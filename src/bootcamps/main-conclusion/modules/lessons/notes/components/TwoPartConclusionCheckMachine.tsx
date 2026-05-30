@@ -1,6 +1,4 @@
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, XCircle } from "lucide-react";
 
 import { InteractiveCard } from "../NoteInteractions";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
@@ -116,10 +114,8 @@ export function TwoPartConclusionCheckMachine() {
           {claims.map((claim) => {
             const active = claim.id === activeClaim.id;
             return (
-              <motion.button
+              <button
                 key={claim.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 type="button"
                 onClick={() => setActiveClaimId(claim.id)}
                 className={cn(
@@ -131,7 +127,7 @@ export function TwoPartConclusionCheckMachine() {
                 )}
               >
                 {claim.shortLabel}
-              </motion.button>
+              </button>
             );
           })}
         </div>
@@ -162,10 +158,8 @@ export function TwoPartConclusionCheckMachine() {
                 {(["yes", "no"] as const).map((value) => {
                   const checked = activeAnswers[question.id] === value;
                   return (
-                    <motion.button
+                    <button
                       key={value}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
                       type="button"
                       role="radio"
                       aria-checked={checked}
@@ -180,7 +174,7 @@ export function TwoPartConclusionCheckMachine() {
                       )}
                     >
                       {value}
-                    </motion.button>
+                    </button>
                   );
                 })}
               </div>
@@ -189,55 +183,40 @@ export function TwoPartConclusionCheckMachine() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             type="button"
             onClick={submit}
             disabled={!activeAnswers.q1 || !activeAnswers.q2}
-            className="rounded-full border border-[rgba(26,26,26,0.12)] bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors duration-200 hover:bg-[#F8F5EE] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+            className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
           >
             Check this claim
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          </button>
+          <button
             type="button"
             onClick={resetClaim}
             className="rounded-full border border-[rgba(26,26,26,0.12)] bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors duration-200 hover:bg-[#F8F5EE] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
           >
             Clear this claim
-          </motion.button>
+          </button>
         </div>
 
-        <AnimatePresence mode="wait">
-          {submittedClaim && submittedAnswers ? (
-            <motion.div
-              key={submittedClaim.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              role="status"
-              aria-live="polite"
-              className={cn(
-                "rounded-[14px] border px-4 py-4 flex gap-3",
-                activeMatches ? "border-[#B9D6B4] bg-[#F6FBF3]" : "border-[#E6D6B2] bg-[#FEFBF2]",
-              )}
-            >
-              {activeMatches ? (
-                <CheckCircle2 className="h-6 w-6 text-[#2F5B35] flex-shrink-0" />
-              ) : (
-                <XCircle className="h-6 w-6 text-[#74541B] flex-shrink-0" />
-              )}
-              <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.82)]">
-                <strong>{submittedClaim.successTitle}</strong>{" "}
-                {activeMatches
-                  ? submittedClaim.explanation
-                  : `The right pattern is ${submittedClaim.correct.q1.toUpperCase()} on question 1 and ${submittedClaim.correct.q2.toUpperCase()} on question 2. ${submittedClaim.explanation}`}
-              </p>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+        {submittedClaim && submittedAnswers ? (
+          <div
+            role="status"
+            aria-live="polite"
+            className={cn(
+              "rounded-[14px] border px-4 py-4",
+              activeMatches ? "border-[#B9D6B4] bg-[#F6FBF3]" : "border-[#E6D6B2] bg-[#FEFBF2]",
+            )}
+          >
+            <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.82)]">
+              <strong>{submittedClaim.successTitle}</strong>{" "}
+              {activeMatches
+                ? submittedClaim.explanation
+                : `The right pattern is ${submittedClaim.correct.q1.toUpperCase()} on question 1 and ${submittedClaim.correct.q2.toUpperCase()} on question 2. ${submittedClaim.explanation}`}
+            </p>
+          </div>
+        ) : null}
       </div>
     </InteractiveCard>
   );
