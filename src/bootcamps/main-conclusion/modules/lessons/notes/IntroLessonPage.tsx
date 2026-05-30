@@ -755,47 +755,9 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         </LessonSection>
 
         <LessonSection tocTitle="Conclusion Indicators" className="space-y-8">
-          <SectionHeading title="Conclusion Indicator Words" />
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              "therefore", "thus", "hence", "so",
-              "consequently", "as a result", "it follows that", "this shows that"
-            ].map((word) => (
-              <div key={word} className="rounded-full border border-[#D5E7CF] bg-[#FBFDF8] px-4 py-2 text-[14px] font-semibold text-[#2F5B35] text-center capitalize">
-                {word}
-              </div>
-            ))}
-          </div>
+          <SectionHeading title="Conclusion Indicator Lab" />
+          <ConclusionIndicatorLab />
 
-          <IndicatorPillGroup
-            label="Conclusion clues (deep dive)"
-            items={[
-              {
-                id: "therefore",
-                label: "therefore",
-                tone: "conclusion",
-                explanation: "Therefore points forward to the claim the author wants you to accept.",
-              },
-              {
-                id: "thus",
-                label: "thus",
-                tone: "conclusion",
-                explanation: "Thus is compact, but it does the same job: it flags the author's takeaway.",
-              },
-              {
-                id: "hence",
-                label: "hence",
-                tone: "conclusion",
-                explanation: "Hence often sounds formal, but structurally it still means 'this follows from what came before.'",
-              },
-              {
-                id: "it-follows",
-                label: "it follows that",
-                tone: "conclusion",
-                explanation: "This phrase practically announces, 'Here is the claim I think my evidence proves.'",
-              },
-            ]}
-          />
           <XRayExample
             title="Same argument, different packaging"
             description="One version labels the conclusion directly. The other labels the premises instead. The structure stays the same."
