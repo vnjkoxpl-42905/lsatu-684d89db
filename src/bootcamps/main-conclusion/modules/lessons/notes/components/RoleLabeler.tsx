@@ -216,8 +216,8 @@ export function RoleLabeler({ title, stimulus, roles, answerKey, teachingSummary
             feedback.kind === "locked" && "border-[#D7CEC1] bg-[#FBF6EE] text-[#62554A]",
             feedback.kind === "complete" && "border-[#B9D6B4] bg-[#F6FBF3] text-[#2F5B35]",
             (feedback.kind === "idle" || feedback.kind === "success") &&
-              feedback.kind !== "complete" &&
               "border-[rgba(26,26,26,0.10)] bg-[rgba(255,255,255,0.74)] text-[rgba(26,26,26,0.78)]",
+
           )}
         >
           {feedback.message}
