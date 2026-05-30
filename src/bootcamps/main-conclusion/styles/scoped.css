@@ -102,6 +102,7 @@
   --border-accent-strong: rgb(var(--accent) / 0.50);
 
   background:
+    var(--texture-paper),
     radial-gradient(circle at 16% 0%, rgba(255,255,255,.82), transparent 28%),
     radial-gradient(circle at 88% 3%, rgba(26,26,26,.048), transparent 30%),
     rgb(var(--bg));
