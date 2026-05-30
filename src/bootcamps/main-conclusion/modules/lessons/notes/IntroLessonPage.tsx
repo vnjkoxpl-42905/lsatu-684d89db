@@ -819,27 +819,22 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     content: (
       <>
         <LessonSection tocTitle="Five Types Of Conclusions" className="space-y-8">
-          <InteractiveCard prominent className="bg-[#FFFDFC] p-8 border-[#DFC28D]">
-            <h2 className="font-serif text-[32px] font-medium text-[#1a1a1a]">Five Types of Conclusions</h2>
-            <p className="mt-2 text-[18px] text-[rgba(26,26,26,0.78)]">
-              What kind of claim is the author making?
+          <InteractiveCard prominent className="bg-surface p-8 border-none shadow-2">
+            <h2 className="font-serif text-[36px] font-bold text-ink-bright leading-tight">Five Types of Conclusions</h2>
+            <p className="mt-4 font-sans text-[15px] text-ink-soft leading-[1.7]">
+              Once you find the conclusion, name its type so you can predict the weakness that usually comes with it.
             </p>
           </InteractiveCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The argument did not change. Only the packaging did.</p>
+          <div className="space-y-6 font-sans text-[15px] leading-[1.7] text-ink-soft max-w-[64ch]">
+            <p className="text-ink-bright">The argument did not change. Only the packaging did.</p>
             <p>Indicator words are packaging. They can point you toward a conclusion, but they do not tell you what kind of conclusion you are dealing with.</p>
+            <p className="text-ink-bright font-semibold">That is the real question:</p>
+            <p className="font-serif text-[28px] italic text-ink-bright leading-[1.3]">What kind of claim is the author making?</p>
             <p>
-              That is the real question:
+              This matters because conclusions are not all built the same way. Each type has its own shape and its own predictable weakness.
             </p>
-            <p>
-              This matters because conclusions are not all built the same way. Some tell us what should happen. Some explain
-              why something happened. Some predict what will happen next. Some pass judgment. Some reject another person's
-              view.
-            </p>
-            <p>Each type has its own shape. Each type also has its own predictable weakness.</p>
-            <p>
-              So once you can name the type of conclusion, you are not just "finding the conclusion" anymore. You are
-              already starting to see where the argument might break.
+            <p className="text-ink-bright font-semibold">
+              So once you can name the type of conclusion, you are not just "finding the conclusion" anymore. You are already starting to see where the argument might break.
             </p>
           </div>
         </LessonSection>
