@@ -681,8 +681,8 @@ export function SupportSimulator() {
           ) : null}
         </AnimatePresence>
 
-        <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
-          That is the basic structure of an argument: premises support a conclusion.
+        <p className="font-mc-serif text-[18px] italic leading-[1.65] text-[rgba(26,26,26,0.88)]">
+          That is the basic structure of an argument: Premises support a conclusion.
         </p>
       </div>
     </InteractiveCard>
