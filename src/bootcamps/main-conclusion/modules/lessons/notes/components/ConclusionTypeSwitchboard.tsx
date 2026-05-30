@@ -107,79 +107,30 @@ export function ConclusionTypeSwitchboard() {
     setSubmitted(false);
   }
 
-  return (
-    <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
-      <div className="space-y-5">
-        <div className="space-y-2">
-          <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
-            One active pass • Question {exampleIndex + 1} of {examples.length}
-          </div>
-          <h3 className="font-serif text-[36px] italic leading-[1.1] text-[#1a1a1a]">
-            Name the kind of conclusion before the page tells you
-          </h3>
-          <p className="text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.76)]">
-            Pick the type first. Then use the reveal to connect that kind of claim to its usual weak spot.
-          </p>
-        </div>
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
+import { InteractiveCard } from "../NoteInteractions";
+import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+...
         {exampleIndex < examples.length ? (
-          <>
+          <motion.div
+            key={exampleIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          >
             <div className="rounded-[16px] border border-[rgba(26,26,26,0.08)] bg-[rgba(255,255,255,0.76)] p-5">
-              <p className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
-                Current claim
-              </p>
-              <p className="mt-2 text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.82)]">
-                <em>{example.claim}</em>
-              </p>
-            </div>
-
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3" role="radiogroup" aria-label="Conclusion type choices">
-              {typeLabels.map((type) => {
-                const checked = selectedType === type.id;
-                const isCorrect = submitted && type.id === example.correctType;
-                const isWrongPick = submitted && checked && type.id !== example.correctType;
-
-                return (
-                  <button
-                    key={type.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={checked}
-                    disabled={submitted}
-                    onClick={() => setSelectedType(type.id)}
-                    className={cn(
-                      "rounded-[14px] border px-4 py-4 text-left transition-[border-color,background,box-shadow,transform] duration-200 ease-out",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
-                      !submitted &&
-                        "border-[rgba(26,26,26,0.10)] bg-white hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_14px_28px_rgba(26,26,26,0.06)]",
-                      checked && !submitted && "border-[var(--role-conclusion)] bg-[#F0FDF4]",
-                      isCorrect && "border-[var(--role-conclusion)] bg-[#F0FDF4]",
-                      isWrongPick && "border-[var(--state-error)] bg-[#FEF2F2]",
-                      submitted && !isCorrect && !isWrongPick && "border-[rgba(26,26,26,0.08)] bg-[rgba(26,26,26,0.02)]",
-                    )}
-                  >
-                    <span className="text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.84)]">{type.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
+...
             {!submitted ? (
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.45)]">
-                  Pick the kind of claim this is.
-                </p>
-                <button
-                  type="button"
-                  onClick={submit}
-                  disabled={!selectedType}
-                  className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-                >
-                  Check the type
-                </button>
+...
               </div>
             ) : (
-              <div
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 role="status"
                 aria-live="polite"
                 className={cn(
@@ -187,34 +138,19 @@ export function ConclusionTypeSwitchboard() {
                   selectionCorrect ? "border-[#B9D6B4] bg-[#F6FBF3]" : "border-[#E6D6B2] bg-[#FEFBF2]",
                 )}
               >
-                <p className="text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.82)]">
-                  <strong>{selectionCorrect ? titleByType[example.correctType] : "Not this one."}</strong>{" "}
-                  {selectionCorrect
-                    ? example.whyItFits
-                    : `${example.whyItFits} The right label here is ${correctLabel}.`}
-                </p>
-                <p className="mt-3 text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.72)]">
-                  <strong>Likely weak spot:</strong> {example.weakness}
-                </p>
-                <p className="mt-2 text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.72)]">
-                  <strong>Student question:</strong> {example.question}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={nextExample}
-                    className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-                  >
-                    Next claim
-                  </button>
-                </div>
-              </div>
+...
+              </motion.div>
             )}
-          </>
+          </motion.div>
         ) : (
-          <div className="rounded-[14px] border border-[#B9D6B4] bg-[#F6FBF3] px-5 py-4 text-[15px] font-serif leading-[1.7] text-[#2F5B35] font-medium text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            className="rounded-[14px] border border-[#B9D6B4] bg-[#F6FBF3] px-5 py-4 text-[15px] font-serif leading-[1.7] text-[#2F5B35] font-medium text-center"
+          >
             You practiced all five conclusion types.
-          </div>
+          </motion.div>
         )}
       </div>
     </InteractiveCard>
