@@ -1459,63 +1459,52 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "two-part-conclusion-check": {
-    eyebrow: "",
+    eyebrow: "Lessons",
     title: "The 2-Part Conclusion Check",
     subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
     content: (
       <>
         <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-8">
           <SectionHeading title="The 2-Part Conclusion Check" subtitle="The one tool that does not lie" />
-          <p className="font-serif text-[30px] italic leading-[1.35] text-[#1a1a1a]">The one tool that does not lie. Two questions. Both must be yes.</p>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+          <p className="font-serif text-[24px] italic leading-[1.4] text-ink-bright">
+            Two questions. Both must be yes.
+          </p>
+          <div className="space-y-4 text-body-prose text-ink-soft">
             <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
-            <p>One sentence gives background.</p>
-            <p>One sentence introduces another person's opinion.</p>
-            <p>One sentence concedes something.</p>
-            <p>One sentence sounds like a conclusion but is really just support.</p>
-            <p>And the real conclusion may be hiding in the middle.</p>
+            <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
             <p>That is why you need a simple filter.</p>
-            <p>This is that filter.</p>
           </div>
         </LessonSection>
 
         <LessonSection tocTitle="The Check" className="space-y-8">
           <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
-          <CalloutCard className="bg-white">
+          <CalloutCard className="bg-surface">
             <NumberList
               items={[
-                <span><strong>Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</span>,
-                <span><strong>Is this claim supported by at least one other explicit statement in the stimulus?</strong><br />In other words, does something else in the argument give us a reason to believe it?</span>,
+                <span><strong className="text-ink-bright">Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</span>,
+                <span><strong className="text-ink-bright">Is this claim supported by at least one other explicit statement in the stimulus?</strong><br />In other words, does something else in the argument give us a reason to believe it?</span>,
               ]}
             />
           </CalloutCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Both answers must be <strong>yes</strong>.</p>
-            <p>If either answer is <strong>no</strong>, that sentence is not the main conclusion.</p>
-            <p>A factual statement usually fails the first question. Facts are not the author's opinion. The author is using them as evidence.</p>
-            <p>An unsupported claim fails the second question. If nothing else in the stimulus is backing it up, it is not being argued for.</p>
-            <p>A concession fails the first question. The author may admit it, but it is not the author's main point. A concession is something the author gives to the other side before making their own argument.</p>
-            <p><strong>Two questions. Two yeses. No exceptions.</strong></p>
+          <div className="space-y-4 text-body-prose text-ink-soft">
+            <p>Both answers must be <strong className="text-conclusion">yes</strong>.</p>
+            <p>If either answer is <strong className="text-error">no</strong>, that sentence is not the main conclusion.</p>
+            <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
+            <p className="font-semibold text-ink-bright">Two questions. Two yeses. No exceptions.</p>
           </div>
         </LessonSection>
 
         <LessonSection tocTitle="Why This Works" className="space-y-8">
           <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A conclusion is the claim the author is trying to prove.</p>
-            <p>That means two things have to be true:</p>
-            <p>First, the claim has to belong to the author.</p>
-            <p>Second, the claim has to be supported by something else in the stimulus.</p>
-            <p>That is all the 2-Part Conclusion Check is doing. It turns the definition of a conclusion into two simple yes-or-no questions.</p>
-            <p>If a sentence passes both parts, it is probably the conclusion.</p>
-            <p>If it fails either part, it is doing some other job. It may be background, a premise, an opposing view, a concession, or just setup.</p>
-            <p>Keep looking.</p>
+          <div className="space-y-4 text-body-prose text-ink-soft">
+            <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
+            <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
           </div>
         </LessonSection>
 
         <LessonSection tocTitle="Apatosaurus Argument" className="space-y-8">
           <SectionHeading title="Example: The Apatosaurus Argument" subtitle="Run the check on each claim" />
-          <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">Here is a simple rebuttal argument:</p>
+          <p className="text-body text-ink-soft">Here is a simple rebuttal argument:</p>
           <XRayExample
             title="Apatosaurus argument"
             description="Use the scan to separate the attributed view, the author's conclusion, and the supporting evidence."
@@ -1553,30 +1542,27 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               { id: "claim-c", label: "Claim C" },
             ]}
           />
-          <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">There are three claims here. Only one is the main conclusion.</p>
-          <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">Let's run the check.</p>
+          <p className="text-body text-ink-soft">There are three claims here. Only one is the main conclusion.</p>
+          <p className="text-body text-ink-soft">Let's run the check.</p>
           <TwoPartConclusionCheckMachine />
         </LessonSection>
 
         <LessonSection tocTitle="Claim A" className="space-y-8">
           <SectionHeading title="Claim A" subtitle="The attributed view" />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
+          <QuoteCard className="bg-surface">
             <p>
               <em>Some paleontologists suggest the Apatosaurus was able to gallop.</em>
             </p>
           </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Is this the author's own opinion?</p>
-            <p>No.</p>
-            <p>This is an attribution. The author is telling us what some paleontologists believe. That means it belongs to someone else, not the author.</p>
-            <p>Claim A fails the first question.</p>
-            <p>So it is not the conclusion.</p>
+          <div className="space-y-4 text-body-prose text-ink-soft">
+            <p>Is this the author's own opinion? <strong className="text-error">No.</strong></p>
+            <p>This is an attribution. The author is telling us what some paleontologists believe. Claim A fails the first question. So it is not the conclusion.</p>
           </div>
         </LessonSection>
 
         <LessonSection tocTitle="Claim B" className="space-y-8">
           <SectionHeading title="Claim B" subtitle="The author's position" />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
+          <QuoteCard className="bg-surface">
             <p>
               <em>However, this is unlikely.</em>
             </p>
