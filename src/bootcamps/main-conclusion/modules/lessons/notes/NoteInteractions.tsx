@@ -886,7 +886,6 @@ export function ConclusionIndicatorLab() {
     >
       <div className="space-y-6">
         <div className="space-y-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Conclusion-Indicator Lab</p>
           <p className="max-w-3xl text-[18px] leading-[1.7] text-[rgba(26,26,26,0.78)]">
             Touch each indicator and watch how the author signals their main claim. The phrase after the indicator is the conclusion.
           </p>
@@ -939,7 +938,6 @@ export function ConclusionIndicatorLab() {
           >
             <div className="border-b border-[#E5D2AC] px-5 py-5 md:px-6">
               <div className="space-y-2">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Active Indicator</p>
                 <div className="flex flex-wrap items-center gap-3">
                   <h4 className="font-serif text-[34px] italic leading-none text-[#1D1610]">{activeItem.label}</h4>
                   <span className="rounded-full border border-[#E1C78F] bg-[#FFF8EA] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7A5920]">
