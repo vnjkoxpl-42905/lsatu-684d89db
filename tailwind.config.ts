@@ -103,6 +103,7 @@ export default {
         "bg-2": "rgb(var(--bg-2) / <alpha-value>)",
         surface: "rgb(var(--surface) / <alpha-value>)",
         "surface-elev": "rgb(var(--surface-elev) / <alpha-value>)",
+        "paper-texture": "var(--texture-paper)",
         ink: "rgb(var(--ink) / <alpha-value>)",
         "ink-soft": "rgb(var(--ink-soft) / <alpha-value>)",
         "ink-faint": "rgb(var(--ink-faint) / <alpha-value>)",
