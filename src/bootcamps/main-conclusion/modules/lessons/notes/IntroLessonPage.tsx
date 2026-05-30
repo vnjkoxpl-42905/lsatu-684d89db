@@ -29,7 +29,6 @@ export type IntroLessonPageId =
   | "conclusions"
   | "five-types-of-conclusions"
   | "beyond-premises-and-conclusions"
-  | "the-other-roles-in-a-stimulus"
   | "two-part-conclusion-check";
 
 type PageDefinition = {
@@ -924,7 +923,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="The Core Rule" className="space-y-8 border-b-0">
+        <LessonSection tocTitle="The Core Rule" className="space-y-8">
           <SectionHeading title="The Core Rule" subtitle="Ask what job the sentence is doing" />
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
@@ -939,16 +938,9 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
           </div>
         </LessonSection>
-      </>
-    ),
-  },
-  "the-other-roles-in-a-stimulus": {
-    eyebrow: "LESSON",
-    title: "The Other Roles in a Stimulus",
-    subtitle: "A compact guide to background, attribution, concessions, and pivots.",
-    content: (
-      <>
+
         <LessonSection tocTitle="Role Guide" className="space-y-12">
+          <SectionHeading title="Role Guide" subtitle="A compact guide to background, attribution, concessions, and pivots." />
           {[
             {
               title: "Background",
@@ -1018,6 +1010,15 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             </div>
           ))}
         </LessonSection>
+        
+        <LessonSection tocTitle="Final Summary" className="space-y-8 border-b-0">
+          <SectionHeading title="Final Summary" subtitle="Keep the core rule in mind" />
+          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
+            <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
+            <p>Background, attribution, opposing support, concessions, and pivots are all common structures that distract from the main point.</p>
+            <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
+          </div>
+        </LessonSection>
       </>
     ),
   },
@@ -1063,7 +1064,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <div className="space-y-3 text-body-prose text-ink-soft">
           <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
           <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
-        </div>        
+        </div>
+        <TwoPartConclusionCheckMachine />
       </LessonSection>
     </>
   ),
