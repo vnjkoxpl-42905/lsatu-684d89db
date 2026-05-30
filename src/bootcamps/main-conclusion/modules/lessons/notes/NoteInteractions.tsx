@@ -826,7 +826,6 @@ export function XRayExample({
 type ConclusionIndicatorItem = {
   id: string;
   label: string;
-  chipNote: string;
   functionLabel: string;
   teachingNote: string;
   premise: string;
@@ -837,7 +836,6 @@ const conclusionIndicatorItems: ConclusionIndicatorItem[] = [
   {
     id: "therefore",
     label: "Therefore",
-    chipNote: "Claim",
     functionLabel: "Formal conclusion marker",
     teachingNote: `"Therefore" signals the author's main claim, drawn from the reasons just given.`,
     premise: "The old bridge has cracked, and engineers warn it is no longer safe.",
@@ -846,7 +844,6 @@ const conclusionIndicatorItems: ConclusionIndicatorItem[] = [
   {
     id: "thus",
     label: "Thus",
-    chipNote: "Result",
     functionLabel: "Packages the takeaway",
     teachingNote: `"Thus" packages the conclusion as the natural result of the evidence.`,
     premise: "Three of the five council members have publicly opposed the new policy.",
@@ -855,7 +852,6 @@ const conclusionIndicatorItems: ConclusionIndicatorItem[] = [
   {
     id: "so",
     label: "So",
-    chipNote: "Therefore",
     functionLabel: "Conversational conclusion",
     teachingNote: `"So" introduces a conclusion in plain, conversational reasoning.`,
     premise: "It has been raining all morning,",
@@ -864,7 +860,6 @@ const conclusionIndicatorItems: ConclusionIndicatorItem[] = [
   {
     id: "hence",
     label: "Hence",
-    chipNote: "Inference",
     functionLabel: "Formal inference",
     teachingNote: `"Hence" is a formal way of saying "and so, the conclusion is..."`,
     premise: "The sample size was extremely small and the controls were inconsistent.",
@@ -928,7 +923,6 @@ export function ConclusionIndicatorLab() {
                     )}
                   />
                 </div>
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">{item.chipNote}</p>
               </button>
             );
           })}
