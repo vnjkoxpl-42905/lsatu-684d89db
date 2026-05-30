@@ -244,10 +244,16 @@
 }
 .mc-bootcamp .skip-link:focus { left: var(--s-4); top: var(--s-4); }
 
-.mc-bootcamp .mc-indicator-core-stack {
-  display: grid;
-  gap: 18px;
+.mc-bootcamp .mc-vignette {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform var(--d-fast) var(--ease), box-shadow var(--d-fast) var(--ease);
 }
+
+.mc-bootcamp .mc-vignette:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
 
 .mc-bootcamp .mc-indicator-section {
   border-radius: 24px;
