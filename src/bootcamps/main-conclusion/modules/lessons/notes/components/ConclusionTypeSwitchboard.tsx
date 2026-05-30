@@ -111,13 +111,13 @@ export function ConclusionTypeSwitchboard() {
     <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
       <div className="space-y-5">
         <div className="space-y-2">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
+          <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
             One active pass • Question {exampleIndex + 1} of {examples.length}
           </div>
-          <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">
+          <h3 className="font-serif text-[36px] italic leading-[1.1] text-[#1a1a1a]">
             Name the kind of conclusion before the page tells you
           </h3>
-          <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
+          <p className="text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.76)]">
             Pick the type first. Then use the reveal to connect that kind of claim to its usual weak spot.
           </p>
         </div>
@@ -125,10 +125,10 @@ export function ConclusionTypeSwitchboard() {
         {exampleIndex < examples.length ? (
           <>
             <div className="rounded-[16px] border border-[rgba(26,26,26,0.08)] bg-[rgba(255,255,255,0.76)] p-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
+              <p className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
                 Current claim
               </p>
-              <p className="mt-2 text-[18px] leading-[1.75] text-[rgba(26,26,26,0.82)]">
+              <p className="mt-2 text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.82)]">
                 <em>{example.claim}</em>
               </p>
             </div>
@@ -158,7 +158,7 @@ export function ConclusionTypeSwitchboard() {
                       submitted && !isCorrect && !isWrongPick && "border-[rgba(26,26,26,0.08)] bg-[rgba(26,26,26,0.02)]",
                     )}
                   >
-                    <span className="text-[16px] leading-[1.55] text-[rgba(26,26,26,0.84)]">{type.label}</span>
+                    <span className="text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.84)]">{type.label}</span>
                   </button>
                 );
               })}
@@ -166,14 +166,14 @@ export function ConclusionTypeSwitchboard() {
 
             {!submitted ? (
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[rgba(26,26,26,0.45)]">
+                <p className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.45)]">
                   Pick the kind of claim this is.
                 </p>
                 <button
                   type="button"
                   onClick={submit}
                   disabled={!selectedType}
-                  className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                  className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
                 >
                   Check the type
                 </button>
@@ -187,23 +187,23 @@ export function ConclusionTypeSwitchboard() {
                   selectionCorrect ? "border-[#B9D6B4] bg-[#F6FBF3]" : "border-[#E6D6B2] bg-[#FEFBF2]",
                 )}
               >
-                <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.82)]">
+                <p className="text-[15px] font-serif leading-[1.7] text-[rgba(26,26,26,0.82)]">
                   <strong>{selectionCorrect ? titleByType[example.correctType] : "Not this one."}</strong>{" "}
                   {selectionCorrect
                     ? example.whyItFits
                     : `${example.whyItFits} The right label here is ${correctLabel}.`}
                 </p>
-                <p className="mt-3 text-[16px] leading-[1.6] text-[rgba(26,26,26,0.72)]">
+                <p className="mt-3 text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.72)]">
                   <strong>Likely weak spot:</strong> {example.weakness}
                 </p>
-                <p className="mt-2 text-[16px] leading-[1.6] text-[rgba(26,26,26,0.72)]">
+                <p className="mt-2 text-[14px] font-sans leading-[1.6] text-[rgba(26,26,26,0.72)]">
                   <strong>Student question:</strong> {example.question}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     type="button"
                     onClick={nextExample}
-                    className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                    className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
                   >
                     Next claim
                   </button>
@@ -212,7 +212,7 @@ export function ConclusionTypeSwitchboard() {
             )}
           </>
         ) : (
-          <div className="rounded-[14px] border border-[#B9D6B4] bg-[#F6FBF3] px-5 py-4 text-[17px] leading-[1.65] text-[#2F5B35] font-medium text-center">
+          <div className="rounded-[14px] border border-[#B9D6B4] bg-[#F6FBF3] px-5 py-4 text-[15px] font-serif leading-[1.7] text-[#2F5B35] font-medium text-center">
             You practiced all five conclusion types.
           </div>
         )}
