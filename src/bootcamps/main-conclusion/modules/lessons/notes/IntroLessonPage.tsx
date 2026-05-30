@@ -943,50 +943,75 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "A compact guide to background, attribution, concessions, and pivots.",
     content: (
       <>
-        <LessonSection tocTitle="Background" className="space-y-8">
-          <SectionHeading title="Background" subtitle="Context setting" />
-          <div className="space-y-4 text-ink-soft leading-[1.7]">
-            <p><strong>What it is:</strong> Background sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.</p>
-            <p><strong>Tiny example:</strong> Several cities have recently expanded their bike-lane networks.</p>
-            <p><strong>How to read it:</strong> This tells you the situation. It does not yet tell you what the author is trying to prove.</p>
-            <p><strong>Common trap:</strong> Students treat relevant context as support. Relevance is not enough. A premise has to support the author's conclusion.</p>
-          </div>
-        </LessonSection>
-        <LessonSection tocTitle="Other People's Views" className="space-y-8">
-          <SectionHeading title="Other People's Views" subtitle="Whose view is this?" />
-          <div className="space-y-4 text-ink-soft leading-[1.7]">
-            <p><strong>What it is:</strong> An attribution introduces what someone else believes.</p>
-            <p><strong>Tiny example:</strong> Critics argue that the new transit plan is too expensive.</p>
-            <p><strong>How to read it:</strong> If the sentence belongs to someone else, do not treat it as the author's conclusion.</p>
-            <p><strong>Common trap:</strong> Students often mistake another person's view for the author's conclusion. Before labeling something as the conclusion, ask: Whose view is this?</p>
-          </div>
-        </LessonSection>
-        <LessonSection tocTitle="Opposing Support" className="space-y-8">
-          <SectionHeading title="Opposing Support" subtitle="Evidence for someone else" />
-          <div className="space-y-4 text-ink-soft leading-[1.7]">
-            <p><strong>What it is:</strong> Opposing support is evidence given for someone else's view.</p>
-            <p><strong>Tiny example:</strong> They note that the project is already over budget.</p>
-            <p><strong>How to read it:</strong> Ask which claim the evidence is supporting. If it supports the opposing view, it is not the author's premise.</p>
-            <p><strong>Common trap:</strong> Students see evidence and assume it must be the author's premise. Evidence only becomes the author's premise if it supports the author's conclusion.</p>
-          </div>
-        </LessonSection>
-        <LessonSection tocTitle="Concessions" className="space-y-8">
-          <SectionHeading title="Concessions" subtitle="What the author gives away" />
-          <div className="space-y-4 text-ink-soft leading-[1.7]">
-            <p><strong>What it is:</strong> A concession is something the author admits, grants, or allows before making the real argument.</p>
-            <p><strong>Tiny example:</strong> Although vegetarian diets require careful planning, they can still provide complete nutrition.</p>
-            <p><strong>How to read it:</strong> This is something the author gives away before making the real point.</p>
-            <p><strong>Common trap:</strong> Students often mistake a concession for the author's main point because it sounds important or balanced.</p>
-          </div>
-        </LessonSection>
-        <LessonSection tocTitle="Pivots" className="space-y-8 border-b-0">
-          <SectionHeading title="Pivots" subtitle="The turn toward the author's real position" />
-          <div className="space-y-4 text-ink-soft leading-[1.7]">
-            <p><strong>What it is:</strong> A pivot is the turn in the argument, showing the move away from other material toward the author's actual position.</p>
-            <p><strong>Tiny example:</strong> Many residents oppose the plan. However, the city should move forward.</p>
-            <p><strong>How to read it:</strong> When the author pivots, pay attention. The real conclusion often appears after the turn.</p>
-            <p><strong>Common trap:</strong> Students often ignore pivot words and accidentally choose the opposing view or concession as the conclusion.</p>
-          </div>
+        <LessonSection tocTitle="Role Guide" className="space-y-12">
+          {[
+            {
+              title: "Background",
+              subtitle: "Context setting",
+              definition: "Sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.",
+              example: "Several cities have recently expanded their bike-lane networks.",
+              read: "This tells you the situation. It does not yet tell you what the author is trying to prove.",
+              trap: "Treating relevant context as support. Relevance is not enough. A premise has to support the author's conclusion."
+            },
+            {
+              title: "Other People's Views",
+              subtitle: "Whose view is this?",
+              definition: "An attribution introduces what someone else believes (critics, researchers, public).",
+              example: "Critics argue that the new transit plan is too expensive.",
+              read: "If the sentence belongs to someone else, do not treat it as the author's conclusion.",
+              trap: "Mistaking another person's view for the author's conclusion. Ask: Whose view is this?"
+            },
+            {
+              title: "Opposing Support",
+              subtitle: "Evidence for someone else",
+              definition: "Evidence given for someone else's view, not the author's.",
+              example: "They note that the project is already over budget.",
+              read: "Ask which claim the evidence is supporting. If it supports the opposing view, it is not the author's premise.",
+              trap: "Seeing evidence and assuming it must be the author's premise. Evidence only works if it supports the author's conclusion."
+            },
+            {
+              title: "Concessions",
+              subtitle: "What the author gives away",
+              definition: "Something the author admits, grants, or allows before making the real argument.",
+              example: "Although vegetarian diets require careful planning, they can still provide complete nutrition.",
+              read: "Something the author gives away before making the real point.",
+              trap: "Mistaking a concession for the author's main point because it sounds important or balanced."
+            },
+            {
+              title: "Pivots",
+              subtitle: "The turn to the author's position",
+              definition: "The turn in the argument, showing the move away from other material toward the author's actual position.",
+              example: "Many residents oppose the plan. However, the city should move forward.",
+              read: "When the author pivots, pay attention. The real conclusion often appears after the turn.",
+              trap: "Ignoring pivot words and accidentally choosing the opposing view or concession as the conclusion."
+            }
+          ].map((role, i) => (
+            <div key={role.title} className="space-y-6">
+              <div className="flex items-baseline gap-3">
+                <h3 className="font-serif text-[24px] italic text-ink-bright">{role.title}</h3>
+                <span className="font-sans text-[14px] text-ink-soft">{role.subtitle}</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                <div>
+                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">What it is</h4>
+                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.definition}</p>
+                </div>
+                <div>
+                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">Tiny example</h4>
+                  <p className="text-[15px] leading-relaxed text-ink-soft italic font-mono bg-bg-night p-3 rounded-md">{`"${role.example}"`}</p>
+                </div>
+                <div>
+                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">How to read it</h4>
+                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.read}</p>
+                </div>
+                <div>
+                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-state-warn mb-1">Common trap</h4>
+                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.trap}</p>
+                </div>
+              </div>
+              {i < 4 && <div className="h-px bg-ink-faint/10 mt-8" />}
+            </div>
+          ))}
         </LessonSection>
       </>
     ),
