@@ -288,6 +288,10 @@ The bootcamp is layered tonally before it is shadowed. Depth comes first from th
 - **`TrainingPath` (path-strip):** a horizontal phase indicator showing briefing → demo → attempt → reveal → coach → checkpoint → cleared. Active step glows; completed steps fill in Conclusion Green; future steps are Ink Faint.
 - **`PhaseRunner`:** the phase machine that gates Continue until the student submits. Reset is always available. Score line reads as `role="status"` after submission so screen readers announce the verdict.
 - **`ChipPicker`:** the shared primitive used by RoleLabeler, IndicatorTagger, ConclusionPicker. Click-again-to-clear, keyboard-activatable, three-branch score copy (zero / partial / clean).
+- **`TwoPartConclusionCheckMachine`:** the interactive filter component.
+    *   Style: An inline, two-part sequential question interaction.
+    *   Visual: Each question must be clearly separated to prevent cognitive overload. A binary "Yes/No" selection must trigger immediate, non-intrusive feedback that confirms or rejects the candidate based on the 2-part logic.
+    *   Interaction: Must be keyboard-accessible and respect the "no modals" rule (always inline within the lesson flow).
 - **`named-tool-inline`:** the inline mono callout for any named tool reference. Aspiring Gold text on a gold-tinted background, 4px corner, mono typography. The only place text is colored gold without a surface behind it.
 
 ## 6. Do's and Don'ts
