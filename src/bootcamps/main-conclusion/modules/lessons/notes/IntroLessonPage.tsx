@@ -908,14 +908,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "beyond-premises-and-conclusions": {
-    eyebrow: "",
+    eyebrow: "LESSON",
     title: "Beyond Premises and Conclusions",
-    subtitle: "Not every sentence belongs to the author's own argument, so separate context, opposition, concessions, and pivots from the real claim.",
+    subtitle: "Separate context, opposition, concessions, and pivots from the real argument.",
     content: (
       <>
         <LessonSection tocTitle="Big Picture Overview" className="space-y-8">
           <SectionHeading title="Big Picture Overview" subtitle="What else appears in a stimulus" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
             <p>Once students learn premises and conclusions, a new problem appears: not every sentence in an LR stimulus is part of the author's own argument.</p>
             <p>Some sentences give background. Some introduce what other people believe. Some support another person's view. Some concede a point. Some pivot away from that material and toward the author's actual position.</p>
             <p>This is why students cannot treat every sentence as either "premise" or "conclusion" too quickly.</p>
@@ -925,12 +925,10 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="The Core Rule" className="space-y-8">
           <SectionHeading title="The Core Rule" subtitle="Ask what job the sentence is doing" />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <strong>Do not ask what the sentence says. Ask what job it is doing.</strong>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+          <div className="font-mono text-aspiring-gold bg-surface-elev rounded-sm px-2 py-1 inline-block">
+            <strong>Do not ask what the sentence says. Ask what job it is doing.</strong>
+          </div>
+          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
             <p>A sentence may sound important and still not be the author's conclusion.</p>
             <p>A sentence may be factual and still not be a premise for the author's conclusion.</p>
             <p>A sentence may give evidence, but that evidence may support someone else's view rather than the author's.</p>
@@ -1499,149 +1497,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <div className="space-y-4 text-body-prose text-ink-soft">
             <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
             <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="Apatosaurus Argument" className="space-y-8">
-          <SectionHeading title="Example: The Apatosaurus Argument" subtitle="Run the check on each claim" />
-          <p className="text-body text-ink-soft">Here is a simple rebuttal argument:</p>
-          <XRayExample
-            title="Apatosaurus argument"
-            description="Use the scan to separate the attributed view, the author's conclusion, and the supporting evidence."
-            source={
-              <p>
-                <em>Some paleontologists suggest the Apatosaurus was able to gallop. However, this is unlikely. Experiments show the strain of galloping would have broken their legs.</em>
-              </p>
-            }
-            blocks={[
-              {
-                id: "claim-a",
-                label: "Claim A · attributed view",
-                tone: "opposing",
-                tags: ["claim-a"],
-                content: <em>Some paleontologists suggest the Apatosaurus was able to gallop.</em>,
-              },
-              {
-                id: "claim-b",
-                label: "Claim B · author's conclusion",
-                tone: "conclusion",
-                tags: ["claim-b"],
-                content: <em>However, this is unlikely.</em>,
-              },
-              {
-                id: "claim-c",
-                label: "Claim C · premise",
-                tone: "premise",
-                tags: ["claim-c", "claim-b"],
-                content: <em>Experiments show the strain of galloping would have broken their legs.</em>,
-              },
-            ]}
-            focusModes={[
-              { id: "claim-a", label: "Claim A" },
-              { id: "claim-b", label: "Claim B" },
-              { id: "claim-c", label: "Claim C" },
-            ]}
-          />
-          <p className="text-body text-ink-soft">There are three claims here. Only one is the main conclusion.</p>
-          <p className="text-body text-ink-soft">Let's run the check.</p>
-          <TwoPartConclusionCheckMachine />
-        </LessonSection>
-
-        <LessonSection tocTitle="Claim A" className="space-y-8">
-          <SectionHeading title="Claim A" subtitle="The attributed view" />
-          <QuoteCard className="bg-surface">
-            <p>
-              <em>Some paleontologists suggest the Apatosaurus was able to gallop.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-body-prose text-ink-soft">
-            <p>Is this the author's own opinion? <strong className="text-error">No.</strong></p>
-            <p>This is an attribution. The author is telling us what some paleontologists believe. Claim A fails the first question. So it is not the conclusion.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="Claim B" className="space-y-8">
-          <SectionHeading title="Claim B" subtitle="The author's position" />
-          <QuoteCard className="bg-surface">
-            <p>
-              <em>However, this is unlikely.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Is this the author's own opinion?</p>
-            <p>Yes.</p>
-            <p>The word "however" tells us the author is pushing back against the paleontologists. The author is saying that the Apatosaurus probably could not gallop.</p>
-            <p>Is this claim supported by something else in the stimulus?</p>
-            <p>Yes.</p>
-            <p>The next sentence gives the reason: galloping would have placed so much strain on the Apatosaurus's legs that the legs would have broken.</p>
-            <p>Claim B passes both questions.</p>
-            <p>So Claim B is the main conclusion.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="Claim C" className="space-y-8">
-          <SectionHeading title="Claim C" subtitle="The supporting evidence" />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Experiments show the strain of galloping would have broken their legs.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Is this the author's own opinion?</p>
-            <p>Not really.</p>
-            <p>This is presented as an experimental finding. The author is not trying to prove that the experiments happened. The author is using the experiments as evidence.</p>
-            <p>Is this claim supported by something else in the stimulus?</p>
-            <p>No.</p>
-            <p>Nothing else is offered to prove Claim C. Instead, Claim C supports Claim B.</p>
-            <p>That makes Claim C a premise, not a conclusion.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="What The Argument Is Doing" className="space-y-8">
-          <SectionHeading title="What the Argument Is Doing" subtitle="See the structure clearly" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The argument has a simple structure:</p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>Some people say the Apatosaurus could gallop.</p>
-            <p>But that is unlikely.</p>
-            <p>Why? Because experiments show galloping would have broken its legs.</p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The main conclusion is:</p>
-          </div>
-          <QuoteCard className="bg-white pr-6">
-            <p>
-              <em>This is unlikely.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>That is the author's position, and the experiment sentence supports it.</p>
-            <p>The word "however" helped us notice the shift. It marked the moment where the author moved away from someone else's view and introduced their own.</p>
-            <p>But indicator words only give hints. They do not prove the structure by themselves.</p>
-            <p>The 2-Part Check confirms it.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="Remember" className="space-y-8 border-b-0">
-          <SectionHeading title="Remember" subtitle="Two questions. Two yeses." />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>For every possible conclusion, ask:</p>
-          </div>
-          <CalloutCard className="bg-white" prominent>
-            <NumberList
-              items={[
-                <span><strong>Is this the author's own opinion?</strong></span>,
-                <span><strong>Is this supported by something else in the stimulus?</strong></span>,
-              ]}
-            />
-          </CalloutCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Both must be yes.</p>
-            <p>One no means it is not the main conclusion.</p>
-            <p>Run this check on every Main Conclusion question.</p>
-          </div>
-        </LessonSection>
+          </div>        </LessonSection>
       </>
     ),
   },
