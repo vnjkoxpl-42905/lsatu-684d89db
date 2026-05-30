@@ -938,24 +938,29 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Background Information" className="space-y-8">
           <SectionHeading title="1. Background Information" subtitle="Context is not automatically support" />
-          <GridCard title="Plain English Definition">
-            <p>Background information gives context. It sets up the topic, introduces the situation, or explains what the argument is about.</p>
-            <p>Background information usually does <strong>not</strong> directly support the author's conclusion.</p>
-          </GridCard>
-          <GridCard title="How It Appears on the LSAT">
-            <p>Background often appears at the beginning of a stimulus. It may introduce a study, a policy, a debate, a discovery, a law, a historical fact, or a general situation.</p>
-          </GridCard>
-          <GridCard title="Common Student Mistake">
-            <p>Students often confuse context with support. Just because a sentence is true or relevant does not mean it is a premise.</p>
-          </GridCard>
-          <GridCard title="Short Example">
-            <QuoteCard>
-              <p>
-                <em>Several cities have recently expanded their public bike-lane networks. City officials are now debating whether to expand the program further.</em>
-              </p>
-            </QuoteCard>
-          </GridCard>
-          <GridCard title="Labeled Breakdown">
+          
+          <div className="space-y-6">
+            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
+              <h3 className="font-semibold text-ink-bright mb-2">Plain English Definition</h3>
+              <p className="font-body-prose text-ink-soft">Background information gives context. It sets up the topic, introduces the situation, or explains what the argument is about. It usually does <strong>not</strong> directly support the author's conclusion.</p>
+            </div>
+            
+            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
+              <h3 className="font-semibold text-ink-bright mb-2">How It Appears on the LSAT</h3>
+              <p className="font-body-prose text-ink-soft">Background often appears at the beginning of a stimulus. It may introduce a study, a policy, a debate, a discovery, a law, a historical fact, or a general situation.</p>
+            </div>
+            
+            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
+              <h3 className="font-semibold text-ink-bright mb-2">Common Student Mistake</h3>
+              <p className="font-body-prose text-ink-soft">Students often confuse context with support. Just because a sentence is true or relevant does not mean it is a premise.</p>
+            </div>
+          </div>
+
+          <div className="bg-surface-elev rounded-lg p-6 border border-ink-faint/10">
+            <h3 className="font-semibold text-ink-bright mb-4">Short Example</h3>
+            <div className="font-body-prose text-ink-soft italic p-4 bg-bg-night rounded-sm mb-4">
+              "Several cities have recently expanded their public bike-lane networks. City officials are now debating whether to expand the program further."
+            </div>
             <BreakdownList
               items={[
                 <span><strong>Background:</strong> Several cities have recently expanded their public bike-lane networks.</span>,
@@ -964,10 +969,11 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
                 <span><strong>Author's Conclusion:</strong> None yet.</span>,
               ]}
             />
-          </GridCard>
-          <GridCard title="Quick Takeaway">
-            <p>Background tells you where the argument is happening. It does not necessarily tell you what the author is trying to prove.</p>
-          </GridCard>
+          </div>
+
+          <p className="font-body-prose text-ink-soft p-4 bg-surface rounded-lg">
+            <strong>Quick Takeaway:</strong> Background tells you where the argument is happening. It does not necessarily tell you what the author is trying to prove.
+          </p>
         </LessonSection>
 
         <LessonSection tocTitle="Attributions And Opposing Viewpoints" className="space-y-8">
