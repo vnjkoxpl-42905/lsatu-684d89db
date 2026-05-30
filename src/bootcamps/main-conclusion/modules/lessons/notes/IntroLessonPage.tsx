@@ -841,7 +841,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               already starting to see where the argument might break.
             </p>
           </div>
-          <ConclusionTypeSwitchboard />
         </LessonSection>
 
         <LessonSection tocTitle="Recommendations" className="space-y-8">
@@ -906,6 +905,10 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               ]}
             />
           </CalloutCard>
+        </LessonSection>
+        
+        <LessonSection tocTitle="Interactive Practice" className="space-y-8">
+            <ConclusionTypeSwitchboard />
         </LessonSection>
 
         <LessonSection tocTitle="Remember" className="space-y-8 border-b-0">
