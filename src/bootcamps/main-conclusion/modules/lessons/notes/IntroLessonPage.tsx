@@ -917,7 +917,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <SectionHeading title="Big Picture Overview" subtitle="What else appears in a stimulus" />
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
             <p>Once students learn premises and conclusions, a new problem appears: not every sentence in an LR stimulus is part of the author's own argument.</p>
-            <p>Some sentences give background. Some introduce what other people believe. Some support another person's view. Some concede a point. Some pivot away from that material and toward the author's actual position.</p>
+            <p>Some sentences give <span className="text-role-background font-semibold">background</span>. Some introduce <span className="text-role-opposing font-semibold">what other people believe</span>. Some support another person's view. Some <span className="text-role-concession font-semibold">concede a point</span>. Some <span className="text-role-pivot font-semibold">pivot</span> away from that material and toward the author's actual position.</p>
             <p>This is why students cannot treat every sentence as either "premise" or "conclusion" too quickly.</p>
             <p>The real job is to separate the author's argument from everything around it.</p>
           </div>
@@ -1468,21 +1468,21 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
     content: (
       <>
-        <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-8">
+        <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-12">
           <SectionHeading title="The 2-Part Conclusion Check" subtitle="The one tool that does not lie" />
           <p className="font-serif text-[24px] italic leading-[1.4] text-ink-bright">
             Two questions. Both must be yes.
           </p>
-          <div className="space-y-4 text-body-prose text-ink-soft">
+          <div className="space-y-3 text-body-prose text-ink-soft">
             <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
             <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
             <p>That is why you need a simple filter.</p>
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="The Check" className="space-y-8">
+        <LessonSection tocTitle="The Check" className="space-y-12">
           <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
-          <CalloutCard className="bg-surface">
+          <CalloutCard className="bg-surface p-6">
             <NumberList
               items={[
                 <span><strong className="text-ink-bright">Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</span>,
@@ -1490,20 +1490,21 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               ]}
             />
           </CalloutCard>
-          <div className="space-y-4 text-body-prose text-ink-soft">
+          <div className="space-y-3 text-body-prose text-ink-soft">
             <p>Both answers must be <strong className="text-conclusion">yes</strong>.</p>
             <p>If either answer is <strong className="text-error">no</strong>, that sentence is not the main conclusion.</p>
             <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
-            <p className="font-semibold text-ink-bright">Two questions. Two yeses. No exceptions.</p>
+            <p className="font-semibold text-ink-bright pt-2">Two questions. Two yeses. No exceptions.</p>
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="Why This Works" className="space-y-8">
+        <LessonSection tocTitle="Why This Works" className="space-y-12">
           <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
-          <div className="space-y-4 text-body-prose text-ink-soft">
+          <div className="space-y-3 text-body-prose text-ink-soft">
             <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
             <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
-          </div>        </LessonSection>
+          </div>        
+        </LessonSection>
       </>
     ),
   },
