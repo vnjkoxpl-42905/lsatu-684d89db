@@ -619,9 +619,9 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <SectionHeading title="Core Takeaway" subtitle="Evidence and claims" />
           <QuoteCard className="bg-[#FBF8F1] pr-6">
             <p>
-              <strong>Arguments are built from evidence and claims.</strong>
+              <strong>Arguments are the relationships between Premises and Conclusions.</strong>
             </p>
-            <p>Premises hold the conclusion up. Without premises, a conclusion has no support.</p>
+            <p>Premises hold the conclusion up. Without premises a conclusion has no support.</p>
           </QuoteCard>
         </LessonSection>
       </>
