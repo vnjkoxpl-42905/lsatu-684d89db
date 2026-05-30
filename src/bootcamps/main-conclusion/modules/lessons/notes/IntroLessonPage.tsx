@@ -742,7 +742,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         </LessonSection>
 
         <LessonSection tocTitle="Conclusion Indicators" className="space-y-8">
-          <SectionHeading title="Conclusion Indicator Lab" />
           <ConclusionIndicatorLab />
           <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
             <div className="space-y-5">
@@ -786,12 +785,17 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Do Not Just Hunt" className="space-y-8 border-b-0">
           <SectionHeading title="Don't Just Hunt for Indicator Words" subtitle="Read structure, not just packaging" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+          
+          <div className="space-y-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>Here's the thing, though. Indicator words are a tool, not a crutch.</p>
-            <p>
-              They won't always be there. The LSAT will hand you arguments with no indicators at all, and if your entire
-              strategy is seek-and-find, you'll be stuck. <strong>The goal is to change the way you think about sentences, not just tag them.</strong>
-            </p>
+            
+            <QuoteCard className="bg-[#FBF8F1] pr-6">
+              <p>
+                <strong>The goal is to change the way you think about sentences, not just tag them.</strong>
+              </p>
+              <p className="mt-2 text-sm text-[rgba(26,26,26,0.7)]">They won't always be there. If your entire strategy is seek-and-find, you'll be stuck.</p>
+            </QuoteCard>
+
             <p>
               So go deeper. Ask yourself about the personality of each statement. Is it a fact, or is it a claim? Is it
               something being offered as evidence, or something being argued for? Facts are premises. Claims are
@@ -801,7 +805,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               That instinct, reading the role of a sentence rather than hunting for a keyword, is what separates students
               who understand arguments from students who just sort of navigate them.
             </p>
-            <p>Indicator words will speed you up when they're present. Analytical thinking will save you when they're not.</p>
+            <p className="font-medium text-[#1a1a1a]">Indicator words will speed you up when they're present. Analytical thinking will save you when they're not.</p>
           </div>
         </LessonSection>
       </>
