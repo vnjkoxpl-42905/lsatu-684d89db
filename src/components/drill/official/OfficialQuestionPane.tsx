@@ -79,33 +79,33 @@ export default function OfficialQuestionPane({
     cleanAnswerChoice(key, text),
   ] as const);
 
-  const baseSize = 19 * fontScale;
+  const baseSize = 14 * fontScale;
   const officialContentTextStyle: React.CSSProperties = {
-    color: "#212529",
-    fontFamily: "Arial, Helvetica, sans-serif",
+    color: "var(--ink-bright)",
+    fontFamily: "Outfit, Inter, system-ui, sans-serif",
     fontSize: `${baseSize}px`,
     fontWeight: 400,
-    lineHeight: 1.35,
+    lineHeight: 1.6,
   };
-  const stimStyle: React.CSSProperties = officialContentTextStyle;
+  const stimStyle: React.CSSProperties = {
+    ...officialContentTextStyle,
+    fontFamily: "Fraunces, ui-serif, Georgia, serif",
+    fontSize: `${15 * fontScale}px`,
+    lineHeight: 1.7,
+  };
   const stemStyle: React.CSSProperties = officialContentTextStyle;
   const answerTextStyle: React.CSSProperties = officialContentTextStyle;
 
   return (
-    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)]">
+    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)] bg-bg-shadow">
       {/* Stimulus column */}
       <div
         className={cn(
-          "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 whitespace-pre-wrap",
-          // Reading-optimized typography for every question.
+          "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-white/5 whitespace-pre-wrap",
           "antialiased",
-          "selection:bg-transparent selection:text-foreground",
-          // HighlightedText already splits on \n\n and emits <p data-para-start=…>
-          // so selection capture and highlight offsets stay paragraph-aware.
-          // Add paragraph spacing here; defeat the legacy inline lineHeight on
-          // those <p> elements so the container's scaling leading wins.
+          "selection:bg-aspiring-gold selection:text-bg-shadow",
           "[&_p]:mb-4 [&_p:last-child]:mb-0",
-          "[&_p]:!leading-[inherit]",
+          "bg-gradient-to-br from-white/[0.02] to-transparent",
         )}
         style={stimStyle}
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
@@ -120,16 +120,16 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8" style={stemStyle}>
+      <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 bg-bg-night" style={stemStyle}>
         <div className="flex items-start justify-between gap-3">
           <div
             className="flex-1 flex items-start gap-2"
             onMouseUp={(e) => onTextSelection(e, "stem")}
           >
-            <span className="font-bold tabular-nums shrink-0 min-w-[20px]">
+            <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-aspiring-gold">
               {displayNumber}.
             </span>
-            <div className="flex-1">
+            <div className="flex-1 text-ink-bright">
               <HighlightedText
                 text={stemText}
                 highlights={stemHighlights}
@@ -147,13 +147,13 @@ export default function OfficialQuestionPane({
             title={isFlagged ? "Remove flag" : "Flag question"}
             className={cn(
               "shrink-0 p-1.5 rounded transition-colors",
-              isFlagged ? "bg-blue-100" : "hover:bg-slate-100",
+              isFlagged ? "bg-aspiring-gold/20" : "hover:bg-white/5",
             )}
           >
             <Flag
               className={cn(
-                "w-[24px] h-[24px] transition-colors text-[#1d4ed8]",
-                isFlagged && "fill-[#1d4ed8]",
+                "w-[24px] h-[24px] transition-colors text-aspiring-gold",
+                isFlagged && "fill-aspiring-gold",
               )}
               strokeWidth={2}
             />
@@ -166,55 +166,45 @@ export default function OfficialQuestionPane({
             const isEliminated = eliminatedAnswers.has(key);
             const isCorrect = answerRevealed && correctAnswer === key;
             const isWrongSelected = answerRevealed && isSelected && correctAnswer !== key;
+
             return (
               <li
                 key={key}
                 className={cn(
-                  "grid grid-cols-[34px_minmax(0,1fr)_28px] items-start gap-4 group rounded-md transition-colors",
-                  // Reserve consistent padding so revealing answers (which adds a
-                  // ring) does not shift the row position.
-                  "px-1 py-1.5 ring-2 ring-transparent",
-                  isCorrect && "bg-green-50 ring-green-500",
-                  isWrongSelected && "ring-red-500",
+                  "group relative rounded-lg border transition-all duration-200",
+                  "grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3",
+                  isCorrect
+                    ? "border-green-500/50 bg-green-500/10"
+                    : isSelected
+                    ? "border-aspiring-gold bg-surface-elev shadow-lg"
+                    : isEliminated
+                    ? "border-white/5 bg-surface/50 opacity-60 grayscale-[0.5]"
+                    : "border-white/5 bg-surface hover:border-white/10 hover:shadow-md",
                 )}
               >
                 <button
                   type="button"
                   onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                   disabled={isEliminated || answerRevealed}
-                  aria-pressed={isSelected}
-                  aria-label={`Choice ${key}`}
                   className={cn(
-                    "relative shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
-                    "w-[34px] h-[34px] text-[13px]",
+                    "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border text-xs font-semibold transition-all",
                     isCorrect
-                      ? "border-green-700 bg-green-600 text-white"
+                      ? "border-green-500 bg-green-500 text-bg-shadow"
                       : isSelected
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : isEliminated && !answerRevealed
-                      ? "border-slate-500 bg-white text-slate-500"
-                      : "border-slate-800 bg-white text-slate-900 hover:border-slate-900",
-                    isEliminated && !answerRevealed && "cursor-not-allowed",
+                      ? "border-aspiring-gold bg-aspiring-gold text-bg-shadow"
+                      : "border-white/20 text-ink-soft group-hover:border-white/40",
                   )}
                 >
                   {key}
-                  {isEliminated && !answerRevealed && (
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute left-1/2 top-1/2 h-[2px] w-[42px] -translate-x-1/2 -translate-y-1/2 -rotate-[32deg] rounded-full bg-slate-500"
-                    />
-                  )}
                 </button>
                 <button
                   type="button"
                   onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                   disabled={isEliminated || answerRevealed}
                   className={cn(
-                    "min-w-0 text-left pt-0.5 whitespace-normal transition-colors",
-                    isEliminated && !answerRevealed && "cursor-not-allowed text-slate-400",
-                    isCorrect && "font-semibold text-green-900",
+                    "text-left text-sm leading-relaxed transition-colors",
+                    isCorrect ? "text-green-50" : isSelected ? "text-ink-bright" : "text-ink-soft group-hover:text-ink-bright",
                   )}
-                  style={answerTextStyle}
                 >
                   {text}
                 </button>
@@ -225,21 +215,12 @@ export default function OfficialQuestionPane({
                     if (!answerRevealed) onEliminate(key);
                   }}
                   disabled={answerRevealed}
-                  aria-pressed={isEliminated}
-                  aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   className={cn(
-                    "shrink-0 p-1 mt-0.5 rounded transition-colors disabled:opacity-50",
-                    isEliminated && !answerRevealed
-                      ? "text-slate-400 hover:text-slate-600"
-                      : "text-neutral-500 hover:text-neutral-700",
+                    "mt-0.5 p-1 transition-opacity",
+                    isEliminated ? "text-ink-bright" : "text-ink-faint opacity-0 group-hover:opacity-100 hover:text-ink-bright",
                   )}
                 >
-                  {isEliminated && !answerRevealed ? (
-                    <EyeOff className="w-[20px] h-[20px]" strokeWidth={2.25} />
-                  ) : (
-                    <Eye className="w-[20px] h-[20px]" strokeWidth={2.25} />
-                  )}
+                  {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </li>
             );
