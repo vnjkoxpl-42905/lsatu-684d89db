@@ -114,14 +114,6 @@ const PremiseRememberCallout = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-const PremiseTeachingExcerpt = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-[14px] border border-[rgba(116,84,27,0.18)] bg-[linear-gradient(180deg,#FFFDF9_0%,#FBF7EF_100%)] px-6 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.82),0_12px_28px_rgba(26,26,26,0.045)]">
-    <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.22em] text-[rgba(116,84,27,0.72)]">Teaching Excerpt</div>
-    <div className="border-l-2 border-[#D5AD5F] pl-5 text-[18px] leading-[1.82] text-[rgba(26,26,26,0.78)]">
-      {children}
-    </div>
-  </div>
-);
 
 const PremiseSystemFrame = ({ children }: { children: ReactNode }) => (
   <div className="overflow-hidden rounded-[28px] border border-[rgba(116,84,27,0.14)] bg-[linear-gradient(180deg,#FFFDFC_0%,#FFF8EE_100%)] shadow-[0_22px_46px_rgba(92,67,20,0.08)]">
@@ -673,19 +665,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
                   exist, solid, already true, handed to you for free.
                 </p>
               </div>
-              <PremiseTeachingExcerpt>
-                <p>
-                  <em>
-                    You said we should cancel the picnic because the park is flooded and the weather is supposed to be terrible.
-                    But the park is completely dry. And the forecast says it will be clear all afternoon.
-                  </em>
-                </p>
-              </PremiseTeachingExcerpt>
               <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-                <p>
-                  Two premises just got attacked: "the park is flooded" and "the weather is supposed to be terrible." That's
-                  everyday argument. The LSAT is more interesting than that.
-                </p>
                 <p>
                   It doesn't ask you to poke holes in the evidence. It asks you whether the evidence actually leads where the
                   author thinks it does. That's a harder, more useful question, and it's the one that gets you points.
