@@ -915,12 +915,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "The mindset shift: separating the argument from context, opposition, concessions, and pivots.",
     content: (
       <>
-import { motion } from 'framer-motion';
-
-// ... (existing imports, assuming framer-motion is already available as a project dependency)
-
-// ... (re-implementing inside the existing structure)
-
         <LessonSection tocTitle="Big Picture Overview" className="space-y-8">
           <SectionHeading title="Big Picture Overview" subtitle="Not every sentence belongs to the argument" />
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
