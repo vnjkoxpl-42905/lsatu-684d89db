@@ -19,6 +19,7 @@ import { ConclusionTypeCard } from "./components/ConclusionTypeCard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
+import { ContentVignette } from "@/components/bootcamp/ContentVignette";
 
 export type IntroLessonPageId =
   | "how-to-read-lr-stimulus"
@@ -28,6 +29,7 @@ export type IntroLessonPageId =
   | "conclusions"
   | "five-types-of-conclusions"
   | "beyond-premises-and-conclusions"
+  | "the-other-roles-in-a-stimulus"
   | "two-part-conclusion-check";
 
 type PageDefinition = {
@@ -910,603 +912,131 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
   "beyond-premises-and-conclusions": {
     eyebrow: "LESSON",
     title: "Beyond Premises and Conclusions",
-    subtitle: "Separate context, opposition, concessions, and pivots from the real argument.",
+    subtitle: "The mindset shift: separating the argument from context, opposition, concessions, and pivots.",
     content: (
       <>
         <LessonSection tocTitle="Big Picture Overview" className="space-y-8">
-          <SectionHeading title="Big Picture Overview" subtitle="What else appears in a stimulus" />
+          <SectionHeading title="Big Picture Overview" subtitle="Not every sentence belongs to the argument" />
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
-            <p>Once students learn premises and conclusions, a new problem appears: not every sentence in an LR stimulus is part of the author's own argument.</p>
-            <p>Some sentences give <span className="text-role-background font-semibold">background</span>. Some introduce <span className="text-role-opposing font-semibold">what other people believe</span>. Some support another person's view. Some <span className="text-role-concession font-semibold">concede a point</span>. Some <span className="text-role-pivot font-semibold">pivot</span> away from that material and toward the author's actual position.</p>
-            <p>This is why students cannot treat every sentence as either "premise" or "conclusion" too quickly.</p>
-            <p>The real job is to separate the author's argument from everything around it.</p>
+            <p>Once you learn to spot premises and conclusions, a new problem appears: not every sentence in an LR stimulus belongs to the author's argument.</p>
+            <p>Some sentences set the stage. Some belong to someone else. Some are given away before the author makes the real point. Some mark the turn into the author's actual position.</p>
+            <p>The student's job is to ask what role the sentence is playing, not just what it says.</p>
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="The Core Rule" className="space-y-8">
+        <LessonSection tocTitle="The Core Rule" className="space-y-8 border-b-0">
           <SectionHeading title="The Core Rule" subtitle="Ask what job the sentence is doing" />
           <div className="font-mono text-aspiring-gold bg-surface-elev rounded-sm px-2 py-1 inline-block">
             <strong>Do not ask what the sentence says. Ask what job it is doing.</strong>
           </div>
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
             <p>A sentence may sound important and still not be the author's conclusion.</p>
-            <p>A sentence may be factual and still not be a premise for the author's conclusion.</p>
-            <p>A sentence may give evidence, but that evidence may support someone else's view rather than the author's.</p>
-            <p>The role matters more than the topic.</p>
+            <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
           </div>
         </LessonSection>
-
-        <LessonSection tocTitle="Background Information" className="space-y-8">
-          <SectionHeading title="1. Background Information" subtitle="Context is not automatically support" />
-          
-          <div className="space-y-6">
-            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
-              <h3 className="font-semibold text-ink-bright mb-2">Plain English Definition</h3>
-              <p className="font-body-prose text-ink-soft">Background information gives context. It sets up the topic, introduces the situation, or explains what the argument is about. It usually does <strong>not</strong> directly support the author's conclusion.</p>
-            </div>
-            
-            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
-              <h3 className="font-semibold text-ink-bright mb-2">How It Appears on the LSAT</h3>
-              <p className="font-body-prose text-ink-soft">Background often appears at the beginning of a stimulus. It may introduce a study, a policy, a debate, a discovery, a law, a historical fact, or a general situation.</p>
-            </div>
-            
-            <div className="bg-surface rounded-lg p-6 border-l-4 border-role-background">
-              <h3 className="font-semibold text-ink-bright mb-2">Common Student Mistake</h3>
-              <p className="font-body-prose text-ink-soft">Students often confuse context with support. Just because a sentence is true or relevant does not mean it is a premise.</p>
-            </div>
+      </>
+    ),
+  },
+  "the-other-roles-in-a-stimulus": {
+    eyebrow: "LESSON",
+    title: "The Other Roles in a Stimulus",
+    subtitle: "A compact guide to background, attribution, concessions, and pivots.",
+    content: (
+      <>
+        <LessonSection tocTitle="Background" className="space-y-8">
+          <SectionHeading title="Background" subtitle="Context setting" />
+          <div className="space-y-4 text-ink-soft leading-[1.7]">
+            <p><strong>What it is:</strong> Background sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.</p>
+            <p><strong>Tiny example:</strong> Several cities have recently expanded their bike-lane networks.</p>
+            <p><strong>How to read it:</strong> This tells you the situation. It does not yet tell you what the author is trying to prove.</p>
+            <p><strong>Common trap:</strong> Students treat relevant context as support. Relevance is not enough. A premise has to support the author's conclusion.</p>
           </div>
-
-          <div className="bg-surface-elev rounded-lg p-6 border border-ink-faint/10">
-            <h3 className="font-semibold text-ink-bright mb-4">Short Example</h3>
-            <div className="font-body-prose text-ink-soft italic p-4 bg-bg-night rounded-sm mb-4">
-              "Several cities have recently expanded their public bike-lane networks. City officials are now debating whether to expand the program further."
-            </div>
-            <BreakdownList
-              items={[
-                <span><strong>Background:</strong> Several cities have recently expanded their public bike-lane networks.</span>,
-                <span><strong>Background:</strong> City officials are now debating whether to expand the program further.</span>,
-                <span><strong>Author's Premise:</strong> None yet.</span>,
-                <span><strong>Author's Conclusion:</strong> None yet.</span>,
-              ]}
-            />
+        </LessonSection>
+        <LessonSection tocTitle="Other People's Views" className="space-y-8">
+          <SectionHeading title="Other People's Views" subtitle="Whose view is this?" />
+          <div className="space-y-4 text-ink-soft leading-[1.7]">
+            <p><strong>What it is:</strong> An attribution introduces what someone else believes.</p>
+            <p><strong>Tiny example:</strong> Critics argue that the new transit plan is too expensive.</p>
+            <p><strong>How to read it:</strong> If the sentence belongs to someone else, do not treat it as the author's conclusion.</p>
+            <p><strong>Common trap:</strong> Students often mistake another person's view for the author's conclusion. Before labeling something as the conclusion, ask: Whose view is this?</p>
           </div>
-
-          <p className="font-body-prose text-ink-soft p-4 bg-surface rounded-lg">
-            <strong>Quick Takeaway:</strong> Background tells you where the argument is happening. It does not necessarily tell you what the author is trying to prove.
-          </p>
         </LessonSection>
-
-        <LessonSection tocTitle="Attributions And Opposing Viewpoints" className="space-y-8">
-          <SectionHeading title="2. Attributions and Opposing Viewpoints" subtitle="Whose view is this?" />
-          <GridCard title="Plain English Definition">
-            <p>An attribution introduces what someone else believes.</p>
-            <p>The author may mention critics, experts, researchers, officials, opponents, or the public. That view may be something the author later challenges, qualifies, or rejects.</p>
-          </GridCard>
-          <GridCard title="How It Appears on the LSAT">
-            <BulletList
-              items={[
-                "Some critics argue",
-                "Many people believe",
-                "Researchers have claimed",
-                "It is often assumed",
-                "Opponents maintain",
-              ]}
-            />
-          </GridCard>
-          <IndicatorPillGroup
-            label="Attribution language"
-            items={[
-              { id: "critics", label: "some critics argue", tone: "opposing", explanation: "That phrase tells you the sentence belongs to critics, not automatically to the author." },
-              { id: "believe", label: "many people believe", tone: "opposing", explanation: "Belief language is a clue that the view is being attributed before the author takes a stance on it." },
-              { id: "assumed", label: "it is often assumed", tone: "opposing", explanation: "Assumptions often introduce a position the author may qualify or push back against." },
-            ]}
-          />
-          <GridCard title="Common Student Mistake">
-            <p>Students often mistake another person's view for the author's conclusion.</p>
-            <p>Before calling something the conclusion, ask: <strong>Whose view is this?</strong></p>
-          </GridCard>
-          <GridCard title="Short Example">
-            <QuoteCard>
-              <p>
-                <em>Some critics argue that the city should cancel the new transit plan.</em>
-              </p>
-            </QuoteCard>
-          </GridCard>
-          <GridCard title="Labeled Breakdown">
-            <BreakdownList
-              items={[
-                <span><strong>Attribution:</strong> Some critics argue</span>,
-                <span><strong>Opposing View:</strong> The city should cancel the new transit plan.</span>,
-                <span><strong>Author's Conclusion:</strong> Not given yet.</span>,
-              ]}
-            />
-          </GridCard>
-          <GridCard title="Quick Takeaway">
-            <p>If the sentence belongs to someone else, do not treat it as the author's conclusion.</p>
-          </GridCard>
-        </LessonSection>
-
         <LessonSection tocTitle="Opposing Support" className="space-y-8">
-          <SectionHeading title="3. Opposing Support" subtitle="Not all evidence belongs to the author" />
-          <GridCard title="Plain English Definition">
-            <p>Opposing support is evidence given for someone else's view.</p>
-            <p>It supports the opposing viewpoint, not necessarily the author's conclusion.</p>
-          </GridCard>
-          <GridCard title="How It Appears on the LSAT">
-            <p>A stimulus may first introduce another person's claim, then give that side's reason, then pivot to the author's position.</p>
-          </GridCard>
-          <GridCard title="Common Student Mistake">
-            <p>Students often see evidence and assume it must be the author's premise. But evidence only becomes the author's premise if it supports the author's conclusion.</p>
-          </GridCard>
-          <GridCard title="Short Example">
-            <QuoteCard>
-              <p>
-                <em>Some critics argue that the city should cancel the new transit plan. They note that the project is already over budget.</em>
-              </p>
-            </QuoteCard>
-          </GridCard>
-          <GridCard title="Labeled Breakdown">
-            <BreakdownList
-              items={[
-                <span><strong>Opposing View:</strong> The city should cancel the new transit plan.</span>,
-                <span><strong>Opposing Support:</strong> The project is already over budget.</span>,
-                <span><strong>Author's Premise:</strong> Not given yet.</span>,
-                <span><strong>Author's Conclusion:</strong> Not given yet.</span>,
-              ]}
-            />
-          </GridCard>
-          <GridCard title="Quick Takeaway">
-            <p>Not all support belongs to the author. First ask which claim the evidence is supporting.</p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Concessions And Disclaimers" className="space-y-8">
-          <SectionHeading title="4. Concessions / Disclaimers" subtitle="What the author gives away" />
-          <GridCard title="Plain English Definition">
-            <p>A concession is something the author admits, grants, or allows before making the real argument.</p>
-            <p>The author accepts the point, but that point usually does not control the argument.</p>
-          </GridCard>
-          <GridCard title="How It Appears on the LSAT">
-            <BulletList
-              items={["although", "even though", "while", "granted", "admittedly", "to be sure", "despite"]}
-            />
-          </GridCard>
-          <IndicatorPillGroup
-            label="Concession language"
-            items={[
-              { id: "although", label: "although", tone: "pivot", explanation: "Although often lets the author grant a point before steering toward the real claim." },
-              { id: "granted", label: "granted", tone: "pivot", explanation: "Granted flags a point the author is willing to give away without surrendering the argument." },
-              { id: "admittedly", label: "admittedly", tone: "pivot", explanation: "Admittedly sounds generous, but structurally it often clears space for the author's real move." },
-            ]}
-          />
-          <GridCard title="Common Student Mistake">
-            <p>Students often mistake a concession for the author's main point because it sounds important or balanced.</p>
-          </GridCard>
-          <GridCard title="Short Example">
-            <QuoteCard>
-              <p>
-                <em>Although vegetarian diets require careful planning, they can still provide complete nutrition.</em>
-              </p>
-            </QuoteCard>
-          </GridCard>
-          <GridCard title="Labeled Breakdown">
-            <BreakdownList
-              items={[
-                <span><strong>Concession:</strong> Vegetarian diets require careful planning.</span>,
-                <span><strong>Author's Main Direction:</strong> They can still provide complete nutrition.</span>,
-              ]}
-            />
-          </GridCard>
-          <GridCard title="Quick Takeaway">
-            <p>A concession is something the author gives away before making the real point.</p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Pivots" className="space-y-8">
-          <SectionHeading title="5. Pivots" subtitle="The turn toward the author's actual position" />
-          <GridCard title="Plain English Definition">
-            <p>A pivot is the turn in the argument.</p>
-            <p>It shows the moment when the author moves away from background, another person's view, opposing support, or a concession and toward the author's actual position.</p>
-          </GridCard>
-          <GridCard title="How It Appears on the LSAT">
-            <BulletList
-              items={["but", "however", "nevertheless", "still", "yet", "even so", "nonetheless", "despite this"]}
-            />
-          </GridCard>
-          <IndicatorPillGroup
-            label="Pivot language"
-            items={[
-              { id: "but", label: "but", tone: "pivot", explanation: "But is the cleanest turn signal. Something important often happens right after it." },
-              { id: "however", label: "however", tone: "pivot", explanation: "However often marks the moment the author separates from an opposing view." },
-              { id: "still", label: "still", tone: "pivot", explanation: "Still acknowledges the pressure from the other side, then pushes forward anyway." },
-            ]}
-          />
-          <GridCard title="Common Student Mistake">
-            <p>Students often ignore pivot words and accidentally choose the opposing view or concession as the conclusion.</p>
-          </GridCard>
-          <GridCard title="Short Example">
-            <QuoteCard>
-              <p>
-                <em>Many residents oppose the new transit plan because it is expensive. However, the city should move forward with it because it will reduce traffic over time.</em>
-              </p>
-            </QuoteCard>
-          </GridCard>
-          <GridCard title="Labeled Breakdown">
-            <BreakdownList
-              items={[
-                <span><strong>Opposing View:</strong> Many residents oppose the new transit plan.</span>,
-                <span><strong>Opposing Support:</strong> It is expensive.</span>,
-                <span><strong>Pivot:</strong> However</span>,
-                <span><strong>Author's Conclusion:</strong> The city should move forward with the plan.</span>,
-                <span><strong>Author's Premise:</strong> It will reduce traffic over time.</span>,
-              ]}
-            />
-          </GridCard>
-          <GridCard title="Quick Takeaway">
-            <p>When the author pivots, pay attention. The real conclusion often appears after the turn.</p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Full Argument Examples" className="space-y-8">
-          <SectionHeading title="Applied Labeled Examples" subtitle="Putting the pieces together" />
-          <XRayExample
-            title="Vegetarian diets: separate the author's case from everything around it"
-            description="This is the full layered structure students often blur together on first read."
-            blocks={[
-              {
-                id: "veg-opposing",
-                label: "Opposing view",
-                tone: "opposing",
-                tags: ["claim-a"],
-                content: <em>Many nutritionists argue that vegetarian diets make it difficult to get enough protein.</em>,
-              },
-              {
-                id: "veg-support",
-                label: "Opposing support",
-                tone: "opposing",
-                tags: ["claim-a"],
-                content: <em>They point out that meat contains all essential amino acids.</em>,
-              },
-              {
-                id: "veg-concession",
-                label: "Concession",
-                tone: "pivot",
-                tags: ["claim-b"],
-                content: <em>Although vegetarian diets require more planning,</em>,
-              },
-              {
-                id: "veg-author-premise",
-                label: "Author's premise",
-                tone: "premise",
-                tags: ["claim-b"],
-                content: <em>plant-based diets can provide complete nutrition when properly balanced.</em>,
-              },
-              {
-                id: "veg-conclusion",
-                label: "Author's conclusion",
-                tone: "conclusion",
-                tags: ["claim-b"],
-                content: <em>Therefore, most people can be healthy without eating meat.</em>,
-              },
-            ]}
-            focusModes={[
-              { id: "claim-a", label: "Opposing side" },
-              { id: "claim-b", label: "Author's side" },
-            ]}
-          />
-          <RoleSpotlightSequence />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Now do the sorting work yourself.</p>
-            <p>Each example uses the same seven-role rail. Pick the role, then label the sentence that actually does that job.</p>
-          </div>
-          <div className="grid gap-5">
-            <RoleLabeler
-              title="Example 1: Vegetarian Diets"
-              roles={ROLE_LABELER_ROLES}
-              stimulus={[
-                {
-                  id: "veg-opposing-view",
-                  text: "Many nutritionists argue that vegetarian diets make it difficult to get enough protein.",
-                },
-                {
-                  id: "veg-opposing-support",
-                  text: "They point out that meat contains all essential amino acids.",
-                },
-                {
-                  id: "veg-concession",
-                  text: "Although vegetarian diets require more planning,",
-                },
-                {
-                  id: "veg-author-premise",
-                  text: "plant-based diets can provide complete nutrition when properly balanced.",
-                },
-                {
-                  id: "veg-author-conclusion",
-                  text: "Therefore, most people can be healthy without eating meat.",
-                },
-              ]}
-              answerKey={{
-                "veg-opposing-view": "opposing-view",
-                "veg-opposing-support": "opposing-support",
-                "veg-concession": "concession",
-                "veg-author-premise": "author-premise",
-                "veg-author-conclusion": "author-conclusion",
-              }}
-              teachingSummary={[
-                "Opposing View: nutritionists say vegetarian diets make protein hard to get.",
-                "Opposing Support: meat contains all essential amino acids.",
-                "Concession: vegetarian diets require more planning.",
-                "Author's Premise: balanced plant-based diets can still provide complete nutrition.",
-                "Author's Conclusion: most people can be healthy without eating meat.",
-              ]}
-            />
-            <RoleLabeler
-              title="Example 2: Museum Funding"
-              roles={ROLE_LABELER_ROLES}
-              stimulus={[
-                {
-                  id: "museum-background",
-                  text: "The city museum has operated at a deficit for three years.",
-                },
-                {
-                  id: "museum-opposing-view",
-                  text: "Some taxpayers argue that public funding for the museum should be eliminated.",
-                },
-                {
-                  id: "museum-opposing-support",
-                  text: "They point out that only a small percentage of residents visit the museum each year.",
-                },
-                {
-                  id: "museum-author-premise",
-                  text: "However, the museum provides free educational programs for local schools,",
-                },
-                {
-                  id: "museum-author-conclusion",
-                  text: "so the city should continue funding it.",
-                },
-              ]}
-              answerKey={{
-                "museum-background": "background",
-                "museum-opposing-view": "opposing-view",
-                "museum-opposing-support": "opposing-support",
-                "museum-author-premise": "author-premise",
-                "museum-author-conclusion": "author-conclusion",
-              }}
-              teachingSummary={[
-                "Background: the museum deficit sets the scene.",
-                "Opposing View: some taxpayers want funding eliminated.",
-                "Opposing Support: they point to low attendance.",
-                "Author's Premise: the museum provides free educational programs.",
-                "Author's Conclusion: the city should continue funding it.",
-              ]}
-            />
-            <RoleLabeler
-              title="Example 3: Online Classes"
-              roles={ROLE_LABELER_ROLES}
-              stimulus={[
-                {
-                  id: "online-background",
-                  text: "Online courses have become more common at many universities.",
-                },
-                {
-                  id: "online-opposing-view",
-                  text: "Critics claim that these courses are inferior to in-person classes",
-                },
-                {
-                  id: "online-opposing-support",
-                  text: "because students interact less with instructors.",
-                },
-                {
-                  id: "online-concession",
-                  text: "While some online courses are poorly designed,",
-                },
-                {
-                  id: "online-author-premise",
-                  text: "well-run online courses can include frequent discussion, feedback, and live meetings.",
-                },
-                {
-                  id: "online-author-conclusion",
-                  text: "Thus, universities should not reject online courses as a category.",
-                },
-              ]}
-              answerKey={{
-                "online-background": "background",
-                "online-opposing-view": "opposing-view",
-                "online-opposing-support": "opposing-support",
-                "online-concession": "concession",
-                "online-author-premise": "author-premise",
-                "online-author-conclusion": "author-conclusion",
-              }}
-              teachingSummary={[
-                "Background: online courses are now common.",
-                "Opposing View: critics say the courses are inferior.",
-                "Opposing Support: they point to less instructor interaction.",
-                "Concession: some online courses are poorly designed.",
-                "Author's Premise: well-run courses can still include discussion, feedback, and live meetings.",
-                "Author's Conclusion: universities should not reject online courses as a category.",
-              ]}
-            />
-            <RoleLabeler
-              title="Example 4: Traffic Cameras"
-              roles={ROLE_LABELER_ROLES}
-              stimulus={[
-                {
-                  id: "camera-background",
-                  text: "Several intersections in the city have high accident rates.",
-                },
-                {
-                  id: "camera-opposing-view",
-                  text: "Many drivers believe traffic cameras are mainly a way for the city to collect fines.",
-                },
-                {
-                  id: "camera-concession",
-                  text: "Granted, the cameras will generate some revenue.",
-                },
-                {
-                  id: "camera-pivot",
-                  text: "Still,",
-                },
-                {
-                  id: "camera-author-premise",
-                  text: "intersections with cameras in nearby cities have seen fewer serious crashes,",
-                },
-                {
-                  id: "camera-author-conclusion",
-                  text: "so installing cameras at the most dangerous intersections would improve public safety.",
-                },
-              ]}
-              answerKey={{
-                "camera-background": "background",
-                "camera-opposing-view": "opposing-view",
-                "camera-concession": "concession",
-                "camera-pivot": "pivot",
-                "camera-author-premise": "author-premise",
-                "camera-author-conclusion": "author-conclusion",
-              }}
-              teachingSummary={[
-                "Background: the city has dangerous intersections.",
-                "Opposing View: some drivers think cameras are just for fines.",
-                "Concession: the cameras will generate some revenue.",
-                "Pivot: 'Still' marks the turn back to the author's position.",
-                "Author's Premise: nearby cities saw fewer serious crashes after adding cameras.",
-                "Author's Conclusion: installing cameras would improve public safety.",
-              ]}
-            />
-            <RoleLabeler
-              title="Example 5: Local Bookstores"
-              roles={ROLE_LABELER_ROLES}
-              stimulus={[
-                {
-                  id: "bookstore-background",
-                  text: "Large online retailers often sell books at lower prices than independent bookstores.",
-                },
-                {
-                  id: "bookstore-opposing-view",
-                  text: "It is often assumed that local bookstores cannot compete with them.",
-                },
-                {
-                  id: "bookstore-author-premise",
-                  text: "But local bookstores host community events, recommend books personally, and create spaces for readers to meet.",
-                },
-                {
-                  id: "bookstore-author-conclusion",
-                  text: "Therefore, independent bookstores can remain valuable even when they cannot match online prices.",
-                },
-              ]}
-              answerKey={{
-                "bookstore-background": "background",
-                "bookstore-opposing-view": "opposing-view",
-                "bookstore-author-premise": "author-premise",
-                "bookstore-author-conclusion": "author-conclusion",
-              }}
-              teachingSummary={[
-                "Background: online retailers often charge less.",
-                "Opposing View: people assume bookstores cannot compete.",
-                "Author's Premise: bookstores add value through events, recommendations, and community space.",
-                "Author's Conclusion: independent bookstores can still remain valuable even without matching online prices.",
-              ]}
-            />
+          <SectionHeading title="Opposing Support" subtitle="Evidence for someone else" />
+          <div className="space-y-4 text-ink-soft leading-[1.7]">
+            <p><strong>What it is:</strong> Opposing support is evidence given for someone else's view.</p>
+            <p><strong>Tiny example:</strong> They note that the project is already over budget.</p>
+            <p><strong>How to read it:</strong> Ask which claim the evidence is supporting. If it supports the opposing view, it is not the author's premise.</p>
+            <p><strong>Common trap:</strong> Students see evidence and assume it must be the author's premise. Evidence only becomes the author's premise if it supports the author's conclusion.</p>
           </div>
         </LessonSection>
-
-        <LessonSection tocTitle="Trap Patterns" className="space-y-8">
-          <SectionHeading title="Trap Patterns" subtitle="The common mistakes" />
-          <div className="grid gap-5">
-            <GridCard title="Trap 1: Mistaking an opposing view for the author's conclusion">
-              <p>If a sentence is introduced with "some critics argue" or "many people believe," it probably belongs to someone else.</p>
-              <p>Ask: <strong>Whose view is this?</strong></p>
-            </GridCard>
-            <GridCard title="Trap 2: Mistaking background information for a premise">
-              <p>Context can be relevant without supporting the author's claim.</p>
-              <p>Ask: <strong>Is this actually being used as evidence?</strong></p>
-            </GridCard>
-            <GridCard title="Trap 3: Mistaking a concession for the author's main point">
-              <p>A concession is usually something the author grants before turning to the real argument.</p>
-              <p>Ask: <strong>Is the author resting on this point, or moving past it?</strong></p>
-            </GridCard>
-            <GridCard title="Trap 4: Ignoring pivot words">
-              <p>Pivots often show the author's turn.</p>
-              <p>Ask: <strong>What changed after the pivot?</strong></p>
-            </GridCard>
-            <GridCard title="Trap 5: Treating every factual statement as support">
-              <p>A factual statement is not automatically a premise. It must support the author's conclusion.</p>
-              <p>Ask: <strong>What claim does this fact support?</strong></p>
-            </GridCard>
-            <GridCard title="Trap 6: Thinking the first strong opinion must be the conclusion">
-              <p>The first strong opinion may belong to critics, researchers, opponents, or the public.</p>
-              <p>Ask: <strong>Is this the author's own position?</strong></p>
-            </GridCard>
+        <LessonSection tocTitle="Concessions" className="space-y-8">
+          <SectionHeading title="Concessions" subtitle="What the author gives away" />
+          <div className="space-y-4 text-ink-soft leading-[1.7]">
+            <p><strong>What it is:</strong> A concession is something the author admits, grants, or allows before making the real argument.</p>
+            <p><strong>Tiny example:</strong> Although vegetarian diets require careful planning, they can still provide complete nutrition.</p>
+            <p><strong>How to read it:</strong> This is something the author gives away before making the real point.</p>
+            <p><strong>Common trap:</strong> Students often mistake a concession for the author's main point because it sounds important or balanced.</p>
           </div>
         </LessonSection>
-
-        <LessonSection tocTitle="Final Teaching Summary" className="space-y-8 border-b-0">
-          <SectionHeading title="Final Teaching Summary" subtitle="Sort everything around the author's claim" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>LR stimuli contain more than premises and conclusions.</p>
-            <p>Before you label a sentence, ask what job it is doing.</p>
-          </div>
-          <BulletList
-            items={[
-              "Background sets the scene.",
-              "Attributions introduce someone else's view.",
-              "Opposing support backs someone else's view.",
-              "Concessions give something away.",
-              "Pivots turn toward the author's real position.",
-            ]}
-          />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The author's conclusion is the claim the author is trying to prove.</p>
-            <p>Everything else must be sorted around that.</p>
+        <LessonSection tocTitle="Pivots" className="space-y-8 border-b-0">
+          <SectionHeading title="Pivots" subtitle="The turn toward the author's real position" />
+          <div className="space-y-4 text-ink-soft leading-[1.7]">
+            <p><strong>What it is:</strong> A pivot is the turn in the argument, showing the move away from other material toward the author's actual position.</p>
+            <p><strong>Tiny example:</strong> Many residents oppose the plan. However, the city should move forward.</p>
+            <p><strong>How to read it:</strong> When the author pivots, pay attention. The real conclusion often appears after the turn.</p>
+            <p><strong>Common trap:</strong> Students often ignore pivot words and accidentally choose the opposing view or concession as the conclusion.</p>
           </div>
         </LessonSection>
       </>
     ),
   },
   "two-part-conclusion-check": {
-    eyebrow: "Lessons",
-    title: "The 2-Part Conclusion Check",
-    subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
-    content: (
-      <>
-        <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-12">
-          <SectionHeading title="The 2-Part Conclusion Check" subtitle="The one tool that does not lie" />
-          <p className="font-serif text-[24px] italic leading-[1.4] text-ink-bright">
-            Two questions. Both must be yes.
-          </p>
-          <div className="space-y-3 text-body-prose text-ink-soft">
-            <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
-            <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
-            <p>That is why you need a simple filter.</p>
-          </div>
-        </LessonSection>
+  eyebrow: "Lessons",
+  title: "The 2-Part Conclusion Check",
+  subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
+  content: (
+    <>
+      <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-12">
+        <SectionHeading title="The 2-Part Conclusion Check" subtitle="The one tool that does not lie" />
+        <p className="font-serif text-[24px] italic leading-[1.4] text-ink-bright">
+          Two questions. Both must be yes.
+        </p>
+        <div className="space-y-3 text-body-prose text-ink-soft">
+          <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
+          <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
+          <p>That is why you need a simple filter.</p>
+        </div>
+      </LessonSection>
 
-        <LessonSection tocTitle="The Check" className="space-y-12">
-          <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
-          <CalloutCard className="bg-surface p-6">
-            <NumberList
-              items={[
-                <span><strong className="text-ink-bright">Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</span>,
-                <span><strong className="text-ink-bright">Is this claim supported by at least one other explicit statement in the stimulus?</strong><br />In other words, does something else in the argument give us a reason to believe it?</span>,
-              ]}
-            />
-          </CalloutCard>
-          <div className="space-y-3 text-body-prose text-ink-soft">
-            <p>Both answers must be <strong className="text-conclusion">yes</strong>.</p>
-            <p>If either answer is <strong className="text-error">no</strong>, that sentence is not the main conclusion.</p>
-            <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
-            <p className="font-semibold text-ink-bright pt-2">Two questions. Two yeses. No exceptions.</p>
-          </div>
-        </LessonSection>
+      <LessonSection tocTitle="The Check" className="space-y-12">
+        <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
 
-        <LessonSection tocTitle="Why This Works" className="space-y-12">
-          <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
-          <div className="space-y-3 text-body-prose text-ink-soft">
-            <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
-            <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
-          </div>        
-        </LessonSection>
-      </>
-    ),
+        <ContentVignette variant="tool" accentColor="gold">
+          <h3 className="text-xl font-semibold text-ink-bright mb-4">The Filter</h3>
+          <div className="space-y-4">
+              <p className="text-ink-soft"><strong className="text-ink-bright">1. Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</p>
+              <p className="text-ink-soft"><strong className="text-ink-bright">2. Is this claim supported by at least one other explicit statement in the stimulus?</strong><br />In other words, does something else in the argument give us a reason to believe it?</p>
+          </div>
+        </ContentVignette>
+
+        <div className="space-y-3 text-body-prose text-ink-soft">
+          <p>Both answers must be <strong className="text-conclusion">yes</strong>.</p>
+          <p>If either answer is <strong className="text-error">no</strong>, that sentence is not the main conclusion.</p>
+          <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
+          <p className="font-semibold text-ink-bright pt-2">Two questions. Two yeses. No exceptions.</p>
+        </div>
+      </LessonSection>
+
+      <LessonSection tocTitle="Why This Works" className="space-y-12 border-b-0">
+        <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
+        <div className="space-y-3 text-body-prose text-ink-soft">
+          <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
+          <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
+        </div>        
+      </LessonSection>
+    </>
+  ),
   },
 };
 
