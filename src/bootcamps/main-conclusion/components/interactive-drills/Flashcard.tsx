@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import { type StructuredFlashcard } from '@/bootcamps/main-conclusion/data/structuredFlashcards';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { motion } from 'framer-motion';
 
 interface FlashcardProps {
   card: StructuredFlashcard;
@@ -22,9 +22,9 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
   };
 
   return (
-    <div className={cn("flex flex-col items-center gap-8", className)}>
+    <div className={cn("flex flex-col items-center gap-12", className)}>
       <div 
-        className="group h-[500px] w-full max-w-[500px] perspective-1200 cursor-pointer"
+        className="group h-[420px] w-full max-w-[500px] perspective-1200 cursor-pointer"
         onClick={handleFlip}
       >
         <div className={cn(
@@ -32,34 +32,40 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
           isFlipped ? "rotate-y-180" : ""
         )}>
           {/* Front */}
-          <div className="absolute inset-0 backface-hidden rounded-[20px] bg-white p-10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center text-center">
-            <div className="font-mc-sans text-xs font-semibold uppercase tracking-[0.1em] text-mc-accent mb-6">
+          <div className="absolute inset-0 backface-hidden rounded-[32px] bg-white p-12 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.08)] border border-[oklch(0.2_0.01_60/0.04)] flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:shadow-[0_48px_96px_-24px_oklch(0.2_0.01_60/0.12)]">
+            <div className="text-[#3B82F6] text-[10px] font-bold uppercase tracking-[0.2em] mb-12">
               Concept Check
             </div>
-            <h3 className="font-mc-serif text-[28px] leading-[1.3] text-ink font-medium">
+            <h3 className="font-mc-serif text-[32px] leading-tight text-[oklch(0.15_0.01_60)] font-medium">
               {card.front}
             </h3>
-            <div className="absolute bottom-8 font-mc-sans text-sm text-ink-faint flex items-center gap-2">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-50"><path d="M17 11l-5-5-5 5M12 18V6"/></svg>
+            <div className="absolute bottom-10 font-mc-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.3)] flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-40"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
               Tap to reveal
             </div>
           </div>
 
           {/* Back */}
-          <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[20px] bg-white p-10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-[rgba(0,0,0,0.04)] flex flex-col text-left overflow-y-auto">
-            <div className="inline-block self-start bg-mc-accent/10 text-mc-accent text-[11px] font-bold uppercase tracking-[0.1em] px-3 py-1.5 rounded-full mb-6">
-              {card.role.replace(/_/g, ' ')}
+          <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[32px] bg-white p-12 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.08)] border border-[oklch(0.2_0.01_60/0.04)] flex flex-col text-left overflow-y-auto">
+            <div className="inline-flex self-start bg-[oklch(0.6_0.15_150/0.08)] text-[oklch(0.6_0.15_150)] text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-10">
+              {card.role}
             </div>
-            <p className="font-mc-serif text-[18px] leading-relaxed text-ink mb-6">
+            
+            <p className="font-mc-serif text-[20px] leading-relaxed text-[oklch(0.15_0.01_60)] mb-8 whitespace-pre-wrap">
               {card.function}
             </p>
+
             {card.example !== 'N/A' && (
-              <div className="bg-[rgba(0,0,0,0.03)] px-5 py-4 rounded-[12px] mb-6 italic text-ink-soft border border-[rgba(0,0,0,0.05)]">
-                {card.example}
+              <div className="bg-[oklch(0.2_0.01_60/0.03)] px-6 py-5 rounded-[18px] mb-8 border border-[oklch(0.2_0.01_60/0.04)]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-3">Example</p>
+                <p className="font-mc-serif italic text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.8)]">
+                  {card.example}
+                </p>
               </div>
             )}
-            <div className="flex gap-3 text-[14px] text-ink-faint font-mc-sans leading-relaxed">
-              <span className="opacity-50 mt-0.5">💡</span>
+
+            <div className="mt-auto pt-6 border-t border-[oklch(0.2_0.01_60/0.06)] flex gap-3 text-[13px] text-[oklch(0.2_0.01_60/0.5)] font-mc-sans leading-relaxed italic">
+              <span className="opacity-40">💡</span>
               <p>{card.note}</p>
             </div>
           </div>
@@ -68,15 +74,21 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
 
       {/* Controls - Only visible after flip */}
       <div className={cn(
-        "flex gap-4 transition-all duration-300",
-        isFlipped ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        "flex gap-6 transition-all duration-500",
+        isFlipped ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95 pointer-events-none"
       )}>
-        <Button variant="subtle" className="px-8 py-2.5 rounded-full" onClick={() => handleAction('review')}>
+        <button 
+          onClick={() => handleAction('review')}
+          className="rounded-full border border-[oklch(0.2_0.01_60/0.1)] bg-white px-10 py-3.5 text-[12px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60)] transition-all duration-300 ease-eased hover:bg-[oklch(0.98_0.005_60)] hover:border-[oklch(0.2_0.01_60/0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+        >
           Review Again
-        </Button>
-        <Button variant="primary" className="px-10 py-2.5 rounded-full" onClick={() => handleAction('got-it')}>
+        </button>
+        <button 
+          onClick={() => handleAction('got-it')}
+          className="rounded-full bg-[oklch(0.15_0.01_60)] px-12 py-3.5 text-[12px] font-bold uppercase tracking-[0.2em] text-[oklch(0.96_0.01_60)] transition-all duration-300 ease-eased hover:bg-[oklch(0.1_0.01_60)] shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+        >
           Got It
-        </Button>
+        </button>
       </div>
     </div>
   );
