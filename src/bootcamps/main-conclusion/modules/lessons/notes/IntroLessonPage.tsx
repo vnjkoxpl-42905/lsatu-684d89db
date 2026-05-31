@@ -1058,7 +1058,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
           <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
           <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
-          <p className="font-semibold text-[oklch(0.15_0.01_60)]">That is why you need a simple filter.</p>
+          <p className="font-semibold text-[oklch(0.15_0.01_60)]">That is why you need a definitive check.</p>
         </div>
       </LessonSection>
 
@@ -1066,7 +1066,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
 
         <ContentVignette variant="tool" accentColor="gold" className="shadow-[0_24px_64px_-12px_oklch(0.2_0.01_60/0.08)]">
-          <h3 className="text-xl font-bold text-[oklch(0.15_0.01_60)] mb-8 tracking-tight">The Filter</h3>
+          <h3 className="text-xl font-bold text-[oklch(0.15_0.01_60)] mb-8 tracking-tight">The Litmus Test</h3>
           <div className="grid gap-10">
               <div className="space-y-3">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">Question 1</p>
@@ -1091,9 +1091,9 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
       </LessonSection>
 
       <LessonSection tocTitle="Why This Works" className="space-y-16 border-b-0">
-        <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
+        <SectionHeading title="Why This Works" subtitle="Turn the definition into a check" />
         <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
-          <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
+          <p>A conclusion is the claim the author is trying to prove. This test turns that definition into two simple yes-or-no questions.</p>
           <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
         </div>
         <TwoPartConclusionCheckMachine />

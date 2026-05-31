@@ -96,7 +96,7 @@ export function TwoPartConclusionCheckMachine() {
       <div className="space-y-8">
         <div className="space-y-3">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-[oklch(0.2_0.01_60/0.4)]">
-            Interactive Filter
+            The Decision Machine
           </div>
           <h3 className="font-serif text-[32px] italic leading-tight text-[oklch(0.15_0.01_60)] tracking-tight">
             Check each claim with the same two questions
