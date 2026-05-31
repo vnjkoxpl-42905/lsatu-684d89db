@@ -1086,7 +1086,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
 
         <ContentVignette variant="tool" accentColor="gold" className="shadow-[0_24px_64px_-12px_oklch(0.2_0.01_60/0.08)]">
-          <h3 className="text-xl font-bold text-[oklch(0.15_0.01_60)] mb-8 tracking-tight">The Litmus Test</h3>
+          <h3 className="text-xl font-bold text-[oklch(0.15_0.01_60)] mb-8 tracking-tight">The 2-Part Check</h3>
           <div className="grid gap-10">
               <div className="space-y-3">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">Question 1</p>
