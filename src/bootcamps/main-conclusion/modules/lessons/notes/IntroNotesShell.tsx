@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 import { ArrowDown, ArrowRight, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { getNextAction, getPreviousAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 
@@ -36,64 +37,116 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: [0.23, 1, 0.32, 1], // easeOutQuint
+      },
+    },
+  };
+
   return (
-    <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans">
+    <div className="mc-bootcamp min-h-screen bg-[oklch(0.96_0.01_60)] text-[oklch(0.2_0.01_60)] font-sans selection:bg-[oklch(0.2_0.01_60/0.08)]">
       <DynamicIslandTOC />
       <main className="mx-auto w-full max-w-[1120px] px-6 py-8 md:px-10 md:py-10 desktop:px-12 desktop:py-12">
         <div className="mx-auto w-full max-w-[980px]">
           {/* Launch / Hero Screen */}
-          <section className="launch-screen min-h-screen flex flex-col justify-center grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center py-20">
+          <motion.section 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="launch-screen min-h-[90vh] flex flex-col justify-center grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center py-20"
+          >
             <div className="hero-copy">
               {eyebrow ? (
-                <p className="mb-6 text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)]">
+                <motion.p 
+                  variants={itemVariants}
+                  className="mb-8 text-[10px] font-bold uppercase tracking-[0.4em] text-[oklch(0.2_0.01_60/0.46)]"
+                >
                   {eyebrow}
-                </p>
+                </motion.p>
               ) : null}
-              <h1 className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">{title}</h1>
-              <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">{subtitle}</p>
+              <motion.h1 
+                variants={itemVariants}
+                className="text-[clamp(64px,10vw,128px)] font-serif italic font-medium leading-[0.88] tracking-[-0.06em] mb-10 text-[oklch(0.15_0.01_60)]"
+              >
+                {title}
+              </motion.h1>
+              <motion.p 
+                variants={itemVariants}
+                className="text-xl md:text-2xl text-[oklch(0.2_0.01_60/0.64)] leading-relaxed max-w-2xl font-light"
+              >
+                {subtitle}
+              </motion.p>
             </div>
 
-            <aside className="summary-card rounded-[20px] border border-[rgba(26,26,26,0.1)] bg-white p-1 shadow-[0_26px_76px_rgba(26,26,26,0.12)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_34px_90px_rgba(26,26,26,0.16)] focus-within:-translate-y-[2px] focus-within:border-[rgba(26,26,26,0.18)] focus-within:shadow-[0_34px_90px_rgba(26,26,26,0.16)]">
-              <button 
-                onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full rounded-[18px] bg-[#1a1a1a] text-[#F5F2ED] p-8 min-h-[350px] flex flex-col items-center justify-center gap-6 text-center transition-all duration-200 ease-out hover:bg-[rgba(26,26,26,0.9)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-              >
-                <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[rgba(245,242,237,0.46)]">BEGIN</div>
-                <div className="text-4xl font-serif italic">Start reading</div>
-                <div className="text-sm text-[rgba(245,242,237,0.6)]">The notes begin below.</div>
-                <div className="mt-4 border border-[rgba(245,242,237,0.2)] rounded-full p-3">
-                  <ArrowDown className="h-6 w-6" />
-                </div>
-              </button>
-            </aside>
-          </section>
+            <motion.aside 
+              variants={itemVariants}
+              className="summary-card group relative"
+            >
+              <div className="absolute inset-0 rounded-[24px] bg-[oklch(0.2_0.01_60/0.04)] blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              <div className="relative rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-white p-1 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.12)] transition-all duration-300 ease-eased group-hover:-translate-y-1 group-hover:shadow-[0_48px_96px_-24px_oklch(0.2_0.01_60/0.16)]">
+                <button 
+                  onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="w-full rounded-[20px] bg-[oklch(0.15_0.01_60)] text-[oklch(0.96_0.01_60)] p-10 min-h-[380px] flex flex-col items-center justify-center gap-8 text-center transition-all duration-300 ease-eased hover:bg-[oklch(0.12_0.01_60)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+                >
+                  <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[oklch(0.96_0.01_60/0.4)]">BEGIN</div>
+                  <div className="text-5xl font-serif italic tracking-tight">Start reading</div>
+                  <div className="text-[15px] text-[oklch(0.96_0.01_60/0.6)] font-mc-sans leading-relaxed px-4">The notes begin below.</div>
+                  <motion.div 
+                    animate={{ y: [0, 6, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="mt-6 border border-[oklch(0.96_0.01_60/0.15)] rounded-full p-4 group-hover:bg-[oklch(0.96_0.01_60/0.05)] transition-colors duration-300"
+                  >
+                    <ArrowDown className="h-6 w-6" strokeWidth={1.5} />
+                  </motion.div>
+                </button>
+              </div>
+            </motion.aside>
+          </motion.section>
 
           {/* Notes Drawer */}
           <section className={cn("notes-drawer", isPremisesNote ? "pb-48 md:pb-56" : "pb-32")} id="notesDrawer">
-            <article className="note-card bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_14px_34px_rgba(26,26,26,0.075)] overflow-hidden">
+            <article className="note-card bg-white border border-[oklch(0.2_0.01_60/0.08)] shadow-[0_16px_48px_-8px_oklch(0.2_0.01_60/0.06)] overflow-hidden rounded-[24px]">
               <div className="note-content">
                 {children}
               </div>
 
               {/* Integrated Navigation */}
               {(prevAction || nextAction) && (
-                <div className="note-navigation bg-[#FAF7EF] border-t border-[rgba(26,26,26,0.1)] p-10 md:p-12">
-                  <div className="flex flex-col md:flex-row gap-6 justify-between">
+                <div className="note-navigation bg-[oklch(0.98_0.005_60)] border-t border-[oklch(0.2_0.01_60/0.06)] p-10 md:p-14">
+                  <div className="flex flex-col md:flex-row gap-8 justify-between">
                     {/* Previous Action */}
                     {prevAction ? (
                       <Link 
                         to={prevAction.route} 
-                        className="group flex-1 flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                        className="group flex-1 flex flex-col items-start gap-6 rounded-[24px] p-8 bg-white border border-[oklch(0.2_0.01_60/0.08)] shadow-[0_8px_24px_oklch(0.2_0.01_60/0.04)] transition-all duration-300 ease-eased hover:-translate-y-1 hover:border-[oklch(0.2_0.01_60/0.15)] hover:shadow-[0_24px_48px_-12px_oklch(0.2_0.01_60/0.08)]"
                       >
-                        <div className="flex items-center gap-3 rounded-full bg-[rgba(26,26,26,0.05)] px-6 py-4 text-[#1a1a1a] transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.1)] mr-4">
-                          <ArrowLeft className="h-5 w-5" />
+                        <div className="flex items-center gap-2 rounded-full bg-[oklch(0.2_0.01_60/0.04)] px-5 py-3 text-[oklch(0.2_0.01_60)] transition-colors duration-300 group-hover:bg-[oklch(0.2_0.01_60/0.08)]">
+                          <ArrowLeft className="h-4 w-4" />
+                          <span className="text-[10px] uppercase tracking-[0.2em] font-bold">Back</span>
                         </div>
-                        <div className="flex-1 text-right">
-                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
+                        <div className="w-full">
+                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[oklch(0.2_0.01_60/0.4)] mb-2">
                             {getActionLabel(prevAction.type, 'prev')}
                           </div>
-                          <div className="text-2xl font-serif italic mb-1">{prevAction.title}</div>
-                          <div className="text-sm text-[rgba(26,26,26,0.6)]">{prevAction.description}</div>
+                          <div className="text-3xl font-serif italic mb-2 tracking-tight">{prevAction.title}</div>
+                          <div className="text-sm text-[oklch(0.2_0.01_60/0.5)] line-clamp-2 leading-relaxed">{prevAction.description}</div>
                         </div>
                       </Link>
                     ) : <div className="flex-1 hidden md:block" />}
@@ -102,18 +155,18 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                     {nextAction ? (
                       <Link 
                         to={nextAction.route} 
-                        className="group flex-1 flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                        className="group flex-1 flex flex-col items-end gap-6 rounded-[24px] p-8 bg-white border border-[oklch(0.2_0.01_60/0.08)] shadow-[0_8px_24px_oklch(0.2_0.01_60/0.04)] transition-all duration-300 ease-eased hover:-translate-y-1 hover:border-[oklch(0.2_0.01_60/0.15)] hover:shadow-[0_24px_48px_-12px_oklch(0.2_0.01_60/0.08)]"
                       >
-                        <div className="flex-1">
-                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
+                        <div className="flex items-center gap-2 rounded-full bg-[oklch(0.15_0.01_60)] px-6 py-3 text-[oklch(0.96_0.01_60)] transition-all duration-300 group-hover:bg-[oklch(0.1_0.01_60)]">
+                          <span className="text-[11px] uppercase tracking-[0.2em] font-bold">Continue</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </div>
+                        <div className="w-full text-right">
+                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[oklch(0.2_0.01_60/0.4)] mb-2">
                             {getActionLabel(nextAction.type, 'next')}
                           </div>
-                          <div className="text-2xl font-serif italic mb-1">{nextAction.title}</div>
-                          <div className="text-sm text-[rgba(26,26,26,0.6)]">{nextAction.description}</div>
-                        </div>
-                        <div className="ml-4 flex items-center gap-3 rounded-full bg-[#1a1a1a] px-6 py-4 text-[#F5F2ED] transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.88)]">
-                          <span className="text-[12px] uppercase tracking-[0.18em] font-bold">Continue</span>
-                          <ArrowRight className="h-5 w-5" />
+                          <div className="text-3xl font-serif italic mb-2 tracking-tight">{nextAction.title}</div>
+                          <div className="text-sm text-[oklch(0.2_0.01_60/0.5)] line-clamp-2 leading-relaxed">{nextAction.description}</div>
                         </div>
                       </Link>
                     ) : <div className="flex-1 hidden md:block" />}

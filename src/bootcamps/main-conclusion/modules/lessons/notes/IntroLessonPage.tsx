@@ -1028,40 +1028,62 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
   subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
   content: (
     <>
-      <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-12">
+      <LessonSection tocTitle="The 2-Part Conclusion Check" className="space-y-16">
         <SectionHeading title="The 2-Part Conclusion Check" subtitle="The one tool that does not lie" />
-        <p className="font-serif text-[24px] italic leading-[1.4] text-ink-bright">
-          Two questions. Both must be yes.
-        </p>
-        <div className="space-y-3 text-body-prose text-ink-soft">
+        
+        <motion.div 
+          initial={{ opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="relative py-12 px-8 border-l-2 border-[oklch(0.2_0.01_60/0.1)] bg-[oklch(0.98_0.005_60)] rounded-r-2xl"
+        >
+          <p className="font-serif text-[32px] md:text-[40px] italic leading-[1.1] text-[oklch(0.15_0.01_60)] tracking-tight">
+            Two questions. <br />
+            Both must be <span className="text-mc-success underline decoration-[oklch(0.6_0.15_150/0.3)] underline-offset-8">yes</span>.
+          </p>
+          <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
+            <div className="text-[120px] font-serif italic leading-none">?</div>
+          </div>
+        </motion.div>
+
+        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
           <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
           <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
-          <p>That is why you need a simple filter.</p>
+          <p className="font-semibold text-[oklch(0.15_0.01_60)]">That is why you need a simple filter.</p>
         </div>
       </LessonSection>
 
-      <LessonSection tocTitle="The Check" className="space-y-12">
+      <LessonSection tocTitle="The Check" className="space-y-16">
         <SectionHeading title="The Check" subtitle="Run these two questions on every candidate" />
 
-        <ContentVignette variant="tool" accentColor="gold">
-          <h3 className="text-xl font-semibold text-ink-bright mb-4">The Filter</h3>
-          <div className="space-y-4">
-              <p className="text-ink-soft"><strong className="text-ink-bright">1. Is this the author's own opinion?</strong><br />In other words, is this a claim someone could reasonably disagree with?</p>
-              <p className="text-ink-soft"><strong className="text-ink-bright">2. Is this claim supported by at least one other explicit statement in the stimulus?</strong><br />In other words, does something else in the argument give us a reason to believe it?</p>
+        <ContentVignette variant="tool" accentColor="gold" className="shadow-[0_24px_64px_-12px_oklch(0.2_0.01_60/0.08)]">
+          <h3 className="text-xl font-bold text-[oklch(0.15_0.01_60)] mb-8 tracking-tight">The Filter</h3>
+          <div className="grid gap-10">
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">Question 1</p>
+                <p className="text-[20px] leading-tight text-[oklch(0.15_0.01_60)]"><strong className="font-bold">Is this the author's own opinion?</strong></p>
+                <p className="text-[16px] text-[oklch(0.2_0.01_60/0.64)] italic">In other words, is this a claim someone could reasonably disagree with?</p>
+              </div>
+              <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] w-1/4" />
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">Question 2</p>
+                <p className="text-[20px] leading-tight text-[oklch(0.15_0.01_60)]"><strong className="font-bold">Is this claim supported by at least one other explicit statement?</strong></p>
+                <p className="text-[16px] text-[oklch(0.2_0.01_60/0.64)] italic">In other words, does something else in the argument give us a reason to believe it?</p>
+              </div>
           </div>
         </ContentVignette>
 
-        <div className="space-y-3 text-body-prose text-ink-soft">
-          <p>Both answers must be <strong className="text-conclusion">yes</strong>.</p>
-          <p>If either answer is <strong className="text-error">no</strong>, that sentence is not the main conclusion.</p>
+        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
+          <p>Both answers must be <strong className="text-mc-success font-bold underline decoration-mc-success/20 underline-offset-4">yes</strong>.</p>
+          <p>If either answer is <strong className="text-mc-error font-bold underline decoration-mc-error/20 underline-offset-4">no</strong>, that sentence is not the main conclusion.</p>
           <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
-          <p className="font-semibold text-ink-bright pt-2">Two questions. Two yeses. No exceptions.</p>
+          <p className="font-bold text-[oklch(0.15_0.01_60)] pt-4 text-[18px]">Two questions. Two yeses. No exceptions.</p>
         </div>
       </LessonSection>
 
-      <LessonSection tocTitle="Why This Works" className="space-y-12 border-b-0">
+      <LessonSection tocTitle="Why This Works" className="space-y-16 border-b-0">
         <SectionHeading title="Why This Works" subtitle="Turn the definition into a filter" />
-        <div className="space-y-3 text-body-prose text-ink-soft">
+        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
           <p>A conclusion is the claim the author is trying to prove. This filter turns that definition into two simple yes-or-no questions.</p>
           <p>If a sentence passes both, it is probably the conclusion. If it fails either, it is doing some other job—background, premise, opposing view, concession, or setup. Keep looking.</p>
         </div>
