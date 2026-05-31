@@ -478,3 +478,9 @@
   .mc-bootcamp .print-card p,
   .mc-bootcamp .print-card li { font-size: 9.5pt; line-height: 1.35; }
 }
+
+/* 3D flip utilities for Flashcard (front/back faces) */
+.mc-bootcamp .perspective-1200 { perspective: 1200px; }
+.mc-bootcamp .preserve-3d { transform-style: preserve-3d; }
+.mc-bootcamp .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.mc-bootcamp .rotate-y-180 { transform: rotateY(180deg); }
