@@ -1105,8 +1105,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
           <p>Both answers must be <strong className="text-mc-success font-bold underline decoration-mc-success/20 underline-offset-4">yes</strong>.</p>
           <p>If either answer is <strong className="text-mc-error font-bold underline decoration-mc-error/20 underline-offset-4">no</strong>, that sentence is not the main conclusion.</p>
-          <p>A factual statement usually fails the first question. Facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
-          <p className="font-bold text-[oklch(0.15_0.01_60)] pt-4 text-[18px]">Two questions. Two yeses. No exceptions.</p>
+          <p>A factual statement fails the first question—facts are not the author's opinion. An unsupported claim fails the second question. A concession fails the first question.</p>
+          <p className="font-bold text-[oklch(0.15_0.01_60)] pt-4 text-[18px]">Two questions. Both must be yes. No exceptions.</p>
         </div>
       </LessonSection>
 
