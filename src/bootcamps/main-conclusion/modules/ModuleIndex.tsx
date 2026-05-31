@@ -50,10 +50,10 @@ export function ModuleIndex(): JSX.Element {
     ? {
         ...step,
         eyebrow: 'START HERE',
-        title: 'Page 1: How to Read an LR Stimulus',
+        title: 'How to Read an LR Stimulus',
         subtitle:
           'Start with the reading mindset first: find the conclusion, find the premises, and test whether the support really proves the claim.',
-        cta: 'Begin Page 1',
+        cta: 'Begin Lesson',
         // Force absolute path for navigation
         href: '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
         secondary: undefined,
