@@ -153,12 +153,23 @@ export function DynamicIslandTOC({
   }, [headings]);
 
   const activeHeading = headings.find((h) => h.id === activeId);
+  const [isVisible, setIsVisible] = useState(false);
 
   // Normalize depths so the highest-level heading in the doc touches the left edge
   const minLevel = useMemo(() => {
     if (headings.length === 0) return 1;
     return Math.min(...headings.map((h) => h.level));
   }, [headings]);
+
+  useEffect(() => {
+    const checkVisibility = () => {
+      // Hide if at the very top (Hero section)
+      setIsVisible(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", checkVisibility, { passive: true });
+    checkVisibility();
+    return () => window.removeEventListener("scroll", checkVisibility);
+  }, []);
 
   return (
     <>
@@ -179,131 +190,136 @@ export function DynamicIslandTOC({
       </AnimatePresence>
 
       {/* Dynamic Island Wrapper */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="fixed bottom-[30px] left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center"
-      >
-        <motion.div
-          onClick={() => {
-            if (!isExpanded) setIsExpanded(true);
-          }}
-          initial={false}
-          animate={{
-            width: isExpanded ? 340 : 280,
-            height: isExpanded ? 400 : 52,
-            borderRadius: isExpanded ? 24 : 26,
-          }}
-          transition={islandTransition}
-          style={{ cursor: isExpanded ? "default" : "pointer" }}
-          className="relative overflow-hidden border border-foreground/10 bg-background text-foreground shadow-2xl"
-        >
-          {/* CLOSED PILL CONTENT */}
+      <AnimatePresence>
+        {isVisible && headings.length > 0 && (
           <motion.div
-            initial={false}
-            animate={{
-              opacity: isExpanded ? 0 : 1,
-              scale: isExpanded ? 0.95 : 1,
-              filter: isExpanded ? "blur(4px)" : "blur(0px)",
-            }}
-            transition={{ ...islandTransition, delay: isExpanded ? 0 : 0.1 }}
-            className={cn("absolute inset-0 flex items-center gap-4 px-4 sm:px-5", isExpanded && "pointer-events-none")}
+            initial={{ y: 80, opacity: 0, x: "-50%" }}
+            animate={{ y: 0, opacity: 1, x: "-50%" }}
+            exit={{ y: 80, opacity: 0, x: "-50%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed bottom-[30px] left-1/2 z-[9999] flex flex-col items-center"
           >
-            <div className="h-2 w-2 shrink-0 rounded-full bg-foreground" />
-
-            <div className="relative flex h-full flex-1 items-center overflow-hidden text-left">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
-                  key={activeId || "empty"}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="block w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-foreground"
-                >
-                  {activeHeading?.text || "Contents"}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-
-            <CircleProgress percentage={progress} />
-          </motion.div>
-
-          {/* EXPANDED MENU CONTENT */}
-          <motion.div
-            initial={false}
-            animate={{
-              opacity: isExpanded ? 1 : 0,
-              scale: isExpanded ? 1 : 1.05,
-            }}
-            transition={{ ...islandTransition, delay: isExpanded ? 0.1 : 0 }}
-            className={cn("absolute inset-0 flex flex-col", !isExpanded && "pointer-events-none")}
-          >
-            <div className="flex shrink-0 items-center justify-between px-6 pb-3 pt-5">
-              <span className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground">
-                TABLE OF CONTENTS
-              </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsExpanded(false);
+            <motion.div
+              onClick={() => {
+                if (!isExpanded) setIsExpanded(true);
+              }}
+              initial={false}
+              animate={{
+                width: isExpanded ? 340 : 280,
+                height: isExpanded ? 400 : 52,
+                borderRadius: isExpanded ? 24 : 26,
+              }}
+              transition={islandTransition}
+              style={{ cursor: isExpanded ? "default" : "pointer" }}
+              className="relative overflow-hidden border border-[oklch(0.2_0.01_60/0.08)] bg-white text-[oklch(0.15_0.01_60)] shadow-[0_24px_48px_-12px_oklch(0.2_0.01_60/0.15)]"
+            >
+              {/* CLOSED PILL CONTENT */}
+              <motion.div
+                initial={false}
+                animate={{
+                  opacity: isExpanded ? 0 : 1,
+                  scale: isExpanded ? 0.95 : 1,
+                  filter: isExpanded ? "blur(4px)" : "blur(0px)",
                 }}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                transition={{ ...islandTransition, delay: isExpanded ? 0 : 0.1 }}
+                className={cn("absolute inset-0 flex items-center gap-4 px-4 sm:px-5", isExpanded && "pointer-events-none")}
               >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+                <div className="h-2 w-2 shrink-0 rounded-full bg-[oklch(0.15_0.01_60)]" />
 
-            <div className="flex-1 overflow-y-auto overscroll-contain px-3 pb-4" data-lenis-prevent="true">
-              <div className="flex flex-col gap-0.5">
-                {headings.map((h) => {
-                  const isActive = activeId === h.id;
-                  const isHovered = hoveredId === h.id;
-
-                  // Dynamically calculate padding based on nesting depth!
-                  const indentLevel = Math.max(0, h.level - minLevel);
-                  const paddingLeft = indentLevel * 14 + 12; // 12px base + 14px per depth
-
-                  return (
-                    <button
-                      key={h.id}
-                      onMouseEnter={() => setHoveredId(h.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // Adjust scroll to give fixed headers breathing room
-                        const yOffset = -80;
-                        const y = h.element.getBoundingClientRect().top + window.scrollY + yOffset;
-                        window.scrollTo({ top: y, behavior: "smooth" });
-                        setIsExpanded(false);
-                      }}
-                      style={{ paddingLeft: `${paddingLeft}px` }}
-                      className={cn(
-                        "group flex w-full shrink-0 cursor-pointer items-center rounded-lg border-none py-2 pr-3 text-left text-sm transition-all duration-300 ease-out",
-                        isActive && "bg-foreground/10 font-medium text-foreground",
-                        !isActive && isHovered && "bg-foreground/5 text-foreground/85",
-                        !isActive && !isHovered && "bg-transparent text-foreground/45",
-                      )}
+                <div className="relative flex h-full flex-1 items-center overflow-hidden text-left">
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.span
+                      key={activeId || "empty"}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="block w-full overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium tracking-tight"
                     >
-                      <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap transition-transform duration-300 group-hover:translate-x-1">
-                        {h.text}
-                      </span>
+                      {activeHeading?.text || "Contents"}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
 
-                      <motion.div
-                        initial={false}
-                        animate={{ scale: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="ml-3 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground"
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+                <CircleProgress percentage={progress} />
+              </motion.div>
+
+              {/* EXPANDED MENU CONTENT */}
+              <motion.div
+                initial={false}
+                animate={{
+                  opacity: isExpanded ? 1 : 0,
+                  scale: isExpanded ? 1 : 1.05,
+                }}
+                transition={{ ...islandTransition, delay: isExpanded ? 0.1 : 0 }}
+                className={cn("absolute inset-0 flex flex-col", !isExpanded && "pointer-events-none")}
+              >
+                <div className="flex shrink-0 items-center justify-between px-6 pb-3 pt-5">
+                  <span className="text-[10px] font-bold tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] uppercase">
+                    TABLE OF CONTENTS
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsExpanded(false);
+                    }}
+                    className="text-[oklch(0.2_0.01_60/0.4)] transition-colors hover:text-[oklch(0.2_0.01_60)]"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto overscroll-contain px-3 pb-4" data-lenis-prevent="true">
+                  <div className="flex flex-col gap-0.5">
+                    {headings.map((h) => {
+                      const isActive = activeId === h.id;
+                      const isHovered = hoveredId === h.id;
+
+                      // Dynamically calculate padding based on nesting depth!
+                      const indentLevel = Math.max(0, h.level - minLevel);
+                      const paddingLeft = indentLevel * 14 + 12; // 12px base + 14px per depth
+
+                      return (
+                        <button
+                          key={h.id}
+                          onMouseEnter={() => setHoveredId(h.id)}
+                          onMouseLeave={() => setHoveredId(null)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Adjust scroll to give fixed headers breathing room
+                            const yOffset = -80;
+                            const y = h.element.getBoundingClientRect().top + window.scrollY + yOffset;
+                            window.scrollTo({ top: y, behavior: "smooth" });
+                            setIsExpanded(false);
+                          }}
+                          style={{ paddingLeft: `${paddingLeft}px` }}
+                          className={cn(
+                            "group flex w-full shrink-0 cursor-pointer items-center rounded-lg border-none py-2 pr-3 text-left text-sm transition-all duration-300 ease-out",
+                            isActive && "bg-[oklch(0.2_0.01_60/0.06)] font-medium text-[oklch(0.15_0.01_60)]",
+                            !isActive && isHovered && "bg-[oklch(0.2_0.01_60/0.03)] text-[oklch(0.15_0.01_60/0.85)]",
+                            !isActive && !isHovered && "bg-transparent text-[oklch(0.15_0.01_60/0.45)]",
+                          )}
+                        >
+                          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap transition-transform duration-300 group-hover:translate-x-1">
+                            {h.text}
+                          </span>
+
+                          <motion.div
+                            initial={false}
+                            animate={{ scale: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="ml-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[oklch(0.15_0.01_60)]"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
