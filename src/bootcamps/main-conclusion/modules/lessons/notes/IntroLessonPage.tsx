@@ -914,32 +914,31 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "The mindset shift: separating the argument from context, opposition, concessions, and pivots.",
     content: (
       <>
-        <LessonSection tocTitle="Big Picture Overview" className="space-y-8">
-          <SectionHeading title="Big Picture Overview" subtitle="Not every sentence belongs to the argument" />
-          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
-            <p>Once you learn to spot premises and conclusions, a new problem appears: not every sentence in an LR stimulus belongs to the author's argument.</p>
-            <p>Some sentences set the stage. Some belong to someone else. Some are given away before the author makes the real point. Some mark the turn into the author's actual position.</p>
-            <p>The student's job is to ask what role the sentence is playing, not just what it says.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="The Core Rule" className="space-y-8">
-          <SectionHeading title="The Core Rule" subtitle="Ask what job the sentence is doing" />
+        <LessonSection tocTitle="The Mindset Shift" className="space-y-16">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-            className="font-mono text-aspiring-gold bg-surface-elev rounded-sm px-2 py-1 inline-block"
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative py-12 px-8 border-l-2 border-[oklch(0.2_0.01_60/0.1)] bg-[oklch(0.98_0.005_60)] rounded-r-2xl"
           >
-            <strong>Do not ask what the sentence says. Ask what job it is doing.</strong>
+            <p className="font-serif text-[32px] md:text-[40px] italic leading-[1.1] text-[oklch(0.15_0.01_60)] tracking-tight">
+              Do not ask what the sentence says. <br />
+              Ask <span className="text-[oklch(0.65_0.12_85)] underline decoration-[oklch(0.65_0.12_85/0.3)] underline-offset-8">what job</span> it is doing.
+            </p>
+            <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
+              <div className="text-[120px] font-serif italic leading-none">!</div>
+            </div>
           </motion.div>
-          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
-            <p>A sentence may sound important and still not be the author's conclusion.</p>
+
+          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
+            <p className="text-[20px] font-medium text-[oklch(0.15_0.01_60)] leading-snug">
+              A sentence may sound important and still not be the author's conclusion.
+            </p>
             <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="Role Guide" className="space-y-12">
+        <LessonSection tocTitle="Role Guide" className="space-y-16">
           <SectionHeading title="Role Guide" subtitle="A compact guide to background, attribution, concessions, and pivots." />
           {[
             {
@@ -983,37 +982,47 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               trap: "Ignoring pivot words and accidentally choosing the opposing view or concession as the conclusion."
             }
           ].map((role, i) => (
-            <div key={role.title} className="space-y-6">
-              <div className="flex items-baseline gap-3">
-                <h3 className="font-serif text-[24px] italic text-ink-bright">{role.title}</h3>
-                <span className="font-sans text-[14px] text-ink-soft">{role.subtitle}</span>
+            <motion.div 
+              key={role.title} 
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="space-y-10"
+            >
+              <div className="flex items-baseline gap-4">
+                <h3 className="font-serif text-[32px] italic text-[oklch(0.15_0.01_60)] tracking-tight">{role.title}</h3>
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">{role.subtitle}</span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                <div>
-                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">What it is</h4>
-                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.definition}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="space-y-10">
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">What it is</h4>
+                    <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.definition}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">How to read it</h4>
+                    <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.read}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">Tiny example</h4>
-                  <p className="text-[15px] leading-relaxed text-ink-soft italic font-mono bg-bg-night p-3 rounded-md">{`"${role.example}"`}</p>
-                </div>
-                <div>
-                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-faint mb-1">How to read it</h4>
-                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.read}</p>
-                </div>
-                <div>
-                  <h4 className="text-[12px] font-bold uppercase tracking-wider text-state-warn mb-1">Common trap</h4>
-                  <p className="text-[15px] leading-relaxed text-ink-soft">{role.trap}</p>
+                <div className="space-y-8">
+                  <div className="rounded-[20px] border border-[oklch(0.2_0.01_60/0.08)] bg-[oklch(0.98_0.005_60)] p-8 shadow-sm">
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.65_0.12_85)] mb-4">Example</h4>
+                    <p className="text-[20px] leading-relaxed text-[oklch(0.15_0.01_60)] font-serif italic">{`"${role.example}"`}</p>
+                  </div>
+                  <div className="rounded-[20px] border border-mc-error/10 bg-mc-error/5 p-8">
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-mc-error/60 mb-4">Common trap</h4>
+                    <p className="text-[16px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.trap}</p>
+                  </div>
                 </div>
               </div>
-              {i < 4 && <div className="h-px bg-ink-faint/10 mt-8" />}
-            </div>
+              {i < 4 && <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] pt-12" />}
+            </motion.div>
           ))}
         </LessonSection>
         
-        <LessonSection tocTitle="Final Summary" className="space-y-8 border-b-0">
+        <LessonSection tocTitle="Final Summary" className="space-y-16 border-b-0 pb-20">
           <SectionHeading title="Final Summary" subtitle="Keep the core rule in mind" />
-          <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
+          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
             <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
             <p>Background, attribution, opposing support, concessions, and pivots are all common structures that distract from the main point.</p>
             <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
