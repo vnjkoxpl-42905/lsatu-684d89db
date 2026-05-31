@@ -950,7 +950,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               trap: "Treating relevant context as support. Relevance is not enough. A premise has to support the author's conclusion."
             },
             {
-              title: "Other People's Views",
+              title: "Opposing Viewpoint",
               subtitle: "Whose view is this?",
               definition: "An attribution introduces what someone else believes (critics, researchers, public).",
               example: "Critics argue that the new transit plan is too expensive.",
