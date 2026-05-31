@@ -951,7 +951,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             },
             {
               title: "Opposing Viewpoint",
-              subtitle: "Whose view is this?",
+              subtitle: "Other People's Views",
               definition: "An attribution introduces what someone else believes (critics, researchers, public).",
               example: "Critics argue that the new transit plan is too expensive.",
               read: "If the sentence belongs to someone else, do not treat it as the author's conclusion.",
