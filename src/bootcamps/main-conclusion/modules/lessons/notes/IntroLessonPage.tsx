@@ -1055,10 +1055,30 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </div>
         </motion.div>
 
-        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
-          <p>Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.</p>
-          <p>One sentence gives background. Another introduces an opinion. A third concedes a point. A fourth sounds like a conclusion but is really just support. And the real conclusion may be hiding in the middle.</p>
-          <p className="font-semibold text-[oklch(0.15_0.01_60)]">That is why you need a definitive check.</p>
+        <div className="relative space-y-12 max-w-[64ch]">
+          <p className="text-[22px] md:text-[26px] font-serif italic leading-snug text-[oklch(0.15_0.01_60)]">
+            Finding the main conclusion sounds easy until the LSAT gives you five sentences that all feel important.
+          </p>
+          
+          <div className="space-y-6 text-[17px] font-serif leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">
+            <p>
+              The <span className="font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-[oklch(0.2_0.01_60/0.4)] px-1.5 py-0.5 rounded-sm bg-[oklch(0.2_0.01_60/0.04)] mr-1">Background</span> is often just set dressing. A <span className="font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-[oklch(0.2_0.01_60/0.4)] px-1.5 py-0.5 rounded-sm bg-[oklch(0.2_0.01_60/0.04)] mx-1">Concession</span> is a point the author is already giving away. An <span className="font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-[oklch(0.2_0.01_60/0.4)] px-1.5 py-0.5 rounded-sm bg-[oklch(0.2_0.01_60/0.04)] mx-1">Opinion</span> might belong to a critic, not the author. 
+            </p>
+            <p>
+              And the real conclusion? It is usually hiding in the middle of the wreckage, camouflaged by everything around it.
+            </p>
+          </div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="pt-6 border-t border-[oklch(0.85_0.12_85/0.2)]"
+          >
+            <p className="text-xl font-bold text-[oklch(0.65_0.12_85)] tracking-tight">
+              That is why you need a definitive check.
+            </p>
+          </motion.div>
         </div>
       </LessonSection>
 
