@@ -20,10 +20,7 @@ import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
 import {
-  ClaimBucketInspector,
   FabsHoverMiniTool,
-  ReferentialLanguageUnpack,
-  TrojanHorseHoweverReveal,
 } from "@/bootcamps/main-conclusion/components/reference-templates/ArgumentsFoundationsMiniInteractions";
 import { ContentVignette } from "@/components/bootcamp/ContentVignette";
 
@@ -1052,20 +1049,51 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </QuoteCard>
         </LessonSection>
 
-        <LessonSection tocTitle="Reference Mini Interactions" className="space-y-10">
-          <SectionHeading title="Reference Mini Interactions" subtitle="Direct duplicates from the best Arguments Foundations moments" />
-          <ClaimBucketInspector />
-          <TrojanHorseHoweverReveal />
-          <ReferentialLanguageUnpack />
+        <LessonSection tocTitle="FABS Mini Tool" className="space-y-6">
           <FabsHoverMiniTool />
         </LessonSection>
 
         <LessonSection tocTitle="What To Carry Into The Lab" className="space-y-16 border-b-0">
           <SectionHeading title="What To Carry Into The Lab" subtitle="The exact reflex you want before drilling" />
-          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
-            <p>If the first sentence sounds like the author’s opinion and the later claims answer “why believe that?”, start with a first-sentence read.</p>
-            <p>If the first sentence sounds like someone else’s view, or if the real author voice appears after a pivot, start with a rebuttal read.</p>
-            <p>FABS is a support clue. It helps you verify support after you have the structure. It is not the structure itself.</p>
+          <div className="max-w-[70rem] space-y-10">
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <div className="rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-[linear-gradient(180deg,oklch(0.985_0.005_60),oklch(0.975_0.008_62))] px-7 py-7 shadow-[0_18px_42px_-28px_oklch(0.2_0.01_60/0.16)]">
+                <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[oklch(0.42_0.03_70)]">Read 1</div>
+                <h3 className="max-w-[13ch] font-serif text-[30px] italic leading-[1.02] tracking-[-0.03em] text-[oklch(0.15_0.01_60)]">
+                  First-sentence read
+                </h3>
+                <p className="mt-5 max-w-[30ch] text-[20px] leading-[1.55] text-[oklch(0.2_0.01_60/0.8)]">
+                  If the first sentence sounds like the author’s opinion and the later claims answer “why believe that?”, start there.
+                </p>
+              </div>
+
+              <div className="rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-white px-7 py-7 shadow-[0_18px_42px_-28px_oklch(0.2_0.01_60/0.16)]">
+                <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[oklch(0.42_0.03_70)]">Read 2</div>
+                <h3 className="max-w-[12ch] font-serif text-[30px] italic leading-[1.02] tracking-[-0.03em] text-[oklch(0.15_0.01_60)]">
+                  Rebuttal read
+                </h3>
+                <p className="mt-5 max-w-[31ch] text-[20px] leading-[1.55] text-[oklch(0.2_0.01_60/0.8)]">
+                  If the opening sounds like someone else’s view, or the real author voice appears after a pivot, wait for the turn.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-[26px] border border-[oklch(0.2_0.01_60/0.08)] bg-[linear-gradient(135deg,oklch(0.978_0.008_62)_0%,oklch(0.968_0.014_74)_100%)] px-7 py-7 shadow-[0_20px_46px_-30px_oklch(0.2_0.01_60/0.18)]">
+              <div className="pointer-events-none absolute right-6 top-5 text-[72px] font-serif italic leading-none text-[oklch(0.78_0.04_76/0.18)]">
+                F
+              </div>
+              <div className="max-w-[48rem]">
+                <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[oklch(0.42_0.03_70)]">
+                  Keep This Straight
+                </div>
+                <p className="max-w-[34ch] font-serif text-[32px] italic leading-[1.08] tracking-[-0.03em] text-[oklch(0.15_0.01_60)]">
+                  FABS helps you verify support, not find the whole structure.
+                </p>
+                <p className="mt-4 max-w-[58ch] text-[18px] leading-[1.7] text-[oklch(0.2_0.01_60/0.74)]">
+                  Use the indicator to spot a reason. Then ask what that reason supports. The structure still comes first.
+                </p>
+              </div>
+            </div>
           </div>
         </LessonSection>
       </>
