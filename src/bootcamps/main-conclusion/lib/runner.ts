@@ -130,13 +130,14 @@ export function nextTrainingStep(
     return {
       kind: 'unlock-drill',
       eyebrow: 'Unlock the Simulator',
-      title: `Drill ${UNLOCK_DRILL_NUMBER}: Rebuttal vs First-Sentence`,
+      title: 'Final Mixed Structure Check',
       subtitle:
-        'Four stages, five questions each. Clear all four and the Question Simulator opens.',
+        'A mixed-structure capstone of first-sentence and rebuttal items. Clear it and the Question Simulator opens.',
       cta: 'Open the gate drill',
-      href: `${BC}/drills/${UNLOCK_DRILL_NUMBER}`,
+      href: `${BC}/drills/${UNLOCK_DRILL_SLUG}`,
     };
   }
+
 
   // 4) Capstone + Drill 3.4 done → live training.
   return {
