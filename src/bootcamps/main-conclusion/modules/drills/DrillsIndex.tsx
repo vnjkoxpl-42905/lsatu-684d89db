@@ -1,7 +1,9 @@
 /**
- * Module 3: secondary Drill Lab hub.
- * The IntegratedPathRail remains the primary course path; this page is a
- * direct-access library for revisiting drill mechanics by skill family.
+ * Module 3 · Drill Lab hub — student-facing 5-step Intro to LR drill sequence.
+ *
+ * Replaces the old 3.1 / 3.2 / 3.3 / 3.4 / 3.7 surface with five integrated labs
+ * sourced from the reference bootcamps (introconclusiondrill, structuredrill,
+ * lrfoundational) and rebuilt in LSAT U's design system.
  */
 
 import { Link } from 'react-router-dom';
@@ -16,8 +18,8 @@ import { nextDrillStep } from '@/bootcamps/main-conclusion/lib/runner';
 interface DrillRow {
   id: string;
   number: string;
+  slug: string;
   title: string;
-  route: string;
   skill: string;
   interaction: string;
   why: string;
@@ -26,90 +28,88 @@ interface DrillRow {
 
 export const DRILLS: DrillRow[] = [
   {
-    id: 'MC-DRL-3.1',
-    number: '3.1',
-    title: 'Indicator Recognition',
-    route: '/drills/3.1',
-    skill: 'Signal Recognition',
-    interaction: 'classification',
-    why: 'Learn what signal phrases are doing before you trust the surface grammar.',
+    id: 'MC-DRL-MCL',
+    number: '1',
+    slug: 'main-conclusion-lab',
+    title: 'Main Conclusion Lab',
+    skill: 'Conclusion Spotting',
+    interaction: 'click the conclusion · 20 reps',
+    why: 'Tap the sentence the author is trying to prove. Wrong picks get a hint; right picks reveal the full role map.',
   },
   {
-    id: 'MC-DRL-3.2',
-    number: '3.2',
-    title: 'Structure Reading',
-    route: '/drills/3.2',
-    skill: 'Structure Lab',
-    interaction: 'click conclusion',
-    why: 'Click the conclusion inside the stimulus, then inspect the full role map.',
+    id: 'MC-DRL-ASL',
+    number: '2',
+    slug: 'argument-structure-lab',
+    title: 'Argument Structure Lab',
+    skill: 'Structure Dissection',
+    interaction: '3-step flow · click MC → classify → click support',
+    why: 'Decompose each argument: select the main conclusion, classify the shape, then locate either the supporting claim or the opposing view.',
   },
   {
-    id: 'MC-DRL-3.3',
-    number: '3.3',
-    title: 'First-Sentence Conclusions',
-    route: '/drills/3.3',
-    skill: 'Structure Lab',
-    interaction: 'click + check',
-    why: 'Train the difference between a real first-sentence conclusion and an opener trap.',
+    id: 'MC-DRL-CLS',
+    number: '3',
+    slug: 'structure-classification',
+    title: 'First-Sentence vs Rebuttal',
+    skill: 'Structure Classification',
+    interaction: 'snap-classification',
+    why: 'Build the reflex: is the conclusion at the top of the stimulus, or is the author pushing back on a prior view?',
   },
   {
-    id: 'MC-DRL-3.4',
-    number: '3.4',
-    title: 'Rebuttal Conclusions',
-    route: '/drills/3.4',
-    skill: 'Rebuttal Lab',
-    interaction: 'multi-step dissection',
-    why: 'Separate author view from rejected view. Passing this drill unlocks the Simulator.',
+    id: 'MC-DRL-XRY',
+    number: '4',
+    slug: 'x-ray-review',
+    title: 'X-Ray Review Mode',
+    skill: 'Review & Demo',
+    interaction: 'role reveal · 3 canonical stimuli',
+    why: 'Toggle X-Ray on three canonical arguments to see conclusion, premise, opposing view, and indicators laid out in colour.',
+  },
+  {
+    id: 'MC-DRL-MIX',
+    number: '5',
+    slug: 'mixed-structure-check',
+    title: 'Final Mixed Structure Check',
+    skill: 'Capstone',
+    interaction: 'mixed first-sentence + rebuttal',
+    why: 'Capstone reps that mix both structures. Clear this drill to unlock the Question Simulator.',
     gates_simulator: true,
-  },
-  {
-    id: 'MC-DRL-3.7',
-    number: '3.7',
-    title: 'Pronoun Replacement',
-    route: '/drills/3.7',
-    skill: 'Translation Lab',
-    interaction: 'rewrite',
-    why: 'Replace vague referential language before you paraphrase the conclusion.',
   },
 ];
 
 const GROUPS = [
   {
-    title: 'Signal Recognition',
-    description: 'Signals are not answers; they are instructions for how to read the next claim.',
-    drillIds: ['MC-DRL-3.1'],
+    title: 'Conclusion Spotting',
+    description: 'Train the click before you train the dissection.',
+    drillIds: ['MC-DRL-MCL'],
   },
   {
-    title: 'Structure Lab',
-    description: 'Conclusion spotting by clicking directly in the stimulus.',
-    drillIds: ['MC-DRL-3.2', 'MC-DRL-3.3'],
+    title: 'Structure Dissection',
+    description: 'Map the whole argument: conclusion, support, opposing view, structure shape.',
+    drillIds: ['MC-DRL-ASL', 'MC-DRL-CLS'],
   },
   {
-    title: 'Rebuttal Lab',
-    description: 'Author view versus rejected view, with the simulator gate preserved.',
-    drillIds: ['MC-DRL-3.4'],
-  },
-  {
-    title: 'Translation Lab',
-    description: 'Turn the argument into a precise standalone claim.',
-    drillIds: ['MC-DRL-3.7'],
+    title: 'Review & Capstone',
+    description: 'Stress-test the read on mixed structures. The capstone gates the Simulator.',
+    drillIds: ['MC-DRL-XRY', 'MC-DRL-MIX'],
   },
 ];
+
+const BC = '/bootcamp/intro-to-lr';
 
 export function DrillsIndex() {
   const { progress } = useModuleProgress();
   const completed = new Set(progress?.completed_drills ?? []);
+  const ordered = DRILLS.map((d) => ({ id: d.id, number: d.number, title: d.title, gates_simulator: d.gates_simulator }));
   const next = nextDrillStep(
     progress
       ? { completed_lessons: progress.completed_lessons, completed_drills: progress.completed_drills }
       : null,
-    DRILLS,
+    ordered,
   );
   const doneCount = DRILLS.filter((d) => completed.has(d.id)).length;
   const pct = Math.round((doneCount / DRILLS.length) * 100);
 
   function toCard(drill: DrillRow): DrillLabCard {
-    const href = drill.route.startsWith('/bootcamp/intro-to-lr') ? drill.route : `/bootcamp/intro-to-lr${drill.route}`;
+    const href = `${BC}/drills/${drill.slug}`;
     return {
       id: drill.id,
       number: drill.number,
@@ -119,35 +119,42 @@ export function DrillsIndex() {
       interaction: drill.interaction,
       why: drill.why,
       completed: completed.has(drill.id),
-      active: next.href === href,
+      active: next.href === `${BC}/drills/${drill.number}` || next.title.includes(drill.title),
       gatesSimulator: drill.gates_simulator,
       progressLabel: drill.gates_simulator && !completed.has(drill.id) ? 'gate' : 'available',
     };
   }
 
+  // Map "next drill" href onto our slug-based routes (runner.ts speaks in numbers).
+  const nextRow = DRILLS.find((d) => !completed.has(d.id)) ?? DRILLS[DRILLS.length - 1]!;
+  const nextHref = `${BC}/drills/${nextRow.slug}`;
+  const isGate = !!nextRow.gates_simulator && !completed.has(nextRow.id);
+
   return (
     <article className="mx-auto max-w-4xl space-y-8 px-6 py-12 pb-32 desktop:px-12 desktop:py-16">
       <header className="space-y-4">
         <div>
-          <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Secondary Drill Lab</p>
+          <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Intro to LR · Drill Lab</p>
           <h1 className="mt-2 font-mc-serif text-h1 font-semibold leading-tight text-ink">
-            Practice library, not the path
+            Five drills, one clean path
           </h1>
           <p className="mt-3 max-w-2xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">
-            The rail still owns the course sequence. This hub groups the Intro to LR drills by the skill they train so you can jump back into a lab directly.
+            Spot the main conclusion, dissect the structure, classify the shape, review with X-Ray, then mixed-rep your way into the Simulator.
           </p>
         </div>
         <Card variant="elev" accent>
           <div className="flex flex-col gap-4 desktop:flex-row desktop:items-center desktop:justify-between">
             <div>
-              <Badge tone={next.isGate ? 'accent' : 'neutral'} dot={next.isGate} pulse={next.isGate}>
+              <Badge tone={isGate ? 'accent' : 'neutral'} dot={isGate} pulse={isGate}>
                 {doneCount}/{DRILLS.length} cleared · {pct}%
               </Badge>
-              <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{next.title}</h2>
-              <p className="mt-1 font-mc-serif text-body text-ink-soft">{next.subtitle}</p>
+              <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{nextRow.title}</h2>
+              <p className="mt-1 font-mc-serif text-body text-ink-soft">{nextRow.why}</p>
             </div>
-            <Link to={next.href} className="shrink-0 rounded-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
-              <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>{next.cta}</Button>
+            <Link to={nextHref} className="shrink-0 rounded-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
+              <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
+                {isGate ? 'Run the gate drill' : `Open ${nextRow.title}`}
+              </Button>
             </Link>
           </div>
         </Card>

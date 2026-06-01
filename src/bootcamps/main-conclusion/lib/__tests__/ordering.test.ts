@@ -25,7 +25,7 @@ describe('module ordering', () => {
 
   it('every /simulator/* route requires Drill 3.4', () => {
     for (const route of ['/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode']) {
-      expect(ROUTE_REQUIREMENTS[route]?.blocker).toBe('MC-DRL-3.4');
+      expect(ROUTE_REQUIREMENTS[route]?.blocker).toBe('MC-DRL-MIX');
     }
   });
 

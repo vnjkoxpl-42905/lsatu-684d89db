@@ -16,20 +16,20 @@ export interface RouteRequirement {
 
 export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   '/simulator': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-DRL-MIX',
+    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
   },
   '/simulator/bank': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-DRL-MIX',
+    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
   },
   '/simulator/trap-master': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-DRL-MIX',
+    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
   },
   '/simulator/hard-mode': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-DRL-MIX',
+    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
   },
 };
 
@@ -97,9 +97,10 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 13) additions.push(`/lessons/1.${next}`);
   }
-  // Drill 3.4 is the simulator gate.
-  if (currentRouteId === '/drills/3.4') {
+  // Final Mixed Structure Check is the simulator gate.
+  if (currentRouteId === '/drills/mixed-structure-check' || currentRouteId === '/drills/3.4') {
     additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
   }
+
   return additions;
 }
