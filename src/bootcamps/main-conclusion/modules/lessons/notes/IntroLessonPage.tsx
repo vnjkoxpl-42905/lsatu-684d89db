@@ -1035,16 +1035,16 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "The two dominant conclusion placements in Intro to LR. Learn the read before you touch the lab.",
     content: (
       <>
-        <LessonSection tocTitle="The Two Main Shapes" className="space-y-16">
-          <SectionHeading title="The Two Main Shapes" subtitle="Where the author usually hides the point" />
+        <LessonSection tocTitle="Conclusion Placement" className="space-y-16">
+          <SectionHeading title="Conclusion Placement" subtitle="Where the author usually puts the main point" />
           <div className="grid gap-6 lg:grid-cols-2">
             <GridCard title="First-sentence conclusion">
-              <p>The author puts the opinion up front, then spends the rest of the stimulus defending it.</p>
-              <p>This is the classic upside-down argument: conclusion first, support later.</p>
+              <p>The author states the main point in the first sentence.</p>
+              <p>The rest of the stimulus gives reasons for that claim. Conclusion first. Support after.</p>
             </GridCard>
             <GridCard title="Rebuttal / pivot conclusion">
-              <p>The stimulus opens on someone else’s view, a concession, or a setup line, then pivots into the author’s actual claim.</p>
-              <p>Watch for the author’s pushback after words like <strong>but</strong>, <strong>yet</strong>, and <strong>however</strong>.</p>
+              <p>The stimulus starts with someone else’s view, a concession, or a setup line.</p>
+              <p>Then the author pivots into the real conclusion. Watch for <strong>but</strong>, <strong>yet</strong>, and <strong>however</strong>.</p>
             </GridCard>
           </div>
           <QuoteCard>
