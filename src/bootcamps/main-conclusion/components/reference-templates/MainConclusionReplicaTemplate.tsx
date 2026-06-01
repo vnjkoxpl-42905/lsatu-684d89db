@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
-import { ReplicaShell, RoleKey, StimulusLine } from './shared';
+import { ReplicaShell, RoleKey, StimulusInlineSegment } from './shared';
 
 export function MainConclusionReplicaTemplate({
   title,
@@ -53,7 +53,7 @@ export function MainConclusionReplicaTemplate({
 
   return (
     <ReplicaShell
-      eyebrow="Intro to LR · Replica Drill"
+      eyebrow="Intro to LR"
       title={title}
       description="Full stimulus first. Click the sentence you think the author is trying to prove, then analyze your choice."
     >
@@ -61,25 +61,27 @@ export function MainConclusionReplicaTemplate({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-1">
             <p className="font-mc-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
-              Question {index + 1} of {questions.length}
+              {index + 1} of {questions.length}
             </p>
             <p className="font-mc-serif text-xl text-ink">Find the main conclusion.</p>
           </div>
           {status === 'correct' ? <RoleKey /> : null}
         </div>
 
-        <div className="space-y-3">
-          {(status === 'correct' ? roleReveal : current.chunks.map((chunk) => ({ chunk, accent: 'ink' as const }))).map(
-            ({ chunk, accent }, chunkIndex) => (
-              <StimulusLine
-                key={`${current.id}-${chunkIndex}`}
-                html={chunk}
-                selected={selectedIndex === chunkIndex || status === 'correct'}
-                accent={status === 'correct' ? accent : selectedIndex === chunkIndex ? 'ink' : 'ink'}
-                onClick={status === 'correct' ? undefined : () => setSelectedIndex(chunkIndex)}
-              />
-            ),
-          )}
+        <div className="rounded-[22px] border border-[rgba(26,26,26,0.08)] bg-[#fffdfa] px-5 py-5 md:px-6">
+          <div className="text-[18px] leading-[1.95] text-ink">
+            {(status === 'correct' ? roleReveal : current.chunks.map((chunk) => ({ chunk, accent: 'ink' as const }))).map(
+              ({ chunk, accent }, chunkIndex) => (
+                <StimulusInlineSegment
+                  key={`${current.id}-${chunkIndex}`}
+                  html={chunk}
+                  selected={selectedIndex === chunkIndex || status === 'correct'}
+                  accent={status === 'correct' ? accent : selectedIndex === chunkIndex ? 'conclusion' : 'ink'}
+                  onClick={status === 'correct' ? undefined : () => setSelectedIndex(chunkIndex)}
+                />
+              ),
+            )}
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -104,4 +106,3 @@ export function MainConclusionReplicaTemplate({
     </ReplicaShell>
   );
 }
-

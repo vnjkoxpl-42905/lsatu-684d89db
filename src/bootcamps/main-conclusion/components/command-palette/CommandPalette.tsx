@@ -15,7 +15,7 @@ import refs from '@/bootcamps/main-conclusion/data/references.generated.json';
 import namedTools from '@/bootcamps/main-conclusion/data/named-tools.generated.json';
 import sim from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 import traps from '@/bootcamps/main-conclusion/data/traps.generated.json';
-import { DRILLS } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
+import { INTRO_DRILLS } from '@/bootcamps/main-conclusion/modules/drills/introDrills';
 import { HARD_SECTIONS } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
 import { DIAG_SECTIONS } from '@/bootcamps/main-conclusion/modules/diagnostics/DiagnosticsIndex';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
@@ -53,7 +53,7 @@ export function CommandPalette({ open, onClose }: Props) {
         href: `/lessons/${l.number}`,
       });
     }
-    for (const d of DRILLS) all.push({ id: d.id, title: `${d.number} · ${d.title}`, group: 'Drill', href: `/drills/${d.slug}` });
+    for (const d of INTRO_DRILLS) all.push({ id: d.id, title: `${d.number} · ${d.title}`, group: 'Drill', href: `/drills/${d.slug}` });
     for (const r of refs as Array<{ id: string; title: string; route: string }>)
       all.push({ id: r.id, title: r.title, group: 'Reference', href: r.route });
     for (const nt of namedTools as Array<{ id: string; name: string }>)

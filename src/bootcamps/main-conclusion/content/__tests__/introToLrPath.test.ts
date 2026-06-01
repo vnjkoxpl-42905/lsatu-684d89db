@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { INTEGRATED_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
+import { INTEGRATED_PATH, getCurrentActionIndex, normalizePathnameForAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 describe('Intro to LR guided path order', () => {
   it('starts with the nine-step lesson sequence', () => {
@@ -37,5 +37,12 @@ describe('Intro to LR guided path order', () => {
     expect(visibleMetadata).not.toMatch(/\bquiz\b/);
     expect(visibleMetadata).not.toMatch(/\bdrill\b/);
     expect(visibleMetadata).not.toMatch(/\bmastered\b/);
+  });
+
+  it('treats drill /run routes as part of the parent drill action', () => {
+    expect(normalizePathnameForAction('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(
+      '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run',
+    );
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(9);
   });
 });

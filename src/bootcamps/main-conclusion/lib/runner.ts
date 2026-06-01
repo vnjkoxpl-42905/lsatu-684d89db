@@ -167,6 +167,7 @@ export interface PathDot {
 export interface DrillRow {
   id: string;
   number: string;
+  slug: string;
   title: string;
   gates_simulator?: boolean;
 }
@@ -201,9 +202,9 @@ export function nextDrillStep(
       eyebrow: 'Unlock the Simulator',
       title: `Drill ${gate.number}: ${gate.title}`,
       subtitle:
-        'Four stages, five questions each. Clear all four and the Question Simulator opens.',
-      cta: `Run Drill ${gate.number}`,
-      href: `${BC}/drills/${gate.number}`,
+        'Clear the capstone drill page and finish the mixed structure run to unlock the Question Simulator.',
+      cta: `Open Drill ${gate.number}`,
+      href: `${BC}/drills/${gate.slug}`,
       isGate: true,
     };
   }
@@ -214,9 +215,9 @@ export function nextDrillStep(
     return {
       eyebrow: 'Next drill',
       title: `Drill ${next.number}: ${next.title}`,
-      subtitle: 'Four stages of five questions. Treat it as a timing check, not a grade.',
-      cta: `Run Drill ${next.number}`,
-      href: `${BC}/drills/${next.number}`,
+      subtitle: 'Open the drill page first, then enter the live lab when you are ready to work.',
+      cta: `Open Drill ${next.number}`,
+      href: `${BC}/drills/${next.slug}`,
       isGate: false,
     };
   }

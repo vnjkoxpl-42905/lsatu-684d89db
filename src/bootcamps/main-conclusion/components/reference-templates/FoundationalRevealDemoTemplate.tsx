@@ -19,7 +19,7 @@ export function FoundationalRevealDemoTemplate({
 
   return (
     <ReplicaShell
-      eyebrow="Intro to LR · Reveal Review"
+      eyebrow="Intro to LR"
       title={title}
       description="Review the argument skeleton directly: X-ray the roles, expose the pivot, and watch the logical gap break the structure."
     >

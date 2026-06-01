@@ -94,11 +94,11 @@ describe('nextTrainingStep', () => {
 });
 
 const DRILLS: DrillRow[] = [
-  { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Word ID' },
-  { id: 'MC-DRL-3.2', number: '3.2', title: 'X-Ray Drill' },
-  { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Reading' },
-  { id: 'MC-DRL-MIX', number: '3.4', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
-  { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping' },
+  { id: 'MC-DRL-3.1', number: '3.1', slug: 'indicator-word-id', title: 'Indicator Word ID' },
+  { id: 'MC-DRL-3.2', number: '3.2', slug: 'x-ray-drill', title: 'X-Ray Drill' },
+  { id: 'MC-DRL-3.3', number: '3.3', slug: 'first-sentence-reading', title: 'First-Sentence Reading' },
+  { id: 'MC-DRL-MIX', number: '3.4', slug: 'final-mixed-structure-check', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
+  { id: 'MC-DRL-3.5', number: '3.5', slug: 'chain-mapping', title: 'Chain Mapping' },
 ];
 
 describe('nextDrillStep', () => {
@@ -109,7 +109,7 @@ describe('nextDrillStep', () => {
     };
     const step = nextDrillStep(progress, DRILLS);
     expect(step.isGate).toBe(true);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.4');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
   });
 
   it('points at the next non-gate drill when the gate is done', () => {
@@ -119,7 +119,7 @@ describe('nextDrillStep', () => {
     };
     const step = nextDrillStep(progress, DRILLS);
     expect(step.isGate).toBe(false);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.2');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/x-ray-drill');
   });
 
   it('all drills cleared → simulator', () => {

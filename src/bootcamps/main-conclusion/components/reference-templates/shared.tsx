@@ -65,26 +65,61 @@ export function StimulusLine({
   );
 }
 
+export function StimulusInlineSegment({
+  html,
+  onClick,
+  selected = false,
+  accent = 'ink',
+}: {
+  html: string;
+  onClick?: () => void;
+  selected?: boolean;
+  accent?: 'ink' | 'conclusion' | 'support' | 'opposing' | 'neutral';
+}) {
+  const accentClasses =
+    accent === 'conclusion'
+      ? 'bg-emerald-100 text-emerald-950 shadow-[inset_0_-2px_0_rgba(5,150,105,0.25)]'
+      : accent === 'support'
+        ? 'bg-sky-100 text-sky-950 shadow-[inset_0_-2px_0_rgba(14,165,233,0.24)]'
+        : accent === 'opposing'
+          ? 'bg-violet-100 text-violet-950 shadow-[inset_0_-2px_0_rgba(139,92,246,0.24)]'
+          : accent === 'neutral'
+            ? 'bg-zinc-200 text-zinc-950 shadow-[inset_0_-2px_0_rgba(63,63,70,0.18)]'
+            : 'text-ink';
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'mb-1 mr-1 inline rounded-[10px] px-1.5 py-0.5 text-left text-[18px] leading-[1.9] transition-colors',
+        selected ? accentClasses : 'text-ink hover:bg-[rgba(26,26,26,0.06)]',
+      )}
+    >
+      <span dangerouslySetInnerHTML={{ __html: renderIndicatorMarkup(html) }} />
+    </button>
+  );
+}
+
 export function ReplicaShell({
   eyebrow,
   title,
   description,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  description: string;
+  description?: string;
   children: ReactNode;
 }) {
   return (
     <article className="space-y-8">
       <header className="space-y-3">
-        <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">{eyebrow}</p>
+        {eyebrow ? <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">{eyebrow}</p> : null}
         <h1 className="font-mc-serif text-h1 font-semibold leading-tight text-ink">{title}</h1>
-        <p className="max-w-3xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">{description}</p>
+        {description ? <p className="max-w-3xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">{description}</p> : null}
       </header>
       {children}
     </article>
   );
 }
-

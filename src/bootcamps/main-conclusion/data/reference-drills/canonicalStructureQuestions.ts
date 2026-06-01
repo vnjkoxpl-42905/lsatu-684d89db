@@ -198,6 +198,11 @@ export const CANONICAL_STRUCTURED_DRILL_QUESTIONS = CANONICAL_STRUCTURE_QUESTION
   question.compatibleTemplates.includes('structured-dissection-replica'),
 );
 
+export const CANONICAL_MIXED_STRUCTURE_CHECK_QUESTIONS = [
+  ...CANONICAL_STRUCTURED_DRILL_QUESTIONS.filter((question) => question.structureType === 'rebuttal').slice(4),
+  ...CANONICAL_STRUCTURED_DRILL_QUESTIONS.filter((question) => question.structureType === 'first-sentence').slice(3).reverse(),
+].slice(0, 12);
+
 const RVF_REPLICA_POOL = CANONICAL_STRUCTURED_DRILL_QUESTIONS;
 
 export const CANONICAL_REBUTTAL_VS_FIRST_STAGE_SETS = [

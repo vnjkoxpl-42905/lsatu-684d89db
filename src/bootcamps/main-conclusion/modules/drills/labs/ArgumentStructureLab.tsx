@@ -5,12 +5,10 @@ import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModulePr
 
 interface Props {
   drillId: string;
-  eyebrow: string;
   title: string;
-  description: string;
 }
 
-export function ArgumentStructureLab({ drillId, eyebrow, title, description }: Props) {
+export function ArgumentStructureLab({ drillId, title }: Props) {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
 
@@ -19,7 +17,7 @@ export function ArgumentStructureLab({ drillId, eyebrow, title, description }: P
       title={title}
       questions={CANONICAL_STRUCTURED_DRILL_QUESTIONS}
       onComplete={() => markDrillComplete?.(drillId)}
-      key={`${eyebrow}-${description}`}
+      key={drillId}
     />
   );
 }

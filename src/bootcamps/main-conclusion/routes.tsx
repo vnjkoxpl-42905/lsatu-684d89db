@@ -24,6 +24,7 @@ import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/In
 import { StructuredFlashcards } from '@/bootcamps/main-conclusion/modules/reference/StructuredFlashcards';
 import { DrillsIndex } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
 import { DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillShell';
+import { ActiveDrillShell } from '@/bootcamps/main-conclusion/modules/drills/ActiveDrillShell';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
 import { IntroPathLearningLayout } from '@/bootcamps/main-conclusion/components/IntroPathLearningLayout';
@@ -288,8 +289,30 @@ export function BootcampRoutes() {
             </IntroPathLearningLayout>
           }
         />
-        <Route path="drills" element={<DrillsIndex />} />
-        <Route path="drills/:drillId" element={<DrillShell />} />
+        <Route
+          path="drills"
+          element={
+            <IntroPathLearningLayout>
+              <DrillsIndex />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="drills/:drillId"
+          element={
+            <IntroPathLearningLayout>
+              <DrillShell />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="drills/:drillId/run"
+          element={
+            <IntroPathLearningLayout>
+              <ActiveDrillShell />
+            </IntroPathLearningLayout>
+          }
+        />
         <Route
           path="practice-drills"
           element={

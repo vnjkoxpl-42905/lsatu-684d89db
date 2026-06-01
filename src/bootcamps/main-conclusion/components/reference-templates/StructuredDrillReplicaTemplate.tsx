@@ -72,7 +72,7 @@ export function StructuredDrillReplicaTemplate({
 
   return (
     <ReplicaShell
-      eyebrow="Intro to LR · Replica Drill"
+      eyebrow="Intro to LR"
       title={title}
       description="Use the full stimulus as your workspace: lock the main conclusion, classify the structure, then identify the next structural role."
     >
@@ -195,4 +195,3 @@ export function StructuredDrillReplicaTemplate({
     </ReplicaShell>
   );
 }
-
