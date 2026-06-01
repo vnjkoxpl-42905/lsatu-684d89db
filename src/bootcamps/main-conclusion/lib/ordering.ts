@@ -97,9 +97,10 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 13) additions.push(`/lessons/1.${next}`);
   }
-  // Drill 3.4 is the simulator gate.
-  if (currentRouteId === '/drills/3.4') {
+  // Final Mixed Structure Check is the simulator gate.
+  if (currentRouteId === '/drills/mixed-structure-check' || currentRouteId === '/drills/3.4') {
     additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
   }
+
   return additions;
 }
