@@ -54,8 +54,10 @@ function lessonRank(num: string): number {
 }
 const CAPSTONE_NUMBER = '1.13';
 const CAPSTONE_LESSON_ID = 'MC-LSN-1.13';
-const UNLOCK_DRILL_NUMBER = '3.4';
-const UNLOCK_DRILL_ID = 'MC-DRL-3.4';
+const UNLOCK_DRILL_NUMBER = '5';
+const UNLOCK_DRILL_ID = 'MC-DRL-MIX';
+const UNLOCK_DRILL_SLUG = 'mixed-structure-check';
+
 
 /**
  * Given the student's progress and the static lesson list, decide which single
