@@ -91,13 +91,45 @@ export function ReferentialLanguageUnpack() {
 }
 
 export function FabsHoverMiniTool() {
-  const words = [
-    ['F', 'For'],
-    ['A', 'After all'],
-    ['B', 'Because'],
-    ['S', 'Since'],
+  const items = [
+    {
+      letter: 'F',
+      word: 'For',
+      rule: '"For" introduces support.',
+      example:
+        'The town should keep the library open on Sundays, for many working parents can only bring their children on weekends.',
+      conclusion: 'The town should keep the library open on Sundays.',
+      support: 'Many working parents can only bring their children on weekends.',
+    },
+    {
+      letter: 'A',
+      word: 'After all',
+      rule: '"After all" introduces support.',
+      example: 'The museum should stay open later on Fridays. After all, most visitors arrive after work.',
+      conclusion: 'The museum should stay open later on Fridays.',
+      support: 'Most visitors arrive after work.',
+    },
+    {
+      letter: 'B',
+      word: 'Because',
+      rule: '"Because" introduces support.',
+      example:
+        'The rule should be revised because it punishes small paperwork mistakes as harshly as serious violations.',
+      conclusion: 'The rule should be revised.',
+      support: 'It punishes small paperwork mistakes as harshly as serious violations.',
+    },
+    {
+      letter: 'S',
+      word: 'Since',
+      rule: '"Since" introduces support.',
+      example:
+        'Since the bridge failed two safety inspections, the city should close it until repairs are complete.',
+      conclusion: 'The city should close the bridge until repairs are complete.',
+      support: 'The bridge failed two safety inspections.',
+    },
   ] as const;
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<(typeof items)[number]['letter'] | null>(null);
+  const current = items.find((item) => item.letter === active) ?? null;
 
   return (
     <Card variant="surface" className="space-y-4 p-6">
@@ -106,21 +138,48 @@ export function FabsHoverMiniTool() {
         <h3 className="mt-1 font-mc-serif text-[28px] italic text-ink">Support indicator, not the whole system.</h3>
       </div>
       <div className="flex flex-wrap gap-3">
-        {words.map(([letter, word]) => (
+        {items.map((item) => (
           <button
-            key={letter}
+            key={item.letter}
             type="button"
-            onMouseEnter={() => setActive(word)}
-            onFocus={() => setActive(word)}
-            onMouseLeave={() => setActive(null)}
-            className={active === word ? 'rounded-[18px] bg-emerald-100 px-4 py-3 font-bold text-emerald-900' : 'rounded-[18px] border border-[rgba(26,26,26,0.08)] bg-white px-4 py-3 font-bold text-ink'}
+            onClick={() => setActive((currentLetter) => (currentLetter === item.letter ? null : item.letter))}
+            className={
+              active === item.letter
+                ? 'rounded-[18px] border border-emerald-200 bg-emerald-100 px-4 py-3 font-bold text-emerald-900'
+                : 'rounded-[18px] border border-[rgba(26,26,26,0.08)] bg-white px-4 py-3 font-bold text-ink hover:border-[rgba(26,26,26,0.16)]'
+            }
           >
-            {letter}
+            {item.letter}
           </button>
         ))}
       </div>
+      {current ? (
+        <div className="space-y-4 rounded-[20px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-4">
+          <div className="space-y-1">
+            <p className="font-semibold text-ink">
+              {current.letter} — {current.word}
+            </p>
+            <p className="text-[15px] leading-[1.6] text-ink-soft">{current.rule}</p>
+          </div>
+          <div className="space-y-3 text-[15px] leading-[1.7] text-ink">
+            <p>
+              <span className="font-semibold">Example:</span> {current.example}
+            </p>
+            <p>
+              <span className="font-semibold">Conclusion:</span> {current.conclusion}
+            </p>
+            <p>
+              <span className="font-semibold">Support:</span> {current.support}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <p className="text-[15px] leading-[1.6] text-ink-soft">
+          Tap a letter. FABS words introduce support. They point to the reason, not the main conclusion.
+        </p>
+      )}
       <p className="text-[15px] leading-[1.6] text-ink-soft">
-        {active ? `${active} usually introduces support. Use it as a clue, then still verify the real conclusion.` : 'Hover a letter. FABS helps you spot support, but it does not replace the structural read.'}
+        Use the indicator to find the reason. Then verify what that reason supports.
       </p>
     </Card>
   );
