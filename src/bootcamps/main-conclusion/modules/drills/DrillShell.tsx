@@ -1,68 +1,74 @@
-import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
-import { useParams } from 'react-router-dom';
+/**
+ * DrillShell — routes /drills/:drillId to the new student-facing labs.
+ *
+ * New slugs (canonical):
+ *   main-conclusion-lab   → MainConclusionLab        (drill 1)
+ *   argument-structure-lab → ArgumentStructureLab    (drill 2)
+ *   structure-classification → StructureClassification (drill 3)
+ *   x-ray-review          → XRayReview               (drill 4)
+ *   mixed-structure-check → MixedStructureCheck      (drill 5, gates Simulator)
+ *
+ * Legacy 3.x slugs silently redirect to the closest new lab so any stale
+ * bookmarks, lesson links, or path-rail entries keep working.
+ */
+
+import { useParams, Navigate } from 'react-router-dom';
+import { DynamicIslandTOC } from '@/components/ui/dynamic-island-toc';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
-import { Drill3_1 } from './Drill3_1';
-import { Drill3_2 } from './Drill3_2';
-import { Drill3_3 } from './Drill3_3';
-import { Drill3_4 } from './Drill3_4';
-import { Drill3_5 } from './Drill3_5';
-import { Drill3_6 } from './Drill3_6';
-import { Drill3_7 } from './Drill3_7';
-import { Drill3_8 } from './Drill3_8';
-import { Drill3_9 } from './Drill3_9';
+import { MainConclusionLab } from './labs/MainConclusionLab';
+import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
+import { StructureClassification } from './labs/StructureClassification';
+import { XRayReview } from './labs/XRayReview';
+import { MixedStructureCheck } from './labs/MixedStructureCheck';
+
+const LEGACY_REDIRECT: Record<string, string> = {
+  '3.1': 'main-conclusion-lab',
+  '3.2': 'main-conclusion-lab',
+  '3.3': 'argument-structure-lab',
+  '3.4': 'mixed-structure-check',
+  '3.5': 'argument-structure-lab',
+  '3.6': 'argument-structure-lab',
+  '3.7': 'structure-classification',
+  '3.8': 'argument-structure-lab',
+  '3.9': 'argument-structure-lab',
+};
 
 export function DrillShell() {
   const { drillId } = useParams<{ drillId: string }>();
-  
-  let content;
+
+  if (drillId && drillId in LEGACY_REDIRECT) {
+    return <Navigate to={`/bootcamp/intro-to-lr/drills/${LEGACY_REDIRECT[drillId]}`} replace />;
+  }
+
+  let content: React.ReactNode;
   switch (drillId) {
-    case '3.1':
-      content = <Drill3_1 />;
+    case 'main-conclusion-lab':
+      content = <MainConclusionLab />;
       break;
-    case '3.2':
-      content = <Drill3_2 />;
-      break;
-    case '3.3':
-      content = <Drill3_3 />;
-      break;
-    case '3.4':
-      content = <Drill3_4 />;
-      break;
-    case '3.5':
+    case 'argument-structure-lab':
       content = (
-        <EmptyState
-          title="Drill Archived"
-          body="This drill is currently undergoing a quality review and is unlinked from the main path."
-          surfaceId="drill/3.5"
+        <ArgumentStructureLab
+          drillId="MC-DRL-ASL"
+          eyebrow="Drill · Argument Structure Lab"
+          title="Dissect the argument"
+          description="Three steps per item: click the main conclusion, classify the structure, then locate the supporting claim or the opposing viewpoint."
         />
       );
       break;
-    case '3.7':
-      content = <Drill3_7 />;
+    case 'structure-classification':
+      content = <StructureClassification />;
       break;
-    case '3.8':
-      content = (
-        <EmptyState
-          title="Drill Archived"
-          body="This drill is currently undergoing a quality review and is unlinked from the main path."
-          surfaceId="drill/3.8"
-        />
-      );
+    case 'x-ray-review':
+      content = <XRayReview />;
       break;
-    case '3.9':
-      content = (
-        <EmptyState
-          title="Drill Archived"
-          body="This drill is currently undergoing a quality review and is unlinked from the main path."
-          surfaceId="drill/3.9"
-        />
-      );
+    case 'mixed-structure-check':
+      content = <MixedStructureCheck />;
       break;
     default:
       content = (
         <EmptyState
           title="Drill not found"
-          body="Drill IDs are 3.1 through 3.9."
+          body="Pick a drill from the Drill Lab to get started."
           surfaceId={`drill/${drillId ?? '?'}`}
         />
       );
