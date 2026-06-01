@@ -54,6 +54,6 @@ export const XRAY_ITEMS: XRayItem[] = [
       { kind: "plain", text: " " },
       { kind: "conclusion", text: "supplements can easily make up for it." }
     ],
-    insight: "The author concedes one point — then pivots on "but" to the real conclusion. The concession does not weaken the author; it strengthens credibility before the rebuttal."
+    insight: 'The author concedes one point — then pivots on "but" to the real conclusion. The concession does not weaken the author; it strengthens credibility before the rebuttal.'
   }
 ];
