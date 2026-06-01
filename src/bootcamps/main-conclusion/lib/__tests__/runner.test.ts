@@ -109,7 +109,7 @@ describe('nextDrillStep', () => {
     };
     const step = nextDrillStep(progress, DRILLS);
     expect(step.isGate).toBe(true);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/mixed-structure-check');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.4');
   });
 
   it('points at the next non-gate drill when the gate is done', () => {
