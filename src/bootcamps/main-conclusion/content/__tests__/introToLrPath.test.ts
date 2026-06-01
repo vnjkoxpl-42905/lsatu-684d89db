@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { INTEGRATED_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 describe('Intro to LR guided path order', () => {
-  it('starts with the eight-page note sequence', () => {
-    expect(INTEGRATED_PATH.slice(0, 8).map((action) => action.id)).toEqual([
+  it('starts with the nine-step lesson sequence', () => {
+    expect(INTEGRATED_PATH.slice(0, 9).map((action) => action.id)).toEqual([
       'how-to-read-lr-stimulus',
       'three-parts-lr-question',
       'so-an-argument',
@@ -13,6 +13,17 @@ describe('Intro to LR guided path order', () => {
       'five-types-of-conclusions',
       'beyond-premises-and-conclusions',
       'two-part-conclusion-check',
+      'first-sentence-vs-rebuttal-structures',
+    ]);
+  });
+
+  it('ends with the five replica drill labs', () => {
+    expect(INTEGRATED_PATH.slice(9).map((action) => action.id)).toEqual([
+      'main-conclusion-lab',
+      'first-sentence-vs-rebuttal-lab',
+      'argument-structure-lab',
+      'structure-reveal-review',
+      'final-mixed-structure-check',
     ]);
   });
 

@@ -73,10 +73,10 @@ export default function PracticePathNotes() {
         <PhaseHeader number="01" title="Stimulus and sentence roles" subtitle="Start by reading the passage closely, then label what each sentence is doing." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
-            label="Drill 3.2"
-            name="Structure Reading"
-            purpose="Practice identifying sentence roles after learning stimulus-first reading and argument anatomy."
-            to="/bootcamp/intro-to-lr/drills/3.2"
+            label="Drill Lab"
+            name="Structure Reveal Review Mode"
+            purpose="Review sentence roles and structure-reveal logic after learning stimulus-first reading and argument anatomy."
+            to="/bootcamp/intro-to-lr/drills/structure-reveal-review"
           />
           <DrillCard
             label="Reference"
@@ -91,16 +91,16 @@ export default function PracticePathNotes() {
         <PhaseHeader number="02" title="Indicators and conclusion candidates" subtitle="Use indicator words as clues, then practice turning them into actual conclusion picks." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
-            label="Drill 3.1"
-            name="Indicator Recognition"
-            purpose="Spot conclusion and premise indicators now that you already understand the support relationship."
-            to="/bootcamp/intro-to-lr/drills/3.1"
+            label="Drill Lab"
+            name="Main Conclusion Lab"
+            purpose="Use the replica drill to click the main conclusion directly in full stimuli."
+            to="/bootcamp/intro-to-lr/drills/main-conclusion-lab"
           />
           <DrillCard
-            label="Drill 3.3"
-            name="First-Sentence Conclusions"
-            purpose="Practice deciding whether the opening sentence is really the author&apos;s point."
-            to="/bootcamp/intro-to-lr/drills/3.3"
+            label="Drill Lab"
+            name="First-Sentence vs Rebuttal Lab"
+            purpose="Practice deciding whether the read is a first-sentence conclusion or a rebuttal conclusion."
+            to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab"
           />
         </div>
       </section>
@@ -109,10 +109,10 @@ export default function PracticePathNotes() {
         <PhaseHeader number="03" title="Rebuttal patterns and context" subtitle="After basic placement work, train the cases where someone else&apos;s view appears first." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
-            label="Drill 3.4"
-            name="Rebuttal Conclusions"
-            purpose="Practice finding the author&apos;s conclusion after an opposing view or concession."
-            to="/bootcamp/intro-to-lr/drills/3.4"
+            label="Drill Lab"
+            name="Argument Structure Lab"
+            purpose="Work the full dissection flow: main conclusion, structure type, then support or opposing view."
+            to="/bootcamp/intro-to-lr/drills/argument-structure-lab"
           />
           <DrillCard
             label="Practice Set"
@@ -127,10 +127,10 @@ export default function PracticePathNotes() {
         <PhaseHeader number="04" title="Matching and capstone application" subtitle="Finish by translating conclusions cleanly and then applying the full framework under pressure." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 lg:grid-cols-3 md:divide-x">
           <DrillCard
-            label="Drill 3.7"
-            name="Pronoun Replacement Drill"
-            purpose="Practice replacing vague references so the answer choice matches the exact claim."
-            to="/bootcamp/intro-to-lr/drills/3.7"
+            label="Drill Lab"
+            name="Final Mixed Structure Check"
+            purpose="Use the final mixed replica drill to unlock the simulator once the structure read is stable."
+            to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check"
           />
           <DrillCard
             label="Capstone"

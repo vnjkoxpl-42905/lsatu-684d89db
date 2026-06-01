@@ -1,7 +1,7 @@
 /**
  * Module ordering enforcement (per architecture-plan.md §5 + G2.DRL-3.4).
  *
- * Hard constraint: Drill 3.4 must complete before /simulator/* unlocks.
+ * Hard constraint: the Final Mixed Structure Check must complete before /simulator/* unlocks.
  * `ModuleProgress.unlocked_routes` is the source of truth — never derived ad-hoc.
  */
 
@@ -59,6 +59,11 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   // M3 — every drill
   '/drills',
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
+  '/drills/main-conclusion-lab',
+  '/drills/first-sentence-vs-rebuttal-lab',
+  '/drills/argument-structure-lab',
+  '/drills/structure-reveal-review',
+  '/drills/final-mixed-structure-check',
   // Preview/review mode includes simulator surfaces; persisted student unlocks
   // still come only from Drill 3.4 completion below.
   '/simulator',
@@ -98,7 +103,11 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     if (next <= 13) additions.push(`/lessons/1.${next}`);
   }
   // Final Mixed Structure Check is the simulator gate.
-  if (currentRouteId === '/drills/mixed-structure-check' || currentRouteId === '/drills/3.4') {
+  if (
+    currentRouteId === '/drills/final-mixed-structure-check' ||
+    currentRouteId === '/drills/mixed-structure-check' ||
+    currentRouteId === '/drills/3.4'
+  ) {
     additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
   }
 

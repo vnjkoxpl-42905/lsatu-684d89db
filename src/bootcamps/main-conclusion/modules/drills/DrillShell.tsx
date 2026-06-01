@@ -4,9 +4,9 @@
  * New slugs (canonical):
  *   main-conclusion-lab   → MainConclusionLab        (drill 1)
  *   argument-structure-lab → ArgumentStructureLab    (drill 2)
- *   structure-classification → StructureClassification (drill 3)
- *   x-ray-review          → XRayReview               (drill 4)
- *   mixed-structure-check → MixedStructureCheck      (drill 5, gates Simulator)
+ *   first-sentence-vs-rebuttal-lab → StructureClassification (drill 2)
+ *   structure-reveal-review        → XRayReview               (drill 4)
+ *   final-mixed-structure-check    → MixedStructureCheck      (drill 5, gates Simulator)
  *
  * Legacy 3.x slugs silently redirect to the closest new lab so any stale
  * bookmarks, lesson links, or path-rail entries keep working.
@@ -24,13 +24,17 @@ import { MixedStructureCheck } from './labs/MixedStructureCheck';
 const LEGACY_REDIRECT: Record<string, string> = {
   '3.1': 'main-conclusion-lab',
   '3.2': 'main-conclusion-lab',
-  '3.3': 'argument-structure-lab',
-  '3.4': 'mixed-structure-check',
+  '3.3': 'first-sentence-vs-rebuttal-lab',
+  '3.4': 'final-mixed-structure-check',
   '3.5': 'argument-structure-lab',
   '3.6': 'argument-structure-lab',
-  '3.7': 'structure-classification',
+  '3.7': 'first-sentence-vs-rebuttal-lab',
   '3.8': 'argument-structure-lab',
   '3.9': 'argument-structure-lab',
+  'mixed-classification': 'first-sentence-vs-rebuttal-lab',
+  'x-ray-review': 'structure-reveal-review',
+  'final-structure-check': 'final-mixed-structure-check',
+  'mixed-structure-check': 'final-mixed-structure-check',
 };
 
 export function DrillShell() {
@@ -55,13 +59,13 @@ export function DrillShell() {
         />
       );
       break;
-    case 'structure-classification':
+    case 'first-sentence-vs-rebuttal-lab':
       content = <StructureClassification />;
       break;
-    case 'x-ray-review':
+    case 'structure-reveal-review':
       content = <XRayReview />;
       break;
-    case 'mixed-structure-check':
+    case 'final-mixed-structure-check':
       content = <MixedStructureCheck />;
       break;
     default:

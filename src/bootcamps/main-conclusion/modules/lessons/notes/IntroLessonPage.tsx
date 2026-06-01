@@ -19,6 +19,12 @@ import { ConclusionTypeCard } from "./components/ConclusionTypeCard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
+import {
+  ClaimBucketInspector,
+  FabsHoverMiniTool,
+  ReferentialLanguageUnpack,
+  TrojanHorseHoweverReveal,
+} from "@/bootcamps/main-conclusion/components/reference-templates/ArgumentsFoundationsMiniInteractions";
 import { ContentVignette } from "@/components/bootcamp/ContentVignette";
 
 export type IntroLessonPageId =
@@ -29,7 +35,8 @@ export type IntroLessonPageId =
   | "conclusions"
   | "five-types-of-conclusions"
   | "beyond-premises-and-conclusions"
-  | "two-part-conclusion-check";
+  | "two-part-conclusion-check"
+  | "first-sentence-vs-rebuttal-structures";
 
 type PageDefinition = {
   eyebrow: string;
@@ -1017,6 +1024,48 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
             <p>Background, Opposing Viewpoint, Concession, and Pivot are all common structures that distract from the main point.</p>
             <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
+          </div>
+        </LessonSection>
+      </>
+    ),
+  },
+  "first-sentence-vs-rebuttal-structures": {
+    eyebrow: "Lessons",
+    title: "First-Sentence vs Rebuttal Structures",
+    subtitle: "The two dominant conclusion placements in Intro to LR. Learn the read before you touch the lab.",
+    content: (
+      <>
+        <LessonSection tocTitle="The Two Main Shapes" className="space-y-16">
+          <SectionHeading title="The Two Main Shapes" subtitle="Where the author usually hides the point" />
+          <div className="grid gap-6 lg:grid-cols-2">
+            <GridCard title="First-sentence conclusion">
+              <p>The author puts the opinion up front, then spends the rest of the stimulus defending it.</p>
+              <p>This is the classic upside-down argument: conclusion first, support later.</p>
+            </GridCard>
+            <GridCard title="Rebuttal / pivot conclusion">
+              <p>The stimulus opens on someone else’s view, a concession, or a setup line, then pivots into the author’s actual claim.</p>
+              <p>Watch for the author’s pushback after words like <strong>but</strong>, <strong>yet</strong>, and <strong>however</strong>.</p>
+            </GridCard>
+          </div>
+          <QuoteCard>
+            Your job is not to memorize indicator words in isolation. Your job is to hear the structure: opinion first, or rebuttal after a pivot.
+          </QuoteCard>
+        </LessonSection>
+
+        <LessonSection tocTitle="Reference Mini Interactions" className="space-y-10">
+          <SectionHeading title="Reference Mini Interactions" subtitle="Direct duplicates from the best Arguments Foundations moments" />
+          <ClaimBucketInspector />
+          <TrojanHorseHoweverReveal />
+          <ReferentialLanguageUnpack />
+          <FabsHoverMiniTool />
+        </LessonSection>
+
+        <LessonSection tocTitle="What To Carry Into The Lab" className="space-y-16 border-b-0">
+          <SectionHeading title="What To Carry Into The Lab" subtitle="The exact reflex you want before drilling" />
+          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
+            <p>If the first sentence sounds like the author’s opinion and the later claims answer “why believe that?”, start with a first-sentence read.</p>
+            <p>If the first sentence sounds like someone else’s view, or if the real author voice appears after a pivot, start with a rebuttal read.</p>
+            <p>FABS is a support clue. It helps you verify support after you have the structure. It is not the structure itself.</p>
           </div>
         </LessonSection>
       </>

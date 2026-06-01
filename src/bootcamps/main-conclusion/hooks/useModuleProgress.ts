@@ -12,6 +12,14 @@ import { TABLES, ModuleProgress } from '@/bootcamps/main-conclusion/persistence/
 import { now, newId } from '@/bootcamps/main-conclusion/lib/ids';
 import { INITIAL_UNLOCKED_ROUTES, unlockNext, type ProgressShape } from '@/bootcamps/main-conclusion/lib/ordering';
 
+const DRILL_ROUTE_ALIASES: Record<string, string> = {
+  'MC-DRL-MCL': '/drills/main-conclusion-lab',
+  'MC-DRL-CLS': '/drills/first-sentence-vs-rebuttal-lab',
+  'MC-DRL-ASL': '/drills/argument-structure-lab',
+  'MC-DRL-XRY': '/drills/structure-reveal-review',
+  'MC-DRL-MIX': '/drills/final-mixed-structure-check',
+};
+
 // Per-user progress record id is deterministic on user.id so we always read+update
 // the same row. (Uses crypto.subtle elsewhere; for the id stub here we accept newId
 // fallback. Keep one stable progress row per user.)
@@ -140,8 +148,7 @@ export function useModuleProgress(_userId?: string): {
         const completed = base.completed_drills.includes(drillId)
           ? base.completed_drills
           : [...base.completed_drills, drillId];
-        const drillNumber = drillId.replace('MC-DRL-', '');
-        const routeId = `/drills/${drillNumber}`;
+        const routeId = DRILL_ROUTE_ALIASES[drillId] ?? `/drills/${drillId.replace('MC-DRL-', '')}`;
         const shape: ProgressShape = {
           unlocked_routes: base.unlocked_routes,
           completed_lessons: base.completed_lessons,

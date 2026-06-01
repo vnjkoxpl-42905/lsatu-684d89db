@@ -56,7 +56,7 @@ const CAPSTONE_NUMBER = '1.13';
 const CAPSTONE_LESSON_ID = 'MC-LSN-1.13';
 const UNLOCK_DRILL_NUMBER = '5';
 const UNLOCK_DRILL_ID = 'MC-DRL-MIX';
-const UNLOCK_DRILL_SLUG = 'mixed-structure-check';
+const UNLOCK_DRILL_SLUG = 'final-mixed-structure-check';
 
 
 /**

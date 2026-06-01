@@ -96,6 +96,7 @@ function NoteLoader() {
     'where-conclusions-hide': 'conclusions',
     'layered-arguments': 'beyond-premises-and-conclusions',
     'matching-the-answer': 'two-part-conclusion-check',
+    'first-sentence-vs-rebuttal-structures': 'first-sentence-vs-rebuttal-structures',
   };
 
   const pageId = (noteId && noteId in redirects ? redirects[noteId] : noteId) as IntroLessonPageId | undefined;
@@ -109,6 +110,7 @@ function NoteLoader() {
     case 'five-types-of-conclusions':
     case 'beyond-premises-and-conclusions':
     case 'two-part-conclusion-check':
+    case 'first-sentence-vs-rebuttal-structures':
       return <IntroLessonPage pageId={pageId} />;
     default:
       return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />;
@@ -126,6 +128,7 @@ function LegacyLessonRedirect() {
     '1.6': 'five-types-of-conclusions',
     '1.7': 'beyond-premises-and-conclusions',
     '1.8': 'two-part-conclusion-check',
+    '1.9': 'first-sentence-vs-rebuttal-structures',
   };
 
   if (lessonId === 'note' || lessonId === 'notes') {

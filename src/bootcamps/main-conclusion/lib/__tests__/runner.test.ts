@@ -53,7 +53,7 @@ describe('nextTrainingStep', () => {
     };
     const step2 = nextTrainingStep(withCapstone, LESSONS);
     expect(step2.kind).toBe('unlock-drill');
-    expect(step2.href).toBe('/bootcamp/intro-to-lr/drills/mixed-structure-check');
+    expect(step2.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
   });
 
   it('mid-teaching with stray capstone attempt does NOT short-circuit to drill', () => {

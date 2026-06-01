@@ -48,6 +48,7 @@ const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
 const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
 const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
 const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"));
+const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
@@ -194,6 +195,13 @@ const App = () => {
                   <QuestionBankProvider>
                     <AdminGuidedDrills />
                   </QuestionBankProvider>
+                </React.Suspense>
+              </AdminErrorBoundary>
+            } />
+            <Route path="/admin/bootcamp-reference-lab" element={
+              <AdminErrorBoundary routeLabel="/admin/bootcamp-reference-lab">
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <BootcampReferenceLab />
                 </React.Suspense>
               </AdminErrorBoundary>
             } />

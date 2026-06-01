@@ -1,49 +1,17 @@
-/**
- * DrillFinalStructureCheck - Final Mixed Structure Check
- */
-
-import { useState } from 'react';
-import { InteractiveDrillRunner } from '@/bootcamps/main-conclusion/components/interactive-drills/InteractiveDrillRunner';
-import type { InteractiveDrillItem } from '@/bootcamps/main-conclusion/components/interactive-drills/types';
-import { DRILL_3_4_STAGE_4, type FamilyQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
-import { adaptFamilyQuestion } from '@/bootcamps/main-conclusion/components/interactive-drills/adapters';
+import { StructuredDrillReplicaTemplate } from '@/bootcamps/main-conclusion/components/reference-templates/StructuredDrillReplicaTemplate';
+import { CANONICAL_STRUCTURED_DRILL_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/canonicalStructureQuestions';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
-
-const protocol = {
-  title: 'Final Mixed Structure Check',
-  goal: 'Stress-test the read on mixed structures.',
-  interaction: 'Clear this drill to unlock the Question Simulator.',
-  afterSubmit: 'Reveal full analysis.',
-};
 
 export function MixedStructureCheck() {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
-  const [qIndex, setQIndex] = useState(0);
-  const q = DRILL_3_4_STAGE_4[qIndex]!;
-  const isLast = qIndex + 1 >= DRILL_3_4_STAGE_4.length;
-
-  function next() {
-    if (isLast) {
-      markDrillComplete?.('MC-DRL-MIX');
-      return;
-    }
-    setQIndex((prev) => prev + 1);
-  }
-
-  const item: InteractiveDrillItem = {
-    ...adaptFamilyQuestion(q),
-    mode: 'rebuttal_dissection',
-    title: 'Final Mixed Structure Check'
-  };
 
   return (
-    <InteractiveDrillRunner
-      item={item}
-      protocol={protocol}
-      state={{ answered: false, correct: null, questionIndex: qIndex, totalQuestions: DRILL_3_4_STAGE_4.length }}
-      onComplete={next}
+    <StructuredDrillReplicaTemplate
+      title="Final Mixed Structure Check"
+      questions={CANONICAL_STRUCTURED_DRILL_QUESTIONS}
+      onComplete={() => markDrillComplete?.('MC-DRL-MIX')}
     />
   );
 }
