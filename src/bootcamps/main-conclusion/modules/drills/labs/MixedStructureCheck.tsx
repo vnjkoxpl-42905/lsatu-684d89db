@@ -1,35 +1,49 @@
 /**
- * Final Mixed Structure Check — capstone drill that gates the Simulator.
- * Reuses the ArgumentStructureLab mechanic with a shuffled, mixed pool.
+ * DrillFinalStructureCheck - Final Mixed Structure Check
  */
 
-import { useMemo } from 'react';
-import { FIRST_SENTENCE_QUESTIONS, REBUTTAL_QUESTIONS } from '@/bootcamps/main-conclusion/content/newDrills.source';
-import { ArgumentStructureLab } from './ArgumentStructureLab';
+import { useState } from 'react';
+import { InteractiveDrillRunner } from '@/bootcamps/main-conclusion/components/interactive-drills/InteractiveDrillRunner';
+import type { InteractiveDrillItem } from '@/bootcamps/main-conclusion/components/interactive-drills/types';
+import { DRILL_3_4_STAGE_4, type FamilyQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import { adaptFamilyQuestion } from '@/bootcamps/main-conclusion/components/interactive-drills/adapters';
+import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
+import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
-/**
- * Deterministic interleave: take questions alternately from first/rebuttal pools
- * so students cannot lean on the streak. Same order every visit — no Date.now.
- */
-function interleave() {
-  const out: typeof FIRST_SENTENCE_QUESTIONS = [];
-  const max = Math.max(FIRST_SENTENCE_QUESTIONS.length, REBUTTAL_QUESTIONS.length);
-  for (let i = 0; i < max; i++) {
-    if (REBUTTAL_QUESTIONS[i]) out.push(REBUTTAL_QUESTIONS[i]!);
-    if (FIRST_SENTENCE_QUESTIONS[i]) out.push(FIRST_SENTENCE_QUESTIONS[i]!);
-  }
-  return out;
-}
+const protocol = {
+  title: 'Final Mixed Structure Check',
+  goal: 'Stress-test the read on mixed structures.',
+  interaction: 'Clear this drill to unlock the Question Simulator.',
+  afterSubmit: 'Reveal full analysis.',
+};
 
 export function MixedStructureCheck() {
-  const pool = useMemo(interleave, []);
+  const user = useUser();
+  const { markDrillComplete } = useModuleProgress(user?.id);
+  const [qIndex, setQIndex] = useState(0);
+  const q = DRILL_3_4_STAGE_4[qIndex]!;
+  const isLast = qIndex + 1 >= DRILL_3_4_STAGE_4.length;
+
+  function next() {
+    if (isLast) {
+      markDrillComplete?.('MC-DRL-MIX');
+      return;
+    }
+    setQIndex((prev) => prev + 1);
+  }
+
+  const item: InteractiveDrillItem = {
+    ...adaptFamilyQuestion(q),
+    mode: 'rebuttal_dissection',
+    title: 'Final Mixed Structure Check'
+  };
+
   return (
-    <ArgumentStructureLab
-      drillId="MC-DRL-MIX"
-      eyebrow="Drill · Mixed Structure Check"
-      title="Capstone mixed-structure check"
-      description="First-sentence and rebuttal items shuffled together. Clear this drill to unlock the Simulator."
-      questions={pool}
+    <InteractiveDrillRunner
+      item={item}
+      protocol={protocol}
+      state={{ answered: false, correct: null, questionIndex: qIndex, totalQuestions: DRILL_3_4_STAGE_4.length }}
+      onComplete={next}
     />
   );
 }
