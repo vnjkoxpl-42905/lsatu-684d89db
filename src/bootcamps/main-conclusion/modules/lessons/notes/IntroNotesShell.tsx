@@ -71,51 +71,107 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="launch-screen min-h-[90vh] flex flex-col justify-center grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center py-20"
+            className="launch-screen relative grid min-h-[72vh] grid-cols-1 items-center gap-10 overflow-hidden rounded-[36px] border border-[oklch(0.2_0.01_60/0.06)] bg-[linear-gradient(180deg,oklch(0.985_0.006_60)_0%,oklch(0.972_0.01_62)_100%)] px-8 py-12 shadow-[0_30px_80px_-36px_oklch(0.2_0.01_60/0.2)] md:grid-cols-[minmax(0,1fr)_320px] md:gap-12 md:px-12 md:py-14"
           >
-            <div className="hero-copy">
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-[42%] bg-[radial-gradient(circle_at_top,oklch(0.9_0.03_78/0.34),transparent_58%)]" />
+            <div className="pointer-events-none absolute left-8 top-8 h-20 w-20 rounded-full bg-[oklch(0.88_0.04_80/0.3)] blur-3xl" />
+            <motion.div
+              aria-hidden
+              animate={{ opacity: [0.22, 0.42, 0.22], scale: [1, 1.04, 1] }}
+              transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute -bottom-14 left-[12%] h-40 w-40 rounded-full bg-[oklch(0.82_0.055_82/0.22)] blur-3xl"
+            />
+            <div className="pointer-events-none absolute inset-x-8 top-10 h-px bg-[linear-gradient(90deg,transparent,oklch(0.74_0.04_76/0.42),transparent)]" />
+
+            <div className="hero-copy relative z-10 max-w-[40rem]">
               {eyebrow ? (
                 <motion.p 
                   variants={itemVariants}
-                  className="mb-8 text-[10px] font-bold uppercase tracking-[0.4em] text-[oklch(0.2_0.01_60/0.46)]"
+                  className="mb-5 text-[11px] font-bold uppercase tracking-[0.34em] text-[oklch(0.22_0.012_60/0.62)]"
                 >
                   {eyebrow}
                 </motion.p>
               ) : null}
               <motion.h1 
                 variants={itemVariants}
-                className="text-[clamp(64px,10vw,128px)] font-serif italic font-medium leading-[0.88] tracking-[-0.06em] mb-10 text-[oklch(0.15_0.01_60)]"
+                className="max-w-[8.5ch] text-[clamp(58px,8vw,108px)] font-serif italic font-medium leading-[0.9] tracking-[-0.05em] text-[oklch(0.15_0.01_60)] md:max-w-[7.4ch]"
               >
                 {title}
               </motion.h1>
-              <motion.p 
+
+              <motion.div
                 variants={itemVariants}
-                className="text-xl md:text-2xl text-[oklch(0.2_0.01_60/0.64)] leading-relaxed max-w-2xl font-light"
+                className="mt-8 max-w-[32rem] space-y-4"
               >
-                {subtitle}
-              </motion.p>
+                <p className="text-[20px] leading-[1.42] text-[oklch(0.2_0.01_60/0.74)] md:text-[22px]">
+                  {subtitle}
+                </p>
+                <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[oklch(0.2_0.01_60/0.52)]">
+                  <span className="rounded-full border border-[oklch(0.2_0.01_60/0.1)] bg-white/70 px-4 py-2">Lesson notes</span>
+                  <span className="rounded-full border border-[oklch(0.2_0.01_60/0.08)] bg-[oklch(0.975_0.008_60)] px-4 py-2">Read before the lab</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                variants={itemVariants}
+                className="mt-8 grid gap-3 md:max-w-[34rem] md:grid-cols-2"
+              >
+                <div className="rounded-[22px] border border-[oklch(0.2_0.01_60/0.08)] bg-white/78 px-5 py-5 shadow-[0_18px_38px_-24px_oklch(0.2_0.01_60/0.18)]">
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[oklch(0.45_0.03_72)]">Read 1</div>
+                  <div className="font-serif text-[28px] italic leading-[1.02] text-[oklch(0.16_0.01_60)]">Conclusion first</div>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[oklch(0.22_0.01_60/0.68)]">
+                    If the first sentence sounds like the author's claim, test that read first.
+                  </p>
+                </div>
+                <div className="rounded-[22px] border border-[oklch(0.2_0.01_60/0.08)] bg-[linear-gradient(180deg,oklch(0.985_0.008_62),oklch(0.968_0.012_70))] px-5 py-5 shadow-[0_18px_38px_-24px_oklch(0.2_0.01_60/0.18)]">
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[oklch(0.45_0.03_72)]">Read 2</div>
+                  <div className="font-serif text-[28px] italic leading-[1.02] text-[oklch(0.16_0.01_60)]">Pivot later</div>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[oklch(0.22_0.01_60/0.68)]">
+                    If the opening sounds like a setup or someone else's view, wait for the turn.
+                  </p>
+                </div>
+              </motion.div>
             </div>
 
             <motion.aside 
               variants={itemVariants}
-              className="summary-card group relative"
+              className="summary-card group relative z-10 w-full md:max-w-[320px]"
             >
-              <div className="absolute inset-0 rounded-[24px] bg-[oklch(0.2_0.01_60/0.04)] blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-              <div className="relative rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-white p-1 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.12)] transition-all duration-300 ease-eased group-hover:-translate-y-1 group-hover:shadow-[0_48px_96px_-24px_oklch(0.2_0.01_60/0.16)]">
+              <div className="absolute inset-0 rounded-[28px] bg-[oklch(0.2_0.01_60/0.05)] blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              <div className="relative rounded-[28px] border border-[oklch(0.2_0.01_60/0.08)] bg-white/88 p-2 shadow-[0_28px_72px_-24px_oklch(0.2_0.01_60/0.18)] transition-all duration-300 ease-eased group-hover:-translate-y-1.5 group-hover:shadow-[0_42px_96px_-28px_oklch(0.2_0.01_60/0.22)]">
                 <button 
                   onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full rounded-[20px] bg-[oklch(0.15_0.01_60)] text-[oklch(0.96_0.01_60)] p-10 min-h-[380px] flex flex-col items-center justify-center gap-8 text-center transition-all duration-300 ease-eased hover:bg-[oklch(0.12_0.01_60)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+                  className="relative w-full overflow-hidden rounded-[24px] bg-[linear-gradient(180deg,oklch(0.16_0.01_60)_0%,oklch(0.11_0.01_60)_100%)] text-[oklch(0.96_0.01_60)] p-8 min-h-[320px] flex flex-col items-start justify-between text-left transition-all duration-300 ease-eased hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
                 >
-                  <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[oklch(0.96_0.01_60/0.4)]">BEGIN</div>
-                  <div className="text-5xl font-serif italic tracking-tight">Start reading</div>
-                  <div className="text-[15px] text-[oklch(0.96_0.01_60/0.6)] font-mc-sans leading-relaxed px-4">The notes begin below.</div>
-                  <motion.div 
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="mt-6 border border-[oklch(0.96_0.01_60/0.15)] rounded-full p-4 group-hover:bg-[oklch(0.96_0.01_60/0.05)] transition-colors duration-300"
-                  >
-                    <ArrowDown className="h-6 w-6" strokeWidth={1.5} />
-                  </motion.div>
+                  <motion.div
+                    aria-hidden
+                    animate={{ x: ["-120%", "160%"] }}
+                    transition={{ duration: 3.8, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
+                    className="pointer-events-none absolute inset-y-0 w-20 bg-[linear-gradient(90deg,transparent,oklch(0.96_0.01_60/0.08),transparent)] blur-md"
+                  />
+                  <div className="space-y-6">
+                    <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[oklch(0.96_0.01_60/0.48)]">Begin</div>
+                    <div className="space-y-3">
+                      <div className="text-[46px] font-serif italic leading-[0.96] tracking-[-0.04em]">Read the pattern</div>
+                      <div className="max-w-[19rem] text-[15px] leading-relaxed text-[oklch(0.96_0.01_60/0.68)]">
+                        Start with the two conclusion placements. Then carry that read into the lab.
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-[oklch(0.96_0.01_60/0.5)]">
+                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">First sentence</span>
+                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">But / Yet / However</span>
+                    </div>
+                  </div>
+                  <div className="flex w-full items-center justify-between rounded-[18px] border border-[oklch(0.96_0.01_60/0.12)] bg-[oklch(0.96_0.01_60/0.04)] px-5 py-4">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-[oklch(0.96_0.01_60/0.56)]">Open notes</div>
+                    <motion.div 
+                      animate={{ y: [0, 5, 0] }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                      className="rounded-full border border-[oklch(0.96_0.01_60/0.14)] p-3 transition-colors duration-300 group-hover:bg-[oklch(0.96_0.01_60/0.06)]"
+                    >
+                      <ArrowDown className="h-5 w-5" strokeWidth={1.75} />
+                    </motion.div>
+                  </div>
                 </button>
               </div>
             </motion.aside>
