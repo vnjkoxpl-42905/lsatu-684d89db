@@ -53,7 +53,7 @@ describe('nextTrainingStep', () => {
     };
     const step2 = nextTrainingStep(withCapstone, LESSONS);
     expect(step2.kind).toBe('unlock-drill');
-    expect(step2.href).toBe('/bootcamp/intro-to-lr/drills/3.4');
+    expect(step2.href).toBe('/bootcamp/intro-to-lr/drills/mixed-structure-check');
   });
 
   it('mid-teaching with stray capstone attempt does NOT short-circuit to drill', () => {
@@ -70,7 +70,7 @@ describe('nextTrainingStep', () => {
   it('capstone + Drill 3.4 done → simulator-ready', () => {
     const progress: ProgressLike = {
       completed_lessons: LESSONS.map((l) => l.id),
-      completed_drills: ['MC-DRL-3.4'],
+      completed_drills: ['MC-DRL-MIX'],
     };
     const step = nextTrainingStep(progress, LESSONS);
     expect(step.kind).toBe('simulator-ready');
@@ -83,7 +83,7 @@ describe('nextTrainingStep', () => {
       empty,
       { completed_lessons: ['MC-LSN-1.1'], completed_drills: [] },
       { completed_lessons: LESSONS.map((l) => l.id), completed_drills: [] },
-      { completed_lessons: LESSONS.map((l) => l.id), completed_drills: ['MC-DRL-3.4'] },
+      { completed_lessons: LESSONS.map((l) => l.id), completed_drills: ['MC-DRL-MIX'] },
     ];
     for (const p of cases) {
       const s = nextTrainingStep(p, LESSONS);
@@ -97,7 +97,7 @@ const DRILLS: DrillRow[] = [
   { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Word ID' },
   { id: 'MC-DRL-3.2', number: '3.2', title: 'X-Ray Drill' },
   { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Reading' },
-  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
+  { id: 'MC-DRL-MIX', number: '3.4', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
   { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping' },
 ];
 
@@ -109,13 +109,13 @@ describe('nextDrillStep', () => {
     };
     const step = nextDrillStep(progress, DRILLS);
     expect(step.isGate).toBe(true);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.4');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/mixed-structure-check');
   });
 
   it('points at the next non-gate drill when the gate is done', () => {
     const progress: ProgressLike = {
       completed_lessons: [],
-      completed_drills: ['MC-DRL-3.1', 'MC-DRL-3.4'],
+      completed_drills: ['MC-DRL-3.1', 'MC-DRL-MIX'],
     };
     const step = nextDrillStep(progress, DRILLS);
     expect(step.isGate).toBe(false);
