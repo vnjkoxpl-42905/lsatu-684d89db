@@ -6,7 +6,6 @@ import { RoleLabeler, type RoleLabelerRole } from "./RoleLabeler";
 const roles: RoleLabelerRole[] = [
   { id: "background", label: "Background", tone: "background" },
   { id: "opposing-view", label: "Opposing View", tone: "opposing" },
-  { id: "opposing-support", label: "Opposing Support", tone: "opposing" },
   { id: "concession", label: "Concession", tone: "concession" },
   { id: "pivot", label: "Pivot", tone: "pivot" },
   { id: "author-premise", label: "Author's Premise", tone: "premise" },
@@ -24,7 +23,7 @@ const stimulus = [
 const answerKey = {
   "sentence-1": "background",
   "sentence-2": "opposing-view",
-  "sentence-3": "opposing-support",
+  "sentence-3": "opposing-view", // Folded "Opposing Support" into Opposing Viewpoint
   "sentence-4": "author-premise",
   "sentence-5": "author-conclusion",
 } as const;
@@ -83,7 +82,7 @@ describe("RoleLabeler", () => {
     fireEvent.click(screen.getByRole("button", { name: /the city museum has operated at a deficit/i }));
     fireEvent.click(screen.getByRole("button", { name: "Opposing View" }));
     fireEvent.click(screen.getByRole("button", { name: /some taxpayers argue that public funding/i }));
-    fireEvent.click(screen.getByRole("button", { name: "Opposing Support" }));
+    fireEvent.click(screen.getByRole("button", { name: "Opposing View" }));
     fireEvent.click(screen.getByRole("button", { name: /they point out that only a small percentage/i }));
     fireEvent.click(screen.getByRole("button", { name: "Author's Premise" }));
     fireEvent.click(screen.getByRole("button", { name: /however, the museum provides free educational programs/i }));

@@ -190,7 +190,6 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
 const ROLE_LABELER_ROLES: RoleLabelerRole[] = [
   { id: "background", label: "Background", tone: "background" },
   { id: "opposing-view", label: "Opposing View", tone: "opposing" },
-  { id: "opposing-support", label: "Opposing Support", tone: "opposing" },
   { id: "concession", label: "Concession", tone: "concession" },
   { id: "pivot", label: "Pivot", tone: "pivot" },
   { id: "author-premise", label: "Author's Premise", tone: "premise" },
@@ -939,46 +938,38 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         </LessonSection>
 
         <LessonSection tocTitle="Role Guide" className="space-y-16">
-          <SectionHeading title="Role Guide" subtitle="A compact guide to background, attribution, concessions, and pivots." />
+          <SectionHeading title="Role Guide" subtitle="A compact guide to Background, Opposing Viewpoint, Concession, and Pivot." />
           {[
             {
               title: "Background",
               subtitle: "Context setting",
               definition: "Sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.",
               example: "Several cities have recently expanded their bike-lane networks.",
-              read: "This tells you the situation. It does not yet tell you what the author is trying to prove.",
+              read: "Do not hunt for a keyword here. Ask whether the sentence is setting the scene or proving the author’s point.",
               trap: "Treating relevant context as support. Relevance is not enough. A premise has to support the author's conclusion."
             },
             {
               title: "Opposing Viewpoint",
               subtitle: "Other People's Views",
-              definition: "An attribution introduces what someone else believes (critics, researchers, public).",
+              definition: "Someone else's view, often included so the author can respond to it. Sometimes the stimulus gives reasons for someone else’s view. Treat that as part of the opposing-view setup. Ask whose point the sentence is supporting.",
               example: "Critics argue that the new transit plan is too expensive.",
-              read: "If the sentence belongs to someone else, do not treat it as the author's conclusion.",
-              trap: "Mistaking another person's view for the author's conclusion. Ask: Whose view is this?"
+              read: "Do not hunt for a keyword here. Ask whose view the sentence belongs to.",
+              trap: "Mistaking another person's view for the author's conclusion."
             },
             {
-              title: "Opposing Support",
-              subtitle: "Evidence for someone else",
-              definition: "Evidence given for someone else's view, not the author's.",
-              example: "They note that the project is already over budget.",
-              read: "Ask which claim the evidence is supporting. If it supports the opposing view, it is not the author's premise.",
-              trap: "Seeing evidence and assuming it must be the author's premise. Evidence only works if it supports the author's conclusion."
-            },
-            {
-              title: "Concessions",
+              title: "Concession",
               subtitle: "What the author gives away",
               definition: "Something the author admits, grants, or allows before making the real argument.",
               example: "Although vegetarian diets require careful planning, they can still provide complete nutrition.",
-              read: "Something the author gives away before making the real point.",
+              read: "Useful indicators: although, while, despite, granted, admittedly, though it is true, yes, it is true that, naturally.",
               trap: "Mistaking a concession for the author's main point because it sounds important or balanced."
             },
             {
-              title: "Pivots",
+              title: "Pivot",
               subtitle: "The turn to the author's position",
               definition: "The turn in the argument, showing the move away from other material toward the author's actual position.",
               example: "Many residents oppose the plan. However, the city should move forward.",
-              read: "When the author pivots, pay attention. The real conclusion often appears after the turn.",
+              read: "Useful indicators: but, yet, however, nevertheless, nonetheless, on the other hand.",
               trap: "Ignoring pivot words and accidentally choosing the opposing view or concession as the conclusion."
             }
           ].map((role, i) => (
@@ -1015,7 +1006,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
                   </div>
                 </div>
               </div>
-              {i < 4 && <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] pt-12" />}
+              {i < 3 && <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] pt-12" />}
             </motion.div>
           ))}
         </LessonSection>
@@ -1024,7 +1015,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <SectionHeading title="Final Summary" subtitle="Keep the core rule in mind" />
           <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
             <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
-            <p>Background, attribution, opposing support, concessions, and pivots are all common structures that distract from the main point.</p>
+            <p>Background, Opposing Viewpoint, Concession, and Pivot are all common structures that distract from the main point.</p>
             <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
           </div>
         </LessonSection>
