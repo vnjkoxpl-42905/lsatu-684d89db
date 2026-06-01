@@ -83,6 +83,22 @@ function buildMainConclusionQuestion(item: MainConclusionItem, index: number): C
   };
 }
 
+function buildArgumentsFoundationsQuestion(item: MainConclusionItem, index: number): CanonicalStructureQuestion {
+  const base = buildMainConclusionQuestion(item, index);
+
+  return {
+    ...base,
+    sourceBootcamps: ['arguments-foundations'],
+    compatibleTemplates: ['arguments-foundations-mini'],
+    compatibility: [
+      {
+        template: 'arguments-foundations-mini',
+        sourceBootcamp: 'arguments-foundations',
+      },
+    ],
+  };
+}
+
 const LIVE_MAINCONCLUSION_ARGUMENTS_DUPLICATES: MainConclusionItem[] = [
   {
     sentences: [
@@ -150,6 +166,49 @@ function buildStructureQuestion(item: StructureItem): CanonicalStructureQuestion
   };
 }
 
+function mergeCanonicalQuestionRecords(
+  existing: CanonicalStructureQuestion,
+  incoming: CanonicalStructureQuestion,
+): CanonicalStructureQuestion {
+  const roleLabels =
+    existing.roleLabels.length >= incoming.roleLabels.length ? existing.roleLabels : incoming.roleLabels;
+  const revealExplanation =
+    existing.revealExplanation.length >= incoming.revealExplanation.length
+      ? existing.revealExplanation
+      : incoming.revealExplanation;
+  const hint = existing.hint.length >= incoming.hint.length ? existing.hint : incoming.hint;
+  const sourceBootcamps = Array.from(new Set([...existing.sourceBootcamps, ...incoming.sourceBootcamps]));
+  const compatibleTemplates = Array.from(new Set([...existing.compatibleTemplates, ...incoming.compatibleTemplates]));
+  const compatibility = [...existing.compatibility];
+
+  for (const candidate of incoming.compatibility) {
+    const alreadyPresent = compatibility.some(
+      (entry) =>
+        entry.template === candidate.template &&
+        entry.sourceBootcamp === candidate.sourceBootcamp &&
+        JSON.stringify(entry.stageTags ?? []) === JSON.stringify(candidate.stageTags ?? []),
+    );
+    if (!alreadyPresent) compatibility.push(candidate);
+  }
+
+  return {
+    ...existing,
+    supportIndexes: Array.from(new Set([...existing.supportIndexes, ...incoming.supportIndexes])).sort((a, b) => a - b),
+    opposingViewIndexes: Array.from(new Set([...existing.opposingViewIndexes, ...incoming.opposingViewIndexes])).sort(
+      (a, b) => a - b,
+    ),
+    concessionOrPivotIndexes: Array.from(
+      new Set([...existing.concessionOrPivotIndexes, ...incoming.concessionOrPivotIndexes]),
+    ).sort((a, b) => a - b),
+    sourceBootcamps,
+    compatibleTemplates,
+    compatibility,
+    hint,
+    revealExplanation,
+    roleLabels,
+  };
+}
+
 const ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS = [
   normalizeReferenceStimulus(
     "The government argues that reducing educational spending will help address budget deficits. But it is clear that the government's decision to cut funding for public education is misguided. Cutting funding for education can lead to a decline in the quality of public schools and hinder future economic development.",
@@ -160,34 +219,43 @@ const ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS = [
 ];
 
 export const CANONICAL_STRUCTURE_QUESTIONS: CanonicalStructureQuestion[] = (() => {
-  const canonical = [
+  const seededQuestions = [
     ...MAIN_CONCLUSION_QUESTIONS.map(buildMainConclusionQuestion),
     ...LIVE_MAINCONCLUSION_ARGUMENTS_DUPLICATES.map((item, index) =>
-      buildMainConclusionQuestion(item, MAIN_CONCLUSION_QUESTIONS.length + index),
+      buildArgumentsFoundationsQuestion(item, MAIN_CONCLUSION_QUESTIONS.length + index),
     ),
     ...STRUCTURE_QUESTIONS.map(buildStructureQuestion),
   ];
+  const canonicalByKey = new Map<string, CanonicalStructureQuestion>();
 
-  return canonical.map((question) => {
-    if (!ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS.includes(question.duplicateKey)) {
-      return question;
+  for (const question of seededQuestions) {
+    const normalizedQuestion = ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS.includes(question.duplicateKey)
+      ? {
+          ...question,
+          sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'],
+          compatibleTemplates: Array.from(
+            new Set<ReferenceTemplateFamily>([...question.compatibleTemplates, 'arguments-foundations-mini']),
+          ),
+          compatibility: [
+            ...question.compatibility,
+            {
+              template: 'arguments-foundations-mini',
+              sourceBootcamp: 'arguments-foundations',
+            },
+          ],
+        }
+      : question;
+
+    const existing = canonicalByKey.get(normalizedQuestion.duplicateKey);
+    if (!existing) {
+      canonicalByKey.set(normalizedQuestion.duplicateKey, normalizedQuestion);
+      continue;
     }
 
-    return {
-      ...question,
-      sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'],
-      compatibleTemplates: Array.from(
-        new Set<ReferenceTemplateFamily>([...question.compatibleTemplates, 'arguments-foundations-mini']),
-      ),
-      compatibility: [
-        ...question.compatibility,
-        {
-          template: 'arguments-foundations-mini',
-          sourceBootcamp: 'arguments-foundations',
-        },
-      ],
-    };
-  });
+    canonicalByKey.set(normalizedQuestion.duplicateKey, mergeCanonicalQuestionRecords(existing, normalizedQuestion));
+  }
+
+  return [...canonicalByKey.values()];
 })();
 
 export const CANONICAL_MAIN_CONCLUSION_QUESTIONS = CANONICAL_STRUCTURE_QUESTIONS.filter((question) =>

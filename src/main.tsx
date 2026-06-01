@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import { BUILD_SHA } from "@/lib/buildInfo";
 import "./index.css";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -31,6 +32,47 @@ import "./index.css";
     }
   } catch {}
 })();
+
+let latestBuildCheck: Promise<void> | null = null;
+
+async function reloadIfNewBundleIsAvailable() {
+  if (latestBuildCheck) return latestBuildCheck;
+
+  latestBuildCheck = (async () => {
+    try {
+      const currentScript = document.querySelector<HTMLScriptElement>('script[type="module"][src*="/assets/index-"]');
+      const currentBundle = currentScript?.getAttribute("src");
+      if (!currentBundle) return;
+
+      const response = await fetch(window.location.href, { cache: "no-store" });
+      if (!response.ok) return;
+
+      const html = await response.text();
+      const match = html.match(/<script[^>]+type="module"[^>]+src="([^"]*\/assets\/index-[^"]+\.js)"/i);
+      const nextBundle = match?.[1];
+
+      if (nextBundle && nextBundle !== currentBundle) {
+        window.location.reload();
+      }
+    } catch {
+      // A failed freshness probe should never block app boot.
+    } finally {
+      latestBuildCheck = null;
+    }
+  })();
+
+  return latestBuildCheck;
+}
+
+document.documentElement.dataset.buildSha = BUILD_SHA;
+window.addEventListener("pageshow", () => {
+  void reloadIfNewBundleIsAvailable();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    void reloadIfNewBundleIsAvailable();
+  }
+});
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
