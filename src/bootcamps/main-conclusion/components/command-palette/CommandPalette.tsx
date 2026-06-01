@@ -53,7 +53,7 @@ export function CommandPalette({ open, onClose }: Props) {
         href: `/lessons/${l.number}`,
       });
     }
-    for (const d of DRILLS) all.push({ id: d.id, title: `${d.number} · ${d.title}`, group: 'Drill', href: d.route });
+    for (const d of DRILLS) all.push({ id: d.id, title: `${d.number} · ${d.title}`, group: 'Drill', href: `/drills/${d.slug}` });
     for (const r of refs as Array<{ id: string; title: string; route: string }>)
       all.push({ id: r.id, title: r.title, group: 'Reference', href: r.route });
     for (const nt of namedTools as Array<{ id: string; name: string }>)
