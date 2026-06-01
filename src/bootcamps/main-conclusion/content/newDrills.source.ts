@@ -40,7 +40,7 @@ export const XRAY_ITEMS: XRayItem[] = [
       { kind: "plain", text: ", " },
       { kind: "conclusion", text: "Monica caused the extinction of the dinosaurs." }
     ],
-    insight: ""Therefore" cleanly marks the conclusion. Everything before is premise — including the dubious second clause. Validity ≠ truth."
+    insight: '"Therefore" cleanly marks the conclusion. Everything before is premise — including the dubious second clause. Validity ≠ truth.'
   },
   {
     id: "concession-pivot",
