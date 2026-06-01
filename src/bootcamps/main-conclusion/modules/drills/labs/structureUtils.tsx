@@ -13,7 +13,7 @@ export function plainText(html: string): string {
 
 /**
  * Render a span with indicator-word highlights inlined. We use Tailwind utility
- * classes (no raw colors leaking from the reference HTML).
+ * classes mapping to role-color tokens from DESIGN.md.
  */
 export function IndicatorText({ html }: { html: string }) {
   const re = /<i-w t="([^"]+)">([^<]+)<\/i-w>/g;
@@ -25,13 +25,16 @@ export function IndicatorText({ html }: { html: string }) {
     if (m.index > last) nodes.push(html.slice(last, m.index));
     const type = m[1] ?? '';
     const word = m[2] ?? '';
-    let tone = 'text-amber-600 font-semibold';
-    if (type.includes('Premise')) tone = 'text-emerald-700 font-semibold';
-    else if (type.includes('Opposing')) tone = 'text-rose-700 font-semibold';
-    else if (type.includes('Concession')) tone = 'text-stone-600 font-semibold italic';
-    else if (type.includes('Pivot')) tone = 'text-orange-600 font-semibold';
+    
+    // Map to role tokens from DESIGN.md
+    let tone = 'text-[color:var(--role-concession)]'; // Default/Concession
+    if (type.includes('Conclusion')) tone = 'text-[color:var(--role-conclusion)]';
+    else if (type.includes('Premise')) tone = 'text-[color:var(--role-premise)]';
+    else if (type.includes('Opposing')) tone = 'text-[color:var(--role-opposing)]';
+    else if (type.includes('Pivot')) tone = 'text-[color:var(--role-pivot)]';
+
     nodes.push(
-      <span key={key++} className={tone} title={type}>
+      <span key={key++} className={`${tone} font-semibold`} title={type}>
         {word}
       </span>,
     );
