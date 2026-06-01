@@ -55,10 +55,11 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
       y: 0,
       transition: {
         duration: 0.45,
-        ease: [0.23, 1, 0.32, 1], // easeOutQuint
+        ease: [0.23, 1, 0.32, 1] as [number, number, number, number], // easeOutQuint
       },
     },
   };
+
 
   return (
     <div className="mc-bootcamp min-h-screen bg-[oklch(0.96_0.01_60)] text-[oklch(0.2_0.01_60)] font-sans selection:bg-[oklch(0.2_0.01_60/0.08)]">
