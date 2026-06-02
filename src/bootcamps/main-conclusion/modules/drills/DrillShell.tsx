@@ -41,7 +41,7 @@ export function DrillShell() {
     );
   }
 
-  if (drill.slug === 'first-sentence-vs-rebuttal-lab') {
+  if (drill.slug === 'first-sentence-vs-rebuttal-lab' || drill.slug === 'main-conclusion-lab') {
     return <Navigate to={drill.runRoute} replace />;
   }
 
