@@ -482,6 +482,149 @@ function StimulusReadingDrill() {
   );
 }
 
+const BeyondPremisesAndConclusions = () => {
+  const [hoveredRoleTitle, setHoveredRoleTitle] = useState<string | null>(null);
+  const reducedMotion = useReducedMotion();
+
+  return (
+    <>
+      <LessonSection tocTitle="The Mindset Shift" className="space-y-16">
+        <motion.div 
+          initial={{ opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="relative py-12 px-8 border-l-2 border-[oklch(0.2_0.01_60/0.1)] bg-[oklch(0.98_0.005_60)] rounded-r-2xl"
+        >
+          <p className="font-serif text-[32px] md:text-[40px] italic leading-[1.1] text-[oklch(0.15_0.01_60)] tracking-tight">
+            Do not ask what the sentence says. <br />
+            Ask <span className="text-[oklch(0.65_0.12_85)] underline decoration-[oklch(0.65_0.12_85/0.3)] underline-offset-8">what job</span> it is doing.
+          </p>
+          <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
+            <div className="text-[120px] font-serif italic leading-none">!</div>
+          </div>
+        </motion.div>
+
+        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
+          <p className="text-[20px] font-medium text-[oklch(0.15_0.01_60)] leading-snug">
+            A sentence may sound important and still not be the author's conclusion.
+          </p>
+          <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
+        </div>
+      </LessonSection>
+
+      <LessonSection tocTitle="Role Guide" className="space-y-16">
+        <SectionHeading title="Role Guide" subtitle="A compact guide to Background, Opposing Viewpoint, Concession, and Pivot." />
+        {[
+          {
+            title: "Background",
+            subtitle: "Context setting",
+            definition: "Sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.",
+            example: "Several cities have recently expanded their bike-lane networks.",
+            read: "Do not hunt for a keyword here. Ask whether the sentence is setting the scene or proving the author’s point.",
+            trap: "Treating relevant context as support. Relevance is not enough. A premise has to support the author's conclusion."
+          },
+          {
+            title: "Opposing Viewpoint",
+            subtitle: "Other People's Views",
+            definition: "Someone else's view, often included so the author can respond to it. Sometimes the stimulus gives reasons for someone else’s view. Treat that as part of the opposing-view setup. Ask whose point the sentence is supporting.",
+            example: "Critics argue that the new transit plan is too expensive.",
+            read: "Do not hunt for a keyword here. Ask whose view the sentence belongs to.",
+            trap: "Mistaking another person's view for the author's conclusion."
+          },
+          {
+            title: "Concession",
+            subtitle: "What the author gives away",
+            definition: "Something the author admits, grants, or allows before making the real argument.",
+            example: "Although vegetarian diets require careful planning, they can still provide complete nutrition.",
+            read: "Useful indicators: although, while, despite, granted, admittedly, though it is true, yes, it is true that, naturally.",
+            trap: "Mistaking a concession for the author's main point because it sounds important or balanced."
+          },
+          {
+            title: "Pivot",
+            subtitle: "The turn to the author's position",
+            definition: "The turn in the argument, showing the move away from other material toward the author's actual position.",
+            example: "Many residents oppose the plan. However, the city should move forward.",
+            read: "Useful indicators: but, yet, however, nevertheless, nonetheless, on the other hand.",
+            trap: "Ignoring pivot words and accidentally choosing the opposing view or concession as the conclusion."
+          }
+        ].map((role, i) => (
+          <motion.div 
+            key={role.title} 
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-10"
+          >
+            <div className="flex items-baseline gap-4">
+              <h3 className="font-serif text-[32px] italic text-[oklch(0.15_0.01_60)] tracking-tight">{role.title}</h3>
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">{role.subtitle}</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-10">
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">What it is</h4>
+                  <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.definition}</p>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">How to read it</h4>
+                  {role.read.startsWith("Useful indicators:") ? (
+                    <div className="space-y-4 pt-1">
+                      <p className="text-[12px] font-bold uppercase tracking-wider text-[oklch(0.2_0.01_60/0.3)]">Useful indicators:</p>
+                      <div className="flex flex-wrap gap-x-2 gap-y-3">
+                        {role.read.replace("Useful indicators: ", "").split(", ").map(word => (
+                          <motion.span 
+                            key={word}
+                            onMouseEnter={() => setHoveredRoleTitle(role.title)}
+                            onMouseLeave={() => setHoveredRoleTitle(null)}
+                            animate={!reducedMotion && hoveredRoleTitle === role.title ? {
+                              scale: [1, 1.05, 1],
+                              transition: { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
+                            } : { scale: 1 }}
+                            className={cn(
+                              "mc-shine px-3 py-1.5 rounded-lg text-[11.5px] font-mono tracking-wider border shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all cursor-default select-none bg-white",
+                              role.title === "Concession" && "border-role-concession/30 text-[oklch(0.4_0.15_85)] hover:border-role-concession/50 hover:shadow-md",
+                              role.title === "Pivot" && "border-role-pivot/30 text-[oklch(0.4_0.15_45)] hover:border-role-pivot/50 hover:shadow-md",
+                              role.title !== "Concession" && role.title !== "Pivot" && "border-[oklch(0.2_0.01_60/0.08)] text-[oklch(0.2_0.01_60/0.8)] hover:border-[oklch(0.2_0.01_60/0.15)]"
+                            )}
+                          >
+                            {word}
+                          </motion.span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.read}</p>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-8">
+                <div className="rounded-[20px] border border-[oklch(0.2_0.01_60/0.08)] bg-[oklch(0.98_0.005_60)] p-8 shadow-sm">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.65_0.12_85)] mb-4">Example</h4>
+                  <p className="text-[20px] leading-relaxed text-[oklch(0.15_0.01_60)] font-serif italic">{`"${role.example}"`}</p>
+                </div>
+                <div className="rounded-[20px] border border-mc-error/10 bg-mc-error/5 p-8">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-mc-error/60 mb-4">Common trap</h4>
+                  <p className="text-[16px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.trap}</p>
+                </div>
+              </div>
+            </div>
+            {i < 3 && <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] pt-12" />}
+          </motion.div>
+        ))}
+      </LessonSection>
+      
+      <LessonSection tocTitle="Final Summary" className="space-y-16 border-b-0 pb-20">
+        <SectionHeading title="Final Summary" subtitle="Keep the core rule in mind" />
+        <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
+          <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
+          <p>Background, Opposing Viewpoint, Concession, and Pivot are all common structures that distract from the main point.</p>
+          <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
+        </div>
+      </LessonSection>
+    </>
+  );
+};
+
 const pages: Record<IntroLessonPageId, PageDefinition> = {
   "how-to-read-lr-stimulus": {
     eyebrow: "",
@@ -915,134 +1058,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     eyebrow: "LESSON",
     title: "Beyond Premises and Conclusions",
     subtitle: "The mindset shift: separating the argument from context, opposition, concessions, and pivots.",
-    content: (
-      <>
-        <LessonSection tocTitle="The Mindset Shift" className="space-y-16">
-          <motion.div 
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative py-12 px-8 border-l-2 border-[oklch(0.2_0.01_60/0.1)] bg-[oklch(0.98_0.005_60)] rounded-r-2xl"
-          >
-            <p className="font-serif text-[32px] md:text-[40px] italic leading-[1.1] text-[oklch(0.15_0.01_60)] tracking-tight">
-              Do not ask what the sentence says. <br />
-              Ask <span className="text-[oklch(0.65_0.12_85)] underline decoration-[oklch(0.65_0.12_85/0.3)] underline-offset-8">what job</span> it is doing.
-            </p>
-            <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
-              <div className="text-[120px] font-serif italic leading-none">!</div>
-            </div>
-          </motion.div>
-
-          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
-            <p className="text-[20px] font-medium text-[oklch(0.15_0.01_60)] leading-snug">
-              A sentence may sound important and still not be the author's conclusion.
-            </p>
-            <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
-          </div>
-        </LessonSection>
-
-        <LessonSection tocTitle="Role Guide" className="space-y-16">
-          <SectionHeading title="Role Guide" subtitle="A compact guide to Background, Opposing Viewpoint, Concession, and Pivot." />
-          {[
-            {
-              title: "Background",
-              subtitle: "Context setting",
-              definition: "Sets the stage. It tells you what the argument is about, but it is not automatically evidence for the author's conclusion.",
-              example: "Several cities have recently expanded their bike-lane networks.",
-              read: "Do not hunt for a keyword here. Ask whether the sentence is setting the scene or proving the author’s point.",
-              trap: "Treating relevant context as support. Relevance is not enough. A premise has to support the author's conclusion."
-            },
-            {
-              title: "Opposing Viewpoint",
-              subtitle: "Other People's Views",
-              definition: "Someone else's view, often included so the author can respond to it. Sometimes the stimulus gives reasons for someone else’s view. Treat that as part of the opposing-view setup. Ask whose point the sentence is supporting.",
-              example: "Critics argue that the new transit plan is too expensive.",
-              read: "Do not hunt for a keyword here. Ask whose view the sentence belongs to.",
-              trap: "Mistaking another person's view for the author's conclusion."
-            },
-            {
-              title: "Concession",
-              subtitle: "What the author gives away",
-              definition: "Something the author admits, grants, or allows before making the real argument.",
-              example: "Although vegetarian diets require careful planning, they can still provide complete nutrition.",
-              read: "Useful indicators: although, while, despite, granted, admittedly, though it is true, yes, it is true that, naturally.",
-              trap: "Mistaking a concession for the author's main point because it sounds important or balanced."
-            },
-            {
-              title: "Pivot",
-              subtitle: "The turn to the author's position",
-              definition: "The turn in the argument, showing the move away from other material toward the author's actual position.",
-              example: "Many residents oppose the plan. However, the city should move forward.",
-              read: "Useful indicators: but, yet, however, nevertheless, nonetheless, on the other hand.",
-              trap: "Ignoring pivot words and accidentally choosing the opposing view or concession as the conclusion."
-            }
-          ].map((role, i) => (
-            <motion.div 
-              key={role.title} 
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="space-y-10"
-            >
-              <div className="flex items-baseline gap-4">
-                <h3 className="font-serif text-[32px] italic text-[oklch(0.15_0.01_60)] tracking-tight">{role.title}</h3>
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)]">{role.subtitle}</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div className="space-y-10">
-                  <div>
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">What it is</h4>
-                    <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.definition}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">How to read it</h4>
-                    {role.read.startsWith("Useful indicators:") ? (
-                      <div className="flex flex-wrap gap-x-2 gap-y-3 pt-1">
-                        {role.read.replace("Useful indicators: ", "").split(", ").map(word => (
-                          <span 
-                            key={word}
-                            className={cn(
-                              "px-3 py-1.5 rounded-lg text-[13px] font-mono border shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all bg-white",
-                              role.title === "Concession" && "border-role-concession/30 text-[oklch(0.45_0.15_85)] hover:border-role-concession/50 hover:shadow-md",
-                              role.title === "Pivot" && "border-role-pivot/30 text-[oklch(0.45_0.15_45)] hover:border-role-pivot/50 hover:shadow-md",
-                              role.title !== "Concession" && role.title !== "Pivot" && "border-[oklch(0.2_0.01_60/0.08)] text-[oklch(0.2_0.01_60/0.8)] hover:border-[oklch(0.2_0.01_60/0.15)]"
-                            )}
-                          >
-                            {word}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.read}</p>
-                    )}
-                  </div>
-                </div>
-                <div className="space-y-8">
-                  <div className="rounded-[20px] border border-[oklch(0.2_0.01_60/0.08)] bg-[oklch(0.98_0.005_60)] p-8 shadow-sm">
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.65_0.12_85)] mb-4">Example</h4>
-                    <p className="text-[20px] leading-relaxed text-[oklch(0.15_0.01_60)] font-serif italic">{`"${role.example}"`}</p>
-                  </div>
-                  <div className="rounded-[20px] border border-mc-error/10 bg-mc-error/5 p-8">
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-mc-error/60 mb-4">Common trap</h4>
-                    <p className="text-[16px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.trap}</p>
-                  </div>
-                </div>
-              </div>
-              {i < 3 && <div className="h-px bg-[oklch(0.2_0.01_60/0.06)] pt-12" />}
-            </motion.div>
-          ))}
-        </LessonSection>
-        
-        <LessonSection tocTitle="Final Summary" className="space-y-16 border-b-0 pb-20">
-          <SectionHeading title="Final Summary" subtitle="Keep the core rule in mind" />
-          <div className="space-y-6 text-body-prose text-[oklch(0.2_0.01_60/0.76)] max-w-[64ch]">
-            <p>Mastering LR requires more than just spotting the conclusion. It requires active reading to identify the function of every sentence.</p>
-            <p>Background, Opposing Viewpoint, Concession, and Pivot are all common structures that distract from the main point.</p>
-            <p>By labeling these roles, you keep the argument itself clear and shielded from distractions.</p>
-          </div>
-        </LessonSection>
-      </>
-    ),
+    content: <BeyondPremisesAndConclusions />,
   },
   "first-sentence-vs-rebuttal-structures": {
     eyebrow: "Lessons",
