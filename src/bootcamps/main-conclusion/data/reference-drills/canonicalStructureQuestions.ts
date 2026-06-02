@@ -9,9 +9,11 @@ import {
   type XRayItem,
 } from '@/bootcamps/main-conclusion/content/newDrills.source';
 import type {
+  CanonicalQuestionCompatibility,
   CanonicalRoleLabel,
   CanonicalStructureQuestion,
   CanonicalStructureType,
+  ReferenceBootcampSource,
   ReferenceTemplateFamily,
 } from './types';
 
@@ -232,17 +234,17 @@ export const CANONICAL_STRUCTURE_QUESTIONS: CanonicalStructureQuestion[] = (() =
     const normalizedQuestion = ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS.includes(question.duplicateKey)
       ? {
           ...question,
-          sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'],
+          sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'] as ReferenceBootcampSource[],
           compatibleTemplates: Array.from(
             new Set<ReferenceTemplateFamily>([...question.compatibleTemplates, 'arguments-foundations-mini']),
           ),
           compatibility: [
             ...question.compatibility,
             {
-              template: 'arguments-foundations-mini',
-              sourceBootcamp: 'arguments-foundations',
+              template: 'arguments-foundations-mini' as ReferenceTemplateFamily,
+              sourceBootcamp: 'arguments-foundations' as ReferenceBootcampSource,
             },
-          ],
+          ] as CanonicalQuestionCompatibility[],
         }
       : question;
 
