@@ -64,7 +64,7 @@ export function MainConclusionReplicaTemplate({
   onComplete?: () => void;
   userName?: string;
 }) {
-  const [screen, setScreen] = useState<'home' | 'briefing' | 'drill' | 'finish'>('home');
+  const [screen, setScreen] = useState<'drill' | 'finish'>('drill');
   const [index, setIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
@@ -170,88 +170,6 @@ export function MainConclusionReplicaTemplate({
     setIndex((value) => value + 1);
     setSelectedIndex(null);
     setStatus('idle');
-  }
-
-  function showBriefing() {
-    setScreen('briefing');
-  }
-
-  function startDrill() {
-    setScreen('drill');
-  }
-
-  if (screen === 'home') {
-    return (
-      <section
-        className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
-          backgroundSize: '24px 24px, 24px 24px, 100% 100%',
-        }}
-      >
-        <div className="mx-auto flex w-full max-w-[600px] flex-col items-center text-center">
-          <div className="text-[4rem] leading-none text-[#1ec8ff] [text-shadow:0_0_20px_rgba(30,200,255,0.8)]">🎯</div>
-          <h1 className="mt-5 font-mc-mono text-[2.2rem] uppercase tracking-[0.12em] text-[#1ec8ff]">
-            Main Conclusion Drill
-          </h1>
-          <p className="mt-3 text-[17px] text-[#94a3b8]">Master logical structure and identify main points.</p>
-          <div className="mt-8 w-full max-w-[320px] rounded-[12px] border-2 border-[#1ec8ff] bg-black/60 px-5 py-[18px] font-mc-mono text-[1.05rem] uppercase tracking-[0.18em] text-white">
-            {userName}
-          </div>
-          <button
-            type="button"
-            onClick={showBriefing}
-            className="mt-8 w-full max-w-[600px] rounded-[14px] border border-[#1ec8ff] bg-transparent px-6 py-5 font-mc-mono text-[1.2rem] uppercase tracking-[0.18em] text-[#1ec8ff] transition-colors hover:bg-[#1ec8ff] hover:text-black"
-          >
-            Initialize Drill
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  if (screen === 'briefing') {
-    return (
-      <section
-        className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
-          backgroundSize: '24px 24px, 24px 24px, 100% 100%',
-        }}
-      >
-        <div className="mx-auto w-full max-w-[760px]">
-          <div className="rounded-[20px] border border-[#1ec8ff] bg-[rgba(30,41,59,0.7)] p-8 md:p-10">
-            <h2 className="font-mc-mono text-[1.5rem] uppercase tracking-[0.12em] text-[#1ec8ff]">
-              {`Welcome, ${userName.toUpperCase()}`}
-            </h2>
-            <p className="mb-5 mt-3 border-b border-[#1ec8ff]/15 pb-[10px] text-[#94a3b8]">DIRECTIONS &amp; PROTOCOL</p>
-            <ul className="my-6 space-y-5 text-left">
-              <li className="flex items-start gap-[15px] leading-[1.5]">
-                <span className="rounded-[10px] border border-[#06b6d426] bg-[#06b6d41a] p-[10px] text-[1.4rem]">🔍</span>
-                <span><strong>Find the Conclusion:</strong> Read the argument and find the author's primary claim.</span>
-              </li>
-              <li className="flex items-start gap-[15px] leading-[1.5]">
-                <span className="rounded-[10px] border border-[#06b6d426] bg-[#06b6d41a] p-[10px] text-[1.4rem]">👆</span>
-                <span><strong>Tap to Select:</strong> Tap the exact sentence you think is the conclusion. It will glow blue.</span>
-              </li>
-              <li className="flex items-start gap-[15px] leading-[1.5]">
-                <span className="rounded-[10px] border border-[#06b6d426] bg-[#06b6d41a] p-[10px] text-[1.4rem]">⚙️</span>
-                <span><strong>Analyze:</strong> Hit the button to verify. If wrong, the drill will highlight pivot clues to help you.</span>
-              </li>
-            </ul>
-            <button
-              type="button"
-              onClick={startDrill}
-              className="mt-4 w-full rounded-[14px] border border-[#1ec8ff] bg-transparent px-6 py-5 font-mc-mono text-[1.2rem] uppercase tracking-[0.18em] text-[#1ec8ff] transition-colors hover:bg-[#1ec8ff] hover:text-black"
-            >
-              Start Drill
-            </button>
-          </div>
-        </div>
-      </section>
-    );
   }
 
   if (screen === 'finish') {

@@ -11,3 +11,19 @@ export function formatParticipantName(
   const trimmed = displayName?.trim();
   return trimmed || 'User';
 }
+
+export function formatFirstName(
+  displayName: string | null | undefined,
+  fallback = 'Student'
+): string {
+  const trimmed = displayName?.trim();
+  if (!trimmed) return fallback;
+
+  const firstToken = trimmed.split(/[\s._-]+/).find(Boolean);
+  if (!firstToken) return fallback;
+
+  const cleaned = firstToken.replace(/[^a-zA-Z]/g, '');
+  if (!cleaned) return fallback;
+
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+}

@@ -2,6 +2,7 @@ import { MainConclusionReplicaTemplate } from '@/bootcamps/main-conclusion/compo
 import { CANONICAL_MAIN_CONCLUSION_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/canonicalStructureQuestions';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
+import { formatFirstName } from '@/lib/displayName';
 
 export function MainConclusionLab() {
   const user = useUser();
@@ -12,7 +13,7 @@ export function MainConclusionLab() {
       title="Main Conclusion Lab"
       questions={CANONICAL_MAIN_CONCLUSION_QUESTIONS}
       onComplete={() => markDrillComplete?.('MC-DRL-MCL')}
-      userName={user?.name ?? 'Student'}
+      userName={formatFirstName(user?.name, 'Student')}
     />
   );
 }
