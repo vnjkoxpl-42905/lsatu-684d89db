@@ -87,8 +87,8 @@ export default function PracticePathNotes() {
         </div>
       </section>
 
-      <section data-toc data-toc-title="Indicators and candidates">
-        <PhaseHeader number="02" title="Indicators and conclusion candidates" subtitle="Use indicator words as clues, then practice turning them into actual conclusion picks." />
+      <section data-toc data-toc-title="Indicators and verification">
+        <PhaseHeader number="02" title="Indicators, candidates, and verification" subtitle="Use indicator words as clues, pick the likely conclusion, and immediately verify the read." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
             label="Drill Lab"
@@ -97,10 +97,10 @@ export default function PracticePathNotes() {
             to="/bootcamp/intro-to-lr/drills/main-conclusion-lab"
           />
           <DrillCard
-            label="Drill Lab"
-            name="First-Sentence vs Rebuttal Lab"
-            purpose="Practice deciding whether the read is a first-sentence conclusion or a rebuttal conclusion."
-            to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab"
+            label="Reference"
+            name="2-Part Conclusion Check"
+            purpose="Revisit the verification rule right after the main-conclusion reps so the read stays honest."
+            to="/bootcamp/intro-to-lr/reference/2-part-check"
           />
         </div>
       </section>
@@ -108,6 +108,12 @@ export default function PracticePathNotes() {
       <section data-toc data-toc-title="Rebuttal and context">
         <PhaseHeader number="03" title="Rebuttal patterns and context" subtitle="After basic placement work, train the cases where someone else&apos;s view appears first." />
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
+          <DrillCard
+            label="Drill Lab"
+            name="First-Sentence vs Rebuttal Lab"
+            purpose="Practice deciding whether the read is a first-sentence conclusion or a rebuttal conclusion."
+            to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab"
+          />
           <DrillCard
             label="Drill Lab"
             name="Argument Structure Lab"
