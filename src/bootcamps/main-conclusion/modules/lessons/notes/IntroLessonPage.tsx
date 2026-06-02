@@ -20,6 +20,7 @@ import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
 import {
+  ClaimBucketInspector,
   FabsHoverMiniTool,
 } from "@/bootcamps/main-conclusion/components/reference-templates/ArgumentsFoundationsMiniInteractions";
 import { ContentVignette } from "@/components/bootcamp/ContentVignette";
