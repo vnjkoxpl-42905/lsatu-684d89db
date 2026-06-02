@@ -46,14 +46,6 @@ function formatCounter(index: number, total: number) {
   return `${pad(index + 1)}/${pad(total)}`;
 }
 
-function formatRoleLabel(label?: string) {
-  if (!label) return 'Main conclusion';
-  return label
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
-
 export function MainConclusionReplicaTemplate({
   questions,
   onComplete,
@@ -77,30 +69,22 @@ export function MainConclusionReplicaTemplate({
 
   const current = questions[index]!;
   const isLast = index === questions.length - 1;
-  const correctRoleLabel = formatRoleLabel(current.roleLabels[current.correctMainConclusionIndex]);
 
-  const highlightedWrongChunkIndex =
-    status === 'wrong'
-      ? current.chunks.findIndex((chunk) =>
-          extractQuotedPhrases(current.hint).some((phrase) => chunk.toLowerCase().includes(phrase.toLowerCase())),
-        )
-      : -1;
-
-  const progressWidth = `${((index + (status === 'correct' ? 1 : 0)) / questions.length) * 100}%`;
+  const progressWidth = `${(index / questions.length) * 100}%`;
 
   const feedbackTone =
     status === 'correct'
-      ? 'border-[#124261] bg-[#09111d] text-[#8ef0cd]'
+      ? 'border-[#10b981] bg-black text-[#10b981]'
       : status === 'wrong'
-        ? 'border-[#214763] bg-[#09111d] text-[#ffb4b4]'
-        : 'border-[#214763] bg-[#09111d] text-[#94a3b8]';
+        ? 'border-[#ef4444] bg-black text-[#ef4444]'
+        : 'border-[#06b6d4] bg-black text-[#94a3b8]';
 
   const terminalContent = useMemo(() => {
     if (status === 'correct') {
       return [
         '> ANALYSIS VALID.',
         `> GOOD EYE, ${userName.toUpperCase()}.`,
-        `> ${current.revealExplanation.replace(/^Correct\.?\s*/i, '')}`,
+        `> ${current.hint}`,
       ];
     }
 
@@ -174,15 +158,8 @@ export function MainConclusionReplicaTemplate({
 
   if (screen === 'finish') {
     return (
-      <section
-        className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
-          backgroundSize: '24px 24px, 24px 24px, 100% 100%',
-        }}
-      >
-        <div className="mx-auto mt-[10vh] flex w-full max-w-[760px] flex-col items-center text-center">
+      <section className="mx-auto mt-[10vh] flex w-full max-w-[600px] flex-col text-white">
+        <div className="flex flex-col items-center text-center">
           <div className="text-[5rem] leading-none [text-shadow:0_0_30px_#10b981]">🏆</div>
           <h2 className="my-6 font-mc-mono text-[2rem] uppercase tracking-[0.12em] text-[#10b981]">
             {`System Clear: ${userName.toUpperCase()}`}
@@ -197,33 +174,26 @@ export function MainConclusionReplicaTemplate({
   }
 
   return (
-    <section
-      className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
-      style={{
-        backgroundImage:
-          'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
-        backgroundSize: '24px 24px, 24px 24px, 100% 100%',
-      }}
-    >
-      <div className="mx-auto w-full max-w-[760px]">
-        <div className="flex items-center justify-between gap-4 font-mc-mono text-[13px] uppercase tracking-[0.22em]">
+    <section className="mx-auto mt-5 flex w-full max-w-[600px] flex-col gap-5 text-white">
+      <div className="w-full">
+        <div className="mb-[10px] flex items-center justify-between gap-4 border-b border-[#06b6d426] pb-[10px] font-mc-mono text-[13px] uppercase tracking-[0.22em]">
           <p className="text-[#1ec8ff]">Drill_Active</p>
           <span className="shrink-0 text-[#94a3b8]">{formatCounter(index, questions.length)}</span>
         </div>
 
-        <div className="mt-5 h-[6px] overflow-hidden rounded-full bg-[#2a3a4e]">
+        <div className="mb-5 h-[6px] overflow-hidden rounded-[3px] bg-[rgba(255,255,255,0.1)]">
           <div
-            className="h-full rounded-full bg-[#1ec8ff] shadow-[0_0_16px_rgba(30,200,255,0.45)] transition-all duration-500"
+            className="h-full bg-[#06b6d4] shadow-[0_0_10px_#06b6d4] transition-all duration-500"
             style={{ width: progressWidth }}
           />
         </div>
 
-        <p className="mb-[10px] mt-5 font-mc-mono text-[0.85rem] text-[#94a3b8]">
+        <p className="mb-[10px] font-mc-mono text-[0.85rem] text-[#94a3b8]">
           {`> ${userName.toUpperCase()}, TAP THE CONCLUSION SENTENCE`}
         </p>
 
         <div
-          className="relative mt-3 overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.05)] bg-[rgba(30,41,59,0.7)] px-7 py-7 text-[1.15rem] leading-[1.8] shadow-[inset_0_0_40px_rgba(0,0,0,0.4)] md:px-8"
+          className="relative overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.05)] bg-[rgba(30,41,59,0.7)] px-7 py-7 text-[1.15rem] leading-[1.8] shadow-[inset_0_0_40px_rgba(0,0,0,0.4)]"
           style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
         >
           <div
@@ -236,15 +206,11 @@ export function MainConclusionReplicaTemplate({
               transition: isScanning ? `top ${scanDuration}ms linear, opacity 120ms linear` : 'opacity 120ms linear',
             }}
           />
-          <p className="mb-5 font-mc-mono text-[12px] uppercase tracking-[0.16em] text-[#7892ad]">
-            Stimulus
-          </p>
-          <p className="text-[20px] leading-[1.75] text-[#e5edf8] md:text-[21px]">
+          <p className="text-[1.15rem] leading-[1.8] text-[#f8fafc]">
             {current.chunks.map((chunk, chunkIndex) => {
               const isSelected = selectedIndex === chunkIndex;
               const isCorrectSelection = status === 'correct' && chunkIndex === current.correctMainConclusionIndex;
-              const shouldShowHintClues = status === 'wrong' && chunkIndex === highlightedWrongChunkIndex;
-              const html = shouldShowHintClues ? highlightHintPhrases(chunk, current.hint) : escapeHtml(chunk);
+              const html = status === 'wrong' ? highlightHintPhrases(chunk, current.hint) : escapeHtml(chunk);
 
               return (
                 <span
