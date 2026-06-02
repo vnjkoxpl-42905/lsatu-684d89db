@@ -38,14 +38,15 @@ export function StructuredDrillPremiumTemplate({
     () =>
       current.chunks.map((chunk, chunkIndex) => ({
         chunk,
-        accent:
+        accent: (
           chunkIndex === current.correctMainConclusionIndex
             ? 'conclusion'
             : current.opposingViewIndexes.includes(chunkIndex)
               ? 'opposing'
               : current.supportIndexes.includes(chunkIndex)
                 ? 'support'
-                : 'neutral',
+                : 'neutral'
+        ) as 'conclusion' | 'opposing' | 'support' | 'neutral',
       })),
     [current],
   );
