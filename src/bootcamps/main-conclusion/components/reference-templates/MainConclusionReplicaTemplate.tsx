@@ -62,6 +62,8 @@ export function MainConclusionReplicaTemplate({
   questions: CanonicalStructureQuestion[];
   onComplete?: () => void;
 }) {
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const [index, setIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
@@ -121,6 +123,7 @@ export function MainConclusionReplicaTemplate({
 
   function nextQuestion() {
     if (isLast) {
+      setIsComplete(true);
       onComplete?.();
       return;
     }
@@ -128,6 +131,91 @@ export function MainConclusionReplicaTemplate({
     setIndex((value) => value + 1);
     setSelectedIndex(null);
     setStatus('idle');
+  }
+
+  function startDrill() {
+    setHasStarted(true);
+  }
+
+  if (!hasStarted) {
+    return (
+      <section
+        className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
+          backgroundSize: '24px 24px, 24px 24px, 100% 100%',
+        }}
+      >
+        <div className="mx-auto w-full max-w-[760px]">
+          <div className="font-mc-mono text-[13px] uppercase tracking-[0.22em] text-[#1ec8ff]">Initialize_Drill</div>
+          <div className="mt-8 rounded-[24px] border border-[#24364d] bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] md:p-10">
+            <p className="font-mc-mono text-[12px] uppercase tracking-[0.18em] text-[#7892ad]">Main Conclusion Drill</p>
+            <h1 className="mt-5 text-[38px] font-semibold leading-[1.02] tracking-[0.08em] text-[#f3f7ff] md:text-[46px]">
+              SPOT THE
+              <br />
+              SENTENCE THE
+              <br />
+              AUTHOR IS
+              <br />
+              TRYING TO PROVE
+            </h1>
+            <div className="mt-8 rounded-[20px] border border-[#214763] bg-[#09111d]/90 p-6">
+              <p className="font-mc-mono text-[12px] uppercase tracking-[0.18em] text-[#94a3b8]">Directions_And_Protocol</p>
+              <p className="mt-4 text-[17px] leading-[1.8] text-[#d7e3f3]">
+                Read one stimulus at a time. Tap the sentence that states the author&apos;s main
+                conclusion, then analyze your selection. Wrong picks get a short clue. Correct picks
+                reveal the sentence&apos;s role and unlock the next question.
+              </p>
+              <p className="mt-4 font-mc-mono text-[12px] uppercase tracking-[0.18em] text-[#6f8399]">
+                20 questions • one connected paragraph • instant feedback
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={startDrill}
+              className="mt-8 w-full rounded-[16px] border border-transparent bg-[#20b8d3] px-6 py-4 font-mc-mono text-[18px] uppercase tracking-[0.22em] text-[#03121b] transition-transform hover:translate-y-[-1px]"
+            >
+              Start Drill &gt;&gt;
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isComplete) {
+    return (
+      <section
+        className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
+          backgroundSize: '24px 24px, 24px 24px, 100% 100%',
+        }}
+      >
+        <div className="mx-auto w-full max-w-[760px]">
+          <div className="font-mc-mono text-[13px] uppercase tracking-[0.22em] text-[#14f1c9]">Drill_Complete</div>
+          <div className="mt-8 rounded-[24px] border border-[#214763] bg-[#09111d]/92 p-8 shadow-[0_0_32px_rgba(30,200,255,0.08)] md:p-10">
+            <p className="font-mc-mono text-[12px] uppercase tracking-[0.18em] text-[#94a3b8]">Completion Status</p>
+            <h2 className="mt-5 text-[34px] font-semibold tracking-[0.08em] text-[#f3f7ff] md:text-[40px]">
+              MAIN CONCLUSION
+              <br />
+              DRILL COMPLETE
+            </h2>
+            <p className="mt-6 text-[17px] leading-[1.8] text-[#d7e3f3]">
+              You completed all 20 questions. Your LSAT U completion tracking has been saved.
+            </p>
+            <div className="mt-6 rounded-[18px] border border-[#1ec8ff]/30 bg-[#0e1d31] px-5 py-4">
+              <p className="font-mc-mono text-[11px] uppercase tracking-[0.18em] text-[#7892ad]">Verification Code</p>
+              <p className="mt-3 font-mc-mono text-[24px] uppercase tracking-[0.26em] text-[#1ec8ff]">
+                LOGIC_MASTER_2026
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -141,10 +229,7 @@ export function MainConclusionReplicaTemplate({
     >
       <div className="mx-auto w-full max-w-[760px]">
         <div className="flex items-center justify-between gap-4 font-mc-mono text-[13px] uppercase tracking-[0.22em]">
-          <div>
-            <p className="text-[#1ec8ff]">Drill_Active</p>
-            <p className="mt-2 text-[11px] tracking-[0.18em] text-[#6f8399]">Main conclusion identification</p>
-          </div>
+          <p className="text-[#1ec8ff]">Drill_Active</p>
           <span className="shrink-0 text-[#94a3b8]">{formatCounter(index, questions.length)}</span>
         </div>
 
@@ -154,10 +239,6 @@ export function MainConclusionReplicaTemplate({
             style={{ width: progressWidth }}
           />
         </div>
-
-        <p className="mt-5 font-mc-mono text-[13px] uppercase tracking-[0.18em] text-[#94a3b8]">
-          Tap the conclusion sentence
-        </p>
 
         <div className="relative mt-3 overflow-hidden rounded-[22px] border border-[#24364d] bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] md:px-8">
           <div className="pointer-events-none absolute left-0 top-0 h-[3px] w-full bg-[#1ec8ff] opacity-70 shadow-[0_0_16px_rgba(30,200,255,0.65)]" />
@@ -179,9 +260,13 @@ export function MainConclusionReplicaTemplate({
                   onClick={() => selectChunk(chunkIndex)}
                   onKeyDown={(event) => handleChunkKeyDown(event, chunkIndex)}
                   className={cn(
-                    'rounded-[6px] border border-transparent px-[0.08em] py-0 align-baseline whitespace-normal break-normal transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1ec8ff]/45',
-                    isSelected && status !== 'correct' ? 'bg-[#1ec8ff]/14 text-[#f2f8ff]' : '',
-                    isCorrectSelection ? 'bg-[#14f1c9]/14 text-[#dffdf6]' : '',
+                    'rounded-[5px] border border-transparent px-[0.05em] py-0 align-baseline whitespace-normal break-normal transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1ec8ff]/45',
+                    isSelected && status !== 'correct'
+                      ? 'bg-[#1ec8ff]/16 text-[#f5fbff] shadow-[0_0_18px_rgba(30,200,255,0.18)]'
+                      : '',
+                    isCorrectSelection
+                      ? 'bg-[#14f1c9]/14 text-[#e6fffa] shadow-[0_0_18px_rgba(20,241,201,0.16)]'
+                      : '',
                     !isSelected && !isCorrectSelection ? 'hover:bg-white/[0.04]' : '',
                     status === 'correct' ? 'cursor-default' : 'cursor-pointer',
                   )}
@@ -192,14 +277,6 @@ export function MainConclusionReplicaTemplate({
                 </span>
               );
             })}
-          </p>
-        </div>
-
-        <div className="mt-5 rounded-[22px] border border-[#24364d] bg-[rgba(9,18,31,0.88)] p-5">
-          <p className="font-mc-mono text-[12px] uppercase tracking-[0.16em] text-[#7892ad]">Task</p>
-          <p className="mt-2 text-[16px] leading-[1.7] text-[#c8d5e6]">
-            Tap the sentence you think expresses the author&apos;s main conclusion. Then analyze your
-            selection to check your reasoning.
           </p>
         </div>
 
@@ -229,7 +306,7 @@ export function MainConclusionReplicaTemplate({
           )}
         </div>
 
-        <div className={cn('mt-5 rounded-[18px] border px-5 py-4 text-[15px] leading-[1.7]', feedbackTone)}>
+        <div className={cn('mt-5 rounded-[18px] border px-5 py-4 font-mc-mono text-[15px] leading-[1.7]', feedbackTone)}>
           {feedbackContent.map((line, lineIndex) => (
             <p key={`${status}-${lineIndex}`}>{line}</p>
           ))}
