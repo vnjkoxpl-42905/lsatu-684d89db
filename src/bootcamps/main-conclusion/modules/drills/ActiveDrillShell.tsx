@@ -72,6 +72,25 @@ export function ActiveDrillShell() {
       );
   }
 
+  if (drill.slug === 'main-conclusion-lab') {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.10)_0%,transparent_50%),linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:100%_100%,20px_20px,20px_20px] bg-[#0b1120] px-5 py-5 md:px-8">
+        <div className="mx-auto w-full max-w-[600px]">
+          <div className="mb-5">
+            <Link
+              to={drill.route}
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.10)] bg-[rgba(15,23,42,0.68)] px-4 py-2 font-mc-mono text-[11px] uppercase tracking-[0.18em] text-[#94a3b8] transition-colors hover:bg-[rgba(15,23,42,0.84)] hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Drill Page
+            </Link>
+          </div>
+          <div className="min-w-0">{content}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1200px] px-6 py-8 md:px-10 md:py-10 desktop:px-12 desktop:py-12">
       <div className="mb-6">

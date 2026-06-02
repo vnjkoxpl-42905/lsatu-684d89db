@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LeftRail } from './LeftRail';
 import { RightDrawer } from './RightDrawer';
 import { useState, createContext, useContext, useCallback, useEffect, useRef } from 'react';
@@ -30,6 +30,7 @@ export function useDrawer(): DrawerCtx {
 }
 
 export function WorkspaceShell(): JSX.Element {
+  const location = useLocation();
   const [payload, setPayload] = useState<DrawerPayload>(null);
   const open = useCallback((p: DrawerPayload) => setPayload(p), []);
   const close = useCallback(() => setPayload(null), []);
@@ -70,6 +71,22 @@ export function WorkspaceShell(): JSX.Element {
   const surfaceId = deriveSurfaceId(typeof window !== 'undefined' ? window.location.pathname : '/');
 
   const { is_admin } = useUserPermissions();
+  const isMainConclusionRunFullscreen =
+    location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run';
+
+  if (isMainConclusionRunFullscreen) {
+    return (
+      <Ctx.Provider value={{ payload, open, close }}>
+        <a className="skip-link" href="#main">Skip to main content</a>
+        <main id="main" className="min-h-screen bg-transparent">
+          <Outlet />
+        </main>
+        <RightDrawer payload={payload} onClose={close} />
+        <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+        {tutorOpen ? <AiTutor surfaceId={surfaceId} onClose={() => setTutorOpen(false)} /> : null}
+      </Ctx.Provider>
+    );
+  }
 
   return (
     <Ctx.Provider value={{ payload, open, close }}>

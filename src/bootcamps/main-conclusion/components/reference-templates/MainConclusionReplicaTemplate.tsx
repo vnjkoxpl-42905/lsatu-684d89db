@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
@@ -69,6 +69,8 @@ export function MainConclusionReplicaTemplate({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
   const [isScanning, setIsScanning] = useState(false);
+  const scanTimeoutRef = useRef<number | null>(null);
+  const analysisTimeoutRef = useRef<number | null>(null);
 
   const current = questions[index]!;
   const isLast = index === questions.length - 1;
@@ -106,13 +108,30 @@ export function MainConclusionReplicaTemplate({
     return [`> ${userName.toUpperCase()}, TAP THE CONCLUSION SENTENCE`];
   }, [current.hint, current.revealExplanation, status, userName]);
 
+  useEffect(() => {
+    return () => {
+      if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
+      if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
+    };
+  }, []);
+
+  function triggerScan(duration: number) {
+    if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
+    setIsScanning(true);
+    scanTimeoutRef.current = window.setTimeout(() => {
+      setIsScanning(false);
+      scanTimeoutRef.current = null;
+    }, duration);
+  }
+
   function analyzeSelection() {
     if (selectedIndex == null || isScanning) return;
-    setIsScanning(true);
+    triggerScan(1000);
 
-    window.setTimeout(() => {
+    if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
+    analysisTimeoutRef.current = window.setTimeout(() => {
       setStatus(selectedIndex === current.correctMainConclusionIndex ? 'correct' : 'wrong');
-      setIsScanning(false);
+      analysisTimeoutRef.current = null;
     }, 1000);
   }
 
@@ -120,6 +139,7 @@ export function MainConclusionReplicaTemplate({
     if (status === 'correct') return;
     setSelectedIndex(chunkIndex);
     if (status === 'wrong') setStatus('idle');
+    triggerScan(350);
   }
 
   function handleChunkKeyDown(event: React.KeyboardEvent<HTMLSpanElement>, chunkIndex: number) {
