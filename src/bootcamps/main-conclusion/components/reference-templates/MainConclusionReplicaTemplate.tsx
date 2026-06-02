@@ -198,10 +198,10 @@ export function MainConclusionReplicaTemplate({
               isScanning && 'opacity-100',
             )}
             style={{
-              '--scan-distance': 'calc(100% - 4px)',
+              ['--scan-distance' as any]: 'calc(100% - 4px)',
               animation: isScanning ? `mc-scan-line ${scanDuration}ms linear` : 'none',
               transition: 'opacity 120ms linear',
-            }}
+            } as React.CSSProperties}
           />
           <p className="text-[1.15rem] leading-[1.8] text-[#f8fafc]">
             {current.chunks.map((chunk, chunkIndex) => {
