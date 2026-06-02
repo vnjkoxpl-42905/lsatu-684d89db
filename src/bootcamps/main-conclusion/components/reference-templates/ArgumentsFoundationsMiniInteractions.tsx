@@ -14,8 +14,8 @@ export function ClaimBucketInspector() {
   return (
     <Card variant="elev" className="space-y-4 p-6">
       <div>
-        <p className="font-mc-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">Claim Bucket Inspector</p>
-        <h3 className="mt-1 font-mc-serif text-[28px] italic text-ink">Four buckets. No ambiguity.</h3>
+        <p className="font-mc-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">Argument Role Sorter</p>
+        <h3 className="mt-1 font-mc-serif text-[28px] italic text-ink">What job is this claim doing in the argument?</h3>
       </div>
       <div className="grid gap-3 md:grid-cols-2">
         {buckets.map((bucket) => (

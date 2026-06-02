@@ -1083,8 +1083,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </QuoteCard>
         </LessonSection>
 
-        <LessonSection tocTitle="FABS Mini Tool" className="space-y-6">
-          <FabsHoverMiniTool />
+        <LessonSection tocTitle="FOUR ARGUMENT ROLES" className="space-y-6">
+          <ClaimBucketInspector />
         </LessonSection>
 
         <LessonSection tocTitle="What To Carry Into The Lab" className="space-y-16 border-b-0">
