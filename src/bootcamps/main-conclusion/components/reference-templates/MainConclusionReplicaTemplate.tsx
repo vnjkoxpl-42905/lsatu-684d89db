@@ -69,8 +69,11 @@ export function MainConclusionReplicaTemplate({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
   const [isScanning, setIsScanning] = useState(false);
+  const [scanProgress, setScanProgress] = useState(0);
+  const [scanDuration, setScanDuration] = useState(1000);
   const scanTimeoutRef = useRef<number | null>(null);
   const analysisTimeoutRef = useRef<number | null>(null);
+  const scanFrameRef = useRef<number | null>(null);
 
   const current = questions[index]!;
   const isLast = index === questions.length - 1;
@@ -92,7 +95,7 @@ export function MainConclusionReplicaTemplate({
         ? 'border-[#214763] bg-[#09111d] text-[#ffb4b4]'
         : 'border-[#214763] bg-[#09111d] text-[#94a3b8]';
 
-  const feedbackContent = useMemo(() => {
+  const terminalContent = useMemo(() => {
     if (status === 'correct') {
       return [
         '> ANALYSIS VALID.',
@@ -105,21 +108,30 @@ export function MainConclusionReplicaTemplate({
       return ['> MISMATCH. RE-ANALYZING PIVOT CLUES...', `> ${current.hint}`];
     }
 
-    return [`> ${userName.toUpperCase()}, TAP THE CONCLUSION SENTENCE`];
+    return [];
   }, [current.hint, current.revealExplanation, status, userName]);
 
   useEffect(() => {
     return () => {
       if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
       if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
+      if (scanFrameRef.current) window.cancelAnimationFrame(scanFrameRef.current);
     };
   }, []);
 
   function triggerScan(duration: number) {
     if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
+    if (scanFrameRef.current) window.cancelAnimationFrame(scanFrameRef.current);
+    setScanDuration(duration);
+    setScanProgress(0);
     setIsScanning(true);
+    scanFrameRef.current = window.requestAnimationFrame(() => {
+      setScanProgress(1);
+      scanFrameRef.current = null;
+    });
     scanTimeoutRef.current = window.setTimeout(() => {
       setIsScanning(false);
+      setScanProgress(0);
       scanTimeoutRef.current = null;
     }, duration);
   }
@@ -288,7 +300,9 @@ export function MainConclusionReplicaTemplate({
           />
         </div>
 
-        <p className="mb-[10px] mt-5 font-mc-mono text-[0.85rem] text-[#94a3b8]">{feedbackContent[0]}</p>
+        <p className="mb-[10px] mt-5 font-mc-mono text-[0.85rem] text-[#94a3b8]">
+          {`> ${userName.toUpperCase()}, TAP THE CONCLUSION SENTENCE`}
+        </p>
 
         <div
           className="relative mt-3 overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.05)] bg-[rgba(30,41,59,0.7)] px-7 py-7 text-[1.15rem] leading-[1.8] shadow-[inset_0_0_40px_rgba(0,0,0,0.4)] md:px-8"
@@ -299,7 +313,10 @@ export function MainConclusionReplicaTemplate({
               'pointer-events-none absolute left-0 top-0 h-1 w-full bg-[#06b6d4] opacity-0 shadow-[0_0_20px_#06b6d4]',
               isScanning && 'opacity-100',
             )}
-            style={isScanning ? { animation: 'scan 1s linear' } : undefined}
+            style={{
+              top: `${scanProgress * 100}%`,
+              transition: isScanning ? `top ${scanDuration}ms linear, opacity 120ms linear` : 'opacity 120ms linear',
+            }}
           />
           <p className="mb-5 font-mc-mono text-[12px] uppercase tracking-[0.16em] text-[#7892ad]">
             Stimulus
@@ -368,11 +385,11 @@ export function MainConclusionReplicaTemplate({
         <div
           className={cn(
             'mt-5 hidden rounded-r-[10px] rounded-bl-[0] rounded-tl-[0] border-l-4 bg-black px-[18px] py-[18px] font-mc-mono text-[0.95rem] leading-[1.5]',
-            (status === 'wrong' || status === 'correct') && 'block',
+            terminalContent.length > 0 && 'block',
             feedbackTone,
           )}
         >
-          {feedbackContent.map((line, lineIndex) => (
+          {terminalContent.map((line, lineIndex) => (
             <p key={`${status}-${lineIndex}`}>{line}</p>
           ))}
         </div>
