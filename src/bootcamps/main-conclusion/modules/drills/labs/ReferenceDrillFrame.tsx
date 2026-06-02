@@ -2,18 +2,22 @@ import { useEffect } from 'react';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
+type ReferenceSource = 'structuredrill' | 'introconclusiondrill';
+
 interface Props {
   drillId: string;
   title: string;
+  /** Which reference HTML app to embed. Defaults to structuredrill for back-compat. */
+  source?: ReferenceSource;
   /** Optional URL hash to deep-link into a section of the reference app (e.g. "drills-view"). */
   hash?: string;
 }
 
 /**
- * Renders the canonical structuredrill reference HTML verbatim in an iframe.
- * Source: public/reference-drills/structuredrill/index.html
+ * Renders a canonical drill reference HTML verbatim in an iframe.
+ * Sources live under public/reference-drills/<source>/index.html
  */
-export function ReferenceDrillFrame({ drillId, title, hash }: Props) {
+export function ReferenceDrillFrame({ drillId, title, source = 'structuredrill', hash }: Props) {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
 
@@ -22,7 +26,7 @@ export function ReferenceDrillFrame({ drillId, title, hash }: Props) {
     markDrillComplete?.(drillId);
   }, [drillId, markDrillComplete]);
 
-  const src = `/reference-drills/structuredrill/index.html${hash ? `#${hash}` : ''}`;
+  const src = `/reference-drills/${source}/index.html${hash ? `#${hash}` : ''}`;
 
   return (
     <div className="flex h-[calc(100vh-6rem)] w-full flex-col bg-white">
