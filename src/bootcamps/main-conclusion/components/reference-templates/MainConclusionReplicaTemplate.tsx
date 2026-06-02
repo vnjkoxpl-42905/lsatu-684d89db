@@ -61,11 +61,9 @@ export function MainConclusionReplicaTemplate({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
   const [isScanning, setIsScanning] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
   const [scanDuration, setScanDuration] = useState(1000);
   const scanTimeoutRef = useRef<number | null>(null);
   const analysisTimeoutRef = useRef<number | null>(null);
-  const scanFrameRef = useRef<number | null>(null);
 
   const current = questions[index]!;
   const isLast = index === questions.length - 1;
@@ -99,23 +97,15 @@ export function MainConclusionReplicaTemplate({
     return () => {
       if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
       if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
-      if (scanFrameRef.current) window.cancelAnimationFrame(scanFrameRef.current);
     };
   }, []);
 
   function triggerScan(duration: number) {
     if (scanTimeoutRef.current) window.clearTimeout(scanTimeoutRef.current);
-    if (scanFrameRef.current) window.cancelAnimationFrame(scanFrameRef.current);
     setScanDuration(duration);
-    setScanProgress(0);
     setIsScanning(true);
-    scanFrameRef.current = window.requestAnimationFrame(() => {
-      setScanProgress(1);
-      scanFrameRef.current = null;
-    });
     scanTimeoutRef.current = window.setTimeout(() => {
       setIsScanning(false);
-      setScanProgress(0);
       scanTimeoutRef.current = null;
     }, duration);
   }
@@ -175,6 +165,12 @@ export function MainConclusionReplicaTemplate({
 
   return (
     <section className="mx-auto mt-5 flex w-full max-w-[600px] flex-col gap-5 text-white">
+      <style>{`
+        @keyframes mc-scan-line {
+          from { transform: translateY(0); opacity: 1; }
+          to { transform: translateY(var(--scan-distance, 280px)); opacity: 1; }
+        }
+      `}</style>
       <div className="w-full">
         <div className="mb-[10px] flex items-center justify-between gap-4 border-b border-[#06b6d426] pb-[10px] font-mc-mono text-[13px] uppercase tracking-[0.22em]">
           <p className="text-[#1ec8ff]">Drill_Active</p>
@@ -202,8 +198,9 @@ export function MainConclusionReplicaTemplate({
               isScanning && 'opacity-100',
             )}
             style={{
-              top: `${scanProgress * 100}%`,
-              transition: isScanning ? `top ${scanDuration}ms linear, opacity 120ms linear` : 'opacity 120ms linear',
+              '--scan-distance': 'calc(100% - 4px)',
+              animation: isScanning ? `mc-scan-line ${scanDuration}ms linear` : 'none',
+              transition: 'opacity 120ms linear',
             }}
           />
           <p className="text-[1.15rem] leading-[1.8] text-[#f8fafc]">
