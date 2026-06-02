@@ -42,13 +42,7 @@ export function DrillShell() {
   }
 
   if (drill.slug === 'first-sentence-vs-rebuttal-lab') {
-    return (
-      <ReferenceDrillFrame
-        drillId={drill.completionId}
-        title={drill.title}
-        hash="drills-view"
-      />
-    );
+    return <Navigate to={drill.runRoute} replace />;
   }
 
   return <IntroDrillPage drill={drill} />;
