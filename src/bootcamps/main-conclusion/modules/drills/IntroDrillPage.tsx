@@ -56,7 +56,7 @@ export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
 
                 <Link to={drill.runRoute} className="inline-flex">
                   <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                    Enter Drill
+                    Start Drill
                   </Button>
                 </Link>
               </Card>

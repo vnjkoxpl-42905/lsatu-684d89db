@@ -193,8 +193,7 @@
         <div class="card">
             <h1 style="font-size: 1.8rem;">Main Conclusion Drill</h1>
             <p style="color:var(--text-dim); margin-top: 8px;">Analytical Structure Lab</p>
-            <input type="text" id="nameInput" class="input-field" placeholder="Enter Your Name" autocomplete="off">
-            <button class="btn" onclick="initLab()">Initialize Lab</button>
+            <button class="btn" onclick="initLab()">Start Drill</button>
         </div>
     </div>
 
@@ -468,9 +467,6 @@
     ];
 
     function initLab() {
-        const val = document.getElementById('nameInput').value.trim();
-        if(!val) return;
-        studentName = val;
         document.getElementById('home').classList.remove('active');
         document.getElementById('drill').classList.add('active');
         loadQ();
@@ -570,9 +566,10 @@
     function finish() {
         document.getElementById('drill').classList.remove('active');
         document.getElementById('finish').classList.add('active');
-        document.getElementById('congrats').innerText = `EXCELLENT WORK, ${studentName.toUpperCase()}`;
+        document.getElementById('congrats').innerText = studentName
+            ? `EXCELLENT WORK, ${studentName.toUpperCase()}`
+            : 'EXCELLENT WORK';
     }
 </script>
 </body>
 </html>
-
