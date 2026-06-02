@@ -418,7 +418,6 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             </Button>
           )}
           <div className="flex-1" />
-          <span className="hidden sm:inline text-[10px] font-bold text-slate-300 tracking-widest mr-3 select-none">PASTE IMAGE OR CMD+ENTER</span>
           <Button
             onClick={send}
             disabled={sending || !canSend}
