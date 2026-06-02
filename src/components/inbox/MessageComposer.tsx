@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react';
-import { Paperclip, Send, X, FileText, Sparkles, Cloud } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Paperclip, Send, X, FileText, Sparkles, Cloud, Image as ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,8 +15,11 @@ import {
   slashTemplateQuery,
   type MessageTemplate,
 } from '@/lib/messageTemplates';
-
-const MAX_SIZE = 20 * 1024 * 1024;
+import {
+  buildExternalWorkUploadInsert,
+  classifyInboxAttachmentMime,
+  validateInboxAttachment,
+} from '@/lib/inboxAttachments';
 
 export function MessageComposer({ conversationId, onSent }: { conversationId: string; onSent?: () => void }) {
   const { user } = useAuth();
@@ -32,6 +35,10 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
+
+  const errorMessage = (error: unknown, fallback: string) =>
+    error instanceof Error ? error.message : fallback;
 
   const adjustHeight = () => {
     const el = textareaRef.current;
@@ -66,16 +73,23 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
 
   const pickFile = (f: File | null) => {
     if (!f) return;
-    if (f.type !== 'application/pdf') {
-      toast.error('Only PDF files are allowed');
-      return;
-    }
-    if (f.size > MAX_SIZE) {
-      toast.error('File must be under 20MB');
+    const error = validateInboxAttachment({ type: f.type, size: f.size });
+    if (error) {
+      toast.error(error);
       return;
     }
     setFile(f);
   };
+
+  useEffect(() => {
+    if (!file || classifyInboxAttachmentMime(file.type) !== 'image') {
+      setFilePreviewUrl(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setFilePreviewUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   const polish = async () => {
     const text = body.trim();
@@ -91,9 +105,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         throw new Error('No polished text returned');
       }
       setPolished(next);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setPolished(null);
-      toast.error(e?.message ?? 'Polish failed');
+      toast.error(errorMessage(e, 'Polish failed'));
     } finally {
       setPolishing(false);
     }
@@ -136,10 +150,12 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       if (msgErr || !msg) throw msgErr ?? new Error('Failed to send');
 
       if (file) {
-        const path = `${conversationId}/${msg.id}/${file.name}`;
+        const safeName = file.name.replace(/[^\w.\-() ]+/g, '_');
+        const path = `${conversationId}/${msg.id}/${Date.now()}-${safeName}`;
+        const mimeType = file.type || 'application/octet-stream';
         const { error: upErr } = await supabase.storage
           .from('message-attachments')
-          .upload(path, file, { contentType: 'application/pdf', upsert: false });
+          .upload(path, file, { contentType: mimeType, upsert: false });
         if (upErr) throw upErr;
         const { error: attErr } = await supabase.from('message_attachments').insert({
           message_id: msg.id,
@@ -147,9 +163,24 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           storage_path: path,
           file_name: file.name,
           file_size: file.size,
-          mime_type: 'application/pdf',
+          mime_type: mimeType,
         });
         if (attErr) throw attErr;
+
+        const externalUploadRow = buildExternalWorkUploadInsert({
+          senderId: user.id,
+          senderIsAdmin: isAdmin,
+          fileName: file.name,
+          fileType: mimeType,
+          storagePath: path,
+        });
+        if (externalUploadRow) {
+          const { error: mirrorErr } = await supabase.from('external_work_uploads').insert(externalUploadRow);
+          if (mirrorErr) {
+            console.warn('[MessageComposer] external upload mirror failed', mirrorErr);
+            toast.error('Message sent, but the upload review row could not be created');
+          }
+        }
       }
 
       if (driveAttachments.length > 0) {
@@ -177,8 +208,8 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         textareaRef.current.style.overflowY = 'hidden';
       }
       onSent?.();
-    } catch (e: any) {
-      toast.error(e.message ?? 'Failed to send message');
+    } catch (e: unknown) {
+      toast.error(errorMessage(e, 'Failed to send message'));
     } finally {
       setSending(false);
     }
@@ -220,8 +251,27 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       <div className="mx-auto max-w-4xl space-y-4">
       {file && (
         <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm shadow-sm">
-          <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-          <span className="flex-1 truncate text-xs font-semibold text-slate-700">{file.name}</span>
+          {filePreviewUrl ? (
+            <img
+              src={filePreviewUrl}
+              alt={file.name}
+              className="h-12 w-12 rounded-lg object-cover border border-slate-200 shrink-0"
+            />
+          ) : classifyInboxAttachmentMime(file.type) === 'image' ? (
+            <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
+              <ImageIcon className="w-4 h-4 text-slate-400" />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
+              <FileText className="w-4 h-4 text-slate-400" />
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-xs font-semibold text-slate-700">{file.name}</div>
+            <div className="mt-0.5 text-[11px] text-slate-400">
+              {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready' : 'PDF ready to send'}
+            </div>
+          </div>
           <button
             onClick={() => setFile(null)}
             className="text-slate-400 hover:text-slate-900 transition-colors"
@@ -294,7 +344,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       <input
         ref={fileRef}
         type="file"
-        accept="application/pdf"
+        accept="application/pdf,image/png,image/jpeg,image/webp"
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
@@ -322,7 +372,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             size="icon"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
-            aria-label="Attach PDF"
+            aria-label="Attach PDF or screenshot"
             className="h-9 w-9 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl"
           >
             <Paperclip className="w-4.5 h-4.5" />

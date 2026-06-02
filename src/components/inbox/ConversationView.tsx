@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useConversationMessages, type Conversation, type Message } from '@/hooks/useInbox';
+import { useConversationMessages, type Conversation, type Message, type MessageAttachment } from '@/hooks/useInbox';
 import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
 import { formatParticipantName } from '@/lib/displayName';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { initialsFromName } from './inboxDisplay';
+import { AttachmentPreviewSheet } from './AttachmentPreviewSheet';
 
 interface Props {
   conversation: Conversation;
@@ -100,6 +101,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   const { is_admin } = useUserPermissions();
   const { messages, loading, refresh } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
@@ -225,6 +227,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
                     isOwn={msg.sender_id === user.id}
                     senderName={showSenderName ? nameById.get(msg.sender_id) : null}
                     showTimestamp={isLastInGroup}
+                    onPreviewAttachment={setPreviewAttachment}
                   />
                 ))}
               </div>
@@ -236,6 +239,14 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
       <div className="bg-white/80 backdrop-blur-md border-t border-border shrink-0">
         <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
       </div>
+
+      <AttachmentPreviewSheet
+        attachment={previewAttachment}
+        open={!!previewAttachment}
+        onOpenChange={(open) => {
+          if (!open) setPreviewAttachment(null);
+        }}
+      />
     </div>
   );
 }

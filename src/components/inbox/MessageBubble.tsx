@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
-import type { Message } from '@/hooks/useInbox';
+import type { Message, MessageAttachment } from '@/hooks/useInbox';
 import { format, isToday } from 'date-fns';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 
@@ -9,6 +9,7 @@ interface Props {
   isOwn: boolean;
   senderName?: string | null;
   showTimestamp?: boolean;
+  onPreviewAttachment?: (attachment: MessageAttachment) => void;
 }
 
 function shortTime(d: Date) {
@@ -16,7 +17,13 @@ function shortTime(d: Date) {
   return format(d, 'MMM d, h:mm a');
 }
 
-export function MessageBubble({ message, isOwn, senderName, showTimestamp = true }: Props) {
+export function MessageBubble({
+  message,
+  isOwn,
+  senderName,
+  showTimestamp = true,
+  onPreviewAttachment,
+}: Props) {
   const { is_admin } = useUserPermissions();
   const created = new Date(message.created_at);
   const hasBody = !!message.body;
@@ -64,7 +71,7 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
               )}
             >
               {message.attachments.map((a) => (
-                <AttachmentCard key={a.id} attachment={a} />
+                <AttachmentCard key={a.id} attachment={a} onPreview={onPreviewAttachment} />
               ))}
             </div>
           )}
@@ -114,7 +121,7 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
             )}
           >
             {message.attachments.map((a) => (
-              <AttachmentCard key={a.id} attachment={a} />
+              <AttachmentCard key={a.id} attachment={a} onPreview={onPreviewAttachment} />
             ))}
           </div>
         )}

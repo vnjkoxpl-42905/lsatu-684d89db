@@ -19,7 +19,13 @@ function fileKindLabel(mimeType: string) {
   return 'File';
 }
 
-function ImageAttachment({ attachment }: { attachment: MessageAttachment }) {
+function ImageAttachment({
+  attachment,
+  onPreview,
+}: {
+  attachment: MessageAttachment;
+  onPreview?: (attachment: MessageAttachment) => void;
+}) {
   const [url, setUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,6 +43,10 @@ function ImageAttachment({ attachment }: { attachment: MessageAttachment }) {
   }, [attachment.storage_path]);
 
   const open = () => {
+    if (onPreview) {
+      onPreview(attachment);
+      return;
+    }
     if (!url) return;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -66,14 +76,24 @@ function ImageAttachment({ attachment }: { attachment: MessageAttachment }) {
   );
 }
 
-export function AttachmentCard({ attachment }: { attachment: MessageAttachment }) {
+export function AttachmentCard({
+  attachment,
+  onPreview,
+}: {
+  attachment: MessageAttachment;
+  onPreview?: (attachment: MessageAttachment) => void;
+}) {
   const isDrive = attachment.kind === 'drive';
   const isImage = !isDrive && (attachment.mime_type ?? '').startsWith('image/');
   if (isImage) {
-    return <ImageAttachment attachment={attachment} />;
+    return <ImageAttachment attachment={attachment} onPreview={onPreview} />;
   }
 
   const open = async () => {
+    if (!isDrive && onPreview) {
+      onPreview(attachment);
+      return;
+    }
     if (isDrive) {
       if (!attachment.web_view_link) {
         toast.error('Drive link unavailable');
