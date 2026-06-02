@@ -113,6 +113,12 @@ export function MainConclusionReplicaTemplate({
     if (status === 'wrong') setStatus('idle');
   }
 
+  function handleChunkKeyDown(event: React.KeyboardEvent<HTMLSpanElement>, chunkIndex: number) {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    selectChunk(chunkIndex);
+  }
+
   function nextQuestion() {
     if (isLast) {
       onComplete?.();
@@ -158,7 +164,7 @@ export function MainConclusionReplicaTemplate({
           <p className="mb-5 font-mc-mono text-[12px] uppercase tracking-[0.16em] text-[#7892ad]">
             Stimulus
           </p>
-          <div className="text-[20px] leading-[1.75] text-[#e5edf8] md:text-[21px]">
+          <p className="text-[20px] leading-[1.75] text-[#e5edf8] md:text-[21px]">
             {current.chunks.map((chunk, chunkIndex) => {
               const isSelected = selectedIndex === chunkIndex;
               const isCorrectSelection = status === 'correct' && chunkIndex === current.correctMainConclusionIndex;
@@ -166,25 +172,27 @@ export function MainConclusionReplicaTemplate({
               const html = shouldShowHintClues ? highlightHintPhrases(chunk, current.hint) : escapeHtml(chunk);
 
               return (
-                <button
+                <span
                   key={`${current.id}-${chunkIndex}`}
-                  type="button"
+                  role={status === 'correct' ? undefined : 'button'}
+                  tabIndex={status === 'correct' ? -1 : 0}
                   onClick={() => selectChunk(chunkIndex)}
+                  onKeyDown={(event) => handleChunkKeyDown(event, chunkIndex)}
                   className={cn(
-                    'inline rounded-[6px] border border-transparent px-[0.08em] py-0 text-left align-baseline whitespace-normal break-normal transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1ec8ff]/45',
+                    'rounded-[6px] border border-transparent px-[0.08em] py-0 align-baseline whitespace-normal break-normal transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1ec8ff]/45',
                     isSelected && status !== 'correct' ? 'bg-[#1ec8ff]/14 text-[#f2f8ff]' : '',
                     isCorrectSelection ? 'bg-[#14f1c9]/14 text-[#dffdf6]' : '',
                     !isSelected && !isCorrectSelection ? 'hover:bg-white/[0.04]' : '',
                     status === 'correct' ? 'cursor-default' : 'cursor-pointer',
                   )}
-                  disabled={status === 'correct'}
+                  aria-pressed={isSelected}
                 >
                   <span dangerouslySetInnerHTML={{ __html: html }} />
                   {chunkIndex < current.chunks.length - 1 ? ' ' : ''}
-                </button>
+                </span>
               );
             })}
-          </div>
+          </p>
         </div>
 
         <div className="mt-5 rounded-[22px] border border-[#24364d] bg-[rgba(9,18,31,0.88)] p-5">
