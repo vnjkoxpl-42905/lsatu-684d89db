@@ -1,5 +1,5 @@
 import { MainConclusionReplicaTemplate } from '@/bootcamps/main-conclusion/components/reference-templates/MainConclusionReplicaTemplate';
-import { CANONICAL_MAIN_CONCLUSION_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/canonicalStructureQuestions';
+import { ORDERED_CANONICAL_MAIN_CONCLUSION_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/canonicalStructureQuestions';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { formatFirstName } from '@/lib/displayName';
@@ -11,7 +11,7 @@ export function MainConclusionLab() {
   return (
     <MainConclusionReplicaTemplate
       title="Main Conclusion Lab"
-      questions={CANONICAL_MAIN_CONCLUSION_QUESTIONS}
+      questions={ORDERED_CANONICAL_MAIN_CONCLUSION_QUESTIONS}
       onComplete={() => markDrillComplete?.('MC-DRL-MCL')}
       userName={formatFirstName(user?.name, 'Student')}
     />

@@ -263,7 +263,26 @@ export const CANONICAL_STRUCTURE_QUESTIONS: CanonicalStructureQuestion[] = (() =
 export const CANONICAL_MAIN_CONCLUSION_QUESTIONS = CANONICAL_STRUCTURE_QUESTIONS.filter((question) =>
   question.compatibleTemplates.includes('main-conclusion-replica'),
 );
+const MAIN_CONCLUSION_SOURCE_ORDER = MAIN_CONCLUSION_QUESTIONS.map((item) =>
+  normalizeReferenceStimulus(buildStimulus(item.sentences.map(stripIndicatorMarkup))),
+);
 
+const MAIN_CONCLUSION_BY_KEY = new Map(
+  CANONICAL_STRUCTURE_QUESTIONS.filter((question) => question.compatibleTemplates.includes('main-conclusion-replica')).map(
+    (question) => [question.duplicateKey, question] as const,
+  ),
+);
+
+export const ORDERED_CANONICAL_MAIN_CONCLUSION_QUESTIONS = [
+  ...MAIN_CONCLUSION_SOURCE_ORDER.map((key) => MAIN_CONCLUSION_BY_KEY.get(key)).filter(
+    (question): question is CanonicalStructureQuestion => Boolean(question),
+  ),
+  ...CANONICAL_STRUCTURE_QUESTIONS.filter(
+    (question) =>
+      question.compatibleTemplates.includes('main-conclusion-replica') &&
+      !MAIN_CONCLUSION_SOURCE_ORDER.includes(question.duplicateKey),
+  ),
+];
 export const CANONICAL_STRUCTURED_DRILL_QUESTIONS = CANONICAL_STRUCTURE_QUESTIONS.filter((question) =>
   question.compatibleTemplates.includes('structured-dissection-replica'),
 );
