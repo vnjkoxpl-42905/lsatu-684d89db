@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useConversationMessages, type Conversation, type Message, type MessageAttachment } from '@/hooks/useInbox';
+import { useConversationMessages, type Conversation, type MessageAttachment } from '@/hooks/useInbox';
 import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
 import { formatParticipantName } from '@/lib/displayName';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { initialsFromName } from './inboxDisplay';
 import { AttachmentPreviewSheet } from './AttachmentPreviewSheet';
+import { buildDaySections } from './messageClusters';
 
 interface Props {
   conversation: Conversation;
@@ -19,59 +19,6 @@ interface Props {
   /** When true, suppress the internal header — for embedded use inside a
    *  containing surface (e.g. FloatingMessenger) that renders its own. */
   hideHeader?: boolean;
-}
-
-function dayLabel(d: Date) {
-  if (isToday(d)) return 'Today';
-  if (isYesterday(d)) return 'Yesterday';
-  return format(d, 'MMM d, yyyy');
-}
-
-interface DisplayMessage {
-  msg: Message;
-  showSenderName: boolean;
-  isLastInGroup: boolean;
-}
-
-interface DaySection {
-  key: string;
-  label: string;
-  items: DisplayMessage[];
-}
-
-function groupMessages(messages: Message[], ownId: string): DaySection[] {
-  const sections: DaySection[] = [];
-  let currentDay: Date | null = null;
-  let currentSection: DaySection | null = null;
-
-  messages.forEach((m, i) => {
-    const created = new Date(m.created_at);
-    if (!currentDay || !isSameDay(currentDay, created)) {
-      currentDay = created;
-      currentSection = {
-        key: format(created, 'yyyy-MM-dd'),
-        label: dayLabel(created),
-        items: [],
-      };
-      sections.push(currentSection);
-    }
-
-    const prev = messages[i - 1];
-    const next = messages[i + 1];
-    const sameSenderAsPrev =
-      !!prev && prev.sender_id === m.sender_id && isSameDay(new Date(prev.created_at), created);
-    const sameSenderAsNext =
-      !!next && next.sender_id === m.sender_id && isSameDay(new Date(next.created_at), created);
-
-    const isOwn = m.sender_id === ownId;
-    currentSection!.items.push({
-      msg: m,
-      showSenderName: !isOwn && !sameSenderAsPrev,
-      isLastInGroup: !sameSenderAsNext,
-    });
-  });
-
-  return sections;
 }
 
 function ConversationSkeleton() {
@@ -108,19 +55,8 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   }, [messages.length]);
 
   const sections = useMemo(
-    () => (user ? groupMessages(messages, user.id) : []),
-    [messages, user],
-  );
-
-  const nameById = useMemo(
-    () =>
-      new Map(
-        conversation.participants.map((participant) => [
-          participant.user_id,
-          formatParticipantName(participant.display_name, participant.is_admin),
-        ]),
-      ),
-    [conversation.participants],
+    () => (user ? buildDaySections(messages, conversation.participants, user.id) : []),
+    [messages, conversation.participants, user],
   );
 
   const others = user
@@ -212,7 +148,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         ) : (
           <div className="mx-auto max-w-4xl space-y-12">
             {sections.map((section) => (
-              <div key={section.key} className="space-y-8">
+              <div key={section.key} className="space-y-6">
                 <div className="flex items-center gap-8 my-14">
                   <div className="flex-1 h-px bg-slate-200/60" />
                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
@@ -220,13 +156,10 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
                   </div>
                   <div className="flex-1 h-px bg-slate-200/60" />
                 </div>
-                {section.items.map(({ msg, showSenderName, isLastInGroup }) => (
+                {section.clusters.map((cluster) => (
                   <MessageBubble
-                    key={msg.id}
-                    message={msg}
-                    isOwn={msg.sender_id === user.id}
-                    senderName={showSenderName ? nameById.get(msg.sender_id) : null}
-                    showTimestamp={isLastInGroup}
+                    key={`${section.key}-${cluster.senderId}-${cluster.createdAt}`}
+                    cluster={cluster}
                     onPreviewAttachment={setPreviewAttachment}
                   />
                 ))}

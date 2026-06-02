@@ -1,130 +1,130 @@
+import { format, isToday } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
-import type { Message, MessageAttachment } from '@/hooks/useInbox';
-import { format, isToday } from 'date-fns';
-import { useUserPermissions } from '@/hooks/useUserPermissions';
+import type { MessageAttachment } from '@/hooks/useInbox';
+import type { MessageCluster } from './messageClusters';
 
 interface Props {
-  message: Message;
-  isOwn: boolean;
-  senderName?: string | null;
-  showTimestamp?: boolean;
+  cluster: MessageCluster;
   onPreviewAttachment?: (attachment: MessageAttachment) => void;
 }
 
-function shortTime(d: Date) {
-  if (isToday(d)) return format(d, 'h:mm a');
-  return format(d, 'MMM d, h:mm a');
+function shortTime(date: Date) {
+  if (isToday(date)) return format(date, 'h:mm a');
+  return format(date, 'MMM d, h:mm a');
 }
 
-export function MessageBubble({
-  message,
-  isOwn,
-  senderName,
-  showTimestamp = true,
-  onPreviewAttachment,
-}: Props) {
-  const { is_admin } = useUserPermissions();
-  const created = new Date(message.created_at);
-  const hasBody = !!message.body;
-  const hasAttachments = message.attachments.length > 0;
+export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
+  const headerTime = shortTime(new Date(cluster.createdAt));
+  const isInstructor = cluster.isInstructor;
 
-  if (is_admin) {
-    return (
-      <div className={cn('flex flex-col gap-2.5 group', isOwn ? 'items-end' : 'items-start')}>
-        {/* Label */}
-        <div className={cn(
-          "text-[9px] font-bold uppercase tracking-[0.25em] flex items-center gap-3",
-          isOwn ? "text-slate-400" : "text-slate-300"
-        )}>
-          {isOwn ? "JOSHUA" : senderName?.toUpperCase() || "STUDENT"}
-          {showTimestamp && (
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-medium text-slate-400">
-              {shortTime(created).toUpperCase()}
-            </span>
-          )}
-        </div>
+  return (
+    <div
+      className={cn(
+        'flex w-full',
+        isInstructor ? 'justify-end' : 'justify-start',
+      )}
+    >
+      <div
+        className={cn(
+          'flex max-w-full gap-3',
+          isInstructor ? 'flex-row-reverse' : 'flex-row',
+        )}
+      >
+        {cluster.showAvatar ? (
+          <div className="pt-[22px] shrink-0">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#E7F2EC] text-[12px] font-bold text-[#2F6A4F]">
+              {cluster.speakerInitials}
+            </div>
+          </div>
+        ) : null}
 
         <div
           className={cn(
-            'flex flex-col gap-4 max-w-[85%] md:max-w-[75%]',
-            isOwn ? 'items-end' : 'items-start',
+            'flex min-w-0 flex-col',
+            isInstructor ? 'items-end' : 'items-start',
           )}
         >
-          {hasBody && (
-            <div
-              className={cn(
-                'px-6 py-5 text-[15px] leading-[1.6] break-words border transition-all',
-                isOwn
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-2xl rounded-tr-sm'
-                  : 'bg-white text-slate-800 border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)] rounded-2xl rounded-tl-sm',
-              )}
+          <div
+            className={cn(
+              'mb-[6px] flex items-center gap-1.5',
+              isInstructor ? 'justify-end' : 'justify-start',
+            )}
+          >
+            <span
+              className="text-[12px] font-[650] leading-none"
+              style={{ color: isInstructor ? '#111827' : '#2F6A4F' }}
             >
-              {message.body}
-            </div>
-          )}
-          {hasAttachments && (
-            <div
-              className={cn(
-                'flex flex-col gap-3 w-full max-w-full',
-                isOwn ? 'items-end' : 'items-start',
-              )}
+              {cluster.speakerName}
+            </span>
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: isInstructor ? '#7A4E2D' : '#2F6A4F' }}
+              aria-hidden="true"
+            />
+            <span
+              className="text-[11px] font-medium leading-none"
+              style={{ color: '#978B7D' }}
             >
-              {message.attachments.map((a) => (
-                <AttachmentCard key={a.id} attachment={a} onPreview={onPreviewAttachment} />
-              ))}
-            </div>
-          )}
+              {cluster.speakerRoleLabel} · {headerTime}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {cluster.messages.map((message, index) => {
+              const firstBubble = index === 0;
+              const hasBody = !!message.body;
+              const hasAttachments = message.attachments.length > 0;
+
+              return (
+                <div
+                  key={message.id}
+                  className={cn(
+                    'flex min-w-0 flex-col gap-3',
+                    isInstructor ? 'items-end' : 'items-start',
+                  )}
+                >
+                  {hasBody ? (
+                    <div
+                      className={cn(
+                        'relative break-words rounded-[14px] px-[18px] py-[14px] text-[15px] leading-[1.6]',
+                        isInstructor
+                          ? 'max-w-[520px] bg-[#111827] text-[#FFFDF9]'
+                          : 'max-w-[620px] border border-[#E6DDD2] bg-white text-[#1F1B16]',
+                      )}
+                    >
+                      {!isInstructor && firstBubble ? (
+                        <span
+                          className="absolute bottom-[10px] left-0 top-[10px] w-[3px] rounded-r-full"
+                          style={{ backgroundColor: '#2F6A4F' }}
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      {message.body}
+                    </div>
+                  ) : null}
+
+                  {hasAttachments ? (
+                    <div
+                      className={cn(
+                        'flex w-full max-w-full flex-col gap-3',
+                        isInstructor ? 'items-end' : 'items-start',
+                      )}
+                    >
+                      {message.attachments.map((attachment) => (
+                        <AttachmentCard
+                          key={attachment.id}
+                          attachment={attachment}
+                          onPreview={onPreviewAttachment}
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={cn('flex flex-col gap-2.5 group', isOwn ? 'items-end' : 'items-start')}>
-      {/* Label */}
-      <div className={cn(
-        "text-[9px] font-bold uppercase tracking-[0.25em] flex items-center gap-3",
-        isOwn ? "text-slate-400" : "text-slate-300"
-      )}>
-        {isOwn ? "ME" : "JOSHUA"}
-        {showTimestamp && (
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-medium text-slate-400">
-            {shortTime(created).toUpperCase()}
-          </span>
-        )}
-      </div>
-
-      <div
-        className={cn(
-          'flex flex-col gap-4 max-w-[85%] md:max-w-[75%]',
-          isOwn ? 'items-end' : 'items-start',
-        )}
-      >
-        {hasBody && (
-          <div
-            className={cn(
-              'px-6 py-5 text-[15px] leading-[1.6] break-words border transition-all',
-              isOwn
-                ? 'bg-white text-slate-900 border-slate-900/10 shadow-[0_4px_12px_rgba(0,0,0,0.02)] rounded-2xl rounded-tr-sm'
-                : 'bg-white text-slate-800 border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)] rounded-2xl rounded-tl-sm',
-            )}
-          >
-            {message.body}
-          </div>
-        )}
-        {hasAttachments && (
-          <div
-            className={cn(
-              'flex flex-col gap-3 w-full max-w-full',
-              isOwn ? 'items-end' : 'items-start',
-            )}
-          >
-            {message.attachments.map((a) => (
-              <AttachmentCard key={a.id} attachment={a} onPreview={onPreviewAttachment} />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
