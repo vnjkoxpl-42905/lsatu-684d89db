@@ -996,7 +996,25 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
                   </div>
                   <div>
                     <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-4">How to read it</h4>
-                    <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.read}</p>
+                    {role.read.startsWith("Useful indicators:") ? (
+                      <div className="flex flex-wrap gap-x-2 gap-y-3 pt-1">
+                        {role.read.replace("Useful indicators: ", "").split(", ").map(word => (
+                          <span 
+                            key={word}
+                            className={cn(
+                              "px-3 py-1.5 rounded-lg text-[13px] font-mono border shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all bg-white",
+                              role.title === "Concession" && "border-role-concession/30 text-[oklch(0.45_0.15_85)] hover:border-role-concession/50 hover:shadow-md",
+                              role.title === "Pivot" && "border-role-pivot/30 text-[oklch(0.45_0.15_45)] hover:border-role-pivot/50 hover:shadow-md",
+                              role.title !== "Concession" && role.title !== "Pivot" && "border-[oklch(0.2_0.01_60/0.08)] text-[oklch(0.2_0.01_60/0.8)] hover:border-[oklch(0.2_0.01_60/0.15)]"
+                            )}
+                          >
+                            {word}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.76)]">{role.read}</p>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-8">
