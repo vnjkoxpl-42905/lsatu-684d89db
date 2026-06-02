@@ -3,10 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
-import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
-import { StructureClassification } from './labs/StructureClassification';
-import { XRayReview } from './labs/XRayReview';
-import { MixedStructureCheck } from './labs/MixedStructureCheck';
+import { ReferenceDrillFrame } from './labs/ReferenceDrillFrame';
 import { getIntroDrillBySlug } from './introDrills';
 
 const LEGACY_REDIRECT: Record<string, string> = {
@@ -51,16 +48,16 @@ export function ActiveDrillShell() {
       content = <MainConclusionLab />;
       break;
     case 'argument-structure-lab':
-      content = <ArgumentStructureLab drillId={drill.completionId} />;
-      break;
     case 'first-sentence-vs-rebuttal-lab':
-      content = <StructureClassification />;
-      break;
     case 'structure-reveal-review':
-      content = <XRayReview />;
-      break;
     case 'final-mixed-structure-check':
-      content = <MixedStructureCheck />;
+      content = (
+        <ReferenceDrillFrame
+          drillId={drill.completionId}
+          title={drill.title}
+          hash="drills-view"
+        />
+      );
       break;
     default:
       content = (
