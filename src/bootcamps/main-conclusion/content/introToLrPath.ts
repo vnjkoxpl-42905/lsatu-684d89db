@@ -65,6 +65,14 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Separate context, opposition, concessions, and pivots from the real argument.',
   },
   {
+    id: 'main-conclusion-lab',
+    type: 'drill',
+    title: 'Main Conclusion Lab',
+    route: '/bootcamp/intro-to-lr/drills/main-conclusion-lab',
+    description: 'Use the direct replica format to find the main conclusion in full stimuli.',
+    phase: 'Drills',
+  },
+  {
     id: 'two-part-conclusion-check',
     type: 'note',
     title: 'The 2-Part Conclusion Check',
@@ -77,14 +85,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'First-Sentence vs Rebuttal Structures',
     route: '/bootcamp/intro-to-lr/lessons/notes/first-sentence-vs-rebuttal-structures',
     description: 'Learn the two dominant conclusion placements before you enter the drill labs.',
-  },
-  {
-    id: 'main-conclusion-lab',
-    type: 'drill',
-    title: 'Main Conclusion Lab',
-    route: '/bootcamp/intro-to-lr/drills/main-conclusion-lab',
-    description: 'Use the direct replica format to find the main conclusion in full stimuli.',
-    phase: 'Drills',
   },
   {
     id: 'first-sentence-vs-rebuttal-lab',
