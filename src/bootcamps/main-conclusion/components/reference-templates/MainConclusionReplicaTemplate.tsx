@@ -46,6 +46,14 @@ function formatCounter(index: number, total: number) {
   return `${pad(index + 1)}/${pad(total)}`;
 }
 
+function formatRoleLabel(label?: string) {
+  if (!label) return 'Main conclusion';
+  return label
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export function MainConclusionReplicaTemplate({
   questions,
   onComplete,
@@ -60,6 +68,7 @@ export function MainConclusionReplicaTemplate({
 
   const current = questions[index]!;
   const isLast = index === questions.length - 1;
+  const correctRoleLabel = formatRoleLabel(current.roleLabels[current.correctMainConclusionIndex]);
 
   const highlightedWrongChunkIndex =
     status === 'wrong'
@@ -70,28 +79,28 @@ export function MainConclusionReplicaTemplate({
 
   const progressWidth = `${((index + (status === 'correct' ? 1 : 0)) / questions.length) * 100}%`;
 
-  const terminalTone =
+  const feedbackTone =
     status === 'correct'
-      ? 'border-l-[#14f1c9] text-[#14f1c9]'
+      ? 'border-[#b7e4d1] bg-[#f3fbf7] text-[#17603e]'
       : status === 'wrong'
-        ? 'border-l-[#ff5b5b] text-[#ff5b5b]'
-        : 'border-l-[#1ec8ff] text-[#94a3b8]';
+        ? 'border-[#f1c5c5] bg-[#fff6f5] text-[#8a2f2f]'
+        : 'border-[#dbe4f0] bg-[#f8fafc] text-[#526277]';
 
-  const terminalContent = useMemo(() => {
+  const feedbackContent = useMemo(() => {
     if (status === 'correct') {
       return [
-        '> ANALYSIS VALID.',
-        '> GOOD EYE.',
-        `> ${current.revealExplanation.replace(/^Correct\.?\s*/i, '')}`,
+        'Correct.',
+        `Role: ${correctRoleLabel}`,
+        current.revealExplanation.replace(/^Correct\.?\s*/i, ''),
       ];
     }
 
     if (status === 'wrong') {
-      return ['> MISMATCH. RE-ANALYZING PIVOT CLUES...', `> ${current.hint}`];
+      return ['Not quite.', current.hint];
     }
 
-    return ['> TAP THE SENTENCE YOU THINK IS THE MAIN CONCLUSION.'];
-  }, [current.hint, current.revealExplanation, status]);
+    return ['Select the sentence you think states the main conclusion, then analyze your choice.'];
+  }, [correctRoleLabel, current.hint, current.revealExplanation, status]);
 
   function analyzeSelection() {
     if (selectedIndex == null) return;
@@ -117,33 +126,31 @@ export function MainConclusionReplicaTemplate({
 
   return (
     <section
-      className="relative overflow-hidden rounded-[30px] border border-[#16334d] bg-[#0c1626] px-5 py-6 text-white shadow-[0_22px_60px_rgba(5,10,25,0.35)] md:px-8 md:py-8"
-      style={{
-        backgroundImage:
-          'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px), radial-gradient(circle at top, rgba(33,198,255,0.08), transparent 32%)',
-        backgroundSize: '24px 24px, 24px 24px, 100% 100%',
-      }}
+      className="rounded-[30px] border border-[#d9e2ec] bg-[#f7f3eb] px-5 py-6 text-[#1f2937] shadow-[0_18px_48px_rgba(15,23,42,0.08)] md:px-8 md:py-8"
     >
       <div className="mx-auto w-full max-w-[760px]">
-        <div className="flex items-center justify-between gap-4 font-mc-mono text-[13px] uppercase tracking-[0.22em]">
-          <span className="text-[#1ec8ff]">Drill_Active</span>
-          <span className="text-[#94a3b8]">{formatCounter(index, questions.length)}</span>
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#7c6953]">Main Conclusion Lab</p>
+            <h2 className="mt-1 text-[26px] font-semibold tracking-[-0.02em] text-[#1f2937]">Find the sentence that states the argument&apos;s main conclusion.</h2>
+          </div>
+          <span className="shrink-0 text-[18px] font-medium text-[#6b7280]">
+            {`${index + 1} of ${questions.length}`}
+          </span>
         </div>
 
-        <div className="mt-4 h-[6px] overflow-hidden rounded-full bg-[#2a3a4e]">
+        <div className="mt-5 h-[8px] overflow-hidden rounded-full bg-[#e5e7eb]">
           <div
-            className="h-full rounded-full bg-[#1ec8ff] shadow-[0_0_16px_rgba(30,200,255,0.45)] transition-all duration-500"
+            className="h-full rounded-full bg-[#c49a6c] transition-all duration-500"
             style={{ width: progressWidth }}
           />
         </div>
 
-        <p className="mt-5 font-mc-mono text-[13px] uppercase tracking-[0.18em] text-[#94a3b8]">
-          {`> TAP THE CONCLUSION SENTENCE`}
-        </p>
-
-        <div className="relative mt-3 overflow-hidden rounded-[22px] border border-[#24364d] bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] md:px-8">
-          <div className="pointer-events-none absolute left-0 top-0 h-[3px] w-full bg-[#1ec8ff] opacity-70 shadow-[0_0_16px_rgba(30,200,255,0.65)]" />
-          <div className="text-[20px] leading-[1.65] text-[#e5edf8] md:text-[21px]">
+        <div className="mt-6 rounded-[26px] border border-[#e3e8ef] bg-white px-7 py-7 shadow-[0_10px_30px_rgba(15,23,42,0.07)] md:px-8">
+          <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#8b7355]">
+            Stimulus
+          </p>
+          <div className="text-[21px] leading-[1.85] text-[#26313f] md:text-[22px]">
             {current.chunks.map((chunk, chunkIndex) => {
               const isSelected = selectedIndex === chunkIndex;
               const isCorrectSelection = status === 'correct' && chunkIndex === current.correctMainConclusionIndex;
@@ -156,20 +163,28 @@ export function MainConclusionReplicaTemplate({
                   type="button"
                   onClick={() => selectChunk(chunkIndex)}
                   className={cn(
-                    'mb-1 mr-1 inline rounded-[8px] border px-1 py-0.5 text-left align-baseline transition-all duration-200',
-                    'border-transparent',
-                    isSelected && status !== 'correct' ? 'border-[#1ec8ff] bg-[#1ec8ff]/12 shadow-[0_0_24px_rgba(30,200,255,0.12)]' : '',
-                    isCorrectSelection ? 'border-[#14f1c9] bg-[#14f1c9]/14 shadow-[0_0_24px_rgba(20,241,201,0.14)]' : '',
-                    !isSelected && !isCorrectSelection ? 'hover:border-[#1ec8ff]/25 hover:bg-white/[0.02]' : '',
+                    'inline rounded-[10px] px-1 py-0 text-left align-baseline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c49a6c]/45',
+                    isSelected && status !== 'correct' ? 'bg-[#fdecc8] text-[#5f3f1b]' : '',
+                    isCorrectSelection ? 'bg-[#dff4e8] text-[#1d5a3b]' : '',
+                    !isSelected && !isCorrectSelection ? 'hover:bg-[#f4efe6]' : '',
                     status === 'correct' ? 'cursor-default' : 'cursor-pointer',
                   )}
                   disabled={status === 'correct'}
                 >
                   <span dangerouslySetInnerHTML={{ __html: html }} />
+                  {chunkIndex < current.chunks.length - 1 ? ' ' : ''}
                 </button>
               );
             })}
           </div>
+        </div>
+
+        <div className="mt-5 rounded-[22px] border border-[#e2e8f0] bg-[#fcfaf6] p-5">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#8b7355]">Task</p>
+          <p className="mt-2 text-[16px] leading-[1.7] text-[#526277]">
+            Tap the sentence you think expresses the author&apos;s main conclusion. Then analyze your
+            selection to check your reasoning.
+          </p>
         </div>
 
         <div className="mt-4">
@@ -177,9 +192,9 @@ export function MainConclusionReplicaTemplate({
             <button
               type="button"
               onClick={nextQuestion}
-              className="w-full rounded-[16px] border border-transparent bg-[#20b8d3] px-6 py-4 font-mc-mono text-[18px] uppercase tracking-[0.28em] text-[#03121b] transition-transform hover:translate-y-[-1px]"
+              className="w-full rounded-[16px] border border-transparent bg-[#c49a6c] px-6 py-4 text-[16px] font-semibold tracking-[0.01em] text-white transition-transform hover:translate-y-[-1px]"
             >
-              {isLast ? 'Finish Lab >>' : 'Next Question >>'}
+              {isLast ? 'Finish Lab' : 'Next Question'}
             </button>
           ) : (
             <button
@@ -187,10 +202,10 @@ export function MainConclusionReplicaTemplate({
               onClick={analyzeSelection}
               disabled={selectedIndex == null}
               className={cn(
-                'w-full rounded-[16px] border px-6 py-4 font-mc-mono text-[18px] uppercase tracking-[0.28em] transition-colors',
+                'w-full rounded-[16px] border px-6 py-4 text-[16px] font-semibold transition-colors',
                 selectedIndex == null
-                  ? 'border-[#2b3b4f] bg-transparent text-[#314257]'
-                  : 'border-[#1ec8ff] bg-transparent text-[#1ec8ff] hover:bg-[#1ec8ff] hover:text-[#04111b]',
+                  ? 'border-[#d5dbe4] bg-white text-[#9aa5b1]'
+                  : 'border-[#c49a6c] bg-white text-[#8b5e34] hover:bg-[#f7efe4]',
               )}
             >
               Analyze Selection
@@ -198,8 +213,8 @@ export function MainConclusionReplicaTemplate({
           )}
         </div>
 
-        <div className={cn('mt-5 rounded-r-[14px] border-l-4 bg-black px-5 py-4 font-mc-mono text-[15px] leading-[1.65]', terminalTone)}>
-          {terminalContent.map((line, lineIndex) => (
+        <div className={cn('mt-5 rounded-[18px] border px-5 py-4 text-[15px] leading-[1.7]', feedbackTone)}>
+          {feedbackContent.map((line, lineIndex) => (
             <p key={`${status}-${lineIndex}`}>{line}</p>
           ))}
         </div>
