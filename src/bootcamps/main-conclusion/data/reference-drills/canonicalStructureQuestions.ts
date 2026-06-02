@@ -9,9 +9,11 @@ import {
   type XRayItem,
 } from '@/bootcamps/main-conclusion/content/newDrills.source';
 import type {
+  CanonicalQuestionCompatibility,
   CanonicalRoleLabel,
   CanonicalStructureQuestion,
   CanonicalStructureType,
+  ReferenceBootcampSource,
   ReferenceTemplateFamily,
 } from './types';
 
