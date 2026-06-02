@@ -9,6 +9,7 @@ export interface Participant {
   last_read_at: string;
   display_name?: string | null;
   is_admin?: boolean;
+  last_seen_at?: string | null;
 }
 
 export interface Conversation {
@@ -89,8 +90,14 @@ export function useInbox() {
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
     const { data: nameRows } = await supabase
       .rpc('get_conversation_participant_names', { _user_ids: userIds });
-    const rows = (nameRows ?? []) as Array<{ user_id: string; display_name: string | null; is_admin: boolean }>;
+    const rows = (nameRows ?? []) as Array<{
+      user_id: string;
+      display_name: string | null;
+      is_admin: boolean;
+      last_seen_at: string | null;
+    }>;
     const nameMap = new Map(rows.map((r) => [r.user_id, r.display_name]));
+    const lastSeenMap = new Map(rows.map((r) => [r.user_id, r.last_seen_at]));
     // RLS on user_roles blocks students from reading other users' roles, so
     // admin status is sourced from the RPC (which runs SECURITY DEFINER).
     const adminSet = new Set(rows.filter((r) => r.is_admin).map((r) => r.user_id));
@@ -134,6 +141,7 @@ export function useInbox() {
           last_read_at: p.last_read_at,
           display_name: nameMap.get(p.user_id) ?? null,
           is_admin: adminSet.has(p.user_id),
+          last_seen_at: lastSeenMap.get(p.user_id) ?? null,
         }));
       const lastRead = lastReadMap.get(c.id);
       const lastMsg = lastMsgMap.get(c.id) ?? null;
@@ -195,7 +203,7 @@ export function useConversationMessages(conversationId: string | null) {
       .order('created_at', { ascending: true });
 
     const ids = (msgs ?? []).map((m) => m.id);
-    let attMap = new Map<string, MessageAttachment[]>();
+    const attMap = new Map<string, MessageAttachment[]>();
     if (ids.length) {
       const { data: atts } = await supabase
         .from('message_attachments')

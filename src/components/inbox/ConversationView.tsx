@@ -11,6 +11,7 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { initialsFromName } from './inboxDisplay';
 import { AttachmentPreviewSheet } from './AttachmentPreviewSheet';
 import { buildDaySections } from './messageClusters';
+import { isParticipantOnline } from './inboxPresence';
 
 interface Props {
   conversation: Conversation;
@@ -62,6 +63,8 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   const others = user
     ? conversation.participants.filter((p) => p.user_id !== user.id)
     : [];
+  const primaryOther = others[0] ?? null;
+  const participantOnline = isParticipantOnline(primaryOther?.last_seen_at);
   const formattedNames = others
     .map((o) => formatParticipantName(o.display_name, o.is_admin))
     .filter((n) => n && n !== 'User');
@@ -121,11 +124,17 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
               <div className="flex items-center gap-8 text-[10px] font-bold tracking-[0.1em] uppercase">
                 <div className="flex items-center gap-3">
                   <span className="text-slate-400">Status</span>
-                  <span className="text-emerald-600 flex items-center gap-1.5">
-                    <span className="w-1 h-1 rounded-full bg-emerald-500" />
-                    Active
+                  <span className={cn('flex items-center gap-1.5', participantOnline ? 'text-emerald-600' : 'text-slate-400')}>
+                    <span className={cn('w-1 h-1 rounded-full', participantOnline ? 'bg-emerald-500' : 'bg-slate-300')} />
+                    {participantOnline ? 'Online' : 'Away'}
                   </span>
                 </div>
+              </div>
+            )}
+            {!is_admin && (
+              <div className="hidden md:flex items-center gap-2 text-[11px] font-medium text-slate-500">
+                <span className={cn('h-2 w-2 rounded-full', participantOnline ? 'bg-emerald-500' : 'bg-slate-300')} />
+                <span>{participantOnline ? 'Joshua is online' : 'Joshua is away'}</span>
               </div>
             )}
           </div>

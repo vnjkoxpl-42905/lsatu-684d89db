@@ -28,6 +28,7 @@ import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
+import { isParticipantOnline } from './inboxPresence';
 
 const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub', '/topics/abstract'];
 
@@ -74,6 +75,16 @@ export function FloatingMessenger() {
     return realNames.join(', ') || active.subject || 'Conversation';
   }, [active, user, is_admin]);
 
+  const activeOtherParticipant = useMemo(() => {
+    if (!active || !user) return null;
+    return active.participants.find((participant) => participant.user_id !== user.id) ?? null;
+  }, [active, user]);
+
+  const activeIsOnline = useMemo(
+    () => isParticipantOnline(activeOtherParticipant?.last_seen_at),
+    [activeOtherParticipant],
+  );
+
   const reducedMotion = useReducedMotion();
 
   if (!authReady || !user || permsLoading) return null;
@@ -107,8 +118,8 @@ export function FloatingMessenger() {
       const id = await startJoshuaConversation();
       await refresh();
       setActiveId(id);
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Could not start conversation');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Could not start conversation');
     } finally {
       setStarting(false);
     }
@@ -181,11 +192,16 @@ export function FloatingMessenger() {
                 aria-hidden="true"
               >
                 J
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
+                {activeIsOnline && (
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
+                )}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-semibold truncate">Joshua</div>
-                <div className="text-[11px] text-muted-foreground truncate">Your coach</div>
+                <div className="text-sm font-semibold truncate">{activeHeaderName || 'Joshua'}</div>
+                <div className="text-[11px] text-muted-foreground truncate inline-flex items-center gap-1.5">
+                  <span>{activeIsOnline ? 'Online now' : 'Your coach'}</span>
+                  {activeIsOnline && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />}
+                </div>
               </div>
               <button
                 type="button"

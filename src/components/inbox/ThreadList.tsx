@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from 'date-fns';
 import { Paperclip } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
+import { isParticipantOnline } from './inboxPresence';
 
 type Variant = 'admin' | 'student';
 
@@ -49,6 +50,8 @@ export function ThreadList({
         const name = otherParticipantName(c, user.id, c.subject || 'Conversation');
         const initial = initialsFromName(name);
         const replyRequired = needsReply(c, user.id);
+        const otherParticipant = c.participants.find((participant) => participant.user_id !== user.id);
+        const isOnline = isParticipantOnline(otherParticipant?.last_seen_at);
 
         return (
           <button
@@ -65,7 +68,7 @@ export function ThreadList({
           >
             <div
               className={cn(
-                'w-10 h-10 flex items-center justify-center text-[10px] font-bold shrink-0 rounded-full transition-all tracking-tight',
+                'relative w-10 h-10 flex items-center justify-center text-[10px] font-bold shrink-0 rounded-full transition-all tracking-tight',
                 isActive 
                   ? 'bg-slate-900 text-white shadow-sm scale-105' 
                   : 'bg-white text-slate-700 ring-1 ring-slate-200 group-hover:ring-slate-300 shadow-sm',
@@ -73,18 +76,29 @@ export function ThreadList({
               aria-hidden="true"
             >
               {initial}
+              {isOnline && (
+                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+              )}
             </div>
 
             
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <div
-                  className={cn(
-                    'truncate text-[13px] tracking-tight',
-                    c.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700',
+                <div className="min-w-0 flex items-center gap-2">
+                  <div
+                    className={cn(
+                      'truncate text-[13px] tracking-tight',
+                      c.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700',
+                    )}
+                  >
+                    {name}
+                  </div>
+                  {isOnline && (
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-emerald-700">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Online
+                    </span>
                   )}
-                >
-                  {name}
                 </div>
                 <div
                   className={cn(

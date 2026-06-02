@@ -40,6 +40,11 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const errorMessage = (error: unknown, fallback: string) =>
     error instanceof Error ? error.message : fallback;
 
+  const clearAttachment = () => {
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
   const adjustHeight = () => {
     const el = textareaRef.current;
     if (!el) return;
@@ -79,6 +84,25 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       return;
     }
     setFile(f);
+  };
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const items = Array.from(event.clipboardData.items);
+    const imageItem = items.find((item) => item.type.startsWith('image/'));
+    if (!imageItem) return;
+
+    const pastedFile = imageItem.getAsFile();
+    if (!pastedFile) return;
+
+    event.preventDefault();
+    const extension = pastedFile.type.split('/')[1] || 'png';
+    const screenshotFile = new File(
+      [pastedFile],
+      `pasted-screenshot-${Date.now()}.${extension}`,
+      { type: pastedFile.type },
+    );
+    pickFile(screenshotFile);
+    toast.success('Screenshot pasted and attached');
   };
 
   useEffect(() => {
@@ -199,10 +223,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       }
 
       setBody('');
-      setFile(null);
+      clearAttachment();
       setDriveAttachments([]);
       setPolished(null);
-      if (fileRef.current) fileRef.current.value = '';
       if (textareaRef.current) {
         textareaRef.current.style.height = '44px';
         textareaRef.current.style.overflowY = 'hidden';
@@ -269,11 +292,11 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <div className="min-w-0 flex-1">
             <div className="truncate text-xs font-semibold text-slate-700">{file.name}</div>
             <div className="mt-0.5 text-[11px] text-slate-400">
-              {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready' : 'PDF ready to send'}
+              {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready. Paste another to replace it.' : 'PDF ready to send'}
             </div>
           </div>
           <button
-            onClick={() => setFile(null)}
+            onClick={clearAttachment}
             className="text-slate-400 hover:text-slate-900 transition-colors"
             aria-label="Remove attachment"
           >
@@ -361,6 +384,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           ref={textareaRef}
           value={body}
           onChange={(e) => setBodyAndResize(e.target.value)}
+          onPaste={handlePaste}
           onKeyDown={handleKeyDown}
           placeholder="Ask Joshua a question or send study context"
           className="w-full resize-none min-h-0 border-0 bg-transparent px-5 py-4 text-[15px] shadow-none focus-visible:ring-0 placeholder:text-slate-400 text-slate-800 font-medium"
@@ -394,7 +418,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             </Button>
           )}
           <div className="flex-1" />
-          <span className="hidden sm:inline text-[10px] font-bold text-slate-300 tracking-widest mr-3 select-none">CMD+ENTER</span>
+          <span className="hidden sm:inline text-[10px] font-bold text-slate-300 tracking-widest mr-3 select-none">PASTE IMAGE OR CMD+ENTER</span>
           <Button
             onClick={send}
             disabled={sending || !canSend}
