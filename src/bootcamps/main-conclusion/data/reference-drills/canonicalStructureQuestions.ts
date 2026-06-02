@@ -241,10 +241,10 @@ export const CANONICAL_STRUCTURE_QUESTIONS: CanonicalStructureQuestion[] = (() =
           compatibility: [
             ...question.compatibility,
             {
-              template: 'arguments-foundations-mini',
-              sourceBootcamp: 'arguments-foundations',
+              template: 'arguments-foundations-mini' as ReferenceTemplateFamily,
+              sourceBootcamp: 'arguments-foundations' as ReferenceBootcampSource,
             },
-          ],
+          ] as CanonicalQuestionCompatibility[],
         }
       : question;
 
