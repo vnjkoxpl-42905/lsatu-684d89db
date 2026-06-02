@@ -232,7 +232,7 @@ export const CANONICAL_STRUCTURE_QUESTIONS: CanonicalStructureQuestion[] = (() =
     const normalizedQuestion = ARGUMENTS_FOUNDATIONS_DUPLICATE_SEEDS.includes(question.duplicateKey)
       ? {
           ...question,
-          sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'],
+          sourceBootcamps: [...question.sourceBootcamps, 'arguments-foundations'] as ReferenceBootcampSource[],
           compatibleTemplates: Array.from(
             new Set<ReferenceTemplateFamily>([...question.compatibleTemplates, 'arguments-foundations-mini']),
           ),
