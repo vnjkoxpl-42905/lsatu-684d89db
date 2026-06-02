@@ -12,6 +12,7 @@ export function MainConclusionLab() {
       title="Main Conclusion Lab"
       questions={CANONICAL_MAIN_CONCLUSION_QUESTIONS}
       onComplete={() => markDrillComplete?.('MC-DRL-MCL')}
+      userName={user?.name ?? 'Student'}
     />
   );
 }
