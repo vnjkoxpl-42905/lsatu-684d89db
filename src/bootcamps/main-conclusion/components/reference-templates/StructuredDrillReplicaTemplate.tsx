@@ -32,14 +32,13 @@ export function StructuredDrillReplicaTemplate({
     () =>
       current.chunks.map((chunk, chunkIndex) => ({
         chunk,
-        accent:
-          chunkIndex === current.correctMainConclusionIndex
-            ? 'conclusion'
-            : current.opposingViewIndexes.includes(chunkIndex)
-              ? 'opposing'
-              : current.supportIndexes.includes(chunkIndex)
-                ? 'support'
-                : 'neutral',
+        accent: (chunkIndex === current.correctMainConclusionIndex
+          ? 'conclusion'
+          : current.opposingViewIndexes.includes(chunkIndex)
+            ? 'opposing'
+            : current.supportIndexes.includes(chunkIndex)
+              ? 'support'
+              : 'neutral') as 'conclusion' | 'opposing' | 'support' | 'neutral',
       })),
     [current],
   );
