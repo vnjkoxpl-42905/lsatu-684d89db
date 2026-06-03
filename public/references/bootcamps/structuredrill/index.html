@@ -486,12 +486,7 @@
         <div class="login-card">
             <h1 style="margin-bottom: 0.5rem;">Welcome to Premium</h1>
             <p style="margin-bottom: 2rem;">Your LSAT Argument Analysis Portal</p>
-            <div class="input-group">
-                <label for="student-name">Student Name</label>
-                <input type="text" id="student-name" placeholder="Enter your name" autocomplete="off" onkeypress="handleLoginEnter(event)" oninput="clearLoginError()">
-                <div id="login-error" class="input-error-text">Please enter your name to continue.</div>
-            </div>
-            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Homework</button>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Drill</button>
         </div>
     </main>
 
@@ -996,26 +991,19 @@
     }
 
     async function login() {
-        const nameInput = document.getElementById('student-name').value.trim();
         const btn = document.getElementById('login-btn');
-        
-        if (!nameInput) {
-            document.getElementById('student-name').classList.add('input-error-active');
-            document.getElementById('login-error').style.display = 'block';
-            return;
-        }
 
-        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Authenticating...';
+        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Loading...';
         btn.disabled = true;
-        
+
         await new Promise(r => setTimeout(r, 800));
-        
-        appState.name = nameInput;
+
+        appState.name = 'Student';
         appState.view = 'dashboard-view';
         saveState();
         initApp();
-        
-        btn.innerHTML = 'Start Homework';
+
+        btn.innerHTML = 'Start Drill';
         btn.disabled = false;
     }
 
