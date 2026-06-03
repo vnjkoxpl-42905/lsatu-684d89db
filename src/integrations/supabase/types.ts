@@ -398,6 +398,30 @@ export type Database = {
         }
         Relationships: []
       }
+      bootcamp_kv: {
+        Row: {
+          data: Json
+          record_id: string
+          table_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          data: Json
+          record_id: string
+          table_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          data?: Json
+          record_id?: string
+          table_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chapter_progress: {
         Row: {
           first_viewed_at: string
