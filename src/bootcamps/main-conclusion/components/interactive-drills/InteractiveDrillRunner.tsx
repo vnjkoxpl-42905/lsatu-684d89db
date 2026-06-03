@@ -100,33 +100,7 @@ export function InteractiveDrillRunner({
 
   return (
     <div className="space-y-5">
-      {protocolOpen ? (
-        <DrillProtocolCard protocol={protocol} onStart={() => setProtocolOpen(false)} />
-      ) : (
-        <DrillProtocolCard protocol={protocol} compact />
-      )}
-
-      {!protocolOpen ? (
-        <>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <Badge tone="accent" dot>
-                question {String(runnerState.questionIndex + 1).padStart(2, '0')}/{runnerState.totalQuestions}
-              </Badge>
-              <Badge tone="neutral" className="ml-2">
-                {item.id}
-              </Badge>
-            </div>
-            {runnerState.answered ? (
-              <Badge tone={runnerState.correct ? 'success' : 'error'}>
-                {runnerState.correct ? 'correct' : 'review'}
-              </Badge>
-            ) : null}
-          </div>
-
-          {renderMode()}
-        </>
-      ) : null}
+      {renderMode()}
     </div>
   );
 
@@ -161,7 +135,7 @@ export function InteractiveDrillRunner({
     return (
       <div className="space-y-4">
         <Card variant="surface">
-          <p className="font-mc-serif text-h3 leading-relaxed text-ink">
+          <p className="font-mc-serif text-h3 leading-[1.3] text-ink">
             {parts.map((part, index) =>
               part === q.highlighted_word ? (
                 <mark key={index} className="rounded-[4px] border-b border-[rgb(var(--accent)/0.60)] bg-[rgb(var(--accent)/0.24)] px-1 text-ink not-italic">

@@ -55,16 +55,16 @@
             z-index: -1; pointer-events: none;
             animation: ambientDrift 20s alternate infinite ease-in-out;
         }
-        @keyframes ambientDrift { 
-            0% { transform: scale(1) translate(0, 0); } 
-            100% { transform: scale(1.1) translate(2%, 3%); } 
+        @keyframes ambientDrift {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(2%, 3%); }
         }
 
         h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
         h1 { font-size: 2rem; margin-bottom: 0.5rem; }
         h2 { font-size: 1.5rem; margin-bottom: 1rem; }
         p { margin-bottom: 1rem; color: var(--text-secondary); }
-        
+
         .app-container { display: flex; min-height: 100vh; flex-direction: column; }
 
         nav {
@@ -75,7 +75,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            display: none; 
+            display: none;
             transition: background 0.4s ease;
         }
         .nav-content {
@@ -96,9 +96,9 @@
         }
         .nav-item.active { color: var(--text-main); }
         .nav-item.active::after { transform: scaleX(1); }
-        
+
         .profile-wrapper { display: flex; align-items: center; gap: 1rem; }
-        
+
         /* Persistent Auto-Save Indicator */
         #save-status {
             font-size: 0.75rem; font-weight: 500; color: var(--text-tertiary);
@@ -119,18 +119,18 @@
 
         /* Fixed View System */
         .view {
-            display: none; 
+            display: none;
             flex: 1; padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; width: 100%;
         }
-        .view.active { 
-            display: block; 
+        .view.active {
+            display: block;
             animation: fadeInView 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         #login-view.active { display: flex; }
-        
-        @keyframes fadeInView { 
-            from { opacity: 0; transform: translateY(16px); filter: blur(4px); } 
-            to { opacity: 1; transform: translateY(0); filter: blur(0); } 
+
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
         /* Buttons & Tactile Feedback */
@@ -154,8 +154,8 @@
 
         /* Login */
         #login-view { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
-        .login-card { 
-            background: var(--bg-card); padding: 3.5rem 3rem; border-radius: var(--radius-lg); 
+        .login-card {
+            background: var(--bg-card); padding: 3.5rem 3rem; border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; text-align: center;
             animation: floatCard 6s ease-in-out infinite;
         }
@@ -182,9 +182,9 @@
         /* Dashboard */
         .dashboard-header { margin-bottom: 3rem; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
-        .card { 
-            background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.75rem; 
-            box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.02); transition: var(--transition); 
+        .card {
+            background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.75rem;
+            box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.02); transition: var(--transition);
             animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
         .dashboard-grid .card:nth-child(1) { animation-delay: 0.1s; }
@@ -195,14 +195,14 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .kpi-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
         .kpi-value { font-size: 2.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: baseline; gap: 0.5rem; }
         .kpi-sub { font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-top: 0.75rem; }
-        
+
         .progress-bar-bg { background: var(--bg-main); border: 1px solid var(--border); height: 8px; border-radius: 4px; margin-top: 1rem; overflow: hidden; }
-        .progress-bar-fill { 
-            background: linear-gradient(90deg, var(--accent), #3fa2ff); height: 100%; border-radius: 4px; 
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent), #3fa2ff); height: 100%; border-radius: 4px;
             transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;
         }
         .progress-bar-fill::after {
@@ -211,15 +211,15 @@
             animation: shimmerBar 2.5s infinite;
         }
         @keyframes shimmerBar { 100% { left: 200%; } }
-        
-        .action-card { 
+
+        .action-card {
             background: linear-gradient(135deg, #1D1D1F 0%, #3A3A3C 100%); background-size: 200% 200%;
-            position: relative; overflow: hidden; animation: gradientShift 10s ease infinite, slideUpFade 0.6s backwards 0.1s; 
+            position: relative; overflow: hidden; animation: gradientShift 10s ease infinite, slideUpFade 0.6s backwards 0.1s;
         }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .action-card::after { 
-            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; 
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%); 
+        .action-card::after {
+            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
             border-radius: 50%; pointer-events: none; transition: transform 0.5s ease;
         }
         .action-card:hover::after { transform: scale(1.5); }
@@ -231,17 +231,17 @@
         .lesson-layout { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; }
         .lesson-nav { position: sticky; top: 100px; }
         .lesson-nav-header { margin-bottom: 1.5rem; }
-        
-        .lesson-nav-item { 
-            display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; border-radius: var(--radius-md); 
-            cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-weight: 500; 
-            margin-bottom: 0.25rem; border: 1px solid transparent; 
+
+        .lesson-nav-item {
+            display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; border-radius: var(--radius-md);
+            cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-weight: 500;
+            margin-bottom: 0.25rem; border: 1px solid transparent;
         }
         .lesson-nav-item.active { background: var(--accent-light); color: var(--accent); box-shadow: 0 4px 12px rgba(0,113,227,0.08); }
         .lesson-nav-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.4s ease; }
         .lesson-nav-item.completed .lesson-nav-indicator { background: var(--success); box-shadow: 0 0 8px rgba(52,199,89,0.4); }
         .lesson-nav-item:active { transform: scale(0.97); transition: transform 0.1s; }
-        
+
         .lesson-content { max-width: 700px; }
         .lesson-section { display: none; animation: fadeInView 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .lesson-section.active { display: block; }
@@ -249,7 +249,7 @@
         .coach-note { background: #F9F9FB; border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-lg); margin: 2rem 0; display: flex; gap: 1.25rem; transition: var(--transition); }
         .coach-icon { font-size: 1.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); animation: gentlePulse 3s infinite; }
         @keyframes gentlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
+
         .framework-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
         .framework-bucket { background: var(--bg-main); border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-lg); transition: var(--transition); }
         .bucket-tag { display: inline-block; padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.75rem; transition: var(--transition); }
@@ -277,7 +277,7 @@
         .breakdown-step { display: flex; align-items: flex-start; gap: 1rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; }
         .breakdown-step strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 0.2rem; font-size: 1rem; }
         .step-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--accent-light); color: var(--accent); border-radius: 50%; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
-        
+
         .cta-box { margin-top: 4rem; padding: 3rem 2rem; background: linear-gradient(135deg, var(--bg-card) 0%, #F5F5F7 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); text-align: center; box-shadow: var(--shadow-sm); transition: var(--transition); }
         .cta-box h3 { font-size: 1.35rem; margin-bottom: 0.75rem; color: var(--text-main); }
         .cta-box p { color: var(--text-secondary); margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6; font-size: 1.05rem; }
@@ -286,7 +286,7 @@
         .drill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
         .drill-workspace { background: var(--bg-card); border-radius: var(--radius-lg); padding: 3.5rem; box-shadow: var(--shadow-md); margin-bottom: 2rem; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
         .stimulus { font-size: 1.25rem; line-height: 1.8; color: var(--text-main); margin-bottom: 2rem; }
-        
+
         .drill-part-anim { animation: textReveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
         @keyframes textReveal { from { opacity: 0; filter: blur(4px); } to { opacity: 1; filter: blur(0); } }
 
@@ -295,7 +295,7 @@
         .selectable-phrase.selected-conclusion { background: var(--accent-light); color: var(--accent); border-color: rgba(0,113,227,0.3); box-shadow: 0 2px 12px rgba(0,113,227,0.15); }
         .selectable-phrase.selected-support { background: var(--success-light); color: #248A3D; border-color: rgba(52,199,89,0.3); box-shadow: 0 2px 12px rgba(52,199,89,0.15); }
         .selectable-phrase.selected-opposing { background: var(--error-light); color: #D70015; border-color: rgba(255,59,48,0.3); box-shadow: 0 2px 12px rgba(255,59,48,0.15); }
-        
+
         .indicator-word { font-weight: 600; border-bottom: 2px dashed; position: relative; display: inline-block; transition: var(--transition); }
         .indicator-word::after { content: attr(data-type); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(12px) scale(0.95); background: #1D1D1F; color: #FFFFFF; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10; box-shadow: var(--shadow-md); pointer-events: none; }
         .indicator-word::before { content: ''; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(12px) scale(0.95); border: 6px solid transparent; border-top-color: #1D1D1F; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10; margin-bottom: -11px; pointer-events: none; }
@@ -308,7 +308,7 @@
         .choice-btn { flex: 1; padding: 1.25rem; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-weight: 500; text-align: center; transition: var(--transition); box-shadow: var(--shadow-sm); }
         .choice-btn:active { transform: scale(0.97); transition: transform 0.1s; }
         .choice-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); box-shadow: 0 4px 16px rgba(0,113,227,0.15); }
-        
+
         .feedback-panel { margin-top: 2rem; padding: 1.75rem; border-radius: var(--radius-lg); display: none; transition: var(--transition); box-shadow: var(--shadow-md); animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .feedback-panel.correct { background: #F4FBF6; border: 1px solid rgba(52,199,89,0.2); }
         .feedback-panel.incorrect { background: #FEF6F5; border: 1px solid rgba(255,59,48,0.2); }
@@ -326,12 +326,12 @@
         .flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; z-index: 2; }
         .flashcard.is-flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); display: flex; flex-direction: column; padding: 2.5rem; border: 1px solid rgba(0,0,0,0.03); transition: var(--transition); }
-        
+
         .card-front { align-items: center; justify-content: center; text-align: center; }
         .fc-prompt-label { font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; }
         .fc-front-question { font-size: 1.6rem; font-weight: 600; color: var(--text-main); line-height: 1.4; margin-bottom: 2rem; }
         .fc-hint { position: absolute; bottom: 2rem; font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
-        
+
         .card-back { transform: rotateY(180deg); align-items: flex-start; text-align: left; justify-content: flex-start; }
         .fc-role-badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); margin-bottom: 1.25rem; }
         .fc-function-text { font-size: 1.15rem; color: var(--text-main); font-weight: 500; line-height: 1.5; margin-bottom: 1.5rem; }
@@ -346,14 +346,14 @@
         .btn-gotit:hover { background: var(--success); box-shadow: 0 4px 16px rgba(52,199,89,0.2); }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         /* Premium State System & Loaders */
         #top-progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1000; opacity: 0; transition: width 0.4s ease, opacity 0.3s ease; box-shadow: 0 0 10px var(--accent); }
-        
+
         .state-loading, .state-empty { display: none; animation: fadeInView 0.4s ease; }
         .view.is-loading .state-loading { display: block; }
         .view.is-loading .state-content, .view.is-loading .state-empty { display: none !important; }
-        
+
         .view.is-empty .state-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; }
         .view.is-empty .state-content, .view.is-empty .state-loading { display: none !important; }
         .view:not(.is-loading):not(.is-empty) .state-content { display: block; animation: fadeInView 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -362,7 +362,7 @@
         .skeleton-text { height: 1.2rem; margin-bottom: 0.75rem; border-radius: 4px; }
         .skeleton-title { height: 2.5rem; width: 60%; margin-bottom: 1rem; border-radius: 8px; }
         .skeleton-card { height: 160px; border-radius: var(--radius-lg); }
-        
+
         @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -377,11 +377,11 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .empty-state-icon { width: 72px; height: 72px; background: var(--success-light); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(52,199,89,0.2); animation: floatCard 4s ease-in-out infinite; }
         .empty-state-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-main); }
         .empty-state-desc { color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 450px; line-height: 1.6; margin-left: auto; margin-right: auto; font-size: 1.05rem; }
-        
+
         /* Premium Toasts & Inline Errors */
         #toast-container { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none; }
         .toast { background: var(--bg-card); color: var(--text-main); padding: 0.8rem 1.5rem; border-radius: var(--radius-full); box-shadow: var(--shadow-lg); border: 1px solid var(--border); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; animation: toastIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -390,17 +390,17 @@
         .toast-icon.success { background: var(--success); box-shadow: 0 2px 8px rgba(52,199,89,0.4); }
         .toast-icon.error { background: var(--error); box-shadow: 0 2px 8px rgba(255,59,48,0.4); }
         .toast-icon.warning { background: var(--warning); box-shadow: 0 2px 8px rgba(255,149,0,0.4); }
-        
+
         .input-error-text { color: var(--error); font-size: 0.85rem; margin-top: 0.5rem; display: none; animation: slideUp 0.3s ease; }
         .input-error-active { border-color: var(--error) !important; box-shadow: 0 0 0 3px var(--error-light) !important; background: #fff !important; }
 
         @keyframes toastIn { from { opacity: 0; transform: translateY(20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.95); } }
-        
+
         #profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.3s ease; }
         .modal-content { background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-lg); width: 90%; max-width: 400px; box-shadow: 0 24px 48px rgba(0,0,0,0.2); transition: var(--transition); animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+
         .text-center { text-align: center; } .mt-2 { margin-top: 0.5rem; } .mt-4 { margin-top: 1rem; } .mt-8 { margin-top: 2rem; } .mb-4 { margin-bottom: 1rem; } .mx-auto { margin-left: auto; margin-right: auto; } .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
         /* Hover states wrapped for non-touch devices to prevent sticky hover issues */
@@ -432,7 +432,7 @@
             .nav-links { order: 3; width: 100%; overflow-x: auto; padding-top: 1rem; padding-bottom: 0.5rem; gap: 1.5rem; justify-content: flex-start; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
             .nav-links::-webkit-scrollbar { display: none; }
             .nav-item::after { bottom: -8px; }
-            
+
             .view { padding: 1.5rem 1rem; }
             .lesson-layout { grid-template-columns: 1fr; gap: 1.5rem; }
             .lesson-nav { position: static; display: flex; overflow-x: auto; white-space: nowrap; padding-bottom: 1rem; gap: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -440,11 +440,11 @@
             .lesson-nav-header { display: none; }
             .lesson-nav-item { margin-bottom: 0; flex-shrink: 0; border: 1px solid var(--border); background: var(--bg-card); padding: 0.6rem 1rem; }
             .lesson-nav-item.active { border-color: var(--accent); background: var(--accent-light); }
-            
+
             .drill-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
             .header-progress { align-items: flex-start; width: 100%; }
             .header-bar-bg { width: 100%; }
-            
+
             .drill-workspace { padding: 1.5rem; }
             .choice-grid { flex-direction: column; }
             .anchor-box { padding: 1.5rem; margin: 1.5rem 0; }
@@ -470,6 +470,7 @@
                 <a class="nav-item" data-target="dashboard-view">Dashboard</a>
                 <a class="nav-item" data-target="lessons-view">Notes</a>
                 <a class="nav-item" data-target="drills-view">Drills</a>
+                <a class="nav-item" data-target="flashcards-view">Flashcards</a>
             </div>
             <div class="profile-wrapper">
                 <div id="save-status"><div class="dot"></div> Saved</div>
@@ -485,7 +486,12 @@
         <div class="login-card">
             <h1 style="margin-bottom: 0.5rem;">Welcome to Premium</h1>
             <p style="margin-bottom: 2rem;">Your LSAT Argument Analysis Portal</p>
-            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Drill</button>
+            <div class="input-group">
+                <label for="student-name">Student Name</label>
+                <input type="text" id="student-name" placeholder="Enter your name" autocomplete="off" onkeypress="handleLoginEnter(event)" oninput="clearLoginError()">
+                <div id="login-error" class="input-error-text">Please enter your name to continue.</div>
+            </div>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Homework</button>
         </div>
     </main>
 
@@ -559,14 +565,14 @@
                         </div>
                         <div class="progress-bar-bg" style="height: 4px; margin-top: 0.5rem; margin-bottom: 1.5rem;"><div class="progress-bar-fill" id="nav-notes-bar" style="width: 0%;"></div></div>
                     </div>
-                    
+
                     <div class="lesson-nav-item active" data-section="sec-1" onclick="switchLesson('sec-1')"><div class="lesson-nav-indicator"></div> Argument Basics</div>
                     <div class="lesson-nav-item" data-section="sec-2" onclick="switchLesson('sec-2')"><div class="lesson-nav-indicator"></div> 2-Step Check</div>
                     <div class="lesson-nav-item" data-section="sec-3" onclick="switchLesson('sec-3')"><div class="lesson-nav-indicator"></div> Role Framework</div>
                     <div class="lesson-nav-item" data-section="sec-4" onclick="switchLesson('sec-4')"><div class="lesson-nav-indicator"></div> Referential Language</div>
                 </div>
                 <div class="lesson-content">
-                    
+
                     <div id="sec-1" class="lesson-section active">
                         <div class="bucket-tag tag-neutral">Foundation</div>
                         <h1>Argument Basics</h1>
@@ -661,7 +667,7 @@
                         <div class="bucket-tag tag-main">Translation Skill</div>
                         <h1>Referential Language in Conclusions</h1>
                         <p class="mt-4" style="font-size: 1.1rem; color: var(--text-main);">Many conclusions act as rebuttals or summaries that rely on referential shorthand words like <em>this</em>, <em>that</em>, <em>they</em>, <em>such</em>, or <em>it</em>.</p>
-                        
+
                         <div class="anchor-box reveal-on-scroll" style="padding: 1.5rem 2rem;">
                             <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em;">The Translation Rule</h3>
                             <p style="color: var(--text-main); font-size: 1.1rem; margin: 0; font-weight: 500;">Never leave a conclusion in vague shorthand. Always trace the referential word back to its exact target, and replace the pronoun with the specific noun.</p>
@@ -670,7 +676,7 @@
                         <div class="example-card reveal-on-scroll">
                             <div class="example-label">Case Study</div>
                             <div class="example-text">"Some people propose laws that would require mandatory background checks. However, <em>such laws</em> won't affect the homicide rate."</div>
-                            
+
                             <div class="example-breakdown">
                                 <div class="breakdown-step">
                                     <span class="step-icon">1</span>
@@ -695,7 +701,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <p style="font-size: 1.05rem; color: var(--text-main); margin-top: 2rem;">When dissecting arguments in the drills ahead, your job is to translate every vague conclusion into a precise, standalone claim.</p>
 
                         <div class="cta-box reveal-on-scroll">
@@ -744,6 +750,59 @@
         </div>
     </main>
 
+    <main id="flashcards-view" class="view">
+        <div class="state-loading">
+            <div class="text-center mb-4">
+                <div class="skeleton skeleton-text" style="width: 80px; height: 24px; border-radius: 12px; margin: 0 auto 1rem;"></div>
+                <div class="skeleton skeleton-title" style="margin: 0 auto 0.5rem;"></div>
+                <div class="skeleton skeleton-text" style="width: 100px; margin: 0 auto;"></div>
+            </div>
+            <div class="flashcard-wrapper skeleton" style="border:none;"></div>
+        </div>
+        <div class="state-content">
+            <div class="text-center mb-4">
+                <div class="bucket-tag tag-support">Training</div>
+                <h1>Indicator Word Deck</h1>
+                <div class="fc-progress-container mt-4">
+                    <div class="header-progress-top" style="justify-content: center;">
+                        <span class="header-percent"><span id="fc-percent-val">0</span>%</span>
+                        <span class="header-percent-label">Mastered</span>
+                    </div>
+                    <div class="header-bar-bg mx-auto my-2" style="width: 240px; height: 8px;"><div class="header-bar-fill" id="fc-header-bar" style="width: 0%;"></div></div>
+                    <div class="header-subtext mt-2" id="fc-sub-text">0 of 33 cards</div>
+                </div>
+            </div>
+
+            <div class="flashcard-wrapper reveal-on-scroll">
+                <div class="flashcard-stack-2"></div>
+                <div class="flashcard-stack-1"></div>
+                <div class="flashcard" id="fc-card" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="fc-prompt-label">Concept Check</div>
+                        <div class="fc-front-question" id="fc-front-q">Question text here</div>
+                        <div class="fc-hint">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                            Tap to reveal
+                        </div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="fc-role-badge" id="fc-role">Role</div>
+                        <div class="fc-function-text" id="fc-function">Explanation of function.</div>
+                        <div class="fc-example-box" id="fc-example-text">"Example sentence."</div>
+                        <div class="fc-coach-note">
+                            <span class="coach-icon" style="font-size: 1.1rem; filter: none; animation: none;">💡</span>
+                            <span id="fc-note-text">Note text</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fc-controls-wrapper" id="fc-controls">
+                <button class="btn btn-review" onclick="handleFC('review')">Review Again</button>
+                <button class="btn btn-gotit" onclick="handleFC('got-it')">Got It</button>
+            </div>
+        </div>
+    </main>
 </div>
 
 <div id="profile-modal">
@@ -797,14 +856,14 @@
     // APP STATE & PERSISTENCE
     // ------------------------------------------------------------------
     const DEFAULT_STATE = {
-        name: '', 
+        name: '',
         view: 'dashboard-view',
         lastLearningView: 'lessons-view',
         currentLessonSection: 'sec-1',
-        fcIndex: 0, 
+        fcIndex: 0,
         fcMastered: [],
         drillsCompleted: [],
-        popQuizzes: {}, 
+        popQuizzes: {},
         lessons: { 'sec-1': false, 'sec-2': false, 'sec-3': false, 'sec-4': false }
     };
 
@@ -838,7 +897,7 @@
             el.classList.add('reveal-on-scroll');
             scrollObserver.observe(el);
         });
-        
+
         const frameworkGrid = document.querySelector('.framework-grid');
         if (frameworkGrid) {
             Array.from(frameworkGrid.children).forEach((bucket, i) => {
@@ -854,7 +913,7 @@
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const ease = 1 - Math.pow(1 - progress, 4); 
+            const ease = 1 - Math.pow(1 - progress, 4);
             obj.innerHTML = Math.floor(ease * (end - start) + start);
             if (progress < 1) {
                 window.requestAnimationFrame(step);
@@ -867,14 +926,14 @@
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast';
-        
+
         let iconHtml = '✓';
         if (type === 'error') iconHtml = '✕';
         if (type === 'warning') iconHtml = '↻';
-        
+
         toast.innerHTML = `<div class="toast-icon ${type}">${iconHtml}</div> <span>${message}</span>`;
         container.appendChild(toast);
-        
+
         setTimeout(() => {
             toast.classList.add('toast-leaving');
             setTimeout(() => toast.remove(), 400);
@@ -884,21 +943,21 @@
     async function simulateLoading(viewId, callback) {
         const view = document.getElementById(viewId);
         if(!view) return;
-        
+
         loaderBar.style.opacity = '1';
         loaderBar.style.width = '30%';
         view.classList.add('is-loading');
-        
+
         setTimeout(() => { loaderBar.style.width = '70%'; }, 200);
         await new Promise(r => setTimeout(r, 600));
-        
+
         if(callback) callback();
-        
+
         loaderBar.style.width = '100%';
         view.classList.remove('is-loading');
-        
-        setTimeout(() => { 
-            loaderBar.style.opacity = '0'; 
+
+        setTimeout(() => {
+            loaderBar.style.opacity = '0';
             setTimeout(() => { loaderBar.style.width = '0%'; }, 300);
         }, 300);
     }
@@ -906,8 +965,8 @@
     function loadState() {
         const saved = StorageMgr.get('lsat_portal_state');
         if (saved) {
-            try { 
-                const parsed = JSON.parse(saved); 
+            try {
+                const parsed = JSON.parse(saved);
                 appState = { ...DEFAULT_STATE, ...parsed };
                 if (!appState.popQuizzes) appState.popQuizzes = {};
                 if (!appState.fcMastered) appState.fcMastered = [];
@@ -920,7 +979,7 @@
     function saveState() {
         StorageMgr.set('lsat_portal_state', JSON.stringify(appState));
         updateDashboard();
-        
+
         const saveIndicator = document.getElementById('save-status');
         if (saveIndicator && appState.name) {
             saveIndicator.style.opacity = '1';
@@ -937,19 +996,26 @@
     }
 
     async function login() {
+        const nameInput = document.getElementById('student-name').value.trim();
         const btn = document.getElementById('login-btn');
 
-        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Loading...';
+        if (!nameInput) {
+            document.getElementById('student-name').classList.add('input-error-active');
+            document.getElementById('login-error').style.display = 'block';
+            return;
+        }
+
+        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Authenticating...';
         btn.disabled = true;
 
         await new Promise(r => setTimeout(r, 800));
 
-        appState.name = 'Student';
+        appState.name = nameInput;
         appState.view = 'dashboard-view';
         saveState();
         initApp();
 
-        btn.innerHTML = 'Start Drill';
+        btn.innerHTML = 'Start Homework';
         btn.disabled = false;
     }
 
@@ -960,13 +1026,13 @@
         if (newName && newName.trim() !== '') {
             appState.name = newName.trim();
             saveState();
-            
+
             const initial = appState.name.charAt(0).toUpperCase();
             document.getElementById('nav-name').innerText = appState.name;
             document.getElementById('modal-name').innerText = appState.name;
             document.getElementById('nav-avatar').innerText = initial;
             document.getElementById('modal-avatar').innerText = initial;
-            
+
             updateDashboard();
             showToast('Profile name updated.');
         }
@@ -976,14 +1042,14 @@
         const btn = document.getElementById('logout-btn');
         btn.innerHTML = '<span class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid rgba(255,59,48,0.3); border-top-color:var(--error); border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Logging out...';
         btn.disabled = true;
-        
+
         await new Promise(r => setTimeout(r, 600));
 
         StorageMgr.remove('lsat_portal_state');
         appState = { ...DEFAULT_STATE };
         document.getElementById('student-name').value = '';
         document.getElementById('profile-modal').style.display = 'none';
-        
+
         btn.innerHTML = 'Clear Session & Logout';
         btn.disabled = false;
 
@@ -994,7 +1060,7 @@
         const btn = document.getElementById('reset-btn');
         btn.innerHTML = '<span class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid rgba(0,0,0,0.1); border-top-color:var(--text-main); border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Resetting...';
         btn.disabled = true;
-        
+
         await new Promise(r => setTimeout(r, 800));
 
         appState.lessons = { 'sec-1': false, 'sec-2': false, 'sec-3': false, 'sec-4': false };
@@ -1007,15 +1073,15 @@
         appState.currentLessonSection = 'sec-1';
         drillCurrentIdx = 0;
         saveState();
-        
+
         document.querySelectorAll('.pq-option').forEach(opt => {
             opt.classList.remove('correct', 'incorrect');
             opt.style.pointerEvents = 'auto';
         });
         document.querySelectorAll('.pq-feedback').forEach(fb => fb.style.display = 'none');
-        
+
         document.getElementById('profile-modal').style.display = 'none';
-        
+
         btn.innerHTML = 'Reset Progress';
         btn.disabled = false;
 
@@ -1026,18 +1092,18 @@
     function applyPQState(quizId) {
         const state = appState.popQuizzes[quizId];
         if (!state) return;
-        
+
         const container = document.getElementById(quizId);
         if (!container) return;
-        
+
         const options = container.querySelectorAll('.pq-option');
         options.forEach((opt, idx) => {
-            opt.style.pointerEvents = 'none'; 
+            opt.style.pointerEvents = 'none';
             if (idx === state.selected) {
                 opt.classList.add(state.isCorrect ? 'correct' : 'incorrect');
             }
         });
-        
+
         const feedbackEl = container.querySelector('.pq-feedback');
         feedbackEl.innerText = state.feedbackText;
         feedbackEl.style.color = state.isCorrect ? 'var(--success)' : 'var(--error)';
@@ -1050,7 +1116,7 @@
 
     function initApp() {
         if (!appState.name) { navigate('login-view', false); return; }
-        
+
         const initial = appState.name.charAt(0).toUpperCase();
         document.getElementById('nav-avatar').innerText = initial;
         document.getElementById('nav-name').innerText = appState.name;
@@ -1063,8 +1129,10 @@
 
         updateDashboard();
         loadDrill();
+        loadFlashcard();
+
         const startView = (appState.view && appState.view !== 'login-view') ? appState.view : 'dashboard-view';
-        navigate(startView, false); 
+        navigate(startView, false);
     }
 
     function navigate(viewId, animate = true) {
@@ -1074,7 +1142,7 @@
         });
 
         const target = document.getElementById(viewId);
-        
+
         if (viewId === 'login-view') {
             target.style.display = 'flex';
         } else {
@@ -1082,12 +1150,12 @@
         }
 
         if (animate) {
-            void target.offsetWidth; 
+            void target.offsetWidth;
             target.classList.add('active');
         } else {
             target.classList.add('active');
-            target.style.animation = 'none'; 
-            setTimeout(() => target.style.animation = '', 100); 
+            target.style.animation = 'none';
+            setTimeout(() => target.style.animation = '', 100);
         }
 
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1097,7 +1165,7 @@
         document.getElementById('main-nav').style.display = viewId === 'login-view' ? 'none' : 'block';
 
         appState.view = viewId;
-        if (['lessons-view', 'drills-view'].includes(viewId)) {
+        if (['lessons-view', 'drills-view', 'flashcards-view'].includes(viewId)) {
             appState.lastLearningView = viewId;
         }
         saveState();
@@ -1139,7 +1207,7 @@
         else if (notesEl) notesEl.innerText = notesPercent;
         document.getElementById('dash-notes-bar').style.width = `${notesPercent}%`;
         document.getElementById('dash-notes-sub').innerText = `${notesCompleted} of 4 modules`;
-        
+
         // Notes Nav
         document.getElementById('nav-notes-percent').innerText = `${notesPercent}%`;
         document.getElementById('nav-notes-bar').style.width = `${notesPercent}%`;
@@ -1159,7 +1227,7 @@
         const actionBtn = document.getElementById('dash-action-btn');
 
         const lastView = appState.lastLearningView || 'lessons-view';
-        
+
         if (lastView === 'lessons-view') {
             const lessonNames = {
                 'sec-1': 'Argument Basics',
@@ -1172,14 +1240,21 @@
             nextDesc.innerText = "Pick up right where you left off.";
             actionBtn.innerText = "Continue Learning";
             actionBtn.onclick = () => { navigate('lessons-view'); switchLesson(appState.currentLessonSection || 'sec-1'); };
-            
+
         } else if (lastView === 'drills-view') {
             nextLabel.innerText = "Resume Drills";
             nextTitle.innerText = "Argument Dissection";
             nextDesc.innerText = drillsDone >= 20 ? "All drills completed." : `${drillsPercent}% completed.`;
             actionBtn.innerText = drillsDone >= 20 ? "Review Drills" : "Continue Drilling";
             actionBtn.onclick = () => navigate('drills-view');
-            
+
+        } else if (lastView === 'flashcards-view') {
+            const fcPercent = Math.round(((appState.fcMastered || []).length / flashcardsData.length) * 100);
+            nextLabel.innerText = "Resume Flashcards";
+            nextTitle.innerText = "Indicator Word Deck";
+            nextDesc.innerText = `${fcPercent}% of deck mastered.`;
+            actionBtn.innerText = "Open Deck";
+            actionBtn.onclick = () => navigate('flashcards-view');
         }
 
         document.querySelectorAll('.lesson-nav-item').forEach(el => {
@@ -1193,13 +1268,13 @@
         document.querySelectorAll('.lesson-section').forEach(el => el.classList.remove('active'));
         const targetSection = document.getElementById(secId);
         if (targetSection) targetSection.classList.add('active');
-        
+
         document.querySelectorAll('.lesson-nav-item').forEach(el => el.classList.remove('active'));
         const targetNav = document.querySelector(`.lesson-nav-item[data-section="${secId}"]`);
         if (targetNav) targetNav.classList.add('active');
-        
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        
+
         initScrollAnimations();
 
         if (doSave && appState.currentLessonSection !== secId) {
@@ -1217,8 +1292,8 @@
     }
 
     function checkPQ(quizId, optionIndex, isCorrect, feedbackText) {
-        if (appState.popQuizzes[quizId] !== undefined) return; 
-        
+        if (appState.popQuizzes[quizId] !== undefined) return;
+
         appState.popQuizzes[quizId] = { selected: optionIndex, isCorrect, feedbackText };
         saveState();
         applyPQState(quizId);
@@ -1335,7 +1410,7 @@
 
     function parseIndicators(text) {
         return text.replace(/<i-w t="([^"]+)">([^<]+)<\/i-w>/g, (match, type, content) => {
-            let color = "var(--accent)"; 
+            let color = "var(--accent)";
             if (type.includes("Premise")) color = "#248A3D";
             else if (type.includes("Pivot")) color = "#FF9500";
             else if (type.includes("Opposing")) color = "#D70015";
@@ -1355,7 +1430,7 @@
     function loadDrill() {
         const nextIncomplete = drillsData.findIndex(d => !appState.drillsCompleted.includes(d.id));
         if (nextIncomplete === -1) {
-            drillCurrentIdx = drillsData.length - 1; 
+            drillCurrentIdx = drillsData.length - 1;
         } else {
             drillCurrentIdx = nextIncomplete;
         }
@@ -1369,14 +1444,14 @@
         updateDrillProgress();
 
         const ws = document.getElementById('drill-workspace');
-        const partsHTML = q.parts.map((p, index) => 
+        const partsHTML = q.parts.map((p, index) =>
             `<span class="selectable-phrase drill-part-anim" style="animation-delay: ${index * 0.1}s;" id="${p.id}" onclick="handlePhraseClick('${p.id}')">${parseIndicators(p.text)}</span>`
         ).join('');
-        
+
         ws.innerHTML = `<div class="stimulus" id="stimulus-container">${partsHTML}</div>`;
         document.getElementById('drill-feedback').style.display = 'none';
         renderDrillControls();
-        
+
         ws.classList.remove('is-visible');
         setTimeout(() => ws.classList.add('is-visible'), 50);
     }
@@ -1404,7 +1479,7 @@
         }
         ctrls.innerHTML = html;
         updateWorkspaceHighlights();
-        
+
         ctrls.classList.remove('is-visible');
         setTimeout(() => ctrls.classList.add('is-visible'), 50);
     }
@@ -1447,7 +1522,7 @@
         const q = drillsData[drillCurrentIdx];
         const isConclusionCorrect = q.parts.find(p => p.id === drillState.selectedC)?.isC;
         const isTypeCorrect = drillState.structureType === q.type;
-        
+
         let isFollowUpCorrect = false;
         if (drillState.structureType === 'first') isFollowUpCorrect = q.parts.find(p => p.id === drillState.selectedFollowUp)?.isS;
         else isFollowUpCorrect = q.parts.find(p => p.id === drillState.selectedFollowUp)?.isO;
@@ -1456,9 +1531,9 @@
 
         document.querySelectorAll('.selectable-phrase').forEach(el => {
             el.className = 'selectable-phrase';
-            el.style.pointerEvents = 'none'; 
+            el.style.pointerEvents = 'none';
         });
-        
+
         q.parts.forEach(p => {
             const el = document.getElementById(p.id);
             if(p.isC) el.classList.add('selected-conclusion');
@@ -1466,7 +1541,7 @@
             if(p.isO) el.classList.add('selected-opposing');
         });
 
-        document.getElementById('drill-controls').innerHTML = ''; 
+        document.getElementById('drill-controls').innerHTML = '';
         const fbPanel = document.getElementById('drill-feedback');
         fbPanel.style.display = 'block';
         fbPanel.className = `feedback-panel ${isAllCorrect ? 'correct' : 'incorrect'}`;
@@ -1505,6 +1580,106 @@
             drillCurrentIdx = nextIncomplete !== -1 ? nextIncomplete : 0;
             renderDrill();
         }
+    }
+
+    // ------------------------------------------------------------------
+    // FLASHCARDS LOGIC
+    // ------------------------------------------------------------------
+    const flashcardsData = [
+        { front: 'What is the 2-Point Check for a Main Conclusion?', role: 'Framework', function: '1) Sounds like the Author\'s Opinion (facts < conclusions).\n2) Is Supported by at least one other explicit claim.', example: 'N/A', note: 'Always verify support!' },
+        { front: 'What does "so" usually signal?', role: 'Conclusion Indicator', function: 'Indicates the Main Conclusion or an Intermediate Conclusion follows.', example: '"The rent is high, so we must move."', note: 'Often introduces the main point.' },
+        { front: 'What does "thus" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a logical deduction or conclusion follows.', example: '"It is raining; thus, the game is delayed."', note: 'A formal way to state a conclusion.' },
+        { front: 'What does "hence" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a conclusion derived from previous premises.', example: '"He was late, hence he missed the train."', note: 'Similar to "therefore".' },
+        { front: 'What does "therefore" usually signal?', role: 'Conclusion Indicator', function: 'Signals that the author\'s main point or an intermediate conclusion is about to follow.', example: '"The roads are icy. Therefore, school should be canceled."', note: 'Usually the easiest way to spot the exact claim you need to prove.' },
+        { front: 'What does "it follows" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a conclusion deduced from the evidence.', example: '"Since A equals B, it follows that B equals A."', note: 'Watch for what immediately follows this phrase.' },
+        { front: 'What does "as a result" usually signal?', role: 'Conclusion Indicator', function: 'Shows the logical outcome or conclusion of the preceding facts.', example: '"Sales dropped; as a result, the store closed."', note: 'Can be an intermediate or main conclusion.' },
+        { front: 'What does "consequently" usually signal?', role: 'Conclusion Indicator', function: 'Indicates the consequence or conclusion of an argument.', example: '"He didn\'t study; consequently, he failed."', note: 'Flags a direct conclusion.' },
+        { front: 'What does "this shows that" usually signal?', role: 'Conclusion Indicator', function: 'Directly points to the conclusion the author is drawing from the evidence.', example: '"The fingerprints match. This shows that he was there."', note: 'Directly flags a conclusion.' },
+        { front: 'When you see "conclude", what does it usually signal?', role: 'Conclusion Indicator', function: 'Explicitly states the conclusion of the argument.', example: '"We must conclude that the earth is round."', note: 'Directly flags a conclusion.' },
+        { front: 'In LR, what is "for" usually doing?', role: 'Premise Indicator', function: 'Introduces a reason or support for a preceding claim.', example: '"We must leave, for the storm is approaching."', note: 'Often follows the conclusion it supports.' },
+        { front: 'In LR, what is "after all" usually doing?', role: 'Premise Indicator', function: 'Provides justification or a premise for an earlier claim.', example: '"She will win. After all, she trained the hardest."', note: 'A classic premise indicator.' },
+        { front: 'In LR, what is "because" usually doing?', role: 'Premise Indicator', function: 'Introduces factual support, evidence, or a reason for a claim.', example: '"The proposal should fail because it is too expensive."', note: 'Look for the conclusion this support is helping to prove.' },
+        { front: 'In LR, what is "since" usually doing?', role: 'Premise Indicator', function: 'Acts as a premise indicator, supplying a reason.', example: '"Since the bridge is out, we must turn back."', note: 'The conclusion often comes in the other half of the sentence.' },
+        { front: 'In LR, what is "and" (when connecting facts) usually doing?', role: 'Premise Indicator', function: 'Functions as an additional premise or piece of evidence.', example: '"The car is fast, and it is fuel-efficient."', note: 'Links multiple pieces of support together.' },
+        { front: 'What is the likely function of "but"?', role: 'Pivot Word', function: 'Signals a shift, often away from an opposing view and toward the author\'s point.', example: '"Some like it cold, but I prefer it hot."', note: 'Pay close attention to what comes right after it.' },
+        { front: 'What is the likely function of "yet"?', role: 'Pivot Word', function: 'Functions as a pivot, shifting the argument\'s direction.', example: '"The plan is costly, yet it is necessary."', note: 'Often introduces the main conclusion.' },
+        { front: 'What is the likely function of "however"?', role: 'Pivot Word', function: 'Signals a turn away from another viewpoint and toward the author\'s real point.', example: '"Some critics oppose the policy. However, the evidence supports it."', note: 'Pay close attention to what comes right after it—often the main conclusion.' },
+        { front: 'What does "some people say" usually introduce?', role: 'Opposing Viewpoint', function: 'Frames a view or belief that the author is almost certainly going to attack or rebut.', example: '"Some people say video games cause violence. But studies show otherwise."', note: 'Expect a pivot word (like "but") to follow shortly after.' },
+        { front: 'What does "it\'s commonly believed" usually introduce?', role: 'Opposing Viewpoint', function: 'Sets up a widespread opinion that the author will likely disagree with.', example: '"It\'s commonly believed that carrots improve eyesight, but this is a myth."', note: 'A classic setup for a rebuttal conclusion.' },
+        { front: 'What does "some economists believe" usually introduce?', role: 'Opposing Viewpoint', function: 'Introduces a domain-specific opposing viewpoint.', example: '"Some economists believe taxes should rise, but they are mistaken."', note: 'The author is teeing up an argument against these experts.' },
+        { front: 'What does "some biologist" usually introduce?', role: 'Opposing Viewpoint', function: 'Introduces a domain-specific opposing viewpoint.', example: '"Some biologists claim the species is extinct, yet recent sightings occur."', note: 'Look for the author\'s rebuttal.' },
+        { front: 'When you see "although", what should you suspect?', role: 'Concession', function: 'Acknowledges a contrary point without adopting it as the main view.', example: '"Although the initial cost is high, the long-term savings are substantial."', note: 'The author is playing defense. The real point comes after the comma.' },
+        { front: 'When you see "while" (as a contrast), what should you suspect?', role: 'Concession', function: 'Concedes a point before delivering the primary argument.', example: '"While it is raining, we must still go outside."', note: 'The main point usually follows the concession.' },
+        { front: 'When you see "despite", what should you suspect?', role: 'Concession', function: 'Acknowledges a hindrance or opposing fact without adopting it.', example: '"Despite the risks, the mission was a success."', note: 'Often followed by the author\'s main conclusion.' },
+        { front: 'When you see "granted", what should you suspect?', role: 'Concession', function: 'Admits a point to the opposition before countering it.', example: '"Granted, the car is old, but it runs perfectly."', note: 'Sets up a pivot to the actual conclusion.' },
+        { front: 'When you see "naturally", what should you suspect?', role: 'Concession', function: 'Acknowledges an expected objection before proceeding.', example: '"Naturally, people are upset, but the law must stay."', note: 'Functions similarly to "granted".' },
+        { front: 'What do words like "clearly" signal?', role: 'Opinion Indicator', function: 'Flags the author\'s strong belief, often pointing directly to the conclusion.', example: '"Clearly, the new tax plan will benefit the wealthy."', note: 'The author uses these words to persuade you. Find the evidence they use to back it up.' },
+        { front: 'What do words like "obviously" signal?', role: 'Opinion Indicator', function: 'Indicates a strong subjective judgment from the author.', example: '"Obviously, we cannot fund this project."', note: 'Highly likely to be the main conclusion.' },
+        { front: 'What do words like "evidently" signal?', role: 'Opinion Indicator', function: 'Signals that the author is drawing a conclusion based on evidence.', example: '"Evidently, the policy has failed."', note: 'Ties the opinion directly to the reasoning.' },
+        { front: 'If an author uses "ought", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment, highly likely to be the conclusion.', example: '"We ought to protect the environment."', note: 'Prescriptive claims almost always act as conclusions.' },
+        { front: 'If an author uses "must", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Signals a strong prescriptive or logical necessity, often the conclusion.', example: '"The government must lower interest rates."', note: 'Facts rarely use "must". It\'s a conclusion needing support.' },
+        { front: 'If an author uses "should", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment (what the author thinks is right), highly likely to be the conclusion.', example: '"The city should invest in more green spaces."', note: 'Facts do not use "should". This is a subjective claim that needs support.' }
+    ];
+
+    function updateFCProgress() {
+        const total = flashcardsData.length;
+        const mastered = (appState.fcMastered || []).length;
+        const percent = Math.round((mastered / total) * 100);
+        document.getElementById('fc-percent-val').innerText = percent;
+        document.getElementById('fc-header-bar').style.width = `${percent}%`;
+        document.getElementById('fc-sub-text').innerText = `${mastered} of ${total} cards mastered`;
+    }
+
+    function loadFlashcard() {
+        const c = flashcardsData[appState.fcIndex];
+        document.getElementById('fc-front-q').innerText = c.front;
+        document.getElementById('fc-role').innerText = c.role;
+        document.getElementById('fc-function').innerText = c.function;
+        document.getElementById('fc-example-text').innerText = c.example;
+        document.getElementById('fc-note-text').innerText = c.note;
+
+        updateFCProgress();
+
+        const card = document.getElementById('fc-card');
+        const controls = document.getElementById('fc-controls');
+
+        card.classList.remove('is-flipped');
+        controls.classList.remove('visible');
+    }
+
+    function flipCard() {
+        const card = document.getElementById('fc-card');
+        const controls = document.getElementById('fc-controls');
+        const isFlippingToBack = !card.classList.contains('is-flipped');
+
+        card.classList.toggle('is-flipped');
+
+        if (isFlippingToBack) {
+            controls.classList.add('visible');
+        } else {
+            controls.classList.remove('visible');
+        }
+    }
+
+    function handleFC(action) {
+        document.getElementById('fc-card').classList.remove('is-flipped');
+        document.getElementById('fc-controls').classList.remove('visible');
+
+        setTimeout(() => {
+            if (action === 'got-it') {
+                if (!appState.fcMastered) appState.fcMastered = [];
+                if (!appState.fcMastered.includes(appState.fcIndex)) {
+                    appState.fcMastered.push(appState.fcIndex);
+                }
+                showToast('Marked as mastered', 'success');
+            } else {
+                showToast('Saved for next review', 'warning');
+            }
+
+            appState.fcIndex = (appState.fcIndex + 1) % flashcardsData.length;
+            saveState();
+            loadFlashcard();
+        }, 400);
     }
 
     document.querySelectorAll('.nav-item').forEach(link => {
