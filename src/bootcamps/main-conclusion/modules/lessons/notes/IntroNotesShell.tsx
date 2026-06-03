@@ -106,10 +106,6 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                 <p className="text-[20px] leading-[1.42] text-[oklch(0.2_0.01_60/0.74)] md:text-[22px]">
                   {subtitle}
                 </p>
-                <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[oklch(0.2_0.01_60/0.52)]">
-                  <span className="rounded-full border border-[oklch(0.2_0.01_60/0.1)] bg-white/70 px-4 py-2">Lesson notes</span>
-                  <span className="rounded-full border border-[oklch(0.2_0.01_60/0.08)] bg-[oklch(0.975_0.008_60)] px-4 py-2">Read before the lab</span>
-                </div>
               </motion.div>
 
               <motion.div

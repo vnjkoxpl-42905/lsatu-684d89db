@@ -1,11 +1,22 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { PremiseSupportCheck } from "./PremiseSupportCheck";
 import { RoleSpotlightSequence } from "./RoleSpotlightSequence";
 import { TwoPartConclusionCheckMachine } from "./TwoPartConclusionCheckMachine";
 import { IntroLessonPage } from "../IntroLessonPage";
+
+beforeAll(() => {
+  class MockIntersectionObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+
+  window.IntersectionObserver = MockIntersectionObserver as typeof IntersectionObserver;
+  globalThis.IntersectionObserver = MockIntersectionObserver as typeof IntersectionObserver;
+});
 
 describe("remaining intro note interactions", () => {
   it("reveals which sentence is doing the support work on the premises page", () => {
@@ -119,8 +130,25 @@ describe("remaining intro note interactions", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getAllByText(/label the stimulus yourself/i)).toHaveLength(5);
-    expect(screen.getAllByRole("button", { name: "Background" }).length).toBeGreaterThan(0);
-    expect(screen.getByText(/example 1: vegetarian diets/i)).toBeInTheDocument();
+    expect(screen.getByText(/a compact guide to background, opposing viewpoint, concession, and pivot\./i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Background" })).toBeInTheDocument();
+    expect(screen.getByText(/although vegetarian diets require careful planning, they can still provide complete nutrition\./i)).toBeInTheDocument();
+  });
+
+  it("uses student-facing hero copy for the conclusion placement lesson", () => {
+    window.scrollTo = () => {};
+
+    render(
+      <MemoryRouter initialEntries={["/bootcamp/intro-to-lr/lessons/notes/first-sentence-vs-rebuttal-structures"]}>
+        <IntroLessonPage pageId="first-sentence-vs-rebuttal-structures" />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByText(/learn the two most common places the main conclusion appears, then carry that pattern into the lab\./i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/learn the read before you touch the lab\./i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/lesson notes/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/read before the lab/i)).not.toBeInTheDocument();
   });
 });
