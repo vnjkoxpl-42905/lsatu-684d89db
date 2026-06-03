@@ -1,19 +1,18 @@
 /**
- * Persistence factory — the LSAT U absorption hand-off point.
- * v1: V1Persistence (LocalStorage + IndexedDB).
- * v1.5 / LSAT U absorption: replace the export below with `new SupabasePersistence(...)`.
- * One-file change. App code never knows the difference.
+ * Persistence factory.
+ *
+ * For signed-in users we use SupabaseSyncedPersistence: local-first reads/writes
+ * with background autosave to the `bootcamp_kv` table so every profile keeps
+ * all of their bootcamp progress in the cloud and across devices.
+ * For anonymous callers we fall back to local-only V1Persistence.
  */
 
 import type { Persistence } from './Persistence';
 import { V1Persistence } from './V1Persistence';
 import { LocalStoragePersistence } from './LocalStoragePersistence';
 import { IndexedDBPersistence } from './IndexedDBPersistence';
+import { SupabaseSyncedPersistence } from './SupabaseSyncedPersistence';
 
-// Per-user adapter cache. The original implementation cached a single
-// `_persistence` after the first call and ignored later userId arguments,
-// which meant a sign-out → sign-in as a different user kept writing under
-// the first user's storage prefix. Keying the cache by userId prevents that.
 const _cache: Map<string, Persistence> = new Map();
 let _testOverride: Persistence | null = null;
 
@@ -22,10 +21,13 @@ export function getPersistence(userId: string = 'anon'): Persistence {
   if (_testOverride) return _testOverride;
   const existing = _cache.get(userId);
   if (existing) return existing;
-  const created = new V1Persistence(
-    new LocalStoragePersistence(userId),
-    new IndexedDBPersistence(userId),
-  );
+  const created: Persistence =
+    userId && userId !== 'anon'
+      ? new SupabaseSyncedPersistence(userId)
+      : new V1Persistence(
+          new LocalStoragePersistence(userId),
+          new IndexedDBPersistence(userId),
+        );
   _cache.set(userId, created);
   return created;
 }
@@ -35,3 +37,4 @@ export function __setPersistenceForTests(p: Persistence | null): void {
   _testOverride = p;
   if (p === null) _cache.clear();
 }
+
