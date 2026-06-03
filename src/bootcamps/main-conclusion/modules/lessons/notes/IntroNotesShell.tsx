@@ -113,14 +113,20 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                 className="mt-8 grid gap-3 md:max-w-[34rem] md:grid-cols-2"
               >
                 <div className="rounded-[22px] border border-[oklch(0.2_0.01_60/0.08)] bg-white/78 px-5 py-5 shadow-[0_18px_38px_-24px_oklch(0.2_0.01_60/0.18)]">
-                  <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[oklch(0.45_0.03_72)]">Read 1</div>
+                  <div className="mb-3 flex items-baseline gap-2.5 text-[oklch(0.45_0.03_72)]">
+                    <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-[oklch(0.42_0.02_70/0.7)]">Place</span>
+                    <span className="font-serif text-[21px] italic leading-none text-[oklch(0.56_0.03_72/0.62)]">1</span>
+                  </div>
                   <div className="font-serif text-[28px] italic leading-[1.02] text-[oklch(0.16_0.01_60)]">Conclusion first</div>
                   <p className="mt-3 text-[15px] leading-relaxed text-[oklch(0.22_0.01_60/0.68)]">
                     If the first sentence sounds like the author's claim, test that read first.
                   </p>
                 </div>
                 <div className="rounded-[22px] border border-[oklch(0.2_0.01_60/0.08)] bg-[linear-gradient(180deg,oklch(0.985_0.008_62),oklch(0.968_0.012_70))] px-5 py-5 shadow-[0_18px_38px_-24px_oklch(0.2_0.01_60/0.18)]">
-                  <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[oklch(0.45_0.03_72)]">Read 2</div>
+                  <div className="mb-3 flex items-baseline gap-2.5 text-[oklch(0.45_0.03_72)]">
+                    <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-[oklch(0.42_0.02_70/0.7)]">Place</span>
+                    <span className="font-serif text-[21px] italic leading-none text-[oklch(0.56_0.03_72/0.62)]">2</span>
+                  </div>
                   <div className="font-serif text-[28px] italic leading-[1.02] text-[oklch(0.16_0.01_60)]">Pivot later</div>
                   <p className="mt-3 text-[15px] leading-relaxed text-[oklch(0.22_0.01_60/0.68)]">
                     If the opening sounds like a setup or someone else's view, wait for the turn.

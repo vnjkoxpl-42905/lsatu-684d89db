@@ -144,10 +144,15 @@ describe("remaining intro note interactions", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/learn the two most common places the main conclusion appears\./i)).toBeInTheDocument();
+    expect(screen.getByText(/the main conclusion usually appears in one of two places\./i)).toBeInTheDocument();
+    expect(screen.getAllByText("Place")).toHaveLength(4);
+    expect(screen.getAllByText("1")).toHaveLength(2);
+    expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.queryByText(/learn the read before you touch the lab\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/then carry that pattern into the lab\./i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/learn the two most common places the main conclusion appears\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/lesson notes/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/read before the lab/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^read 1$/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^read 2$/i)).not.toBeInTheDocument();
   });
 });

@@ -1064,7 +1064,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
   "first-sentence-vs-rebuttal-structures": {
     eyebrow: "Lessons",
     title: "First-Sentence vs Rebuttal Structures",
-    subtitle: "Learn the two most common places the main conclusion appears.",
+    subtitle: "The main conclusion usually appears in one of two places.",
     content: (
       <>
         <LessonSection tocTitle="Conclusion Placement" className="space-y-16">
@@ -1093,7 +1093,10 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <div className="max-w-[70rem] space-y-10">
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
               <div className="rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-[linear-gradient(180deg,oklch(0.985_0.005_60),oklch(0.975_0.008_62))] px-7 py-7 shadow-[0_18px_42px_-28px_oklch(0.2_0.01_60/0.16)]">
-                <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[oklch(0.42_0.03_70)]">Read 1</div>
+                <div className="mb-4 flex items-baseline gap-3 text-[oklch(0.42_0.03_70)]">
+                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[oklch(0.4_0.02_70/0.7)]">Place</span>
+                  <span className="font-serif text-[24px] italic leading-none text-[oklch(0.55_0.03_72/0.65)]">1</span>
+                </div>
                 <h3 className="max-w-[13ch] font-serif text-[30px] italic leading-[1.02] tracking-[-0.03em] text-[oklch(0.15_0.01_60)]">
                   First-sentence read
                 </h3>
@@ -1103,7 +1106,10 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               </div>
 
               <div className="rounded-[24px] border border-[oklch(0.2_0.01_60/0.08)] bg-white px-7 py-7 shadow-[0_18px_42px_-28px_oklch(0.2_0.01_60/0.16)]">
-                <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[oklch(0.42_0.03_70)]">Read 2</div>
+                <div className="mb-4 flex items-baseline gap-3 text-[oklch(0.42_0.03_70)]">
+                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[oklch(0.4_0.02_70/0.7)]">Place</span>
+                  <span className="font-serif text-[24px] italic leading-none text-[oklch(0.55_0.03_72/0.65)]">2</span>
+                </div>
                 <h3 className="max-w-[12ch] font-serif text-[30px] italic leading-[1.02] tracking-[-0.03em] text-[oklch(0.15_0.01_60)]">
                   Rebuttal read
                 </h3>
