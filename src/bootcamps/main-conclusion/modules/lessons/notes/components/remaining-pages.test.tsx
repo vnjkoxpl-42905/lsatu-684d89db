@@ -151,6 +151,14 @@ describe("remaining intro note interactions", () => {
     expect(screen.queryByText(/learn the read before you touch the lab\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/then carry that pattern into the lab\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/learn the two most common places the main conclusion appears\./i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/read the pattern/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/but \/ yet \/ however/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/start here/i)).toBeInTheDocument();
+    expect(screen.getByText(/first check whether the author states the point up front or turns into it later\./i)).toBeInTheDocument();
+    expect(screen.getAllByText(/conclusion first/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/turn later/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/if the opening sounds like someone else's view, wait for the author's turn\./i)).toBeInTheDocument();
+    expect(screen.queryByText(/if the opening sounds like a setup or someone else's view, wait for the turn\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/lesson notes/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/^read 1$/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/^read 2$/i)).not.toBeInTheDocument();

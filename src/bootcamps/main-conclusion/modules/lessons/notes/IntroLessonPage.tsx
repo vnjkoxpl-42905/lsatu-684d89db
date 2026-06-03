@@ -1070,17 +1070,53 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <LessonSection tocTitle="Conclusion Placement" className="space-y-16">
           <SectionHeading title="Conclusion Placement" subtitle="Where the author usually puts the main point" />
           <div className="grid gap-6 lg:grid-cols-2">
-            <GridCard title="First-sentence conclusion">
-              <p>The author states the main point in the first sentence.</p>
-              <p>The rest of the stimulus gives reasons for that claim. Conclusion first. Support after.</p>
-            </GridCard>
-            <GridCard title="Rebuttal / pivot conclusion">
-              <p>The stimulus starts with someone else’s view, a concession, or a setup line.</p>
-              <p>Then the author pivots into the real conclusion. Watch for <strong>but</strong>, <strong>yet</strong>, and <strong>however</strong>.</p>
-            </GridCard>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -3, boxShadow: "0 20px 34px -28px oklch(0.36 0.05 150 / 0.2)" }}
+              className="group rounded-[24px] border border-[oklch(0.46_0.05_150/0.14)] bg-[linear-gradient(180deg,oklch(0.986_0.006_110),oklch(0.974_0.01_145))] p-7 shadow-[0_18px_38px_-30px_oklch(0.2_0.01_60/0.16)] transition-shadow duration-200"
+            >
+              <div className="mb-5 flex items-baseline justify-between gap-4">
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-[oklch(0.43_0.04_145/0.68)]">Place 1</span>
+                <span className="rounded-full border border-[oklch(0.46_0.05_150/0.14)] bg-[oklch(0.98_0.01_150/0.86)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[oklch(0.39_0.05_145/0.76)] transition-colors duration-200 group-hover:bg-[oklch(0.965_0.018_145)]">
+                  Up front
+                </span>
+              </div>
+              <h3 className="mb-4 max-w-[13ch] font-serif text-[28px] italic leading-tight text-[oklch(0.16_0.01_60)]">
+                First-sentence conclusion
+              </h3>
+              <div className="space-y-4 text-[18px] leading-[1.68] text-[rgba(26,26,26,0.82)]">
+                <p>The author states the main point in the first sentence.</p>
+                <p>The rest of the stimulus gives the support. Main point first. Reasons after.</p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.42, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -3, boxShadow: "0 20px 34px -28px oklch(0.42 0.06 45 / 0.18)" }}
+              className="group rounded-[24px] border border-[oklch(0.58_0.05_42/0.16)] bg-[linear-gradient(180deg,oklch(0.987_0.006_32),oklch(0.975_0.01_48))] p-7 shadow-[0_18px_38px_-30px_oklch(0.2_0.01_60/0.16)] transition-shadow duration-200"
+            >
+              <div className="mb-5 flex items-baseline justify-between gap-4">
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-[oklch(0.46_0.04_42/0.68)]">Place 2</span>
+                <span className="rounded-full border border-[oklch(0.58_0.05_42/0.16)] bg-[oklch(0.982_0.01_42/0.86)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[oklch(0.43_0.05_40/0.76)] transition-colors duration-200 group-hover:bg-[oklch(0.968_0.02_42)]">
+                  After the turn
+                </span>
+              </div>
+              <h3 className="mb-4 max-w-[14ch] font-serif text-[28px] italic leading-tight text-[oklch(0.16_0.01_60)]">
+                Rebuttal / pivot conclusion
+              </h3>
+              <div className="space-y-4 text-[18px] leading-[1.68] text-[rgba(26,26,26,0.82)]">
+                <p>The stimulus starts with someone else&apos;s view, or with language that is not yet the author&apos;s point.</p>
+                <p>Then the author turns into the real conclusion. Wait for the author&apos;s turn.</p>
+              </div>
+            </motion.div>
           </div>
           <QuoteCard>
-            Your job is not to memorize indicator words in isolation. Your job is to hear the structure: opinion first, or rebuttal after a pivot.
+            Your job is to hear the structure: the point is either up front, or it arrives after the turn.
           </QuoteCard>
         </LessonSection>
 

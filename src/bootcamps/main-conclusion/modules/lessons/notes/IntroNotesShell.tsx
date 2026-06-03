@@ -129,7 +129,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                   </div>
                   <div className="font-serif text-[28px] italic leading-[1.02] text-[oklch(0.16_0.01_60)]">Pivot later</div>
                   <p className="mt-3 text-[15px] leading-relaxed text-[oklch(0.22_0.01_60/0.68)]">
-                    If the opening sounds like a setup or someone else's view, wait for the turn.
+                    If the opening sounds like someone else's view, wait for the author's turn.
                   </p>
                 </div>
               </motion.div>
@@ -154,14 +154,14 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                   <div className="space-y-6">
                     <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[oklch(0.96_0.01_60/0.48)]">Begin</div>
                     <div className="space-y-3">
-                      <div className="text-[46px] font-serif italic leading-[0.96] tracking-[-0.04em]">Read the pattern</div>
+                      <div className="text-[46px] font-serif italic leading-[0.96] tracking-[-0.04em]">Start here</div>
                       <div className="max-w-[19rem] text-[15px] leading-relaxed text-[oklch(0.96_0.01_60/0.68)]">
-                        Start with the two conclusion placements. Then carry that read into the lab.
+                        First check whether the author states the point up front or turns into it later.
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-[oklch(0.96_0.01_60/0.5)]">
-                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">First sentence</span>
-                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">But / Yet / However</span>
+                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">Conclusion first</span>
+                      <span className="rounded-full border border-[oklch(0.96_0.01_60/0.1)] px-3 py-2">Turn later</span>
                     </div>
                   </div>
                   <div className="flex w-full items-center justify-between rounded-[18px] border border-[oklch(0.96_0.01_60/0.12)] bg-[oklch(0.96_0.01_60/0.04)] px-5 py-4">
