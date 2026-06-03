@@ -5,7 +5,7 @@ export function MainConclusionLab() {
     <ReferenceDrillFrame
       drillId="MC-DRL-MCL"
       title="Main Conclusion Lab"
-      source="introconclusiondrill"
+      source="maincfirst"
     />
   );
 }
