@@ -1064,7 +1064,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
   "first-sentence-vs-rebuttal-structures": {
     eyebrow: "Lessons",
     title: "First-Sentence vs Rebuttal Structures",
-    subtitle: "Learn the two most common places the main conclusion appears, then carry that pattern into the lab.",
+    subtitle: "Learn the two most common places the main conclusion appears.",
     content: (
       <>
         <LessonSection tocTitle="Conclusion Placement" className="space-y-16">
