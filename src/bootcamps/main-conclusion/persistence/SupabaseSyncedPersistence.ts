@@ -108,7 +108,7 @@ export class SupabaseSyncedPersistence implements Persistence {
           user_id: this.userId,
           table_name: b.table,
           record_id: b.id,
-          data: b.data as object,
+          data: b.data as never,
         }));
         const { error } = await supabase
           .from('bootcamp_kv')
