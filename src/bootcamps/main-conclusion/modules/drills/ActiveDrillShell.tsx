@@ -1,9 +1,13 @@
+import type { ReactNode } from 'react';
 import { Navigate, Link, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
-import { ReferenceDrillFrame } from './labs/ReferenceDrillFrame';
+import { StructureClassification } from './labs/StructureClassification';
+import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
+import { XRayReview } from './labs/XRayReview';
+import { MixedStructureCheck } from './labs/MixedStructureCheck';
 import { getIntroDrillBySlug } from './introDrills';
 
 const LEGACY_REDIRECT: Record<string, string> = {
@@ -42,30 +46,22 @@ export function ActiveDrillShell() {
     );
   }
 
-  let content: React.ReactNode;
+  let content: ReactNode;
   switch (drill.slug) {
     case 'main-conclusion-lab':
       content = <MainConclusionLab />;
       break;
     case 'first-sentence-vs-rebuttal-lab':
-      content = (
-        <ReferenceDrillFrame
-          drillId={drill.completionId}
-          title={drill.title}
-          source="first-sentence-vs-rebuttal"
-        />
-      );
+      content = <StructureClassification />;
       break;
     case 'argument-structure-lab':
+      content = <ArgumentStructureLab drillId={drill.completionId} title={drill.title} />;
+      break;
     case 'structure-reveal-review':
+      content = <XRayReview />;
+      break;
     case 'final-mixed-structure-check':
-      content = (
-        <ReferenceDrillFrame
-          drillId={drill.completionId}
-          title={drill.title}
-          hash="drills-view"
-        />
-      );
+      content = <MixedStructureCheck />;
       break;
     default:
       content = (

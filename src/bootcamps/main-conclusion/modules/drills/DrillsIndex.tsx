@@ -7,11 +7,12 @@
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, LibraryBig, ShieldAlert, Target } from 'lucide-react';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { DynamicDrillLab, type DrillLabCard } from '@/bootcamps/main-conclusion/components/interactive-drills/DynamicDrillLab';
+import { Gauge } from '@/components/ui/gauge-1';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { nextDrillStep } from '@/bootcamps/main-conclusion/lib/runner';
 import { INTRO_DRILLS } from './introDrills';
@@ -33,6 +34,16 @@ const GROUPS = [
     drillIds: ['MC-DRL-XRY', 'MC-DRL-MIX'],
   },
 ];
+
+function gaugeColors(value: number) {
+  return {
+    '0': 'rgb(var(--error))',
+    '50': 'rgb(var(--warn))',
+    '75': 'rgb(var(--success))',
+    secondary: 'rgb(var(--border) / 0.18)',
+    primary: value >= 75 ? 'rgb(var(--success))' : value >= 50 ? 'rgb(var(--warn))' : 'rgb(var(--error))',
+  };
+}
 
 export function DrillsIndex() {
   const { progress } = useModuleProgress();
@@ -72,6 +83,11 @@ export function DrillsIndex() {
 
   const nextHref = next.href;
   const isGate = next.isGate;
+  const completionPercent = Math.round((doneCount / Math.max(INTRO_DRILLS.length, 1)) * 100);
+  const gateCleared = completed.has('MC-DRL-MIX');
+  const groupedProgress = Math.round(
+    (GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length / GROUPS.length) * 100,
+  );
 
   return (
     <article className="mx-auto max-w-4xl space-y-8 px-6 py-12 pb-32 desktop:px-12 desktop:py-16">
@@ -103,6 +119,27 @@ export function DrillsIndex() {
         </Card>
       </header>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        <DrillMetricCard
+          title="Drill completion"
+          detail={`${doneCount} of ${INTRO_DRILLS.length} drills cleared`}
+          icon={<LibraryBig className="h-4 w-4" strokeWidth={2} />}
+          gauge={<Gauge value={completionPercent} size="medium" showValue colors={gaugeColors(completionPercent)} />}
+        />
+        <DrillMetricCard
+          title="Simulator gate"
+          detail={gateCleared ? 'Final mixed check cleared. Simulator can open.' : 'Final mixed check still gates the Simulator.'}
+          icon={<ShieldAlert className="h-4 w-4" strokeWidth={2} />}
+          gauge={<Gauge value={gateCleared ? 100 : completionPercent} size="medium" showValue colors={gaugeColors(gateCleared ? 100 : completionPercent)} />}
+        />
+        <DrillMetricCard
+          title="Sequence coverage"
+          detail={`${GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length} of ${GROUPS.length} drill bands fully cleared`}
+          icon={<Target className="h-4 w-4" strokeWidth={2} />}
+          gauge={<Gauge value={groupedProgress} size="medium" showValue colors={gaugeColors(groupedProgress)} />}
+        />
+      </section>
+
       {GROUPS.map((group) => (
         <DynamicDrillLab
           key={group.title}
@@ -112,5 +149,30 @@ export function DrillsIndex() {
         />
       ))}
     </article>
+  );
+}
+
+function DrillMetricCard({
+  title,
+  detail,
+  icon,
+  gauge,
+}: {
+  title: string;
+  detail: string;
+  icon: JSX.Element;
+  gauge: JSX.Element;
+}) {
+  return (
+    <Card variant="surface" className="flex items-center gap-4 p-5">
+      <div className="shrink-0">{gauge}</div>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.14em] text-ink-faint">
+          {icon}
+          <span>{title}</span>
+        </div>
+        <p className="mt-2 font-mc-serif text-body text-ink-soft">{detail}</p>
+      </div>
+    </Card>
   );
 }

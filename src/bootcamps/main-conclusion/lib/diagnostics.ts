@@ -143,9 +143,9 @@ export function buildRecommendations(
     recs.push({
       id: 'rec-calibration',
       kind: 'drill',
-      title: 'Generate your first diagnostic evidence',
+      title: 'Start the Drill Lab',
       reason: 'Your dashboard needs saved drill or simulator work before it can diagnose patterns.',
-      href: '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
+      href: '/bootcamp/intro-to-lr/drills',
       priority: 1,
     });
   }

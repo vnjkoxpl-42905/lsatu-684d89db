@@ -2,7 +2,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { IntroDrillPage } from './IntroDrillPage';
-import { ReferenceDrillFrame } from './labs/ReferenceDrillFrame';
 import { getIntroDrillBySlug } from './introDrills';
 
 const LEGACY_REDIRECT: Record<string, string> = {
@@ -39,10 +38,6 @@ export function DrillShell() {
         />
       </div>
     );
-  }
-
-  if (drill.slug === 'first-sentence-vs-rebuttal-lab' || drill.slug === 'main-conclusion-lab') {
-    return <Navigate to={drill.runRoute} replace />;
   }
 
   return <IntroDrillPage drill={drill} />;

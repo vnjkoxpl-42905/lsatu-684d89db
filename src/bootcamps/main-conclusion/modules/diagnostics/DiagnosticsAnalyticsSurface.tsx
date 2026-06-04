@@ -100,9 +100,9 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
             The analytics page is built from saved drill gates, simulator attempts, SRS reviews, and recordings. Once those exist, this page remembers the student&apos;s profile and starts diagnosing patterns over time.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check">
+            <Link to="/bootcamp/intro-to-lr/drills">
               <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                Open the final mixed drill
+                Open the Drill Lab
               </Button>
             </Link>
             <Link to="/bootcamp/intro-to-lr/diagnostics/philosophy" className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
