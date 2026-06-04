@@ -291,51 +291,29 @@ export function BootcampRoutes() {
         />
         <Route
           path="drills"
-          element={
-            <IntroPathLearningLayout>
-              <DrillsIndex />
-            </IntroPathLearningLayout>
-          }
+          element={<DrillsIndex />}
         />
         <Route
           path="drills/:drillId"
-          element={
-            <IntroPathLearningLayout>
-              <DrillShell />
-            </IntroPathLearningLayout>
-          }
+          element={<DrillShell />}
         />
         <Route
           path="drills/:drillId/run"
-          element={
-            <IntroPathLearningLayout>
-              <ActiveDrillShell />
-            </IntroPathLearningLayout>
-          }
+          element={<ActiveDrillShell />}
         />
         <Route
           path="practice-drills"
-          element={
-            <IntroPathLearningLayout>
-              <PracticeDrillsIndex />
-            </IntroPathLearningLayout>
-          }
+          element={<PracticeDrillsIndex />}
         />
         <Route
           path="practice-drills/:practiceSlug"
-          element={
-            <IntroPathLearningLayout>
-              <PracticeRunnerWrapper />
-            </IntroPathLearningLayout>
-          }
+          element={<PracticeRunnerWrapper />}
         />
         <Route
           path="simulator"
           element={
             <LockedRoute routeId="/simulator">
-              <IntroPathLearningLayout>
-                <SimulatorOverview />
-              </IntroPathLearningLayout>
+              <SimulatorOverview />
             </LockedRoute>
           }
         />
@@ -343,9 +321,7 @@ export function BootcampRoutes() {
           path="simulator/bank"
           element={
             <LockedRoute routeId="/simulator/bank">
-              <IntroPathLearningLayout>
-                <StructuredDissectionLab />
-              </IntroPathLearningLayout>
+              <StructuredDissectionLab />
             </LockedRoute>
           }
         />
@@ -353,9 +329,7 @@ export function BootcampRoutes() {
           path="simulator/trap-master"
           element={
             <LockedRoute routeId="/simulator/trap-master">
-              <IntroPathLearningLayout>
-                <TrapMaster />
-              </IntroPathLearningLayout>
+              <TrapMaster />
             </LockedRoute>
           }
         />
@@ -363,9 +337,7 @@ export function BootcampRoutes() {
           path="simulator/trap-master/:traitId"
           element={
             <LockedRoute routeId="/simulator/trap-master">
-              <IntroPathLearningLayout>
-                <TraitDeepDive />
-              </IntroPathLearningLayout>
+              <TraitDeepDive />
             </LockedRoute>
           }
         />
@@ -373,9 +345,7 @@ export function BootcampRoutes() {
           path="simulator/answer-key-views"
           element={
             <LockedRoute routeId="/simulator/answer-key-views">
-              <IntroPathLearningLayout>
-                <QuestionBank />
-              </IntroPathLearningLayout>
+              <QuestionBank />
             </LockedRoute>
           }
         />
@@ -383,9 +353,7 @@ export function BootcampRoutes() {
           path="simulator/hard-mode"
           element={
             <LockedRoute routeId="/simulator/hard-mode">
-              <IntroPathLearningLayout>
-                <HardMode />
-              </IntroPathLearningLayout>
+              <HardMode />
             </LockedRoute>
           }
         />
