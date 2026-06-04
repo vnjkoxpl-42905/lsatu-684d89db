@@ -14,8 +14,8 @@ beforeAll(() => {
     disconnect() {}
   }
 
-  window.IntersectionObserver = MockIntersectionObserver as typeof IntersectionObserver;
-  globalThis.IntersectionObserver = MockIntersectionObserver as typeof IntersectionObserver;
+  window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+  globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 });
 
 describe("remaining intro note interactions", () => {
