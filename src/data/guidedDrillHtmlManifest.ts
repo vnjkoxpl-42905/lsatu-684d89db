@@ -268,7 +268,7 @@ export const guidedDrillHtmlManifest: GuidedDrillHtmlManifestEntry[] = [
     htmlPath: "/guided-drill-html/29_rebuttal_conclusions_drill.html",
     sourceFile: "29_rebuttal_conclusions_drill.html",
     time: "30 min",
-    questions: 4,
+    questions: 6,
   },
   {
     order: 30,

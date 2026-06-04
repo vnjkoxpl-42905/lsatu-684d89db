@@ -174,7 +174,7 @@ function DrillContent() {
   const [isRetryAfterWrong, setIsRetryAfterWrong] = React.useState(false);
   const [correctExplanation, setCorrectExplanation] = React.useState<string>('');
   const [showReviewButton, setShowReviewButton] = React.useState(false);
-  const [showEndDrillDialog, setShowEndDrillDialog] = React.useState(false);
+  const [isEndingBootcampPracticeDrill, setIsEndingBootcampPracticeDrill] = React.useState(false);
   
   // New post-section flow states
   const [postSectionScreen, setPostSectionScreen] = React.useState<'complete' | 'review' | 'score-report' | null>(null);
@@ -2517,7 +2517,7 @@ function DrillContent() {
     ] : isMcPractice ? [
       {
         label: 'Bootcamp',
-        onClick: () => navigate('/bootcamp/intro-to-lr'),
+        onClick: () => navigate(bootcampPracticeReturnTo),
       },
       ...(contextFocus
         ? [{
@@ -2541,9 +2541,16 @@ function DrillContent() {
       },
     ];
     const handleEndBootcampPracticeDrill = async () => {
-      setShowEndDrillDialog(false);
-      await handleFinishSection(undefined, { returnToAfterFinish: bootcampPracticeReturnTo });
+      if (isEndingBootcampPracticeDrill) return;
+      setIsEndingBootcampPracticeDrill(true);
+      try {
+        await handleFinishSection(undefined, { returnToAfterFinish: bootcampPracticeReturnTo });
+      } catch (err) {
+        console.error('[drill:intro-to-lr-practice:end] finish failed', err);
+        setIsEndingBootcampPracticeDrill(false);
+      }
     };
+    const officialIsPaused = !!timer?.isPaused && !isEndingBootcampPracticeDrill;
 
     return (
       <>
@@ -2561,25 +2568,9 @@ function DrillContent() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <AlertDialog open={showEndDrillDialog} onOpenChange={setShowEndDrillDialog}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>End drill?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Your completed answers will be saved, then you will return to the bootcamp.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleEndBootcampPracticeDrill}>
-                End Drill
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
 
         <OfficialDrillFrame
-          isPaused={!!timer?.isPaused}
+          isPaused={officialIsPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
           tutorToggleVisible={session?.mode === 'adaptive'}
@@ -2597,7 +2588,7 @@ function DrillContent() {
           header={
             <OfficialSessionStrip
               breadcrumbs={officialBreadcrumbs}
-              isPaused={!!timer?.isPaused}
+              isPaused={officialIsPaused}
               onTogglePause={handleTogglePauseClick}
               pauseNoun={isFullSection ? 'Section' : 'Question'}
               completeLabel={isMcPractice ? 'End Drill' : undefined}
@@ -2605,7 +2596,7 @@ function DrillContent() {
                 session.mode === 'adaptive'
                   ? undefined
                   : isMcPractice
-                  ? () => setShowEndDrillDialog(true)
+                  ? () => { void handleEndBootcampPracticeDrill(); }
                   : () => handleFinishSection()
               }
               showAnswerVisible={

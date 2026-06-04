@@ -113,10 +113,6 @@ export function PracticeDrillsIndex() {
                   <span className="block font-mc-sans text-sm font-medium text-ink">{pool.qfeatures.join(', ')}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Starting Level</span>
-                  <span className="block font-mc-sans text-sm font-medium text-ink">Lower difficulty first</span>
-                </div>
-                <div className="space-y-1">
                   <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Count</span>
                   <span className="block font-mc-sans text-sm font-medium text-ink">{pool.count} questions</span>
                 </div>
