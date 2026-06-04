@@ -36,12 +36,23 @@ const GROUPS = [
 ];
 
 function gaugeColors(value: number) {
+  // An untouched sequence is not a failure. At 0 the ring is a muted neutral,
+  // never error-red, so a brand-new student is not greeted by three red dials.
+  // Color earns in as real progress accrues: gold while underway, green once
+  // the band reads as cleared. Error-red is reserved for genuine regression,
+  // which this monotonic checklist never produces.
+  const primary =
+    value <= 0
+      ? 'rgb(var(--ink) / 0.22)'
+      : value >= 75
+        ? 'rgb(var(--success))'
+        : 'rgb(var(--accent))';
   return {
-    '0': 'rgb(var(--error))',
-    '50': 'rgb(var(--warn))',
+    '0': 'rgb(var(--ink) / 0.22)',
+    '1': 'rgb(var(--accent))',
     '75': 'rgb(var(--success))',
     secondary: 'rgb(var(--border) / 0.18)',
-    primary: value >= 75 ? 'rgb(var(--success))' : value >= 50 ? 'rgb(var(--warn))' : 'rgb(var(--error))',
+    primary,
   };
 }
 
@@ -75,7 +86,7 @@ export function DrillsIndex() {
       interaction: drill.interaction,
       why: drill.why,
       completed: completed.has(drill.id),
-      active: next.href === href || next.title.includes(drill.title),
+      active: next.href === href,
       gatesSimulator: drill.gatesSimulator,
       progressLabel: drill.gatesSimulator && !completed.has(drill.id) ? 'gate' : 'available',
     };

@@ -90,7 +90,23 @@ const DRILLS: DrillRow[] = [
 ];
 
 describe('nextDrillStep', () => {
-  it('points at the gate drill (3.4) when not yet cleared, even if 3.1–3.3 are done', () => {
+  it('fresh student (0 drills) → start at the first drill, NOT the gate capstone', () => {
+    const step = nextDrillStep(empty, DRILLS);
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/indicator-word-id');
+    expect(step.isGate).toBe(false);
+  });
+
+  it('does not jump the queue to the gate when earlier drills are still uncleared', () => {
+    const progress: ProgressLike = {
+      completed_lessons: [],
+      completed_drills: ['MC-DRL-3.1'],
+    };
+    const step = nextDrillStep(progress, DRILLS);
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/x-ray-drill');
+    expect(step.isGate).toBe(false);
+  });
+
+  it('surfaces the gate framing only once the gate is the next uncleared drill in order', () => {
     const progress: ProgressLike = {
       completed_lessons: [],
       completed_drills: ['MC-DRL-3.1', 'MC-DRL-3.2', 'MC-DRL-3.3'],

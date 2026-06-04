@@ -175,24 +175,24 @@ export function nextDrillStep(
 ): DrillNextStep {
   const completed = new Set(progress?.completed_drills ?? []);
   const ordered = [...drills].sort((a, b) => parseFloat(a.number) - parseFloat(b.number));
-  const gate = ordered.find((d) => d.gates_simulator);
 
-  // Highest priority: if the unlock-gate drill is not done, that is always next.
-  if (gate && !completed.has(gate.id)) {
-    return {
-      eyebrow: 'Unlock the Simulator',
-      title: `Drill ${gate.number}: ${gate.title}`,
-      subtitle:
-        'Clear the mixed-structure drill page and finish the run to unlock the Question Simulator.',
-      cta: `Open Drill ${gate.number}`,
-      href: `${BC}/drills/${gate.slug}`,
-      isGate: true,
-    };
-  }
-
-  // Otherwise: first uncompleted drill in numeric order.
+  // Next is always the first uncompleted drill in numeric order. The student
+  // works the sequence in order, so a brand-new student starts at Drill 1, not
+  // the capstone. When that next drill happens to be the gate, surface the
+  // unlock-the-Simulator framing; otherwise use the plain next-drill framing.
   const next = ordered.find((d) => !completed.has(d.id));
   if (next) {
+    if (next.gates_simulator) {
+      return {
+        eyebrow: 'Unlock the Simulator',
+        title: `Drill ${next.number}: ${next.title}`,
+        subtitle:
+          'Clear the mixed-structure drill page and finish the run to unlock the Question Simulator.',
+        cta: `Open Drill ${next.number}`,
+        href: `${BC}/drills/${next.slug}`,
+        isGate: true,
+      };
+    }
     return {
       eyebrow: 'Next drill',
       title: `Drill ${next.number}: ${next.title}`,
