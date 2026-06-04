@@ -104,6 +104,28 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
         }
       />
 
+      {hasNoEvidence ? (
+        <Card variant="elev" accent className="p-5">
+          <div className="flex items-start gap-3">
+            <Badge tone="warn" dot>awaiting evidence</Badge>
+            <div className="flex-1">
+              <p className="font-mc-serif text-body text-ink">
+                Your diagnostic memory is empty. The graphs below populate automatically as you finish drills, simulator sets, and SRS reviews. Every attempt is saved to your profile and synced across devices.
+              </p>
+              <div className="mt-3">
+                <Link to="/bootcamp/intro-to-lr/drills">
+                  <Button size="sm" rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+                    Start the first drill
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ) : null}
+
+
+
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           title="Diagnostic accuracy"
