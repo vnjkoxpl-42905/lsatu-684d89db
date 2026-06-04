@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, type KeyboardEvent } from 'react';
+import { RotateCw } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import { type StructuredFlashcard } from '@/bootcamps/main-conclusion/data/structuredFlashcards';
-import { motion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 
 interface FlashcardProps {
   card: StructuredFlashcard;
@@ -11,9 +12,20 @@ interface FlashcardProps {
 
 export function Flashcard({ card, onAction, className }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const numberedFunction = card.function.match(/^\d+\)/m)
+    ? card.function.split(/\n+/).map((line) => line.replace(/^\d+\)\s*/, '').trim()).filter(Boolean)
+    : null;
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
+  };
+
+  const handleFlipKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleFlip();
+    }
   };
 
   const handleAction = (action: 'review' | 'got-it') => {
@@ -22,50 +34,61 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
   };
 
   return (
-    <div className={cn("flex flex-col items-center gap-12", className)}>
+    <div className={cn("flex flex-col items-center gap-8 sm:gap-10", className)}>
       <div 
-        className="group h-[420px] w-full max-w-[500px] perspective-1200 cursor-pointer"
+        role="button"
+        tabIndex={0}
+        aria-pressed={isFlipped}
+        aria-label={isFlipped ? 'Hide flashcard answer' : 'Reveal flashcard answer'}
+        className="group h-[min(410px,calc(100vh-292px))] min-h-[330px] w-full max-w-[500px] perspective-1200 cursor-pointer rounded-[24px] outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.48_0.14_255/0.35)] focus-visible:ring-offset-4 focus-visible:ring-offset-[oklch(0.98_0.005_60)]"
         onClick={handleFlip}
+        onKeyDown={handleFlipKeyDown}
       >
         <div className={cn(
-          "relative h-full w-full transition-transform duration-700 preserve-3d",
+          "relative h-full w-full preserve-3d",
+          shouldReduceMotion ? "transition-none" : "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
           isFlipped ? "rotate-y-180" : ""
         )}>
           {/* Front */}
-          <div className="absolute inset-0 backface-hidden rounded-[32px] bg-white p-12 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.08)] border border-[oklch(0.2_0.01_60/0.04)] flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:shadow-[0_48px_96px_-24px_oklch(0.2_0.01_60/0.12)]">
-            <div className="text-[#3B82F6] text-[10px] font-bold uppercase tracking-[0.2em] mb-12">
-              Concept Check
-            </div>
-            <h3 className="font-mc-serif text-[32px] leading-tight text-[oklch(0.15_0.01_60)] font-medium">
+          <div className="absolute inset-0 backface-hidden rounded-[24px] border border-[oklch(0.2_0.01_60/0.055)] bg-[oklch(0.995_0.004_60)] px-8 py-12 text-center shadow-[0_30px_76px_-30px_oklch(0.2_0.01_60/0.22)] transition-[box-shadow,transform,border-color] duration-300 ease-eased flex flex-col items-center justify-center group-hover:-translate-y-1 group-hover:border-[oklch(0.48_0.14_255/0.16)] group-hover:shadow-[0_44px_104px_-38px_oklch(0.2_0.01_60/0.28)] sm:px-12">
+            <h3 className="max-w-[13em] text-balance font-mc-serif text-[clamp(1.62rem,3.8vw,2.22rem)] font-medium leading-[1.15] tracking-[-0.008em] text-[oklch(0.15_0.01_60)]">
               {card.front}
             </h3>
-            <div className="absolute bottom-10 font-mc-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.3)] flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-40"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
-              Tap to reveal
+            <div className="absolute bottom-8 flex items-center gap-2 font-mc-sans text-[0.66rem] font-bold uppercase tracking-[0.15em] text-[oklch(0.2_0.01_60/0.38)]">
+              <RotateCw className="h-3.5 w-3.5 opacity-55" aria-hidden="true" strokeWidth={2.4} />
+              Flip card
             </div>
           </div>
 
           {/* Back */}
-          <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[32px] bg-white p-12 shadow-[0_32px_80px_-20px_oklch(0.2_0.01_60/0.08)] border border-[oklch(0.2_0.01_60/0.04)] flex flex-col text-left overflow-y-auto">
-            <div className="inline-flex self-start bg-[oklch(0.6_0.15_150/0.08)] text-[oklch(0.6_0.15_150)] text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-10">
-              {card.role}
-            </div>
-            
-            <p className="font-mc-serif text-[20px] leading-relaxed text-[oklch(0.15_0.01_60)] mb-8 whitespace-pre-wrap">
-              {card.function}
-            </p>
+          <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[24px] border border-[oklch(0.2_0.01_60/0.055)] bg-[oklch(0.995_0.004_60)] px-7 py-8 shadow-[0_30px_76px_-30px_oklch(0.2_0.01_60/0.22)] flex flex-col overflow-y-auto text-left sm:px-10 sm:py-9">
+            {numberedFunction ? (
+              <ol className="mb-6 space-y-4 font-mc-serif text-[clamp(1.02rem,2vw,1.18rem)] leading-[1.5] text-[oklch(0.15_0.01_60)]">
+                {numberedFunction.map((item, index) => (
+                  <li key={item} className="grid grid-cols-[2rem_1fr] gap-2">
+                    <span className="font-mc-sans text-[0.72rem] font-bold tabular-nums text-[oklch(0.48_0.14_255)]">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="mb-6 max-w-[32ch] whitespace-pre-wrap font-mc-serif text-[clamp(1.04rem,2vw,1.24rem)] leading-[1.58] text-[oklch(0.15_0.01_60)]">
+                {card.function}
+              </p>
+            )}
 
             {card.example !== 'N/A' && (
-              <div className="bg-[oklch(0.2_0.01_60/0.03)] px-6 py-5 rounded-[18px] mb-8 border border-[oklch(0.2_0.01_60/0.04)]">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60/0.4)] mb-3">Example</p>
-                <p className="font-mc-serif italic text-[17px] leading-relaxed text-[oklch(0.2_0.01_60/0.8)]">
+              <div className="mb-6 rounded-[16px] border border-[oklch(0.2_0.01_60/0.045)] bg-[oklch(0.2_0.01_60/0.028)] px-5 py-4 sm:px-6">
+                <p className="mb-2.5 text-[0.64rem] font-bold uppercase tracking-[0.14em] text-[oklch(0.2_0.01_60/0.46)]">Example</p>
+                <p className="font-mc-serif text-[clamp(0.98rem,1.9vw,1.08rem)] italic leading-[1.56] text-[oklch(0.2_0.01_60/0.82)]">
                   {card.example}
                 </p>
               </div>
             )}
 
-            <div className="mt-auto pt-6 border-t border-[oklch(0.2_0.01_60/0.06)] flex gap-3 text-[13px] text-[oklch(0.2_0.01_60/0.5)] font-mc-sans leading-relaxed italic">
-              <span className="opacity-40">💡</span>
+            <div className="mt-auto border-t border-[oklch(0.2_0.01_60/0.06)] pt-4 font-mc-sans text-[0.82rem] italic leading-[1.55] text-[oklch(0.2_0.01_60/0.58)]">
               <p>{card.note}</p>
             </div>
           </div>
@@ -74,18 +97,19 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
 
       {/* Controls - Only visible after flip */}
       <div className={cn(
-        "flex gap-6 transition-all duration-500",
+        "flex flex-wrap justify-center gap-3 sm:gap-5 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        shouldReduceMotion && "transition-none",
         isFlipped ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95 pointer-events-none"
       )}>
         <button 
           onClick={() => handleAction('review')}
-          className="rounded-full border border-[oklch(0.2_0.01_60/0.1)] bg-white px-10 py-3.5 text-[12px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2_0.01_60)] transition-all duration-300 ease-eased hover:bg-[oklch(0.98_0.005_60)] hover:border-[oklch(0.2_0.01_60/0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+          className="min-h-11 rounded-full border border-[oklch(0.2_0.01_60/0.1)] bg-[oklch(0.995_0.004_60)] px-8 py-3 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[oklch(0.2_0.01_60/0.75)] transition-[background,border-color,box-shadow,transform] duration-220 ease-eased hover:-translate-y-0.5 hover:bg-[oklch(0.98_0.005_60)] hover:border-[oklch(0.2_0.01_60/0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2 active:translate-y-0"
         >
           Review Again
         </button>
         <button 
           onClick={() => handleAction('got-it')}
-          className="rounded-full bg-[oklch(0.15_0.01_60)] px-12 py-3.5 text-[12px] font-bold uppercase tracking-[0.2em] text-[oklch(0.96_0.01_60)] transition-all duration-300 ease-eased hover:bg-[oklch(0.1_0.01_60)] shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+          className="min-h-11 rounded-full bg-[oklch(0.15_0.01_60)] px-10 py-3 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[oklch(0.96_0.01_60)] shadow-[0_16px_34px_-20px_oklch(0.15_0.01_60/0.8)] transition-[background,box-shadow,transform] duration-220 ease-eased hover:-translate-y-0.5 hover:bg-[oklch(0.1_0.01_60)] hover:shadow-[0_22px_42px_-22px_oklch(0.15_0.01_60/0.9)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2 active:translate-y-0"
         >
           Got It
         </button>
