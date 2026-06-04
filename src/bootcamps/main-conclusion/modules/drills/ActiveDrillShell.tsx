@@ -47,8 +47,16 @@ export function ActiveDrillShell() {
     case 'main-conclusion-lab':
       content = <MainConclusionLab />;
       break;
-    case 'argument-structure-lab':
     case 'first-sentence-vs-rebuttal-lab':
+      content = (
+        <ReferenceDrillFrame
+          drillId={drill.completionId}
+          title={drill.title}
+          source="first-sentence-vs-rebuttal"
+        />
+      );
+      break;
+    case 'argument-structure-lab':
     case 'structure-reveal-review':
     case 'final-mixed-structure-check':
       content = (

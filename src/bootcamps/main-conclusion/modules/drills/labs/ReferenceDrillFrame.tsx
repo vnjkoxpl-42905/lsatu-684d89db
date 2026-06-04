@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
-type ReferenceSource = 'structuredrill' | 'introconclusiondrill' | 'maincfirst';
+type ReferenceSource = 'structuredrill' | 'introconclusiondrill' | 'maincfirst' | 'first-sentence-vs-rebuttal';
 
 interface Props {
   drillId: string;
