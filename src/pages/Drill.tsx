@@ -114,6 +114,7 @@ function DrillContent() {
   const returnTo = searchParams.get('returnTo');
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
+  const isMcPractice = searchParams.get('source') === 'intro-to-lr-practice-drills';
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -2612,6 +2613,7 @@ function DrillContent() {
             onToggleFlag={handleToggleFlag}
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
+            hideStimulusLabel={isMcPractice}
           />
           <OfficialAnswerNavigator
             questionQueue={session.questionQueue}
