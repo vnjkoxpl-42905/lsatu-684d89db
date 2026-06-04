@@ -73,8 +73,10 @@ export function WorkspaceShell(): JSX.Element {
   const { is_admin } = useUserPermissions();
   const isMainConclusionRunFullscreen =
     location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run';
+  const isLessonStyleFlashcards =
+    location.pathname === '/bootcamp/intro-to-lr/reference/flashcards';
 
-  if (isMainConclusionRunFullscreen) {
+  if (isMainConclusionRunFullscreen || isLessonStyleFlashcards) {
     return (
       <Ctx.Provider value={{ payload, open, close }}>
         <a className="skip-link" href="#main">Skip to main content</a>
