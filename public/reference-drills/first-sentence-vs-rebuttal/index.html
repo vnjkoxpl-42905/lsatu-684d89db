@@ -154,68 +154,10 @@
 
         /* Login */
         #login-view { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
-        .login-card {
-            background: var(--bg-card); padding: 3rem 2.75rem; border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg); width: 100%; max-width: 560px; text-align: center;
+        .login-card { 
+            background: var(--bg-card); padding: 3.5rem 3rem; border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; text-align: center;
             animation: floatCard 6s ease-in-out infinite;
-        }
-        .login-card h1 {
-            font-size: clamp(2.35rem, 4vw, 3.1rem);
-            line-height: 1.1;
-            margin-bottom: 0.75rem;
-            text-wrap: balance;
-        }
-        .login-card #login-btn {
-            margin-top: 0;
-        }
-        #walkthrough-view { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
-        .walkthrough-panel {
-            background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg); width: 100%; max-width: 1120px;
-        }
-        .walkthrough-header { text-align: center; margin-bottom: 2.25rem; }
-        .walkthrough-eyebrow {
-            color: var(--text-tertiary); font-size: 0.78rem; font-weight: 700;
-            letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.45rem;
-        }
-        .walkthrough-header h1 { font-size: 2rem; line-height: 1.15; margin-bottom: 0.6rem; }
-        .walkthrough-header p { max-width: 38rem; margin: 0 auto; font-size: 1rem; }
-        .walkthrough-grid {
-            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.9rem;
-            margin-bottom: 1.9rem;
-        }
-        .walkthrough-step {
-            background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-md);
-            padding: 1.05rem; min-height: 212px; display: flex; flex-direction: column; gap: 0.75rem;
-            position: relative;
-        }
-        .walkthrough-step::before {
-            content: ''; position: absolute; top: 18px; right: -10px; width: 20px; height: 2px;
-            background: linear-gradient(90deg, rgba(0,113,227,0.18), rgba(0,113,227,0));
-        }
-        .walkthrough-step:last-child::before { display: none; }
-        .walkthrough-step-top { display: flex; align-items: center; gap: 0.6rem; }
-        .walkthrough-number {
-            width: 28px; height: 28px; border-radius: 50%; background: var(--text-main); color: white;
-            display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700;
-            flex: 0 0 auto;
-        }
-        .walkthrough-step h2 { font-size: 1rem; line-height: 1.2; margin: 0; max-width: 12ch; }
-        .walkthrough-step p { font-size: 0.9rem; line-height: 1.45; margin: 0; max-width: 22ch; }
-        .walkthrough-cue {
-            margin-top: auto; background: white; border: 1px solid rgba(0,0,0,0.04);
-            border-radius: 10px; padding: 0.85rem 0.9rem; color: var(--text-main); font-size: 0.88rem; line-height: 1.35;
-        }
-        .cue-highlight { background: var(--accent-light); color: var(--accent); border-radius: 6px; padding: 0.05rem 0.3rem; font-weight: 700; }
-        .cue-underline { border-bottom: 2px solid var(--accent); font-weight: 700; }
-        .cue-split { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.55rem; align-items: center; font-size: 0.82rem; text-align: center; }
-        .cue-pill { background: var(--accent-light); color: var(--accent); border-radius: var(--radius-full); padding: 0.45rem 0.7rem; font-weight: 700; }
-        .cue-arrow { color: var(--text-tertiary); font-weight: 700; }
-        .walkthrough-action { display: flex; justify-content: center; }
-        .walkthrough-action .btn { min-width: 220px; padding: 1rem 2rem; font-size: 1.05rem; }
-        @media (max-width: 1100px) {
-            .walkthrough-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .walkthrough-step::before { display: none; }
         }
         @keyframes floatCard {
             0%, 100% { transform: translateY(0px); box-shadow: var(--shadow-lg); }
@@ -341,17 +283,7 @@
         .cta-box p { color: var(--text-secondary); margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6; font-size: 1.05rem; }
 
         /* Drills */
-        .drill-header { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
-        .drill-context { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
-        .drill-context-label {
-            font-size: 0.78rem; font-weight: 700; color: var(--text-tertiary);
-            letter-spacing: 0.08em; text-transform: uppercase;
-        }
-        .drill-context-title {
-            font-size: 1.35rem; font-weight: 600; color: var(--text-main);
-            line-height: 1.25; margin: 0;
-        }
-        .drill-context-subtitle { font-size: 0.95rem; color: var(--text-secondary); margin: 0; }
+        .drill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
         .drill-workspace { background: var(--bg-card); border-radius: var(--radius-lg); padding: 3.5rem; box-shadow: var(--shadow-md); margin-bottom: 2rem; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
         .stimulus { font-size: 1.25rem; line-height: 1.8; color: var(--text-main); margin-bottom: 2rem; }
         
@@ -360,12 +292,6 @@
 
         .selectable-phrase { cursor: pointer; padding: 0.2rem 0.4rem; margin: -0.2rem -0.4rem; border-radius: 6px; transition: var(--transition); border: 1px solid transparent; }
         .selectable-phrase:active { transform: scale(0.98); transition: transform 0.1s; }
-        .selectable-phrase:focus-visible,
-        .word-tok:focus-visible,
-        .choice-btn:focus-visible {
-            outline: 3px solid rgba(0, 113, 227, 0.28);
-            outline-offset: 3px;
-        }
         /* Yellow highlighter for conclusion */
         .selectable-phrase.selected-conclusion { background: rgba(255, 235, 59, 0.55); color: #5a4a00; border-color: rgba(255, 193, 7, 0.4); box-shadow: 0 2px 12px rgba(255, 193, 7, 0.2); }
         /* Pink for support / premise */
@@ -396,11 +322,9 @@
         .step-feedback { padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 0.95rem; animation: stepFeedbackIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .step-feedback.correct { background: var(--success-light); color: #1e7135; border: 1px solid rgba(52,199,89,0.3); }
         .step-feedback.wrong { background: var(--error-light); color: #b0241a; border: 1px solid rgba(255,59,48,0.3); }
-        .step-feedback.warning { background: var(--warning-light); color: #8a5300; border: 1px solid rgba(255,149,0,0.3); }
         .step-feedback-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; flex-shrink: 0; }
         .step-feedback.correct .step-feedback-icon { background: var(--success); box-shadow: 0 4px 12px rgba(52,199,89,0.3); }
         .step-feedback.wrong .step-feedback-icon { background: var(--error); box-shadow: 0 4px 12px rgba(255,59,48,0.3); }
-        .step-feedback.warning .step-feedback-icon { background: var(--warning); box-shadow: 0 4px 12px rgba(255,149,0,0.25); }
         @keyframes stepFeedbackIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ── Session review screen ── */
@@ -437,8 +361,6 @@
         .review-badge { padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
         .review-badge.perfect { background: var(--success-light); color: #1e7135; }
         .review-badge.missed { background: var(--warning-light); color: #8a5300; }
-        .review-badge.assisted { background: var(--accent-light); color: var(--accent); }
-        .review-badge.recovered { background: var(--warning-light); color: #8a5300; }
         .miss-chip { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); background: var(--bg-main); padding: 0.2rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); text-transform: lowercase; }
         .review-toggle { color: var(--text-tertiary); font-size: 1.1rem; transition: transform 0.3s ease; }
         .review-card.open .review-toggle { transform: rotate(180deg); }
@@ -481,15 +403,13 @@
         .instruction-step { font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; font-size: 1.1rem; }
         .step-badge { background: var(--text-main); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .choice-grid { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .choice-btn { flex: 1; padding: 1.25rem; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-weight: 500; text-align: center; transition: var(--transition); box-shadow: var(--shadow-sm); appearance: none; font-family: inherit; font-size: 1rem; color: var(--text-main); }
+        .choice-btn { flex: 1; padding: 1.25rem; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-weight: 500; text-align: center; transition: var(--transition); box-shadow: var(--shadow-sm); }
         .choice-btn:active { transform: scale(0.97); transition: transform 0.1s; }
         .choice-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); box-shadow: 0 4px 16px rgba(0,113,227,0.15); }
         
         .feedback-panel { margin-top: 2rem; padding: 1.75rem; border-radius: var(--radius-lg); display: none; transition: var(--transition); box-shadow: var(--shadow-md); animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .feedback-panel.correct { background: #F4FBF6; border: 1px solid rgba(52,199,89,0.2); }
         .feedback-panel.incorrect { background: #FEF6F5; border: 1px solid rgba(255,59,48,0.2); }
-        .feedback-panel.recovered { background: #FFF7EA; border: 1px solid rgba(255,149,0,0.2); }
-        .feedback-panel.assisted { background: #F4F8FD; border: 1px solid rgba(0,113,227,0.18); }
 
         /* Training Flashcards Redesign */
         .flashcard-wrapper { position: relative; perspective: 1200px; width: 100%; max-width: 600px; margin: 0 auto 2rem; height: 440px; }
@@ -630,11 +550,6 @@
             .example-card { padding: 1.25rem; }
             .example-breakdown { padding: 1.25rem; }
             .cta-box { padding: 2rem 1.5rem; }
-            .walkthrough-panel { padding: 1.5rem; }
-            .walkthrough-header h1 { font-size: 1.75rem; }
-            .walkthrough-grid { grid-template-columns: 1fr; }
-            .walkthrough-step { min-height: auto; }
-            .walkthrough-action .btn { width: 100%; }
             .flashcard-wrapper { height: 480px; }
             .card-back { padding: 1.5rem; }
             h1 { font-size: 1.75rem; }
@@ -650,67 +565,9 @@
 
     <main id="login-view" class="view active">
         <div class="login-card">
-            <h1>First Sentence vs Rebuttal Drill</h1>
-            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Drill</button>
-        </div>
-    </main>
-
-    <main id="walkthrough-view" class="view">
-        <div class="walkthrough-panel">
-            <div class="walkthrough-header">
-                <div class="walkthrough-eyebrow">Before the drill</div>
-                <h1>Here’s the read you’re about to practice.</h1>
-                <p>Move fast, mark the structure, and map what each sentence is doing before you answer.</p>
-            </div>
-            <div class="walkthrough-grid">
-                <article class="walkthrough-step">
-                    <div class="walkthrough-step-top">
-                        <span class="walkthrough-number">1</span>
-                        <h2>Find indicators</h2>
-                    </div>
-                    <p>Spot the words that tell you the argument is turning or supporting.</p>
-                    <div class="walkthrough-cue">
-                        <span class="cue-highlight">therefore</span> / <span class="cue-highlight">because</span>
-                    </div>
-                </article>
-                <article class="walkthrough-step">
-                    <div class="walkthrough-step-top">
-                        <span class="walkthrough-number">2</span>
-                        <h2>Identify the conclusion</h2>
-                    </div>
-                    <p>Lock onto the claim the author is actually trying to prove.</p>
-                    <div class="walkthrough-cue">
-                        The policy <span class="cue-underline">should be revised</span>.
-                    </div>
-                </article>
-                <article class="walkthrough-step">
-                    <div class="walkthrough-step-top">
-                        <span class="walkthrough-number">3</span>
-                        <h2>Classify the structure</h2>
-                    </div>
-                    <p>Decide whether the conclusion comes first or shows up as a rebuttal.</p>
-                    <div class="walkthrough-cue cue-split">
-                        <span class="cue-pill">First sentence</span>
-                        <span class="cue-arrow">vs</span>
-                        <span class="cue-pill">Rebuttal</span>
-                    </div>
-                </article>
-                <article class="walkthrough-step">
-                    <div class="walkthrough-step-top">
-                        <span class="walkthrough-number">4</span>
-                        <h2>Pick the role</h2>
-                    </div>
-                    <p>Name the support if it is building the case, or the opposing view if it is being answered.</p>
-                    <div class="walkthrough-cue cue-split">
-                        <span class="cue-pill">support</span>
-                        <span class="cue-arrow">-&gt;</span>
-                        <span class="cue-pill">opposing view</span>
-                    </div>
-                </article>
-            </div>
-            <div class="walkthrough-action">
-                <button class="btn btn-primary" onclick="beginDrill()">Begin drill</button>
-            </div>
+            <h1 style="margin-bottom: 0.5rem;">Welcome to Premium</h1>
+            <p style="margin-bottom: 2rem;">Your LSAT Argument Analysis Portal</p>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem; margin-top: 1rem;" onclick="login()">Start Drill</button>
         </div>
     </main>
 
@@ -953,11 +810,7 @@
         </div>
         <div class="state-content">
             <div class="drill-header">
-                <div class="drill-context">
-                    <div class="drill-context-label">Argument drill</div>
-                    <h2 class="drill-context-title" id="drill-title">First Sentence vs Rebuttal</h2>
-                    <p class="drill-context-subtitle" id="drill-position">Question 1 of 20</p>
-                </div>
+                <div></div>
                 <div class="header-progress">
                     <div class="header-progress-top">
                         <span class="header-percent"><span id="drill-percent-val">0</span>%</span>
@@ -1086,7 +939,6 @@
         fcIndex: 0, 
         fcMastered: [],
         drillsCompleted: [],
-        hasSeenDrillWalkthrough: false,
         popQuizzes: {}, 
         lessons: { 'sec-1': false, 'sec-2': false, 'sec-3': false, 'sec-4': false }
     };
@@ -1228,21 +1080,13 @@
         await new Promise(r => setTimeout(r, 400));
 
         appState.name = appState.name || 'Student';
-        const targetView = appState.hasSeenDrillWalkthrough ? 'drills-view' : 'walkthrough-view';
-        appState.view = targetView;
+        appState.view = 'drills-view';
         saveState();
         initApp();
-        navigate(targetView);
+        navigate('drills-view');
 
         btn.innerHTML = 'Start Drill';
         btn.disabled = false;
-    }
-
-    function beginDrill() {
-        appState.hasSeenDrillWalkthrough = true;
-        appState.view = 'drills-view';
-        saveState();
-        navigate('drills-view');
     }
 
     function handleLoginEnter(e) { if (e.key === 'Enter') login(); }
@@ -1273,8 +1117,7 @@
 
         StorageMgr.remove('lsat_portal_state');
         appState = { ...DEFAULT_STATE };
-        const studentNameInput = document.getElementById('student-name');
-        if (studentNameInput) studentNameInput.value = '';
+        document.getElementById('student-name').value = '';
         document.getElementById('profile-modal').style.display = 'none';
         
         btn.innerHTML = 'Clear Session & Logout';
@@ -1373,7 +1216,7 @@
 
         const target = document.getElementById(viewId);
         
-        if (viewId === 'login-view' || viewId === 'walkthrough-view') {
+        if (viewId === 'login-view') {
             target.style.display = 'flex';
         } else {
             target.style.display = 'block';
@@ -1864,107 +1707,19 @@
     };
 
     // Per-question attempt log for the end-of-session review
-    // Shape: { 1: { indicators: { wrong:0 }, conclusion: { wrong:0 }, structure: { wrong:0 }, support: { wrong:0 }, mistakesByStep: {...}, usedIndicatorReveal:false, solvedClean:true, completionStatus:'clean' }, ... }
+    // Shape: { 1: { indicators: { wrong:0 }, conclusion: { wrong:0 }, structure: { wrong:0 }, support: { wrong:0 } }, ... }
     let drillAttempts = {};
-
-    function createDefaultAttemptLog() {
-        return {
-            indicators: { wrong: 0 },
-            conclusion: { wrong: 0 },
-            structure: { wrong: 0 },
-            support: { wrong: 0 },
-            mistakesByStep: {
-                indicators: 0,
-                conclusion: 0,
-                structure: 0,
-                support: 0
-            },
-            usedIndicatorReveal: false,
-            solvedClean: true,
-            completionStatus: 'clean'
-        };
-    }
 
     function ensureAttemptLog(qid) {
         if (!drillAttempts[qid]) {
-            drillAttempts[qid] = createDefaultAttemptLog();
+            drillAttempts[qid] = {
+                indicators: { wrong: 0 },
+                conclusion: { wrong: 0 },
+                structure: { wrong: 0 },
+                support: { wrong: 0 }
+            };
         }
         return drillAttempts[qid];
-    }
-
-    function markDrillMistake(qid, stepKey) {
-        const log = ensureAttemptLog(qid);
-        log[stepKey].wrong++;
-        log.mistakesByStep[stepKey]++;
-        log.solvedClean = false;
-        if (log.completionStatus === 'clean') log.completionStatus = 'recovered';
-        return log;
-    }
-
-    function markIndicatorReveal(qid) {
-        const log = ensureAttemptLog(qid);
-        log.usedIndicatorReveal = true;
-        log.solvedClean = false;
-        log.completionStatus = 'assisted';
-        return log;
-    }
-
-    function getWrongCount(log) {
-        return log.indicators.wrong + log.conclusion.wrong + log.structure.wrong + log.support.wrong;
-    }
-
-    function getQuestionStatus(log) {
-        if (log.usedIndicatorReveal) return 'assisted';
-        if (log.solvedClean && getWrongCount(log) === 0) return 'clean';
-        return 'recovered';
-    }
-
-    function getStatusMeta(status) {
-        if (status === 'clean') {
-            return {
-                panelClass: 'correct',
-                heading: 'Clean Dissection',
-                icon: '✓',
-                iconColor: '#34C759',
-                summary: 'You solved every step cleanly on the first pass.'
-            };
-        }
-        if (status === 'assisted') {
-            return {
-                panelClass: 'assisted',
-                heading: 'Assisted Dissection',
-                icon: '↻',
-                iconColor: '#0071E3',
-                summary: 'You completed the argument, but used the indicator reveal on this one.'
-            };
-        }
-        return {
-            panelClass: 'recovered',
-            heading: 'Recovered Dissection',
-            icon: '↺',
-            iconColor: '#FF9500',
-            summary: 'You finished correctly after a miss or two. That still counts as progress.'
-        };
-    }
-
-    function firstCoachingSentence(text) {
-        if (!text) return '';
-        const match = text.match(/^[^.!?]+[.!?]/);
-        return match ? match[0].trim() : text.trim();
-    }
-
-    function buildRetryMessage(q, stepKey) {
-        const explain = drillExplanations[q.id] || {};
-        if (stepKey === 'indicators') {
-            return `That word is not doing argumentative work. <strong>Hint:</strong> look for language that signals a reason, a verdict, or a turn in the argument.`;
-        }
-        if (stepKey === 'conclusion') {
-            return `That is not the main conclusion. <strong>Hint:</strong> ${firstCoachingSentence(explain.why_conclusion)}`;
-        }
-        if (stepKey === 'structure') {
-            return `Not quite. Re-read the conclusion and ask whether the author is making a case or pushing back on a view. <strong>Hint:</strong> ${firstCoachingSentence(explain.why_structure)}`;
-        }
-        return `That is not the ${q.type === 'first' ? 'supporting claim' : 'opposing viewpoint'}. <strong>Hint:</strong> ${firstCoachingSentence(explain.why_follow_up)}`;
     }
 
     function updateDrillProgress() {
@@ -1972,61 +1727,7 @@
         const drillsPercent = Math.round((drillsDone / drillsData.length) * 100);
         document.getElementById('drill-percent-val').innerText = drillsPercent;
         document.getElementById('drill-header-bar').style.width = `${drillsPercent}%`;
-        document.getElementById('drill-sub-text').innerText = `${drillsDone} of ${drillsData.length} questions complete`;
-    }
-
-    function updateDrillHeader(q) {
-        const explain = drillExplanations[q.id] || {};
-        const title = explain.title || `Argument ${drillCurrentIdx + 1}`;
-        document.getElementById('drill-title').innerText = title;
-        document.getElementById('drill-position').innerText = `Question ${drillCurrentIdx + 1} of ${drillsData.length}`;
-    }
-
-    function handlePhraseKeydown(event) {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        handlePhraseClick(event.currentTarget.id);
-    }
-
-    function handleWordKeydown(event) {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        if (drillState.step !== 0) return;
-        event.preventDefault();
-        handleWordClick(event.currentTarget);
-    }
-
-    function syncStimulusAccessibility() {
-        const phraseMode = drillState.step === 1 || drillState.step === 3;
-        const phraseLabel = drillState.step === 1
-            ? 'Select as the main conclusion'
-            : drillState.step === 3
-                ? `Select as the ${drillState.structureType === 'first' ? 'supporting claim' : 'opposing viewpoint'}`
-                : 'Argument phrase';
-
-        document.querySelectorAll('.selectable-phrase').forEach(el => {
-            const isSelected = el.id === drillState.selectedC || el.id === drillState.selectedFollowUp;
-            el.setAttribute('tabindex', phraseMode ? '0' : '-1');
-            el.setAttribute('role', phraseMode ? 'button' : 'group');
-            el.setAttribute('aria-disabled', phraseMode ? 'false' : 'true');
-            if (phraseMode) {
-                el.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
-                el.setAttribute('aria-label', `${el.textContent.trim()}. ${phraseLabel}.`);
-            } else {
-                el.removeAttribute('aria-pressed');
-                el.removeAttribute('aria-label');
-            }
-        });
-
-        const identifyMode = drillState.step === 0;
-        document.querySelectorAll('.word-tok').forEach(tok => {
-            const groupId = tok.getAttribute('data-iw-group');
-            const isSelected = groupId ? drillState.foundIndicators.has(groupId) : false;
-            tok.setAttribute('tabindex', identifyMode ? '0' : '-1');
-            tok.setAttribute('role', 'button');
-            tok.setAttribute('aria-disabled', identifyMode ? 'false' : 'true');
-            tok.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
-            tok.setAttribute('aria-label', `${tok.textContent.trim()}. Mark as indicator word.`);
-        });
+        document.getElementById('drill-sub-text').innerText = `${drillsPercent}% of questions`;
     }
 
     function loadDrill() {
@@ -2044,12 +1745,11 @@
         _iwSeq = 0;
         _tokSeq = 0;
 
-        updateDrillHeader(q);
         updateDrillProgress();
 
         const ws = document.getElementById('drill-workspace');
         const partsHTML = q.parts.map((p, index) =>
-            `<span class="selectable-phrase drill-part-anim" style="animation-delay: ${index * 0.1}s;" id="${p.id}" tabindex="-1">${parseIndicators(p.text)}</span>`
+            `<span class="selectable-phrase drill-part-anim" style="animation-delay: ${index * 0.1}s;" id="${p.id}" onclick="handlePhraseClick('${p.id}')">${parseIndicators(p.text)}</span>`
         ).join('');
 
         ws.innerHTML = `<div class="stimulus" id="stimulus-container">${partsHTML}</div>`;
@@ -2068,18 +1768,12 @@
         };
 
         // Wire up word-token clicks for Step 0
-        ws.querySelectorAll('.selectable-phrase').forEach(el => {
-            el.addEventListener('click', () => handlePhraseClick(el.id));
-            el.addEventListener('keydown', handlePhraseKeydown);
-        });
-
         ws.querySelectorAll('.word-tok').forEach(tok => {
             tok.addEventListener('click', (e) => {
                 if (drillState.step !== 0) return;
                 e.stopPropagation();
                 handleWordClick(tok);
             });
-            tok.addEventListener('keydown', handleWordKeydown);
         });
 
         renderDrillControls();
@@ -2098,12 +1792,11 @@
         } else {
             // Miss: gentle shake + log
             const q = drillsData[drillCurrentIdx];
-            if (q) markDrillMistake(q.id, 'indicators');
+            if (q) ensureAttemptLog(q.id).indicators.wrong++;
             tok.classList.remove('miss');
             void tok.offsetWidth;
             tok.classList.add('miss');
             setTimeout(() => tok.classList.remove('miss'), 500);
-            if (q) showStepFeedback(buildRetryMessage(q, 'indicators'), 'wrong');
         }
     }
 
@@ -2125,7 +1818,6 @@
         if (counter) counter.innerText = `${found} of ${total} found`;
         const btn = document.getElementById('btn-step-0');
         if (btn) btn.disabled = found < total;
-        syncStimulusAccessibility();
     }
 
     function enableIdentifyMode(on) {
@@ -2146,42 +1838,38 @@
             html = `<div class="instruction-step"><div class="step-badge">1</div> Identify the Indicator Words</div>
                     <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">Click each indicator word in the text above (premise, conclusion, pivot, opinion, concession).</p>
                     <p style="font-size: 0.85rem; color: var(--text-tertiary); margin-bottom: 1.5rem;"><span id="iw-counter">0 of ${drillState.totalIndicators} found</span></p>
-                    <button class="btn btn-primary" disabled id="btn-step-0" onclick="advanceDrillStep()">Continue to conclusion</button>
+                    <button class="btn btn-primary" disabled id="btn-step-0" onclick="advanceDrillStep()">Next Step</button>
                     <button class="btn btn-secondary" style="margin-left: 0.5rem;" onclick="skipIdentifyStep()">Skip / Reveal All</button>`;
             updateIndicatorProgress();
         } else if (drillState.step === 1) {
             enableIdentifyMode(false);
             html = `<div class="instruction-step"><div class="step-badge">2</div> Select the Main Conclusion in the text above.</div>
                     <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Click on the phrase that represents the author's ultimate point.</p>
-                    <button class="btn btn-primary" disabled id="btn-step-1" onclick="advanceDrillStep()">Continue to structure</button>`;
+                    <button class="btn btn-primary" disabled id="btn-step-1" onclick="advanceDrillStep()">Next Step</button>`;
         } else if (drillState.step === 2) {
             html = `<div class="instruction-step"><div class="step-badge">3</div> Classify the Argument Structure</div>
                     <div class="choice-grid">
-                        <button type="button" class="choice-btn ${drillState.structureType === 'first' ? 'selected' : ''}" aria-pressed="${drillState.structureType === 'first' ? 'true' : 'false'}" onclick="selectStructure('first')">Conclusion first</button>
-                        <button type="button" class="choice-btn ${drillState.structureType === 'rebuttal' ? 'selected' : ''}" aria-pressed="${drillState.structureType === 'rebuttal' ? 'true' : 'false'}" onclick="selectStructure('rebuttal')">Rebuttal</button>
+                        <div class="choice-btn ${drillState.structureType === 'first' ? 'selected' : ''}" onclick="selectStructure('first')">First-sentence</div>
+                        <div class="choice-btn ${drillState.structureType === 'rebuttal' ? 'selected' : ''}" onclick="selectStructure('rebuttal')">Rebuttal</div>
                     </div>
-                    <button class="btn btn-primary" disabled id="btn-step-2" onclick="advanceDrillStep()">Continue to role</button>`;
+                    <button class="btn btn-primary" disabled id="btn-step-2" onclick="advanceDrillStep()">Next Step</button>`;
         } else if (drillState.step === 3) {
             const prompt = drillState.structureType === 'first' ? "Select a Supporting Claim" : "Select the Opposing Viewpoint";
             html = `<div class="instruction-step"><div class="step-badge">4</div> ${prompt}</div>
                     <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Click on the appropriate phrase in the text above.</p>
-                    <button class="btn btn-primary" disabled id="btn-step-3" onclick="gradeDrill()">Check dissection</button>`;
+                    <button class="btn btn-primary" disabled id="btn-step-3" onclick="gradeDrill()">Submit Answer</button>`;
         }
         ctrls.innerHTML = html;
         updateWorkspaceHighlights();
-        syncStimulusAccessibility();
 
         ctrls.classList.remove('is-visible');
         setTimeout(() => ctrls.classList.add('is-visible'), 50);
     }
 
     function skipIdentifyStep() {
-        const q = drillsData[drillCurrentIdx];
-        if (q) markIndicatorReveal(q.id);
         revealAllIndicators();
         drillState.step = 1;
         renderDrillControls();
-        showStepFeedback('Indicator words revealed. This question will count as assisted, not clean.', 'warning');
     }
 
     function handlePhraseClick(pId) {
@@ -2209,7 +1897,6 @@
                 if (drillState.structureType === 'rebuttal') el.classList.add('selected-opposing', 'pulsing');
             }
         });
-        syncStimulusAccessibility();
     }
 
     function selectStructure(type) {
@@ -2224,9 +1911,9 @@
         if (drillState.step === 0) {
             // Identify step: by construction all required indicators are found
             revealAllIndicators();
+            celebrateStep('All indicator words found!');
             drillState.step = 1;
             renderDrillControls();
-            showStepFeedback('Indicator words identified. Move to the author’s actual conclusion.', 'correct');
             return;
         }
 
@@ -2235,17 +1922,17 @@
             const part = q.parts.find(p => p.id === drillState.selectedC);
             const correct = part && part.isC;
             if (!correct) {
-                markDrillMistake(q.id, 'conclusion');
-                rejectStep(buildRetryMessage(q, 'conclusion'), drillState.selectedC);
+                ensureAttemptLog(q.id).conclusion.wrong++;
+                rejectStep('Not quite. That isn’t the main conclusion. Try another phrase.', drillState.selectedC);
                 drillState.selectedC = null;
                 updateWorkspaceHighlights();
                 const btn = document.getElementById('btn-step-1');
                 if (btn) btn.disabled = true;
                 return;
             }
+            celebrateStep('Conclusion identified.');
             drillState.step = 2;
             renderDrillControls();
-            showStepFeedback('Conclusion identified. Now classify the structure.', 'correct');
             return;
         }
 
@@ -2253,21 +1940,28 @@
             // Validate structure classification
             const correct = drillState.structureType === q.type;
             if (!correct) {
-                markDrillMistake(q.id, 'structure');
-                rejectStep(buildRetryMessage(q, 'structure'));
+                ensureAttemptLog(q.id).structure.wrong++;
+                rejectStep(`Not quite. Re-read the conclusion and try the other structure.`);
                 drillState.structureType = null;
                 renderDrillControls();
                 return;
             }
+            celebrateStep('Structure classified correctly.');
             drillState.step = 3;
             renderDrillControls();
-            showStepFeedback('Structure classified. Finish by naming the role.', 'correct');
             return;
         }
     }
 
+    function celebrateStep(message) {
+        showStepFeedback(message, true);
+        burstConfetti();
+        showToast(message, 'success');
+    }
+
     function rejectStep(message, phraseId) {
-        showStepFeedback(message, 'wrong');
+        showStepFeedback(message, false);
+        showToast('Try again.', 'error');
         if (phraseId) {
             const el = document.getElementById(phraseId);
             if (el) {
@@ -2279,24 +1973,42 @@
         }
     }
 
-    function showStepFeedback(message, type) {
+    function showStepFeedback(message, isCorrect) {
         const ctrls = document.getElementById('drill-controls');
-        if (!ctrls) return;
         const existing = ctrls.querySelector('.step-feedback');
         if (existing) existing.remove();
         const banner = document.createElement('div');
-        const icons = { correct: '✓', wrong: '✕', warning: '!' };
-        banner.className = `step-feedback ${type}`;
-        banner.innerHTML = `<div class="step-feedback-icon">${icons[type] || '•'}</div><span>${message}</span>`;
+        banner.className = 'step-feedback ' + (isCorrect ? 'correct' : 'wrong');
+        banner.innerHTML = `<div class="step-feedback-icon">${isCorrect ? '✓' : '✕'}</div><span>${message}</span>`;
         ctrls.prepend(banner);
-        if (type === 'correct') {
+        if (isCorrect) {
             setTimeout(() => banner.remove(), 1800);
+        }
+    }
+
+    function burstConfetti() {
+        const colors = ['#FFC107', '#FF69B4', '#FF9500', '#34C759', '#0071E3'];
+        const root = document.body;
+        const originX = window.innerWidth / 2;
+        const originY = window.innerHeight / 2.2;
+        for (let i = 0; i < 18; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            piece.style.left = originX + 'px';
+            piece.style.top = originY + 'px';
+            piece.style.background = colors[i % colors.length];
+            const angle = (Math.PI * 2 * i) / 18 + (Math.random() - 0.5);
+            const dist = 120 + Math.random() * 100;
+            piece.style.setProperty('--cx', `${Math.cos(angle) * dist}px`);
+            piece.style.setProperty('--cy', `${Math.sin(angle) * dist + 80}px`);
+            piece.style.setProperty('--cr', `${(Math.random() * 720 - 360)}deg`);
+            root.appendChild(piece);
+            setTimeout(() => piece.remove(), 1200);
         }
     }
 
     function gradeDrill() {
         const q = drillsData[drillCurrentIdx];
-        const log = ensureAttemptLog(q.id);
 
         // Step 3 retry-on-wrong: support for "first", opposing for "rebuttal"
         let isFollowUpCorrect = false;
@@ -2304,8 +2016,9 @@
         else isFollowUpCorrect = q.parts.find(p => p.id === drillState.selectedFollowUp)?.isO;
 
         if (!isFollowUpCorrect) {
-            markDrillMistake(q.id, 'support');
-            rejectStep(buildRetryMessage(q, 'support'), drillState.selectedFollowUp);
+            ensureAttemptLog(q.id).support.wrong++;
+            const label = drillState.structureType === 'first' ? 'supporting claim' : 'opposing viewpoint';
+            rejectStep(`Not quite. That isn’t the ${label}. Try another phrase.`, drillState.selectedFollowUp);
             drillState.selectedFollowUp = null;
             updateWorkspaceHighlights();
             const btn = document.getElementById('btn-step-3');
@@ -2313,14 +2026,12 @@
             return;
         }
 
-        log.completionStatus = getQuestionStatus(log);
-        const status = getStatusMeta(log.completionStatus);
+        celebrateStep('Argument fully dissected!');
+        const isAllCorrect = true;
 
         document.querySelectorAll('.selectable-phrase').forEach(el => {
             el.className = 'selectable-phrase';
             el.style.pointerEvents = 'none'; 
-            el.setAttribute('tabindex', '-1');
-            el.setAttribute('aria-disabled', 'true');
         });
         
         q.parts.forEach(p => {
@@ -2333,31 +2044,31 @@
         document.getElementById('drill-controls').innerHTML = ''; 
         const fbPanel = document.getElementById('drill-feedback');
         fbPanel.style.display = 'block';
-        fbPanel.className = `feedback-panel ${status.panelClass}`;
+        fbPanel.className = `feedback-panel ${isAllCorrect ? 'correct' : 'incorrect'}`;
 
         fbPanel.innerHTML = `
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: ${status.iconColor}; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px ${status.iconColor === '#34C759' ? 'rgba(52,199,89,0.3)' : status.iconColor === '#FF9500' ? 'rgba(255,149,0,0.25)' : 'rgba(0,113,227,0.22)'};">
-                    ${status.icon}
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: ${isAllCorrect ? '#34C759' : '#FF3B30'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px ${isAllCorrect ? 'rgba(52,199,89,0.3)' : 'rgba(255,59,48,0.3)'};">
+                    ${isAllCorrect ? '✓' : '✕'}
                 </div>
                 <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem;">
-                    ${status.heading}
+                    ${isAllCorrect ? 'Perfect Dissection' : 'Review the Map'}
                 </h3>
             </div>
-            <p style="color: var(--text-main); line-height: 1.55; margin-bottom: 0.75rem; font-size: 1rem; font-weight: 500;">${status.summary}</p>
             <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-size: 1.05rem;">${q.feedback}</p>
             <div style="display: flex; gap: 1rem; font-size: 0.85rem; font-weight: 500; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05);">
                 <span style="color: #b8860b;"><span style="background: rgba(255,235,59,0.55); padding: 0 6px; border-radius: 3px; margin-right:4px;">&nbsp;</span> Conclusion</span>
                 <span style="color: #b30059;"><span style="background: rgba(255,182,193,0.55); padding: 0 6px; border-radius: 3px; margin-right:4px;">&nbsp;</span> Support</span>
                 <span style="color: #a05a00;"><span style="background: rgba(255,165,0,0.35); padding: 0 6px; border-radius: 3px; margin-right:4px;">&nbsp;</span> Opposing View</span>
             </div>
-            <button class="btn btn-primary mt-4" style="width: 100%; font-size: 1.05rem;" onclick="nextDrill()">${appState.drillsCompleted.length === 19 ? 'Finish Drills' : 'Next Question'}</button>
+            <button class="btn btn-${isAllCorrect ? 'primary' : 'secondary'} mt-4" style="width: 100%; font-size: 1.05rem;" onclick="nextDrill()">${appState.drillsCompleted.length === 19 ? 'Finish Drills' : 'Next Question'}</button>
         `;
 
-        if (!appState.drillsCompleted.includes(q.id)) {
+        if (isAllCorrect && !appState.drillsCompleted.includes(q.id)) {
             appState.drillsCompleted.push(q.id);
             saveState();
             updateDrillProgress();
+            showToast('Progress saved.', 'success');
         }
     }
 
@@ -2378,21 +2089,20 @@
 
         // Compute totals
         let totalWrong = { indicators: 0, conclusion: 0, structure: 0, support: 0 };
-        let cleanQs = 0;
+        let perfectQs = 0;
         let perQ = drillsData.map(q => {
-            const log = drillAttempts[q.id] || createDefaultAttemptLog();
-            const wrong = getWrongCount(log);
-            const completionStatus = getQuestionStatus(log);
-            if (completionStatus === 'clean') cleanQs++;
+            const log = drillAttempts[q.id] || { indicators:{wrong:0}, conclusion:{wrong:0}, structure:{wrong:0}, support:{wrong:0} };
+            const wrong = log.indicators.wrong + log.conclusion.wrong + log.structure.wrong + log.support.wrong;
+            if (wrong === 0) perfectQs++;
             totalWrong.indicators += log.indicators.wrong;
             totalWrong.conclusion += log.conclusion.wrong;
             totalWrong.structure += log.structure.wrong;
             totalWrong.support += log.support.wrong;
-            return { q, log, wrong, completionStatus };
+            return { q, log, wrong };
         });
 
         const totalQuestions = drillsData.length;
-        const cleanPct = Math.round((cleanQs / totalQuestions) * 100);
+        const perfectPct = Math.round((perfectQs / totalQuestions) * 100);
 
         // Identify strongest and weakest component
         const components = [
@@ -2406,36 +2116,25 @@
         const weakest = sorted[sorted.length - 1];
 
         // Build per-question cards (missed cards first, then clean)
-        const statusRank = { assisted: 2, recovered: 1, clean: 0 };
-        const sortedQ = [...perQ].sort((a, b) => {
-            if (statusRank[b.completionStatus] !== statusRank[a.completionStatus]) {
-                return statusRank[b.completionStatus] - statusRank[a.completionStatus];
-            }
-            return b.wrong - a.wrong;
-        });
-        const cardsHtml = sortedQ.map(({q, log, wrong, completionStatus}) => {
+        const sortedQ = [...perQ].sort((a,b) => b.wrong - a.wrong);
+        const cardsHtml = sortedQ.map(({q, log, wrong}, i) => {
             const explain = drillExplanations[q.id] || {};
-            const status = completionStatus === 'clean'
+            const status = wrong === 0
                 ? `<span class="review-badge perfect">Clean</span>`
-                : completionStatus === 'assisted'
-                    ? `<span class="review-badge assisted">Assisted</span>`
-                    : `<span class="review-badge recovered">Recovered</span>`;
+                : `<span class="review-badge missed">${wrong} miss${wrong>1?'es':''}</span>`;
             const miscount = (key) => log[key].wrong > 0
                 ? `<span class="miss-chip">${log[key].wrong}× ${key}</span>` : '';
-            const revealChip = log.usedIndicatorReveal
-                ? `<span class="miss-chip">reveal used</span>`
-                : '';
             const conclusionPart = q.parts.find(p => p.isC);
             const conclusionText = conclusionPart ? conclusionPart.text.replace(/<i-w t="[^"]+">([^<]+)<\/i-w>/g,'$1') : '';
             return `
-                <div class="review-card ${completionStatus === 'clean' ? 'review-clean' : 'review-missed'}">
+                <div class="review-card ${wrong === 0 ? 'review-clean' : 'review-missed'}">
                     <div class="review-card-head" onclick="toggleReviewCard(this)">
                         <div class="review-card-title">
                             <span class="review-qnum">Q${q.id}</span>
                             <span class="review-qtitle">${explain.title || '—'}</span>
                         </div>
                         <div class="review-card-meta">
-                            ${revealChip}${miscount('indicators')}${miscount('conclusion')}${miscount('structure')}${miscount('support')}
+                            ${miscount('indicators')}${miscount('conclusion')}${miscount('structure')}${miscount('support')}
                             ${status}
                             <span class="review-toggle">▾</span>
                         </div>
@@ -2481,9 +2180,9 @@
                 <div class="review-summary-grid">
                     <div class="card review-stat">
                         <div class="kpi-title">Clean first-try</div>
-                        <div class="kpi-value"><span>${cleanQs}</span> / ${totalQuestions}</div>
-                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${cleanPct}%;"></div></div>
-                        <span class="kpi-sub">${cleanPct}% solved cleanly</span>
+                        <div class="kpi-value"><span>${perfectQs}</span> / ${totalQuestions}</div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${perfectPct}%;"></div></div>
+                        <span class="kpi-sub">${perfectPct}% on the first attempt</span>
                     </div>
                     <div class="card review-stat">
                         <div class="kpi-title">Misses by component</div>
