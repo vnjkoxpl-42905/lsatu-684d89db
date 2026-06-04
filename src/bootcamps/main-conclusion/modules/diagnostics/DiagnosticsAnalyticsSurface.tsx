@@ -83,38 +83,8 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
     (modules.filter((module) => module.pct >= 1).length / Math.max(modules.length, 1)) * 100,
   );
 
-  if (!seed.attempted && totalScoredAttempts === 0) {
-    return (
-      <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-5xl mx-auto space-y-8">
-        <PageHeader
-          eyebrow="Diagnostics"
-          title={title}
-          description="This area becomes your saved diagnostic memory once you start generating real work. It tracks strengths, weaknesses, and change over time for each student."
-        />
-        <Card variant="elev" accent className="p-7">
-          <Badge tone="warn" dot>
-            awaiting seed data
-          </Badge>
-          <h2 className="mt-4 font-mc-serif text-h1 font-semibold text-ink">Start the first diagnostic pass</h2>
-          <p className="mt-3 max-w-[56ch] font-mc-serif text-body-prose text-ink-soft">
-            The analytics page is built from saved drill gates, simulator attempts, SRS reviews, and recordings. Once those exist, this page remembers the student&apos;s profile and starts diagnosing patterns over time.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/bootcamp/intro-to-lr/drills">
-              <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                Open the Drill Lab
-              </Button>
-            </Link>
-            <Link to="/bootcamp/intro-to-lr/diagnostics/philosophy" className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
-              <Button size="lg" variant="ghost">
-                Read the diagnostic philosophy
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </article>
-    );
-  }
+  const hasNoEvidence = !seed.attempted && totalScoredAttempts === 0;
+
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-6xl mx-auto space-y-8">
