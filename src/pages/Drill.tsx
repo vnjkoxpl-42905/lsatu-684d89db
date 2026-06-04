@@ -57,7 +57,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import type { LRQuestion } from '@/lib/questionLoader';
-import type { DrillMode, DrillSession, FullSectionConfig, TypeDrillConfig, TimerMode } from '@/types/drill';
+import type { DrillMode, DrillSession, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
 import { QuestionPoolService } from '@/lib/questionPoolService';
 import { QuestionPoolChip } from '@/components/drill/QuestionPoolChip';
 import { QuestionPoolExhausted } from '@/components/drill/QuestionPoolExhausted';
@@ -65,6 +65,11 @@ import { toast } from 'sonner';
 import { QuestionTimer } from '@/lib/questionTimer';
 import { record } from '@rrweb/record';
 import type { eventWithTime } from '@rrweb/types';
+import {
+  getResolvedDrillRouteState,
+  getTimerConfigForDrillRoute,
+  type DrillRouteState,
+} from '@/lib/drillRouteState';
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -83,29 +88,10 @@ function DrillContent() {
   const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
-  const state = React.useMemo<{
-    mode: DrillMode;
-    config?: FullSectionConfig | TypeDrillConfig;
-  }>(() => {
-    const urlMode = searchParams.get('mode');
-    if (urlMode) {
-      const qidsParam = searchParams.get('qids') ?? '';
-      const qids = qidsParam.split(',').map((s) => s.trim()).filter(Boolean);
-      const config: TypeDrillConfig = {
-        qtypes: [],
-        difficulties: [],
-        pts: [],
-        count: qids.length,
-        selectedQids: qids,
-      };
-      return { mode: urlMode as DrillMode, config };
-    }
-    return (location.state || {}) as {
-      mode: DrillMode;
-      config?: FullSectionConfig | TypeDrillConfig;
-      practicingLabel?: string;
-    };
-  }, [searchParams, location.state]);
+  const state = React.useMemo<DrillRouteState>(
+    () => getResolvedDrillRouteState(searchParams, location.state),
+    [searchParams, location.state],
+  );
 
   const practicingLabel = searchParams.get('focus') || (location.state as { practicingLabel?: string } | null)?.practicingLabel;
 
@@ -115,6 +101,10 @@ function DrillContent() {
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const isMcPractice = searchParams.get('source') === 'intro-to-lr-practice-drills';
+  const bootcampPracticeReturnTo =
+    returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
+      ? returnTo
+      : '/bootcamp/intro-to-lr/practice-drills';
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -184,6 +174,7 @@ function DrillContent() {
   const [isRetryAfterWrong, setIsRetryAfterWrong] = React.useState(false);
   const [correctExplanation, setCorrectExplanation] = React.useState<string>('');
   const [showReviewButton, setShowReviewButton] = React.useState(false);
+  const [showEndDrillDialog, setShowEndDrillDialog] = React.useState(false);
   
   // New post-section flow states
   const [postSectionScreen, setPostSectionScreen] = React.useState<'complete' | 'review' | 'score-report' | null>(null);
@@ -1644,7 +1635,10 @@ function DrillContent() {
     }
   };
 
-  const handleFinishSection = async (attemptsOverride?: DrillSession['attempts']) => {
+  const handleFinishSection = async (
+    attemptsOverride?: DrillSession['attempts'],
+    options?: { returnToAfterFinish?: string },
+  ) => {
     if (!session) return;
 
     // Stop the section timer so it does not keep ticking through
@@ -1700,6 +1694,11 @@ function DrillContent() {
 
     // Update session state
     setSession(updatedSession);
+
+    if (options?.returnToAfterFinish) {
+      navigate(options.returnToAfterFinish);
+      return;
+    }
 
     // Show section complete screen
     setPostSectionScreen('complete');
@@ -2499,6 +2498,52 @@ function DrillContent() {
       : isFullSection
       ? 'Section'
       : 'Practice Drill';
+    const officialBreadcrumbs = origin === 'fallacy-flaw' ? [
+      {
+        label: contextLabel || 'Flaw Bootcamp',
+        onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
+      },
+      {
+        label: contextFocus || 'LSAT Questions',
+        onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
+      },
+      {
+        label: [
+          currentQuestion.pt ? `PT${currentQuestion.pt}` : null,
+          currentQuestion.section ? `Section ${currentQuestion.section}` : null,
+          questionLabel
+        ].filter(Boolean).join(' · ')
+      }
+    ] : isMcPractice ? [
+      {
+        label: 'Bootcamp',
+        onClick: () => navigate('/bootcamp/intro-to-lr'),
+      },
+      ...(contextFocus
+        ? [{
+            label: contextFocus,
+            onClick: () => navigate(bootcampPracticeReturnTo),
+          }]
+        : []),
+      {
+        label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
+      },
+    ] : [
+      { label: 'Library', onClick: () => navigate('/practice') },
+      ...(currentQuestion.pt
+        ? [{
+            label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
+            onClick: () => navigate('/practice'),
+          }]
+        : []),
+      {
+        label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
+      },
+    ];
+    const handleEndBootcampPracticeDrill = async () => {
+      setShowEndDrillDialog(false);
+      await handleFinishSection(undefined, { returnToAfterFinish: bootcampPracticeReturnTo });
+    };
 
     return (
       <>
@@ -2513,6 +2558,22 @@ function DrillContent() {
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={confirmExit}>Yes, leave</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <AlertDialog open={showEndDrillDialog} onOpenChange={setShowEndDrillDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>End drill?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Your completed answers will be saved, then you will return to the bootcamp.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleEndBootcampPracticeDrill}>
+                End Drill
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -2535,38 +2596,18 @@ function DrillContent() {
           }}
           header={
             <OfficialSessionStrip
-              breadcrumbs={origin === 'fallacy-flaw' ? [
-                {
-                  label: contextLabel || 'Flaw Bootcamp',
-                  onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
-                },
-                {
-                  label: contextFocus || 'LSAT Questions',
-                  onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
-                },
-                {
-                  label: [
-                    currentQuestion.pt ? `PT${currentQuestion.pt}` : null,
-                    currentQuestion.section ? `Section ${currentQuestion.section}` : null,
-                    questionLabel
-                  ].filter(Boolean).join(' · ')
-                }
-              ] : [
-                { label: 'Library', onClick: () => navigate('/practice') },
-                ...(currentQuestion.pt
-                  ? [{
-                      label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
-                      onClick: () => navigate('/practice'),
-                    }]
-                  : []),
-                {
-                  label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
-                },
-              ]}
+              breadcrumbs={officialBreadcrumbs}
               isPaused={!!timer?.isPaused}
               onTogglePause={handleTogglePauseClick}
               pauseNoun={isFullSection ? 'Section' : 'Question'}
-              onComplete={session.mode === 'adaptive' ? undefined : handleFinishSection}
+              completeLabel={isMcPractice ? 'End Drill' : undefined}
+              onComplete={
+                session.mode === 'adaptive'
+                  ? undefined
+                  : isMcPractice
+                  ? () => setShowEndDrillDialog(true)
+                  : () => handleFinishSection()
+              }
               showAnswerVisible={
                 session.mode === 'adaptive' &&
                 !showAnswerRevealed.get(currentQuestion.qid)
@@ -3118,47 +3159,12 @@ function DrillContent() {
 
 export default function Drill() {
   const location = useLocation();
-  const state = location.state as { 
-    mode: DrillMode; 
-    config?: FullSectionConfig | TypeDrillConfig;
-  };
-
-  // Calculate timer config
-  const getTimerConfig = (): { mode: 'countdown' | 'stopwatch'; durationMs?: number } | null => {
-    // Practice-set mode (type-drill with selectedQids) uses stopwatch
-    if (state?.mode === 'type-drill' && state.config) {
-      const config = state.config as TypeDrillConfig;
-      if (config.selectedQids && config.selectedQids.length > 0) {
-        return { mode: 'stopwatch' };
-      }
-    }
-    
-    if (state?.mode === 'full-section' && state.config) {
-      const config = state.config as FullSectionConfig;
-      const timerMode = config.timer.mode;
-
-      if (timerMode === 'unlimited') {
-        return { mode: 'stopwatch' };
-      }
-
-      let durationMs: number;
-      switch (timerMode) {
-        case '35': durationMs = 35 * 60 * 1000; break;
-        case '52.5': durationMs = 52.5 * 60 * 1000; break;
-        case '70': durationMs = 70 * 60 * 1000; break;
-        case 'custom': durationMs = (config.timer.customMinutes || 35) * 60 * 1000; break;
-        default: durationMs = 35 * 60 * 1000;
-      }
-
-      return { mode: 'countdown', durationMs };
-    }
-
-    // Default: every other drill mode (adaptive, type-drill without selectedQids,
-    // anything new) gets a stopwatch so the toolbar shows real elapsed time.
-    return { mode: 'stopwatch' };
-  };
-
-  const timerConfig = getTimerConfig();
+  const [searchParams] = useSearchParams();
+  const state = React.useMemo<DrillRouteState>(
+    () => getResolvedDrillRouteState(searchParams, location.state),
+    [searchParams, location.state],
+  );
+  const timerConfig = React.useMemo(() => getTimerConfigForDrillRoute(state), [state]);
 
   if (timerConfig) {
     return (
