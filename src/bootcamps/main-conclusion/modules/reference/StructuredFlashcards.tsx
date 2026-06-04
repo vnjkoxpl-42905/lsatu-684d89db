@@ -5,8 +5,38 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 const STORAGE_KEY = 'mc_bootcamp_flashcard_mastery';
 
+function randomizeBalancedOrder(): number[] {
+  const remaining = STRUCTURED_FLASHCARDS.map((card, index) => ({ index, role: card.role }));
+  const ordered: number[] = [];
+  let lastRole: (typeof STRUCTURED_FLASHCARDS)[number]['role'] | null = null;
+  let sameRoleRun = 0;
+
+  while (remaining.length > 0) {
+    const candidates = remaining.filter(({ role }) => {
+      if (role !== lastRole) return true;
+      return sameRoleRun < 1;
+    });
+    const pool = candidates.length > 0 ? candidates : remaining;
+    const nextCard = pool[Math.floor(Math.random() * pool.length)];
+    const nextIndex = remaining.findIndex(({ index }) => index === nextCard.index);
+
+    ordered.push(nextCard.index);
+    remaining.splice(nextIndex, 1);
+
+    if (nextCard.role === lastRole) {
+      sameRoleRun += 1;
+    } else {
+      lastRole = nextCard.role;
+      sameRoleRun = 0;
+    }
+  }
+
+  return ordered;
+}
+
 export function StructuredFlashcards() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardOrder, setCardOrder] = useState<number[]>([]);
+  const [currentPosition, setCurrentPosition] = useState(0);
   const [masteredIds, setMasteredIds] = useState<number[]>([]);
   const [isLoaded, setIsVisible] = useState(false);
   const shouldReduceMotion = useReducedMotion();
@@ -20,6 +50,7 @@ export function StructuredFlashcards() {
         console.error('Failed to parse flashcard mastery', e);
       }
     }
+    setCardOrder(randomizeBalancedOrder());
     setIsVisible(true);
   }, []);
 
@@ -29,21 +60,31 @@ export function StructuredFlashcards() {
   };
 
   const handleAction = (action: 'review' | 'got-it') => {
+    const currentCardIndex = cardOrder[currentPosition];
+    if (currentCardIndex == null) return;
+
     if (action === 'got-it') {
-      if (!masteredIds.includes(currentIndex)) {
-        saveMastery([...masteredIds, currentIndex]);
+      if (!masteredIds.includes(currentCardIndex)) {
+        saveMastery([...masteredIds, currentCardIndex]);
       }
     }
-    
-    setCurrentIndex((prev) => (prev + 1) % STRUCTURED_FLASHCARDS.length);
+
+    if (currentPosition >= cardOrder.length - 1) {
+      setCardOrder(randomizeBalancedOrder());
+      setCurrentPosition(0);
+      return;
+    }
+
+    setCurrentPosition((prev) => prev + 1);
   };
 
-  const card = STRUCTURED_FLASHCARDS[currentIndex];
+  const currentCardIndex = cardOrder[currentPosition];
+  const card = currentCardIndex != null ? STRUCTURED_FLASHCARDS[currentCardIndex] : null;
   const masteredCount = masteredIds.length;
   const totalCount = STRUCTURED_FLASHCARDS.length;
   const masteryPercent = Math.round((masteredCount / totalCount) * 100);
 
-  if (!isLoaded) return null;
+  if (!isLoaded || !card) return null;
 
   return (
     <article className="min-h-screen bg-[oklch(0.98_0.005_60)] flex flex-col items-center pt-14 pb-16 px-5 sm:pt-20 sm:pb-20 sm:px-6">
@@ -82,7 +123,7 @@ export function StructuredFlashcards() {
       {/* Flashcard Component */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentIndex}
+          key={currentCardIndex}
           initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.985, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 1.015, y: -8 }}
@@ -94,7 +135,7 @@ export function StructuredFlashcards() {
       </AnimatePresence>
 
       <div className="mt-9 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[oklch(0.2_0.01_60/0.32)] tabular-nums">
-        Card {currentIndex + 1} of {totalCount}
+        Card {currentPosition + 1} of {totalCount}
       </div>
     </article>
   );

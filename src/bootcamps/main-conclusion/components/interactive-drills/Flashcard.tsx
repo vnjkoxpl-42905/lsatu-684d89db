@@ -16,6 +16,7 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
   const numberedFunction = card.function.match(/^\d+\)/m)
     ? card.function.split(/\n+/).map((line) => line.replace(/^\d+\)\s*/, '').trim()).filter(Boolean)
     : null;
+  const roleLabel = card.role === 'Conclusion Indicator' ? 'Conclusion Indicator' : card.role;
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -51,6 +52,9 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
         )}>
           {/* Front */}
           <div className="absolute inset-0 backface-hidden rounded-[24px] border border-[oklch(0.2_0.01_60/0.055)] bg-[oklch(0.995_0.004_60)] px-8 py-12 text-center shadow-[0_30px_76px_-30px_oklch(0.2_0.01_60/0.22)] transition-[box-shadow,transform,border-color] duration-300 ease-eased flex flex-col items-center justify-center group-hover:-translate-y-1 group-hover:border-[oklch(0.48_0.14_255/0.16)] group-hover:shadow-[0_44px_104px_-38px_oklch(0.2_0.01_60/0.28)] sm:px-12">
+            <div className="absolute left-6 top-6 rounded-full bg-[oklch(0.48_0.14_255/0.08)] px-3 py-1 font-mc-sans text-[0.6rem] font-bold uppercase tracking-[0.12em] text-[oklch(0.38_0.12_255)] sm:left-8 sm:top-8">
+              {roleLabel}
+            </div>
             <h3 className="max-w-[13em] text-balance font-mc-serif text-[clamp(1.62rem,3.8vw,2.22rem)] font-medium leading-[1.15] tracking-[-0.008em] text-[oklch(0.15_0.01_60)]">
               {card.front}
             </h3>
@@ -62,6 +66,9 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
 
           {/* Back */}
           <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[24px] border border-[oklch(0.2_0.01_60/0.055)] bg-[oklch(0.995_0.004_60)] px-7 py-8 shadow-[0_30px_76px_-30px_oklch(0.2_0.01_60/0.22)] flex flex-col overflow-y-auto text-left sm:px-10 sm:py-9">
+            <div className="mb-5 self-start rounded-full bg-[oklch(0.48_0.14_255/0.08)] px-3 py-1 font-mc-sans text-[0.6rem] font-bold uppercase tracking-[0.12em] text-[oklch(0.38_0.12_255)]">
+              {roleLabel}
+            </div>
             {numberedFunction ? (
               <ol className="mb-6 space-y-4 font-mc-serif text-[clamp(1.02rem,2vw,1.18rem)] leading-[1.5] text-[oklch(0.15_0.01_60)]">
                 {numberedFunction.map((item, index) => (
