@@ -33,14 +33,14 @@ export function Recommendations() {
       <PageHeader
         eyebrow="Diagnostics"
         title="Recommendations"
-        description="Targeted next moves, ranked by leverage. Built from your trait performance, your SRS queue, and your Lesson 13 results."
+        description="Targeted next moves, ranked by leverage. Built from your trait performance, your SRS queue, and your saved diagnostic evidence."
         compact
       />
 
       {recs.length === 0 ? (
         <Card variant="elev">
           <p className="font-mc-serif text-body-prose text-ink">
-            Nothing to recommend yet. Take Lesson 13 first.
+            Nothing to recommend yet. Generate some drill or simulator history first.
           </p>
         </Card>
       ) : (

@@ -3,7 +3,15 @@
  * Pure functions over persistence records → derived view models for the M6 surfaces.
  */
 
-import type { CalibrationAttempt, TrapsTag, ModuleProgress } from '@/bootcamps/main-conclusion/persistence/records';
+import type {
+  CalibrationAttempt,
+  TrapsTag,
+  ModuleProgress,
+  SimulatorAttempt,
+  DrillStageGate,
+  RrRecording,
+  SrsQueueItem,
+} from '@/bootcamps/main-conclusion/persistence/records';
 
 export type TraitId = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7';
 export const TRAITS: TraitId[] = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
@@ -96,6 +104,24 @@ export interface Recommendation {
   priority: number; // 1 = highest
 }
 
+export interface SourceSummary {
+  source: 'Calibration' | 'Simulator' | 'Drill';
+  attempts: number;
+  correct: number;
+}
+
+export interface RollingAccuracyPoint {
+  label: string;
+  source: 'Calibration' | 'Simulator' | 'Drill';
+  rollingAccuracy: number;
+}
+
+export interface WeakSurface {
+  surfaceId: string;
+  wrongCount: number;
+  dominantTrait: TraitId | null;
+}
+
 const TRAIT_TO_REMEDIATION: Record<TraitId, { drill: string; route: string; topic: string }> = {
   T1: { drill: 'MC-DRL-3.5', route: '/drills/3.5', topic: 'Too-strong / scope-creep' },
   T2: { drill: 'MC-DRL-3.2', route: '/drills/3.2', topic: 'Premise-as-conclusion' },
@@ -117,9 +143,9 @@ export function buildRecommendations(
     recs.push({
       id: 'rec-calibration',
       kind: 'drill',
-      title: 'Take the M1.13 calibration',
-      reason: 'Your dashboard shows nothing until the first calibration attempt seeds it.',
-      href: '/bootcamp/intro-to-lr/lessons/1.13',
+      title: 'Generate your first diagnostic evidence',
+      reason: 'Your dashboard needs saved drill or simulator work before it can diagnose patterns.',
+      href: '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
       priority: 1,
     });
   }
@@ -153,4 +179,134 @@ export function buildRecommendations(
   }
 
   return recs.sort((a, b) => a.priority - b.priority);
+}
+
+export function strongestTraits(traits: TraitStats[]): TraitStats[] {
+  return [...traits]
+    .filter((trait) => trait.attempts >= 3 && trait.accuracy >= 0.75)
+    .sort((a, b) => b.accuracy - a.accuracy || b.attempts - a.attempts)
+    .slice(0, 3);
+}
+
+export function weakestTraits(traits: TraitStats[]): TraitStats[] {
+  return [...traits]
+    .filter((trait) => trait.attempts >= 2)
+    .sort((a, b) => a.accuracy - b.accuracy || b.picked_when_wrong - a.picked_when_wrong)
+    .slice(0, 3);
+}
+
+export function buildSourceSummary(
+  calibrationAttempts: CalibrationAttempt[],
+  simulatorAttempts: SimulatorAttempt[],
+  drillStageGates: DrillStageGate[],
+): SourceSummary[] {
+  return [
+    {
+      source: 'Calibration',
+      attempts: calibrationAttempts.length,
+      correct: calibrationAttempts.filter((attempt) => attempt.correct).length,
+    },
+    {
+      source: 'Simulator',
+      attempts: simulatorAttempts.length,
+      correct: simulatorAttempts.filter((attempt) => attempt.correct).length,
+    },
+    {
+      source: 'Drill',
+      attempts: drillStageGates.reduce((sum, gate) => sum + gate.responses.length, 0),
+      correct: drillStageGates.reduce(
+        (sum, gate) => sum + gate.responses.filter((response) => response.correct).length,
+        0,
+      ),
+    },
+  ];
+}
+
+export function buildRollingAccuracySeries(
+  calibrationAttempts: CalibrationAttempt[],
+  simulatorAttempts: SimulatorAttempt[],
+  drillStageGates: DrillStageGate[],
+): RollingAccuracyPoint[] {
+  const events = [
+    ...calibrationAttempts.map((attempt) => ({
+      when: attempt.attempted_at,
+      source: 'Calibration' as const,
+      correctRate: attempt.correct ? 100 : 0,
+    })),
+    ...simulatorAttempts.map((attempt) => ({
+      when: attempt.attempted_at,
+      source: 'Simulator' as const,
+      correctRate: attempt.correct ? 100 : 0,
+    })),
+    ...drillStageGates.map((gate) => ({
+      when: gate.completed_at,
+      source: 'Drill' as const,
+      correctRate: Math.round((gate.score / 5) * 100),
+    })),
+  ]
+    .sort((a, b) => new Date(a.when).getTime() - new Date(b.when).getTime())
+    .slice(-12);
+
+  return events.map((event, index) => {
+    const window = events.slice(Math.max(0, index - 3), index + 1);
+    const average = Math.round(
+      window.reduce((sum, item) => sum + item.correctRate, 0) / Math.max(window.length, 1),
+    );
+    return {
+      label: new Date(event.when).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      source: event.source,
+      rollingAccuracy: average,
+    };
+  });
+}
+
+export function buildSurfaceWeaknesses(tags: TrapsTag[]): WeakSurface[] {
+  const wrongTags = tags.filter((tag) => tag.picked && !tag.correct);
+  const bySurface = new Map<string, TrapsTag[]>();
+
+  for (const tag of wrongTags) {
+    const current = bySurface.get(tag.surface_id) ?? [];
+    current.push(tag);
+    bySurface.set(tag.surface_id, current);
+  }
+
+  return Array.from(bySurface.entries())
+    .map(([surfaceId, surfaceTags]) => {
+      const traitCounts = new Map<TraitId, number>();
+      for (const tag of surfaceTags) {
+        if (!tag.trait_id) continue;
+        const trait = tag.trait_id as TraitId;
+        traitCounts.set(trait, (traitCounts.get(trait) ?? 0) + 1);
+      }
+      const dominantTrait = Array.from(traitCounts.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+      return {
+        surfaceId,
+        wrongCount: surfaceTags.length,
+        dominantTrait,
+      };
+    })
+    .sort((a, b) => b.wrongCount - a.wrongCount)
+    .slice(0, 4);
+}
+
+export function latestDiagnosticsActivityAt(
+  calibrationAttempts: CalibrationAttempt[],
+  simulatorAttempts: SimulatorAttempt[],
+  drillStageGates: DrillStageGate[],
+  rrRecordings: RrRecording[],
+  srsItems: SrsQueueItem[],
+  progress: ModuleProgress | null,
+): string | null {
+  const stamps = [
+    ...calibrationAttempts.map((attempt) => attempt.attempted_at),
+    ...simulatorAttempts.map((attempt) => attempt.attempted_at),
+    ...drillStageGates.map((gate) => gate.completed_at),
+    ...rrRecordings.map((recording) => recording.created_at),
+    ...srsItems.flatMap((item) => [item.last_reviewed_at, item.due_at].filter(Boolean) as string[]),
+    progress?.updated_at,
+  ].filter(Boolean) as string[];
+
+  if (stamps.length === 0) return null;
+
+  return stamps.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
 }

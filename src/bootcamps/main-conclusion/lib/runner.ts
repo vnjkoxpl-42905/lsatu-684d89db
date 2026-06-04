@@ -3,7 +3,7 @@
  *
  * Reads from real progress (completed_lessons, completed_drills) plus the static
  * lesson list. No fake claims: if no progress exists, the next step is Lesson 1.
- * If everything is done, the next step is the Simulator (the post-capstone state).
+ * If everything is done, the next step is the Simulator (the post-gate state).
  *
  * Consumed by ModuleIndex (the bootcamp landing page) and tested by runner.test.ts.
  */
@@ -24,7 +24,6 @@ export interface ProgressLike {
 export type StepKind =
   | 'start'
   | 'continue-lesson'
-  | 'capstone'
   | 'unlock-drill'
   | 'simulator-ready'
   | 'all-clear';
@@ -41,20 +40,17 @@ export interface NextStep {
   cta: string;
   /** Destination href (full path under the bootcamp). */
   href: string;
-  /** Optional secondary action (e.g. a "Run a question" link after capstone). */
+  /** Optional secondary action for an alternate follow-up move. */
   secondary?: { label: string; href: string };
 }
 
-const TOTAL_LESSONS = 13;
+const TOTAL_LESSONS = 12;
 
 /** Rank lesson numbers like "1.5" / "1.10" by the integer second component. */
 function lessonRank(num: string): number {
   const parts = num.split('.');
   return Number(parts[1] ?? '0');
 }
-const CAPSTONE_NUMBER = '1.13';
-const CAPSTONE_LESSON_ID = 'MC-LSN-1.13';
-const UNLOCK_DRILL_NUMBER = '5';
 const UNLOCK_DRILL_ID = 'MC-DRL-MIX';
 const UNLOCK_DRILL_SLUG = 'final-mixed-structure-check';
 
@@ -88,11 +84,9 @@ export function nextTrainingStep(
     };
   }
 
-  // Teaching lessons are 1.1–1.12. Capstone is 1.13 and is tracked separately.
-  const teaching = sorted.filter((l) => l.id !== CAPSTONE_LESSON_ID);
+  const teaching = sorted.filter((l) => lessonRank(l.number) <= TOTAL_LESSONS);
   const firstUndoneTeaching = teaching.find((l) => !completedLessons.has(l.id));
   const teachingDoneCount = teaching.filter((l) => completedLessons.has(l.id)).length;
-  const capstoneAttempted = completedLessons.has(CAPSTONE_LESSON_ID);
   const drill34Done = completedDrills.has(UNLOCK_DRILL_ID);
 
   // 1) Mid-teaching: any of 1.1–1.12 not yet done → continue there.
@@ -112,34 +106,21 @@ export function nextTrainingStep(
     };
   }
 
-  // 2) Teaching done, capstone not taken → push to the final lesson check.
-  if (!capstoneAttempted) {
-    return {
-      kind: 'capstone',
-      eyebrow: 'Lesson 13',
-      title: 'Take the final lesson check',
-      subtitle:
-        'You have the teaching in place. Lesson 13 is the first full read on how the ideas are holding together.',
-      cta: 'Open Lesson 13',
-      href: `${BC}/lessons/${CAPSTONE_NUMBER}`,
-    };
-  }
-
-  // 3) Capstone done, Drill 3.4 not cleared → run the unlock-gate drill.
+  // 2) Teaching done, Drill 3.4 not cleared → run the unlock-gate drill.
   if (!drill34Done) {
     return {
       kind: 'unlock-drill',
-      eyebrow: 'Unlock the Simulator',
+      eyebrow: 'Final check',
       title: 'Final Mixed Structure Check',
       subtitle:
-        'A mixed-structure capstone of first-sentence and rebuttal items. Clear it and the Question Simulator opens.',
+        'You have the teaching in place. Run the mixed-structure check to pressure-test the read before entering the Question Simulator.',
       cta: 'Open the gate drill',
       href: `${BC}/drills/${UNLOCK_DRILL_SLUG}`,
     };
   }
 
 
-  // 4) Capstone + Drill 3.4 done → live training.
+  // 3) Drill 3.4 done → live training.
   return {
     kind: 'simulator-ready',
     eyebrow: 'Live training',
@@ -202,7 +183,7 @@ export function nextDrillStep(
       eyebrow: 'Unlock the Simulator',
       title: `Drill ${gate.number}: ${gate.title}`,
       subtitle:
-        'Clear the capstone drill page and finish the mixed structure run to unlock the Question Simulator.',
+        'Clear the mixed-structure drill page and finish the run to unlock the Question Simulator.',
       cta: `Open Drill ${gate.number}`,
       href: `${BC}/drills/${gate.slug}`,
       isGate: true,
@@ -253,7 +234,7 @@ export function buildLessonPath(
       title: l.title,
       href: `${BC}/lessons/${l.number}`,
       status: isDone ? 'done' : isActive ? 'active' : 'upcoming',
-      capstone: l.number === CAPSTONE_NUMBER,
+      capstone: false,
     };
   });
 }

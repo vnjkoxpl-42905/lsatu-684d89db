@@ -10,18 +10,13 @@ import lessonsData from '@/bootcamps/main-conclusion/data/lessons.generated.json
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import {
   nextTrainingStep,
-  buildLessonPath,
   type LessonRow,
   type ProgressLike,
 } from '@/bootcamps/main-conclusion/lib/runner';
 import { RunnerHero } from '@/bootcamps/main-conclusion/components/training-runner/RunnerHero';
-import { TrainingPath } from '@/bootcamps/main-conclusion/components/training-runner/TrainingPath';
-import { DynamicIslandTOC } from '@/bootcamps/main-conclusion/components/training-runner/DynamicIslandTOC';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
-import { Sparkles, BookOpen, Award, Dumbbell, Target } from 'lucide-react';
-import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { Sparkles, BookOpen, Dumbbell, Target } from 'lucide-react';
 
-const LESSONS = lessonsData as LessonRow[];
+const LESSONS = (lessonsData as LessonRow[]).filter((lesson) => lesson.number !== '1.13');
 
 export function ModuleIndex(): JSX.Element {
   const { progress } = useModuleProgress();
@@ -36,9 +31,7 @@ export function ModuleIndex(): JSX.Element {
   const isFreshRun = step.kind === 'start';
 
   const Icon =
-    step.kind === 'capstone'
-      ? Award
-      : step.kind === 'unlock-drill'
+    step.kind === 'unlock-drill'
       ? Dumbbell
       : step.kind === 'simulator-ready'
       ? Target

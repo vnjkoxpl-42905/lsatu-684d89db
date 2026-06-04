@@ -46,6 +46,7 @@ export function CommandPalette({ open, onClose }: Props) {
   const items = useMemo<Item[]>(() => {
     const all: Item[] = [];
     for (const l of lessons as Array<{ id: string; number: string; title: string }>) {
+      if (l.number === '1.13') continue;
       all.push({
         id: l.id,
         title: `${l.number} · ${l.title}`,

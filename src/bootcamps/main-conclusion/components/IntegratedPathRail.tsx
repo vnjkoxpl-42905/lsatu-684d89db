@@ -123,7 +123,7 @@ export function IntegratedPathRail() {
             </p>
             <p className="font-mc-serif text-lg italic leading-tight text-ink">{currentAction.title}</p>
             <p className="text-sm leading-relaxed text-ink-soft">
-              {nextAction ? `Next: ${nextAction.title}` : 'Final capstone in this path.'}
+              {nextAction ? `Next: ${nextAction.title}` : 'Final step in this path.'}
             </p>
           </div>
         ) : (

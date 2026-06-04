@@ -8,7 +8,7 @@ import {
   type DrillRow,
 } from '@/bootcamps/main-conclusion/lib/runner';
 
-const LESSONS: LessonRow[] = Array.from({ length: 13 }, (_, i) => ({
+const LESSONS: LessonRow[] = Array.from({ length: 12 }, (_, i) => ({
   id: `MC-LSN-1.${i + 1}`,
   number: `1.${i + 1}`,
   title: `Lesson ${i + 1}`,
@@ -38,26 +38,14 @@ describe('nextTrainingStep', () => {
     expect(step.subtitle).toContain('4 of 12');
   });
 
-  it('teaching lessons (1.1–1.12) done, capstone not attempted → push to calibration', () => {
-    // 1.1 through 1.12 complete; capstone (1.13) NOT done.
-    const completed_lessons = LESSONS.filter((l) => l.id !== 'MC-LSN-1.13').map((l) => l.id);
-    const progress: ProgressLike = { completed_lessons, completed_drills: [] };
+  it('teaching lessons done, gate drill not cleared → push to the final mixed drill', () => {
+    const progress: ProgressLike = { completed_lessons: LESSONS.map((l) => l.id), completed_drills: [] };
     const step = nextTrainingStep(progress, LESSONS);
-    expect(step.kind).toBe('capstone');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.13');
-
-    // Capstone done, Drill 3.4 not done → unlock-drill branch.
-    const withCapstone: ProgressLike = {
-      completed_lessons: LESSONS.map((l) => l.id),
-      completed_drills: [],
-    };
-    const step2 = nextTrainingStep(withCapstone, LESSONS);
-    expect(step2.kind).toBe('unlock-drill');
-    expect(step2.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
+    expect(step.kind).toBe('unlock-drill');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
   });
 
-  it('mid-teaching with stray capstone attempt does NOT short-circuit to drill', () => {
-    // Edge case: capstone marked done but teaching not finished → still continue teaching.
+  it('mid-teaching with stray legacy lesson 13 completion does NOT short-circuit to drill', () => {
     const progress: ProgressLike = {
       completed_lessons: ['MC-LSN-1.1', 'MC-LSN-1.2', 'MC-LSN-1.13'],
       completed_drills: [],
@@ -67,7 +55,7 @@ describe('nextTrainingStep', () => {
     expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.3');
   });
 
-  it('capstone + Drill 3.4 done → simulator-ready', () => {
+  it('teaching done + Drill 3.4 done → simulator-ready', () => {
     const progress: ProgressLike = {
       completed_lessons: LESSONS.map((l) => l.id),
       completed_drills: ['MC-DRL-MIX'],
@@ -143,12 +131,12 @@ describe('buildLessonPath', () => {
     expect(path[1].status).toBe('done');
     expect(path[2].status).toBe('active');
     expect(path[3].status).toBe('upcoming');
-    expect(path[12].capstone).toBe(true);
+    expect(path.every((dot) => !dot.capstone)).toBe(true);
   });
 
-  it('returns 13 dots for the canonical lesson list', () => {
+  it('returns 12 dots for the active lesson list', () => {
     const path = buildLessonPath(null, LESSONS);
-    expect(path).toHaveLength(13);
+    expect(path).toHaveLength(12);
     expect(path[0].status).toBe('active');
   });
 });

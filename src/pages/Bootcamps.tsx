@@ -43,7 +43,7 @@ const BOOTCAMPS = [
     title: 'Intro to LR',
     emoji: '🛠️',
     description:
-      'Six modules, gate-driven, calibration after teaching. 12 voice-led lessons + capstone; Reference + Indicator Vault; 9 drills with Stage-Gate engine; 20-question Simulator with Trap Master 7-trait diagnostic; Hard Sentences cluster decomposer; Diagnostics dashboard with SM-2 spaced repetition. Unlock cascade starts at Lesson 1.1.',
+      'Six modules, gate-driven, and diagnosis-based. 12 voice-led lessons; Reference + Indicator Vault; 9 drills with Stage-Gate engine; 20-question Simulator with Trap Master 7-trait diagnostic; Hard Sentences cluster decomposer; Diagnostics dashboard with SM-2 spaced repetition. Unlock cascade starts at Lesson 1.1.',
     stats: ['6 Modules', '86 Surfaces', 'SM-2 SRS'],
     route: '/bootcamp/intro-to-lr',
     accentClass: 'bg-amber-500/10 border-amber-500/20',

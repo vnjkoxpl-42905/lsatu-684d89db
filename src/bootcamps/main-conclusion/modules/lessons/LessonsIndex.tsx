@@ -12,8 +12,8 @@ interface LessonRow {
 
 export function LessonsIndex(): JSX.Element {
   const { progress } = useModuleProgress();
-  const all = lessons as LessonRow[];
-  const completedCount = progress?.completed_lessons.length ?? 0;
+  const all = (lessons as LessonRow[]).filter((lesson) => lesson.number !== '1.13');
+  const completedCount = all.filter((lesson) => progress?.completed_lessons.includes(lesson.id) ?? false).length;
   const totalCount = all.length;
 
   return (
@@ -85,7 +85,7 @@ function Header({
         Lessons
       </div>
       <h1 className="mt-3 font-mc-serif text-[clamp(3rem,6vw,4.8rem)] font-medium italic text-ink leading-[0.92] tracking-[-0.06em]">
-        Thirteen guided lessons
+        Twelve guided lessons
       </h1>
       <p className="mt-4 max-w-[60ch] font-mc-sans text-body-prose leading-relaxed text-ink-soft">
         Each lesson is a guided session: briefing, demo, your attempt, reveal, coach&apos;s note,

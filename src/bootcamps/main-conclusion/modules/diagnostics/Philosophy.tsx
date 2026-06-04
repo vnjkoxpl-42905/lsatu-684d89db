@@ -29,8 +29,8 @@ export function Philosophy() {
       <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
         We refuse this. The dashboard you are about to see does not produce a number until you have done
         the work to make a number meaningful. The first time it has anything to say is after the
-        Lesson 13 capstone, which sits at the end of teaching, not the front. We calibrate after we
-        have taught you the thing. Not before.
+        drills and simulator start generating real evidence. We diagnose after you have actually worked
+        the method. Not before.
       </p>
 
       <Card variant="elev" className="border border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.04)]">

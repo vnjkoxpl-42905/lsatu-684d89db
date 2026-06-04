@@ -35,8 +35,8 @@ describe('module ordering', () => {
     expect(additions).not.toContain('/simulator');
   });
 
-  it('completing lesson 1.13 unlocks nothing further (capstone is the last lesson)', () => {
-    expect(unlockNext('/lessons/1.13', blank())).toEqual([]);
+  it('completing lesson 1.12 unlocks nothing further inside lessons', () => {
+    expect(unlockNext('/lessons/1.12', blank())).toEqual([]);
   });
 
   it('completing /drills/3.4 unlocks all four simulator routes (and only those)', () => {

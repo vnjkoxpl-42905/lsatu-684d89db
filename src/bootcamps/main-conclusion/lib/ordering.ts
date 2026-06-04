@@ -41,7 +41,7 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   '/',
   // M1 — every lesson
   '/lessons',
-  ...Array.from({ length: 13 }, (_, i) => `/lessons/1.${i + 1}`),
+  ...Array.from({ length: 12 }, (_, i) => `/lessons/1.${i + 1}`),
   // M2 — every reference + named tool surface
   '/reference',
   '/reference/indicators',
@@ -100,7 +100,7 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
   const lessonMatch = /^\/lessons\/1\.(\d+)$/.exec(currentRouteId);
   if (lessonMatch) {
     const next = Number(lessonMatch[1]) + 1;
-    if (next <= 13) additions.push(`/lessons/1.${next}`);
+    if (next <= 12) additions.push(`/lessons/1.${next}`);
   }
   // Final Mixed Structure Check is the simulator gate.
   if (
