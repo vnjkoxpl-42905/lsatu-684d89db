@@ -83,38 +83,8 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
     (modules.filter((module) => module.pct >= 1).length / Math.max(modules.length, 1)) * 100,
   );
 
-  if (!seed.attempted && totalScoredAttempts === 0) {
-    return (
-      <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-5xl mx-auto space-y-8">
-        <PageHeader
-          eyebrow="Diagnostics"
-          title={title}
-          description="This area becomes your saved diagnostic memory once you start generating real work. It tracks strengths, weaknesses, and change over time for each student."
-        />
-        <Card variant="elev" accent className="p-7">
-          <Badge tone="warn" dot>
-            awaiting seed data
-          </Badge>
-          <h2 className="mt-4 font-mc-serif text-h1 font-semibold text-ink">Start the first diagnostic pass</h2>
-          <p className="mt-3 max-w-[56ch] font-mc-serif text-body-prose text-ink-soft">
-            The analytics page is built from saved drill gates, simulator attempts, SRS reviews, and recordings. Once those exist, this page remembers the student&apos;s profile and starts diagnosing patterns over time.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/bootcamp/intro-to-lr/drills">
-              <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                Open the Drill Lab
-              </Button>
-            </Link>
-            <Link to="/bootcamp/intro-to-lr/diagnostics/philosophy" className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
-              <Button size="lg" variant="ghost">
-                Read the diagnostic philosophy
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </article>
-    );
-  }
+  const hasNoEvidence = !seed.attempted && totalScoredAttempts === 0;
+
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-6xl mx-auto space-y-8">
@@ -133,6 +103,28 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
           </div>
         }
       />
+
+      {hasNoEvidence ? (
+        <Card variant="elev" accent className="p-5">
+          <div className="flex items-start gap-3">
+            <Badge tone="warn" dot>awaiting evidence</Badge>
+            <div className="flex-1">
+              <p className="font-mc-serif text-body text-ink">
+                Your diagnostic memory is empty. The graphs below populate automatically as you finish drills, simulator sets, and SRS reviews. Every attempt is saved to your profile and synced across devices.
+              </p>
+              <div className="mt-3">
+                <Link to="/bootcamp/intro-to-lr/drills">
+                  <Button size="sm" rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+                    Start the first drill
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ) : null}
+
+
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
@@ -400,13 +392,12 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
         </Card>
       </section>
 
-      <section className="flex flex-wrap gap-2 border-t border-[rgb(var(--border)/0.10)] pt-5">
-        <Link to="/bootcamp/intro-to-lr/diagnostics/philosophy"><Chip tone="accent">Philosophy</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/trait-profile"><Chip tone="accent">Trait detail</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/mistake-profile"><Chip tone="accent">Mistake profile</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/rr-review"><Chip tone="accent">R&R review</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/srs"><Chip tone="accent">SRS queue</Chip></Link>
+      <section className="rounded-[6px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev)/0.45)] px-4 py-3">
+        <p className="font-mc-sans text-small text-ink-soft">
+          Every attempt, drill gate, and review on this profile is saved to your account and synced across devices. This page is your full diagnostic memory — there are no separate sub-pages to hunt through.
+        </p>
       </section>
+
     </article>
   );
 }
