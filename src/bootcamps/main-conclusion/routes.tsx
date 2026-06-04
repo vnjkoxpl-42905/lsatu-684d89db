@@ -171,11 +171,7 @@ export function BootcampRoutes() {
         />
         <Route
           path="reference/flashcards"
-          element={
-            <IntroPathLearningLayout>
-              <StructuredFlashcards />
-            </IntroPathLearningLayout>
-          }
+          element={<StructuredFlashcards />}
         />
         <Route
           path="reference/indicators"
