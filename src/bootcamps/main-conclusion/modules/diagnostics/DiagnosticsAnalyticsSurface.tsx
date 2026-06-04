@@ -392,13 +392,12 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
         </Card>
       </section>
 
-      <section className="flex flex-wrap gap-2 border-t border-[rgb(var(--border)/0.10)] pt-5">
-        <Link to="/bootcamp/intro-to-lr/diagnostics/philosophy"><Chip tone="accent">Philosophy</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/trait-profile"><Chip tone="accent">Trait detail</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/mistake-profile"><Chip tone="accent">Mistake profile</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/rr-review"><Chip tone="accent">R&R review</Chip></Link>
-        <Link to="/bootcamp/intro-to-lr/diagnostics/srs"><Chip tone="accent">SRS queue</Chip></Link>
+      <section className="rounded-[6px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev)/0.45)] px-4 py-3">
+        <p className="font-mc-sans text-small text-ink-soft">
+          Every attempt, drill gate, and review on this profile is saved to your account and synced across devices. This page is your full diagnostic memory — there are no separate sub-pages to hunt through.
+        </p>
       </section>
+
     </article>
   );
 }
