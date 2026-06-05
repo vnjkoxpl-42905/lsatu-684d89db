@@ -40,11 +40,7 @@ No Prettier. Formatting is ESLint-only.
 
 ## Conventions
 
-- **Automatic Git Workflow:** By default, after completing any code fix or modification, Gemini CLI will automatically:
-  1. `git add .`
-  2. `git commit -m "<descriptive message>"`
-  3. `git push origin main`
-  This behavior is default unless explicitly told otherwise.
+- **Git workflow:** Always commit and push directly to `main`. Never create feature branches or pull requests unless explicitly asked. After completing any code change: stage relevant files, commit with a descriptive message, and push to `main`.
 - Path alias `@/` → `./src/` (set in `vite.config.ts` and `tsconfig.json`).
 - TypeScript strict mode is **off** (`strictNullChecks: false`, `noImplicitAny: false`, `noUnusedLocals: false`). Do not flip these without explicit approval — it would cascade into a very large diff.
 - Lovable-specific plumbing that must not be removed:
