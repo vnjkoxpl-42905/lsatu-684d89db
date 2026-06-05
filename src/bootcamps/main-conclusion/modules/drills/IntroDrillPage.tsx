@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
@@ -8,6 +8,7 @@ import type { IntroDrillDefinition } from './introDrills';
 
 export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const previousAction = getPreviousAction(pathname);
 
   return (
@@ -54,11 +55,12 @@ export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
                   ) : null}
                 </div>
 
-                <Link to={drill.runRoute} className="inline-flex">
-                  <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                    Start Drill
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => navigate(drill.runRoute)}
+                  rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+                >
+                  Start Drill
+                </Button>
               </Card>
             </aside>
           </section>
