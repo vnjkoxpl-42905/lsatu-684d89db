@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
-import { StructureClassification } from './labs/StructureClassification';
+import { ReferenceDrillFrame } from './labs/ReferenceDrillFrame';
 import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
 import { XRayReview } from './labs/XRayReview';
 import { MixedStructureCheck } from './labs/MixedStructureCheck';
@@ -52,7 +52,13 @@ export function ActiveDrillShell() {
       content = <MainConclusionLab />;
       break;
     case 'first-sentence-vs-rebuttal-lab':
-      content = <StructureClassification />;
+      content = (
+        <ReferenceDrillFrame
+          drillId={drill.completionId}
+          title={drill.title}
+          source="first-sentence-vs-rebuttal"
+        />
+      );
       break;
     case 'argument-structure-lab':
       content = <ArgumentStructureLab drillId={drill.completionId} title={drill.title} />;
