@@ -372,23 +372,39 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     });
   }
 
-  function renderPartMarkup(part: FirstSentenceVsRebuttalQuestion['parts'][number]) {
+  function renderPartMarkup(part: FirstSentenceVsRebuttalQuestion['parts'][number], interactive: boolean) {
     const segments = parseIndicatorMarkup(part.text);
     return segments.map((segment, segmentIndex) => {
       if (segment.kind === 'indicator') {
         const indicatorId = `${part.id}:${segmentIndex}`;
+        const tone = indicatorTone(segment.indicatorType);
+        if (!interactive) {
+          return (
+            <span
+              key={indicatorId}
+              className="fsvr-lab__indicator"
+              data-tone={tone}
+            >
+              {segment.text}
+            </span>
+          );
+        }
         const found = active.foundIndicators.includes(indicatorId) || active.foundIndicators.some((id) => id.startsWith('reveal-'));
         return (
           <button
             key={indicatorId}
             type="button"
             className={`fsvr-lab__indicator${found ? ' fsvr-lab__indicator--found' : ''}`}
-            data-tone={indicatorTone(segment.indicatorType)}
+            data-tone={tone}
             onClick={() => handleIndicatorClick(indicatorId)}
           >
             {segment.text}
           </button>
         );
+      }
+
+      if (!interactive) {
+        return <Fragment key={`${part.id}:${segmentIndex}`}>{segment.text}</Fragment>;
       }
 
       const pieces = segment.text.match(/[A-Za-z'’-]+|[^A-Za-z'’-]+/g) ?? [];
@@ -417,48 +433,53 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     return currentQuestion.parts.map((part, index) => {
       const isSelectedConclusion = active.selectedConclusionId === part.id;
       const isSelectedFollowUp = active.selectedFollowUpId === part.id;
-      let partClass = 'fsvr-lab__part';
+      const clickable = !active.revealed && (active.step === 1 || active.step === 3);
+      const interactive = active.step === 0 && !active.revealed;
 
+      let partClass = 'fsvr-lab__part';
       if (active.revealed) {
         partClass += ` fsvr-lab__part--${part.role}`;
-      } else if (active.step === 1 || active.step === 3) {
+      } else if (clickable) {
         partClass += ' fsvr-lab__part--clickable';
         if (isSelectedConclusion || isSelectedFollowUp) {
           partClass += ' fsvr-lab__part--selected';
         }
+      } else {
+        partClass += ' fsvr-lab__part--reading';
       }
 
-      if (active.step === 0) {
-        return (
-          <Fragment key={part.id}>
-            <span className="fsvr-lab__part fsvr-lab__part--reading">
-              <span className="fsvr-lab__part-text">{renderPartMarkup(part)}</span>
-            </span>
-            {index < currentQuestion.parts.length - 1 ? ' ' : null}
-          </Fragment>
-        );
-      }
+      const selectPart = () => {
+        if (active.step === 1) {
+          setActive((value) => ({ ...value, selectedConclusionId: part.id }));
+          setFeedback(null);
+          return;
+        }
+        if (active.step === 3 && part.id !== active.selectedConclusionId) {
+          setActive((value) => ({ ...value, selectedFollowUpId: part.id }));
+          setFeedback(null);
+        }
+      };
 
       return (
         <Fragment key={part.id}>
-          <button
-            type="button"
+          <span
             className={partClass}
-            onClick={() => {
-              if (active.revealed) return;
-              if (active.step === 1) {
-                setActive((value) => ({ ...value, selectedConclusionId: part.id }));
-                setFeedback(null);
-                return;
-              }
-              if (active.step === 3 && part.id !== active.selectedConclusionId) {
-                setActive((value) => ({ ...value, selectedFollowUpId: part.id }));
-                setFeedback(null);
-              }
-            }}
+            role={clickable ? 'button' : undefined}
+            tabIndex={clickable ? 0 : undefined}
+            onClick={clickable ? selectPart : undefined}
+            onKeyDown={
+              clickable
+                ? (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      selectPart();
+                    }
+                  }
+                : undefined
+            }
           >
-            <span className="fsvr-lab__part-text">{stripIndicatorMarkup(part.text)}</span>
-          </button>
+            <span className="fsvr-lab__part-text">{renderPartMarkup(part, interactive)}</span>
+          </span>
           {index < currentQuestion.parts.length - 1 ? ' ' : null}
         </Fragment>
       );
