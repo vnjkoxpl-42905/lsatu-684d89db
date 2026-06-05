@@ -6,6 +6,8 @@ import {
   FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS,
   createDefaultFirstSentenceVsRebuttalAttemptLog,
   createEmptyFirstSentenceVsRebuttalSessionRecord,
+  firstSentenceVsRebuttalFollowUpIds,
+  firstSentenceVsRebuttalFollowUpRole,
   type FirstSentenceVsRebuttalAttemptLog,
   type FirstSentenceVsRebuttalQuestion,
   type FirstSentenceVsRebuttalQuestionStatus,
@@ -33,9 +35,10 @@ interface ActiveQuestionState {
   step: 0 | 1 | 2 | 3;
   foundIndicators: string[];
   wrongWordToken: string | null;
+  wrongPhraseId: string | null;
   selectedConclusionId: string | null;
   selectedStructure: 'first' | 'rebuttal' | null;
-  selectedFollowUpId: string | null;
+  selectedFollowUpIds: string[];
   finalStatus: FirstSentenceVsRebuttalQuestionStatus | null;
   revealed: boolean;
 }
@@ -48,13 +51,23 @@ function createActiveQuestionState(): ActiveQuestionState {
     step: 0,
     foundIndicators: [],
     wrongWordToken: null,
+    wrongPhraseId: null,
     selectedConclusionId: null,
     selectedStructure: null,
-    selectedFollowUpId: null,
+    selectedFollowUpIds: [],
     finalStatus: null,
     revealed: false,
   };
 }
+
+const INDICATOR_TONE_LABEL: Record<string, string> = {
+  premise: 'Premise',
+  pivot: 'Pivot',
+  opposing: 'Opposing view',
+  concession: 'Concession',
+  opinion: 'Opinion',
+  conclusion: 'Conclusion',
+};
 
 function firstSentence(text: string) {
   const match = text.match(/^[^.!?]+[.!?]/);
@@ -149,22 +162,6 @@ function persistableSession(session: FirstSentenceVsRebuttalSessionRecord): Less
   };
 }
 
-function sessionFromRecord(record: LessonProgress | null): FirstSentenceVsRebuttalSessionRecord {
-  const raw = record?.checkpoint_responses as
-    | { kind?: string; session?: FirstSentenceVsRebuttalSessionRecord }
-    | undefined;
-
-  if (raw?.kind === 'first-sentence-vs-rebuttal-lab' && raw.session) {
-    return {
-      ...createEmptyFirstSentenceVsRebuttalSessionRecord(),
-      ...raw.session,
-      attempts: raw.session.attempts ?? {},
-    };
-  }
-
-  return createEmptyFirstSentenceVsRebuttalSessionRecord();
-}
-
 function componentTotals(session: FirstSentenceVsRebuttalSessionRecord) {
   return Object.values(session.attempts).reduce(
     (totals, log) => ({
@@ -184,36 +181,67 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   const [active, setActive] = useState<ActiveQuestionState>(createActiveQuestionState());
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
+  const [reviewQuestionId, setReviewQuestionId] = useState<number | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'saved' | null>(null);
   const [loaded, setLoaded] = useState(false);
 
+  // Start Drill always begins a fresh session at Question 1 — no mid-drill resume.
   useEffect(() => {
     if (!user?.id) return;
-    let cancelled = false;
-
-    (async () => {
-      const persist = getPersistence(user.id);
-      const record = await persist.get<LessonProgress>(TABLES.lesson_progress, SESSION_RECORD_ID);
-      if (cancelled) return;
-      setSession(sessionFromRecord(record));
-      setLoaded(true);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    setSession(createEmptyFirstSentenceVsRebuttalSessionRecord());
+    setActive(createActiveQuestionState());
+    setFeedback(null);
+    setReviewQuestionId(null);
+    setLoaded(true);
   }, [user?.id]);
 
   useEffect(() => {
     if (!loaded || !user?.id) return;
+    let cancelled = false;
     const persist = getPersistence(user.id);
-    void persist.set(TABLES.lesson_progress, SESSION_RECORD_ID, {
-      id: SESSION_RECORD_ID,
-      user_id: user.id,
-      lesson_id: SESSION_LESSON_ID,
-      viewed_at: now(),
-      checkpoint_responses: persistableSession(session),
-    } satisfies LessonProgress);
+    void (async () => {
+      try {
+        await persist.set(TABLES.lesson_progress, SESSION_RECORD_ID, {
+          id: SESSION_RECORD_ID,
+          user_id: user.id,
+          lesson_id: SESSION_LESSON_ID,
+          viewed_at: now(),
+          checkpoint_responses: persistableSession(session),
+        } satisfies LessonProgress);
+        if (!cancelled) setSaveStatus('saved');
+      } catch {
+        /* persistence is best-effort; ignore write failures */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [loaded, session, user?.id]);
+
+  // Fade the "Saved" indicator out shortly after it appears.
+  useEffect(() => {
+    if (saveStatus !== 'saved') return;
+    const timer = setTimeout(() => setSaveStatus(null), 1600);
+    return () => clearTimeout(timer);
+  }, [saveStatus]);
+
+  // Correct feedback banners auto-dismiss; warning/wrong banners stay until the next action.
+  useEffect(() => {
+    if (feedback?.tone !== 'correct') return;
+    const timer = setTimeout(() => {
+      setFeedback((value) => (value?.tone === 'correct' ? null : value));
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, [feedback]);
+
+  // Clear the wrong-answer shake/flash after the animation has played.
+  useEffect(() => {
+    if (!active.wrongWordToken && !active.wrongPhraseId) return;
+    const timer = setTimeout(() => {
+      setActive((value) => ({ ...value, wrongWordToken: null, wrongPhraseId: null }));
+    }, 650);
+    return () => clearTimeout(timer);
+  }, [active.wrongWordToken, active.wrongPhraseId]);
 
   const orderedQuestions = useMemo(
     () =>
@@ -328,16 +356,25 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   async function gradeQuestion() {
-    if (!active.selectedFollowUpId) {
-      setFeedback({ tone: 'warning', message: 'Click the phrase in the stimulus first.' });
+    const targetIds = firstSentenceVsRebuttalFollowUpIds(currentQuestion);
+    const targetRole = firstSentenceVsRebuttalFollowUpRole(currentQuestion);
+    const noun = targetRole === 'support' ? 'supporting claim' : 'opposing viewpoint';
+    const selected = active.selectedFollowUpIds;
+
+    if (selected.length === 0) {
+      setFeedback({
+        tone: 'warning',
+        message: targetIds.length > 1 ? `Click every ${noun} in the stimulus first.` : `Click the ${noun} in the stimulus first.`,
+      });
       return;
     }
-    const selected = currentQuestion.parts.find((part) => part.id === active.selectedFollowUpId);
-    const correctRole = currentQuestion.type === 'first' ? 'support' : 'opposing';
 
-    if (!selected || selected.role !== correctRole) {
-      setActive((value) => ({ ...value, selectedFollowUpId: null }));
-      handleWrong('support', buildRetryMessage(currentQuestion, 'support'));
+    const complete = targetIds.length === selected.length && targetIds.every((id) => selected.includes(id));
+    if (!complete) {
+      setFeedback({
+        tone: 'warning',
+        message: `You have ${selected.length} of ${targetIds.length}. Select every ${noun} before checking.`,
+      });
       return;
     }
 
@@ -394,12 +431,15 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       if (segment.kind === 'indicator') {
         const indicatorId = `${part.id}:${segmentIndex}`;
         const tone = indicatorTone(segment.indicatorType);
+        const tip = INDICATOR_TONE_LABEL[tone] ?? 'Indicator';
         if (!interactive) {
+          // Indicators past Step 1 are already identified — show their type on hover.
           return (
             <span
               key={indicatorId}
-              className="fsvr-lab__indicator"
+              className="fsvr-lab__indicator fsvr-lab__indicator--found"
               data-tone={tone}
+              data-tip={tip}
             >
               {segment.text}
             </span>
@@ -412,6 +452,9 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
             type="button"
             className={`fsvr-lab__indicator${found ? ' fsvr-lab__indicator--found' : ''}`}
             data-tone={tone}
+            data-tip={found ? tip : undefined}
+            aria-pressed={found}
+            aria-label={found ? `${segment.text} — ${tip} indicator, found` : `Mark indicator word ${segment.text}`}
             onClick={() => handleIndicatorClick(indicatorId)}
           >
             {segment.text}
@@ -434,6 +477,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 key={wordId}
                 type="button"
                 className={`fsvr-lab__plain-word${active.wrongWordToken === wordId ? ' fsvr-lab__plain-word--miss' : ''}`}
+                aria-label={`Check word ${piece}`}
                 onClick={() => handlePlainWordClick(wordId)}
               >
                 {piece}
@@ -447,8 +491,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
   function renderStimulus() {
     return currentQuestion.parts.map((part, index) => {
-      const isSelectedConclusion = active.selectedConclusionId === part.id;
-      const isSelectedFollowUp = active.selectedFollowUpId === part.id;
+      const isSelected =
+        (active.step === 1 && active.selectedConclusionId === part.id) ||
+        (active.step === 3 && active.selectedFollowUpIds.includes(part.id));
+      const isWrong = active.wrongPhraseId === part.id;
       const clickable = !active.revealed && (active.step === 1 || active.step === 3);
       const interactive = active.step === 0 && !active.revealed;
 
@@ -457,21 +503,32 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
         partClass += ` fsvr-lab__part--${part.role}`;
       } else if (clickable) {
         partClass += ' fsvr-lab__part--clickable';
-        if (isSelectedConclusion || isSelectedFollowUp) {
-          partClass += ' fsvr-lab__part--selected';
-        }
+        if (isSelected) partClass += ' fsvr-lab__part--selected';
+        if (isWrong) partClass += ' fsvr-lab__part--wrong';
       } else {
         partClass += ' fsvr-lab__part--reading';
       }
 
       const selectPart = () => {
         if (active.step === 1) {
-          setActive((value) => ({ ...value, selectedConclusionId: part.id }));
+          setActive((value) => ({ ...value, selectedConclusionId: part.id, wrongPhraseId: null }));
           setFeedback(null);
           return;
         }
-        if (active.step === 3 && part.id !== active.selectedConclusionId) {
-          setActive((value) => ({ ...value, selectedFollowUpId: part.id }));
+        if (active.step === 3) {
+          const targetRole = firstSentenceVsRebuttalFollowUpRole(currentQuestion);
+          if (part.role !== targetRole) {
+            // Wrong-role click: flash/shake but never select or count a miss.
+            setActive((value) => ({ ...value, wrongPhraseId: part.id }));
+            return;
+          }
+          setActive((value) => ({
+            ...value,
+            wrongPhraseId: null,
+            selectedFollowUpIds: value.selectedFollowUpIds.includes(part.id)
+              ? value.selectedFollowUpIds.filter((id) => id !== part.id)
+              : [...value.selectedFollowUpIds, part.id],
+          }));
           setFeedback(null);
         }
       };
@@ -480,8 +537,11 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
         <Fragment key={part.id}>
           <span
             className={partClass}
+            data-role={part.role}
             role={clickable ? 'button' : undefined}
             tabIndex={clickable ? 0 : undefined}
+            aria-pressed={clickable ? isSelected : undefined}
+            aria-label={clickable ? 'Select this phrase' : undefined}
             onClick={clickable ? selectPart : undefined}
             onKeyDown={
               clickable
@@ -502,8 +562,72 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     });
   }
 
+  function renderColorCodedStimulus(question: FirstSentenceVsRebuttalQuestion) {
+    return question.parts.map((part, index) => (
+      <Fragment key={part.id}>
+        <span className={`fsvr-lab__part fsvr-lab__part--${part.role}`} data-role={part.role}>
+          <span className="fsvr-lab__part-text">{renderPartMarkup(part, false)}</span>
+        </span>
+        {index < question.parts.length - 1 ? ' ' : null}
+      </Fragment>
+    ));
+  }
+
+  function renderBreakdown(question: FirstSentenceVsRebuttalQuestion) {
+    const conclusion = question.parts.find((part) => part.role === 'conclusion');
+    const supports = question.parts.filter((part) => part.role === 'support');
+    const opposings = question.parts.filter((part) => part.role === 'opposing');
+    return (
+      <div className="fsvr-lab__breakdown-body">
+        <div>
+          <div className="fsvr-lab__review-label">Main conclusion</div>
+          <div className="fsvr-lab__review-quote">{conclusion ? stripIndicatorMarkup(conclusion.text) : '—'}</div>
+        </div>
+        {supports.length ? (
+          <div>
+            <div className="fsvr-lab__review-label">Support / premise</div>
+            {supports.map((part) => (
+              <div key={part.id} className="fsvr-lab__review-quote">{stripIndicatorMarkup(part.text)}</div>
+            ))}
+          </div>
+        ) : null}
+        {opposings.length ? (
+          <div>
+            <div className="fsvr-lab__review-label">Opposing viewpoint</div>
+            {opposings.map((part) => (
+              <div key={part.id} className="fsvr-lab__review-quote">{stripIndicatorMarkup(part.text)}</div>
+            ))}
+          </div>
+        ) : null}
+        <div>
+          <div className="fsvr-lab__review-label">Why that’s the conclusion</div>
+          <p>{question.review.whyConclusion}</p>
+        </div>
+        <div>
+          <div className="fsvr-lab__review-label">Why {question.type === 'first' ? 'First-sentence' : 'Rebuttal'}</div>
+          <p>{question.review.whyStructure}</p>
+        </div>
+        <div>
+          <div className="fsvr-lab__review-label">{question.type === 'first' ? 'Why that supporting claim' : 'Why that opposing view'}</div>
+          <p>{question.review.whyFollowUp}</p>
+        </div>
+        <div>
+          <div className="fsvr-lab__review-label">Key takeaway</div>
+          <p>{question.feedback}</p>
+        </div>
+      </div>
+    );
+  }
+
   function renderControls() {
-    const followUpPrompt = active.selectedStructure === 'first' ? 'Select a Supporting Claim' : 'Select the Opposing Viewpoint';
+    const followUpRole = firstSentenceVsRebuttalFollowUpRole(currentQuestion);
+    const followUpTargetIds = firstSentenceVsRebuttalFollowUpIds(currentQuestion);
+    const followUpPrompt =
+      followUpRole === 'support'
+        ? followUpTargetIds.length > 1
+          ? 'Select every supporting claim'
+          : 'Select the supporting claim'
+        : 'Select the opposing viewpoint';
 
     return (
       <div className="fsvr-lab__controls">
@@ -521,7 +645,8 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
             {active.step === 0 && `Click each indicator word in the text above. ${active.foundIndicators.length} of ${currentQuestion.indicatorCount} found.`}
             {active.step === 1 && 'Click the phrase that represents the author’s ultimate point.'}
             {active.step === 2 && 'Decide whether the conclusion comes first or arrives as a rebuttal.'}
-            {active.step === 3 && `${followUpPrompt}. Click the phrase in the stimulus above.`}
+            {active.step === 3 &&
+              `${followUpPrompt} in the stimulus above. ${active.selectedFollowUpIds.length} of ${followUpTargetIds.length} selected.`}
           </p>
 
           {feedback ? (
@@ -535,6 +660,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
             <div className="fsvr-lab__choice-grid">
               <button
                 type="button"
+                aria-pressed={active.selectedStructure === 'first'}
                 className={`fsvr-lab__choice${active.selectedStructure === 'first' ? ' fsvr-lab__choice--selected' : ''}`}
                 onClick={() => setActive((value) => ({ ...value, selectedStructure: 'first' }))}
               >
@@ -542,6 +668,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
               </button>
               <button
                 type="button"
+                aria-pressed={active.selectedStructure === 'rebuttal'}
                 className={`fsvr-lab__choice${active.selectedStructure === 'rebuttal' ? ' fsvr-lab__choice--selected' : ''}`}
                 onClick={() => setActive((value) => ({ ...value, selectedStructure: 'rebuttal' }))}
               >
@@ -593,6 +720,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 <span><b style={{ background: 'rgba(255,59,48,0.9)' }} />Opposing View</span>
                 <span><b style={{ background: 'rgba(199,199,204,0.95)' }} />Neutral</span>
               </div>
+              <details className="fsvr-lab__breakdown">
+                <summary className="fsvr-lab__breakdown-summary">Full breakdown</summary>
+                {renderBreakdown(currentQuestion)}
+              </details>
             </div>
           )}
         </div>
@@ -601,6 +732,36 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function renderReview() {
+    const reviewQuestion = reviewQuestionId != null ? orderedQuestions.find((question) => question.id === reviewQuestionId) : null;
+    if (reviewQuestion) {
+      const status = getQuestionStatus(ensureAttemptLog(session, reviewQuestion.id));
+      return (
+        <section className="fsvr-lab__review fsvr-lab__review--single">
+          <div className="fsvr-lab__answer-key-head">
+            <button type="button" className="fsvr-lab__nav-button" onClick={() => setReviewQuestionId(null)}>
+              <ChevronLeft className="fsvr-lab__nav-icon" aria-hidden="true" />
+              Answer key
+            </button>
+            <span className={`fsvr-lab__chip fsvr-lab__chip--${status}`}>{statusLabel(status)}</span>
+          </div>
+          <div>
+            <div className="fsvr-lab__eyebrow">Answer key · Q{reviewQuestion.id}</div>
+            <h1>{reviewQuestion.review.title}</h1>
+          </div>
+          <div className="fsvr-lab__stimulus fsvr-lab__stimulus--review">
+            <div className="fsvr-lab__stimulus-text">{renderColorCodedStimulus(reviewQuestion)}</div>
+          </div>
+          <div className="fsvr-lab__legend">
+            <span><b style={{ background: 'rgba(255,214,10,0.9)' }} />Conclusion</span>
+            <span><b style={{ background: 'rgba(255,149,0,0.9)' }} />Support</span>
+            <span><b style={{ background: 'rgba(255,59,48,0.9)' }} />Opposing View</span>
+            <span><b style={{ background: 'rgba(199,199,204,0.95)' }} />Neutral</span>
+          </div>
+          {renderBreakdown(reviewQuestion)}
+        </section>
+      );
+    }
+
     const rank = { assisted: 2, recovered: 1, clean: 0 } satisfies Record<FirstSentenceVsRebuttalQuestionStatus, number>;
     const cards = orderedQuestions
       .map((question) => ({
@@ -666,11 +827,30 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           </div>
         </div>
 
+        <div className="fsvr-lab__answer-key">
+          <div className="fsvr-lab__review-label">Answer key — open any question for a color-coded review</div>
+          <div className="fsvr-lab__answer-key-grid">
+            {orderedQuestions.map((question) => {
+              const status = getQuestionStatus(ensureAttemptLog(session, question.id));
+              return (
+                <button
+                  key={question.id}
+                  type="button"
+                  className={`fsvr-lab__answer-key-num fsvr-lab__answer-key-num--${status}`}
+                  onClick={() => setReviewQuestionId(question.id)}
+                  aria-label={`Review question ${question.id} (${statusLabel(status)})`}
+                >
+                  {question.id}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="fsvr-lab__review-grid">
           {cards.map(({ question, log }) => {
             const status = getQuestionStatus(log);
             const isOpen = expanded.includes(question.id);
-            const conclusion = question.parts.find((part) => part.role === 'conclusion');
             const chips = [
               log.usedIndicatorReveal ? 'reveal used' : null,
               log.indicators.wrong ? `${log.indicators.wrong}x indicators` : null,
@@ -698,26 +878,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                     <span className={`fsvr-lab__chip fsvr-lab__chip--${status}`}>{statusLabel(status)}</span>
                   </div>
                 </button>
-                {isOpen ? (
-                  <div className="fsvr-lab__review-body">
-                    <div>
-                      <div className="fsvr-lab__review-label">Main conclusion</div>
-                      <div className="fsvr-lab__review-quote">{conclusion ? stripIndicatorMarkup(conclusion.text) : '—'}</div>
-                    </div>
-                    <div>
-                      <div className="fsvr-lab__review-label">Why that’s the conclusion</div>
-                      <p>{question.review.whyConclusion}</p>
-                    </div>
-                    <div>
-                      <div className="fsvr-lab__review-label">Why {question.type === 'first' ? 'First-sentence' : 'Rebuttal'}</div>
-                      <p>{question.review.whyStructure}</p>
-                    </div>
-                    <div>
-                      <div className="fsvr-lab__review-label">{question.type === 'first' ? 'Why that supporting claim' : 'Why that opposing view'}</div>
-                      <p>{question.review.whyFollowUp}</p>
-                    </div>
-                  </div>
-                ) : null}
+                {isOpen ? <div className="fsvr-lab__review-body">{renderBreakdown(question)}</div> : null}
               </article>
             );
           })}
@@ -735,6 +896,14 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     <section className="fsvr-lab">
       <div className="fsvr-lab__shell" data-review={isSessionComplete ? 'true' : 'false'}>
         <div className="fsvr-lab__topbar">
+          <span
+            className={`fsvr-lab__save-status${saveStatus === 'saved' ? ' fsvr-lab__save-status--visible' : ''}`}
+            role="status"
+            aria-live="polite"
+          >
+            <span className="fsvr-lab__save-dot" aria-hidden="true" />
+            Saved
+          </span>
           <Link to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab" className="fsvr-lab__home">
             <Home className="fsvr-lab__home-icon" aria-hidden="true" />
             Home
@@ -754,13 +923,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                   <span className="fsvr-lab__progress-label">Complete</span>
                 </div>
                 <div className="fsvr-lab__bar"><span style={{ width: `${progressPercent}%` }} /></div>
-                <div className="fsvr-lab__progress-row">
-                  <span>{completedCount} of {orderedQuestions.length} questions complete</span>
-                </div>
               </div>
             </header>
 
-            <article className="fsvr-lab__workspace">
+            <article className="fsvr-lab__workspace" key={currentQuestion.id}>
               <div className="fsvr-lab__stimulus">
                 <div className="fsvr-lab__stimulus-text">{renderStimulus()}</div>
               </div>

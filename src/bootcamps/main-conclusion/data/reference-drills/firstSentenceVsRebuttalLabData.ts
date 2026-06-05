@@ -48,6 +48,27 @@ export interface FirstSentenceVsRebuttalSessionRecord {
   completedAt: string | null;
 }
 
+/**
+ * The role Step 4 should ask the student to select.
+ * First-sentence arguments ask for the supporting claim(s); rebuttals ask for the
+ * opposing viewpoint(s). A handful of rebuttals (e.g. Q15) fuse the opposing view
+ * into the conclusion and carry no standalone opposing part — those fall back to
+ * asking for supports so the question stays solvable.
+ */
+export function firstSentenceVsRebuttalFollowUpRole(
+  question: FirstSentenceVsRebuttalQuestion,
+): Extract<FirstSentenceVsRebuttalRole, 'support' | 'opposing'> {
+  if (question.type === 'first') return 'support';
+  const hasOpposing = question.parts.some((part) => part.role === 'opposing');
+  return hasOpposing ? 'opposing' : 'support';
+}
+
+/** All part ids the student must select to finish Step 4 for this question. */
+export function firstSentenceVsRebuttalFollowUpIds(question: FirstSentenceVsRebuttalQuestion): string[] {
+  const role = firstSentenceVsRebuttalFollowUpRole(question);
+  return question.parts.filter((part) => part.role === role).map((part) => part.id);
+}
+
 export function normalizeFirstSentenceVsRebuttalStimulus(text: string) {
   return text
     .replace(/<i-w t="[^"]+">([^<]+)<\/i-w>/g, '$1')
