@@ -105,19 +105,31 @@ export function ReplicaShell({
   eyebrow,
   title,
   description,
+  tone = 'default',
   children,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
+  tone?: 'default' | 'inverted';
   children: ReactNode;
 }) {
   return (
     <article className="space-y-8">
       <header className="space-y-3">
-        {eyebrow ? <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">{eyebrow}</p> : null}
-        <h1 className="font-mc-serif text-h1 font-semibold leading-tight text-ink">{title}</h1>
-        {description ? <p className="max-w-3xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">{description}</p> : null}
+        {eyebrow ? (
+          <p className={cn('font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent', tone === 'inverted' && 'text-[#f0d58a]')}>
+            {eyebrow}
+          </p>
+        ) : null}
+        <h1 className={cn('font-mc-serif text-h1 font-semibold leading-tight text-ink', tone === 'inverted' && 'text-white')}>
+          {title}
+        </h1>
+        {description ? (
+          <p className={cn('max-w-3xl font-mc-serif text-body-prose leading-relaxed text-ink-soft', tone === 'inverted' && 'text-[#cbd5e1]')}>
+            {description}
+          </p>
+        ) : null}
       </header>
       {children}
     </article>

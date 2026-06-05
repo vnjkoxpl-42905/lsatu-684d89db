@@ -53,6 +53,7 @@ export function RebuttalVsFirstReplicaTemplate({
       eyebrow="Intro to LR"
       title={title}
       description="Make the read quickly: is the author’s conclusion stated first, or does the author pivot into a rebuttal?"
+      tone="inverted"
     >
       <div className="space-y-6">
         <div className="grid gap-3 md:grid-cols-4">
