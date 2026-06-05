@@ -55,11 +55,12 @@ export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
                   ) : null}
                 </div>
 
-                <Link to={drill.runRoute} className="inline-flex">
-                  <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                    Start Drill
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => navigate(drill.runRoute)}
+                  rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+                >
+                  Start Drill
+                </Button>
               </Card>
             </aside>
           </section>
