@@ -290,12 +290,12 @@ export function BootcampRoutes() {
           element={<DrillsIndex />}
         />
         <Route
-          path="drills/:drillId"
-          element={<DrillShell />}
-        />
-        <Route
           path="drills/:drillId/run"
           element={<ActiveDrillShell />}
+        />
+        <Route
+          path="drills/:drillId"
+          element={<DrillShell />}
         />
         <Route
           path="practice-drills"
