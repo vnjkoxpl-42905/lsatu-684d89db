@@ -1,14 +1,12 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { getPreviousAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
 import type { IntroDrillDefinition } from './introDrills';
 
 export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const previousAction = getPreviousAction(pathname);
 
   return (
@@ -55,12 +53,13 @@ export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
                   ) : null}
                 </div>
 
-                <Button
-                  onClick={() => navigate(drill.runRoute)}
-                  rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+                <Link
+                  to={drill.runRoute}
+                  className="group/btn relative inline-flex h-9 items-center justify-center gap-2 rounded-[4px] border border-[color:var(--border-accent-mid)] bg-[image:var(--grad-accent-strong)] px-4 font-mc-mono text-body uppercase tracking-[0.18em] text-[rgb(var(--bg))] shadow-[0_16px_34px_rgb(var(--bg)/0.4)] transition-[transform,box-shadow,background,border-color] duration-150 ease-eased hover:-translate-y-[2px] hover:border-[color:var(--border-accent-strong)] hover:shadow-[var(--glow-accent-strong)] active:translate-y-[0.5px] active:shadow-[var(--shadow-press)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
                 >
                   Start Drill
-                </Button>
+                  <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                </Link>
               </Card>
             </aside>
           </section>
