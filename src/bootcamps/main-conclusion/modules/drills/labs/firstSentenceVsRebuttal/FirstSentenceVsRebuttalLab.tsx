@@ -397,7 +397,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function renderStimulus() {
-    return currentQuestion.parts.map((part) => {
+    return currentQuestion.parts.map((part, index) => {
       const isSelectedConclusion = active.selectedConclusionId === part.id;
       const isSelectedFollowUp = active.selectedFollowUpId === part.id;
       let partClass = 'fsvr-lab__part';
@@ -413,32 +413,37 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
       if (active.step === 0) {
         return (
-          <div key={part.id} className="fsvr-lab__part">
-            <div className="fsvr-lab__part-text">{renderPartMarkup(part)}</div>
-          </div>
+          <Fragment key={part.id}>
+            <span className="fsvr-lab__part fsvr-lab__part--reading">
+              <span className="fsvr-lab__part-text">{renderPartMarkup(part)}</span>
+            </span>
+            {index < currentQuestion.parts.length - 1 ? ' ' : null}
+          </Fragment>
         );
       }
 
       return (
-        <button
-          key={part.id}
-          type="button"
-          className={partClass}
-          onClick={() => {
-            if (active.revealed) return;
-            if (active.step === 1) {
-              setActive((value) => ({ ...value, selectedConclusionId: part.id }));
-              setFeedback(null);
-              return;
-            }
-            if (active.step === 3 && part.id !== active.selectedConclusionId) {
-              setActive((value) => ({ ...value, selectedFollowUpId: part.id }));
-              setFeedback(null);
-            }
-          }}
-        >
-          <div className="fsvr-lab__part-text">{stripIndicatorMarkup(part.text)}</div>
-        </button>
+        <Fragment key={part.id}>
+          <button
+            type="button"
+            className={partClass}
+            onClick={() => {
+              if (active.revealed) return;
+              if (active.step === 1) {
+                setActive((value) => ({ ...value, selectedConclusionId: part.id }));
+                setFeedback(null);
+                return;
+              }
+              if (active.step === 3 && part.id !== active.selectedConclusionId) {
+                setActive((value) => ({ ...value, selectedFollowUpId: part.id }));
+                setFeedback(null);
+              }
+            }}
+          >
+            <span className="fsvr-lab__part-text">{stripIndicatorMarkup(part.text)}</span>
+          </button>
+          {index < currentQuestion.parts.length - 1 ? ' ' : null}
+        </Fragment>
       );
     });
   }
@@ -449,12 +454,15 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
     return (
       <div className="fsvr-lab__controls">
-        <div className="fsvr-lab__card" style={{ padding: '1rem' }}>
-          <div className="fsvr-lab__step">
-            {active.step === 0 && '1. Identify the Indicator Words'}
-            {active.step === 1 && '2. Select the Main Conclusion'}
-            {active.step === 2 && '3. Classify the Argument Structure'}
-            {active.step === 3 && '4. Finish the Dissection'}
+        <div className="fsvr-lab__card fsvr-lab__controls-card">
+          <div className="fsvr-lab__instruction-step">
+            <div className="fsvr-lab__step-badge">{active.step + 1}</div>
+            <div className="fsvr-lab__step">
+              {active.step === 0 && 'Identify the Indicator Words'}
+              {active.step === 1 && 'Select the Main Conclusion'}
+              {active.step === 2 && 'Classify the Argument Structure'}
+              {active.step === 3 && 'Finish the Dissection'}
+            </div>
           </div>
           <p className="fsvr-lab__step-copy">
             {active.step === 0 && `Click each indicator word in the text above. ${active.foundIndicators.length} of ${currentQuestion.indicatorCount} found.`}
@@ -527,10 +535,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 </div>
               </div>
               <div className="fsvr-lab__legend">
-                <span><b style={{ background: 'rgba(253,224,71,0.75)' }} />Conclusion</span>
-                <span><b style={{ background: 'rgba(244,114,182,0.75)' }} />Support</span>
-                <span><b style={{ background: 'rgba(251,146,60,0.75)' }} />Opposing View</span>
-                <span><b style={{ background: 'rgba(203,213,225,0.75)' }} />Neutral</span>
+                <span><b style={{ background: 'rgba(255,214,10,0.9)' }} />Conclusion</span>
+                <span><b style={{ background: 'rgba(255,149,0,0.9)' }} />Support</span>
+                <span><b style={{ background: 'rgba(255,59,48,0.9)' }} />Opposing View</span>
+                <span><b style={{ background: 'rgba(199,199,204,0.95)' }} />Neutral</span>
               </div>
               <button type="button" className="fsvr-lab__cta" onClick={() => void advanceQuestion()}>
                 {session.currentQuestionIndex + 1 >= orderedQuestions.length ? 'Finish drills' : 'Next question'}
@@ -552,25 +560,60 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       .sort((left, right) => rank[getQuestionStatus(right.log)] - rank[getQuestionStatus(left.log)]);
 
     const cleanCount = cards.filter(({ log }) => getQuestionStatus(log) === 'clean').length;
+    const cleanPercent = Math.round((cleanCount / orderedQuestions.length) * 100);
     const strongest = [
       { key: 'indicators', label: 'Indicator words', value: totals.indicators },
       { key: 'conclusion', label: 'Main conclusion', value: totals.conclusion },
       { key: 'structure', label: 'Structure', value: totals.structure },
       { key: 'support', label: 'Support / opposing view', value: totals.support },
     ].sort((left, right) => left.value - right.value);
+    const weakest = strongest[strongest.length - 1];
 
     return (
       <section className="fsvr-lab__review">
         <div>
           <div className="fsvr-lab__eyebrow">Session review</div>
           <h1>How that went</h1>
-          <p>Twenty arguments dissected. Here’s the saved breakdown from this profile.</p>
+          <p>Twenty arguments dissected. Here’s what your saved session looked like, step by step.</p>
         </div>
 
-        <div className="fsvr-lab__summary">
-          <strong className="fsvr-lab__review-label">Clean first-try</strong>
-          <p>{cleanCount} of {orderedQuestions.length} questions were solved cleanly on the first pass.</p>
-          <p>Strongest step: {strongest[0]?.label.toLowerCase()}. Weakest step: {strongest[strongest.length - 1]?.label.toLowerCase()}.</p>
+        <div className="fsvr-lab__review-summary-grid">
+          <div className="fsvr-lab__review-stat">
+            <div className="fsvr-lab__review-label">Clean first-try</div>
+            <div className="fsvr-lab__review-kpi">
+              <span>{cleanCount}</span> / {orderedQuestions.length}
+            </div>
+            <div className="fsvr-lab__bar"><span style={{ width: `${cleanPercent}%` }} /></div>
+            <p>{cleanPercent}% solved cleanly.</p>
+          </div>
+          <div className="fsvr-lab__review-stat">
+            <div className="fsvr-lab__review-label">Misses by component</div>
+            <div className="fsvr-lab__component-list">
+              {strongest.map((item) => (
+                <div key={item.key} className="fsvr-lab__component-row">
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="fsvr-lab__review-callouts">
+          <div className="fsvr-lab__callout fsvr-lab__callout--strength">
+            <div className="fsvr-lab__callout-icon">✓</div>
+            <div>
+              <div className="fsvr-lab__review-label">Strongest step</div>
+              <p>{strongest[0]?.label} cost you the fewest misses this set.</p>
+            </div>
+          </div>
+          <div className="fsvr-lab__callout fsvr-lab__callout--weakness">
+            <div className="fsvr-lab__callout-icon">⚑</div>
+            <div>
+              <div className="fsvr-lab__review-label">Biggest weakness</div>
+              <p>{weakest?.label} is where the most misses collected. Start your next review there.</p>
+            </div>
+          </div>
         </div>
 
         <div className="fsvr-lab__review-grid">
@@ -637,29 +680,37 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     <section className="fsvr-lab">
       <div className="fsvr-lab__shell">
         <header className="fsvr-lab__hero">
-          <div className="fsvr-lab__eyebrow">Argument drill</div>
-          <h1>{title}</h1>
-          <p>Preserved from the standalone quiz, rebuilt natively: indicator words, conclusion, structure, then the key role that makes the read hold together.</p>
-          <div className="fsvr-lab__progress">
-            <div className="fsvr-lab__progress-row">
-              <span>{completedCount} of {orderedQuestions.length} questions complete</span>
-              <span>{progressPercent}%</span>
+          <div className="fsvr-lab__hero-copy">
+            <div className="fsvr-lab__eyebrow">Argument drill</div>
+            <h1>{title}</h1>
+            <p>Preserved from the standalone quiz, rebuilt natively: indicator words, conclusion, structure, then the key role that makes the read hold together.</p>
+          </div>
+          <div className="fsvr-lab__progress-card">
+            <div className="fsvr-lab__progress-top">
+              <span className="fsvr-lab__progress-value">{progressPercent}%</span>
+              <span className="fsvr-lab__progress-label">Complete</span>
             </div>
             <div className="fsvr-lab__bar"><span style={{ width: `${progressPercent}%` }} /></div>
+            <div className="fsvr-lab__progress-row">
+              <span>{completedCount} of {orderedQuestions.length} questions complete</span>
+            </div>
           </div>
         </header>
 
         {!isSessionComplete ? (
           <article className="fsvr-lab__workspace">
-            <div className="fsvr-lab__stimulus">
+            <div className="fsvr-lab__workspace-header">
               <div className="fsvr-lab__meta">
                 <div>
                   <div className="fsvr-lab__title">{currentQuestion.review.title}</div>
                   <div className="fsvr-lab__subtitle">Question {session.currentQuestionIndex + 1} of {orderedQuestions.length}</div>
                 </div>
-                <div className="fsvr-lab__eyebrow">{currentQuestion.type === 'first' ? 'Conclusion first' : 'Rebuttal'}</div>
+                <div className="fsvr-lab__type-pill">{currentQuestion.type === 'first' ? 'Conclusion first' : 'Rebuttal'}</div>
               </div>
-              {renderStimulus()}
+            </div>
+
+            <div className="fsvr-lab__stimulus">
+              <div className="fsvr-lab__stimulus-text">{renderStimulus()}</div>
             </div>
 
             {renderControls()}
