@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
-import { ReferenceDrillFrame } from './labs/ReferenceDrillFrame';
+import { StructureClassification } from './labs/StructureClassification';
 import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
 import { XRayReview } from './labs/XRayReview';
 import { MixedStructureCheck } from './labs/MixedStructureCheck';
@@ -52,13 +52,7 @@ export function ActiveDrillShell() {
       content = <MainConclusionLab />;
       break;
     case 'first-sentence-vs-rebuttal-lab':
-      content = (
-        <ReferenceDrillFrame
-          drillId={drill.completionId}
-          title={drill.title}
-          source="first-sentence-vs-rebuttal"
-        />
-      );
+      content = <StructureClassification />;
       break;
     case 'argument-structure-lab':
       content = <ArgumentStructureLab drillId={drill.completionId} title={drill.title} />;
@@ -79,22 +73,17 @@ export function ActiveDrillShell() {
       );
   }
 
-  const backTarget =
-    drill.slug === 'first-sentence-vs-rebuttal-lab'
-      ? '/bootcamp/intro-to-lr/drills'
-      : drill.route;
-
-  if (drill.slug === 'main-conclusion-lab' || drill.slug === 'first-sentence-vs-rebuttal-lab') {
+  if (drill.slug === 'main-conclusion-lab') {
     return (
       <div className="min-h-screen bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.10)_0%,transparent_50%),linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:100%_100%,20px_20px,20px_20px] bg-[#0b1120] px-5 py-5 md:px-8">
         <div className="mx-auto w-full max-w-[1200px]">
           <div className="mb-5">
             <Link
-              to={backTarget}
+              to={drill.route}
               className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.10)] bg-[rgba(15,23,42,0.68)] px-4 py-2 font-mc-mono text-[11px] uppercase tracking-[0.18em] text-[#94a3b8] transition-colors hover:bg-[rgba(15,23,42,0.84)] hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" />
-              {drill.slug === 'first-sentence-vs-rebuttal-lab' ? 'Back to Drill Lab' : 'Back to Drill Page'}
+              Back to Drill Page
             </Link>
           </div>
           <div className="min-w-0">{content}</div>
