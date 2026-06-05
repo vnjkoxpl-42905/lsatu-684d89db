@@ -10,7 +10,7 @@
  * here so that every nested route shares the chrome.
  */
 
-import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { WorkspaceShell } from '@/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell';
 import { LockedRoute } from '@/bootcamps/main-conclusion/components/workspace-shell/LockedRoute';
@@ -87,6 +87,13 @@ function PracticeRunnerWrapper() {
 
   const items = (SIMULATOR_DATA as any[]).filter((item: any) => (set.qids as readonly string[]).includes(item.id));
   return <PracticeRunner items={items} title={set.title} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
+}
+
+function DrillRouteSwitch() {
+  const { pathname } = useLocation();
+  const isRunRoute = pathname.replace(/\/+$/, '').endsWith('/run');
+
+  return isRunRoute ? <ActiveDrillShell /> : <DrillShell />;
 }
 
 function NoteLoader() {
@@ -290,12 +297,8 @@ export function BootcampRoutes() {
           element={<DrillsIndex />}
         />
         <Route
-          path="drills/:drillId/run"
-          element={<ActiveDrillShell />}
-        />
-        <Route
-          path="drills/:drillId"
-          element={<DrillShell />}
+          path="drills/:drillId/*"
+          element={<DrillRouteSwitch />}
         />
         <Route
           path="practice-drills"
