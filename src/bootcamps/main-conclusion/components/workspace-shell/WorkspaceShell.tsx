@@ -71,10 +71,11 @@ export function WorkspaceShell(): JSX.Element {
   const surfaceId = deriveSurfaceId(typeof window !== 'undefined' ? window.location.pathname : '/');
 
   const { is_admin } = useUserPermissions();
-  const isMainConclusionRunFullscreen =
-    location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run';
+  const isFullscreenDrillRun =
+    location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run' ||
+    location.pathname === '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run';
 
-  if (isMainConclusionRunFullscreen) {
+  if (isFullscreenDrillRun) {
     return (
       <Ctx.Provider value={{ payload, open, close }}>
         <a className="skip-link" href="#main">Skip to main content</a>
