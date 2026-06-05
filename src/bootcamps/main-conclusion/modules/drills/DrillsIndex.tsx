@@ -121,11 +121,15 @@ export function DrillsIndex() {
               <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{next.title}</h2>
               <p className="mt-1 font-mc-serif text-body text-ink-soft">{next.subtitle}</p>
             </div>
-            <Link to={nextHref} className="shrink-0 rounded-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
-              <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
+            <Button
+              asChild
+              rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+              className="shrink-0"
+            >
+              <Link to={nextHref}>
                 {next.cta}
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </Card>
       </header>

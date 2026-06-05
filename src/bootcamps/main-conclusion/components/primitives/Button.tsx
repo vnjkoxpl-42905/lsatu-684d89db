@@ -1,3 +1,4 @@
+import { Slot } from '@radix-ui/react-slot';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
@@ -10,6 +11,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  asChild?: boolean;
 }
 
 const VARIANTS: Record<Variant, string> = {
@@ -47,14 +49,15 @@ const SIZES: Record<Size, string> = {
 };
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
-  { variant = 'primary', size = 'md', loading = false, leftIcon, rightIcon, disabled, className, children, ...rest },
+  { variant = 'primary', size = 'md', loading = false, leftIcon, rightIcon, disabled, className, children, asChild = false, ...rest },
   ref,
 ) {
   const isDisabled = disabled || loading;
+  const Comp = asChild ? Slot : 'button';
   return (
-    <button
+    <Comp
       ref={ref}
-      disabled={isDisabled}
+      disabled={asChild ? undefined : isDisabled}
       aria-busy={loading || undefined}
       className={cn(
         'group/btn relative inline-flex items-center justify-center rounded-[4px] font-mc-mono uppercase tracking-[0.18em]',
@@ -70,7 +73,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       {loading ? <Spinner /> : leftIcon ? <span className="shrink-0 inline-flex">{leftIcon}</span> : null}
       <span className="relative z-[1] inline-flex items-center justify-center">{children}</span>
       {!loading && rightIcon ? <span className="shrink-0 inline-flex">{rightIcon}</span> : null}
-    </button>
+    </Comp>
   );
 });
 
