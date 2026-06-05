@@ -20,6 +20,7 @@ describe('Intro to LR guided path order', () => {
 
   it('keeps the remaining replica drills at the end of the path', () => {
     expect(INTEGRATED_PATH.slice(10).map((action) => action.id)).toEqual([
+      'first-sentence-vs-rebuttal-lab',
       'argument-structure-lab',
       'structure-reveal-review',
       'final-mixed-structure-check',
@@ -43,5 +44,12 @@ describe('Intro to LR guided path order', () => {
       '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run',
     );
     expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(7);
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(10);
+  });
+
+  it('normalizes the mixed classification alias to the native first sentence vs rebuttal drill', () => {
+    expect(normalizePathnameForAction('/bootcamp/intro-to-lr/drills/mixed-classification')).toBe(
+      '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
+    );
   });
 });
