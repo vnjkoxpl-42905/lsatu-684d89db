@@ -60,7 +60,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   '/drills',
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
   '/drills/main-conclusion-lab',
-  '/drills/first-sentence-vs-rebuttal-lab',
   '/drills/argument-structure-lab',
   '/drills/structure-reveal-review',
   '/drills/final-mixed-structure-check',

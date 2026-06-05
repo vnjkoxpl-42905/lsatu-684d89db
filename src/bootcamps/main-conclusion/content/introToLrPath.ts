@@ -87,14 +87,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Learn the two dominant conclusion placements before you enter the drill labs.',
   },
   {
-    id: 'first-sentence-vs-rebuttal-lab',
-    type: 'drill',
-    title: 'First-Sentence vs Rebuttal Lab',
-    route: '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
-    description: 'Run fast comparison reps on the two main conclusion structures.',
-    phase: 'Drills',
-  },
-  {
     id: 'argument-structure-lab',
     type: 'drill',
     title: 'Argument Structure Lab',
@@ -135,7 +127,7 @@ const PRACTICE_ALIAS_MAP: Record<string, string> = {
   '/bootcamp/intro-to-lr/lessons/notes/where-conclusions-hide': '/bootcamp/intro-to-lr/lessons/notes/conclusions',
   '/bootcamp/intro-to-lr/lessons/notes/layered-arguments': '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
   '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer': '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
-  '/bootcamp/intro-to-lr/drills/mixed-classification': '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
+  '/bootcamp/intro-to-lr/drills/mixed-classification': '/bootcamp/intro-to-lr/drills/argument-structure-lab',
   '/bootcamp/intro-to-lr/drills/x-ray-review': '/bootcamp/intro-to-lr/drills/structure-reveal-review',
   '/bootcamp/intro-to-lr/drills/final-structure-check': '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
 };

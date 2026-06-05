@@ -53,17 +53,6 @@ export const BOOTCAMP_REFERENCE_LAB_ENTRIES: BootcampReferenceLabEntry[] = [
     notes: 'Backbone of the new Intro to LR drill system. Full workspace + role-map reveal.',
   },
   {
-    referenceId: 'ref-rebuttal-vs-first-drill',
-    sourceBootcamp: 'mainconclusionrebuttalvsfirst',
-    formatFamily: 'rebuttal-vs-first-replica',
-    lsatUTarget: 'First-Sentence vs Rebuttal Lab',
-    audience: 'student-facing',
-    itemCount: 20,
-    duplicateOfCanonicalId: [],
-    previewPath: 'https://mainconclusionrebuttalvsfirst.netlify.app',
-    notes: 'Template timing/staging replica only. Exact stage text is unavailable in the app source, so LSAT U reuses canonical structure items.',
-  },
-  {
     referenceId: 'ref-arguments',
     sourceBootcamp: 'arguments-foundations',
     formatFamily: 'arguments-foundations-mini',

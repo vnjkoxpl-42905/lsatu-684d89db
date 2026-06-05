@@ -110,12 +110,6 @@ export default function PracticePathNotes() {
         <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
             label="Drill Lab"
-            name="First-Sentence vs Rebuttal Lab"
-            purpose="Practice deciding whether the read is a first-sentence conclusion or a rebuttal conclusion."
-            to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab"
-          />
-          <DrillCard
-            label="Drill Lab"
             name="Argument Structure Lab"
             purpose="Work the full dissection flow: main conclusion, structure type, then support or opposing view."
             to="/bootcamp/intro-to-lr/drills/argument-structure-lab"

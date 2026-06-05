@@ -72,8 +72,7 @@ export function WorkspaceShell(): JSX.Element {
 
   const { is_admin } = useUserPermissions();
   const isFullscreenDrillRun =
-    location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run' ||
-    location.pathname === '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run';
+    location.pathname === '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run';
 
   if (isFullscreenDrillRun) {
     return (
