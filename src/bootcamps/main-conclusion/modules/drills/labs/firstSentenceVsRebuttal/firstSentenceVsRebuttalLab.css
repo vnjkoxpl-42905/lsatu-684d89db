@@ -15,6 +15,7 @@
   --fsvr-warning-soft: #fff5e5;
   --fsvr-error: #ff3b30;
   --fsvr-error-soft: #ffeceb;
+  --fsvr-pivot: #8e5cff;
   --fsvr-conclusion: rgba(255, 214, 10, 0.5);
   --fsvr-support: rgba(255, 149, 0, 0.28);
   --fsvr-opposing: rgba(255, 59, 48, 0.17);
@@ -265,9 +266,12 @@
   cursor: pointer;
 }
 
-.fsvr-lab__indicator[data-tone='premise'],
-.fsvr-lab__indicator[data-tone='pivot'] {
+.fsvr-lab__indicator[data-tone='premise'] {
   color: var(--fsvr-warning);
+}
+
+.fsvr-lab__indicator[data-tone='pivot'] {
+  color: var(--fsvr-pivot);
 }
 
 .fsvr-lab__indicator[data-tone='opposing'],
@@ -282,6 +286,45 @@
 
 .fsvr-lab__indicator--found {
   background: rgba(0, 0, 0, 0.04);
+  animation: fsvr-indicator-pulse 3.8s ease-in-out infinite;
+}
+
+/* Revealed-indicator hover tooltip */
+.fsvr-lab__indicator[data-tip] {
+  position: relative;
+}
+
+.fsvr-lab__indicator[data-tip]:hover::after,
+.fsvr-lab__indicator[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--fsvr-text);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fsvr-lab__indicator[data-tip]:hover::before,
+.fsvr-lab__indicator[data-tip]:focus-visible::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--fsvr-text);
+  z-index: 5;
+  pointer-events: none;
 }
 
 .fsvr-lab__controls-card {
@@ -799,5 +842,224 @@
 
   .fsvr-lab__chips {
     justify-content: flex-start;
+  }
+}
+
+/* ───────────────────────── micro-interactions & polish ───────────────────────── */
+
+/* 9. Found / revealed indicator breathing pulse (glow in the word's own tone color) */
+@keyframes fsvr-indicator-pulse {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 10px currentColor; }
+}
+
+/* 10. Wrong-answer shake + flash */
+@keyframes fsvr-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.fsvr-lab__plain-word--miss {
+  animation: fsvr-shake 0.45s ease;
+}
+
+.fsvr-lab__part--wrong {
+  position: relative;
+  z-index: 1;
+  border-radius: 7px;
+  background: var(--fsvr-error-soft);
+  box-shadow: 0 0 0 1px rgba(255, 59, 48, 0.4);
+  animation: fsvr-shake 0.45s ease;
+}
+
+/* 11. Selected-phrase colored pulse (tone-tinted via data-role) */
+@keyframes fsvr-selected-pulse {
+  0%, 100% { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08), 0 0 0 0 var(--fsvr-pulse, rgba(0, 113, 227, 0.4)); }
+  50% { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08), 0 0 14px 3px var(--fsvr-pulse, rgba(0, 113, 227, 0.4)); }
+}
+
+.fsvr-lab__part--selected {
+  animation: fsvr-selected-pulse 2.2s ease-in-out infinite;
+}
+
+.fsvr-lab__part--selected[data-role='conclusion'] { --fsvr-pulse: rgba(255, 193, 7, 0.45); }
+.fsvr-lab__part--selected[data-role='support'] { --fsvr-pulse: rgba(255, 149, 0, 0.45); }
+.fsvr-lab__part--selected[data-role='opposing'] { --fsvr-pulse: rgba(255, 59, 48, 0.4); }
+
+/* 12. Step-feedback banner slide-in */
+@keyframes fsvr-feedback-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fsvr-lab__feedback {
+  animation: fsvr-feedback-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 14. Autosave indicator */
+.fsvr-lab__save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: auto;
+  align-self: center;
+  color: var(--fsvr-muted);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fsvr-lab__save-status--visible {
+  opacity: 1;
+}
+
+.fsvr-lab__save-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fsvr-success);
+  box-shadow: 0 0 6px var(--fsvr-success);
+}
+
+/* 6. Post-check breakdown disclosure */
+.fsvr-lab__breakdown {
+  margin-top: 6px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.fsvr-lab__breakdown-summary {
+  padding: 14px 18px;
+  cursor: pointer;
+  color: var(--fsvr-text);
+  font-size: 15px;
+  font-weight: 650;
+  list-style: none;
+}
+
+.fsvr-lab__breakdown-summary::-webkit-details-marker {
+  display: none;
+}
+
+.fsvr-lab__breakdown-summary::after {
+  content: '▾';
+  float: right;
+  color: var(--fsvr-soft);
+  transition: transform 0.25s ease;
+}
+
+.fsvr-lab__breakdown[open] .fsvr-lab__breakdown-summary::after {
+  transform: rotate(180deg);
+}
+
+.fsvr-lab__breakdown-body {
+  display: grid;
+  gap: 16px;
+  padding: 4px 18px 18px;
+}
+
+.fsvr-lab__breakdown-body .fsvr-lab__review-quote + .fsvr-lab__review-quote {
+  margin-top: 8px;
+}
+
+.fsvr-lab__breakdown-body p {
+  margin: 0;
+  color: var(--fsvr-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* 7. Final interactive answer key */
+.fsvr-lab__answer-key {
+  display: grid;
+  gap: 12px;
+}
+
+.fsvr-lab__answer-key-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fsvr-lab__answer-key-num {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--fsvr-text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 650;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.fsvr-lab__answer-key-num:hover {
+  transform: translateY(-2px);
+  border-color: var(--fsvr-accent);
+  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.14);
+}
+
+.fsvr-lab__answer-key-num--clean { border-color: rgba(52, 199, 89, 0.45); }
+.fsvr-lab__answer-key-num--recovered { border-color: rgba(255, 149, 0, 0.5); }
+.fsvr-lab__answer-key-num--assisted { border-color: rgba(0, 113, 227, 0.45); }
+
+.fsvr-lab__answer-key-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fsvr-lab__stimulus--review {
+  min-height: 0;
+  padding: 32px 40px;
+}
+
+/* 15. Keyboard focus rings */
+.fsvr-lab__part:focus-visible,
+.fsvr-lab__indicator:focus-visible,
+.fsvr-lab__plain-word:focus-visible,
+.fsvr-lab__choice:focus-visible,
+.fsvr-lab__cta:focus-visible,
+.fsvr-lab__nav-button:focus-visible,
+.fsvr-lab__answer-key-num:focus-visible,
+.fsvr-lab__toggle:focus-visible,
+.fsvr-lab__breakdown-summary:focus-visible,
+.fsvr-lab__home:focus-visible {
+  outline: 3px solid rgba(0, 113, 227, 0.4);
+  outline-offset: 2px;
+}
+
+/* 16. Entrance animation — per-question view fade/slide (kept on the container so it
+   never competes with the per-part pulse/shake animations) */
+@keyframes fsvr-view-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fsvr-lab__workspace {
+  animation: fsvr-view-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Respect reduced-motion: disable pulses, shakes, and entrance motion */
+@media (prefers-reduced-motion: reduce) {
+  .fsvr-lab__indicator--found,
+  .fsvr-lab__plain-word--miss,
+  .fsvr-lab__part--wrong,
+  .fsvr-lab__part--selected,
+  .fsvr-lab__feedback,
+  .fsvr-lab__workspace {
+    animation: none !important;
   }
 }
