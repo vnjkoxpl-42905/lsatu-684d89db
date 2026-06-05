@@ -7,6 +7,7 @@ import { MainConclusionLab } from './labs/MainConclusionLab';
 import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
 import { XRayReview } from './labs/XRayReview';
 import { MixedStructureCheck } from './labs/MixedStructureCheck';
+import { FirstSentenceVsRebuttalLab } from './labs/firstSentenceVsRebuttal/FirstSentenceVsRebuttalLab';
 import { getIntroDrillBySlug } from './introDrills';
 
 const LEGACY_REDIRECT: Record<string, string> = {
@@ -46,6 +47,9 @@ export function ActiveDrillShell() {
   switch (drill.slug) {
     case 'main-conclusion-lab':
       content = <MainConclusionLab />;
+      break;
+    case 'first-sentence-vs-rebuttal-lab':
+      content = <FirstSentenceVsRebuttalLab drillId={drill.completionId} title={drill.title} />;
       break;
     case 'argument-structure-lab':
       content = <ArgumentStructureLab drillId={drill.completionId} title={drill.title} />;
