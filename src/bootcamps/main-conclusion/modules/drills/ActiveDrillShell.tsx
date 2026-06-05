@@ -92,6 +92,10 @@ export function ActiveDrillShell() {
     );
   }
 
+  if (drill.slug === 'first-sentence-vs-rebuttal-lab') {
+    return <>{content}</>;
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1200px] px-6 py-8 md:px-10 md:py-10 desktop:px-12 desktop:py-12">
       <div className="mb-6">

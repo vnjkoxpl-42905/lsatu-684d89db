@@ -1,4 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
 
 import {
   FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS,
@@ -224,9 +226,16 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   const currentQuestion = orderedQuestions[session.currentQuestionIndex] ?? orderedQuestions[0];
 
   useEffect(() => {
-    setActive(createActiveQuestionState());
+    if (!currentQuestion) return;
+    const nextState = createActiveQuestionState();
+    if (session.completedQuestionIds.includes(currentQuestion.id)) {
+      nextState.foundIndicators = Array.from({ length: currentQuestion.indicatorCount }, (_, index) => `reveal-${index}`);
+      nextState.finalStatus = getQuestionStatus(ensureAttemptLog(session, currentQuestion.id));
+      nextState.revealed = true;
+    }
+    setActive(nextState);
     setFeedback(null);
-  }, [currentQuestion?.id]);
+  }, [currentQuestion?.id, session.completedQuestionIds]);
 
   if (!currentQuestion) return null;
 
@@ -352,6 +361,14 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     updateSession({
       ...session,
       currentQuestionIndex: session.currentQuestionIndex + 1,
+    });
+  }
+
+  function navigateToQuestion(index: number) {
+    if (index < 0 || index >= orderedQuestions.length) return;
+    updateSession({
+      ...session,
+      currentQuestionIndex: index,
     });
   }
 
@@ -540,9 +557,6 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 <span><b style={{ background: 'rgba(255,59,48,0.9)' }} />Opposing View</span>
                 <span><b style={{ background: 'rgba(199,199,204,0.95)' }} />Neutral</span>
               </div>
-              <button type="button" className="fsvr-lab__cta" onClick={() => void advanceQuestion()}>
-                {session.currentQuestionIndex + 1 >= orderedQuestions.length ? 'Finish drills' : 'Next question'}
-              </button>
             </div>
           )}
         </div>
@@ -676,45 +690,69 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     );
   }
 
+  const canGoPrevious = session.currentQuestionIndex > 0 && !isSessionComplete;
+  const currentQuestionComplete = active.revealed || session.completedQuestionIds.includes(currentQuestion.id);
+  const canGoNext = currentQuestionComplete && !isSessionComplete;
+  const nextLabel = session.currentQuestionIndex + 1 >= orderedQuestions.length ? 'Finish' : 'Next';
+
   return (
     <section className="fsvr-lab">
-      <div className="fsvr-lab__shell">
-        <header className="fsvr-lab__hero">
-          <div className="fsvr-lab__hero-copy">
-            <div className="fsvr-lab__eyebrow">Argument drill</div>
-            <h1>{title}</h1>
-            <p>Preserved from the standalone quiz, rebuilt natively: indicator words, conclusion, structure, then the key role that makes the read hold together.</p>
-          </div>
-          <div className="fsvr-lab__progress-card">
-            <div className="fsvr-lab__progress-top">
-              <span className="fsvr-lab__progress-value">{progressPercent}%</span>
-              <span className="fsvr-lab__progress-label">Complete</span>
-            </div>
-            <div className="fsvr-lab__bar"><span style={{ width: `${progressPercent}%` }} /></div>
-            <div className="fsvr-lab__progress-row">
-              <span>{completedCount} of {orderedQuestions.length} questions complete</span>
-            </div>
-          </div>
-        </header>
+      <div className="fsvr-lab__shell" data-review={isSessionComplete ? 'true' : 'false'}>
+        <div className="fsvr-lab__topbar">
+          <Link to="/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab" className="fsvr-lab__home">
+            <Home className="fsvr-lab__home-icon" aria-hidden="true" />
+            Home
+          </Link>
+        </div>
 
         {!isSessionComplete ? (
-          <article className="fsvr-lab__workspace">
-            <div className="fsvr-lab__workspace-header">
-              <div className="fsvr-lab__meta">
-                <div>
-                  <div className="fsvr-lab__title">{currentQuestion.review.title}</div>
-                  <div className="fsvr-lab__subtitle">Question {session.currentQuestionIndex + 1} of {orderedQuestions.length}</div>
-                </div>
-                <div className="fsvr-lab__type-pill">{currentQuestion.type === 'first' ? 'Conclusion first' : 'Rebuttal'}</div>
+          <>
+            <header className="fsvr-lab__hero">
+              <div className="fsvr-lab__hero-copy">
+                <div className="fsvr-lab__eyebrow">Argument Drill</div>
+                <h1>{currentQuestion.review.title}</h1>
               </div>
-            </div>
+              <div className="fsvr-lab__progress-card" aria-label={`${title} progress`}>
+                <div className="fsvr-lab__progress-top">
+                  <span className="fsvr-lab__progress-value">{progressPercent}%</span>
+                  <span className="fsvr-lab__progress-label">Complete</span>
+                </div>
+                <div className="fsvr-lab__bar"><span style={{ width: `${progressPercent}%` }} /></div>
+                <div className="fsvr-lab__progress-row">
+                  <span>{completedCount} of {orderedQuestions.length} questions complete</span>
+                </div>
+              </div>
+            </header>
 
-            <div className="fsvr-lab__stimulus">
-              <div className="fsvr-lab__stimulus-text">{renderStimulus()}</div>
-            </div>
+            <article className="fsvr-lab__workspace">
+              <div className="fsvr-lab__stimulus">
+                <div className="fsvr-lab__stimulus-text">{renderStimulus()}</div>
+              </div>
 
-            {renderControls()}
-          </article>
+              {renderControls()}
+            </article>
+
+            <nav className="fsvr-lab__footer-nav" aria-label="Question navigation">
+              <button
+                type="button"
+                className="fsvr-lab__nav-button"
+                disabled={!canGoPrevious}
+                onClick={() => navigateToQuestion(session.currentQuestionIndex - 1)}
+              >
+                <ChevronLeft className="fsvr-lab__nav-icon" aria-hidden="true" />
+                Previous
+              </button>
+              <button
+                type="button"
+                className="fsvr-lab__nav-button"
+                disabled={!canGoNext}
+                onClick={() => void advanceQuestion()}
+              >
+                {nextLabel}
+                <ChevronRight className="fsvr-lab__nav-icon" aria-hidden="true" />
+              </button>
+            </nav>
+          </>
         ) : (
           renderReview()
         )}
