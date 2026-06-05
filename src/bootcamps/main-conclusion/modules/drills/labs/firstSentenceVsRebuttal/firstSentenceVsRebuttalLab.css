@@ -255,6 +255,8 @@
 .fsvr-lab__plain-word--miss {
   background: var(--fsvr-error-soft);
   color: #b0241a;
+  animation: fsvr-shake-flash 420ms ease-in-out;
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.18);
 }
 
 .fsvr-lab__indicator {
@@ -327,6 +329,13 @@
   pointer-events: none;
 }
 
+.fsvr-lab__indicator--success {
+  background: var(--fsvr-success-soft);
+  color: #1e7135;
+  animation: fsvr-success-pulse 760ms ease-out;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.18), 0 0 22px rgba(52, 199, 89, 0.3);
+}
+
 .fsvr-lab__controls-card {
   min-height: auto;
   display: grid;
@@ -382,6 +391,8 @@
   padding: 14px 18px;
   border: 1px solid transparent;
   border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.055);
+  animation: fsvr-feedback-enter 220ms ease-out;
 }
 
 .fsvr-lab__feedback--correct {
@@ -459,6 +470,24 @@
   color: var(--fsvr-accent);
 }
 
+.fsvr-lab__part--success,
+.fsvr-lab__choice--success {
+  border-color: rgba(52, 199, 89, 0.5);
+  background: var(--fsvr-success-soft);
+  color: #1e7135;
+  animation: fsvr-success-pulse 760ms ease-out;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.16), 0 0 22px rgba(52, 199, 89, 0.24);
+}
+
+.fsvr-lab__part--miss,
+.fsvr-lab__choice--miss {
+  border-color: rgba(255, 59, 48, 0.5);
+  background: var(--fsvr-error-soft);
+  color: #b0241a;
+  animation: fsvr-shake-flash 420ms ease-in-out;
+  box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.16), 0 0 18px rgba(255, 59, 48, 0.22);
+}
+
 .fsvr-lab__cta-row {
   display: flex;
   flex-wrap: wrap;
@@ -485,9 +514,14 @@
   background: #005bb5;
 }
 
-.fsvr-lab__cta:disabled {
-  cursor: default;
+.fsvr-lab__cta:disabled,
+.fsvr-lab__cta[aria-disabled='true'] {
+  cursor: not-allowed;
   opacity: 0.66;
+}
+
+.fsvr-lab__cta[aria-disabled='true']:hover {
+  background: #72aaf0;
 }
 
 .fsvr-lab__cta--secondary {
@@ -743,6 +777,72 @@
   line-height: 1.55;
 }
 
+@keyframes fsvr-feedback-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fsvr-success-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+
+  34% {
+    transform: scale(1.035);
+    box-shadow: 0 0 0 6px rgba(52, 199, 89, 0.18), 0 0 26px rgba(52, 199, 89, 0.34);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fsvr-shake-flash {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  18% {
+    transform: translateX(-4px);
+    background: #ffd7d4;
+  }
+
+  36% {
+    transform: translateX(4px);
+    background: #ffeceb;
+  }
+
+  54% {
+    transform: translateX(-3px);
+    background: #ffd7d4;
+  }
+
+  72% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsvr-lab__feedback,
+  .fsvr-lab__indicator--success,
+  .fsvr-lab__plain-word--miss,
+  .fsvr-lab__part--success,
+  .fsvr-lab__part--miss,
+  .fsvr-lab__choice--success,
+  .fsvr-lab__choice--miss {
+    animation: none;
+  }
+}
+
 @media (max-width: 900px) {
   .fsvr-lab {
     padding: 18px 18px 42px;
@@ -863,7 +963,7 @@
 }
 
 .fsvr-lab__plain-word--miss {
-  animation: fsvr-shake 0.45s ease;
+  animation: fsvr-shake-flash 420ms ease-in-out;
 }
 
 .fsvr-lab__part--wrong {

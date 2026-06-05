@@ -25,10 +25,17 @@ import './firstSentenceVsRebuttalLab.css';
 
 type StepKey = 'indicators' | 'conclusion' | 'structure' | 'support';
 type Tone = 'correct' | 'wrong' | 'warning';
+type FeedbackTargetKind = 'indicator' | 'plain-word' | 'part' | 'choice';
 
 interface FeedbackState {
   tone: Tone;
   message: string;
+}
+
+interface FeedbackTarget {
+  kind: FeedbackTargetKind;
+  id: string;
+  tone: Tone;
 }
 
 interface ActiveQuestionState {
@@ -109,12 +116,6 @@ function statusLabel(status: FirstSentenceVsRebuttalQuestionStatus) {
   return 'Recovered';
 }
 
-function statusTone(status: FirstSentenceVsRebuttalQuestionStatus): Tone {
-  if (status === 'clean') return 'correct';
-  if (status === 'assisted') return 'warning';
-  return 'warning';
-}
-
 function ensureAttemptLog(
   session: FirstSentenceVsRebuttalSessionRecord,
   questionId: number,
@@ -180,6 +181,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   const [session, setSession] = useState<FirstSentenceVsRebuttalSessionRecord>(createEmptyFirstSentenceVsRebuttalSessionRecord());
   const [active, setActive] = useState<ActiveQuestionState>(createActiveQuestionState());
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
+  const [feedbackTarget, setFeedbackTarget] = useState<FeedbackTarget | null>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
   const [reviewQuestionId, setReviewQuestionId] = useState<number | null>(null);
   const [saveStatus, setSaveStatus] = useState<'saved' | null>(null);
@@ -252,18 +254,20 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   );
 
   const currentQuestion = orderedQuestions[session.currentQuestionIndex] ?? orderedQuestions[0];
+  const currentQuestionIsComplete = currentQuestion ? session.completedQuestionIds.includes(currentQuestion.id) : false;
 
   useEffect(() => {
     if (!currentQuestion) return;
     const nextState = createActiveQuestionState();
-    if (session.completedQuestionIds.includes(currentQuestion.id)) {
+    if (currentQuestionIsComplete) {
       nextState.foundIndicators = Array.from({ length: currentQuestion.indicatorCount }, (_, index) => `reveal-${index}`);
       nextState.finalStatus = getQuestionStatus(ensureAttemptLog(session, currentQuestion.id));
       nextState.revealed = true;
     }
     setActive(nextState);
     setFeedback(null);
-  }, [currentQuestion?.id, session.completedQuestionIds]);
+    setFeedbackTarget(null);
+  }, [currentQuestion?.id, currentQuestionIsComplete]);
 
   if (!currentQuestion) return null;
 
@@ -277,10 +281,19 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     setSession(next);
   }
 
-  function handleWrong(step: StepKey, message: string, wrongWordToken?: string | null) {
+  function showWarning(message = 'Choose an answer first.') {
+    setFeedback({ tone: 'warning', message });
+    setFeedbackTarget(null);
+  }
+
+  function handleWrong(step: StepKey, message: string, target?: FeedbackTarget | null) {
     updateSession(recordMistake(session, currentQuestion.id, step));
-    setActive((value) => ({ ...value, wrongWordToken: wrongWordToken ?? null }));
+    setActive((value) => ({
+      ...value,
+      wrongWordToken: target?.kind === 'plain-word' ? target.id : null,
+    }));
     setFeedback({ tone: 'wrong', message });
+    setFeedbackTarget(target ?? null);
   }
 
   function handleIndicatorClick(indicatorId: string) {
@@ -290,27 +303,30 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       foundIndicators: [...value.foundIndicators, indicatorId],
       wrongWordToken: null,
     }));
+    setFeedbackTarget({ kind: 'indicator', id: indicatorId, tone: 'correct' });
     setFeedback({
       tone: 'correct',
-      message:
-        active.foundIndicators.length + 1 === currentQuestion.indicatorCount
-          ? 'All indicator words found. Move to the author’s actual conclusion.'
-          : 'Indicator marked. Keep scanning for the turns, verdicts, and reasons.',
+      message: 'Correct. Move to the next step.',
     });
   }
 
   function handlePlainWordClick(wordId: string) {
     if (active.step !== 0) return;
-    handleWrong('indicators', buildRetryMessage(currentQuestion, 'indicators'), wordId);
+    handleWrong('indicators', buildRetryMessage(currentQuestion, 'indicators'), {
+      kind: 'plain-word',
+      id: wordId,
+      tone: 'wrong',
+    });
   }
 
   function continueFromIndicators() {
     if (active.foundIndicators.length < currentQuestion.indicatorCount) {
-      setFeedback({ tone: 'warning', message: 'Find the indicator words first, or use Skip / Reveal All.' });
+      showWarning();
       return;
     }
     setActive((value) => ({ ...value, step: 1, wrongWordToken: null }));
-    setFeedback({ tone: 'correct', message: 'Indicator words identified. Move to the author’s actual conclusion.' });
+    setFeedbackTarget(null);
+    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
   }
 
   function skipIndicators() {
@@ -321,38 +337,52 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       foundIndicators: Array.from({ length: currentQuestion.indicatorCount }, (_, index) => `reveal-${index}`),
       wrongWordToken: null,
     }));
+    setFeedbackTarget(null);
     setFeedback({ tone: 'warning', message: 'Indicator words revealed. This question will count as assisted, not clean.' });
   }
 
   function continueFromConclusion() {
     if (!active.selectedConclusionId) {
-      setFeedback({ tone: 'warning', message: 'Click the phrase you think is the conclusion first.' });
+      showWarning();
       return;
     }
     const selected = currentQuestion.parts.find((part) => part.id === active.selectedConclusionId);
+
     if (!selected || selected.role !== 'conclusion') {
+      const targetId = active.selectedConclusionId;
       setActive((value) => ({ ...value, selectedConclusionId: null }));
-      handleWrong('conclusion', buildRetryMessage(currentQuestion, 'conclusion'));
+      handleWrong('conclusion', buildRetryMessage(currentQuestion, 'conclusion'), targetId ? {
+        kind: 'part',
+        id: targetId,
+        tone: 'wrong',
+      } : null);
       return;
     }
 
     setActive((value) => ({ ...value, step: 2 }));
-    setFeedback({ tone: 'correct', message: 'Conclusion identified. Now classify the structure.' });
+    setFeedbackTarget({ kind: 'part', id: selected.id, tone: 'correct' });
+    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
   }
 
   function continueFromStructure() {
     if (!active.selectedStructure) {
-      setFeedback({ tone: 'warning', message: 'Choose Conclusion first or Rebuttal.' });
+      showWarning();
       return;
     }
     if (active.selectedStructure !== currentQuestion.type) {
+      const targetId = active.selectedStructure;
       setActive((value) => ({ ...value, selectedStructure: null }));
-      handleWrong('structure', buildRetryMessage(currentQuestion, 'structure'));
+      handleWrong('structure', buildRetryMessage(currentQuestion, 'structure'), {
+        kind: 'choice',
+        id: targetId,
+        tone: 'wrong',
+      });
       return;
     }
 
     setActive((value) => ({ ...value, step: 3 }));
-    setFeedback({ tone: 'correct', message: 'Structure classified. Finish by naming the role.' });
+    setFeedbackTarget({ kind: 'choice', id: active.selectedStructure, tone: 'correct' });
+    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
   }
 
   async function gradeQuestion() {
@@ -393,9 +423,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
     updateSession(nextSession);
     setActive((value) => ({ ...value, revealed: true, finalStatus: status, wrongWordToken: null }));
+    setFeedbackTarget(selected[0] ? { kind: 'part', id: selected[0], tone: 'correct' } : null);
     setFeedback({
-      tone: statusTone(status),
-      message: statusSummary(status),
+      tone: 'correct',
+      message: `Correct. Move to the next step. ${statusSummary(status)}`,
     });
 
     if (nextSession.completedAt) {
@@ -446,11 +477,12 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           );
         }
         const found = active.foundIndicators.includes(indicatorId) || active.foundIndicators.some((id) => id.startsWith('reveal-'));
+        const success = feedbackTarget?.kind === 'indicator' && feedbackTarget.id === indicatorId && feedbackTarget.tone === 'correct';
         return (
           <button
             key={indicatorId}
             type="button"
-            className={`fsvr-lab__indicator${found ? ' fsvr-lab__indicator--found' : ''}`}
+            className={`fsvr-lab__indicator${found ? ' fsvr-lab__indicator--found' : ''}${success ? ' fsvr-lab__indicator--success' : ''}`}
             data-tone={tone}
             data-tip={found ? tip : undefined}
             aria-pressed={found}
@@ -513,6 +545,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
         if (active.step === 1) {
           setActive((value) => ({ ...value, selectedConclusionId: part.id, wrongPhraseId: null }));
           setFeedback(null);
+          setFeedbackTarget(null);
           return;
         }
         if (active.step === 3) {
@@ -520,6 +553,8 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           if (part.role !== targetRole) {
             // Wrong-role click: flash/shake but never select or count a miss.
             setActive((value) => ({ ...value, wrongPhraseId: part.id }));
+            setFeedbackTarget({ kind: 'part', id: part.id, tone: 'wrong' });
+            setFeedback({ tone: 'wrong', message: buildRetryMessage(currentQuestion, 'support') });
             return;
           }
           setActive((value) => ({
@@ -530,8 +565,13 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
               : [...value.selectedFollowUpIds, part.id],
           }));
           setFeedback(null);
+          setFeedbackTarget(null);
         }
       };
+
+      if (feedbackTarget?.kind === 'part' && feedbackTarget.id === part.id) {
+        partClass += feedbackTarget.tone === 'correct' ? ' fsvr-lab__part--success' : ' fsvr-lab__part--miss';
+      }
 
       return (
         <Fragment key={part.id}>
@@ -650,7 +690,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           </p>
 
           {feedback ? (
-            <div className={`fsvr-lab__feedback fsvr-lab__feedback--${feedback.tone}`}>
+            <div className={`fsvr-lab__feedback fsvr-lab__feedback--${feedback.tone}`} role="status" aria-live="polite">
               <span className="fsvr-lab__feedback-icon">{feedback.tone === 'correct' ? '✓' : feedback.tone === 'warning' ? '!' : '✕'}</span>
               <div className="fsvr-lab__feedback-copy">{feedback.message}</div>
             </div>
@@ -661,16 +701,24 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
               <button
                 type="button"
                 aria-pressed={active.selectedStructure === 'first'}
-                className={`fsvr-lab__choice${active.selectedStructure === 'first' ? ' fsvr-lab__choice--selected' : ''}`}
-                onClick={() => setActive((value) => ({ ...value, selectedStructure: 'first' }))}
+                className={`fsvr-lab__choice${active.selectedStructure === 'first' ? ' fsvr-lab__choice--selected' : ''}${feedbackTarget?.kind === 'choice' && feedbackTarget.id === 'first' ? ` fsvr-lab__choice--${feedbackTarget.tone === 'correct' ? 'success' : 'miss'}` : ''}`}
+                onClick={() => {
+                  setActive((value) => ({ ...value, selectedStructure: 'first' }));
+                  setFeedback(null);
+                  setFeedbackTarget(null);
+                }}
               >
                 Conclusion first
               </button>
               <button
                 type="button"
                 aria-pressed={active.selectedStructure === 'rebuttal'}
-                className={`fsvr-lab__choice${active.selectedStructure === 'rebuttal' ? ' fsvr-lab__choice--selected' : ''}`}
-                onClick={() => setActive((value) => ({ ...value, selectedStructure: 'rebuttal' }))}
+                className={`fsvr-lab__choice${active.selectedStructure === 'rebuttal' ? ' fsvr-lab__choice--selected' : ''}${feedbackTarget?.kind === 'choice' && feedbackTarget.id === 'rebuttal' ? ` fsvr-lab__choice--${feedbackTarget.tone === 'correct' ? 'success' : 'miss'}` : ''}`}
+                onClick={() => {
+                  setActive((value) => ({ ...value, selectedStructure: 'rebuttal' }));
+                  setFeedback(null);
+                  setFeedbackTarget(null);
+                }}
               >
                 Rebuttal
               </button>
@@ -690,25 +738,25 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 </>
               ) : null}
               {active.step === 1 ? (
-                <button type="button" className="fsvr-lab__cta" onClick={continueFromConclusion}>
+                <button type="button" className="fsvr-lab__cta" aria-disabled={!active.selectedConclusionId} onClick={continueFromConclusion}>
                   Continue to structure
                 </button>
               ) : null}
               {active.step === 2 ? (
-                <button type="button" className="fsvr-lab__cta" onClick={continueFromStructure}>
+                <button type="button" className="fsvr-lab__cta" aria-disabled={!active.selectedStructure} onClick={continueFromStructure}>
                   Continue to role
                 </button>
               ) : null}
               {active.step === 3 ? (
-                <button type="button" className="fsvr-lab__cta" onClick={() => void gradeQuestion()}>
+                <button type="button" className="fsvr-lab__cta" aria-disabled={active.selectedFollowUpIds.length === 0} onClick={() => void gradeQuestion()}>
                   Check dissection
                 </button>
               ) : null}
             </div>
           ) : (
             <div className="fsvr-lab__summary">
-              <div className={`fsvr-lab__feedback fsvr-lab__feedback--${active.finalStatus === 'clean' ? 'correct' : 'warning'}`}>
-                <span className="fsvr-lab__feedback-icon">{active.finalStatus === 'clean' ? '✓' : active.finalStatus === 'assisted' ? '↻' : '↺'}</span>
+              <div className="fsvr-lab__feedback fsvr-lab__feedback--correct" role="status" aria-live="polite">
+                <span className="fsvr-lab__feedback-icon">✓</span>
                 <div>
                   <div className="fsvr-lab__step">{active.finalStatus ? `${statusLabel(active.finalStatus)} Dissection` : 'Review'}</div>
                   <div className="fsvr-lab__feedback-copy">{currentQuestion.feedback}</div>
@@ -888,7 +936,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   const canGoPrevious = session.currentQuestionIndex > 0 && !isSessionComplete;
-  const currentQuestionComplete = active.revealed || session.completedQuestionIds.includes(currentQuestion.id);
+  const currentQuestionComplete = active.revealed || currentQuestionIsComplete;
   const canGoNext = currentQuestionComplete && !isSessionComplete;
   const nextLabel = session.currentQuestionIndex + 1 >= orderedQuestions.length ? 'Finish' : 'Next';
 
