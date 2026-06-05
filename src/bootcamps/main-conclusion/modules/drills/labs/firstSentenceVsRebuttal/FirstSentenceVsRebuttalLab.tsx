@@ -26,6 +26,7 @@ import './firstSentenceVsRebuttalLab.css';
 type StepKey = 'indicators' | 'conclusion' | 'structure' | 'support';
 type Tone = 'correct' | 'wrong' | 'warning';
 type FeedbackTargetKind = 'indicator' | 'plain-word' | 'part' | 'choice';
+type ConfirmableStep = 0 | 1 | 2;
 
 interface FeedbackState {
   tone: Tone;
@@ -46,6 +47,7 @@ interface ActiveQuestionState {
   selectedConclusionId: string | null;
   selectedStructure: 'first' | 'rebuttal' | null;
   selectedFollowUpIds: string[];
+  confirmedStep: ConfirmableStep | null;
   finalStatus: FirstSentenceVsRebuttalQuestionStatus | null;
   revealed: boolean;
 }
@@ -62,6 +64,7 @@ function createActiveQuestionState(): ActiveQuestionState {
     selectedConclusionId: null,
     selectedStructure: null,
     selectedFollowUpIds: [],
+    confirmedStep: null,
     finalStatus: null,
     revealed: false,
   };
@@ -227,15 +230,6 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     return () => clearTimeout(timer);
   }, [saveStatus]);
 
-  // Correct feedback banners auto-dismiss; warning/wrong banners stay until the next action.
-  useEffect(() => {
-    if (feedback?.tone !== 'correct') return;
-    const timer = setTimeout(() => {
-      setFeedback((value) => (value?.tone === 'correct' ? null : value));
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, [feedback]);
-
   // Clear the wrong-answer shake/flash after the animation has played.
   useEffect(() => {
     if (!active.wrongWordToken && !active.wrongPhraseId) return;
@@ -286,11 +280,17 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     setFeedbackTarget(null);
   }
 
+  function showCorrect(message: string, target?: FeedbackTarget | null) {
+    setFeedback({ tone: 'correct', message });
+    setFeedbackTarget(target ?? null);
+  }
+
   function handleWrong(step: StepKey, message: string, target?: FeedbackTarget | null) {
     updateSession(recordMistake(session, currentQuestion.id, step));
     setActive((value) => ({
       ...value,
       wrongWordToken: target?.kind === 'plain-word' ? target.id : null,
+      confirmedStep: null,
     }));
     setFeedback({ tone: 'wrong', message });
     setFeedbackTarget(target ?? null);
@@ -298,15 +298,64 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
   function handleIndicatorClick(indicatorId: string) {
     if (active.step !== 0 || active.foundIndicators.includes(indicatorId)) return;
+    const nextFoundIndicators = [...active.foundIndicators, indicatorId];
+    const complete = nextFoundIndicators.length >= currentQuestion.indicatorCount;
     setActive((value) => ({
       ...value,
-      foundIndicators: [...value.foundIndicators, indicatorId],
+      foundIndicators: value.foundIndicators.includes(indicatorId)
+        ? value.foundIndicators
+        : [...value.foundIndicators, indicatorId],
       wrongWordToken: null,
+      confirmedStep: complete ? 0 : null,
     }));
-    setFeedbackTarget({ kind: 'indicator', id: indicatorId, tone: 'correct' });
-    setFeedback({
+    showCorrect(
+      complete ? 'Correct. Next: choose the main conclusion.' : 'Correct. Keep finding the indicator words.',
+      { kind: 'indicator', id: indicatorId, tone: 'correct' },
+    );
+  }
+
+  function handleConclusionChoice(part: FirstSentenceVsRebuttalQuestion['parts'][number]) {
+    if (active.step !== 1 || active.revealed) return;
+
+    if (part.role !== 'conclusion') {
+      handleWrong('conclusion', buildRetryMessage(currentQuestion, 'conclusion'), {
+        kind: 'part',
+        id: part.id,
+        tone: 'wrong',
+      });
+      setActive((value) => ({ ...value, selectedConclusionId: null, wrongPhraseId: part.id, confirmedStep: null }));
+      return;
+    }
+
+    setActive((value) => ({
+      ...value,
+      selectedConclusionId: part.id,
+      wrongPhraseId: null,
+      confirmedStep: 1,
+    }));
+    showCorrect('Correct. Next: classify the structure.', {
+      kind: 'part',
+      id: part.id,
       tone: 'correct',
-      message: 'Correct. Move to the next step.',
+    });
+  }
+
+  function handleStructureChoice(choice: 'first' | 'rebuttal') {
+    if (choice !== currentQuestion.type) {
+      setActive((value) => ({ ...value, selectedStructure: null, confirmedStep: null }));
+      handleWrong('structure', buildRetryMessage(currentQuestion, 'structure'), {
+        kind: 'choice',
+        id: choice,
+        tone: 'wrong',
+      });
+      return;
+    }
+
+    setActive((value) => ({ ...value, selectedStructure: choice, confirmedStep: 2 }));
+    showCorrect('Correct. Next: find the supporting or opposing part.', {
+      kind: 'choice',
+      id: choice,
+      tone: 'correct',
     });
   }
 
@@ -324,9 +373,14 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       showWarning();
       return;
     }
-    setActive((value) => ({ ...value, step: 1, wrongWordToken: null }));
+    if (active.confirmedStep !== 0) {
+      showCorrect('Correct. Next: choose the main conclusion.');
+      setActive((value) => ({ ...value, confirmedStep: 0 }));
+      return;
+    }
+    setActive((value) => ({ ...value, step: 1, wrongWordToken: null, confirmedStep: null }));
     setFeedbackTarget(null);
-    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
+    setFeedback(null);
   }
 
   function skipIndicators() {
@@ -336,12 +390,20 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       step: 1,
       foundIndicators: Array.from({ length: currentQuestion.indicatorCount }, (_, index) => `reveal-${index}`),
       wrongWordToken: null,
+      confirmedStep: null,
     }));
     setFeedbackTarget(null);
     setFeedback({ tone: 'warning', message: 'Indicator words revealed. This question will count as assisted, not clean.' });
   }
 
   function continueFromConclusion() {
+    if (active.confirmedStep === 1) {
+      setActive((value) => ({ ...value, step: 2, confirmedStep: null }));
+      setFeedbackTarget(null);
+      setFeedback(null);
+      return;
+    }
+
     if (!active.selectedConclusionId) {
       showWarning();
       return;
@@ -350,7 +412,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
     if (!selected || selected.role !== 'conclusion') {
       const targetId = active.selectedConclusionId;
-      setActive((value) => ({ ...value, selectedConclusionId: null }));
+      setActive((value) => ({ ...value, selectedConclusionId: null, confirmedStep: null }));
       handleWrong('conclusion', buildRetryMessage(currentQuestion, 'conclusion'), targetId ? {
         kind: 'part',
         id: targetId,
@@ -359,19 +421,29 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       return;
     }
 
-    setActive((value) => ({ ...value, step: 2 }));
-    setFeedbackTarget({ kind: 'part', id: selected.id, tone: 'correct' });
-    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
+    setActive((value) => ({ ...value, selectedConclusionId: selected.id, confirmedStep: 1 }));
+    showCorrect('Correct. Next: classify the structure.', {
+      kind: 'part',
+      id: selected.id,
+      tone: 'correct',
+    });
   }
 
   function continueFromStructure() {
+    if (active.confirmedStep === 2) {
+      setActive((value) => ({ ...value, step: 3, confirmedStep: null }));
+      setFeedbackTarget(null);
+      setFeedback(null);
+      return;
+    }
+
     if (!active.selectedStructure) {
       showWarning();
       return;
     }
     if (active.selectedStructure !== currentQuestion.type) {
       const targetId = active.selectedStructure;
-      setActive((value) => ({ ...value, selectedStructure: null }));
+      setActive((value) => ({ ...value, selectedStructure: null, confirmedStep: null }));
       handleWrong('structure', buildRetryMessage(currentQuestion, 'structure'), {
         kind: 'choice',
         id: targetId,
@@ -380,9 +452,12 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       return;
     }
 
-    setActive((value) => ({ ...value, step: 3 }));
-    setFeedbackTarget({ kind: 'choice', id: active.selectedStructure, tone: 'correct' });
-    setFeedback({ tone: 'correct', message: 'Correct. Move to the next step.' });
+    setActive((value) => ({ ...value, confirmedStep: 2 }));
+    showCorrect('Correct. Next: find the supporting or opposing part.', {
+      kind: 'choice',
+      id: active.selectedStructure,
+      tone: 'correct',
+    });
   }
 
   async function gradeQuestion() {
@@ -543,9 +618,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
 
       const selectPart = () => {
         if (active.step === 1) {
-          setActive((value) => ({ ...value, selectedConclusionId: part.id, wrongPhraseId: null }));
-          setFeedback(null);
-          setFeedbackTarget(null);
+          handleConclusionChoice(part);
           return;
         }
         if (active.step === 3) {
@@ -560,6 +633,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           setActive((value) => ({
             ...value,
             wrongPhraseId: null,
+            confirmedStep: null,
             selectedFollowUpIds: value.selectedFollowUpIds.includes(part.id)
               ? value.selectedFollowUpIds.filter((id) => id !== part.id)
               : [...value.selectedFollowUpIds, part.id],
@@ -702,11 +776,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 type="button"
                 aria-pressed={active.selectedStructure === 'first'}
                 className={`fsvr-lab__choice${active.selectedStructure === 'first' ? ' fsvr-lab__choice--selected' : ''}${feedbackTarget?.kind === 'choice' && feedbackTarget.id === 'first' ? ` fsvr-lab__choice--${feedbackTarget.tone === 'correct' ? 'success' : 'miss'}` : ''}`}
-                onClick={() => {
-                  setActive((value) => ({ ...value, selectedStructure: 'first' }));
-                  setFeedback(null);
-                  setFeedbackTarget(null);
-                }}
+                onClick={() => handleStructureChoice('first')}
               >
                 Conclusion first
               </button>
@@ -714,11 +784,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 type="button"
                 aria-pressed={active.selectedStructure === 'rebuttal'}
                 className={`fsvr-lab__choice${active.selectedStructure === 'rebuttal' ? ' fsvr-lab__choice--selected' : ''}${feedbackTarget?.kind === 'choice' && feedbackTarget.id === 'rebuttal' ? ` fsvr-lab__choice--${feedbackTarget.tone === 'correct' ? 'success' : 'miss'}` : ''}`}
-                onClick={() => {
-                  setActive((value) => ({ ...value, selectedStructure: 'rebuttal' }));
-                  setFeedback(null);
-                  setFeedbackTarget(null);
-                }}
+                onClick={() => handleStructureChoice('rebuttal')}
               >
                 Rebuttal
               </button>
@@ -730,7 +796,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
               {active.step === 0 ? (
                 <>
                   <button type="button" className="fsvr-lab__cta" onClick={continueFromIndicators}>
-                    Continue to conclusion
+                    {active.confirmedStep === 0 ? 'Next: choose the main conclusion' : 'Continue to conclusion'}
                   </button>
                   <button type="button" className="fsvr-lab__cta fsvr-lab__cta--secondary" onClick={skipIndicators}>
                     Skip / Reveal All
@@ -739,12 +805,12 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
               ) : null}
               {active.step === 1 ? (
                 <button type="button" className="fsvr-lab__cta" aria-disabled={!active.selectedConclusionId} onClick={continueFromConclusion}>
-                  Continue to structure
+                  {active.confirmedStep === 1 ? 'Next: classify the structure' : 'Continue to structure'}
                 </button>
               ) : null}
               {active.step === 2 ? (
                 <button type="button" className="fsvr-lab__cta" aria-disabled={!active.selectedStructure} onClick={continueFromStructure}>
-                  Continue to role
+                  {active.confirmedStep === 2 ? 'Next: find the supporting or opposing part' : 'Continue to role'}
                 </button>
               ) : null}
               {active.step === 3 ? (

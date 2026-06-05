@@ -975,19 +975,9 @@
   animation: fsvr-shake 0.45s ease;
 }
 
-/* 11. Selected-phrase colored pulse (tone-tinted via data-role) */
-@keyframes fsvr-selected-pulse {
-  0%, 100% { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08), 0 0 0 0 var(--fsvr-pulse, rgba(0, 113, 227, 0.4)); }
-  50% { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08), 0 0 14px 3px var(--fsvr-pulse, rgba(0, 113, 227, 0.4)); }
-}
-
 .fsvr-lab__part--selected {
-  animation: fsvr-selected-pulse 2.2s ease-in-out infinite;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.16);
 }
-
-.fsvr-lab__part--selected[data-role='conclusion'] { --fsvr-pulse: rgba(255, 193, 7, 0.45); }
-.fsvr-lab__part--selected[data-role='support'] { --fsvr-pulse: rgba(255, 149, 0, 0.45); }
-.fsvr-lab__part--selected[data-role='opposing'] { --fsvr-pulse: rgba(255, 59, 48, 0.4); }
 
 /* 12. Step-feedback banner slide-in */
 @keyframes fsvr-feedback-in {
