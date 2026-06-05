@@ -8,6 +8,7 @@ import type { IntroDrillDefinition } from './introDrills';
 
 export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const previousAction = getPreviousAction(pathname);
 
   return (
