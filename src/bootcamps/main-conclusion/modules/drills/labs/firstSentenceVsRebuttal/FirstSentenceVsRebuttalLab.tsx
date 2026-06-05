@@ -277,6 +277,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function continueFromIndicators() {
+    if (active.foundIndicators.length < currentQuestion.indicatorCount) {
+      setFeedback({ tone: 'warning', message: 'Find the indicator words first, or use Skip / Reveal All.' });
+      return;
+    }
     setActive((value) => ({ ...value, step: 1, wrongWordToken: null }));
     setFeedback({ tone: 'correct', message: 'Indicator words identified. Move to the author’s actual conclusion.' });
   }
@@ -293,6 +297,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function continueFromConclusion() {
+    if (!active.selectedConclusionId) {
+      setFeedback({ tone: 'warning', message: 'Click the phrase you think is the conclusion first.' });
+      return;
+    }
     const selected = currentQuestion.parts.find((part) => part.id === active.selectedConclusionId);
     if (!selected || selected.role !== 'conclusion') {
       setActive((value) => ({ ...value, selectedConclusionId: null }));
@@ -305,6 +313,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function continueFromStructure() {
+    if (!active.selectedStructure) {
+      setFeedback({ tone: 'warning', message: 'Choose Conclusion first or Rebuttal.' });
+      return;
+    }
     if (active.selectedStructure !== currentQuestion.type) {
       setActive((value) => ({ ...value, selectedStructure: null }));
       handleWrong('structure', buildRetryMessage(currentQuestion, 'structure'));
@@ -316,6 +328,10 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   async function gradeQuestion() {
+    if (!active.selectedFollowUpId) {
+      setFeedback({ tone: 'warning', message: 'Click the phrase in the stimulus first.' });
+      return;
+    }
     const selected = currentQuestion.parts.find((part) => part.id === active.selectedFollowUpId);
     const correctRole = currentQuestion.type === 'first' ? 'support' : 'opposing';
 
@@ -487,7 +503,6 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   function renderControls() {
-    const indicatorReady = active.foundIndicators.length >= currentQuestion.indicatorCount;
     const followUpPrompt = active.selectedStructure === 'first' ? 'Select a Supporting Claim' : 'Select the Opposing Viewpoint';
 
     return (
@@ -539,7 +554,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
             <div className="fsvr-lab__cta-row">
               {active.step === 0 ? (
                 <>
-                  <button type="button" className="fsvr-lab__cta" disabled={!indicatorReady} onClick={continueFromIndicators}>
+                  <button type="button" className="fsvr-lab__cta" onClick={continueFromIndicators}>
                     Continue to conclusion
                   </button>
                   <button type="button" className="fsvr-lab__cta fsvr-lab__cta--secondary" onClick={skipIndicators}>
@@ -548,17 +563,17 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 </>
               ) : null}
               {active.step === 1 ? (
-                <button type="button" className="fsvr-lab__cta" disabled={!active.selectedConclusionId} onClick={continueFromConclusion}>
+                <button type="button" className="fsvr-lab__cta" onClick={continueFromConclusion}>
                   Continue to structure
                 </button>
               ) : null}
               {active.step === 2 ? (
-                <button type="button" className="fsvr-lab__cta" disabled={!active.selectedStructure} onClick={continueFromStructure}>
+                <button type="button" className="fsvr-lab__cta" onClick={continueFromStructure}>
                   Continue to role
                 </button>
               ) : null}
               {active.step === 3 ? (
-                <button type="button" className="fsvr-lab__cta" disabled={!active.selectedFollowUpId} onClick={() => void gradeQuestion()}>
+                <button type="button" className="fsvr-lab__cta" onClick={() => void gradeQuestion()}>
                   Check dissection
                 </button>
               ) : null}
