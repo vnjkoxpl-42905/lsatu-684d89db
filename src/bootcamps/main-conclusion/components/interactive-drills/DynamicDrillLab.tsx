@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 export interface DrillLabCard {
@@ -61,20 +60,32 @@ export function DynamicDrillLab({
                   <span>{drill.interaction}</span>
                 </div>
               </div>
-              <Button
-                asChild
-                size="sm"
-                variant={drill.active || !drill.completed ? 'primary' : 'subtle'}
-                rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}
-                className="shrink-0"
+              <Link
+                to={drill.route}
+                className={cn(
+                  'group/btn shrink-0 inline-flex h-7 items-center justify-center gap-1.5 rounded-[4px] px-3 font-mc-mono text-mono uppercase tracking-[0.18em]',
+                  'transition-[transform,box-shadow,background,border-color] duration-150 ease-eased',
+                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
+                  drill.active || !drill.completed
+                    ? cn(
+                        'mc-shine bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))]',
+                        'border border-[color:var(--border-accent-mid)]',
+                        'shadow-[0_16px_34px_rgb(var(--bg)/0.4)]',
+                        'hover:-translate-y-[2px] hover:border-[color:var(--border-accent-strong)] hover:shadow-[var(--glow-accent-strong)]',
+                        'active:translate-y-[0.5px] active:shadow-[var(--shadow-press)]',
+                      )
+                    : cn(
+                        'bg-[rgb(var(--surface-elev)/0.72)] text-[rgb(var(--ink))]',
+                        'border border-[rgb(var(--border)/0.10)]',
+                        'shadow-[var(--shadow-1)]',
+                        'hover:-translate-y-[2px] hover:bg-[rgb(var(--surface-elev))] hover:border-[rgb(var(--border)/0.22)] hover:shadow-[var(--shadow-lift)]',
+                        'active:translate-y-[0.5px] active:shadow-[var(--shadow-press)]',
+                      ),
+                )}
               >
-                <Link
-                  to={drill.route}
-                  className="rounded-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-                >
-                  Open Drill
-                </Link>
-              </Button>
+                <span>Open Drill</span>
+                <ArrowRight className="h-3.5 w-3.5 shrink-0" strokeWidth={2.2} />
+              </Link>
             </div>
           </Card>
         ))}
