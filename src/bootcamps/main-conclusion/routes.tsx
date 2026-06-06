@@ -147,7 +147,7 @@ function LegacyLessonRedirect() {
     return <Navigate to={`/bootcamp/intro-to-lr/lessons/notes/${noteByLessonId[lessonId]}`} replace />;
   }
   if (lessonId === '1.13') {
-    return <Navigate to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check" replace />;
+    return <Navigate to="/bootcamp/intro-to-lr/drills" replace />;
   }
   return <Navigate to={`/bootcamp/intro-to-lr/lessons/legacy/${lessonId ?? ''}`} replace />;
 }
@@ -166,7 +166,7 @@ export function BootcampRoutes() {
         <Route path="lessons/notes" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
-        <Route path="lessons/legacy/1.13" element={<Navigate to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check" replace />} />
+        <Route path="lessons/legacy/1.13" element={<Navigate to="/bootcamp/intro-to-lr/drills" replace />} />
         <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
         <Route
           path="reference"

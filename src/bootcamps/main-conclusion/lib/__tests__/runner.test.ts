@@ -38,14 +38,14 @@ describe('nextTrainingStep', () => {
     expect(step.subtitle).toContain('4 of 12');
   });
 
-  it('teaching lessons done, gate drill not cleared → push to the final mixed drill', () => {
+  it('teaching lessons done → simulator-ready (no gate drill required)', () => {
     const progress: ProgressLike = { completed_lessons: LESSONS.map((l) => l.id), completed_drills: [] };
     const step = nextTrainingStep(progress, LESSONS);
-    expect(step.kind).toBe('unlock-drill');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
+    expect(step.kind).toBe('simulator-ready');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/simulator/bank');
   });
 
-  it('mid-teaching with stray legacy lesson 13 completion does NOT short-circuit to drill', () => {
+  it('mid-teaching with stray legacy lesson 13 completion does NOT short-circuit to simulator', () => {
     const progress: ProgressLike = {
       completed_lessons: ['MC-LSN-1.1', 'MC-LSN-1.2', 'MC-LSN-1.13'],
       completed_drills: [],
@@ -55,23 +55,11 @@ describe('nextTrainingStep', () => {
     expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.3');
   });
 
-  it('teaching done + Drill 3.4 done → simulator-ready', () => {
-    const progress: ProgressLike = {
-      completed_lessons: LESSONS.map((l) => l.id),
-      completed_drills: ['MC-DRL-MIX'],
-    };
-    const step = nextTrainingStep(progress, LESSONS);
-    expect(step.kind).toBe('simulator-ready');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/simulator/bank');
-    expect(step.secondary?.href).toBe('/bootcamp/intro-to-lr/diagnostics/dashboard');
-  });
-
   it('never leaks internal IDs into student-visible strings', () => {
     const cases: ProgressLike[] = [
       empty,
       { completed_lessons: ['MC-LSN-1.1'], completed_drills: [] },
       { completed_lessons: LESSONS.map((l) => l.id), completed_drills: [] },
-      { completed_lessons: LESSONS.map((l) => l.id), completed_drills: ['MC-DRL-MIX'] },
     ];
     for (const p of cases) {
       const s = nextTrainingStep(p, LESSONS);
@@ -82,48 +70,25 @@ describe('nextTrainingStep', () => {
 });
 
 const DRILLS: DrillRow[] = [
-  { id: 'MC-DRL-3.1', number: '3.1', slug: 'indicator-word-id', title: 'Indicator Word ID' },
-  { id: 'MC-DRL-3.2', number: '3.2', slug: 'x-ray-drill', title: 'X-Ray Drill' },
-  { id: 'MC-DRL-3.3', number: '3.3', slug: 'first-sentence-reading', title: 'First-Sentence Reading' },
-  { id: 'MC-DRL-MIX', number: '3.4', slug: 'final-mixed-structure-check', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
-  { id: 'MC-DRL-3.5', number: '3.5', slug: 'chain-mapping', title: 'Chain Mapping' },
+  { id: 'MC-DRL-MCL', number: '1', slug: 'main-conclusion-lab', title: 'Main Conclusion Lab' },
+  { id: 'MC-DRL-CLS', number: '2', slug: 'first-sentence-vs-rebuttal-lab', title: 'First Sentence vs Rebuttal' },
 ];
 
 describe('nextDrillStep', () => {
-  it('fresh student (0 drills) → start at the first drill, NOT the gate capstone', () => {
+  it('fresh student (0 drills) → start at the first drill', () => {
     const step = nextDrillStep(empty, DRILLS);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/indicator-word-id');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/main-conclusion-lab');
     expect(step.isGate).toBe(false);
   });
 
-  it('does not jump the queue to the gate when earlier drills are still uncleared', () => {
+  it('first drill done → point to second drill', () => {
     const progress: ProgressLike = {
       completed_lessons: [],
-      completed_drills: ['MC-DRL-3.1'],
+      completed_drills: ['MC-DRL-MCL'],
     };
     const step = nextDrillStep(progress, DRILLS);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/x-ray-drill');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab');
     expect(step.isGate).toBe(false);
-  });
-
-  it('surfaces the gate framing only once the gate is the next uncleared drill in order', () => {
-    const progress: ProgressLike = {
-      completed_lessons: [],
-      completed_drills: ['MC-DRL-3.1', 'MC-DRL-3.2', 'MC-DRL-3.3'],
-    };
-    const step = nextDrillStep(progress, DRILLS);
-    expect(step.isGate).toBe(true);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/final-mixed-structure-check');
-  });
-
-  it('points at the next non-gate drill when the gate is done', () => {
-    const progress: ProgressLike = {
-      completed_lessons: [],
-      completed_drills: ['MC-DRL-3.1', 'MC-DRL-MIX'],
-    };
-    const step = nextDrillStep(progress, DRILLS);
-    expect(step.isGate).toBe(false);
-    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/x-ray-drill');
   });
 
   it('all drills cleared → simulator', () => {

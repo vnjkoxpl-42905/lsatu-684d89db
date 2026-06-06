@@ -45,21 +45,6 @@ export const INTRO_DRILLS: IntroDrillDefinition[] = [
     interaction: '4-step flow · explanation breakdowns',
     why: 'Work through the two dominant conclusion placements in a faithful native port with end-of-question feedback and session review.',
   },
-  {
-    id: 'MC-DRL-MIX',
-    slug: 'final-mixed-structure-check',
-    number: '3',
-    title: 'Final Mixed Structure Check',
-    summary: 'Complete mixed structure reps before moving on.',
-    questionCount: 12,
-    route: `${BC}/drills/final-mixed-structure-check`,
-    runRoute: `${BC}/drills/final-mixed-structure-check/run`,
-    completionId: 'MC-DRL-MIX',
-    skill: 'Capstone',
-    interaction: 'mixed structure reps · capstone flow',
-    why: 'Capstone reps that mix both structures. Clear this drill to unlock the Question Simulator.',
-    gatesSimulator: true,
-  },
 ];
 
 export function getIntroDrillBySlug(slug: string | undefined) {

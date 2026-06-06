@@ -8,16 +8,8 @@ const LEGACY_REDIRECT: Record<string, string> = {
   '3.1': 'main-conclusion-lab',
   '3.2': 'main-conclusion-lab',
   '3.3': 'first-sentence-vs-rebuttal-lab',
-  '3.4': 'final-mixed-structure-check',
-  '3.5': 'final-mixed-structure-check',
-  '3.6': 'final-mixed-structure-check',
   '3.7': 'first-sentence-vs-rebuttal-lab',
-  '3.8': 'final-mixed-structure-check',
-  '3.9': 'final-mixed-structure-check',
   'mixed-classification': 'first-sentence-vs-rebuttal-lab',
-  'x-ray-review': 'final-mixed-structure-check',
-  'final-structure-check': 'final-mixed-structure-check',
-  'mixed-structure-check': 'final-mixed-structure-check',
 };
 
 export function DrillShell() {

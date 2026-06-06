@@ -1,7 +1,7 @@
 /**
- * Module ordering enforcement (per architecture-plan.md §5 + G2.DRL-3.4).
+ * Module ordering enforcement (per architecture-plan.md §5).
  *
- * Hard constraint: the Final Mixed Structure Check must complete before /simulator/* unlocks.
+ * Simulator is always accessible — no drill gate.
  * `ModuleProgress.unlocked_routes` is the source of truth — never derived ad-hoc.
  */
 
@@ -14,24 +14,7 @@ export interface RouteRequirement {
   hint: string;
 }
 
-export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
-  '/simulator': {
-    blocker: 'MC-DRL-MIX',
-    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
-  },
-  '/simulator/bank': {
-    blocker: 'MC-DRL-MIX',
-    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
-  },
-  '/simulator/trap-master': {
-    blocker: 'MC-DRL-MIX',
-    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
-  },
-  '/simulator/hard-mode': {
-    blocker: 'MC-DRL-MIX',
-    hint: 'Complete the Final Mixed Structure Check to unlock the Question Simulator.',
-  },
-};
+export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {};
 
 /** Initial unlocks for a brand-new student.
  *  Preview mode: every lesson, drill, reference section, and module entry point is open
@@ -61,9 +44,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
   '/drills/main-conclusion-lab',
   '/drills/first-sentence-vs-rebuttal-lab',
-  '/drills/final-mixed-structure-check',
-  // Preview/review mode includes simulator surfaces; persisted student unlocks
-  // still come only from Drill 3.4 completion below.
   '/simulator',
   '/simulator/bank',
   '/simulator/trap-master',
@@ -100,14 +80,5 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 12) additions.push(`/lessons/1.${next}`);
   }
-  // Final Mixed Structure Check is the simulator gate.
-  if (
-    currentRouteId === '/drills/final-mixed-structure-check' ||
-    currentRouteId === '/drills/mixed-structure-check' ||
-    currentRouteId === '/drills/3.4'
-  ) {
-    additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
-  }
-
   return additions;
 }

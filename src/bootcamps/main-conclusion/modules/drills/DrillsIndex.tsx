@@ -7,7 +7,7 @@
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowRight, LibraryBig, ShieldAlert, Target } from 'lucide-react';
+import { ArrowRight, LibraryBig, Target } from 'lucide-react';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -27,11 +27,6 @@ const GROUPS = [
     title: 'Structure Read',
     description: 'Classify the family first, then map the whole argument.',
     drillIds: ['MC-DRL-CLS'],
-  },
-  {
-    title: 'Review & Capstone',
-    description: 'Stress-test the read on mixed structures. The capstone gates the Simulator.',
-    drillIds: ['MC-DRL-MIX'],
   },
 ];
 
@@ -95,7 +90,6 @@ export function DrillsIndex() {
   const nextHref = next.href;
   const isGate = next.isGate;
   const completionPercent = Math.round((doneCount / Math.max(INTRO_DRILLS.length, 1)) * 100);
-  const gateCleared = completed.has('MC-DRL-MIX');
   const groupedProgress = Math.round(
     (GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length / GROUPS.length) * 100,
   );
@@ -106,10 +100,10 @@ export function DrillsIndex() {
         <div>
           <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Intro to LR · Drill Lab</p>
           <h1 className="mt-2 font-mc-serif text-h1 font-semibold leading-tight text-ink">
-            Five drills, one clean path
+            Two drills, one clean path
           </h1>
           <p className="mt-3 max-w-2xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">
-            Spot the main conclusion, dissect the structure, classify the shape, review with X-Ray, then mixed-rep your way into the Simulator.
+            Spot the main conclusion, then classify the structure. Two focused drills before you enter the Simulator.
           </p>
         </div>
         <Card variant="elev" accent>
@@ -132,18 +126,12 @@ export function DrillsIndex() {
         </Card>
       </header>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 md:grid-cols-2">
         <DrillMetricCard
           title="Drill completion"
           detail={`${doneCount} of ${INTRO_DRILLS.length} drills cleared`}
           icon={<LibraryBig className="h-4 w-4" strokeWidth={2} />}
           gauge={<Gauge value={completionPercent} size="medium" showValue colors={gaugeColors(completionPercent)} />}
-        />
-        <DrillMetricCard
-          title="Simulator gate"
-          detail={gateCleared ? 'Final mixed check cleared. Simulator can open.' : 'Final mixed check still gates the Simulator.'}
-          icon={<ShieldAlert className="h-4 w-4" strokeWidth={2} />}
-          gauge={<Gauge value={gateCleared ? 100 : completionPercent} size="medium" showValue colors={gaugeColors(gateCleared ? 100 : completionPercent)} />}
         />
         <DrillMetricCard
           title="Sequence coverage"

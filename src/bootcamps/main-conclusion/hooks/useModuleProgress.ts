@@ -15,7 +15,6 @@ import { INITIAL_UNLOCKED_ROUTES, unlockNext, type ProgressShape } from '@/bootc
 const DRILL_ROUTE_ALIASES: Record<string, string> = {
   'MC-DRL-MCL': '/drills/main-conclusion-lab',
   'MC-DRL-CLS': '/drills/first-sentence-vs-rebuttal-lab',
-  'MC-DRL-MIX': '/drills/final-mixed-structure-check',
 };
 
 // Per-user progress record id is deterministic on user.id so we always read+update

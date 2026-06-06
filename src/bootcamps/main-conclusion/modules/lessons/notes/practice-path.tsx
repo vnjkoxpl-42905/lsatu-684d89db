@@ -113,13 +113,7 @@ export default function PracticePathNotes() {
 
       <section data-toc data-toc-title="Matching and capstone" className="bg-[#FAF7EF]/20">
         <PhaseHeader number="04" title="Matching and capstone application" subtitle="Finish by translating conclusions cleanly and then applying the full framework under pressure." />
-        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 lg:grid-cols-3 md:divide-x">
-          <DrillCard
-            label="Drill Lab"
-            name="Final Mixed Structure Check"
-            purpose="Use the final mixed replica drill to unlock the simulator once the structure read is stable."
-            to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check"
-          />
+        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
           <DrillCard
             label="Capstone"
             name="Question Bank"

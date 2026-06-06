@@ -1,7 +1,6 @@
 /**
  * Module ordering smoke tests (A.4).
- * Asserts the G2.DRL-3.4 architectural constraint: Drill 3.4 completion is the
- * unlock signal for /simulator/*; no other surface flips that bit.
+ * Simulator has no gate drill — it is always accessible.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -18,14 +17,14 @@ describe('module ordering', () => {
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/lessons/1.1');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/reference');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/drills');
-    // Preview mode: simulator surfaces are seeded (LockedRoute also bypasses gates via BOOTCAMP_PREVIEW_OPEN).
+    // Simulator is always accessible — no gate drill.
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator/bank');
   });
 
-  it('every /simulator/* route requires Drill 3.4', () => {
+  it('no simulator routes have a drill blocker', () => {
     for (const route of ['/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode']) {
-      expect(ROUTE_REQUIREMENTS[route]?.blocker).toBe('MC-DRL-MIX');
+      expect(ROUTE_REQUIREMENTS[route]).toBeUndefined();
     }
   });
 
@@ -39,15 +38,8 @@ describe('module ordering', () => {
     expect(unlockNext('/lessons/1.12', blank())).toEqual([]);
   });
 
-  it('completing /drills/3.4 unlocks all four simulator routes (and only those)', () => {
-    const additions = unlockNext('/drills/3.4', blank());
-    expect(additions.sort()).toEqual(
-      ['/simulator', '/simulator/bank', '/simulator/hard-mode', '/simulator/trap-master'].sort(),
-    );
-  });
-
-  it('completing any drill OTHER than 3.4 does NOT unlock the simulator', () => {
-    for (const drill of ['/drills/3.1', '/drills/3.2', '/drills/3.3', '/drills/3.5', '/drills/3.6', '/drills/3.7', '/drills/3.8', '/drills/3.9']) {
+  it('completing any drill does NOT unlock simulator routes (no gate)', () => {
+    for (const drill of ['/drills/3.1', '/drills/3.2', '/drills/3.3', '/drills/3.4', '/drills/3.5']) {
       const additions = unlockNext(drill, blank());
       expect(additions).not.toContain('/simulator');
       expect(additions).not.toContain('/simulator/bank');
@@ -57,7 +49,7 @@ describe('module ordering', () => {
   it('unlockNext is pure — no mutation of input', () => {
     const progress = blank();
     const before = JSON.stringify(progress);
-    unlockNext('/drills/3.4', progress);
+    unlockNext('/drills/3.1', progress);
     expect(JSON.stringify(progress)).toBe(before);
   });
 });

@@ -51,9 +51,6 @@ function lessonRank(num: string): number {
   const parts = num.split('.');
   return Number(parts[1] ?? '0');
 }
-const UNLOCK_DRILL_ID = 'MC-DRL-MIX';
-const UNLOCK_DRILL_SLUG = 'final-mixed-structure-check';
-
 
 /**
  * Given the student's progress and the static lesson list, decide which single
@@ -87,7 +84,6 @@ export function nextTrainingStep(
   const teaching = sorted.filter((l) => lessonRank(l.number) <= TOTAL_LESSONS);
   const firstUndoneTeaching = teaching.find((l) => !completedLessons.has(l.id));
   const teachingDoneCount = teaching.filter((l) => completedLessons.has(l.id)).length;
-  const drill34Done = completedDrills.has(UNLOCK_DRILL_ID);
 
   // 1) Mid-teaching: any of 1.1–1.12 not yet done → continue there.
   if (firstUndoneTeaching) {
@@ -106,21 +102,7 @@ export function nextTrainingStep(
     };
   }
 
-  // 2) Teaching done, Drill 3.4 not cleared → run the unlock-gate drill.
-  if (!drill34Done) {
-    return {
-      kind: 'unlock-drill',
-      eyebrow: 'Final check',
-      title: 'Final Mixed Structure Check',
-      subtitle:
-        'You have the teaching in place. Run the mixed-structure check to pressure-test the read before entering the Question Simulator.',
-      cta: 'Open the gate drill',
-      href: `${BC}/drills/${UNLOCK_DRILL_SLUG}`,
-    };
-  }
-
-
-  // 3) Drill 3.4 done → live training.
+  // 2) Teaching done → live training.
   return {
     kind: 'simulator-ready',
     eyebrow: 'Live training',
@@ -182,17 +164,6 @@ export function nextDrillStep(
   // unlock-the-Simulator framing; otherwise use the plain next-drill framing.
   const next = ordered.find((d) => !completed.has(d.id));
   if (next) {
-    if (next.gates_simulator) {
-      return {
-        eyebrow: 'Unlock the Simulator',
-        title: `Drill ${next.number}: ${next.title}`,
-        subtitle:
-          'Clear the mixed-structure drill page and finish the run to unlock the Question Simulator.',
-        cta: `Open Drill ${next.number}`,
-        href: `${BC}/drills/${next.slug}`,
-        isGate: true,
-      };
-    }
     return {
       eyebrow: 'Next drill',
       title: `Drill ${next.number}: ${next.title}`,

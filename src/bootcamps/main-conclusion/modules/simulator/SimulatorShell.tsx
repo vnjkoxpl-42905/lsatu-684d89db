@@ -34,8 +34,6 @@ interface SimQ {
 
 export function SimulatorOverview() {
   const { progress } = useModuleProgress();
-  const drill34Done = !!(progress?.completed_drills.includes('MC-DRL-MIX') || progress?.completed_drills.includes('MC-DRL-3.4'));
-
   const overviewLinks: Array<{ to: string; title: string; desc: string; Icon: LucideIcon }> = [
     {
       to: '/bootcamp/intro-to-lr/simulator/bank',
@@ -58,60 +56,6 @@ export function SimulatorOverview() {
         description="Real LSAT-format Main Conclusion items, full five-choice answer set, trap-trait diagnostic on every miss."
       />
 
-      {!drill34Done ? (
-        <section
-          className={cn(
-            'relative isolate overflow-hidden rounded-5 p-6',
-            'bg-[image:var(--grad-surface-elev)]',
-            'border border-[color:var(--border-accent-soft)]',
-            'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
-          )}
-        >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
-          />
-          <div className="relative">
-            <Badge tone="warn" dot>
-              gate ahead
-            </Badge>
-            <h2 className="font-mc-serif text-h1 font-semibold mt-3 text-ink leading-tight">
-              Clear the Final Mixed Structure Check first
-            </h2>
-            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
-              The Final Mixed Structure Check is the unlock gate. Clear the replica drill sequence and
-              then come here for calibrated simulator reads.
-            </p>
-            <div className="mt-4">
-              <Link
-                to="/bootcamp/intro-to-lr/drills/final-mixed-structure-check"
-                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-              >
-                <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                  Open the gate drill
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <section
-          className={cn(
-            'rounded-4 p-5',
-            'bg-[image:var(--grad-surface-soft)]',
-            'border border-[rgb(var(--border)/0.08)]',
-          )}
-        >
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge tone="success" dot>
-              Simulator unlocked
-            </Badge>
-            <span className="font-mc-mono text-mono text-ink-faint">
-              Final Mixed Structure Check cleared. Open any of the sections below.
-            </span>
-          </div>
-        </section>
-      )}
       <ul className="grid gap-3 sm:grid-cols-3">
         {overviewLinks.map((l) => (
           <li key={l.to}>

@@ -94,14 +94,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Work the full four-step structure read before you move into the argument dissection lab.',
     phase: 'Drills',
   },
-  {
-    id: 'final-mixed-structure-check',
-    type: 'drill',
-    title: 'Final Mixed Structure Check',
-    route: '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
-    description: 'Final capstone test of structure-reading skills.',
-    phase: 'Drills',
-  },
 ];
 
 export const INTRO_LR_PATH = INTEGRATED_PATH;
@@ -120,7 +112,6 @@ const PRACTICE_ALIAS_MAP: Record<string, string> = {
   '/bootcamp/intro-to-lr/lessons/notes/layered-arguments': '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
   '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer': '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
   '/bootcamp/intro-to-lr/drills/mixed-classification': '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
-  '/bootcamp/intro-to-lr/drills/final-structure-check': '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
 };
 
 function stripPathname(pathname: string): string {

@@ -21,7 +21,6 @@ describe('Intro to LR guided path order', () => {
   it('keeps the remaining replica drills at the end of the path', () => {
     expect(INTEGRATED_PATH.slice(10).map((action) => action.id)).toEqual([
       'first-sentence-vs-rebuttal-lab',
-      'final-mixed-structure-check',
     ]);
   });
 
