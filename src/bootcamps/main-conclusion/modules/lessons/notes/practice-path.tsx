@@ -107,13 +107,7 @@ export default function PracticePathNotes() {
 
       <section data-toc data-toc-title="Rebuttal and context">
         <PhaseHeader number="03" title="Rebuttal patterns and context" subtitle="After basic placement work, train the cases where someone else&apos;s view appears first." />
-        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
-          <DrillCard
-            label="Drill Lab"
-            name="Argument Structure Lab"
-            purpose="Work the full dissection flow: main conclusion, structure type, then support or opposing view."
-            to="/bootcamp/intro-to-lr/drills/argument-structure-lab"
-          />
+        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)]">
           <DrillCard
             label="Practice Set"
             name="Rebuttal Main Conclusion Practice"

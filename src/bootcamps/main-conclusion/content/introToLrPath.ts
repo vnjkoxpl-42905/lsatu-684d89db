@@ -95,14 +95,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     phase: 'Drills',
   },
   {
-    id: 'argument-structure-lab',
-    type: 'drill',
-    title: 'Argument Structure Lab',
-    route: '/bootcamp/intro-to-lr/drills/argument-structure-lab',
-    description: 'Use the full structured-drill replica to dissect the whole argument.',
-    phase: 'Drills',
-  },
-  {
     id: 'structure-reveal-review',
     type: 'drill',
     title: 'Structure Reveal Review Mode',

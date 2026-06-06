@@ -15,7 +15,6 @@ import { INITIAL_UNLOCKED_ROUTES, unlockNext, type ProgressShape } from '@/bootc
 const DRILL_ROUTE_ALIASES: Record<string, string> = {
   'MC-DRL-MCL': '/drills/main-conclusion-lab',
   'MC-DRL-CLS': '/drills/first-sentence-vs-rebuttal-lab',
-  'MC-DRL-ASL': '/drills/argument-structure-lab',
   'MC-DRL-XRY': '/drills/structure-reveal-review',
   'MC-DRL-MIX': '/drills/final-mixed-structure-check',
 };

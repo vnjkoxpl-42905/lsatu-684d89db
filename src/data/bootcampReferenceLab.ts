@@ -45,7 +45,7 @@ export const BOOTCAMP_REFERENCE_LAB_ENTRIES: BootcampReferenceLabEntry[] = [
     referenceId: 'ref-structure-drill',
     sourceBootcamp: 'structuredrill',
     formatFamily: 'structured-dissection-replica',
-    lsatUTarget: 'Argument Structure Lab + Final Mixed Structure Check',
+    lsatUTarget: 'Final Mixed Structure Check',
     audience: 'student-facing',
     itemCount: canonicalIdsForSource('structuredrill').length,
     duplicateOfCanonicalId: [],

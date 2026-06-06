@@ -7,13 +7,12 @@ describe('INTRO_DRILLS', () => {
     expect(INTRO_DRILLS.map((drill) => drill.slug)).toEqual([
       'main-conclusion-lab',
       'first-sentence-vs-rebuttal-lab',
-      'argument-structure-lab',
       'structure-reveal-review',
       'final-mixed-structure-check',
     ]);
   });
 
   it('numbers the drill cards to match the lesson sequence', () => {
-    expect(INTRO_DRILLS.map((drill) => drill.number)).toEqual(['1', '2', '3', '4', '5']);
+    expect(INTRO_DRILLS.map((drill) => drill.number)).toEqual(['1', '2', '3', '4']);
   });
 });

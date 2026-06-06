@@ -26,7 +26,7 @@ const GROUPS = [
   {
     title: 'Structure Read',
     description: 'Classify the family first, then map the whole argument.',
-    drillIds: ['MC-DRL-CLS', 'MC-DRL-ASL'],
+    drillIds: ['MC-DRL-CLS'],
   },
   {
     title: 'Review & Capstone',

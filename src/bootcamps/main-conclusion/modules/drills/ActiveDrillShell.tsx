@@ -4,7 +4,6 @@ import { ArrowLeft } from 'lucide-react';
 
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
-import { ArgumentStructureLab } from './labs/ArgumentStructureLab';
 import { XRayReview } from './labs/XRayReview';
 import { MixedStructureCheck } from './labs/MixedStructureCheck';
 import { FirstSentenceVsRebuttalLab } from './labs/firstSentenceVsRebuttal/FirstSentenceVsRebuttalLab';
@@ -15,11 +14,11 @@ const LEGACY_REDIRECT: Record<string, string> = {
   '3.2': 'main-conclusion-lab',
   '3.3': 'first-sentence-vs-rebuttal-lab',
   '3.4': 'final-mixed-structure-check',
-  '3.5': 'argument-structure-lab',
-  '3.6': 'argument-structure-lab',
+  '3.5': 'structure-reveal-review',
+  '3.6': 'structure-reveal-review',
   '3.7': 'first-sentence-vs-rebuttal-lab',
-  '3.8': 'argument-structure-lab',
-  '3.9': 'argument-structure-lab',
+  '3.8': 'structure-reveal-review',
+  '3.9': 'structure-reveal-review',
   'mixed-classification': 'first-sentence-vs-rebuttal-lab',
   'x-ray-review': 'structure-reveal-review',
   'final-structure-check': 'final-mixed-structure-check',
@@ -53,9 +52,6 @@ export function ActiveDrillShell() {
       break;
     case 'first-sentence-vs-rebuttal-lab':
       content = <FirstSentenceVsRebuttalLab drillId={drill.completionId} title={drill.title} />;
-      break;
-    case 'argument-structure-lab':
-      content = <ArgumentStructureLab drillId={drill.completionId} title={drill.title} />;
       break;
     case 'structure-reveal-review':
       content = <XRayReview />;
