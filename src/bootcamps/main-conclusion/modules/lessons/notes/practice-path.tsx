@@ -71,13 +71,7 @@ export default function PracticePathNotes() {
 
       <section data-toc data-toc-title="Stimulus and roles">
         <PhaseHeader number="01" title="Stimulus and sentence roles" subtitle="Start by reading the passage closely, then label what each sentence is doing." />
-        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)] md:grid-cols-2 md:divide-x">
-          <DrillCard
-            label="Drill Lab"
-            name="Structure Reveal Review Mode"
-            purpose="Review sentence roles and structure-reveal logic after learning stimulus-first reading and argument anatomy."
-            to="/bootcamp/intro-to-lr/drills/structure-reveal-review"
-          />
+        <div className="grid grid-cols-1 divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)]">
           <DrillCard
             label="Reference"
             name="2-Part Conclusion Check"

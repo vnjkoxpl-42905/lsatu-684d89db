@@ -95,14 +95,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     phase: 'Drills',
   },
   {
-    id: 'structure-reveal-review',
-    type: 'drill',
-    title: 'Structure Reveal Review Mode',
-    route: '/bootcamp/intro-to-lr/drills/structure-reveal-review',
-    description: 'Use reveal-mode demos to review conclusion, support, concession, and gap logic.',
-    phase: 'Drills',
-  },
-  {
     id: 'final-mixed-structure-check',
     type: 'drill',
     title: 'Final Mixed Structure Check',
@@ -128,7 +120,6 @@ const PRACTICE_ALIAS_MAP: Record<string, string> = {
   '/bootcamp/intro-to-lr/lessons/notes/layered-arguments': '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
   '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer': '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
   '/bootcamp/intro-to-lr/drills/mixed-classification': '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
-  '/bootcamp/intro-to-lr/drills/x-ray-review': '/bootcamp/intro-to-lr/drills/structure-reveal-review',
   '/bootcamp/intro-to-lr/drills/final-structure-check': '/bootcamp/intro-to-lr/drills/final-mixed-structure-check',
 };
 

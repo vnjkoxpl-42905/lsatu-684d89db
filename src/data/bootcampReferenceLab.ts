@@ -67,7 +67,7 @@ export const BOOTCAMP_REFERENCE_LAB_ENTRIES: BootcampReferenceLabEntry[] = [
     referenceId: 'ref-lr-foundational',
     sourceBootcamp: 'logicalreasoningfoundationalpartial',
     formatFamily: 'foundational-reveal-demo',
-    lsatUTarget: 'Structure Reveal Review Mode + lesson demos',
+    lsatUTarget: 'lesson demos',
     audience: 'student-facing',
     itemCount: FOUNDATIONAL_REVEAL_DEMOS.length + 1,
     duplicateOfCanonicalId: [],

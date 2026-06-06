@@ -31,7 +31,7 @@ const GROUPS = [
   {
     title: 'Review & Capstone',
     description: 'Stress-test the read on mixed structures. The capstone gates the Simulator.',
-    drillIds: ['MC-DRL-XRY', 'MC-DRL-MIX'],
+    drillIds: ['MC-DRL-MIX'],
   },
 ];
 

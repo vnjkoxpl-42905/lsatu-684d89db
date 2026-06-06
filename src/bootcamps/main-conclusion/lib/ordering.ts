@@ -61,7 +61,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
   '/drills/main-conclusion-lab',
   '/drills/first-sentence-vs-rebuttal-lab',
-  '/drills/structure-reveal-review',
   '/drills/final-mixed-structure-check',
   // Preview/review mode includes simulator surfaces; persisted student unlocks
   // still come only from Drill 3.4 completion below.
