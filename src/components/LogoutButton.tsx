@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
+import { AuroraButton } from '@/components/ui/aurora-button';
 
 export function LogoutButton() {
   const { signOut } = useAuth();
@@ -12,10 +12,14 @@ export function LogoutButton() {
   };
 
   return (
-    <LiquidMetalButton
-      label="Logout"
-      ariaLabel="Log out"
+    <AuroraButton
+      type="button"
+      className="w-full rounded-full px-5 py-3 text-sm font-medium"
+      glowClassName="rounded-full"
+      aria-label="Sign out"
       onClick={handleLogout}
-    />
+    >
+      Sign out
+    </AuroraButton>
   );
 }

@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { AuroraButton } from "@/components/ui/aurora-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -126,15 +126,18 @@ export default function MainhubAccountButton({ displayName }: MainhubAccountButt
 
         <DropdownMenuSeparator />
 
-        <div className="flex justify-center px-3 py-2">
-          <LiquidMetalButton
-            label="Sign out"
-            ariaLabel="Sign out"
+        <div className="px-3 py-2">
+          <AuroraButton
+            type="button"
+            className="w-full rounded-full px-5 py-3 text-base font-medium"
+            glowClassName="rounded-full"
             onClick={async () => {
               await signOut();
               navigate("/auth");
             }}
-          />
+          >
+            Sign out
+          </AuroraButton>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
