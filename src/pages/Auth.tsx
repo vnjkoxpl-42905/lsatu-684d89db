@@ -241,6 +241,7 @@ const PAGE_CSS = `
   /* Eyebrow / kicker text */
   .lsatu-arc .arc-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: ${ARC.inkSecondary}; }
   .lsatu-arc .arc-eyebrow::before { content: ''; width: 18px; height: 1px; background: ${ARC.inkSecondary}; opacity: 0.55; }
+  .lsatu-arc .arc-eyebrow.arc-eyebrow-no-lead::before { display: none; }
 
   /* Top-nav Sign-in button — subtle press feedback + hover-gated tint shift. */
   .lsatu-arc .arc-nav-signin { background: transparent; border: 0; padding: 6px 10px; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.ink}; cursor: pointer; border-radius: 8px; transition: background 200ms ${ARC.easeOut}, color 200ms ${ARC.easeOut}, transform 200ms ${ARC.easeOut}; }
@@ -412,7 +413,7 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
 const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
   <section style={{ padding: 'clamp(72px, 10vw, 132px) 32px 56px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
     <div className="arc-fade">
-      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
+      <span className="arc-eyebrow arc-eyebrow-no-lead" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
       <h1 style={{
         fontSize: 'clamp(44px, 7.4vw, 96px)',
         fontWeight: 600,
