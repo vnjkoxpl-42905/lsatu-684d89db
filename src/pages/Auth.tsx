@@ -734,13 +734,13 @@ const ArcTextOnly = () => (
         fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
         marginTop: 22, marginBottom: 22,
       }}>
-        The discipline of focus.
+        Focused LSAT prep, without the noise.
       </h2>
       <p style={{ fontSize: 17, lineHeight: 1.6, color: ARC.inkSecondary, marginBottom: 28 }}>
-        No leaderboards. No fake streaks. No vanity metrics. Every number you see is a real number — measured, persisted, and tied to your actual progress.
+        LSAT U keeps your study time centered on the work that matters: practice, review, mistakes, and steady improvement.
       </p>
       <span className="arc-link" style={{ fontSize: 14, fontFamily: ARC.sans }}>
-        Plain on the surface. Serious underneath.
+        Simple on the surface. Serious where it counts.
       </span>
     </div>
   </section>
