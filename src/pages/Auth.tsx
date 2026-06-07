@@ -607,13 +607,7 @@ const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
         fontWeight: 500, lineHeight: 1.16, letterSpacing: '-0.025em',
         margin: '24px 0 28px', color: ARC.ink,
       }}>
-        “Built by Joshua. Trained on real LSAT arguments. Tested by real students under real conditions.”
-      </p>
-      <p style={{
-        fontSize: 13, color: ARC.inkSecondary, marginBottom: 36,
-        letterSpacing: '0.06em',
-      }}>
-        — Joshua, founder · LSAT U
+        “A better way to prepare for the LSAT, with practice, review, and progress all working together.”
       </p>
       <button className="arc-cta" onClick={onPrimary}>
         Begin training
