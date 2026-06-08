@@ -61,7 +61,7 @@ const getPrefersReducedMotion = () => {
 export const StoryScroll = ({
   children,
   className,
-  pinSpacing = false,
+  pinSpacing = true,
   "aria-label": ariaLabel = "Landing story",
 }: StoryScrollProps) => {
   const containerRef = React.useRef<HTMLElement>(null);
