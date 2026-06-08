@@ -2498,6 +2498,9 @@ function DrillContent() {
       : isFullSection
       ? 'Section'
       : 'Practice Drill';
+    const mcPracticeTestLabel = currentQuestion.pt
+      ? `Practice Test ${currentQuestion.pt}`
+      : contextFocus;
     const officialBreadcrumbs = origin === 'fallacy-flaw' ? [
       {
         label: contextLabel || 'Flaw Bootcamp',
@@ -2519,9 +2522,9 @@ function DrillContent() {
         label: 'Bootcamp',
         onClick: () => navigate(bootcampPracticeReturnTo),
       },
-      ...(contextFocus
+      ...(mcPracticeTestLabel
         ? [{
-            label: contextFocus,
+            label: mcPracticeTestLabel,
             onClick: () => navigate(bootcampPracticeReturnTo),
           }]
         : []),
