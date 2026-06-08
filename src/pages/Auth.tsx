@@ -203,11 +203,13 @@ const PAGE_CSS = `
   /* Scroll-reveal — applied to .arc-rise, toggled by IntersectionObserver */
   .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 560ms ${ARC.easeOut}, transform 560ms ${ARC.easeOut}; }
   .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); }
+  .lsatu-arc [data-story-scroll] .arc-rise { opacity: 1; transform: none; transition: none; }
 
   /* Pillar columns — cascade in 60ms apart once the parent section reveals.
      Without this, all three columns arrive together which reads as static. */
   .lsatu-arc .arc-pillar { opacity: 0; transform: translateY(8px); transition: opacity 480ms ${ARC.easeOut}, transform 480ms ${ARC.easeOut}; }
   .lsatu-arc .arc-rise.is-in .arc-pillar { opacity: 1; transform: translateY(0); }
+  .lsatu-arc [data-story-scroll] .arc-pillar { opacity: 1; transform: none; transition: none; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(1) { transition-delay: 80ms; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(2) { transition-delay: 140ms; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(3) { transition-delay: 200ms; }
@@ -279,7 +281,8 @@ function useScrollReveal() {
   React.useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.lsatu-arc .arc-rise'));
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.lsatu-arc .arc-rise'))
+      .filter((el) => !el.closest('[data-story-scroll]'));
 
     if (reduced) {
       els.forEach((el) => el.classList.add('is-in'));
@@ -1106,19 +1109,30 @@ export default function Auth() {
 
       <ArcNav onSignIn={openSignIn} />
       <StoryScroll aria-label="LSAT U landing story">
-        <StorySection aria-label="Master the LSAT">
+        <StorySection aria-label="Master the LSAT" settle={false}>
           <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
         </StorySection>
         <StorySection aria-label="LSAT U workspace preview">
           <ArcPlatformPreview />
         </StorySection>
-        <StorySection aria-label="LSAT question training rhythm">
+        <StorySection
+          aria-label="LSAT question training rhythm"
+          pin={false}
+          className="min-h-0"
+          innerClassName="min-h-0"
+        >
           <ArcMarquee />
+        </StorySection>
+        <StorySection aria-label="LSAT training principles">
           <ArcCarousel />
         </StorySection>
-        <StorySection aria-label="LSAT U training philosophy">
+        <StorySection aria-label="LSAT U statement of intent">
           <ArcProof onPrimary={openSignIn} />
+        </StorySection>
+        <StorySection aria-label="LSAT U training pillars" pin={false}>
           <ArcPillars />
+        </StorySection>
+        <StorySection aria-label="LSAT U build philosophy">
           <ArcTextOnly />
         </StorySection>
         <StorySection aria-label="Begin LSAT U training">

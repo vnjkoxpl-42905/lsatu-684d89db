@@ -11,6 +11,8 @@ export interface StorySectionProps {
   children: React.ReactNode;
   className?: string;
   innerClassName?: string;
+  pin?: boolean;
+  settle?: boolean;
   style?: React.CSSProperties;
   "aria-label"?: string;
 }
@@ -19,18 +21,22 @@ export const StorySection = ({
   children,
   className,
   innerClassName,
+  pin = true,
+  settle = true,
   style,
   "aria-label": ariaLabel,
 }: StorySectionProps) => (
   <section
     data-story-section
+    data-story-pin={pin ? "true" : "false"}
+    data-story-settle={settle ? "true" : "false"}
     aria-label={ariaLabel}
-    className={cn("relative min-h-[92svh] w-full overflow-hidden md:min-h-screen", className)}
+    className={cn("relative min-h-[100svh] w-full", className)}
     style={style}
   >
     <div
       data-story-inner
-      className={cn("story-scroll-inner relative min-h-[92svh] w-full md:min-h-screen", innerClassName)}
+      className={cn("story-scroll-inner relative min-h-[100svh] w-full", innerClassName)}
       style={{ transformOrigin: "bottom left" }}
     >
       {children}
@@ -89,14 +95,17 @@ export const StoryScroll = ({
         const inner = section.querySelector<HTMLElement>("[data-story-inner]");
         if (!inner) return;
 
+        const shouldPin = section.dataset.storyPin !== "false";
+        const shouldSettle = section.dataset.storySettle !== "false";
+
         gsap.set(section, { zIndex: sections.length - index });
 
-        if (index > 0) {
+        if (index > 0 && shouldSettle) {
           gsap.set(inner, {
-            autoAlpha: 0.92,
-            rotation: 3.5,
-            scale: 0.985,
-            y: 28,
+            autoAlpha: 0.96,
+            rotation: 1.6,
+            scale: 0.992,
+            y: 18,
             transformOrigin: "bottom left",
           });
 
@@ -117,14 +126,14 @@ export const StoryScroll = ({
           if (settleTween.scrollTrigger) triggers.push(settleTween.scrollTrigger);
         }
 
-        if (index < sections.length - 1) {
+        if (index < sections.length - 1 && shouldPin) {
           triggers.push(
             ScrollTrigger.create({
               trigger: section,
               start: "bottom bottom",
               end: "bottom top",
               pin: true,
-              pinSpacing: false,
+              pinSpacing: true,
             }),
           );
         }
@@ -140,7 +149,12 @@ export const StoryScroll = ({
   );
 
   return (
-    <main ref={containerRef} aria-label={ariaLabel} className={cn("w-full overflow-x-hidden", className)}>
+    <main
+      ref={containerRef}
+      data-story-scroll
+      aria-label={ariaLabel}
+      className={cn("w-full overflow-x-hidden", className)}
+    >
       {children}
     </main>
   );
