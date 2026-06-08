@@ -29,7 +29,6 @@ interface Props {
   onToggleFlag: () => void;
   onTextSelection: (e: React.MouseEvent<HTMLDivElement>, section: "stimulus" | "stem") => void;
   onHighlightClick: (highlightId: string) => void;
-  onNext?: () => void;
   /** Hide the "STIMULUS" column heading (used by Main Conclusion Practice). */
   hideStimulusLabel?: boolean;
 }
@@ -68,7 +67,6 @@ export default function OfficialQuestionPane({
   onToggleFlag,
   onTextSelection,
   onHighlightClick,
-  onNext,
   hideStimulusLabel = false,
 }: Props) {
   const stimulusHighlights = highlights.filter((h) => h.section === "stimulus");
@@ -230,16 +228,6 @@ export default function OfficialQuestionPane({
             })}
           </ul>
         </div>
-      </div>
-
-      {/* Action Button */}
-      <div className="px-6 py-4 bg-bg-night border-t border-white/5 shrink-0">
-        <button
-          onClick={onNext}
-          className="w-full py-4 text-center font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
-        >
-          NEXT QUESTION &gt;&gt;
-        </button>
       </div>
 
       {/* Feedback area */}
