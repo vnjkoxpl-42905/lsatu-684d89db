@@ -70,6 +70,7 @@ import {
   getTimerConfigForDrillRoute,
   type DrillRouteState,
 } from '@/lib/drillRouteState';
+import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -2488,10 +2489,11 @@ function DrillContent() {
         handleNext();
       }
     };
-    const qnumNum = Number(currentQuestion.qnum);
-    const displayNum = Number.isFinite(qnumNum) && qnumNum > 0
-      ? qnumNum
-      : session.currentIndex + 1;
+    const displayNum = getDrillDisplayNumber({
+      isMcPractice,
+      qnum: currentQuestion.qnum,
+      currentIndex: session.currentIndex,
+    });
     const questionLabel = `Question ${displayNum}`;
     const sectionLabel = currentQuestion.section
       ? `Section ${currentQuestion.section}`
