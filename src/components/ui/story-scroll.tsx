@@ -104,23 +104,17 @@ export const StoryScroll = ({
 
         if (index > 0 && shouldSettle) {
           gsap.set(inner, {
-            autoAlpha: 0.96,
-            rotation: 1.6,
-            scale: 0.992,
-            y: 18,
+            rotation: 18,
             transformOrigin: "bottom left",
           });
 
           const settleTween = gsap.to(inner, {
-            autoAlpha: 1,
             rotation: 0,
-            scale: 1,
-            y: 0,
             ease: "none",
             scrollTrigger: {
               trigger: section,
               start: "top bottom",
-              end: "top 38%",
+              end: "top 25%",
               scrub: true,
             },
           });
