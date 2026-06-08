@@ -113,6 +113,7 @@ export const StoryScroll = ({
           transformOrigin: "bottom left",
           force3D: true,
           willChange: "transform",
+          backfaceVisibility: "hidden",
         });
 
         if (index > 0 && shouldSettle) {
@@ -149,10 +150,10 @@ export const StoryScroll = ({
                 const distance = nextSection.offsetTop - section.offsetTop;
                 return `+=${Math.max(distance, window.innerHeight * 0.72)}`;
               },
-              pin: true,
+              pin: inner,
               pinSpacing,
-              scrub: false,
               anticipatePin: 1,
+              fastScrollEnd: true,
               invalidateOnRefresh: true,
             }),
           );
@@ -163,6 +164,10 @@ export const StoryScroll = ({
 
       return () => {
         triggers.forEach((trigger) => trigger.kill());
+        sectionStates.forEach(({ inner }) => {
+          if (!inner) return;
+          gsap.set(inner, { clearProps: "willChange,backfaceVisibility" });
+        });
       };
     },
     { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pinSpacing, settleRotation] },
