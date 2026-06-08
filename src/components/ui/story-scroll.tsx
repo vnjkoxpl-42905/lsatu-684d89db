@@ -104,7 +104,7 @@ export const StoryScroll = ({
 
         if (index > 0 && shouldSettle) {
           gsap.set(inner, {
-            rotation: 18,
+            rotation: 1.6,
             transformOrigin: "bottom left",
           });
 
