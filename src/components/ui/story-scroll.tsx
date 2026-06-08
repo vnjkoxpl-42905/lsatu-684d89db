@@ -31,12 +31,12 @@ export const StorySection = ({
     data-story-pin={pin ? "true" : "false"}
     data-story-settle={settle ? "true" : "false"}
     aria-label={ariaLabel}
-    className={cn("relative min-h-[100svh] w-full", className)}
+    className={cn("relative min-h-[100svh] w-full overflow-hidden bg-inherit", className)}
     style={style}
   >
     <div
       data-story-inner
-      className={cn("story-scroll-inner relative min-h-[100svh] w-full", innerClassName)}
+      className={cn("story-scroll-inner relative flex min-h-[100svh] w-full flex-col justify-center", innerClassName)}
       style={{ transformOrigin: "bottom left" }}
     >
       {children}
@@ -47,6 +47,7 @@ export const StorySection = ({
 export interface StoryScrollProps {
   children: React.ReactNode;
   className?: string;
+  pinSpacing?: boolean;
   "aria-label"?: string;
 }
 
@@ -60,6 +61,7 @@ const getPrefersReducedMotion = () => {
 export const StoryScroll = ({
   children,
   className,
+  pinSpacing = false,
   "aria-label": ariaLabel = "Landing story",
 }: StoryScrollProps) => {
   const containerRef = React.useRef<HTMLElement>(null);
@@ -98,7 +100,7 @@ export const StoryScroll = ({
         const shouldPin = section.dataset.storyPin !== "false";
         const shouldSettle = section.dataset.storySettle !== "false";
 
-        gsap.set(section, { zIndex: sections.length - index });
+        gsap.set(section, { zIndex: index + 1 });
 
         if (index > 0 && shouldSettle) {
           gsap.set(inner, {
@@ -133,7 +135,7 @@ export const StoryScroll = ({
               start: "bottom bottom",
               end: "bottom top",
               pin: true,
-              pinSpacing: true,
+              pinSpacing,
             }),
           );
         }
@@ -145,7 +147,7 @@ export const StoryScroll = ({
         triggers.forEach((trigger) => trigger.kill());
       };
     },
-    { scope: containerRef, dependencies: [countChildren(children), reducedMotion] },
+    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pinSpacing] },
   );
 
   return (
@@ -153,7 +155,7 @@ export const StoryScroll = ({
       ref={containerRef}
       data-story-scroll
       aria-label={ariaLabel}
-      className={cn("w-full overflow-x-hidden", className)}
+      className={cn("w-full overflow-x-hidden bg-inherit", className)}
     >
       {children}
     </main>

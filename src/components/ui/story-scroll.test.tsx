@@ -25,9 +25,12 @@ describe("StoryScroll", () => {
     const story = screen.getByRole("main", { name: "Landing story" });
     const hero = screen.getByRole("region", { name: "Hero" });
     const preview = screen.getByRole("region", { name: "Preview" });
+    const heroInner = hero.querySelector("[data-story-inner]");
 
     expect(story).toHaveAttribute("data-story-scroll");
-    expect(hero).not.toHaveClass("overflow-hidden");
+    expect(story).toHaveClass("bg-inherit");
+    expect(hero).toHaveClass("overflow-hidden", "bg-inherit");
+    expect(heroInner).toHaveClass("flex", "justify-center");
     expect(hero).toHaveAttribute("data-story-settle", "false");
     expect(preview).toHaveAttribute("data-story-pin", "false");
     expect(screen.getByText("Hero content")).toBeInTheDocument();
