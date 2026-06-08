@@ -3,6 +3,12 @@
  * Sequence for Intro to LR bootcamp.
  */
 
+import {
+  MAIN_CONCLUSION_PRACTICE_CARDS,
+  buildPracticeDrillHref,
+  buildPracticeDrillLinkState,
+} from '@/bootcamps/main-conclusion/data/practiceDrillCards';
+
 export type ActionType = 'note' | 'tool' | 'reference' | 'checkpoint' | 'drill' | 'practice' | 'capstone';
 
 export interface PathAction {
@@ -12,7 +18,13 @@ export interface PathAction {
   route: string;
   description: string;
   phase?: string;
+  buttonLabel?: string;
+  linkState?: unknown;
+  metadata?: Array<{ label: string; value: string }>;
+  constraint?: string;
 }
+
+const [FIRST_SENTENCE_MAIN_CONCLUSION_CARD, REBUTTAL_MAIN_CONCLUSION_CARD] = MAIN_CONCLUSION_PRACTICE_CARDS;
 
 export const INTEGRATED_PATH: PathAction[] = [
   {
@@ -87,12 +99,36 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Learn the two dominant conclusion placements before you enter the drill labs.',
   },
   {
-    id: 'first-sentence-vs-rebuttal-lab',
+    id: 'first-sentence-main-conclusion',
     type: 'drill',
-    title: 'First Sentence vs Rebuttal',
-    route: '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
-    description: 'Work the full four-step structure read before you move into the argument dissection lab.',
+    title: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.title,
+    route: buildPracticeDrillHref(FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool),
+    description: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.description,
     phase: 'Drills',
+    buttonLabel: 'View Instructions',
+    linkState: buildPracticeDrillLinkState(FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool),
+    metadata: [
+      { label: 'Question Type', value: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.questionTypeLabel },
+      { label: 'Question Feature', value: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.qfeatures.join(', ') },
+      { label: 'Count', value: `${FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.count} questions` },
+    ],
+    constraint: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.constraint,
+  },
+  {
+    id: 'rebuttal-main-conclusion',
+    type: 'drill',
+    title: REBUTTAL_MAIN_CONCLUSION_CARD.pool.title,
+    route: buildPracticeDrillHref(REBUTTAL_MAIN_CONCLUSION_CARD.pool),
+    description: REBUTTAL_MAIN_CONCLUSION_CARD.description,
+    phase: 'Drills',
+    buttonLabel: 'View Instructions',
+    linkState: buildPracticeDrillLinkState(REBUTTAL_MAIN_CONCLUSION_CARD.pool),
+    metadata: [
+      { label: 'Question Type', value: REBUTTAL_MAIN_CONCLUSION_CARD.questionTypeLabel },
+      { label: 'Question Feature', value: REBUTTAL_MAIN_CONCLUSION_CARD.pool.qfeatures.join(', ') },
+      { label: 'Count', value: `${REBUTTAL_MAIN_CONCLUSION_CARD.pool.count} questions` },
+    ],
+    constraint: REBUTTAL_MAIN_CONCLUSION_CARD.constraint,
   },
 ];
 

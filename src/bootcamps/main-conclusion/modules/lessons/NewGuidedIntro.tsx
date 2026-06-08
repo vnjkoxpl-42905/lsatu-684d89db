@@ -27,13 +27,40 @@ export function NewGuidedIntro() {
                   {action.description}
                 </p>
 
+                {action.metadata?.length ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-6 mb-8 max-w-2xl">
+                    {action.metadata.map((item) => (
+                      <div key={`${action.id}-${item.label}`} className="space-y-1">
+                        <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)]">
+                          {item.label}
+                        </div>
+                        <div className="text-base text-[rgba(26,26,26,0.78)] leading-relaxed">
+                          {item.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {action.constraint ? (
+                  <div className="mb-8 max-w-2xl border border-[rgba(26,26,26,0.08)] bg-[rgba(26,26,26,0.02)] rounded-[4px] px-5 py-4">
+                    <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-2">
+                      Constraint
+                    </div>
+                    <p className="text-base leading-relaxed text-[rgba(26,26,26,0.78)]">
+                      {action.constraint}
+                    </p>
+                  </div>
+                ) : null}
+
                 <div className="flex flex-wrap gap-4">
                   <Link
                     to={action.route}
+                    state={action.linkState}
                     className="inline-flex items-center gap-2 bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-[rgba(26,26,26,0.8)] transition-all"
                   >
                     {action.type === 'note' ? <BookOpen className="h-4 w-4" /> : <Dumbbell className="h-4 w-4" />}
-                    {getActionButtonLabel(action.type)}
+                    {action.buttonLabel ?? getActionButtonLabel(action.type)}
                   </Link>
                 </div>
               </section>
