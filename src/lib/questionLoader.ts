@@ -45,9 +45,22 @@ type RenderableLRQuestionInput = {
 
 const sharedPassageMetadataPrefixPattern =
   /^\s*(?:The following passage is used for Section\s+\d+,\s+questions\s+\d+\s+through\s+\d+\.|Questions?\s+\d+\s+(?:through|and|[-–])\s+\d+\s+refer to the following passage\.)\s*/i;
+const sharedPassageRangePattern =
+  /^\s*(?:The following passage is used for Section\s+\d+,\s+questions\s+(\d+)\s+through\s+(\d+)\.|Questions?\s+(\d+)\s+(?:through|and|[-–])\s+(\d+)\s+refer to the following passage\.)\s*/i;
 
 function stripSharedPassageMetadataPrefix(text: string): string {
   return text.replace(sharedPassageMetadataPrefixPattern, '').trim();
+}
+
+function getSharedPassageRange(text: string): { start: number; end: number } | null {
+  const match = text.match(sharedPassageRangePattern);
+  if (!match) return null;
+
+  const start = Number(match[1] ?? match[3]);
+  const end = Number(match[2] ?? match[4]);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start > end) return null;
+
+  return { start, end };
 }
 
 const dialogueIntroPattern = /^[A-Z][A-Za-z’' -]{1,80}:\s+/;
@@ -119,6 +132,46 @@ function normalizeQuestionTextFields<T extends {
           target.stimulus = passage;
         }
       }
+    }
+  }
+
+  // Some section files only include a shared passage on the first question in
+  // the set and leave later questions blank. Carry that passage forward only
+  // across the declared question range.
+  let activeSharedPassage:
+    | { start: number; end: number; stimulus: string }
+    | null = null;
+
+  for (const item of normalized) {
+    const qnum = item.questionNumber;
+    if (
+      activeSharedPassage &&
+      (typeof qnum !== 'number' || qnum < activeSharedPassage.start || qnum > activeSharedPassage.end)
+    ) {
+      activeSharedPassage = null;
+    }
+
+    const stimulus = item.stimulus?.trim() ?? '';
+    if (stimulus) {
+      const sharedRange = getSharedPassageRange(stimulus);
+      if (sharedRange) {
+        activeSharedPassage = {
+          ...sharedRange,
+          stimulus,
+        };
+      } else {
+        activeSharedPassage = null;
+      }
+      continue;
+    }
+
+    if (
+      activeSharedPassage &&
+      typeof qnum === 'number' &&
+      qnum >= activeSharedPassage.start &&
+      qnum <= activeSharedPassage.end
+    ) {
+      item.stimulus = activeSharedPassage.stimulus;
     }
   }
 
