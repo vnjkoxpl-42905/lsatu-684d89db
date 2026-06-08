@@ -52,9 +52,6 @@ export function Flashcard({ card, onAction, className }: FlashcardProps) {
         )}>
           {/* Front */}
           <div className="absolute inset-0 backface-hidden rounded-[24px] border border-[oklch(0.2_0.01_60/0.055)] bg-[oklch(0.995_0.004_60)] px-8 py-12 text-center shadow-[0_30px_76px_-30px_oklch(0.2_0.01_60/0.22)] transition-[box-shadow,transform,border-color] duration-300 ease-eased flex flex-col items-center justify-center group-hover:-translate-y-1 group-hover:border-[oklch(0.48_0.14_255/0.16)] group-hover:shadow-[0_44px_104px_-38px_oklch(0.2_0.01_60/0.28)] sm:px-12">
-            <div className="absolute left-6 top-6 rounded-full bg-[oklch(0.48_0.14_255/0.08)] px-3 py-1 font-mc-sans text-[0.6rem] font-bold uppercase tracking-[0.12em] text-[oklch(0.38_0.12_255)] sm:left-8 sm:top-8">
-              {roleLabel}
-            </div>
             <h3 className="max-w-[13em] text-balance font-mc-serif text-[clamp(1.62rem,3.8vw,2.22rem)] font-medium leading-[1.15] tracking-[-0.008em] text-[oklch(0.15_0.01_60)]">
               {card.front}
             </h3>
