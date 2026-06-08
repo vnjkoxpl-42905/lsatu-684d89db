@@ -2645,7 +2645,6 @@ function DrillContent() {
             onToggleFlag={handleToggleFlag}
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
-            hideStimulusLabel={isMcPractice}
           />
           <OfficialAnswerNavigator
             questionQueue={session.questionQueue}

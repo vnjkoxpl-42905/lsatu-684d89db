@@ -29,8 +29,6 @@ interface Props {
   onToggleFlag: () => void;
   onTextSelection: (e: React.MouseEvent<HTMLDivElement>, section: "stimulus" | "stem") => void;
   onHighlightClick: (highlightId: string) => void;
-  /** Hide the "STIMULUS" column heading (used by Main Conclusion Practice). */
-  hideStimulusLabel?: boolean;
 }
 
 function stripDataArtifacts(text: string): string {
@@ -67,7 +65,6 @@ export default function OfficialQuestionPane({
   onToggleFlag,
   onTextSelection,
   onHighlightClick,
-  hideStimulusLabel = false,
 }: Props) {
   const stimulusHighlights = highlights.filter((h) => h.section === "stimulus");
   const stemHighlights = highlights.filter((h) => h.section === "stem");
@@ -100,7 +97,7 @@ export default function OfficialQuestionPane({
         {/* Stimulus column */}
         <div
           className={cn(
-            "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-white/5 whitespace-pre-wrap overflow-y-auto",
+            "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 lg:border-r border-white/5 whitespace-pre-wrap overflow-y-auto",
             "antialiased",
             "selection:bg-aspiring-gold selection:text-bg-shadow",
             "[&_p]:mb-4 [&_p:last-child]:mb-0",
@@ -109,9 +106,6 @@ export default function OfficialQuestionPane({
           style={stimStyle}
           onMouseUp={(e) => onTextSelection(e, "stimulus")}
         >
-          {!hideStimulusLabel && (
-            <h2 className="text-xs font-bold tracking-widest text-ink-faint mb-4 uppercase">Stimulus</h2>
-          )}
           <HighlightedText
             text={stimulusText}
             highlights={stimulusHighlights}
