@@ -74,6 +74,42 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+// Stale lazy-chunk recovery. After a deploy the cached index.html can still
+// reference hashed chunk filenames (e.g. TeacherTemplates-XXXX.js) that no
+// longer exist, causing "Failed to fetch dynamically imported module" and a
+// blank screen. Reload once to pick up the fresh manifest; sessionStorage
+// guards against reload loops if the failure is something else.
+const CHUNK_RELOAD_KEY = "__chunk_reload_attempted__";
+function handleChunkLoadError(message: string | undefined): boolean {
+  if (!message) return false;
+  const stale =
+    /Failed to fetch dynamically imported module/i.test(message) ||
+    /Importing a module script failed/i.test(message) ||
+    /error loading dynamically imported module/i.test(message);
+  if (!stale) return false;
+  try {
+    if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return false;
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+  } catch {}
+  window.location.reload();
+  return true;
+}
+window.addEventListener("vite:preloadError", (event) => {
+  (event as Event).preventDefault();
+  handleChunkLoadError("Failed to fetch dynamically imported module");
+});
+window.addEventListener("error", (event) => {
+  handleChunkLoadError(event.message);
+});
+window.addEventListener("unhandledrejection", (event) => {
+  const reason = (event as PromiseRejectionEvent).reason;
+  const message = typeof reason === "string" ? reason : reason?.message;
+  handleChunkLoadError(message);
+});
+window.addEventListener("pageshow", () => {
+  try { sessionStorage.removeItem(CHUNK_RELOAD_KEY); } catch {}
+});
+
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
