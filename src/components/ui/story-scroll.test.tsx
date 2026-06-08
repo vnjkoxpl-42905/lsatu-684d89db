@@ -29,8 +29,10 @@ describe("StoryScroll", () => {
 
     expect(story).toHaveAttribute("data-story-scroll");
     expect(story).toHaveClass("bg-inherit");
-    expect(hero).toHaveClass("overflow-hidden", "bg-inherit");
-    expect(heroInner).toHaveClass("flex", "justify-center");
+    expect(hero).toHaveClass("bg-inherit");
+    expect(hero).not.toHaveClass("overflow-hidden");
+    expect(heroInner).toHaveClass("story-scroll-inner", "relative", "w-full");
+    expect(heroInner).not.toHaveClass("flex", "justify-center");
     expect(hero).toHaveAttribute("data-story-settle", "false");
     expect(preview).toHaveAttribute("data-story-pin", "false");
     expect(screen.getByText("Hero content")).toBeInTheDocument();
