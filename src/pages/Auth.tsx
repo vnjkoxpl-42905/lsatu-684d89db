@@ -16,6 +16,7 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
+import { StoryScroll, StorySection } from '@/components/ui/story-scroll';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODULE-LEVEL CONSTANTS
@@ -1104,14 +1105,26 @@ export default function Auth() {
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
 
       <ArcNav onSignIn={openSignIn} />
-      <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
-      <ArcPlatformPreview />
-      <ArcMarquee />
-      <ArcProof onPrimary={openSignIn} />
-      <ArcCarousel />
-      <ArcPillars />
-      <ArcTextOnly />
-      <ArcFinalCTA onPrimary={openSignIn} />
+      <StoryScroll aria-label="LSAT U landing story">
+        <StorySection aria-label="Master the LSAT">
+          <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+        </StorySection>
+        <StorySection aria-label="LSAT U workspace preview">
+          <ArcPlatformPreview />
+        </StorySection>
+        <StorySection aria-label="LSAT question training rhythm">
+          <ArcMarquee />
+          <ArcCarousel />
+        </StorySection>
+        <StorySection aria-label="LSAT U training philosophy">
+          <ArcProof onPrimary={openSignIn} />
+          <ArcPillars />
+          <ArcTextOnly />
+        </StorySection>
+        <StorySection aria-label="Begin LSAT U training">
+          <ArcFinalCTA onPrimary={openSignIn} />
+        </StorySection>
+      </StoryScroll>
       <ArcFooter />
 
       {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
