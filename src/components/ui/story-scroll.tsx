@@ -48,6 +48,7 @@ export interface StoryScrollProps {
   children: React.ReactNode;
   className?: string;
   pinSpacing?: boolean;
+  settleRotation?: number;
   "aria-label"?: string;
 }
 
@@ -62,6 +63,7 @@ export const StoryScroll = ({
   children,
   className,
   pinSpacing = true,
+  settleRotation = 1.75,
   "aria-label": ariaLabel = "Landing story",
 }: StoryScrollProps) => {
   const containerRef = React.useRef<HTMLElement>(null);
@@ -92,20 +94,31 @@ export const StoryScroll = ({
       if (sections.length < 2) return;
 
       const triggers: ScrollTrigger[] = [];
-
-      sections.forEach((section, index) => {
+      const sectionStates = sections.map((section) => {
         const inner = section.querySelector<HTMLElement>("[data-story-inner]");
+
+        return {
+          section,
+          inner,
+          shouldPin: section.dataset.storyPin !== "false",
+          shouldSettle: section.dataset.storySettle !== "false",
+        };
+      });
+
+      sectionStates.forEach(({ section, inner, shouldPin, shouldSettle }, index) => {
         if (!inner) return;
 
-        const shouldPin = section.dataset.storyPin !== "false";
-        const shouldSettle = section.dataset.storySettle !== "false";
-
-        gsap.set(section, { zIndex: index + 1 });
+        gsap.set(section, { zIndex: sections.length + index });
+        gsap.set(inner, {
+          transformOrigin: "bottom left",
+          force3D: true,
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+        });
 
         if (index > 0 && shouldSettle) {
           gsap.set(inner, {
-            rotation: 1.6,
-            transformOrigin: "bottom left",
+            rotation: settleRotation,
           });
 
           const settleTween = gsap.to(inner, {
@@ -113,9 +126,11 @@ export const StoryScroll = ({
             ease: "none",
             scrollTrigger: {
               trigger: section,
-              start: "top bottom",
-              end: "top 25%",
-              scrub: true,
+              start: "top bottom-=8%",
+              end: "top 62%",
+              scrub: 1.1,
+              fastScrollEnd: true,
+              invalidateOnRefresh: true,
             },
           });
 
@@ -123,13 +138,23 @@ export const StoryScroll = ({
         }
 
         if (index < sections.length - 1 && shouldPin) {
+          const nextSection = sectionStates[index + 1]?.section;
+
           triggers.push(
             ScrollTrigger.create({
               trigger: section,
-              start: "bottom bottom",
-              end: "bottom top",
-              pin: true,
+              start: "top top",
+              end: () => {
+                if (!nextSection) return "+=0";
+
+                const distance = nextSection.offsetTop - section.offsetTop;
+                return `+=${Math.max(distance, window.innerHeight * 0.72)}`;
+              },
+              pin: inner,
               pinSpacing,
+              anticipatePin: 1,
+              fastScrollEnd: true,
+              invalidateOnRefresh: true,
             }),
           );
         }
@@ -139,9 +164,13 @@ export const StoryScroll = ({
 
       return () => {
         triggers.forEach((trigger) => trigger.kill());
+        sectionStates.forEach(({ inner }) => {
+          if (!inner) return;
+          gsap.set(inner, { clearProps: "willChange,backfaceVisibility" });
+        });
       };
     },
-    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pinSpacing] },
+    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pinSpacing, settleRotation] },
   );
 
   return (
