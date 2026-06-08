@@ -1108,15 +1108,17 @@ export default function Auth() {
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
 
       <ArcNav onSignIn={openSignIn} />
-      <StoryScroll aria-label="LSAT U landing story" className="bg-[#FBF8F1]">
+      <StoryScroll aria-label="LSAT U landing story" className="bg-[#FBF8F1]" pinSpacing>
         <StorySection aria-label="Master the LSAT" settle={false}>
           <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
         </StorySection>
         <StorySection aria-label="LSAT U workspace preview">
           <ArcPlatformPreview />
         </StorySection>
-        <StorySection aria-label="LSAT question training rhythm">
+        <StorySection aria-label="LSAT question signal marquee">
           <ArcMarquee />
+        </StorySection>
+        <StorySection aria-label="LSAT question training rhythm">
           <ArcCarousel />
         </StorySection>
         <StorySection aria-label="LSAT U statement of intent">
