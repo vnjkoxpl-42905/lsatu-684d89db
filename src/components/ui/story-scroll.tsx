@@ -31,12 +31,12 @@ export const StorySection = ({
     data-story-pin={pin ? "true" : "false"}
     data-story-settle={settle ? "true" : "false"}
     aria-label={ariaLabel}
-    className={cn("relative min-h-[100svh] w-full overflow-hidden bg-inherit", className)}
+    className={cn("relative w-full bg-inherit", className)}
     style={style}
   >
     <div
       data-story-inner
-      className={cn("story-scroll-inner relative flex min-h-[100svh] w-full flex-col justify-center", innerClassName)}
+      className={cn("story-scroll-inner relative w-full", innerClassName)}
       style={{ transformOrigin: "bottom left" }}
     >
       {children}
