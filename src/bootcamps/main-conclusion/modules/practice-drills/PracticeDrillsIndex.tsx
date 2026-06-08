@@ -16,6 +16,9 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import {
+  MAIN_CONCLUSION_PRACTICE_CARDS,
+  buildPracticeDrillHref,
+  buildPracticeDrillLinkState,
 } from '@/bootcamps/main-conclusion/data/practiceDrillCards';
 
 export function PracticeDrillsIndex() {
