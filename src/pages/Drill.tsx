@@ -14,6 +14,7 @@ import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStr
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
+import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
@@ -191,6 +192,25 @@ function DrillContent() {
   const [adaptiveHydrationStatus, setAdaptiveHydrationStatus] = React.useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
   const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
+  // Smart Drill: questions skipped (advanced without answering). Excluded from
+  // the adaptive selector so a skipped question is not immediately re-served.
+  const [skippedQids, setSkippedQids] = React.useState<Set<string>>(new Set());
+  // Smart Drill: auto-reveal the correct answer after submitting. Persisted.
+  const [autoReveal, setAutoReveal] = React.useState<boolean>(() => {
+    try {
+      return localStorage.getItem('lsatu.smartdrill.autoReveal') !== 'false';
+    } catch {
+      return true;
+    }
+  });
+  const handleAutoRevealChange = React.useCallback((next: boolean) => {
+    setAutoReveal(next);
+    try {
+      localStorage.setItem('lsatu.smartdrill.autoReveal', String(next));
+    } catch {
+      /* ignore quota/availability errors */
+    }
+  }, []);
   const currentViewId = React.useRef<string | null>(null);
 
   // rrweb session replay capture (one row per question in session_replays)
@@ -557,7 +577,7 @@ function DrillContent() {
       const profile = adaptiveEngine.buildStudentProfile(combinedAttempts);
       const selection = adaptiveEngine.selectSmartDrillQuestion(allQuestions, profile, {
         attempts: combinedAttempts,
-        currentSessionUsedQids: new Set(session.attempts.keys()),
+        currentSessionUsedQids: new Set([...session.attempts.keys(), ...skippedQids]),
         recentExposureQids: excludedQids,
       });
       const nextQuestion = selection?.question ?? null;
@@ -2604,16 +2624,7 @@ function DrillContent() {
                   ? () => { void handleEndBootcampPracticeDrill(); }
                   : () => handleFinishSection()
               }
-              showAnswerVisible={
-                session.mode === 'adaptive' &&
-                !showAnswerRevealed.get(currentQuestion.qid)
-              }
-              onShowAnswer={() => {
-                void commitCurrentAdaptiveAnswer({
-                  revealAfterSave: true,
-                  advanceAfterSave: false,
-                });
-              }}
+              showAnswerVisible={false}
             />
           }
         >
@@ -2651,26 +2662,49 @@ function DrillContent() {
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
           />
-          <OfficialAnswerNavigator
-            questionQueue={session.questionQueue}
-            currentIndex={session.currentIndex}
-            attemptedQids={attemptedQids}
-            jumpEnabled={jumpEnabled}
-            jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
-            showQuestionList={showQuestionList}
-            prevDisabled={isAdaptiveMode || session.currentIndex <= 0 || !!timer?.isPaused}
-            nextDisabled={officialNextDisabled}
-            nextDisabledReason={
-              timer?.isPaused
-                ? 'Paused — resume to navigate'
-                : requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted
-                ? 'Select an answer before moving on'
-                : undefined
-            }
-            onJumpTo={handleJumpTo}
-            onPrev={officialPrev}
-            onNext={officialNext}
-          />
+          {isAdaptiveMode ? (
+            <OfficialSmartDrillBar
+              autoReveal={autoReveal}
+              onAutoRevealChange={handleAutoRevealChange}
+              primaryAction={currentAttempted ? 'next' : 'submit'}
+              primaryDisabled={!selectedAnswer || !!timer?.isPaused}
+              onSubmit={() => {
+                void commitCurrentAdaptiveAnswer({
+                  revealAfterSave: autoReveal,
+                  advanceAfterSave: false,
+                });
+              }}
+              onNext={() => setAdvanceToken(t => t + 1)}
+              onSkip={() => {
+                setSkippedQids(prev => new Set(prev).add(currentQuestion.qid));
+                setAdvanceToken(t => t + 1);
+              }}
+              skipDisabled={currentAttempted || !!timer?.isPaused}
+              onEnd={() => handleNavigation('/mainhub')}
+              disabled={!!timer?.isPaused}
+            />
+          ) : (
+            <OfficialAnswerNavigator
+              questionQueue={session.questionQueue}
+              currentIndex={session.currentIndex}
+              attemptedQids={attemptedQids}
+              jumpEnabled={jumpEnabled}
+              jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
+              showQuestionList={showQuestionList}
+              prevDisabled={isAdaptiveMode || session.currentIndex <= 0 || !!timer?.isPaused}
+              nextDisabled={officialNextDisabled}
+              nextDisabledReason={
+                timer?.isPaused
+                  ? 'Paused — resume to navigate'
+                  : requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted
+                  ? 'Select an answer before moving on'
+                  : undefined
+              }
+              onJumpTo={handleJumpTo}
+              onPrev={officialPrev}
+              onNext={officialNext}
+            />
+          )}
         </OfficialDrillFrame>
       </>
     );
