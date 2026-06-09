@@ -43,6 +43,10 @@ export default function RadialOrbitalTimeline({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const orbitRef = useRef<HTMLDivElement | null>(null);
   const reducedMotion = useReducedMotion();
+  // Pause the rotation loop when the ring is scrolled off-screen so it doesn't
+  // burn a 60fps rAF + per-frame React render forever (matters on the public
+  // /auth landing; a no-op on the mainhub where the ring is always in view).
+  const [inView, setInView] = useState(true);
 
   const handleContainerClick = (e: React.MouseEvent) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -91,11 +95,24 @@ export default function RadialOrbitalTimeline({
     });
   };
 
+  // Pause rotation when the ring leaves the viewport (off-screen rAF + render
+  // is wasted work). Defaults to running if IntersectionObserver is unavailable.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // Frame-paced rotation loop. rAF auto-pauses on hidden tabs and resumes
   // cleanly without state queuing (a previous setInterval(50ms) approach
   // queued ticks under throttling and burst-applied them on focus return).
   useEffect(() => {
-    if (!autoRotate || reducedMotion) return;
+    if (!autoRotate || reducedMotion || !inView) return;
     let rafId = 0;
     let lastTime = performance.now();
     const tick = (now: number) => {
@@ -106,7 +123,7 @@ export default function RadialOrbitalTimeline({
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [autoRotate, reducedMotion]);
+  }, [autoRotate, reducedMotion, inView]);
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;

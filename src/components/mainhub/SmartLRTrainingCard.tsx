@@ -214,7 +214,7 @@ export default function SmartLRTrainingCard() {
 
         <div className="mt-3.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500/90">
           <Flame className="h-4 w-4 text-orange-500 fill-orange-500/10" aria-hidden />
-          <span>Streak -- days</span>
+          <span>No streak yet</span>
         </div>
       </div>
 

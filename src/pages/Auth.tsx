@@ -31,6 +31,10 @@ const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
   'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
 
+// ── Shared focus ring for drawer controls — visible on the dark glass surface ──
+const focusRingCls =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]';
+
 // ── CTA button — wraps AnimatedButton with auth-specific props ──
 const CTAButton = ({
   children,
@@ -475,7 +479,7 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
 // The gauge is a static facade — NOT the live SmartLRTrainingCard (that needs
 // QuestionBankContext + navigating buttons, which would be dead on a public
 // page). Whole preview is aria-hidden / decorative: no real handlers, only the
-// app's honest empty state ("0" score, "Streak --"). Reads as "this is the
+// app's honest empty state ("0" score, "No streak yet"). Reads as "this is the
 // dashboard you get", styled in the warm landing tokens.
 
 // Three orbital nodes mirroring the real mainhub (labels + icons match the
@@ -535,7 +539,7 @@ const ArcPlatformPreview = () => (
             <span className="arc-prev-dial-label">Smart LR Score</span>
             <span className="arc-prev-streak">
               <Flame size={12} strokeWidth={1.8} />
-              Streak -- days
+              No streak yet
             </span>
             <div className="arc-prev-selectors">
               <span className="arc-prev-chip"><em>Practice Test</em>Auto</span>
@@ -1142,7 +1146,7 @@ export default function Auth() {
         }}
       >
         <DrawerContent
-          className="bg-[#121212]/95 backdrop-blur-xl border-0 border-t border-white/10 text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-white/15"
+          className="bg-[#121212] border-0 border-t border-white/10 text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-white/15"
         >
           <DrawerTitle className="sr-only">LSAT U Access</DrawerTitle>
           <DrawerDescription className="sr-only">
@@ -1155,7 +1159,7 @@ export default function Auth() {
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
             onClick={() => setModalOpen(false)}
-            className="absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+            className={cn("absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90", focusRingCls)}
             aria-label="Close"
           >
             <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
@@ -1197,7 +1201,7 @@ export default function Auth() {
                 <button
                   type="button"
                   onClick={() => setForgotOpen(false)}
-                  className="block mx-auto mt-4 text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded"
+                  className={cn("block mx-auto mt-4 text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 rounded", focusRingCls)}
                 >
                   Back to sign in
                 </button>
@@ -1224,7 +1228,8 @@ export default function Auth() {
                         onClick={() => setIsSignUp(i === 1)}
                         aria-pressed={selected}
                         className={cn(
-                          'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[7px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]',
+                          'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[7px]',
+                          focusRingCls,
                           selected ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'
                         )}
                       >
@@ -1260,7 +1265,7 @@ export default function Auth() {
                         setConfirmPassword('');
                         setName('');
                       }}
-                      className="text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded"
+                      className={cn("text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 mt-2 rounded", focusRingCls)}
                     >
                       Back to sign in
                     </button>
@@ -1272,10 +1277,10 @@ export default function Auth() {
                       <AnimatePresence>
                         {isSignUp && (
                           <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="overflow-hidden"
+                            initial={{ opacity: 0, y: -6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                           >
                             <label htmlFor="auth-name" className={labelCls}>Name</label>
                             <Input
@@ -1319,7 +1324,7 @@ export default function Auth() {
                             <button
                               type="button"
                               onClick={() => setForgotOpen(true)}
-                              className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+                              className={cn("text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded", focusRingCls)}
                             >
                               Forgot?
                             </button>
@@ -1362,10 +1367,10 @@ export default function Auth() {
                       <AnimatePresence>
                         {isSignUp && (
                           <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="overflow-hidden"
+                            initial={{ opacity: 0, y: -6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                           >
                             <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
                             <div className="relative group">
@@ -1427,7 +1432,7 @@ export default function Auth() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
