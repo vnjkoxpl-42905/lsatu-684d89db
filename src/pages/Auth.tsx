@@ -26,7 +26,7 @@ import RadialOrbitalTimeline, { type TimelineItem } from '@/components/ui/radial
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-500 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
   'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
@@ -70,7 +70,7 @@ const ARC = {
   bgTinted: '#F5EFE2',     // soft cream — proof block, marquee strip
   bgSurface: '#FFFDF7',    // near-white — carousel cards on the warm field
   ink: '#15171D',          // near-black with a faint blue cast
-  inkSecondary: '#6F7480', // one mid-grey — secondary text, hairlines bias
+  inkSecondary: '#6A6F7A', // one mid-grey — secondary text, hairlines bias (AA on cream)
   inkMuted: '#A4A8B0',     // micro-text, kicker numerals
   hairline: 'rgba(21,23,29,0.08)',
   hairlineStrong: 'rgba(21,23,29,0.14)',
@@ -247,7 +247,7 @@ const PAGE_CSS = `
   .lsatu-arc .arc-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: ${ARC.inkSecondary}; }
 
   /* Top-nav Sign-in button — subtle press feedback + hover-gated tint shift. */
-  .lsatu-arc .arc-nav-signin { background: transparent; border: 0; padding: 6px 10px; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.ink}; cursor: pointer; border-radius: 8px; transition: background 200ms ${ARC.easeOut}, color 200ms ${ARC.easeOut}, transform 200ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-nav-signin { display: inline-flex; align-items: center; min-height: 44px; background: transparent; border: 0; padding: 6px 14px; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.ink}; cursor: pointer; border-radius: 8px; transition: background 200ms ${ARC.easeOut}, color 200ms ${ARC.easeOut}, transform 200ms ${ARC.easeOut}; }
   .lsatu-arc .arc-nav-signin:active { transform: scale(0.97); transition-duration: 90ms; }
   @media (hover: hover) and (pointer: fine) {
     .lsatu-arc .arc-nav-signin:hover { background: ${ARC.bgTinted}; color: ${ARC.accent}; }
@@ -457,7 +457,7 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
         </button>
       </div>
       <p style={{
-        marginTop: 22, fontSize: 12, color: ARC.inkMuted,
+        marginTop: 22, fontSize: 12, color: ARC.inkSecondary,
         letterSpacing: '0.06em',
       }}>
         Email or Google · No credit card to start
@@ -775,7 +775,7 @@ const ArcFooter = () => (
     borderTop: `1px solid ${ARC.hairline}`,
     padding: '32px',
     fontSize: 12,
-    color: ARC.inkMuted,
+    color: ARC.inkSecondary,
     letterSpacing: '0.04em',
   }}>
     <div style={{
@@ -1155,7 +1155,7 @@ export default function Auth() {
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
             onClick={() => setModalOpen(false)}
-            className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90"
+            className="absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
             aria-label="Close"
           >
             <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
@@ -1168,7 +1168,7 @@ export default function Auth() {
                   <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
                     Reset Password
                   </h2>
-                  <p className="text-[11px] text-neutral-500">
+                  <p className="text-[11px] text-neutral-400">
                     Enter your email to receive a reset link.
                   </p>
                 </div>
@@ -1197,7 +1197,7 @@ export default function Auth() {
                 <button
                   type="button"
                   onClick={() => setForgotOpen(false)}
-                  className="block mx-auto mt-4 text-[11px] text-neutral-500 hover:text-white transition-colors"
+                  className="block mx-auto mt-4 text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded"
                 >
                   Back to sign in
                 </button>
@@ -1208,7 +1208,7 @@ export default function Auth() {
                   <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
                     LSAT U
                   </h2>
-                  <p className="text-[11px] text-neutral-500">
+                  <p className="text-[11px] text-neutral-400">
                     {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
                   </p>
                 </div>
@@ -1222,9 +1222,10 @@ export default function Auth() {
                         key={tab}
                         type="button"
                         onClick={() => setIsSignUp(i === 1)}
+                        aria-pressed={selected}
                         className={cn(
-                          'relative w-full py-[7px] text-[12px] font-medium transition-colors z-10 rounded-[7px]',
-                          selected ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+                          'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[7px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]',
+                          selected ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'
                         )}
                       >
                         {selected && (
@@ -1259,7 +1260,7 @@ export default function Auth() {
                         setConfirmPassword('');
                         setName('');
                       }}
-                      className="text-[11px] text-neutral-500 hover:text-white transition-colors pt-2"
+                      className="text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded"
                     >
                       Back to sign in
                     </button>
@@ -1318,7 +1319,7 @@ export default function Auth() {
                             <button
                               type="button"
                               onClick={() => setForgotOpen(true)}
-                              className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium"
+                              className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
                             >
                               Forgot?
                             </button>
@@ -1339,7 +1340,7 @@ export default function Auth() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                             aria-pressed={showPassword}
                           >
@@ -1351,7 +1352,7 @@ export default function Auth() {
                           </button>
                         </div>
                         {isSignUp && (
-                          <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">
+                          <p className="text-[10px] text-neutral-400 mt-1.5 ml-0.5">
                             8+ characters
                           </p>
                         )}
@@ -1385,7 +1386,7 @@ export default function Auth() {
 
                       {/* Remember me — sign in only */}
                       {!isSignUp && (
-                        <label className="flex items-center gap-2 cursor-pointer select-none group">
+                        <label className="flex items-center gap-2 py-2.5 cursor-pointer select-none group">
                           <input
                             type="checkbox"
                             checked={rememberMe}
@@ -1395,7 +1396,7 @@ export default function Auth() {
                             }}
                             className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
                           />
-                          <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                          <span className="text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors">
                             Remember my email
                           </span>
                         </label>
@@ -1415,7 +1416,7 @@ export default function Auth() {
                     {/* Divider */}
                     <div className="flex items-center gap-3 pt-4">
                       <div className="flex-1 h-px bg-white/[0.06]" />
-                      <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-600 font-medium">or</span>
+                      <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 font-medium">or</span>
                       <div className="flex-1 h-px bg-white/[0.06]" />
                     </div>
 
@@ -1426,7 +1427,7 @@ export default function Auth() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
