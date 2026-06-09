@@ -1,44 +1,58 @@
 import * as React from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { cn } from "@/lib/utils";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+const getPrefersReducedMotion = () => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+};
 
 export interface StorySectionProps {
   children: React.ReactNode;
   className?: string;
   innerClassName?: string;
-  pin?: boolean;
-  settle?: boolean;
   style?: React.CSSProperties;
   "aria-label"?: string;
+  /**
+   * Injected by StoryScroll. Drives the stacking z-order and whether this panel
+   * gets a card edge (every panel after the first slides over the one before it).
+   */
+  index?: number;
+  /** Injected by StoryScroll. False under reduced-motion -> normal document flow. */
+  stacked?: boolean;
 }
 
+/**
+ * One panel in the story stack. When stacked, it sticks to the top of the
+ * viewport and the next panel scrolls up and covers it. Panels are opaque
+ * (bg-inherit over a solid container) so the cover-and-stack reads cleanly.
+ */
 export const StorySection = ({
   children,
   className,
   innerClassName,
-  pin = true,
-  settle = true,
   style,
   "aria-label": ariaLabel,
+  index = 0,
+  stacked = true,
 }: StorySectionProps) => (
   <section
     data-story-section
-    data-story-pin={pin ? "true" : "false"}
-    data-story-settle={settle ? "true" : "false"}
+    data-story-index={index}
     aria-label={ariaLabel}
-    className={cn("relative w-full bg-inherit", className)}
-    style={style}
+    className={cn(
+      "w-full bg-inherit",
+      stacked
+        ? "sticky top-0 flex min-h-screen flex-col items-center justify-center overflow-hidden"
+        : "relative",
+      // Every panel above the base gets a soft top edge so you can see it slide
+      // up over the previous one. The base panel (the hero) stays flush.
+      stacked && index > 0 && "rounded-t-[28px] shadow-[0_-26px_60px_-30px_rgba(20,18,12,0.30)]",
+      className,
+    )}
+    style={stacked ? { zIndex: index + 1, ...style } : style}
   >
-    <div
-      data-story-inner
-      className={cn("story-scroll-inner relative w-full", innerClassName)}
-      style={{ transformOrigin: "bottom left" }}
-    >
+    <div data-story-inner className={cn("relative w-full", innerClassName)}>
       {children}
     </div>
   </section>
@@ -47,28 +61,21 @@ export const StorySection = ({
 export interface StoryScrollProps {
   children: React.ReactNode;
   className?: string;
-  pin?: boolean;
-  pinSpacing?: boolean;
-  settleRotation?: number;
   "aria-label"?: string;
 }
 
-const countChildren = (children: React.ReactNode) => React.Children.count(children);
-
-const getPrefersReducedMotion = () => {
-  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-};
-
+/**
+ * Pinned card-stack scroll. Each child <StorySection> sticks to the top of the
+ * viewport and is progressively covered by the next, giving the 21st.dev
+ * "story scroll" motion. Implemented with CSS position: sticky + z-index (no
+ * scroll-position math, so nothing can go stale on layout shifts). Collapses to
+ * a plain stacked document under prefers-reduced-motion.
+ */
 export const StoryScroll = ({
   children,
   className,
-  pin = true,
-  pinSpacing = true,
-  settleRotation = 1.75,
   "aria-label": ariaLabel = "Landing story",
 }: StoryScrollProps) => {
-  const containerRef = React.useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = React.useState(getPrefersReducedMotion);
 
   React.useEffect(() => {
@@ -80,127 +87,19 @@ export const StoryScroll = ({
     updateReducedMotion();
     mediaQuery.addEventListener("change", updateReducedMotion);
 
-    return () => {
-      mediaQuery.removeEventListener("change", updateReducedMotion);
-    };
+    return () => mediaQuery.removeEventListener("change", updateReducedMotion);
   }, []);
 
-  useGSAP(
-    () => {
-      if (typeof window === "undefined" || reducedMotion || !containerRef.current) return;
-
-      const sections = Array.from(
-        containerRef.current.querySelectorAll<HTMLElement>("[data-story-section]"),
-      );
-
-      if (sections.length < 2) return;
-
-      const triggers: ScrollTrigger[] = [];
-
-      sections.forEach((section, index) => {
-        const inner = section.querySelector<HTMLElement>("[data-story-inner]");
-        if (!inner) return;
-
-        gsap.set(section, { zIndex: sections.length + index });
-
-        if (pin && index < sections.length - 1 && section.dataset.storyPin !== "false") {
-          const nextSection = sections[index + 1];
-
-          triggers.push(
-            ScrollTrigger.create({
-              trigger: section,
-              start: "top top",
-              end: () => {
-                if (!nextSection) return "+=0";
-
-                const distance = nextSection.offsetTop - section.offsetTop;
-                return `+=${Math.max(distance, window.innerHeight * 0.72)}`;
-              },
-              pin: inner,
-              pinSpacing,
-              anticipatePin: 1,
-              fastScrollEnd: true,
-              invalidateOnRefresh: true,
-            }),
-          );
-        }
-      });
-
-      if (pin) ScrollTrigger.refresh();
-
-      return () => {
-        triggers.forEach((trigger) => trigger.kill());
-      };
-    },
-    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pin, pinSpacing] },
-  );
-
-  // Settle is handled outside GSAP on purpose. useGSAP wraps its body in a
-  // gsap.context() that reverts on cleanup, and the React StrictMode mount/unmount
-  // churn was tearing down every rotation tween before it could land (leaving every
-  // section frozen at its initial tilt). A plain IntersectionObserver + CSS
-  // transition has no gsap context and no scroll-position math to go stale: each
-  // section starts at settleRotation and rotates to 0deg once it enters the viewport.
-  React.useEffect(() => {
-    if (typeof window === "undefined" || reducedMotion || !containerRef.current) return;
-    if (typeof IntersectionObserver === "undefined") return;
-
-    const sections = Array.from(
-      containerRef.current.querySelectorAll<HTMLElement>("[data-story-section]"),
-    );
-    if (sections.length < 2) return;
-
-    const observers: IntersectionObserver[] = [];
-    const touched: HTMLElement[] = [];
-
-    sections.forEach((section, index) => {
-      if (index === 0 || section.dataset.storySettle === "false") return;
-
-      const inner = section.querySelector<HTMLElement>("[data-story-inner]");
-      if (!inner) return;
-
-      // Apply the initial tilt with transitions off, force a reflow, then enable
-      // the transition so the first paint does not animate into the tilt.
-      inner.style.willChange = "transform";
-      inner.style.transition = "none";
-      inner.style.transform = `rotate(${settleRotation}deg)`;
-      void inner.offsetWidth;
-      inner.style.transition = "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)";
-      touched.push(inner);
-
-      const observer = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            inner.style.transform = "rotate(0deg)";
-            obs.disconnect();
-          });
-        },
-        { rootMargin: "0px 0px -15% 0px", threshold: 0.01 },
-      );
-
-      observer.observe(section);
-      observers.push(observer);
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
-      touched.forEach((inner) => {
-        inner.style.transition = "";
-        inner.style.transform = "";
-        inner.style.willChange = "";
-      });
-    };
-  }, [reducedMotion, settleRotation, countChildren(children)]);
+  const panels = React.Children.toArray(children).filter(React.isValidElement);
 
   return (
-    <main
-      ref={containerRef}
-      data-story-scroll
-      aria-label={ariaLabel}
-      className={cn("w-full overflow-x-hidden bg-inherit", className)}
-    >
-      {children}
+    <main data-story-scroll aria-label={ariaLabel} className={cn("relative w-full", className)}>
+      {panels.map((panel, index) =>
+        React.cloneElement(panel as React.ReactElement<StorySectionProps>, {
+          index,
+          stacked: !reducedMotion,
+        }),
+      )}
     </main>
   );
 };
