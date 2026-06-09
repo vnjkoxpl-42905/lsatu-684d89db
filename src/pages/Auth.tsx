@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2, Home, LayoutGrid, Clock, Inbox, User } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2, Home, LayoutGrid, Clock, Inbox, User, Flame, Play, BarChart3, BookOpen, GraduationCap, Dumbbell, CalendarDays, Archive } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
 import { redirectAfterAuth } from '@/lib/authRedirect';
@@ -17,6 +17,7 @@ import {
   DrawerDescription,
 } from '@/components/ui/drawer';
 import { StoryScroll, StorySection } from '@/components/ui/story-scroll';
+import RadialOrbitalTimeline, { type TimelineItem } from '@/components/ui/radial-orbital-timeline';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODULE-LEVEL CONSTANTS
@@ -150,41 +151,39 @@ const PAGE_CSS = `
   .lsatu-arc .arc-shell-nav.is-active { background: ${ARC.bgSurface}; color: ${ARC.ink}; box-shadow: inset 0 0 0 1px ${ARC.hairline}; }
   .lsatu-arc .arc-shell-nav.is-active .arc-shell-nav-icon { color: ${ARC.accent}; }
 
-  /* Main canvas */
-  .lsatu-arc .arc-shell-main { padding: 22px 26px 26px; display: flex; flex-direction: column; gap: 18px; background: ${ARC.bgSurface}; }
-  .lsatu-arc .arc-shell-main-head { display: flex; align-items: center; justify-content: space-between; }
-  .lsatu-arc .arc-shell-greet { font-family: ${ARC.serif}; font-size: 17px; font-weight: 500; letter-spacing: -0.018em; color: ${ARC.ink}; }
-  .lsatu-arc .arc-shell-greet-sub { font-family: ${ARC.serif}; font-style: italic; font-weight: 400; color: ${ARC.inkSecondary}; margin-left: 4px; }
-  .lsatu-arc .arc-shell-pill { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 999px; background: ${ARC.bgTinted}; color: ${ARC.inkSecondary}; }
-  .lsatu-arc .arc-shell-pill .arc-shell-pill-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: ${ARC.accent}; margin-right: 6px; vertical-align: middle; }
+  /* Main canvas — dashboard emulation: gauge facade + live orbital */
+  .lsatu-arc .arc-shell-main { background: ${ARC.bgSurface}; }
+  .lsatu-arc .arc-prev-main { display: grid; grid-template-columns: minmax(0, 258px) minmax(0, 1fr); gap: 22px; align-items: center; padding: 24px 26px; min-height: 340px; }
 
-  /* Skeleton cards */
-  .lsatu-arc .arc-shell-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-  .lsatu-arc .arc-shell-card { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 116px; transition: border-color 240ms ${ARC.easeOut}, transform 240ms ${ARC.easeOut}; opacity: 0; transform: translateY(8px); animation: arcShellCardIn 480ms ${ARC.easeOut} forwards; }
-  /* Stagger the three skeleton cards so they cascade in instead of arriving together. */
-  .lsatu-arc .arc-shell-card:nth-child(1) { animation-delay: 80ms; }
-  .lsatu-arc .arc-shell-card:nth-child(2) { animation-delay: 140ms; }
-  .lsatu-arc .arc-shell-card:nth-child(3) { animation-delay: 200ms; }
-  @keyframes arcShellCardIn { to { opacity: 1; transform: translateY(0); } }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-shell-card:hover { border-color: ${ARC.hairlineStrong}; transform: translateY(-1px); }
+  /* Smart LR Score gauge — static facade in warm tokens */
+  .lsatu-arc .arc-prev-gauge { display: flex; flex-direction: column; align-items: center; padding: 22px 20px 20px; border: 1px solid ${ARC.hairline}; border-radius: 18px; background: ${ARC.bg}; box-shadow: ${ARC.shadowCard}; }
+  .lsatu-arc .arc-prev-dial { position: relative; width: 150px; height: 100px; display: flex; align-items: flex-end; justify-content: center; }
+  .lsatu-arc .arc-prev-dial-svg { position: absolute; inset: 0; width: 100%; height: 100%; color: ${ARC.hairlineStrong}; }
+  .lsatu-arc .arc-prev-dial-num { position: relative; font-family: ${ARC.serif}; font-size: 56px; font-weight: 600; line-height: 0.9; color: ${ARC.inkMuted}; }
+  .lsatu-arc .arc-prev-dial-label { font-family: ${ARC.sans}; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: ${ARC.inkMuted}; margin-top: 8px; }
+  .lsatu-arc .arc-prev-streak { display: inline-flex; align-items: center; gap: 6px; font-family: ${ARC.sans}; font-size: 11.5px; font-weight: 500; color: ${ARC.inkSecondary}; margin-top: 10px; }
+  .lsatu-arc .arc-prev-streak svg { color: #F97316; }
+  .lsatu-arc .arc-prev-selectors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; width: 100%; margin-top: 18px; }
+  .lsatu-arc .arc-prev-chip { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; padding: 7px 9px; border: 1px solid ${ARC.hairline}; border-radius: 11px; background: ${ARC.bgSurface}; font-family: ${ARC.sans}; font-size: 12px; font-weight: 600; color: ${ARC.ink}; }
+  .lsatu-arc .arc-prev-chip em { font-style: normal; font-size: 7.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: ${ARC.inkMuted}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lsatu-arc .arc-prev-drill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px; padding: 12px; border-radius: 13px; background: ${ARC.ink}; color: #fff; font-family: ${ARC.sans}; font-size: 13px; font-weight: 600; box-shadow: ${ARC.shadowLift}; }
+
+  /* Live orbital — absolutely centered + scaled so its 500px box never drives layout */
+  .lsatu-arc .arc-prev-orbital { position: relative; min-height: 340px; }
+  /* Box is wider than the 400px ring so the component's internal overflow-hidden
+     clips with ~80px margin — enough for the "Wrong Answer Journal" node label. */
+  .lsatu-arc .arc-prev-orbital-scale { position: absolute; top: 50%; left: 50%; width: 560px; height: 520px; transform: translate(-50%, -50%) scale(0.64); transform-origin: center; pointer-events: none; }
+
+  /* Narrow widths — hide the slim sidebar, stack gauge above a smaller orbital
+     (mirrors the real homepage, which hides the gauge card below xl). */
+  @media (max-width: 760px) {
+    .lsatu-arc .arc-shell-body { grid-template-columns: 1fr; }
+    .lsatu-arc .arc-shell-side { display: none; }
+    .lsatu-arc .arc-prev-main { grid-template-columns: 1fr; gap: 14px; padding: 20px 18px; }
+    .lsatu-arc .arc-prev-gauge { max-width: 320px; margin: 0 auto; width: 100%; }
+    .lsatu-arc .arc-prev-orbital { min-height: 260px; }
+    .lsatu-arc .arc-prev-orbital-scale { transform: translate(-50%, -50%) scale(0.5); }
   }
-  .lsatu-arc .arc-shell-card-corner { display: flex; align-items: center; gap: 6px; }
-  .lsatu-arc .arc-shell-card-dot { width: 6px; height: 6px; border-radius: 999px; background: ${ARC.hairlineStrong}; }
-  .lsatu-arc .arc-shell-card-dot.is-accent { background: ${ARC.accent}; }
-  .lsatu-arc .arc-shell-card-pip { font-family: ${ARC.sans}; font-size: 9.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: ${ARC.inkMuted}; }
-  .lsatu-arc .arc-shell-bar-skel { height: 6px; border-radius: 3px; background: ${ARC.bgTinted}; }
-  .lsatu-arc .arc-shell-bar-skel.s-1 { width: 64%; }
-  .lsatu-arc .arc-shell-bar-skel.s-2 { width: 86%; }
-  .lsatu-arc .arc-shell-bar-skel.s-3 { width: 42%; }
-  .lsatu-arc .arc-shell-bar-skel.s-accent { background: ${ARC.accentSoft}; }
-
-  /* Wide footer panel (subtle continuation hint) */
-  .lsatu-arc .arc-shell-panel { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; }
-  .lsatu-arc .arc-shell-panel-icon { width: 32px; height: 32px; border-radius: 8px; background: ${ARC.bgTinted}; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .lsatu-arc .arc-shell-panel-icon svg { width: 14px; height: 14px; color: ${ARC.inkSecondary}; }
-  .lsatu-arc .arc-shell-panel-stack { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
-  .lsatu-arc .arc-shell-panel-arrow { width: 22px; height: 22px; border-radius: 999px; background: ${ARC.bgTinted}; display: inline-flex; align-items: center; justify-content: center; color: ${ARC.inkSecondary}; flex-shrink: 0; }
   /* Accent link — left-to-right underline reveal on hover (Linear/Vercel-style).
      The static underline is rendered as a 1px ::after that scales from origin-left.
      Gated on hover-capable pointers; on touch the link reads as plain accent text. */
@@ -464,12 +463,26 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
   </section>
 );
 
-// ── Platform preview ── A faux LSAT U workspace shell. Window chrome,
-// slim sidebar with platform-level nav, soft skeleton cards, one wide
-// continuation panel. Zero curriculum content. Reads as "this is the
-// tool", not "this is a lesson". All chrome is structural — labels are
-// platform concepts (Today, Workspace, Sessions, Inbox, Profile), the
-// canvas is intentionally light-on-content.
+// ── Platform preview ── A faithful, decorative emulation of the real signed-in
+// homepage (AcademyMainhub): window chrome + product nav, the Smart LR Score
+// gauge card on the left, and the live orbital ring on the right (Resume /
+// Analytics / Wrong Answer Journal nodes spinning around a glowing center). The
+// orbital is the *real* RadialOrbitalTimeline, wrapped in pointer-events-none so
+// it spins/pulses but is non-interactive (no click-expand overlay ever fires).
+// The gauge is a static facade — NOT the live SmartLRTrainingCard (that needs
+// QuestionBankContext + navigating buttons, which would be dead on a public
+// page). Whole preview is aria-hidden / decorative: no real handlers, only the
+// app's honest empty state ("0" score, "Streak --"). Reads as "this is the
+// dashboard you get", styled in the warm landing tokens.
+
+// Three orbital nodes mirroring the real mainhub (labels + icons match the
+// product exactly). relatedIds empty + never clicked → no expand overlay.
+const PREVIEW_NODES: TimelineItem[] = [
+  { id: 1, title: 'Resume', date: 'Last assignment', content: 'Open the next thing on your plate.', category: 'Classroom', icon: Play, relatedIds: [], status: 'pending', energy: 60 },
+  { id: 2, title: 'Analytics', date: 'Trends', content: 'Performance trends and accuracy by question type.', category: 'Progress', icon: BarChart3, relatedIds: [], status: 'in-progress', energy: 72 },
+  { id: 3, title: 'Wrong Answer Journal', date: 'Review', content: 'Review missed questions and patterns.', category: 'Journal', icon: BookOpen, relatedIds: [], status: 'pending', energy: 68 },
+];
+
 const ArcPlatformPreview = () => (
   <section className="arc-shell arc-fade" aria-label="LSAT U platform preview">
     <div className="arc-shell-frame">
@@ -486,76 +499,54 @@ const ArcPlatformPreview = () => (
         <aside className="arc-shell-side" aria-hidden="true">
           <div className="arc-shell-side-eyebrow">Workspace</div>
           <div className="arc-shell-nav is-active">
-            <span className="arc-shell-nav-icon"><Home strokeWidth={1.6} size={14} /></span>
-            Today
+            <span className="arc-shell-nav-icon"><GraduationCap strokeWidth={1.6} size={14} /></span>
+            Classroom
           </div>
           <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><LayoutGrid strokeWidth={1.6} size={14} /></span>
-            Spaces
+            <span className="arc-shell-nav-icon"><Flame strokeWidth={1.6} size={14} /></span>
+            Bootcamps
           </div>
           <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><Clock strokeWidth={1.6} size={14} /></span>
-            Sessions
+            <span className="arc-shell-nav-icon"><Dumbbell strokeWidth={1.6} size={14} /></span>
+            Practice Hub
           </div>
           <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><Inbox strokeWidth={1.6} size={14} /></span>
-            Inbox
+            <span className="arc-shell-nav-icon"><CalendarDays strokeWidth={1.6} size={14} /></span>
+            Schedule
           </div>
           <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><User strokeWidth={1.6} size={14} /></span>
-            Profile
+            <span className="arc-shell-nav-icon"><Archive strokeWidth={1.6} size={14} /></span>
+            Reference Library
           </div>
         </aside>
-        <div className="arc-shell-main">
-          <div className="arc-shell-main-head">
-            <div>
-              <span className="arc-shell-greet">Welcome back,</span>
-              <span className="arc-shell-greet-sub">your space is ready.</span>
+        <div className="arc-shell-main arc-prev-main" aria-hidden="true">
+          {/* Smart LR Score gauge — static facade (mirrors SmartLRTrainingCard) */}
+          <div className="arc-prev-gauge">
+            <div className="arc-prev-dial">
+              <svg className="arc-prev-dial-svg" viewBox="0 0 200 160" aria-hidden="true">
+                <path d="M 35 130 A 65 65 0 1 1 165 130" fill="none" stroke="currentColor" strokeWidth="10" strokeLinecap="round" />
+              </svg>
+              <span className="arc-prev-dial-num">0</span>
             </div>
-            <span className="arc-shell-pill" aria-hidden="true">
-              <span className="arc-shell-pill-dot" />
-              Live
+            <span className="arc-prev-dial-label">Smart LR Score</span>
+            <span className="arc-prev-streak">
+              <Flame size={12} strokeWidth={1.8} />
+              Streak -- days
             </span>
-          </div>
-          <div className="arc-shell-row" aria-hidden="true">
-            <div className="arc-shell-card">
-              <div className="arc-shell-card-corner">
-                <span className="arc-shell-card-dot is-accent" />
-                <span className="arc-shell-card-pip">01</span>
-              </div>
-              <div className="arc-shell-bar-skel s-2" />
-              <div className="arc-shell-bar-skel s-1" />
-              <div className="arc-shell-bar-skel s-accent s-3" style={{ marginTop: 'auto' }} />
+            <div className="arc-prev-selectors">
+              <span className="arc-prev-chip"><em>Practice Test</em>Auto</span>
+              <span className="arc-prev-chip"><em>Section</em>Auto</span>
+              <span className="arc-prev-chip"><em>Question</em>Auto</span>
             </div>
-            <div className="arc-shell-card">
-              <div className="arc-shell-card-corner">
-                <span className="arc-shell-card-dot" />
-                <span className="arc-shell-card-pip">02</span>
-              </div>
-              <div className="arc-shell-bar-skel s-1" />
-              <div className="arc-shell-bar-skel s-2" />
-              <div className="arc-shell-bar-skel s-3" style={{ marginTop: 'auto' }} />
-            </div>
-            <div className="arc-shell-card">
-              <div className="arc-shell-card-corner">
-                <span className="arc-shell-card-dot" />
-                <span className="arc-shell-card-pip">03</span>
-              </div>
-              <div className="arc-shell-bar-skel s-2" />
-              <div className="arc-shell-bar-skel s-3" />
-              <div className="arc-shell-bar-skel s-1" style={{ marginTop: 'auto' }} />
+            <div className="arc-prev-drill">
+              <Play size={13} strokeWidth={2} fill="currentColor" />
+              Start Smart LR Drill
             </div>
           </div>
-          <div className="arc-shell-panel" aria-hidden="true">
-            <div className="arc-shell-panel-icon">
-              <ArrowRight strokeWidth={1.7} />
-            </div>
-            <div className="arc-shell-panel-stack">
-              <div className="arc-shell-bar-skel s-2" />
-              <div className="arc-shell-bar-skel s-3" />
-            </div>
-            <div className="arc-shell-panel-arrow">
-              <ArrowRight size={12} strokeWidth={1.8} />
+          {/* Live orbital — the real component, non-interactive (spins + pulses) */}
+          <div className="arc-prev-orbital">
+            <div className="arc-prev-orbital-scale">
+              <RadialOrbitalTimeline timelineData={PREVIEW_NODES} />
             </div>
           </div>
         </div>
