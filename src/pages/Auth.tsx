@@ -1204,6 +1204,7 @@ export default function Auth() {
                       <Input
                         id="auth-reset-email"
                         type="email"
+                        autoComplete="email"
                         placeholder="name@example.com"
                         value={resetEmail}
                         onChange={(e) => setResetEmail(e.target.value)}
@@ -1306,6 +1307,7 @@ export default function Auth() {
                             <Input
                               id="auth-name"
                               type="text"
+                              autoComplete="name"
                               required
                               placeholder="Your name"
                               value={name}
@@ -1325,6 +1327,7 @@ export default function Auth() {
                           <Input
                             id="auth-email"
                             type="email"
+                            autoComplete="email"
                             required
                             placeholder="name@example.com"
                             value={email}
@@ -1355,6 +1358,8 @@ export default function Auth() {
                           <Input
                             id="auth-password"
                             type={showPassword ? 'text' : 'password'}
+                            autoComplete={isSignUp ? 'new-password' : 'current-password'}
+                            aria-describedby={isSignUp ? 'auth-password-hint' : undefined}
                             required
                             placeholder="••••••••••••"
                             value={password}
@@ -1377,7 +1382,7 @@ export default function Auth() {
                           </button>
                         </div>
                         {isSignUp && (
-                          <p className="text-[10px] text-neutral-400 mt-1.5 ml-0.5">
+                          <p id="auth-password-hint" className="text-[10px] text-neutral-400 mt-1.5 ml-0.5">
                             8+ characters
                           </p>
                         )}
@@ -1398,6 +1403,7 @@ export default function Auth() {
                               <Input
                                 id="auth-confirm"
                                 type={showPassword ? 'text' : 'password'}
+                                autoComplete="new-password"
                                 required
                                 placeholder="••••••••••••"
                                 value={confirmPassword}
