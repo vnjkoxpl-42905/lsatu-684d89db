@@ -296,6 +296,14 @@ function MainhubHelpControl({
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages.length, open]);
 
+  // Move focus into the composer once the panel is open and the thread is
+  // ready (the textarea is disabled until conversationId resolves).
+  React.useEffect(() => {
+    if (!open || !conversationId) return;
+    const id = requestAnimationFrame(() => textareaRef.current?.focus());
+    return () => cancelAnimationFrame(id);
+  }, [open, conversationId]);
+
   React.useEffect(() => {
     if (open) return;
     setBody("");
@@ -476,6 +484,12 @@ function MainhubHelpControl({
           role="dialog"
           aria-label="LSAT U support chat"
           data-help-overlay
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.stopPropagation();
+              onOpenChange(false);
+            }
+          }}
           className="fixed bottom-20 right-5 z-50 flex h-[min(560px,calc(100dvh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-[#fbfcff] text-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.18)]"
         >
           <header className="flex h-16 shrink-0 items-center gap-3 border-b border-slate-200/70 bg-white/80 px-4 backdrop-blur">
@@ -639,15 +653,6 @@ function MainhubHelpControl({
                     </div>
                   )}
                 </div>
-                <button
-                  type="button"
-                  disabled
-                  aria-label="Add GIF"
-                  title="GIF support coming soon"
-                  className="pointer-events-auto inline-flex h-8 min-w-8 cursor-not-allowed items-center justify-center rounded-full px-1 text-[11px] font-semibold tracking-[0.02em] text-slate-400 opacity-55"
-                >
-                  GIF
-                </button>
                 <button
                   type="button"
                   onClick={recording ? stopRecording : startRecording}

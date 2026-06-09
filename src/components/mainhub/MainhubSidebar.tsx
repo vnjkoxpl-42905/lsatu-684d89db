@@ -36,12 +36,11 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
-const today = format(new Date(), "EEEE, MMMM d");
-
 export default function MainhubSidebar(_props: MainhubSidebarProps) {
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
+  const today = format(new Date(), "EEEE, MMMM d");
 
   const navByTo = new Map(NAV_ITEMS.map((n) => [n.to, n]));
   const orderedNav: NavItem[] = [];

@@ -41,7 +41,7 @@ function SelectorDropdown({
             disabled ? "cursor-default opacity-60" : "cursor-pointer hover:border-slate-300",
           )}
         >
-          <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
+          <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600">
             {label}
           </span>
           <span className="mt-0.5 flex items-center justify-between gap-1 text-sm font-semibold text-slate-700">
@@ -208,11 +208,11 @@ export default function SmartLRTrainingCard() {
           </div>
         </div>
 
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400/90 mt-1">
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600 mt-1">
           Smart LR Score
         </span>
 
-        <div className="mt-3.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500/90">
+        <div className="mt-3.5 flex items-center gap-1.5 text-xs font-semibold text-slate-600">
           <Flame className="h-4 w-4 text-orange-500 fill-orange-500/10" aria-hidden />
           <span>No streak yet</span>
         </div>
