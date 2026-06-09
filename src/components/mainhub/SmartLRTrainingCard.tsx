@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Check, ChevronDown, Flame, Play } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Check, ChevronDown, Flame, Loader2, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -133,34 +133,55 @@ export default function SmartLRTrainingCard() {
     ).sort((a, b) => a - b);
   }, [allQuestions, pt, section]);
 
+  const [pendingNav, setPendingNav] = useState<null | (() => void)>(null);
+
+  // Wait for question bank to be ready before navigating to /drill, so we
+  // don't flash the "Preparing your drill…" gate on the next route.
+  useEffect(() => {
+    if (pendingNav && !isLoading) {
+      pendingNav();
+      setPendingNav(null);
+    }
+  }, [pendingNav, isLoading]);
+
   const startSmartDrill = () => {
-    if (pt !== AUTO && section !== AUTO && qnum !== AUTO) {
-      const q = allQuestions.find(
-        (x) =>
-          String(x.pt) === pt &&
-          String(x.section) === section &&
-          String(x.qnum) === qnum,
-      );
-      if (q) {
-        navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}`);
+    const run = () => {
+      if (pt !== AUTO && section !== AUTO && qnum !== AUTO) {
+        const q = allQuestions.find(
+          (x) =>
+            String(x.pt) === pt &&
+            String(x.section) === section &&
+            String(x.qnum) === qnum,
+        );
+        if (q) {
+          navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}`);
+          return;
+        }
+      }
+
+      if (pt !== AUTO) {
+        const config: TypeDrillConfig = {
+          qtypes: [],
+          difficulties: [],
+          pts: [Number(pt)],
+          sections: section !== AUTO ? [Number(section)] : [],
+          count: 20,
+        };
+        navigate("/drill", { state: { mode: "type-drill", config } });
         return;
       }
-    }
 
-    if (pt !== AUTO) {
-      const config: TypeDrillConfig = {
-        qtypes: [],
-        difficulties: [],
-        pts: [Number(pt)],
-        sections: section !== AUTO ? [Number(section)] : [],
-        count: 20,
-      };
-      navigate("/drill", { state: { mode: "type-drill", config } });
+      navigate("/drill", { state: { mode: "adaptive" } });
+    };
+
+    if (isLoading) {
+      setPendingNav(() => run);
       return;
     }
-
-    navigate("/drill", { state: { mode: "adaptive" } });
+    run();
   };
+
+  const isPreparing = pendingNav !== null;
 
   const ptOptions: Option[] = [
     { value: AUTO, label: "Auto" },
@@ -252,10 +273,20 @@ export default function SmartLRTrainingCard() {
       <Button
         type="button"
         onClick={startSmartDrill}
-        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98]"
+        disabled={isPreparing}
+        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98] disabled:opacity-90"
       >
-        <Play className="h-4 w-4" aria-hidden />
-        Start Smart LR Drill
+        {isPreparing ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Preparing drill…
+          </>
+        ) : (
+          <>
+            <Play className="h-4 w-4" aria-hidden />
+            Start Smart LR Drill
+          </>
+        )}
       </Button>
 
       <div
