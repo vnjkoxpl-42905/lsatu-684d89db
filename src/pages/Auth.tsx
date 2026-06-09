@@ -129,7 +129,10 @@ const PAGE_CSS = `
 
   /* Platform shell preview — soft app-like frame, slim sidebar, skeleton cards. No content, no labels that read as curriculum. */
   .lsatu-arc .arc-shell { position: relative; margin: 24px auto 0; max-width: 920px; padding: 0 24px; }
-  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 280ms ${ARC.easeOut}, box-shadow 280ms ${ARC.easeOut}, border-color 280ms ${ARC.easeOut}; animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
+  /* Ambient float lives on the wrapper so it never fights the inner frame's
+     hover-lift (a running keyframe on transform would override :hover transform). */
+  .lsatu-arc .arc-shell-float { animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
+  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 280ms ${ARC.easeOut}, box-shadow 280ms ${ARC.easeOut}, border-color 280ms ${ARC.easeOut}; }
   @media (hover: hover) and (pointer: fine) {
     .lsatu-arc .arc-shell-frame:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 36px 80px -20px rgba(15,17,29,0.24); }
   }
@@ -188,7 +191,7 @@ const PAGE_CSS = `
      The static underline is rendered as a 1px ::after that scales from origin-left.
      Gated on hover-capable pointers; on touch the link reads as plain accent text. */
   .lsatu-arc .arc-link { position: relative; color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; padding-bottom: 2px; }
-  .lsatu-arc .arc-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: left center; transition: transform 280ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: left center; transition: transform 240ms ${ARC.easeOut}; }
   @media (hover: hover) and (pointer: fine) {
     .lsatu-arc .arc-link::after { transform: scaleX(0); transform-origin: right center; }
     .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
@@ -252,9 +255,9 @@ const PAGE_CSS = `
 
   @media (prefers-reduced-motion: reduce) {
     .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
-    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon, .lsatu-arc .arc-pillar, .lsatu-arc .arc-link::after { transition: none; }
+    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon, .lsatu-arc .arc-pillar, .lsatu-arc .arc-link::after, .lsatu-arc .arc-nav-signin { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
-    .lsatu-arc .arc-shell-frame { animation: none; }
+    .lsatu-arc .arc-shell-float { animation: none; }
     .lsatu-arc .arc-shell-card { animation: none; opacity: 1; transform: none; }
     .lsatu-arc .arc-pillar { opacity: 1; transform: none; }
     .lsatu-arc .arc-link::after { transform: scaleX(1); }
@@ -485,6 +488,7 @@ const PREVIEW_NODES: TimelineItem[] = [
 
 const ArcPlatformPreview = () => (
   <section className="arc-shell arc-fade" aria-label="LSAT U platform preview">
+    <div className="arc-shell-float">
     <div className="arc-shell-frame">
       <div className="arc-shell-bar">
         <div className="arc-shell-dots" aria-hidden="true">
@@ -551,6 +555,7 @@ const ArcPlatformPreview = () => (
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 );
@@ -1150,7 +1155,7 @@ export default function Auth() {
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
             onClick={() => setModalOpen(false)}
-            className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
+            className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90"
             aria-label="Close"
           >
             <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
