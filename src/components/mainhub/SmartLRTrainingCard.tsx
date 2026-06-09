@@ -133,34 +133,55 @@ export default function SmartLRTrainingCard() {
     ).sort((a, b) => a - b);
   }, [allQuestions, pt, section]);
 
+  const [pendingNav, setPendingNav] = useState<null | (() => void)>(null);
+
+  // Wait for question bank to be ready before navigating to /drill, so we
+  // don't flash the "Preparing your drill…" gate on the next route.
+  useEffect(() => {
+    if (pendingNav && !isLoading) {
+      pendingNav();
+      setPendingNav(null);
+    }
+  }, [pendingNav, isLoading]);
+
   const startSmartDrill = () => {
-    if (pt !== AUTO && section !== AUTO && qnum !== AUTO) {
-      const q = allQuestions.find(
-        (x) =>
-          String(x.pt) === pt &&
-          String(x.section) === section &&
-          String(x.qnum) === qnum,
-      );
-      if (q) {
-        navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}`);
+    const run = () => {
+      if (pt !== AUTO && section !== AUTO && qnum !== AUTO) {
+        const q = allQuestions.find(
+          (x) =>
+            String(x.pt) === pt &&
+            String(x.section) === section &&
+            String(x.qnum) === qnum,
+        );
+        if (q) {
+          navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}`);
+          return;
+        }
+      }
+
+      if (pt !== AUTO) {
+        const config: TypeDrillConfig = {
+          qtypes: [],
+          difficulties: [],
+          pts: [Number(pt)],
+          sections: section !== AUTO ? [Number(section)] : [],
+          count: 20,
+        };
+        navigate("/drill", { state: { mode: "type-drill", config } });
         return;
       }
-    }
 
-    if (pt !== AUTO) {
-      const config: TypeDrillConfig = {
-        qtypes: [],
-        difficulties: [],
-        pts: [Number(pt)],
-        sections: section !== AUTO ? [Number(section)] : [],
-        count: 20,
-      };
-      navigate("/drill", { state: { mode: "type-drill", config } });
+      navigate("/drill", { state: { mode: "adaptive" } });
+    };
+
+    if (isLoading) {
+      setPendingNav(() => run);
       return;
     }
-
-    navigate("/drill", { state: { mode: "adaptive" } });
+    run();
   };
+
+  const isPreparing = pendingNav !== null;
 
   const ptOptions: Option[] = [
     { value: AUTO, label: "Auto" },
