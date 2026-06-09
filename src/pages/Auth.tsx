@@ -1108,7 +1108,7 @@ export default function Auth() {
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
 
       <ArcNav onSignIn={openSignIn} />
-      <StoryScroll aria-label="LSAT U landing story" className="bg-[#FBF8F1]" pinSpacing>
+      <StoryScroll aria-label="LSAT U landing story" className="bg-[#FBF8F1]" pin={false}>
         <StorySection aria-label="Master the LSAT" settle={false}>
           <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
         </StorySection>

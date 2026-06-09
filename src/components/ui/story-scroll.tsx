@@ -47,6 +47,7 @@ export const StorySection = ({
 export interface StoryScrollProps {
   children: React.ReactNode;
   className?: string;
+  pin?: boolean;
   pinSpacing?: boolean;
   settleRotation?: number;
   "aria-label"?: string;
@@ -62,6 +63,7 @@ const getPrefersReducedMotion = () => {
 export const StoryScroll = ({
   children,
   className,
+  pin = true,
   pinSpacing = true,
   settleRotation = 1.75,
   "aria-label": ariaLabel = "Landing story",
@@ -137,7 +139,7 @@ export const StoryScroll = ({
           if (settleTween.scrollTrigger) triggers.push(settleTween.scrollTrigger);
         }
 
-        if (index < sections.length - 1 && shouldPin) {
+        if (pin && index < sections.length - 1 && shouldPin) {
           const nextSection = sectionStates[index + 1]?.section;
 
           triggers.push(
@@ -170,7 +172,7 @@ export const StoryScroll = ({
         });
       };
     },
-    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pinSpacing, settleRotation] },
+    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pin, pinSpacing, settleRotation] },
   );
 
   return (
