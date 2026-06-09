@@ -273,10 +273,20 @@ export default function SmartLRTrainingCard() {
       <Button
         type="button"
         onClick={startSmartDrill}
-        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98]"
+        disabled={isPreparing}
+        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98] disabled:opacity-90"
       >
-        <Play className="h-4 w-4" aria-hidden />
-        Start Smart LR Drill
+        {isPreparing ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Preparing drill…
+          </>
+        ) : (
+          <>
+            <Play className="h-4 w-4" aria-hidden />
+            Start Smart LR Drill
+          </>
+        )}
       </Button>
 
       <div
