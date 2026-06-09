@@ -96,51 +96,15 @@ export const StoryScroll = ({
       if (sections.length < 2) return;
 
       const triggers: ScrollTrigger[] = [];
-      const sectionStates = sections.map((section) => {
+
+      sections.forEach((section, index) => {
         const inner = section.querySelector<HTMLElement>("[data-story-inner]");
-
-        return {
-          section,
-          inner,
-          shouldPin: section.dataset.storyPin !== "false",
-          shouldSettle: section.dataset.storySettle !== "false",
-        };
-      });
-
-      sectionStates.forEach(({ section, inner, shouldPin, shouldSettle }, index) => {
         if (!inner) return;
 
         gsap.set(section, { zIndex: sections.length + index });
-        gsap.set(inner, {
-          transformOrigin: "bottom left",
-          force3D: true,
-          willChange: "transform",
-          backfaceVisibility: "hidden",
-        });
 
-        if (index > 0 && shouldSettle) {
-          gsap.set(inner, {
-            rotation: settleRotation,
-          });
-
-          const settleTween = gsap.to(inner, {
-            rotation: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom-=8%",
-              end: "top 62%",
-              scrub: 1.1,
-              fastScrollEnd: true,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          if (settleTween.scrollTrigger) triggers.push(settleTween.scrollTrigger);
-        }
-
-        if (pin && index < sections.length - 1 && shouldPin) {
-          const nextSection = sectionStates[index + 1]?.section;
+        if (pin && index < sections.length - 1 && section.dataset.storyPin !== "false") {
+          const nextSection = sections[index + 1];
 
           triggers.push(
             ScrollTrigger.create({
@@ -162,18 +126,72 @@ export const StoryScroll = ({
         }
       });
 
-      ScrollTrigger.refresh();
+      if (pin) ScrollTrigger.refresh();
 
       return () => {
         triggers.forEach((trigger) => trigger.kill());
-        sectionStates.forEach(({ inner }) => {
-          if (!inner) return;
-          gsap.set(inner, { clearProps: "willChange,backfaceVisibility" });
-        });
       };
     },
-    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pin, pinSpacing, settleRotation] },
+    { scope: containerRef, dependencies: [countChildren(children), reducedMotion, pin, pinSpacing] },
   );
+
+  // Settle is handled outside GSAP on purpose. useGSAP wraps its body in a
+  // gsap.context() that reverts on cleanup, and the React StrictMode mount/unmount
+  // churn was tearing down every rotation tween before it could land (leaving every
+  // section frozen at its initial tilt). A plain IntersectionObserver + CSS
+  // transition has no gsap context and no scroll-position math to go stale: each
+  // section starts at settleRotation and rotates to 0deg once it enters the viewport.
+  React.useEffect(() => {
+    if (typeof window === "undefined" || reducedMotion || !containerRef.current) return;
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const sections = Array.from(
+      containerRef.current.querySelectorAll<HTMLElement>("[data-story-section]"),
+    );
+    if (sections.length < 2) return;
+
+    const observers: IntersectionObserver[] = [];
+    const touched: HTMLElement[] = [];
+
+    sections.forEach((section, index) => {
+      if (index === 0 || section.dataset.storySettle === "false") return;
+
+      const inner = section.querySelector<HTMLElement>("[data-story-inner]");
+      if (!inner) return;
+
+      // Apply the initial tilt with transitions off, force a reflow, then enable
+      // the transition so the first paint does not animate into the tilt.
+      inner.style.willChange = "transform";
+      inner.style.transition = "none";
+      inner.style.transform = `rotate(${settleRotation}deg)`;
+      void inner.offsetWidth;
+      inner.style.transition = "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)";
+      touched.push(inner);
+
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            inner.style.transform = "rotate(0deg)";
+            obs.disconnect();
+          });
+        },
+        { rootMargin: "0px 0px -15% 0px", threshold: 0.01 },
+      );
+
+      observer.observe(section);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+      touched.forEach((inner) => {
+        inner.style.transition = "";
+        inner.style.transform = "";
+        inner.style.willChange = "";
+      });
+    };
+  }, [reducedMotion, settleRotation, countChildren(children)]);
 
   return (
     <main
