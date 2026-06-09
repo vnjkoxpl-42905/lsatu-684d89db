@@ -26,14 +26,14 @@ import RadialOrbitalTimeline, { type TimelineItem } from '@/components/ui/radial
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-500 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-[color:var(--auth-line-2)] focus-visible:border-[color:var(--auth-line-focus)] focus-visible:ring-1 focus-visible:ring-[color:var(--auth-ring-soft)] text-white text-base sm:text-sm placeholder:text-neutral-500 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
   'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
 
 // ── Shared focus ring for drawer controls — visible on the dark glass surface ──
 const focusRingCls =
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]';
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--auth-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--auth-surface)]';
 
 // ── CTA button — wraps AnimatedButton with auth-specific props ──
 const CTAButton = ({
@@ -97,6 +97,26 @@ const ARC = {
 // reveal animation, marquee, scroll-snap carousel. All motion respects
 // prefers-reduced-motion.
 const PAGE_CSS = `
+  /* Auth drawer palette — single source for the dark sign-in surface. Global
+     (:root) so it reaches the Vaul portal; namespaced so it can't collide.
+     Values are the exact prior literals (no visual change), now tokenized. */
+  :root {
+    --auth-surface: #121212;
+    --auth-line-1: rgb(255 255 255 / 0.05);
+    --auth-line-2: rgb(255 255 255 / 0.06);
+    --auth-line-3: rgb(255 255 255 / 0.10);
+    --auth-line-focus: rgb(255 255 255 / 0.18);
+    --auth-catchlight: rgb(255 255 255 / 0.15);
+    --auth-fill-1: rgb(255 255 255 / 0.04);
+    --auth-fill-hover: rgb(255 255 255 / 0.07);
+    --auth-fill-active: rgb(255 255 255 / 0.10);
+    --auth-indicator: rgb(255 255 255 / 0.08);
+    --auth-ring: rgb(255 255 255 / 0.40);
+    --auth-ring-soft: rgb(255 255 255 / 0.08);
+    --auth-success: #34d399;
+    --auth-success-bg: rgb(16 185 129 / 0.10);
+    --auth-success-line: rgb(16 185 129 / 0.20);
+  }
   .lsatu-arc { background: ${ARC.bg}; color: ${ARC.ink}; font-family: ${ARC.sans}; min-height: 100vh; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   .lsatu-arc * { box-sizing: border-box; }
   .lsatu-arc a { color: inherit; text-decoration: none; }
@@ -1146,7 +1166,7 @@ export default function Auth() {
         }}
       >
         <DrawerContent
-          className="bg-[#121212] border-0 border-t border-white/10 text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-white/15"
+          className="bg-[color:var(--auth-surface)] border-0 border-t border-[color:var(--auth-line-3)] text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-[color:var(--auth-catchlight)]"
         >
           <DrawerTitle className="sr-only">LSAT U Access</DrawerTitle>
           <DrawerDescription className="sr-only">
@@ -1154,7 +1174,7 @@ export default function Auth() {
           </DrawerDescription>
 
           {/* Top specular catch-light */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--auth-catchlight)] to-transparent pointer-events-none" />
 
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
@@ -1218,7 +1238,7 @@ export default function Auth() {
                 </div>
 
                 {/* Segmented control */}
-                <div className="flex p-[3px] mb-6 bg-black/50 border border-white/[0.05] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
+                <div className="flex p-[3px] mb-6 bg-black/50 border border-[color:var(--auth-line-1)] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
                   {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
                     const selected = (i === 1) === isSignUp;
                     return (
@@ -1236,7 +1256,7 @@ export default function Auth() {
                         {selected && (
                           <motion.div
                             layoutId="seg"
-                            className="absolute inset-0 bg-white/[0.08] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(255,255,255,0.06)]"
+                            className="absolute inset-0 bg-[color:var(--auth-indicator)] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(255,255,255,0.06)]"
                             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                           />
                         )}
@@ -1248,8 +1268,8 @@ export default function Auth() {
 
                 {showConfirmation ? (
                   <div className="text-center space-y-4 py-4">
-                    <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
-                      <Mail className="w-6 h-6 text-emerald-400" />
+                    <div className="w-14 h-14 rounded-full bg-[color:var(--auth-success-bg)] border border-[color:var(--auth-success-line)] flex items-center justify-center mx-auto">
+                      <Mail className="w-6 h-6 text-[color:var(--auth-success)]" />
                     </div>
                     <h3 className="text-lg font-semibold text-white">Check your email</h3>
                     <p className="text-[13px] text-neutral-400 leading-relaxed max-w-[280px] mx-auto">
@@ -1345,7 +1365,7 @@ export default function Auth() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+                            className={cn("absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-colors", focusRingCls)}
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                             aria-pressed={showPassword}
                           >
@@ -1399,7 +1419,7 @@ export default function Auth() {
                               setRememberMe(e.target.checked);
                               if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
                             }}
-                            className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
+                            className="w-4 h-4 rounded border-[color:var(--auth-line-3)] bg-black/50 text-white accent-white focus:ring-[color:var(--auth-ring-soft)] cursor-pointer"
                           />
                           <span className="text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors">
                             Remember my email
@@ -1420,9 +1440,9 @@ export default function Auth() {
 
                     {/* Divider */}
                     <div className="flex items-center gap-3 pt-4">
-                      <div className="flex-1 h-px bg-white/[0.06]" />
+                      <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
                       <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 font-medium">or</span>
-                      <div className="flex-1 h-px bg-white/[0.06]" />
+                      <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
                     </div>
 
                     {/* Google Sign In — CSS scale (GPU) instead of Framer's
@@ -1432,7 +1452,7 @@ export default function Auth() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
+                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-[color:var(--auth-fill-1)] border border-[color:var(--auth-line-2)] hover:bg-[color:var(--auth-fill-hover)] active:bg-[color:var(--auth-fill-active)] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
