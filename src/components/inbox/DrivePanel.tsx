@@ -156,8 +156,11 @@ async function fetchThumbnailUrl(file: DriveFile, sz = 400): Promise<string | nu
     });
     if (!res.ok) { thumbCache.set(id, ''); return null; }
     const blob = await res.blob();
-    if (!blob.type.startsWith('image/')) { thumbCache.set(id, ''); return null; }
-    const objUrl = URL.createObjectURL(blob);
+    if (blob.size === 0) { thumbCache.set(id, ''); return null; }
+    const ct = res.headers.get('content-type') ?? blob.type ?? 'image/png';
+    const typed = blob.type ? blob : new Blob([blob], { type: ct });
+    if (!ct.startsWith('image/')) { thumbCache.set(id, ''); return null; }
+    const objUrl = URL.createObjectURL(typed);
     thumbCache.set(id, objUrl);
     return objUrl;
   } catch {
