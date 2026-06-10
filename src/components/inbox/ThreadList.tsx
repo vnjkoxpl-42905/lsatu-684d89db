@@ -138,11 +138,6 @@ export function ThreadList({
                   Reply Required
                 </div>
               )}
-              {!isAdmin && (
-                <div className="mt-2.5 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-                  1:1 coaching
-                </div>
-              )}
             </div>
           </button>
         );
