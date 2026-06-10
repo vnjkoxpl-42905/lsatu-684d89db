@@ -2,6 +2,7 @@
 // Endpoints:
 //   GET  ?action=list&q=<search>&pageToken=<token>
 //   GET  ?action=meta&id=<fileId>
+//   GET  ?action=thumbnail&id=<fileId>&sz=<px>   (streams image bytes; 404 if none)
 //   GET  ?action=download&id=<fileId>&format=<pdf|docx|xlsx|pptx|odt|ods|odp|rtf|txt|html|epub|csv|tsv|svg|png|jpeg>
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
@@ -145,6 +146,62 @@ Deno.serve(async (req) => {
       if (!res.ok) throw new Error(`Drive meta ${res.status}: ${txt.slice(0, 300)}`);
       return new Response(JSON.stringify({ ok: true, file: data }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (action === "thumbnail") {
+      // Streams a preview image for a file so the grid can show real thumbnails
+      // (Google Docs/Sheets/Slides/PDF previews, image files, etc.) instead of
+      // generic icons. The client fetches this with its auth header and turns the
+      // bytes into an object URL; on any failure it falls back to a file-type icon.
+      const id = url.searchParams.get("id");
+      if (!id) throw new Error("id required");
+      const sz = url.searchParams.get("sz"); // requested square size in px, e.g. 400
+      // The client forwards the thumbnailLink + mimeType it already got from `list`, so
+      // we can usually skip the per-file metadata round-trip.
+      let thumbLink: string | undefined = url.searchParams.get("link") ?? undefined;
+      let mime: string = url.searchParams.get("mime") ?? "";
+      const cacheHeaders = { ...corsHeaders, "Cache-Control": "private, max-age=3600" };
+
+      if (!thumbLink) {
+        const fields = "id,mimeType,thumbnailLink";
+        const metaRes = await safeFetchJson(`${GATEWAY}/files/${encodeURIComponent(id)}?fields=${encodeURIComponent(fields)}`, { headers });
+        if (!metaRes.res.ok) throw new Error(`Drive meta ${metaRes.res.status}: ${metaRes.txt.slice(0, 300)}`);
+        const meta = metaRes.data ?? {};
+        mime = meta.mimeType ?? mime;
+        thumbLink = meta.thumbnailLink;
+      }
+
+      // Strategy 1: the Drive-provided thumbnailLink — the only preview source for
+      // Docs/Sheets/Slides/PDF. Bump the trailing size token when a size is asked for.
+      if (thumbLink) {
+        let link = thumbLink;
+        if (sz && /=s\d+$/.test(link)) link = link.replace(/=s\d+$/, `=s${sz}`);
+        // Plain fetch first: Drive thumbnailLinks are short-lived, self-authorizing URLs
+        // and usually resolve unauthenticated — that's the attempt most likely to work.
+        // Gateway auth headers (which can't authenticate googleusercontent) are a fallback.
+        for (const init of [{}, { headers }]) {
+          try {
+            const r = await fetch(link, init as RequestInit);
+            const ct = r.headers.get("Content-Type") ?? "";
+            if (r.ok && ct.startsWith("image/")) {
+              return new Response(r.body, { headers: { ...cacheHeaders, "Content-Type": ct } });
+            }
+          } catch { /* try next strategy */ }
+        }
+      }
+
+      // Strategy 2: for binary image files, stream the media itself as the preview.
+      if (mime.startsWith("image/")) {
+        const r = await fetch(`${GATEWAY}/files/${encodeURIComponent(id)}?alt=media`, { headers });
+        if (r.ok) {
+          return new Response(r.body, { headers: { ...cacheHeaders, "Content-Type": r.headers.get("Content-Type") ?? mime } });
+        }
+      }
+
+      // No preview available → 404 so the client renders its icon fallback.
+      return new Response(JSON.stringify({ ok: false, error: "no thumbnail" }), {
+        status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 

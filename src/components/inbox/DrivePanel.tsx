@@ -8,7 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { ChevronDown, Download, ExternalLink, FileArchive, FileText, Folder, Image as ImageIcon, RefreshCw, Search, X } from 'lucide-react';
+import { ChevronDown, Download, ExternalLink, FileArchive, FileText, Folder, Image as ImageIcon, LayoutGrid, List as ListIcon, MoreVertical, RefreshCw, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -123,6 +123,76 @@ async function fetchPage(q: string, pageToken: string | null) {
   return { files: (json.files ?? []) as DriveFile[], nextPageToken: (json.nextPageToken ?? null) as string | null };
 }
 
+// Session cache of thumbnail object URLs. undefined = never fetched, '' = known
+// missing (404/non-image), string = ready object URL. Persisting these across the
+// list/grid toggle avoids re-fetching the same previews repeatedly.
+const thumbCache = new Map<string, string>();
+
+/**
+ * Fetches a file's preview image through the gdrive `thumbnail` proxy (which attaches
+ * Drive auth server-side) and returns an object URL. An <img> tag can't carry our auth
+ * header, so we fetch the bytes here and hand back a blob URL. Returns null when no
+ * preview is available so the caller can render a file-type icon instead.
+ */
+async function fetchThumbnailUrl(file: DriveFile, sz = 400): Promise<string | null> {
+  const id = file.id;
+  const cached = thumbCache.get(id);
+  if (cached !== undefined) return cached || null;
+  try {
+    const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
+    url.searchParams.set('action', 'thumbnail');
+    url.searchParams.set('id', id);
+    url.searchParams.set('sz', String(sz));
+    // Forward what the list response already gave us so the proxy can skip its own
+    // metadata round-trip (one Drive call per thumbnail instead of two).
+    if (file.thumbnailLink) url.searchParams.set('link', file.thumbnailLink);
+    if (file.mimeType) url.searchParams.set('mime', file.mimeType);
+    const session = (await supabase.auth.getSession()).data.session;
+    const res = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Bearer ${session?.access_token ?? ''}`,
+        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      },
+    });
+    if (!res.ok) { thumbCache.set(id, ''); return null; }
+    const blob = await res.blob();
+    if (!blob.type.startsWith('image/')) { thumbCache.set(id, ''); return null; }
+    const objUrl = URL.createObjectURL(blob);
+    thumbCache.set(id, objUrl);
+    return objUrl;
+  } catch {
+    thumbCache.set(id, '');
+    return null;
+  }
+}
+
+function formatRelative(iso?: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  if (d.toDateString() === now.toDateString()) {
+    return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }
+  const sameYear = d.getFullYear() === now.getFullYear();
+  return d.toLocaleDateString([], sameYear
+    ? { month: 'short', day: 'numeric' }
+    : { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+const AVATAR_COLORS = ['#1a73e8', '#d93025', '#188038', '#e37400', '#9334e6', '#0b8043', '#c5221f'];
+function initialsOf(name?: string): string {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase() || '?';
+}
+function avatarColor(name?: string): string {
+  const s = name ?? '';
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
 /** Streams a file from the gdrive edge function with progress + abort support. */
 async function streamDownload(
   file: DriveFile,
@@ -194,6 +264,9 @@ function triggerBlobDownload(blob: Blob, filename: string) {
 
 const SELECTION_STORAGE_KEY = 'drive-selection-v1';
 const ZIP_NAME_STORAGE_KEY = 'drive-last-zip-name';
+const VIEW_MODE_STORAGE_KEY = 'drive-view-mode';
+
+type ViewMode = 'grid' | 'list';
 
 type FileEntry = { file: DriveFile; format?: string };
 
@@ -255,6 +328,19 @@ export function DrivePanel() {
     }
   }, [selected]);
   const [selectingAll, setSelectingAll] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    try {
+      const v = localStorage.getItem(VIEW_MODE_STORAGE_KEY);
+      return v === 'list' ? 'list' : 'grid';
+    } catch {
+      return 'grid';
+    }
+  });
+  useEffect(() => {
+    try { localStorage.setItem(VIEW_MODE_STORAGE_KEY, viewMode); } catch { /* ignore */ }
+  }, [viewMode]);
+  const [foldersOpen, setFoldersOpen] = useState(true);
+  const [filesOpen, setFilesOpen] = useState(true);
   const [manager, setManager] = useState<ManagerState>({ kind: 'idle' });
   const managerRef = useRef<ManagerState>(manager);
   managerRef.current = manager;
@@ -298,6 +384,7 @@ export function DrivePanel() {
     () => files.filter((f) => !f.mimeType.includes('folder')),
     [files],
   );
+  const folders = useMemo(() => files.filter((f) => f.mimeType.includes('folder')), [files]);
   const allVisibleSelected = visibleSelectable.length > 0 && visibleSelectable.every((f) => selected.has(f.id));
   const someVisibleSelected = visibleSelectable.some((f) => selected.has(f.id)) && !allVisibleSelected;
   const toggleSelectAllVisible = useCallback(() => {
@@ -568,85 +655,131 @@ export function DrivePanel() {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto px-3 pb-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-6">
         {loading ? (
           <div className="p-8 text-center text-sm text-[#444746]">Loading…</div>
         ) : files.length === 0 ? (
           <div className="p-8 text-center text-sm text-[#444746]">No files found.</div>
         ) : (
-          <div className="rounded-2xl bg-white border border-[#e3e3e3] overflow-hidden">
-            <ul>
-              {files.map((f, i) => {
-                const canPreview = PREVIEWABLE(f.mimeType);
-                const isFolder = f.mimeType.includes('folder');
-                const isSelected = selected.has(f.id);
-                return (
-                  <li
-                    key={f.id}
-                    className={cn(
-                      'group px-4 py-3 flex items-center gap-4 transition-colors',
-                      i > 0 && 'border-t border-[#f0f0f0]',
-                      canPreview && 'cursor-pointer',
-                      isSelected ? 'bg-[#c2e7ff]/45 hover:bg-[#c2e7ff]/60' : 'hover:bg-[#f0f4f9]',
-                    )}
-                    onClick={() => { if (canPreview) setPreview(f); }}
-                  >
-                    <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-                      <Checkbox
-                        checked={isSelected}
-                        onCheckedChange={() => toggleSelected(f)}
-                        disabled={isFolder}
-                        aria-label={`Select ${f.name}`}
-                        className={cn(
-                          'border-[#747775] data-[state=checked]:bg-[#0b57d0] data-[state=checked]:border-[#0b57d0]',
-                          !isSelected && 'opacity-0 group-hover:opacity-100 transition-opacity',
-                        )}
-                      />
-                    </div>
-                    <div className="shrink-0">{fileIcon(f.mimeType)}</div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-sm text-[#1f1f1f] truncate">{f.name}</span>
-                        {f.size && <span className="text-xs text-[#5f6368] tabular-nums shrink-0">{formatBytes(f.size)}</span>}
-                      </div>
-                      <div className="text-xs text-[#5f6368] truncate">
-                        {f.owners?.[0]?.displayName ?? ''}
-                        {f.modifiedTime ? ` · ${new Date(f.modifiedTime).toLocaleDateString()}` : ''}
-                      </div>
-                    </div>
-                    <div className="shrink-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                      {!isFolder && (
-                        <DownloadButton file={f} disabled={manager.kind !== 'idle'} onDownload={(format) => startSingleDownload(f, format)} />
-                      )}
-                      {f.webViewLink && (
-                        <a
-                          href={f.webViewLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-[#0b57d0] hover:bg-[#e9eef6]"
-                        >
-                          Open <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="px-4 py-4 flex justify-center border-t border-[#f0f0f0]">
-              {nextPageToken ? (
-                <Button
-                  size="sm"
-                  onClick={loadMore}
-                  disabled={loadingMore}
-                  className="h-9 rounded-full border border-[#747775] bg-transparent px-5 text-[13px] font-medium text-[#0b57d0] shadow-none hover:bg-[#e9eef6]"
-                >
-                  {loadingMore ? 'Loading…' : 'Load more'}
-                </Button>
+          <div className="mx-auto max-w-[1500px] pt-1">
+            {!submitted && (
+              <h1 className="px-1 pb-4 pt-2 text-[22px] font-normal leading-7 text-[#1f1f1f]">
+                Welcome to Drive
+              </h1>
+            )}
+
+            {folders.length > 0 && (
+              <section className="mb-7">
+                <SectionHeader title="Suggested folders" open={foldersOpen} onToggle={() => setFoldersOpen((o) => !o)} />
+                {foldersOpen && (
+                  <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                    {folders.map((f) => <FolderCard key={f.id} file={f} />)}
+                  </div>
+                )}
+              </section>
+            )}
+
+            <section>
+              <div className="flex items-center justify-between">
+                <SectionHeader
+                  title={submitted ? 'Files' : 'Suggested files'}
+                  open={filesOpen}
+                  onToggle={() => setFilesOpen((o) => !o)}
+                />
+                <ViewToggle mode={viewMode} onChange={setViewMode} />
+              </div>
+
+              {filesOpen && (viewMode === 'grid' ? (
+                <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+                  {visibleSelectable.map((f) => (
+                    <FileCard
+                      key={f.id}
+                      file={f}
+                      selected={selected.has(f.id)}
+                      anySelected={selected.size > 0}
+                      disabled={manager.kind !== 'idle'}
+                      onToggleSelect={() => toggleSelected(f)}
+                      onOpenPreview={() => { if (PREVIEWABLE(f.mimeType)) setPreview(f); }}
+                      onDownload={(format) => startSingleDownload(f, format)}
+                    />
+                  ))}
+                </div>
               ) : (
-                <span className="text-xs text-[#5f6368]">End of results</span>
+                <div className="mt-2 overflow-hidden rounded-2xl border border-[#e3e3e3] bg-white">
+                  <ul>
+                    {visibleSelectable.map((f, i) => {
+                      const canPreview = PREVIEWABLE(f.mimeType);
+                      const isSelected = selected.has(f.id);
+                      return (
+                        <li
+                          key={f.id}
+                          className={cn(
+                            'group flex items-center gap-4 px-4 py-3 transition-colors',
+                            i > 0 && 'border-t border-[#f0f0f0]',
+                            canPreview && 'cursor-pointer',
+                            isSelected ? 'bg-[#c2e7ff]/45 hover:bg-[#c2e7ff]/60' : 'hover:bg-[#f0f4f9]',
+                          )}
+                          onClick={() => { if (canPreview) setPreview(f); }}
+                        >
+                          <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+                            <Checkbox
+                              checked={isSelected}
+                              onCheckedChange={() => toggleSelected(f)}
+                              aria-label={`Select ${f.name}`}
+                              className={cn(
+                                'border-[#747775] data-[state=checked]:bg-[#0b57d0] data-[state=checked]:border-[#0b57d0]',
+                                !isSelected && 'opacity-0 group-hover:opacity-100 transition-opacity',
+                              )}
+                            />
+                          </div>
+                          <div className="shrink-0">{fileIcon(f.mimeType)}</div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-baseline gap-2">
+                              <span className="truncate text-sm text-[#1f1f1f]">{f.name}</span>
+                              {f.size && <span className="shrink-0 text-xs tabular-nums text-[#5f6368]">{formatBytes(f.size)}</span>}
+                            </div>
+                            <div className="truncate text-xs text-[#5f6368]">
+                              {f.owners?.[0]?.displayName ?? ''}
+                              {f.modifiedTime ? ` · ${formatRelative(f.modifiedTime)}` : ''}
+                            </div>
+                          </div>
+                          <div className="flex shrink-0 items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                            <DownloadButton file={f} disabled={manager.kind !== 'idle'} onDownload={(format) => startSingleDownload(f, format)} />
+                            {f.webViewLink && (
+                              <a
+                                href={f.webViewLink}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-[#0b57d0] hover:bg-[#e9eef6]"
+                              >
+                                Open <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                            )}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+
+              {filesOpen && (
+                <div className="flex justify-center py-6">
+                  {nextPageToken ? (
+                    <Button
+                      size="sm"
+                      onClick={loadMore}
+                      disabled={loadingMore}
+                      className="h-9 rounded-full border border-[#747775] bg-transparent px-5 text-[13px] font-medium text-[#0b57d0] shadow-none hover:bg-[#e9eef6]"
+                    >
+                      {loadingMore ? 'Loading…' : 'Load more'}
+                    </Button>
+                  ) : (
+                    <span className="text-xs text-[#5f6368]">End of results</span>
+                  )}
+                </div>
               )}
-            </div>
+            </section>
           </div>
         )}
       </div>
@@ -712,6 +845,227 @@ export function DrivePanel() {
 // ─────────────────────────────────────────────────────────────────────
 // Sub-components
 // ─────────────────────────────────────────────────────────────────────
+
+function SectionHeader({ title, open, onToggle }: { title: string; open: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="flex items-center gap-1.5 rounded-md py-1 pr-2 text-[15px] font-medium text-[#1f1f1f] hover:text-[#0b57d0]"
+    >
+      <ChevronDown className={cn('h-5 w-5 text-[#444746] transition-transform', !open && '-rotate-90')} />
+      {title}
+    </button>
+  );
+}
+
+function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode) => void }) {
+  return (
+    <div className="flex items-center overflow-hidden rounded-full border border-[#c4c7c5]">
+      <button
+        type="button"
+        aria-label="List view"
+        aria-pressed={mode === 'list'}
+        onClick={() => onChange('list')}
+        className={cn('px-3 py-1.5 transition-colors', mode === 'list' ? 'bg-[#c2e7ff] text-[#001d35]' : 'text-[#444746] hover:bg-[#f0f4f9]')}
+      >
+        <ListIcon className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        aria-label="Grid view"
+        aria-pressed={mode === 'grid'}
+        onClick={() => onChange('grid')}
+        className={cn('px-3 py-1.5 transition-colors', mode === 'grid' ? 'bg-[#c2e7ff] text-[#001d35]' : 'text-[#444746] hover:bg-[#f0f4f9]')}
+      >
+        <LayoutGrid className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function InitialsAvatar({ name }: { name?: string }) {
+  return (
+    <div
+      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-medium text-white"
+      style={{ backgroundColor: avatarColor(name) }}
+      title={name}
+    >
+      {initialsOf(name)}
+    </div>
+  );
+}
+
+/**
+ * Lazily fetches a file's preview via the thumbnail proxy once the card scrolls near the
+ * viewport (so a 50-file page doesn't fire 50 requests at once), then renders it. Falls
+ * back to a file-type icon whenever no preview is available.
+ */
+function DriveThumbnail({ file, className }: { file: DriveFile; className?: string }) {
+  const initial = thumbCache.get(file.id);
+  const ref = useRef<HTMLDivElement>(null);
+  const [src, setSrc] = useState<string | null>(initial || null);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'fail'>(
+    initial ? 'ok' : initial === '' ? 'fail' : 'idle',
+  );
+
+  // Reveal: mark visible when the card enters (or nears) the viewport.
+  const [visible, setVisible] = useState<boolean>(thumbCache.get(file.id) !== undefined);
+  useEffect(() => {
+    if (visible) return;
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setVisible(true); io.disconnect(); }
+    }, { rootMargin: '300px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [visible]);
+
+  // Fetch: only once visible and not already resolved/loading.
+  useEffect(() => {
+    if (!visible || status !== 'idle') return;
+    let active = true;
+    setStatus('loading');
+    fetchThumbnailUrl(file)
+      .then((u) => { if (!active) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
+      .catch(() => { if (active) setStatus('fail'); });
+    return () => { active = false; };
+  }, [visible, status, file]);
+
+  if (status === 'ok' && src) {
+    return (
+      <img
+        src={src}
+        alt=""
+        className={cn('object-cover object-top', className)}
+        onError={() => setStatus('fail')}
+      />
+    );
+  }
+  return (
+    <div ref={ref} className={cn('flex items-center justify-center bg-[#f1f3f4]', className)}>
+      {status === 'fail'
+        ? <span className="scale-[2]">{fileIcon(file.mimeType)}</span>
+        : <div className="h-7 w-7 animate-pulse rounded-full bg-[#dadce0]" />}
+    </div>
+  );
+}
+
+function CardKebab({ file, onDownload, disabled, showDownload = true }: { file: DriveFile; onDownload: (format?: string) => void; disabled?: boolean; showDownload?: boolean }) {
+  const formats = NATIVE_EXPORT_FORMATS[file.mimeType];
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          disabled={disabled}
+          aria-label="More actions"
+          className="h-8 w-8 rounded-full text-[#444746] opacity-0 transition-opacity hover:bg-[#e9eef6] group-hover:opacity-100 data-[state=open]:opacity-100"
+        >
+          <MoreVertical className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56 rounded-xl border-[#e3e3e3] p-1.5 shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)]">
+        {showDownload && (formats ? (
+          formats.map((f) => (
+            <DropdownMenuItem key={f.format} onClick={() => onDownload(f.format)} className="rounded-lg px-3 py-2 text-[13px] text-[#1f1f1f] focus:bg-[#f0f4f9]">
+              <Download className="mr-2 h-4 w-4 text-[#444746]" /> Download {f.label}
+            </DropdownMenuItem>
+          ))
+        ) : (
+          <DropdownMenuItem onClick={() => onDownload()} className="rounded-lg px-3 py-2 text-[13px] text-[#1f1f1f] focus:bg-[#f0f4f9]">
+            <Download className="mr-2 h-4 w-4 text-[#444746]" /> Download
+          </DropdownMenuItem>
+        ))}
+        {file.webViewLink && (
+          <DropdownMenuItem
+            onClick={() => window.open(file.webViewLink, '_blank', 'noopener')}
+            className="rounded-lg px-3 py-2 text-[13px] text-[#1f1f1f] focus:bg-[#f0f4f9]"
+          >
+            <ExternalLink className="mr-2 h-4 w-4 text-[#444746]" /> Open in Drive
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function FolderCard({ file }: { file: DriveFile }) {
+  return (
+    <div className="group flex items-center gap-3 rounded-xl border border-[#dadce0] bg-white px-4 py-3.5 transition-colors hover:bg-[#f0f4f9]">
+      <Folder className="h-5 w-5 shrink-0 text-[#5f6368]" />
+      <button
+        type="button"
+        onClick={() => file.webViewLink && window.open(file.webViewLink, '_blank', 'noopener')}
+        className="min-w-0 flex-1 truncate text-left text-[13px] font-medium text-[#1f1f1f]"
+        title={file.name}
+      >
+        {file.name}
+      </button>
+      {file.webViewLink && (
+        <CardKebab file={file} onDownload={() => undefined} showDownload={false} />
+      )}
+    </div>
+  );
+}
+
+function FileCard({ file, selected, anySelected, disabled, onToggleSelect, onOpenPreview, onDownload }: {
+  file: DriveFile;
+  selected: boolean;
+  anySelected: boolean;
+  disabled?: boolean;
+  onToggleSelect: () => void;
+  onOpenPreview: () => void;
+  onDownload: (format?: string) => void;
+}) {
+  const ownerName = file.owners?.[0]?.displayName;
+  return (
+    <div
+      className={cn(
+        'group relative flex flex-col overflow-hidden rounded-xl border bg-white transition-colors',
+        selected ? 'border-[#0b57d0] bg-[#f0f6ff]' : 'border-[#dadce0] hover:border-[#c4c7c5] hover:bg-[#f8fafd]',
+      )}
+    >
+      <div className="flex h-11 items-center gap-2 px-3">
+        <span className="shrink-0">{fileIcon(file.mimeType)}</span>
+        <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-[#1f1f1f]" title={file.name}>{file.name}</span>
+        <div className="shrink-0">
+          <CardKebab file={file} onDownload={onDownload} disabled={disabled} />
+        </div>
+      </div>
+
+      <div
+        onClick={onOpenPreview}
+        className="relative h-[150px] w-full cursor-pointer border-y border-[#e8eaed] bg-[#f8fafd]"
+      >
+        <DriveThumbnail file={file} className="h-full w-full" />
+        <span
+          className={cn(
+            'absolute left-2 top-2 transition-opacity',
+            selected || anySelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Checkbox
+            checked={selected}
+            onCheckedChange={onToggleSelect}
+            aria-label={`Select ${file.name}`}
+            className="h-[18px] w-[18px] border-[#747775] bg-white data-[state=checked]:border-[#0b57d0] data-[state=checked]:bg-[#0b57d0]"
+          />
+        </span>
+      </div>
+
+      <div className="flex h-11 items-center gap-2 px-3">
+        <InitialsAvatar name={ownerName} />
+        <span className="min-w-0 flex-1 truncate text-[12px] text-[#5f6368]">
+          {ownerName ? `${ownerName} · ` : ''}{formatRelative(file.modifiedTime)}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function DownloadButton({ file, onDownload, disabled }: {
   file: DriveFile;
