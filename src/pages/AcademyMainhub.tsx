@@ -212,14 +212,14 @@ export default function AcademyMainhub() {
           </div>
         </div>
 
-        <div className="relative flex h-full w-full max-w-[1060px] items-center justify-center gap-3 2xl:max-w-[1100px] 2xl:gap-4">
-          <div className="hidden w-[360px] shrink-0 xl:flex 2xl:w-[390px]">
+        <div className="relative flex h-full w-full max-w-[1060px] items-center justify-center gap-8 2xl:max-w-[1100px] 2xl:gap-12">
+          <div className="hidden w-[320px] shrink-0 xl:flex 2xl:w-[360px]">
             <SmartLRTrainingCard />
           </div>
 
           <section
             aria-label="Mainhub orbital workspace"
-            className="relative flex h-full min-h-[560px] min-w-0 flex-1 items-center justify-center"
+            className="relative flex h-full min-h-[560px] min-w-0 flex-1 items-center justify-center pl-6 2xl:pl-10"
           >
             <div
               data-tour="mainhub-orbital"
