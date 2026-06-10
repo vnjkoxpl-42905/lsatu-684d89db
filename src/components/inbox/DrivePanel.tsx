@@ -931,7 +931,8 @@ function DriveThumbnail({ file, className }: { file: DriveFile; className?: stri
       .then((u) => { if (!active) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
       .catch(() => { if (active) setStatus('fail'); });
     return () => { active = false; };
-  }, [visible, status, file]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, status, file.id]);
 
   if (status === 'ok' && src) {
     return (
