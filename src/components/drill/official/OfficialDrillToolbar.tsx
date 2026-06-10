@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check } from "lucide-react";
+import { FileText } from "lucide-react";
 import type { HighlightColor } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
 import {
@@ -14,6 +14,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type HighlightMode = "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
 
@@ -37,6 +43,11 @@ interface Props {
   /** Active font scale value (1.0 = default). */
   fontScale: number;
   setFontScale: (n: number) => void;
+  /** Show the notes toggle icon (Smart Drill only). */
+  notesButtonVisible?: boolean;
+  /** Whether the notes panel is currently open (drives the active state). */
+  notesOpen?: boolean;
+  onToggleNotes?: () => void;
 }
 
 export default function OfficialDrillToolbar({
@@ -48,6 +59,9 @@ export default function OfficialDrillToolbar({
   setSearchTerm,
   fontScale,
   setFontScale,
+  notesButtonVisible,
+  notesOpen,
+  onToggleNotes,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
@@ -199,6 +213,35 @@ export default function OfficialDrillToolbar({
                 >
                   {timerLabelPrefix}: {paddedTimer}
                 </div>
+              </>
+            )}
+
+            {notesButtonVisible && onToggleNotes && (
+              <>
+                <PipeSeparator />
+                <TooltipProvider delayDuration={150}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        onClick={onToggleNotes}
+                        aria-label={notesOpen ? "Close notes" : "Open notes"}
+                        aria-pressed={!!notesOpen}
+                        className={cn(
+                          "p-1.5 rounded-sm transition-colors flex items-center justify-center",
+                          notesOpen
+                            ? "bg-emerald-100 text-emerald-700 border border-emerald-300"
+                            : "border border-transparent text-slate-800 hover:bg-slate-200",
+                        )}
+                      >
+                        <FileText className="w-5 h-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      {notesOpen ? "Close notes" : "Open notes"}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </>
             )}
           </div>

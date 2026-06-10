@@ -230,6 +230,8 @@ function DrillContent() {
   // Official-layout-only local UI state (Find Text + Aa font scale).
   const [officialSearchTerm, setOfficialSearchTerm] = React.useState('');
   const [officialFontScale, setOfficialFontScale] = React.useState(1);
+  // Smart Drill docked notes panel open state.
+  const [notesOpen, setNotesOpen] = React.useState(false);
   
   const timer = useTimerContextSafe();
 
@@ -2598,6 +2600,9 @@ function DrillContent() {
           isPaused={officialIsPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
+          notesPanelEnabled={isAdaptiveMode}
+          notesPanelOpen={notesOpen}
+          onNotesPanelClose={() => setNotesOpen(false)}
           tutorToggleVisible={session?.mode === 'adaptive'}
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
@@ -2637,6 +2642,9 @@ function DrillContent() {
             setSearchTerm={setOfficialSearchTerm}
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
+            notesButtonVisible={isAdaptiveMode}
+            notesOpen={notesOpen}
+            onToggleNotes={() => setNotesOpen(o => !o)}
           />
           <OfficialQuestionPane
             question={{

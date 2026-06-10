@@ -2,6 +2,7 @@ import * as React from "react";
 import { Play, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
+import DrillNotesPanel from "@/components/drill/official/DrillNotesPanel";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,12 @@ interface Props {
   tutorMode?: boolean;
   /** Toggle handler for Tutor mode. */
   onTutorModeChange?: (next: boolean) => void;
+  /** Enable the docked Notes panel (Smart Drill). Replaces the floating notepad. */
+  notesPanelEnabled?: boolean;
+  /** Whether the docked Notes panel is open. */
+  notesPanelOpen?: boolean;
+  /** Close handler for the docked Notes panel. */
+  onNotesPanelClose?: () => void;
 }
 
 /**
@@ -36,6 +43,9 @@ export default function OfficialDrillFrame({
   tutorToggleVisible,
   tutorMode,
   onTutorModeChange,
+  notesPanelEnabled,
+  notesPanelOpen,
+  onNotesPanelClose,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -89,16 +99,51 @@ export default function OfficialDrillFrame({
           </div>
         )}
       </header>
-      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex relative">
-        <div
-          className={
-            "mx-auto w-full max-w-[1400px] flex-1 min-h-[700px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity] " +
-            (isPaused ? "blur-[3px] opacity-60 pointer-events-none select-none" : "")
-          }
-          aria-hidden={isPaused ? "true" : undefined}
-        >
-          {children}
+      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex relative overflow-hidden">
+        <div className="flex-1 flex min-w-0">
+          <div
+            className={
+              "mx-auto w-full max-w-[1400px] min-h-[700px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity] " +
+              (isPaused ? "blur-[3px] opacity-60 pointer-events-none select-none" : "")
+            }
+            aria-hidden={isPaused ? "true" : undefined}
+          >
+            {children}
+          </div>
         </div>
+
+        {/* Docked Notes panel (Smart Drill). md+: pushes the card; mobile: overlay drawer. */}
+        {notesPanelEnabled && (
+          <>
+            {/* md+ push column */}
+            <div
+              className={cn(
+                "hidden md:block shrink-0 overflow-hidden transition-[width] duration-300 ease-out",
+                notesPanelOpen ? "w-[380px] pl-2 sm:pl-4" : "w-0",
+              )}
+            >
+              {notesPanelOpen && <DrillNotesPanel onClose={onNotesPanelClose} />}
+            </div>
+
+            {/* mobile scrim + overlay drawer */}
+            {notesPanelOpen && (
+              <button
+                type="button"
+                aria-label="Close notes"
+                onClick={onNotesPanelClose}
+                className="md:hidden absolute inset-0 z-30 bg-black/20"
+              />
+            )}
+            <div
+              className={cn(
+                "md:hidden absolute inset-y-0 right-0 z-40 max-w-[100vw] transition-transform duration-300 ease-out",
+                notesPanelOpen ? "translate-x-0" : "translate-x-full pointer-events-none",
+              )}
+            >
+              <DrillNotesPanel onClose={onNotesPanelClose} />
+            </div>
+          </>
+        )}
 
         {isPaused && (
           <div
@@ -124,7 +169,7 @@ export default function OfficialDrillFrame({
           </div>
         )}
       </main>
-      {!isPaused && <DrillNotepad />}
+      {!isPaused && !notesPanelEnabled && <DrillNotepad />}
     </div>
   );
 }

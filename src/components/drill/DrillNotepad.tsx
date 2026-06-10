@@ -5,11 +5,7 @@ import {
   getActiveDrillQid,
   subscribeActiveDrillQid,
 } from "@/lib/drillNotepadBus";
-
-const STORAGE_PREFIX = "drill-notepad:";
-const GLOBAL_KEY = `${STORAGE_PREFIX}global`;
-const keyFor = (qid: string | null) =>
-  qid ? `${STORAGE_PREFIX}q:${qid}` : GLOBAL_KEY;
+import { readDrillNotes, writeDrillNotes } from "@/lib/drillNotesStorage";
 
 /**
  * Mini notepad pinned to the bottom-left of the drill page.
@@ -27,22 +23,12 @@ export default function DrillNotepad() {
 
   // Load notes whenever the active qid changes.
   React.useEffect(() => {
-    try {
-      setValue(localStorage.getItem(keyFor(qid)) ?? "");
-    } catch {
-      setValue("");
-    }
+    setValue(readDrillNotes(qid));
   }, [qid]);
 
-  // Persist notes for the current qid (debounced via microtask).
+  // Persist notes for the current qid.
   React.useEffect(() => {
-    try {
-      const k = keyFor(qid);
-      if (value) localStorage.setItem(k, value);
-      else localStorage.removeItem(k);
-    } catch {
-      /* ignore */
-    }
+    writeDrillNotes(qid, value);
   }, [value, qid]);
 
   const hasNotes = value.trim().length > 0;
