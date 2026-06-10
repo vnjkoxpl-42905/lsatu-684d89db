@@ -93,9 +93,9 @@ function formatBytes(b?: string | number) {
 }
 
 function fileIcon(mime: string) {
-  if (mime.startsWith('image/')) return <ImageIcon className="w-4 h-4 text-muted-foreground" />;
-  if (mime.includes('folder')) return <Folder className="w-4 h-4 text-muted-foreground" />;
-  return <FileText className="w-4 h-4 text-muted-foreground" />;
+  if (mime.startsWith('image/')) return <ImageIcon className="w-5 h-5 text-[#34a853]" />;
+  if (mime.includes('folder')) return <Folder className="w-5 h-5 text-[#5f6368]" />;
+  return <FileText className="w-5 h-5 text-[#4285f4]" />;
 }
 
 const PREVIEWABLE = (mime: string) =>
@@ -488,44 +488,51 @@ export function DrivePanel() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="border-b border-border px-4 py-3 flex items-center gap-2 shrink-0">
+    <div className="h-full flex flex-col bg-[#f8fafd]">
+      <div className="px-4 pt-4 pb-3 flex items-center gap-2 shrink-0">
         <form
           onSubmit={(e) => { e.preventDefault(); setSubmitted(query.trim()); }}
-          className="flex-1 relative"
+          className="flex-1 relative group"
         >
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-[#444746] pointer-events-none" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search files in Drive"
-            className="pl-8 h-9 text-sm"
+            className="pl-12 h-12 rounded-full border-transparent bg-[#e9eef6] text-base text-[#1f1f1f] placeholder:text-[#444746] shadow-none transition-colors focus-visible:ring-0 focus-visible:bg-white focus-visible:shadow-[0_1px_3px_1px_rgba(60,64,67,0.15)]"
           />
         </form>
-        <Button variant="ghost" size="icon" onClick={() => load(submitted)} aria-label="Refresh">
-          <RefreshCw className={cn('w-4 h-4', loading && 'animate-spin')} />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => load(submitted)}
+          aria-label="Refresh"
+          className="h-11 w-11 rounded-full text-[#444746] hover:bg-[#e9eef6] hover:text-[#1f1f1f]"
+        >
+          <RefreshCw className={cn('w-5 h-5', loading && 'animate-spin')} />
         </Button>
       </div>
 
       {/* Selection bar */}
       {files.length > 0 && (
-        <div className="border-b border-border px-4 py-2 flex items-center gap-3 shrink-0 bg-muted/20">
+        <div className="px-5 py-2 flex items-center gap-3 shrink-0">
           <Checkbox
             checked={allVisibleSelected ? true : someVisibleSelected ? 'indeterminate' : false}
             onCheckedChange={toggleSelectAllVisible}
             aria-label="Select all on this page"
+            className="border-[#747775] data-[state=checked]:bg-[#0b57d0] data-[state=checked]:border-[#0b57d0]"
           />
-          <span className="text-xs text-muted-foreground">
+          <span className="text-[13px] font-medium text-[#444746]">
             {selected.size > 0 ? `${selected.size} selected` : `${visibleSelectable.length} files`}
           </span>
           {selected.size > 0 && (
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+              className="h-7 px-2.5 rounded-full text-xs text-[#0b57d0] hover:bg-[#e9eef6] hover:text-[#0b57d0]"
               onClick={clearSelection}
             >
-              <X className="w-3 h-3 mr-0.5" />
+              <X className="w-3.5 h-3.5 mr-0.5" />
               Clear
             </Button>
           )}
@@ -533,13 +540,13 @@ export function DrivePanel() {
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+              className="h-7 px-2.5 rounded-full text-xs text-[#0b57d0] hover:bg-[#e9eef6] hover:text-[#0b57d0]"
               onClick={selectAllMatching}
               disabled={selectingAll || manager.kind !== 'idle'}
             >
               {selectingAll ? (
                 <>
-                  <RefreshCw className="w-3 h-3 mr-0.5 animate-spin" />
+                  <RefreshCw className="w-3.5 h-3.5 mr-0.5 animate-spin" />
                   Selecting…
                 </>
               ) : (
@@ -550,27 +557,26 @@ export function DrivePanel() {
           <div className="ml-auto">
             <Button
               size="sm"
-              variant="outline"
-              className="h-7 text-xs gap-1.5"
+              className="h-9 rounded-full gap-2 bg-[#0b57d0] px-4 text-[13px] font-medium text-white shadow-none hover:bg-[#0842a0] disabled:bg-[#e9eef6] disabled:text-[#9aa0a6]"
               disabled={selected.size === 0 || manager.kind !== 'idle'}
               onClick={startBulkZipDownload}
             >
-              <FileArchive className="w-3.5 h-3.5" />
+              <FileArchive className="w-4 h-4" />
               Download as ZIP
             </Button>
           </div>
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto px-3 pb-4">
         {loading ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">Loading…</div>
+          <div className="p-8 text-center text-sm text-[#444746]">Loading…</div>
         ) : files.length === 0 ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">No files found.</div>
+          <div className="p-8 text-center text-sm text-[#444746]">No files found.</div>
         ) : (
-          <>
-            <ul className="divide-y divide-border">
-              {files.map((f) => {
+          <div className="rounded-2xl bg-white border border-[#e3e3e3] overflow-hidden">
+            <ul>
+              {files.map((f, i) => {
                 const canPreview = PREVIEWABLE(f.mimeType);
                 const isFolder = f.mimeType.includes('folder');
                 const isSelected = selected.has(f.id);
@@ -578,9 +584,10 @@ export function DrivePanel() {
                   <li
                     key={f.id}
                     className={cn(
-                      'px-4 py-2.5 flex items-center gap-3 hover:bg-muted/40',
+                      'group px-4 py-3 flex items-center gap-4 transition-colors',
+                      i > 0 && 'border-t border-[#f0f0f0]',
                       canPreview && 'cursor-pointer',
-                      isSelected && 'bg-primary/5',
+                      isSelected ? 'bg-[#c2e7ff]/45 hover:bg-[#c2e7ff]/60' : 'hover:bg-[#f0f4f9]',
                     )}
                     onClick={() => { if (canPreview) setPreview(f); }}
                   >
@@ -590,15 +597,19 @@ export function DrivePanel() {
                         onCheckedChange={() => toggleSelected(f)}
                         disabled={isFolder}
                         aria-label={`Select ${f.name}`}
+                        className={cn(
+                          'border-[#747775] data-[state=checked]:bg-[#0b57d0] data-[state=checked]:border-[#0b57d0]',
+                          !isSelected && 'opacity-0 group-hover:opacity-100 transition-opacity',
+                        )}
                       />
                     </div>
                     <div className="shrink-0">{fileIcon(f.mimeType)}</div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-sm font-medium truncate">{f.name}</span>
-                        {f.size && <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">{formatBytes(f.size)}</span>}
+                        <span className="text-sm text-[#1f1f1f] truncate">{f.name}</span>
+                        {f.size && <span className="text-xs text-[#5f6368] tabular-nums shrink-0">{formatBytes(f.size)}</span>}
                       </div>
-                      <div className="text-[11px] text-muted-foreground truncate">
+                      <div className="text-xs text-[#5f6368] truncate">
                         {f.owners?.[0]?.displayName ?? ''}
                         {f.modifiedTime ? ` · ${new Date(f.modifiedTime).toLocaleDateString()}` : ''}
                       </div>
@@ -612,9 +623,9 @@ export function DrivePanel() {
                           href={f.webViewLink}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline px-1.5"
+                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-[#0b57d0] hover:bg-[#e9eef6]"
                         >
-                          Open <ExternalLink className="w-3 h-3" />
+                          Open <ExternalLink className="w-3.5 h-3.5" />
                         </a>
                       )}
                     </div>
@@ -622,16 +633,21 @@ export function DrivePanel() {
                 );
               })}
             </ul>
-            <div className="px-4 py-4 flex justify-center">
+            <div className="px-4 py-4 flex justify-center border-t border-[#f0f0f0]">
               {nextPageToken ? (
-                <Button variant="outline" size="sm" onClick={loadMore} disabled={loadingMore}>
+                <Button
+                  size="sm"
+                  onClick={loadMore}
+                  disabled={loadingMore}
+                  className="h-9 rounded-full border border-[#747775] bg-transparent px-5 text-[13px] font-medium text-[#0b57d0] shadow-none hover:bg-[#e9eef6]"
+                >
                   {loadingMore ? 'Loading…' : 'Load more'}
                 </Button>
               ) : (
-                <span className="text-[11px] text-muted-foreground">End of results</span>
+                <span className="text-xs text-[#5f6368]">End of results</span>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
 
@@ -709,12 +725,12 @@ function DownloadButton({ file, onDownload, disabled }: {
       <Button
         variant="ghost"
         size="sm"
-        className="h-7 px-2 text-[11px]"
+        className="h-8 rounded-full px-3 text-[13px] font-medium text-[#0b57d0] hover:bg-[#e9eef6] hover:text-[#0b57d0]"
         onClick={() => onDownload()}
         disabled={disabled}
         aria-label="Download"
       >
-        <Download className="w-3 h-3 mr-1" />
+        <Download className="w-3.5 h-3.5 mr-1.5" />
         Download
       </Button>
     );
@@ -726,18 +742,22 @@ function DownloadButton({ file, onDownload, disabled }: {
         <Button
           variant="ghost"
           size="sm"
-          className="h-7 px-2 text-[11px]"
+          className="h-8 rounded-full px-3 text-[13px] font-medium text-[#0b57d0] hover:bg-[#e9eef6] hover:text-[#0b57d0]"
           disabled={disabled}
           aria-label="Download as"
         >
-          <Download className="w-3 h-3 mr-1" />
+          <Download className="w-3.5 h-3.5 mr-1.5" />
           Download
-          <ChevronDown className="w-3 h-3 ml-0.5 opacity-60" />
+          <ChevronDown className="w-3.5 h-3.5 ml-1 opacity-70" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-52 rounded-xl border-[#e3e3e3] p-1.5 shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)]">
         {formats.map((f) => (
-          <DropdownMenuItem key={f.format} onClick={() => onDownload(f.format)} className="text-xs">
+          <DropdownMenuItem
+            key={f.format}
+            onClick={() => onDownload(f.format)}
+            className="rounded-lg px-3 py-2 text-[13px] text-[#1f1f1f] focus:bg-[#f0f4f9]"
+          >
             {f.label}
           </DropdownMenuItem>
         ))}
