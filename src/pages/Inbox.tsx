@@ -198,11 +198,6 @@ export default function Inbox() {
                 <h1 className="text-sm font-bold leading-tight tracking-tight">
                   {headerName}
                 </h1>
-                {!is_admin && (
-                  <p className="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">
-                    Direct coaching thread
-                  </p>
-                )}
               </div>
               {is_admin && unreadCount > 0 && (
                 <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
