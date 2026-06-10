@@ -1935,6 +1935,7 @@ function DrillContent() {
         
         if (error) throw error;
         setIsFlagged(false);
+        toast.success("Question unflagged");
       } else {
         // Flag
         const { error } = await supabase
@@ -1954,6 +1955,12 @@ function DrillContent() {
           throw error;
         }
         setIsFlagged(true);
+        toast.success("Question flagged", {
+          action: {
+            label: "View Flagged",
+            onClick: () => navigate("/flagged"),
+          },
+        });
       }
     } catch (err) {
       console.error('Error toggling flag:', err);
@@ -1961,7 +1968,7 @@ function DrillContent() {
   };
 
   const handleNavigation = (destination: '/practice' | '/mainhub' | '/dashboard') => {
-    setExitDestination(destination);
+    setExitDestination(returnTo || destination);
     setShowExitDialog(true);
   };
 
@@ -2051,7 +2058,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate('/mainhub')}
+          onBack={() => navigate(returnTo || '/mainhub')}
         />
       );
     }
@@ -2063,7 +2070,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate('/mainhub')}
+          onBack={() => navigate(returnTo || '/mainhub')}
         />
       );
     }
@@ -2077,7 +2084,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate('/mainhub')}
+        onBack={() => navigate(returnTo || '/mainhub')}
       />
     );
   }
@@ -2121,7 +2128,9 @@ function DrillContent() {
         <Card className="p-8 max-w-md text-center">
           <h2 className="text-xl font-semibold mb-3">No questions available</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
-          <Button onClick={() => navigate('/mainhub')}>Return to Main Hub</Button>
+          <Button onClick={() => navigate(returnTo || '/mainhub')}>
+            Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
+          </Button>
         </Card>
       </div>
     );
@@ -2153,7 +2162,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate('/mainhub');
+            navigate(returnTo || '/mainhub');
           }}
         />
       );
@@ -2196,8 +2205,8 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate('/mainhub')}>
-              Return to Main Hub
+            <Button onClick={() => navigate(returnTo || '/mainhub')}>
+              Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
             </Button>
           </div>
         </Card>
@@ -2555,6 +2564,14 @@ function DrillContent() {
       {
         label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
       },
+    ] : returnTo ? [
+      {
+        label: returnTo === '/flagged' ? 'Flagged Questions' : 'Library',
+        onClick: () => navigate(returnTo)
+      },
+      {
+        label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
+      }
     ] : [
       { label: 'Library', onClick: () => navigate('/practice') },
       ...(currentQuestion.pt
@@ -2761,7 +2778,7 @@ function DrillContent() {
 
         {/* Unified Top Bar */}
         <DrillTopBar
-          onBack={() => navigate('/practice')}
+          onBack={() => navigate(returnTo || '/practice')}
           questionLabel={currentQuestion ? (
             window.innerWidth >= 640
               ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`

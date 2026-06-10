@@ -78,7 +78,7 @@ export default function FlaggedQuestions() {
     const question = questionBank.getQuestion(qid);
     if (!question) return;
 
-    navigate('/drill', {
+    navigate('/drill?returnTo=/flagged', {
       state: {
         mode: 'type-drill',
         config: {
