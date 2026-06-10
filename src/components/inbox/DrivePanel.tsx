@@ -154,16 +154,20 @@ async function fetchThumbnailUrl(file: DriveFile, sz = 400): Promise<string | nu
         apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
       },
     });
+    console.log('[thumb] response', id, res.status, res.headers.get('content-type'));
     if (!res.ok) { thumbCache.set(id, ''); return null; }
     const blob = await res.blob();
+    console.log('[thumb] blob', id, blob.size, blob.type);
     if (blob.size === 0) { thumbCache.set(id, ''); return null; }
     const ct = res.headers.get('content-type') ?? blob.type ?? 'image/png';
     const typed = blob.type ? blob : new Blob([blob], { type: ct });
     if (!ct.startsWith('image/')) { thumbCache.set(id, ''); return null; }
     const objUrl = URL.createObjectURL(typed);
+    console.log('[thumb] objUrl', id, objUrl);
     thumbCache.set(id, objUrl);
     return objUrl;
-  } catch {
+  } catch (e) {
+    console.error('[thumb] error', id, e);
     thumbCache.set(id, '');
     return null;
   }
