@@ -21,7 +21,16 @@ import {
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
 
-export function MessageComposer({ conversationId, onSent }: { conversationId: string; onSent?: () => void }) {
+export function MessageComposer({
+  conversationId,
+  onSent,
+  onOptimisticSend,
+}: {
+  conversationId: string;
+  onSent?: () => void;
+  /** Optional: render the outgoing text instantly before the network round-trip. */
+  onOptimisticSend?: (body: string) => void;
+}) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
   const [body, setBody] = useState('');
@@ -165,6 +174,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
     if (!text && !file && driveAttachments.length === 0) return;
     setSending(true);
 
+    // Show the text immediately; the refetch in onSent reconciles it.
+    if (text) onOptimisticSend?.(text);
+
     try {
       const { data: msg, error: msgErr } = await supabase
         .from('messages')
@@ -231,6 +243,13 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         textareaRef.current.style.overflowY = 'hidden';
       }
       onSent?.();
+
+      // Reach: if the recipient isn't currently online, the edge function
+      // queues an email so messages aren't missed. Fire-and-forget — a
+      // notification failure must never block or surface over a sent message.
+      void supabase.functions
+        .invoke('notify-new-message', { body: { conversationId, messageId: msg.id } })
+        .catch((err) => console.warn('[MessageComposer] notify-new-message failed', err));
     } catch (e: unknown) {
       toast.error(errorMessage(e, 'Failed to send message'));
     } finally {
