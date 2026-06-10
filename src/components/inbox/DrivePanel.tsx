@@ -932,14 +932,17 @@ function DriveThumbnail({ file, className }: { file: DriveFile; className?: stri
   // Fetch: only once visible and not already resolved/loading.
   useEffect(() => {
     if (!visible || status !== 'idle') return;
-    let active = true;
     setStatus('loading');
+    let cancelled = false;
     fetchThumbnailUrl(file)
-      .then((u) => { if (!active) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
-      .catch(() => { if (active) setStatus('fail'); });
-    return () => { active = false; };
+      .then((u) => { if (cancelled) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
+      .catch(() => { if (!cancelled) setStatus('fail'); });
+    return () => { cancelled = true; };
+    // Only re-run when visibility or file identity changes — including `status` here
+    // causes the setStatus('loading') call above to immediately re-trigger the effect,
+    // which cancels the in-flight promise before it can resolve.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, status, file.id]);
+  }, [visible, file.id]);
 
   if (status === 'ok' && src) {
     return (
