@@ -156,8 +156,11 @@ async function fetchThumbnailUrl(file: DriveFile, sz = 400): Promise<string | nu
     });
     if (!res.ok) { thumbCache.set(id, ''); return null; }
     const blob = await res.blob();
-    if (!blob.type.startsWith('image/')) { thumbCache.set(id, ''); return null; }
-    const objUrl = URL.createObjectURL(blob);
+    if (blob.size === 0) { thumbCache.set(id, ''); return null; }
+    const ct = res.headers.get('content-type') ?? blob.type ?? 'image/png';
+    if (!ct.startsWith('image/')) { thumbCache.set(id, ''); return null; }
+    const typed = blob.type ? blob : new Blob([blob], { type: ct });
+    const objUrl = URL.createObjectURL(typed);
     thumbCache.set(id, objUrl);
     return objUrl;
   } catch {
@@ -925,13 +928,17 @@ function DriveThumbnail({ file, className }: { file: DriveFile; className?: stri
   // Fetch: only once visible and not already resolved/loading.
   useEffect(() => {
     if (!visible || status !== 'idle') return;
-    let active = true;
     setStatus('loading');
+    let cancelled = false;
     fetchThumbnailUrl(file)
-      .then((u) => { if (!active) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
-      .catch(() => { if (active) setStatus('fail'); });
-    return () => { active = false; };
-  }, [visible, status, file]);
+      .then((u) => { if (cancelled) return; if (u) { setSrc(u); setStatus('ok'); } else setStatus('fail'); })
+      .catch(() => { if (!cancelled) setStatus('fail'); });
+    return () => { cancelled = true; };
+    // Only re-run when visibility or file identity changes — including `status` here
+    // causes the setStatus('loading') call above to immediately re-trigger the effect,
+    // which cancels the in-flight promise before it can resolve.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, file.id]);
 
   if (status === 'ok' && src) {
     return (
