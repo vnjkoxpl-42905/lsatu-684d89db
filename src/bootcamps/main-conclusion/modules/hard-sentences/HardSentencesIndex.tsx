@@ -1,152 +1,165 @@
 /**
- * Module 5: Hard Sentences — index + section renderer with full bodies.
- * Phase E authored 2026-05-01.
+ * Module 5: Hard Sentences — letterpress hub with truthful per-entry progress.
+ * Section bodies live in modules/hard-sentences/sections/.
+ * (The legacy HardSentenceSection renderer below is retained until the new
+ * section pages replace it in routing; it is deleted in the cleanup stage.)
  */
 
 import { Link, useParams } from 'react-router-dom';
-import { ArrowRight, Award } from 'lucide-react';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { ArrowRight, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
-import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { ClusterDecomposer, type ClusterSentence } from '@/bootcamps/main-conclusion/components/cluster-decomposer/ClusterDecomposer';
-import { HARD_SECTIONS, type Block, type HardSection } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
+import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { ClusterDecomposer as LegacyClusterDecomposer, type ClusterSentence } from '@/bootcamps/main-conclusion/components/cluster-decomposer/ClusterDecomposer';
+import { HARD_SECTIONS, type Block } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
+import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
+import {
+  HARD_ENTRIES,
+  firstIncomplete,
+  isEntryComplete,
+  type HardCompletionSnapshot,
+  type HardEntry,
+} from '@/bootcamps/main-conclusion/modules/hard-sentences/hardSentencesNav';
 
-const CAPSTONE: { id: string; number: string; title: string; route: string } = {
-  id: 'MC-HS-5.8',
-  number: '5.8',
-  title: 'Capstone (5 final check items)',
-  route: '/hard-sentences/capstone',
+const KIND_LABEL: Record<HardEntry['kind'], string> = {
+  note: 'Notes',
+  lab: 'Guided lab',
+  drill: 'Graded drill',
+  capstone: 'Capstone',
 };
 
 export function HardSentencesIndex() {
-  const all: Array<HardSection | typeof CAPSTONE> = [...HARD_SECTIONS, CAPSTONE];
-  // Honest framing: per-section completion isn't tracked. We don't pretend to
-  // know where the student left off; we offer the first section as a default
-  // entry and the roster as a free-pick.
-  const entry = all[0]!;
+  const user = useUser();
+  const { progress } = useModuleProgress(user?.id);
+  const snap: HardCompletionSnapshot = {
+    hardSections: progress?.completed_hard_sections ?? [],
+    drills: progress?.completed_drills ?? [],
+    capstones: progress?.completed_capstones ?? [],
+  };
+  const resume = firstIncomplete(snap);
+  const doneCount = HARD_ENTRIES.filter((e) => isEntryComplete(e, snap)).length;
+  const anyDone = doneCount > 0;
+
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
-      <header className="relative isolate">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
-        />
-        <div className="relative">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-            <span
-              aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
-            />
-            Hard Sentences
-          </div>
-          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-            Decompose the cluster
-          </h1>
-          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            LSAT writers stack qualifiers around a core thought until you can&apos;t see it. This module
-            is the dive crew. One section at a time, peel the coral off the statue.
-          </p>
-        </div>
-      </header>
+    <div className="mc-bootcamp min-h-screen bg-[oklch(0.96_0.01_60)] text-[oklch(0.2_0.01_60)] font-sans selection:bg-[oklch(0.2_0.01_60/0.08)]">
+      <main className="mx-auto w-full max-w-[1120px] px-6 py-8 md:px-10 md:py-10 desktop:px-12 desktop:py-12">
+        <div className="mx-auto w-full max-w-[980px]">
+          {/* Hero */}
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+            className="relative grid grid-cols-1 items-center gap-10 overflow-hidden rounded-[36px] border border-[oklch(0.2_0.01_60/0.06)] bg-[linear-gradient(180deg,oklch(0.985_0.006_60)_0%,oklch(0.972_0.01_62)_100%)] px-8 py-12 shadow-[0_30px_80px_-36px_oklch(0.2_0.01_60/0.2)] md:grid-cols-[minmax(0,1fr)_320px] md:gap-12 md:px-12 md:py-14"
+          >
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-[42%] bg-[radial-gradient(circle_at_top,oklch(0.9_0.03_78/0.34),transparent_58%)]" />
+            <div className="pointer-events-none absolute inset-x-8 top-10 h-px bg-[linear-gradient(90deg,transparent,oklch(0.74_0.04_76/0.42),transparent)]" />
 
-      <section
-        className={cn(
-          'relative isolate overflow-hidden rounded-5 p-6',
-          'bg-[image:var(--grad-surface-elev)]',
-          'border border-[color:var(--border-accent-soft)]',
-          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
-        )}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
-        />
-        <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-5">
-          <div className="min-w-0 flex-1">
-            <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-              <span
-                aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
-              />
-              New here? Open with the why
+            <div className="relative z-10 max-w-[40rem]">
+              <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.34em] text-[oklch(0.22_0.012_60/0.62)]">
+                Module 5 · Hard Sentences
+              </p>
+              <h1 className="max-w-[9ch] text-[clamp(54px,7.5vw,96px)] font-serif italic font-medium leading-[0.92] tracking-[-0.05em] text-[oklch(0.15_0.01_60)]">
+                Hard Sentences.
+              </h1>
+              <p className="mt-8 max-w-[32rem] text-[20px] leading-[1.42] text-[oklch(0.2_0.01_60/0.74)] md:text-[22px]">
+                Some LSAT sentences bury their point under layers of qualifiers. The point is always
+                still in there. Let&apos;s learn how to lift the layers off, one at a time.
+              </p>
             </div>
-            <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
-              {entry.number}: {entry.title}
-            </h2>
-            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
-              The first section frames the cluster anatomy. The decomposer practice lives in 5.7.
-              Pick anywhere from the roster below if you already know what you came for.
-            </p>
-            <div className="mt-4">
-              <Link
-                to={entry.route}
-                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-              >
-                <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                  Open section {entry.number}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint">All sections</h2>
-      <ul className="grid gap-3">
-        {all.map((s) => {
-          const isCapstone = s.id === CAPSTONE.id;
-          return (
-            <li key={s.id}>
-              <Link
-                to={s.route}
-                className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-              >
-                <Card variant="surface" interactive accent={isCapstone}>
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={cn(
-                        'shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full font-mc-mono text-body font-semibold',
-                        isCapstone
-                          ? 'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-mid)] shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.10)]'
-                          : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
-                      )}
-                    >
-                      {isCapstone ? <Award className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" /> : s.number}
+            <aside className="relative z-10 w-full md:max-w-[320px]">
+              <div className="relative rounded-[28px] border border-[oklch(0.2_0.01_60/0.08)] bg-white/88 p-2 shadow-[0_28px_72px_-24px_oklch(0.2_0.01_60/0.18)]">
+                <Link
+                  to={resume.route}
+                  className="relative flex min-h-[280px] w-full flex-col items-start justify-between overflow-hidden rounded-[24px] bg-[linear-gradient(180deg,oklch(0.16_0.01_60)_0%,oklch(0.11_0.01_60)_100%)] p-8 text-left text-[oklch(0.96_0.01_60)] transition-all duration-300 ease-eased hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+                >
+                  <div className="space-y-5">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-[oklch(0.96_0.01_60/0.48)]">
+                      {anyDone ? 'Resume' : 'Begin'}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-baseline gap-2">
-                        {isCapstone ? (
-                          <Badge tone="accent" dot>
-                            capstone · 5 final check items
-                          </Badge>
-                        ) : null}
+                    <div className="space-y-3">
+                      <div className="font-serif text-[38px] italic leading-[0.98] tracking-[-0.04em]">
+                        {resume.title}
                       </div>
-                      <h3
-                        className={cn(
-                          'font-mc-serif text-h3 font-semibold mt-1 leading-tight',
-                          'transition-colors duration-150 ease-eased',
-                          'text-ink group-hover:text-mc-accent',
-                        )}
-                      >
-                        {s.number} · {s.title}
-                      </h3>
+                      <div className="max-w-[19rem] text-[15px] leading-relaxed text-[oklch(0.96_0.01_60/0.68)]">
+                        {resume.description}
+                      </div>
                     </div>
-                    <ArrowRight
-                      className="shrink-0 h-4 w-4 text-ink-faint transition-all duration-220 ease-eased group-hover:text-mc-accent group-hover:translate-x-0.5"
-                      aria-hidden="true"
-                    />
                   </div>
-                </Card>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </article>
+                  <div className="flex w-full items-center justify-between rounded-[18px] border border-[oklch(0.96_0.01_60/0.12)] bg-[oklch(0.96_0.01_60/0.04)] px-5 py-4">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-[oklch(0.96_0.01_60/0.56)]">
+                      {doneCount} of {HARD_ENTRIES.length} complete
+                    </div>
+                    <div className="rounded-full border border-[oklch(0.96_0.01_60/0.14)] p-3">
+                      <ArrowRight className="h-5 w-5" strokeWidth={1.75} />
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </aside>
+          </motion.section>
+
+          {/* Roster */}
+          <section className="mt-10 pb-24">
+            <div className="mb-6 text-[10px] font-bold uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)]">
+              All sections
+            </div>
+            <ul className="grid gap-4">
+              {HARD_ENTRIES.map((entry, i) => {
+                const done = isEntryComplete(entry, snap);
+                return (
+                  <li key={entry.id}>
+                    <Link
+                      to={entry.route}
+                      className="group block rounded-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2_0.01_60/0.2)] focus-visible:ring-offset-2"
+                    >
+                      <div className="flex items-center gap-5 rounded-[16px] border border-[rgba(26,26,26,0.10)] bg-white p-6 transition-all duration-300 ease-eased group-hover:-translate-y-0.5 group-hover:border-[rgba(26,26,26,0.18)] group-hover:shadow-[0_18px_40px_-18px_rgba(26,26,26,0.18)] md:p-7">
+                        <div
+                          className={cn(
+                            'flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-serif text-[20px] italic',
+                            done
+                              ? 'border-emerald-600/30 bg-emerald-50 text-emerald-700'
+                              : 'border-[rgba(26,26,26,0.12)] bg-[#FBF8F1] text-[#1a1a1a]',
+                          )}
+                        >
+                          {done ? <Check className="h-5 w-5" strokeWidth={2.4} aria-hidden="true" /> : i + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <h3 className="font-serif text-[24px] italic leading-tight text-[#1a1a1a]">
+                              {entry.title}
+                            </h3>
+                            <span className="rounded-full border border-[rgba(26,26,26,0.12)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
+                              {KIND_LABEL[entry.kind]}
+                            </span>
+                            {done ? (
+                              <span className="rounded-full border border-emerald-600/25 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700">
+                                Done
+                              </span>
+                            ) : null}
+                          </div>
+                          <p className="mt-1.5 text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)]">
+                            {entry.description}
+                          </p>
+                        </div>
+                        <ArrowRight
+                          className="h-5 w-5 shrink-0 text-[rgba(26,26,26,0.35)] transition-all duration-300 ease-eased group-hover:translate-x-0.5 group-hover:text-[#1a1a1a]"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }
 
@@ -193,7 +206,7 @@ function RenderBlock({ block }: { block: Block }) {
         specifiers: block.specifiers,
         core: block.core,
       };
-      return <ClusterDecomposer sentences={[cs]} />;
+      return <LegacyClusterDecomposer sentences={[cs]} />;
     }
     case 'visual-spec':
       // Special handling for the Cluster Decomposer mounted page; rendered via section route.
@@ -270,7 +283,7 @@ export function HardSentenceSection() {
         {sec.blocks.map((b, i) => (
           <RenderBlock key={i} block={b} />
         ))}
-        {isDecomposer ? <ClusterDecomposer sentences={DECOMPOSER_SAMPLES} /> : null}
+        {isDecomposer ? <LegacyClusterDecomposer sentences={DECOMPOSER_SAMPLES} /> : null}
       </div>
 </article>
   );
