@@ -1002,8 +1002,8 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
   }
 
   const canGoPrevious = session.currentQuestionIndex > 0 && !isSessionComplete;
-  const currentQuestionComplete = active.revealed || currentQuestionIsComplete;
-  const canGoNext = currentQuestionComplete && !isSessionComplete;
+  // Free navigation: the student may jump to the next argument anytime, finished or not.
+  const canGoNext = !isSessionComplete;
   const nextLabel = session.currentQuestionIndex + 1 >= orderedQuestions.length ? 'Finish' : 'Next';
 
   return (
