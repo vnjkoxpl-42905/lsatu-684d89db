@@ -99,6 +99,14 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Learn the two dominant conclusion placements before you enter the drill labs.',
   },
   {
+    id: 'first-sentence-vs-rebuttal-lab',
+    type: 'drill',
+    title: 'First-Sentence vs Rebuttal Lab',
+    route: '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
+    description: 'Run fast comparison reps on the two main conclusion structures.',
+    phase: 'Drills',
+  },
+  {
     id: 'first-sentence-main-conclusion',
     type: 'drill',
     title: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.title,
