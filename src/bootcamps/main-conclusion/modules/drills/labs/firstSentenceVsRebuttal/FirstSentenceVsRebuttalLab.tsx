@@ -383,17 +383,44 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
     setFeedback(null);
   }
 
-  function skipIndicators() {
-    updateSession(recordIndicatorReveal(session, currentQuestion.id));
+  async function revealEverything() {
+    const conclusionId = currentQuestion.parts.find((part) => part.role === 'conclusion')?.id ?? null;
+    const followUpIds = firstSentenceVsRebuttalFollowUpIds(currentQuestion);
+
+    const revealedSession = recordIndicatorReveal(session, currentQuestion.id);
+    const alreadyCompleted = revealedSession.completedQuestionIds.includes(currentQuestion.id);
+    const nextSession: FirstSentenceVsRebuttalSessionRecord = {
+      ...revealedSession,
+      completedQuestionIds: alreadyCompleted
+        ? revealedSession.completedQuestionIds
+        : [...revealedSession.completedQuestionIds, currentQuestion.id],
+      completedAt:
+        !alreadyCompleted && revealedSession.completedQuestionIds.length + 1 >= orderedQuestions.length
+          ? now()
+          : revealedSession.completedAt,
+    };
+    updateSession(nextSession);
+
+    const status = getQuestionStatus(ensureAttemptLog(nextSession, currentQuestion.id));
     setActive((value) => ({
       ...value,
-      step: 1,
+      step: 3,
+      revealed: true,
+      finalStatus: status,
       foundIndicators: Array.from({ length: currentQuestion.indicatorCount }, (_, index) => `reveal-${index}`),
+      selectedConclusionId: conclusionId,
+      selectedStructure: currentQuestion.type,
+      selectedFollowUpIds: followUpIds,
       wrongWordToken: null,
+      wrongPhraseId: null,
       confirmedStep: null,
     }));
     setFeedbackTarget(null);
-    setFeedback({ tone: 'warning', message: 'Indicator words revealed. This question will count as assisted, not clean.' });
+    setFeedback({ tone: 'warning', message: 'Full answer revealed. This question counts as assisted, not clean.' });
+
+    if (nextSession.completedAt) {
+      await markDrillComplete?.(drillId);
+    }
   }
 
   function continueFromConclusion() {
@@ -798,7 +825,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                   <button type="button" className="fsvr-lab__cta" onClick={continueFromIndicators}>
                     {active.confirmedStep === 0 ? 'Next: choose the main conclusion' : 'Continue to conclusion'}
                   </button>
-                  <button type="button" className="fsvr-lab__cta fsvr-lab__cta--secondary" onClick={skipIndicators}>
+                  <button type="button" className="fsvr-lab__cta fsvr-lab__cta--secondary" onClick={() => void revealEverything()}>
                     Skip / Reveal All
                   </button>
                 </>
