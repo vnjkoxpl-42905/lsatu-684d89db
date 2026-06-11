@@ -1215,8 +1215,9 @@
     }
 
     function clearLoginError() {
-        document.getElementById('student-name').classList.remove('input-error-active');
-        document.getElementById('login-error').style.display = 'none';
+        document.getElementById('student-name')?.classList.remove('input-error-active');
+        const loginError = document.getElementById('login-error');
+        if (loginError) loginError.style.display = 'none';
     }
 
     async function login() {
@@ -1591,11 +1592,11 @@
 
         // Q8 — Rebuttal. Map: Opposing view → Rebuttal conclusion → Support → Support
         { id: 8, type: 'rebuttal', parts: [
-            {id: 'p1', text: "Nylon industry spokesperson: <i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, <i-w t=\"Opposing Viewpoint\">some people</i-w> have the mistaken notion that cotton is natural but nylon is not. ", isO: true},
+            {id: 'p1', text: "Nylon industry spokesperson: <i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, <i-w t=\"Opposing Viewpoint\">some people say</i-w> cotton is natural but nylon is not. ", isO: true},
             {id: 'p2', text: "<i-w t=\"Pivot\">However</i-w>, nylon's main components come from petroleum and from the nitrogen in the atmosphere. ", isC: true},
             {id: 'p3', text: "Clearly the atmosphere is natural. ", isS: true},
             {id: 'p4', text: "And petroleum comes from oil, which in turn comes from ancient plants—a natural source.", isS: true}
-        ], feedback: "Rebuttal. The first sentence sets up the mistaken view; 'However' introduces the author's actual position. Follow-up: some people have the mistaken notion that cotton is natural but nylon is not." },
+        ], feedback: "Rebuttal. The first sentence sets up the mistaken view; 'However' introduces the author's actual position. Follow-up: some people say cotton is natural but nylon is not." },
 
         // Q9 — Rebuttal. Map: Opposing viewpoint → Rebuttal conclusion → Support → Example → Support
         { id: 9, type: 'rebuttal', parts: [
@@ -1608,7 +1609,7 @@
 
         // Q10 — Rebuttal. Map: Opposing position → Rebuttal conclusion → Support → Illustration
         { id: 10, type: 'rebuttal', parts: [
-            {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some</i-w> legislators refuse to commit public funds for new scientific research if they cannot be assured that the research will contribute to the public welfare. ", isO: true},
+            {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> legislators should refuse to commit public funds for new scientific research if they cannot be assured that the research will contribute to the public welfare. ", isO: true},
             {id: 'p2', text: "Such a position ignores the lessons of experience. ", isC: true},
             {id: 'p3', text: "Many important contributions to the public welfare that resulted from scientific research were never predicted as potential outcomes of that research. ", isS: true},
             {id: 'p4', text: "Suppose that a scientist in the early twentieth century had applied for public funds to study molds: who would have predicted that such research would lead to the discovery of antibiotics—one of the greatest contributions ever made to the public welfare?", isS: true}
@@ -1624,7 +1625,7 @@
 
         // Q12 — Rebuttal. Map: Opposing viewpoint → Rhetorical rebuttal conclusion
         { id: 12, type: 'rebuttal', parts: [
-            {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some people believe</i-w> that witnessing violence in movies will discharge aggressive energy. ", isO: true},
+            {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> that witnessing violence in movies will discharge aggressive energy. ", isO: true},
             {id: 'p2', text: "Does watching someone else eat fill one's own stomach? ", isC: true},
             {id: 'p3', text: "The viewer remains hungry no matter how vivid the scene is.", isS: true}
         ], feedback: "Rebuttal. The second sentence is a rhetorical-question rebuttal of the first sentence's view, and the final sentence supports the analogy. Follow-up: the view that witnessing movie violence discharges aggressive energy." },
@@ -1647,10 +1648,11 @@
         // Q15 — Rebuttal. Map: Background fact → Opposing setup → Rebuttal conclusion → Analogy support
         { id: 15, type: 'rebuttal', parts: [
             {id: 'p1', text: "That long-term cigarette smoking can lead to health problems including cancer and lung disease is a scientifically well-established fact. ", isS: true},
-            {id: 'p2', text: "Contrary to what <i-w t=\"Opposing Viewpoint\">many people seem to believe</i-w>, <i-w t=\"Pivot\">however</i-w>, it is not necessary to deny this fact in order to reject the view that tobacco companies should be held either morally or legally responsible for the poor health of smokers. ", isC: true},
-            {id: 'p3', text: "<i-w t=\"Premise Indicator\">After all</i-w>, excessive consumption of candy undeniably leads to such health problems as tooth decay, ", isS: true},
-            {id: 'p4', text: "but no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.", isS: true}
-        ], feedback: "Rebuttal. The first sentence is background fact; the conclusion comes as pushback against what many people believe. Follow-up: the view that tobacco companies should be held morally or legally responsible for smokers' poor health." },
+            {id: 'p2', text: "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> tobacco companies should be held either morally or legally responsible for the poor health of smokers. ", isO: true},
+            {id: 'p3', text: "<i-w t=\"Pivot\">However</i-w>, it is not necessary to deny the health risks of smoking in order to reject that view. ", isC: true},
+            {id: 'p4', text: "<i-w t=\"Premise Indicator\">After all</i-w>, excessive consumption of candy undeniably leads to such health problems as tooth decay, ", isS: true},
+            {id: 'p5', text: "but no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.", isS: true}
+        ], feedback: "Rebuttal. The first sentence is background fact; the second sentence gives the opposing view, and the 'However' sentence rejects it. Follow-up: the view that tobacco companies should be held morally or legally responsible for smokers' poor health." },
 
         // Q16 — Rebuttal. Map: Opposing viewpoint → Support for opposing viewpoint → Support for author → Rebuttal conclusion
         { id: 16, type: 'rebuttal', parts: [
@@ -1663,7 +1665,7 @@
         // Q17 — Rebuttal. Map: Support / principle → Opposing viewpoint → Rebuttal conclusion
         { id: 17, type: 'rebuttal', parts: [
             {id: 'p1', text: "Broadcaster: Our radio station has a responsibility to serve the public interest. ", isS: true},
-            {id: 'p2', text: "<i-w t=\"Conclusion Indicator\">Hence</i-w>, when our critics contend that our recent exposé of events in the private lives of local celebrities was excessively intrusive, ", isO: true},
+            {id: 'p2', text: "When our critics contend that our recent exposé of events in the private lives of local celebrities was excessively intrusive, ", isO: true},
             {id: 'p3', text: "we can only reply that the overwhelming public interest in these matters makes it our responsibility to publicize them.", isC: true}
         ], feedback: "Rebuttal. The station's duty is the principle; the real conclusion is the reply to the critics. Follow-up: critics' contention that the exposé was excessively intrusive." },
 
@@ -1787,7 +1789,7 @@
         8: {
             title: "Nylon spokesperson",
             why_conclusion: "Sentence 1 sets up the mistaken belief. 'However' announces the spokesperson's actual claim. The conclusion is the 'However' sentence, full stop. Whenever 'however' shows up right after a 'some people think,' you've found the rebuttal verdict.",
-            why_structure: "Rebuttal. The opposing view is named in sentence 1 (the mistaken notion about nylon and cotton). The author pivots and says no, here's what nylon actually is. Then they back it up. Pure rebuttal pattern.",
+            why_structure: "Rebuttal. The opposing view is named in sentence 1 (the claim about nylon and cotton). The author pivots and says no, here's what nylon actually is. Then they back it up. Pure rebuttal pattern.",
             why_follow_up: "The view being rejected is the cotton/nylon mistaken-notion line. That's the position the author is pushing against, and what the follow-up question is asking for."
         },
         9: {
@@ -1800,7 +1802,7 @@
             title: "Legislators and scientific research",
             why_conclusion: "'Such a position ignores the lessons of experience.' That's the rebuttal verdict. Short, mean, and pointed at sentence 1. Conclusion = sentence 2.",
             why_structure: "Rebuttal. A position is described in sentence 1. The author rejects that position in sentence 2. Then they tell you why with the antibiotics illustration. Even though there's no 'however' or 'but,' the rebuttal shape is unmistakable.",
-            why_follow_up: "The opposing view is the legislators' refusal to fund unguaranteed research. That's what 'such a position' refers to, and that's what the author is attacking."
+            why_follow_up: "The opposing view is that legislators should refuse to fund unguaranteed research. That's what 'such a position' refers to, and that's what the author is attacking."
         },
         11: {
             title: "Letter to the editor about Judge Mosston",
@@ -1811,7 +1813,7 @@
         12: {
             title: "Movie violence",
             why_conclusion: "The conclusion is a question. Yes, really. The rhetorical question ('Does watching someone else eat fill one's own stomach?') is the author's rebuttal. The expected answer is no, and that's what the author wants you to hear.",
-            why_structure: "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
+            why_structure: "Rebuttal. The first sentence is the view being attacked ('Some people say'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
             why_follow_up: "The opposing view is the catharsis claim: violent movies discharge aggression. That's the target the rhetorical question is mocking."
         },
         13: {
@@ -1828,9 +1830,9 @@
         },
         15: {
             title: "Cigarettes and tobacco companies",
-            why_conclusion: "Long, ugly second sentence. The conclusion is the part after 'however': it's not necessary to deny the health link to reject tobacco-company liability. The candy stuff at the end is the analogy support.",
-            why_structure: "Rebuttal. The opposing view is named inside sentence 2 ('contrary to what many people seem to believe'). The author is pushing back on that popular view. Background fact in sentence 1, rebuttal conclusion in sentence 2, analogy in the rest.",
-            why_follow_up: "The view being rejected is the popular position: that tobacco companies should be held morally or legally responsible. That's the target."
+            why_conclusion: "The conclusion is the 'However' sentence: it is not necessary to deny the health risks of smoking in order to reject tobacco-company liability. The candy stuff at the end is the analogy support.",
+            why_structure: "Rebuttal. The opposing view is named in sentence 2. The author then pivots with 'However' and rejects that popular view. Background fact in sentence 1, rebuttal conclusion in sentence 3, analogy in the rest.",
+            why_follow_up: "The view being rejected is the popular position: that tobacco companies should be held morally or legally responsible for smokers' poor health. That's the target."
         },
         16: {
             title: "Patient on pharmacists",

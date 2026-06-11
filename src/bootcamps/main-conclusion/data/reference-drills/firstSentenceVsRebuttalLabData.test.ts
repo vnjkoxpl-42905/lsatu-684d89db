@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
 
 import { FIRST_SENTENCE_QUESTIONS, REBUTTAL_QUESTIONS } from '@/bootcamps/main-conclusion/content/newDrills.source';
 import {
@@ -10,7 +11,17 @@ import {
 
 const INDICATOR_RE = /<i-w t="[^"]+">([^<]+)<\/i-w>/g;
 const TYPED_INDICATOR_RE = /<i-w t="([^"]+)">([^<]+)<\/i-w>/g;
-const INTENTIONALLY_ENHANCED_STIMULUS_IDS = new Set([12]);
+const INTENTIONALLY_ENHANCED_STIMULUS_IDS = new Set([8, 10, 12, 15, 17]);
+const STATIC_REFERENCE_FILES = [
+  'public/reference-drills/first-sentence-vs-rebuttal/index.html',
+  'public/references/bootcamps/first-sentence-vs-rebuttal/index.html',
+] as const;
+const ALLOWED_OPPOSING_VIEW_INDICATORS = new Set([
+  'some people say',
+  "it's commonly believed",
+  'some economists believe',
+  'some biologists believe',
+]);
 
 function taggedIndicatorWords(): string[] {
   const words: string[] = [];
@@ -31,6 +42,17 @@ function stripSpeakerPrefix(text: string) {
     /^(policy adviser|consumer advocate|legal theorist|nylon industry spokesperson|letter to the editor|patient|broadcaster)\s*:?\s*/i,
     '',
   );
+}
+
+function staticTaggedIndicatorWords(filePath: string): string[] {
+  const text = readFileSync(filePath, 'utf8');
+  const indicatorPattern = /<i-w t=\\?"[^"]+\\?">([^<]+)<\/i-w>/g;
+  const words: string[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = indicatorPattern.exec(text)) !== null) {
+    words.push(match[1].trim().toLowerCase());
+  }
+  return words;
 }
 
 describe('firstSentenceVsRebuttalLabData', () => {
@@ -91,9 +113,46 @@ describe('firstSentenceVsRebuttalLabData', () => {
     }
   });
 
+  it('uses conclusion indicators only on conclusion claims', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
+      for (const part of question.parts) {
+        TYPED_INDICATOR_RE.lastIndex = 0;
+        let match: RegExpExecArray | null;
+        while ((match = TYPED_INDICATOR_RE.exec(part.text)) !== null) {
+          if (match[1] === 'Conclusion Indicator') {
+            expect(part.role, `Q${question.id} ${part.id} tags "${match[2]}" as a conclusion indicator`).toBe('conclusion');
+          }
+        }
+      }
+    }
+  });
+
+  it('uses only approved opposing-view indicator phrases', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
+      for (const part of question.parts) {
+        TYPED_INDICATOR_RE.lastIndex = 0;
+        let match: RegExpExecArray | null;
+        while ((match = TYPED_INDICATOR_RE.exec(part.text)) !== null) {
+          if (match[1] === 'Opposing Viewpoint') {
+            const word = match[2].trim().toLowerCase().replace(/[’]/g, "'");
+            expect(ALLOWED_OPPOSING_VIEW_INDICATORS, `Q${question.id} ${part.id} uses unapproved opposing indicator "${word}"`).toContain(
+              word,
+            );
+          }
+        }
+      }
+    }
+  });
+
   it('keeps every enhanced argument to at least three selectable parts', () => {
     for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
       expect(question.parts.length, `Q${question.id} is too short`).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('gives every rebuttal a standalone opposing viewpoint part', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.filter((item) => item.type === 'rebuttal')) {
+      expect(question.parts.some((part) => part.role === 'opposing'), `Q${question.id} has no standalone opposing viewpoint`).toBe(true);
     }
   });
 
@@ -104,13 +163,12 @@ describe('firstSentenceVsRebuttalLabData', () => {
     expect(firstSentenceVsRebuttalFollowUpRole(rebuttalWithOpposing)).toBe('opposing');
   });
 
-  it('falls back to support for a rebuttal that has no standalone opposing part (Q15)', () => {
-    const fused = FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.find((question) => question.id === 15)!;
-    expect(fused.type).toBe('rebuttal');
-    expect(fused.parts.some((part) => part.role === 'opposing')).toBe(false);
-    expect(firstSentenceVsRebuttalFollowUpRole(fused)).toBe('support');
-    expect(firstSentenceVsRebuttalFollowUpIds(fused)).toEqual(
-      fused.parts.filter((part) => part.role === 'support').map((part) => part.id),
+  it('asks for the opposing viewpoint on Q15', () => {
+    const repaired = FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.find((question) => question.id === 15)!;
+    expect(repaired.type).toBe('rebuttal');
+    expect(firstSentenceVsRebuttalFollowUpRole(repaired)).toBe('opposing');
+    expect(firstSentenceVsRebuttalFollowUpIds(repaired)).toEqual(
+      repaired.parts.filter((part) => part.role === 'opposing').map((part) => part.id),
     );
   });
 
@@ -119,5 +177,13 @@ describe('firstSentenceVsRebuttalLabData', () => {
     const supportIds = multi.parts.filter((part) => part.role === 'support').map((part) => part.id);
     expect(supportIds.length).toBeGreaterThan(1);
     expect(firstSentenceVsRebuttalFollowUpIds(multi)).toEqual(supportIds);
+  });
+
+  it('keeps static HTML copies free of forbidden indicator words', () => {
+    for (const filePath of STATIC_REFERENCE_FILES) {
+      const words = staticTaggedIndicatorWords(filePath);
+      expect(words, `${filePath} still tags "and" as an indicator`).not.toContain('and');
+      expect(words, `${filePath} still tags "must" as an indicator`).not.toContain('must');
+    }
   });
 });

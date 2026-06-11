@@ -51,9 +51,8 @@ export interface FirstSentenceVsRebuttalSessionRecord {
 /**
  * The role Step 4 should ask the student to select.
  * First-sentence arguments ask for the supporting claim(s); rebuttals ask for the
- * opposing viewpoint(s). A handful of rebuttals (e.g. Q15) fuse the opposing view
- * into the conclusion and carry no standalone opposing part — those fall back to
- * asking for supports so the question stays solvable.
+ * opposing viewpoint(s). Rebuttal questions are written with a standalone
+ * opposing part so the final role step always asks for the rebuttal target.
  */
 export function firstSentenceVsRebuttalFollowUpRole(
   question: FirstSentenceVsRebuttalQuestion,
@@ -331,7 +330,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
     "parts": [
       {
         "id": "p1",
-        "text": "Nylon industry spokesperson: <i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, <i-w t=\"Opposing Viewpoint\">some people</i-w> have the mistaken notion that cotton is natural but nylon is not. ",
+        "text": "Nylon industry spokesperson: <i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, <i-w t=\"Opposing Viewpoint\">some people say</i-w> cotton is natural but nylon is not. ",
         "role": "opposing"
       },
       {
@@ -350,11 +349,11 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
         "role": "support"
       }
     ],
-    "feedback": "Rebuttal. The first sentence sets up the mistaken view; 'However' introduces the author's actual position. Follow-up: some people have the mistaken notion that cotton is natural but nylon is not.",
+    "feedback": "Rebuttal. The first sentence sets up the mistaken view; 'However' introduces the author's actual position. Follow-up: some people say cotton is natural but nylon is not.",
     "review": {
       "title": "Nylon spokesperson",
       "whyConclusion": "Sentence 1 sets up the mistaken belief. 'However' announces the spokesperson's actual claim. The conclusion is the 'However' sentence, full stop. Whenever 'however' shows up right after a 'some people think,' you've found the rebuttal verdict.",
-      "whyStructure": "Rebuttal. The opposing view is named in sentence 1 (the mistaken notion about nylon and cotton). The author pivots and says no, here's what nylon actually is. Then they back it up. Pure rebuttal pattern.",
+      "whyStructure": "Rebuttal. The opposing view is named in sentence 1 (the claim about nylon and cotton). The author pivots and says no, here's what nylon actually is. Then they back it up. Pure rebuttal pattern.",
       "whyFollowUp": "The view being rejected is the cotton/nylon mistaken-notion line. That's the position the author is pushing against, and what the follow-up question is asking for."
     },
     "indicatorCount": 3
@@ -404,7 +403,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
     "parts": [
       {
         "id": "p1",
-        "text": "<i-w t=\"Opposing Viewpoint\">Some</i-w> legislators refuse to commit public funds for new scientific research if they cannot be assured that the research will contribute to the public welfare. ",
+        "text": "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> legislators should refuse to commit public funds for new scientific research if they cannot be assured that the research will contribute to the public welfare. ",
         "role": "opposing"
       },
       {
@@ -428,7 +427,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "title": "Legislators and scientific research",
       "whyConclusion": "'Such a position ignores the lessons of experience.' That's the rebuttal verdict. Short, mean, and pointed at sentence 1. Conclusion = sentence 2.",
       "whyStructure": "Rebuttal. A position is described in sentence 1. The author rejects that position in sentence 2. Then they tell you why with the antibiotics illustration. Even though there's no 'however' or 'but,' the rebuttal shape is unmistakable.",
-      "whyFollowUp": "The opposing view is the legislators' refusal to fund unguaranteed research. That's what 'such a position' refers to, and that's what the author is attacking."
+      "whyFollowUp": "The opposing view is that legislators should refuse to fund unguaranteed research. That's what 'such a position' refers to, and that's what the author is attacking."
     },
     "indicatorCount": 1
   },
@@ -472,7 +471,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
     "parts": [
       {
         "id": "p1",
-        "text": "<i-w t=\"Opposing Viewpoint\">Some people believe</i-w> that witnessing violence in movies will discharge aggressive energy. ",
+        "text": "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> that witnessing violence in movies will discharge aggressive energy. ",
         "role": "opposing"
       },
       {
@@ -490,7 +489,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
     "review": {
       "title": "Movie violence",
       "whyConclusion": "The conclusion is a question. Yes, really. The rhetorical question ('Does watching someone else eat fill one's own stomach?') is the author's rebuttal. The expected answer is no, and that's what the author wants you to hear.",
-      "whyStructure": "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
+      "whyStructure": "Rebuttal. The first sentence is the view being attacked ('Some people say'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
       "whyFollowUp": "The opposing view is the catharsis claim: violent movies discharge aggression. That's the target the rhetorical question is mocking."
     },
     "indicatorCount": 1
@@ -569,26 +568,31 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p2",
-        "text": "Contrary to what <i-w t=\"Opposing Viewpoint\">many people seem to believe</i-w>, <i-w t=\"Pivot\">however</i-w>, it is not necessary to deny this fact in order to reject the view that tobacco companies should be held either morally or legally responsible for the poor health of smokers. ",
-        "role": "conclusion"
+        "text": "<i-w t=\"Opposing Viewpoint\">Some people say</i-w> tobacco companies should be held either morally or legally responsible for the poor health of smokers. ",
+        "role": "opposing"
       },
       {
         "id": "p3",
+        "text": "<i-w t=\"Pivot\">However</i-w>, it is not necessary to deny the health risks of smoking in order to reject that view. ",
+        "role": "conclusion"
+      },
+      {
+        "id": "p4",
         "text": "<i-w t=\"Premise Indicator\">After all</i-w>, excessive consumption of candy undeniably leads to such health problems as tooth decay, ",
         "role": "support"
       },
       {
-        "id": "p4",
+        "id": "p5",
         "text": "but no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.",
         "role": "support"
       }
     ],
-    "feedback": "Rebuttal. The first sentence is background fact; the conclusion comes as pushback against what many people believe. Follow-up: the view that tobacco companies should be held morally or legally responsible for smokers' poor health.",
+    "feedback": "Rebuttal. The first sentence is background fact; the second sentence gives the opposing view, and the 'However' sentence rejects it. Follow-up: the view that tobacco companies should be held morally or legally responsible for smokers' poor health.",
     "review": {
       "title": "Cigarettes and tobacco companies",
-      "whyConclusion": "Long, ugly second sentence. The conclusion is the part after 'however': it's not necessary to deny the health link to reject tobacco-company liability. The candy stuff at the end is the analogy support.",
-      "whyStructure": "Rebuttal. The opposing view is named inside sentence 2 ('contrary to what many people seem to believe'). The author is pushing back on that popular view. Background fact in sentence 1, rebuttal conclusion in sentence 2, analogy in the rest.",
-      "whyFollowUp": "The view being rejected is the popular position: that tobacco companies should be held morally or legally responsible. That's the target."
+      "whyConclusion": "The conclusion is the 'However' sentence: it is not necessary to deny the health risks of smoking in order to reject tobacco-company liability. The candy stuff at the end is the analogy support.",
+      "whyStructure": "Rebuttal. The opposing view is named in sentence 2. The author then pivots with 'However' and rejects that popular view. Background fact in sentence 1, rebuttal conclusion in sentence 3, analogy in the rest.",
+      "whyFollowUp": "The view being rejected is the popular position: that tobacco companies should be held morally or legally responsible for smokers' poor health. That's the target."
     },
     "indicatorCount": 3
   },
@@ -637,7 +641,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p2",
-        "text": "<i-w t=\"Conclusion Indicator\">Hence</i-w>, when our critics contend that our recent exposé of events in the private lives of local celebrities was excessively intrusive, ",
+        "text": "When our critics contend that our recent exposé of events in the private lives of local celebrities was excessively intrusive, ",
         "role": "opposing"
       },
       {
@@ -653,7 +657,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "whyStructure": "Rebuttal. Critics named explicitly ('our critics contend'). Author replies. That's the rebuttal pattern, even if the broadcaster opens with a principle instead of opening with the critics.",
       "whyFollowUp": "The view being rejected is the critics' contention that the exposé was excessively intrusive. That's the position the broadcaster is replying to."
     },
-    "indicatorCount": 1
+    "indicatorCount": 0
   },
   {
     "id": 18,
