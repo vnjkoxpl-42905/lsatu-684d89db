@@ -778,7 +778,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
                 className={`fsvr-lab__choice${active.selectedStructure === 'first' ? ' fsvr-lab__choice--selected' : ''}${feedbackTarget?.kind === 'choice' && feedbackTarget.id === 'first' ? ` fsvr-lab__choice--${feedbackTarget.tone === 'correct' ? 'success' : 'miss'}` : ''}`}
                 onClick={() => handleStructureChoice('first')}
               >
-                Conclusion first
+                First sentence conclusion
               </button>
               <button
                 type="button"
