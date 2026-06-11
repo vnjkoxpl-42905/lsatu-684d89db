@@ -1202,6 +1202,42 @@ export type Database = {
         }
         Relationships: []
       }
+      intro_lr_attempts: {
+        Row: {
+          correct: boolean
+          created_at: string
+          drill_id: string
+          id: string
+          mode: string
+          question_id: string
+          selected_answer: string | null
+          time_ms: number | null
+          user_id: string
+        }
+        Insert: {
+          correct: boolean
+          created_at?: string
+          drill_id: string
+          id?: string
+          mode: string
+          question_id: string
+          selected_answer?: string | null
+          time_ms?: number | null
+          user_id: string
+        }
+        Update: {
+          correct?: boolean
+          created_at?: string
+          drill_id?: string
+          id?: string
+          mode?: string
+          question_id?: string
+          selected_answer?: string | null
+          time_ms?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       message_attachments: {
         Row: {
           created_at: string
