@@ -74,7 +74,7 @@ describe('FirstSentenceVsRebuttalLab feedback', () => {
     fireEvent.click(screen.getByRole('button', { name: /next: classify the structure/i }));
 
     expect(screen.getByText(/classify the argument structure/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /conclusion first/i }));
+    fireEvent.click(screen.getByRole('button', { name: /first sentence conclusion/i }));
 
     const structureSuccess = feedbackStatus(/correct\. next: find the supporting or opposing part/i);
     expect(structureSuccess).toHaveClass('fsvr-lab__feedback--correct');
