@@ -6,6 +6,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind + shadcn/ui, Supabase backend with Edge Functions, hosted on Lovable. The Lovable-connected project is the source of truth; GitHub (`vnjkoxpl-42905/lsatu-684d89db`) is the mirror. Treat the connected project as canonical unless told otherwise.
 
+## Second brain (product memory)
+
+Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/Documents/Obsidian Vault/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
+
+Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start / Session End). In short:
+
+- On "start" / "brief me": read `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then give a 4-line briefing.
+- On "handoff" / "done for today": update `wiki/hot.md`, append a dated `wiki/log.md` entry, update the task anchor, give a 3-line confirmation.
+
+Where LSATU truth lives in the vault:
+
+- Product context: `wiki/synthesis/intro-to-lr-product.md` (flagship Main Conclusion bootcamp)
+- Design system (colors, type, role tokens): `wiki/synthesis/intro-to-lr-design.md`
+- Code/source map: `wiki/synthesis/lsatu-source-map.md`
+- Quality bar all bootcamps finish to: `wiki/synthesis/bootcamp-quality-bar.md`
+- Teaching voice (route ALL student-facing copy through it): `wiki/concepts/teaching-voice.md`
+- Concepts: `wiki/concepts/drill.md`, `wiki/concepts/mainhub.md`
+- Entities: `wiki/entities/intro-to-lr-bootcamp.md`, `lsat-u.md`, `supabase.md`, `lovable.md`
+
+Rules: `raw/` is immutable input, never edit it. Read knowledge from `wiki/`, not `raw/`. Use the `obsidian` CLI (`search`, `backlinks`, `read`) for graph traversal (needs the Obsidian app open); flat file reads work without it. When saving deliverables to the vault, use `[[wiki-link]]` syntax and `UPPERCASE-HYPHENATED.md` naming.
+
 ## Commands
 
 Scripts (from `package.json`):
