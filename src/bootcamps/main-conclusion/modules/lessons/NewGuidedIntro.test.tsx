@@ -26,6 +26,15 @@ function renderGuidedIntro() {
 }
 
 describe('NewGuidedIntro', () => {
+  it('describes the lesson hub as an argument structure path instead of an article-based intro', () => {
+    renderGuidedIntro();
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Argument Structure.' })).toBeInTheDocument();
+    expect(screen.getByText('A guided path through premises, conclusions, structure, and main-conclusion practice.')).toBeInTheDocument();
+    expect(screen.queryByText('Intro to LR.')).not.toBeInTheDocument();
+    expect(screen.queryByText('A guided, article-based journey into LSAT Logical Reasoning.')).not.toBeInTheDocument();
+  });
+
   it('renders the two main conclusion practice cards after the structures note', () => {
     renderGuidedIntro();
 
