@@ -108,4 +108,51 @@ describe('FirstSentenceVsRebuttalLab feedback', () => {
       await new Promise((resolve) => setTimeout(resolve, 1900));
     });
   });
+
+  it('grades only the designated follow-up, rejecting other same-role parts', async () => {
+    // Q1 (vision test) has two support parts but designates p2 (night vision)
+    // as the single answer. Clicking the other support sentence (the accident
+    // statistic) must flash wrong, not select; clicking the designated one
+    // must complete the step.
+    renderLab();
+
+    // Step 0 → indicators (tapping the only indicator confirms the step, so the
+    // CTA flips straight to "Next: choose the main conclusion").
+    await screen.findByRole('button', { name: /continue to conclusion/i });
+    await waitFor(() => expect(screen.getByText('Saved')).toHaveClass('fsvr-lab__save-status--visible'));
+    fireEvent.click(screen.getByRole('button', { name: /mark indicator word should/i }));
+    fireEvent.click(screen.getByRole('button', { name: /next: choose the main conclusion/i }));
+
+    // Step 1 → conclusion is the first phrase
+    fireEvent.keyDown(screen.getAllByLabelText(/select this phrase/i)[0], { key: 'Enter' });
+    fireEvent.click(screen.getByRole('button', { name: /next: classify the structure/i }));
+
+    // Step 2 → first-sentence structure
+    fireEvent.click(screen.getByRole('button', { name: /first sentence conclusion/i }));
+    fireEvent.click(screen.getByRole('button', { name: /next: find the supporting or opposing part/i }));
+
+    expect(screen.getByText(/finish the dissection/i)).toBeInTheDocument();
+
+    // Wrong same-role part: the accident-statistic sentence (not designated).
+    const accidentStat = screen.getByText(/most car accidents occur at night/i).closest('[role="button"]') as HTMLElement;
+    fireEvent.click(accidentStat);
+    const miss = feedbackStatus(/hint:/i);
+    expect(miss).toHaveClass('fsvr-lab__feedback--wrong');
+    // It must NOT count as selected.
+    expect(screen.getByText(/0 of 1 selected/i)).toBeInTheDocument();
+
+    // Designated part: the night-vision sentence.
+    const nightVision = screen.getByText(/many people whose daylight vision is adequate/i).closest('[role="button"]') as HTMLElement;
+    fireEvent.click(nightVision);
+    expect(screen.getByText(/1 of 1 selected/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /check dissection/i }));
+    // Grading the single designated answer completes the question cleanly.
+    const graded = feedbackStatus(/clean dissection/i);
+    expect(graded).toHaveClass('fsvr-lab__feedback--correct');
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1900));
+    });
+  });
 });

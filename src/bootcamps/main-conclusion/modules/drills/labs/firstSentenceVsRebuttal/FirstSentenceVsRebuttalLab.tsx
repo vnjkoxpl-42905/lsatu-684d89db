@@ -649,9 +649,12 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           return;
         }
         if (active.step === 3) {
-          const targetRole = firstSentenceVsRebuttalFollowUpRole(currentQuestion);
-          if (part.role !== targetRole) {
-            // Wrong-role click: flash/shake but never select or count a miss.
+          const targetIds = firstSentenceVsRebuttalFollowUpIds(currentQuestion);
+          if (!targetIds.includes(part.id)) {
+            // Not a designated follow-up: flash/shake but never select or count a
+            // miss. Covers both wrong-role parts and correct-role-but-not-the-
+            // answer parts (e.g. a second supporting claim that isn't the
+            // cleanest one the review names).
             setActive((value) => ({ ...value, wrongPhraseId: part.id }));
             setFeedbackTarget({ kind: 'part', id: part.id, tone: 'wrong' });
             setFeedback({ tone: 'wrong', message: buildRetryMessage(currentQuestion, 'support') });

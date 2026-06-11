@@ -24,6 +24,16 @@ export interface FirstSentenceVsRebuttalQuestion {
   feedback: string;
   review: FirstSentenceVsRebuttalReviewExplanation;
   indicatorCount: number;
+  /**
+   * The single part the student must select on Step 4 (the "cleanest"
+   * supporting claim or the opposing view the review prose names). When a
+   * question has more than one part sharing the follow-up role, the grader
+   * would otherwise demand all of them, contradicting the explanation, which
+   * always points at one. Set this to the designated answer's part id.
+   * Omit it when the follow-up role has exactly one part (nothing to
+   * disambiguate) — the grader falls back to that single part.
+   */
+  followUpId?: string;
 }
 
 export interface FirstSentenceVsRebuttalAttemptStep {
@@ -62,8 +72,18 @@ export function firstSentenceVsRebuttalFollowUpRole(
   return hasOpposing ? 'opposing' : 'support';
 }
 
-/** All part ids the student must select to finish Step 4 for this question. */
+/**
+ * The part id(s) the student must select to finish Step 4 for this question.
+ * When `followUpId` is set, that single designated part is the answer (matches
+ * the review prose, which always names one "cleanest" follow-up). Otherwise the
+ * follow-up role has a single part and we grade against it.
+ */
 export function firstSentenceVsRebuttalFollowUpIds(question: FirstSentenceVsRebuttalQuestion): string[] {
+  if (question.followUpId) {
+    // Trust the explicit answer only if it still exists on the question.
+    const designated = question.parts.find((part) => part.id === question.followUpId);
+    if (designated) return [designated.id];
+  }
   const role = firstSentenceVsRebuttalFollowUpRole(question);
   return question.parts.filter((part) => part.role === role).map((part) => part.id);
 }
@@ -104,6 +124,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 1,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -133,6 +154,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 2,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -162,6 +184,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 3,
     "type": "first",
+    "followUpId": "p3",
     "parts": [
       {
         "id": "p1",
@@ -191,6 +214,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 4,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -220,6 +244,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 5,
     "type": "first",
+    "followUpId": "p5",
     "parts": [
       {
         "id": "p1",
@@ -259,6 +284,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 6,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -288,6 +314,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 7,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -497,6 +524,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 13,
     "type": "rebuttal",
+    "followUpId": "p1",
     "parts": [
       {
         "id": "p1",
@@ -599,6 +627,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 16,
     "type": "rebuttal",
+    "followUpId": "p1",
     "parts": [
       {
         "id": "p1",
@@ -701,6 +730,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 19,
     "type": "first",
+    "followUpId": "p2",
     "parts": [
       {
         "id": "p1",
@@ -735,6 +765,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
   {
     "id": 20,
     "type": "first",
+    "followUpId": "p1",
     "parts": [
       {
         "id": "p1",
