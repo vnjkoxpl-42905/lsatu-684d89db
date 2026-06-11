@@ -167,6 +167,49 @@ export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { 
         />
       </section>
 
+      <Card variant="elev" className="space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Intro to LR</div>
+            <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">Your saved question attempts</h2>
+            <p className="mt-2 max-w-[60ch] font-mc-serif text-body text-ink-soft">
+              Every question you answer inside Intro to LR autosaves to your profile in the background. This card pulls from that log so you can see how much practice you have actually banked.
+            </p>
+          </div>
+          <Badge tone={introLr.accuracy >= 75 ? 'success' : introLr.accuracy >= 50 ? 'warn' : 'neutral'}>
+            {introLr.loading ? 'loading…' : `${introLr.total} attempts`}
+          </Badge>
+        </div>
+        {introLr.loading ? (
+          <LoadingSkeleton lines={3} />
+        ) : introLr.total === 0 ? (
+          <p className="font-mc-serif text-body text-ink-soft">
+            No saved question attempts yet. Start any drill in Intro to LR and answers will appear here automatically.
+          </p>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="rounded-[6px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev)/0.45)] px-3 py-3">
+              <div className="font-mc-mono text-mono uppercase tracking-[0.14em] text-ink-faint">Accuracy</div>
+              <div className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{introLr.accuracy}%</div>
+              <p className="mt-1 font-mc-sans text-small text-ink-soft">{introLr.correct} of {introLr.total} correct.</p>
+            </div>
+            <div className="rounded-[6px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev)/0.45)] px-3 py-3 md:col-span-2">
+              <div className="font-mc-mono text-mono uppercase tracking-[0.14em] text-ink-faint">By question type</div>
+              <ul className="mt-2 space-y-1">
+                {introLr.byMode.slice(0, 6).map((m) => (
+                  <li key={m.mode} className="flex items-center justify-between gap-3 font-mc-sans text-small text-ink">
+                    <span className="truncate">{m.mode}</span>
+                    <span className="font-mc-mono text-mono text-ink-soft">{m.accuracy}% · {m.total}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </Card>
+
+
+
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
         <Card variant="elev" className="space-y-4">
           <div className="flex items-start justify-between gap-3">
