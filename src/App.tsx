@@ -206,6 +206,13 @@ const App = () => {
                 </React.Suspense>
               </AdminErrorBoundary>
             } />
+            <Route path="/admin/intro-lr" element={
+              <AdminErrorBoundary routeLabel="/admin/intro-lr">
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <AdminIntroLr />
+                </React.Suspense>
+              </AdminErrorBoundary>
+            } />
             <Route path="/guided/:assignmentId" element={
               <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                 <QuestionBankProvider>
