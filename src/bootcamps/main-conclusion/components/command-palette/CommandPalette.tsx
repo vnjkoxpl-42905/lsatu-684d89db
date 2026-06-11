@@ -16,7 +16,7 @@ import namedTools from '@/bootcamps/main-conclusion/data/named-tools.generated.j
 import sim from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 import traps from '@/bootcamps/main-conclusion/data/traps.generated.json';
 import { INTRO_DRILLS } from '@/bootcamps/main-conclusion/modules/drills/introDrills';
-import { HARD_SECTIONS } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
+import { HARD_ENTRIES } from '@/bootcamps/main-conclusion/modules/hard-sentences/hardSentencesNav';
 import { DIAG_SECTIONS } from '@/bootcamps/main-conclusion/modules/diagnostics/DiagnosticsIndex';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
@@ -63,8 +63,8 @@ export function CommandPalette({ open, onClose }: Props) {
       all.push({ id: q.id, title: `Q${q.number} · ${q.title}`, group: 'Simulator', href: `/simulator/bank` });
     for (const t of traps as Array<{ id: string; name: string }>)
       all.push({ id: t.id, title: t.name, group: 'Trap', href: `/simulator/trap-master/${t.id}` });
-    for (const h of HARD_SECTIONS)
-      all.push({ id: h.id, title: `${h.number} · ${h.title}`, group: 'Hard Sentences', href: h.route });
+    for (const h of HARD_ENTRIES)
+      all.push({ id: `MC-HS-${h.id}`, title: `${h.id} · ${h.title}`, group: 'Hard Sentences', href: h.route });
     for (const s of DIAG_SECTIONS)
       all.push({ id: s.id, title: s.title, group: 'Diagnostics', href: s.route });
     return all;

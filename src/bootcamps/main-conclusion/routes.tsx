@@ -37,7 +37,14 @@ import {
 } from '@/bootcamps/main-conclusion/modules/simulator/SimulatorShell';
 import { StructuredDissectionLab } from '@/bootcamps/main-conclusion/components/structured-dissection/StructuredDissectionLab';
 import { TraitDeepDive } from '@/bootcamps/main-conclusion/components/trap-master/TraitDeepDive';
-import { HardSentencesIndex, HardSentenceSection } from '@/bootcamps/main-conclusion/modules/hard-sentences/HardSentencesIndex';
+import { HardSentencesIndex } from '@/bootcamps/main-conclusion/modules/hard-sentences/HardSentencesIndex';
+import WhyHardSentences from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/WhyHardSentences';
+import WhatIsACluster from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/WhatIsACluster';
+import Specifiers from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/Specifiers';
+import JordanMove from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/JordanMove';
+import OptionalVsCore from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/OptionalVsCore';
+import ClusterDecomposerLab from '@/bootcamps/main-conclusion/modules/hard-sentences/sections/ClusterDecomposerLab';
+import DrillClusterDecomposition from '@/bootcamps/main-conclusion/modules/hard-sentences/DrillClusterDecomposition';
 import { DiagnosticsIndex } from '@/bootcamps/main-conclusion/modules/diagnostics/DiagnosticsIndex';
 import { Philosophy } from '@/bootcamps/main-conclusion/modules/diagnostics/Philosophy';
 import { Dashboard } from '@/bootcamps/main-conclusion/modules/diagnostics/Dashboard';
@@ -358,7 +365,15 @@ export function BootcampRoutes() {
         />
         <Route path="hard-sentences" element={<HardSentencesIndex />} />
         <Route path="hard-sentences/capstone" element={<CapstoneRoute />} />
-        <Route path="hard-sentences/:sectionId" element={<HardSentenceSection />} />
+        <Route path="hard-sentences/5.1" element={<WhyHardSentences />} />
+        <Route path="hard-sentences/5.2" element={<WhatIsACluster />} />
+        <Route path="hard-sentences/5.3" element={<Specifiers />} />
+        <Route path="hard-sentences/5.4" element={<JordanMove />} />
+        <Route path="hard-sentences/5.5" element={<OptionalVsCore />} />
+        <Route path="hard-sentences/5.6" element={<ClusterDecomposerLab />} />
+        <Route path="hard-sentences/5.7" element={<DrillClusterDecomposition />} />
+        {/* Legacy section ids (e.g. old bookmarks) land on the hub. */}
+        <Route path="hard-sentences/:sectionId" element={<Navigate to="/bootcamp/intro-to-lr/hard-sentences" replace />} />
         <Route path="diagnostics" element={<DiagnosticsIndex />} />
         <Route path="diagnostics/philosophy" element={<Philosophy />} />
         <Route path="diagnostics/dashboard" element={<Dashboard />} />
