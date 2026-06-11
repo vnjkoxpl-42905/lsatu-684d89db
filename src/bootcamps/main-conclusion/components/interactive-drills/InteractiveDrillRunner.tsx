@@ -95,6 +95,17 @@ export function InteractiveDrillRunner({
   }, [item.id]);
 
   const complete = (correct = true, selectedAnswer?: string) => {
+    try {
+      logIntroLrAttempt({
+        drillId: (state && (state as RunnerState & { drillId?: string }).drillId) ?? item.id,
+        questionId: item.id,
+        mode: item.mode,
+        correct,
+        selectedAnswer,
+      });
+    } catch {
+      /* logger swallows its own errors; this is belt-and-suspenders */
+    }
     onAnswer?.(correct, selectedAnswer);
   };
 
