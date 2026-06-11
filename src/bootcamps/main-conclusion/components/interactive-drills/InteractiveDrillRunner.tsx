@@ -7,6 +7,7 @@ import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { Input } from '@/bootcamps/main-conclusion/components/primitives/Input';
 import { evaluateDesignedConclusion, type Classification } from '@/bootcamps/main-conclusion/lib/ai-templates/whimsical-evaluator';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { logIntroLrAttempt } from '@/bootcamps/main-conclusion/lib/attemptLogger';
 import { ClickableStimulus } from './ClickableStimulus';
 import { DrillProtocolCard } from './DrillProtocolCard';
 import { FreeResponsePanel } from './FreeResponsePanel';
