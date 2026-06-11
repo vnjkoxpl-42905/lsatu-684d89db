@@ -17,7 +17,7 @@ import { LockedRoute } from '@/bootcamps/main-conclusion/components/workspace-sh
 import { ModuleIndex } from '@/bootcamps/main-conclusion/modules/ModuleIndex';
 import { LessonsIndex } from '@/bootcamps/main-conclusion/modules/lessons/LessonsIndex';
 import { Lesson } from '@/bootcamps/main-conclusion/modules/lessons/Lesson';
-import { CapstoneRoute } from '@/bootcamps/main-conclusion/modules/lessons/Capstone';
+import { HardSentencesCapstone } from '@/bootcamps/main-conclusion/modules/hard-sentences/HardSentencesCapstone';
 import { ReferenceIndex } from '@/bootcamps/main-conclusion/modules/reference/ReferenceIndex';
 import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/modules/reference/ReferenceSection';
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
@@ -364,7 +364,7 @@ export function BootcampRoutes() {
           }
         />
         <Route path="hard-sentences" element={<HardSentencesIndex />} />
-        <Route path="hard-sentences/capstone" element={<CapstoneRoute />} />
+        <Route path="hard-sentences/capstone" element={<HardSentencesCapstone />} />
         <Route path="hard-sentences/5.1" element={<WhyHardSentences />} />
         <Route path="hard-sentences/5.2" element={<WhatIsACluster />} />
         <Route path="hard-sentences/5.3" element={<Specifiers />} />

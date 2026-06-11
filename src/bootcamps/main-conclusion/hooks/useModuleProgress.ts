@@ -40,6 +40,7 @@ export function useModuleProgress(_userId?: string): {
   markDrillComplete: (drillId: string) => Promise<void>;
   markMilestoneComplete: (milestoneId: string) => Promise<void>;
   markHardSectionComplete: (sectionId: string) => Promise<void>;
+  markCapstoneComplete: (capstoneId: 'M1.13' | 'M5.8') => Promise<void>;
 } {
   const { user: authUser } = useAuth();
   const [progress, setProgress] = useState<ModuleProgress | null>(null);
@@ -255,6 +256,41 @@ export function useModuleProgress(_userId?: string): {
     [authUser, progress],
   );
 
+  const markCapstoneComplete = useCallback(
+    async (capstoneId: 'M1.13' | 'M5.8') => {
+      if (!authUser) {
+        throw new Error('markCapstoneComplete called with no authenticated user');
+      }
+      const userId = authUser.id;
+      const progressId = progressIdFor(userId);
+      const persist = getPersistence(userId);
+      try {
+        const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        const base = current ?? progress;
+        if (!base) {
+          throw new Error('markCapstoneComplete: progress not yet loaded');
+        }
+        const existing = base.completed_capstones ?? [];
+        if (existing.includes(capstoneId)) return;
+        const merged: ModuleProgress = {
+          ...base,
+          completed_capstones: [...existing, capstoneId],
+          updated_at: now(),
+        };
+        await persist.set(TABLES.module_progress, progressId, merged);
+        setProgress(merged);
+      } catch (e) {
+        console.error('[useModuleProgress] markCapstoneComplete failed', {
+          userId,
+          capstoneId,
+          error: e,
+        });
+        throw e;
+      }
+    },
+    [authUser, progress],
+  );
+
   // Suppress unused-newId warning (kept available for future writes).
   void newId;
 
@@ -265,5 +301,6 @@ export function useModuleProgress(_userId?: string): {
     markDrillComplete,
     markMilestoneComplete,
     markHardSectionComplete,
+    markCapstoneComplete,
   };
 }

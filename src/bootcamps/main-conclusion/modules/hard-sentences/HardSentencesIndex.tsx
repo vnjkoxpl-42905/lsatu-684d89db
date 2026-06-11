@@ -1,5 +1,5 @@
 /**
- * Module 5: Hard Sentences — letterpress hub with truthful per-entry progress.
+ * Module 5: Hard Sentences. Letterpress hub with truthful per-entry progress.
  * Section bodies live in modules/hard-sentences/sections/.
  */
 

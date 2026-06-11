@@ -1,11 +1,11 @@
 /**
- * M5.8 Capstone — 5 self-contained cluster-decomposition items.
+ * M5.8 Capstone: 5 self-contained cluster-decomposition items.
  *
  * Phase E ships these as the working capstone. The OCR-pending calibration items
  * (MC-CAL-M5-Q1..Q5 in calibration.generated.json) wire in at Phase H.1 once the
  * DOCX extractor pulls the source content from Cluster Sentences Review.docx.
  *
- * Voice register 1 (decisive — capstones are scored, not narrated).
+ * Voice register 1 (decisive; capstones are scored, not narrated).
  * Trait target on every item: cluster-decomposition.
  */
 
@@ -38,13 +38,13 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         letter: 'A',
         text: 'The senator’s amendment has stalled.',
         is_correct: true,
-        rationale: 'Strip the relative clause and the prepositional chain — the core is "the amendment has stalled."',
+        rationale: 'Strip the relative clause and the prepositional chain. The core is "the amendment has stalled."',
       },
       {
         letter: 'B',
         text: 'The amendment would extend the deadline by ninety days.',
         is_correct: false,
-        rationale: 'A specifier — what the amendment would do — not the claim that it has stalled.',
+        rationale: 'A specifier (what the amendment would do), not the claim that it has stalled.',
         trap_label: 'Specifier as core (T2 analog)',
       },
       {
@@ -52,14 +52,14 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         text: 'Some states have not yet submitted their plans.',
         is_correct: false,
         rationale: 'Inside-the-specifier fact, not the load-bearing claim.',
-        trap_label: 'T2 — Premise as conclusion',
+        trap_label: 'T2 · Premise as conclusion',
       },
       {
         letter: 'D',
         text: 'The senator should withdraw the amendment.',
         is_correct: false,
         rationale: 'Adds a recommendation the sentence never makes.',
-        trap_label: 'T1 — Too strong',
+        trap_label: 'T1 · Too strong',
       },
     ],
     source_note: 'Adapted from §5.6 practice item 1.',
@@ -75,15 +75,15 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         letter: 'A',
         text: 'Researchers at three regional universities conducted a study.',
         is_correct: false,
-        rationale: 'Specifier — who conducted it — not the finding.',
+        rationale: 'A specifier (who conducted it), not the finding.',
         trap_label: 'Specifier as core',
       },
       {
         letter: 'B',
         text: 'Background noise affects reading comprehension among adolescents.',
         is_correct: false,
-        rationale: 'Closer — but this is the topic, not the claim. The claim is about correlation, and the framing matters.',
-        trap_label: 'T4 — Half the claim',
+        rationale: 'Closer, but this is the topic, not the claim. The claim is about correlation, and the framing matters.',
+        trap_label: 'T4 · Half the claim',
       },
       {
         letter: 'C',
@@ -96,7 +96,7 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         text: 'Schools should reduce background noise to improve reading scores.',
         is_correct: false,
         rationale: 'Adds a recommendation the sentence never makes.',
-        trap_label: 'T1 — Too strong',
+        trap_label: 'T1 · Too strong',
       },
     ],
     source_note: 'Adapted from §5.6 practice item 2.',
@@ -113,27 +113,27 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         text: 'The decision has been finalized.',
         is_correct: false,
         rationale: 'Over-stripped. Drops the load-bearing specifier "to relocate the bus depot." The reader can no longer tell what was decided.',
-        trap_label: 'T4 — Half the claim',
+        trap_label: 'T4 · Half the claim',
       },
       {
         letter: 'B',
         text: 'The decision to relocate the bus depot has been finalized.',
         is_correct: true,
-        rationale: 'The "to relocate the bus depot" specifier is load-bearing — without it, the sentence loses its content.',
+        rationale: 'The "to relocate the bus depot" specifier is load-bearing. Without it, the sentence loses its content.',
       },
       {
         letter: 'C',
         text: 'Public opposition to the bus depot relocation has been building for six months.',
         is_correct: false,
         rationale: 'Specifier-internal fact, not the main claim.',
-        trap_label: 'T2 — Premise as conclusion',
+        trap_label: 'T2 · Premise as conclusion',
       },
       {
         letter: 'D',
         text: 'The city council has rejected the relocation despite support.',
         is_correct: false,
-        rationale: 'Reverses the polarity — the decision was finalized, not rejected.',
-        trap_label: 'T1 — Reversed claim',
+        rationale: 'Reverses the polarity. The decision was finalized, not rejected.',
+        trap_label: 'T1 · Reversed claim',
       },
     ],
     source_note: 'Adapted from §5.6 practice item 3. Tests load-bearing specifier recognition.',
@@ -150,7 +150,7 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         text: 'The artist completed the canvas before 1887.',
         is_correct: false,
         rationale: 'Inside-the-specifier fact (the disputed claim itself), not the sentence’s core assertion.',
-        trap_label: 'T2 — Premise as conclusion',
+        trap_label: 'T2 · Premise as conclusion',
       },
       {
         letter: 'B',
@@ -163,14 +163,14 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         text: 'Infrared analysis can confirm the dating of underdrawings.',
         is_correct: false,
         rationale: 'Generalization beyond what the sentence asserts.',
-        trap_label: 'T6 — Out of scope',
+        trap_label: 'T6 · Out of scope',
       },
       {
         letter: 'D',
         text: 'The artist trained under Marchetti.',
         is_correct: false,
         rationale: 'Specifier-internal fact about training, not the claim.',
-        trap_label: 'T2 — Premise as conclusion',
+        trap_label: 'T2 · Premise as conclusion',
       },
     ],
     source_note: 'Adapted from §5.6 practice item 4. Tests appositive recognition.',
@@ -186,28 +186,28 @@ export const M5_CAPSTONE: CapstoneItem[] = [
         letter: 'A',
         text: 'The proposal was forwarded to the council without recommendation.',
         is_correct: true,
-        rationale: 'Strip both specifiers — the planning-board opposition and the proposal’s content — and the core is the forwarding action.',
+        rationale: 'Strip both specifiers (the planning-board opposition and the proposal’s content) and the core is the forwarding action.',
       },
       {
         letter: 'B',
         text: 'The planning board opposed the proposal.',
         is_correct: false,
         rationale: 'Specifier-internal fact, not the main claim.',
-        trap_label: 'T2 — Premise as conclusion',
+        trap_label: 'T2 · Premise as conclusion',
       },
       {
         letter: 'C',
         text: 'The historic district will be expanded by three blocks.',
         is_correct: false,
         rationale: 'Inside-the-specifier proposal content; the sentence does not assert it as fact.',
-        trap_label: 'T1 — Too strong',
+        trap_label: 'T1 · Too strong',
       },
       {
         letter: 'D',
         text: 'The council will approve the historic-district expansion.',
         is_correct: false,
         rationale: 'A prediction the sentence does not make.',
-        trap_label: 'T1 — Too strong',
+        trap_label: 'T1 · Too strong',
       },
     ],
     source_note: 'Adapted from §5.6 practice item 5. Two specifiers, one load-bearing.',
