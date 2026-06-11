@@ -31,7 +31,8 @@ interface Aggregate {
 
 export default function AdminIntroLr() {
   const { user, loading: authLoading } = useAuth();
-  const { isAdmin, loading: permLoading } = useUserPermissions();
+  const { is_admin: isAdmin } = useUserPermissions();
+  const permLoading = false;
   const { rows: students } = useHubStudents();
   const [attempts, setAttempts] = React.useState<Row[]>([]);
   const [loading, setLoading] = React.useState(true);
