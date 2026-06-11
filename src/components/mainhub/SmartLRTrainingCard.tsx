@@ -154,7 +154,7 @@ export default function SmartLRTrainingCard() {
             String(x.qnum) === qnum,
         );
         if (q) {
-          navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}`);
+          navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(q.qid)}&present=smart`);
           return;
         }
       }
@@ -167,7 +167,7 @@ export default function SmartLRTrainingCard() {
           sections: section !== AUTO ? [Number(section)] : [],
           count: 20,
         };
-        navigate("/drill", { state: { mode: "type-drill", config } });
+        navigate("/drill", { state: { mode: "type-drill", config, present: "smart" } });
         return;
       }
 

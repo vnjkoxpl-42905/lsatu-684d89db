@@ -4,6 +4,13 @@ export interface DrillRouteState {
   mode?: DrillMode;
   config?: FullSectionConfig | TypeDrillConfig;
   practicingLabel?: string;
+  /**
+   * Presentation hint, independent of `mode`. When 'smart', the runner renders
+   * the adaptive Smart-Drill chrome (Tutor toggle, notes, Skip/Submit footer,
+   * no Complete Section) even for a fixed-queue type-drill. The Smart LR Drill
+   * card sets this so a hand-picked question looks identical to the Auto run.
+   */
+  present?: "smart";
 }
 
 export interface DrillTimerRouteConfig {
@@ -29,7 +36,9 @@ export function getResolvedDrillRouteState(
       selectedQids: qids,
     };
 
-    return { mode: urlMode as DrillMode, config };
+    const present = searchParams.get("present") === "smart" ? "smart" : undefined;
+
+    return { mode: urlMode as DrillMode, config, present };
   }
 
   return (locationState || {}) as DrillRouteState;

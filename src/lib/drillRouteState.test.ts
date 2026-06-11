@@ -19,6 +19,26 @@ describe("drill route state helpers", () => {
     ]);
   });
 
+  it("carries present=smart from the URL for Smart LR Drill hand-picks", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&present=smart"),
+      null,
+    );
+
+    expect(state.mode).toBe("type-drill");
+    expect((state.config as TypeDrillConfig).selectedQids).toEqual(["PT118-S4-Q1"]);
+    expect(state.present).toBe("smart");
+  });
+
+  it("leaves present undefined when the param is absent", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1"),
+      null,
+    );
+
+    expect(state.present).toBeUndefined();
+  });
+
   it("uses a stopwatch for URL-launched type drills with explicit qids", () => {
     const state = getResolvedDrillRouteState(
       new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1"),

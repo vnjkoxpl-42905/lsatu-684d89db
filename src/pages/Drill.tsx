@@ -2451,6 +2451,14 @@ function DrillContent() {
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     const isAdaptiveMode = session.mode === 'adaptive';
+    // Presentation is decoupled from mode: the Smart LR Drill card can request
+    // the adaptive chrome (Tutor toggle, notes, Skip/Submit footer, no Complete
+    // Section) for a hand-picked type-drill via `present: 'smart'`, so a chosen
+    // question looks identical to the Auto run. Question semantics still follow
+    // `mode` — only the chrome + footer switch on this flag.
+    const usesSmartChrome = isAdaptiveMode || state?.present === 'smart';
+    // Fixed-queue Smart presentation: smart chrome but not the adaptive engine.
+    const isSmartFixedQueue = usesSmartChrome && !isAdaptiveMode;
     const showQuestionList = !isAdaptiveMode;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
@@ -2617,10 +2625,10 @@ function DrillContent() {
           isPaused={officialIsPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
-          notesPanelEnabled={isAdaptiveMode}
+          notesPanelEnabled={usesSmartChrome}
           notesPanelOpen={notesOpen}
           onNotesPanelClose={() => setNotesOpen(false)}
-          tutorToggleVisible={session?.mode === 'adaptive'}
+          tutorToggleVisible={usesSmartChrome}
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
             setTutorMode(next);
@@ -2640,7 +2648,7 @@ function DrillContent() {
               pauseNoun={isFullSection ? 'Section' : 'Question'}
               completeLabel={isMcPractice ? 'End Drill' : undefined}
               onComplete={
-                session.mode === 'adaptive'
+                usesSmartChrome
                   ? undefined
                   : isMcPractice
                   ? () => { void handleEndBootcampPracticeDrill(); }
@@ -2659,7 +2667,7 @@ function DrillContent() {
             setSearchTerm={setOfficialSearchTerm}
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
-            notesButtonVisible={isAdaptiveMode}
+            notesButtonVisible={usesSmartChrome}
             notesOpen={notesOpen}
             onToggleNotes={() => setNotesOpen(o => !o)}
           />
@@ -2706,6 +2714,39 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
+              disabled={!!timer?.isPaused}
+            />
+          ) : isSmartFixedQueue ? (
+            // Same chrome as the adaptive Smart Drill, but driven by the fixed
+            // queue the student hand-picked from the Smart LR Drill card. Submit
+            // saves and reveals in place (honoring the auto-reveal toggle); Next
+            // walks the queue via the shared officialNext; Skip advances past the
+            // answer gate; End finishes the section.
+            <OfficialSmartDrillBar
+              autoReveal={autoReveal}
+              onAutoRevealChange={handleAutoRevealChange}
+              primaryAction={currentAttempted ? 'next' : 'submit'}
+              primaryDisabled={!selectedAnswer || !!timer?.isPaused}
+              onSubmit={() => {
+                void (async () => {
+                  await handleSubmitNonAdaptive(selectedAnswer);
+                  if (autoReveal) {
+                    setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+                  }
+                })();
+              }}
+              onNext={() => { void officialNext(); }}
+              onSkip={() => {
+                if (isPracticeSetMode) {
+                  handlePracticeSetNext();
+                } else if (session.currentIndex >= session.questionQueue.length - 1) {
+                  void handleFinishSection();
+                } else {
+                  handleNext();
+                }
+              }}
+              skipDisabled={currentAttempted || !!timer?.isPaused}
+              onEnd={() => { void handleFinishSection(); }}
               disabled={!!timer?.isPaused}
             />
           ) : (
