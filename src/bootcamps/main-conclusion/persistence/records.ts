@@ -27,6 +27,7 @@ export const ModuleProgress = z.object({
   completed_lessons: z.array(z.string()),
   completed_drills: z.array(z.string()),
   completed_milestones: z.array(z.string()).default([]),
+  completed_hard_sections: z.array(z.string()).default([]),
   completed_capstones: z.array(z.enum(['M1.13', 'M5.8'])),
   updated_at: IsoDateSchema,
 });

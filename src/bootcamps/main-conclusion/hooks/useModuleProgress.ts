@@ -39,6 +39,7 @@ export function useModuleProgress(_userId?: string): {
   markLessonComplete: (lessonId: string, routeId: string) => Promise<void>;
   markDrillComplete: (drillId: string) => Promise<void>;
   markMilestoneComplete: (milestoneId: string) => Promise<void>;
+  markHardSectionComplete: (sectionId: string) => Promise<void>;
 } {
   const { user: authUser } = useAuth();
   const [progress, setProgress] = useState<ModuleProgress | null>(null);
@@ -61,6 +62,7 @@ export function useModuleProgress(_userId?: string): {
             completed_lessons: [],
             completed_drills: [],
             completed_milestones: [],
+            completed_hard_sections: [],
             completed_capstones: [],
             updated_at: now(),
           });
@@ -217,8 +219,51 @@ export function useModuleProgress(_userId?: string): {
     [authUser, progress],
   );
 
+  const markHardSectionComplete = useCallback(
+    async (sectionId: string) => {
+      if (!authUser) {
+        throw new Error('markHardSectionComplete called with no authenticated user');
+      }
+      const userId = authUser.id;
+      const progressId = progressIdFor(userId);
+      const persist = getPersistence(userId);
+      try {
+        const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        const base = current ?? progress;
+        if (!base) {
+          throw new Error('markHardSectionComplete: progress not yet loaded');
+        }
+        // Older persisted rows predate this field.
+        const existing = base.completed_hard_sections ?? [];
+        if (existing.includes(sectionId)) return;
+        const merged: ModuleProgress = {
+          ...base,
+          completed_hard_sections: [...existing, sectionId],
+          updated_at: now(),
+        };
+        await persist.set(TABLES.module_progress, progressId, merged);
+        setProgress(merged);
+      } catch (e) {
+        console.error('[useModuleProgress] markHardSectionComplete failed', {
+          userId,
+          sectionId,
+          error: e,
+        });
+        throw e;
+      }
+    },
+    [authUser, progress],
+  );
+
   // Suppress unused-newId warning (kept available for future writes).
   void newId;
 
-  return { progress, markRouteVisited, markLessonComplete, markDrillComplete, markMilestoneComplete };
+  return {
+    progress,
+    markRouteVisited,
+    markLessonComplete,
+    markDrillComplete,
+    markMilestoneComplete,
+    markHardSectionComplete,
+  };
 }
