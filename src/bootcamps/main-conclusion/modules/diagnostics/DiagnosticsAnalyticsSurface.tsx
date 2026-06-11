@@ -5,6 +5,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } fro
 import { Gauge } from '@/components/ui/gauge-1';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { useDiagnostics } from '@/bootcamps/main-conclusion/hooks/useDiagnostics';
+import { useIntroLrAttempts } from '@/bootcamps/main-conclusion/hooks/useIntroLrAttempts';
 import {
   aggregateTraitStats,
   buildRecommendations,
