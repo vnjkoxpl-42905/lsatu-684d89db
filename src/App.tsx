@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OrbitalActiveProvider } from "@/contexts/OrbitalActiveContext";
 
@@ -88,6 +88,22 @@ import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 import GuidedTour from "./components/mainhub/GuidedTour";
+
+// Param/query-preserving redirects for the teacher IA rebuild (ADR 0001).
+// The old surfaces still resolve; they just forward to their new home so no
+// bookmarked /teacher/* URL 404s.
+function RedirectBootcampToInsights() {
+  const { topicId } = useParams();
+  return <Navigate to={`/teacher/insights/${topicId}`} replace />;
+}
+function RedirectBootcampStudentToInsights() {
+  const { topicId, studentId } = useParams();
+  return <Navigate to={`/teacher/insights/${topicId}/students/${studentId}`} replace />;
+}
+function RedirectSmartboardToWhiteboard() {
+  const { search } = useLocation();
+  return <Navigate to={`/teacher/whiteboard${search}`} replace />;
+}
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
 // React root is remounting (e.g. from a service-worker replace) vs its child
@@ -324,21 +340,33 @@ const App = () => {
                       </React.Suspense>
                     } />
                     <Route path="weekly-plans" element={<Navigate to="/teacher/schedule" replace />} />
-                    <Route path="bootcamps" element={
+                    {/* Insights = bootcamp/topic analytics. Renamed from the old
+                        top-level "Bootcamps" which collided with the assign action. */}
+                    <Route path="insights" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherBootcampsHub />
                       </React.Suspense>
                     } />
-                    <Route path="bootcamps/:topicId" element={
+                    <Route path="insights/:topicId" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherBootcampDetail />
                       </React.Suspense>
                     } />
-                    <Route path="bootcamps/:topicId/students/:studentId" element={
+                    <Route path="insights/:topicId/students/:studentId" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherStudentBootcampDetail />
                       </React.Suspense>
                     } />
+                    {/* Whiteboard = top-level teaching canvas (was Library > Smartboard). */}
+                    <Route path="whiteboard" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherSmartboard />
+                      </React.Suspense>
+                    } />
+                    {/* legacy bootcamp-analytics paths -> Insights */}
+                    <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
+                    <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
+                    <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
                     <Route path="admin" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherAdmin />
@@ -371,9 +399,9 @@ const App = () => {
                       <Route path="bootcamps" element={
                         <React.Suspense fallback={<div />}><TeacherBootcamps /></React.Suspense>
                       } />
-                      <Route path="smartboard" element={
-                        <React.Suspense fallback={<div />}><TeacherSmartboard /></React.Suspense>
-                      } />
+                      {/* Smartboard moved to top-level /teacher/whiteboard. Keep a
+                          redirect so old links and the saved-session query survive. */}
+                      <Route path="smartboard" element={<RedirectSmartboardToWhiteboard />} />
                       <Route path="guided-drills" element={
                         <React.Suspense fallback={<div />}><AdminGuidedDrills /></React.Suspense>
                       } />
@@ -381,12 +409,12 @@ const App = () => {
                         <React.Suspense fallback={<div />}><TeacherAnalyticsBridge /></React.Suspense>
                       } />
                     </Route>
-                    {/* legacy redirects */}
+                    {/* legacy redirects. NOTE: bare `bootcamps` is handled above
+                        (-> Insights, the analytics surface it historically showed).
+                        `smartboard` is handled inside the library block (-> Whiteboard). */}
                     <Route path="assignments" element={<Navigate to="/teacher/library/assignments" replace />} />
                     <Route path="recaps" element={<Navigate to="/teacher/library/recaps" replace />} />
                     <Route path="uploads" element={<Navigate to="/teacher/library/uploads" replace />} />
-                    <Route path="bootcamps" element={<Navigate to="/teacher/library/bootcamps" replace />} />
-                    <Route path="smartboard" element={<Navigate to="/teacher/library/smartboard" replace />} />
                     <Route path="analytics-bridge" element={<Navigate to="/teacher/library/analytics" replace />} />
                   </Route>
 

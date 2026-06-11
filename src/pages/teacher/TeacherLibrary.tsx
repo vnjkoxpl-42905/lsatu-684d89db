@@ -1,15 +1,16 @@
 import { NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
-import { ClipboardList, BookOpen, UploadCloud, Flame, PencilRuler, LineChart, Target } from 'lucide-react';
+import { ClipboardList, Flame, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// Library = the content store for assignable material + the cross-cut view of
+// what is currently assigned. Surfaces that moved out of Library in the IA
+// rebuild (Recaps -> student, Uploads -> Command, Smartboard -> Whiteboard,
+// Analytics -> Insights) keep their routes for redirects but leave this strip.
+// See docs/adr/0001-teacher-workspace-ia.md.
 const SUB: { to: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
   { to: '/teacher/library/assignments', label: 'Assignments', Icon: ClipboardList },
-  { to: '/teacher/library/guided-drills', label: 'Guided Drills', Icon: Target },
-  { to: '/teacher/library/recaps', label: 'Recaps', Icon: BookOpen },
-  { to: '/teacher/library/uploads', label: 'Uploads', Icon: UploadCloud },
   { to: '/teacher/library/bootcamps', label: 'Bootcamps', Icon: Flame },
-  { to: '/teacher/library/smartboard', label: 'Smartboard', Icon: PencilRuler },
-  { to: '/teacher/library/analytics', label: 'Analytics', Icon: LineChart },
+  { to: '/teacher/library/guided-drills', label: 'Guided Drills', Icon: Target },
 ];
 
 export default function TeacherLibrary() {

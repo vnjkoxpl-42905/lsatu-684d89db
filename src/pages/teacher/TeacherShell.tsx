@@ -6,29 +6,52 @@ import {
   MessageSquare,
   CalendarDays,
   Library,
-  Flame,
+  PencilRuler,
+  BarChart3,
   ArrowLeft,
   Shield,
-  FileText,
   Archive,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { BOOTCAMPS_DASHBOARD_ENABLED } from '@/components/teacher/bootcamps/topicRegistry';
 
-const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: string }>; end?: boolean }[] = [
+type NavItem = {
+  to: string;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  end?: boolean;
+};
+
+/**
+ * Primary teacher nav (verb/surface-first). See docs/adr/0001-teacher-workspace-ia.md
+ * and src/pages/teacher/CONTEXT.md for why each surface lives where it does.
+ */
+const PRIMARY_NAV: NavItem[] = [
   { to: '/teacher', label: 'Command', Icon: Sparkles, end: true },
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
-  { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
-  { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-  { to: '/teacher/templates', label: 'Templates', Icon: FileText },
-  { to: '/teacher/reference-library', label: 'Bootcamp References', Icon: Archive },
+  { to: '/teacher/whiteboard', label: 'Whiteboard', Icon: PencilRuler },
+  { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
+  { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
   { to: '/teacher/admin', label: 'Admin', Icon: Shield },
-].filter((item) =>
-  item.to === '/teacher/bootcamps' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
+];
+
+/**
+ * References = Joshua's private inspiration shelf. Never assignable, not daily-ops,
+ * so it sits below a divider rather than in the primary set.
+ */
+const SECONDARY_NAV: NavItem[] = [
+  { to: '/teacher/reference-library', label: 'References', Icon: Archive },
+];
+
+// Insights surfaces bootcamp analytics; hidden if the dashboard is disabled.
+const visiblePrimary = PRIMARY_NAV.filter((item) =>
+  item.to === '/teacher/insights' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
 );
+
+const MOBILE_NAV: NavItem[] = [...visiblePrimary, ...SECONDARY_NAV];
 
 /**
  * Teacher Workspace shell. Premium operator hub for admins.
@@ -70,7 +93,7 @@ export default function TeacherShell() {
         {/* Desktop sidebar / mobile bottom-tab. */}
         <aside className="hidden md:flex md:w-[200px] shrink-0 border-r border-zinc-800/60 flex-col">
           <nav className="py-4 flex flex-col gap-0.5" aria-label="Teacher workspace">
-            {NAV.map(({ to, label, Icon, end }) => (
+            {visiblePrimary.map(({ to, label, Icon, end }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -88,6 +111,25 @@ export default function TeacherShell() {
                 <span className="truncate">{label}</span>
               </NavLink>
             ))}
+            <div className="my-2 mx-4 h-px bg-zinc-800/60" />
+            {SECONDARY_NAV.map(({ to, label, Icon, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  cn(
+                    'mx-2 inline-flex items-center gap-2.5 px-3 py-2 text-[13px] rounded-lg transition-all',
+                    isActive
+                      ? 'bg-gradient-to-r from-amber-500/15 to-transparent text-amber-100 border border-amber-500/20'
+                      : 'border border-transparent text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900/60',
+                  )
+                }
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="truncate">{label}</span>
+              </NavLink>
+            ))}
           </nav>
         </aside>
 
@@ -95,19 +137,20 @@ export default function TeacherShell() {
           <Outlet />
         </main>
 
-        {/* Mobile bottom tab bar */}
+        {/* Mobile bottom tab bar. Horizontally scrollable so all surfaces fit
+            without overflow; admin must stay usable on mobile. */}
         <nav
-          className="md:hidden shrink-0 border-t border-zinc-800/60 bg-zinc-950/95 backdrop-blur flex items-stretch pb-[max(0.25rem,env(safe-area-inset-bottom))]"
+          className="md:hidden shrink-0 border-t border-zinc-800/60 bg-zinc-950/95 backdrop-blur flex items-stretch overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))]"
           aria-label="Teacher workspace"
         >
-          {NAV.map(({ to, label, Icon, end }) => (
+          {MOBILE_NAV.map(({ to, label, Icon, end }) => (
             <NavLink
               key={to}
               to={to}
               end={end}
               className={({ isActive }) =>
                 cn(
-                  'flex-1 flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
+                  'shrink-0 min-w-[4.5rem] flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
                   isActive ? 'text-amber-300' : 'text-zinc-500 hover:text-zinc-200',
                 )
               }
