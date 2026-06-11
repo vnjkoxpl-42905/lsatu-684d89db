@@ -261,32 +261,38 @@
 
 .fsvr-lab__indicator {
   padding: 0 2px;
-  border-bottom: 2px dashed currentColor;
   border-radius: 4px;
   background: transparent;
   color: inherit;
   cursor: pointer;
 }
 
-.fsvr-lab__indicator[data-tone='premise'] {
+/* An un-found indicator must be indistinguishable from a plain word in Step 1,
+   so it hovers identically and carries no tone color or underline until found. */
+.fsvr-lab__indicator:hover {
+  background: rgba(0, 0, 0, 0.055);
+}
+
+.fsvr-lab__indicator--found[data-tone='premise'] {
   color: var(--fsvr-warning);
 }
 
-.fsvr-lab__indicator[data-tone='pivot'] {
+.fsvr-lab__indicator--found[data-tone='pivot'] {
   color: var(--fsvr-pivot);
 }
 
-.fsvr-lab__indicator[data-tone='opposing'],
-.fsvr-lab__indicator[data-tone='concession'] {
+.fsvr-lab__indicator--found[data-tone='opposing'],
+.fsvr-lab__indicator--found[data-tone='concession'] {
   color: var(--fsvr-error);
 }
 
-.fsvr-lab__indicator[data-tone='opinion'],
-.fsvr-lab__indicator[data-tone='conclusion'] {
+.fsvr-lab__indicator--found[data-tone='opinion'],
+.fsvr-lab__indicator--found[data-tone='conclusion'] {
   color: var(--fsvr-accent);
 }
 
 .fsvr-lab__indicator--found {
+  border-bottom: 2px dashed currentColor;
   background: rgba(0, 0, 0, 0.04);
   animation: fsvr-indicator-pulse 3.8s ease-in-out infinite;
 }
