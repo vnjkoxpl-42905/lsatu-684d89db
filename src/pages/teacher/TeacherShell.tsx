@@ -17,7 +17,7 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { BOOTCAMPS_DASHBOARD_ENABLED } from '@/components/teacher/bootcamps/topicRegistry';
 
 const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: string }>; end?: boolean }[] = [
-  { to: '/teacher', label: 'Assistant', Icon: Sparkles, end: true },
+  { to: '/teacher', label: 'Command', Icon: Sparkles, end: true },
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
