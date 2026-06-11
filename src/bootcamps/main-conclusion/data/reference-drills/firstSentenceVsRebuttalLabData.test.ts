@@ -9,6 +9,8 @@ import {
 } from './firstSentenceVsRebuttalLabData';
 
 const INDICATOR_RE = /<i-w t="[^"]+">([^<]+)<\/i-w>/g;
+const TYPED_INDICATOR_RE = /<i-w t="([^"]+)">([^<]+)<\/i-w>/g;
+const INTENTIONALLY_ENHANCED_STIMULUS_IDS = new Set([12]);
 
 function taggedIndicatorWords(): string[] {
   const words: string[] = [];
@@ -38,24 +40,61 @@ describe('firstSentenceVsRebuttalLabData', () => {
     expect(FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.filter((question) => question.type === 'rebuttal')).toHaveLength(11);
   });
 
-  it('matches the canonical newDrills bank at the full-stimulus level, with only HTML-specific speaker labels and part splits differing', () => {
+  it('matches the canonical newDrills bank at the full-stimulus level except intentionally enhanced items', () => {
     const canonical = [...FIRST_SENTENCE_QUESTIONS, ...REBUTTAL_QUESTIONS].map((question) => ({
       id: question.id,
       type: question.type,
       stimulus: normalizeFirstSentenceVsRebuttalStimulus(question.parts.map((part) => part.text).join(' ')),
-    })).sort((left, right) => left.id - right.id);
+    })).filter((question) => !INTENTIONALLY_ENHANCED_STIMULUS_IDS.has(question.id)).sort((left, right) => left.id - right.id);
 
     const htmlPort = FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.map((question) => ({
       id: question.id,
       type: question.type,
       stimulus: normalizeFirstSentenceVsRebuttalStimulus(stripSpeakerPrefix(question.parts.map((part) => part.text).join(' '))),
-    })).sort((left, right) => left.id - right.id);
+    })).filter((question) => !INTENTIONALLY_ENHANCED_STIMULUS_IDS.has(question.id)).sort((left, right) => left.id - right.id);
 
     expect(htmlPort).toEqual(canonical);
   });
 
   it('never tags the word "and" as an indicator (deliberately removed from the answer key)', () => {
     expect(taggedIndicatorWords()).not.toContain('and');
+  });
+
+  it('does not tag "must" as an indicator', () => {
+    expect(taggedIndicatorWords()).not.toContain('must');
+  });
+
+  it('uses no more than one pivot indicator per argument', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
+      const pivotCount = question.parts.reduce((count, part) => {
+        const matches = part.text.match(/<i-w t="Pivot">/g);
+        return count + (matches?.length ?? 0);
+      }, 0);
+
+      expect(pivotCount, `Q${question.id} has too many pivot indicators`).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('uses opinion indicators only on conclusion claims', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
+      for (const part of question.parts) {
+        TYPED_INDICATOR_RE.lastIndex = 0;
+        let match: RegExpExecArray | null;
+        while ((match = TYPED_INDICATOR_RE.exec(part.text)) !== null) {
+          if (match[1] === 'Opinion Indicator') {
+            expect(['conclusion', 'opposing'], `Q${question.id} ${part.id} tags "${match[2]}" as an opinion indicator`).toContain(
+              part.role,
+            );
+          }
+        }
+      }
+    }
+  });
+
+  it('keeps every enhanced argument to at least three selectable parts', () => {
+    for (const question of FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS) {
+      expect(question.parts.length, `Q${question.id} is too short`).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it('asks for support on first-sentence questions and a normal rebuttal asks for the opposing view', () => {

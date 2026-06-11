@@ -1428,23 +1428,23 @@
             {id: 'p1', text: "Legal theorist: It is unreasonable to incarcerate anyone for any other reason than that he or she is a serious threat to the property or lives of other people. ", isC: true},
             {id: 'p2', text: "The breaking of a law does not justify incarceration, ", isS: true},
             {id: 'p3', text: "<i-w t=\"Premise Indicator\">for</i-w> lawbreaking proceeds either from ignorance of the law or of the effects of one's actions, or from the free choice on the part of the lawbreaker. ", isS: true},
-            {id: 'p4', text: "<i-w t=\"Opinion Indicator\">Obviously</i-w> mere ignorance cannot justify incarcerating a lawbreaker, <i-w t=\"Premise Indicator\">and</i-w> even free choice on the part of the lawbreaker fails to justify incarceration, ", isS: true},
-            {id: 'p5', text: "<i-w t=\"Premise Indicator\">for</i-w> free choice proceeds from the desires of an agent, <i-w t=\"Premise Indicator\">and</i-w> the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.", isS: true}
+            {id: 'p4', text: "Obviously mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, ", isS: true},
+            {id: 'p5', text: "<i-w t=\"Premise Indicator\">for</i-w> free choice proceeds from the desires of an agent, and the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.", isS: true}
         ], feedback: "First-sentence. The broad claim is sentence 1; later sentences build a support chain underneath it, including an intermediate conclusion. Follow-up: the breaking of a law does not justify incarceration." },
 
         // Q8 — Rebuttal. Map: Opposing view → Rebuttal conclusion → Support → Support
         { id: 8, type: 'rebuttal', parts: [
             {id: 'p1', text: "Nylon industry spokesperson: <i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, <i-w t=\"Opposing Viewpoint\">some people</i-w> have the mistaken notion that cotton is natural but nylon is not. ", isO: true},
             {id: 'p2', text: "<i-w t=\"Pivot\">However</i-w>, nylon's main components come from petroleum and from the nitrogen in the atmosphere. ", isC: true},
-            {id: 'p3', text: "<i-w t=\"Opinion Indicator\">Clearly</i-w> the atmosphere is natural. ", isS: true},
-            {id: 'p4', text: "<i-w t=\"Premise Indicator\">And</i-w> petroleum comes from oil, which in turn comes from ancient plants—a natural source.", isS: true}
+            {id: 'p3', text: "Clearly the atmosphere is natural. ", isS: true},
+            {id: 'p4', text: "And petroleum comes from oil, which in turn comes from ancient plants—a natural source.", isS: true}
         ], feedback: "Rebuttal. The first sentence sets up the mistaken view; 'However' introduces the author's actual position. Follow-up: some people have the mistaken notion that cotton is natural but nylon is not." },
 
         // Q9 — Rebuttal. Map: Opposing viewpoint → Rebuttal conclusion → Support → Example → Support
         { id: 9, type: 'rebuttal', parts: [
             {id: 'p1', text: "Mayor McKinney's policies have often been criticized on the grounds that they benefit only wealthy city residents, ", isO: true},
             {id: 'p2', text: "<i-w t=\"Pivot\">but</i-w> that is not a fair evaluation. ", isC: true},
-            {id: 'p3', text: "Some of McKinney's policies have <i-w t=\"Opinion Indicator\">clearly</i-w> benefited the city's less affluent residents. ", isS: true},
+            {id: 'p3', text: "Some of McKinney's policies have clearly benefited the city's less affluent residents. ", isS: true},
             {id: 'p4', text: "McKinney actively supported last year's proposal to lower the city's high property taxes. ", isS: true},
             {id: 'p5', text: "<i-w t=\"Premise Indicator\">Because</i-w> of this tax decrease, more development is taking place in the city, helping to end the housing shortage and stabilize the rents in the city.", isS: true}
         ], feedback: "Rebuttal. The criticism comes first; the author pushes back with 'but that is not a fair evaluation.' Follow-up: critics say McKinney's policies benefit only wealthy residents." },
@@ -1461,15 +1461,16 @@
         { id: 11, type: 'rebuttal', parts: [
             {id: 'p1', text: "Letter to the editor: I was shocked to learn that Judge Mosston was convicted of criminal assault, ", isO: true},
             {id: 'p2', text: "<i-w t=\"Pivot\">but</i-w> I disagree with my fellow citizens who believe that he should be forced to resign. ", isC: true},
-            {id: 'p3', text: "I have played cards with Judge Mosston for many years, <i-w t=\"Premise Indicator\">and</i-w> he has always shown himself to be fair toward me and our fellow cardplayers. ", isS: true},
+            {id: 'p3', text: "I have played cards with Judge Mosston for many years, and he has always shown himself to be fair toward me and our fellow cardplayers. ", isS: true},
             {id: 'p4', text: "Our judicial system simply cannot afford to lose any just and fair judges.", isS: true}
         ], feedback: "Rebuttal. The first clause is concession/background; the real point comes after 'but.' Follow-up: the fellow citizens' view that Judge Mosston should be forced to resign." },
 
         // Q12 — Rebuttal. Map: Opposing viewpoint → Rhetorical rebuttal conclusion
         { id: 12, type: 'rebuttal', parts: [
             {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some people believe</i-w> that witnessing violence in movies will discharge aggressive energy. ", isO: true},
-            {id: 'p2', text: "Does watching someone else eat fill one's own stomach?", isC: true}
-        ], feedback: "Rebuttal. The second sentence is a rhetorical-question rebuttal of the first sentence's view. Follow-up: the view that witnessing movie violence discharges aggressive energy." },
+            {id: 'p2', text: "Does watching someone else eat fill one's own stomach? ", isC: true},
+            {id: 'p3', text: "The viewer remains hungry no matter how vivid the scene is.", isS: true}
+        ], feedback: "Rebuttal. The second sentence is a rhetorical-question rebuttal of the first sentence's view, and the final sentence supports the analogy. Follow-up: the view that witnessing movie violence discharges aggressive energy." },
 
         // Q13 — Rebuttal. Map: Opposing setup → Conditional background → Support → Rebuttal conclusion
         { id: 13, type: 'rebuttal', parts: [
@@ -1491,7 +1492,7 @@
             {id: 'p1', text: "That long-term cigarette smoking can lead to health problems including cancer and lung disease is a scientifically well-established fact. ", isS: true},
             {id: 'p2', text: "Contrary to what <i-w t=\"Opposing Viewpoint\">many people seem to believe</i-w>, <i-w t=\"Pivot\">however</i-w>, it is not necessary to deny this fact in order to reject the view that tobacco companies should be held either morally or legally responsible for the poor health of smokers. ", isC: true},
             {id: 'p3', text: "<i-w t=\"Premise Indicator\">After all</i-w>, excessive consumption of candy undeniably leads to such health problems as tooth decay, ", isS: true},
-            {id: 'p4', text: "<i-w t=\"Pivot\">but</i-w> no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.", isS: true}
+            {id: 'p4', text: "but no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.", isS: true}
         ], feedback: "Rebuttal. The first sentence is background fact; the conclusion comes as pushback against what many people believe. Follow-up: the view that tobacco companies should be held morally or legally responsible for smokers' poor health." },
 
         // Q16 — Rebuttal. Map: Opposing viewpoint → Support for opposing viewpoint → Support for author → Rebuttal conclusion
@@ -1511,11 +1512,11 @@
 
         // Q18 — Rebuttal. Map: Background → Support principle → Rebuttal-flavored conclusion → Support → Support
         { id: 18, type: 'rebuttal', parts: [
-            {id: 'p1', text: "The fire that destroyed the Municipal Building started before dawn this morning, <i-w t=\"Premise Indicator\">and</i-w> the last fire fighters did not leave until late this afternoon. ", isS: true},
+            {id: 'p1', text: "The fire that destroyed the Municipal Building started before dawn this morning, and the last fire fighters did not leave until late this afternoon. ", isS: true},
             {id: 'p2', text: "No one could have been anywhere in the vicinity of a fire like that one and fail to notice it. ", isS: true},
-            {id: 'p3', text: "Thomas <i-w t=\"Opinion Indicator\">must</i-w> have seen it, ", isC: true},
+            {id: 'p3', text: "Thomas must have seen it, ", isC: true},
             {id: 'p4', text: "whatever he now says to the contrary. ", isO: true},
-            {id: 'p5', text: "He admits that, as usual, he went from his apartment to the library this morning, <i-w t=\"Premise Indicator\">and</i-w> there is no way for him to get from his apartment to the library without going past the Municipal Building.", isS: true}
+            {id: 'p5', text: "He admits that, as usual, he went from his apartment to the library this morning, and there is no way for him to get from his apartment to the library without going past the Municipal Building.", isS: true}
         ], feedback: "Rebuttal. The conclusion explicitly pushes against Thomas's contrary position. Follow-up: whatever he now says to the contrary." },
 
         // Q19 — First-sentence. Map: Conclusion → Support → Support → Speculative support
@@ -1653,7 +1654,7 @@
         12: {
             title: "Movie violence",
             why_conclusion: "The conclusion is a question. Yes, really. The rhetorical question ('Does watching someone else eat fill one's own stomach?') is the author's rebuttal. The expected answer is no, and that's what the author wants you to hear.",
-            why_structure: "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. It's two sentences total, which makes the structure stark.",
+            why_structure: "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
             why_follow_up: "The opposing view is the catharsis claim: violent movies discharge aggression. That's the target the rhetorical question is mocking."
         },
         13: {
@@ -1688,7 +1689,7 @@
         },
         18: {
             title: "The fire and Thomas",
-            why_conclusion: "'Thomas must have seen it.' That's the move. The 'must' is the giveaway, and the 'whatever he now says to the contrary' makes it explicitly a rebuttal of Thomas's own denial.",
+            why_conclusion: "'Thomas must have seen it.' That's the move. The sentence is the author's verdict, and 'whatever he now says to the contrary' makes it explicitly a rebuttal of Thomas's own denial.",
             why_structure: "Rebuttal. This one is sneaky because no critic is named with a clean 'some people' phrase. The opposing view is Thomas himself. The author is pushing against Thomas's denial. That makes it rebuttal.",
             why_follow_up: "The view being rejected is whatever Thomas now says to the contrary. That's the contrary position the author is rejecting."
         },
@@ -2272,7 +2273,6 @@
         { front: 'In LR, what is "after all" usually doing?', role: 'Premise Indicator', function: 'Provides justification or a premise for an earlier claim.', example: '"She will win. After all, she trained the hardest."', note: 'A classic premise indicator.' },
         { front: 'In LR, what is "because" usually doing?', role: 'Premise Indicator', function: 'Introduces factual support, evidence, or a reason for a claim.', example: '"The proposal should fail because it is too expensive."', note: 'Look for the conclusion this support is helping to prove.' },
         { front: 'In LR, what is "since" usually doing?', role: 'Premise Indicator', function: 'Acts as a premise indicator, supplying a reason.', example: '"Since the bridge is out, we must turn back."', note: 'The conclusion often comes in the other half of the sentence.' },
-        { front: 'In LR, what is "and" (when connecting facts) usually doing?', role: 'Premise Indicator', function: 'Functions as an additional premise or piece of evidence.', example: '"The car is fast, and it is fuel-efficient."', note: 'Links multiple pieces of support together.' },
         { front: 'What is the likely function of "but"?', role: 'Pivot Word', function: 'Signals a shift, often away from an opposing view and toward the author\'s point.', example: '"Some like it cold, but I prefer it hot."', note: 'Pay close attention to what comes right after it.' },
         { front: 'What is the likely function of "yet"?', role: 'Pivot Word', function: 'Functions as a pivot, shifting the argument\'s direction.', example: '"The plan is costly, yet it is necessary."', note: 'Often introduces the main conclusion.' },
         { front: 'What is the likely function of "however"?', role: 'Pivot Word', function: 'Signals a turn away from another viewpoint and toward the author\'s real point.', example: '"Some critics oppose the policy. However, the evidence supports it."', note: 'Pay close attention to what comes right after it—often the main conclusion.' },
@@ -2289,7 +2289,6 @@
         { front: 'What do words like "obviously" signal?', role: 'Opinion Indicator', function: 'Indicates a strong subjective judgment from the author.', example: '"Obviously, we cannot fund this project."', note: 'Highly likely to be the main conclusion.' },
         { front: 'What do words like "evidently" signal?', role: 'Opinion Indicator', function: 'Signals that the author is drawing a conclusion based on evidence.', example: '"Evidently, the policy has failed."', note: 'Ties the opinion directly to the reasoning.' },
         { front: 'If an author uses "ought", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment, highly likely to be the conclusion.', example: '"We ought to protect the environment."', note: 'Prescriptive claims almost always act as conclusions.' },
-        { front: 'If an author uses "must", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Signals a strong prescriptive or logical necessity, often the conclusion.', example: '"The government must lower interest rates."', note: 'Facts rarely use "must". It\'s a conclusion needing support.' },
         { front: 'If an author uses "should", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment (what the author thinks is right), highly likely to be the conclusion.', example: '"The city should invest in more green spaces."', note: 'Facts do not use "should". This is a subjective claim that needs support.' }
     ];
 

@@ -307,7 +307,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p4",
-        "text": "<i-w t=\"Opinion Indicator\">Obviously</i-w> mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, ",
+        "text": "Obviously mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, ",
         "role": "support"
       },
       {
@@ -323,7 +323,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "whyStructure": "First-sentence. The theorist has a position and then walks down it. There's an intermediate conclusion sitting in the middle ('the breaking of a law does not justify incarceration'), but the main verdict is still the opener.",
       "whyFollowUp": "The breaking-of-a-law sentence. That's the intermediate conclusion, which makes it the cleanest single supporting claim for the main one. Everything below it props it up, and it props up the top."
     },
-    "indicatorCount": 3
+    "indicatorCount": 2
   },
   {
     "id": 8,
@@ -341,7 +341,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p3",
-        "text": "<i-w t=\"Opinion Indicator\">Clearly</i-w> the atmosphere is natural. ",
+        "text": "Clearly the atmosphere is natural. ",
         "role": "support"
       },
       {
@@ -357,7 +357,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "whyStructure": "Rebuttal. The opposing view is named in sentence 1 (the mistaken notion about nylon and cotton). The author pivots and says no, here's what nylon actually is. Then they back it up. Pure rebuttal pattern.",
       "whyFollowUp": "The view being rejected is the cotton/nylon mistaken-notion line. That's the position the author is pushing against, and what the follow-up question is asking for."
     },
-    "indicatorCount": 4
+    "indicatorCount": 3
   },
   {
     "id": 9,
@@ -375,7 +375,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p3",
-        "text": "Some of McKinney's policies have <i-w t=\"Opinion Indicator\">clearly</i-w> benefited the city's less affluent residents. ",
+        "text": "Some of McKinney's policies have clearly benefited the city's less affluent residents. ",
         "role": "support"
       },
       {
@@ -396,7 +396,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "whyStructure": "Rebuttal. Critics named first ('have often been criticized'), author flips with 'but,' then defends the flip with examples. The structure could not be more textbook rebuttal.",
       "whyFollowUp": "The opposing view is the criticism: McKinney's policies benefit only wealthy residents. The author is rejecting exactly that, and the follow-up wants you to name it."
     },
-    "indicatorCount": 3
+    "indicatorCount": 2
   },
   {
     "id": 10,
@@ -477,15 +477,20 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p2",
-        "text": "Does watching someone else eat fill one's own stomach?",
+        "text": "Does watching someone else eat fill one's own stomach? ",
         "role": "conclusion"
+      },
+      {
+        "id": "p3",
+        "text": "The viewer remains hungry no matter how vivid the scene is.",
+        "role": "support"
       }
     ],
-    "feedback": "Rebuttal. The second sentence is a rhetorical-question rebuttal of the first sentence's view. Follow-up: the view that witnessing movie violence discharges aggressive energy.",
+    "feedback": "Rebuttal. The second sentence is a rhetorical-question rebuttal of the first sentence's view, and the final sentence supports the analogy. Follow-up: the view that witnessing movie violence discharges aggressive energy.",
     "review": {
       "title": "Movie violence",
       "whyConclusion": "The conclusion is a question. Yes, really. The rhetorical question ('Does watching someone else eat fill one's own stomach?') is the author's rebuttal. The expected answer is no, and that's what the author wants you to hear.",
-      "whyStructure": "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. It's two sentences total, which makes the structure stark.",
+      "whyStructure": "Rebuttal. The first sentence is the view being attacked ('Some people believe'). The second sentence is the attack. The final sentence backs up the analogy instead of introducing a new conclusion.",
       "whyFollowUp": "The opposing view is the catharsis claim: violent movies discharge aggression. That's the target the rhetorical question is mocking."
     },
     "indicatorCount": 1
@@ -574,7 +579,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p4",
-        "text": "<i-w t=\"Pivot\">but</i-w> no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.",
+        "text": "but no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.",
         "role": "support"
       }
     ],
@@ -585,7 +590,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       "whyStructure": "Rebuttal. The opposing view is named inside sentence 2 ('contrary to what many people seem to believe'). The author is pushing back on that popular view. Background fact in sentence 1, rebuttal conclusion in sentence 2, analogy in the rest.",
       "whyFollowUp": "The view being rejected is the popular position: that tobacco companies should be held morally or legally responsible. That's the target."
     },
-    "indicatorCount": 4
+    "indicatorCount": 3
   },
   {
     "id": 16,
@@ -666,7 +671,7 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
       },
       {
         "id": "p3",
-        "text": "Thomas <i-w t=\"Opinion Indicator\">must</i-w> have seen it, ",
+        "text": "Thomas must have seen it, ",
         "role": "conclusion"
       },
       {
@@ -683,11 +688,11 @@ export const FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS: FirstSentenceVsRebuttalQuesti
     "feedback": "Rebuttal. The conclusion explicitly pushes against Thomas's contrary position. Follow-up: whatever he now says to the contrary.",
     "review": {
       "title": "The fire and Thomas",
-      "whyConclusion": "'Thomas must have seen it.' That's the move. The 'must' is the giveaway, and the 'whatever he now says to the contrary' makes it explicitly a rebuttal of Thomas's own denial.",
+      "whyConclusion": "'Thomas must have seen it.' That's the move. The sentence is the author's verdict, and 'whatever he now says to the contrary' makes it explicitly a rebuttal of Thomas's own denial.",
       "whyStructure": "Rebuttal. This one is sneaky because no critic is named with a clean 'some people' phrase. The opposing view is Thomas himself. The author is pushing against Thomas's denial. That makes it rebuttal.",
       "whyFollowUp": "The view being rejected is whatever Thomas now says to the contrary. That's the contrary position the author is rejecting."
     },
-    "indicatorCount": 1
+    "indicatorCount": 0
   },
   {
     "id": 19,
