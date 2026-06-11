@@ -12,9 +12,6 @@ export function NewGuidedIntro() {
           <header className="mb-24">
             <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">Introduction</p>
             <h1 className="text-[clamp(56px,8vw,120px)] font-serif italic font-medium leading-[0.80] tracking-[-0.05em] mb-8">Argument Structure.</h1>
-            <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed">
-              A guided path through premises, conclusions, structure, and main-conclusion practice.
-            </p>
           </header>
 
           {/* Path Steps */}
