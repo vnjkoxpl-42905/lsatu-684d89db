@@ -52,6 +52,7 @@ function gaugeColors(value: number) {
 
 export function DiagnosticsAnalyticsSurface({ title = 'Diagnostic Profile' }: { title?: string }) {
   const d = useDiagnostics();
+  const introLr = useIntroLrAttempts();
 
   if (d.loading) {
     return (
