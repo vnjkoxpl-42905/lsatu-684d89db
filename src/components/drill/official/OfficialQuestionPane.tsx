@@ -77,8 +77,8 @@ export default function OfficialQuestionPane({
 
   const baseSize = 14 * fontScale;
   const officialContentTextStyle: React.CSSProperties = {
-    color: "var(--ink-bright)",
-    fontFamily: "Outfit, Inter, system-ui, sans-serif",
+    color: "#111827",
+    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
     fontSize: `${baseSize}px`,
     fontWeight: 400,
     lineHeight: 1.6,
@@ -92,16 +92,16 @@ export default function OfficialQuestionPane({
   const stemStyle: React.CSSProperties = officialContentTextStyle;
 
   return (
-    <div className="flex flex-col h-full bg-bg-shadow">
+    <div className="flex flex-col h-full bg-white text-slate-950">
       <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)] overflow-hidden">
         {/* Stimulus column */}
         <div
           className={cn(
-            "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 lg:border-r border-white/5 whitespace-pre-wrap overflow-y-auto",
+            "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 whitespace-pre-wrap overflow-y-auto",
             "antialiased",
-            "selection:bg-aspiring-gold selection:text-bg-shadow",
+            "selection:bg-blue-100 selection:text-slate-950",
             "[&_p]:mb-4 [&_p:last-child]:mb-0",
-            "bg-gradient-to-br from-white/[0.02] to-transparent",
+            "bg-white",
           )}
           style={stimStyle}
           onMouseUp={(e) => onTextSelection(e, "stimulus")}
@@ -116,16 +116,16 @@ export default function OfficialQuestionPane({
         </div>
 
         {/* Question column */}
-        <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 bg-bg-night overflow-y-auto" style={stemStyle}>
+        <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
           <div className="flex items-start justify-between gap-3">
             <div
               className="flex-1 flex items-start gap-2"
               onMouseUp={(e) => onTextSelection(e, "stem")}
             >
-              <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-aspiring-gold">
+              <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-slate-950">
                 {displayNumber}.
               </span>
-              <div className="flex-1 text-ink-bright">
+              <div className="flex-1 text-slate-950">
                 <HighlightedText
                   text={stemText}
                   highlights={stemHighlights}
@@ -143,13 +143,13 @@ export default function OfficialQuestionPane({
               title={isFlagged ? "Remove flag" : "Flag question"}
               className={cn(
                 "shrink-0 p-1.5 rounded transition-colors",
-                isFlagged ? "bg-aspiring-gold/20" : "hover:bg-white/5",
+                isFlagged ? "bg-amber-100" : "hover:bg-slate-100",
               )}
             >
               <Flag
                 className={cn(
-                  "w-[24px] h-[24px] transition-colors text-aspiring-gold",
-                  isFlagged && "fill-aspiring-gold",
+                  "w-[24px] h-[24px] transition-colors text-slate-950",
+                  isFlagged && "fill-amber-400",
                 )}
                 strokeWidth={2}
               />
@@ -169,12 +169,12 @@ export default function OfficialQuestionPane({
                     "group relative rounded-lg border transition-all duration-200",
                     "grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3",
                     isCorrect
-                      ? "border-green-500/50 bg-green-500/10"
+                      ? "border-green-500 bg-green-50"
                       : isSelected
-                      ? "border-aspiring-gold bg-surface-elev shadow-lg"
+                      ? "border-slate-500 bg-slate-100 shadow-sm"
                       : isEliminated
-                      ? "border-white/5 bg-surface/50 opacity-60 grayscale-[0.5]"
-                      : "border-white/5 bg-surface hover:border-white/10 hover:shadow-md",
+                      ? "border-transparent bg-white opacity-55 grayscale-[0.5]"
+                      : "border-transparent bg-white hover:border-slate-200 hover:bg-slate-50",
                   )}
                 >
                   <button
@@ -184,10 +184,10 @@ export default function OfficialQuestionPane({
                     className={cn(
                       "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border text-xs font-semibold transition-all",
                       isCorrect
-                        ? "border-green-500 bg-green-500 text-bg-shadow"
+                        ? "border-green-600 bg-green-500 text-white"
                         : isSelected
-                        ? "border-aspiring-gold bg-aspiring-gold text-bg-shadow"
-                        : "border-white/20 text-ink-soft group-hover:border-white/40",
+                        ? "border-slate-900 bg-slate-900 text-white"
+                        : "border-transparent text-slate-950 group-hover:border-slate-300",
                     )}
                   >
                     {key}
@@ -198,7 +198,11 @@ export default function OfficialQuestionPane({
                     disabled={isEliminated || answerRevealed}
                     className={cn(
                       "text-left text-sm leading-relaxed transition-colors",
-                      isCorrect ? "text-green-50" : isSelected ? "text-ink-bright" : "text-ink-soft group-hover:text-ink-bright",
+                      isCorrect
+                        ? "text-green-900"
+                        : isSelected
+                        ? "text-slate-950"
+                        : "text-slate-950 group-hover:text-slate-950",
                     )}
                   >
                     {text}
@@ -212,7 +216,7 @@ export default function OfficialQuestionPane({
                     disabled={answerRevealed}
                     className={cn(
                       "mt-0.5 p-1 transition-opacity",
-                      isEliminated ? "text-ink-bright" : "text-ink-faint opacity-0 group-hover:opacity-100 hover:text-ink-bright",
+                      isEliminated ? "text-slate-700" : "text-slate-400 opacity-0 group-hover:opacity-100 hover:text-slate-800",
                     )}
                   >
                     {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -226,8 +230,8 @@ export default function OfficialQuestionPane({
 
       {/* Feedback area */}
       {answerRevealed && (
-        <div className="px-6 py-4 bg-bg-shadow border-t border-white/10 shrink-0">
-          <div className="text-sm text-ink-bright">
+        <div className="px-6 py-4 bg-white border-t border-slate-200 shrink-0">
+          <div className="text-sm text-slate-900">
             <p className="font-semibold">{'>'} ANALYSIS VALID.</p>
           </div>
         </div>
