@@ -1238,135 +1238,6 @@ export type Database = {
         }
         Relationships: []
       }
-      journal_databases: {
-        Row: {
-          columns: Json
-          created_at: string
-          page_id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          columns?: Json
-          created_at?: string
-          page_id: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          columns?: Json
-          created_at?: string
-          page_id?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "journal_databases_page_id_fkey"
-            columns: ["page_id"]
-            isOneToOne: true
-            referencedRelation: "journal_pages"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      journal_pages: {
-        Row: {
-          body: Json
-          created_at: string
-          icon: string | null
-          id: string
-          is_archived: boolean
-          parent_page_id: string | null
-          properties: Json
-          sort_order: number
-          title: string
-          type: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          body?: Json
-          created_at?: string
-          icon?: string | null
-          id?: string
-          is_archived?: boolean
-          parent_page_id?: string | null
-          properties?: Json
-          sort_order?: number
-          title?: string
-          type?: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          body?: Json
-          created_at?: string
-          icon?: string | null
-          id?: string
-          is_archived?: boolean
-          parent_page_id?: string | null
-          properties?: Json
-          sort_order?: number
-          title?: string
-          type?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "journal_pages_parent_page_id_fkey"
-            columns: ["parent_page_id"]
-            isOneToOne: false
-            referencedRelation: "journal_pages"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      journal_views: {
-        Row: {
-          config: Json
-          created_at: string
-          database_id: string
-          id: string
-          kind: string
-          name: string
-          sort_order: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          config?: Json
-          created_at?: string
-          database_id: string
-          id?: string
-          kind?: string
-          name?: string
-          sort_order?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          config?: Json
-          created_at?: string
-          database_id?: string
-          id?: string
-          kind?: string
-          name?: string
-          sort_order?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "journal_views_database_id_fkey"
-            columns: ["database_id"]
-            isOneToOne: false
-            referencedRelation: "journal_pages"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       message_attachments: {
         Row: {
           created_at: string
@@ -1563,7 +1434,6 @@ export type Database = {
           has_drill_access: boolean
           has_export_access: boolean
           has_flagged_access: boolean
-          has_journal_access: boolean
           has_practice_access: boolean
           has_schedule_access: boolean
           has_seen_tour: boolean
@@ -1594,7 +1464,6 @@ export type Database = {
           has_drill_access?: boolean
           has_export_access?: boolean
           has_flagged_access?: boolean
-          has_journal_access?: boolean
           has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
@@ -1625,7 +1494,6 @@ export type Database = {
           has_drill_access?: boolean
           has_export_access?: boolean
           has_flagged_access?: boolean
-          has_journal_access?: boolean
           has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
