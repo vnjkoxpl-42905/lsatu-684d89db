@@ -147,6 +147,11 @@ export function RoleLabeler({ title, stimulus, roles, answerKey, teachingSummary
 
     if (correctRoleId === activeRoleId) {
       setAssignments((current) => ({ ...current, [sentenceId]: activeRoleId }));
+      // Clear the active role after a correct label so the student picks a fresh
+      // role for the next sentence. Without this, re-picking the same role for two
+      // consecutive sentences toggles it back off (handleRolePick toggles), which
+      // silently strands the next sentence unlabeled.
+      setActiveRoleId(null);
       setFeedback({
         kind: "success",
         message: `Locked in: that sentence is doing ${correctRole.label.toLowerCase()} work.`,

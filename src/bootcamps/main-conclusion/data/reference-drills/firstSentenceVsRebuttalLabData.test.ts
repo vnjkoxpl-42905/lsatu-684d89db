@@ -172,11 +172,17 @@ describe('firstSentenceVsRebuttalLabData', () => {
     );
   });
 
-  it('targets every correct part for a multi-support question', () => {
+  it('grades the single designated follow-up on a question with several same-role parts', () => {
+    // Q7 has four support parts but the review prose names one "cleanest"
+    // supporting claim (p2, the breaking-of-a-law intermediate conclusion).
+    // The grade-one-designated-follow-up fix (commit 8e347680) made the grader
+    // target only that part so students are not told "1 of 4" after following
+    // the teaching. Assert the designated single id, not every same-role part.
     const multi = FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS.find((question) => question.id === 7)!;
     const supportIds = multi.parts.filter((part) => part.role === 'support').map((part) => part.id);
     expect(supportIds.length).toBeGreaterThan(1);
-    expect(firstSentenceVsRebuttalFollowUpIds(multi)).toEqual(supportIds);
+    expect(multi.followUpId).toBe('p2');
+    expect(firstSentenceVsRebuttalFollowUpIds(multi)).toEqual(['p2']);
   });
 
   it('keeps static HTML copies free of forbidden indicator words', () => {
