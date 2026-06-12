@@ -33,6 +33,7 @@ This file is the Codex-facing adapter for this repository. It summarizes the Cla
 - Do not hardcode secrets or service-role credentials.
 - Treat Supabase-generated files as generated artifacts, not hand-edited source.
 - TypeScript strictness is intentionally loose. Do not tighten it without explicit approval.
+- Keep this adapter aligned with `CLAUDE.md` without duplicating the full project guide. Put durable detail in `CLAUDE.md`; keep shared reference material in `docs/`, `references/`, or `templates/`.
 
 ## Product Constraints
 
@@ -56,8 +57,8 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 ## Codex Adapter Layout
 
 - `.codex/config.toml`: minimal shared Codex project config. Keep secrets and machine-specific overrides out of this file.
-- `.codex/agents/`: Codex agent definitions converted from `.claude/agents/*.md` when Claude agents exist.
-- `.agents/skills/`: repository-local Codex skills copied from `.claude/skills/` when Claude skills exist. Keep each `SKILL.md` with its supporting files.
+- `.codex/agents/`: Codex agent definitions converted from `.claude/agents/*.md` when Claude agents exist. Use `.toml` files with converted instructions in `developer_instructions`.
+- `.agents/skills/`: repository-local Codex skills copied from `.claude/skills/` when Claude skills exist and Codex should use them. Keep each `SKILL.md` with its supporting files.
 - `.codex/hooks.json`: existing repository hooks. Preserve unless the task explicitly concerns hooks.
 
 This checkout currently has Claude settings and hooks under `.claude/`, but no `.claude/skills/` or `.claude/agents/` directory to convert.

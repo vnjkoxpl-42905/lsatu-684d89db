@@ -70,6 +70,15 @@ No Prettier. Formatting is ESLint-only.
   - Lovable preview Service Worker guard in `src/main.tsx`
 - Identity rules: email sign-in, profile identity uses **name** (not username), instructor is displayed as **"Joshua"**, students display their real profile names.
 
+## Cross-tool instruction hygiene
+
+`CLAUDE.md` is the fuller project source of truth. `AGENTS.md` is the Codex-facing adapter and should stay aligned without becoming a second full copy.
+
+- When updating project instructions, update both files as needed: put durable detail here, and keep `AGENTS.md` as a concise adapter.
+- When creating a Claude skill that Codex should use, also copy it to `.agents/skills/` with its `SKILL.md` and supporting files.
+- When creating a Claude agent that Codex should spawn, also create a matching `.codex/agents/<name>.toml` and place the converted instructions in `developer_instructions`.
+- When adding shared knowledge, put it in `docs/`, `references/`, or `templates/` so every tool can read the same source.
+
 ## Product rules (must not regress)
 
 - Foyer (`FoyerSidebar` + `FoyerHeroRing`) is the primary navigation. The Foyer additionally hosts a `GooeyDock` quick-launch row well below the orbital ring; this dock is allowed only on `/foyer`. Do not add docks elsewhere.
