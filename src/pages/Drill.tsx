@@ -1308,8 +1308,19 @@ function DrillContent() {
         await generateCorrectExplanation();
       }
       
-      setShowSolution(true);
-      setShowReviewButton(true);
+      // Auto-open tutor card in bottom-left for ANY wrong answer when Tutor Mode is on
+      if (!correct && tutorMode && currentQuestion) {
+        setAnswerLocked(true);
+        setIsRetryAfterWrong(true);
+        setTimeout(() => {
+          setTutorQuestionSnapshot(currentQuestion);
+          setTutorUserAnswerSnapshot(selectedAnswer);
+          setTutorChatOpen(true);
+        }, 150);
+      } else {
+        setShowSolution(true);
+        setShowReviewButton(true);
+      }
       // Don't auto-advance - user clicks Next
     }
   };
