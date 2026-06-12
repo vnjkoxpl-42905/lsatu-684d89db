@@ -1,5 +1,7 @@
 // Question loader - ingests JSON files and builds index
 
+import { looksLikeSpeakerLabel } from './dialogue';
+
 export interface LRQuestion {
   qid: string;
   pt: number;
@@ -65,16 +67,20 @@ function getSharedPassageRange(text: string): { start: number; end: number } | n
 
 const dialogueIntroPattern = /^[A-Z][A-Za-z’' -]{1,80}:\s+/;
 const dialogueTransitionPattern = /[.!?]["”')\]]?\s+[A-Z][A-Za-z’' -]{1,80}:\s+/;
+// Captures: 1) sentence-ending punctuation, 2) the candidate speaker label
+// (without its trailing colon/space), 3) the colon + whitespace that follows.
 const dialogueTurnBreakPattern =
-  /([.!?]["”')\]]?)\s+([A-Z][A-Za-z’' -]{1,80}:\s+)/g;
+  /([.!?]["”')\]]?)\s+([A-Z][A-Za-z’' -]{1,80})(:\s+)/g;
 
 function normalizeDialogueSpeakerBreaks(text: string): string {
   if (!dialogueIntroPattern.test(text) || !dialogueTransitionPattern.test(text)) return text;
 
-  return text.replace(dialogueTurnBreakPattern, '$1\n\n$2');
+  return text.replace(dialogueTurnBreakPattern, (match, punct, label, colon) =>
+    looksLikeSpeakerLabel(label) ? `${punct}\n\n${label}${colon}` : match,
+  );
 }
 
-function normalizeStimulusText(text: string): string {
+export function normalizeStimulusText(text: string): string {
   const sharedRange = getSharedPassageRange(text);
   let normalized = stripSharedPassageMetadataPrefix(text);
 

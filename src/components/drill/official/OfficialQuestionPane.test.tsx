@@ -62,4 +62,21 @@ describe("OfficialQuestionPane", () => {
     expect(screen.getByText("Figorian Development Commission:")).toHaveClass("font-bold");
     expect(container.querySelector(".space-y-4")?.children).toHaveLength(2);
   });
+
+  it("does not treat a mid-argument clause ending in a colon as a speaker", () => {
+    // Even if a stray break lands before a sentence clause, the renderer must not
+    // bold it as a turn (regression: PT118 S3 Q7-8 showed three bold speakers).
+    const { container } = renderPane({
+      ...question,
+      stimulus:
+        "Figorian Wildlife Commission: First speaker text.\n\nTo protect wildlife we must regulate such development in Figoria: more text.\n\nFigorian Development Commission: Second speaker text.",
+    });
+
+    expect(
+      screen.queryByText(
+        "To protect wildlife we must regulate such development in Figoria:",
+      ),
+    ).not.toBeInTheDocument();
+    expect(container.querySelector(".space-y-4")).not.toBeInTheDocument();
+  });
 });

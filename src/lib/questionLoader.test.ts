@@ -49,5 +49,12 @@ describe("QuestionBank shared-passage loading", () => {
     expect(question7?.stimulus).toContain(
       "them.\n\nFigorian Development Commission:",
     );
+
+    // The mid-argument clause that ends with a colon must NOT be promoted to its
+    // own dialogue turn (regression: PT118 S3 Q7-8 rendered three bold speakers).
+    expect(question7?.stimulus).not.toMatch(
+      /\n\nTo protect wildlife we must regulate such development in Figoria:/,
+    );
+    expect(question7?.stimulus?.split("\n\n")).toHaveLength(2);
   });
 });

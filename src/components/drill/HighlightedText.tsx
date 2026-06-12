@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import type { Highlight } from "@/lib/highlightUtils";
+import { looksLikeSpeakerLabel } from "@/lib/dialogue";
 
 interface HighlightedTextProps {
   text: string;
@@ -152,7 +153,9 @@ export function HighlightedText({
   const dialogueTurns = rawSegments
     .map(seg => {
       const match = seg.match(speakerPattern);
-      if (match) return { speaker: match[1], text: seg.slice(match[0].length).trim() };
+      if (match && looksLikeSpeakerLabel(match[1])) {
+        return { speaker: match[1], text: seg.slice(match[0].length).trim() };
+      }
       return null;
     })
     .filter(Boolean);
