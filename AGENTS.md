@@ -53,6 +53,15 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 - After completing a change, stage the intended files, commit with a concise message, and push to `origin main` unless the user says otherwise.
 - Existing Codex repo hooks live in `.codex/hooks.json`; preserve them unless the task explicitly requires a hook change.
 
+## Codex Adapter Layout
+
+- `.codex/config.toml`: minimal shared Codex project config. Keep secrets and machine-specific overrides out of this file.
+- `.codex/agents/`: Codex agent definitions converted from `.claude/agents/*.md` when Claude agents exist.
+- `.agents/skills/`: repository-local Codex skills copied from `.claude/skills/` when Claude skills exist. Keep each `SKILL.md` with its supporting files.
+- `.codex/hooks.json`: existing repository hooks. Preserve unless the task explicitly concerns hooks.
+
+This checkout currently has Claude settings and hooks under `.claude/`, but no `.claude/skills/` or `.claude/agents/` directory to convert.
+
 ## Known Gaps
 
 - No real Vitest specs exist yet.

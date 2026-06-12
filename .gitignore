@@ -43,3 +43,5 @@ gha-creds-*.json
 
 # Codex local overrides
 .codex/*.local.toml
+.codex/agents/*.local.toml
+.agents/**/*.local.*
