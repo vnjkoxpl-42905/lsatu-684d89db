@@ -19,13 +19,13 @@ const choices: Choice[] = [
   },
   {
     id: "park-support",
-    text: "Residents now report using those parks more often after dark.",
-    rationale: "This is the reason offered for the city's recommendation. It is the sentence doing the support work.",
+    text: "After all, residents now report using those lit parks more often after dark.",
+    rationale: "The FABS word “After all” gives it away: this is the reason offered for the recommendation, the sentence doing the support work.",
     isSupport: true,
   },
   {
     id: "park-conclusion",
-    text: "Therefore, the city should extend the lighting program to more parks.",
+    text: "The city should extend the lighting program to more parks.",
     rationale: "This is the claim being argued for. It is the conclusion, not the support.",
     isSupport: false,
   },
@@ -64,7 +64,7 @@ export function PremiseSupportCheck() {
             Find the sentence doing the support work
           </h3>
           <p className="max-w-2xl text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
-            Accept every sentence as true. Then ask which one is actually being used to hold the recommendation up.
+            Accept every sentence as true. One of them even announces itself with a FABS word; find the sentence actually holding the recommendation up.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export function PremiseSupportCheck() {
           </div>
           <p className="max-w-3xl text-[18px] leading-[1.78] text-[rgba(26,26,26,0.82)]">
             <em>
-              Several neighborhood parks received evening lighting last year. Residents now report using those parks more often after dark. Therefore, the city should extend the lighting program to more parks.
+              Several neighborhood parks received evening lighting last year. The city should extend the lighting program to more parks. After all, residents now report using those lit parks more often after dark.
             </em>
           </p>
         </div>
@@ -157,8 +157,8 @@ export function PremiseSupportCheck() {
             <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.82)]">
               <strong>{selectedChoice?.isSupport ? "That sentence is doing the support work." : "Not quite."}</strong>{" "}
               {selectedChoice?.isSupport
-                ? "The premise is the sentence being used as a reason for the recommendation."
-                : "The real premise is the sentence about residents using the parks more often after dark."}
+                ? "The premise is the sentence being used as a reason for the recommendation, and its FABS word “After all” flags it."
+                : "The real premise is the “After all…” sentence about residents using the lit parks more often after dark."}
             </p>
             <button
               type="button"
