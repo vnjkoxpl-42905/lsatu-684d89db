@@ -25,6 +25,10 @@ interface Props {
   onEnd: () => void;
   /** Opens the AI tutor card for the current question. Hidden if omitted. */
   onAskTutor?: () => void;
+  /** Label for the tutor button (context-aware, e.g. "Strategize" / "Explain"). */
+  askTutorLabel?: string;
+  /** Disables the tutor button (e.g. before the answer is submitted). */
+  askTutorDisabled?: boolean;
   /** Whole bar disabled (e.g. while paused). */
   disabled?: boolean;
 }
@@ -45,6 +49,8 @@ export default function OfficialSmartDrillBar({
   skipDisabled,
   onEnd,
   onAskTutor,
+  askTutorLabel = "Ask Joshua",
+  askTutorDisabled,
   disabled,
 }: Props) {
   const isNext = primaryAction === "next";
@@ -67,11 +73,12 @@ export default function OfficialSmartDrillBar({
           <button
             type="button"
             onClick={onAskTutor}
-            disabled={disabled}
+            disabled={disabled || askTutorDisabled}
+            title={askTutorDisabled ? "Submit an answer first" : undefined}
             className="inline-flex items-center gap-1.5 rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            Ask Joshua
+            {askTutorLabel}
           </button>
         )}
 

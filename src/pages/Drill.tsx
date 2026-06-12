@@ -2808,6 +2808,8 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
               onAskTutor={openTutorForCurrent}
+              askTutorLabel={showAnswerRevealed.get(currentQuestion.qid) ? 'Explain' : 'Strategize'}
+              askTutorDisabled={!currentAttempted}
               disabled={!!timer?.isPaused}
             />
           ) : isSmartFixedQueue ? (
@@ -2858,6 +2860,8 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => { void handleFinishSection(); }}
               onAskTutor={openTutorForCurrent}
+              askTutorLabel={showAnswerRevealed.get(currentQuestion.qid) ? 'Explain' : 'Strategize'}
+              askTutorDisabled={!currentAttempted}
               disabled={!!timer?.isPaused}
             />
           ) : (
