@@ -11,6 +11,7 @@ import {
   ArrowLeft,
   Shield,
   Archive,
+  GraduationCap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -44,6 +45,7 @@ const PRIMARY_NAV: NavItem[] = [
  */
 const SECONDARY_NAV: NavItem[] = [
   { to: '/teacher/reference-library', label: 'References', Icon: Archive },
+  { to: '/teacher/tutor-corpus', label: 'Tutor corpus', Icon: GraduationCap },
 ];
 
 // Insights surfaces bootcamp analytics; hidden if the dashboard is disabled.

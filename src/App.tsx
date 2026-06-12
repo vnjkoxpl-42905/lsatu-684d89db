@@ -79,6 +79,7 @@ const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/Te
 const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
+const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -436,6 +437,15 @@ const App = () => {
                     <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                         <BootcampReferenceDetail />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+
+                  {/* Admin-only tutor corpus review (grade / edit / propagate tone). */}
+                  <Route path="/teacher/tutor-corpus" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <TutorCorpus />
                       </React.Suspense>
                     </ProtectedRoute>
                   } />

@@ -98,18 +98,46 @@ async function readTutorCache(
   try {
     const { data } = await supabase
       .from('question_tutor_cache')
-      .select('content_json, content_markdown')
+      .select('content_json, content_markdown, admin_markdown')
       .eq('qid', qid).eq('kind', kind).eq('picked_answer', picked || '')
       .maybeSingle();
-    return data || null;
+    if (!data) return null;
+    // An admin edit is the canonical served copy.
+    return {
+      content_json: data.content_json,
+      content_markdown: data.admin_markdown || data.content_markdown,
+    };
   } catch {
     return null;
   }
 }
 
+// Pull Joshua's top-rated / edited answers of this kind+qtype as style anchors
+// so new generations match the voice he has blessed.
+async function fetchToneExemplars(
+  supabase: any, kind: 'preview' | 'explanation', qtype: string,
+): Promise<string> {
+  try {
+    const { data } = await supabase
+      .from('question_tutor_cache')
+      .select('admin_markdown, content_markdown, rating')
+      .eq('kind', kind).eq('qtype', qtype)
+      .gte('rating', 4)
+      .order('rating', { ascending: false })
+      .limit(2);
+    if (!data?.length) return '';
+    const examples = data
+      .map((r: any, i: number) => `EXAMPLE ${i + 1} (rated ${r.rating}/5):\n${r.admin_markdown || r.content_markdown}`)
+      .join('\n\n');
+    return `\n\nTONE EXEMPLARS — match the voice, structure, and concision of these admin-approved answers (do NOT copy their content, only their style):\n${examples}`;
+  } catch {
+    return '';
+  }
+}
+
 async function writeTutorCache(supabase: any, row: {
   qid: string; kind: 'preview' | 'explanation'; picked_answer: string;
-  content_json?: any; content_markdown?: string | null; model: string;
+  qtype?: string; content_json?: any; content_markdown?: string | null; model: string;
 }) {
   try {
     await supabase
@@ -554,6 +582,13 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
     const correctExpl = question.answerChoiceExplanations?.[question.correctAnswer];
     const whyCorrect = correctExpl?.whyCorrect || '';
 
+    // Tone propagation: steer the cacheable generations (preview breakdown,
+    // post-answer explanation) toward the admin-blessed voice.
+    const toneExemplars =
+      tutorMode === 'preview' ? await fetchToneExemplars(supabase, 'preview', question.qtype)
+      : tutorMode === 'post-answer' ? await fetchToneExemplars(supabase, 'explanation', question.qtype)
+      : '';
+
     const sharedContext = `QUESTION CONTEXT:
 - Type: ${question.qtype}${knowledge.resolvedReasoningType ? ` (${knowledge.resolvedReasoningType})` : ''}
 - Stimulus: ${stimulusShort || 'N/A'}
@@ -619,7 +654,7 @@ ${isFirstMessage
 1) Why (${question.userAnswer}) is wrong: name the trap phrase in their pick, quote 2-4 words, say what it confuses.
 2) What (${question.correctAnswer}) does that (${question.userAnswer}) doesn't — one precise structural move (e.g. "matches the scope of the conclusion," "addresses the necessary condition, not the sufficient one").
 3) The takeaway pattern in 6-10 words — the thing they should look for next time. No fluff. No "great question." Get to it.`
-  : `FOLLOW-UP: Answer the student's question precisely. You may discuss any choice, the correct answer, or the structural breakdown. Stay 2-4 sentences unless they ask for depth.`}`;
+  : `FOLLOW-UP: Answer the student's question precisely. You may discuss any choice, the correct answer, or the structural breakdown. Stay 2-4 sentences unless they ask for depth.`}${toneExemplars}`;
 
     // Pre-submission structural breakdown. Answer-blind: teach how to read and
     // attack the argument, never identify a choice. Returns JSON for the panel.
@@ -637,7 +672,7 @@ Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
   "evidence": ["each premise or piece of support as its own short string"],
   "evaluate": "how to pressure-test this argument: what family it smells like and your angle of attack (1-3 sentences, real coaching voice)",
   "goal": "what the right answer will need to DO structurally and the method to use (e.g. the negation test) — WITHOUT identifying any specific choice"
-}`;
+}${toneExemplars}`;
 
     const systemPrompt =
       tutorMode === 'post-answer'
@@ -685,7 +720,7 @@ Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
       }
       const md = previewMarkdown(parsed);
       runInBackground(writeTutorCache(supabase, {
-        qid: question.qid, kind: 'preview', picked_answer: '',
+        qid: question.qid, kind: 'preview', picked_answer: '', qtype: question.qtype,
         content_json: parsed, content_markdown: md, model: GEN_MODEL,
       }));
       runInBackground(logTutorTurns(supabase, [{
@@ -791,7 +826,7 @@ Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
       if (isCacheableExplanation && replyText) {
         runInBackground(writeTutorCache(supabase, {
           qid: question.qid, kind: 'explanation', picked_answer: question.userAnswer,
-          content_markdown: replyText, model: GEN_MODEL,
+          qtype: question.qtype, content_markdown: replyText, model: GEN_MODEL,
         }));
       }
     };
