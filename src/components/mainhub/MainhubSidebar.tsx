@@ -30,7 +30,7 @@ type NavItem = {
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
   { to: "/teacher/reference-library", label: "Reference Library", Icon: Archive, adminOnly: true },
-  { to: "/teacher/whiteboard", label: "Whiteboard", Icon: PencilRuler, adminOnly: true },
+  { to: "/admin/board", label: "Whiteboard", Icon: PencilRuler, adminOnly: true },
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
