@@ -10,10 +10,12 @@ LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind +
 
 Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/Documents/Obsidian Vault/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
 
-Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start / Session End). In short:
+Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start / Session End), run via two skills:
 
-- On "start" / "brief me": read `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then give a 4-line briefing.
-- On "handoff" / "done for today": update `wiki/hot.md`, append a dated `wiki/log.md` entry, update the task anchor, give a 3-line confirmation.
+- **`/pickup`** (start / "brief me"): reads `wiki/tasks.md` → `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then gives a 6-8 line briefing (Now / Next / open threads / suggested next) and waits.
+- **`/wrapup`** (handoff / "done for today"): proposes which tasks are done (confirm first), strikes them through in `wiki/tasks.md`, refreshes `wiki/hot.md`, appends a dated `wiki/log.md` entry, updates the task anchor, gives a 4-line confirmation.
+
+`wiki/tasks.md` is the living ledger of Now / Next / Done; finished work is struck through with a date so a new session never re-runs it.
 
 Where LSATU truth lives in the vault:
 
