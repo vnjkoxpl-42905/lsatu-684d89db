@@ -80,6 +80,135 @@ interface CachedKnowledge {
 const knowledgeCache = new Map<string, CachedKnowledge>();
 const KNOWLEDGE_TTL_MS = 10 * 60 * 1000;
 
+const GEN_MODEL = "google/gemini-3-flash-preview";
+
+// Run a promise in the background without blocking the response. Deno Deploy /
+// Supabase Edge keep the isolate alive via EdgeRuntime.waitUntil; fall back to a
+// detached promise locally.
+function runInBackground(p: Promise<unknown>) {
+  const rt = (globalThis as any).EdgeRuntime;
+  if (rt?.waitUntil) rt.waitUntil(p);
+  else p.catch(() => {});
+}
+
+// ── Reusable tutor content cache (question_tutor_cache) ──────────────────────
+async function readTutorCache(
+  supabase: any, qid: string, kind: 'preview' | 'explanation', picked: string,
+): Promise<{ content_json: any; content_markdown: string | null } | null> {
+  try {
+    const { data } = await supabase
+      .from('question_tutor_cache')
+      .select('content_json, content_markdown')
+      .eq('qid', qid).eq('kind', kind).eq('picked_answer', picked || '')
+      .maybeSingle();
+    return data || null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeTutorCache(supabase: any, row: {
+  qid: string; kind: 'preview' | 'explanation'; picked_answer: string;
+  content_json?: any; content_markdown?: string | null; model: string;
+}) {
+  try {
+    await supabase
+      .from('question_tutor_cache')
+      .upsert({ ...row, updated_at: new Date().toISOString() }, { onConflict: 'qid,kind,picked_answer' });
+  } catch {
+    console.error('tutor cache write failed');
+  }
+}
+
+// ── Append-only interaction log (tutor_interaction_log) ──────────────────────
+async function logTutorTurns(supabase: any, rows: Array<{
+  user_id: string | null; qid: string; mode: string; picked_answer?: string | null;
+  role: 'student' | 'tutor'; message?: string | null; content_json?: any;
+}>) {
+  if (!rows.length) return;
+  try {
+    await supabase.from('tutor_interaction_log').insert(rows);
+  } catch {
+    console.error('tutor log write failed');
+  }
+}
+
+// Concatenate the content deltas out of an accumulated SSE body.
+function parseSSEContent(raw: string): string {
+  let out = '';
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t.startsWith('data:')) continue;
+    const payload = t.slice(5).trim();
+    if (!payload || payload === '[DONE]') continue;
+    try {
+      const j = JSON.parse(payload);
+      const d = j.choices?.[0]?.delta?.content;
+      if (d) out += d;
+    } catch {
+      // partial / non-JSON keepalive line — skip
+    }
+  }
+  return out;
+}
+
+async function drainStream(stream: ReadableStream<Uint8Array>): Promise<string> {
+  const reader = stream.getReader();
+  const dec = new TextDecoder();
+  let raw = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    raw += dec.decode(value, { stream: true });
+  }
+  return raw;
+}
+
+// Emit a one-shot SSE stream carrying cached text, so a streaming client reads a
+// cache hit exactly like a live generation.
+function sseFromText(text: string): ReadableStream<Uint8Array> {
+  const enc = new TextEncoder();
+  return new ReadableStream({
+    start(controller) {
+      const chunk = { choices: [{ delta: { content: text } }] };
+      controller.enqueue(enc.encode(`data: ${JSON.stringify(chunk)}\n\n`));
+      controller.enqueue(enc.encode('data: [DONE]\n\n'));
+      controller.close();
+    },
+  });
+}
+
+// Parse model JSON that may arrive wrapped in ```json fences.
+function safeParseJson(raw: string | null | undefined): any | null {
+  if (!raw) return null;
+  let s = raw.trim();
+  const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) s = fence[1].trim();
+  try {
+    return JSON.parse(s);
+  } catch {
+    const first = s.indexOf('{');
+    const last = s.lastIndexOf('}');
+    if (first >= 0 && last > first) {
+      try { return JSON.parse(s.slice(first, last + 1)); } catch { /* fall through */ }
+    }
+    return null;
+  }
+}
+
+// Render a preview breakdown object as the markdown the panel shows.
+function previewMarkdown(b: any): string {
+  if (!b || typeof b !== 'object') return '';
+  const lines: string[] = [];
+  if (b.conclusion) lines.push(`**Conclusion (therefore)**\n${b.conclusion}`);
+  if (Array.isArray(b.evidence) && b.evidence.length) {
+    lines.push(`**Evidence**\n${b.evidence.map((e: string) => `- ${e}`).join('\n')}`);
+  }
+  if (b.evaluate) lines.push(`**Evaluate**\n${b.evaluate}`);
+  if (b.goal) lines.push(`**Goal**\n${b.goal}`);
+  return lines.join('\n\n');
+}
+
 // Normalize the bank's raw questionType to the canonical form used as the
 // coaching-table primary key. The bank has casing/punctuation drift
 // ("Must be True" vs "Must Be True", "Principle Strengthen" vs "Principle-Strengthen",
@@ -239,8 +368,11 @@ serve(async (req) => {
     // Parse and validate input
     const body = await req.json();
     const { question, messages, stream: wantsStream, mode: rawMode } = body;
-    const tutorMode: 'pre-answer' | 'post-answer' | 'socratic' =
-      rawMode === 'post-answer' ? 'post-answer' : rawMode === 'pre-answer' ? 'pre-answer' : 'socratic';
+    const tutorMode: 'pre-answer' | 'post-answer' | 'socratic' | 'preview' =
+      rawMode === 'post-answer' ? 'post-answer'
+      : rawMode === 'pre-answer' ? 'pre-answer'
+      : rawMode === 'preview' ? 'preview'
+      : 'socratic';
 
     if (!validateQuestion(question)) {
       return new Response(
@@ -480,12 +612,32 @@ FORMAT (post-answer mode):
 - You MAY name the correct answer letter and contrast it with the student's pick.
 - Use light markdown: **bold** for the trap and the key move, line breaks between sentences.
 
+TEACH, DON'T JUST LABEL: be precise and directly specific about why (${question.userAnswer}) is wrong and why (${question.correctAnswer}) is right, but frame it so the student learns the repeatable pattern — not just this answer key.
+
 ${isFirstMessage
   ? `FIRST TURN — exactly 3 short sentences:
 1) Why (${question.userAnswer}) is wrong: name the trap phrase in their pick, quote 2-4 words, say what it confuses.
 2) What (${question.correctAnswer}) does that (${question.userAnswer}) doesn't — one precise structural move (e.g. "matches the scope of the conclusion," "addresses the necessary condition, not the sufficient one").
-3) The takeaway pattern in 6-10 words. No fluff. No "great question." Get to it.`
+3) The takeaway pattern in 6-10 words — the thing they should look for next time. No fluff. No "great question." Get to it.`
   : `FOLLOW-UP: Answer the student's question precisely. You may discuss any choice, the correct answer, or the structural breakdown. Stay 2-4 sentences unless they ask for depth.`}`;
+
+    // Pre-submission structural breakdown. Answer-blind: teach how to read and
+    // attack the argument, never identify a choice. Returns JSON for the panel.
+    const previewPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. The student has NOT answered yet and wants to understand the argument's structure BEFORE choosing. No hedging, no padding, no em-dashes, no "the stimulus states." Plain English, real coaching voice.
+
+${sharedContext}
+
+ABSOLUTE RULES:
+1. Stay answer-blind. Never reveal or hint at which answer choice is correct. Do not reference choices by letter.
+2. Analyze the ARGUMENT, not the options. Teach them how to pressure-test it themselves.
+
+Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
+{
+  "conclusion": "the author's main conclusion in plain words (the 'therefore' of the argument)",
+  "evidence": ["each premise or piece of support as its own short string"],
+  "evaluate": "how to pressure-test this argument: what family it smells like and your angle of attack (1-3 sentences, real coaching voice)",
+  "goal": "what the right answer will need to DO structurally and the method to use (e.g. the negation test) — WITHOUT identifying any specific choice"
+}`;
 
     const systemPrompt =
       tutorMode === 'post-answer'
@@ -493,6 +645,80 @@ ${isFirstMessage
         : tutorMode === 'pre-answer'
         ? preAnswerPrompt
         : socraticPrompt;
+
+    // ── Preview: cache-first, JSON, non-streaming ────────────────────────────
+    if (tutorMode === 'preview') {
+      const hit = await readTutorCache(supabase, question.qid, 'preview', '');
+      if (hit?.content_json) {
+        return new Response(
+          JSON.stringify({ content_json: hit.content_json, content_markdown: hit.content_markdown, cached: true }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+
+      const pResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: GEN_MODEL,
+          messages: [{ role: "system", content: previewPrompt }],
+          stream: false,
+        }),
+      });
+
+      if (!pResp.ok) {
+        const msg = pResp.status === 429
+          ? "Joshua is taking a breather. Try again in a moment."
+          : pResp.status === 402
+          ? "Coaching sessions require credits. Please add funds."
+          : "Joshua is having trouble connecting. Please try again.";
+        return new Response(JSON.stringify({ error: msg }), {
+          status: pResp.status === 429 || pResp.status === 402 ? pResp.status : 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const pData = await pResp.json();
+      const parsed = safeParseJson(pData.choices?.[0]?.message?.content);
+      if (!parsed) {
+        throw new Error("Joshua couldn't break down this question. Please try again.");
+      }
+      const md = previewMarkdown(parsed);
+      runInBackground(writeTutorCache(supabase, {
+        qid: question.qid, kind: 'preview', picked_answer: '',
+        content_json: parsed, content_markdown: md, model: GEN_MODEL,
+      }));
+      runInBackground(logTutorTurns(supabase, [{
+        user_id: user.id, qid: question.qid, mode: 'preview', role: 'tutor',
+        message: md, content_json: parsed,
+      }]));
+
+      return new Response(
+        JSON.stringify({ content_json: parsed, content_markdown: md, cached: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      );
+    }
+
+    // ── Explanation cache (post-answer first turn) ───────────────────────────
+    const isCacheableExplanation =
+      tutorMode === 'post-answer' && isFirstMessage && !!question.userAnswer;
+    if (isCacheableExplanation) {
+      const hit = await readTutorCache(supabase, question.qid, 'explanation', question.userAnswer);
+      if (hit?.content_markdown) {
+        if (wantsStream === true) {
+          return new Response(sseFromText(hit.content_markdown), {
+            headers: { ...corsHeaders, "Content-Type": "text/event-stream", "Cache-Control": "no-cache", "Connection": "keep-alive" },
+          });
+        }
+        return new Response(
+          JSON.stringify({ content: hit.content_markdown, cached: true }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
+
+    // Latest student message (for the interaction log).
+    const lastStudentMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || null;
 
 
     const useStream = wantsStream === true;
@@ -504,7 +730,7 @@ ${isFirstMessage
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: GEN_MODEL,
         messages: [
           { role: "system", content: systemPrompt },
           ...messagesForModel,
@@ -545,9 +771,39 @@ ${isFirstMessage
       );
     }
 
-    // Streaming branch — forward SSE from Lovable straight to the client.
+    // Persist this turn (and cache it when it's a reusable explanation) once the
+    // full reply text is known. Logs the student's message and the tutor reply.
+    const persistTurn = (replyText: string) => {
+      const turns: Array<any> = [];
+      if (lastStudentMsg) {
+        turns.push({
+          user_id: user.id, qid: question.qid, mode: tutorMode,
+          picked_answer: question.userAnswer || null, role: 'student', message: lastStudentMsg,
+        });
+      }
+      if (replyText) {
+        turns.push({
+          user_id: user.id, qid: question.qid, mode: tutorMode,
+          picked_answer: question.userAnswer || null, role: 'tutor', message: replyText,
+        });
+      }
+      runInBackground(logTutorTurns(supabase, turns));
+      if (isCacheableExplanation && replyText) {
+        runInBackground(writeTutorCache(supabase, {
+          qid: question.qid, kind: 'explanation', picked_answer: question.userAnswer,
+          content_markdown: replyText, model: GEN_MODEL,
+        }));
+      }
+    };
+
+    // Streaming branch — tee the SSE: one side to the client, one accumulated in
+    // the background to log + cache the full reply.
     if (useStream && response.body) {
-      return new Response(response.body, {
+      const [toClient, toCapture] = response.body.tee();
+      runInBackground(
+        drainStream(toCapture).then((raw) => persistTurn(parseSSEContent(raw))),
+      );
+      return new Response(toClient, {
         headers: {
           ...corsHeaders,
           "Content-Type": "text/event-stream",
@@ -564,6 +820,8 @@ ${isFirstMessage
     if (!content) {
       throw new Error("Joshua couldn't generate a response. Please try again.");
     }
+
+    persistTurn(content);
 
     return new Response(
       JSON.stringify({ content }),
