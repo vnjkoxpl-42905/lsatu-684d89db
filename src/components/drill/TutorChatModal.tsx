@@ -282,8 +282,8 @@ export function TutorChatModal({
         isMobile
           ? "inset-x-0 bottom-0 h-[88dvh] rounded-t-2xl animate-in slide-in-from-bottom duration-300"
           : isPostAnswer
-            ? "bottom-6 right-6 w-[440px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
-            : "bottom-6 left-6 w-[380px] max-h-[420px] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+            ? "bottom-6 left-6 w-[440px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+            : "bottom-6 left-6 w-[400px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
       )}
     >
       {isMobile && (
