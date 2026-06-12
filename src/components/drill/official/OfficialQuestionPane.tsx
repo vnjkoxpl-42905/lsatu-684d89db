@@ -227,15 +227,6 @@ export default function OfficialQuestionPane({
           </ul>
         </div>
       </div>
-
-      {/* Feedback area */}
-      {answerRevealed && (
-        <div className="px-6 py-4 bg-white border-t border-slate-200 shrink-0">
-          <div className="text-sm text-slate-900">
-            <p className="font-semibold">{'>'} ANALYSIS VALID.</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

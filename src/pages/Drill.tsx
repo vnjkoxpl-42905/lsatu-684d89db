@@ -2471,6 +2471,78 @@ function DrillContent() {
     );
   };
 
+  // Floating AI tutor overlay (launcher + chat card). Rendered at page root so
+  // its fixed positioning isn't clipped. Shared by BOTH the official testing
+  // layout and the legacy DrillTopBar layout — without this the tutor state
+  // flips but nothing mounts on the official surface.
+  const renderTutorOverlay = () => (
+    <>
+      {/* Manual "Ask Joshua" floating button — bottom-left, hidden while tutor card is open */}
+      {currentQuestion && !tutorChatOpen && !showSolution && (
+        <button
+          type="button"
+          onClick={() => {
+            setTutorQuestionSnapshot(currentQuestion);
+            setTutorUserAnswerSnapshot(selectedAnswer || '');
+            setTutorChatMode(resolveTutorMode({
+              userAnswer: selectedAnswer,
+              answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
+            }));
+            setTutorChatOpen(true);
+          }}
+          aria-label="Ask Joshua about this question"
+          className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-neutral-950 text-neutral-100 px-4 py-2.5 text-[12.5px] font-medium shadow-lg shadow-black/30 border border-white/10 hover:bg-neutral-800 active:scale-95 transition-all"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-400/90" />
+          Ask Joshua
+        </button>
+      )}
+
+      {/* Floating Tutor Card — fixed bottom-left, rendered at page root so fixed positioning isn't clipped */}
+      {tutorChatOpen && tutorQuestionSnapshot && (
+        <ErrorBoundary
+          onReset={() => {
+            setTutorChatOpen(false);
+            setTutorQuestionSnapshot(null);
+            setTutorUserAnswerSnapshot('');
+            setTutorChatMode('pre-answer');
+            setAnswerLocked(false);
+          }}
+        >
+          <TutorChatModal
+            open={tutorChatOpen}
+            question={tutorQuestionSnapshot}
+            userAnswer={tutorUserAnswerSnapshot}
+            mode={tutorChatMode}
+            sessionId={session?.sessionId}
+            tutorContext={{
+              eliminatedAnswers: Array.from(eliminatedByQid.get(tutorQuestionSnapshot.qid) ?? []),
+              timeMs: Math.max(0, Math.floor(performance.now() - questionStartTime)),
+              flagged: isFlagged,
+              answerRevealed: !!showAnswerRevealed.get(tutorQuestionSnapshot.qid),
+            }}
+            onNext={() => {
+              setTutorChatOpen(false);
+              setTutorQuestionSnapshot(null);
+              setTutorUserAnswerSnapshot('');
+              setTutorChatMode('pre-answer');
+              setAnswerLocked(false);
+              const next = isPracticeSetMode ? handlePracticeSetNext : handleNext;
+              next();
+            }}
+            onClose={() => {
+              setTutorChatOpen(false);
+              setTutorQuestionSnapshot(null);
+              setTutorUserAnswerSnapshot('');
+              setTutorChatMode('pre-answer');
+              setAnswerLocked(false);
+            }}
+          />
+        </ErrorBoundary>
+      )}
+    </>
+  );
+
   // ── Official testing-format layout ─────────────────────────────────────
   // Opt-in via /drill?layout=official. Reuses every existing handler so the
   // attempt save / WAJ / blind review / section-complete flow is identical
@@ -2757,9 +2829,25 @@ function DrillContent() {
               primaryDisabled={!selectedAnswer || !!timer?.isPaused}
               onSubmit={() => {
                 void (async () => {
-                  await handleSubmitNonAdaptive(selectedAnswer);
+                  const submitted = selectedAnswer;
+                  await handleSubmitNonAdaptive(submitted);
                   if (autoReveal) {
                     setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+                  }
+                  // Pop the AI tutor (post-answer when revealed) on a wrong answer
+                  // so the student gets a specific, back-and-forth explanation
+                  // instead of the old dead "ANALYSIS VALID" placeholder.
+                  const tutorLaunch = resolveTutorLaunch({
+                    tutorModeEnabled: tutorMode,
+                    correct: submitted === currentQuestion.correctAnswer,
+                    answerRevealed: autoReveal,
+                  });
+                  if (tutorLaunch.shouldOpen) {
+                    setAnswerLocked(true);
+                    setTutorQuestionSnapshot(currentQuestion);
+                    setTutorUserAnswerSnapshot(submitted);
+                    setTutorChatMode(tutorLaunch.mode);
+                    setTutorChatOpen(true);
                   }
                 })();
               }}
@@ -2800,6 +2888,7 @@ function DrillContent() {
             />
           )}
         </OfficialDrillFrame>
+        {renderTutorOverlay()}
       </>
     );
   }
@@ -3247,69 +3336,7 @@ function DrillContent() {
         showContrast={settings.showContrast}
       />
 
-      {/* Manual "Ask Joshua" floating button — bottom-left, hidden while tutor card is open */}
-      {currentQuestion && !tutorChatOpen && !showSolution && (
-        <button
-          type="button"
-          onClick={() => {
-            setTutorQuestionSnapshot(currentQuestion);
-            setTutorUserAnswerSnapshot(selectedAnswer || '');
-            setTutorChatMode(resolveTutorMode({
-              userAnswer: selectedAnswer,
-              answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
-            }));
-            setTutorChatOpen(true);
-          }}
-          aria-label="Ask Joshua about this question"
-          className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-neutral-950 text-neutral-100 px-4 py-2.5 text-[12.5px] font-medium shadow-lg shadow-black/30 border border-white/10 hover:bg-neutral-800 active:scale-95 transition-all"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400/90" />
-          Ask Joshua
-        </button>
-      )}
-
-      {/* Floating Tutor Card — fixed bottom-left, rendered at page root so fixed positioning isn't clipped */}
-      {tutorChatOpen && tutorQuestionSnapshot && (
-        <ErrorBoundary
-          onReset={() => {
-            setTutorChatOpen(false);
-            setTutorQuestionSnapshot(null);
-            setTutorUserAnswerSnapshot('');
-            setTutorChatMode('pre-answer');
-            setAnswerLocked(false);
-          }}
-        >
-          <TutorChatModal
-            open={tutorChatOpen}
-            question={tutorQuestionSnapshot}
-            userAnswer={tutorUserAnswerSnapshot}
-            mode={tutorChatMode}
-            sessionId={session?.sessionId}
-            tutorContext={{
-              eliminatedAnswers: Array.from(eliminatedByQid.get(tutorQuestionSnapshot.qid) ?? []),
-              timeMs: Math.max(0, Math.floor(performance.now() - questionStartTime)),
-              flagged: isFlagged,
-              answerRevealed: !!showAnswerRevealed.get(tutorQuestionSnapshot.qid),
-            }}
-            onNext={() => {
-              setTutorChatOpen(false);
-              setTutorQuestionSnapshot(null);
-              setTutorUserAnswerSnapshot('');
-              setTutorChatMode('pre-answer');
-              setAnswerLocked(false);
-              const next = isPracticeSetMode ? handlePracticeSetNext : handleNext;
-              next();
-            }}
-            onClose={() => {
-              setTutorChatOpen(false);
-              setTutorQuestionSnapshot(null);
-              setTutorUserAnswerSnapshot('');
-              setTutorChatMode('pre-answer');
-              setAnswerLocked(false);
-            }}
-          />
-        </ErrorBoundary>
-      )}
+      {renderTutorOverlay()}
     </div>
     </>
   );
