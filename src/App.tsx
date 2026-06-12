@@ -86,7 +86,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import AdminChatHub from "./components/chat-hub/AdminChatHub";
-import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 import GuidedTour from "./components/mainhub/GuidedTour";
 
@@ -532,7 +531,6 @@ const App = () => {
           </Routes>
           <FloatingMessenger />
           <AdminChatHub />
-          <FloatingWhiteboard />
           <FloatingHelpButton />
           <GuidedTour />
         </BrowserRouter>
