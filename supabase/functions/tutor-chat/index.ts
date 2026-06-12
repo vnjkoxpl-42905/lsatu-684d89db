@@ -274,6 +274,27 @@ serve(async (req) => {
       knowledge = await getCoachingKnowledge(supabase, question);
       knowledgeCache.set(cacheKey, { value: knowledge, expires: Date.now() + KNOWLEDGE_TTL_MS });
     }
+    // Fetch student's recent wrong-answer history for this qtype (memory context).
+    // Best-effort; failures must not break coaching.
+    let pastMistakesContext = '';
+    try {
+      const qtypeNorm = normalizeQtype(question.qtype) || question.qtype;
+      const { data: recentWrong } = await supabaseClient
+        .from('attempts')
+        .select('qid,qtype,selected_answer,timestamp_iso')
+        .eq('user_id', user.id)
+        .eq('correct', false)
+        .eq('qtype', qtypeNorm)
+        .order('timestamp_iso', { ascending: false })
+        .limit(5);
+      if (recentWrong && recentWrong.length > 0) {
+        pastMistakesContext = `\nSTUDENT'S RECENT WRONG ANSWERS ON ${qtypeNorm} (most recent first):\n${recentWrong
+          .map((a: any) => `- ${a.qid}: picked (${a.selected_answer})`)
+          .join('\n')}\nUse this only to notice repeated patterns; don't lecture about history unless they ask.`;
+      }
+    } catch (_e) {
+      // ignore — memory is optional
+    }
 
     // Prepare concise inputs to avoid token limits
     const clamp = (s: string | null | undefined, n: number) => {
@@ -374,7 +395,7 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
 ${whyWrong ? `\nWHY (${question.userAnswer}) IS WRONG:\n${whyWrong}` : ''}
 ${question.breakdown?.crucialInsight ? `\nCRUCIAL INSIGHT: ${question.breakdown.crucialInsight}` : ''}
 ${breakdownTextShort ? `\nARGUMENT BREAKDOWN:\n${breakdownTextShort}` : ''}
-${knowledgeContextShort ? `\nCOACHING KNOWLEDGE:\n${knowledgeContextShort}` : ''}`;
+${knowledgeContextShort ? `\nCOACHING KNOWLEDGE:\n${knowledgeContextShort}` : ''}${pastMistakesContext}`;
 
     const socraticPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. Be concise, specific, and direct. No hedging, no padding, no em-dashes, no phrases like "the stimulus states" or "the argument exhibits." Plain English, real person.
 
