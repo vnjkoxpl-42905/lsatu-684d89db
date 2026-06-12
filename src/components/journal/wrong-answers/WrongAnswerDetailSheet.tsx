@@ -1,15 +1,25 @@
 /**
- * WrongAnswerDetailSheet — attempt history + review notes for a single missed
- * question, with a "Reattempt" launch into the drill. Ported from the original
- * WrongAnswerJournal detail Sheet so behavior is preserved.
+ * WrongAnswerDetailSheet — attempt history + editable reflection notes for a
+ * single missed question, with a "Reattempt" drill launch.
+ *
+ * Reflection fields are user-scoped (wrong_answer_journal_notes). They auto-save
+ * on blur. On first open the fields are pre-populated from the most recent wrong
+ * attempt's review answers (q1/q2/q3) if no note exists yet.
  */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Play, CheckCircle2, XCircle } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Play, CheckCircle2, XCircle, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 import type { WAJEntry, WAJHistoryItem } from '@/lib/wajService';
+import { upsertNote, type WAJNote, type ReviewStatus } from '@/lib/wajNotesService';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
 
 function formatTime(ms: number | null | undefined): string {
   if (ms == null || isNaN(ms)) return '—';
@@ -48,14 +58,79 @@ function StatusBadge({ status }: { status: 'wrong' | 'right' }) {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Reflection form state
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface ReflectionFields {
+  root_cause: string;
+  trap_pattern: string;
+  student_note: string;
+  next_action: string;
+  review_status: ReviewStatus;
+  reattempt_due_at: string;
+}
+
+function seedFromEntry(entry: WAJEntry, note: WAJNote | null): ReflectionFields {
+  if (note) {
+    return {
+      root_cause: note.root_cause ?? '',
+      trap_pattern: note.trap_pattern ?? '',
+      student_note: note.student_note ?? '',
+      next_action: note.next_action ?? '',
+      review_status: note.review_status,
+      reattempt_due_at: note.reattempt_due_at ?? '',
+    };
+  }
+  // Pre-populate from most recent wrong attempt's review answers
+  const history = safeHistory(entry.history_json);
+  const lastWrong = [...history].reverse().find((h) => h.result === 0 && h.review);
+  return {
+    root_cause: lastWrong?.review?.q1 ?? '',
+    trap_pattern: '',
+    student_note: '',
+    next_action: lastWrong?.review?.q3 ?? '',
+    review_status: 'unreviewed',
+    reattempt_due_at: '',
+  };
+}
+
+const STATUS_OPTIONS: { value: ReviewStatus; label: string }[] = [
+  { value: 'unreviewed', label: 'Unreviewed' },
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'mastered', label: 'Mastered' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function WrongAnswerDetailSheet({
   entry,
+  note,
+  classId,
   onClose,
+  onNoteSaved,
 }: {
   entry: WAJEntry | null;
+  note: WAJNote | null;
+  classId: string;
   onClose: () => void;
+  onNoteSaved: (note: WAJNote) => void;
 }) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [fields, setFields] = React.useState<ReflectionFields | null>(null);
+  const [saving, setSaving] = React.useState(false);
+
+  // Re-seed when entry changes
+  React.useEffect(() => {
+    if (entry) {
+      setFields(seedFromEntry(entry, note));
+    } else {
+      setFields(null);
+    }
+  }, [entry?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const reattempt = (e: WAJEntry) => {
     navigate('/drill', {
@@ -72,10 +147,36 @@ export function WrongAnswerDetailSheet({
     });
   };
 
+  const save = async () => {
+    if (!entry || !fields || !classId) return;
+    setSaving(true);
+    try {
+      const saved = await upsertNote({
+        class_id: classId,
+        qid: entry.qid,
+        root_cause: fields.root_cause || null,
+        trap_pattern: fields.trap_pattern || null,
+        student_note: fields.student_note || null,
+        next_action: fields.next_action || null,
+        review_status: fields.review_status,
+        reattempt_due_at: fields.reattempt_due_at || null,
+      });
+      onNoteSaved(saved);
+      toast({ title: 'Reflection saved' });
+    } catch (err) {
+      toast({ title: 'Failed to save', description: String(err), variant: 'destructive' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const setField = <K extends keyof ReflectionFields>(k: K, v: ReflectionFields[K]) =>
+    setFields((prev) => (prev ? { ...prev, [k]: v } : prev));
+
   return (
     <Sheet open={!!entry} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="w-full sm:max-w-2xl overflow-y-auto bg-background border-l border-border">
-        {entry && (
+        {entry && fields && (
           <>
             <SheetHeader className="pb-4 border-b border-border">
               <SheetTitle className="text-foreground font-mono text-[15px]">
@@ -95,6 +196,7 @@ export function WrongAnswerDetailSheet({
               </div>
             </SheetHeader>
 
+            {/* ── Attempt history ── */}
             <div className="mt-6 space-y-3">
               {safeHistory(entry.history_json).length === 0 ? (
                 <p className="text-muted-foreground text-sm py-8 text-center">
@@ -108,7 +210,9 @@ export function WrongAnswerDetailSheet({
                       key={idx}
                       className={cn(
                         'rounded-xl border p-4 space-y-3 shadow-sm',
-                        isCorrect ? 'bg-emerald-500/[0.06] border-emerald-500/20' : 'bg-card border-border',
+                        isCorrect
+                          ? 'bg-emerald-500/[0.06] border-emerald-500/20'
+                          : 'bg-card border-border',
                       )}
                     >
                       <div className="flex items-center justify-between">
@@ -177,6 +281,92 @@ export function WrongAnswerDetailSheet({
                   );
                 })
               )}
+            </div>
+
+            {/* ── Reflection notes ── */}
+            <div className="mt-8 rounded-xl border border-border bg-card p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[13px] font-semibold text-foreground">My Reflection</h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 gap-1.5 text-[11px]"
+                  onClick={save}
+                  disabled={saving}
+                >
+                  <Save className="w-3 h-3" />
+                  {saving ? 'Saving…' : 'Save'}
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <IL>Root cause</IL>
+                  <Textarea
+                    className="mt-1.5 min-h-[64px] resize-none text-[13px]"
+                    placeholder="Why did I miss this? (misread stem, eliminated correct, trap answer…)"
+                    value={fields.root_cause}
+                    onChange={(e) => setField('root_cause', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <IL>Trap pattern</IL>
+                  <Textarea
+                    className="mt-1.5 min-h-[48px] resize-none text-[13px]"
+                    placeholder="e.g. Scope shift, Causal reversal, Extreme language…"
+                    value={fields.trap_pattern}
+                    onChange={(e) => setField('trap_pattern', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <IL>Student note</IL>
+                  <Textarea
+                    className="mt-1.5 min-h-[64px] resize-none text-[13px]"
+                    placeholder="Anything else I want to remember about this question…"
+                    value={fields.student_note}
+                    onChange={(e) => setField('student_note', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <IL>Next action</IL>
+                  <Textarea
+                    className="mt-1.5 min-h-[48px] resize-none text-[13px]"
+                    placeholder="What I'll do differently next time…"
+                    value={fields.next_action}
+                    onChange={(e) => setField('next_action', e.target.value)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <IL>Review status</IL>
+                    <select
+                      className="mt-1.5 w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-[13px] text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                      value={fields.review_status}
+                      onChange={(e) => setField('review_status', e.target.value as ReviewStatus)}
+                    >
+                      {STATUS_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <IL>Reattempt by</IL>
+                    <input
+                      type="date"
+                      className="mt-1.5 w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-[13px] text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                      value={fields.reattempt_due_at}
+                      onChange={(e) => setField('reattempt_due_at', e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}

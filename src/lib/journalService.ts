@@ -15,6 +15,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { getWAJEntries, type WAJEntry } from '@/lib/wajService';
+import { getNotesForClass, type WAJNote, type ReviewStatus } from '@/lib/wajNotesService';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -382,29 +383,48 @@ export interface WrongAnswerSmartRow {
   status: 'wrong' | 'right';
   attempts: number;
   first_missed: string; // ISO
+  last_attempted: string | null; // ISO — most recent history item
+  last_chosen: string | null;
+  last_correct: string | null;
+  /** User-scoped reflection note, if any. */
+  note: WAJNote | null;
   /** The original entry, for the detail sheet + reattempt. */
   entry: WAJEntry;
 }
 
+export type { WAJNote, ReviewStatus };
+
 /**
  * Reads the class-scoped wrong_answer_journal via wajService and maps entries
- * into read-only smart-database rows. classId is resolved by the caller via the
- * useClassId() hook (students.class_id WHERE user_id = auth.uid()).
+ * into smart-database rows, merging in user-scoped reflection notes.
+ * classId is resolved by the caller via the useClassId() hook.
  */
 export async function getWrongAnswerSmartRows(
   classId: string,
   filters?: { qtype?: string; level?: number; pt?: number; last_status?: 'wrong' | 'right' },
 ): Promise<WrongAnswerSmartRow[]> {
-  const entries = await getWAJEntries(classId, filters);
-  return (entries ?? []).map((e) => ({
-    id: e.id,
-    qid: e.qid,
-    label: `PT${e.pt}–S${e.section}–Q${e.qnum}`,
-    qtype: e.qtype,
-    level: e.level,
-    status: e.last_status === 'right' ? 'right' : 'wrong',
-    attempts: e.revisit_count + 1,
-    first_missed: e.first_wrong_at_iso,
-    entry: e,
-  }));
+  const [entries, notesMap] = await Promise.all([
+    getWAJEntries(classId, filters),
+    getNotesForClass(classId),
+  ]);
+
+  return (entries ?? []).map((e) => {
+    const history = Array.isArray(e.history_json) ? e.history_json : [];
+    const last = history.length > 0 ? history[history.length - 1] : null;
+    return {
+      id: e.id,
+      qid: e.qid,
+      label: `PT${e.pt}–S${e.section}–Q${e.qnum}`,
+      qtype: e.qtype,
+      level: e.level,
+      status: e.last_status === 'right' ? 'right' : 'wrong',
+      attempts: e.revisit_count + 1,
+      first_missed: e.first_wrong_at_iso,
+      last_attempted: last?.attempt_at_iso ?? null,
+      last_chosen: last?.chosen_answer ?? null,
+      last_correct: last?.correct_answer ?? null,
+      note: notesMap.get(e.qid) ?? null,
+      entry: e,
+    };
+  });
 }
