@@ -6,13 +6,41 @@ import type { LRQuestion } from '@/lib/questionLoader';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ReactMarkdown from 'react-markdown';
+import type { TutorMode } from './tutorBehavior';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-export type TutorMode = 'post-answer' | 'socratic';
+interface TutorQuestionPayload {
+  qid: string;
+  pt: number;
+  section: number;
+  qnum: number;
+  qtype: string;
+  level: number;
+  stimulus: string;
+  questionStem: string;
+  answerChoices: LRQuestion['answerChoices'];
+  userAnswer: string;
+  correctAnswer: string;
+  breakdown: LRQuestion['breakdown'];
+  answerChoiceExplanations: LRQuestion['answerChoiceExplanations'];
+  reasoningType: LRQuestion['reasoningType'];
+  tutorContext?: TutorContext;
+}
+
+interface TutorContext {
+  eliminatedAnswers: string[];
+  timeMs: number | null;
+  flagged: boolean;
+  answerRevealed: boolean;
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
 
 interface TutorChatModalProps {
   open: boolean;
@@ -21,6 +49,7 @@ interface TutorChatModalProps {
   onClose: () => void;
   mode?: TutorMode;
   sessionId?: string;
+  tutorContext?: TutorContext;
   onNext?: () => void;
 }
 
@@ -34,6 +63,7 @@ export function TutorChatModal({
   onClose,
   mode = 'socratic',
   sessionId,
+  tutorContext,
   onNext,
 }: TutorChatModalProps) {
   const isMobile = useIsMobile();
@@ -97,7 +127,42 @@ export function TutorChatModal({
     breakdown: q.breakdown,
     answerChoiceExplanations: q.answerChoiceExplanations,
     reasoningType: q.reasoningType,
+    tutorContext,
   });
+
+  const loadStoredConversation = async (q: LRQuestion): Promise<boolean> => {
+    try {
+      let query = supabase
+        .from('tutor_conversations')
+        .select('role, content')
+        .eq('qid', q.qid)
+        .eq('mode', mode)
+        .in('role', ['user', 'assistant'])
+        .order('created_at', { ascending: true })
+        .limit(30);
+
+      query = sessionId ? query.eq('session_id', sessionId) : query.is('session_id', null);
+
+      const { data, error } = await query;
+      if (error || !data || data.length === 0) return false;
+
+      const restored = data
+        .filter((row): row is Message => (
+          (row.role === 'user' || row.role === 'assistant') &&
+          typeof row.content === 'string' &&
+          row.content.length > 0
+        ));
+
+      if (restored.length === 0) return false;
+      setMessages(restored);
+      setInitializing(false);
+      setIsLoading(false);
+      return true;
+    } catch (e) {
+      console.warn('load stored tutor conversation failed', e);
+      return false;
+    }
+  };
 
   // Persist a single message to the tutor_conversations table (best-effort).
   const persistMessage = async (q: LRQuestion, role: 'user' | 'assistant', content: string) => {
@@ -125,7 +190,7 @@ export function TutorChatModal({
   };
 
   const streamTutorReply = async (
-    body: { question: any; messages: Message[]; mode: TutorMode },
+    body: { question: TutorQuestionPayload; messages: Message[]; mode: TutorMode },
     signal: AbortSignal,
     onDelta: (text: string) => void,
   ): Promise<void> => {
@@ -146,9 +211,11 @@ export function TutorChatModal({
     if (!resp.ok) {
       let msg = `Joshua is having trouble (HTTP ${resp.status}).`;
       try {
-        const err = await resp.json();
+        const err = await resp.json() as { error?: string; message?: string };
         msg = err.error || err.message || msg;
-      } catch {}
+      } catch {
+        // Response body was not JSON; keep the HTTP fallback.
+      }
       throw new Error(msg);
     }
 
@@ -173,7 +240,9 @@ export function TutorChatModal({
           const json = JSON.parse(payload);
           const delta = json.choices?.[0]?.delta?.content;
           if (typeof delta === 'string' && delta.length > 0) onDelta(delta);
-        } catch {}
+        } catch {
+          // Ignore malformed SSE keepalive chunks.
+        }
       }
     }
   };
@@ -198,6 +267,9 @@ export function TutorChatModal({
 
     let final = '';
     try {
+      const restored = await loadStoredConversation(question);
+      if (restored) return;
+
       await streamTutorReply(
         { question: buildQuestionData(question), messages: [], mode },
         controller.signal,
@@ -205,9 +277,9 @@ export function TutorChatModal({
       );
       setInitializing(false);
       if (final.trim()) persistMessage(question, 'assistant', final);
-    } catch (e: any) {
-      if (e?.name === 'AbortError') return;
-      const msg = e?.message || 'Unexpected error from coaching service.';
+    } catch (e: unknown) {
+      if (e instanceof DOMException && e.name === 'AbortError') return;
+      const msg = errorMessage(e, 'Unexpected error from coaching service.');
       setMessages([{ role: 'assistant', content: msg }]);
       setInitializing(false);
       toast.error(msg);
@@ -240,9 +312,9 @@ export function TutorChatModal({
         (d) => { final += d; appendDelta(d); },
       );
       if (final.trim()) persistMessage(question, 'assistant', final);
-    } catch (e: any) {
-      if (e?.name === 'AbortError') return;
-      const msg = e?.message || 'Unexpected error from coaching service.';
+    } catch (e: unknown) {
+      if (e instanceof DOMException && e.name === 'AbortError') return;
+      const msg = errorMessage(e, 'Unexpected error from coaching service.');
       setMessages((prev) => {
         if (prev.length === 0) return prev;
         const last = prev[prev.length - 1];
@@ -270,6 +342,7 @@ export function TutorChatModal({
     isLoading && (!lastMsg || (lastMsg.role === 'assistant' && lastMsg.content === ''));
 
   const isPostAnswer = mode === 'post-answer';
+  const isPreAnswer = mode === 'pre-answer';
   const breakdown = question.breakdown;
 
   return (
@@ -297,7 +370,7 @@ export function TutorChatModal({
         <div className="flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-amber-400/80" />
           <span className="text-[10px] tracking-[0.18em] text-neutral-400 font-semibold uppercase select-none">
-            {isPostAnswer ? 'AI Tutor' : 'Coach'}
+            {isPostAnswer ? 'AI Tutor' : isPreAnswer ? 'Pre-answer Coach' : 'Coach'}
           </span>
         </div>
         {isPostAnswer && (
@@ -420,6 +493,30 @@ export function TutorChatModal({
         </div>
 
         <div className="flex gap-2 mt-2">
+          {!isPostAnswer && !initializing && !isLoading && messages.length > 0 && (
+            <>
+              <button
+                onClick={() => setInput(isPreAnswer ? 'Give me a small hint without discussing answer choices.' : 'Give me a smaller hint.')}
+                className={cn(
+                  "rounded-lg bg-white/[0.04] text-neutral-300 font-medium hover:bg-white/[0.08] transition-colors duration-150 select-none",
+                  isMobile ? "px-3 py-3 text-[13px]" : "px-3 py-2 text-[12px]"
+                )}
+              >
+                Smaller hint
+              </button>
+              {!isPreAnswer && (
+                <button
+                  onClick={() => setInput(`Why is (${userAnswer}) tempting but wrong?`)}
+                  className={cn(
+                    "rounded-lg bg-white/[0.04] text-neutral-300 font-medium hover:bg-white/[0.08] transition-colors duration-150 select-none",
+                    isMobile ? "px-3 py-3 text-[13px]" : "px-3 py-2 text-[12px]"
+                  )}
+                >
+                  Why mine fails
+                </button>
+              )}
+            </>
+          )}
           <button
             onClick={onClose}
             className={cn(

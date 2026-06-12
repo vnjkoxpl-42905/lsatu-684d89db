@@ -22,6 +22,12 @@ interface QuestionInput {
   reasoningType?: string | string[];
   breakdown?: any;
   answerChoiceExplanations?: any;
+  tutorContext?: {
+    eliminatedAnswers?: string[];
+    timeMs?: number | null;
+    flagged?: boolean;
+    answerRevealed?: boolean;
+  };
 }
 
 interface MessageInput {
@@ -232,7 +238,8 @@ serve(async (req) => {
     // Parse and validate input
     const body = await req.json();
     const { question, messages, stream: wantsStream, mode: rawMode } = body;
-    const tutorMode: 'post-answer' | 'socratic' = rawMode === 'post-answer' ? 'post-answer' : 'socratic';
+    const tutorMode: 'pre-answer' | 'post-answer' | 'socratic' =
+      rawMode === 'post-answer' ? 'post-answer' : rawMode === 'pre-answer' ? 'pre-answer' : 'socratic';
 
     if (!validateQuestion(question)) {
       return new Response(
@@ -263,6 +270,24 @@ serve(async (req) => {
 
     // Initialize Supabase client with service role for knowledge base access
     const supabase = createClient(supabaseUrl, SUPABASE_SERVICE_ROLE_KEY);
+
+    if (tutorMode === 'post-answer') {
+      const { data: savedAttempt, error: attemptError } = await supabase
+        .from('attempts')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('qid', question.qid)
+        .eq('selected_answer', question.userAnswer)
+        .limit(1)
+        .maybeSingle();
+
+      if (attemptError || !savedAttempt) {
+        return new Response(
+          JSON.stringify({ error: 'Post-answer tutoring requires a saved attempt.' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
 
     // Get coaching knowledge from database (cached per qid).
     const cacheKey = question.qid;
@@ -312,13 +337,15 @@ serve(async (req) => {
         event_type: 'coaching_request',
         metadata: {
           message_count: messages.length,
-          qid: question.qid
+          qid: question.qid,
+          mode: tutorMode,
+          stream: wantsStream === true,
         }
       }); // Fire and forget - don't await
     }
 
     // Build context strings
-    const chosenAnswerText = question.answerChoices?.[question.userAnswer] || '';
+    const chosenAnswerText = question.userAnswer ? question.answerChoices?.[question.userAnswer] || '' : '';
 
     // Extract why the student's chosen answer is wrong (for coaching only)
     const wrongExpl = question.answerChoiceExplanations?.[question.userAnswer];
@@ -391,11 +418,28 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
 - Type: ${question.qtype}${knowledge.resolvedReasoningType ? ` (${knowledge.resolvedReasoningType})` : ''}
 - Stimulus: ${stimulusShort || 'N/A'}
 - Stem: ${stemShort}
-- Student picked (${question.userAnswer}): "${clamp(chosenAnswerText, 400)}"
+- Student picked: ${question.userAnswer ? `(${question.userAnswer}) "${clamp(chosenAnswerText, 400)}"` : 'no answer selected yet'}
+- Student state: elapsed ${typeof question.tutorContext?.timeMs === 'number' ? `${Math.round(question.tutorContext.timeMs / 1000)}s` : 'unknown'}, eliminated ${question.tutorContext?.eliminatedAnswers?.length ? question.tutorContext.eliminatedAnswers.join(', ') : 'none'}, flagged ${question.tutorContext?.flagged ? 'yes' : 'no'}, answer revealed ${question.tutorContext?.answerRevealed ? 'yes' : 'no'}
 ${whyWrong ? `\nWHY (${question.userAnswer}) IS WRONG:\n${whyWrong}` : ''}
 ${question.breakdown?.crucialInsight ? `\nCRUCIAL INSIGHT: ${question.breakdown.crucialInsight}` : ''}
 ${breakdownTextShort ? `\nARGUMENT BREAKDOWN:\n${breakdownTextShort}` : ''}
 ${knowledgeContextShort ? `\nCOACHING KNOWLEDGE:\n${knowledgeContextShort}` : ''}${pastMistakesContext}`;
+
+    const preAnswerPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. The student has not selected an answer yet. Be concise, specific, and direct.
+
+${sharedContext}
+
+ABSOLUTE RULES:
+1. Never reveal the correct answer letter.
+2. Never say whether any specific answer choice is correct.
+3. Do not walk through all answer choices.
+4. If asked for the answer, reply: "I can't give that away — use the hint, then take your shot."
+
+COACHING STYLE:
+- Help them read the argument and stem better before choosing.
+- Point them toward the key task, gap, or scope issue in this question.
+- Default to 2-3 short sentences.
+- End with a concrete next move.`;
 
     const socraticPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. Be concise, specific, and direct. No hedging, no padding, no em-dashes, no phrases like "the stimulus states" or "the argument exhibits." Plain English, real person.
 
@@ -435,7 +479,12 @@ ${isFirstMessage
 3) The takeaway pattern in 6-10 words. No fluff. No "great question." Get to it.`
   : `FOLLOW-UP: Answer the student's question precisely. You may discuss any choice, the correct answer, or the structural breakdown. Stay 2-4 sentences unless they ask for depth.`}`;
 
-    const systemPrompt = tutorMode === 'post-answer' ? postAnswerPrompt : socraticPrompt;
+    const systemPrompt =
+      tutorMode === 'post-answer'
+        ? postAnswerPrompt
+        : tutorMode === 'pre-answer'
+        ? preAnswerPrompt
+        : socraticPrompt;
 
 
     const useStream = wantsStream === true;

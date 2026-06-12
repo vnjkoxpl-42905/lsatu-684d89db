@@ -16,6 +16,7 @@ import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPa
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
+import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
 import { VoiceCoachModal } from '@/components/drill/VoiceCoachModal';
@@ -24,7 +25,7 @@ import { GuidedDrillIntroModal } from '@/components/drill/GuidedDrillIntroModal'
 import { useHomeworkSet } from '@/hooks/useHomeworkSets';
 import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
-import { BlindReviewFlow, type BlindReviewResult } from '@/components/drill/BlindReviewFlow';
+import { BlindReviewFlow, type BlindReviewResult as LegacyBlindReviewResult } from '@/components/drill/BlindReviewFlow';
 import { SectionComplete } from '@/components/drill/SectionComplete';
 import { ScoreReport } from '@/components/drill/ScoreReport';
 import { LRSectionResults } from '@/components/drill/LRSectionResults';
@@ -58,7 +59,13 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import type { LRQuestion } from '@/lib/questionLoader';
-import type { DrillMode, DrillSession, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
+import type {
+  BlindReviewResult as DrillBlindReviewResult,
+  DrillMode,
+  DrillSession,
+  FullSectionConfig,
+  TypeDrillConfig,
+} from '@/types/drill';
 import { QuestionPoolService } from '@/lib/questionPoolService';
 import { QuestionPoolChip } from '@/components/drill/QuestionPoolChip';
 import { QuestionPoolExhausted } from '@/components/drill/QuestionPoolExhausted';
@@ -145,8 +152,7 @@ function DrillContent() {
   const [tutorChatOpen, setTutorChatOpen] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
-  
-  const [tutorMessages, setTutorMessages] = React.useState<Array<{role: 'user' | 'assistant'; content: string}>>([]);
+  const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
   const [wajModalOpen, setWajModalOpen] = React.useState(false);
   const [voiceCoachOpen, setVoiceCoachOpen] = React.useState(false);
   const [showVoiceChip, setShowVoiceChip] = React.useState(false);
@@ -172,7 +178,7 @@ function DrillContent() {
   const [showBRSelection, setShowBRSelection] = React.useState(false);
   const [showBRFlow, setShowBRFlow] = React.useState(false);
   const [brSelectedQids, setBrSelectedQids] = React.useState<string[]>([]);
-  const [brResults, setBrResults] = React.useState<any[]>([]);
+  const [brResults, setBrResults] = React.useState<DrillBlindReviewResult[]>([]);
   const [isRetryAfterWrong, setIsRetryAfterWrong] = React.useState(false);
   const [correctExplanation, setCorrectExplanation] = React.useState<string>('');
   const [showReviewButton, setShowReviewButton] = React.useState(false);
@@ -662,7 +668,7 @@ function DrillContent() {
     setTutorChatOpen(false);
     setTutorQuestionSnapshot(null);
     setTutorUserAnswerSnapshot('');
-    setTutorMessages([]);
+    setTutorChatMode('pre-answer');
     setVoiceCoachOpen(false);
     setShowVoiceChip(false);
     setAnswerLocked(false);
@@ -1216,6 +1222,7 @@ function DrillContent() {
             });
             setTutorQuestionSnapshot(currentQuestion);
             setTutorUserAnswerSnapshot(selectedAnswer);
+            setTutorChatMode('socratic');
             setTutorChatOpen(true);
           }
         }, 150);
@@ -1425,14 +1432,23 @@ function DrillContent() {
 
       setSession({ ...session, attempts: newAttempts });
 
+      const tutorLaunch = resolveTutorLaunch({
+        tutorModeEnabled: tutorMode,
+        correct,
+        answerRevealed: revealAfterSave,
+      });
+
       if (revealAfterSave) {
         setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
         setAnswerLocked(true);
-        if (committedAnswer !== currentQuestion.correctAnswer) {
-          setTutorQuestionSnapshot(currentQuestion);
-          setTutorUserAnswerSnapshot(committedAnswer);
-          setTutorChatOpen(true);
-        }
+      }
+
+      if (tutorLaunch.shouldOpen) {
+        setAnswerLocked(true);
+        setTutorQuestionSnapshot(currentQuestion);
+        setTutorUserAnswerSnapshot(committedAnswer);
+        setTutorChatMode(tutorLaunch.mode);
+        setTutorChatOpen(true);
       }
 
       if (advanceAfterSave) setAdvanceToken(t => t + 1);
@@ -1469,7 +1485,8 @@ function DrillContent() {
           messages: [{
             role: 'user',
             content: `I got this question correct on my second try! Can you give me a super specific explanation about why choice (${selectedAnswer}) is correct? Be very specific about how it relates to the question and provide a key insight. Keep it concise but insightful.`
-          }]
+          }],
+          mode: 'post-answer'
         }
       });
 
@@ -2041,7 +2058,7 @@ function DrillContent() {
       <EnhancedBlindReview
         session={session}
         reviewQids={autoReviewQids}
-        onComplete={async (results: BlindReviewResult[]) => {
+        onComplete={async (results: DrillBlindReviewResult[]) => {
           setBrResults(results);
           setPostSectionScreen('score-report');
           await saveBRResults(session, results);
@@ -2186,11 +2203,15 @@ function DrillContent() {
         <BlindReviewFlow
           session={session!}
           selectedQids={brSelectedQids}
-          onComplete={async (results: BlindReviewResult[]) => {
-            setBrResults(results);
+          onComplete={async (results: LegacyBlindReviewResult[]) => {
+            const enrichedResults: DrillBlindReviewResult[] = results.map((result) => ({
+              ...result,
+              preCorrect: session!.attempts.get(result.qid)?.correct ?? false,
+            }));
+            setBrResults(enrichedResults);
             setShowBRFlow(false);
             setPostSectionScreen('score-report');
-            await saveBRResults(session!, results);
+            await saveBRResults(session!, enrichedResults);
           }}
         />
       );
@@ -2226,7 +2247,7 @@ function DrillContent() {
   }
 
   // Helper function to save BR results
-  const saveBRResults = async (session: DrillSession, results: BlindReviewResult[]) => {
+  const saveBRResults = async (session: DrillSession, results: DrillBlindReviewResult[]) => {
     if (!user) return;
 
     try {
@@ -2643,11 +2664,7 @@ function DrillContent() {
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
             setTutorMode(next);
-            if (next && currentQuestion && session?.mode === 'adaptive') {
-              setTutorQuestionSnapshot(currentQuestion);
-              setTutorUserAnswerSnapshot(selectedAnswer ?? null);
-              setTutorChatOpen(true);
-            } else if (!next) {
+            if (!next) {
               setTutorChatOpen(false);
             }
           }}
@@ -2865,15 +2882,20 @@ function DrillContent() {
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
             setTutorMode(next);
-            if (next && currentQuestion && session?.mode === 'adaptive') {
-              setTutorQuestionSnapshot(currentQuestion);
-              setTutorUserAnswerSnapshot(selectedAnswer ?? null);
-              setTutorChatOpen(true);
-            } else if (!next) {
+            if (!next) {
               setTutorChatOpen(false);
             }
           }}
-          onOpenTutor={() => setTutorChatOpen(true)}
+          onOpenTutor={() => {
+            if (!currentQuestion) return;
+            setTutorQuestionSnapshot(currentQuestion);
+            setTutorUserAnswerSnapshot(selectedAnswer);
+            setTutorChatMode(resolveTutorMode({
+              userAnswer: selectedAnswer,
+              answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
+            }));
+            setTutorChatOpen(true);
+          }}
           onOpenInfo={guidedSet?.is_guided_set ? () => setGuidedInfoOpen(true) : undefined}
         />
         <GuidedDrillIntroModal
@@ -3232,6 +3254,10 @@ function DrillContent() {
           onClick={() => {
             setTutorQuestionSnapshot(currentQuestion);
             setTutorUserAnswerSnapshot(selectedAnswer || '');
+            setTutorChatMode(resolveTutorMode({
+              userAnswer: selectedAnswer,
+              answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
+            }));
             setTutorChatOpen(true);
           }}
           aria-label="Ask Joshua about this question"
@@ -3249,6 +3275,7 @@ function DrillContent() {
             setTutorChatOpen(false);
             setTutorQuestionSnapshot(null);
             setTutorUserAnswerSnapshot('');
+            setTutorChatMode('pre-answer');
             setAnswerLocked(false);
           }}
         >
@@ -3256,12 +3283,19 @@ function DrillContent() {
             open={tutorChatOpen}
             question={tutorQuestionSnapshot}
             userAnswer={tutorUserAnswerSnapshot}
-            mode={session?.mode === 'adaptive' && tutorQuestionSnapshot && showAnswerRevealed.get(tutorQuestionSnapshot.qid) ? 'post-answer' : 'socratic'}
+            mode={tutorChatMode}
             sessionId={session?.sessionId}
+            tutorContext={{
+              eliminatedAnswers: Array.from(eliminatedByQid.get(tutorQuestionSnapshot.qid) ?? []),
+              timeMs: Math.max(0, Math.floor(performance.now() - questionStartTime)),
+              flagged: isFlagged,
+              answerRevealed: !!showAnswerRevealed.get(tutorQuestionSnapshot.qid),
+            }}
             onNext={() => {
               setTutorChatOpen(false);
               setTutorQuestionSnapshot(null);
               setTutorUserAnswerSnapshot('');
+              setTutorChatMode('pre-answer');
               setAnswerLocked(false);
               const next = isPracticeSetMode ? handlePracticeSetNext : handleNext;
               next();
@@ -3270,6 +3304,7 @@ function DrillContent() {
               setTutorChatOpen(false);
               setTutorQuestionSnapshot(null);
               setTutorUserAnswerSnapshot('');
+              setTutorChatMode('pre-answer');
               setAnswerLocked(false);
             }}
           />
