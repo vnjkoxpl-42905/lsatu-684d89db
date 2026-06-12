@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ClipboardCheck } from "lucide-react";
+import { ClipboardCheck, Sparkles } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -23,6 +23,8 @@ interface Props {
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
   onEnd: () => void;
+  /** Opens the AI tutor card for the current question. Hidden if omitted. */
+  onAskTutor?: () => void;
   /** Whole bar disabled (e.g. while paused). */
   disabled?: boolean;
 }
@@ -42,6 +44,7 @@ export default function OfficialSmartDrillBar({
   onSkip,
   skipDisabled,
   onEnd,
+  onAskTutor,
   disabled,
 }: Props) {
   const isNext = primaryAction === "next";
@@ -58,6 +61,19 @@ export default function OfficialSmartDrillBar({
         >
           End
         </button>
+
+        {/* Ask Joshua — opens the AI tutor for the current question */}
+        {onAskTutor && (
+          <button
+            type="button"
+            onClick={onAskTutor}
+            disabled={disabled}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            Ask Joshua
+          </button>
+        )}
 
         {/* Right cluster */}
         <div className="ml-auto flex items-center gap-3">

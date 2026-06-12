@@ -43,7 +43,7 @@ import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
 import { upsertLastActivity, type DrillSnapshot, type SectionSnapshot } from '@/lib/lastActivity';
 import { getRecentExposureSet, recordExposures } from '@/lib/questionExposure';
-import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play, Sparkles } from 'lucide-react';
+import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
@@ -2475,29 +2475,22 @@ function DrillContent() {
   // its fixed positioning isn't clipped. Shared by BOTH the official testing
   // layout and the legacy DrillTopBar layout — without this the tutor state
   // flips but nothing mounts on the official surface.
+  // Open the AI tutor for the current question. Mode is derived from state:
+  // pre-answer (strategize) before a pick, socratic after a pick, post-answer
+  // once revealed. Wired to the "Ask Joshua" button beside End in the footer.
+  const openTutorForCurrent = () => {
+    if (!currentQuestion) return;
+    setTutorQuestionSnapshot(currentQuestion);
+    setTutorUserAnswerSnapshot(selectedAnswer || '');
+    setTutorChatMode(resolveTutorMode({
+      userAnswer: selectedAnswer,
+      answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
+    }));
+    setTutorChatOpen(true);
+  };
+
   const renderTutorOverlay = () => (
     <>
-      {/* Manual "Ask Joshua" floating button — bottom-left, hidden while tutor card is open */}
-      {currentQuestion && !tutorChatOpen && !showSolution && (
-        <button
-          type="button"
-          onClick={() => {
-            setTutorQuestionSnapshot(currentQuestion);
-            setTutorUserAnswerSnapshot(selectedAnswer || '');
-            setTutorChatMode(resolveTutorMode({
-              userAnswer: selectedAnswer,
-              answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
-            }));
-            setTutorChatOpen(true);
-          }}
-          aria-label="Ask Joshua about this question"
-          className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-neutral-950 text-neutral-100 px-4 py-2.5 text-[12.5px] font-medium shadow-lg shadow-black/30 border border-white/10 hover:bg-neutral-800 active:scale-95 transition-all"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400/90" />
-          Ask Joshua
-        </button>
-      )}
-
       {/* Floating Tutor Card — fixed bottom-left, rendered at page root so fixed positioning isn't clipped */}
       {tutorChatOpen && tutorQuestionSnapshot && (
         <ErrorBoundary
@@ -2814,6 +2807,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
+              onAskTutor={openTutorForCurrent}
               disabled={!!timer?.isPaused}
             />
           ) : isSmartFixedQueue ? (
@@ -2863,6 +2857,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => { void handleFinishSection(); }}
+              onAskTutor={openTutorForCurrent}
               disabled={!!timer?.isPaused}
             />
           ) : (
