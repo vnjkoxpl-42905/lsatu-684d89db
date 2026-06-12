@@ -4,8 +4,7 @@ import { INTEGRATED_PATH, getCurrentActionIndex, normalizePathnameForAction } fr
 
 describe('Intro to LR guided path order', () => {
   it('places the main conclusion drill right after beyond premises and conclusions', () => {
-    expect(INTEGRATED_PATH.slice(0, 10).map((action) => action.id)).toEqual([
-      'how-to-read-lr-stimulus',
+    expect(INTEGRATED_PATH.slice(0, 9).map((action) => action.id)).toEqual([
       'three-parts-lr-question',
       'so-an-argument',
       'premises',
@@ -19,9 +18,9 @@ describe('Intro to LR guided path order', () => {
   });
 
   it('places the first-sentence and rebuttal practice drills after the structures note', () => {
-    // The first-sentence-vs-rebuttal lab is now step 11 of the path; the two
+    // The first-sentence-vs-rebuttal lab is now step 10 of the path; the two
     // practice drills follow it.
-    expect(INTEGRATED_PATH.slice(10).map((action) => action.id)).toEqual([
+    expect(INTEGRATED_PATH.slice(9).map((action) => action.id)).toEqual([
       'first-sentence-vs-rebuttal-lab',
       'first-sentence-main-conclusion',
       'rebuttal-main-conclusion',
@@ -44,10 +43,10 @@ describe('Intro to LR guided path order', () => {
     expect(normalizePathnameForAction('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(
       '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run',
     );
-    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(7);
-    // The first-sentence-vs-rebuttal lab is now step 11 (index 10); its /run
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(6);
+    // The first-sentence-vs-rebuttal lab is now step 10 (index 9); its /run
     // subroute resolves to that parent action.
-    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(10);
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(9);
   });
 
   it('normalizes the mixed classification alias to the native first sentence vs rebuttal drill', () => {

@@ -43,12 +43,12 @@ export function ModuleIndex(): JSX.Element {
     ? {
         ...step,
         eyebrow: 'START HERE',
-        title: 'How to Read an LR Stimulus',
+        title: 'The Three Parts of an LR Question',
         subtitle:
-          'Start with the reading mindset first: find the conclusion, find the premises, and test whether the support really proves the claim.',
+          'Start by seeing the stimulus, stem, and answer choices in the right order, and what each one is asking you to do.',
         cta: 'Begin Lesson',
         // Force absolute path for navigation
-        href: '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
+        href: '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
         secondary: undefined,
       }
     : {

@@ -106,7 +106,7 @@ function DrillRouteSwitch() {
 function NoteLoader() {
   const { noteId } = useParams();
   const redirects: Record<string, IntroLessonPageId> = {
-    'argument-basics': 'how-to-read-lr-stimulus',
+    'argument-basics': 'three-parts-lr-question',
     'argument-anatomy': 'three-parts-lr-question',
     'where-conclusions-hide': 'conclusions',
     'layered-arguments': 'beyond-premises-and-conclusions',
@@ -117,7 +117,6 @@ function NoteLoader() {
   const pageId = (noteId && noteId in redirects ? redirects[noteId] : noteId) as IntroLessonPageId | undefined;
 
   switch (pageId) {
-    case 'how-to-read-lr-stimulus':
     case 'three-parts-lr-question':
     case 'so-an-argument':
     case 'premises':
@@ -128,14 +127,14 @@ function NoteLoader() {
     case 'first-sentence-vs-rebuttal-structures':
       return <IntroLessonPage pageId={pageId} />;
     default:
-      return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />;
+      return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question" replace />;
   }
 }
 
 function LegacyLessonRedirect() {
   const { lessonId } = useParams();
   const noteByLessonId: Record<string, IntroLessonPageId> = {
-    '1.1': 'how-to-read-lr-stimulus',
+    '1.1': 'three-parts-lr-question',
     '1.2': 'three-parts-lr-question',
     '1.3': 'so-an-argument',
     '1.4': 'premises',
@@ -147,7 +146,7 @@ function LegacyLessonRedirect() {
   };
 
   if (lessonId === 'note' || lessonId === 'notes') {
-    return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />;
+    return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question" replace />;
   }
 
   if (lessonId && lessonId in noteByLessonId) {
@@ -169,8 +168,8 @@ export function BootcampRoutes() {
         <Route path="lessons" element={<NewGuidedIntro />} />
         <Route path="lessons/workbook" element={<IntroGuidedWorkbook />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
-        <Route path="lessons/note" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />} />
-        <Route path="lessons/notes" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />} />
+        <Route path="lessons/note" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question" replace />} />
+        <Route path="lessons/notes" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question" replace />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
         <Route path="lessons/legacy/1.13" element={<Navigate to="/bootcamp/intro-to-lr/drills" replace />} />

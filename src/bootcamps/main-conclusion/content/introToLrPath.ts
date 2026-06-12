@@ -28,13 +28,6 @@ const [FIRST_SENTENCE_MAIN_CONCLUSION_CARD, REBUTTAL_MAIN_CONCLUSION_CARD] = MAI
 
 export const INTEGRATED_PATH: PathAction[] = [
   {
-    id: 'how-to-read-lr-stimulus',
-    type: 'note',
-    title: 'How to Read an LR Stimulus',
-    route: '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
-    description: 'Start with active reading and the right student mindset.',
-  },
-  {
     id: 'three-parts-lr-question',
     type: 'note',
     title: 'The Three Parts of an LR Question',
@@ -150,7 +143,7 @@ const PRACTICE_ALIAS_MAP: Record<string, string> = {
   '/bootcamp/intro-to-lr/reference/concession-decoder': '/bootcamp/intro-to-lr/reference/rebuttal-structure',
   '/bootcamp/intro-to-lr/reference#opposing-view-filter': '/bootcamp/intro-to-lr/reference/rebuttal-structure',
   '/bootcamp/intro-to-lr/reference/opposing-view-filter': '/bootcamp/intro-to-lr/reference/rebuttal-structure',
-  '/bootcamp/intro-to-lr/lessons/notes/argument-basics': '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
+  '/bootcamp/intro-to-lr/lessons/notes/argument-basics': '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
   '/bootcamp/intro-to-lr/lessons/notes/argument-anatomy': '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
   '/bootcamp/intro-to-lr/lessons/notes/where-conclusions-hide': '/bootcamp/intro-to-lr/lessons/notes/conclusions',
   '/bootcamp/intro-to-lr/lessons/notes/layered-arguments': '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',

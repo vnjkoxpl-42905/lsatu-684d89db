@@ -16,7 +16,7 @@ export function NewGuidedIntro() {
 
           {/* Path Steps */}
           <div className="space-y-16">
-            {INTRO_LR_PATH.filter((action) => action.id !== 'how-to-read-lr-stimulus').map((action) => (
+            {INTRO_LR_PATH.map((action) => (
               <section key={action.id} id={action.id} className="scroll-mt-24 p-8 bg-white border border-[rgba(26,26,26,0.05)] rounded-[4px] shadow-sm">
                 <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-4">{action.type}</div>
                 <h2 className="text-3xl font-serif italic mb-6">{action.title}</h2>
