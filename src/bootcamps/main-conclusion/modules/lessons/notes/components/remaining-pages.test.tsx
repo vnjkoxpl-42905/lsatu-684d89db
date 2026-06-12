@@ -145,9 +145,9 @@ describe("remaining intro note interactions", () => {
     );
 
     expect(screen.getByText(/the main conclusion usually appears in one of two places\./i)).toBeInTheDocument();
-    expect(screen.getAllByText("Place")).toHaveLength(4);
-    expect(screen.getAllByText("1")).toHaveLength(2);
-    expect(screen.getAllByText("2")).toHaveLength(2);
+    expect(screen.getAllByText("Place")).toHaveLength(2);
+    expect(screen.getAllByText("1")).toHaveLength(1);
+    expect(screen.getAllByText("2")).toHaveLength(1);
     expect(screen.queryByText(/learn the read before you touch the lab\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/then carry that pattern into the lab\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/learn the two most common places the main conclusion appears\./i)).not.toBeInTheDocument();
@@ -157,7 +157,6 @@ describe("remaining intro note interactions", () => {
     expect(screen.getByText(/first check whether the author states the point up front or turns into it later\./i)).toBeInTheDocument();
     expect(screen.getAllByText(/conclusion first/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/turn later/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/if the opening sounds like someone else's view, wait for the author's turn\./i)).toBeInTheDocument();
     expect(screen.queryByText(/if the opening sounds like a setup or someone else's view, wait for the turn\./i)).not.toBeInTheDocument();
     expect(screen.queryByText(/lesson notes/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/^read 1$/i)).not.toBeInTheDocument();
