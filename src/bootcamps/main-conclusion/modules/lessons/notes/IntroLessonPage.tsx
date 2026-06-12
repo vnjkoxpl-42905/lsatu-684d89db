@@ -717,15 +717,25 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Remember" className="space-y-8 border-b-0">
           <SectionHeading title="Remember" subtitle="Do not stop at finding the conclusion" />
-          <BulletList
-            items={[
-              <span><strong>Recommendations</strong> say what should happen.</span>,
-              <span><strong>Causal hypotheses</strong> say what caused something.</span>,
-              <span><strong>Predictions</strong> say what will happen.</span>,
-              <span><strong>Judgments and labels</strong> assign a verdict.</span>,
-              <span><strong>Rebuttals</strong> say the other side is wrong.</span>,
-            ]}
-          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {[
+              { type: "Recommendations", note: "say what should happen.", color: "#FACC15" },
+              { type: "Causal hypotheses", note: "say what caused something.", color: "#A855F7" },
+              { type: "Predictions", note: "say what will happen.", color: "#38BDF8" },
+              { type: "Judgments and labels", note: "assign a verdict.", color: "#10B981" },
+              { type: "Rebuttals", note: "say the other side is wrong.", color: "#F97316" },
+            ].map((entry) => (
+              <div
+                key={entry.type}
+                className="rounded-[14px] border border-[rgba(26,26,26,0.08)] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-transform duration-200 ease-out hover:-translate-y-[2px]"
+                style={{ borderTopColor: entry.color, borderTopWidth: 3 }}
+              >
+                <span className="inline-block h-1.5 w-8 rounded-full" style={{ backgroundColor: entry.color }} />
+                <h4 className="mt-3 font-serif text-[18px] italic leading-tight text-[#1a1a1a]">{entry.type}</h4>
+                <p className="mt-1.5 text-[14px] leading-[1.5] text-[rgba(26,26,26,0.66)]">{entry.note}</p>
+              </div>
+            ))}
+          </div>
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>Do not stop at finding the conclusion. Name the type.</p>
             <p>Once you know the type of conclusion, you know the kind of weakness to look for.</p>
