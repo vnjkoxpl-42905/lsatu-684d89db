@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
+import { getTutorKb } from "./knowledge-base.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -401,9 +402,16 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
 `;
     }
 
+    // Inject curated tutor knowledge base sourced from
+    // LR-Strategies.pdf + LSAT_LAB_BREAKDOWN.pdf (Joshua's source-of-truth).
+    const kbText = getTutorKb(question.qtype);
+    if (kbText) {
+      knowledgeContext += `\n**JOSHUA'S TUTOR KNOWLEDGE BASE (${question.qtype}):**\n${kbText}\n`;
+    }
+
     // Truncate heavy sections to stay within model limits
     const breakdownTextShort = clamp(breakdownText, 1500);
-    const knowledgeContextShort = clamp(knowledgeContext, 4000);
+    const knowledgeContextShort = clamp(knowledgeContext, 12000);
 
     // Keep roughly the last 10 turns so the tutor remembers the student's line of argument.
     const messagesForModel = (messages || []).slice(-20);
