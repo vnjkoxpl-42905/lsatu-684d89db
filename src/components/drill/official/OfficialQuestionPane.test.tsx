@@ -15,10 +15,10 @@ const question = {
   },
 };
 
-function renderPane() {
+function renderPane(questionOverride = question) {
   return render(
     <OfficialQuestionPane
-      question={question}
+      question={questionOverride}
       displayNumber={26}
       selectedAnswer="A"
       eliminatedAnswers={new Set()}
@@ -49,5 +49,17 @@ describe("OfficialQuestionPane", () => {
     });
     expect(correctAnswerText).toHaveClass("text-green-900");
     expect(correctAnswerText).not.toHaveClass("text-green-50");
+  });
+
+  it("renders multi-word speaker labels as separate dialogue turns", () => {
+    const { container } = renderPane({
+      ...question,
+      stimulus:
+        "Figorian Wildlife Commission: First speaker text.\n\nFigorian Development Commission: Second speaker text.",
+    });
+
+    expect(screen.getByText("Figorian Wildlife Commission:")).toHaveClass("font-bold");
+    expect(screen.getByText("Figorian Development Commission:")).toHaveClass("font-bold");
+    expect(container.querySelector(".space-y-4")?.children).toHaveLength(2);
   });
 });

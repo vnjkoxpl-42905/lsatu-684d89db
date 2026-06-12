@@ -44,5 +44,10 @@ describe("QuestionBank shared-passage loading", () => {
 
     expect(question7?.stimulus).toBeTruthy();
     expect(question8?.stimulus).toBe(question7?.stimulus);
+    expect(question7?.stimulus).not.toMatch(/^The following passage is used/i);
+    expect(question7?.stimulus).not.toMatch(/\s7\.$/);
+    expect(question7?.stimulus).toContain(
+      "them.\n\nFigorian Development Commission:",
+    );
   });
 });

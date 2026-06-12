@@ -63,6 +63,14 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Name the type of claim so you can predict the weakness.',
   },
   {
+    id: 'conclusion-type-lab',
+    type: 'drill',
+    title: 'Conclusion Type Lab',
+    route: '/bootcamp/intro-to-lr/drills/conclusion-type-lab',
+    description: 'Classify each conclusion: recommendation, causal, prediction, judgment, or rebuttal.',
+    phase: 'Drills',
+  },
+  {
     id: 'beyond-premises-and-conclusions',
     type: 'note',
     title: 'Beyond Premises and Conclusions',

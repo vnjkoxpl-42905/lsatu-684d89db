@@ -71,7 +71,20 @@ const dialogueTurnBreakPattern =
 function normalizeDialogueSpeakerBreaks(text: string): string {
   if (!dialogueIntroPattern.test(text) || !dialogueTransitionPattern.test(text)) return text;
 
-  return text.replace(dialogueTurnBreakPattern, '$1\n$2');
+  return text.replace(dialogueTurnBreakPattern, '$1\n\n$2');
+}
+
+function normalizeStimulusText(text: string): string {
+  const sharedRange = getSharedPassageRange(text);
+  let normalized = stripSharedPassageMetadataPrefix(text);
+
+  if (sharedRange) {
+    normalized = normalized
+      .replace(new RegExp(`\\s+${sharedRange.start}\\.$`), '')
+      .trim();
+  }
+
+  return normalizeDialogueSpeakerBreaks(normalized);
 }
 
 export function isRenderableLRQuestion(q: RenderableLRQuestionInput): boolean {
@@ -180,8 +193,7 @@ function normalizeQuestionTextFields<T extends {
   // narrow metadata prefix.
   for (const item of normalized) {
     if (typeof item.stimulus === 'string') {
-      item.stimulus = stripSharedPassageMetadataPrefix(item.stimulus);
-      item.stimulus = normalizeDialogueSpeakerBreaks(item.stimulus);
+      item.stimulus = normalizeStimulusText(item.stimulus);
     }
   }
 

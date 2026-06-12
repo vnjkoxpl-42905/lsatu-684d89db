@@ -28,6 +28,11 @@ const GROUPS = [
     description: 'Classify the family first, then map the whole argument.',
     drillIds: ['MC-DRL-CLS'],
   },
+  {
+    title: 'Conclusion Analysis',
+    description: 'Name the type of claim so you can predict the weakness.',
+    drillIds: ['MC-DRL-CT'],
+  },
 ];
 
 function gaugeColors(value: number) {

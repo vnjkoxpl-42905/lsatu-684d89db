@@ -45,6 +45,20 @@ export const INTRO_DRILLS: IntroDrillDefinition[] = [
     interaction: '4-step flow · explanation breakdowns',
     why: 'Work through the two dominant conclusion placements in a faithful native port with end-of-question feedback and session review.',
   },
+  {
+    id: 'MC-DRL-CT',
+    slug: 'conclusion-type-lab',
+    number: '3',
+    title: 'Conclusion Type Lab',
+    summary: 'Name the type of conclusion: recommendation, causal, prediction, judgment, or rebuttal.',
+    questionCount: 12,
+    route: `${BC}/drills/conclusion-type-lab`,
+    runRoute: `${BC}/drills/conclusion-type-lab/run`,
+    completionId: 'MC-DRL-CT',
+    skill: 'Conclusion Analysis',
+    interaction: 'full stimulus · 5-choice type picker',
+    why: 'Name what kind of claim you are reading. Once you can name the type, you already know the weakness to hunt for.',
+  },
 ];
 
 export function getIntroDrillBySlug(slug: string | undefined) {

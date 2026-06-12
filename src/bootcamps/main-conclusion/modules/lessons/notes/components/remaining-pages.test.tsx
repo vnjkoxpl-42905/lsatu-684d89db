@@ -24,14 +24,14 @@ describe("remaining intro note interactions", () => {
 
     fireEvent.click(
       screen.getByRole("radio", {
-        name: /residents now report using those parks more often after dark/i,
+        name: /residents now report using those lit parks more often after dark/i,
       }),
     );
     fireEvent.click(screen.getByRole("button", { name: /reveal the support/i }));
 
     expect(screen.getByText(/that sentence is doing the support work/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/this is the reason offered for the city's recommendation/i),
+      screen.getByText(/this is the reason offered for the recommendation/i),
     ).toBeInTheDocument();
   });
 

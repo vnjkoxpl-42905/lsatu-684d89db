@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { MainConclusionLab } from './labs/MainConclusionLab';
 import { FirstSentenceVsRebuttalLab } from './labs/firstSentenceVsRebuttal/FirstSentenceVsRebuttalLab';
+import { ConclusionTypeLab } from './labs/ConclusionTypeLab';
 import { getIntroDrillBySlug } from './introDrills';
 
 const LEGACY_REDIRECT: Record<string, string> = {
@@ -42,6 +43,9 @@ export function ActiveDrillShell() {
       break;
     case 'first-sentence-vs-rebuttal-lab':
       content = <FirstSentenceVsRebuttalLab drillId={drill.completionId} title={drill.title} />;
+      break;
+    case 'conclusion-type-lab':
+      content = <ConclusionTypeLab />;
       break;
     default:
       content = (

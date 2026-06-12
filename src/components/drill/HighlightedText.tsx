@@ -145,8 +145,8 @@ export function HighlightedText({
   eraserMode,
   searchTerm,
 }: HighlightedTextProps) {
-  const speakerPattern = /^([A-Z][a-z]*):\s+/;
-  const turnSplitPattern = /(?=^[A-Z][a-z]*:\s)/gm;
+  const speakerPattern = /^([A-Z][A-Za-z’' -]{1,80}):\s+/;
+  const turnSplitPattern = /(?=^[A-Z][A-Za-z’' -]{1,80}:\s)/gm;
   const rawSegments = text.split(turnSplitPattern).filter(s => s.trim());
 
   const dialogueTurns = rawSegments
