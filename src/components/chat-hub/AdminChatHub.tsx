@@ -27,7 +27,15 @@ import { subscribeTAWidget } from '@/components/ta/taWidgetBus';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/drill', '/mainhub'];
+const HIDDEN_ROUTES = [
+  '/auth',
+  '/onboarding',
+  '/reset-password',
+  '/drill',
+  '/mainhub',
+  '/inbox',
+  '/teacher/conversations',
+];
 const TAB_LS_KEY = 'admin-chat-hub-tab';
 const TA_LS_KEY = 'ta-selected-student';
 

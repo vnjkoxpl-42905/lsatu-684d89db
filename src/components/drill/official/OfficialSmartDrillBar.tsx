@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ClipboardCheck, Sparkles } from "lucide-react";
+import { ClipboardCheck } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -75,9 +75,8 @@ export default function OfficialSmartDrillBar({
             onClick={onAskTutor}
             disabled={disabled || askTutorDisabled}
             title={askTutorDisabled ? "Submit an answer first" : undefined}
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             {askTutorLabel}
           </button>
         )}

@@ -2808,7 +2808,7 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
               onAskTutor={openTutorForCurrent}
-              askTutorLabel={showAnswerRevealed.get(currentQuestion.qid) ? 'Explain' : 'Strategize'}
+              askTutorLabel="Explain"
               askTutorDisabled={!currentAttempted}
               disabled={!!timer?.isPaused}
             />
@@ -2860,7 +2860,7 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => { void handleFinishSection(); }}
               onAskTutor={openTutorForCurrent}
-              askTutorLabel={showAnswerRevealed.get(currentQuestion.qid) ? 'Explain' : 'Strategize'}
+              askTutorLabel="Explain"
               askTutorDisabled={!currentAttempted}
               disabled={!!timer?.isPaused}
             />
