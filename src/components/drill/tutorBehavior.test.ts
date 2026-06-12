@@ -43,7 +43,11 @@ describe("tutorBehavior", () => {
     ).toBe(false);
   });
 
-  it("uses pre-answer mode when Ask Joshua opens before an answer is selected", () => {
-    expect(resolveTutorMode({ userAnswer: "", answerRevealed: false })).toBe("pre-answer");
+  it("uses preview mode when Explanation opens before an answer is selected", () => {
+    expect(resolveTutorMode({ userAnswer: "", answerRevealed: false })).toBe("preview");
+  });
+
+  it("uses socratic mode when an answer is selected but not revealed", () => {
+    expect(resolveTutorMode({ userAnswer: "B", answerRevealed: false })).toBe("socratic");
   });
 });

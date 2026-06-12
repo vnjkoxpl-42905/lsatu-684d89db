@@ -1,6 +1,6 @@
 import * as React from "react";
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowUp, ArrowRight, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { ArrowUp, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LRQuestion } from '@/lib/questionLoader';
 import { toast } from 'sonner';
@@ -247,6 +247,39 @@ export function TutorChatModal({
     }
   };
 
+  // Preview is a one-shot, non-streaming structural breakdown (cache-first on
+  // the server). Returns the markdown the panel renders.
+  const fetchPreviewBreakdown = async (
+    q: LRQuestion,
+    signal: AbortSignal,
+  ): Promise<string> => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token || SUPABASE_ANON_KEY;
+
+    const resp = await fetch(`${SUPABASE_URL}/functions/v1/tutor-chat`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ question: buildQuestionData(q), messages: [], mode: 'preview' }),
+      signal,
+    });
+
+    if (!resp.ok) {
+      let msg = `Joshua is having trouble (HTTP ${resp.status}).`;
+      try {
+        const err = await resp.json() as { error?: string };
+        msg = err.error || msg;
+      } catch { /* keep fallback */ }
+      throw new Error(msg);
+    }
+
+    const data = await resp.json() as { content_markdown?: string };
+    return data.content_markdown || 'No breakdown available for this question.';
+  };
+
   const appendDelta = (delta: string) => {
     setMessages((prev) => {
       if (prev.length === 0) return prev;
@@ -269,6 +302,15 @@ export function TutorChatModal({
     try {
       const restored = await loadStoredConversation(question);
       if (restored) return;
+
+      if (mode === 'preview') {
+        // One-shot structural breakdown; no streaming.
+        final = await fetchPreviewBreakdown(question, controller.signal);
+        setMessages([{ role: 'assistant', content: final }]);
+        setInitializing(false);
+        if (final.trim()) persistMessage(question, 'assistant', final);
+        return;
+      }
 
       await streamTutorReply(
         { question: buildQuestionData(question), messages: [], mode },
@@ -304,10 +346,13 @@ export function TutorChatModal({
     const controller = new AbortController();
     abortRef.current = controller;
 
+    // After a preview breakdown, follow-up chat is answer-blind coaching.
+    const followUpMode: TutorMode = mode === 'preview' ? 'pre-answer' : mode;
+
     let final = '';
     try {
       await streamTutorReply(
-        { question: buildQuestionData(question), messages: nextHistory, mode },
+        { question: buildQuestionData(question), messages: nextHistory, mode: followUpMode },
         controller.signal,
         (d) => { final += d; appendDelta(d); },
       );
@@ -343,6 +388,7 @@ export function TutorChatModal({
 
   const isPostAnswer = mode === 'post-answer';
   const isPreAnswer = mode === 'pre-answer';
+  const isPreview = mode === 'preview';
   const breakdown = question.breakdown;
 
   return (
@@ -367,12 +413,9 @@ export function TutorChatModal({
 
       {/* Header */}
       <div className="shrink-0 px-5 pt-3 pb-3 flex items-center justify-between border-b border-white/[0.04]">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400/80" />
-          <span className="text-[10px] tracking-[0.18em] text-neutral-400 font-semibold uppercase select-none">
-            {isPostAnswer ? 'AI Tutor' : isPreAnswer ? 'Pre-answer Coach' : 'Coach'}
-          </span>
-        </div>
+        <span className="text-[10px] tracking-[0.18em] text-neutral-400 font-semibold uppercase select-none">
+          {isPreview ? 'Breakdown' : isPostAnswer ? 'Explanation' : 'Coach'}
+        </span>
         {isPostAnswer && (
           <span className="text-[10px] text-neutral-500 tabular-nums">
             You: ({userAnswer}) · Correct: ({question.correctAnswer})

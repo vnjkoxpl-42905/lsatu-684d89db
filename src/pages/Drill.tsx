@@ -2475,9 +2475,9 @@ function DrillContent() {
   // its fixed positioning isn't clipped. Shared by BOTH the official testing
   // layout and the legacy DrillTopBar layout — without this the tutor state
   // flips but nothing mounts on the official surface.
-  // Open the AI tutor for the current question. Mode is derived from state:
-  // pre-answer (strategize) before a pick, socratic after a pick, post-answer
-  // once revealed. Wired to the "Ask Joshua" button beside End in the footer.
+  // Open the tutor for the current question. Mode is derived from state:
+  // preview (structural breakdown) before a pick, socratic after a pick,
+  // post-answer once revealed. Wired to the "Explanation" button beside End.
   const openTutorForCurrent = () => {
     if (!currentQuestion) return;
     setTutorQuestionSnapshot(currentQuestion);
@@ -2808,8 +2808,8 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
               onAskTutor={openTutorForCurrent}
-              askTutorLabel="Explain"
-              askTutorDisabled={!currentAttempted}
+              askTutorLabel="Explanation"
+              askTutorDisabled={false}
               disabled={!!timer?.isPaused}
             />
           ) : isSmartFixedQueue ? (
@@ -2860,8 +2860,8 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => { void handleFinishSection(); }}
               onAskTutor={openTutorForCurrent}
-              askTutorLabel="Explain"
-              askTutorDisabled={!currentAttempted}
+              askTutorLabel="Explanation"
+              askTutorDisabled={false}
               disabled={!!timer?.isPaused}
             />
           ) : (
