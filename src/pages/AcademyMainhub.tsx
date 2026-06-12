@@ -59,8 +59,8 @@ const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
     energy: 72,
   },
   waj: {
-    date: "Review",
-    content: "Open your Wrong Answer Journal.",
+    date: "Notes",
+    content: "Open your Journal — notes, databases, and missed-question review.",
     category: "Journal",
     status: "pending",
     energy: 68,
@@ -168,7 +168,7 @@ export default function AcademyMainhub() {
       } else if (itemId === "analytics") {
         navigate("/analytics");
       } else if (itemId === "waj") {
-        navigate("/waj");
+        navigate("/journal");
       }
     },
     [navigate, classroomItems, setOrbitalActive, lastActivity],

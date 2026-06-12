@@ -115,7 +115,7 @@ export default function HubSnapshot({ studentId }: Props) {
           />
           <Metric
             icon={AlertCircle}
-            label="WAJ items"
+            label="To review"
             value={(wajCount ?? 0).toLocaleString()}
           />
           <Metric

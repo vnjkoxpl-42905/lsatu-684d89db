@@ -16,7 +16,6 @@ import Practice from "./pages/Practice";
 import SavedSets from "./pages/SavedSets";
 import AcademyMainhub from "./pages/AcademyMainhub";
 import Drill from "./pages/Drill";
-import WrongAnswerJournal from "./pages/WrongAnswerJournal";
 import FlaggedQuestions from "./pages/FlaggedQuestions";
 import Analytics from "./pages/Analytics";
 import Auth from "./pages/Auth";
@@ -51,6 +50,7 @@ const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"))
 const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
 const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
+const Journal = React.lazy(() => import("./pages/Journal"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
@@ -266,9 +266,15 @@ const App = () => {
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
                   } />
-                  <Route path="/waj" element={
-                    <ProtectedRoute flag="has_waj_access"><WrongAnswerJournal /></ProtectedRoute>
+                  <Route path="/journal" element={
+                    <ProtectedRoute flag="has_journal_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <Journal />
+                      </React.Suspense>
+                    </ProtectedRoute>
                   } />
+                  {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
+                  <Route path="/waj" element={<Navigate to="/journal" replace />} />
                   <Route path="/flagged" element={
                     <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
                   } />

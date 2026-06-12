@@ -60,9 +60,9 @@ export const SLASH_COMMANDS: SlashCommand[] = [
     id: "waj",
     icon: BookMarked,
     label: "/waj",
-    description: "Review WAJ and suggest targeted practice",
+    description: "Review the Journal's Wrong Answers and suggest targeted practice",
     prefill:
-      "Review this student's Wrong Answer Journal. Cluster the entries by root cause (not just by question type). For the two largest clusters, suggest a targeted drill and the teaching library reference I should send with it. Do not draft the assignment yet.",
+      "Review this student's Journal — the Wrong Answers section. Cluster the entries by root cause (not just by question type). For the two largest clusters, suggest a targeted drill and the teaching library reference I should send with it. Do not draft the assignment yet.",
   },
   {
     id: "status",

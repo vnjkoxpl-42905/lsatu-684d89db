@@ -11,6 +11,7 @@ export interface UserPermissions {
   has_practice_access: boolean;
   has_drill_access: boolean;
   has_waj_access: boolean;
+  has_journal_access: boolean;
   has_flagged_access: boolean;
   has_chat_access: boolean;
   has_export_access: boolean;
@@ -27,6 +28,7 @@ const ACCESS_FLAGS = [
   "has_practice_access",
   "has_drill_access",
   "has_waj_access",
+  "has_journal_access",
   "has_flagged_access",
   "has_chat_access",
   "has_export_access",
@@ -64,6 +66,7 @@ export function useUserPermissions(): UserPermissions {
     has_practice_access: false,
     has_drill_access: false,
     has_waj_access: false,
+    has_journal_access: false,
     has_flagged_access: false,
     has_chat_access: false,
     has_export_access: false,

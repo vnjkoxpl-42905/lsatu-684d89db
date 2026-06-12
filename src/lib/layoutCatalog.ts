@@ -47,7 +47,7 @@ export const DOCK_CATALOG: CatalogItem[] = [
 export const ORBITAL_CATALOG: CatalogItem[] = [
   { id: "resume", label: "Resume", icon: Play, description: "Open your highest-priority active assignment." },
   { id: "analytics", label: "Analytics", icon: BarChart3, requires: "has_analytics_access", description: "Performance trends and accuracy by question type." },
-  { id: "waj", label: "Wrong Answer Journal", icon: BookOpen, requires: "has_waj_access", description: "Review missed questions and patterns." },
+  { id: "waj", label: "Journal", icon: BookOpen, requires: "has_journal_access", description: "Notes, databases, and missed-question review." },
 ];
 
 // Mainhub sidebar nav items. The `id` is the route path so saved layouts survive
