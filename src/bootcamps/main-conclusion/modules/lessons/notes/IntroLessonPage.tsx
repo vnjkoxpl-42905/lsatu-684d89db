@@ -13,6 +13,7 @@ import {
   ConclusionIndicatorLab,
 } from "./NoteInteractions";
 import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
+import { IndicatorPopQuiz } from "./components/IndicatorPopQuiz";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
 import { ConclusionTypeSwitchboard } from "./components/ConclusionTypeSwitchboard";
 import { ConclusionTypeCard } from "./components/ConclusionTypeCard";
@@ -569,6 +570,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Conclusion Indicators" className="space-y-8">
           <ConclusionIndicatorLab />
+          <IndicatorPopQuiz />
           <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
             <div className="space-y-5">
               <div className="space-y-2">
