@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { Paperclip } from 'lucide-react';
+import { CheckCheck, Mail, Paperclip, TimerReset } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 import { isParticipantOnline } from './inboxPresence';
@@ -44,7 +44,7 @@ export function ThreadList({
   const isAdmin = variant === 'admin';
 
   return (
-    <div role="list" className="flex flex-col gap-1 p-2">
+    <div role="list" className={cn('flex flex-col', isAdmin ? 'gap-2 p-3' : 'gap-1 p-2')}>
       {conversations.map((c) => {
         const isActive = activeId === c.id;
         const name = otherParticipantName(c, user.id, c.subject || 'Conversation');
@@ -59,25 +59,33 @@ export function ThreadList({
             role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
-              'group w-full flex items-start gap-3 text-left transition-all relative',
-              'px-4 py-4 rounded-xl border',
-              isActive
-                ? 'border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] ring-1 ring-black/5'
-                : 'border-transparent hover:bg-white/40 hover:border-border/20'
+              'group w-full flex items-start gap-3 text-left transition-all relative border',
+              isAdmin ? 'rounded-2xl px-3.5 py-3.5' : 'rounded-xl px-4 py-4',
+              isAdmin
+                ? isActive
+                  ? 'border-[#e6d6bb] bg-[#f8f2e4] text-[#151a24] shadow-[inset_3px_0_#a14f43,0_18px_38px_rgba(0,0,0,0.24)]'
+                  : 'border-white/10 bg-white/[0.06] text-[#edf2f7] hover:border-white/15 hover:bg-white/[0.09]'
+                : isActive
+                  ? 'border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] ring-1 ring-black/5'
+                  : 'border-transparent hover:bg-white/40 hover:border-border/20'
             )}
           >
             <div
               className={cn(
-                'relative w-10 h-10 flex items-center justify-center text-[10px] font-bold shrink-0 rounded-full transition-all tracking-tight',
-                isActive 
-                  ? 'bg-slate-900 text-white shadow-sm scale-105' 
-                  : 'bg-white text-slate-700 ring-1 ring-slate-200 group-hover:ring-slate-300 shadow-sm',
+                'relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[10px] font-black tracking-tight transition-all',
+                isAdmin
+                  ? isActive
+                    ? 'bg-[#151a24] text-[#f6e9c8] shadow-sm'
+                    : 'bg-[#f4d995] text-[#1a1f2b] shadow-sm'
+                  : isActive
+                    ? 'bg-slate-900 text-white shadow-sm scale-105'
+                    : 'bg-white text-slate-700 ring-1 ring-slate-200 group-hover:ring-slate-300 shadow-sm',
               )}
               aria-hidden="true"
             >
               {initial}
               {isOnline && (
-                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                <span className={cn('absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2', isAdmin && !isActive ? 'ring-[#141a24]' : 'ring-white')} />
               )}
             </div>
 
@@ -88,12 +96,18 @@ export function ThreadList({
                   <div
                     className={cn(
                       'truncate text-[13px] tracking-tight',
-                      c.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700',
+                      isAdmin
+                        ? isActive
+                          ? 'font-black text-[#151a24]'
+                          : c.unread
+                            ? 'font-black text-white'
+                            : 'font-bold text-[#e4eaf3]'
+                        : c.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700',
                     )}
                   >
                     {name}
                   </div>
-                  {isOnline && (
+                  {isOnline && !isAdmin && (
                     <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-emerald-700">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                       Online
@@ -103,7 +117,13 @@ export function ThreadList({
                 <div
                   className={cn(
                     'shrink-0 text-[10px] font-medium tracking-wide uppercase',
-                    c.unread ? 'text-primary' : 'text-slate-400',
+                    isAdmin
+                      ? isActive
+                        ? 'text-[#8b5b42]'
+                        : c.unread
+                          ? 'text-[#f4d995]'
+                          : 'text-[#aab4c3]'
+                      : c.unread ? 'text-primary' : 'text-slate-400',
                   )}
                 >
                   {compactTime(c.last_message_at)}
@@ -114,14 +134,20 @@ export function ThreadList({
                 <div
                   className={cn(
                     'text-[12px] flex-1 line-clamp-1 break-words leading-relaxed',
-                    c.unread ? 'text-slate-900 font-medium' : 'text-slate-500',
+                    isAdmin
+                      ? isActive
+                        ? 'font-semibold text-[#4d4539]'
+                        : c.unread
+                          ? 'font-semibold text-[#f8eed8]'
+                          : 'text-[#aab4c3]'
+                      : c.unread ? 'text-slate-900 font-medium' : 'text-slate-500',
                   )}
                 >
                   {c.last_message?.body || c.subject || 'NEW CONVERSATION'}
                 </div>
                 {c.hasAttachments && (
                   <Paperclip
-                    className="w-3 h-3 text-slate-400 shrink-0"
+                    className={cn('w-3 h-3 shrink-0', isAdmin && !isActive ? 'text-[#f4d995]' : 'text-slate-400')}
                     aria-label="Has attachments"
                   />
                 )}
@@ -133,11 +159,37 @@ export function ThreadList({
                 )}
               </div>
               
-              {replyRequired && (
+              {isAdmin ? (
+                <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                  {replyRequired ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#a14f43]/15 px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#a14f43]">
+                      <TimerReset className="h-3 w-3" />
+                      Reply
+                    </span>
+                  ) : (
+                    <span className={cn('inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                      <CheckCheck className="h-3 w-3" />
+                      Read
+                    </span>
+                  )}
+                  <span className={cn('inline-flex rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                    Intro LR
+                  </span>
+                  {c.hasAttachments && (
+                    <span className={cn('inline-flex rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                      File
+                    </span>
+                  )}
+                  <span className={cn('inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                    <Mail className="h-3 w-3" />
+                    Gmail
+                  </span>
+                </div>
+              ) : replyRequired ? (
                 <div className="mt-2.5 inline-flex items-center px-2 py-0.5 text-[9px] uppercase tracking-[0.05em] font-bold bg-red-50 text-red-600 rounded-md ring-1 ring-red-100">
                   Reply Required
                 </div>
-              )}
+              ) : null}
             </div>
           </button>
         );

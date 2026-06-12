@@ -1,5 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Paperclip, Send, X, FileText, Sparkles, Cloud, Image as ImageIcon } from 'lucide-react';
+import {
+  Bot,
+  CalendarPlus,
+  Check,
+  Cloud,
+  FileText,
+  Image as ImageIcon,
+  Mail,
+  MessageSquareText,
+  Paperclip,
+  Send,
+  Sparkles,
+  Wand2,
+  X,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,6 +35,8 @@ import {
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
 
+type DeliveryMode = 'message' | 'email' | 'both';
+
 export function MessageComposer({ conversationId, onSent }: { conversationId: string; onSent?: () => void }) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
@@ -33,6 +49,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const [templates] = useState<MessageTemplate[]>([]);
   const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
   const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
+  const [composerFocused, setComposerFocused] = useState(false);
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>('both');
+  const [messageType, setMessageType] = useState('Coaching reply');
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
@@ -239,6 +258,22 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   };
 
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
+  const smartDeliveryScaffold = {
+    recommended: (file || driveAttachments.length > 0 ? 'both' : 'message') as DeliveryMode,
+    reason: file || driveAttachments.length > 0
+      ? 'Attachment present, so keep an in-app copy and prepare email backup.'
+      : 'No file context yet, so an in-app coaching reply is the lightest path.',
+    signals: [
+      messageType,
+      file || driveAttachments.length > 0 ? 'has attachments' : 'text only',
+      'student activity pending',
+    ],
+  };
+  const deliveryLabel: Record<DeliveryMode, string> = {
+    message: 'Message',
+    email: 'Email',
+    both: 'Both',
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (templatePaletteOpen && filteredTemplates.length > 0) {
@@ -270,10 +305,10 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   };
 
   return (
-    <div className="px-6 py-6 shrink-0 bg-transparent">
-      <div className="mx-auto max-w-4xl space-y-4">
+    <div className={cn('shrink-0 bg-transparent', isAdmin ? 'px-4 py-4 sm:px-6' : 'px-4 py-5 sm:px-6')}>
+      <div className={cn('mx-auto space-y-4', isAdmin ? 'max-w-4xl' : 'max-w-3xl')}>
       {file && (
-        <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm shadow-sm">
+        <div className={cn('flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm shadow-sm', isAdmin ? 'border-[#d8c6ad] bg-[#fffaf0]' : 'border-[#eadfcf] bg-white')}>
           {filePreviewUrl ? (
             <img
               src={filePreviewUrl}
@@ -290,8 +325,8 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <div className="truncate text-xs font-semibold text-slate-700">{file.name}</div>
-            <div className="mt-0.5 text-[11px] text-slate-400">
+            <div className="truncate text-xs font-bold text-[#211b16]">{file.name}</div>
+            <div className="mt-0.5 text-[11px] text-[#7a6b58]">
               {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready. Paste another to replace it.' : 'PDF ready to send'}
             </div>
           </div>
@@ -325,11 +360,12 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         </div>
       )}
       {polished !== null && (
-        <div className="px-5 py-4 rounded-2xl border border-slate-200 bg-white shadow-lg space-y-4 ring-1 ring-black/5">
-          <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">
-            AI Polished Version
+        <div className="space-y-4 rounded-2xl border border-[#d8c6ad] bg-[#fffaf0] px-5 py-4 shadow-lg ring-1 ring-black/5">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#8b5b42]">
+            <Wand2 className="h-3.5 w-3.5" />
+            Composer Polish
           </div>
-          <div className="whitespace-pre-wrap text-sm leading-relaxed text-slate-800 font-medium">{polished}</div>
+          <div className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-[#211b16]">{polished}</div>
           <div className="flex flex-wrap gap-2 pt-1">
             <Button
               size="sm"
@@ -371,7 +407,42 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
-      <div className="relative rounded-2xl border border-slate-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] focus-within:ring-2 focus-within:ring-slate-900/5 focus-within:border-slate-300 transition-all">
+      <div
+        className={cn(
+          'relative overflow-hidden rounded-2xl border transition-all',
+          isAdmin
+            ? 'border-[#d8c6ad] bg-[#fffaf0] shadow-[0_18px_48px_rgba(52,39,23,0.12)] focus-within:border-[#a14f43]/50'
+            : 'border-[#eadfcf] bg-white shadow-[0_12px_34px_rgba(63,45,24,0.08)] focus-within:border-[#7f8f69]/50',
+        )}
+      >
+        {isAdmin && (
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#eadfcf] bg-[#fff8ea] px-3 py-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#182131] px-2.5 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-[#f7edd7]">
+                <Sparkles className="h-3 w-3 text-[#f0d28e]" />
+                Smart: {deliveryLabel[deliveryMode]}
+              </span>
+              <span className="hidden text-[11px] font-semibold text-[#7a6b58] sm:inline">
+                Recommended {deliveryLabel[smartDeliveryScaffold.recommended]} · {smartDeliveryScaffold.reason}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-[#eadfcf] p-1">
+              {(['message', 'email', 'both'] as DeliveryMode[]).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setDeliveryMode(mode)}
+                  className={cn(
+                    'rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.08em] transition',
+                    deliveryMode === mode ? 'bg-[#a14f43] text-white shadow-sm' : 'text-[#5f513f] hover:bg-white/70',
+                  )}
+                >
+                  {deliveryLabel[mode]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <TemplateSuggestionPalette
           open={templatePaletteOpen}
           templates={filteredTemplates}
@@ -384,20 +455,58 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           ref={textareaRef}
           value={body}
           onChange={(e) => setBodyAndResize(e.target.value)}
+          onFocus={() => setComposerFocused(true)}
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
-          placeholder="Ask Joshua a question or send study context"
-          className="w-full resize-none min-h-0 border-0 bg-transparent px-5 py-4 text-[15px] shadow-none focus-visible:ring-0 placeholder:text-slate-400 text-slate-800 font-medium"
-          style={{ height: '54px', overflowY: 'hidden', transition: 'none' }}
+          placeholder={isAdmin ? 'Message with files, templates, and assignment context...' : 'Ask Joshua a question or send study context'}
+          className={cn(
+            'w-full resize-none border-0 bg-transparent px-5 py-4 text-[15px] font-medium shadow-none focus-visible:ring-0',
+            isAdmin ? 'text-[#211b16] placeholder:text-[#9a8b76]' : 'text-slate-800 placeholder:text-slate-400',
+          )}
+          style={{ height: isAdmin && composerFocused ? '82px' : '54px', overflowY: 'hidden', transition: 'height 160ms ease' }}
         />
-        <div className="flex items-center gap-2 px-3 py-2 border-t border-slate-50">
+        {isAdmin && composerFocused && (
+          <div className="grid gap-3 border-t border-[#eadfcf] bg-[#fffaf0] px-3 py-3 md:grid-cols-[1fr_auto]">
+            <div className="flex flex-wrap items-center gap-2">
+              {['Coaching reply', 'Assignment note', 'Check-in', 'File follow-up'].map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => setMessageType(label)}
+                  className={cn(
+                    'rounded-full border px-2.5 py-1.5 text-[10px] font-black uppercase tracking-[0.08em] transition',
+                    messageType === label
+                      ? 'border-[#a14f43] bg-[#a14f43] text-white'
+                      : 'border-[#d8c6ad] bg-white/70 text-[#5f513f] hover:border-[#a14f43]/50',
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-start gap-2 md:justify-end">
+              <button type="button" className="inline-flex items-center gap-1.5 rounded-xl bg-[#eadfcf] px-2.5 py-2 text-[11px] font-black text-[#5f513f]">
+                <Bot className="h-3.5 w-3.5" />
+                Context sources
+              </button>
+              <button type="button" className="inline-flex items-center gap-1.5 rounded-xl bg-[#eadfcf] px-2.5 py-2 text-[11px] font-black text-[#5f513f]">
+                <CalendarPlus className="h-3.5 w-3.5" />
+                Follow-up
+              </button>
+            </div>
+            <div className="md:col-span-2 rounded-xl bg-[#f1e6d4] px-3 py-2 text-[11px] font-semibold text-[#665a4b]">
+              Training scaffold: {smartDeliveryScaffold.signals.join(' / ')}. Override is captured in UI state; backend persistence is pending.
+            </div>
+          </div>
+        )}
+        <div className={cn('flex items-center gap-2 border-t px-3 py-2', isAdmin ? 'border-[#eadfcf]' : 'border-slate-50')}>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
             aria-label="Attach PDF or screenshot"
-            className="h-9 w-9 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl"
+            className={cn('h-9 w-9 rounded-xl', isAdmin ? 'text-[#7a6b58] hover:bg-[#eadfcf] hover:text-[#211b16]' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50')}
           >
             <Paperclip className="w-4.5 h-4.5" />
           </Button>
@@ -412,10 +521,16 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               disabled={sending || polishing || body.trim().length < 3}
               aria-label="Polish with AI"
               title="Polish with AI"
-              className="h-9 w-9 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl"
+              className="h-9 w-9 rounded-xl text-[#7a6b58] hover:bg-[#eadfcf] hover:text-[#211b16]"
             >
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </Button>
+          )}
+          {isAdmin && (
+            <div className="hidden items-center gap-1.5 text-[11px] font-black text-[#7a6b58] sm:flex">
+              {deliveryMode === 'message' ? <MessageSquareText className="h-3.5 w-3.5" /> : deliveryMode === 'email' ? <Mail className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
+              {deliveryLabel[deliveryMode]} selected
+            </div>
           )}
           <div className="flex-1" />
           <Button
@@ -426,8 +541,10 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             aria-label="Send"
             className={cn(
               "h-9 w-9 rounded-xl transition-all",
-              canSend 
-                ? "bg-slate-900 text-white hover:bg-slate-800 shadow-sm" 
+              canSend
+                ? isAdmin
+                  ? 'bg-[#a14f43] text-white shadow-sm hover:bg-[#8d453a]'
+                  : 'bg-[#203024] text-white shadow-sm hover:bg-[#2c4231]'
                 : "text-slate-300 hover:bg-transparent"
             )}
           >

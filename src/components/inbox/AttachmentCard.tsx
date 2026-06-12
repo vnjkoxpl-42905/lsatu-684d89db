@@ -3,6 +3,7 @@ import { FileText, Download, Cloud, ExternalLink, Image as ImageIcon } from 'luc
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { MessageAttachment } from '@/hooks/useInbox';
+import { cn } from '@/lib/utils';
 
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -54,23 +55,25 @@ function ImageAttachment({
   return (
     <button
       onClick={open}
-      className="block max-w-xs mt-2 rounded-md border border-border bg-background/50 hover:bg-accent transition-colors overflow-hidden text-left"
+      className="mt-2 block max-w-sm overflow-hidden rounded-2xl border border-[#decdb7] bg-[#fffaf1] text-left shadow-[0_12px_28px_rgba(86,61,32,0.10)] transition hover:border-[#a14f43]/45 hover:bg-white"
       title={attachment.file_name}
     >
       {url ? (
         <img
           src={url}
           alt={attachment.file_name}
-          className="block w-full max-h-64 object-cover"
+          className="block max-h-64 w-full object-cover"
           loading="lazy"
         />
       ) : (
-        <div className="flex items-center gap-2 px-3 py-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 px-3 py-3 text-xs font-semibold text-[#7a6b58]">
           <ImageIcon className="w-4 h-4" /> Loading {attachment.file_name}…
         </div>
       )}
-      <div className="px-3 py-1.5 text-[11px] text-muted-foreground border-t border-border flex items-center gap-1.5">
-        <ImageIcon className="w-3 h-3" /> {attachment.file_name} · {formatSize(attachment.file_size)}
+      <div className="flex items-center gap-1.5 border-t border-[#eadfcf] px-3 py-2 text-[11px] font-bold text-[#6f6253]">
+        <ImageIcon className="h-3.5 w-3.5 text-[#8b5b42]" />
+        <span className="truncate">{attachment.file_name}</span>
+        <span className="shrink-0 text-[#a89a88]">· {formatSize(attachment.file_size)}</span>
       </div>
     </button>
   );
@@ -119,25 +122,30 @@ export function AttachmentCard({
   return (
     <button
       onClick={open}
-      className="flex items-center gap-3 w-full max-w-xs px-3 py-2 mt-2 rounded-md border border-border bg-background/50 hover:bg-accent transition-colors text-left"
+      className="mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-[#decdb7] bg-[#fffaf1] px-3.5 py-3 text-left shadow-[0_12px_28px_rgba(86,61,32,0.10)] transition hover:border-[#a14f43]/45 hover:bg-white"
     >
-      <div className="flex items-center justify-center w-9 h-9 rounded-md bg-muted shrink-0">
+      <div
+        className={cn(
+          'flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl',
+          isDrive ? 'bg-[#e6eef5]' : 'bg-[#efe4d3]',
+        )}
+      >
         {isDrive ? (
-          <Cloud className="w-4 h-4 text-muted-foreground" />
+          <Cloud className="h-5 w-5 text-[#356385]" />
         ) : (
-          <FileText className="w-4 h-4 text-muted-foreground" />
+          <FileText className="h-5 w-5 text-[#8b5b42]" />
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium truncate">{attachment.file_name}</div>
-        <div className="text-xs text-muted-foreground">
+        <div className="truncate text-sm font-black text-[#211b16]">{attachment.file_name}</div>
+        <div className="mt-0.5 text-xs font-semibold text-[#7a6b58]">
           {isDrive ? 'Google Drive' : `${formatSize(attachment.file_size)} · ${fileKindLabel(attachment.mime_type ?? '')}`}
         </div>
       </div>
       {isDrive ? (
-        <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0" />
+        <ExternalLink className="h-4 w-4 shrink-0 text-[#7a6b58]" />
       ) : (
-        <Download className="w-4 h-4 text-muted-foreground shrink-0" />
+        <Download className="h-4 w-4 shrink-0 text-[#7a6b58]" />
       )}
     </button>
   );

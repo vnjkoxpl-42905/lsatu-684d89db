@@ -7,11 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   ArrowLeft,
+  ChevronDown,
   Search,
   MessageCircle,
   Inbox as InboxIcon,
   Mail,
   HardDrive,
+  PenLine,
+  Plus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
@@ -23,6 +26,7 @@ import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { GmailPane } from '@/features/admin-inbox/gmail/components/GmailPane';
 import { DrivePanel } from '@/components/inbox/DrivePanel';
 import { initialsFromName, needsReply, otherParticipantName } from '@/components/inbox/inboxDisplay';
+import { AdminIntelligencePanel } from '@/components/inbox/AdminIntelligencePanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -114,7 +118,8 @@ export default function Inbox() {
     return initialsFromName(headerName);
   }, [is_admin, headerName]);
 
-  const composeTarget = (location.state as any)?.composeTarget || null;
+  const routeState = location.state as { composeTarget?: string | null } | null;
+  const composeTarget = routeState?.composeTarget || null;
   const clearComposeTarget = () => navigate(location.pathname, { replace: true, state: {} });
 
   useEffect(() => {
@@ -157,8 +162,8 @@ export default function Inbox() {
       const id = await startJoshuaConversation();
       await refresh();
       navigate(`/inbox/${id}`, { replace: true });
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Could not start conversation');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Could not start conversation');
     } finally {
       setStarting(false);
     }
@@ -175,32 +180,58 @@ export default function Inbox() {
       : FILTER_EMPTY_LABEL[filter];
 
   return (
-    <div className={cn('h-screen overflow-hidden flex flex-col bg-[#FDFDFC]', !is_admin && 'bg-[#FDFDFC]')}>
-      <header className="border-b border-border bg-white sticky top-0 z-10 shrink-0">
-        <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between gap-3">
+    <div
+      className={cn(
+        'h-screen overflow-hidden flex flex-col',
+        is_admin
+          ? 'bg-[#111722] text-[#f8eed8]'
+          : 'bg-[linear-gradient(180deg,#fffaf2_0%,#f8efe1_48%,#fffdf8_100%)] text-[#211b16]',
+      )}
+    >
+      <header
+        className={cn(
+          'sticky top-0 z-20 shrink-0',
+          is_admin
+            ? 'border-b border-white/10 bg-[#111722]/95 shadow-[0_16px_40px_rgba(0,0,0,0.24)] backdrop-blur'
+            : 'border-b border-[#eadfcf] bg-[#fffaf2]/90 backdrop-blur',
+        )}
+      >
+        <div className="mx-auto flex max-w-[1680px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/mainhub')} aria-label="Back to Main Hub">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/mainhub')}
+              aria-label="Back to Main Hub"
+              className={cn(
+                'rounded-xl',
+                is_admin ? 'text-[#c9d0dc] hover:bg-white/10 hover:text-white' : 'text-[#6d6254] hover:bg-[#efe4d3]',
+              )}
+            >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-2">
               <div
                 className={cn(
-                  'h-8 w-8 rounded-full flex items-center justify-center border text-[10px] font-bold tracking-tight transition-all',
+                  'h-9 w-9 rounded-2xl flex items-center justify-center border text-[10px] font-black tracking-tight transition-all',
                   is_admin
-                    ? 'bg-slate-100 text-slate-700 border-slate-200'
-                    : 'bg-primary/10 text-primary border-primary/20',
+                    ? 'bg-[#f0d28e] text-[#161b25] border-[#f0d28e]/40 shadow-[0_12px_30px_rgba(0,0,0,0.22)]'
+                    : 'bg-[#203024] text-[#f8eed8] border-[#203024]/20',
                 )}
                 aria-hidden="true"
               >
                 {headerInitial || (is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />)}
               </div>
               <div className="min-w-0">
-                <h1 className="text-sm font-bold leading-tight tracking-tight">
-                  {headerName}
+                <h1 className={cn('text-sm font-black leading-tight tracking-tight', is_admin ? 'text-[#fff6e5]' : 'text-[#211b16]')}>
+                  {is_admin ? 'Messages Command Center' : headerName}
                 </h1>
+                <p className={cn('hidden text-[11px] font-semibold sm:block', is_admin ? 'text-[#aab4c3]' : 'text-[#7a6b58]')}>
+                  {is_admin ? headerName : 'A direct line to Joshua'}
+                </p>
               </div>
               {is_admin && unreadCount > 0 && (
-                <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
+                <span className="ml-1 inline-flex h-[22px] min-w-[22px] items-center justify-center rounded-full bg-[#a14f43] px-1.5 text-[10px] font-black text-white">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -208,42 +239,47 @@ export default function Inbox() {
           </div>
           <div className="flex items-center gap-2">
             {is_admin && (
-              <div className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-muted/60">
+              <div className="inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.06] p-1">
                 <button
                   onClick={() => setSource('app')}
                   className={cn(
-                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
-                    source === 'app' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
+                    source === 'app' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
                   )}
                 >
-                  <span className="inline-flex items-center gap-1"><InboxIcon className="w-3 h-3" /> Messages</span>
+                  <span className="inline-flex items-center gap-1.5"><InboxIcon className="w-3 h-3" /> Messages</span>
                 </button>
                 <button
                   onClick={() => setSource('gmail')}
                   className={cn(
-                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
-                    source === 'gmail' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
+                    source === 'gmail' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
                   )}
                 >
-                  <span className="inline-flex items-center gap-1"><Mail className="w-3 h-3" /> Gmail</span>
+                  <span className="inline-flex items-center gap-1.5"><Mail className="w-3 h-3" /> Gmail</span>
                 </button>
                 <button
                   onClick={() => setSource('drive')}
                   className={cn(
-                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
-                    source === 'drive' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
+                    source === 'drive' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
                   )}
                 >
-                  <span className="inline-flex items-center gap-1"><HardDrive className="w-3 h-3" /> Drive</span>
+                  <span className="inline-flex items-center gap-1.5"><HardDrive className="w-3 h-3" /> Drive</span>
                 </button>
               </div>
             )}
-            <NewConversationDialog
-              showTrigger={is_admin && source === 'app'}
-              autoOpenWith={composeTarget}
-              onAutoOpenHandled={clearComposeTarget}
-              onCreated={(id) => navigate(`/inbox/${id}`)}
-            />
+            {is_admin ? (
+              <NewConversationDialog
+                showTrigger={source === 'app'}
+                autoOpenWith={composeTarget}
+                onAutoOpenHandled={clearComposeTarget}
+                onCreated={(id) => navigate(`/inbox/${id}`)}
+                triggerLabel={active ? 'New' : 'New command'}
+                triggerIcon={active ? <ChevronDown className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                triggerClassName="rounded-2xl bg-[#a14f43] px-3 font-black text-white hover:bg-[#8d453a]"
+              />
+            ) : null}
           </div>
         </div>
       </header>
@@ -251,53 +287,58 @@ export default function Inbox() {
       {/* TODO: migrate to has_admin_inbox_access flag per CLAUDE.md "granular flags not roles."
           Tracking ticket TBD. Until then, is_admin matches the existing admin-inbox gate. */}
       {is_admin && source === 'gmail' ? (
-        <div className="max-w-7xl mx-auto flex-1 min-h-0">
+        <div className="mx-auto min-h-0 w-full max-w-[1680px] flex-1 overflow-hidden bg-white text-foreground">
           <GmailPane />
         </div>
       ) : is_admin && source === 'drive' ? (
-        <div className="max-w-7xl mx-auto flex-1 min-h-0">
+        <div className="mx-auto min-h-0 w-full max-w-[1680px] flex-1 overflow-hidden bg-white text-foreground">
           <DrivePanel />
         </div>
       ) : showEmptyStudent ? (
-        <div className="max-w-7xl mx-auto flex-1 min-h-0">
+        <div className="mx-auto min-h-0 w-full max-w-7xl flex-1">
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>
       ) : (
         <div className={cn(
-          'max-w-7xl mx-auto md:grid flex-1 min-h-0 w-full',
-          is_admin ? 'md:grid-cols-[360px_1fr]' : 'md:grid-cols-[320px_1fr]',
+          'mx-auto md:grid flex-1 min-h-0 w-full',
+          is_admin
+            ? 'max-w-[1680px] md:grid-cols-[370px_minmax(0,1fr)] xl:grid-cols-[380px_minmax(0,1fr)_360px]'
+            : 'max-w-6xl md:grid-cols-[300px_1fr] px-3 py-4 md:px-6',
         )}>
           <aside
             className={cn(
-              'border-r border-border h-full md:flex md:flex-col bg-white/50 backdrop-blur-sm overflow-hidden',
+              'h-full md:flex md:flex-col overflow-hidden',
+              is_admin
+                ? 'border-r border-white/10 bg-[#141a24] text-[#edf2f7]'
+                : 'rounded-3xl border border-[#eadfcf] bg-white/70 shadow-[0_24px_70px_rgba(63,45,24,0.10)] backdrop-blur-sm',
               active ? 'hidden md:flex' : 'flex flex-col',
             )}
           >
             {!is_admin && (
-              <div className="px-4 py-4 border-b border-border bg-white/80 shrink-0">
-                <div className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider">
+              <div className="border-b border-[#eadfcf] bg-[#fffaf2]/80 px-4 py-4 shrink-0">
+                <div className="text-[11px] font-black uppercase text-[#8b5b42] tracking-[0.16em]">
                   Coaching
                 </div>
-                <div className="mt-1 text-sm font-medium text-foreground">
+                <div className="mt-1 text-sm font-bold text-[#211b16]">
                   One thread with Joshua
                 </div>
               </div>
             )}
             {is_admin && (
-              <div className="px-4 py-4 border-b border-border space-y-3 shrink-0 bg-white/40">
+              <div className="space-y-3 border-b border-white/10 bg-[#141a24] px-4 py-4 shrink-0">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#aab4c3] pointer-events-none" />
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search students or messages"
-                    className="pl-9 h-9 text-sm bg-white/80 border-border/50 focus:bg-white transition-colors"
+                    className="h-10 rounded-2xl border-white/10 bg-white/[0.07] pl-9 text-sm font-semibold text-white placeholder:text-[#aab4c3] focus:bg-white/[0.10]"
                   />
                 </div>
                 <div
                   role="tablist"
                   aria-label="Filter conversations"
-                  className="inline-flex items-center gap-1 p-1 rounded-xl bg-muted/40 w-full"
+                  className="inline-flex w-full items-center gap-1 rounded-2xl bg-white/[0.06] p-1"
                 >
                   {FILTER_TABS.map((t) => (
                     <button
@@ -306,11 +347,11 @@ export default function Inbox() {
                       aria-selected={filter === t.id}
                       onClick={() => setFilter(t.id)}
                       className={cn(
-                        'flex-1 px-2 py-1.5 text-[11px] font-medium rounded-lg transition-all whitespace-nowrap',
+                        'flex-1 px-2 py-1.5 text-[11px] font-black rounded-xl transition-all whitespace-nowrap',
                         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                         filter === t.id
-                          ? 'bg-white text-foreground shadow-sm ring-1 ring-black/5'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-white/50',
+                          ? 'bg-[#f0d28e] text-[#161b25] shadow-sm'
+                          : 'text-[#aab4c3] hover:bg-white/10 hover:text-white',
                       )}
                     >
                       {t.label}
@@ -334,7 +375,13 @@ export default function Inbox() {
             </div>
           </aside>
 
-          <main className={cn('h-full flex flex-col min-h-0', active ? 'flex' : 'hidden md:flex')}>
+          <main
+            className={cn(
+              'h-full min-h-0 flex flex-col',
+              !is_admin && 'overflow-hidden rounded-3xl border border-[#eadfcf] bg-[#fffdf8] shadow-[0_24px_70px_rgba(63,45,24,0.10)]',
+              active ? 'flex' : 'hidden md:flex',
+            )}
+          >
             {active ? (
               <ConversationView
                 conversation={active}
@@ -342,11 +389,14 @@ export default function Inbox() {
                 onMessageSent={refresh}
               />
             ) : (
-              <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground bg-[#FDFDFC]">
+              <div className={cn('flex-1 flex items-center justify-center text-sm font-semibold', is_admin ? 'bg-[#f7f3ea] text-[#8b7c68]' : 'bg-[#fffdf8] text-[#8b7c68]')}>
                 {is_admin ? 'Pick a thread to open' : 'Loading conversation'}
               </div>
             )}
           </main>
+          {is_admin && (
+            <AdminIntelligencePanel conversation={active} ownId={user?.id ?? null} />
+          )}
         </div>
       )}
     </div>

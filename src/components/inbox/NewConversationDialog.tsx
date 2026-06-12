@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +9,7 @@ import { Plus, Search, Paperclip, FileText, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface Profile {
   class_id: string;
@@ -21,6 +23,9 @@ export function NewConversationDialog({
   showTrigger = true,
   autoOpenWith,
   onAutoOpenHandled,
+  triggerLabel = 'New',
+  triggerIcon,
+  triggerClassName,
 }: {
   onCreated: (conversationId: string) => void;
   showTrigger?: boolean;
@@ -28,6 +33,9 @@ export function NewConversationDialog({
   // preselected. Used for cross-surface entry points like Mainhub "Ask Joshua".
   autoOpenWith?: string | null;
   onAutoOpenHandled?: () => void;
+  triggerLabel?: string;
+  triggerIcon?: ReactNode;
+  triggerClassName?: string;
 }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
@@ -157,8 +165,8 @@ export function NewConversationDialog({
       setOpen(false);
       reset();
       onCreated(conv.id);
-    } catch (e: any) {
-      toast.error(e.message ?? 'Failed to create conversation');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Failed to create conversation');
     } finally {
       setSubmitting(false);
     }
@@ -168,8 +176,9 @@ export function NewConversationDialog({
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
       {showTrigger && (
         <DialogTrigger asChild>
-          <Button size="sm" variant="outline">
-            <Plus className="w-4 h-4 mr-1" /> New
+          <Button size="sm" variant="outline" className={cn(triggerClassName)}>
+            {triggerIcon ?? <Plus className="w-4 h-4" />}
+            <span className="ml-1.5">{triggerLabel}</span>
           </Button>
         </DialogTrigger>
       )}
