@@ -7,7 +7,7 @@
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowRight, LibraryBig, Target } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -90,20 +90,19 @@ export function DrillsIndex() {
   const nextHref = next.href;
   const isGate = next.isGate;
   const completionPercent = Math.round((doneCount / Math.max(INTRO_DRILLS.length, 1)) * 100);
-  const groupedProgress = Math.round(
-    (GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length / GROUPS.length) * 100,
-  );
+  const clearedBands = GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length;
+  const groupedProgress = Math.round((clearedBands / GROUPS.length) * 100);
 
   return (
-    <article className="mx-auto max-w-4xl space-y-8 px-6 py-12 pb-32 desktop:px-12 desktop:py-16">
+    <article className="mx-auto max-w-4xl space-y-6 px-6 py-12 pb-32 desktop:px-12 desktop:py-16">
       <header className="space-y-4">
         <div>
           <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Intro to LR · Drill Lab</p>
           <h1 className="mt-2 font-mc-serif text-h1 font-semibold leading-tight text-ink">
-            Two drills, one clean path
+            {INTRO_DRILLS.length} drills, one clean path
           </h1>
           <p className="mt-3 max-w-2xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">
-            Spot the main conclusion, then classify the structure. Two focused drills before you enter the Simulator.
+            Focused, sequenced reps to run before you enter the Simulator.
           </p>
         </div>
         <Card variant="elev" accent>
@@ -126,54 +125,50 @@ export function DrillsIndex() {
         </Card>
       </header>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        <DrillMetricCard
-          title="Drill completion"
+      <Card variant="surface" className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-8">
+        <StatItem
+          label="Drill completion"
           detail={`${doneCount} of ${INTRO_DRILLS.length} drills cleared`}
-          icon={<LibraryBig className="h-4 w-4" strokeWidth={2} />}
           gauge={<Gauge value={completionPercent} size="medium" showValue colors={gaugeColors(completionPercent)} />}
         />
-        <DrillMetricCard
-          title="Sequence coverage"
-          detail={`${GROUPS.filter((group) => group.drillIds.every((id) => completed.has(id))).length} of ${GROUPS.length} drill bands fully cleared`}
-          icon={<Target className="h-4 w-4" strokeWidth={2} />}
+        <div className="hidden h-12 w-px shrink-0 bg-[rgb(var(--border)/0.25)] sm:block" />
+        <StatItem
+          label="Sequence coverage"
+          detail={`${clearedBands} of ${GROUPS.length} drill bands cleared`}
           gauge={<Gauge value={groupedProgress} size="medium" showValue colors={gaugeColors(groupedProgress)} />}
         />
-      </section>
+      </Card>
 
-      {GROUPS.map((group) => (
-        <DynamicDrillLab
-          key={group.title}
-          title={group.title}
-          description={group.description}
-          drills={group.drillIds.map((id) => toCard(INTRO_DRILLS.find((drill) => drill.id === id)!))}
-        />
-      ))}
+      <section className="space-y-5">
+        {GROUPS.map((group) => (
+          <DynamicDrillLab
+            key={group.title}
+            title={group.title}
+            description={group.description}
+            drills={group.drillIds.map((id) => toCard(INTRO_DRILLS.find((drill) => drill.id === id)!))}
+          />
+        ))}
+      </section>
     </article>
   );
 }
 
-function DrillMetricCard({
-  title,
+function StatItem({
+  label,
   detail,
-  icon,
   gauge,
 }: {
-  title: string;
+  label: string;
   detail: string;
-  icon: JSX.Element;
   gauge: JSX.Element;
 }) {
   return (
-    <Card variant="surface" className="flex items-center gap-4 p-5">
+    <div className="flex flex-1 items-center gap-4">
       <div className="shrink-0">{gauge}</div>
       <div className="min-w-0">
-        <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.14em] text-ink-faint">
-          {icon}
-          <span>{title}</span>
-        </div>
-        <p className="mt-2 font-mc-serif text-body text-ink-soft">{detail}</p>
+        <div className="font-mc-mono text-label uppercase tracking-[0.14em] text-ink-faint">{label}</div>
+        <p className="mt-1.5 font-mc-serif text-body text-ink-soft">{detail}</p>
       </div>
-    </Card>
+    </div>
   );
 }
