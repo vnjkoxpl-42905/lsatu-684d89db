@@ -125,12 +125,19 @@ export function ThreadList({
                     aria-label="Has attachments"
                   />
                 )}
-                {c.unread && (
+                {c.unreadCount > 0 ? (
+                  <span
+                    className="shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center"
+                    aria-label={`${c.unreadCount} unread`}
+                  >
+                    {c.unreadCount > 9 ? '9+' : c.unreadCount}
+                  </span>
+                ) : c.unread ? (
                   <div
                     className="w-1.5 h-1.5 shrink-0 bg-primary rounded-full shadow-[0_0_0_2px_rgba(var(--primary),0.1)]"
                     aria-label="Unread"
                   />
-                )}
+                ) : null}
               </div>
               
               {replyRequired && (

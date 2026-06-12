@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -21,6 +21,8 @@ export interface Conversation {
   participants: Participant[];
   last_message?: { body: string; created_at: string; sender_id: string } | null;
   unread: boolean;
+  /** Number of messages in this thread the current user has not yet read. */
+  unreadCount: number;
   hasAttachments: boolean;
 }
 
@@ -49,6 +51,11 @@ export function useInbox() {
   const { user } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+  // Mirror of the conversation ids the user participates in. Used by the
+  // realtime subscription to ignore inserts in threads the user isn't part of
+  // (the messages channel is global), so the whole inbox isn't refetched on
+  // every message sent anywhere in the product.
+  const convIdsRef = useRef<Set<string>>(new Set());
 
   const loadConversations = useCallback(async () => {
     if (!user) return;
@@ -61,6 +68,7 @@ export function useInbox() {
       .eq('user_id', user.id);
 
     const convIds = (myParts ?? []).map((p) => p.conversation_id);
+    convIdsRef.current = new Set(convIds);
     if (convIds.length === 0) {
       setConversations([]);
       setLoading(false);
@@ -110,10 +118,20 @@ export function useInbox() {
       .order('created_at', { ascending: false });
     const lastMsgMap = new Map<string, { body: string; created_at: string; sender_id: string }>();
     const msgIdToConv = new Map<string, string>();
+    // Count, per conversation, how many inbound messages arrived after the
+    // user last read the thread. A null last_read_at is treated as "never
+    // read", so every inbound message counts.
+    const unreadCountMap = new Map<string, number>();
     for (const m of msgs ?? []) {
       msgIdToConv.set(m.id, m.conversation_id);
       if (!lastMsgMap.has(m.conversation_id)) {
         lastMsgMap.set(m.conversation_id, { body: m.body, created_at: m.created_at, sender_id: m.sender_id });
+      }
+      if (m.sender_id !== user.id) {
+        const lastRead = lastReadMap.get(m.conversation_id);
+        if (!lastRead || new Date(m.created_at) > new Date(lastRead)) {
+          unreadCountMap.set(m.conversation_id, (unreadCountMap.get(m.conversation_id) ?? 0) + 1);
+        }
       }
     }
 
@@ -145,12 +163,20 @@ export function useInbox() {
         }));
       const lastRead = lastReadMap.get(c.id);
       const lastMsg = lastMsgMap.get(c.id) ?? null;
-      const unread = !!(lastMsg && lastRead && new Date(lastMsg.created_at) > new Date(lastRead) && lastMsg.sender_id !== user.id);
+      // Unread when the latest message is inbound and arrived after the user's
+      // last read (or they've never read the thread). Robust to a brand-new
+      // thread whose recipient row was seeded with an epoch last_read_at.
+      const unread = !!(
+        lastMsg &&
+        lastMsg.sender_id !== user.id &&
+        (!lastRead || new Date(lastMsg.created_at) > new Date(lastRead))
+      );
       return {
         ...c,
         participants: parts,
         last_message: lastMsg,
         unread,
+        unreadCount: unreadCountMap.get(c.id) ?? 0,
         hasAttachments: attachmentConvIds.has(c.id),
       };
     });
@@ -168,8 +194,15 @@ export function useInbox() {
     if (!user) return;
     const channel = supabase
       .channel(`inbox-feed-${user.id}-${Math.random().toString(36).slice(2)}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
-        loadConversations();
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+        // The messages table broadcasts every insert product-wide. Only refetch
+        // when the new message belongs to a thread this user participates in.
+        // On the very first message of a freshly-created thread our id set may
+        // be stale, so fall back to refetching when the conversation is unknown.
+        const convId = (payload.new as { conversation_id?: string } | null)?.conversation_id;
+        if (!convId || convIdsRef.current.has(convId) || convIdsRef.current.size === 0) {
+          loadConversations();
+        }
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'conversation_participants', filter: `user_id=eq.${user.id}` }, () => {
         loadConversations();
@@ -187,12 +220,37 @@ export function useInbox() {
 
 export function useConversationMessages(conversationId: string | null) {
   const { user } = useAuth();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [serverMessages, setServerMessages] = useState<Message[]>([]);
+  const [optimistic, setOptimistic] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Optimistically append the user's own outgoing text so it renders instantly,
+  // before the insert + refetch round-trip completes. Reconciled away on the
+  // next successful load (the real row replaces it). Attachments are intentionally
+  // omitted here — they surface once the refetch lands.
+  const appendOptimistic = useCallback(
+    (body: string) => {
+      if (!conversationId || !user) return;
+      const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      setOptimistic((prev) => [
+        ...prev,
+        {
+          id: tempId,
+          conversation_id: conversationId,
+          sender_id: user.id,
+          body,
+          created_at: new Date().toISOString(),
+          attachments: [],
+        },
+      ]);
+    },
+    [conversationId, user],
+  );
 
   const load = useCallback(async () => {
     if (!conversationId) {
-      setMessages([]);
+      setServerMessages([]);
+      setOptimistic([]);
       return;
     }
     setLoading(true);
@@ -216,11 +274,22 @@ export function useConversationMessages(conversationId: string | null) {
       }
     }
 
-    setMessages(
+    setServerMessages(
       (msgs ?? []).map((m) => ({ ...m, attachments: attMap.get(m.id) ?? [] }))
     );
+    // The authoritative list is now loaded; drop any optimistic placeholders.
+    setOptimistic([]);
     setLoading(false);
   }, [conversationId]);
+
+  // Merge server truth with any still-pending optimistic placeholders, keeping
+  // chronological order.
+  const messages = useMemo(() => {
+    if (optimistic.length === 0) return serverMessages;
+    return [...serverMessages, ...optimistic].sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+    );
+  }, [serverMessages, optimistic]);
 
   useEffect(() => {
     load();
@@ -253,5 +322,5 @@ export function useConversationMessages(conversationId: string | null) {
     };
   }, [conversationId, load]);
 
-  return { messages, loading, refresh: load };
+  return { messages, loading, refresh: load, appendOptimistic };
 }

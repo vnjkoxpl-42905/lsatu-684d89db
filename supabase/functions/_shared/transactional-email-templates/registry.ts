@@ -10,7 +10,9 @@ export interface TemplateEntry {
 }
 
 import { template as assignmentNotification } from './assignment-notification.tsx'
+import { template as newMessageNotification } from './new-message-notification.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'assignment-notification': assignmentNotification,
+  'new-message-notification': newMessageNotification,
 }

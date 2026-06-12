@@ -1,5 +1,8 @@
 project_id = "atrcqxpmqrynmtvvyjju"
 
+[functions.notify-new-message]
+verify_jwt = true
+
 [functions.process-email-queue]
 verify_jwt = true
 

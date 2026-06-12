@@ -30,7 +30,11 @@ import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { isParticipantOnline } from './inboxPresence';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub', '/topics/abstract'];
+// NOTE: `/mainhub` is intentionally NOT hard-hidden here. The messenger is
+// visible on the mainhub by default and is suppressed only while an orbital
+// node is in the expanded state (see the `onMainhub && orbitalActive` guard
+// below) so the Find overlay and the messenger panel don't compete.
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/topics/abstract'];
 
 export function FloatingMessenger() {
   const location = useLocation();

@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Plus, Search, Paperclip, FileText, X } from 'lucide-react';
+import { Plus, Search, Paperclip, FileText, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { initialsFromName } from './inboxDisplay';
 
-interface Profile {
+interface Student {
   class_id: string;
   display_name: string | null;
 }
@@ -31,7 +32,8 @@ export function NewConversationDialog({
 }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loadingRoster, setLoadingRoster] = useState(false);
   const [filter, setFilter] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [subject, setSubject] = useState('');
@@ -52,18 +54,27 @@ export function NewConversationDialog({
 
   useEffect(() => {
     if (!open || !user) return;
+    setLoadingRoster(true);
+    // Only surface students who can actually receive and reply to messages
+    // (has_chat_access). Messaging anyone else would land in a thread they
+    // cannot open. Self is excluded.
     supabase
       .from('profiles')
       .select('class_id, display_name')
       .neq('class_id', user.id)
-      .limit(200)
-      .then(({ data }) => setProfiles(data ?? []));
+      .eq('has_chat_access', true)
+      .order('display_name', { ascending: true })
+      .limit(500)
+      .then(({ data }) => {
+        setStudents((data ?? []) as Student[]);
+        setLoadingRoster(false);
+      });
   }, [open, user]);
 
-  const filtered = profiles.filter((p) =>
-    (p.display_name ?? '').toLowerCase().includes(filter.toLowerCase()) ||
-    p.class_id.toLowerCase().includes(filter.toLowerCase())
-  );
+  const query = filter.trim().toLowerCase();
+  const filtered = query
+    ? students.filter((p) => (p.display_name ?? '').toLowerCase().includes(query))
+    : students;
 
   const pickFile = (f: File | null) => {
     if (!f) return;
@@ -82,6 +93,7 @@ export function NewConversationDialog({
     setSubject('');
     setFirstMessage('');
     setSelectedUserId(null);
+    setFilter('');
     setFile(null);
     if (fileRef.current) fileRef.current.value = '';
   };
@@ -93,52 +105,24 @@ export function NewConversationDialog({
     }
     setSubmitting(true);
     try {
-      // Reuse existing 1:1 thread if one already exists between admin and recipient
-      const { data: myParts, error: myPartsErr } = await supabase
-        .from('conversation_participants')
-        .select('conversation_id')
-        .eq('user_id', user.id);
-      if (myPartsErr) throw myPartsErr;
-      const myConvIds = (myParts ?? []).map((p) => p.conversation_id);
-      if (myConvIds.length > 0) {
-        const { data: shared, error: sharedErr } = await supabase
-          .from('conversation_participants')
-          .select('conversation_id')
-          .eq('user_id', selectedUserId)
-          .in('conversation_id', myConvIds)
-          .limit(1);
-        if (sharedErr) throw sharedErr;
-        if (shared && shared.length > 0) {
-          toast.info('A conversation with this student already exists. Opening it.');
-          setOpen(false);
-          reset();
-          onCreated(shared[0].conversation_id);
-          return;
-        }
-      }
-
-      const { data: conv, error: cErr } = await supabase
-        .from('conversations')
-        .insert({ subject: subject.trim() || null, created_by: user.id })
-        .select()
-        .single();
-      if (cErr || !conv) throw cErr ?? new Error('Failed');
-
-      const { error: pErr } = await supabase.from('conversation_participants').insert([
-        { conversation_id: conv.id, user_id: user.id },
-        { conversation_id: conv.id, user_id: selectedUserId },
-      ]);
-      if (pErr) throw pErr;
+      // Atomic reuse-or-create — no client-side check-then-insert race, so a
+      // student never ends up with two parallel 1:1 threads.
+      const { data: convId, error: rpcErr } = await supabase.rpc(
+        'admin_get_or_create_conversation' as never,
+        { _student: selectedUserId, _subject: subject.trim() || null } as never,
+      );
+      if (rpcErr) throw rpcErr;
+      if (!convId || typeof convId !== 'string') throw new Error('Could not open conversation');
 
       const { data: msg, error: mErr } = await supabase
         .from('messages')
-        .insert({ conversation_id: conv.id, sender_id: user.id, body: firstMessage.trim() })
+        .insert({ conversation_id: convId, sender_id: user.id, body: firstMessage.trim() })
         .select()
         .single();
       if (mErr || !msg) throw mErr ?? new Error('Failed to send first message');
 
       if (file) {
-        const path = `${conv.id}/${msg.id}/${file.name}`;
+        const path = `${convId}/${msg.id}/${file.name}`;
         const { error: upErr } = await supabase.storage
           .from('message-attachments')
           .upload(path, file, { contentType: 'application/pdf', upsert: false });
@@ -153,12 +137,17 @@ export function NewConversationDialog({
         if (attErr) throw attErr;
       }
 
-      toast.success('Conversation started');
+      // Best-effort offline email notification (mirrors MessageComposer).
+      void supabase.functions
+        .invoke('notify-new-message', { body: { conversationId: convId, messageId: msg.id } })
+        .catch((err) => console.warn('[NewConversationDialog] notify-new-message failed', err));
+
+      toast.success('Message sent');
       setOpen(false);
       reset();
-      onCreated(conv.id);
-    } catch (e: any) {
-      toast.error(e.message ?? 'Failed to create conversation');
+      onCreated(convId);
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Failed to create conversation');
     } finally {
       setSubmitting(false);
     }
@@ -185,23 +174,39 @@ export function NewConversationDialog({
               <Input
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                placeholder="Search students…"
+                placeholder="Search students by name…"
                 className="pl-9"
               />
             </div>
-            <div className="max-h-48 overflow-y-auto border border-border rounded-md divide-y divide-border">
-              {filtered.length === 0 && (
-                <div className="p-3 text-sm text-muted-foreground text-center">No matches</div>
+            <div className="max-h-56 overflow-y-auto border border-border rounded-md divide-y divide-border">
+              {loadingRoster ? (
+                <div className="p-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="w-4 h-4 animate-spin" /> Loading students…
+                </div>
+              ) : filtered.length === 0 ? (
+                <div className="p-3 text-sm text-muted-foreground text-center">
+                  {students.length === 0
+                    ? 'No chat-enabled students yet.'
+                    : 'No students match your search.'}
+                </div>
+              ) : (
+                filtered.map((p) => {
+                  const name = p.display_name?.trim() || 'Student';
+                  const selected = selectedUserId === p.class_id;
+                  return (
+                    <button
+                      key={p.class_id}
+                      onClick={() => setSelectedUserId(p.class_id)}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-left text-sm hover:bg-accent transition-colors ${selected ? 'bg-accent' : ''}`}
+                    >
+                      <span className="w-8 h-8 shrink-0 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-[11px] font-semibold">
+                        {initialsFromName(name)}
+                      </span>
+                      <span className="truncate font-medium">{name}</span>
+                    </button>
+                  );
+                })
               )}
-              {filtered.map((p) => (
-                <button
-                  key={p.class_id}
-                  onClick={() => setSelectedUserId(p.class_id)}
-                  className={`w-full px-3 py-2 text-left text-sm hover:bg-accent ${selectedUserId === p.class_id ? 'bg-accent' : ''}`}
-                >
-                  {p.display_name || 'Student'} <span className="text-xs text-muted-foreground">({p.class_id.slice(0, 8)})</span>
-                </button>
-              ))}
             </div>
           </div>
           <div className="space-y-2">
@@ -234,8 +239,10 @@ export function NewConversationDialog({
             <Paperclip className="w-4 h-4 mr-1" /> Attach PDF
           </Button>
           <div className="flex gap-2">
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={create} disabled={submitting}>Send</Button>
+            <Button variant="ghost" onClick={() => setOpen(false)} disabled={submitting}>Cancel</Button>
+            <Button onClick={create} disabled={submitting || !selectedUserId}>
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send'}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>

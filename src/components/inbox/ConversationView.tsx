@@ -47,7 +47,7 @@ function ConversationSkeleton() {
 export function ConversationView({ conversation, onBack, onMessageSent, hideHeader = false }: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
-  const { messages, loading, refresh } = useConversationMessages(conversation.id);
+  const { messages, loading, refresh, appendOptimistic } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
 
@@ -179,7 +179,11 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
       </div>
 
       <div className="bg-white/80 backdrop-blur-md border-t border-border shrink-0">
-        <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
+        <MessageComposer
+          conversationId={conversation.id}
+          onOptimisticSend={appendOptimistic}
+          onSent={() => { refresh(); onMessageSent?.(); }}
+        />
       </div>
 
       <AttachmentPreviewSheet
