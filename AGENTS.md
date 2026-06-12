@@ -54,6 +54,15 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 - After completing a change, stage the intended files, commit with a concise message, and push to `origin main` unless the user says otherwise.
 - Existing Codex repo hooks live in `.codex/hooks.json`; preserve them unless the task explicitly requires a hook change.
 
+## Session Protocol (second brain)
+
+Product context, status, and decisions live in the Obsidian vault at `~/Documents/Obsidian Vault/`, not this repo. Two repo-local skills in `.agents/skills/` run the session ritual; the canonical protocol is in the vault `CLAUDE.md`.
+
+- `pickup` — start of session. Read `wiki/tasks.md` (the Now / Next / Done ledger) first, then `wiki/hot.md`, `wiki/dashboard.md`, skim `wiki/index.md`, read the latest `wiki/log.md` entry. Emit a 6-8 line briefing (where we left off, Now, Next, open threads, hot, suggested next) and wait. Do not deep-read other pages until pointed at a task.
+- `wrapup` — end of session. Propose which `## Now` tasks finished and confirm before writing; a wrong "Done" is the failure to avoid. Then strike finished items through in `wiki/tasks.md` with a date, refresh `wiki/hot.md`, append a dated `wiki/log.md` entry (newest first, distinct label for same-day sessions), update the task anchor.
+
+`wiki/tasks.md` is the single source of truth for what is open vs done. Finished work is struck through so a new session never re-runs it. `raw/` in the vault is immutable.
+
 ## Codex Adapter Layout
 
 - `.codex/config.toml`: minimal shared Codex project config. Keep secrets and machine-specific overrides out of this file.
