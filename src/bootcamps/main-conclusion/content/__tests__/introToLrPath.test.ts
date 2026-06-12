@@ -19,7 +19,10 @@ describe('Intro to LR guided path order', () => {
   });
 
   it('places the first-sentence and rebuttal practice drills after the structures note', () => {
+    // The first-sentence-vs-rebuttal lab is now step 11 of the path; the two
+    // practice drills follow it.
     expect(INTEGRATED_PATH.slice(10).map((action) => action.id)).toEqual([
+      'first-sentence-vs-rebuttal-lab',
       'first-sentence-main-conclusion',
       'rebuttal-main-conclusion',
     ]);
@@ -42,7 +45,9 @@ describe('Intro to LR guided path order', () => {
       '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run',
     );
     expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(7);
-    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(-1);
+    // The first-sentence-vs-rebuttal lab is now step 11 (index 10); its /run
+    // subroute resolves to that parent action.
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(10);
   });
 
   it('normalizes the mixed classification alias to the native first sentence vs rebuttal drill', () => {

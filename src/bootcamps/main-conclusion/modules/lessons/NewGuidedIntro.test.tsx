@@ -41,11 +41,16 @@ describe('NewGuidedIntro', () => {
     const titles = screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent);
 
     const structuresIndex = titles.indexOf('First-Sentence vs Rebuttal Structures');
+    const labIndex = titles.indexOf('First-Sentence vs Rebuttal Lab');
     const firstSentenceIndex = titles.indexOf('First-Sentence Main Conclusion');
     const rebuttalIndex = titles.indexOf('Rebuttal Main Conclusion');
 
+    // Order: structures note -> lab -> first-sentence drill -> rebuttal drill.
+    // The lab now sits between the structures note and the two practice cards,
+    // so assert relative ordering rather than strict +1 adjacency.
     expect(structuresIndex).toBeGreaterThanOrEqual(0);
-    expect(firstSentenceIndex).toBe(structuresIndex + 1);
+    expect(labIndex).toBe(structuresIndex + 1);
+    expect(firstSentenceIndex).toBeGreaterThan(labIndex);
     expect(rebuttalIndex).toBe(firstSentenceIndex + 1);
     expect(titles).not.toContain('First Sentence vs Rebuttal');
   });

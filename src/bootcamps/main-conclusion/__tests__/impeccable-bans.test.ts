@@ -35,7 +35,13 @@ const SOURCE_FILES = walk(ROOT, ['.ts', '.tsx']);
 const TSX_FILES = SOURCE_FILES.filter((f) => f.endsWith('.tsx'));
 
 describe('impeccable bans — automated guards', () => {
-  it('side-stripe ban: no `border-l-[2-9]` or `border-r-[2-9]` anywhere in the bootcamp', () => {
+  // Retired 2026-06-12. The original side-stripe sweep (commit 1dfc8849, May 2)
+  // thinned every role border to a hairline. The May-22 "premium restrained UI"
+  // reskin deliberately brought back thicker role-color left borders, and Joshua
+  // confirmed the current reskinned Intro to LR look is the intended design. This
+  // guard now contradicts the shipped design, so it is skipped rather than
+  // enforced. Re-enable only if a future design decision restores the hairline rule.
+  it.skip('side-stripe ban: no `border-l-[2-9]` or `border-r-[2-9]` anywhere in the bootcamp', () => {
     const SIDE_STRIPE = /border-[lr]-[2-9]/;
     const hits: Array<{ file: string; line: number; text: string }> = [];
     for (const file of TSX_FILES) {

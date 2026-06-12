@@ -4,25 +4,31 @@ import { describe, expect, it } from "vitest";
 import { ConclusionTypeSwitchboard } from "./ConclusionTypeSwitchboard";
 
 describe("ConclusionTypeSwitchboard", () => {
-  it("reveals the matching type and weakness after the student classifies the claim", () => {
+  it("reveals the matching type and weak spot after the student classifies the claim", () => {
     render(<ConclusionTypeSwitchboard />);
 
-    fireEvent.click(screen.getByRole("button", { name: /show next example/i }));
+    // Advance to the causal example (claim 2): classify claim 1, then Next claim.
+    fireEvent.click(screen.getByRole("radio", { name: /recommendation/i }));
+    fireEvent.click(screen.getByRole("button", { name: /check the type/i }));
+    fireEvent.click(screen.getByRole("button", { name: /next claim/i }));
+
     fireEvent.click(screen.getByRole("radio", { name: /causal hypothesis/i }));
     fireEvent.click(screen.getByRole("button", { name: /check the type/i }));
 
-    expect(screen.getByText(/the author is trying to explain why something happened/i)).toBeInTheDocument();
+    expect(screen.getByText(/that conclusion is a causal hypothesis/i)).toBeInTheDocument();
+    expect(screen.getByText(/it claims to know why something happened/i)).toBeInTheDocument();
     expect(screen.getByText(/what else could explain it/i)).toBeInTheDocument();
   });
 
   it("corrects a wrong classification and points the student toward the right type", () => {
     render(<ConclusionTypeSwitchboard />);
 
+    // Claim 1 is a recommendation; picking Prediction is wrong.
     fireEvent.click(screen.getByRole("radio", { name: /prediction/i }));
     fireEvent.click(screen.getByRole("button", { name: /check the type/i }));
 
     expect(screen.getByText(/not this one/i)).toBeInTheDocument();
-    expect(screen.getByText(/this claim is a recommendation/i)).toBeInTheDocument();
-    expect(screen.getByText(/it is telling us what should be done/i)).toBeInTheDocument();
+    expect(screen.getByText(/the right label here is recommendation/i)).toBeInTheDocument();
+    expect(screen.getByText(/it tells us what should happen/i)).toBeInTheDocument();
   });
 });

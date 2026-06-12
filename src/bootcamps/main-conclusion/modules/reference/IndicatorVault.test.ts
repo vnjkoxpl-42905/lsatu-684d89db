@@ -17,8 +17,21 @@ describe('buildCoreIndicatorSections', () => {
   it('reuses generated indicator words for the premise and conclusion sections', () => {
     const sections = buildCoreIndicatorSections(vault);
 
+    // Words come straight from indicator-vault.generated.json (source of truth).
+    // The conclusion sequence was intentionally restaged/expanded as a pedagogy
+    // update (commit 2a2120d9); this assertion tracks the generated order, it is
+    // not a hand-curated subset.
     expect(sections[0].words).toEqual(['for', 'after all', 'because', 'since']);
-    expect(sections[1].words).toEqual(['therefore', 'thus', 'so', 'hence', 'it follows that']);
+    expect(sections[1].words).toEqual([
+      'therefore',
+      'thus',
+      'hence',
+      'so',
+      'consequently',
+      'as a result',
+      'it follows that',
+      'this shows that',
+    ]);
   });
 
   it('includes the approved are and are-not teaching copy', () => {
