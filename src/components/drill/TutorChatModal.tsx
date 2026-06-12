@@ -1,12 +1,13 @@
 import * as React from "react";
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowUp, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowUp, ArrowRight, PanelLeft, PanelRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LRQuestion } from '@/lib/questionLoader';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ReactMarkdown from 'react-markdown';
 import type { TutorMode } from './tutorBehavior';
+import { readDrillNotes, writeDrillNotes } from '@/lib/drillNotesStorage';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -38,6 +39,8 @@ interface TutorContext {
   answerRevealed: boolean;
 }
 
+type PanelTab = 'coach' | 'breakdown' | 'notes';
+
 function errorMessage(error: unknown, fallback: string) {
   return error instanceof Error ? error.message : fallback;
 }
@@ -51,10 +54,18 @@ interface TutorChatModalProps {
   sessionId?: string;
   tutorContext?: TutorContext;
   onNext?: () => void;
+  /** Which tab to open on. Defaults from `mode` (preview → breakdown). */
+  initialTab?: PanelTab;
 }
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+// The live coaching mode for the Coach tab, derived from drill state.
+function coachModeFor(userAnswer: string, answerRevealed: boolean): TutorMode {
+  if (answerRevealed) return 'post-answer';
+  return userAnswer ? 'socratic' : 'pre-answer';
+}
 
 export function TutorChatModal({
   open,
@@ -65,33 +76,65 @@ export function TutorChatModal({
   sessionId,
   tutorContext,
   onNext,
+  initialTab,
 }: TutorChatModalProps) {
   const isMobile = useIsMobile();
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [initializing, setInitializing] = React.useState(true);
-  const [breakdownOpen, setBreakdownOpen] = React.useState(true);
+  const [activeTab, setActiveTab] = React.useState<PanelTab>(
+    initialTab ?? (mode === 'preview' ? 'breakdown' : 'coach'),
+  );
+  const [dock, setDock] = React.useState<'left' | 'right'>('left');
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const abortRef = React.useRef<AbortController | null>(null);
+  const initKeyRef = React.useRef<string>('');
+
+  const answerRevealed = !!tutorContext?.answerRevealed;
+  const coachMode = coachModeFor(userAnswer, answerRevealed);
+  // The Breakdown tab is always the answer-blind structural preview; the Coach
+  // tab is the live, state-resolved conversation.
+  const activeMode: TutorMode = activeTab === 'breakdown' ? 'preview' : coachMode;
+
+  // ── Notes (folded in from the standalone Notes panel) ──────────────────────
+  const [notesValue, setNotesValue] = React.useState('');
+  const [notesSaved, setNotesSaved] = React.useState(true);
+  React.useEffect(() => {
+    if (!question) return;
+    setNotesValue(readDrillNotes(question.qid));
+    setNotesSaved(true);
+  }, [question?.qid]);
+  React.useEffect(() => {
+    if (notesSaved || !question) return;
+    const t = setTimeout(() => {
+      writeDrillNotes(question.qid, notesValue);
+      setNotesSaved(true);
+    }, 400);
+    return () => clearTimeout(t);
+  }, [notesValue, notesSaved, question?.qid]);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
   React.useEffect(() => {
-    if (!isLoading && !initializing) {
+    if (!isLoading && !initializing && activeTab === 'coach') {
       inputRef.current?.focus();
     }
-  }, [isLoading, initializing]);
+  }, [isLoading, initializing, activeTab]);
 
+  // (Re)initialize the conversation whenever the question or the active tutor
+  // mode changes. Notes tab never streams.
   React.useEffect(() => {
-    if (open && question && initializing) {
-      loadInitialQuestion();
-    }
+    if (!open || !question || activeTab === 'notes') return;
+    const key = `${question.qid}:${activeMode}`;
+    if (initKeyRef.current === key) return;
+    initKeyRef.current = key;
+    loadInitialQuestion();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, question, initializing]);
+  }, [open, question?.qid, activeMode, activeTab]);
 
   React.useEffect(() => {
     if (!open) {
@@ -100,9 +143,10 @@ export function TutorChatModal({
       setMessages([]);
       setInput('');
       setInitializing(true);
-      setIsLoading(false);
-      setBreakdownOpen(true);
+      initKeyRef.current = '';
+      setActiveTab(initialTab ?? (mode === 'preview' ? 'breakdown' : 'coach'));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   React.useEffect(() => {
@@ -136,7 +180,7 @@ export function TutorChatModal({
         .from('tutor_conversations')
         .select('role, content')
         .eq('qid', q.qid)
-        .eq('mode', mode)
+        .eq('mode', activeMode)
         .in('role', ['user', 'assistant'])
         .order('created_at', { ascending: true })
         .limit(30);
@@ -181,7 +225,7 @@ export function TutorChatModal({
         correct_answer: q.correctAnswer,
         role,
         content,
-        mode,
+        mode: activeMode,
       });
     } catch (e) {
       // non-fatal
@@ -296,6 +340,7 @@ export function TutorChatModal({
     abortRef.current = controller;
 
     setMessages([{ role: 'assistant', content: '' }]);
+    setInitializing(true);
     setIsLoading(true);
 
     let final = '';
@@ -303,7 +348,7 @@ export function TutorChatModal({
       const restored = await loadStoredConversation(question);
       if (restored) return;
 
-      if (mode === 'preview') {
+      if (activeMode === 'preview') {
         // One-shot structural breakdown; no streaming.
         final = await fetchPreviewBreakdown(question, controller.signal);
         setMessages([{ role: 'assistant', content: final }]);
@@ -313,7 +358,7 @@ export function TutorChatModal({
       }
 
       await streamTutorReply(
-        { question: buildQuestionData(question), messages: [], mode },
+        { question: buildQuestionData(question), messages: [], mode: activeMode },
         controller.signal,
         (d) => { final += d; appendDelta(d); },
       );
@@ -347,7 +392,7 @@ export function TutorChatModal({
     abortRef.current = controller;
 
     // After a preview breakdown, follow-up chat is answer-blind coaching.
-    const followUpMode: TutorMode = mode === 'preview' ? 'pre-answer' : mode;
+    const followUpMode: TutorMode = activeMode === 'preview' ? 'pre-answer' : activeMode;
 
     let final = '';
     try {
@@ -386,10 +431,14 @@ export function TutorChatModal({
   const awaitingFirstToken =
     isLoading && (!lastMsg || (lastMsg.role === 'assistant' && lastMsg.content === ''));
 
-  const isPostAnswer = mode === 'post-answer';
-  const isPreAnswer = mode === 'pre-answer';
-  const isPreview = mode === 'preview';
-  const breakdown = question.breakdown;
+  const isPostAnswer = coachMode === 'post-answer';
+  const isConversation = activeTab !== 'notes';
+
+  const TABS: { key: PanelTab; label: string }[] = [
+    { key: 'coach', label: 'Coach' },
+    { key: 'breakdown', label: 'Breakdown' },
+    { key: 'notes', label: 'Notes' },
+  ];
 
   return (
     <div
@@ -400,9 +449,10 @@ export function TutorChatModal({
         "shadow-2xl shadow-black/40",
         isMobile
           ? "inset-x-0 bottom-0 h-[88dvh] rounded-t-2xl animate-in slide-in-from-bottom duration-300"
-          : isPostAnswer
-            ? "bottom-6 left-6 w-[440px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
-            : "bottom-6 left-6 w-[400px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+          : cn(
+              "bottom-6 w-[440px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300",
+              dock === 'left' ? "left-6" : "right-6",
+            )
       )}
     >
       {isMobile && (
@@ -411,188 +461,196 @@ export function TutorChatModal({
         </div>
       )}
 
-      {/* Header */}
-      <div className="shrink-0 px-5 pt-3 pb-3 flex items-center justify-between border-b border-white/[0.04]">
-        <span className="text-[10px] tracking-[0.18em] text-neutral-400 font-semibold uppercase select-none">
-          {isPreview ? 'Breakdown' : isPostAnswer ? 'Explanation' : 'Coach'}
-        </span>
-        {isPostAnswer && (
-          <span className="text-[10px] text-neutral-500 tabular-nums">
-            You: ({userAnswer}) · Correct: ({question.correctAnswer})
-          </span>
-        )}
-      </div>
-
-      {/* Structural breakdown (post-answer only) */}
-      {isPostAnswer && breakdown && (
-        <div className="shrink-0 px-5 pt-3 pb-2 border-b border-white/[0.04]">
-          <button
-            onClick={() => setBreakdownOpen(o => !o)}
-            className="flex items-center justify-between w-full text-[11px] tracking-wide uppercase text-neutral-400 hover:text-neutral-200 font-medium"
-          >
-            <span>Question breakdown</span>
-            {breakdownOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-          </button>
-          {breakdownOpen && (
-            <dl className="mt-2.5 space-y-1.5 text-[12.5px] leading-[1.55] text-neutral-300">
-              {breakdown.conclusion && (
-                <div><dt className="inline text-neutral-500 font-medium">Conclusion · </dt><dd className="inline">{breakdown.conclusion}</dd></div>
+      {/* Header: tab strip + dock toggle */}
+      <div className="shrink-0 px-3 pt-2.5 pb-0 flex items-center justify-between border-b border-white/[0.04]">
+        <div className="flex items-center gap-1">
+          {TABS.map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setActiveTab(t.key)}
+              className={cn(
+                "relative px-3 py-2 text-[12px] font-medium transition-colors select-none",
+                activeTab === t.key
+                  ? "text-neutral-100"
+                  : "text-neutral-500 hover:text-neutral-300",
               )}
-              {Array.isArray(breakdown.evidence) && breakdown.evidence.length > 0 && (
-                <div><dt className="inline text-neutral-500 font-medium">Evidence · </dt><dd className="inline">{breakdown.evidence.join('; ')}</dd></div>
+            >
+              {t.label}
+              {activeTab === t.key && (
+                <span className="absolute inset-x-2 -bottom-px h-[2px] rounded-full bg-amber-400/80" />
               )}
-              {breakdown.objection && (
-                <div><dt className="inline text-neutral-500 font-medium">Objection · </dt><dd className="inline">{breakdown.objection}</dd></div>
-              )}
-              {breakdown.crucialInsight && (
-                <div className="pt-1 mt-1.5 border-t border-white/[0.04]"><dt className="inline text-amber-400/80 font-medium">Key insight · </dt><dd className="inline text-neutral-200">{breakdown.crucialInsight}</dd></div>
-              )}
-            </dl>
-          )}
+            </button>
+          ))}
         </div>
-      )}
-
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-3 min-h-0">
-        <div className="space-y-3.5">
-          {messages.map((msg, idx) =>
-            msg.role === 'assistant' ? (
-              msg.content.length > 0 ? (
-                <div
-                  key={idx}
-                  className={cn(
-                    "leading-[1.65] text-neutral-100 select-text prose prose-invert prose-sm max-w-none",
-                    "prose-p:my-2 prose-strong:text-white prose-strong:font-semibold",
-                    "prose-code:text-amber-300 prose-code:bg-white/5 prose-code:px-1 prose-code:rounded",
-                    isMobile ? "text-[15px]" : "text-[13.5px]"
-                  )}
-                >
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
-              ) : null
-            ) : (
-              <div
-                key={idx}
-                className={cn(
-                  "ml-8 px-3 py-2 rounded-lg bg-white/[0.05] text-neutral-200 select-text",
-                  isMobile ? "text-[14.5px] leading-[1.55]" : "text-[12.5px] leading-[1.5]"
-                )}
-              >
-                {msg.content}
-              </div>
-            )
+        <div className="flex items-center gap-2 pr-1">
+          {isPostAnswer && isConversation && (
+            <span className="text-[10px] text-neutral-500 tabular-nums">
+              You: ({userAnswer}) · Correct: ({question.correctAnswer})
+            </span>
           )}
-
-          {awaitingFirstToken && (
-            <p className="text-[18px] tracking-widest text-neutral-600 animate-pulse leading-none select-none">
-              ···
-            </p>
+          {!isMobile && (
+            <button
+              type="button"
+              aria-label={dock === 'left' ? 'Dock right' : 'Dock left'}
+              onClick={() => setDock((d) => (d === 'left' ? 'right' : 'left'))}
+              className="text-neutral-500 hover:text-neutral-200 transition-colors"
+            >
+              {dock === 'left'
+                ? <PanelRight className="w-3.5 h-3.5" />
+                : <PanelLeft className="w-3.5 h-3.5" />}
+            </button>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
       </div>
 
-      {/* Input + actions */}
-      <div
-        className={cn(
-          "shrink-0 px-4 pt-2 border-t border-white/[0.04]",
-          isMobile
-            ? "pb-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] bg-neutral-950/95"
-            : "pb-3"
-        )}
-      >
-        <div className={cn(
-          "flex items-center gap-2 px-3",
-          isMobile ? "py-3" : "py-2",
-          "bg-white/[0.04] border border-white/[0.06] rounded-lg"
-        )}>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={isLoading || initializing}
-            placeholder="Ask a follow-up…"
+      {/* Notes tab */}
+      {activeTab === 'notes' ? (
+        <div className="flex-1 flex flex-col min-h-0">
+          <p className="px-5 pt-3 pb-2 text-[12.5px] leading-relaxed text-neutral-500 italic">
+            Jot down any thoughts for this question. Saved and visible next time you review it.
+          </p>
+          <textarea
+            value={notesValue}
+            onChange={(e) => { setNotesValue(e.target.value); setNotesSaved(false); }}
+            placeholder="Notes for this question…"
             className={cn(
-              "flex-1 bg-transparent border-0 outline-none text-neutral-200 placeholder:text-neutral-600 disabled:opacity-40 select-text",
-              isMobile ? "text-[16px]" : "text-[13px]"
+              "flex-1 w-full resize-none px-5 py-3 border-t border-white/[0.04] bg-transparent",
+              "text-neutral-100 placeholder:text-neutral-600 leading-relaxed focus:outline-none select-text",
+              isMobile ? "text-[16px]" : "text-[14px]",
             )}
           />
-          <button
-            onClick={handleSend}
-            disabled={!input.trim() || isLoading || initializing}
+          <div className="px-5 py-3 border-t border-white/[0.04] flex items-center justify-between">
+            <span className="text-[11px] text-neutral-500">{notesSaved ? 'Saved' : 'Saving…'}</span>
+            <span
+              aria-hidden
+              className={cn(
+                "h-2 w-2 rounded-full transition-colors",
+                notesSaved ? "bg-emerald-400" : "bg-amber-400",
+              )}
+            />
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-5 py-3 min-h-0">
+            <div className="space-y-3.5">
+              {messages.map((msg, idx) =>
+                msg.role === 'assistant' ? (
+                  msg.content.length > 0 ? (
+                    <div
+                      key={idx}
+                      className={cn(
+                        "leading-[1.65] text-neutral-100 select-text prose prose-invert prose-sm max-w-none",
+                        "prose-p:my-2 prose-strong:text-white prose-strong:font-semibold",
+                        "prose-code:text-amber-300 prose-code:bg-white/5 prose-code:px-1 prose-code:rounded",
+                        isMobile ? "text-[15px]" : "text-[13.5px]"
+                      )}
+                    >
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : null
+                ) : (
+                  <div
+                    key={idx}
+                    className={cn(
+                      "ml-8 px-3 py-2 rounded-lg bg-white/[0.05] text-neutral-200 select-text",
+                      isMobile ? "text-[14.5px] leading-[1.55]" : "text-[12.5px] leading-[1.5]"
+                    )}
+                  >
+                    {msg.content}
+                  </div>
+                )
+              )}
+
+              {awaitingFirstToken && (
+                <p className="text-[18px] tracking-widest text-neutral-600 animate-pulse leading-none select-none">
+                  ···
+                </p>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* Input + actions */}
+          <div
             className={cn(
-              "shrink-0 rounded-full flex items-center justify-center transition-all duration-150",
-              isMobile ? "w-9 h-9" : "w-7 h-7",
-              input.trim() && !isLoading && !initializing
-                ? "bg-white/15 text-neutral-100 hover:bg-white/25 active:scale-95"
-                : "bg-white/[0.04] text-neutral-600 cursor-not-allowed"
+              "shrink-0 px-4 pt-2 border-t border-white/[0.04]",
+              isMobile
+                ? "pb-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] bg-neutral-950/95"
+                : "pb-3"
             )}
           >
-            <ArrowUp className={isMobile ? "w-4 h-4" : "w-3.5 h-3.5"} />
-          </button>
-        </div>
-
-        <div className="flex gap-2 mt-2">
-          {!isPostAnswer && !initializing && !isLoading && messages.length > 0 && (
-            <>
-              <button
-                onClick={() => setInput(isPreAnswer ? 'Give me a small hint without discussing answer choices.' : 'Give me a smaller hint.')}
+            <div className={cn(
+              "flex items-center gap-2 px-3",
+              isMobile ? "py-3" : "py-2",
+              "bg-white/[0.04] border border-white/[0.06] rounded-lg"
+            )}>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={isLoading || initializing}
+                placeholder="Ask a follow-up…"
                 className={cn(
-                  "rounded-lg bg-white/[0.04] text-neutral-300 font-medium hover:bg-white/[0.08] transition-colors duration-150 select-none",
-                  isMobile ? "px-3 py-3 text-[13px]" : "px-3 py-2 text-[12px]"
+                  "flex-1 bg-transparent border-0 outline-none text-neutral-200 placeholder:text-neutral-600 disabled:opacity-40 select-text",
+                  isMobile ? "text-[16px]" : "text-[13px]"
+                )}
+              />
+              <button
+                onClick={handleSend}
+                disabled={!input.trim() || isLoading || initializing}
+                className={cn(
+                  "shrink-0 rounded-full flex items-center justify-center transition-all duration-150",
+                  isMobile ? "w-9 h-9" : "w-7 h-7",
+                  input.trim() && !isLoading && !initializing
+                    ? "bg-white/15 text-neutral-100 hover:bg-white/25 active:scale-95"
+                    : "bg-white/[0.04] text-neutral-600 cursor-not-allowed"
                 )}
               >
-                Smaller hint
+                <ArrowUp className={isMobile ? "w-4 h-4" : "w-3.5 h-3.5"} />
               </button>
-              {!isPreAnswer && (
+            </div>
+
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={onClose}
+                className={cn(
+                  "flex-1 rounded-lg bg-white/[0.06] text-neutral-300 font-medium hover:bg-white/[0.1] active:bg-white/[0.12] transition-colors duration-150 select-none",
+                  isMobile ? "py-3 text-[14px]" : "py-2 text-[12.5px]"
+                )}
+              >
+                Close
+              </button>
+              {isPostAnswer && onNext ? (
                 <button
-                  onClick={() => setInput(`Why is (${userAnswer}) tempting but wrong?`)}
+                  onClick={onNext}
                   className={cn(
-                    "rounded-lg bg-white/[0.04] text-neutral-300 font-medium hover:bg-white/[0.08] transition-colors duration-150 select-none",
-                    isMobile ? "px-3 py-3 text-[13px]" : "px-3 py-2 text-[12px]"
+                    "flex-[1.4] rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none flex items-center justify-center gap-1.5",
+                    isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
                   )}
                 >
-                  Why mine fails
+                  Next question <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button
+                  onClick={onClose}
+                  className={cn(
+                    "flex-1 rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none",
+                    isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
+                  )}
+                >
+                  Return to question →
                 </button>
               )}
-            </>
-          )}
-          <button
-            onClick={onClose}
-            className={cn(
-              "flex-1 rounded-lg bg-white/[0.06] text-neutral-300 font-medium hover:bg-white/[0.1] active:bg-white/[0.12] transition-colors duration-150 select-none",
-              isMobile ? "py-3 text-[14px]" : "py-2 text-[12.5px]"
-            )}
-          >
-            Close
-          </button>
-          {isPostAnswer && onNext && (
-            <button
-              onClick={onNext}
-              className={cn(
-                "flex-[1.4] rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none flex items-center justify-center gap-1.5",
-                isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
-              )}
-            >
-              Next question <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          )}
-          {!isPostAnswer && (
-            <button
-              onClick={onClose}
-              className={cn(
-                "flex-1 rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none",
-                isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
-              )}
-            >
-              Return to question →
-            </button>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

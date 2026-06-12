@@ -153,6 +153,8 @@ function DrillContent() {
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
+  // Which tab the unified tutor panel opens on (undefined → derived from mode).
+  const [tutorInitialTab, setTutorInitialTab] = React.useState<'coach' | 'breakdown' | 'notes' | undefined>(undefined);
   const [wajModalOpen, setWajModalOpen] = React.useState(false);
   const [voiceCoachOpen, setVoiceCoachOpen] = React.useState(false);
   const [showVoiceChip, setShowVoiceChip] = React.useState(false);
@@ -2478,7 +2480,7 @@ function DrillContent() {
   // Open the tutor for the current question. Mode is derived from state:
   // preview (structural breakdown) before a pick, socratic after a pick,
   // post-answer once revealed. Wired to the "Explanation" button beside End.
-  const openTutorForCurrent = () => {
+  const openTutorForCurrent = (tab?: 'coach' | 'breakdown' | 'notes') => {
     if (!currentQuestion) return;
     setTutorQuestionSnapshot(currentQuestion);
     setTutorUserAnswerSnapshot(selectedAnswer || '');
@@ -2486,7 +2488,20 @@ function DrillContent() {
       userAnswer: selectedAnswer,
       answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
     }));
+    setTutorInitialTab(tab);
     setTutorChatOpen(true);
+  };
+
+  // The drill toolbar's Notes control now opens the unified tutor panel on its
+  // Notes tab (the standalone docked Notes panel is folded in).
+  const toggleNotesPanel = () => {
+    if (tutorChatOpen && tutorInitialTab === 'notes') {
+      setTutorChatOpen(false);
+      setTutorQuestionSnapshot(null);
+      setTutorInitialTab(undefined);
+    } else {
+      openTutorForCurrent('notes');
+    }
   };
 
   const renderTutorOverlay = () => (
@@ -2507,6 +2522,7 @@ function DrillContent() {
             question={tutorQuestionSnapshot}
             userAnswer={tutorUserAnswerSnapshot}
             mode={tutorChatMode}
+            initialTab={tutorInitialTab}
             sessionId={session?.sessionId}
             tutorContext={{
               eliminatedAnswers: Array.from(eliminatedByQid.get(tutorQuestionSnapshot.qid) ?? []),
@@ -2761,8 +2777,8 @@ function DrillContent() {
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
             notesButtonVisible={usesSmartChrome}
-            notesOpen={notesOpen}
-            onToggleNotes={() => setNotesOpen(o => !o)}
+            notesOpen={tutorChatOpen && tutorInitialTab === 'notes'}
+            onToggleNotes={toggleNotesPanel}
           />
           <OfficialQuestionPane
             question={{
@@ -2807,7 +2823,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/mainhub')}
-              onAskTutor={openTutorForCurrent}
+              onAskTutor={() => openTutorForCurrent()}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
               disabled={!!timer?.isPaused}
@@ -2859,7 +2875,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => { void handleFinishSection(); }}
-              onAskTutor={openTutorForCurrent}
+              onAskTutor={() => openTutorForCurrent()}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
               disabled={!!timer?.isPaused}
