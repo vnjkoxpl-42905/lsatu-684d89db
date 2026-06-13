@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
 
 function escapeHtml(text: string) {
@@ -47,6 +48,7 @@ function formatCounter(index: number, total: number) {
 }
 
 export function MainConclusionReplicaTemplate({
+  title,
   questions,
   onComplete,
   userName = 'Student',
@@ -60,6 +62,10 @@ export function MainConclusionReplicaTemplate({
   const [index, setIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'wrong' | 'correct'>('idle');
+  // Questions where the student missed at least once before landing the answer.
+  // Used to score the verdict on first-try accuracy (you must answer correctly
+  // to advance, so completion alone is not a meaningful score).
+  const [missedIds, setMissedIds] = useState<Set<string>>(new Set());
   const [isScanning, setIsScanning] = useState(false);
   const [scanDuration, setScanDuration] = useState(1000);
   const scanTimeoutRef = useRef<number | null>(null);
@@ -116,7 +122,16 @@ export function MainConclusionReplicaTemplate({
 
     if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
     analysisTimeoutRef.current = window.setTimeout(() => {
-      setStatus(selectedIndex === current.correctMainConclusionIndex ? 'correct' : 'wrong');
+      const isCorrect = selectedIndex === current.correctMainConclusionIndex;
+      if (!isCorrect) {
+        setMissedIds((prev) => {
+          if (prev.has(current.id)) return prev;
+          const next = new Set(prev);
+          next.add(current.id);
+          return next;
+        });
+      }
+      setStatus(isCorrect ? 'correct' : 'wrong');
       analysisTimeoutRef.current = null;
     }, 1000);
   }
@@ -146,20 +161,33 @@ export function MainConclusionReplicaTemplate({
     setStatus('idle');
   }
 
+  function restart() {
+    setScreen('drill');
+    setIndex(0);
+    setSelectedIndex(null);
+    setStatus('idle');
+    setMissedIds(new Set());
+  }
+
   if (screen === 'finish') {
+    const firstTryCorrect = questions.length - missedIds.size;
+    const items = questions.map((q) => ({
+      id: q.id,
+      ok: !missedIds.has(q.id),
+      prompt: q.chunks[q.correctMainConclusionIndex] ?? q.chunks.join(' '),
+    }));
     return (
-      <section className="mx-auto mt-[10vh] flex w-full max-w-[600px] flex-col text-white">
-        <div className="flex flex-col items-center text-center">
-          <div className="text-[5rem] leading-none [text-shadow:0_0_30px_#10b981]">🏆</div>
-          <h2 className="my-6 font-mc-mono text-[2rem] uppercase tracking-[0.12em] text-[#10b981]">
-            {`System Clear: ${userName.toUpperCase()}`}
-          </h2>
-          <p className="text-[1.1rem] text-[#94a3b8]">All 20 questions complete. Final verification code:</p>
-          <div className="mt-8 w-full rounded-[18px] border-2 border-dashed border-[#10b981] bg-[rgba(16,185,129,0.05)] px-6 py-8 font-mc-mono text-[2rem] uppercase tracking-[0.18em] text-[#10b981]">
-            #LOGIC_MASTER_2026
-          </div>
-        </div>
-      </section>
+      <DrillVerdict
+        label={title}
+        correct={firstTryCorrect}
+        total={questions.length}
+        calibrationThreshold={0.8}
+        calibratedLead="You are finding the main conclusion on the first read. That is the move every Logical Reasoning question is built on, and you can now do it under pressure."
+        repeatLead="You landed every answer, but several took more than one pass. Re-run the set and trust your first read more. The items you missed below are where the pivot language fooled you."
+        nextStep="Next: return to the path and carry this into timed practice."
+        items={items}
+        onRerun={restart}
+      />
     );
   }
 

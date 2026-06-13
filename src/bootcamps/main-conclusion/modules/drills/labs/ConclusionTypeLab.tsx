@@ -7,10 +7,10 @@
  */
 
 import { useState } from 'react';
-import { ArrowRight, RefreshCcw } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
 import { ConclusionTypePicker } from '@/bootcamps/main-conclusion/components/conclusion-type-picker/ConclusionTypePicker';
 import { ORDERED_CANONICAL_CONCLUSION_TYPE_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/conclusionTypeQuestions';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
@@ -54,23 +54,23 @@ export function ConclusionTypeLab() {
   }
 
   if (finished) {
+    const items = QUESTIONS.map((q) => ({
+      id: q.id,
+      ok: resolved[q.id] === true,
+      prompt: q.conclusion,
+    }));
     return (
-      <div className="mc-bootcamp mx-auto w-full max-w-[760px] space-y-6">
-        <Card variant="elev" accent className="space-y-4 p-8 text-center">
-          <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Conclusion Type Lab</p>
-          <h2 className="font-mc-serif text-h1 font-semibold text-ink">
-            {correctCount} of {QUESTIONS.length} named correctly
-          </h2>
-          <p className="mx-auto max-w-md font-mc-serif text-body-prose leading-relaxed text-ink-soft">
-            Once you can name the type, you already know the weakness to look for. Re-run any time to sharpen the reflex.
-          </p>
-          <div className="flex justify-center pt-2">
-            <Button onClick={restart} leftIcon={<RefreshCcw className="h-4 w-4" strokeWidth={2.2} />}>
-              Run it again
-            </Button>
-          </div>
-        </Card>
-      </div>
+      <DrillVerdict
+        label="Conclusion Type Lab"
+        correct={correctCount}
+        total={QUESTIONS.length}
+        calibrationThreshold={0.8}
+        calibratedLead="You can name the type on sight. Once you can name it, you already know the weakness to look for. That reflex is what carries into the harder question types."
+        repeatLead="A few types are still slipping past you. Re-run the set and slow down on the ones you missed below, then name the predictable weakness each type carries."
+        nextStep="Next: head back to the path and keep building toward the full Main Conclusion drill."
+        items={items}
+        onRerun={restart}
+      />
     );
   }
 
