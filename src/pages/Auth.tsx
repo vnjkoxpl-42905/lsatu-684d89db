@@ -396,19 +396,19 @@ const QUESTION_TYPES = [
   'Role in Argument',
 ];
 
-const PRINCIPLES: Array<{ kicker: string; title: string; body: string }> = [
-  { kicker: '01 — Anatomy',  title: 'Find the argument.',     body: 'Premises, conclusion, and the bridge between them. Every stem hides one — train the eye to see it before the clock starts.' },
-  { kicker: '02 — Bridge',   title: 'Test the gap.',          body: 'Strengthen and Weaken live in the space between premise and conclusion. Drill the gap, not the answer choice.' },
-  { kicker: '03 — Failure',  title: 'Spot the flaw.',         body: 'Most LR arguments break in a small, predictable set of ways. Learn the set; the arguments stop surprising you.' },
-  { kicker: '04 — Stems',    title: 'Read the stem first.',   body: 'The stem sets the search target. Reading the stimulus without a target is the most expensive mistake on the test.' },
-  { kicker: '05 — Patterns', title: 'Hunt patterns.',         body: 'One principle, dozens of questions. Compression beats memorization — and compresses time on test day.' },
-  { kicker: '06 — Pace',     title: 'Slow now, fast later.',  body: 'Trained instinct beats trained speed. Build the instinct in slow drills; speed becomes a side-effect of clarity.' },
+const HABITS: Array<{ kicker: string; title: string; body: string }> = [
+  { kicker: '01 · Anatomy',  title: 'Find the argument.',     body: 'Every argument is a premise, a conclusion, and the bridge between them. Once you can see that shape on sight, the whole question slows down for you.' },
+  { kicker: '02 · Bridge',   title: 'Test the gap.',          body: 'Strengthen and Weaken questions live in the gap between premise and conclusion. Train your eye on that gap first, and the right answer gets a lot easier to spot.' },
+  { kicker: '03 · Failure',  title: 'Spot the flaw.',         body: 'Most arguments break in the same handful of ways. Learn that short list, and the flaws start jumping out at you instead of hiding.' },
+  { kicker: '04 · Stems',    title: 'Read the stem first.',   body: 'The question stem tells you what to look for. Read it first, every time, so you go into the stimulus knowing exactly what you are hunting.' },
+  { kicker: '05 · Patterns', title: 'Hunt patterns.',         body: 'The same few patterns show up across dozens of questions. Once you start recognizing them, you stop solving from scratch and start moving fast.' },
+  { kicker: '06 · Pace',     title: 'Slow now, fast later.',  body: 'Speed is not something you force. Go slow now and build the instinct, and the speed shows up on its own when it counts.' },
 ];
 
 const PILLARS: Array<{ title: string; body: string }> = [
-  { title: 'Adaptive drilling.',   body: 'Your weakest argument types surface first. The engine drills where the score gain is, not where the comfort is.' },
-  { title: 'A coach in the page.', body: 'Joshua’s coaching is woven into every drill — real-time feedback that anticipates the exact moment you’ll trip.' },
-  { title: 'Real numbers, only.',  body: 'No leaderboards. No vanity streaks. Every metric is measured, persisted, and tied to your actual progress.' },
+  { title: 'Adaptive drilling.',   body: 'Your weakest question types come up first, on purpose. We spend your time where the points actually are, not where it feels comfortable.' },
+  { title: 'A coach in the page.', body: 'Coaching is built into every drill. You get feedback right at the moment you would normally trip, so you learn the fix while it still matters.' },
+  { title: 'Real numbers, only.',  body: 'No leaderboards. No vanity streaks. Every number you see is real, tracked over time, and tied to your actual progress.' },
 ];
 
 // ── Nav ── Brand mark + Sign-in. Sticky with translucent warm-white blur.
@@ -630,7 +630,7 @@ const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
         fontWeight: 500, lineHeight: 1.16, letterSpacing: '-0.025em',
         margin: '24px 0 28px', color: ARC.ink,
       }}>
-        “A better way to prepare for the LSAT, with practice, review, and progress all working together.”
+        “LSAT U is the prep we wish every aspiring attorney had: practice, review, and real progress in one place, all pointed at the score you actually want.”
       </p>
       <button className="arc-cta" onClick={onPrimary}>
         Begin training
@@ -650,7 +650,7 @@ const ArcCarousel = () => {
   return (
     <section className="arc-rise" style={{ padding: '12px 0 80px', maxWidth: 1280, margin: '0 auto' }}>
       <div style={{ padding: '0 32px', maxWidth: 1100, margin: '0 auto', textAlign: 'center', marginBottom: 48 }}>
-        <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Six principles, one rhythm</span>
+        <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Six habits, one rhythm</span>
         <h2 style={{
           fontSize: 'clamp(32px, 4.4vw, 56px)',
           fontWeight: 600, lineHeight: 1.02, letterSpacing: '-0.03em',
@@ -663,7 +663,7 @@ const ArcCarousel = () => {
           fontSize: 17, lineHeight: 1.55, color: ARC.inkSecondary,
           maxWidth: 580, margin: '0 auto',
         }}>
-          The LSAT rewards a small set of habits, learned deeply. Each card is one of the habits the engine drills against you, until it stops being a drill and becomes the way you read.
+          The LSAT really comes down to a small set of habits, practiced until they are second nature. These are the ones we build together, one drill at a time, until they stop feeling like work and just become how you read.
         </p>
       </div>
 
@@ -674,8 +674,8 @@ const ArcCarousel = () => {
       </div>
 
       <div className="arc-carousel-wrap">
-        <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training principles">
-          {PRINCIPLES.map((p, i) => (
+        <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training habits">
+          {HABITS.map((p, i) => (
             <article key={i} className="arc-card" role="listitem">
               <div className="arc-card-kicker">{p.kicker}</div>
               <div className="arc-card-title">{p.title}</div>
@@ -687,9 +687,9 @@ const ArcCarousel = () => {
             background: ARC.ink, color: ARC.bg, borderColor: ARC.ink,
           }}>
             <div className="arc-card-kicker" style={{ color: ARC.bgTinted, opacity: 0.7 }}>Begin →</div>
-            <div className="arc-card-title" style={{ color: ARC.bg }}>The next card is the page in front of you.</div>
+            <div className="arc-card-title" style={{ color: ARC.bg }}>Ready when you are.</div>
             <div className="arc-card-body" style={{ color: ARC.bgTinted, opacity: 0.85 }}>
-              The principles only matter when you sit down to drill them. Sign in to start.
+              These habits only stick once you start drilling them. Sign in and let’s get to work.
             </div>
           </article>
         </div>
@@ -709,8 +709,8 @@ const ArcPillars = () => (
         fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
         marginTop: 22,
       }}>
-        A study tool that doesn’t just teach the test —<br />
-        <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>it trains the lawyer in you.</span>
+        It doesn’t just teach the test.<br />
+        <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>It trains the lawyer in you.</span>
       </h2>
     </div>
     <div style={{
