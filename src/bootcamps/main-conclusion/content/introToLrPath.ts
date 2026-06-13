@@ -22,6 +22,7 @@ export interface PathAction {
   linkState?: unknown;
   metadata?: Array<{ label: string; value: string }>;
   constraint?: string;
+  estMinutes?: number;
 }
 
 const [FIRST_SENTENCE_MAIN_CONCLUSION_CARD, REBUTTAL_MAIN_CONCLUSION_CARD] = MAIN_CONCLUSION_PRACTICE_CARDS;
@@ -33,6 +34,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'The Three Parts of an LR Question',
     route: '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
     description: 'See the stimulus, stem, and answer choices in the right order.',
+    estMinutes: 6,
   },
   {
     id: 'so-an-argument',
@@ -40,6 +42,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'So, An Argument',
     route: '/bootcamp/intro-to-lr/lessons/notes/so-an-argument',
     description: 'Lock in the basic picture: premises support conclusions.',
+    estMinutes: 6,
   },
   {
     id: 'premises',
@@ -47,6 +50,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Premises',
     route: '/bootcamp/intro-to-lr/lessons/notes/premises',
     description: 'Learn what counts as evidence and how to treat it on the LSAT.',
+    estMinutes: 8,
   },
   {
     id: 'conclusions',
@@ -54,6 +58,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/conclusions',
     description: 'Focus on the claim the author is trying to prove.',
+    estMinutes: 8,
   },
   {
     id: 'five-types-of-conclusions',
@@ -61,6 +66,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Five Types of Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/five-types-of-conclusions',
     description: 'Name the type of claim so you can predict the weakness.',
+    estMinutes: 10,
   },
   {
     id: 'conclusion-type-lab',
@@ -69,6 +75,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     route: '/bootcamp/intro-to-lr/drills/conclusion-type-lab',
     description: 'Classify each conclusion: recommendation, causal, prediction, judgment, or rebuttal.',
     phase: 'Drills',
+    estMinutes: 8,
   },
   {
     id: 'beyond-premises-and-conclusions',
@@ -76,6 +83,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Beyond Premises and Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
     description: 'Separate context, opposition, concessions, and pivots from the real argument.',
+    estMinutes: 10,
   },
   {
     id: 'two-part-conclusion-check',
@@ -83,6 +91,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'The 2-Part Conclusion Check',
     route: '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
     description: 'Run the two-question filter on every conclusion candidate.',
+    estMinutes: 8,
   },
   {
     id: 'main-conclusion-lab',
@@ -91,6 +100,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     route: '/bootcamp/intro-to-lr/drills/main-conclusion-lab',
     description: 'Use the direct replica format to find the main conclusion in full stimuli.',
     phase: 'Drills',
+    estMinutes: 12,
   },
   {
     id: 'first-sentence-vs-rebuttal-structures',
@@ -98,6 +108,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'First-Sentence vs Rebuttal Structures',
     route: '/bootcamp/intro-to-lr/lessons/notes/first-sentence-vs-rebuttal-structures',
     description: 'Learn the two dominant conclusion placements before you enter the drill labs.',
+    estMinutes: 8,
   },
   {
     id: 'first-sentence-vs-rebuttal-lab',
@@ -106,6 +117,7 @@ export const INTEGRATED_PATH: PathAction[] = [
     route: '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',
     description: 'Run fast comparison reps on the two main conclusion structures.',
     phase: 'Drills',
+    estMinutes: 10,
   },
   {
     id: 'first-sentence-main-conclusion',
@@ -122,6 +134,7 @@ export const INTEGRATED_PATH: PathAction[] = [
       { label: 'Count', value: `${FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.count} questions` },
     ],
     constraint: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.constraint,
+    estMinutes: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.count * 2,
   },
   {
     id: 'rebuttal-main-conclusion',
@@ -138,6 +151,7 @@ export const INTEGRATED_PATH: PathAction[] = [
       { label: 'Count', value: `${REBUTTAL_MAIN_CONCLUSION_CARD.pool.count} questions` },
     ],
     constraint: REBUTTAL_MAIN_CONCLUSION_CARD.constraint,
+    estMinutes: REBUTTAL_MAIN_CONCLUSION_CARD.pool.count * 2,
   },
 ];
 

@@ -93,6 +93,16 @@ export function IntegratedPathRail() {
                         <span className="mt-1 block text-xs leading-relaxed text-ink-faint">
                           {action.description}
                         </span>
+                        {action.estMinutes ? (
+                          <span className="mt-1.5 block font-mc-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint/70">
+                            ~{action.estMinutes} min
+                          </span>
+                        ) : null}
+                        {action.constraint ? (
+                          <span className="mt-2 block rounded-3 border-l-2 border-[rgb(var(--accent)/0.45)] bg-[rgb(var(--accent)/0.06)] px-2.5 py-1.5 text-[11px] leading-relaxed text-ink-soft">
+                            {action.constraint}
+                          </span>
+                        ) : null}
                       </span>
 
                       {isNext ? (
@@ -120,6 +130,7 @@ export function IntegratedPathRail() {
           <div className="space-y-1">
             <p className="font-mc-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint/80">
               Step {currentIndex + 1} of {totalSteps}
+              {currentAction.estMinutes ? ` · ~${currentAction.estMinutes} min` : ''}
             </p>
             <p className="font-mc-serif text-lg italic leading-tight text-ink">{currentAction.title}</p>
             <p className="text-sm leading-relaxed text-ink-soft">
