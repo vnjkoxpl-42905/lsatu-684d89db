@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Model selection (critical — read first)
+
+**Never use "fable" or `claude-fable-5` as the model for any Agent tool call.** Fable 5 is currently unavailable and will cause a 400 API error that kills the entire session. Always use `"opus"` (claude-opus-4-8) or `"sonnet"` (claude-sonnet-4-6) when spawning sub-agents. Default to `"sonnet"` unless the task explicitly requires maximum reasoning depth, in which case use `"opus"`.
+
 ## Project snapshot
 
 LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind + shadcn/ui, Supabase backend with Edge Functions, hosted on Lovable. The Lovable-connected project is the source of truth; GitHub (`vnjkoxpl-42905/lsatu-684d89db`) is the mirror. Treat the connected project as canonical unless told otherwise.
