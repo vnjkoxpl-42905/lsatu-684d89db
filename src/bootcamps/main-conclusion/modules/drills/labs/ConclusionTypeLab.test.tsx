@@ -51,6 +51,13 @@ describe('ConclusionTypeLab', () => {
 
     const firstOptions = screen.getAllByRole('radio');
     expect(firstOptions).toHaveLength(CONCLUSION_TYPE_META.length);
+    expect(screen.getByRole('radiogroup', { name: /choose the claim family/i })).toBeInTheDocument();
+    expect(screen.getByText(/^Action claim$/)).toBeInTheDocument();
+    expect(screen.getByText(/^Explanation claim$/)).toBeInTheDocument();
+    expect(screen.getByText(/^Future claim$/)).toBeInTheDocument();
+    expect(screen.getByText(/^Evaluation claim$/)).toBeInTheDocument();
+    expect(screen.getByText(/^Pushback claim$/)).toBeInTheDocument();
+    expect(screen.getByText(/make sure the author answers the actual opposing point/i)).toBeInTheDocument();
     expect(firstOptions[0]).not.toHaveClass('ctlab__option--correct');
     expect(firstOptions[0]).not.toHaveClass('ctlab__option--wrong');
 

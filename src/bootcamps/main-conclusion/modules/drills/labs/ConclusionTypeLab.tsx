@@ -27,6 +27,17 @@ interface CTAttempt {
 
 const QUESTIONS = ORDERED_CANONICAL_CONCLUSION_TYPE_QUESTIONS;
 const DRILL_ROUTE = '/bootcamp/intro-to-lr/drills/conclusion-type-lab';
+const CONCLUSION_TYPE_BOARD: Array<{
+  type: ConclusionType;
+  family: string;
+  className?: string;
+}> = [
+  { type: 'recommendation', family: 'Action claim' },
+  { type: 'causal', family: 'Explanation claim' },
+  { type: 'prediction', family: 'Future claim' },
+  { type: 'judgment', family: 'Evaluation claim' },
+  { type: 'rebuttal', family: 'Pushback claim', className: 'ctlab__option--wide' },
+];
 
 function questionNumber(question: ConclusionTypeQuestion) {
   return QUESTIONS.findIndex((item) => item.id === question.id) + 1;
@@ -155,37 +166,49 @@ export function ConclusionTypeLab() {
         <article className="ctlab__question" key={question.id}>
           <StimulusCard question={question} />
 
-          <div className="ctlab__options" role="radiogroup" aria-label="Conclusion type">
-            {CONCLUSION_TYPE_META.map((meta) => {
-              const isPicked = picked === meta.value;
-              const showCorrect = submitted && meta.value === question.answer;
-              const showWrongPick = submitted && attempt?.firstPick === meta.value && meta.value !== question.answer;
-              return (
-                <button
-                  key={meta.value}
-                  type="button"
-                  role="radio"
-                  aria-checked={isPicked}
-                  disabled={submitted}
-                  onClick={() => setPicked((current) => (current === meta.value ? null : meta.value))}
-                  className={cn(
-                    'ctlab__option',
-                    isPicked && !submitted && 'ctlab__option--selected',
-                    showCorrect && 'ctlab__option--correct',
-                    showWrongPick && 'ctlab__option--wrong',
-                    submitted && !showCorrect && !showWrongPick && 'ctlab__option--dimmed',
-                  )}
-                >
-                  <span>
-                    <strong>{meta.label}</strong>
-                    <small>{meta.blurb}</small>
-                  </span>
-                  {showCorrect ? <Check aria-label="Correct type" /> : null}
-                  {showWrongPick ? <XIcon aria-label="Your first pick" /> : null}
-                </button>
-              );
-            })}
-          </div>
+          <section className="ctlab__type-board" aria-labelledby="ctlab-type-board-title">
+            <div className="ctlab__type-board-header">
+              <p className="ctlab__eyebrow" id="ctlab-type-board-title">
+                Choose the claim family
+              </p>
+            </div>
+
+            <div className="ctlab__options" role="radiogroup" aria-labelledby="ctlab-type-board-title">
+              {CONCLUSION_TYPE_BOARD.map(({ type, family, className }) => {
+                const meta = conclusionTypeMeta(type);
+                const isPicked = picked === meta.value;
+                const showCorrect = submitted && meta.value === question.answer;
+                const showWrongPick = submitted && attempt?.firstPick === meta.value && meta.value !== question.answer;
+                return (
+                  <button
+                    key={meta.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={isPicked}
+                    disabled={submitted}
+                    onClick={() => setPicked((current) => (current === meta.value ? null : meta.value))}
+                    className={cn(
+                      'ctlab__option',
+                      className,
+                      isPicked && !submitted && 'ctlab__option--selected',
+                      showCorrect && 'ctlab__option--correct',
+                      showWrongPick && 'ctlab__option--wrong',
+                      submitted && !showCorrect && !showWrongPick && 'ctlab__option--dimmed',
+                    )}
+                  >
+                    <span className="ctlab__option-copy">
+                      <span className="ctlab__option-family">{family}</span>
+                      <strong>{meta.label}</strong>
+                      <small>{meta.blurb}</small>
+                      <span className="ctlab__option-weakness">{meta.weaknessSignature}</span>
+                    </span>
+                    {showCorrect ? <Check aria-label="Correct type" /> : null}
+                    {showWrongPick ? <XIcon aria-label="Your first pick" /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
 
           {submitted && attempt ? <TeachBlock refEl={teachRef} question={question} attempt={attempt} /> : null}
 
