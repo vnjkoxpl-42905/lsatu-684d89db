@@ -78,19 +78,19 @@ export const INTEGRATED_PATH: PathAction[] = [
     description: 'Separate context, opposition, concessions, and pivots from the real argument.',
   },
   {
+    id: 'two-part-conclusion-check',
+    type: 'note',
+    title: 'The 2-Part Conclusion Check',
+    route: '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
+    description: 'Run the two-question filter on every conclusion candidate.',
+  },
+  {
     id: 'main-conclusion-lab',
     type: 'drill',
     title: 'Main Conclusion Lab',
     route: '/bootcamp/intro-to-lr/drills/main-conclusion-lab',
     description: 'Use the direct replica format to find the main conclusion in full stimuli.',
     phase: 'Drills',
-  },
-  {
-    id: 'two-part-conclusion-check',
-    type: 'note',
-    title: 'The 2-Part Conclusion Check',
-    route: '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
-    description: 'Run the two-question filter on every conclusion candidate.',
   },
   {
     id: 'first-sentence-vs-rebuttal-structures',
