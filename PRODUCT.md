@@ -34,6 +34,8 @@ Success looks like a student who logs in daily, knows exactly what to do next, a
 
 The app speaks like a coach who built the system from scratch. No hedging, no softening, no "you might consider." Instructions are direct because the method is direct. The product never softens an instruction into a suggestion.
 
+**Voice update (warm coach):** Student-facing copy across bootcamp lessons, drills, and coaching moments follows the warm-coach voice: collaborative second person ("let's," "you"), short calm sentences, struggle normalized, hard moments closed with a small lift. Directness still governs structure and instruction; warmth governs tone. The "no hedging" line above is about the method's confidence, not coldness. Route all student-facing copy through the vault's teaching-voice note before shipping.
+
 **Messenger-specific voice:** one-on-one, hi-tech, interactive, engaging. The inbox is the closest thing to being in the room with Joshua. It should feel like a real conversation — not a support ticket, not a legal file. Fast enough to feel like messaging, structured enough to feel like coaching.
 
 ## Anti-references
@@ -48,6 +50,11 @@ The app speaks like a coach who built the system from scratch. No hedging, no so
 - Legal client portal (too cold): formal, transactional, case-number adjacent. Every interaction feels like filing a document.
 - Intercom/support chat (too service-desk): "How can I help you today?" patterns, ticket threads, canned responses, SLA framing.
 - Slack/team chat (too busy): channels, reactions, status dots, workplace overhead. This is a coaching thread, not a team workspace.
+
+**Drills / Labs-specific:**
+- The multiple-choice quiz: a bare stem, five options, a right/wrong mark, a score. No coaching, no reason the answer is right, no takeaway that transfers to the next question. A drill that could have been a Google Form has failed.
+- Blends into the drill page: a lab that reuses default app primitives with no identity of its own, so it reads like a generic list row instead of a built surface. This is the current ConclusionTypeLab problem.
+- The score screen as ending: "you got X/Y" with no per-item insight, no view of which skill slipped, nothing concrete to do next.
 
 ## Design Principles
 
@@ -69,6 +76,13 @@ The app speaks like a coach who built the system from scratch. No hedging, no so
 
 9. **Attempt before reveal.** Passive reading is the enemy. Every lesson runs through the phase machine: briefing, demo, attempt, reveal, coach, checkpoint, cleared. Continue is gated until the student submits. Reveal copy references the student's actual attempt, not a generic answer.
 10. **Compute the next step; do not present a grid.** Module hubs lead with one computed CTA. Card grids are how generic LSAT prep apps shrug at the student; this product points.
+
+**Drills / Labs-specific:**
+
+11. **The reveal teaches the weakness, not just the answer.** (the primary mandate) Naming the correct answer is the floor. The payoff is the predictable weakness that answer's category carries, tied to what the student actually picked. A student who finishes a Conclusion Type set should leave with a transferable reflex ("a recommendation conclusion is attacked on whether the action actually solves the stated problem"), not a tally. Reveal copy speaks to their pick, not a generic key.
+12. **First Sentence vs Rebuttal is the craft bar.** Every lab rises to the `FirstSentenceVsRebuttalLab` standard: a distinct built identity, in-the-moment coaching feedback on a wrong pick, a saved session, and an end-of-set review that shows which skill slipped (per-component or per-type miss tracking) with an answer key to revisit any item. A single-skill classify drill keeps its single attempt per item but earns that same depth of reveal and review. It is not exempt from the bar because it is simpler.
+13. **A lab is a built surface, not a list row.** Each drill carries its own visual signature within the bootcamp tokens. It must not read as a default card or blend into the drill index. The index lists labs; a lab, once entered, stands on its own.
+14. **Calibration, not gatekeeping.** (echoes teach-first-calibrate-after) A drill measures after teaching, never gates before it. The verdict frames a miss as the next thing to work, warmly. `DrillVerdict`'s "Re-run open" framing, never "Failed," never a grade.
 
 ## Accessibility & Inclusion
 
