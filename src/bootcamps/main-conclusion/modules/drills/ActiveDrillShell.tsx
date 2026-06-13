@@ -76,7 +76,7 @@ export function ActiveDrillShell() {
     );
   }
 
-  if (drill.slug === 'first-sentence-vs-rebuttal-lab') {
+  if (drill.slug === 'first-sentence-vs-rebuttal-lab' || drill.slug === 'conclusion-type-lab') {
     return <>{content}</>;
   }
 
