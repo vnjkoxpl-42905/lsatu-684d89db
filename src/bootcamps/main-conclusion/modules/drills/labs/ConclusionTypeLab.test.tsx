@@ -51,6 +51,11 @@ describe('ConclusionTypeLab', () => {
 
     const firstOptions = screen.getAllByRole('radio');
     expect(firstOptions).toHaveLength(CONCLUSION_TYPE_META.length);
+    expect(firstOptions[0]).toHaveClass('ctlab__option--recommendation');
+    expect(firstOptions[1]).toHaveClass('ctlab__option--causal');
+    expect(firstOptions[2]).toHaveClass('ctlab__option--prediction');
+    expect(firstOptions[3]).toHaveClass('ctlab__option--judgment');
+    expect(firstOptions[4]).toHaveClass('ctlab__option--rebuttal');
     expect(screen.getByRole('radiogroup', { name: /choose the claim family/i })).toBeInTheDocument();
     expect(screen.getByText(/^Action claim$/)).toBeInTheDocument();
     expect(screen.getByText(/^Explanation claim$/)).toBeInTheDocument();

@@ -14,6 +14,16 @@
   --ct-wrong-soft: #fdecec;
   --ct-warning: #d9881f;
   --ct-warning-soft: #fbf1e3;
+  --ct-family-action: #b87718;
+  --ct-family-action-soft: #fff7e6;
+  --ct-family-explanation: #6476c8;
+  --ct-family-explanation-soft: #f0f3ff;
+  --ct-family-future: #2387a4;
+  --ct-family-future-soft: #eaf8fb;
+  --ct-family-evaluation: #7b6a4d;
+  --ct-family-evaluation-soft: #f7f2ea;
+  --ct-family-pushback: #b35f4b;
+  --ct-family-pushback-soft: #fff0eb;
   --ct-shadow-stimulus: 0 20px 48px rgba(0, 0, 0, 0.05);
   --ct-shadow-control: 0 10px 26px rgba(0, 0, 0, 0.035);
   --ct-shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.035);
@@ -208,11 +218,13 @@
 }
 
 .ctlab__option {
+  --ct-family: var(--ct-ink);
+  --ct-family-soft: var(--ct-card);
   min-height: 120px;
   width: 100%;
-  border: 1px solid var(--ct-border);
+  border: 1px solid color-mix(in srgb, var(--ct-family) 18%, var(--ct-border));
   border-radius: var(--ct-r-control);
-  background: var(--ct-card);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ct-family-soft) 78%, var(--ct-card)), var(--ct-card) 74%);
   color: var(--ct-ink);
   padding: 15px 16px;
   display: flex;
@@ -222,6 +234,31 @@
   text-align: left;
   box-shadow: var(--ct-shadow-soft);
   transition: opacity var(--ct-d-mid) var(--ct-ease-state), border-color var(--ct-d-mid) var(--ct-ease-state), background var(--ct-d-mid) var(--ct-ease-state), transform var(--ct-d-mid) var(--ct-ease-state), box-shadow var(--ct-d-mid) var(--ct-ease-state);
+}
+
+.ctlab__option--recommendation {
+  --ct-family: var(--ct-family-action);
+  --ct-family-soft: var(--ct-family-action-soft);
+}
+
+.ctlab__option--causal {
+  --ct-family: var(--ct-family-explanation);
+  --ct-family-soft: var(--ct-family-explanation-soft);
+}
+
+.ctlab__option--prediction {
+  --ct-family: var(--ct-family-future);
+  --ct-family-soft: var(--ct-family-future-soft);
+}
+
+.ctlab__option--judgment {
+  --ct-family: var(--ct-family-evaluation);
+  --ct-family-soft: var(--ct-family-evaluation-soft);
+}
+
+.ctlab__option--rebuttal {
+  --ct-family: var(--ct-family-pushback);
+  --ct-family-soft: var(--ct-family-pushback-soft);
 }
 
 .ctlab__option--wide {
@@ -235,7 +272,7 @@
 }
 
 .ctlab__option-family {
-  color: var(--ct-soft);
+  color: var(--ct-family);
   font-size: 11px;
   font-weight: 750;
   letter-spacing: 0.12em;
@@ -274,13 +311,15 @@
 }
 
 .ctlab__option:not(:disabled):hover {
-  border-color: #c7c7cc;
+  border-color: color-mix(in srgb, var(--ct-family) 45%, var(--ct-border));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--ct-family) 12%, transparent);
   transform: translateY(-1px);
 }
 
 .ctlab__option--selected {
-  border-color: var(--ct-ink);
-  background: #f5f5f7;
+  border-color: color-mix(in srgb, var(--ct-family) 74%, var(--ct-ink));
+  background: color-mix(in srgb, var(--ct-family-soft) 84%, var(--ct-card));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--ct-family) 16%, transparent);
 }
 
 .ctlab__option--correct {

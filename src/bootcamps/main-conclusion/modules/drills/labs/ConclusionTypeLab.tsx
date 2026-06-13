@@ -32,11 +32,11 @@ const CONCLUSION_TYPE_BOARD: Array<{
   family: string;
   className?: string;
 }> = [
-  { type: 'recommendation', family: 'Action claim' },
-  { type: 'causal', family: 'Explanation claim' },
-  { type: 'prediction', family: 'Future claim' },
-  { type: 'judgment', family: 'Evaluation claim' },
-  { type: 'rebuttal', family: 'Pushback claim', className: 'ctlab__option--wide' },
+  { type: 'recommendation', family: 'Action claim', className: 'ctlab__option--recommendation' },
+  { type: 'causal', family: 'Explanation claim', className: 'ctlab__option--causal' },
+  { type: 'prediction', family: 'Future claim', className: 'ctlab__option--prediction' },
+  { type: 'judgment', family: 'Evaluation claim', className: 'ctlab__option--judgment' },
+  { type: 'rebuttal', family: 'Pushback claim', className: 'ctlab__option--rebuttal ctlab__option--wide' },
 ];
 
 function questionNumber(question: ConclusionTypeQuestion) {
