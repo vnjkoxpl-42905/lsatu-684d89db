@@ -85,7 +85,12 @@ function handleChunkLoadError(message: string | undefined): boolean {
   const stale =
     /Failed to fetch dynamically imported module/i.test(message) ||
     /Importing a module script failed/i.test(message) ||
-    /error loading dynamically imported module/i.test(message);
+    /error loading dynamically imported module/i.test(message) ||
+    // React.lazy mounts a resolved chunk by reading `.default`. After a deploy
+    // the cached app shell can resolve a lazy import to `undefined` (chunk
+    // manifest mismatch), producing this exact TypeError. Treat it as stale.
+    /Cannot read propert(?:y|ies) of undefined \(reading 'default'\)/i.test(message) ||
+    /undefined is not an object \(evaluating '.*\.default'\)/i.test(message);
   if (!stale) return false;
   try {
     if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return false;
