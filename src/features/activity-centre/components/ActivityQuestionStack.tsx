@@ -33,7 +33,7 @@ export function ActivityQuestionStack({
   onRecord,
   onNext,
 }: ActivityQuestionStackProps) {
-  const refs = useRef<Array<HTMLDivElement | null>>([]);
+  const refs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     const node = refs.current[activeIndex];
