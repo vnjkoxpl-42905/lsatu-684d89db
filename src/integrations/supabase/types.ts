@@ -194,6 +194,151 @@ export type Database = {
         }
         Relationships: []
       }
+      activities: {
+        Row: {
+          class_id: string
+          created_at: string
+          created_by: string
+          id: string
+          instructions: Json
+          item_format: string
+          items: Json
+          slug: string
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          instructions?: Json
+          item_format?: string
+          items?: Json
+          slug: string
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          instructions?: Json
+          item_format?: string
+          items?: Json
+          slug?: string
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      activity_assignments: {
+        Row: {
+          activity_id: string | null
+          assigned_by: string
+          class_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          instructions: Json
+          item_format: string
+          items: Json
+          score: number | null
+          started_at: string | null
+          status: string
+          student_id: string
+          subtitle: string | null
+          title: string
+        }
+        Insert: {
+          activity_id?: string | null
+          assigned_by: string
+          class_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          instructions?: Json
+          item_format?: string
+          items?: Json
+          score?: number | null
+          started_at?: string | null
+          status?: string
+          student_id: string
+          subtitle?: string | null
+          title: string
+        }
+        Update: {
+          activity_id?: string | null
+          assigned_by?: string
+          class_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          instructions?: Json
+          item_format?: string
+          items?: Json
+          score?: number | null
+          started_at?: string | null
+          status?: string
+          student_id?: string
+          subtitle?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_assignments_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_item_responses: {
+        Row: {
+          assignment_id: string
+          attempt_no: number
+          created_at: string
+          id: string
+          item_order: number
+          response_text: string
+          student_id: string
+          verdict: string | null
+        }
+        Insert: {
+          assignment_id: string
+          attempt_no?: number
+          created_at?: string
+          id?: string
+          item_order: number
+          response_text?: string
+          student_id: string
+          verdict?: string | null
+        }
+        Update: {
+          assignment_id?: string
+          attempt_no?: number
+          created_at?: string
+          id?: string
+          item_order?: number
+          response_text?: string
+          student_id?: string
+          verdict?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_item_responses_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "activity_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_ta_drafts: {
         Row: {
           approved_at: string | null
@@ -1556,6 +1701,7 @@ export type Database = {
           daily_goal_questions: number | null
           daily_goal_streak: number | null
           display_name: string | null
+          has_activity_access: boolean
           has_analytics_access: boolean
           has_bootcamp_access: boolean
           has_chat_access: boolean
@@ -1587,6 +1733,7 @@ export type Database = {
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
           display_name?: string | null
+          has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
           has_chat_access?: boolean
@@ -1618,6 +1765,7 @@ export type Database = {
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
           display_name?: string | null
+          has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
           has_chat_access?: boolean
