@@ -51,7 +51,6 @@ export function ActivityHeroPanel({
       {/* Editorial content */}
       <div className="relative z-10 flex h-full flex-col px-6 pb-10 pt-8 md:px-10 md:pb-14 md:pt-24">
         <div className="flex flex-wrap gap-2">
-          <span className="ac-hero-chip">#{(assignment.item_format ?? "drill").toUpperCase()}</span>
           {assignment.subtitle && (
             <span className="ac-hero-chip">#{assignment.subtitle.split(" ")[0].toUpperCase()}</span>
           )}
