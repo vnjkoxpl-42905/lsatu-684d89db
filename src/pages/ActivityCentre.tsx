@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useStudentActivities } from "@/features/activity-centre";
 import type { ActivityAssignment } from "@/features/activity-centre";
 import "@/features/activity-centre/activity-centre.css";
