@@ -4,7 +4,6 @@ interface ActivityHeroPanelProps {
   assignment: ActivityAssignment;
   current: number; // 1-based
   total: number;
-  instructorName?: string;
 }
 
 /**
@@ -15,15 +14,9 @@ export function ActivityHeroPanel({
   assignment,
   current,
   total,
-  instructorName = "Joshua",
 }: ActivityHeroPanelProps) {
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
   const tagline = assignment.instructions?.tagline;
-  const dateLabel = new Date(assignment.created_at).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 
   return (
     <aside className="ac-hero relative isolate overflow-hidden md:sticky md:top-0 md:h-screen md:min-h-[560px]">
@@ -65,11 +58,6 @@ export function ActivityHeroPanel({
             {tagline ?? assignment.subtitle}
           </p>
         )}
-
-        <div className="mt-auto pt-10 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">
-          <div>By {instructorName}</div>
-          <div className="mt-1 text-white/55">{dateLabel}</div>
-        </div>
       </div>
     </aside>
   );
