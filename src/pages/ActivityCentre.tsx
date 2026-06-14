@@ -18,6 +18,13 @@ export default function ActivityCentre() {
   return (
     <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
       <div className="mx-auto max-w-3xl">
+        <button
+          onClick={() => navigate("/foyer")}
+          className="mb-3 inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Home
+        </button>
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Activity Centre
         </p>
