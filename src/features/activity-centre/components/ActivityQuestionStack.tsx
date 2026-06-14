@@ -51,7 +51,9 @@ export function ActivityQuestionStack({
         return (
           <section
             key={item.order}
-            ref={(el) => (refs.current[i] = el)}
+            ref={(el) => {
+              refs.current[i] = el;
+            }}
             aria-current={state === "active" ? "step" : undefined}
             className={
               "ac-question-card transition-opacity duration-500 " +

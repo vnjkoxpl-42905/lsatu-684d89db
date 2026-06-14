@@ -6,9 +6,9 @@ import { completeAssignment, markAssignmentStarted, recordItemResponse } from ".
 import { useAuth } from "@/contexts/AuthContext";
 import type { Verdict } from "../api/types";
 import { ActivityIntro } from "./ActivityIntro";
-import { ActivityItemView } from "./ActivityItemView";
+import { ActivityHeroPanel } from "./ActivityHeroPanel";
+import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
-import { ProgressHeader } from "./ProgressHeader";
 import "../activity-centre.css";
 
 type Phase = "intro" | "running" | "done";
@@ -21,7 +21,7 @@ function scoreFor(verdicts: Record<number, Verdict | null>, total: number): numb
   return Math.round((sum / total) * 100);
 }
 
-/** Student player: intro -> two-panel item loop -> completion summary. */
+/** Student player: intro -> split-screen scrolling quiz -> completion summary. */
 export function ActivityRunner() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const { user } = useAuth();
@@ -44,7 +44,6 @@ export function ActivityRunner() {
         await markAssignmentStarted(assignment.id);
       } catch (e) {
         console.error("[activity:start] failed", e);
-        // Non-fatal: the student can still work; status just stays 'assigned'.
       }
     }
   }, [assignment]);
@@ -79,7 +78,6 @@ export function ActivityRunner() {
       setIndex((i) => i + 1);
       return;
     }
-    // Last item: finalize.
     const finalScore = scoreFor(verdicts, items.length);
     if (assignment) {
       try {
@@ -110,13 +108,12 @@ export function ActivityRunner() {
     );
   }
 
-  const currentItem = items[index];
   const finalScore = scoreFor(verdicts, items.length);
 
-  return (
-    <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
-      <div className="mx-auto max-w-5xl">
-        {phase === "intro" && (
+  if (phase === "intro") {
+    return (
+      <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
+        <div className="mx-auto max-w-5xl">
           <ActivityIntro
             title={assignment.title}
             subtitle={assignment.subtitle}
@@ -124,24 +121,15 @@ export function ActivityRunner() {
             itemCount={items.length}
             onStart={handleStart}
           />
-        )}
+        </div>
+      </div>
+    );
+  }
 
-        {phase === "running" && currentItem && (
-          <div className="space-y-6">
-            <ProgressHeader title={assignment.title} current={index + 1} total={items.length} />
-            <ActivityItemView
-              key={currentItem.order}
-              item={currentItem}
-              format={assignment.item_format}
-              isLast={index === items.length - 1}
-              onResolved={handleResolved}
-              onRecord={handleRecord}
-              onNext={handleNext}
-            />
-          </div>
-        )}
-
-        {phase === "done" && (
+  if (phase === "done") {
+    return (
+      <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
+        <div className="mx-auto max-w-5xl">
           <CompletionSummary
             title={assignment.title}
             items={items}
@@ -149,7 +137,31 @@ export function ActivityRunner() {
             responses={responses}
             score={finalScore}
           />
-        )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="activity-centre min-h-screen">
+      <div className="grid min-h-screen grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
+        <ActivityHeroPanel
+          assignment={assignment}
+          current={index + 1}
+          total={items.length}
+        />
+        <main className="min-h-screen bg-[hsl(var(--background))]">
+          <ActivityQuestionStack
+            items={items}
+            format={assignment.item_format}
+            activeIndex={index}
+            verdicts={verdicts}
+            responses={responses}
+            onResolved={handleResolved}
+            onRecord={handleRecord}
+            onNext={handleNext}
+          />
+        </main>
       </div>
     </div>
   );
