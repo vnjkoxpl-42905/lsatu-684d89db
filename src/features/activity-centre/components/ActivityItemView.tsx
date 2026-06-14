@@ -89,7 +89,7 @@ export function ActivityItemView({
   };
 
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="space-y-5">
       <StatementPanel item={item} />
       <ItemPrompt
         format={format}

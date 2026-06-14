@@ -22,7 +22,7 @@ interface AnswerPanelProps {
 }
 
 const emeraldBtn =
-  "bg-[hsl(var(--ac-emerald-strong))] text-white hover:bg-[hsl(var(--ac-emerald))]";
+  "w-full md:w-auto bg-[hsl(var(--ac-emerald))] text-white hover:bg-[hsl(var(--ac-emerald-strong))] h-12 px-6 text-[15px] font-medium rounded-xl";
 
 /** Right panel: textarea, submit, and the coach feedback / retry / reveal flow. */
 export function AnswerPanel({

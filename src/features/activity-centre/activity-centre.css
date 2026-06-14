@@ -54,3 +54,35 @@
 .activity-centre .ac-progress > div {
   background-color: hsl(var(--ac-emerald));
 }
+
+/* ---------- Split-screen quiz layout ---------- */
+
+.activity-centre .ac-hero {
+  background-color: #1a1f2c;
+}
+
+.activity-centre .ac-hero-bg {
+  background:
+    linear-gradient(180deg, rgba(15, 20, 32, 0.55) 0%, rgba(15, 20, 32, 0.85) 100%),
+    radial-gradient(120% 80% at 20% 20%, hsl(var(--ac-emerald) / 0.35), transparent 60%),
+    linear-gradient(135deg, #1f2937 0%, #0f172a 60%, #1a2233 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+.activity-centre .ac-hero-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(6px);
+}
+
+.activity-centre .ac-question-card {
+  scroll-margin-top: 4rem;
+}
