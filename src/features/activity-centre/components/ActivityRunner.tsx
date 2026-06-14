@@ -155,8 +155,6 @@ export function ActivityRunner() {
             items={items}
             format={assignment.item_format}
             activeIndex={index}
-            verdicts={verdicts}
-            responses={responses}
             onResolved={handleResolved}
             onRecord={handleRecord}
             onNext={handleNext}
