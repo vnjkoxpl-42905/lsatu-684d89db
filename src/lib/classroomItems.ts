@@ -112,6 +112,10 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
     case 'homework':
       if (item.source_id) return `/classroom/${encodeURIComponent(item.source_id)}`;
       return '/classroom';
+    case 'activity':
+      // source_id is the activity_assignments row id; source_table='activity_assignments'.
+      if (item.source_id) return `/activities/${encodeURIComponent(item.source_id)}`;
+      return '/activities';
     case 'bootcamp_module':
       if (item.source_id) return item.source_id; // expected to be a /bootcamp/* path
       return '/bootcamps';

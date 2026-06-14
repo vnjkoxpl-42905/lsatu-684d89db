@@ -34,6 +34,7 @@ const TYPE_ICONS: Record<ClassroomItem['type'], React.ComponentType<{ className?
   upload_summary: FileText,
   weekly_plan_task: FileText,
   drill: Sparkles,
+  activity: GraduationCap,
 };
 
 const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
@@ -46,6 +47,7 @@ const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
   upload_summary: 'Upload summary',
   weekly_plan_task: 'Weekly plan',
   drill: 'Drill',
+  activity: 'Activity',
 };
 
 // Color discipline: amber stays reserved for *actions* (the New-Assignment

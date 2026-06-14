@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export type ClassroomItemType =
   | 'drill'
   | 'homework'
+  | 'activity'
   | 'bootcamp_module'
   | 'note'
   | 'session_recap'

@@ -21,6 +21,7 @@ import {
   ListChecks,
   UploadCloud,
   Zap,
+  Sparkles,
 } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import type { DayContentProps } from 'react-day-picker';
@@ -55,6 +56,7 @@ const TYPE_META: Record<ClassroomItemType, TypeMeta> = {
   weekly_plan_task:{ label: 'Weekly plan',  short: 'Plan',   dot: 'bg-indigo-500', pill: 'bg-indigo-500/10 text-indigo-600 border-indigo-200', badge: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20', Icon: ListChecks },
   smartboard_recap:{ label: 'Smartboard',   short: 'Board',  dot: 'bg-fuchsia-500', pill: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-200', badge: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20', Icon: PencilRuler },
   drill:           { label: 'Drill',        short: 'Drill',  dot: 'bg-cyan-500',   pill: 'bg-cyan-500/10 text-cyan-600 border-cyan-200',   badge: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20',   Icon: Zap },
+  activity:        { label: 'Activity',     short: 'Activity', dot: 'bg-emerald-500', pill: 'bg-emerald-500/10 text-emerald-600 border-emerald-200', badge: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20', Icon: Sparkles },
   upload_summary:  { label: 'Upload',       short: 'Upload', dot: 'bg-zinc-500',   pill: 'bg-zinc-500/10 text-zinc-600 border-zinc-200',   badge: 'bg-zinc-500/10 text-zinc-600 border-zinc-500/20',   Icon: UploadCloud },
 };
 

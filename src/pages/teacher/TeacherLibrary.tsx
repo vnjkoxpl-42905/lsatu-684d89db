@@ -1,5 +1,5 @@
 import { NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
-import { ClipboardList, Flame, Target } from 'lucide-react';
+import { ClipboardList, Flame, Sparkles, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Library = the content store for assignable material + the cross-cut view of
@@ -11,6 +11,7 @@ const SUB: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/library/assignments', label: 'Assignments', Icon: ClipboardList },
   { to: '/teacher/library/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library/guided-drills', label: 'Guided Drills', Icon: Target },
+  { to: '/teacher/library/activities', label: 'Activities', Icon: Sparkles },
 ];
 
 export default function TeacherLibrary() {

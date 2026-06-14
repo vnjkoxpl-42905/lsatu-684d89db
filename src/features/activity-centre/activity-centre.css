@@ -1,0 +1,56 @@
+/*
+ * Activity Centre is an always-light editorial surface, even when the app is
+ * toggled to dark. We pin the same token values as `.light` in src/index.css
+ * onto the .activity-centre wrapper so every shadcn primitive inside renders
+ * light regardless of the ancestor theme class. The single accent is emerald
+ * (--state-correct); we also override the global focus-visible ring (bronze)
+ * to emerald within this scope.
+ */
+
+.activity-centre {
+  color-scheme: light;
+  --background: 0 0% 99%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 7%;
+  --primary: 0 0% 7%;
+  --primary-foreground: 0 0% 99%;
+  --secondary: 0 0% 95%;
+  --secondary-foreground: 0 0% 7%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 92%;
+  --accent-foreground: 0 0% 7%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 88%;
+  --input: 0 0% 90%;
+  --ring: 160 84% 39%; /* emerald, overriding the global bronze ring */
+
+  /* Editorial surface tone (off-white) + emerald accent shorthand. */
+  --ac-surface: 210 40% 99%;
+  --ac-emerald: 160 84% 39%;
+  --ac-emerald-strong: 161 94% 30%;
+
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Emerald focus ring inside the module, overriding the global bronze. */
+.activity-centre :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--card)), 0 0 0 4px hsl(var(--ac-emerald) / 0.55);
+}
+
+/* Editorial display title (Georgia is already configured for bootcamp display). */
+.activity-centre .ac-display {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+}
+
+/* Emerald-tinted progress indicator (shadcn Progress uses --primary by default). */
+.activity-centre .ac-progress > div {
+  background-color: hsl(var(--ac-emerald));
+}

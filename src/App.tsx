@@ -51,6 +51,9 @@ const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampRefe
 const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 const Journal = React.lazy(() => import("./pages/Journal"));
+const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
+const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
+const TeacherActivities = React.lazy(() => import("./pages/teacher/TeacherActivities"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
@@ -275,6 +278,20 @@ const App = () => {
                   } />
                   {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
                   <Route path="/waj" element={<Navigate to="/journal" replace />} />
+                  <Route path="/activities" element={
+                    <ProtectedRoute flag="has_activity_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivityCentre />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/activities/:assignmentId" element={
+                    <ProtectedRoute flag="has_activity_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivityRunner />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
                   <Route path="/flagged" element={
                     <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
                   } />
@@ -410,6 +427,9 @@ const App = () => {
                       <Route path="smartboard" element={<RedirectSmartboardToWhiteboard />} />
                       <Route path="guided-drills" element={
                         <React.Suspense fallback={<div />}><AdminGuidedDrills /></React.Suspense>
+                      } />
+                      <Route path="activities" element={
+                        <React.Suspense fallback={<div />}><TeacherActivities /></React.Suspense>
                       } />
                       <Route path="analytics" element={
                         <React.Suspense fallback={<div />}><TeacherAnalyticsBridge /></React.Suspense>
