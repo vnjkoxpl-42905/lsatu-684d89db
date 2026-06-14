@@ -12,6 +12,14 @@ _Avoid_: Activities Centre, Skills Centre, Drill Centre
 One bespoke skill exercise — a titled, self-contained set of authored items with an answer key, worked through with a coach (e.g. "Negation Station"). The unit a teacher assigns.
 _Avoid_: Skill drill, drill (reserved for the MCQ engine), station, module, game
 
+**Question Set**:
+Codex-facing term for one complete per-question unit inside an Activity: the Question Type, the prompt, the response area, the coach feedback, the credited answer, and the answer key material used to judge the response. In the UI, this should still be labeled "Question N"; when Joshua says "question set," he means this full unit, not the collection of all questions.
+_Avoid_: Question collection, drill set, item bank
+
+**Question Type**:
+The classification pill inside a Question Set that names what kind of statement or reasoning form the student is working with (e.g. "Universal Statement," "Conditional Statement," "Causal Statement"). This is the canonical term for the label currently shown above the prompt.
+_Avoid_: Category, tag, badge, label
+
 **Drill**:
 Reserved term. The existing question-bank engine: a timed run over multiple-choice questions pulled by `qid`. An Activity is NOT a Drill.
 

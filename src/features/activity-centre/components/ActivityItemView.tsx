@@ -90,7 +90,7 @@ export function ActivityItemView({
 
   return (
     <div className="space-y-5">
-      <StatementPanel item={item} />
+      <StatementPanel item={item} showQuestionType={attempts > 0} />
       <ItemPrompt
         format={format}
         item={item}
