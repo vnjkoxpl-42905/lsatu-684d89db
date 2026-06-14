@@ -12,6 +12,10 @@ _Avoid_: Activities Centre, Skills Centre, Drill Centre
 One bespoke skill exercise — a titled, self-contained set of authored items with an answer key, worked through with a coach (e.g. "Negation Station"). The unit a teacher assigns.
 _Avoid_: Skill drill, drill (reserved for the MCQ engine), station, module, game
 
+**Homepage**:
+Joshua-facing shorthand for an individual Activity's intro/start page: the page that shows the Activity title, item count, overview copy, example, and Start action before the student begins the first Question Set.
+_Avoid_: LSAT U landing page, Foyer, Activity Centre list
+
 **Question Set**:
 Codex-facing term for one complete per-question unit inside an Activity: the Question Type, the prompt, the response area, the coach feedback, the credited answer, and the answer key material used to judge the response. In the UI, this should still be labeled "Question N"; when Joshua says "question set," he means this full unit, not the collection of all questions.
 _Avoid_: Question collection, drill set, item bank
