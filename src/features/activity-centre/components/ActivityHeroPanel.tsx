@@ -43,13 +43,7 @@ export function ActivityHeroPanel({
 
       {/* Editorial content */}
       <div className="relative z-10 flex h-full flex-col px-6 pb-10 pt-8 md:px-10 md:pb-14 md:pt-24">
-        <div className="flex flex-wrap gap-2">
-          {assignment.subtitle && (
-            <span className="ac-hero-chip">#{assignment.subtitle.split(" ")[0].toUpperCase()}</span>
-          )}
-        </div>
-
-        <h1 className="ac-display mt-6 max-w-[14ch] text-3xl font-bold leading-[1.05] text-white md:mt-8 md:text-[44px]">
+        <h1 className="ac-display max-w-[14ch] text-3xl font-bold leading-[1.05] text-white md:text-[44px]">
           {assignment.title}
         </h1>
 
