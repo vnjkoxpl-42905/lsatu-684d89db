@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ChevronDown, Sparkles, Users } from "lucide-react";
+import { ChevronDown, Play, Sparkles, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -85,8 +87,11 @@ function ActivityCard({
   open: boolean;
   onToggle: () => void;
 }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const { assign, assigning } = useAssignActivity();
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [previewing, setPreviewing] = useState(false);
 
   const toggle = (id: string) =>
     setSelected((prev) => {
@@ -112,17 +117,40 @@ function ActivityCard({
     }
   };
 
+  const handleTryIt = async () => {
+    if (!user) return;
+    setPreviewing(true);
+    const res = await assign(activity, user.id);
+    setPreviewing(false);
+    if (res.ok && res.id) {
+      navigate(`/activities/${res.id}`);
+    } else {
+      toast.error(res.error || "Could not create preview assignment");
+    }
+  };
+
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900/50">
-      <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 p-4 text-left">
-        <div>
-          <p className="font-medium text-zinc-100">{activity.title}</p>
-          <p className="text-xs text-zinc-500">
-            {activity.subtitle} · {activity.items.length} items · {activity.item_format}
-          </p>
-        </div>
-        <ChevronDown className={cn("h-4 w-4 text-zinc-500 transition-transform", open && "rotate-180")} />
-      </button>
+      <div className="flex items-center gap-2 p-4">
+        <button type="button" onClick={onToggle} className="flex flex-1 items-center justify-between gap-4 text-left">
+          <div>
+            <p className="font-medium text-zinc-100">{activity.title}</p>
+            <p className="text-xs text-zinc-500">
+              {activity.subtitle} · {activity.items.length} items · {activity.item_format}
+            </p>
+          </div>
+          <ChevronDown className={cn("h-4 w-4 text-zinc-500 transition-transform", open && "rotate-180")} />
+        </button>
+        <button
+          type="button"
+          onClick={handleTryIt}
+          disabled={previewing || assigning}
+          className="flex shrink-0 items-center gap-1.5 rounded-lg bg-emerald-600/20 px-3 py-1.5 text-xs font-medium text-emerald-300 hover:bg-emerald-600/30 disabled:opacity-50"
+        >
+          <Play className="h-3 w-3" />
+          {previewing ? "Opening…" : "Try it"}
+        </button>
+      </div>
 
       {open && (
         <div className="border-t border-zinc-800 p-4">

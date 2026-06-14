@@ -71,18 +71,18 @@ export function useAssignActivity() {
   const [assigning, setAssigning] = useState(false);
 
   const assign = useCallback(
-    async (activity: Activity, studentId: string): Promise<{ ok: boolean; error?: string }> => {
+    async (activity: Activity, studentId: string): Promise<{ ok: boolean; id?: string; error?: string }> => {
       if (!user) return { ok: false, error: "Not signed in" };
       setAssigning(true);
       try {
         // class_id mirrors the admin's id, matching the homework seed/assign convention.
-        await assignActivityToStudent({
+        const assignment = await assignActivityToStudent({
           activity,
           studentId,
           assignedBy: user.id,
           classId: user.id,
         });
-        return { ok: true };
+        return { ok: true, id: assignment.id };
       } catch (e) {
         console.error("[activity:admin:assign] failed", { studentId, activityId: activity.id, error: e });
         return { ok: false, error: e instanceof Error ? e.message : "Assign failed" };
