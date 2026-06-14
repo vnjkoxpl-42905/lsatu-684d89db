@@ -9,6 +9,7 @@ import {
   Flame,
   Archive,
   PencilRuler,
+  Sparkles,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -35,6 +36,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
   { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
+  { to: "/activities", label: "Activity Centre", Icon: Sparkles, flag: "has_activity_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 

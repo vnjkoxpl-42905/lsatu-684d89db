@@ -12,6 +12,7 @@ import {
   PencilRuler,
   Play,
   Sliders,
+  Sparkles,
   User as UserIcon,
   type LucideIcon,
   BarChart3,
@@ -58,6 +59,7 @@ export const SIDEBAR_CATALOG: CatalogItem[] = [
   { id: "/bootcamps", label: "Bootcamps", icon: Flame, to: "/bootcamps", requires: "has_bootcamp_access", description: "Multi-day skill modules and assigned bootcamp tracks." },
   { id: "/inbox", label: "Messages", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access", description: "1:1 message threads with Joshua." },
   { id: "/practice", label: "Practice Hub", icon: Dumbbell, to: "/practice", requires: "has_practice_access", description: "Drill-launcher hub: full sections, smart builder, custom drills." },
+  { id: "/activities", label: "Activity Centre", icon: Sparkles, to: "/activities", requires: "has_activity_access", description: "Coach-led skill exercises assigned by your instructor." },
   { id: "/schedule", label: "Schedule", icon: CalendarDays, to: "/schedule", requires: "has_schedule_access", description: "Calendar of due dates and weekly plan items." },
 ];
 
