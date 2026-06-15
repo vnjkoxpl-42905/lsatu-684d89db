@@ -15,17 +15,17 @@
 
 .act-home {
   /* ---- Per-activity accent slot (Negation Station = emerald) ---- */
-  --act-accent: 160 84% 32%;        /* eyebrow, numerals, chips, marks      */
-  --act-accent-strong: 161 88% 24%; /* Start button                         */
+  --act-accent: 14 80% 54%;         /* warm orange accent                   */
+  --act-accent-strong: 14 84% 46%;  /* deeper orange for buttons + marks    */
   --act-on-accent: 40 44% 97%;      /* warm off-white on the accent         */
 
-  /* ---- Warm tactile workbook surfaces (matches bootcamp DESIGN.md) ---- */
-  --act-canvas: 38 36% 93%;         /* warm cream paper, NOT white          */
-  --act-canvas-2: 40 46% 96%;       /* lighter cream for the radial highlight*/
-  --act-surface: 40 50% 98%;        /* card, lighter than canvas            */
-  --act-ink: 30 17% 9%;             /* warm near-black body text            */
-  --act-ink-soft: 30 8% 36%;        /* secondary text                       */
-  --act-hairline: 36 20% 84%;       /* soft warm borders                    */
+  /* ---- Near-white cream canvas (matches the reference) ---- */
+  --act-canvas: 40 30% 96%;         /* near-white warm cream                */
+  --act-canvas-2: 40 40% 98%;       /* subtle highlight                     */
+  --act-surface: 0 0% 100%;         /* pure white cards                     */
+  --act-ink: 30 10% 10%;            /* warm near-black body text            */
+  --act-ink-soft: 30 6% 38%;        /* secondary text                       */
+  --act-hairline: 36 14% 86%;       /* soft warm borders                    */
 
   /* ---- Fixed skeleton (radius + depth + motion match the workbook) ---- */
   --act-r-card: 18px;
@@ -418,7 +418,7 @@
 .act-home .act-orb--before {
   top: 0;
   left: 0;
-  background: radial-gradient(circle at 30% 28%, #2a2a2a 0%, #050505 70%);
+  background: #000;
   color: hsl(40 30% 96%);
   z-index: 1;
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
@@ -428,7 +428,7 @@
   bottom: 0;
   right: 0;
   background:
-    radial-gradient(circle at 30% 25%, #ffffff 0%, #f2efe8 35%, #c9c2b4 70%, #8d8576 100%);
+    radial-gradient(circle at 30% 22%, #ffffff 0%, #ededea 40%, #b8b3aa 78%, #7a7468 100%);
   color: hsl(var(--act-ink));
   z-index: 2;
   box-shadow: 0 30px 60px -25px rgba(60, 50, 30, 0.35);

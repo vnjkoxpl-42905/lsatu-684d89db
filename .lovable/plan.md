@@ -1,62 +1,23 @@
-## Goal
+The reference uses a different palette than what's currently rendering. The current intro uses emerald green accents (breadcrumb arrows, numbered step chips, counter rule, list arrows) on a warm beige paper. The reference uses a near-white cream canvas, a single warm orange accent (#e85a2c-ish), pure black "Before" orb, and a silver/grey "After" orb.
 
-Rebuild the Activity Runner (currently shown on `/activities/:assignmentId`, e.g. Negation Station) so it matches the reference quiz in `quizhd.mp4`:
+## Color changes (scoped to `.act-home` in `src/features/activity-centre/activities-home.css`)
 
-- Sticky left "hero" panel with cover image, title, subtitle, byline, and a progress bar pinned to the top of the panel.
-- Right side is a single vertical scroll column of questions, one after another, each with:
-  - Small green `QUESTION N` label
-  - Bold question/statement text
-  - The interaction area (textarea + Submit) for the active question
-  - Upcoming and resolved questions rendered faded/locked so they preview above and below the active one
-- Active question advances by scrolling smoothly to the next card once the current one is resolved (correct, revealed, or out of attempts), instead of swapping a single panel.
+- `--act-canvas`: lift to a paler near-white cream (`hsl(40 30% 96%)`) so the page reads bright like the reference, not beige.
+- `--act-canvas-2`: matching subtle highlight.
+- `--act-accent`: replace emerald (`160 84% 32%`) with warm orange (`14 80% 54%`).
+- `--act-accent-strong`: matching deeper orange (`14 84% 46%`) for the Start button + breadcrumb arrows + counter rule + list bullets.
+- `--act-on-accent`: keep warm off-white.
+- Numbered step chips (`.act-step-num`): keep the soft tinted pill, but it'll auto-recolor to a soft orange tint via the accent var.
+- Orb tweaks: deepen the `.act-orb--before` to pure black (`#000`) with a faint inner highlight; soften `.act-orb--after` to a cleaner silver gradient.
 
-Scope: visual + layout redesign of the runner. No backend, no schema, no scoring logic changes.
+## What stays the same
 
-## What changes
+- Layout, typography, spacing, the editorial structure I built last turn.
+- The drill/completion screens (they live outside `.act-home` and are not affected).
+- The rest of Negation Station's brand emerald elsewhere in the app — only the intro homepage palette changes.
 
-**`src/features/activity-centre/components/ActivityRunner.tsx`**
-- Replace the centered single-column wrapper with a two-column layout:
-  - Left: new `ActivityHeroPanel` (sticky on `md+`, full-width banner on mobile).
-  - Right: new `ActivityQuestionStack` that renders every item in order.
-- Remove the old `ProgressHeader` from the right column; progress bar lives in the hero panel.
-- Keep all existing state (`phase`, `verdicts`, `responses`, `index`, `handleRecord`, `handleResolved`, `handleNext`). `handleNext` now scrolls the next item card into view in addition to incrementing `index`.
+## Files touched
 
-**New `src/features/activity-centre/components/ActivityHeroPanel.tsx`**
-- Cover image (use `assignment.cover_image_url` if present, else gradient fallback using existing `--ac-emerald` token).
-- Title, subtitle, tag chips, and a "Activity" / instructor byline.
-- Slim top progress bar bound to `current / total`.
-- Sticky positioning (`md:sticky md:top-0 md:h-screen`); on mobile collapses to a short banner above the questions.
+- `src/features/activity-centre/activities-home.css` — token values + orb gradients only.
 
-**New `src/features/activity-centre/components/ActivityQuestionStack.tsx`**
-- Maps over all `items`. For each item renders an `ActivityQuestionCard` with:
-  - `state`: `done | active | upcoming`
-  - `index === activeIndex` → renders full `ActivityItemView` interactions
-  - `done` → renders the resolved response + verdict, slightly muted
-  - `upcoming` → renders only the `QUESTION N` label + statement at ~40% opacity, non-interactive, mirroring the faded "Question 3" peek in the reference
-- Each card has a `ref`; on `activeIndex` change the stack scrolls that ref into view (`scrollIntoView({ behavior: "smooth", block: "center" })`).
-
-**`ActivityItemView` / `AnswerPanel` / `StatementPanel`**
-- `ActivityItemView` no longer renders its own 2-column grid — it now renders a single right-column-friendly card: green `QUESTION N` eyebrow, statement, then the answer panel directly underneath.
-- `StatementPanel` becomes the eyebrow + statement block used inside the card (the "type" chip stays, since it's useful, but matches the reference's quieter chip styling).
-- `AnswerPanel` keeps its existing logic; only the surrounding card chrome changes to match the reference (rounded card, soft border, full-width green Submit button).
-
-**`src/features/activity-centre/activity-centre.css`**
-- Add tokens/utility classes for: hero gradient overlay, sticky hero, the green `QUESTION N` eyebrow color (reuse `--ac-emerald-strong`), faded upcoming-card style, and the full-width emerald submit button used in the reference.
-
-## Out of scope
-
-- No changes to `activity-coach` edge function, `activitiesClient`, schema, or scoring.
-- No changes to `ActivityIntro` (the pre-start screen) or `CompletionSummary`.
-- No new fields on `activities` — cover image uses the existing `cover_image_url` column if set, otherwise falls back to a tokenized gradient.
-
-## Mobile behavior
-
-Current viewport is 624×904. On `< md`:
-- Hero collapses to a short banner (image + title + progress) above the question stack.
-- Question cards take full width.
-- Sticky hero is disabled on mobile (it would eat the viewport).
-
-## Verification
-
-- `npm run build` and visual check at `/activities/3dfbf3de-70c2-45e0-a9bf-e85980481506` at both desktop and 624px widths.
-- Confirm Submit → coach verdict → Next still advances and that the next card scrolls into view.
+No component edits, no logic changes.
