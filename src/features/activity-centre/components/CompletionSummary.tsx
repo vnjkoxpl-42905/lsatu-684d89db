@@ -9,6 +9,10 @@ interface CompletionSummaryProps {
   verdicts: Record<number, Verdict | null>;
   responses: Record<number, string>;
   score: number;
+  /** True when this is an ungraded practice run, not the graded result. */
+  practice?: boolean;
+  /** Re-run the activity for ungraded practice. */
+  onPractice?: () => void;
 }
 
 const VERDICT_LABEL: Record<string, { label: string; cls: string }> = {
@@ -18,8 +22,8 @@ const VERDICT_LABEL: Record<string, { label: string; cls: string }> = {
   none: { label: "Skipped", cls: "text-muted-foreground" },
 };
 
-/** Completion: score, per-item recap, Done. */
-export function CompletionSummary({ title, items, verdicts, responses, score }: CompletionSummaryProps) {
+/** Completion: score, per-item recap, Done, optional ungraded re-run. */
+export function CompletionSummary({ title, items, verdicts, responses, score, practice, onPractice }: CompletionSummaryProps) {
   const navigate = useNavigate();
   const correct = items.filter((i) => verdicts[i.order] === "correct").length;
   const partial = items.filter((i) => verdicts[i.order] === "partial").length;
@@ -28,18 +32,34 @@ export function CompletionSummary({ title, items, verdicts, responses, score }: 
     <div className="mx-auto max-w-2xl">
       <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 text-center shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          {title} complete
+          {practice ? `${title} · practice` : `${title} complete`}
         </p>
         <p className="ac-display mt-3 text-6xl text-foreground">{score}%</p>
         <p className="mt-2 text-sm text-muted-foreground">
           {correct} correct · {partial} almost · {items.length} items
         </p>
-        <Button
-          onClick={() => navigate("/activities")}
-          className="mt-7 h-11 px-7 bg-[hsl(var(--ac-emerald-strong))] text-white hover:bg-[hsl(var(--ac-emerald))]"
-        >
-          Done
-        </Button>
+        {practice && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Practice run — not counted toward your graded score.
+          </p>
+        )}
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <Button
+            onClick={() => navigate("/activities")}
+            className="h-11 px-7 bg-[hsl(var(--ac-emerald-strong))] text-white hover:bg-[hsl(var(--ac-emerald))]"
+          >
+            Done
+          </Button>
+          {onPractice && (
+            <Button
+              variant="outline"
+              onClick={onPractice}
+              className="h-11 px-7"
+            >
+              Practice again
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="mt-6 space-y-3">

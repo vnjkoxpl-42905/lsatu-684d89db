@@ -79,6 +79,28 @@ export async function archiveClassroomItem(id: string) {
   return updateClassroomItem(id, { status: 'archived', visible_to_student: false });
 }
 
+/**
+ * Keep the Classroom feed in step with a source assignment's progress.
+ * Finds the classroom_items row that points at (sourceTable, sourceId) and
+ * advances its status, so a completed activity stops showing "Start". RLS
+ * scopes the update to the caller's own rows. Caller treats failure as
+ * non-fatal — the source assignment remains the source of truth.
+ */
+export async function syncClassroomItemStatusBySource(
+  sourceTable: string,
+  sourceId: string,
+  status: ClassroomItem['status'],
+): Promise<void> {
+  const patch: { status: ClassroomItem['status']; completed_at?: string } = { status };
+  if (status === 'completed') patch.completed_at = new Date().toISOString();
+  const { error } = await supabase
+    .from('classroom_items')
+    .update(patch)
+    .eq('source_table', sourceTable)
+    .eq('source_id', sourceId);
+  if (error) throw error;
+}
+
 export function nextActionFor(items: ClassroomItem[]): ClassroomItem | null {
   if (!items?.length) return null;
   const candidates = items.filter(

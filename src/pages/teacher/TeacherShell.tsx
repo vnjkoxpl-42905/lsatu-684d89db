@@ -12,6 +12,7 @@ import {
   Shield,
   Archive,
   GraduationCap,
+  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -33,6 +34,7 @@ const PRIMARY_NAV: NavItem[] = [
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
+  { to: '/teacher/activities', label: 'Activities', Icon: Zap },
   { to: '/teacher/whiteboard', label: 'Whiteboard', Icon: PencilRuler },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },

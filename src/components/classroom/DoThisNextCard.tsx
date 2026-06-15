@@ -25,6 +25,7 @@ const TYPE_LABEL: Record<string, string> = {
   homework: 'Homework',
   ta_assignment: 'TA assignment',
   drill: 'Drill',
+  activity: 'Activity',
 };
 
 export function DoThisNextCard({ item }: Props) {

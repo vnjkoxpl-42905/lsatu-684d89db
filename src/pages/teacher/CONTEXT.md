@@ -53,7 +53,13 @@ A post-session summary for a student. **Not hand-written** — AI-drafted from t
 The Excalidraw canvas for live teaching. Its own **top-level tab**: a template gallery (reusable boards prepped per lesson type — conditional, causal) plus saved sessions. Opened standalone or attached to a student. Templates are a teaching aid Joshua prepares once and reuses; they are NOT a student-assignable material (the student doesn't receive a board, Joshua presents on it).
 
 ### Command
-The home base: triage (what needs a reply), AI draft approval queue, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). Contains the operator AI assistant. (The separate "AI TA" route was already merged into Command — `/teacher/ai-ta` redirects to `/teacher`.)
+The home base: a **work queue-centered** hub for triage (what needs a reply), AI draft approval queue, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). Contains the operator AI assistant. (The separate "AI TA" route was already merged into Command — `/teacher/ai-ta` redirects to `/teacher`.)
+
+### Work Queue-Centered
+The Command page is organized by the kind of work waiting for Joshua, not by the student roster and not by app sections. A work queue answers "what must I handle right now?" Examples: reply to students, approve assistant drafts, review uploads, assign next work, inspect analytics. Students appear inside queues as the people affected by the work.
+
+### Student-Centered
+An organization model where the student is the primary object: Joshua scans students first, then discovers each student's messages, assignments, recaps, uploads, and analytics. This belongs in **Students** and student detail pages. Command may show student rows inside a queue, but Command is not primarily a student roster.
 
 ### Ingestion (Drive + Gmail)
 The inbound layer that feeds the workspace from Joshua's Google account. **Import from Google Drive and Gmail.** It supplies two things: (1) **Library material** — notes (often stored as **HTML**), question sets, files Joshua imports to assign; (2) **Session Transcripts** — Meet/Gemini transcripts that arrive by email. Materials are imported (copied in), not read live, so the Library stays the source of truth.

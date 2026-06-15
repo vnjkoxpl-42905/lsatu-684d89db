@@ -7,3 +7,4 @@ export { ItemPrompt } from "./ItemPrompt";
 export { CoachFeedback } from "./CoachFeedback";
 export { ProgressHeader } from "./ProgressHeader";
 export { CompletionSummary } from "./CompletionSummary";
+export { ActivityResults } from "./ActivityResults";

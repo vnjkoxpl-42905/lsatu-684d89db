@@ -4,6 +4,7 @@ import type {
   ActivityAssignment,
   ActivityInstructions,
   ActivityItem,
+  ActivityItemResponse,
   ActivityStatus,
   Verdict,
 } from "./types";
@@ -84,6 +85,26 @@ export async function recordItemResponse(input: {
   if (error) throw error;
 }
 
+/**
+ * Student: read my full append-only attempt log for one assignment, ordered so
+ * reconstruction can walk items in order and attempts oldest-first. Drives
+ * resume-where-I-left-off. RLS scopes to student_id = auth.uid().
+ */
+export async function listItemResponses(
+  assignmentId: string,
+  studentId: string,
+): Promise<ActivityItemResponse[]> {
+  const { data, error } = await supabase
+    .from("activity_item_responses")
+    .select("*")
+    .eq("assignment_id", assignmentId)
+    .eq("student_id", studentId)
+    .order("item_order", { ascending: true })
+    .order("attempt_no", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as ActivityItemResponse[];
+}
+
 /** Student: complete an assignment, writing the final score. */
 export async function completeAssignment(assignmentId: string, score: number): Promise<void> {
   const { error } = await supabase
@@ -118,6 +139,31 @@ export async function listAssignmentsForStudent(studentId: string): Promise<Acti
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []).map(hydrateAssignment);
+}
+
+/** Admin: list every assignment issued for one activity, across all students. */
+export async function listAssignmentsForActivity(activityId: string): Promise<ActivityAssignment[]> {
+  const { data, error } = await supabase
+    .from("activity_assignments")
+    .select("*")
+    .eq("activity_id", activityId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(hydrateAssignment);
+}
+
+/** Admin: read every attempt for one assignment (any student). RLS allows admin read. */
+export async function listResponsesForAssignment(
+  assignmentId: string,
+): Promise<ActivityItemResponse[]> {
+  const { data, error } = await supabase
+    .from("activity_item_responses")
+    .select("*")
+    .eq("assignment_id", assignmentId)
+    .order("item_order", { ascending: true })
+    .order("attempt_no", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as ActivityItemResponse[];
 }
 
 /**

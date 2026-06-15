@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ChevronDown, Play, Sparkles, Users } from "lucide-react";
+import { BarChart3, ChevronDown, Play, Sparkles, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { useAdminActivities, useAssignActivity } from "@/features/activity-centre";
+import { useAdminActivities, useAssignActivity, ActivityResults } from "@/features/activity-centre";
 import type { Activity } from "@/features/activity-centre";
 
 interface StudentRow {
@@ -92,6 +92,11 @@ function ActivityCard({
   const { assign, assigning } = useAssignActivity();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [previewing, setPreviewing] = useState(false);
+  const [tab, setTab] = useState<"assign" | "results">("assign");
+  const [resultsKey, setResultsKey] = useState(0);
+
+  const nameFor = (studentId: string) =>
+    students.find((s) => s.user_id === studentId)?.display_name || "Unnamed student";
 
   const toggle = (id: string) =>
     setSelected((prev) => {
@@ -106,14 +111,25 @@ function ActivityCard({
   const handleAssign = async () => {
     if (selectedIds.length === 0) return;
     let ok = 0;
+    let emailFailures = 0;
     for (const studentId of selectedIds) {
-      const res = await assign(activity, studentId);
-      if (res.ok) ok += 1;
-      else toast.error(res.error || "Assign failed");
+      const res = await assign(activity, studentId, { notify: true });
+      if (res.ok) {
+        ok += 1;
+        if (res.emailOk === false) emailFailures += 1;
+      } else {
+        toast.error(res.error || "Assign failed");
+      }
     }
     if (ok > 0) {
-      toast.success(`Assigned ${activity.title} to ${ok} student${ok === 1 ? "" : "s"}`);
+      const base = `Assigned ${activity.title} to ${ok} student${ok === 1 ? "" : "s"}`;
+      if (emailFailures > 0) {
+        toast.warning(`${base}, but email failed for ${emailFailures}. Classroom + alert still landed.`);
+      } else {
+        toast.success(`${base} — notified by email, classroom, and alert.`);
+      }
       setSelected(new Set());
+      setResultsKey((k) => k + 1);
     }
   };
 
@@ -154,31 +170,57 @@ function ActivityCard({
 
       {open && (
         <div className="border-t border-zinc-800 p-4">
-          <div className="mb-3 flex items-center gap-1.5 text-xs font-medium text-zinc-400">
-            <Users className="h-3.5 w-3.5" /> Assign to students
+          <div className="mb-4 flex gap-1 rounded-lg bg-zinc-900 p-1 text-xs font-medium">
+            <button
+              type="button"
+              onClick={() => setTab("assign")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 transition-colors",
+                tab === "assign" ? "bg-zinc-800 text-zinc-100" : "text-zinc-400 hover:text-zinc-200",
+              )}
+            >
+              <Users className="h-3.5 w-3.5" /> Assign
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("results")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 transition-colors",
+                tab === "results" ? "bg-zinc-800 text-zinc-100" : "text-zinc-400 hover:text-zinc-200",
+              )}
+            >
+              <BarChart3 className="h-3.5 w-3.5" /> Results
+            </button>
           </div>
-          {students.length === 0 ? (
-            <p className="text-xs text-zinc-500">No students found.</p>
+
+          {tab === "assign" ? (
+            <>
+              {students.length === 0 ? (
+                <p className="text-xs text-zinc-500">No students found.</p>
+              ) : (
+                <div className="max-h-56 space-y-1 overflow-y-auto pr-1">
+                  {students.map((s) => (
+                    <label
+                      key={s.user_id}
+                      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-800/50"
+                    >
+                      <Checkbox checked={selected.has(s.user_id)} onCheckedChange={() => toggle(s.user_id)} />
+                      <span className="text-sm text-zinc-200">{s.display_name || "Unnamed student"}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+              <Button
+                onClick={handleAssign}
+                disabled={assigning || selectedIds.length === 0}
+                className="mt-4 bg-emerald-600 text-white hover:bg-emerald-500"
+              >
+                {assigning ? "Assigning…" : `Assign${selectedIds.length ? ` (${selectedIds.length})` : ""}`}
+              </Button>
+            </>
           ) : (
-            <div className="max-h-56 space-y-1 overflow-y-auto pr-1">
-              {students.map((s) => (
-                <label
-                  key={s.user_id}
-                  className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-800/50"
-                >
-                  <Checkbox checked={selected.has(s.user_id)} onCheckedChange={() => toggle(s.user_id)} />
-                  <span className="text-sm text-zinc-200">{s.display_name || "Unnamed student"}</span>
-                </label>
-              ))}
-            </div>
+            <ActivityResults activityId={activity.id} nameFor={nameFor} reloadKey={resultsKey} />
           )}
-          <Button
-            onClick={handleAssign}
-            disabled={assigning || selectedIds.length === 0}
-            className="mt-4 bg-emerald-600 text-white hover:bg-emerald-500"
-          >
-            {assigning ? "Assigning…" : `Assign${selectedIds.length ? ` (${selectedIds.length})` : ""}`}
-          </Button>
         </div>
       )}
     </div>
