@@ -12,12 +12,11 @@ interface ActivityIntroProps {
 }
 
 /**
- * Activities homepage (intro). Fits the bootcamp's warm tactile workbook: a
- * calm warm-paper reading column with an emerald accent (the per-activity
- * signature). A simple header, numbered how-it-works steps, a before -> after
- * worked example as two paper cards, and the Start action. Sections fade up
- * gently on mount (collapsed under reduced-motion). See activities-home.css for
- * the scoped design tokens; the drill + completion screens are untouched.
+ * Editorial intro for an activity. Layout mirrors the reference: small
+ * breadcrumb-with-arrows label top-left, "NN ITEMS" counter top-right with an
+ * accent underline, a large mixed-weight headline, numbered how-it-works list,
+ * a worked example shown as two overlapping circles (Before = dark, After =
+ * light silver), and the Start action.
  */
 export function ActivityIntro({ title, subtitle, instructions, itemCount, onStart }: ActivityIntroProps) {
   const ex = instructions.worked_example;
@@ -43,53 +42,74 @@ export function ActivityIntro({ title, subtitle, instructions, itemCount, onStar
   };
 
   return (
-    <motion.div className="act-body" variants={container} initial="hidden" animate="show">
-      <motion.header variants={item} className="act-header">
-        <span className="act-eyebrow">{itemCount} items</span>
-        <h1 className="act-title">{title}</h1>
-        {subtitle && <p className="act-subtitle">{subtitle}</p>}
+    <motion.div className="act-edit" variants={container} initial="hidden" animate="show">
+      {/* Top meta row: breadcrumb label + items counter */}
+      <motion.div variants={item} className="act-edit-topbar">
+        <span className="act-edit-crumb" aria-hidden="true">
+          <span className="act-edit-crumb-arrow">◀</span>
+          <span>{title}</span>
+          <span className="act-edit-crumb-arrow">▶</span>
+        </span>
+        <span className="act-edit-counter" aria-label={`${itemCount} items`}>
+          <span className="act-edit-counter-num">{String(itemCount).padStart(2, "0")}</span>
+          <span className="act-edit-counter-rule" aria-hidden="true" />
+          <span className="act-edit-counter-total">ITEMS</span>
+        </span>
+      </motion.div>
+
+      {/* Headline block */}
+      <motion.header variants={item} className="act-edit-header">
+        <h1 className="act-edit-title">
+          <span className="act-edit-title-bold">{title}.</span>{" "}
+          {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
+        </h1>
       </motion.header>
 
       {instructions.tagline && (
-        <motion.p variants={item} className="act-tagline act-prose">
+        <motion.p variants={item} className="act-edit-tagline act-prose">
           {instructions.tagline}
         </motion.p>
       )}
 
-      {instructions.rules?.length ? (
-        <motion.ol variants={item} className="act-steps">
-          {instructions.rules.map((rule, i) => (
-            <li key={i} className="act-step">
-              <span className="act-step-num">{i + 1}</span>
-              <span className="act-step-text">{rule}</span>
-            </li>
-          ))}
-        </motion.ol>
-      ) : null}
+      {/* Two-column: rules left, circles right (stacks on mobile) */}
+      <motion.div variants={item} className="act-edit-grid">
+        {instructions.rules?.length ? (
+          <ol className="act-steps">
+            {instructions.rules.map((rule, i) => (
+              <li key={i} className="act-step">
+                <span className="act-step-num">{i + 1}</span>
+                <span className="act-step-text">{rule}</span>
+              </li>
+            ))}
+          </ol>
+        ) : <span />}
 
-      {ex && (
-        <motion.div variants={item}>
-          <div className="act-example">
-            <div className="act-card">
-              <p className="act-card-label">Before</p>
-              <p className="act-card-statement">{ex.statement}</p>
+        {ex && (
+          <div className="act-orbs" aria-label="Worked example">
+            <div className="act-orb act-orb--before">
+              <div className="act-orb-inner">
+                <p className="act-orb-label">Before</p>
+                <p className="act-orb-statement">{ex.statement}</p>
+              </div>
             </div>
-            <div className="act-arrow" aria-hidden="true">
-              <ArrowRight size={22} strokeWidth={2.25} />
-            </div>
-            <div className="act-card">
-              <p className="act-card-label">After, any of these</p>
-              <div className="act-chips">
-                {ex.credited_answers.map((answer, i) => (
-                  <span key={i} className="act-chip">
-                    {answer}
-                  </span>
-                ))}
+            <div className="act-orb act-orb--after">
+              <div className="act-orb-inner">
+                <p className="act-orb-label">After, any of these</p>
+                <ul className="act-orb-list">
+                  {ex.credited_answers.map((answer, i) => (
+                    <li key={i}>{answer}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
-          {ex.explanation && <p className="act-why act-prose">{ex.explanation}</p>}
-        </motion.div>
+        )}
+      </motion.div>
+
+      {ex?.explanation && (
+        <motion.p variants={item} className="act-why act-prose">
+          {ex.explanation}
+        </motion.p>
       )}
 
       {instructions.task && (
