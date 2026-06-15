@@ -44,7 +44,7 @@ export function AnswerPanel({
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
 
   return (
-    <div className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(16,24,40,0.04)] md:p-9">
+    <div className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9">
       <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
         Your negation
       </label>

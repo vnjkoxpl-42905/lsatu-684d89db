@@ -26,7 +26,7 @@ export function CompletionSummary({ title, items, verdicts, responses, score }: 
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 text-center shadow-[0_2px_24px_rgba(16,24,40,0.05)] md:p-12">
+      <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 text-center shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           {title} complete
         </p>

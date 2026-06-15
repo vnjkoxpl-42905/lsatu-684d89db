@@ -1,79 +1,85 @@
 # Activities Design System
 
 > The visual + structural contract for the Activities Centre (standalone skill
-> drills like Negation Station). This is a NEW distinct world, authored by
-> interview, and does NOT inherit the bootcamp workbook `DESIGN.md`. Strategy,
-> users, voice, and anti-references come from `PRODUCT.md`. Plain-language term
-> definitions live in `ACTIVITIES-CONTEXT.md`.
+> drills like Negation Station). Activities **fit the bootcamp's warm tactile
+> workbook** (`DESIGN.md`): same warm paper surfaces, same Inter + Georgia type,
+> same soft depth and calm motion. The one thing each activity keeps for itself
+> is a single accent hue. Strategy, users, voice, and anti-references come from
+> `PRODUCT.md`. Plain-language term definitions live in `ACTIVITIES-CONTEXT.md`.
 >
-> Status: v0.1. Covers the activity homepage (intro). Running and completion
+> Status: v0.2. Covers the activity homepage (intro). Running and completion
 > anatomy are intentionally not specified yet (see TODO at the end).
+>
+> Changed in v0.2 (2026-06-14): retired the standalone cool-emerald "distinct
+> world." Activities now share the bootcamp's warm workbook palette and type;
+> only the accent stays per-activity. Simpler homepage: the loud two-tone
+> full-bleed banner is gone, replaced by a calm warm-paper reading column.
 
 ## 1. Principles
 
-1. **Distinct world.** Activities are neither the dark app shell nor the warm bootcamp workbook. They are a bright, confident, color-themed environment of their own.
-2. **One skeleton, one accent per activity.** Structure, type, spacing, radius, and motion are fixed and identical across activities. Each activity supplies a single accent hue; the rest of the palette derives from it. (Negation Station = emerald.)
-3. **Fully color-themed light.** The canvas itself is a light tint of the activity's accent, not white. Bold accent zones carry identity; reading surfaces stay calm.
-4. **Bold geometric.** Confident blocks, strong shapes, large display type, deliberate entrance motion. Not timid, not decorative.
-5. **Modern learning app, anti-arcade.** Energy comes from color, type, and motion, never gamification. No streaks, XP, or confetti (PRODUCT.md anti-references).
-6. **Reuse the system.** lucide-react icons, framer-motion v12 for motion. Scope all tokens under one wrapper so the world is self-contained and theme-independent (it stays light even when the app is dark).
+1. **Same family as the workbook.** Activities are not a separate visual world. They use the bootcamp's warm cream paper canvas, warm ink, layered paper surfaces, and soft depth, so a drill feels native to the rest of the product.
+2. **One accent per activity.** Structure, type, spacing, radius, and motion are fixed and identical across activities and shared with the workbook. Each activity supplies a single accent hue used only on small signals (eyebrow, numerals, chips, the Start button). Negation Station = emerald.
+3. **Calm, not loud.** A single centered reading column on warm paper. No full-bleed colored banner, no large drenched zones. Identity comes from the accent used sparingly, not from a wall of color.
+4. **Teaching-first.** The how-it-works steps and the worked example are the heroes. Chrome recedes.
+5. **Modern learning app, anti-arcade.** No streaks, XP, or confetti (PRODUCT.md anti-references). Energy is quiet and earned.
+6. **Reuse the system.** lucide-react icons, framer-motion v12 for motion, Inter + Georgia. Scope all tokens under one `.act-home` wrapper.
 
-## 2. Typography
+## 2. Typography (shared with the bootcamp)
 
-- **Display** (the title, the identity moment): **Clash Display** (Fontshare), weights 600/700. Distinctive geometric. Tight tracking, Title Case.
-- **UI + body**: **Inter**, weights 400/500/600/700.
-- Hierarchy from scale and weight; aim for at least a 1.25 ratio between steps. Micro-labels (eyebrow, card labels) are uppercase with wide tracking.
+- **Title + UI**: **Inter** (already loaded), weights 400/500/600/700/800. The activity title is Inter 800, tight tracking, Title Case.
+- **Reading prose** (tagline, the "why" line): **Georgia** serif, `font-feature-settings: 'liga' 1, 'kern' 1`, as in the workbook stimulus/explanations.
+- Micro-labels (eyebrow, card labels) are uppercase with wide tracking. No bespoke display font; Clash Display was removed in v0.2.
 
 ## 3. Token contract
 
-All tokens are HSL triplets (matching the repo convention), scoped under `.act-home`. A per-activity palette fills only the accent slot; the skeleton is fixed. See `src/features/activity-centre/activities-home.css` for the live source.
+All tokens are HSL triplets (matching the repo convention), scoped under `.act-home`. A per-activity palette fills only the accent slot; the warm paper skeleton is fixed and mirrors the bootcamp. See `src/features/activity-centre/activities-home.css` for the live source.
 
 ### Per-activity accent slot (Negation Station = emerald)
 | Token | Value (NS) | Role |
 |---|---|---|
-| `--act-deep` | `162 90% 18%` | banner deep zone, hover state. Title sits here. |
-| `--act-light-zone` | `152 52% 88%` | banner light zone (holds the eyebrow) |
-| `--act-accent` | `160 84% 36%` | numerals, chips, marks |
-| `--act-accent-strong` | `161 92% 26%` | Start button |
-| `--act-on-accent` | `0 0% 100%` | text on deep emerald / button |
+| `--act-accent` | `160 84% 32%` | eyebrow, numerals, chips, marks |
+| `--act-accent-strong` | `161 88% 24%` | Start button, hover marks |
+| `--act-on-accent` | `40 44% 97%` | warm off-white text on the accent |
 
-### Fixed surface recipe (tinted by the accent hue)
-| Token | Value (NS) | Role |
+### Fixed warm-paper surfaces (identical across activities, matches DESIGN.md)
+| Token | Value | Role |
 |---|---|---|
-| `--act-canvas` | `160 40% 97%` | tinted light base, NOT white |
-| `--act-surface` | `160 32% 99.3%` | cards, above canvas |
-| `--act-ink` | `174 28% 11%` | near-black body text |
-| `--act-ink-soft` | `174 9% 38%` | secondary text |
-| `--act-hairline` | `160 22% 86%` | soft borders |
+| `--act-canvas` | `38 36% 93%` | warm cream paper base, NOT white |
+| `--act-canvas-2` | `40 46% 96%` | lighter cream for the radial highlight |
+| `--act-surface` | `40 50% 98%` | cards, above canvas |
+| `--act-ink` | `30 17% 9%` | warm near-black body text |
+| `--act-ink-soft` | `30 8% 36%` | secondary text |
+| `--act-hairline` | `36 20% 84%` | soft warm borders |
 
 ### Fixed skeleton
-- Radius: `--act-r-card: 20px`, `--act-r-button: 12px`, `--act-r-chip: 999px`.
-- Shadow: soft, accent-tinted, low alpha (resting `--act-shadow-1`, raised `--act-shadow-2`).
-- Motion: ease-out `cubic-bezier(0.22, 1, 0.36, 1)`, ~160ms interactions, ~500ms entrance. No bounce. Collapses to instant under `prefers-reduced-motion`.
+- Radius (matches the workbook): `--act-r-card: 18px`, `--act-r-button: 10px`, `--act-r-chip: 8px`.
+- Depth: soft, ink-tinted, low alpha (`--act-shadow-1` resting, `--act-shadow-2` raised), as in DESIGN.md.
+- Motion: ease `cubic-bezier(0.4, 0, 0.2, 1)`, ~180ms interactions, ~400ms entrance. No bounce. Collapses to instant under `prefers-reduced-motion`.
 
 ### Guardrails (a per-activity palette is valid only if all pass)
-- Canvas stays clearly light and only tinted (high lightness, low saturation), never white, never the app's dark.
-- Body ink contrast >= 4.5:1 on both canvas and surface; large text >= 3:1 (WCAG AA, the PRODUCT.md floor).
-- Saturated accent only on the banner, button, numerals, chips, and marks, never as a reading-text wash.
+- Canvas stays warm (hue 20-60), light (L >= 90%), and only lightly saturated, never white, never cool gray, never the app's dark. Same as DESIGN.md G1.
+- Body ink contrast >= 4.5:1 on canvas and surface; large text >= 3:1 (WCAG AA, the PRODUCT.md floor).
+- The accent is a signal, not a wash: saturated accent only on the eyebrow, numerals, chips, marks, and the Start button. Never a full background.
 - Visible accent focus ring on every interactive element. Touch targets >= 44x44px. `prefers-reduced-motion` honored.
 
 ## 4. Component anatomy: Activity homepage (intro)
 
-The reusable intro template, top to bottom. Implemented in
+The reusable intro template, top to bottom, in a single centered warm-paper
+column (max-width ~44rem). Implemented in
 `src/features/activity-centre/components/ActivityIntro.tsx`.
 
-1. **Banner** (full-bleed, two-tone vertical split). Edge-to-edge strip, no outer rounding. Left zone deep emerald with the title in Clash Display Title Case (reversed-out) and the subtitle in Inter; right zone lighter emerald with the "N items" eyebrow. On mobile the zones stack.
-2. **Tagline.** `instructions.tagline` in Inter on the tinted canvas, comfortable reading width.
-3. **How it works (numbered steps).** `instructions.rules[]` as a numbered 1 / 2 / 3 list, each step with an emerald numeral marker. Never a paragraph wall.
-4. **Worked example (before to after, two cards).** A before card (the statement) and an after card (all credited answers as chips) side by side with a directional arrow between (stacks vertically with a down arrow on mobile). The explanation sits as a calm line below both cards.
+1. **Header.** A small accent eyebrow ("N items"), the title in Inter 800 Title Case, and the subtitle in Inter soft ink. No colored banner.
+2. **Tagline.** `instructions.tagline` in Georgia prose on the warm canvas.
+3. **How it works (numbered steps).** `instructions.rules[]` as a numbered 1 / 2 / 3 list, each step with a small accent numeral marker. Never a paragraph wall.
+4. **Worked example (before to after, two paper cards).** A before card (the statement) and an after card (all credited answers as accent chips) side by side with a directional arrow between (stacks vertically with a down arrow on mobile). The explanation sits in Georgia below both cards.
 5. **Task line.** `instructions.task` emphasized, directly above the button.
-6. **Start.** Large `--act-accent-strong` button labelled by action ("Start drilling"), confident hover (lift + deepen), accent focus ring.
+6. **Start.** `--act-accent-strong` button labelled by action ("Start drilling"), soft hover lift, accent focus ring, >= 44px target.
 
-Motion: sections stagger up in sequence on mount (banner, tagline, steps, example, task, button), ease-out, collapsing to instant under reduced-motion.
+Motion: sections fade up gently in sequence on mount (header, tagline, steps, example, task, button), ease-out, collapsing to instant under reduced-motion.
 
 A future activity reuses this exact anatomy with a different accent hue and its own copy.
 
 ## 5. TODO (not yet specified)
 - Running / question phase anatomy in this world (currently uses the older `.activity-centre` tokens).
 - Completion / review phase anatomy (currently leads with a large score; PRODUCT.md anti-references warn against the score-screen-as-ending).
-- A documented per-activity accent palette set for activities beyond Negation Station.
+- A documented per-activity accent palette set for activities beyond Negation Station (each must still pass the warm-canvas guardrails above).

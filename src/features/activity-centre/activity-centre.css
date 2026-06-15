@@ -1,38 +1,40 @@
 /*
- * Activity Centre is an always-light editorial surface, even when the app is
- * toggled to dark. We pin the same token values as `.light` in src/index.css
- * onto the .activity-centre wrapper so every shadcn primitive inside renders
- * light regardless of the ancestor theme class. The single accent is emerald
- * (--state-correct); we also override the global focus-visible ring (bronze)
- * to emerald within this scope.
+ * Activity Centre is an always-light warm workbook surface, even when the app is
+ * toggled to dark. It fits the bootcamp's warm tactile palette (DESIGN.md): a
+ * warm cream paper canvas, warm near-black ink, emerald as the single per-
+ * activity accent. We pin warm token values onto the .activity-centre wrapper so
+ * every shadcn primitive inside renders warm + light regardless of the ancestor
+ * theme class, and override the global focus-visible ring (bronze) to emerald.
+ * These tokens match the homepage scope (.act-home) so the intro and the drill
+ * read as one continuous surface.
  */
 
 .activity-centre {
   color-scheme: light;
-  --background: 0 0% 99%;
-  --foreground: 0 0% 7%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 7%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 7%;
-  --primary: 0 0% 7%;
-  --primary-foreground: 0 0% 99%;
-  --secondary: 0 0% 95%;
-  --secondary-foreground: 0 0% 7%;
-  --muted: 0 0% 95%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 0 0% 92%;
-  --accent-foreground: 0 0% 7%;
+  --background: 38 36% 93%;      /* warm cream paper, matches .act-home canvas */
+  --foreground: 30 17% 9%;       /* warm near-black ink                        */
+  --card: 40 50% 98%;            /* card surface, lighter than canvas (G2)     */
+  --card-foreground: 30 17% 9%;
+  --popover: 40 50% 98%;
+  --popover-foreground: 30 17% 9%;
+  --primary: 30 17% 12%;
+  --primary-foreground: 40 44% 97%;
+  --secondary: 38 28% 89%;
+  --secondary-foreground: 30 17% 12%;
+  --muted: 38 26% 90%;
+  --muted-foreground: 30 8% 36%;
+  --accent: 38 30% 87%;
+  --accent-foreground: 30 17% 12%;
   --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 88%;
-  --input: 0 0% 90%;
-  --ring: 160 84% 39%; /* emerald, overriding the global bronze ring */
+  --destructive-foreground: 40 44% 97%;
+  --border: 36 20% 84%;
+  --input: 36 20% 82%;
+  --ring: 160 84% 32%; /* emerald, overriding the global bronze ring */
 
-  /* Editorial surface tone (off-white) + emerald accent shorthand. */
-  --ac-surface: 210 40% 99%;
-  --ac-emerald: 160 84% 39%;
-  --ac-emerald-strong: 161 94% 30%;
+  /* Warm paper surface tone + emerald accent shorthand (matches .act-home). */
+  --ac-surface: 40 50% 98%;
+  --ac-emerald: 160 84% 32%;
+  --ac-emerald-strong: 161 88% 24%;
 
   background: hsl(var(--background));
   color: hsl(var(--foreground));
@@ -57,15 +59,16 @@
 
 /* ---------- Split-screen quiz layout ---------- */
 
+/* Warm-dark hero rail: the dark end of the warm ink ramp (same hue as --ink),
+ * with a soft emerald glow for the activity's identity. Warm, not cool navy. */
 .activity-centre .ac-hero {
-  background-color: #1a1f2c;
+  background-color: hsl(30 24% 12%);
 }
 
 .activity-centre .ac-hero-bg {
   background:
-    linear-gradient(180deg, rgba(15, 20, 32, 0.55) 0%, rgba(15, 20, 32, 0.85) 100%),
-    radial-gradient(120% 80% at 20% 20%, hsl(var(--ac-emerald) / 0.35), transparent 60%),
-    linear-gradient(135deg, #1f2937 0%, #0f172a 60%, #1a2233 100%);
+    radial-gradient(120% 80% at 18% 18%, hsl(var(--ac-emerald) / 0.2), transparent 55%),
+    linear-gradient(165deg, hsl(30 22% 15%) 0%, hsl(28 26% 9%) 60%, hsl(32 20% 13%) 100%);
   background-size: cover;
   background-position: center;
 }
@@ -80,6 +83,7 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
