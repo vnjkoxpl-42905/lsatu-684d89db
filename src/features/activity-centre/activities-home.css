@@ -421,18 +421,35 @@
   background: #000;
   color: hsl(40 30% 96%);
   z-index: 1;
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.45),
+    inset 0 -10px 30px rgba(255, 255, 255, 0.04);
 }
 
 .act-home .act-orb--after {
   bottom: 0;
   right: 0;
   background:
-    radial-gradient(circle at 30% 22%, #ffffff 0%, #ededea 40%, #b8b3aa 78%, #7a7468 100%);
+    linear-gradient(135deg, transparent 28%, rgba(255, 255, 255, 0.7) 48%, transparent 68%),
+    conic-gradient(
+      from 210deg at 50% 50%,
+      #9c968a 0%,
+      #d8d4cc 14%,
+      #ffffff 28%,
+      #f4f0e8 38%,
+      #8d8678 55%,
+      #2b2925 68%,
+      #6b6557 82%,
+      #9c968a 100%
+    );
   color: hsl(var(--act-ink));
   z-index: 2;
-  box-shadow: 0 30px 60px -25px rgba(60, 50, 30, 0.35);
+  box-shadow:
+    0 30px 60px -25px rgba(60, 50, 30, 0.4),
+    inset 0 -8px 24px rgba(0, 0, 0, 0.18),
+    inset 0 8px 18px rgba(255, 255, 255, 0.4);
 }
+
 
 .act-home .act-orb-label {
   font-size: 0.68rem;
