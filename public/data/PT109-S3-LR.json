@@ -322,7 +322,12 @@
       "D": "demonstrate that there is no relation between the number of police officers and the crime rate",
       "E": "suggest that the number of police officers is not the only influence on the crime rate"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Implied Conclusion"
+    ]
   },
   {
     "practiceTest": "PT109",

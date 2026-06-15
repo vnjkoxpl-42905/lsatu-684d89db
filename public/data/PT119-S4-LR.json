@@ -492,7 +492,11 @@
       "D": "Utilizing direct-mail marketing is rarely beneficial for restaurants that cannot identify regular, average, and infrequent customers.",
       "E": "Restaurants that routinely record names, addresses, and menu selections of their customers always utilize direct-mail marketing more effectively than do any other restaurants."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",
