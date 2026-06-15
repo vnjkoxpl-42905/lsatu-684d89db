@@ -428,7 +428,7 @@
   bottom: 0;
   right: 0;
   background:
-    radial-gradient(circle at 30% 25%, #ffffff 0%, #f2efe8 35%, #c9c2b4 70%, #8d8576 100%);
+    radial-gradient(circle at 30% 22%, #ffffff 0%, #ededea 40%, #b8b3aa 78%, #7a7468 100%);
   color: hsl(var(--act-ink));
   z-index: 2;
   box-shadow: 0 30px 60px -25px rgba(60, 50, 30, 0.35);
