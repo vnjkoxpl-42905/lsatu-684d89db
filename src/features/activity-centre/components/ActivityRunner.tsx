@@ -112,16 +112,14 @@ export function ActivityRunner() {
 
   if (phase === "intro") {
     return (
-      <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
-        <div className="mx-auto max-w-5xl">
-          <ActivityIntro
-            title={assignment.title}
-            subtitle={assignment.subtitle}
-            instructions={assignment.instructions}
-            itemCount={items.length}
-            onStart={handleStart}
-          />
-        </div>
+      <div className="activity-centre act-home">
+        <ActivityIntro
+          title={assignment.title}
+          subtitle={assignment.subtitle}
+          instructions={assignment.instructions}
+          itemCount={items.length}
+          onStart={handleStart}
+        />
       </div>
     );
   }

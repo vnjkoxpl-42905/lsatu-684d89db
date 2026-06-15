@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
+import "../activities-home.css";
 
 interface ActivityIntroProps {
   title: string;
@@ -9,55 +11,105 @@ interface ActivityIntroProps {
   onStart: () => void;
 }
 
-/** Editorial hero: title, rules, worked example, emerald Start. */
+/**
+ * Activities homepage (intro). The distinct "Activities" world: a full-bleed
+ * two-tone emerald banner, numbered how-it-works steps, a before -> after
+ * worked example as two cards, and the Start action. Sections stagger up on
+ * mount (collapsed under reduced-motion). See activities-home.css for the
+ * scoped design tokens; the drill + completion screens are untouched.
+ */
 export function ActivityIntro({ title, subtitle, instructions, itemCount, onStart }: ActivityIntroProps) {
   const ex = instructions.worked_example;
+  const reduce = useReducedMotion();
+
+  const container: Variants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: reduce ? 0 : 0.08,
+        delayChildren: reduce ? 0 : 0.05,
+      },
+    },
+  };
+
+  const item: Variants = {
+    hidden: { opacity: 0, y: reduce ? 0 : 18 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduce ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+
   return (
-    <div className="mx-auto max-w-2xl rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 shadow-[0_2px_24px_rgba(16,24,40,0.05)] md:p-12">
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-        {itemCount} items
-      </p>
-      <h1 className="ac-display mt-3 text-4xl text-foreground md:text-5xl">{title}</h1>
-      {subtitle && <p className="mt-2 text-lg text-muted-foreground">{subtitle}</p>}
-
-      {instructions.tagline && (
-        <p className="mt-6 text-[15px] leading-relaxed text-foreground/80">{instructions.tagline}</p>
-      )}
-
-      {instructions.rules?.length ? (
-        <div className="mt-6 space-y-3">
-          {instructions.rules.map((r, i) => (
-            <p key={i} className="text-[15px] leading-relaxed text-foreground/75">
-              {r}
-            </p>
-          ))}
+    <motion.div variants={container} initial="hidden" animate="show">
+      {/* Full-bleed two-tone banner: deep zone holds the title, light zone the count. */}
+      <motion.div variants={item} className="act-banner">
+        <div className="act-banner-deep">
+          <h1 className="act-display text-4xl md:text-6xl">{title}</h1>
+          {subtitle && <p className="text-base text-white/85 md:text-lg">{subtitle}</p>}
         </div>
-      ) : null}
-
-      {ex && (
-        <div className="mt-7 rounded-2xl border border-border bg-card p-5">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Example</p>
-          <p className="ac-display mt-2 text-lg text-foreground">{ex.statement}</p>
-          <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Credited answers
-          </p>
-          <p className="mt-1 text-sm text-foreground/80">{ex.credited_answers.join(" · ")}</p>
-          {ex.explanation && (
-            <p className="mt-3 text-sm leading-relaxed text-foreground/70">{ex.explanation}</p>
-          )}
+        <div className="act-banner-light">
+          <span className="act-eyebrow">{itemCount} items</span>
         </div>
-      )}
+      </motion.div>
 
-      {instructions.task && (
-        <p className="mt-6 text-[15px] font-medium text-foreground/85">{instructions.task}</p>
-      )}
+      <div className="act-body">
+        {instructions.tagline && (
+          <motion.p variants={item} className="act-tagline">
+            {instructions.tagline}
+          </motion.p>
+        )}
 
-      <Button
-        onClick={onStart}
-        className="mt-8 h-11 px-7 text-base bg-[hsl(var(--ac-emerald-strong))] text-white hover:bg-[hsl(var(--ac-emerald))]"
-      >
-        Start
-      </Button>
-    </div>
+        {instructions.rules?.length ? (
+          <motion.ol variants={item} className="act-steps mt-8">
+            {instructions.rules.map((rule, i) => (
+              <li key={i} className="act-step">
+                <span className="act-step-num">{i + 1}</span>
+                <span className="act-step-text">{rule}</span>
+              </li>
+            ))}
+          </motion.ol>
+        ) : null}
+
+        {ex && (
+          <motion.div variants={item} className="mt-8">
+            <div className="act-example">
+              <div className="act-card">
+                <p className="act-card-label">Before</p>
+                <p className="act-card-statement">{ex.statement}</p>
+              </div>
+              <div className="act-arrow" aria-hidden="true">
+                <ArrowRight size={22} strokeWidth={2.25} />
+              </div>
+              <div className="act-card">
+                <p className="act-card-label">After, any of these</p>
+                <div className="act-chips">
+                  {ex.credited_answers.map((answer, i) => (
+                    <span key={i} className="act-chip">
+                      {answer}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {ex.explanation && <p className="act-why">{ex.explanation}</p>}
+          </motion.div>
+        )}
+
+        {instructions.task && (
+          <motion.p variants={item} className="act-task mt-8">
+            {instructions.task}
+          </motion.p>
+        )}
+
+        <motion.div variants={item} className="mt-6">
+          <button type="button" onClick={onStart} className="act-start">
+            Start drilling
+            <ArrowRight size={18} strokeWidth={2.25} />
+          </button>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }
