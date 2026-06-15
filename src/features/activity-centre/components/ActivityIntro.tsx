@@ -7,7 +7,6 @@ interface ActivityIntroProps {
   title: string;
   subtitle: string | null;
   instructions: ActivityInstructions;
-  itemCount: number;
   onStart: () => void;
 }
 
@@ -18,7 +17,7 @@ interface ActivityIntroProps {
  * a worked example shown as two overlapping circles (Before = dark, After =
  * light silver), and the Start action.
  */
-export function ActivityIntro({ title, subtitle, instructions, itemCount, onStart }: ActivityIntroProps) {
+export function ActivityIntro({ title, subtitle, instructions, onStart }: ActivityIntroProps) {
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
 
@@ -49,11 +48,6 @@ export function ActivityIntro({ title, subtitle, instructions, itemCount, onStar
           <span className="act-edit-crumb-arrow">◀</span>
           <span>{title}</span>
           <span className="act-edit-crumb-arrow">▶</span>
-        </span>
-        <span className="act-edit-counter" aria-label={`${itemCount} items`}>
-          <span className="act-edit-counter-num">{String(itemCount).padStart(2, "0")}</span>
-          <span className="act-edit-counter-rule" aria-hidden="true" />
-          <span className="act-edit-counter-total">ITEMS</span>
         </span>
       </motion.div>
 

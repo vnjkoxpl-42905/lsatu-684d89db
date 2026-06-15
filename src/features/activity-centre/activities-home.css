@@ -303,44 +303,6 @@
   line-height: 1;
 }
 
-.act-home .act-edit-counter {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.85rem;
-  color: hsl(var(--act-ink));
-  letter-spacing: 0.04em;
-}
-
-.act-home .act-edit-counter-num {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.act-home .act-edit-counter-rule {
-  display: inline-block;
-  width: 4.5rem;
-  height: 2px;
-  background: hsl(var(--act-hairline));
-  position: relative;
-  border-radius: 2px;
-}
-
-.act-home .act-edit-counter-rule::before {
-  content: "";
-  position: absolute;
-  inset: 0 60% 0 0;
-  background: hsl(var(--act-accent-strong));
-  border-radius: 2px;
-}
-
-.act-home .act-edit-counter-total {
-  font-weight: 500;
-  color: hsl(var(--act-ink) / 0.55);
-  font-variant-numeric: tabular-nums;
-}
-
 /* --- Headline --- */
 .act-home .act-edit-header {
   max-width: 56rem;

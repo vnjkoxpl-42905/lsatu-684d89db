@@ -117,7 +117,6 @@ export function ActivityRunner() {
           title={assignment.title}
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
-          itemCount={items.length}
           onStart={handleStart}
         />
       </div>
