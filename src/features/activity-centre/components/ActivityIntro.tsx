@@ -11,15 +11,19 @@ interface ActivityIntroProps {
 }
 
 /**
- * Editorial intro for an activity. Layout mirrors the reference: small
- * breadcrumb-with-arrows label top-left, "NN ITEMS" counter top-right with an
- * accent underline, a large mixed-weight headline, numbered how-it-works list,
- * a worked example shown as two overlapping circles (Before = dark, After =
- * light silver), and the Start action.
+ * Editorial intro for an activity. Layout mirrors the "Problem & Solution"
+ * reference: a pixel-match hero (breadcrumb-with-arrows top-left, mixed-weight
+ * title top-right, two big overlapping circles dominant lower-left, each with a
+ * large upper label and a single prose line), then a compact detail section
+ * below (credited negations + lean rules + the Start action).
  */
 export function ActivityIntro({ title, subtitle, instructions, onStart }: ActivityIntroProps) {
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
+
+  // The worked example carries no "after" prose, so draft one short line from
+  // the explanation for the chrome orb (Negation-Station-specific, not a field).
+  const afterLine = "The weakest claim that contradicts 100% conformity: a single counterexample.";
 
   const container: Variants = {
     hidden: {},
@@ -42,44 +46,22 @@ export function ActivityIntro({ title, subtitle, instructions, onStart }: Activi
 
   return (
     <motion.div className="act-edit" variants={container} initial="hidden" animate="show">
-      {/* Top meta row: breadcrumb label + items counter */}
-      <motion.div variants={item} className="act-edit-topbar">
-        <span className="act-edit-crumb" aria-hidden="true">
-          <span className="act-edit-crumb-arrow">◀</span>
-          <span>{title}</span>
-          <span className="act-edit-crumb-arrow">▶</span>
-        </span>
-      </motion.div>
-
-      {/* Headline block */}
-      <motion.header variants={item} className="act-edit-header">
-        <h1 className="act-edit-title">
-          <span className="act-edit-title-bold">{title}.</span>{" "}
-          {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
-        </h1>
-      </motion.header>
-
-      {instructions.tagline && (
-        <motion.p variants={item} className="act-edit-tagline act-prose">
-          {instructions.tagline}
-        </motion.p>
-      )}
-
-      {/* Two-column: rules left, circles right (stacks on mobile) */}
-      <motion.div variants={item} className="act-edit-grid">
-        {instructions.rules?.length ? (
-          <ol className="act-steps">
-            {instructions.rules.map((rule, i) => (
-              <li key={i} className="act-step">
-                <span className="act-step-num">{i + 1}</span>
-                <span className="act-step-text">{rule}</span>
-              </li>
-            ))}
-          </ol>
-        ) : <span />}
+      {/* ---- HERO (pixel-match): crumb top-left, title top-right, orbs lower-left ---- */}
+      <section className="act-hero">
+        <motion.div variants={item} className="act-hero-top">
+          <span className="act-edit-crumb" aria-hidden="true">
+            <span className="act-edit-crumb-arrow">◀</span>
+            <span>{title}</span>
+            <span className="act-edit-crumb-arrow">▶</span>
+          </span>
+          <h1 className="act-edit-title">
+            <span className="act-edit-title-bold">{title}.</span>{" "}
+            {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
+          </h1>
+        </motion.div>
 
         {ex && (
-          <div className="act-orbs" aria-label="Worked example">
+          <motion.div variants={item} className="act-orbs" aria-label="Worked example">
             <div className="act-orb act-orb--before">
               <div className="act-orb-inner">
                 <p className="act-orb-label">Before</p>
@@ -88,36 +70,47 @@ export function ActivityIntro({ title, subtitle, instructions, onStart }: Activi
             </div>
             <div className="act-orb act-orb--after">
               <div className="act-orb-inner">
-                <p className="act-orb-label">After, any of these</p>
-                <ul className="act-orb-list">
-                  {ex.credited_answers.map((answer, i) => (
-                    <li key={i}>{answer}</li>
-                  ))}
-                </ul>
+                <p className="act-orb-label">After</p>
+                <p className="act-orb-statement">{afterLine}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
-      </motion.div>
+      </section>
 
-      {ex?.explanation && (
-        <motion.p variants={item} className="act-why act-prose">
-          {ex.explanation}
-        </motion.p>
-      )}
+      {/* ---- DETAIL (compact): credited negations + lean rules + Start ---- */}
+      <section className="act-detail">
+        <motion.div variants={item} className="act-detail-grid">
+          {instructions.rules?.length ? (
+            <ol className="act-steps">
+              {instructions.rules.map((rule, i) => (
+                <li key={i} className="act-step">
+                  <span className="act-step-num">{i + 1}</span>
+                  <span className="act-step-text">{rule}</span>
+                </li>
+              ))}
+            </ol>
+          ) : <span />}
 
-      {instructions.task && (
-        <motion.p variants={item} className="act-task">
-          {instructions.task}
-        </motion.p>
-      )}
+          {ex && (
+            <div className="act-credited">
+              <p className="act-credited-label">After, any of these</p>
+              <ul className="act-orb-list">
+                {ex.credited_answers.map((answer, i) => (
+                  <li key={i}>{answer}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </motion.div>
 
-      <motion.div variants={item}>
-        <button type="button" onClick={onStart} className="act-start">
-          Start drilling
-          <ArrowRight size={18} strokeWidth={2.25} />
-        </button>
-      </motion.div>
+        <motion.div variants={item}>
+          <button type="button" onClick={onStart} className="act-start">
+            Start drilling
+            <ArrowRight size={18} strokeWidth={2.25} />
+          </button>
+        </motion.div>
+      </section>
     </motion.div>
   );
 }
