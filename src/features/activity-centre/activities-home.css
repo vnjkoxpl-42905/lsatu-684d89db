@@ -14,15 +14,15 @@
  */
 
 .act-home {
-  /* ---- Per-activity accent slot (Negation Station = emerald) ---- */
-  --act-accent: 14 80% 54%;         /* warm orange accent                   */
-  --act-accent-strong: 14 84% 46%;  /* deeper orange for buttons + marks    */
+  /* ---- Per-activity accent slot (Negation Station = burnt orange, ref #E8531F) ---- */
+  --act-accent: 16 80% 52%;         /* warm burnt-orange accent             */
+  --act-accent-strong: 14 82% 46%;  /* deeper orange for buttons + marks    */
   --act-on-accent: 40 44% 97%;      /* warm off-white on the accent         */
 
-  /* ---- Near-white cream canvas (matches the reference) ---- */
-  --act-canvas: 40 30% 96%;         /* near-white warm cream                */
-  --act-canvas-2: 40 40% 98%;       /* subtle highlight                     */
-  --act-surface: 0 0% 100%;         /* pure white cards                     */
+  /* ---- Flat bone canvas (matched to image ref #F3F0E8, not near-white) ---- */
+  --act-canvas: 44 30% 93%;         /* flat warm bone paper (~#F3F0E8)      */
+  --act-canvas-2: 44 30% 93%;       /* equal to canvas: the paper is flat   */
+  --act-surface: 44 36% 98%;        /* card, just above the bone canvas     */
   --act-ink: 30 10% 10%;            /* warm near-black body text            */
   --act-ink-soft: 30 6% 38%;        /* secondary text                       */
   --act-hairline: 36 14% 86%;       /* soft warm borders                    */
