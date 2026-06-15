@@ -2,11 +2,12 @@
  * Activities homepage (intro) world.
  *
  * Scoped entirely under `.act-home`. It now fits the bootcamp's warm tactile
- * workbook (DESIGN.md): a warm cream paper canvas, warm near-black ink, Inter
- * for UI/title and Georgia for reading prose, soft ink-tinted depth, calm
- * motion. The one departure each activity keeps is its accent hue. Negation
- * Station = emerald. The drill + completion screens do NOT use `.act-home`, so
- * they are unaffected by anything here.
+ * workbook (DESIGN.md): a clean warm-ivory paper canvas (refined, not sepia),
+ * crisp near-neutral ink, Inter for UI/title and Georgia for reading prose,
+ * soft ink-tinted depth, calm motion. The one departure each activity keeps is
+ * its accent hue, used sparingly. Negation Station = burnt orange, restrained
+ * to the CTA and directional marks only. The drill + completion screens do NOT
+ * use `.act-home`, so they are unaffected by anything here.
  *
  * One fixed skeleton, one accent per activity. To theme a future activity,
  * override only the `--act-accent*` tokens on its own `.act-home.<activity>`
@@ -16,16 +17,16 @@
 .act-home {
   /* ---- Per-activity accent slot (Negation Station = burnt orange, ref #E8531F) ---- */
   --act-accent: 16 80% 52%;         /* warm burnt-orange accent             */
-  --act-accent-strong: 14 82% 46%;  /* deeper orange for buttons + marks    */
+  --act-accent-strong: 14 82% 46%;  /* deeper orange for the CTA + marks    */
   --act-on-accent: 40 44% 97%;      /* warm off-white on the accent         */
 
-  /* ---- Flat bone canvas (matched to image ref #F3F0E8, not near-white) ---- */
-  --act-canvas: 44 30% 93%;         /* flat warm bone paper (~#F3F0E8)      */
-  --act-canvas-2: 44 30% 93%;       /* equal to canvas: the paper is flat   */
-  --act-surface: 44 36% 98%;        /* card, just above the bone canvas     */
-  --act-ink: 30 10% 10%;            /* warm near-black body text            */
-  --act-ink-soft: 30 6% 38%;        /* secondary text                       */
-  --act-hairline: 36 14% 86%;       /* soft warm borders                    */
+  /* ---- Clean warm-ivory canvas (refined, not sepia/beige) ---- */
+  --act-canvas: 40 13% 95%;         /* clean warm ivory paper               */
+  --act-canvas-2: 40 15% 92%;       /* a touch deeper, for quiet depth      */
+  --act-surface: 40 22% 99%;        /* card, crisp and near-white on paper  */
+  --act-ink: 30 6% 10%;             /* crisp near-neutral ink               */
+  --act-ink-soft: 30 5% 40%;        /* secondary text                       */
+  --act-hairline: 38 12% 88%;       /* soft warm borders                    */
 
   /* ---- Fixed skeleton (radius + depth + motion match the workbook) ---- */
   --act-r-card: 18px;
@@ -119,8 +120,8 @@
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 999px;
-  background: hsl(var(--act-accent) / 0.12);
-  color: hsl(var(--act-accent-strong));
+  background: hsl(var(--act-ink) / 0.06);
+  color: hsl(var(--act-ink) / 0.72);
   font-weight: 700;
   font-size: 0.88rem;
   flex-shrink: 0;
@@ -343,8 +344,8 @@
 /* --- Headline --- */
 .act-home .act-edit-header {
   max-width: 56rem;
-  margin: 0 auto 1.5rem;
-  text-align: center;
+  margin: 0 0 1.5rem;
+  text-align: left;
 }
 
 .act-home .act-edit-title {
@@ -368,8 +369,8 @@
 
 .act-home .act-edit-tagline {
   max-width: 44rem;
-  margin: 0 auto 3rem;
-  text-align: center;
+  margin: 0 0 3rem;
+  text-align: left;
   font-size: 1.1rem;
   line-height: 1.65;
   color: hsl(var(--act-ink) / 0.78);
@@ -395,14 +396,14 @@
 .act-home .act-orbs {
   position: relative;
   width: 100%;
-  aspect-ratio: 1.15 / 1;
+  aspect-ratio: 1 / 1;
   max-width: 36rem;
   margin: 0 auto;
 }
 
 .act-home .act-orb {
   position: absolute;
-  width: 68%;
+  width: 63%;
   aspect-ratio: 1 / 1;
   border-radius: 9999px;
   display: flex;
@@ -429,25 +430,21 @@
 .act-home .act-orb--after {
   bottom: 0;
   right: 0;
+  /* Soft pearl: one off-centre luminous core, gentle falloff. No chrome. */
   background:
-    linear-gradient(135deg, transparent 28%, rgba(255, 255, 255, 0.7) 48%, transparent 68%),
-    conic-gradient(
-      from 210deg at 50% 50%,
-      #9c968a 0%,
-      #d8d4cc 14%,
-      #ffffff 28%,
-      #f4f0e8 38%,
-      #8d8678 55%,
-      #2b2925 68%,
-      #6b6557 82%,
-      #9c968a 100%
+    radial-gradient(
+      circle at 38% 30%,
+      #ffffff 0%,
+      #f7f3ec 40%,
+      #e8e2d6 76%,
+      #d8d1c3 100%
     );
   color: hsl(var(--act-ink));
   z-index: 2;
   box-shadow:
-    0 30px 60px -25px rgba(60, 50, 30, 0.4),
-    inset 0 -8px 24px rgba(0, 0, 0, 0.18),
-    inset 0 8px 18px rgba(255, 255, 255, 0.4);
+    0 24px 50px -28px rgba(60, 50, 30, 0.32),
+    inset 0 12px 24px rgba(255, 255, 255, 0.6),
+    inset 0 -16px 30px rgba(90, 78, 56, 0.1);
 }
 
 
