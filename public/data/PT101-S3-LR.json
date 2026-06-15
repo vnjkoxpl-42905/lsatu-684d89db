@@ -243,7 +243,10 @@
       "D": "Short-fibered regular cottons are economically competitive with synthetic fabrics.",
       "E": "Garments made of green and brown cottons are less expensive than garments made of regular cotton."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT101",

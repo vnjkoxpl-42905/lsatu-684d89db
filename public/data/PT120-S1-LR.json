@@ -571,6 +571,11 @@
       "D": "Before receiving the after-school lessons in handwriting, the 100 first-graders who received the lessons were representative of first-graders more generally, with respect to their skills in both handwriting and composition.",
       "E": "Among the first-graders who received the lessons in handwriting, those who started out with strong composition skills showed substantial improvement in how automatically they could write letters."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Focused on Evidence"
+    ]
   }
 ]

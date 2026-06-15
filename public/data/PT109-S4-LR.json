@@ -81,7 +81,10 @@
       "D": "If the subject matter in Favilla’s writings were exceptionally varied, she would not deserve to be considered a great writer.",
       "E": "If Favilla’s writings show no evidence of a distinctive style, she does not deserve to be considered a great writer."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT109",

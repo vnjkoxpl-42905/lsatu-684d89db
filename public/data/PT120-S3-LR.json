@@ -453,7 +453,12 @@
       "D": "Anyone who does not smoke cares about the health of others.",
       "E": "Anyone who cares about his or her own health does not smoke."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "New Concept in Conclusion"
+    ]
   },
   {
     "practiceTest": "PT120",

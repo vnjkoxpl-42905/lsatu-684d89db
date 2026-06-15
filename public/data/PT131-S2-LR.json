@@ -480,7 +480,12 @@
       "D": "Workers from Plant A took fewer vacation days per capita during the month than did workers from Plant B.",
       "E": "Workers in Plant B were more productive during the month of the study than were workers from Plant A."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "First Sentence Conclusion",
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT131",

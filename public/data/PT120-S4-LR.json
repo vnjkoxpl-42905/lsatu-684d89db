@@ -344,7 +344,11 @@
       "D": "People with doctorates in the liberal arts are interested in employment in the business world.",
       "E": "Only people not concerned with making money in the business world are interested in improving their intellects."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
   },
   {
     "practiceTest": "PT120",
