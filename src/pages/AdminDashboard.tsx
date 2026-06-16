@@ -13,6 +13,15 @@ import {
 import { toast } from "sonner";
 import { formatRelativeShort } from "@/lib/time";
 
+// The primary admin account is protected: it can never be demoted (by anyone,
+// including itself), which also guarantees the system always has at least one
+// admin and can never be locked out. Enforced authoritatively in the
+// admin-manage-users edge function; mirrored here for UI affordances.
+const PRIMARY_ADMIN_EMAIL = "contact@aspiringattorneys.com";
+
+const isPrimaryAdmin = (email: string | null | undefined) =>
+  (email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL;
+
 interface ManagedUser {
   class_id: string;
   email: string;
@@ -252,6 +261,10 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
   const setRole = async (userId: string, role: "admin" | "user") => {
     const prev = users.find(u => u.class_id === userId);
     if (!prev) return;
+    if (role === "user" && isPrimaryAdmin(prev.email)) {
+      toast.error("The primary admin account cannot be demoted.");
+      return;
+    }
     setUsers(us => us.map(u => u.class_id === userId ? { ...u, role } : u));
     try {
       const res = await supabase.functions.invoke("admin-manage-users", {
@@ -419,7 +432,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
                       <td className="py-3 px-4">
                         {user.role === "admin" ? (
                           <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[10px]">
-                            <Crown className="w-2.5 h-2.5 mr-1" /> Admin
+                            <Crown className="w-2.5 h-2.5 mr-1" /> {isPrimaryAdmin(user.email) ? "Primary admin" : "Admin"}
                           </Badge>
                         ) : (
                           <Badge variant="outline" className="text-zinc-500 border-zinc-700 text-[10px]">User</Badge>
@@ -519,6 +532,13 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
                                   >
                                     <Crown className="w-3 h-3 mr-1" /> Promote to Admin
                                   </Button>
+                                ) : isPrimaryAdmin(user.email) ? (
+                                  <span
+                                    className="inline-flex items-center gap-1 text-xs text-zinc-500"
+                                    title="The primary admin account cannot be demoted."
+                                  >
+                                    <Shield className="w-3 h-3" /> Protected primary admin
+                                  </span>
                                 ) : (
                                   <Button
                                     size="sm"

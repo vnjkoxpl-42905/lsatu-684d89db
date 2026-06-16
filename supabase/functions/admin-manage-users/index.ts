@@ -5,6 +5,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// The primary admin account can never be demoted, so the system always retains
+// at least one admin and can never be locked out of role management.
+const PRIMARY_ADMIN_EMAIL = "contact@aspiringattorneys.com";
+
 const ALL_FLAGS = [
   "has_bootcamp_access",
   "has_classroom_access",
@@ -206,6 +210,15 @@ Deno.serve(async (req) => {
         const { user_id, role } = body;
         if (!user_id || !["admin", "user"].includes(role)) {
           return jsonRes({ error: "Invalid params" }, 400);
+        }
+        // Protect the primary admin: it can never be demoted, by anyone
+        // (including itself). This guarantees the system keeps at least one
+        // admin and cannot be locked out.
+        if (role === "user") {
+          const { data: target } = await admin.auth.admin.getUserById(user_id);
+          if ((target?.user?.email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+            return jsonRes({ error: "The primary admin account cannot be demoted." }, 403);
+          }
         }
         if (role === "admin") {
           await admin
