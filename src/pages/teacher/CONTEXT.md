@@ -15,18 +15,18 @@ A kind of prepared material Joshua can give a student. These stay SEPARATE objec
 The single place that holds ALL of Joshua's prepared materials, grouped by type: every Bootcamp, every Guided Drill, every Question Set, every Note, every Whiteboard Template. This is a CONTENT store, not an action menu. (The current app misuses "Library" as a wrapper for assign-actions; that is the bug being fixed.) From the Library Joshua browses/edits material and can assign it.
 
 ### Assign (the verb / action)
-The action of pushing a Library item to one student with a date. NOT its own top-level tab. It has **two doors**, co-equal: (1) from the **Library** — "I have this drill, send it to Lydia"; (2) from a **Student** — "here's Lydia, add a conditional note + the Causation bootcamp." Both doors land in the same place (the student's plan/feed). Future: pre-filled / automated from session transcripts.
+The action of pushing a Library item to one student with a date. In the redesigned Teacher Workspace, Assign is a top-level area because assigning work is one of Joshua's primary daily jobs. It still has **two doors**, co-equal: (1) from the **Library** — "I have this drill, send it to Lydia"; (2) from a **Student** — "here's Lydia, add a conditional note + the Causation bootcamp." Both doors land in the student's plan/feed. Future: pre-filled / automated from session transcripts.
 
 ## Top-level nav (target)
 
 Verb/surface-first, co-equal Library + Students:
-- **Command** — home base (triage, AI drafts, today's priorities).
+- **Today** — the start page for what needs attention now.
 - **Students** — door 1: roster -> per-student plan, assign from here, recap, smartboard, conversation, that student's Insights.
-- **Library** — door 2: all prepared material by type (bootcamps, guided drills, question sets, notes, whiteboard templates), assign from here.
-- **Insights** — analytics (absorbs old top-level "Bootcamps" topic-analytics + the "Analytics" Library tab).
+- **Assign** — the fast path for giving work to students.
+- **Teach** — live teaching tools, teaching materials, review surfaces, and the AI Teaching Assistant.
 - **Admin** — accounts + granular feature flags.
 
-Homes still TBD for: Schedule, Smartboard, Recaps, Conversations, Templates, Bootcamp References.
+Homes still TBD under these areas for: Schedule, Whiteboard, Library, Insights, Conversations, Recaps, Templates, Bootcamp References, Tutor Corpus.
 
 ### Bootcamp
 A multi-day topic program (Causation Station, Intro to LR, etc.). It is ONE kind of Assignable. NOTE the old collision: two surfaces were both called "Bootcamps" —
@@ -53,10 +53,85 @@ A post-session summary for a student. **Not hand-written** — AI-drafted from t
 The Excalidraw canvas for live teaching. Its own **top-level tab**: a template gallery (reusable boards prepped per lesson type — conditional, causal) plus saved sessions. Opened standalone or attached to a student. Templates are a teaching aid Joshua prepares once and reuses; they are NOT a student-assignable material (the student doesn't receive a board, Joshua presents on it).
 
 ### Command
-The home base: a **work queue-centered** hub for triage (what needs a reply), AI draft approval queue, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). Contains the operator AI assistant. (The separate "AI TA" route was already merged into Command — `/teacher/ai-ta` redirects to `/teacher`.)
+The route-level home base, now named **Teacher Desk** in the product language. Command is a **task list-centered** hub for triage (what needs a reply), AI draft approvals, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). It is not the dedicated AI assistant page.
 
-### Work Queue-Centered
-The Command page is organized by the kind of work waiting for Joshua, not by the student roster and not by app sections. A work queue answers "what must I handle right now?" Examples: reply to students, approve assistant drafts, review uploads, assign next work, inspect analytics. Students appear inside queues as the people affected by the work.
+### Today
+The top-level start page for the Teacher Workspace. It replaces "Command" as the user-facing name for the daily home base. Today shows what needs Joshua's attention now and gives him a clear next action. It is organized around only three teacher task modes: Reply, Review, and Assign.
+
+### Daily Command Sheet
+The desired feel of the Today page: calm, direct, and action-oriented rather than a dashboard. It emphasizes a small set of task modes and clear next actions. It avoids giant hero sections, oversized assistant panels, scattered stat cards, extra category lists, and empty sections that compete with real work.
+
+### Instrument Panel Visual Direction
+The chosen visual language for the Teacher Workspace is a close adaptation of the quiet technical instrument panel reference, not a loose mood board. The page should use the same basic composition: pale graphite canvas, faint technical grid, top metadata line, compact left-side tool stack, one central wireframe work object, restrained right-side control cluster, small technical labels, thin black strokes, clear active states, and generous empty space. It should feel like a premium operating desk, not a generic SaaS dashboard.
+
+- Borrow: pale gray/blue-gray background, fine grid texture, precise black linework, compact left-side tools, restrained right-side controls, small technical labels, one selected action state, and lots of breathing room.
+- Translate: the central "object" becomes the selected teacher task or student decision; left tools become Today task groups and navigation; right controls become reply/assign/review/approve actions.
+- Avoid: copying 3D modeling controls literally, decorative cube visuals that do not serve teaching work, low-contrast text, tiny unreadable controls, and empty aesthetic space that hides the next teacher move.
+
+### Today Task Groups
+Today uses only three main task modes: **Reply**, **Review**, and **Assign**. These are the only task groups inside Today.
+
+- Reply: student messages or communication tasks Joshua needs to handle.
+- Review: drafts, uploads, transcripts, recaps, or student work waiting for Joshua's judgment.
+- Assign: work Joshua needs to give next, including suggested assignments surfaced from analytics, transcripts, or student progress.
+
+Everything else is supporting context, not a main category. Schedule appears only as a small "Next session" module. Watchlist disappears as its own category; if a student needs attention, that attention becomes a Reply, Review, or Assign task. Drafts belong inside Review. Later today is a quiet footer or side note, not a full section.
+
+### Students
+The top-level area for student-centered work. It contains conversations, student detail, student assignments, student recaps, student progress, and student files.
+
+### Assign
+The top-level area for giving work to students. It contains assignments, bootcamps, guided drills, activities, and templates.
+
+### Teacher Desk
+The page-level name for Command. It means Joshua's operating desk for the teaching day: the place he starts from before opening a student, assignment, conversation, schedule, insight, or draft.
+
+### Teach
+A top-level Teacher Workspace area for live-session work: the surfaces Joshua uses while teaching or preparing an active session. Teach contains session-support tools such as the whiteboard, schedule/session plan, active lesson materials, AI Teaching Assistant, live notes, and transcript tools.
+
+- Not: assignments, bootcamps, guided drills, activities, or templates, which belong under Assign.
+- Not: student files, progress, recaps, or student detail, which belong under Students.
+- Not: pending drafts, uploads to review, or conversations needing reply, which belong under Today.
+
+### Admin
+The top-level area for system management and configuration. Admin contains accounts, permissions, feature flags, tutor corpus/admin review, source management that is not student-facing, and system settings.
+
+- Not: daily teaching work, student assignments, schedule preview, conversations, whiteboard, drafts needing approval, or other active teaching tasks.
+
+### Teacher Workspace Redesign
+The project track for making the overall teacher workspace calmer, clearer, and easier to operate. It concerns page structure, navigation, task visibility, student access, assignment flow, analytics access, and reducing unnecessary divisions. It is related to the AI Teaching Assistant but is not the same task.
+
+### AI Teaching Assistant
+A dedicated operator assistant page for Joshua. It knows each student's context, has access to analytics, suggests next assignments, drafts student communications, helps process transcripts/notes/messages into concrete next actions, and learns from what Joshua approves, edits, rejects, and repeats. It uses a memory base to serve Joshua better across sessions. It is not just a chat box and not the same surface as the Teacher Desk task list.
+
+### AI Teaching Assistant Buildout
+The project track for making the assistant more capable over time. It concerns drafting, recommendations, analytics-aware student context, memory, learning Joshua's Teaching Profile, approval-gated autonomy, and background review. It is related to the Teacher Workspace Redesign because the workspace is where Joshua primarily accesses it, but it is a distinct task.
+
+### Approval-Gated Autonomy
+The operating model for the AI Teaching Assistant. The assistant should prepare drafts, actions, memory updates, and recommendations for Joshua's approval before anything reaches students or changes their plans. Over time, it should get smarter by analyzing Joshua's approvals, edits, rejections, repeated patterns, student outcomes, and teaching preferences, with the long-term aim of handling more teaching operations on Joshua's behalf.
+
+### Teaching Profile
+The memory model the AI Teaching Assistant builds about Joshua so it can emulate his teaching operation over time. It includes Joshua's decision-making, teaching judgment, student-handling patterns, student communication voice, curriculum preferences, and workflow habits.
+
+- Teaching judgment: when Joshua assigns review vs. new material, slows down, pushes forward, or changes course.
+- Voice: how Joshua writes to students, including tone, length, directness, and encouragement style.
+- Student handling: how Joshua responds to low completion, confusion, missed work, strong performance, anxiety, or stalled progress.
+- Curriculum preferences: which drills, bootcamps, notes, explanations, and assignment types Joshua prefers for different weaknesses.
+- Workflow habits: what Joshua approves quickly, edits, rejects, repeats, or delegates.
+
+### Learning Source
+Evidence the AI Teaching Assistant can use to improve the Teaching Profile. Learning Sources include Joshua's explicit instructions, approved drafts, edits before approval, rejected drafts, actual student messages, recaps, assignment choices, transcript-derived notes, and student outcomes. The assistant should learn from both explicit instructions and implicit behavior.
+
+### Background Review
+The AI Teaching Assistant's passive mode when Joshua is not actively using the page. It reviews workspace signals, organizes what it notices, and prepares suggestions for making the Teacher Workspace more efficient. It can identify tasks Joshua should consider, but it does not send messages, assign work, change plans, or alter memory without approval.
+
+### Task List-Centered
+The Command page is organized by the teacher tasks waiting for Joshua, not by the student roster and not by app sections. A task answers "what do I need to handle next?" Examples: reply to students, approve assistant drafts, review uploads, assign next work, inspect analytics. Students appear inside tasks as the people affected by the work.
+
+### Task
+A teacher action or decision waiting for Joshua. Examples include replying to an unread student message, approving an assistant draft, reviewing uploaded work, assigning next work, investigating a progress concern, or processing a session transcript into recap/notes.
+
+- Not: a shortcut to open Students, Library, Schedule, or Insights.
 
 ### Student-Centered
 An organization model where the student is the primary object: Joshua scans students first, then discovers each student's messages, assignments, recaps, uploads, and analytics. This belongs in **Students** and student detail pages. Command may show student rows inside a queue, but Command is not primarily a student roster.
