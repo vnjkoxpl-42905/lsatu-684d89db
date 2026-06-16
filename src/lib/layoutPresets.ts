@@ -7,10 +7,11 @@ export interface LayoutPrefs {
   sidebar: string[];
 }
 
+// Student-facing default. Admin-only sidebar entries (/teacher,
+// /teacher/reference-library, /admin/board) are intentionally excluded:
+// MainhubSidebar appends admin NAV_ITEMS for admins via its append-fallback,
+// so admins keep them without seeding admin ids into every student layout.
 const DEFAULT_SIDEBAR = [
-  "/teacher",
-  "/teacher/reference-library",
-  "/admin/board",
   "/classroom",
   "/bootcamps",
   "/inbox",
@@ -22,7 +23,7 @@ export const PRESETS: Record<Exclude<PresetId, "custom">, LayoutPrefs> = {
   default: {
     preset: "default",
     orbital: ["resume", "analytics", "waj"],
-    dock: ["teacher", "whiteboard"],
+    dock: [],
     sidebar: DEFAULT_SIDEBAR,
   },
   minimal: {
@@ -35,9 +36,6 @@ export const PRESETS: Record<Exclude<PresetId, "custom">, LayoutPrefs> = {
     preset: "power",
     orbital: ["resume", "analytics", "waj"],
     dock: [
-      "teacher",
-      "whiteboard",
-      "ask-joshua",
       "inbox",
       "schedule",
       "notifications",

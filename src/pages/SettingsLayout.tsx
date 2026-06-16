@@ -428,6 +428,15 @@ function SurfaceEditor({
   const visibleSet = new Set(ids);
   const addable = catalog.filter((c) => !visibleSet.has(c.id) && userHasAccess(c));
 
+  // Hide admin-only entries from non-admins (e.g. stale admin ids left in an
+  // older saved layout). Original indices are preserved so move/remove still
+  // act on the real draft array. Admins keep every entry (userHasAccess true).
+  // Unknown ids (no catalog match) stay visible so they remain removable.
+  const visibleEntries = ids
+    .map((id, originalIdx) => ({ id, originalIdx, item: byId.get(id) }))
+    .filter(({ item }) => !(item?.adminOnly && !userHasAccess(item)));
+  const visibleIds = visibleEntries.map((e) => e.id);
+
   const isOrbital = surface === "orbital";
   const isSidebar = surface === "sidebar";
   const atMax = isOrbital && ids.length >= ORBITAL_MAX;
@@ -497,20 +506,19 @@ function SurfaceEditor({
         </div>
       </div>
 
-      {ids.length === 0 ? (
+      {visibleIds.length === 0 ? (
         <div className="px-4 py-6 text-sm text-muted-foreground text-center">
           Empty. Use Add to put something here.
         </div>
       ) : (
         <Reorder.Group
           axis="y"
-          values={ids}
+          values={visibleIds}
           onReorder={onReorder}
           className="divide-y divide-border"
           as="ul"
         >
-          {ids.map((id, i) => {
-            const item = byId.get(id);
+          {visibleEntries.map(({ id, originalIdx, item }) => {
             if (!item) {
               return (
                 <Reorder.Item
@@ -523,7 +531,7 @@ function SurfaceEditor({
                   Unknown item ({id})
                   <button
                     type="button"
-                    onClick={() => onRemove(i)}
+                    onClick={() => onRemove(originalIdx)}
                     className="ml-auto text-muted-foreground hover:text-foreground"
                     aria-label="Remove"
                   >
@@ -537,7 +545,7 @@ function SurfaceEditor({
                 key={id}
                 id={id}
                 item={item}
-                idx={i}
+                idx={originalIdx}
                 total={ids.length}
                 accessible={userHasAccess(item)}
                 atMin={atMin}
