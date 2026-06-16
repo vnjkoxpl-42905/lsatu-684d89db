@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   Users,
@@ -63,6 +63,7 @@ const MOBILE_NAV: NavItem[] = [...visiblePrimary, ...SECONDARY_NAV];
  */
 export default function TeacherShell() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { is_admin, loading } = useUserPermissions();
 
   useEffect(() => {
@@ -71,6 +72,10 @@ export default function TeacherShell() {
 
   if (loading || !is_admin) {
     return <div className="min-h-screen bg-zinc-950" />;
+  }
+
+  if (location.pathname.startsWith('/teacher/desk-preview')) {
+    return <Outlet />;
   }
 
   return (

@@ -61,6 +61,7 @@ const ClassroomItem = React.lazy(() => import("./pages/ClassroomItem"));
 const ClassroomUploads = React.lazy(() => import("./pages/ClassroomUploads"));
 const ClassroomRecaps = React.lazy(() => import("./pages/ClassroomRecaps"));
 const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
+const TeacherDeskPreview = React.lazy(() => import("./pages/teacher/TeacherDeskPreview"));
 const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
 const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents"));
 const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
@@ -337,6 +338,11 @@ const App = () => {
                       </React.Suspense>
                     } />
                     <Route path="ai-ta" element={<Navigate to="/teacher" replace />} />
+                    <Route path="desk-preview" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherDeskPreview />
+                      </React.Suspense>
+                    } />
                     <Route path="today" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherToday />
