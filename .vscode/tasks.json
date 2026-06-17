@@ -55,6 +55,26 @@
       "presentation": { "reveal": "always", "panel": "shared" }
     },
     {
+      "label": "test:watch",
+      "detail": "Vitest watch mode for the cockpit verification pane",
+      "type": "npm",
+      "script": "test:watch",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "cockpit" },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "cockpit:status",
+      "detail": "Repeating branch/worktree/status pane for cockpit sessions",
+      "type": "shell",
+      "command": "bash scripts/cockpit-status.sh",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "cockpit" },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
       "label": "playwright",
       "detail": "Playwright e2e smoke specs from top-level e2e/",
       "type": "npm",
@@ -86,6 +106,14 @@
       "dependsOrder": "sequence",
       "dependsOn": ["lint:changed", "typecheck", "build", "test", "test:e2e"],
       "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "cockpit:launch",
+      "detail": "One-command cockpit launch: Vite dev server + Vitest watch + status pane",
+      "dependsOrder": "parallel",
+      "dependsOn": ["dev", "test:watch", "cockpit:status"],
+      "group": "build",
       "problemMatcher": []
     }
   ]
