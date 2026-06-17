@@ -4,6 +4,15 @@ import App from "./App.tsx";
 import { BUILD_SHA } from "@/lib/buildInfo";
 import "./index.css";
 
+// LocatorJS (dev only): Option/Alt+click a rendered element to jump to its source
+// component in VS Code. Dynamically imported and guarded by import.meta.env.DEV so it
+// is fully stripped from production builds.
+if (import.meta.env.DEV) {
+  import("@locator/runtime")
+    .then(({ default: setupLocatorUI }) => setupLocatorUI())
+    .catch((err) => console.error("[locatorjs] failed to initialize", err));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Service-worker cleanup
 //
