@@ -12,8 +12,8 @@ describe('Intro to LR guided path order', () => {
       'five-types-of-conclusions',
       'conclusion-type-lab',
       'beyond-premises-and-conclusions',
-      'main-conclusion-lab',
       'two-part-conclusion-check',
+      'main-conclusion-lab',
       'first-sentence-vs-rebuttal-structures',
     ]);
   });
@@ -44,7 +44,7 @@ describe('Intro to LR guided path order', () => {
     expect(normalizePathnameForAction('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(
       '/bootcamp/intro-to-lr/drills/main-conclusion-lab/run',
     );
-    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(7);
+    expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/main-conclusion-lab/run')).toBe(8);
     // The first-sentence-vs-rebuttal lab is now step 11 (index 10); its /run
     // subroute resolves to that parent action.
     expect(getCurrentActionIndex('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab/run')).toBe(10);
