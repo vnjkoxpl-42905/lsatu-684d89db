@@ -74,6 +74,6 @@ This checkout currently has Claude settings and hooks under `.claude/`, but no `
 
 ## Known Gaps
 
-- No real Vitest specs exist yet.
-- No dedicated typecheck script or Prettier config exists.
+- Vitest specs exist (37 `src/**/*.test.ts(x)` files as of 2026-06-16); run with `npm run test`. No Playwright e2e specs yet, though `@playwright/test` and `playwright.config.ts` are installed with no `playwright` npm script.
+- No dedicated typecheck script (`npx tsc --noEmit -p tsconfig.app.json`) or Prettier config exists.
 - `README.md` is still minimal.

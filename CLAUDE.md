@@ -91,7 +91,7 @@ No Prettier. Formatting is ESLint-only.
 
 ## Known gaps (do not invent answers)
 
-- No test specs yet — Vitest runner is wired but `src/**/*.test.ts` does not exist.
-- No typecheck script, no Prettier config, no CI workflows.
+- Vitest specs exist (37 `src/**/*.test.ts(x)` files as of 2026-06-16); run them with `npm run test`. No Playwright e2e specs exist yet, though `@playwright/test` and `playwright.config.ts` (Lovable wrapper) are installed and there is no `playwright` npm script.
+- No typecheck script (use `npx tsc --noEmit -p tsconfig.app.json`), no Prettier config, no CI workflows.
 - `README.md` is a stub.
-- `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`, no SessionStart hook.
+- `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`. A `SessionStart` auto-pull hook is wired in `.claude/settings.local.json` (runs `.claude/auto-pull-hook.sh`); Codex mirrors it in `.codex/hooks.json`.
