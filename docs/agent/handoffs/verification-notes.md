@@ -29,7 +29,9 @@ Browser / Playwright / MCP verification output lands here.
 - 2026-06-17 headed Option/Alt-click still produced `[LocatorJS]: Could not find element
   info. Element: JSHandle@node`; use the LocatorJS browser extension for reliable
   click-to-source in this SWC app.
-- `echo $NODE_ENV` returned empty.
+- `echo $NODE_ENV` returned empty in the shell used for verification. Final cockpit
+  checks should repeat this inside a restarted VS Code integrated terminal, because the
+  earlier `NODE_ENV=production` leak was inherited by already-running apps until restart.
 - `npm run lint:changed` linted `vite.config.ts` and exited 0.
 - `npx tsc --noEmit -p tsconfig.app.json` exited 0.
 - `NODE_OPTIONS=--max-old-space-size=8192 npm run build` exited 0 in 2m39s.

@@ -17,6 +17,7 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+**/.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
@@ -35,6 +36,8 @@ design-extract-output/
 
 # Playwright MCP / verification artifacts
 .playwright-mcp/
+test-results/
+playwright-report/
 audit-*.png
 audit-*.jpeg
 
