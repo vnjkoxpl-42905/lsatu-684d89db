@@ -9,7 +9,18 @@ import "./index.css";
 // is fully stripped from production builds.
 if (import.meta.env.DEV) {
   import("@locator/runtime")
-    .then(({ default: setupLocatorUI }) => setupLocatorUI())
+    .then(({ default: setupLocatorUI }) =>
+      setupLocatorUI({
+        adapter: "react",
+        showIntro: false,
+        targets: {
+          vscode: {
+            label: "VS Code",
+            url: "vscode://file/${projectPath}${filePath}:${line}:${column}",
+          },
+        },
+      }),
+    )
     .catch((err) => console.error("[locatorjs] failed to initialize", err));
 }
 

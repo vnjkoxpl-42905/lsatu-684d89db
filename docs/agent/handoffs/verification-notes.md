@@ -10,8 +10,9 @@ Browser / Playwright / MCP verification output lands here.
 
 ## Result
 
-- Pass / fail: Pass for dev-server startup and local app load. LocatorJS runtime loads,
-  but automated Alt-click did not prove editor source-jump in headless Playwright.
+- Pass / fail: Pass for dev-server startup and local app load. LocatorJS runtime is
+  configured for React + VS Code, but the SWC runtime click path still cannot resolve
+  clicked elements reliably; the LocatorJS browser extension is the working path.
 
 ## Evidence observed
 
@@ -23,6 +24,11 @@ Browser / Playwright / MCP verification output lands here.
   `Master the LSAT.Own your future.`
 - Playwright observed the dev-only LocatorJS runtime request:
   `/node_modules/.vite/deps/@locator_runtime.js?...`.
+- 2026-06-17 headed Chromium verification confirmed React fiber `_debugSource` metadata
+  exists on rendered elements, including `src/pages/Auth.tsx:427`.
+- 2026-06-17 headed Option/Alt-click still produced `[LocatorJS]: Could not find element
+  info. Element: JSHandle@node`; use the LocatorJS browser extension for reliable
+  click-to-source in this SWC app.
 - `echo $NODE_ENV` returned empty.
 - `npm run lint:changed` linted `vite.config.ts` and exited 0.
 - `npx tsc --noEmit -p tsconfig.app.json` exited 0.
@@ -33,13 +39,13 @@ Browser / Playwright / MCP verification output lands here.
 
 ## Console errors / warnings
 
-- The automated Alt-click probe produced:
+- The automated and headed Alt-click probes produced:
   `[LocatorJS]: Could not find element info. Element: JSHandle@node`.
 - This is consistent with the known risk that `@vitejs/plugin-react-swc` may not expose
   source metadata in the way LocatorJS runtime needs for every element. Do not switch
   React tooling from SWC to Babel for cockpit work.
-- Fallback: use the LocatorJS browser extension for click-to-source if the runtime
-  overlay cannot jump directly in VS Code.
+- Working path: use the LocatorJS browser extension for click-to-source; allow the
+  browser to open `vscode://file/...` links when prompted.
 - Existing Tailwind ambiguity warnings for arbitrary `duration-*` and `ease-*` classes
   still appear during Vite/Tailwind processing. They are unrelated to this cockpit fix.
 
@@ -53,6 +59,5 @@ Browser / Playwright / MCP verification output lands here.
 
 ## Next fix target if failing
 
-- No immediate app-code fix. If source-jump remains unreliable in manual VS Code testing,
-  install/use the LocatorJS browser extension and keep the runtime as a best-effort
-  dev-only helper.
+- No app-code fix. The browser extension is the required click-to-source path for this
+  SWC setup; keep the runtime as a configured dev-only helper.
