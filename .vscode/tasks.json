@@ -22,9 +22,17 @@
     },
     {
       "label": "lint",
-      "detail": "ESLint flat config over the repo",
+      "detail": "ESLint over the whole repo (will fail on pre-existing debt)",
       "type": "npm",
       "script": "lint",
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "lint:changed",
+      "detail": "ESLint only on files changed vs origin/main + working tree",
+      "type": "shell",
+      "command": "bash scripts/lint-changed.sh",
       "problemMatcher": ["$eslint-stylish"],
       "presentation": { "reveal": "always", "panel": "shared" }
     },
@@ -56,9 +64,9 @@
     },
     {
       "label": "verify-current-lane",
-      "detail": "lint -> typecheck -> build -> test, in sequence",
+      "detail": "lint:changed -> typecheck -> build -> test, in sequence (lint scoped to your changes, not legacy debt)",
       "dependsOrder": "sequence",
-      "dependsOn": ["lint", "typecheck", "build", "test"],
+      "dependsOn": ["lint:changed", "typecheck", "build", "test"],
       "group": { "kind": "test", "isDefault": true },
       "problemMatcher": []
     }
