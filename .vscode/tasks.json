@@ -115,6 +115,29 @@
       "dependsOn": ["dev", "test:watch", "cockpit:status"],
       "group": "build",
       "problemMatcher": []
+    },
+    {
+      "label": "click-to-agent",
+      "detail": "Write active file + manual selection/range note to docs/agent/handoffs/click-to-agent.md",
+      "type": "shell",
+      "command": "bash scripts/click-to-agent-handoff.sh \"${file}\" \"${input:agentSelection}\" \"${input:agentLane}\"",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "agentSelection",
+      "type": "promptString",
+      "description": "Manual selection, line range, or note for the agent. VS Code tasks cannot pass live selection text.",
+      "default": "selection/range not provided"
+    },
+    {
+      "id": "agentLane",
+      "type": "pickString",
+      "description": "Agent lane for this handoff",
+      "options": ["Codex", "Claude"],
+      "default": "Codex"
     }
   ]
 }
