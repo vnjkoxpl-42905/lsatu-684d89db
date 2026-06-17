@@ -2,6 +2,12 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
+// Force test mode for Vitest even if the shell exports NODE_ENV=production.
+// Without this, Vite pre-bundles React in production mode and react/jsx-dev-runtime
+// drops jsxDEV, breaking every component test with "jsxDEV is not a function".
+// Must run before the react() plugin and dep optimization read NODE_ENV.
+process.env.NODE_ENV = "test";
+
 export default defineConfig({
   plugins: [react()],
   test: {
