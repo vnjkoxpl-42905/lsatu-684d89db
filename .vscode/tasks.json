@@ -56,9 +56,18 @@
     },
     {
       "label": "playwright",
-      "detail": "Playwright e2e (no app specs yet; config is the Lovable wrapper)",
-      "type": "shell",
-      "command": "npx playwright test",
+      "detail": "Playwright e2e smoke specs from top-level e2e/",
+      "type": "npm",
+      "script": "playwright",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "test:e2e",
+      "detail": "Playwright e2e smoke specs from top-level e2e/",
+      "type": "npm",
+      "script": "test:e2e",
       "group": "test",
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "shared" }
@@ -69,6 +78,14 @@
       "dependsOrder": "sequence",
       "dependsOn": ["lint:changed", "typecheck", "build", "test"],
       "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "verify-full",
+      "detail": "lint:changed -> typecheck -> build -> test -> test:e2e, in sequence",
+      "dependsOrder": "sequence",
+      "dependsOn": ["lint:changed", "typecheck", "build", "test", "test:e2e"],
+      "group": "test",
       "problemMatcher": []
     }
   ]

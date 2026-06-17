@@ -15,6 +15,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    exclude: ["e2e/**", "node_modules/**", "dist/**"],
     // Multi-step interaction tests (drill labs) chain many fireEvent + waitFor
     // cycles. Under the full parallel run the default 5s is too tight and they
     // time out despite passing in isolation. Give heavy component tests headroom.
