@@ -12,65 +12,84 @@ Joshua / next agent
 
 ## Task
 
-LSAT U VS Code Agent Cockpit core completion
+LSAT U VS Code Agent Cockpit full completion
 
 ## Route or surface
 
-Developer tooling only: Vite dev server, VS Code cockpit handoff docs, cockpit worktrees
+Developer tooling only: VS Code cockpit, Vite dev loop, Playwright e2e, Claude hooks,
+worktree lanes, handoff automation.
 
 ## Files touched or inspected
 
-- `vite.config.ts`
-- `docs/agent/handoffs/verification-notes.md`
-- `docs/agent/handoffs/codex-findings.md`
-- `docs/agent/handoffs/current-handoff.md`
-- `../LSATU-mainhub`
-- `../LSATU-practice`
+- `playwright.config.ts`, `vitest.config.ts`, `e2e/smoke.spec.ts`, `package.json`
+- `.vscode/tasks.json`, `.vscode/launch.json`, `.vscode/extensions.json`
+- `.claude/settings.json`, `.claude/notify-hook.sh`, `.claude/statusline.sh`
+- `scripts/cockpit-status.sh`, `scripts/click-to-agent-handoff.sh`
+- `docs/agent/**`
+- `../LSATU-mainhub`, `../LSATU-practice`
 
 ## What changed
 
-- Vite dependency scanning is scoped to the real app entry so the dev server does not
-  crawl nested reference/demo apps under `references/notion-high-end/**`.
-- Verification notes now record the dev-server result, app-load result, and LocatorJS
-  fallback status.
-- Codex findings now record the remaining optional/later cockpit items and local-only
-  security/package-manager decisions.
+- Playwright e2e now lives in top-level `e2e/`, runs through `npm run test:e2e`, starts
+  or reuses Vite on `http://localhost:8080`, and retains traces on failure.
+- `verify-full` now runs `lint:changed -> typecheck -> build -> test -> test:e2e`.
+- LocatorJS is configured with the React adapter and explicit VS Code URL target. Headed
+  verification confirmed React source metadata exists, but the SWC runtime click path
+  cannot reliably resolve clicked elements; the documented working path is the LocatorJS
+  browser extension.
+- Claude Code repo settings now include a committed Notification hook and statusline.
+- Keybindings, Builder/Reviewer/Writing profile templates, Peacock worktree color snippets,
+  integrated browser layout, and locked-lane instructions are tracked under `docs/agent/`.
+- `cockpit:launch` starts the dev server, Vitest watch, and status pane through VS Code
+  compound/background tasks because `tmux` is not installed.
+- `click-to-agent` captures the active file plus a manual selection/range/note argument
+  into `docs/agent/handoffs/click-to-agent.md`.
+- `.DS_Store`, nested `.DS_Store`, `test-results/`, and `playwright-report/` are ignored.
 - `../LSATU-mainhub` and `../LSATU-practice` were rebased onto the final cockpit commit.
 
 ## What is still wrong
 
-- Nothing blocks the core cockpit dev loop after the Vite scan fix.
-- LocatorJS runtime source-jump remains best-effort with the React SWC stack; use the
-  LocatorJS browser extension if manual runtime jumps are unreliable.
-- Playwright e2e smoke specs, terminal multiplexing, Peacock colors, and custom
-  click-to-agent automation remain optional/later.
+- No Core Cockpit item remains intentionally optional/later.
+- Repo code cannot install a Chrome Web Store extension or persist VS Code locked editor
+  group UI state. Exact manual steps are documented in `docs/agent/locatorjs.md` and
+  `docs/agent/browser-layout.md`.
 
 ## Evidence
 
-- Screenshot: not captured for this tooling-only pass.
-- Console: automated Alt-click produced `[LocatorJS]: Could not find element info.`
-- Network: root app load returned HTTP 200, no failed root-load requests found.
-- Playwright: root app load returned title `LSATU` and visible H1.
-- MCP: not used for this pass.
-- Diff: review the current git diff before commit.
+- `npm run test:e2e`: passed after filtering pre-existing known question-loader warnings.
+- Trace-on-failure: confirmed by the initial failing e2e run, which wrote
+  `test-results/.../trace.zip`.
+- LocatorJS headed probe: React fiber `_debugSource` existed for a rendered element at
+  `src/pages/Auth.tsx:427`; runtime Alt-click still logged `[LocatorJS]: Could not find
+  element info. Element: JSHandle@node`.
+- Claude statusline manual check returned `Fable | main | LSATU | ctx 42%`.
+- Claude notification hook exited 0 through `osascript`.
+- `cockpit-status.sh`: ran and showed branch, HEAD, worktrees, and tracked changes.
+- `click-to-agent-handoff.sh`: wrote `docs/agent/handoffs/click-to-agent.md`.
+- `git worktree list --porcelain`: `main`, `cockpit/mainhub`, and `cockpit/practice`
+  all point at `4fd352536560b6f4dafc112ae9aa8302f216600f`.
 
 ## Exact next instruction
 
-Use `main`, `../LSATU-mainhub`, or `../LSATU-practice` for the next cockpit lane; all
-three point at the same final cockpit commit.
+Use `cockpit:launch` for the local operator cockpit, `verify-full` before high-confidence
+handoffs, and `click-to-agent` when sending active-file context to Claude or Codex.
 
 ## Do not touch
 
 - LSAT U product UI or behavior
-- Auth, routing, Supabase, or Lovable plumbing
+- Auth, routing, Supabase, or Lovable app plumbing
 - BlockNote/demo dependencies
-- `bun.lock` during this npm-canonical pass
+- `bun.lock`
+- Local-only `.vscode/settings.json` security flags
 
 ## Verification needed
 
-- `npm run lint:changed`: passed, linted `vite.config.ts`.
-- `npx tsc --noEmit -p tsconfig.app.json`: passed.
-- `NODE_OPTIONS=--max-old-space-size=8192 npm run build`: passed.
-- `npm run test`: passed, 37 files / 181 passed / 1 skipped.
-- `git worktree list --porcelain`: passed; `main`, `cockpit/mainhub`, and
-  `cockpit/practice` all point at the final cockpit commit.
+Final full sweep after this handoff update:
+
+- `npm run lint:changed`
+- `npx tsc --noEmit -p tsconfig.app.json`
+- `NODE_OPTIONS=--max-old-space-size=8192 npm run build`
+- `npm run test`
+- `npm run test:e2e`
+- `git worktree list --porcelain`
+- `echo $NODE_ENV`

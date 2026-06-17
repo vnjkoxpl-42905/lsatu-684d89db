@@ -1,13 +1,13 @@
 # Codex Review Findings
 
-Codex writes review output here after reading `recent-changes.diff` (or the named files).
-Scope is review only. Do not broaden. Do not edit app code from this pass.
+Scope is VS Code Agent Cockpit tooling/config/docs/scripts only. Do not broaden into LSAT
+U product behavior.
 
 ## Reviewed
 
-- Diff / files: `vite.config.ts`, `docs/agent/handoffs/verification-notes.md`,
-  `docs/agent/handoffs/codex-findings.md`
 - Date: 2026-06-17
+- Diff / files: cockpit configuration, Playwright e2e, Claude hooks, VS Code task/profile
+  docs, worktree docs, automation scripts, final handoff docs.
 
 ## Critical issues
 
@@ -15,29 +15,42 @@ Scope is review only. Do not broaden. Do not edit app code from this pass.
 
 ## Medium issues
 
-- LocatorJS runtime loads in dev, but automated headless Alt-click did not confirm a
-  VS Code source jump. Keep the documented browser-extension fallback; do not change
-  the React SWC plugin for cockpit work.
+- LocatorJS runtime is configured, and React source metadata exists in headed Chromium,
+  but the SWC runtime click path still cannot resolve clicked elements. This is not fixed
+  by installing BlockNote packages or by switching to Babel. Working path is the LocatorJS
+  browser extension, documented in `docs/agent/locatorjs.md`.
 
 ## Minor issues
 
-- `.vscode/settings.json` still contains local-only security bypass flags
-  (`geminicodeassist.agentYoloMode` and `claudeCode.allowDangerouslySkipPermissions`).
-  Per Joshua's decision, leave them unchanged and do not track them as repo policy.
-- `bun.lock` remains unreconciled. Per repo policy and Joshua's decision, npm and
-  `package-lock.json` remain canonical for this cockpit pass.
-- Playwright e2e smoke specs, terminal multiplexing, Peacock colors, and custom
-  click-to-agent automation remain optional/later items.
+- `.vscode/settings.json` still contains local-only security bypass flags. Per the task
+  guardrail, they were not changed.
+- `bun.lock` remains untouched. npm and `package-lock.json` remain canonical.
+- VS Code locked editor groups, user keybindings, browser extension installation, and
+  profile imports are user/UI state. Repo-persistable templates and exact manual steps are
+  tracked under `docs/agent/`.
+
+## Completed items
+
+- Dev-server blocker fixed by scoping Vite optimizer entries to `index.html`.
+- Playwright e2e smoke spec added under top-level `e2e/`.
+- `playwright` and `test:e2e` npm scripts added.
+- `playwright.config.ts` has `baseURL`, `webServer`, and `trace: retain-on-failure`.
+- `vitest.config.ts` explicitly excludes `e2e/**`.
+- `verify-full` task added; `verify-current-lane` left unchanged.
+- Claude Notification hook and statusline added to committed `.claude/settings.json`.
+- Keybinding reference added with verified Codex and Claude command IDs.
+- Builder, Reviewer, and Writing profile templates added.
+- Peacock color snippets added for `main`, `cockpit/mainhub`, and `cockpit/practice`.
+- VS Code compound/background `cockpit:launch` added instead of tmux.
+- Click-to-agent handoff automation added with active file plus manual selection/range.
+- Integrated browser and locked-lane setup documented.
+- `.DS_Store` and Playwright output hygiene added.
+- Cockpit worktrees rebased to the current final commit.
 
 ## What is correct
 
-- The dev-server blocker was fixed at the Vite optimizer entry level instead of by
-  installing unrelated BlockNote/demo dependencies.
-- Scope stayed in tooling/config/docs; LSAT U product UI, auth, routing, Supabase, and
-  Lovable plumbing were not intentionally changed.
-- The local app loaded at `http://localhost:8080` after the Vite fix.
-
-## Exact smallest follow-up fix
-
-- If manual LocatorJS testing in VS Code still cannot jump to source, use the LocatorJS
-  browser extension as the click-to-source path and keep the runtime helper best-effort.
+- Scope stayed in tooling/config/docs/scripts.
+- LSAT U product UI, auth, routing, Supabase, and Lovable app behavior were not changed.
+- No BlockNote/demo dependencies were installed.
+- `@vitejs/plugin-react-swc` stayed in place.
+- `bun.lock` was not modified.

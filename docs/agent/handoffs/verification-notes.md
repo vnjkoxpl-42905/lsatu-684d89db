@@ -6,7 +6,8 @@ Browser / Playwright / MCP verification output lands here.
 
 - Route/surface: LSAT U app shell / VS Code Agent Cockpit local dev loop
 - Local URL: http://localhost:8080
-- Tool used: Vite dev server, curl, Playwright
+- Tool used: Vite dev server, curl, Playwright, headed Chromium, Claude hook scripts,
+  cockpit shell scripts
 
 ## Result
 
@@ -38,6 +39,15 @@ Browser / Playwright / MCP verification output lands here.
 - `npm run test` exited 0 with 37 test files passed, 181 tests passed, 1 skipped.
 - `git worktree list --porcelain` showed `main`, `cockpit/mainhub`, and
   `cockpit/practice` all at the final cockpit commit after rebasing the worktrees.
+- `npm run test:e2e` exited 0 with 1 Chromium smoke test passed.
+- Initial e2e failure generated a retained Playwright trace at
+  `test-results/.../trace.zip`, confirming trace-on-failure behavior.
+- `.claude/statusline.sh` manual check returned `Fable | main | LSATU | ctx 42%`.
+- `.claude/notify-hook.sh` manual check exited 0 through macOS `osascript`.
+- `scripts/cockpit-status.sh` ran and printed branch, HEAD, worktrees, and tracked-change
+  status.
+- `scripts/click-to-agent-handoff.sh` wrote
+  `docs/agent/handoffs/click-to-agent.md` from active-file and manual-selection inputs.
 
 ## Console errors / warnings
 
@@ -63,3 +73,5 @@ Browser / Playwright / MCP verification output lands here.
 
 - No app-code fix. The browser extension is the required click-to-source path for this
   SWC setup; keep the runtime as a configured dev-only helper.
+- For VS Code UI state that cannot be committed, follow `docs/agent/browser-layout.md`,
+  `docs/agent/keybindings.md`, and `docs/agent/profiles.md`.
