@@ -260,6 +260,14 @@ const App = () => {
               <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
             } />
 
+            <Route path="/teacher" element={
+              <ProtectedRoute requireAdmin>
+                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                  <TeacherDeskPreview />
+                </React.Suspense>
+              </ProtectedRoute>
+            } />
+
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={
               <QuestionBankProvider>

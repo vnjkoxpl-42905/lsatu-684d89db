@@ -15,6 +15,12 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
+const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+
+function isLocalDevAccessAllowed() {
+  return import.meta.env.DEV && LOCAL_DEV_HOSTS.has(window.location.hostname);
+}
+
 export default function ProtectedRoute({ flag, requireAdmin, children }: ProtectedRouteProps) {
   const permissions = useUserPermissions();
 
@@ -24,6 +30,10 @@ export default function ProtectedRoute({ flag, requireAdmin, children }: Protect
         <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
       </div>
     );
+  }
+
+  if (isLocalDevAccessAllowed()) {
+    return <>{children}</>;
   }
 
   if (requireAdmin) {
