@@ -13,10 +13,11 @@
     },
     {
       "label": "build",
-      "detail": "Production build (vite build)",
+      "detail": "Production build (vite build) with 8GB heap to avoid Node OOM",
       "type": "npm",
       "script": "build",
       "group": "build",
+      "options": { "env": { "NODE_OPTIONS": "--max-old-space-size=8192" } },
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "shared" }
     },
