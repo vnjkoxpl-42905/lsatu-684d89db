@@ -75,7 +75,7 @@ export const MODE_META: Record<
     emptyActionLabel: 'Open students',
     emptyActionPath: '/teacher/students',
     viewAllLabel: 'View all Review',
-    viewAllPath: '/teacher?tab=drafts',
+    viewAllPath: '/teacher/command?tab=drafts',
     Icon: FileText,
   },
   assign: {
@@ -187,7 +187,7 @@ export function draftToReviewTask(draft: AITADraft, student?: HubStudentRow): De
     priority: 92 + Date.parse(draft.created_at) / 10_000_000_000,
     primaryActionLabel: label.includes('recap') ? 'Approve recap' : 'Approve draft',
     secondaryActionLabel: 'Open drafts',
-    openPath: '/teacher?tab=drafts',
+    openPath: '/teacher/command?tab=drafts',
     sourceKind: 'draft',
     sourceId: draft.id,
     editableText: draft.draft_markdown ?? '',

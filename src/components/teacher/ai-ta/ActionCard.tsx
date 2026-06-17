@@ -1,8 +1,9 @@
 import { CheckCircle2, AlertCircle, FileText, Send, Search, Users, Sparkles } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { OperatorToolResult } from '@/hooks/useOperatorChat';
 
-const ICONS: Record<string, any> = {
+const ICONS: Record<string, LucideIcon> = {
   find_students: Search,
   list_recent_students: Users,
   create_draft: FileText,
@@ -18,7 +19,13 @@ const LABELS: Record<string, string> = {
   summarize_student: 'Summarized student',
 };
 
-function formatStudentList(students: any[]) {
+interface ToolStudent {
+  id?: string;
+  name?: string | null;
+  email?: string | null;
+}
+
+function formatStudentList(students: ToolStudent[]) {
   if (!students?.length) return 'no matches';
   return students
     .slice(0, 5)
@@ -47,7 +54,7 @@ export function ActionCard({ tr }: { tr: OperatorToolResult }) {
         — pending your approval
       </span>
     );
-    actionLink = { to: '/teacher/ai-ta?tab=drafts', label: 'Review' };
+    actionLink = { to: '/teacher/command?tab=drafts', label: 'Review' };
   } else if (tr.name === 'send_message') {
     summary = <span className="text-zinc-300">delivered to the student's inbox</span>;
     actionLink = { to: '/teacher/conversations', label: 'Open thread' };

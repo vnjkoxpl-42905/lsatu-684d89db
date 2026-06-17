@@ -62,7 +62,7 @@ export default function TeacherToday() {
           label="AI drafts pending"
           value={stats.pendingDrafts}
           Icon={Sparkles}
-          onClick={() => navigate('/teacher/ai-ta')}
+          onClick={() => navigate('/teacher/command')}
         />
         <StatTile
           label="Uploads to review"

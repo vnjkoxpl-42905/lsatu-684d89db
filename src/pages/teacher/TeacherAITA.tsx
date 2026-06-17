@@ -164,7 +164,7 @@ function CommandCenter() {
       empty: 'No assistant drafts need approval.',
       Icon: FileText,
       actionLabel: 'Review drafts',
-      action: () => navigate('/teacher?tab=drafts'),
+      action: () => navigate('/teacher/command?tab=drafts'),
       rows:
         stats.pendingDrafts > 0
           ? [
@@ -173,7 +173,7 @@ function CommandCenter() {
                 detail: 'Approve, reject, or post drafts to Classroom.',
                 meta: 'Nothing reaches students without approval',
                 badge: 'Approval',
-                action: () => navigate('/teacher?tab=drafts'),
+                action: () => navigate('/teacher/command?tab=drafts'),
               },
             ]
           : [],

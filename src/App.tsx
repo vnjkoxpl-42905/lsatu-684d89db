@@ -108,6 +108,10 @@ function RedirectSmartboardToWhiteboard() {
   const { search } = useLocation();
   return <Navigate to={`/teacher/whiteboard${search}`} replace />;
 }
+function RedirectAiTaToCommand() {
+  const { search } = useLocation();
+  return <Navigate to={`/teacher/command${search}`} replace />;
+}
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
 // React root is remounting (e.g. from a service-worker replace) vs its child
@@ -334,10 +338,15 @@ const App = () => {
                   }>
                     <Route index element={
                       <React.Suspense fallback={<div />}>
+                        <TeacherDeskPreview />
+                      </React.Suspense>
+                    } />
+                    <Route path="command" element={
+                      <React.Suspense fallback={<div />}>
                         <TeacherAITA />
                       </React.Suspense>
                     } />
-                    <Route path="ai-ta" element={<Navigate to="/teacher" replace />} />
+                    <Route path="ai-ta" element={<RedirectAiTaToCommand />} />
                     <Route path="desk-preview" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherDeskPreview />

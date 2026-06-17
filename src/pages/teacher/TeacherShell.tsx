@@ -74,7 +74,7 @@ export default function TeacherShell() {
     return <div className="min-h-screen bg-zinc-950" />;
   }
 
-  if (location.pathname.startsWith('/teacher/desk-preview')) {
+  if (location.pathname === '/teacher' || location.pathname.startsWith('/teacher/desk-preview')) {
     return <Outlet />;
   }
 
