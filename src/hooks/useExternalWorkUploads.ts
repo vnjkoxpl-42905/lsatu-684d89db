@@ -116,8 +116,10 @@ export function useStudentExternalUploads() {
  */
 export function useAdminUploadsQueue(opts: { all?: boolean } = {}) {
   const all = !!opts.all;
+  const { user } = useAuth();
   return useQuery<ExternalWorkUpload[]>({
     queryKey: ['external-uploads-queue', all],
+    enabled: !!user,
     queryFn: async () => {
       let q = supabase.from('external_work_uploads').select('*');
       if (!all) {

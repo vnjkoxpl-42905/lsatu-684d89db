@@ -32,8 +32,10 @@ export interface AITADraft {
 
 export function useAITADrafts(opts: { studentId?: string | null; status?: AITADraftStatus | 'all' } = {}) {
   const { studentId = null, status = 'all' } = opts;
+  const { user } = useAuth();
   return useQuery<AITADraft[]>({
     queryKey: ['ai-ta-drafts', studentId, status],
+    enabled: !!user,
     queryFn: async () => {
       let q = supabase.from('ai_ta_drafts').select('*');
       if (studentId) q = q.eq('student_id', studentId);

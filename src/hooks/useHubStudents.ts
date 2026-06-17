@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useInbox } from "@/hooks/useInbox";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * Single source of truth for the Student Hub's left panel. Combines three
@@ -80,8 +81,10 @@ interface AssignmentCountsRow {
 }
 
 export function useHubStudents() {
+  const { user } = useAuth();
   const usersQuery = useQuery<ManagedUserRow[]>({
     queryKey: ["hub-managed-users"],
+    enabled: !!user,
     staleTime: HUB_STALE_MS,
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke(
@@ -108,6 +111,7 @@ export function useHubStudents() {
 
   const countsQuery = useQuery<AssignmentCountsRow[]>({
     queryKey: ["hub-assignment-counts"],
+    enabled: !!user,
     staleTime: HUB_STALE_MS,
     queryFn: async () => {
       const { data, error } = await supabase.rpc(

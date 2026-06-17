@@ -37,9 +37,7 @@ export function WorkSurface({
     return (
       <div className="w-full max-w-[560px] border border-black/15 bg-white/12 p-5 text-center">
         <div className="text-sm font-semibold">{MODE_META[mode].empty}</div>
-        <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-black/50">
-          The desk is clear for this mode. Switch modes from the Tools list, or open the full surface to inspect more.
-        </p>
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-black/50">No current teacher move.</p>
       </div>
     );
   }

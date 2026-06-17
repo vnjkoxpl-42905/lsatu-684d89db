@@ -43,7 +43,12 @@ export function ActionContextPanel({
       <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">Controls</div>
 
       {!task ? (
-        <div className="border border-black/15 bg-white/12 p-4 text-sm text-black/52">Select a task to show controls.</div>
+        <div className="border border-black/15 bg-white/12 p-4">
+          <div className="text-sm font-semibold">No task selected</div>
+          <p className="mt-2 text-sm leading-6 text-black/52">
+            This panel opens when a teacher move is selected.
+          </p>
+        </div>
       ) : (
         <>
           <button

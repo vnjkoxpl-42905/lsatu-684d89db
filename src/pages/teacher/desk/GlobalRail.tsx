@@ -8,7 +8,7 @@ import { GLOBAL_RAIL } from './deskTasks';
 export function GlobalRail({ onOpen }: { onOpen: (path: string) => void }) {
   return (
     <div>
-      <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">Forms</div>
+      <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">Workspace</div>
       <nav className="flex items-center gap-2" aria-label="Teacher workspace">
         {GLOBAL_RAIL.map((item) => (
           <button

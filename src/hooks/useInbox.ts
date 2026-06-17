@@ -51,7 +51,11 @@ export function useInbox() {
   const [loading, setLoading] = useState(true);
 
   const loadConversations = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      setConversations([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
 
     // Get conversations the user participates in

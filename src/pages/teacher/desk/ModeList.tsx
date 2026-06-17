@@ -67,7 +67,7 @@ export function ModeList({
         })}
       </div>
 
-      <div className="mt-7 text-[10px] uppercase tracking-[0.2em] text-black/38">Top 3</div>
+      <div className="mt-7 text-[10px] uppercase tracking-[0.2em] text-black/38">Next</div>
       <div className="mt-2.5 space-y-1.5">
         {loading ? (
           <div className="flex items-center gap-2 border border-black/12 bg-white/20 px-3 py-3 text-sm text-black/50">
@@ -77,7 +77,7 @@ export function ModeList({
         ) : visibleTasks.length === 0 ? (
           <div className="border border-dashed border-black/18 bg-white/15 px-3 py-3">
             <div className="text-sm font-semibold">{MODE_META[mode].empty}</div>
-            <p className="mt-1 text-xs leading-5 text-black/48">Nothing in this mode right now.</p>
+            <p className="mt-1 text-xs leading-5 text-black/48">No current teacher move.</p>
           </div>
         ) : (
           visibleTasks.map((task) => (
