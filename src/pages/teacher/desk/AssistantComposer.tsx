@@ -184,7 +184,7 @@ export function AssistantComposer({
         />
         <ActionChip
           icon={<FileText className="h-3.5 w-3.5" strokeWidth={1.75} />}
-          label="Canvas Draft reply"
+          label="Canvas\u00a0"
           disabled={!canUseAssistantActions}
           onClick={() => runUtility('Create a concise Canvas-style draft reply for this Teacher Desk task.')}
         />
