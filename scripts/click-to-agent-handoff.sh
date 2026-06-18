@@ -7,7 +7,14 @@ agent="${3:-Codex}"
 out="docs/agent/handoffs/click-to-agent.md"
 
 if [[ -z "$file" ]]; then
-  echo "Usage: $0 <active-file> [manual-selection-or-note] [agent]" >&2
+  echo "click-to-agent needs a saved active file." >&2
+  echo "Open the file you want to hand off, click inside it, then rerun the task." >&2
+  exit 2
+fi
+
+if [[ "$file" == Untitled* ]]; then
+  echo "click-to-agent received '$file', which is not a saved workspace file." >&2
+  echo "Open a real repo file before running this task so the handoff stays useful." >&2
   exit 2
 fi
 

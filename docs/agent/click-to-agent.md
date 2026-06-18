@@ -28,6 +28,10 @@ docs/agent/handoffs/click-to-agent.md
 - Target lane: prompted as `Codex` or `Claude`.
 - Manual selection/range/note: prompted by the task.
 
+The active file must be a saved workspace file. If VS Code passes an unsaved buffer such
+as `Untitled-1`, the task exits instead of overwriting the existing handoff with useless
+context.
+
 VS Code tasks cannot pass the live selected editor text directly. If the relevant context
 is a selection, enter a line range such as `src/App.tsx:40-75` or paste a short selection
 summary into the prompt.

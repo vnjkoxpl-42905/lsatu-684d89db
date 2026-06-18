@@ -1,6 +1,6 @@
 # Click-to-Agent Handoff
 
-- Created: 2026-06-18T01:37:53Z
+- Created: 2026-06-18T01:46:53Z
 - Target agent: Claude
 - From: Codex + Joshua
 - Active file: `/Users/joshuaf/Documents/Claude/02_PROJECTS/LSATU/docs/superpowers/specs/2026-06-17-teacher-desk-page-audit.md`
@@ -159,7 +159,7 @@ Known issues from the audit:
 Send back a compact but thorough report with:
 
 1. Current visual read: what the page feels like right now.
-2. Product read: whether Today clearly answers “what do I need to reply to, review, or assign?”
+2. Product read: whether Today clearly answers "what do I need to reply to, review, or assign?"
 3. Mismatches against the graphite reference image.
 4. Mismatches against the approved Teacher Desk spec.
 5. Concrete fix list, prioritized.
