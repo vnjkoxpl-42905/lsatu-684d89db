@@ -36,8 +36,10 @@ export function WorkSurface({
   if (!task) {
     return (
       <div className="w-full max-w-[560px] border border-black/15 bg-white/12 p-5 text-center">
-        <div className="text-sm font-semibold">{MODE_META[mode].empty}</div>
-        <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-black/50">No current teacher move.</p>
+        <div className="text-sm font-semibold">{MODE_META[mode].label} is clear</div>
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-black/50">
+          Choose another mode or open the full workspace.
+        </p>
       </div>
     );
   }

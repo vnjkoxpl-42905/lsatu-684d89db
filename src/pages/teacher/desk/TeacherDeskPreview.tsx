@@ -496,9 +496,6 @@ export default function TeacherDeskPreview() {
               }}
               onViewAll={() => navigate(MODE_META[mode].viewAllPath)}
             />
-            <div className="mt-auto hidden lg:block">
-              <BrandMark />
-            </div>
           </aside>
 
           <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:overflow-y-auto">
@@ -563,26 +560,17 @@ export default function TeacherDeskPreview() {
               pinned={selectedTask ? pinnedIds.has(selectedTask.id) : false}
               busy={busyTaskId === selectedTask?.id || updateDraft.isPending}
               primaryDisabled={primaryDisabled}
+              previewActionsDisabled={localPreview}
+              counts={counts}
+              nextSessionCue={nextSessionCue}
               onContextChange={setContextKey}
               onPrimary={handlePrimary}
               onSecondary={(task) => navigate(task.openPath)}
               onTogglePin={togglePin}
             />
-            <div className="mt-auto hidden pt-6 text-right text-[11px] uppercase tracking-[0.2em] text-black/35 lg:block">
-              DESK
-            </div>
           </aside>
         </div>
       </div>
-    </div>
-  );
-}
-
-function BrandMark() {
-  return (
-    <div className="inline-flex flex-col border border-black/25 px-2.5 py-1.5 text-[9px] font-bold uppercase leading-[1.35] tracking-[0.1em]">
-      <span>LSAT U</span>
-      <span className="text-black/45">Teacher Desk</span>
     </div>
   );
 }

@@ -15,7 +15,7 @@ import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
-export type ContextKey = 'student' | 'history' | 'analytics' | 'source';
+export type ContextKey = 'student' | 'source';
 export type AssistantScope = 'task' | 'workspace';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap';
 

@@ -1,12 +1,10 @@
-import { BarChart3, Check, FileText, History, Loader2, Pin, Search, UserRound } from 'lucide-react';
+import { Check, FileText, Loader2, Pin, Search, UserRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { HubStudentRow } from '@/hooks/useHubStudents';
-import { completionRate, type ContextKey, type DeskTask } from './deskTasks';
+import { completionRate, MODE_ORDER, MODE_META, type ContextKey, type DeskMode, type DeskTask } from './deskTasks';
 
 const CONTEXT_TABS: { key: ContextKey; Icon: typeof UserRound }[] = [
   { key: 'student', Icon: UserRound },
-  { key: 'history', Icon: History },
-  { key: 'analytics', Icon: BarChart3 },
   { key: 'source', Icon: FileText },
 ];
 
@@ -22,6 +20,9 @@ export function ActionContextPanel({
   pinned,
   busy,
   primaryDisabled,
+  previewActionsDisabled,
+  counts,
+  nextSessionCue,
   onContextChange,
   onPrimary,
   onSecondary,
@@ -33,6 +34,9 @@ export function ActionContextPanel({
   pinned: boolean;
   busy: boolean;
   primaryDisabled: boolean;
+  previewActionsDisabled?: boolean;
+  counts: Record<DeskMode, number>;
+  nextSessionCue: string | null;
   onContextChange: (key: ContextKey) => void;
   onPrimary: (task: DeskTask) => void;
   onSecondary: (task: DeskTask) => void;
@@ -44,10 +48,13 @@ export function ActionContextPanel({
 
       {!task ? (
         <div className="border border-black/15 bg-white/12 p-4">
-          <div className="text-sm font-semibold">No task selected</div>
-          <p className="mt-2 text-sm leading-6 text-black/52">
-            This panel opens when a teacher move is selected.
-          </p>
+          <div className="text-sm font-semibold">Today</div>
+          <dl className="mt-3 space-y-1.5 text-xs text-black/56">
+            {MODE_ORDER.map((mode) => (
+              <Row key={mode} label={MODE_META[mode].label} value={String(counts[mode])} />
+            ))}
+          </dl>
+          {nextSessionCue ? <p className="mt-4 text-sm leading-6 text-black/52">{nextSessionCue}</p> : null}
         </div>
       ) : (
         <>
@@ -60,6 +67,9 @@ export function ActionContextPanel({
             {busy ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} /> : <Check className="h-4 w-4" strokeWidth={1.5} />}
             {task.primaryActionLabel}
           </button>
+          {previewActionsDisabled ? (
+            <p className="mt-2 text-xs leading-5 text-black/48">Preview data. Actions unlock on the live teacher desk.</p>
+          ) : null}
 
           <div className="mt-2 grid grid-cols-2 gap-2">
             <button
@@ -140,26 +150,6 @@ function ContextBody({
             No roster row is loaded for this task. Open the full student page for profile and progress.
           </p>
         )}
-      </div>
-    );
-  }
-  if (contextKey === 'history') {
-    return (
-      <div>
-        <div className="text-sm font-semibold">Recent history</div>
-        <p className="mt-2 text-sm leading-6 text-black/56">
-          Source age: {task.timing}. Full history stays in the student and conversation surfaces.
-        </p>
-      </div>
-    );
-  }
-  if (contextKey === 'analytics') {
-    return (
-      <div>
-        <div className="text-sm font-semibold">Analytics</div>
-        <p className="mt-2 text-sm leading-6 text-black/56">
-          Analytics opens elsewhere. If it produces work needing judgment, it should arrive here as a Review task.
-        </p>
       </div>
     );
   }
