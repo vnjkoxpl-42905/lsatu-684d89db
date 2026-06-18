@@ -1,4 +1,4 @@
-// Teacher operator chat — streaming AI assistant for admins.
+// Teacher operator chat - streaming AI assistant for admins.
 // Streams Lovable AI Gateway responses with tool calling so Joshua can
 // run real teacher actions (find students, draft messages, draft homework,
 // create AI TA drafts) from a single chat surface.
@@ -18,7 +18,7 @@ const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
 
 const SYSTEM_PROMPT = `You are Joshua's AI Teaching Operator for LSAT U.
 
-You are not a chat bot — you are an operator. Joshua talks to you like a chief of staff.
+You are not a chat bot - you are an operator. Joshua talks to you like a chief of staff.
 He says things like "draft a recap for Maya from yesterday's session", "assign 10 flaw
 questions to Alex due Friday", "message everyone in cohort B about Saturday's review".
 You do those things by calling the tools available to you.
@@ -26,7 +26,7 @@ You do those things by calling the tools available to you.
 Operating principles:
 - Be concise. Reply in a few sentences max unless he asks for detail.
 - Always confirm scope before destructive actions. Never message students or post to
-  classrooms without his explicit go-ahead — create a draft and let him approve.
+  classrooms without his explicit go-ahead - create a draft and let him approve.
 - When he names a student, call find_students first to resolve the id. Don't guess.
 - After running a tool, briefly tell him what you did and what's pending his approval.
 - If a request is ambiguous (which student? which week? how many questions?), ask one
@@ -150,9 +150,41 @@ interface DeskContext {
   sourcePreview?: string;
 }
 
+type ToolArgs = Record<string, unknown>;
+type DbRow = Record<string, unknown>;
+type ChatMessage = {
+  role: "system" | "user" | "assistant" | "tool";
+  content?: string;
+  tool_call_id?: string;
+  tool_calls?: ToolCall[];
+};
+type ToolCall = {
+  id: string;
+  function?: {
+    name?: string;
+    arguments?: string;
+  };
+};
+
+function table(name: string) {
+  return name as never;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function asString(value: unknown, fallback = "") {
+  return typeof value === "string" ? value : fallback;
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 async function runTool(
   name: string,
-  args: Record<string, any>,
+  args: ToolArgs,
   ctx: { adminId: string; admin: ReturnType<typeof createClient>; context?: DeskContext | null },
 ): Promise<ToolResult> {
   const { admin, adminId } = ctx;
@@ -163,7 +195,7 @@ async function runTool(
         const limit = Math.min(Number(args.limit ?? 10) || 10, 25);
         if (!q) return { ok: true, data: { students: [] } };
         const { data, error } = await admin
-          .from("profiles" as any)
+          .from(table("profiles"))
           .select("class_id, display_name")
           .ilike("display_name", `%${q}%`)
           .limit(limit);
@@ -171,7 +203,7 @@ async function runTool(
         return {
           ok: true,
           data: {
-            students: (data ?? []).map((r: any) => ({
+            students: ((data ?? []) as DbRow[]).map((r) => ({
               id: r.class_id,
               name: r.display_name,
             })),
@@ -181,7 +213,7 @@ async function runTool(
       case "list_recent_students": {
         const limit = Math.min(Number(args.limit ?? 10) || 10, 25);
         const { data, error } = await admin
-          .from("profiles" as any)
+          .from(table("profiles"))
           .select("class_id, display_name, last_seen_at")
           .order("last_seen_at", { ascending: false, nullsFirst: false })
           .limit(limit);
@@ -189,7 +221,7 @@ async function runTool(
         return {
           ok: true,
           data: {
-            students: (data ?? []).map((r: any) => ({
+            students: ((data ?? []) as DbRow[]).map((r) => ({
               id: r.class_id,
               name: r.display_name,
             })),
@@ -198,7 +230,7 @@ async function runTool(
       }
       case "create_draft": {
         const { data, error } = await admin
-          .from("ai_ta_drafts" as any)
+          .from(table("ai_ta_drafts"))
           .insert({
             student_id: args.student_id,
             created_by: adminId,
@@ -219,34 +251,36 @@ async function runTool(
         // Find or create the 1:1 conversation between admin and student.
         const studentId = String(args.student_id);
         const { data: existing } = await admin
-          .from("conversation_participants" as any)
+          .from(table("conversation_participants"))
           .select("conversation_id")
           .eq("user_id", adminId);
-        const adminConvIds = (existing ?? []).map((r: any) => r.conversation_id);
+        const adminConvIds = ((existing ?? []) as DbRow[])
+          .map((r) => asString(r.conversation_id))
+          .filter(Boolean);
         let convId: string | null = null;
         if (adminConvIds.length) {
           const { data: shared } = await admin
-            .from("conversation_participants" as any)
+            .from(table("conversation_participants"))
             .select("conversation_id")
             .eq("user_id", studentId)
             .in("conversation_id", adminConvIds);
-          if (shared && shared.length) convId = shared[0].conversation_id;
+          if (shared && shared.length) convId = asString((shared[0] as DbRow).conversation_id, "");
         }
         if (!convId) {
           const { data: newConv, error: cErr } = await admin
-            .from("conversations" as any)
+            .from(table("conversations"))
             .insert({ created_by: adminId })
             .select("id")
             .single();
           if (cErr) throw cErr;
-          convId = newConv.id;
-          await admin.from("conversation_participants" as any).insert([
+          convId = asString((newConv as DbRow).id, "");
+          await admin.from(table("conversation_participants")).insert([
             { conversation_id: convId, user_id: adminId },
             { conversation_id: convId, user_id: studentId },
           ]);
         }
         const { data: msg, error: mErr } = await admin
-          .from("messages" as any)
+          .from(table("messages"))
           .insert({
             conversation_id: convId,
             sender_id: adminId,
@@ -255,17 +289,17 @@ async function runTool(
           .select("id")
           .single();
         if (mErr) throw mErr;
-        return { ok: true, data: { conversation_id: convId, message_id: msg.id } };
+        return { ok: true, data: { conversation_id: convId, message_id: (msg as DbRow).id } };
       }
       case "summarize_student": {
         const sid = String(args.student_id);
         const { data: student } = await admin
-          .from("profiles" as any)
+          .from(table("profiles"))
           .select("class_id, display_name")
           .eq("class_id", sid)
           .maybeSingle();
         const { data: sessions } = await admin
-          .from("student_sessions" as any)
+          .from(table("student_sessions"))
           .select("id, occurred_at, notes")
           .eq("student_id", sid)
           .order("occurred_at", { ascending: false })
@@ -278,9 +312,9 @@ async function runTool(
       default:
         return { ok: false, error: `Unknown tool: ${name}` };
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("tool error", name, e);
-    return { ok: false, error: e?.message ?? "tool failure" };
+    return { ok: false, error: errorMessage(e, "tool failure") };
   }
 }
 
@@ -322,9 +356,10 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { messages = [], context = null } = await req.json();
-    const deskContext: DeskContext | null =
-      context && typeof context === "object" ? (context as DeskContext) : null;
+    const payload = (await req.json()) as { messages?: unknown; context?: unknown };
+    const messages = payload.messages ?? [];
+    const context = payload.context ?? null;
+    const deskContext: DeskContext | null = isRecord(context) ? (context as DeskContext) : null;
     if (!Array.isArray(messages)) {
       return new Response(JSON.stringify({ error: "messages must be an array" }), {
         status: 400,
@@ -337,8 +372,9 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    const validMessages: ChatMessage[] = [];
     for (const m of messages) {
-      if (!m || !["user", "assistant", "tool", "system"].includes(m.role)) {
+      if (!isRecord(m) || !["user", "assistant", "tool", "system"].includes(asString(m.role))) {
         return new Response(JSON.stringify({ error: "Invalid message role" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -350,13 +386,17 @@ Deno.serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
+      validMessages.push({
+        role: asString(m.role) as ChatMessage["role"],
+        content: asString(m.content),
+      });
     }
 
     // Tool-using loop. We use non-streaming first to handle tool calls cleanly,
     // then stream the final assistant message back to the client.
     // Typed per-task scope from the Teacher Desk. The desk renders create_draft
     // output as an inline approval card, so for reply/assign seeds the model
-    // should DRAFT (create_draft), never send_message — Joshua approves the card.
+    // should DRAFT (create_draft), never send_message - Joshua approves the card.
     const contextNote =
       deskContext?.surface === "teacher_desk"
         ? {
@@ -367,7 +407,7 @@ Deno.serve(async (req) => {
               deskContext.studentId ? `- student_id: ${deskContext.studentId}` : "",
               deskContext.sourceKind ? `- source: ${deskContext.sourceKind}` : "",
               deskContext.sourcePreview ? `- source preview: ${deskContext.sourcePreview}` : "",
-              "For a 'reply' task, draft the reply with create_draft (draft_type 'message') addressed to the student — do NOT send_message.",
+              "For a 'reply' task, draft the reply with create_draft (draft_type 'message') addressed to the student - do NOT send_message.",
               "For an 'assign' task, draft a short rationale with create_draft (draft_type 'next_assignment'); the desk attaches the actual drill.",
               "For a 'review' task the desk already holds the existing draft; reply with one short line, no new draft.",
               "The student is already resolved above, so you can skip find_students.",
@@ -377,14 +417,14 @@ Deno.serve(async (req) => {
           }
         : null;
 
-    const baseMessages: any[] = [
+    const baseMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
       ...(contextNote ? [contextNote] : []),
-      ...messages,
+      ...validMessages,
     ];
     const toolResultsForClient: Array<{
       name: string;
-      arguments: any;
+      arguments: ToolArgs;
       result: ToolResult;
     }> = [];
 
@@ -425,7 +465,11 @@ Deno.serve(async (req) => {
         });
       }
 
-      const j = await r.json();
+      const j = (await r.json()) as {
+        choices?: Array<{
+          message?: ChatMessage;
+        }>;
+      };
       const choice = j.choices?.[0];
       const message = choice?.message;
       const toolCalls = message?.tool_calls;
@@ -434,13 +478,16 @@ Deno.serve(async (req) => {
         baseMessages.push(message);
         for (const tc of toolCalls) {
           const fnName = tc.function?.name;
-          let parsedArgs: any = {};
+          let parsedArgs: ToolArgs = {};
           try {
-            parsedArgs = JSON.parse(tc.function?.arguments ?? "{}");
-          } catch {}
-          const result = await runTool(fnName, parsedArgs, { adminId, admin, context: deskContext });
+            const parsed = JSON.parse(tc.function?.arguments ?? "{}") as unknown;
+            parsedArgs = isRecord(parsed) ? parsed : {};
+          } catch (parseError) {
+            console.warn("tool arguments parse failed", parseError);
+          }
+          const result = await runTool(asString(fnName, "unknown"), parsedArgs, { adminId, admin, context: deskContext });
           toolResultsForClient.push({
-            name: fnName,
+            name: asString(fnName, "unknown"),
             arguments: parsedArgs,
             result,
           });
@@ -471,10 +518,10 @@ Deno.serve(async (req) => {
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("operator-chat fatal", e);
     return new Response(
-      JSON.stringify({ error: e?.message ?? "Unknown error" }),
+      JSON.stringify({ error: errorMessage(e, "Unknown error") }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
