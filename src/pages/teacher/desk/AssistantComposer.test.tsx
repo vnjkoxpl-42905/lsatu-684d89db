@@ -118,4 +118,15 @@ describe('AssistantComposer', () => {
 
     expect(screen.queryByRole('button', { name: 'Draft with AI' })).not.toBeInTheDocument();
   });
+
+  it('keeps the disabled composer shell visible in read-only preview', () => {
+    renderComposer({
+      disabled: true,
+      readOnlyMessage: 'Assistant is read-only in local preview.',
+    });
+
+    expect(screen.getByLabelText('Assistant instructions')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Send command' })).toBeDisabled();
+    expect(screen.getByText('Assistant is read-only in local preview.')).toBeInTheDocument();
+  });
 });

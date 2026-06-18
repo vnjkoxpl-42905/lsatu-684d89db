@@ -55,17 +55,19 @@ export function AssistantComposer({
     requestAnimationFrame(() => adjustHeight(true));
   };
 
-  if (readOnlyMessage) {
-    return (
-      <div className="m-3 flex min-h-10 items-center gap-2 border border-black/16 bg-white/45 px-2.5 py-1.5">
-        <Lock className="h-3.5 w-3.5 shrink-0 text-black/40" strokeWidth={1.5} />
-        <span className="truncate text-[12px] text-black/45">{readOnlyMessage}</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="m-3 border border-black/16 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)] transition focus-within:border-black/32 focus-within:bg-white/70">
+    <div
+      className={cn(
+        'm-3 border border-black/16 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)] transition focus-within:border-black/32 focus-within:bg-white/70',
+        readOnlyMessage && 'bg-white/40',
+      )}
+    >
+      {readOnlyMessage ? (
+        <div className="flex items-center gap-1.5 border-b border-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black/42">
+          <Lock className="h-3 w-3" strokeWidth={1.5} />
+          <span className="truncate">{readOnlyMessage}</span>
+        </div>
+      ) : null}
       <div className="flex items-end gap-2 px-2.5 py-1.5">
         <span className="mb-1.5 font-mono text-[13px] text-black/40">❯</span>
         <Textarea
