@@ -1,79 +1,73 @@
-# Teacher Desk — Terminal AI Assistant (gameplan)
+# Teacher Desk — Embedded AI Assistant (gameplan)
 
 Date: 2026-06-18
-Author: Claude (interview with Joshua)
+Author: Claude (grill-with-docs session with Joshua)
 Surface: `http://localhost:8080/teacher` (Soft Graphite Teacher Desk)
-Supersedes intent of: the disabled assistant-line + static draft-approve flow in the current desk.
+Decision record: [ADR 0003](../../adr/0003-teacher-desk-embeds-ai-assistant.md)
+Glossary updated: `src/pages/teacher/CONTEXT.md` (Command, Daily Command Sheet, AI Teaching Assistant)
 
-## What Joshua decided (interview)
+## Locked design (resolved in grilling)
 
-- The Review "draft + approve" card is low-tier and goes away as the centerpiece.
-- Forget the Gmail-card idea completely.
-- Turn the **bottom assistant command line into a real, working AI assistant**, styled as a **terminal** that fits the graphite instrument-panel look.
-- Reuse the **existing** assistant backend, not build new.
-- Review still lists student work; the terminal becomes how Joshua actually acts.
+The Teacher Desk embeds the AI Teaching Assistant as a permanent center panel. Three zones (**Layout A**):
 
-## Stage 0 — Audit findings (grounding)
+```
+┌ left (300px) ─────┬─ center: assistant ──────┬─ right (320px) ─┐
+│ Workspace rail    │ AI TEACHING ASSISTANT     │ CONTEXT         │
+│ Reply / Review /  │ [priority chips row]      │ student + stats │
+│ Assign lists      │ chat transcript           │ source          │
+│ + Next            │ + approval action cards   │ (no actions)    │
+│                   │ ❯ command input           │                 │
+└───────────────────┴───────────────────────────┴─────────────────┘
+```
 
-The right backend already exists, and it is **not** `tutor-chat`:
+Resolved decisions:
+1. **Assistant on the desk, always visible** (not summoned, not a separate tab). Reverses the old IA. Glossary updated.
+2. **Layout A** — left task lists kept, assistant in center, thin context strip right. Cube removed.
+3. **Work happens in the chat.** Priority **chips** above the input are the top desk tasks; clicking one (or a left-list task) seeds the assistant. The assistant drafts/proposes; result is an **approval-gated card** in the chat.
+4. **Every card is editable (option B).** Cards open with an AI draft but have a blank-and-write escape hatch, so Joshua is never forced to send AI words. Applies to Reply, Review (recap), Assign.
+5. **Manual per-mode editors removed** from the desk (reply textarea, draft editor, assign picker). Their function moves into cards.
+6. **Backend = `teacher-operator-chat` via `useOperatorChat`** (NOT `tutor-chat`, which is student/question-specific). One assistant, one shared history (`operator_messages`), reopenable recent chats.
+7. Routing draft content through markdown rendering **fixes the original raw-`**`-blob bug** for free.
 
-- `tutor-chat` (edge fn) is student-and-question-specific: it validates `qid`, `stimulus`, answer choices, etc. Wrong fit for a teacher operator assistant.
-- `teacher-operator-chat` (edge fn) + `useOperatorChat` (`src/hooks/useOperatorChat.ts`) is a complete teacher operator assistant: chat history, loading/error, `sendMessage`, `newConversation`, `conversationId`, messages persisted to `operator_messages`.
-- `src/components/teacher/ai-ta/OperatorChat.tsx` already renders it with markdown (`ReactMarkdown`), file attachments, and **tool actions queued for approval** via `ActionCard` (`tool_results`). Suggestions like "List my students", "Draft a session recap for", "Message", "Summarize how" already work.
-- The operator is already used by the Command/AITA page (`/teacher/command`, `TeacherAITA.tsx`).
-- The desk (`src/pages/teacher/desk/`) does **not** import any of this yet. Its `AssistantCommandLine.tsx` is a truthful disabled stub.
-- `teacher-operator-chat` request body is `{ messages: history }` only — no explicit student/task context field today.
+Visual ref (throwaway): `public/desk-lab.html` (layout toggle A/B/C). Delete after build.
 
-Bonus: routing content through the operator's `ReactMarkdown` renderer **fixes the original complaint for free** (raw `**` / `+` blobs render as real formatting instead of a stripped run-on).
+## Open follow-ups (not blocking Stage 1)
 
-Recommendation: **reuse `useOperatorChat` + `teacher-operator-chat`**, restyle the presentation to the graphite terminal aesthetic. Do not reuse `OperatorChat.tsx`'s JSX wholesale (it is dark zinc/amber, wrong palette for the pale graphite desk) — reuse the **hook** and `ActionCard`, build a desk-specific terminal view.
+- **Dedicated assistant page** (`/teacher/command`, `TeacherAITA` + `OperatorChat`): becomes the expanded/full-screen view of the same assistant, or is retired. Must share the one history either way.
+- **Per-task context injection:** `teacher-operator-chat` body is `{ messages }` only. First slice prepends task/student context to the seeded message; add an explicit `context` field later only if the preface proves weak.
+- **Mobile:** the 3-zone desk must stack to a reachable single column (assistant + a way to get at the task lists).
 
-## Decisions to confirm before Stage 1
+## Audit findings (grounding)
 
-- **D1 (backend):** Use `teacher-operator-chat` (recommended) instead of the `tutor-chat` you named. Confirm.
-- **D2 (approve-draft fate):** When a Review draft is selected, do we (a) keep a small "Approve" quick-action next to the terminal, or (b) fold approval entirely into the assistant ("approve this draft")? Recommend (a) for the first slice so nothing regresses; drafts still exist in the DB either way.
-- **D3 (terminal height):** The bottom line expands upward into a scrollable terminal transcript over the work surface, collapsing back to a prompt line. Confirm this over a full-height takeover of the center column.
-
-## Guardrail note (intentional override)
-
-The 2026-06-16/17 desk spec said keep the full AI assistant **separate** and ship the command line **disabled**, to avoid scope-creeping into the assistant project. This gameplan **intentionally overrides** that, on Joshua's explicit direction. We keep it bounded by reusing the existing operator (no new autonomy/memory work in this pass).
+- `useOperatorChat` (`src/hooks/useOperatorChat.ts`) → `teacher-operator-chat`. Returns `{ messages, isLoading, error, sendMessage, newConversation, conversationId }`; persists to `operator_messages`.
+- `OperatorChat.tsx` already renders chat + `ReactMarkdown` + file attach + `ActionCard` (approval-gated `tool_results`). Wrong palette (dark zinc/amber) for the graphite desk — reuse the **hook + ActionCard logic**, not the JSX.
+- `ActionCard.tsx` is the approval card primitive to reuse.
+- Desk components live in `src/pages/teacher/desk/`. The bottom `AssistantCommandLine.tsx` is the disabled stub being replaced; `WorkSurface.tsx` holds the manual editors being removed; `DeskCube.tsx` is the cube being dropped.
 
 ## Build stages
 
-### Stage 1 — Terminal assistant component (graphite)
-- New `src/pages/teacher/desk/DeskTerminal.tsx` (replaces `AssistantCommandLine.tsx` in `TeacherDeskPreview.tsx`).
-- Drives `useOperatorChat`. Collapsed state = a single graphite command-prompt line (keeps the calm desk). Focus/submit expands it upward into a scrollable terminal transcript: thin black linework, pale canvas, monospace prompt, strong-black selected/active states. No dark zinc, no amber.
-- Render assistant messages with `ReactMarkdown` (reuse the operator's markdown treatment, restyled). Reuse `ActionCard` for `tool_results` so approval-gated actions still surface.
-- Honest states preserved: loading spinner, error line. No fake output.
+### Stage 1 — Desk assistant panel (graphite)
+- New `src/pages/teacher/desk/DeskAssistant.tsx` driving `useOperatorChat`, styled to the graphite language (pale canvas, thin black linework, small uppercase labels, monospace command input, strong-black active states). Reuse a graphite-restyled `ActionCard` for `tool_results`.
+- Priority chips row above the input, sourced from the desk's existing task ranking (`deskTasks` priority) — top N tasks as chips, plus a freeform "Ask" chip. Clicking a chip calls `sendMessage` seeded with that task's context.
+- Honest states: loading, error, empty. Markdown-rendered assistant content.
 
-### Stage 2 — Task/student context
-- When a desk task is selected, scope the assistant to it. First slice (low risk): prepend a compact context preface to the first `sendMessage` for that task (student name, mode, task title/source). No edge-fn change needed.
-- Optional follow-up (only if needed): extend `teacher-operator-chat` body with an explicit `context` object instead of prefacing. Defer unless the preface proves weak.
+### Stage 2 — Rewire the desk to Layout A
+- `TeacherDeskPreview.tsx`: center column renders `DeskAssistant` (remove `DeskCube` + the `WorkSurface` editors). Left column keeps `ModeList` (Reply/Review/Assign + Next). Right column becomes a thin read-only context strip (student + source), no action buttons.
+- Selecting a task in the left list seeds the assistant (same path as a chip).
 
-### Stage 3 — Rework Review mode
-- Remove the heavy inline draft editor + "Approve draft" centerpiece from the Review `WorkSurface`.
-- Keep the Review task list (drafts/uploads still appear as tasks). Show selected draft as a compact, **properly rendered** read view (markdown, not stripped run-on).
-- Per D2, either keep a small Approve quick-action or route it through the terminal. Verify `useUpdateDraftStatus` / draft data still works regardless.
+### Stage 3 — Action cards replace manual flows
+- Reply / Review / Assign each resolve as an editable approval card in the chat: Approve (send/approve/assign), Edit (blank-and-write), Discard. Wire to the existing actions (`sendReply`, `useUpdateDraftStatus`, `createAssignments`/`createClassroomItem`).
+- Verify drafts/recaps/uploads/assignments still function end-to-end through the card path.
 
 ### Stage 4 — Verify
-- Desktop 1440x1000 and mobile 390x844: terminal reachable, expands/collapses, no clipping.
-- Real round-trip to `teacher-operator-chat` with a logged-in admin; streamed/pending → rendered reply.
-- A tool action (e.g. "list my students") returns an `ActionCard`; destructive actions stay approval-gated.
-- No raw markdown artifacts anywhere (now rendered, not stripped).
+- Desktop 1440x1000 and mobile 390x844: 3-zone on desktop, reachable stacked layout on mobile, no clipping.
+- Real round-trip to `teacher-operator-chat` (logged-in admin); seeded chip → drafted card → approve → action fires.
+- No raw markdown artifacts anywhere (now rendered).
 - `npx tsc --noEmit -p tsconfig.app.json`, targeted ESLint, production build.
 
-## Files in play
+## Out of scope
 
-- `src/pages/teacher/desk/AssistantCommandLine.tsx` → replaced by `DeskTerminal.tsx`
-- `src/pages/teacher/desk/TeacherDeskPreview.tsx` — swap the assistant slot; pass selected task context
-- `src/pages/teacher/desk/WorkSurface.tsx` — strip the Review draft editor centerpiece (Stage 3)
-- `src/hooks/useOperatorChat.ts` — reused as-is (maybe extended in Stage 2)
-- `src/components/teacher/ai-ta/ActionCard.tsx` — reused for approval-gated actions
-- `supabase/functions/teacher-operator-chat/` — reference only (optional Stage 2 context field)
-
-## Out of scope (do not pull in)
-
-- New autonomy/memory for the assistant beyond what `teacher-operator-chat` already does.
-- Reply and Assign mode redesigns (scope is Review + the assistant line).
-- Touching `tutor-chat` or the student drill chat.
-- New top-level categories. Reply / Review / Assign stay the only modes.
+- New autonomy/memory beyond what `teacher-operator-chat` already does.
+- Reply/Assign mode *concept* changes — still the only three modes.
+- Touching `tutor-chat` / student drill chat.
+- New top-level categories.
