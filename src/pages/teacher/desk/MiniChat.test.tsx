@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { MiniChat } from './MiniChat';
 import type { DeskTask } from './deskTasks';
@@ -40,20 +41,22 @@ function reviewTask(): DeskTask {
 describe('MiniChat composer-only rendering', () => {
   it('renders only the chat bar and hides assistant header, transcript, and draft card', () => {
     render(
-      <MiniChat
-        task={reviewTask()}
-        variant="draft"
-        draft="Hi Adriana. Here is your plan."
-        onDraftChange={vi.fn()}
-        onSend={vi.fn()}
-        sending={false}
-        localPreview={false}
-      />,
+      <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <MiniChat
+          task={reviewTask()}
+          variant="draft"
+          draft="Hi Adriana. Here is your plan."
+          onDraftChange={vi.fn()}
+          onSend={vi.fn()}
+          sending={false}
+          localPreview={false}
+        />
+      </MemoryRouter>,
     );
 
     expect(screen.queryByText(/AI assistant/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Draft recap/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Draft reply/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('DRAFT RECAP')).not.toBeInTheDocument();
+    expect(screen.queryByText('DRAFT REPLY')).not.toBeInTheDocument();
     expect(screen.queryByText('Hi Adriana. Here is your plan.')).not.toBeInTheDocument();
     expect(screen.getByLabelText('Assistant instructions')).toBeInTheDocument();
   });

@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useOperatorChat } from '@/hooks/useOperatorChat';
 import { AssistantComposer } from './AssistantComposer';
 import { buildTaskContext, type DeskTask } from './deskTasks';
@@ -21,6 +22,7 @@ export function MiniChat({
   sending?: boolean;
   localPreview: boolean;
 }) {
+  const navigate = useNavigate();
   const { isLoading, sendMessage } = useOperatorChat();
   const [input, setInput] = useState('');
   const draftsInto = variant === 'draft';
@@ -48,6 +50,9 @@ export function MiniChat({
         onSubmit={submit}
         loading={isLoading}
         disabled={localPreview}
+        onAttachFile={() => navigate('/teacher/library/uploads')}
+        onOpenDrive={() => navigate('/admin/drive-files')}
+        onUtilityCommand={send}
         readOnlyMessage={localPreview ? 'Assistant is read-only in local preview. It connects on the live teacher desk.' : undefined}
         placeholder={
           draftsInto

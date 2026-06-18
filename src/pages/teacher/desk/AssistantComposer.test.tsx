@@ -88,12 +88,17 @@ describe('AssistantComposer', () => {
     expect(screen.getByRole('button', { name: 'Send command' })).toBeDisabled();
   });
 
-  it('does not render the old seed action inside the v0 bar', () => {
+  it('does not render generic v0 product chips', () => {
     renderComposer({
       seedAction: { label: 'Draft with AI', onClick: vi.fn() },
     });
 
     expect(screen.queryByRole('button', { name: 'Draft with AI' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Project')).not.toBeInTheDocument();
+    expect(screen.queryByText('Clone a Screenshot')).not.toBeInTheDocument();
+    expect(screen.queryByText('Import from Figma')).not.toBeInTheDocument();
+    expect(screen.queryByText('Landing Page')).not.toBeInTheDocument();
+    expect(screen.queryByText('Sign Up Form')).not.toBeInTheDocument();
   });
 
   it('keeps the disabled composer shell visible in read-only preview', () => {
@@ -107,16 +112,59 @@ describe('AssistantComposer', () => {
     expect(screen.getByText('Assistant is read-only in local preview.')).toBeInTheDocument();
   });
 
-  it('renders the requested v0 chrome without wiring fake actions', () => {
+  it('renders LSAT U teacher utility chips instead of generic v0 actions', () => {
     renderComposer({ placeholder: 'Ask Joshua a question...' });
 
     expect(screen.getByPlaceholderText('Ask Joshua a question...')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Attach' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Project' })).toBeDisabled();
-    expect(screen.getByText('Clone a Screenshot')).toBeInTheDocument();
-    expect(screen.getByText('Import from Figma')).toBeInTheDocument();
-    expect(screen.getByText('Upload a Project')).toBeInTheDocument();
-    expect(screen.getByText('Landing Page')).toBeInTheDocument();
-    expect(screen.getByText('Sign Up Form')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Attach file' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Attach material' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Google Drive' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Improve writing' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Canvas Draft reply' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Recommend next work' })).toBeInTheDocument();
+  });
+
+  it('opens a material-type picker with real LSAT U material categories', () => {
+    renderComposer();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Attach material' }));
+
+    expect(screen.getByRole('menuitem', { name: 'Guided drill' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Bootcamp lesson/module' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Practice set' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'PT / section assignment' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Reading or lesson page' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Homework/classroom item' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Recap or note' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Student upload/source material' })).toBeInTheDocument();
+  });
+
+  it('wires navigation chips only when real handlers are provided', () => {
+    const onAttachFile = vi.fn();
+    const onOpenDrive = vi.fn();
+    renderComposer({ onAttachFile, onOpenDrive });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Attach file' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Google Drive' }));
+
+    expect(onAttachFile).toHaveBeenCalledTimes(1);
+    expect(onOpenDrive).toHaveBeenCalledTimes(1);
+  });
+
+  it('sends teacher utility commands through the provided command handler', () => {
+    const onUtilityCommand = vi.fn();
+    renderComposer({ onUtilityCommand });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas Draft reply' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Recommend next work' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Attach material' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Guided drill' }));
+
+    expect(onUtilityCommand).toHaveBeenCalledTimes(4);
+    expect(onUtilityCommand.mock.calls[0][0]).toContain('Improve the writing');
+    expect(onUtilityCommand.mock.calls[1][0]).toContain('Canvas-style draft reply');
+    expect(onUtilityCommand.mock.calls[2][0]).toContain('Recommend the next useful LSAT work');
+    expect(onUtilityCommand.mock.calls[3][0]).toContain('guided drill');
   });
 });
