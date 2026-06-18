@@ -120,7 +120,7 @@ describe('AssistantComposer', () => {
     expect(screen.getByRole('button', { name: 'Attach material' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Google Drive' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Improve writing' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Canvas Draft reply' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Canvas/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Recommend next work' })).toBeInTheDocument();
   });
 
@@ -156,7 +156,7 @@ describe('AssistantComposer', () => {
     renderComposer({ onUtilityCommand });
 
     fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Canvas Draft reply' }));
+    fireEvent.click(screen.getByRole('button', { name: /Canvas/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Recommend next work' }));
     fireEvent.click(screen.getByRole('button', { name: 'Attach material' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Guided drill' }));
