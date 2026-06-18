@@ -91,7 +91,7 @@ export const MODE_META: Record<
 };
 
 export const GLOBAL_RAIL: { label: string; path: string; Icon: LucideIcon; active?: boolean }[] = [
-  { label: 'Today', path: '/teacher/desk-preview', Icon: Sparkles, active: true },
+  { label: 'Today', path: '/teacher', Icon: Sparkles, active: true },
   { label: 'Students', path: '/teacher/students', Icon: Users },
   { label: 'Assign', path: '/teacher/library/assignments/new', Icon: ClipboardList },
   { label: 'Teach', path: '/teacher/whiteboard', Icon: Pencil },

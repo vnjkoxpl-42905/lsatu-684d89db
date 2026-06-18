@@ -100,6 +100,14 @@ const PREVIEW_STUDENTS: HubStudentRow[] = [
   },
 ];
 
+// Sample guided drills for the Assign picker in unauthenticated local preview,
+// so the desk never calls Supabase (and never 401s) just to render the picker.
+const PREVIEW_MATERIALS: MaterialOption[] = [
+  { id: 'preview-drill-weaken', title: 'Weaken — causal claims' },
+  { id: 'preview-drill-sa', title: 'Sufficient assumption — short set' },
+  { id: 'preview-drill-structure', title: 'Argument structure — diagnostic' },
+];
+
 const PREVIEW_TASKS: Record<DeskMode, DeskTask[]> = {
   reply: [
     {
@@ -203,6 +211,13 @@ export default function TeacherDeskPreview() {
 
   useEffect(() => {
     if (mode !== 'assign' || materialsLoaded || materialsLoading) return;
+    // Local preview is unauthenticated: never hit Supabase just to fill the
+    // Assign picker. Seed sample drills and stay calm (no 401, no error toast).
+    if (localPreview) {
+      setMaterials(PREVIEW_MATERIALS);
+      setMaterialsLoaded(true);
+      return;
+    }
     setMaterialsLoading(true);
     listGuidedDrills()
       .then((drills) => {
@@ -213,7 +228,7 @@ export default function TeacherDeskPreview() {
         toast.error(error instanceof Error ? error.message : 'Could not load guided drills');
       })
       .finally(() => setMaterialsLoading(false));
-  }, [mode, materialsLoaded, materialsLoading]);
+  }, [mode, materialsLoaded, materialsLoading, localPreview]);
 
   const students = localPreview ? PREVIEW_STUDENTS : loadedStudents;
 

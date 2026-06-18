@@ -260,6 +260,9 @@ const App = () => {
               <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
             } />
 
+            {/* Canonical Teacher Desk (Today). Rendered full-bleed outside
+                TeacherShell so ProtectedRoute's localhost dev bypass makes it
+                reachable for local preview without TeacherShell's admin gate. */}
             <Route path="/teacher" element={
               <ProtectedRoute requireAdmin>
                 <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
@@ -344,22 +347,18 @@ const App = () => {
                       </React.Suspense>
                     </ProtectedRoute>
                   }>
-                    <Route index element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherDeskPreview />
-                      </React.Suspense>
-                    } />
+                    {/* The desk is owned by the canonical full-bleed /teacher
+                        route above; this index only redirects there so there is
+                        a single Teacher Desk mount and one canonical Today URL. */}
+                    <Route index element={<Navigate to="/teacher" replace />} />
                     <Route path="command" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherAITA />
                       </React.Suspense>
                     } />
                     <Route path="ai-ta" element={<RedirectAiTaToCommand />} />
-                    <Route path="desk-preview" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherDeskPreview />
-                      </React.Suspense>
-                    } />
+                    {/* Legacy preview path now folds into the canonical /teacher desk. */}
+                    <Route path="desk-preview" element={<Navigate to="/teacher" replace />} />
                     <Route path="today" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherToday />
