@@ -1,5 +1,15 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { ArrowUp, Loader2, Lock } from 'lucide-react';
+import {
+  ArrowUp,
+  CircleUserRound,
+  Figma,
+  FileUp,
+  ImageIcon,
+  Loader2,
+  MonitorIcon,
+  Paperclip,
+  PlusIcon,
+} from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
@@ -15,7 +25,6 @@ export function AssistantComposer({
   loading,
   disabled,
   placeholder,
-  seedAction,
   readOnlyMessage,
 }: {
   value: string;
@@ -56,20 +65,9 @@ export function AssistantComposer({
   };
 
   return (
-    <div
-      className={cn(
-        'm-3 border border-black/16 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)] transition focus-within:border-black/32 focus-within:bg-white/70',
-        readOnlyMessage && 'bg-white/40',
-      )}
-    >
-      {readOnlyMessage ? (
-        <div className="flex items-center gap-1.5 border-b border-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black/42">
-          <Lock className="h-3 w-3" strokeWidth={1.5} />
-          <span className="truncate">{readOnlyMessage}</span>
-        </div>
-      ) : null}
-      <div className="flex items-end gap-2 px-2.5 py-1.5">
-        <span className="mb-1.5 font-mono text-[13px] text-black/40">❯</span>
+    <div className="mt-5 w-full">
+      {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
+      <div className="relative overflow-hidden rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <Textarea
           ref={textareaRef}
           value={value}
@@ -88,31 +86,65 @@ export function AssistantComposer({
           disabled={disabled}
           rows={1}
           className={cn(
-            'min-h-11 flex-1 resize-none overflow-hidden border-0 bg-transparent px-0 py-2 font-mono text-[13px] leading-5 text-[#11181c] shadow-none outline-none ring-0',
+            'min-h-[84px] w-full resize-none overflow-hidden border-0 bg-transparent px-4 py-4 text-[15px] leading-6 text-white shadow-none outline-none ring-0',
             'focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-60',
-            'placeholder:text-black/35',
+            'placeholder:text-neutral-500',
           )}
         />
-        {seedAction ? (
+        <div className="flex items-center justify-between px-3 pb-3">
           <button
             type="button"
-            onClick={seedAction.onClick}
-            disabled={loading || disabled}
-            className="mb-1 inline-flex h-7 shrink-0 items-center whitespace-nowrap border border-black/16 px-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-black/60 transition hover:bg-black hover:text-white disabled:opacity-40"
+            disabled
+            aria-label="Attach"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-white/85 transition disabled:opacity-85"
           >
-            {seedAction.label}
+            <Paperclip className="h-5 w-5" strokeWidth={2} />
           </button>
-        ) : null}
-        <button
-          type="button"
-          onClick={submit}
-          disabled={!canSubmit}
-          aria-label="Send command"
-          className="mb-1 inline-flex h-7 w-7 shrink-0 items-center justify-center border border-black/16 text-black/60 transition hover:bg-black hover:text-white disabled:opacity-40"
-        >
-          {loading ? <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} /> : <ArrowUp className="h-3.5 w-3.5" strokeWidth={1.5} />}
-        </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled
+              aria-label="Project"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-dashed border-zinc-600 px-3 text-sm text-zinc-400 transition disabled:opacity-85"
+            >
+              <PlusIcon className="h-4 w-4" strokeWidth={1.75} />
+              Project
+            </button>
+            <button
+              type="button"
+              onClick={submit}
+              disabled={!canSubmit}
+              aria-label="Send command"
+              className={cn(
+                'inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-700 text-zinc-400 transition hover:border-zinc-500 hover:bg-zinc-800',
+                canSubmit && 'border-white bg-white text-black hover:bg-white/90',
+              )}
+            >
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <ArrowUp className="h-4 w-4" strokeWidth={1.75} />}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+        <ActionChip icon={<ImageIcon className="h-3.5 w-3.5" strokeWidth={1.75} />} label="Clone a Screenshot" />
+        <ActionChip icon={<Figma className="h-3.5 w-3.5" strokeWidth={1.75} />} label="Import from Figma" />
+        <ActionChip icon={<FileUp className="h-3.5 w-3.5" strokeWidth={1.75} />} label="Upload a Project" />
+        <ActionChip icon={<MonitorIcon className="h-3.5 w-3.5" strokeWidth={1.75} />} label="Landing Page" />
+        <ActionChip icon={<CircleUserRound className="h-3.5 w-3.5" strokeWidth={1.75} />} label="Sign Up Form" />
       </div>
     </div>
+  );
+}
+
+function ActionChip({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <button
+      type="button"
+      disabled
+      className="inline-flex min-h-10 items-center gap-2 rounded-full border border-neutral-800 bg-[#151515] px-4 py-2 text-xs text-neutral-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] disabled:opacity-100"
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 }

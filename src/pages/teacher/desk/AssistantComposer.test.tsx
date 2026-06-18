@@ -88,33 +88,10 @@ describe('AssistantComposer', () => {
     expect(screen.getByRole('button', { name: 'Send command' })).toBeDisabled();
   });
 
-  it('shows the seed action only when one is provided', () => {
-    const onSeed = vi.fn();
-    const { rerender } = render(
-      <AssistantComposer
-        value=""
-        onChange={vi.fn()}
-        onSubmit={vi.fn()}
-        loading={false}
-        disabled={false}
-        placeholder="draft a reply..."
-        seedAction={{ label: 'Draft with AI', onClick: onSeed }}
-      />,
-    );
-
-    fireEvent.click(screen.getByRole('button', { name: 'Draft with AI' }));
-    expect(onSeed).toHaveBeenCalledTimes(1);
-
-    rerender(
-      <AssistantComposer
-        value=""
-        onChange={vi.fn()}
-        onSubmit={vi.fn()}
-        loading={false}
-        disabled={false}
-        placeholder="draft a reply..."
-      />,
-    );
+  it('does not render the old seed action inside the v0 bar', () => {
+    renderComposer({
+      seedAction: { label: 'Draft with AI', onClick: vi.fn() },
+    });
 
     expect(screen.queryByRole('button', { name: 'Draft with AI' })).not.toBeInTheDocument();
   });
@@ -128,5 +105,18 @@ describe('AssistantComposer', () => {
     expect(screen.getByLabelText('Assistant instructions')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Send command' })).toBeDisabled();
     expect(screen.getByText('Assistant is read-only in local preview.')).toBeInTheDocument();
+  });
+
+  it('renders the requested v0 chrome without wiring fake actions', () => {
+    renderComposer({ placeholder: 'Ask Joshua a question...' });
+
+    expect(screen.getByPlaceholderText('Ask Joshua a question...')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Attach' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Project' })).toBeDisabled();
+    expect(screen.getByText('Clone a Screenshot')).toBeInTheDocument();
+    expect(screen.getByText('Import from Figma')).toBeInTheDocument();
+    expect(screen.getByText('Upload a Project')).toBeInTheDocument();
+    expect(screen.getByText('Landing Page')).toBeInTheDocument();
+    expect(screen.getByText('Sign Up Form')).toBeInTheDocument();
   });
 });
