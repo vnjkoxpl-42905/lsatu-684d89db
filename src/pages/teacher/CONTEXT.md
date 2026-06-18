@@ -53,13 +53,13 @@ A post-session summary for a student. **Not hand-written** — AI-drafted from t
 The Excalidraw canvas for live teaching. Its own **top-level tab**: a template gallery (reusable boards prepped per lesson type — conditional, causal) plus saved sessions. Opened standalone or attached to a student. Templates are a teaching aid Joshua prepares once and reuses; they are NOT a student-assignable material (the student doesn't receive a board, Joshua presents on it).
 
 ### Command
-The route-level home base, now named **Teacher Desk** in the product language. Command is a **task list-centered** hub for triage (what needs a reply), AI draft approvals, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). It is not the dedicated AI assistant page.
+The route-level home base, now named **Teacher Desk** in the product language. Command is a **task list-centered** hub for triage (what needs a reply), AI draft approvals, today's priorities, and the **transcript inbox** (incoming Session Transcripts awaiting recap-generation/approval). The **AI Teaching Assistant is embedded in the Desk as an always-visible panel** (see AI Teaching Assistant); the Desk and the assistant share one surface. (This intentionally reverses the earlier rule that the Desk was "not the assistant page.")
 
 ### Today
 The top-level start page for the Teacher Workspace. It replaces "Command" as the user-facing name for the daily home base. Today shows what needs Joshua's attention now and gives him a clear next action. It is organized around only three teacher task modes: Reply, Review, and Assign.
 
 ### Daily Command Sheet
-The desired feel of the Today page: calm, direct, and action-oriented rather than a dashboard. It emphasizes a small set of task modes and clear next actions. It avoids giant hero sections, oversized assistant panels, scattered stat cards, extra category lists, and empty sections that compete with real work.
+The desired feel of the Today page: calm, direct, and action-oriented rather than a dashboard. It emphasizes a small set of task modes and clear next actions. It avoids giant hero sections, scattered stat cards, extra category lists, and empty sections that compete with real work. The **AI Teaching Assistant panel is a permanent, intentional fixture** of the desk (not clutter), but it must still feel calm and precise rather than a busy, generic chat app.
 
 ### Instrument Panel Visual Direction
 The chosen visual language for the Teacher Workspace is a close adaptation of the quiet technical instrument panel reference, not a loose mood board. The page should use the same basic composition: pale graphite canvas, faint technical grid, top metadata line, compact left-side tool stack, one central wireframe work object, restrained right-side control cluster, small technical labels, thin black strokes, clear active states, and generous empty space. It should feel like a premium operating desk, not a generic SaaS dashboard.
@@ -102,7 +102,7 @@ The top-level area for system management and configuration. Admin contains accou
 The project track for making the overall teacher workspace calmer, clearer, and easier to operate. It concerns page structure, navigation, task visibility, student access, assignment flow, analytics access, and reducing unnecessary divisions. It is related to the AI Teaching Assistant but is not the same task.
 
 ### AI Teaching Assistant
-A dedicated operator assistant page for Joshua. It knows each student's context, has access to analytics, suggests next assignments, drafts student communications, helps process transcripts/notes/messages into concrete next actions, and learns from what Joshua approves, edits, rejects, and repeats. It uses a memory base to serve Joshua better across sessions. It is not just a chat box and not the same surface as the Teacher Desk task list.
+The operator assistant for Joshua. It knows each student's context, has access to analytics, suggests next assignments, drafts student communications, helps process transcripts/notes/messages into concrete next actions, and learns from what Joshua approves, edits, rejects, and repeats. It uses a memory base to serve Joshua better across sessions. It is more than a chat box. It is **always visible as a panel on the Teacher Desk (Today)** and may also have a dedicated home; wherever it is opened it is **one assistant with one shared conversation history** (`operator_messages`, with reopenable recent chats), powered by the `teacher-operator-chat` engine.
 
 ### AI Teaching Assistant Buildout
 The project track for making the assistant more capable over time. It concerns drafting, recommendations, analytics-aware student context, memory, learning Joshua's Teaching Profile, approval-gated autonomy, and background review. It is related to the Teacher Workspace Redesign because the workspace is where Joshua primarily accesses it, but it is a distinct task.
