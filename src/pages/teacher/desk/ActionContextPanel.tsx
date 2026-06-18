@@ -19,6 +19,7 @@ export function ActionContextPanel({
   contextKey,
   pinned,
   busy,
+  showPrimary = true,
   primaryDisabled,
   previewActionsDisabled,
   counts,
@@ -33,6 +34,7 @@ export function ActionContextPanel({
   contextKey: ContextKey;
   pinned: boolean;
   busy: boolean;
+  showPrimary?: boolean;
   primaryDisabled: boolean;
   previewActionsDisabled?: boolean;
   counts: Record<DeskMode, number>;
@@ -58,18 +60,26 @@ export function ActionContextPanel({
         </div>
       ) : (
         <>
-          <button
-            type="button"
-            onClick={() => onPrimary(task)}
-            disabled={busy || primaryDisabled}
-            className="inline-flex h-11 w-full items-center justify-center gap-2 bg-black px-4 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-50"
-          >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} /> : <Check className="h-4 w-4" strokeWidth={1.5} />}
-            {task.primaryActionLabel}
-          </button>
-          {previewActionsDisabled ? (
-            <p className="mt-2 text-xs leading-5 text-black/48">Preview data. Actions unlock on the live teacher desk.</p>
-          ) : null}
+          {showPrimary ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onPrimary(task)}
+                disabled={busy || primaryDisabled}
+                className="inline-flex h-11 w-full items-center justify-center gap-2 bg-black px-4 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-50"
+              >
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} /> : <Check className="h-4 w-4" strokeWidth={1.5} />}
+                {task.primaryActionLabel}
+              </button>
+              {previewActionsDisabled ? (
+                <p className="mt-2 text-xs leading-5 text-black/48">Preview data. Actions unlock on the live teacher desk.</p>
+              ) : null}
+            </>
+          ) : (
+            <p className="text-xs leading-5 text-black/48">
+              Send the reply from the draft card in the work area. Use these for context.
+            </p>
+          )}
 
           <div className="mt-2 grid grid-cols-2 gap-2">
             <button

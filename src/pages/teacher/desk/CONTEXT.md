@@ -50,12 +50,17 @@ The center column: the region that holds the currently selected task and the mea
 The AI Teaching Assistant (parent glossary) rendered as a chat inside the Stage. Today it contains: a transcript, the Draft Box, and a terminal-style command input. It stays inside the desk shell and never becomes a full-page chat. (Was called "MiniChat"; renamed because it is becoming the primary content of the Stage, not a mini add-on.)
 
 ### Draft Bubble
-Replaces the old Draft Box. A **draft** is a piece of student-facing content the assistant produces (a reply, recap, or assignment message). It renders inside the Assistant Chat as a **ChatGPT-canvas-style message bubble**: the draft text shown in place, with its own **Edit** and **Send** controls on the bubble.
+Replaces the old Draft Box. A **draft** is a piece of student-facing content the assistant produces (a reply, recap, or assignment message). It renders inside the Assistant Chat as a **distinct full-width document card** — NOT a chat speech bubble. It carries a header strip (draft-type label on the left, **Edit** + **Send** controls on the right) so it reads as an artifact you will send, visually separate from ordinary AI chatter.
 
-- It appears **only when the assistant produces a draft** (i.e. calls `create_draft`). Ordinary assistant chatter — advice, clarifying questions — stays a plain chat message with no Edit/Send.
-- **Edit** makes the bubble directly editable (rich text: bold, italic, links). Selecting text inside it pops an **Ask for Changes** toolbar, so Joshua can hand-edit or ask the AI to revise just that selection.
-- **Send** lives on the Draft Bubble itself. Sending a Draft Bubble is what commits that exact text to the student. Because Send is per-bubble, the old right-panel Commit Button is **retired** for the draft modes (Reply, Review).
-- There can be more than one Draft Bubble in a conversation (each revision is a new bubble); Joshua sends the one he approves.
+- **Resting state.** Before any draft exists there is **no draft box at all** — the Stage shows the task card + the chat transcript + the Composer, nothing else. The old always-on empty white textarea is killed. (Decision: "Nothing but the composer.")
+- **Appears only on `create_draft`.** The card shows up only when the assistant produces a draft. Ordinary assistant chatter — advice, clarifying questions — stays a plain left-aligned chat message with no Edit/Send.
+- **Form.** Full-width card, header strip (`✦ DRAFT REPLY` style label + Edit/Send), body is the draft text. Plain chatter stays small bubbles; the draft card is deliberately heavier and wider so "this is the thing that goes to the student" is unmistakable.
+- **Edit** makes the card body directly editable (rich text: bold, italic, links). Selecting text inside it pops an **Ask for Changes** toolbar, so Joshua can hand-edit or ask the AI to revise just that selection.
+- **Send** lives on the card. Sending commits that exact text to the student. Because Send is per-card, the old right-panel Commit Button is **retired** for the draft modes (Reply, Review).
+
+**Revision lifecycle.** Each AI revision is a new card. Only the **newest** card is full-size and editable; **older revisions collapse to a one-line chip** (`› v1 · superseded`) that can be expanded. This keeps the canvas from growing unbounded while preserving history. (Decision: "Collapse old, latest live.")
+
+**Send behavior — confirm step.** Send is a two-tap commit: the first tap turns the button into **`Send to {student}?`** with confirm / cancel for ~3s; the second tap commits. On commit the card **locks to a receipt** — `✓ Sent to Maria · 2:14pm`, body no longer editable. This guards against misfiring student-facing messages. (Decision: "Confirm step," not one-tap, not undo-toast.)
 
 ### Composer
 The bottom chat input on the Stage (ChatGPT's "Ask anything"). Joshua types **instructions** here ("be warmer," "shorten Monday"); the assistant responds, producing a new plain message or a new Draft Bubble. The Composer is for talking to the assistant, never the thing that sends to a student.

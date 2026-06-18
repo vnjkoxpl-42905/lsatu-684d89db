@@ -461,6 +461,12 @@ export default function TeacherDeskPreview() {
 
   const ModeIcon = MODE_META[mode].Icon;
   const selectedStudentRow = selectedTask?.studentId ? studentById.get(selectedTask.studentId) ?? null : null;
+  // Reply and editable-review tasks commit via the draft card's own Send, so the
+  // right panel must NOT show a duplicate commit button (glossary: Commit Button is
+  // retired for the draft modes). Upload-review and Assign keep the right-panel commit.
+  const cardHasSend =
+    !!selectedTask &&
+    (selectedTask.mode === 'reply' || (selectedTask.mode === 'review' && selectedTask.editableText !== undefined));
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#c3cace] text-[#11181c] lg:h-screen lg:overflow-hidden">
@@ -545,6 +551,10 @@ export default function TeacherDeskPreview() {
                   if (!selectedTask) return;
                   setEditTextByTask((current) => ({ ...current, [selectedTask.id]: value }));
                 }}
+                onSend={() => {
+                  if (selectedTask) return handlePrimary(selectedTask);
+                }}
+                sending={busyTaskId === selectedTask?.id}
                 materials={materials}
                 materialsLoading={materialsLoading}
                 materialId={selectedTask ? materialByTask[selectedTask.id] ?? '' : ''}
@@ -569,6 +579,7 @@ export default function TeacherDeskPreview() {
               contextKey={contextKey}
               pinned={selectedTask ? pinnedIds.has(selectedTask.id) : false}
               busy={busyTaskId === selectedTask?.id || updateDraft.isPending}
+              showPrimary={!cardHasSend}
               primaryDisabled={primaryDisabled}
               previewActionsDisabled={localPreview}
               counts={counts}

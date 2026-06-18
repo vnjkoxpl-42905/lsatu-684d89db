@@ -17,6 +17,8 @@ export function WorkSurface({
   mode,
   editValue,
   onEditChange,
+  onSend,
+  sending,
   materials,
   materialsLoading,
   materialId,
@@ -29,6 +31,8 @@ export function WorkSurface({
   mode: DeskMode;
   editValue: string;
   onEditChange: (value: string) => void;
+  onSend: () => void | Promise<void>;
+  sending: boolean;
   materials: MaterialOption[];
   materialsLoading: boolean;
   materialId: string;
@@ -67,7 +71,15 @@ export function WorkSurface({
 
       {/* The mini AI chat sits where the white draft textbox used to be. */}
       {showChat ? (
-        <MiniChat task={task} variant="draft" draft={editValue} onDraftChange={onEditChange} localPreview={localPreview} />
+        <MiniChat
+          task={task}
+          variant="draft"
+          draft={editValue}
+          onDraftChange={onEditChange}
+          onSend={onSend}
+          sending={sending}
+          localPreview={localPreview}
+        />
       ) : null}
 
       {task.mode === 'assign' ? (
