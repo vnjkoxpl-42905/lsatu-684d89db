@@ -2,10 +2,10 @@
 
 - Created: 2026-06-18
 - From: Claude + Joshua
-- To: Codex (or any fresh agent) — **cold start, no prior chat context needed**
+- To: **a fresh Claude Code chat** (or any agent) — cold start, no prior chat context needed
 - Status: **Design is LOCKED. This is the implementation handoff. Build it.**
 
-You can pick this up in a brand-new chat. Everything you need is in the repo. Follow the steps in order; do not skip the read phase.
+You are a new Claude Code session picking this up cold. Everything you need is in the repo. Follow the steps in order; do not skip the read phase.
 
 ## Step 0 — Load full context (read in this order)
 
