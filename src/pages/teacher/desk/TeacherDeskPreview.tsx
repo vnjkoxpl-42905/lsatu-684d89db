@@ -1,18 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import { CircleAlert, X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
-import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-import { useAITADrafts, useUpdateDraftStatus } from '@/hooks/useAITADrafts';
+import { useAITADrafts } from '@/hooks/useAITADrafts';
 import { useAdminUploadsQueue } from '@/hooks/useExternalWorkUploads';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import { useInbox } from '@/hooks/useInbox';
-import { createAssignments, listGuidedDrills } from '@/lib/guidedDrills';
-import { createClassroomItem } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem } from '@/lib/classroomNotify';
-import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 import {
   MODE_META,
   MODE_ORDER,
@@ -23,17 +18,15 @@ import {
   sortTasks,
   studentToAssignTask,
   uploadToReviewTask,
-  type ContextKey,
-  type AssistantScope,
   type DeskMode,
   type DeskTask,
 } from './deskTasks';
 import { GlobalRail } from './GlobalRail';
 import { ModeList } from './ModeList';
-import { DeskCube } from './DeskCube';
-import { WorkSurface, type MaterialOption } from './WorkSurface';
-import { ActionContextPanel } from './ActionContextPanel';
-import { AssistantCommandLine } from './AssistantCommandLine';
+import { DeskAssistant, type DeskSeedSignal } from './DeskAssistant';
+import { DeskContextStrip } from './DeskContextStrip';
+import { DeskMobile } from './DeskMobile';
+import { useDeskActions } from './useDeskActions';
 import { useNextSession } from './useNextSession';
 
 const FLOOR_GRID_STYLE: React.CSSProperties = {
@@ -98,14 +91,6 @@ const PREVIEW_STUDENTS: HubStudentRow[] = [
     assignments_completed: 0,
     has_unread_from_student: false,
   },
-];
-
-// Sample guided drills for the Assign picker in unauthenticated local preview,
-// so the desk never calls Supabase (and never 401s) just to render the picker.
-const PREVIEW_MATERIALS: MaterialOption[] = [
-  { id: 'preview-drill-weaken', title: 'Weaken — causal claims' },
-  { id: 'preview-drill-sa', title: 'Sufficient assumption — short set' },
-  { id: 'preview-drill-structure', title: 'Argument structure — diagnostic' },
 ];
 
 const PREVIEW_TASKS: Record<DeskMode, DeskTask[]> = {
@@ -179,9 +164,7 @@ const PREVIEW_TASKS: Record<DeskMode, DeskTask[]> = {
 
 export default function TeacherDeskPreview() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { user } = useAuth();
-  const updateDraft = useUpdateDraftStatus();
 
   const localPreview = isLocalPreviewHost() && !user;
   const { rows: loadedStudents = [], loading: studentsLoading, error: studentsError, refresh: refreshStudents } =
@@ -190,45 +173,14 @@ export default function TeacherDeskPreview() {
   const { data: drafts = [], isLoading: draftsLoading } = useAITADrafts({ status: 'draft' });
   const { data: uploads = [], isLoading: uploadsLoading } = useAdminUploadsQueue();
   const { data: nextSession } = useNextSession();
+  const deskActions = useDeskActions({ refreshInbox, refreshStudents });
 
   const storedMode = useMemo(() => modeFromStorage(), []);
   const [mode, setModeState] = useState<DeskMode>(storedMode ?? 'reply');
   const [autoModeApplied, setAutoModeApplied] = useState(Boolean(storedMode));
   const [selectedByMode, setSelectedByMode] = useState<Partial<Record<DeskMode, string>>>({});
-  const [contextKey, setContextKey] = useState<ContextKey>('student');
-  const [assistantScope, setAssistantScope] = useState<AssistantScope>('task');
-  const [editTextByTask, setEditTextByTask] = useState<Record<string, string>>({});
-  const [materialByTask, setMaterialByTask] = useState<Record<string, string>>({});
-  const [dueByTask, setDueByTask] = useState<Record<string, string>>({});
-  const [busyTaskId, setBusyTaskId] = useState<string | null>(null);
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
-
-  // Guided drills power the real Assign material picker. Loaded lazily the
-  // first time Assign mode is opened.
-  const [materials, setMaterials] = useState<MaterialOption[]>([]);
-  const [materialsLoading, setMaterialsLoading] = useState(false);
-  const [materialsLoaded, setMaterialsLoaded] = useState(false);
-
-  useEffect(() => {
-    if (mode !== 'assign' || materialsLoaded || materialsLoading) return;
-    // Local preview is unauthenticated: never hit Supabase just to fill the
-    // Assign picker. Seed sample drills and stay calm (no 401, no error toast).
-    if (localPreview) {
-      setMaterials(PREVIEW_MATERIALS);
-      setMaterialsLoaded(true);
-      return;
-    }
-    setMaterialsLoading(true);
-    listGuidedDrills()
-      .then((drills) => {
-        setMaterials(drills.filter((d) => d.is_published).map((d) => ({ id: d.id, title: d.title })));
-        setMaterialsLoaded(true);
-      })
-      .catch((error) => {
-        toast.error(error instanceof Error ? error.message : 'Could not load guided drills');
-      })
-      .finally(() => setMaterialsLoading(false));
-  }, [mode, materialsLoaded, materialsLoading, localPreview]);
+  const [seedSignal, setSeedSignal] = useState<DeskSeedSignal | null>(null);
+  const seedNonce = useRef(0);
 
   const students = localPreview ? PREVIEW_STUDENTS : loadedStudents;
 
@@ -243,7 +195,11 @@ export default function TeacherDeskPreview() {
     const replyTasks = conversations
       .filter((conversation) => conversation.unread)
       .map((conversation) => conversationToReplyTask(conversation));
-    const draftTasks = drafts.map((draft) => draftToReviewTask(draft, studentById.get(draft.student_id)));
+    // 'message' drafts are reply artifacts (handled as Reply cards), not Review
+    // items — excluding them keeps a seeded reply from also showing in Review.
+    const draftTasks = drafts
+      .filter((draft) => draft.draft_type !== 'message')
+      .map((draft) => draftToReviewTask(draft, studentById.get(draft.student_id)));
     const uploadTasks = uploads.map((upload) => uploadToReviewTask(upload, studentById.get(upload.student_id)));
     const assignTasks = students
       .filter((student) => student.assignments_total === 0 || (student.assignments_completed / Math.max(1, student.assignments_total)) >= 0.8)
@@ -269,16 +225,23 @@ export default function TeacherDeskPreview() {
     return ranked[0]?.priority >= 0 ? ranked[0].key : 'reply';
   }, [tasksByMode]);
 
-  // Pinned tasks float to the front; the list is already priority-sorted, so a
-  // stable partition keeps ranking within each group.
-  const orderedTasks = useMemo(() => {
-    const all = tasksByMode[mode];
-    return [...all].sort((a, b) => (pinnedIds.has(b.id) ? 1 : 0) - (pinnedIds.has(a.id) ? 1 : 0));
-  }, [tasksByMode, mode, pinnedIds]);
+  // The single highest-priority task across all modes — the assistant's "Next move".
+  const nextTask = useMemo<DeskTask | null>(() => tasksByMode[highestMode][0] ?? null, [tasksByMode, highestMode]);
 
-  const visibleTasks = orderedTasks.slice(0, 3);
+  const visibleTasks = tasksByMode[mode].slice(0, 3);
   const selectedTaskId = selectedByMode[mode];
-  const selectedTask = visibleTasks.find((task) => task.id === selectedTaskId) ?? visibleTasks[0] ?? null;
+  // Explicit selection only — at rest nothing is selected, so the assistant
+  // rests as the task-first "Today queue" and the right strip collapses.
+  const selectedTask = useMemo<DeskTask | null>(() => {
+    for (const key of MODE_ORDER) {
+      const id = selectedByMode[key];
+      if (id) {
+        const found = tasksByMode[key].find((task) => task.id === id);
+        if (found) return found;
+      }
+    }
+    return null;
+  }, [selectedByMode, tasksByMode]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') window.sessionStorage.setItem(SESSION_MODE_KEY, mode);
@@ -291,151 +254,22 @@ export default function TeacherDeskPreview() {
     }
   }, [autoModeApplied, highestMode, isLoading]);
 
-  useEffect(() => {
-    if (!selectedTask) return;
-    setSelectedByMode((current) => (current[mode] === selectedTask.id ? current : { ...current, [mode]: selectedTask.id }));
-    if (selectedTask.editableText !== undefined && editTextByTask[selectedTask.id] === undefined) {
-      setEditTextByTask((current) => ({ ...current, [selectedTask.id]: selectedTask.editableText ?? '' }));
-    }
-  }, [editTextByTask, mode, selectedTask]);
-
-  const setMode = (next: DeskMode) => {
-    setModeState(next);
-    setContextKey('student');
-  };
-
-  const togglePin = (task: DeskTask) => {
-    setPinnedIds((current) => {
-      const next = new Set(current);
-      if (next.has(task.id)) next.delete(task.id);
-      else next.add(task.id);
-      return next;
-    });
-  };
-
-  const sendReply = useCallback(
-    async (task: DeskTask) => {
-      const body = (editTextByTask[task.id] ?? '').trim();
-      if (!body || !user || !task.sourceId) return;
-      setBusyTaskId(task.id);
-      try {
-        const { error } = await supabase
-          .from('messages')
-          .insert({ conversation_id: task.sourceId, sender_id: user.id, body });
-        if (error) throw error;
-        setEditTextByTask((current) => ({ ...current, [task.id]: '' }));
-        toast.success('Reply sent');
-        refreshInbox();
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Could not send reply');
-      } finally {
-        setBusyTaskId(null);
-      }
-    },
-    [editTextByTask, refreshInbox, user],
-  );
-
-  const assignWork = useCallback(
-    async (task: DeskTask) => {
-      const drillId = materialByTask[task.id];
-      if (!drillId || !task.studentId || !user) return;
-      const drill = materials.find((material) => material.id === drillId);
-      const dueRaw = dueByTask[task.id];
-      const dueAt = dueRaw ? new Date(dueRaw).toISOString() : null;
-      setBusyTaskId(task.id);
-      try {
-        const assignments = await createAssignments({
-          guided_drill_ids: [drillId],
-          student_ids: [task.studentId],
-          assigned_by: user.id,
-        });
-        await Promise.all(
-          assignments.map(async (assignment) => {
-            await createClassroomItem({
-              studentId: assignment.student_id,
-              createdBy: user.id,
-              type: 'drill',
-              title: drill?.title ?? 'Guided drill',
-              description: `New guided drill: ${drill?.title ?? ''}`,
-              dueAt,
-              sourceTable: 'guided_drill_assignments',
-              sourceId: assignment.id,
-              status: 'assigned',
-              visibleToStudent: true,
-            });
-            try {
-              await notifyStudentOfClassroomItem({
-                adminUserId: user.id,
-                studentId: assignment.student_id,
-                title: drill?.title ?? 'Guided drill',
-                route: `/guided/${assignment.id}?returnTo=/classroom`,
-                description: `New guided drill: ${drill?.title ?? ''}`,
-              });
-            } catch (notifyError) {
-              console.warn('[TeacherDesk] notify failed', notifyError);
-            }
-          }),
-        );
-        queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
-        queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
-        queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
-        refreshStudents();
-        toast.success('Work assigned');
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Could not assign work');
-      } finally {
-        setBusyTaskId(null);
-      }
-    },
-    [dueByTask, materialByTask, materials, queryClient, refreshStudents, user],
-  );
-
-  const handlePrimary = async (task: DeskTask) => {
-    if (task.sourceKind === 'conversation') {
-      await sendReply(task);
-      return;
-    }
-    if (task.sourceKind === 'draft' && task.sourceId) {
-      setBusyTaskId(task.id);
-      try {
-        await updateDraft.mutateAsync({ id: task.sourceId, status: 'approved' });
-        toast.success('Draft approved');
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Could not approve draft');
-      } finally {
-        setBusyTaskId(null);
-      }
-      return;
-    }
-    if (task.sourceKind === 'upload' && task.sourceId) {
-      setBusyTaskId(task.id);
-      try {
-        const { error } = await supabase
-          .from('external_work_uploads')
-          .update({ processing_status: 'parsed', reviewed_at: new Date().toISOString() })
-          .eq('id', task.sourceId);
-        if (error) throw error;
-        await queryClient.invalidateQueries({ queryKey: ['external-uploads-queue'] });
-        toast.success('Upload marked reviewed');
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Could not mark reviewed');
-      } finally {
-        setBusyTaskId(null);
-      }
-      return;
-    }
-    if (task.sourceKind === 'assignment-gap') {
-      await assignWork(task);
+  // Clicking a left task row selects it AND seeds the assistant.
+  const selectFromList = (taskId: string) => {
+    setSelectedByMode((current) => ({ ...current, [mode]: taskId }));
+    const task = tasksByMode[mode].find((candidate) => candidate.id === taskId);
+    if (task) {
+      seedNonce.current += 1;
+      setSeedSignal({ task, nonce: seedNonce.current });
     }
   };
 
-  const primaryDisabled = useMemo(() => {
-    if (localPreview) return true;
-    if (!selectedTask) return true;
-    if (selectedTask.sourceKind === 'conversation') return !(editTextByTask[selectedTask.id] ?? '').trim();
-    if (selectedTask.sourceKind === 'assignment-gap') return !materialByTask[selectedTask.id];
-    return false;
-  }, [editTextByTask, localPreview, materialByTask, selectedTask]);
+  // Chips inside the assistant seed themselves; this only syncs selection so the
+  // right strip and left list reflect the seeded task.
+  const selectFromAssistant = (task: DeskTask) => {
+    setModeState(task.mode);
+    setSelectedByMode((current) => ({ ...current, [task.mode]: task.id }));
+  };
 
   const todayLabel = format(new Date(), 'd MMMM');
   const weekdayLabel = format(new Date(), 'EEE');
@@ -446,7 +280,6 @@ export default function TeacherDeskPreview() {
     return `Next session: ${name ? `${name} · ` : ''}${when}`;
   }, [nextSession, studentById]);
 
-  const ModeIcon = MODE_META[mode].Icon;
   const selectedStudentRow = selectedTask?.studentId ? studentById.get(selectedTask.studentId) ?? null : null;
 
   return (
@@ -479,33 +312,40 @@ export default function TeacherDeskPreview() {
           </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-1 lg:min-h-0 lg:grid-cols-[300px_minmax(0,1fr)_320px]">
-          <aside className="flex flex-col gap-8 border-b border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-b-0 lg:border-r">
+        <div
+          className={cn(
+            'grid flex-1 grid-cols-1 lg:min-h-0',
+            selectedTask ? 'lg:grid-cols-[300px_minmax(0,1fr)_320px]' : 'lg:grid-cols-[300px_minmax(0,1fr)]',
+          )}
+        >
+          <aside className="hidden flex-col gap-8 border-b border-black/10 px-6 py-6 lg:flex lg:overflow-y-auto lg:border-b-0 lg:border-r">
             <GlobalRail onOpen={(path) => navigate(path)} />
             <ModeList
               mode={mode}
               counts={counts}
               tasksByMode={tasksByMode}
               visibleTasks={visibleTasks}
-              selectedTaskId={selectedTask?.id}
+              selectedTaskId={selectedTaskId}
               loading={isLoading}
-              onSelectMode={setMode}
-              onSelectTask={(taskId) => {
-                setSelectedByMode((current) => ({ ...current, [mode]: taskId }));
-                setContextKey('student');
-              }}
+              onSelectMode={setModeState}
+              onSelectTask={selectFromList}
               onViewAll={() => navigate(MODE_META[mode].viewAllPath)}
             />
           </aside>
 
-          <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:overflow-y-auto">
-            <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-black/45">
-              <ModeIcon className="h-4 w-4" strokeWidth={1.5} />
-              <span>{MODE_META[mode].description}</span>
-            </div>
+          <main className="relative flex min-w-0 flex-col px-5 py-6 lg:overflow-hidden">
+            <DeskMobile
+              mode={mode}
+              counts={counts}
+              tasks={tasksByMode[mode]}
+              selectedTask={selectedTask}
+              loading={isLoading}
+              onSelectMode={setModeState}
+              onSelectTask={selectFromList}
+            />
 
             {!localPreview && studentsError ? (
-              <div className="mb-4 w-full max-w-[620px] border border-black/20 bg-white/25 p-4 text-sm">
+              <div className="mb-4 w-full border border-black/20 bg-white/25 p-4 text-sm">
                 <div className="flex items-center gap-2 font-semibold">
                   <CircleAlert className="h-4 w-4" strokeWidth={1.5} />
                   Teacher data did not load.
@@ -521,54 +361,23 @@ export default function TeacherDeskPreview() {
               </div>
             ) : null}
 
-            <DeskCube mode={mode} hasTask={Boolean(selectedTask)} />
-
-            <div className="mt-5 flex w-full justify-center">
-              <WorkSurface
-                task={selectedTask}
-                mode={mode}
-                editValue={selectedTask ? editTextByTask[selectedTask.id] ?? selectedTask.editableText ?? '' : ''}
-                onEditChange={(value) => {
-                  if (!selectedTask) return;
-                  setEditTextByTask((current) => ({ ...current, [selectedTask.id]: value }));
-                }}
-                materials={materials}
-                materialsLoading={materialsLoading}
-                materialId={selectedTask ? materialByTask[selectedTask.id] ?? '' : ''}
-                onMaterialChange={(value) => {
-                  if (!selectedTask) return;
-                  setMaterialByTask((current) => ({ ...current, [selectedTask.id]: value }));
-                }}
-                dueValue={selectedTask ? dueByTask[selectedTask.id] ?? '' : ''}
-                onDueChange={(value) => {
-                  if (!selectedTask) return;
-                  setDueByTask((current) => ({ ...current, [selectedTask.id]: value }));
-                }}
-              />
-            </div>
-
-            <div className="mt-6 w-full lg:mt-auto lg:pt-6">
-              <AssistantCommandLine scope={assistantScope} onScopeChange={setAssistantScope} task={selectedTask} />
-            </div>
+            <DeskAssistant
+              tasksByMode={tasksByMode}
+              nextTask={nextTask}
+              selectedTask={selectedTask}
+              localPreview={localPreview}
+              loading={isLoading}
+              seedSignal={seedSignal}
+              actions={deskActions}
+              onSelectTask={selectFromAssistant}
+            />
           </main>
 
-          <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-            <ActionContextPanel
-              task={selectedTask}
-              studentRow={selectedStudentRow}
-              contextKey={contextKey}
-              pinned={selectedTask ? pinnedIds.has(selectedTask.id) : false}
-              busy={busyTaskId === selectedTask?.id || updateDraft.isPending}
-              primaryDisabled={primaryDisabled}
-              previewActionsDisabled={localPreview}
-              counts={counts}
-              nextSessionCue={nextSessionCue}
-              onContextChange={setContextKey}
-              onPrimary={handlePrimary}
-              onSecondary={(task) => navigate(task.openPath)}
-              onTogglePin={togglePin}
-            />
-          </aside>
+          {selectedTask ? (
+            <aside className="hidden flex-col border-t border-black/10 px-6 py-6 lg:flex lg:overflow-y-auto lg:border-t-0 lg:border-l">
+              <DeskContextStrip task={selectedTask} studentRow={selectedStudentRow} />
+            </aside>
+          ) : null}
         </div>
       </div>
     </div>

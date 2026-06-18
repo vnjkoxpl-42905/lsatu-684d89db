@@ -5,8 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export interface OperatorToolResult {
   name: string;
-  arguments: any;
-  result: { ok: boolean; data?: any; error?: string };
+  arguments: unknown;
+  result: { ok: boolean; data?: unknown; error?: string };
 }
 
 export interface OperatorMessage {
@@ -18,20 +18,73 @@ export interface OperatorMessage {
   created_at: string;
 }
 
+export interface OperatorConversationSummary {
+  id: string;
+  title: string;
+  updated_at: string;
+}
+
+/** Typed scope the desk attaches to a seeded turn (kept generic for the hook). */
+export type OperatorChatContext = object;
+
 const uid = () =>
-  (typeof crypto !== 'undefined' && (crypto as any).randomUUID
-    ? (crypto as any).randomUUID()
-    : Math.random().toString(36).slice(2));
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2);
 
 export function useOperatorChat() {
   const { user } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<OperatorMessage[]>([]);
+  const [conversations, setConversations] = useState<OperatorConversationSummary[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const conversationIdRef = useRef<string | null>(null);
+  // Mirrors `messages` synchronously so serialized sends always build history
+  // from the latest turns (the closure-read version raced on rapid sends).
+  const messagesRef = useRef<OperatorMessage[]>([]);
+  // Serializes sends so concurrent calls cannot interleave their round-trips.
+  const lockRef = useRef<Promise<void>>(Promise.resolve());
 
-  // Load most recent conversation on mount.
+  const applyMessages = useCallback(
+    (updater: (prev: OperatorMessage[]) => OperatorMessage[]) => {
+      setMessages((prev) => {
+        const next = updater(prev);
+        messagesRef.current = next;
+        return next;
+      });
+    },
+    [],
+  );
+
+  const loadConversationList = useCallback(async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from('operator_conversations')
+      .select('id, title, updated_at')
+      .eq('admin_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(20);
+    if (data) setConversations(data as OperatorConversationSummary[]);
+  }, [user]);
+
+  const loadMessages = useCallback(async (convId: string) => {
+    const { data: msgs } = await supabase
+      .from('operator_messages')
+      .select('*')
+      .eq('conversation_id', convId)
+      .order('created_at', { ascending: true });
+    const mapped: OperatorMessage[] = (msgs ?? []).map((m) => ({
+      id: m.id,
+      role: m.role === 'assistant' ? 'assistant' : 'user',
+      content: m.content ?? '',
+      tool_results: (m.tool_results as unknown as OperatorToolResult[]) ?? undefined,
+      created_at: m.created_at,
+    }));
+    applyMessages(() => mapped);
+  }, [applyMessages]);
+
+  // Load most recent conversation + the recent-chats list on mount.
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
@@ -47,28 +100,14 @@ export function useOperatorChat() {
       if (conv?.id) {
         setConversationId(conv.id);
         conversationIdRef.current = conv.id;
-        const { data: msgs } = await supabase
-          .from('operator_messages')
-          .select('*')
-          .eq('conversation_id', conv.id)
-          .order('created_at', { ascending: true });
-        if (!cancelled && msgs) {
-          setMessages(
-            msgs.map((m) => ({
-              id: m.id,
-              role: m.role === 'assistant' ? 'assistant' : 'user',
-              content: m.content ?? '',
-              tool_results: (m.tool_results as unknown as OperatorToolResult[]) ?? undefined,
-              created_at: m.created_at,
-            })),
-          );
-        }
+        await loadMessages(conv.id);
       }
+      if (!cancelled) await loadConversationList();
     })();
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user, loadMessages, loadConversationList]);
 
   const ensureConversation = useCallback(async (): Promise<string> => {
     if (conversationIdRef.current) return conversationIdRef.current;
@@ -85,89 +124,78 @@ export function useOperatorChat() {
   }, [user]);
 
   const sendMessage = useCallback(
-    async (text: string) => {
-      if (!text.trim() || !user) return;
-      setError(null);
-      setIsLoading(true);
+    (text: string, context?: OperatorChatContext): Promise<void> => {
+      const run = async () => {
+        if (!text.trim() || !user) return;
+        setError(null);
+        setIsLoading(true);
 
-      const userMsg: OperatorMessage = {
-        id: uid(),
-        role: 'user',
-        content: text,
-        created_at: new Date().toISOString(),
-      };
-      const placeholderId = uid();
-      setMessages((prev) => [
-        ...prev,
-        userMsg,
-        {
-          id: placeholderId,
-          role: 'assistant',
-          content: '',
-          pending: true,
-          created_at: new Date().toISOString(),
-        },
-      ]);
-
-      try {
-        const convId = await ensureConversation();
-        // Persist the user message before the round-trip so it survives a refresh.
-        await supabase.from('operator_messages').insert({
-          conversation_id: convId,
+        const userMsg: OperatorMessage = {
+          id: uid(),
           role: 'user',
           content: text,
-        });
+          created_at: new Date().toISOString(),
+        };
+        const placeholderId = uid();
+        applyMessages((prev) => [
+          ...prev,
+          userMsg,
+          { id: placeholderId, role: 'assistant', content: '', pending: true, created_at: new Date().toISOString() },
+        ]);
 
-        // Build the conversation payload for the model.
-        const history = [...messages, userMsg]
-          .filter((m) => !m.pending)
-          .map((m) => ({ role: m.role, content: m.content }));
+        try {
+          const convId = await ensureConversation();
+          await supabase.from('operator_messages').insert({ conversation_id: convId, role: 'user', content: text });
 
-        const { data, error: invokeErr } = await supabase.functions.invoke(
-          'teacher-operator-chat',
-          { body: { messages: history } },
-        );
-        if (invokeErr) throw invokeErr;
-        if (data?.error) throw new Error(data.error);
+          // Build history from the synchronous mirror, excluding the pending
+          // placeholder we just added.
+          const history = messagesRef.current
+            .filter((m) => !m.pending)
+            .map((m) => ({ role: m.role, content: m.content }));
 
-        const finalContent: string = data?.content ?? '';
-        const toolResults: OperatorToolResult[] = data?.tool_results ?? [];
+          const body: Record<string, unknown> = { messages: history };
+          if (context) body.context = context;
+          const { data, error: invokeErr } = await supabase.functions.invoke('teacher-operator-chat', { body });
+          if (invokeErr) throw invokeErr;
+          if (data?.error) throw new Error(data.error);
 
-        // Persist assistant turn.
-        await supabase.from('operator_messages').insert({
-          conversation_id: convId,
-          role: 'assistant',
-          content: finalContent,
-          tool_results: toolResults.length ? (toolResults as unknown as Json) : null,
-        });
+          const finalContent: string = data?.content ?? '';
+          const toolResults: OperatorToolResult[] = data?.tool_results ?? [];
 
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === placeholderId
-              ? {
-                  ...m,
-                  content: finalContent,
-                  tool_results: toolResults.length ? toolResults : undefined,
-                  pending: false,
-                }
-              : m,
-          ),
-        );
-      } catch (e: any) {
-        const msg = e?.message ?? 'Something went wrong';
-        setError(msg);
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === placeholderId
-              ? { ...m, content: `⚠️ ${msg}`, pending: false }
-              : m,
-          ),
-        );
-      } finally {
-        setIsLoading(false);
-      }
+          await supabase.from('operator_messages').insert({
+            conversation_id: convId,
+            role: 'assistant',
+            content: finalContent,
+            tool_results: toolResults.length ? (toolResults as unknown as Json) : null,
+          });
+
+          applyMessages((prev) =>
+            prev.map((m) =>
+              m.id === placeholderId
+                ? { ...m, content: finalContent, tool_results: toolResults.length ? toolResults : undefined, pending: false }
+                : m,
+            ),
+          );
+          loadConversationList();
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : 'Something went wrong';
+          setError(msg);
+          applyMessages((prev) =>
+            prev.map((m) => (m.id === placeholderId ? { ...m, content: `⚠️ ${msg}`, pending: false } : m)),
+          );
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      const next = lockRef.current.then(run, run);
+      lockRef.current = next.then(
+        () => {},
+        () => {},
+      );
+      return next;
     },
-    [ensureConversation, messages, user],
+    [applyMessages, ensureConversation, loadConversationList, user],
   );
 
   const newConversation = useCallback(async () => {
@@ -183,9 +211,29 @@ export function useOperatorChat() {
     }
     conversationIdRef.current = data.id;
     setConversationId(data.id);
-    setMessages([]);
+    applyMessages(() => []);
     setError(null);
-  }, [user]);
+    loadConversationList();
+  }, [applyMessages, loadConversationList, user]);
 
-  return { messages, isLoading, error, sendMessage, newConversation, conversationId };
+  const openConversation = useCallback(
+    async (id: string) => {
+      conversationIdRef.current = id;
+      setConversationId(id);
+      setError(null);
+      await loadMessages(id);
+    },
+    [loadMessages],
+  );
+
+  return {
+    messages,
+    conversations,
+    isLoading,
+    error,
+    sendMessage,
+    newConversation,
+    openConversation,
+    conversationId,
+  };
 }

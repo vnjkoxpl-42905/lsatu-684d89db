@@ -140,10 +140,20 @@ interface ToolResult {
   error?: string;
 }
 
+interface DeskContext {
+  surface?: string;
+  taskId?: string;
+  mode?: string;
+  studentId?: string;
+  sourceKind?: string;
+  sourceId?: string;
+  sourcePreview?: string;
+}
+
 async function runTool(
   name: string,
   args: Record<string, any>,
-  ctx: { adminId: string; admin: ReturnType<typeof createClient> },
+  ctx: { adminId: string; admin: ReturnType<typeof createClient>; context?: DeskContext | null },
 ): Promise<ToolResult> {
   const { admin, adminId } = ctx;
   try {
@@ -195,10 +205,12 @@ async function runTool(
             draft_type: args.draft_type,
             prompt: args.prompt ?? null,
             draft_markdown: args.draft_markdown,
-            input_snapshot_json: { source: "operator_chat" },
+            input_snapshot_json: { source: "operator_chat", context: ctx.context ?? null },
             status: "draft",
           })
-          .select("id, draft_type, student_id")
+          // Return the full draft body inline so the Teacher Desk can render the
+          // editable approval card in place (no punt to /teacher/command).
+          .select("id, draft_type, student_id, draft_markdown, prompt")
           .single();
         if (error) throw error;
         return { ok: true, data: { draft: data } };
@@ -310,7 +322,9 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { messages = [] } = await req.json();
+    const { messages = [], context = null } = await req.json();
+    const deskContext: DeskContext | null =
+      context && typeof context === "object" ? (context as DeskContext) : null;
     if (!Array.isArray(messages)) {
       return new Response(JSON.stringify({ error: "messages must be an array" }), {
         status: 400,
@@ -340,8 +354,32 @@ Deno.serve(async (req) => {
 
     // Tool-using loop. We use non-streaming first to handle tool calls cleanly,
     // then stream the final assistant message back to the client.
+    // Typed per-task scope from the Teacher Desk. The desk renders create_draft
+    // output as an inline approval card, so for reply/assign seeds the model
+    // should DRAFT (create_draft), never send_message — Joshua approves the card.
+    const contextNote =
+      deskContext?.surface === "teacher_desk"
+        ? {
+            role: "system",
+            content: [
+              "DESK CONTEXT (the user seeded this from the Teacher Desk; your create_draft output renders as an inline approval card the user edits/approves):",
+              `- task mode: ${deskContext.mode ?? "unknown"}`,
+              deskContext.studentId ? `- student_id: ${deskContext.studentId}` : "",
+              deskContext.sourceKind ? `- source: ${deskContext.sourceKind}` : "",
+              deskContext.sourcePreview ? `- source preview: ${deskContext.sourcePreview}` : "",
+              "For a 'reply' task, draft the reply with create_draft (draft_type 'message') addressed to the student — do NOT send_message.",
+              "For an 'assign' task, draft a short rationale with create_draft (draft_type 'next_assignment'); the desk attaches the actual drill.",
+              "For a 'review' task the desk already holds the existing draft; reply with one short line, no new draft.",
+              "The student is already resolved above, so you can skip find_students.",
+            ]
+              .filter(Boolean)
+              .join("\n"),
+          }
+        : null;
+
     const baseMessages: any[] = [
       { role: "system", content: SYSTEM_PROMPT },
+      ...(contextNote ? [contextNote] : []),
       ...messages,
     ];
     const toolResultsForClient: Array<{
@@ -400,7 +438,7 @@ Deno.serve(async (req) => {
           try {
             parsedArgs = JSON.parse(tc.function?.arguments ?? "{}");
           } catch {}
-          const result = await runTool(fnName, parsedArgs, { adminId, admin });
+          const result = await runTool(fnName, parsedArgs, { adminId, admin, context: deskContext });
           toolResultsForClient.push({
             name: fnName,
             arguments: parsedArgs,

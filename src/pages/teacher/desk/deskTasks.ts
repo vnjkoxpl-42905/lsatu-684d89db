@@ -15,8 +15,6 @@ import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
-export type ContextKey = 'student' | 'source';
-export type AssistantScope = 'task' | 'workspace';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap';
 
 export interface DeskTask {
@@ -247,4 +245,130 @@ export function studentToAssignTask(student: HubStudentRow): DeskTask {
 
 export function sortTasks(tasks: DeskTask[]) {
   return [...tasks].sort((a, b) => b.priority - a.priority);
+}
+
+export function firstName(value: string | undefined | null) {
+  const full = (value ?? '').trim();
+  if (!full) return 'this student';
+  return full.split(/\s+/)[0];
+}
+
+export type ChipKicker = 'Reply' | 'Review' | 'Assign' | 'Ask';
+
+export interface PriorityChip {
+  id: string;
+  kicker: ChipKicker;
+  label: string;
+  /** null for the freeform Ask chip. */
+  task: DeskTask | null;
+}
+
+function chipLabel(task: DeskTask) {
+  const name = firstName(task.studentName ?? task.subject);
+  if (task.mode === 'reply') return `Reply to ${name}`;
+  if (task.mode === 'assign') return `Assign ${name}`;
+  // review
+  if (task.sourceKind === 'upload') return `Review ${name}'s upload`;
+  return task.reason.toLowerCase().includes('recap')
+    ? `Approve ${name}'s recap`
+    : `Approve ${name}'s draft`;
+}
+
+/**
+ * Top cross-mode priorities for the assistant empty state. Deliberately NOT a
+ * duplicate of the left list (which shows the top-3 of the *selected* mode):
+ * this takes the single highest-priority task from each mode, ranks across
+ * modes, and appends a freeform Ask chip.
+ */
+export function buildPriorityChips(tasksByMode: Record<DeskMode, DeskTask[]>): PriorityChip[] {
+  const top = MODE_ORDER.map((mode) => tasksByMode[mode][0])
+    .filter((task): task is DeskTask => Boolean(task))
+    .sort((a, b) => b.priority - a.priority)
+    .slice(0, 3)
+    .map((task) => ({
+      id: `chip-${task.id}`,
+      kicker: task.verb as ChipKicker,
+      label: chipLabel(task),
+      task,
+    }));
+  return [...top, { id: 'chip-ask', kicker: 'Ask' as const, label: 'Ask about the workspace', task: null }];
+}
+
+/** Typed per-task context the desk attaches to a seeded assistant turn. */
+export interface DeskContext {
+  surface: 'teacher_desk';
+  taskId: string;
+  mode: DeskMode;
+  studentId?: string;
+  sourceKind: SourceKind;
+  sourceId?: string;
+  sourcePreview?: string;
+}
+
+export function buildTaskContext(task: DeskTask): DeskContext {
+  return {
+    surface: 'teacher_desk',
+    taskId: task.id,
+    mode: task.mode,
+    studentId: task.studentId,
+    sourceKind: task.sourceKind,
+    sourceId: task.sourceId,
+    sourcePreview: task.preview?.slice(0, 280),
+  };
+}
+
+/**
+ * The real consequence of approving a task's card — never a generic "Approve."
+ * Cards must label what actually happens when Joshua confirms.
+ */
+export function approveLabel(task: DeskTask): string {
+  switch (task.sourceKind) {
+    case 'conversation':
+      return 'Send to student';
+    case 'draft':
+      return task.reason.toLowerCase().includes('recap') ? 'Post recap' : 'Approve draft';
+    case 'upload':
+      return 'Mark reviewed';
+    case 'assignment-gap':
+      return 'Assign drill';
+    default:
+      return 'Approve';
+  }
+}
+
+/** Past-tense confirmation shown on a completed card. */
+export function approvedLabel(task: DeskTask): string {
+  switch (task.sourceKind) {
+    case 'conversation':
+      return 'Sent to student';
+    case 'draft':
+      return task.reason.toLowerCase().includes('recap') ? 'Recap posted' : 'Draft approved';
+    case 'upload':
+      return 'Marked reviewed';
+    case 'assignment-gap':
+      return 'Drill assigned';
+    default:
+      return 'Done';
+  }
+}
+
+/**
+ * The visible command the assistant seeds when a chip or left task is clicked,
+ * so the action is legible in the transcript rather than silent. Per-task typed
+ * context (studentId, sourceKind, ...) is attached separately by the caller.
+ */
+export function buildSeedCommand(task: DeskTask): string {
+  const name = task.studentName ?? task.subject;
+  switch (task.sourceKind) {
+    case 'conversation':
+      return `Draft a reply to ${name} about: "${task.reason}".`;
+    case 'draft':
+      return `Refine the ${task.reason.replace(/ waiting$/i, '')} for ${name} and show it for my approval.`;
+    case 'upload':
+      return `Review ${name}'s upload (${task.reason}) and draft what needs a teacher pass.`;
+    case 'assignment-gap':
+      return `Recommend the next assignment for ${name} and draft it for my approval.`;
+    default:
+      return `Help me with: ${task.title}.`;
+  }
 }

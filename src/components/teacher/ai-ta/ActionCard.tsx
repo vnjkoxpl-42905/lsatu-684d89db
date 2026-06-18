@@ -37,7 +37,11 @@ export function ActionCard({ tr }: { tr: OperatorToolResult }) {
   const Icon = ICONS[tr.name] ?? Sparkles;
   const ok = tr.result?.ok;
   const label = LABELS[tr.name] ?? tr.name;
-  const data = tr.result?.data ?? {};
+  const data = (tr.result?.data ?? {}) as {
+    students?: ToolStudent[];
+    draft?: { draft_type?: string };
+    student?: { display_name?: string };
+  };
 
   let summary: React.ReactNode = null;
   let actionLink: { to: string; label: string } | null = null;
