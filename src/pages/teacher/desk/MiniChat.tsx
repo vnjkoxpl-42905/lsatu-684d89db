@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { format } from 'date-fns';
-import { ArrowUp, Check, ChevronRight, Loader2, Lock, Pencil, Plus, Send, Sparkles, X } from 'lucide-react';
+import { Check, ChevronRight, Loader2, Pencil, Plus, Send, Sparkles, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useOperatorChat, type OperatorToolResult } from '@/hooks/useOperatorChat';
+import { AssistantComposer } from './AssistantComposer';
 import { DraftEditor } from './DraftEditor';
 import { buildSeedCommand, buildTaskContext, type DeskTask } from './deskTasks';
 
@@ -318,63 +319,31 @@ export function MiniChat({
       {error ? <div className="mx-3 mt-2 border border-black/25 bg-white/40 px-2.5 py-1 text-[11px]">{error}</div> : null}
 
       {/* composer */}
-      <div className="m-3 flex items-center gap-2 border border-black/16 bg-white/45 px-2.5 py-1.5">
-        {localPreview ? (
-          <>
-            <Lock className="h-3.5 w-3.5 shrink-0 text-black/40" strokeWidth={1.5} />
-            <span className="truncate text-[12px] text-black/45">
-              Assistant is read-only in local preview. It connects on the live teacher desk.
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="font-mono text-[13px] text-black/40">❯</span>
-            <input
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                  event.preventDefault();
-                  submit();
-                }
-              }}
-              placeholder={
-                draftsInto
-                  ? hasDraft
-                    ? 'ask for a change…'
-                    : task.sourceKind === 'conversation'
-                      ? 'draft a reply…'
-                      : 'refine this draft…'
-                  : 'which drill should I assign?'
+      <AssistantComposer
+        value={input}
+        onChange={setInput}
+        onSubmit={submit}
+        loading={isLoading}
+        disabled={localPreview}
+        readOnlyMessage={localPreview ? 'Assistant is read-only in local preview. It connects on the live teacher desk.' : undefined}
+        placeholder={
+          draftsInto
+            ? hasDraft
+              ? 'ask for a change…'
+              : task.sourceKind === 'conversation'
+                ? 'draft a reply…'
+                : 'refine this draft…'
+            : 'which drill should I assign?'
+        }
+        seedAction={
+          !hasMessages && !localPreview
+            ? {
+                label: draftsInto ? 'Draft with AI' : 'Recommend',
+                onClick: () => send(buildSeedCommand(task)),
               }
-              className="min-w-0 flex-1 bg-transparent font-mono text-[13px] text-[#11181c] outline-none placeholder:text-black/35"
-            />
-            {!hasMessages ? (
-              <button
-                type="button"
-                onClick={() => send(buildSeedCommand(task))}
-                disabled={isLoading}
-                className="shrink-0 whitespace-nowrap border border-black/16 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-black/60 transition hover:bg-black hover:text-white disabled:opacity-40"
-              >
-                {draftsInto ? 'Draft with AI' : 'Recommend'}
-              </button>
-            ) : null}
-            <button
-              type="button"
-              onClick={submit}
-              disabled={!input.trim() || isLoading}
-              aria-label="Send command"
-              className="inline-flex h-6 w-6 shrink-0 items-center justify-center border border-black/16 text-black/60 transition hover:bg-black hover:text-white disabled:opacity-40"
-            >
-              {isLoading ? (
-                <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
-              ) : (
-                <ArrowUp className="h-3 w-3" strokeWidth={1.5} />
-              )}
-            </button>
-          </>
-        )}
-      </div>
+            : undefined
+        }
+      />
     </div>
   );
 }
