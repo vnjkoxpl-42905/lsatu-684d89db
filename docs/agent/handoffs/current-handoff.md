@@ -1,95 +1,173 @@
 # Current Handoff
 
-Overwrite this per task. It is the live transfer between Claude, Codex, and Joshua.
+This is the live transfer between Joshua, Claude Code, and Codex.
 
 ## From
 
-Codex
+Codex + Joshua
 
 ## To
 
-Joshua / next agent
+Claude Code
 
 ## Task
 
-LSAT U VS Code Agent Cockpit full completion
+Teacher Desk visual/product inspection before the next edit pass.
 
-## Route or surface
+## Route Or Surface
 
-Developer tooling only: VS Code cockpit, Vite dev loop, Playwright e2e, Claude hooks,
-worktree lanes, handoff automation.
+`http://localhost:8080/teacher`
 
-## Files touched or inspected
+This is the current local Teacher Desk implementation. It is the daily Teacher Workspace start page, not the full AI Teaching Assistant buildout.
 
-- `playwright.config.ts`, `vitest.config.ts`, `e2e/smoke.spec.ts`, `package.json`
-- `.vscode/tasks.json`, `.vscode/launch.json`, `.vscode/extensions.json`
-- `.claude/settings.json`, `.claude/notify-hook.sh`, `.claude/statusline.sh`
-- `scripts/cockpit-status.sh`, `scripts/click-to-agent-handoff.sh`
-- `docs/agent/**`
-- `../LSATU-mainhub`, `../LSATU-practice`
+## What Joshua Is Trying To Do
 
-## What changed
+Joshua wants the old Teacher Workspace to stop feeling chaotic. The previous workspace felt overloaded because many things were competing at the same level: conversations, drafts, uploads, schedule, student watchlist, insights, command panels, assistant panels, and general navigation.
 
-- Playwright e2e now lives in top-level `e2e/`, runs through `npm run test:e2e`, starts
-  or reuses Vite on `http://localhost:8080`, and retains traces on failure.
-- `verify-full` now runs `lint:changed -> typecheck -> build -> test -> test:e2e`.
-- LocatorJS is configured with the React adapter and explicit VS Code URL target. Headed
-  verification confirmed React source metadata exists, but the SWC runtime click path
-  cannot reliably resolve clicked elements; the documented working path is the LocatorJS
-  browser extension.
-- Claude Code repo settings now include a committed Notification hook and statusline.
-- Keybindings, Builder/Reviewer/Writing profile templates, Peacock worktree color snippets,
-  integrated browser layout, and locked-lane instructions are tracked under `docs/agent/`.
-- `cockpit:launch` starts the dev server, Vitest watch, and status pane through VS Code
-  compound/background tasks because `tmux` is not installed.
-- `click-to-agent` captures the active file plus a manual selection/range/note argument
-  into `docs/agent/handoffs/click-to-agent.md`.
-- `.DS_Store`, nested `.DS_Store`, `test-results/`, and `playwright-report/` are ignored.
-- `../LSATU-mainhub` and `../LSATU-practice` were rebased onto the final cockpit commit.
+The chosen product direction is a focused Teacher Desk / Today page. It should help Joshua open the workspace and immediately know what teacher move comes next.
 
-## What is still wrong
+The final Today model is intentionally simple:
 
-- No Core Cockpit item remains intentionally optional/later.
-- Repo code cannot install a Chrome Web Store extension or persist VS Code locked editor
-  group UI state. Exact manual steps are documented in `docs/agent/locatorjs.md` and
-  `docs/agent/browser-layout.md`.
+- Reply
+- Review
+- Assign
 
-## Evidence
+Everything else is supporting context.
 
-- `npm run test:e2e`: passed after filtering pre-existing known question-loader warnings.
-- Trace-on-failure: confirmed by the initial failing e2e run, which wrote
-  `test-results/.../trace.zip`.
-- LocatorJS headed probe: React fiber `_debugSource` existed for a rendered element at
-  `src/pages/Auth.tsx:427`; runtime Alt-click still logged `[LocatorJS]: Could not find
-  element info. Element: JSHandle@node`.
-- Claude statusline manual check returned `Fable | main | LSATU | ctx 42%`.
-- Claude notification hook exited 0 through `osascript`.
-- `cockpit-status.sh`: ran and showed branch, HEAD, worktrees, and tracked changes.
-- `click-to-agent-handoff.sh`: wrote `docs/agent/handoffs/click-to-agent.md`.
-- `git worktree list --porcelain`: `main`, `cockpit/mainhub`, and `cockpit/practice`
-  all point at `4fd352536560b6f4dafc112ae9aa8302f216600f`.
+## Decisions Already Made
 
-## Exact next instruction
+- User-facing language should avoid `queue`; use task/task-list language.
+- Top-level Teacher Workspace IA is `Today`, `Students`, `Assign`, `Teach`, `Admin`.
+- Today contains only `Reply`, `Review`, and `Assign` as main task modes.
+- Schedule is only a small `Next session` cue.
+- Watchlist is not a standalone category. If a student needs attention, that should become a Reply, Review, or Assign task.
+- Drafts belong in Review.
+- Later-today information is quiet context, not a full section.
+- The AI Teaching Assistant is a separate larger project. It can appear as supporting UI, but do not turn this task into the assistant memory/autonomy buildout.
 
-Use `cockpit:launch` for the local operator cockpit, `verify-full` before high-confidence
-handoffs, and `click-to-agent` when sending active-file context to Claude or Codex.
+## Visual Direction
 
-## Do not touch
+Joshua selected a specific graphite instrument-panel reference as the visual model:
 
-- LSAT U product UI or behavior
-- Auth, routing, Supabase, or Lovable app plumbing
-- BlockNote/demo dependencies
-- `bun.lock`
-- Local-only `.vscode/settings.json` security flags
+`/Users/joshuaf/Desktop/ui inspo/bb4ad2d81d4da4378dc4e497fb953d98.jpg`
 
-## Verification needed
+Use it as a concrete UI reference, not a loose mood board.
 
-Final full sweep after this handoff update:
+Borrow:
 
-- `npm run lint:changed`
-- `npx tsc --noEmit -p tsconfig.app.json`
-- `NODE_OPTIONS=--max-old-space-size=8192 npm run build`
-- `npm run test`
-- `npm run test:e2e`
-- `git worktree list --porcelain`
-- `echo $NODE_ENV`
+- pale graphite canvas
+- faint technical grid
+- thin black linework
+- compact left-side tools
+- central wireframe/cube-inspired focal element
+- restrained right-side controls
+- small labels
+- strong black selected state
+- quiet futuristic precision
+- almost no color
+
+Avoid:
+
+- dark sci-fi dashboard styling
+- generic SaaS cards
+- purple gradients
+- fake analytics blocks
+- noisy glass/glow effects
+- huge dashboard sections
+- decorative motion that does not improve workflow
+
+## Current Goal
+
+Do not redesign from scratch.
+
+Inspect the current Soft Graphite Teacher Desk implementation and determine what still prevents it from feeling finished, premium, and useful.
+
+Primary success test:
+
+Joshua opens Today and understands the next three teacher actions in under 10 seconds.
+
+The page should answer:
+
+- what do I need to reply to?
+- what do I need to review?
+- what do I need to assign?
+
+## Files To Inspect
+
+Core implementation:
+
+- `src/pages/teacher/desk/TeacherDeskPreview.tsx`
+- `src/pages/teacher/desk/ModeList.tsx`
+- `src/pages/teacher/desk/WorkSurface.tsx`
+- `src/pages/teacher/desk/ActionContextPanel.tsx`
+- `src/pages/teacher/desk/AssistantCommandLine.tsx`
+- `src/pages/teacher/desk/DeskCube.tsx`
+- `src/pages/teacher/desk/types.ts`
+- `src/pages/teacher/desk/taskAdapters.ts`
+
+Product/design references:
+
+- `src/pages/teacher/CONTEXT.md`
+- `docs/superpowers/specs/2026-06-16-teacher-workspace-redesign-design.md`
+- `docs/superpowers/specs/2026-06-17-teacher-desk-page-audit.md`
+
+## Current Known State
+
+Codex previously fixed local `/teacher` access so the page can be inspected without the old Premium Content Locked blocker.
+
+Recent pushed commit:
+
+- `8dc92f90 fix: polish teacher desk preview`
+
+Previous verification reported:
+
+- desktop render checked at `1440x1000`
+- mobile render checked at `390x844`
+- no Premium Content Locked in local preview
+- no `/auth` redirect in local preview
+- no visible raw asterisks in inspected rendered text
+- targeted ESLint passed
+- typecheck passed
+- production build passed with existing repo warnings
+
+Verify the live page again instead of treating this as guaranteed current truth.
+
+## Inspect For These Problems
+
+- Does the page still feel too crowded or does it now feel too empty?
+- Does it clearly show Reply, Review, Assign as the only main Today modes?
+- Does any old category model leak back in: watchlist, schedule-heavy layout, drafts as separate mode, analytics block?
+- Does the central cube help the workspace identity, or does it distract from the selected task?
+- Is the selected task/work surface easy to understand?
+- Are right-side controls useful and specific?
+- Does the assistant line feel usable, secondary, or broken?
+- Does mobile allow the full workflow surface to be reached?
+- Are there raw markdown artifacts in visible text: `*`, `**`, `#`, backticks, markdown bullets?
+- Is any copy too explanatory, demo-like, or product-tour-like?
+- Do labels such as `Forms`, `Tools`, `Top 3`, or old queue language still need replacement?
+
+## Exact Next Instruction For Claude
+
+Inspect the route visually and technically. Do not implement yet.
+
+Return a report with:
+
+1. Overall visual read.
+2. Whether the product workflow is clear.
+3. Mismatches against the graphite reference image.
+4. Mismatches against the approved Teacher Desk spec.
+5. Prioritized fixes.
+6. Files/components likely involved.
+7. What Codex should verify next with browser screenshots, lint, typecheck, or build.
+
+After Claude sends the report, Joshua plans to send it to Codex for examination before the next implementation pass.
+
+## Do Not Touch
+
+- Do not broaden Today beyond Reply, Review, Assign.
+- Do not redesign the whole Teacher Workspace IA.
+- Do not build the full AI Teaching Assistant memory/autonomy system in this task.
+- Do not reintroduce queue language as the user-facing model.
+- Do not add fake analytics or fake production data.
+- Do not weaken production route security.
+- Do not edit unrelated teacher subroutes unless the inspection proves they are directly involved.
