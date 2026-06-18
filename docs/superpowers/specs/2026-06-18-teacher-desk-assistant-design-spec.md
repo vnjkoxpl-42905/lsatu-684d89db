@@ -2,7 +2,20 @@
 
 - Date: 2026-06-18
 - Author: Claude, with Joshua (grill session) + Codex (design input)
-- Status: **Design locked. Ready to implement.**
+- Status: **Superseded in part — see correction below.**
+
+> **CORRECTION (2026-06-18).** This spec's Layout A / "center = assistant" /
+> "remove the work surface, cube, and per-mode editors" / "DeskActionCard"
+> direction was **not** what Joshua wanted, and the first build (which followed it
+> literally) wrongly stripped the desk. The shipped design keeps the **entire
+> previous instrument-panel desk** (cube, Tools/Next rail, work surface, right
+> Controls + Context with its action button) and changes **only one thing**: the
+> white draft textbox inside the work surface becomes a compact **mini terminal
+> chat** (`MiniChat`) that drafts/refines into the editable draft. The
+> right-panel button stays the single commit. No full-page assistant, no separate
+> approval cards. Sections 3–5 and 10 below are historical; treat the corrected
+> behavior in [ADR 0003](../../adr/0003-teacher-desk-embeds-ai-assistant.md) as
+> authoritative.
 - Decision record: [ADR 0003](../../adr/0003-teacher-desk-embeds-ai-assistant.md)
 - Inputs folded in: [gameplan](../plans/2026-06-18-teacher-desk-terminal-assistant.md), [Codex input](../../agent/handoffs/teacher-desk-assistant-codex-input.md), [Claude inspection](2026-06-18-teacher-desk-claude-inspection.md)
 - Glossary: `src/pages/teacher/CONTEXT.md` (Command, Daily Command Sheet, AI Teaching Assistant updated)
