@@ -51,9 +51,25 @@ Rules:
 6. Keep paragraph and line-break structure as-is.
 7. Return only the polished text. No preamble, no commentary, no quotes around it.`;
 
+// Used when the caller passes an `instruction` (the Teacher Desk "Ask for Changes"
+// selection toolbar). Here the text is an EXCERPT of a larger draft and the model
+// should apply the instruction to just that excerpt, returning only the revision.
+const REVISE_SYSTEM_PROMPT = `You revise an excerpt of a teacher's message according to an instruction.
+
+The text you receive is a FRAGMENT selected from inside a larger message. Revise only this fragment.
+
+Rules:
+1. Apply the instruction to the excerpt and return ONLY the revised excerpt.
+2. Because it is a fragment, do not add greetings ("Hi …") or sign-offs ("Thanks", "— Joshua"), and do not pull in context that belongs to the surrounding text.
+3. Keep it roughly the same length unless the instruction explicitly asks to expand or shorten.
+4. Preserve any markdown markers that are part of the excerpt (**bold**, *italic*, [links](url)).
+5. Never use em dashes (—). Use commas, periods, or parentheses instead.
+6. Return only the revised text. No preamble, no commentary, no quotes around it.`;
+
 interface PolishRequest {
   text: string;
   conversationId?: string;
+  instruction?: string;
 }
 
 serve(async (req) => {
@@ -71,16 +87,22 @@ serve(async (req) => {
     const body = (await req.json()) as PolishRequest;
     const text = typeof body?.text === "string" ? body.text : "";
     const conversationId = typeof body?.conversationId === "string" ? body.conversationId : undefined;
+    const instruction = typeof body?.instruction === "string" ? body.instruction.trim() : "";
+    const revising = instruction.length > 0;
 
     if (text.length < 1 || text.length > 5000) {
       return jsonRes({ error: "Text must be between 1 and 5000 characters" }, 400);
     }
+    if (instruction.length > 500) {
+      return jsonRes({ error: "Instruction must be 500 characters or fewer" }, 400);
+    }
 
     // Optional voice-matching: pull the caller's recent messages in this thread
     // as style examples. Newest first, capped at 10. Best-effort — failure here
-    // does not block polishing.
+    // does not block polishing. Skipped in revise mode (the excerpt + instruction
+    // already say what to do; voice samples just add noise to a scoped edit).
     let styleExamples: string[] = [];
-    if (conversationId) {
+    if (conversationId && !revising) {
       const { data: recent } = await admin
         .from("messages")
         .select("body")
@@ -98,9 +120,12 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const userContent = styleExamples.length > 0
-      ? `Recent messages from this writer (for voice reference, do not copy phrasing):\n${styleExamples.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nDraft to polish:\n${text}`
-      : `Draft to polish:\n${text}`;
+    const systemPrompt = revising ? REVISE_SYSTEM_PROMPT : SYSTEM_PROMPT;
+    const userContent = revising
+      ? `Excerpt to revise:\n${text}\n\nInstruction: ${instruction}`
+      : styleExamples.length > 0
+        ? `Recent messages from this writer (for voice reference, do not copy phrasing):\n${styleExamples.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nDraft to polish:\n${text}`
+        : `Draft to polish:\n${text}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -111,7 +136,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: systemPrompt },
           { role: "user", content: userContent },
         ],
         stream: false,

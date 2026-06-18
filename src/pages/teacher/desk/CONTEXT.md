@@ -66,7 +66,9 @@ Replaces the old Draft Box. A **draft** is a piece of student-facing content the
 The bottom chat input on the Stage (ChatGPT's "Ask anything"). Joshua types **instructions** here ("be warmer," "shorten Monday"); the assistant responds, producing a new plain message or a new Draft Bubble. The Composer is for talking to the assistant, never the thing that sends to a student.
 
 ### Ask for Changes
-The floating toolbar (ChatGPT's "Ask for changes ⌘K") that appears when Joshua selects text inside a Draft Bubble in Edit. It offers AI revision of the selection plus light formatting (link, bold, italic, text style). A selection-scoped refine, distinct from the Composer's whole-message instructions.
+The floating toolbar (ChatGPT's "Ask for changes ⌘K") that appears when Joshua selects text inside a Draft Bubble in Edit. It offers AI revision of the selection plus light formatting (link, bold, italic). A selection-scoped refine, distinct from the Composer's whole-message instructions.
+
+**Built (`DraftEditor.tsx`).** The draft body is a plain-markdown textarea (drafts stay markdown end to end; no WYSIWYG / HTML round-trip). Selecting text pops the toolbar near the selection: **Bold / Italic** wrap the selection with markdown markers, **Link** wraps it as `[sel](url)`, and **Ask for changes ⌘K** opens an instruction input. The instruction + the selected fragment go to the `polish-message` edge function in **instruction mode** (a `instruction` param that branches to a revise prompt, returning only the revised fragment, no tools), and the result is spliced back over the selection. AI revise is disabled in local preview (unauthenticated); formatting still works there.
 
 ### Controls Cluster
 The right-side region labeled CONTROLS. **Mode-conditional**: it only carries a commit action in **Assign mode**. In Reply and Review mode the commit action lives on the Draft Bubble's **Send**, so the Controls Cluster holds no commit button there (only secondary controls like Open drafts / Pin, if any). In Assign mode it holds the **Commit Button** (see below).

@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { ArrowUp, Check, ChevronRight, Loader2, Lock, Pencil, Plus, Send, Sparkles, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useOperatorChat, type OperatorToolResult } from '@/hooks/useOperatorChat';
+import { DraftEditor } from './DraftEditor';
 import { buildSeedCommand, buildTaskContext, type DeskTask } from './deskTasks';
 
 interface CreatedDraft {
@@ -294,13 +295,11 @@ export function MiniChat({
                   <ReactMarkdown>{sent.text}</ReactMarkdown>
                 </div>
               ) : editing ? (
-                <textarea
+                <DraftEditor
                   value={draft}
-                  onChange={(event) => onDraftChange(event.target.value)}
-                  autoFocus
-                  aria-label={`Edit ${draftLabel(task).toLowerCase()}`}
-                  placeholder="Edit the draft, or ask the assistant below to revise it…"
-                  className="min-h-[120px] w-full resize-y border border-black/16 bg-white/80 px-3 py-2 text-[13px] leading-relaxed outline-none placeholder:text-black/35 focus:border-black"
+                  onChange={onDraftChange}
+                  canUseAi={!localPreview}
+                  ariaLabel={`Edit ${draftLabel(task).toLowerCase()}`}
                 />
               ) : (
                 <div className="prose prose-sm prose-neutral max-w-none text-[13px] prose-p:my-1 prose-ul:my-1">
