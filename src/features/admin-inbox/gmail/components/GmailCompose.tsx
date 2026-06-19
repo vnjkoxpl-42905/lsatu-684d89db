@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useGmailContacts, useGmailSend } from "../hooks";
 import { GmailRecipientInput } from "./GmailRecipientInput";
-import { GmailDrivePicker } from "./GmailDrivePicker";
+import { GoogleDrivePicker } from "@/components/drive/GoogleDrivePicker";
 import { toast } from "sonner";
 import type { GmailOutgoingAttachment } from "../api";
 import { TemplateSuggestionPalette } from "@/components/teacher/templates/TemplateSuggestionPalette";
@@ -397,7 +397,7 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
         ) : null}
       </div>
 
-      <GmailDrivePicker
+      <GoogleDrivePicker
         open={drivePickerOpen}
         onClose={() => setDrivePickerOpen(false)}
         onAttach={handleDriveAttach}

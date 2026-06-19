@@ -122,13 +122,30 @@ Deno.serve(async (req) => {
 
     if (action === "list") {
       const q = url.searchParams.get("q")?.trim();
+      // Tab the picker maps to a Drive corpus filter. Defaults to "recent".
+      const scope = (url.searchParams.get("scope") ?? "recent").toLowerCase();
       const pageToken = url.searchParams.get("pageToken") ?? "";
       const params = new URLSearchParams();
       params.set("pageSize", "50");
       params.set("orderBy", "modifiedTime desc");
-      params.set("fields", "nextPageToken,files(id,name,mimeType,size,modifiedTime,iconLink,webViewLink,thumbnailLink,owners(displayName,emailAddress))");
-      if (q) params.set("q", `name contains '${q.replace(/'/g, "\\'")}' and trashed = false`);
-      else params.set("q", "trashed = false");
+      params.set("fields", "nextPageToken,files(id,name,mimeType,size,modifiedTime,iconLink,webViewLink,thumbnailLink,shared,owners(displayName,emailAddress))");
+
+      // Each tab is a set of Drive query clauses; search term is ANDed on top.
+      const clauses: string[] = ["trashed = false"];
+      switch (scope) {
+        case "mydrive":
+          clauses.push("'me' in owners");
+          break;
+        case "sharedwithme":
+          clauses.push("sharedWithMe = true");
+          break;
+        case "starred":
+          clauses.push("starred = true");
+          break;
+        // "recent" → no extra clause.
+      }
+      if (q) clauses.push(`name contains '${q.replace(/'/g, "\\'")}'`);
+      params.set("q", clauses.join(" and "));
       if (pageToken) params.set("pageToken", pageToken);
 
       const { res, data, txt } = await safeFetchJson(`${GATEWAY}/files?${params}`, { headers });
