@@ -148,6 +148,76 @@ interface DeskContext {
   sourceKind?: string;
   sourceId?: string;
   sourcePreview?: string;
+  driveConnector?: boolean;
+}
+
+const GDRIVE_GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
+
+const SEARCH_GDRIVE_TOOL = {
+  type: "function",
+  function: {
+    name: "search_google_drive",
+    description:
+      "Search the connected Google Drive for files. Returns file id, name, mimeType, modifiedTime, and webViewLink. You can return names and shareable links to the user, but you CANNOT read file contents yet — say so if asked to summarize a file.",
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description:
+            "Optional name fragment to search. Leave empty to list the most recently modified files.",
+        },
+        pageSize: { type: "number", description: "Max results (default 10, max 25)" },
+      },
+      additionalProperties: false,
+    },
+  },
+} as const;
+
+async function searchGoogleDrive(args: ToolArgs): Promise<ToolResult> {
+  const key = Deno.env.get("GOOGLE_DRIVE_API_KEY");
+  if (!key) {
+    return {
+      ok: false,
+      error:
+        "Google Drive connector is not linked to this workspace. Ask the admin to link Google Drive in Lovable connectors.",
+    };
+  }
+  const q = typeof args.query === "string" ? args.query.trim() : "";
+  const pageSize = Math.min(Math.max(Number(args.pageSize ?? 10) || 10, 1), 25);
+  const params = new URLSearchParams();
+  params.set("pageSize", String(pageSize));
+  params.set("orderBy", "modifiedTime desc");
+  params.set(
+    "fields",
+    "files(id,name,mimeType,modifiedTime,webViewLink,iconLink,owners(displayName,emailAddress))",
+  );
+  if (q) params.set("q", `name contains '${q.replace(/'/g, "\\'")}' and trashed = false`);
+  else params.set("q", "trashed = false");
+
+  const r = await fetch(`${GDRIVE_GATEWAY}/files?${params}`, {
+    headers: {
+      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      "X-Connection-Api-Key": key,
+    },
+  });
+  const txt = await r.text();
+  if (!r.ok) {
+    if (r.status === 401 || r.status === 403) {
+      return { ok: false, error: "Google Drive connector not authorized — ask the admin to relink it." };
+    }
+    return { ok: false, error: `Google Drive error ${r.status}: ${txt.slice(0, 200)}` };
+  }
+  let data: { files?: Array<Record<string, unknown>> } = {};
+  try { data = txt ? JSON.parse(txt) : {}; } catch { /* ignore */ }
+  const files = (data.files ?? []).map((f) => ({
+    id: f.id,
+    name: f.name,
+    mimeType: f.mimeType,
+    modifiedTime: f.modifiedTime,
+    webViewLink: f.webViewLink,
+  }));
+  return { ok: true, data: { files, note: "File contents are not readable yet; only metadata + links are available." } };
 }
 
 type ToolArgs = Record<string, unknown>;
