@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { loadGooglePickerApi, openPicker, type PickedFile } from '@/lib/googleDrive';
+import { DriveBrowserDialog } from './DriveBrowserDialog';
 
 interface SeedAction {
   label: string;
