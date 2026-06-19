@@ -4,16 +4,20 @@ import { X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAITADrafts } from '@/hooks/useAITADrafts';
+import { useAllClassroomItems } from '@/hooks/useAllClassroomItems';
 import { useAdminUploadsQueue } from '@/hooks/useExternalWorkUploads';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import { useInbox } from '@/hooks/useInbox';
 import { OperatorChatProvider } from '@/components/teacher/ai-ta/OperatorChatProvider';
 import {
   ACTIVE_STUDENT_DAYS,
+  SCHEDULE_LOOKAHEAD_DAYS,
   TASK_STALE_DAYS,
+  classroomItemToScheduleTask,
   conversationToReplyTask,
   draftToReviewTask,
   isWithinDays,
+  isWithinUpcomingDays,
   isWorkspaceKey,
   sortTasks,
   studentToAssignTask,
@@ -143,23 +147,23 @@ const PREVIEW_TASKS: Record<DeskMode, DeskTask[]> = {
   ],
   assign: [
     {
-      id: 'preview-assign-dakota',
+      id: 'preview-schedule-meghan',
       mode: 'assign',
-      verb: 'Assign',
-      subject: 'Dakota Brown',
-      reason: 'No active assignment',
+      verb: 'Schedule',
+      subject: 'Meghan Mullins',
+      reason: 'Timed LR review',
       timing: 'Today',
-      sourceLabel: 'Assignment suggested',
-      title: 'Assign first work to Dakota Brown',
-      preview: 'Start Dakota with a short diagnostic assignment so the next teacher move is based on observed misses rather than a generic sequence.',
-      studentId: 'preview-dakota',
-      studentName: 'Dakota Brown',
-      suggested: true,
-      priority: 78,
-      primaryActionLabel: 'Assign work',
+      sourceLabel: 'Calendar item',
+      title: 'Timed LR review for Meghan Mullins',
+      preview: 'Review weaken timing and pick the next focused drill.',
+      studentId: 'preview-meghan',
+      studentName: 'Meghan Mullins',
+      priority: 96,
+      primaryActionLabel: 'Open schedule',
       secondaryActionLabel: 'Open student',
-      openPath: '/teacher/students/preview-dakota',
-      sourceKind: 'assignment-gap',
+      openPath: '/teacher/schedule?student=preview-meghan',
+      sourceKind: 'schedule',
+      sourceId: 'preview-schedule-meghan',
     },
   ],
 };
@@ -181,6 +185,7 @@ export default function TeacherDeskPreview() {
   const { conversations, loading: inboxLoading } = useInbox();
   const { data: drafts = [], isLoading: draftsLoading } = useAITADrafts({ status: 'draft' });
   const { data: uploads = [], isLoading: uploadsLoading } = useAdminUploadsQueue();
+  const { items: classroomItems = [], isLoading: classroomItemsLoading } = useAllClassroomItems();
   const { data: nextSession } = useNextSession();
 
   const students = localPreview ? PREVIEW_STUDENTS : loadedStudents;
@@ -207,20 +212,24 @@ export default function TeacherDeskPreview() {
     const uploadTasks = uploads
       .filter((upload) => isWithinDays(upload.created_at, TASK_STALE_DAYS))
       .map((upload) => uploadToReviewTask(upload, studentById.get(upload.student_id)));
+    const scheduleTasks = classroomItems
+      .filter((item) => item.status !== 'archived' && item.status !== 'completed')
+      .filter((item) => isWithinUpcomingDays(item.due_at ?? item.unlock_at ?? item.created_at, SCHEDULE_LOOKAHEAD_DAYS))
+      .map((item) => classroomItemToScheduleTask(item, studentById.get(item.student_id)));
     // Only suggest assignments for students who are still active. A dormant
     // former student (last seen long ago, or never) should not linger here.
     const assignTasks = students
       .filter((student) => isWithinDays(student.last_seen_at, ACTIVE_STUDENT_DAYS))
       .filter(
         (student) =>
-          student.assignments_total === 0 ||
+          student.assignments_total > 0 &&
           student.assignments_completed / Math.max(1, student.assignments_total) >= 0.8,
       )
       .map((student) => studentToAssignTask(student));
-    return sortTasks([...replyTasks, ...draftTasks, ...uploadTasks, ...assignTasks]);
-  }, [conversations, drafts, localPreview, studentById, students, uploads]);
+    return sortTasks([...replyTasks, ...draftTasks, ...uploadTasks, ...scheduleTasks, ...assignTasks]);
+  }, [classroomItems, conversations, drafts, localPreview, studentById, students, uploads]);
 
-  const isLoading = !localPreview && (studentsLoading || inboxLoading || draftsLoading || uploadsLoading);
+  const isLoading = !localPreview && (studentsLoading || inboxLoading || draftsLoading || uploadsLoading || classroomItemsLoading);
 
   const workspaceParam = searchParams.get('ws');
   const workspace: WorkspaceKey = isWorkspaceKey(workspaceParam) ? workspaceParam : 'today';

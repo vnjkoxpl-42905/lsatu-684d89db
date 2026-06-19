@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import TeacherDeskPreview from './TeacherDeskPreview';
 
 vi.mock('@/contexts/AuthContext', () => ({
@@ -49,6 +49,28 @@ vi.mock('@/hooks/useAITADrafts', () => ({
   useAITADrafts: () => ({ data: [], isLoading: false }),
 }));
 
+vi.mock('@/hooks/useAllClassroomItems', () => ({
+  useAllClassroomItems: () => ({
+    items: [
+      {
+        id: 'schedule-1',
+        student_id: 'student-1',
+        type: 'weekly_plan_task',
+        title: 'Timed LR review',
+        description: 'Review weaken timing.',
+        status: 'assigned',
+        due_at: '2026-06-18T20:00:00.000Z',
+        unlock_at: null,
+        created_at: '2026-06-17T20:00:00.000Z',
+      },
+    ],
+    groups: [],
+    totals: { total: 0, notStarted: 0, inProgress: 0, completed: 0, stuck: 0, uniqueStudents: 0 },
+    isLoading: false,
+    error: null,
+  }),
+}));
+
 vi.mock('@/hooks/useExternalWorkUploads', () => ({
   useAdminUploadsQueue: () => ({ data: [], isLoading: false }),
 }));
@@ -81,7 +103,15 @@ vi.mock('./DeskChatRail', () => ({
 }));
 
 vi.mock('./DeskTodoRail', () => ({
-  DeskTodoRail: () => <aside aria-label="To-do rail">To-do rail</aside>,
+  DeskTodoRail: ({ tasks }: { tasks: Array<{ id: string; verb: string; reason: string }> }) => (
+    <aside aria-label="To-do rail">
+      {tasks.map((task) => (
+        <div key={task.id}>
+          {task.verb}: {task.reason}
+        </div>
+      ))}
+    </aside>
+  ),
 }));
 
 function LocationProbe() {
@@ -109,6 +139,14 @@ function renderDesk(initialEntry = '/teacher') {
 }
 
 describe('TeacherDeskPreview workspace rail', () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date('2026-06-18T12:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('selects Students inside the desk instead of routing to the old students page', () => {
     renderDesk();
 
@@ -118,6 +156,8 @@ describe('TeacherDeskPreview workspace rail', () => {
     expect(screen.getByText('Meghan Mullins')).toBeInTheDocument();
     expect(screen.getByLabelText('Saved chats')).toBeInTheDocument();
     expect(screen.getByLabelText('To-do rail')).toBeInTheDocument();
+    expect(screen.getByText('Schedule: Timed LR review')).toBeInTheDocument();
+    expect(screen.queryByText(/No active assignment/i)).not.toBeInTheDocument();
   });
 
   it('restores a workspace from the ws query param and clears it for Today', () => {

@@ -5,14 +5,17 @@ import {
   buildPriorityChips,
   buildSeedCommand,
   buildTaskContext,
+  classroomItemToScheduleTask,
   conversationToReplyTask,
   draftToReviewTask,
   firstName,
+  isWithinUpcomingDays,
   sortTasks,
   studentToAssignTask,
   type DeskTask,
 } from './deskTasks';
 import type { AITADraft } from '@/hooks/useAITADrafts';
+import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import type { Conversation } from '@/hooks/useInbox';
 import type { HubStudentRow } from '@/hooks/useHubStudents';
 
@@ -148,7 +151,7 @@ describe('desk task assistant contract', () => {
     });
   });
 
-  it('prioritizes assignment gaps for students with no or mostly completed work', () => {
+  it('prioritizes assignment gaps for students with mostly completed work', () => {
     const student = {
       class_id: 'student-1',
       display_name: 'Dakota Brown',
@@ -164,7 +167,47 @@ describe('desk task assistant contract', () => {
       priority: 80,
       title: 'Assign next work to Dakota Brown',
       sourceId: 'student-1',
+      reason: '80% complete',
     });
+  });
+
+  it('converts classroom calendar items into schedule to-do tasks', () => {
+    vi.setSystemTime(new Date('2026-06-18T12:00:00Z'));
+    const item = {
+      id: 'calendar-1',
+      student_id: 'student-1',
+      type: 'weekly_plan_task',
+      title: 'Timed LR review',
+      description: 'Review weaken timing before the next drill.',
+      status: 'assigned',
+      due_at: '2026-06-18T20:00:00Z',
+      unlock_at: null,
+      created_at: '2026-06-17T20:00:00Z',
+    } as ClassroomItem;
+    const student = {
+      class_id: 'student-1',
+      display_name: 'Dakota Brown',
+      email: 'dakota@example.com',
+    } as HubStudentRow;
+
+    expect(classroomItemToScheduleTask(item, student)).toMatchObject({
+      id: 'schedule-calendar-1',
+      verb: 'Schedule',
+      subject: 'Dakota Brown',
+      reason: 'Timed LR review',
+      timing: 'Today',
+      sourceLabel: 'Calendar item',
+      openPath: '/teacher/schedule?student=student-1',
+      sourceKind: 'schedule',
+      sourceId: 'calendar-1',
+    });
+  });
+
+  it('keeps calendar to-do rows inside the upcoming schedule window', () => {
+    vi.setSystemTime(new Date('2026-06-18T12:00:00Z'));
+
+    expect(isWithinUpcomingDays('2026-06-19T12:00:00Z', 14)).toBe(true);
+    expect(isWithinUpcomingDays('2026-07-10T12:00:00Z', 14)).toBe(false);
   });
 
   it('sorts by priority and falls back to a neutral first-name label', () => {

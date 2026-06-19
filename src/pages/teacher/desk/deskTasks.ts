@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import type { AITADraft } from '@/hooks/useAITADrafts';
+import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import type { ExternalWorkUpload } from '@/hooks/useExternalWorkUploads';
 import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
@@ -17,12 +18,12 @@ import type { Conversation } from '@/hooks/useInbox';
 export type DeskMode = 'reply' | 'review' | 'assign';
 export type WorkspaceKey = 'today' | 'students' | 'inbox' | 'library' | 'admin';
 export type ContextKey = 'student' | 'source';
-export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap';
+export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap' | 'schedule';
 
 export interface DeskTask {
   id: string;
   mode: DeskMode;
-  verb: 'Reply' | 'Review' | 'Assign';
+  verb: 'Reply' | 'Review' | 'Assign' | 'Schedule';
   subject: string;
   reason: string;
   timing: string;
@@ -123,6 +124,21 @@ export function plainAge(iso: string | null | undefined) {
   return format(new Date(then), 'MMM d');
 }
 
+export function scheduleTiming(iso: string | null | undefined) {
+  if (!iso) return 'Today';
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return 'Today';
+  const date = new Date(then);
+  const today = new Date();
+  const dateKey = format(date, 'yyyy-MM-dd');
+  const todayKey = format(today, 'yyyy-MM-dd');
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  if (dateKey === todayKey) return 'Today';
+  if (dateKey === format(tomorrow, 'yyyy-MM-dd')) return 'Tomorrow';
+  return format(date, 'MMM d');
+}
+
 function draftTypeLabel(draft: AITADraft) {
   return draft.draft_type.replace(/_/g, ' ');
 }
@@ -221,26 +237,57 @@ export function uploadToReviewTask(upload: ExternalWorkUpload, student?: HubStud
   };
 }
 
+function classroomTypeLabel(item: ClassroomItem) {
+  return item.type.replace(/_/g, ' ');
+}
+
+function classroomItemDate(item: ClassroomItem) {
+  return item.due_at ?? item.unlock_at ?? item.created_at;
+}
+
+export function classroomItemToScheduleTask(item: ClassroomItem, student?: HubStudentRow): DeskTask {
+  const name = studentName(student);
+  const when = classroomItemDate(item);
+  const whenMs = Date.parse(when);
+  const daysUntil = Number.isFinite(whenMs) ? Math.max(0, (whenMs - Date.now()) / (24 * 60 * 60 * 1000)) : 0;
+  return {
+    id: `schedule-${item.id}`,
+    mode: 'assign',
+    verb: 'Schedule',
+    subject: name,
+    reason: item.title,
+    timing: scheduleTiming(when),
+    sourceLabel: 'Calendar item',
+    title: `${item.title} for ${name}`,
+    preview: previewText(item.description ?? item.content_markdown, `${classroomTypeLabel(item)} is on the calendar.`),
+    studentId: item.student_id,
+    studentName: name,
+    priority: 82 + Math.max(0, SCHEDULE_LOOKAHEAD_DAYS - daysUntil),
+    primaryActionLabel: 'Open schedule',
+    secondaryActionLabel: 'Open student',
+    openPath: `/teacher/schedule?student=${encodeURIComponent(item.student_id)}`,
+    sourceKind: 'schedule',
+    sourceId: item.id,
+  };
+}
+
 export function studentToAssignTask(student: HubStudentRow): DeskTask {
   const completion = completionRate(student);
-  const noAssignments = student.assignments_total === 0;
   const name = studentName(student);
   return {
     id: `assign-${student.class_id}`,
     mode: 'assign',
     verb: 'Assign',
     subject: name,
-    reason: noAssignments ? 'No active assignment' : `${completion}% complete`,
-    timing: noAssignments ? 'Today' : 'Before next session',
+    reason: `${completion}% complete`,
+    timing: 'Before next session',
     sourceLabel: 'Assignment suggested',
-    title: noAssignments ? `Assign first work to ${name}` : `Assign next work to ${name}`,
-    preview: noAssignments
-      ? `${name} does not have active assignment data yet. Start with a prepared guided drill.`
-      : `${name} has completed most assigned work. Choose the next useful guided drill.`,
+    title: `Assign next work to ${name}`,
+    preview: `${name} has completed most assigned work. Choose the next useful guided drill.`,
     studentId: student.class_id,
     studentName: name,
     suggested: true,
-    priority: noAssignments ? 78 : 72 + completion / 10,
+    priority: 72 + completion / 10,
     primaryActionLabel: 'Assign work',
     secondaryActionLabel: 'Open student',
     openPath: `/teacher/library/assignments/new?student=${encodeURIComponent(student.class_id)}`,
@@ -261,6 +308,7 @@ export function sortTasks(tasks: DeskTask[]) {
  */
 export const TASK_STALE_DAYS = 5;
 export const ACTIVE_STUDENT_DAYS = 14;
+export const SCHEDULE_LOOKAHEAD_DAYS = 14;
 
 export function isWithinDays(iso: string | null | undefined, days: number): boolean {
   if (!iso) return false;
@@ -269,13 +317,21 @@ export function isWithinDays(iso: string | null | undefined, days: number): bool
   return Date.now() - then <= days * 24 * 60 * 60 * 1000;
 }
 
+export function isWithinUpcomingDays(iso: string | null | undefined, days: number): boolean {
+  if (!iso) return false;
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return false;
+  const now = Date.now();
+  return then >= now - 24 * 60 * 60 * 1000 && then <= now + days * 24 * 60 * 60 * 1000;
+}
+
 export function firstName(value: string | undefined | null) {
   const full = (value ?? '').trim();
   if (!full) return 'this student';
   return full.split(/\s+/)[0];
 }
 
-export type ChipKicker = 'Reply' | 'Review' | 'Assign' | 'Ask';
+export type ChipKicker = 'Reply' | 'Review' | 'Assign' | 'Schedule' | 'Ask';
 
 export interface PriorityChip {
   id: string;
@@ -288,6 +344,7 @@ export interface PriorityChip {
 function chipLabel(task: DeskTask) {
   const name = firstName(task.studentName ?? task.subject);
   if (task.mode === 'reply') return `Reply to ${name}`;
+  if (task.sourceKind === 'schedule') return `Schedule for ${name}`;
   if (task.mode === 'assign') return `Assign ${name}`;
   // review
   if (task.sourceKind === 'upload') return `Review ${name}'s upload`;
@@ -353,6 +410,8 @@ export function approveLabel(task: DeskTask): string {
       return 'Mark reviewed';
     case 'assignment-gap':
       return 'Assign drill';
+    case 'schedule':
+      return 'Open schedule';
     default:
       return 'Approve';
   }
@@ -369,6 +428,8 @@ export function approvedLabel(task: DeskTask): string {
       return 'Marked reviewed';
     case 'assignment-gap':
       return 'Drill assigned';
+    case 'schedule':
+      return 'Schedule opened';
     default:
       return 'Done';
   }
@@ -390,6 +451,8 @@ export function buildSeedCommand(task: DeskTask): string {
       return `Review ${name}'s upload (${task.reason}) and draft what needs a teacher pass.`;
     case 'assignment-gap':
       return `Recommend the next assignment for ${name} and draft it for my approval.`;
+    case 'schedule':
+      return `Help me prepare for ${name}'s scheduled item: "${task.reason}".`;
     default:
       return `Help me with: ${task.title}.`;
   }
