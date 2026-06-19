@@ -249,7 +249,7 @@ export default function TeacherDeskPreview() {
               <DeskChatRail />
             </aside>
 
-            <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:overflow-y-auto">
+            <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:min-h-0 lg:overflow-hidden">
               <DeskChatPanel localPreview={localPreview} />
             </main>
 

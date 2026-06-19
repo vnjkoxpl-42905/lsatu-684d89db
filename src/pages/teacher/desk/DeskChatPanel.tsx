@@ -47,10 +47,10 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
   };
 
   return (
-    <div className="flex w-full max-w-[680px] flex-col">
+    <div className="flex w-full max-w-[680px] flex-col lg:h-full lg:min-h-0">
       <div
         ref={scrollRef}
-        className="min-h-[320px] flex-1 overflow-y-auto border border-black/18 bg-white/22 p-5 backdrop-blur-[1px]"
+        className="min-h-0 flex-1 overflow-y-auto border border-black/18 bg-white/22 p-5 backdrop-blur-[1px]"
       >
         {empty ? (
           <div className="flex h-full min-h-[280px] flex-col items-center justify-center text-center">
