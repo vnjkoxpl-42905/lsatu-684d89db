@@ -9,8 +9,11 @@ import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import { useInbox } from '@/hooks/useInbox';
 import { OperatorChatProvider } from '@/components/teacher/ai-ta/OperatorChatProvider';
 import {
+  ACTIVE_STUDENT_DAYS,
+  TASK_STALE_DAYS,
   conversationToReplyTask,
   draftToReviewTask,
+  isWithinDays,
   sortTasks,
   studentToAssignTask,
   uploadToReviewTask,
@@ -188,10 +191,20 @@ export default function TeacherDeskPreview() {
     }
     const replyTasks = conversations
       .filter((conversation) => conversation.unread)
+      .filter((conversation) =>
+        isWithinDays(conversation.last_message?.created_at ?? conversation.last_message_at, TASK_STALE_DAYS),
+      )
       .map((conversation) => conversationToReplyTask(conversation));
-    const draftTasks = drafts.map((draft) => draftToReviewTask(draft, studentById.get(draft.student_id)));
-    const uploadTasks = uploads.map((upload) => uploadToReviewTask(upload, studentById.get(upload.student_id)));
+    const draftTasks = drafts
+      .filter((draft) => isWithinDays(draft.created_at, TASK_STALE_DAYS))
+      .map((draft) => draftToReviewTask(draft, studentById.get(draft.student_id)));
+    const uploadTasks = uploads
+      .filter((upload) => isWithinDays(upload.created_at, TASK_STALE_DAYS))
+      .map((upload) => uploadToReviewTask(upload, studentById.get(upload.student_id)));
+    // Only suggest assignments for students who are still active. A dormant
+    // former student (last seen long ago, or never) should not linger here.
     const assignTasks = students
+      .filter((student) => isWithinDays(student.last_seen_at, ACTIVE_STUDENT_DAYS))
       .filter(
         (student) =>
           student.assignments_total === 0 ||

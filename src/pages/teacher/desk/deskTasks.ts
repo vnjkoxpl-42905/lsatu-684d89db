@@ -248,6 +248,22 @@ export function sortTasks(tasks: DeskTask[]) {
   return [...tasks].sort((a, b) => b.priority - a.priority);
 }
 
+/**
+ * Staleness windows for the desk to-do rail. A task whose source is older than
+ * TASK_STALE_DAYS has gone cold and should drop off; an "Assign" suggestion is
+ * only relevant for a student seen within ACTIVE_STUDENT_DAYS (so dormant former
+ * students never linger as a standing to-do).
+ */
+export const TASK_STALE_DAYS = 5;
+export const ACTIVE_STUDENT_DAYS = 14;
+
+export function isWithinDays(iso: string | null | undefined, days: number): boolean {
+  if (!iso) return false;
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return false;
+  return Date.now() - then <= days * 24 * 60 * 60 * 1000;
+}
+
 export function firstName(value: string | undefined | null) {
   const full = (value ?? '').trim();
   if (!full) return 'this student';
