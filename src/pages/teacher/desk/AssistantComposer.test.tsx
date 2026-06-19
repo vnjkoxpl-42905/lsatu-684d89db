@@ -224,6 +224,8 @@ describe('AssistantComposer', () => {
       labels: [],
       drive: [],
       driveConnector: true,
+      gmailConnector: false,
+      calendarConnector: false,
     });
   });
 
@@ -281,6 +283,8 @@ describe('AssistantComposer', () => {
         },
       ],
       driveConnector: false,
+      gmailConnector: false,
+      calendarConnector: false,
     });
     expect(screen.queryByRole('button', { name: 'Remove Lesson plan.pdf' })).not.toBeInTheDocument();
   });

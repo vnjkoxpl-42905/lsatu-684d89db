@@ -12,6 +12,8 @@ import {
   X,
 } from 'lucide-react';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
+import { GmailIcon } from '@/components/icons/GmailIcon';
+import { GoogleCalendarIcon } from '@/components/icons/GoogleCalendarIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { DriveBrowserDialog } from './DriveBrowserDialog';
@@ -21,7 +23,7 @@ interface SeedAction {
   onClick: () => void;
 }
 
-type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector';
+type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector' | 'gmailConnector' | 'calendarConnector';
 
 export interface DriveFileRef {
   fileId: string;
@@ -41,9 +43,13 @@ export interface ComposerSubmitSources {
   labels: string[];
   drive: DriveFileRef[];
   driveConnector: boolean;
+  gmailConnector: boolean;
+  calendarConnector: boolean;
 }
 
 const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
+const GMAIL_CONNECTOR_ID = 'gmailConnector:gmail';
+const CALENDAR_CONNECTOR_ID = 'calendarConnector:google-calendar';
 
 
 export function AssistantComposer({
@@ -95,15 +101,18 @@ export function AssistantComposer({
 
   const submit = () => {
     if (!canSubmit) return;
+    const connectorKinds: SourceKind[] = ['drive', 'driveConnector', 'gmailConnector', 'calendarConnector'];
     const labels = attachedSources
-      .filter((s) => s.kind !== 'drive' && s.kind !== 'driveConnector')
+      .filter((s) => !connectorKinds.includes(s.kind))
       .map((s) => s.label);
     const drive = attachedSources
       .filter((s): s is AttachedSource & { drive: DriveFileRef } => s.kind === 'drive' && !!s.drive)
       .map((s) => s.drive);
     const driveConnector = attachedSources.some((s) => s.kind === 'driveConnector');
-    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector;
-    onSubmit(hasAny ? { labels, drive, driveConnector } : undefined);
+    const gmailConnector = attachedSources.some((s) => s.kind === 'gmailConnector');
+    const calendarConnector = attachedSources.some((s) => s.kind === 'calendarConnector');
+    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector || gmailConnector || calendarConnector;
+    onSubmit(hasAny ? { labels, drive, driveConnector, gmailConnector, calendarConnector } : undefined);
     setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
@@ -153,19 +162,21 @@ export function AssistantComposer({
     setAttachedSources((current) => current.filter((source) => source.id !== id));
   };
 
-  const toggleDriveConnector = () => {
+  const toggleConnector = (id: string, kind: SourceKind, label: string) => {
     if (disabled || loading) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
     setAttachedSources((current) => {
-      if (current.some((s) => s.id === DRIVE_CONNECTOR_ID)) {
-        return current.filter((s) => s.id !== DRIVE_CONNECTOR_ID);
+      if (current.some((s) => s.id === id)) {
+        return current.filter((s) => s.id !== id);
       }
-      return [...current, { id: DRIVE_CONNECTOR_ID, kind: 'driveConnector', label: 'Google Drive' }];
+      return [...current, { id, kind, label }];
     });
   };
 
   const driveConnectorActive = attachedSources.some((s) => s.id === DRIVE_CONNECTOR_ID);
+  const gmailConnectorActive = attachedSources.some((s) => s.id === GMAIL_CONNECTOR_ID);
+  const calendarConnectorActive = attachedSources.some((s) => s.id === CALENDAR_CONNECTOR_ID);
 
 
   return (
@@ -224,10 +235,34 @@ export function AssistantComposer({
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
                   description="Use Drive as a context source for the next message"
-                  onClick={toggleDriveConnector}
+                  onClick={() => toggleConnector(DRIVE_CONNECTOR_ID, 'driveConnector', 'Google Drive')}
                   disabled={disabled || loading}
                   trailing={
                     driveConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
+                  icon={<GmailIcon className="h-5 w-5" />}
+                  label="Gmail"
+                  description="Use Gmail as a context source for the next message"
+                  onClick={() => toggleConnector(GMAIL_CONNECTOR_ID, 'gmailConnector', 'Gmail')}
+                  disabled={disabled || loading}
+                  trailing={
+                    gmailConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
+                  icon={<GoogleCalendarIcon className="h-5 w-5" />}
+                  label="Google Calendar"
+                  description="Use Calendar as a context source for the next message"
+                  onClick={() => toggleConnector(CALENDAR_CONNECTOR_ID, 'calendarConnector', 'Google Calendar')}
+                  disabled={disabled || loading}
+                  trailing={
+                    calendarConnectorActive ? (
                       <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
                     ) : undefined
                   }
@@ -324,6 +359,8 @@ const MATERIAL_TYPES = [
 
 function SourceChipIcon({ kind }: { kind: SourceKind }) {
   if (kind === 'drive' || kind === 'driveConnector') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
+  if (kind === 'gmailConnector') return <GmailIcon className="h-3.5 w-3.5" />;
+  if (kind === 'calendarConnector') return <GoogleCalendarIcon className="h-3.5 w-3.5" />;
   if (kind === 'file') return <Paperclip className="h-3.5 w-3.5" strokeWidth={1.9} />;
   return <Library className="h-3.5 w-3.5" strokeWidth={1.8} />;
 }

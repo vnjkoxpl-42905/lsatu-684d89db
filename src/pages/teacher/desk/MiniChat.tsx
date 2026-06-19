@@ -46,7 +46,11 @@ export function MiniChat({
       parts.push(`[Google Drive files: ${drive}]`);
     }
 
-    send(parts.join('\n\n'), sources?.driveConnector ? { driveConnector: true } : undefined);
+    const context: Record<string, unknown> = {};
+    if (sources?.driveConnector) context.driveConnector = true;
+    if (sources?.gmailConnector) context.gmailConnector = true;
+    if (sources?.calendarConnector) context.calendarConnector = true;
+    send(parts.join('\n\n'), Object.keys(context).length ? context : undefined);
   };
 
   return (

@@ -1,40 +1,53 @@
-## Problem
+## Add Gmail + Google Calendar context-source chips
 
-"Attach from Drive" opens Google's client-side Picker, which triggers an OAuth sign-in to `accounts.google.com`. Your Chrome "Work" profile's admin policy blocks that origin (`ERR_BLOCKED_BY_RESPONSE`), so the picker can never load. This is the same managed-account block we hit before — it is not a code bug we can fix from inside the picker flow.
+Mirror the existing Google Drive connector chip in the Teacher Desk composer. The chips toggle a context source for the next message; the assistant then has a matching server-side tool to actually search Gmail / Calendar.
 
-But we don't need the Google Picker at all anymore. The workspace already has the Google Drive connector linked, and the `gdrive` edge function can list/search Drive files server-side without any per-user OAuth. So the right fix is to **retire the Google Picker path** and replace "Attach from Drive" with an in-app Drive browser that calls our own backend.
+### Frontend — `src/pages/teacher/desk/AssistantComposer.tsx`
 
-## Plan
+1. Extend `SourceKind` from `'driveConnector'` to a union covering `'gmailConnector'` and `'calendarConnector'`.
+2. Add stable IDs: `GMAIL_CONNECTOR_ID`, `CALENDAR_CONNECTOR_ID` (Drive ID already exists).
+3. Generalize `toggleDriveConnector` into a single `toggleConnector(kind, id, label)` (or three thin wrappers).
+4. In the `+` menu, add two new `ComposerMenuItem`s directly under Google Drive:
+   - Gmail — "Use Gmail as a context source for the next message" (`MailIcon` from a small new `GmailIcon` component, matching the colored G-mail glyph from screenshot 2)
+   - Google Calendar — same copy pattern (new `GoogleCalendarIcon` matching the 31 glyph)
+   - Each shows an "On" badge when active, same as Drive.
+5. Update `ComposerSubmitSources` to add `gmailConnector: boolean` and `calendarConnector: boolean`; compute them in `submit()` like Drive.
+6. Update `SourceChipIcon` to return the right icon per connector kind.
 
-### 1. New in-app Drive file picker (frontend)
+### Icons — `src/components/icons/`
 
-Create `src/pages/teacher/desk/DriveBrowserDialog.tsx` — a small modal that:
-- Calls `supabase.functions.invoke('gdrive', { method: 'GET', ... })` with `?action=list&q=<search>` to fetch the connected workspace Drive listing.
-- Shows a search input + a scrollable list of files (name, mimeType icon, modified time).
-- Multi-select with checkboxes; "Attach N files" returns the picks as `{ id, name, mimeType, url }[]`.
-- Empty/loading/error states. No `accounts.google.com` redirect anywhere.
+Create `GmailIcon.tsx` and `GoogleCalendarIcon.tsx` (small SVGs matching the official brand glyphs in screenshot 2). Pattern identical to existing `GoogleDriveIcon`.
 
-### 2. Replace the picker call in `AssistantComposer.tsx`
+### Pass-through — `DeskChatPanel.tsx` and `MiniChat.tsx`
 
-- Remove the `loadGooglePickerApi` / `openPicker` import + call from the "Attach from Drive" menu item.
-- Open `DriveBrowserDialog` instead. On confirm, map results into the existing `drive` source chips (same `DriveFileRef` shape) so the rest of the composer keeps working.
+In both, where `submit()` builds `context`, extend from `{ driveConnector: true }` to include `gmailConnector` / `calendarConnector` whenever the respective chip is on. The label-suffix `[Attached context: …]` block already handles arbitrary labels — no change needed for the visible name.
 
-### 3. Leave the connector chip alone
+### Backend — `supabase/functions/teacher-operator-chat/index.ts`
 
-The "Google Drive" connector chip behavior shipped last turn (real `search_google_drive` tool wired to `gdrive` connector) stays as-is. This change only fixes the manual "Attach from Drive" flow.
+1. Extend `DeskContext` with `gmailConnector?: boolean` and `calendarConnector?: boolean`.
+2. Add gateway constants:
+   - `GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1"`
+   - `GCAL_GATEWAY  = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3"`
+3. Add two new tools mirroring `SEARCH_GDRIVE_TOOL`:
+   - `search_gmail({ query?, maxResults? })` → calls `/users/me/messages?q=…&maxResults=…`, then `messages.get?format=metadata` for headers (From/Subject/Date) to return readable rows. Reads `GOOGLE_MAIL_API_KEY`.
+   - `list_calendar_events({ query?, timeMin?, timeMax?, maxResults? })` → calls `/calendars/primary/events` with `q`, `timeMin` (default now), `singleEvents=true`, `orderBy=startTime`. Reads `GOOGLE_CALENDAR_API_KEY`.
+   - Same error handling pattern as `searchGoogleDrive` (401/403 → "not authorized — relink", graceful missing-key message).
+4. Route both in the `runTool` switch.
+5. Add two new system notes parallel to `driveNote`:
+   - When `gmailConnector` is on + key present: "Gmail connector ENABLED — when the user asks about email/inbox/messages, call `search_gmail`. You return From/Subject/Date/snippet; cannot reply or modify."
+   - Same shape for Calendar.
+6. Build `activeTools` by conditionally appending each enabled tool (Drive | Gmail | Calendar).
 
-### 4. Retire `src/lib/googleDrive.ts` from the composer path
+### Verification
 
-Stop importing `loadGooglePickerApi`/`openPicker` in `AssistantComposer.tsx`. The file stays (still used by `/admin/drive-files`), but the Teacher Desk no longer touches the Google Picker. Optionally, in a follow-up, convert `/admin/drive-files` to the same in-app browser to fully retire the picker.
+- Open Teacher Desk `+` menu → see three connector items (Drive, Gmail, Calendar) above Attach file, each with brand icon.
+- Toggle Gmail chip → "On" badge appears, chip shows in composer pill row with Gmail icon, removable.
+- Send "what's in my inbox this week?" with Gmail chip on → assistant invokes `search_gmail` and returns real subjects/senders.
+- Same for Calendar with "what's on my calendar tomorrow?".
+- Drive chip behavior unchanged.
 
-### 5. Verification
+### Out of scope
 
-- Open Teacher Desk → click + → "Attach from Drive" → dialog opens, lists real files from the workspace Drive (no `accounts.google.com` round-trip, no `ERR_BLOCKED_BY_RESPONSE`).
-- Select 1–2 files → they appear as chips → send → assistant receives them in the existing `[Google Drive files: …]` block.
-
-## What this does NOT change
-
-- The Google Drive connector chip and `search_google_drive` tool (shipped previously) — unchanged.
-- The `DriveAttachmentPicker` for the saved Drive library — unchanged.
-- No backend changes; `gdrive` edge function already supports `action=list&q=…`.
-- No new secrets or OAuth setup. No need to touch your Work Chrome profile.
+- Per-message file/attach picker for Gmail / Calendar (could add later, matching `DriveBrowserDialog`).
+- Reading email bodies or writing/sending email/events.
+- Existing "Attach from Drive" picker stays unchanged.
