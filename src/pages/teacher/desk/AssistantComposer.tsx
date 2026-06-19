@@ -232,10 +232,30 @@ export function AssistantComposer({
                 className="absolute bottom-11 left-0 z-20 w-72 overflow-hidden rounded-2xl border border-zinc-700 bg-[#303030] p-1.5 text-sm text-zinc-100 shadow-2xl"
               >
                 <ComposerMenuItem
+                  icon={<GoogleDriveIcon className="h-5 w-5" />}
+                  label="Google Drive"
+                  description="Use Drive as a context source for the next message"
+                  onClick={toggleDriveConnector}
+                  disabled={disabled || loading}
+                  trailing={
+                    driveConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
                   icon={<Paperclip className="h-5 w-5" strokeWidth={1.9} />}
                   label="Attach file"
                   onClick={() => addSource('file', 'Attach file')}
                   disabled={disabled || loading}
+                />
+                <ComposerMenuItem
+                  icon={<GoogleDriveIcon className="h-5 w-5" />}
+                  label="Attach from Drive"
+                  description="Pick specific files with the Google Picker"
+                  onClick={openDrivePicker}
+                  disabled={disabled || loading || driveLoading}
+                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
                 />
                 <ComposerMenuItem
                   icon={<Library className="h-5 w-5" strokeWidth={1.8} />}
@@ -259,13 +279,7 @@ export function AssistantComposer({
                     ))}
                   </div>
                 ) : null}
-                <ComposerMenuItem
-                  icon={<GoogleDriveIcon className="h-5 w-5" />}
-                  label="Google Drive"
-                  onClick={openDrivePicker}
-                  disabled={disabled || loading || driveLoading}
-                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
-                />
+
               </div>
             ) : null}
           </div>
