@@ -1,6 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AssistantComposer } from './AssistantComposer';
+
+const invokeMock = vi.fn();
 
 vi.mock('@/lib/googleDrive', () => {
   const openPicker = vi.fn();
@@ -15,6 +17,9 @@ vi.mock('@/lib/googleDrive', () => {
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: { getSession: vi.fn(async () => ({ data: { session: { access_token: 'test-token' } } })) },
+    functions: {
+      invoke: (...args: unknown[]) => invokeMock(...args),
+    },
   },
 }));
 
@@ -63,6 +68,7 @@ describe('AssistantComposer', () => {
     // GoogleDrivePicker builds request URLs with `new URL()`, which needs a real base.
     vi.stubEnv('VITE_SUPABASE_URL', 'https://test.supabase.co');
     vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'test-key');
+    invokeMock.mockReset();
   });
 
   afterEach(() => {
@@ -319,6 +325,66 @@ describe('AssistantComposer', () => {
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
+  it('improves the current textbox prompt through a preview before replacing it', async () => {
+    invokeMock.mockResolvedValue({ data: { polished: 'Please make this paragraph clearer.' }, error: null });
+    const onChange = vi.fn();
+    const onUtilityCommand = vi.fn();
+    const onSubmit = vi.fn();
+    renderComposer({
+      value: 'plz fix this para make more clear',
+      onChange,
+      onUtilityCommand,
+      onSubmit,
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
+
+    expect(await screen.findByRole('heading', { name: 'Review improved prompt' })).toBeInTheDocument();
+    expect(screen.getAllByText('plz fix this para make more clear')).toHaveLength(2);
+    expect(screen.getByText('Please make this paragraph clearer.')).toBeInTheDocument();
+    expect(invokeMock).toHaveBeenCalledWith('polish-message', {
+      body: {
+        text: 'plz fix this para make more clear',
+        instruction: expect.stringContaining('Clean up this prompt only'),
+      },
+    });
+    expect(onUtilityCommand).not.toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Accept' }));
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith('Please make this paragraph clearer.'));
+  });
+
+  it('opens a prompt helper flow when Improve writing is clicked with an empty textbox', async () => {
+    invokeMock.mockResolvedValue({ data: { polished: 'Please summarize this email and suggest a concise reply.' }, error: null });
+    const onChange = vi.fn();
+    renderComposer({ value: '', onChange });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
+
+    expect(await screen.findByRole('heading', { name: 'Improve a prompt' })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Rough prompt'), {
+      target: { value: 'summarize email and write short reply' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Improve prompt' }));
+
+    expect(await screen.findByRole('heading', { name: 'Review improved prompt' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Reject' }));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('renders an open Canvas chip with a removable close control', () => {
+    const onOpenCanvas = vi.fn();
+    const onCloseCanvas = vi.fn();
+    renderComposer({ canvasOpen: true, onOpenCanvas, onCloseCanvas });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open canvas' }));
+    expect(onOpenCanvas).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Canvas' }));
+    expect(onCloseCanvas).toHaveBeenCalledTimes(1);
+  });
+
   it('opens Canvas from the composer action picker', () => {
     const onOpenCanvas = vi.fn();
     const onUtilityCommand = vi.fn();
@@ -340,18 +406,16 @@ describe('AssistantComposer', () => {
     expect(onOpenCanvas).toHaveBeenCalledTimes(1);
   });
 
-  it('sends teacher utility commands through the provided command handler', () => {
+  it('sends only non-polish teacher utility commands through the provided command handler', () => {
     const onUtilityCommand = vi.fn();
     const onOpenCanvas = vi.fn();
     renderComposer({ onUtilityCommand, onOpenCanvas });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
     fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
     fireEvent.click(screen.getByRole('button', { name: 'Recommend next work' }));
 
-    expect(onUtilityCommand).toHaveBeenCalledTimes(2);
-    expect(onUtilityCommand.mock.calls[0][0]).toContain('Improve the writing');
-    expect(onUtilityCommand.mock.calls[1][0]).toContain('Recommend the next useful LSAT work');
+    expect(onUtilityCommand).toHaveBeenCalledTimes(1);
+    expect(onUtilityCommand.mock.calls[0][0]).toContain('Recommend the next useful LSAT work');
     expect(onOpenCanvas).toHaveBeenCalledTimes(1);
   });
 

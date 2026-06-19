@@ -186,6 +186,8 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           disabled={localPreview}
           onUtilityCommand={send}
           onOpenCanvas={() => setCanvasOpen(true)}
+          canvasOpen={canvasOpen}
+          onCloseCanvas={() => setCanvasOpen(false)}
           readOnlyMessage={
             localPreview ? 'Assistant is read-only in local preview. It connects on the live teacher desk.' : undefined
           }

@@ -15,7 +15,16 @@ import {
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { GmailIcon } from '@/components/icons/GmailIcon';
 import { GoogleCalendarIcon } from '@/components/icons/GoogleCalendarIcon';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { DriveBrowserDialog } from './DriveBrowserDialog';
 import { ImageLightbox } from './ImageLightbox';
@@ -63,6 +72,8 @@ const CALENDAR_CONNECTOR_ID = 'calendarConnector:google-calendar';
 
 const MAX_IMAGES = 4;
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const PROMPT_POLISH_INSTRUCTION =
+  'Clean up this prompt only. Fix spelling, grammar, and clarity while preserving the writer’s direct, casual intent. Do not answer the prompt. Do not add new sections, constraints, examples, or structure. Return only the improved prompt text.';
 
 function readAsDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -83,6 +94,8 @@ export function AssistantComposer({
   placeholder,
   onUtilityCommand,
   onOpenCanvas,
+  canvasOpen,
+  onCloseCanvas,
   readOnlyMessage,
 }: {
   value: string;
@@ -94,6 +107,8 @@ export function AssistantComposer({
   seedAction?: SeedAction;
   onUtilityCommand?: (command: string) => void;
   onOpenCanvas?: () => void;
+  canvasOpen?: boolean;
+  onCloseCanvas?: () => void;
   readOnlyMessage?: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -106,9 +121,15 @@ export function AssistantComposer({
   const [isDragging, setIsDragging] = useState(false);
   const [previewImage, setPreviewImage] = useState<ComposerImage | null>(null);
   const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
+  const [promptHelperOpen, setPromptHelperOpen] = useState(false);
+  const [promptHelperText, setPromptHelperText] = useState('');
+  const [polishingPrompt, setPolishingPrompt] = useState(false);
+  const [promptPolishError, setPromptPolishError] = useState<string | null>(null);
+  const [promptPreview, setPromptPreview] = useState<{ original: string; polished: string } | null>(null);
   const canSubmit = (value.trim().length > 0 || images.length > 0) && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
   const canOpenCanvas = !loading && Boolean(onOpenCanvas);
+  const canPolishPrompt = !loading && !disabled && !polishingPrompt;
 
   const addImageFiles = useCallback(
     async (files: FileList | File[]) => {
@@ -213,11 +234,60 @@ export function AssistantComposer({
     onUtilityCommand?.(command);
   };
 
+  const polishPromptText = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setPromptPolishError(null);
+    setPolishingPrompt(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('polish-message', {
+        body: { text: trimmed, instruction: PROMPT_POLISH_INSTRUCTION },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      const polished = typeof data?.polished === 'string' ? data.polished.trim() : '';
+      if (!polished) throw new Error('The assistant returned an empty prompt.');
+      setPromptPreview({ original: trimmed, polished });
+      setPromptHelperOpen(false);
+    } catch (error) {
+      setPromptPolishError(error instanceof Error ? error.message : 'Could not improve the prompt.');
+    } finally {
+      setPolishingPrompt(false);
+    }
+  };
+
+  const improvePrompt = () => {
+    if (!canPolishPrompt) return;
+    const trimmed = value.trim();
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    if (!trimmed) {
+      setPromptHelperText('');
+      setPromptPolishError(null);
+      setPromptHelperOpen(true);
+      return;
+    }
+    void polishPromptText(trimmed);
+  };
+
+  const acceptPromptPreview = () => {
+    if (!promptPreview) return;
+    onChange(promptPreview.polished);
+    setPromptPreview(null);
+    requestAnimationFrame(() => adjustHeight());
+  };
+
   const openCanvas = () => {
     if (!canOpenCanvas) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
     onOpenCanvas?.();
+  };
+
+  const closeCanvas = () => {
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    onCloseCanvas?.();
   };
 
   const addSource = (kind: SourceKind, label: string) => {
@@ -287,6 +357,74 @@ export function AssistantComposer({
           if (!next) setPreviewImage(null);
         }}
       />
+      <Dialog open={promptHelperOpen} onOpenChange={(open) => !polishingPrompt && setPromptHelperOpen(open)}>
+        <DialogContent className="max-w-lg border-white/10 bg-[#171717] text-white">
+          <DialogHeader>
+            <DialogTitle>Improve a prompt</DialogTitle>
+            <DialogDescription className="text-white/65">
+              Write the rough thing you want to ask. This will clean up the prompt without answering it.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            value={promptHelperText}
+            onChange={(event) => setPromptHelperText(event.target.value)}
+            placeholder="rough prompt..."
+            aria-label="Rough prompt"
+            disabled={polishingPrompt}
+            className="min-h-28 border-white/10 bg-[#101010] text-white placeholder:text-white/35 focus-visible:ring-white/20"
+          />
+          {promptPolishError ? <div className="text-sm text-red-300" role="alert">{promptPolishError}</div> : null}
+          <DialogFooter className="gap-2 sm:space-x-0">
+            <button
+              type="button"
+              onClick={() => setPromptHelperOpen(false)}
+              disabled={polishingPrompt}
+              className="inline-flex h-9 items-center justify-center rounded-full border border-white/10 px-4 text-sm text-white/75 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => void polishPromptText(promptHelperText)}
+              disabled={polishingPrompt || promptHelperText.trim().length === 0}
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-white px-4 text-sm font-medium text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-55"
+            >
+              {polishingPrompt ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.8} /> : null}
+              Improve prompt
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={promptPreview !== null} onOpenChange={(open) => !open && setPromptPreview(null)}>
+        <DialogContent className="max-w-2xl border-white/10 bg-[#171717] text-white">
+          <DialogHeader>
+            <DialogTitle>Review improved prompt</DialogTitle>
+            <DialogDescription className="text-white/65">
+              Accept to replace the text box, or reject to keep your original prompt.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 md:grid-cols-2">
+            <PromptPreviewBlock title="Original" text={promptPreview?.original ?? ''} />
+            <PromptPreviewBlock title="Improved" text={promptPreview?.polished ?? ''} emphasized />
+          </div>
+          <DialogFooter className="gap-2 sm:space-x-0">
+            <button
+              type="button"
+              onClick={() => setPromptPreview(null)}
+              className="inline-flex h-9 items-center justify-center rounded-full border border-white/10 px-4 text-sm text-white/75 transition hover:bg-white/10"
+            >
+              Reject
+            </button>
+            <button
+              type="button"
+              onClick={acceptPromptPreview}
+              className="inline-flex h-9 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-black transition hover:bg-white/90"
+            >
+              Accept
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <input
         ref={fileInputRef}
         type="file"
@@ -383,6 +521,14 @@ export function AssistantComposer({
                 disabled={disabled || loading}
               />
             ))}
+            {canvasOpen ? (
+              <CanvasSourceChip
+                onOpen={openCanvas}
+                onRemove={closeCanvas}
+                disabled={!canOpenCanvas}
+                removeDisabled={!onCloseCanvas}
+              />
+            ) : null}
             {actionMenuOpen ? (
               <div
                 role="menu"
@@ -470,16 +616,6 @@ export function AssistantComposer({
 
               </div>
             ) : null}
-            <button
-              type="button"
-              onClick={openCanvas}
-              disabled={!canOpenCanvas}
-              aria-label="Open canvas"
-              className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full bg-[#4a4a4a] px-2.5 text-xs font-medium text-zinc-100 transition hover:bg-[#5a5a5a] disabled:cursor-not-allowed disabled:opacity-55"
-            >
-              <CopyPlus className="h-3.5 w-3.5" strokeWidth={1.8} />
-              <span>Canvas</span>
-            </button>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -504,10 +640,10 @@ export function AssistantComposer({
       ) : null}
       <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
         <ActionChip
-          icon={<Wand2 className="h-3.5 w-3.5" strokeWidth={1.75} />}
+          icon={polishingPrompt ? <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={1.75} /> : <Wand2 className="h-3.5 w-3.5" strokeWidth={1.75} />}
           label="Improve writing"
-          disabled={!canUseAssistantActions}
-          onClick={() => runUtility('Improve the writing in this Teacher Desk task. Keep Joshua’s voice and preserve the substance.')}
+          disabled={!canPolishPrompt}
+          onClick={improvePrompt}
         />
         <ActionChip
           icon={<CopyPlus className="h-3.5 w-3.5" strokeWidth={1.75} />}
@@ -572,6 +708,42 @@ function SourceChip({
   );
 }
 
+function CanvasSourceChip({
+  onOpen,
+  onRemove,
+  disabled,
+  removeDisabled,
+}: {
+  onOpen: () => void;
+  onRemove: () => void;
+  disabled?: boolean;
+  removeDisabled?: boolean;
+}) {
+  return (
+    <span className="inline-flex max-w-[180px] items-center gap-1.5 rounded-full bg-[#4a4a4a] py-1 pl-2.5 pr-1.5 text-[12px] font-medium text-zinc-100">
+      <button
+        type="button"
+        onClick={onOpen}
+        disabled={disabled}
+        aria-label="Open canvas"
+        className="inline-flex min-w-0 items-center gap-1.5 rounded-full transition hover:text-white disabled:cursor-not-allowed disabled:opacity-55"
+      >
+        <CopyPlus className="h-3.5 w-3.5 shrink-0" strokeWidth={1.8} />
+        <span className="truncate">Canvas</span>
+      </button>
+      <button
+        type="button"
+        onClick={onRemove}
+        disabled={removeDisabled}
+        aria-label="Remove Canvas"
+        className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-zinc-300 transition hover:bg-white/10 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-55"
+      >
+        <X className="h-3 w-3" strokeWidth={2} />
+      </button>
+    </span>
+  );
+}
+
 function ImagePreviewChip({
   image,
   onRemove,
@@ -603,6 +775,20 @@ function ImagePreviewChip({
         <X className="h-3 w-3" strokeWidth={2} />
       </button>
     </span>
+  );
+}
+
+function PromptPreviewBlock({ title, text, emphasized }: { title: string; text: string; emphasized?: boolean }) {
+  return (
+    <div
+      className={cn(
+        'min-h-40 rounded-2xl border p-3',
+        emphasized ? 'border-white/18 bg-white/[0.07]' : 'border-white/10 bg-black/20',
+      )}
+    >
+      <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">{title}</div>
+      <div className="whitespace-pre-wrap text-sm leading-6 text-white/82">{text}</div>
+    </div>
   );
 }
 

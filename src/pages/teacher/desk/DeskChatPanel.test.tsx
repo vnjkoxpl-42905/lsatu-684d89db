@@ -49,4 +49,17 @@ describe('DeskChatPanel layout', () => {
     expect(screen.queryByRole('region', { name: 'Collaborative Workspace' })).not.toBeInTheDocument();
     expect(screen.getByText('What can I help you get done?')).toBeInTheDocument();
   });
+
+  it('removes the canvas from the page through the composer Canvas chip close button', () => {
+    render(<DeskChatPanel localPreview={false} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
+    expect(screen.getByRole('region', { name: 'Collaborative Workspace' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Open canvas' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Canvas' }));
+
+    expect(screen.queryByRole('region', { name: 'Collaborative Workspace' })).not.toBeInTheDocument();
+    expect(screen.getByText('What can I help you get done?')).toBeInTheDocument();
+  });
 });
