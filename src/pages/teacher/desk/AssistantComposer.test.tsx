@@ -283,6 +283,8 @@ describe('AssistantComposer', () => {
         },
       ],
       driveConnector: false,
+      gmailConnector: false,
+      calendarConnector: false,
     });
     expect(screen.queryByRole('button', { name: 'Remove Lesson plan.pdf' })).not.toBeInTheDocument();
   });
