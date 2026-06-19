@@ -706,6 +706,97 @@ async function runTool(
   }
 }
 
+async function findLink(
+  args: ToolArgs,
+  admin: ReturnType<typeof createClient>,
+): Promise<ToolResult> {
+  const query = typeof args.query === "string" ? args.query.trim() : "";
+  if (!query) return { ok: false, error: "query is required" };
+  const limit = Math.min(Math.max(Number(args.limit ?? 5) || 5, 1), 10);
+  const kinds = Array.isArray(args.kinds)
+    ? (args.kinds.filter((k) => typeof k === "string") as string[])
+    : null;
+
+  // 1) Embed the query via Lovable AI Gateway.
+  let queryEmbedding: number[] | null = null;
+  try {
+    const er = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
+    });
+    if (er.ok) {
+      const ej = (await er.json()) as { data?: Array<{ embedding?: number[] }> };
+      queryEmbedding = ej.data?.[0]?.embedding ?? null;
+    } else {
+      console.warn("embedding failed", er.status, await er.text());
+    }
+  } catch (e) {
+    console.warn("embedding threw", e);
+  }
+
+  type MatchRow = {
+    id: string;
+    kind: string;
+    source_id: string;
+    title: string | null;
+    subtitle: string | null;
+    url: string | null;
+    metadata: Record<string, unknown> | null;
+    snippet: string | null;
+    similarity?: number;
+    rank?: number;
+  };
+
+  let rows: MatchRow[] = [];
+
+  if (queryEmbedding) {
+    const { data, error } = await admin.rpc(table("match_lsatu_content") as never, {
+      query_embedding: queryEmbedding as unknown,
+      match_count: limit,
+      kind_filter: kinds && kinds.length ? kinds : null,
+    } as never);
+    if (error) console.warn("match_lsatu_content error", error.message);
+    rows = (data as MatchRow[] | null) ?? [];
+  }
+
+  // 2) FTS fallback (or supplement) when semantic returned nothing.
+  if (!rows.length) {
+    const { data, error } = await admin.rpc(table("fts_lsatu_content") as never, {
+      q: query,
+      match_count: limit,
+      kind_filter: kinds && kinds.length ? kinds : null,
+    } as never);
+    if (error) console.warn("fts_lsatu_content error", error.message);
+    rows = (data as MatchRow[] | null) ?? [];
+  }
+
+  const results = rows.map((r) => ({
+    id: r.id,
+    kind: r.kind,
+    source_id: r.source_id,
+    title: r.title ?? "(untitled)",
+    subtitle: r.subtitle ?? null,
+    url: r.url ?? null,
+    snippet: r.snippet ?? null,
+    score: r.similarity ?? r.rank ?? null,
+  }));
+
+  return {
+    ok: true,
+    data: {
+      query,
+      results,
+      note: results.length
+        ? undefined
+        : "Index is empty or no match. The content index may not be populated yet.",
+    },
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
