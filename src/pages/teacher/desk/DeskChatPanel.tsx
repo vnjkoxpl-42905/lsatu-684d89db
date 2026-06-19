@@ -38,6 +38,12 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
       const drive = sources.drive.map((f) => `${f.name} (${f.url})`).join(', ');
       parts.push(`[Google Drive files: ${drive}]`);
     }
+    if (sources?.driveConnector) {
+      parts.push(
+        '[Google Drive connector: enabled — server-side Drive search is not wired yet, so use only Drive files explicitly attached in this message.]',
+      );
+    }
+
     send(parts.join('\n\n'));
   };
 
