@@ -22,7 +22,7 @@ interface SeedAction {
   onClick: () => void;
 }
 
-type SourceKind = 'file' | 'drive' | 'material';
+type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector';
 
 export interface DriveFileRef {
   fileId: string;
@@ -41,7 +41,11 @@ interface AttachedSource {
 export interface ComposerSubmitSources {
   labels: string[];
   drive: DriveFileRef[];
+  driveConnector: boolean;
 }
+
+const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
+
 
 export function AssistantComposer({
   value,
