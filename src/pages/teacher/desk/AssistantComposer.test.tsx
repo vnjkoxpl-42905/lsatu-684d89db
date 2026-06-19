@@ -224,6 +224,8 @@ describe('AssistantComposer', () => {
       labels: [],
       drive: [],
       driveConnector: true,
+      gmailConnector: false,
+      calendarConnector: false,
     });
   });
 
