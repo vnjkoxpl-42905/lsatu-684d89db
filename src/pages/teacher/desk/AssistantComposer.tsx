@@ -241,10 +241,9 @@ export function AssistantComposer({
                 <ComposerMenuItem
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Attach from Drive"
-                  description="Pick specific files with the Google Picker"
+                  description="Browse and pick files from your connected Drive"
                   onClick={openDrivePicker}
-                  disabled={disabled || loading || driveLoading}
-                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
+                  disabled={disabled || loading}
                 />
                 <ComposerMenuItem
                   icon={<Library className="h-5 w-5" strokeWidth={1.8} />}
