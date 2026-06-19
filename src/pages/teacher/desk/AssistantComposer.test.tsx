@@ -1,6 +1,17 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { AssistantComposer } from './AssistantComposer';
+
+vi.mock('@/lib/googleDrive', () => {
+  const openPicker = vi.fn();
+  return {
+    loadGooglePickerApi: vi.fn(async () => {}),
+    openPicker,
+  };
+});
+
+import { openPicker as mockedOpenPicker } from '@/lib/googleDrive';
+const openPickerMock = mockedOpenPicker as unknown as ReturnType<typeof vi.fn>;
 
 function renderComposer(
   props: Partial<React.ComponentProps<typeof AssistantComposer>> = {},
