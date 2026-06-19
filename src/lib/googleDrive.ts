@@ -76,52 +76,115 @@ export function loadGooglePickerApi(): Promise<void> {
 }
 
 const DRIVE_FILE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+const TOKEN_STORAGE_KEY = "lsatu.gdrive.token.v1";
 
-export function openPicker(onPick: (files: PickedFile[]) => void): void {
-  const clientId = GOOGLE_CLIENT_ID;
-  const apiKey = GOOGLE_API_KEY;
+type CachedToken = { access_token: string; expires_at: number };
 
+function readCachedToken(): string | null {
+  try {
+    const raw = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as CachedToken;
+    // Keep a 60s safety buffer.
+    if (parsed?.access_token && parsed.expires_at - 60_000 > Date.now()) {
+      return parsed.access_token;
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+function writeCachedToken(access_token: string, expires_in: number) {
+  try {
+    const payload: CachedToken = {
+      access_token,
+      expires_at: Date.now() + Math.max(0, expires_in) * 1000,
+    };
+    localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    /* ignore */
+  }
+}
+
+function clearCachedToken() {
+  try { localStorage.removeItem(TOKEN_STORAGE_KEY); } catch { /* ignore */ }
+}
+
+function requestToken(forceConsent = false): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: DRIVE_FILE_SCOPE,
+      callback: (tokenResponse: any) => {
+        if (!tokenResponse?.access_token) {
+          reject(new Error(tokenResponse?.error || "No access token"));
+          return;
+        }
+        writeCachedToken(tokenResponse.access_token, Number(tokenResponse.expires_in) || 3600);
+        resolve(tokenResponse.access_token);
+      },
+      error_callback: (err: any) => reject(new Error(err?.message || "OAuth error")),
+    });
+    tokenClient.requestAccessToken({ prompt: forceConsent ? "consent" : "" });
+  });
+}
+
+function showPicker(accessToken: string, onPick: (files: PickedFile[]) => void) {
+  const appId = GOOGLE_CLIENT_ID.split("-")[0] || "";
+  const view = new window.google.picker.DocsView()
+    .setIncludeFolders(false)
+    .setMimeTypes("*/*");
+
+  const picker = new window.google.picker.PickerBuilder()
+    .addView(view)
+    .setOAuthToken(accessToken)
+    .setDeveloperKey(GOOGLE_API_KEY)
+    .setAppId(appId)
+    .setCallback((data: any) => {
+      if (data.action !== window.google.picker.Action.PICKED) return;
+      const docs: any[] = data.docs || [];
+      const files: PickedFile[] = docs.map((d) => ({
+        id: String(d.id),
+        name: String(d.name ?? "Untitled"),
+        mimeType: String(d.mimeType ?? ""),
+        url: String(d.url ?? d.embedUrl ?? ""),
+        thumbnailUrl: d.iconUrl ? String(d.iconUrl) : undefined,
+      }));
+      onPick(files);
+    })
+    .build();
+
+  picker.setVisible(true);
+}
+
+export async function openPicker(onPick: (files: PickedFile[]) => void): Promise<void> {
   if (!window.google?.accounts?.oauth2 || !window.google?.picker) {
     console.error("[googleDrive] openPicker called before loadGooglePickerApi resolved.");
     return;
   }
 
-  const tokenClient = window.google.accounts.oauth2.initTokenClient({
-    client_id: clientId,
-    scope: DRIVE_FILE_SCOPE,
-    callback: (tokenResponse: any) => {
-      if (!tokenResponse?.access_token) {
-        console.error("[googleDrive] Token response missing access_token", tokenResponse);
-        return;
-      }
+  const cached = readCachedToken();
+  if (cached) {
+    try {
+      showPicker(cached, onPick);
+      return;
+    } catch (err) {
+      console.warn("[googleDrive] Cached token failed, re-requesting", err);
+      clearCachedToken();
+    }
+  }
 
-      const appId = clientId.split("-")[0] || "";
-      const view = new window.google.picker.DocsView()
-        .setIncludeFolders(false)
-        .setMimeTypes("*/*");
-
-      const picker = new window.google.picker.PickerBuilder()
-        .addView(view)
-        .setOAuthToken(tokenResponse.access_token)
-        .setDeveloperKey(apiKey)
-        .setAppId(appId)
-        .setCallback((data: any) => {
-          if (data.action !== window.google.picker.Action.PICKED) return;
-          const docs: any[] = data.docs || [];
-          const files: PickedFile[] = docs.map((d) => ({
-            id: String(d.id),
-            name: String(d.name ?? "Untitled"),
-            mimeType: String(d.mimeType ?? ""),
-            url: String(d.url ?? d.embedUrl ?? ""),
-            thumbnailUrl: d.iconUrl ? String(d.iconUrl) : undefined,
-          }));
-          onPick(files);
-        })
-        .build();
-
-      picker.setVisible(true);
-    },
-  });
-
-  tokenClient.requestAccessToken({ prompt: "" });
+  try {
+    const token = await requestToken(false);
+    showPicker(token, onPick);
+  } catch (err) {
+    clearCachedToken();
+    throw err;
+  }
 }
+
+export function clearGoogleDriveAuth() {
+  clearCachedToken();
+}
+

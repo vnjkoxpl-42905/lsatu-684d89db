@@ -1,22 +1,40 @@
-The "After" orb's silver effect doesn't match the reference. Mine is a flat radial silver; the reference is a chrome sweep — a bright diagonal white highlight band running from upper-left to lower-right, with darker steel-grey at the top-right and bottom-left edges, plus a subtle rim shadow.
+## Problem
 
-## Changes (CSS only, `src/features/activity-centre/activities-home.css`)
+"Attach from Drive" opens Google's client-side Picker, which triggers an OAuth sign-in to `accounts.google.com`. Your Chrome "Work" profile's admin policy blocks that origin (`ERR_BLOCKED_BY_RESPONSE`), so the picker can never load. This is the same managed-account block we hit before — it is not a code bug we can fix from inside the picker flow.
 
-**`.act-orb--after`** — replace the radial gradient with a layered chrome effect:
-1. Base: `conic-gradient` rotated so the brightest band sits on a diagonal — sequence roughly `#9c968a → #d8d4cc → #ffffff → #f0ece4 → #8d8678 → #2b2925 → #9c968a` to produce the bright sweep + dark cheek.
-2. Overlay: a soft `linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.55) 48%, transparent 66%)` to intensify the diagonal highlight.
-3. Inset shadow: `inset 0 -8px 24px rgba(0,0,0,0.18), inset 0 8px 18px rgba(255,255,255,0.4)` for the rim/sheen.
-4. Drop shadow: keep the existing soft cast shadow.
+But we don't need the Google Picker at all anymore. The workspace already has the Google Drive connector linked, and the `gdrive` edge function can list/search Drive files server-side without any per-user OAuth. So the right fix is to **retire the Google Picker path** and replace "Attach from Drive" with an in-app Drive browser that calls our own backend.
 
-**`.act-orb--before`** — keep pure `#000`, just add `inset 0 -10px 30px rgba(255,255,255,0.04)` for a barely-there rim like the reference.
+## Plan
 
-**Text colors inside the After orb** — bump label to `hsl(var(--act-ink) / 0.55)` and body to `hsl(var(--act-ink))` so they read against the brightest part of the chrome.
+### 1. New in-app Drive file picker (frontend)
 
-## Out of scope
+Create `src/pages/teacher/desk/DriveBrowserDialog.tsx` — a small modal that:
+- Calls `supabase.functions.invoke('gdrive', { method: 'GET', ... })` with `?action=list&q=<search>` to fetch the connected workspace Drive listing.
+- Shows a search input + a scrollable list of files (name, mimeType icon, modified time).
+- Multi-select with checkboxes; "Attach N files" returns the picks as `{ id, name, mimeType, url }[]`.
+- Empty/loading/error states. No `accounts.google.com` redirect anywhere.
 
-- No layout/component edits.
-- Accent orange, canvas, typography, and Before orb stay as-is.
+### 2. Replace the picker call in `AssistantComposer.tsx`
 
-## Files touched
+- Remove the `loadGooglePickerApi` / `openPicker` import + call from the "Attach from Drive" menu item.
+- Open `DriveBrowserDialog` instead. On confirm, map results into the existing `drive` source chips (same `DriveFileRef` shape) so the rest of the composer keeps working.
 
-- `src/features/activity-centre/activities-home.css` only.
+### 3. Leave the connector chip alone
+
+The "Google Drive" connector chip behavior shipped last turn (real `search_google_drive` tool wired to `gdrive` connector) stays as-is. This change only fixes the manual "Attach from Drive" flow.
+
+### 4. Retire `src/lib/googleDrive.ts` from the composer path
+
+Stop importing `loadGooglePickerApi`/`openPicker` in `AssistantComposer.tsx`. The file stays (still used by `/admin/drive-files`), but the Teacher Desk no longer touches the Google Picker. Optionally, in a follow-up, convert `/admin/drive-files` to the same in-app browser to fully retire the picker.
+
+### 5. Verification
+
+- Open Teacher Desk → click + → "Attach from Drive" → dialog opens, lists real files from the workspace Drive (no `accounts.google.com` round-trip, no `ERR_BLOCKED_BY_RESPONSE`).
+- Select 1–2 files → they appear as chips → send → assistant receives them in the existing `[Google Drive files: …]` block.
+
+## What this does NOT change
+
+- The Google Drive connector chip and `search_google_drive` tool (shipped previously) — unchanged.
+- The `DriveAttachmentPicker` for the saved Drive library — unchanged.
+- No backend changes; `gdrive` edge function already supports `action=list&q=…`.
+- No new secrets or OAuth setup. No need to touch your Work Chrome profile.
