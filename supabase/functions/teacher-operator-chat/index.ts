@@ -149,6 +149,8 @@ interface DeskContext {
   sourceId?: string;
   sourcePreview?: string;
   driveConnector?: boolean;
+  gmailConnector?: boolean;
+  calendarConnector?: boolean;
 }
 
 const GDRIVE_GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
