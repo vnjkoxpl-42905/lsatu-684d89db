@@ -9,6 +9,7 @@ import {
   Plus,
   Sparkles,
   Wand2,
+  X,
 } from 'lucide-react';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
@@ -19,6 +20,14 @@ interface SeedAction {
   onClick: () => void;
 }
 
+type SourceKind = 'file' | 'drive' | 'material';
+
+interface AttachedSource {
+  id: string;
+  kind: SourceKind;
+  label: string;
+}
+
 export function AssistantComposer({
   value,
   onChange,
@@ -26,26 +35,23 @@ export function AssistantComposer({
   loading,
   disabled,
   placeholder,
-  onAttachFile,
-  onOpenDrive,
   onUtilityCommand,
   readOnlyMessage,
 }: {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (attachedSources?: string[]) => void;
   loading: boolean;
   disabled: boolean;
   placeholder: string;
   seedAction?: SeedAction;
-  onAttachFile?: () => void;
-  onOpenDrive?: () => void;
   onUtilityCommand?: (command: string) => void;
   readOnlyMessage?: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
+  const [attachedSources, setAttachedSources] = useState<AttachedSource[]>([]);
   const canSubmit = value.trim().length > 0 && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
 
@@ -70,7 +76,8 @@ export function AssistantComposer({
 
   const submit = () => {
     if (!canSubmit) return;
-    onSubmit();
+    onSubmit(attachedSources.length ? attachedSources.map((source) => source.label) : undefined);
+    setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
 
@@ -79,24 +86,18 @@ export function AssistantComposer({
     onUtilityCommand?.(command);
   };
 
-  const openFileSource = () => {
-    if (!onAttachFile || disabled || loading) return;
+  const addSource = (kind: SourceKind, label: string) => {
+    if (disabled || loading) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
-    onAttachFile();
+    const id = `${kind}:${label}`;
+    setAttachedSources((current) =>
+      current.some((source) => source.id === id) ? current : [...current, { id, kind, label }],
+    );
   };
 
-  const openDrive = () => {
-    if (!onOpenDrive || disabled || loading) return;
-    setActionMenuOpen(false);
-    setMaterialOpen(false);
-    onOpenDrive();
-  };
-
-  const attachMaterial = (label: string) => {
-    setActionMenuOpen(false);
-    setMaterialOpen(false);
-    runUtility(`Attach ${label.toLowerCase()} context to this Teacher Desk task.`);
+  const removeSource = (id: string) => {
+    setAttachedSources((current) => current.filter((source) => source.id !== id));
   };
 
   return (
@@ -126,8 +127,8 @@ export function AssistantComposer({
             'placeholder:text-neutral-500',
           )}
         />
-        <div className="flex items-center justify-between px-3 pb-3">
-          <div className="relative flex items-center gap-1.5">
+        <div className="flex items-center justify-between gap-2 px-3 pb-3">
+          <div className="relative flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
             <button
               type="button"
               onClick={() => {
@@ -138,20 +139,13 @@ export function AssistantComposer({
               aria-label="Open composer actions"
               aria-expanded={actionMenuOpen}
               aria-haspopup="menu"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#242424] text-zinc-200 transition hover:bg-[#303030] disabled:cursor-not-allowed disabled:opacity-55"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#242424] text-zinc-200 transition hover:bg-[#303030] disabled:cursor-not-allowed disabled:opacity-55"
             >
               <Plus className="h-5 w-5" strokeWidth={2} />
             </button>
-            <button
-              type="button"
-              onClick={openFileSource}
-              disabled={!onAttachFile || disabled || loading}
-              aria-label="Attach file"
-              title={onAttachFile ? 'Open student upload/source material' : 'File attach is not connected here yet'}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/85 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
-            >
-              <Paperclip className="h-5 w-5" strokeWidth={2} />
-            </button>
+            {attachedSources.map((source) => (
+              <SourceChip key={source.id} source={source} onRemove={() => removeSource(source.id)} disabled={disabled || loading} />
+            ))}
             {actionMenuOpen ? (
               <div
                 role="menu"
@@ -160,8 +154,8 @@ export function AssistantComposer({
                 <ComposerMenuItem
                   icon={<Paperclip className="h-5 w-5" strokeWidth={1.9} />}
                   label="Attach file"
-                  onClick={openFileSource}
-                  disabled={!onAttachFile || disabled || loading}
+                  onClick={() => addSource('file', 'Attach file')}
+                  disabled={disabled || loading}
                 />
                 <ComposerMenuItem
                   icon={<Library className="h-5 w-5" strokeWidth={1.8} />}
@@ -176,8 +170,8 @@ export function AssistantComposer({
                         key={item}
                         type="button"
                         role="menuitem"
-                        onClick={() => attachMaterial(item)}
-                        disabled={!canUseAssistantActions}
+                        onClick={() => addSource('material', item)}
+                        disabled={disabled || loading}
                         className="flex w-full items-center rounded-xl px-9 py-2 text-left text-[13px] text-zinc-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
                       >
                         {item}
@@ -188,8 +182,8 @@ export function AssistantComposer({
                 <ComposerMenuItem
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
-                  onClick={openDrive}
-                  disabled={!onOpenDrive || disabled || loading}
+                  onClick={() => addSource('drive', 'Google Drive')}
+                  disabled={disabled || loading}
                 />
               </div>
             ) : null}
@@ -244,6 +238,38 @@ const MATERIAL_TYPES = [
   'Recap or note',
   'Student upload/source material',
 ];
+
+function SourceChipIcon({ kind }: { kind: SourceKind }) {
+  if (kind === 'drive') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
+  if (kind === 'file') return <Paperclip className="h-3.5 w-3.5" strokeWidth={1.9} />;
+  return <Library className="h-3.5 w-3.5" strokeWidth={1.8} />;
+}
+
+function SourceChip({
+  source,
+  onRemove,
+  disabled,
+}: {
+  source: AttachedSource;
+  onRemove: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <span className="inline-flex max-w-[180px] items-center gap-1.5 rounded-full border border-zinc-700 bg-[#242424] py-1 pl-2.5 pr-1.5 text-[12px] text-zinc-200">
+      <SourceChipIcon kind={source.kind} />
+      <span className="truncate">{source.label}</span>
+      <button
+        type="button"
+        onClick={onRemove}
+        disabled={disabled}
+        aria-label={`Remove ${source.label}`}
+        className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-55"
+      >
+        <X className="h-3 w-3" strokeWidth={2} />
+      </button>
+    </span>
+  );
+}
 
 function ComposerMenuItem({
   icon,
