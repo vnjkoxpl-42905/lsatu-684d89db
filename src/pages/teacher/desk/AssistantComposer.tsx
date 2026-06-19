@@ -12,6 +12,8 @@ import {
   X,
 } from 'lucide-react';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
+import { GmailIcon } from '@/components/icons/GmailIcon';
+import { GoogleCalendarIcon } from '@/components/icons/GoogleCalendarIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { DriveBrowserDialog } from './DriveBrowserDialog';
@@ -21,7 +23,7 @@ interface SeedAction {
   onClick: () => void;
 }
 
-type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector';
+type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector' | 'gmailConnector' | 'calendarConnector';
 
 export interface DriveFileRef {
   fileId: string;
@@ -41,9 +43,13 @@ export interface ComposerSubmitSources {
   labels: string[];
   drive: DriveFileRef[];
   driveConnector: boolean;
+  gmailConnector: boolean;
+  calendarConnector: boolean;
 }
 
 const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
+const GMAIL_CONNECTOR_ID = 'gmailConnector:gmail';
+const CALENDAR_CONNECTOR_ID = 'calendarConnector:google-calendar';
 
 
 export function AssistantComposer({
