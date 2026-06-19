@@ -7,6 +7,7 @@ import { AssistantComposer } from './AssistantComposer';
 import { ImageLightbox } from './ImageLightbox';
 import { DraftReplyCard, type DraftReplyData } from './DraftReplyCard';
 import { DeskCanvasPanel } from './DeskCanvasPanel';
+import { LinkCard, linksFromToolResults } from './LinkCard';
 import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
 
 const STARTER_CANVAS = `# Collaborative Workspace
