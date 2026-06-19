@@ -125,40 +125,29 @@ export function AssistantComposer({
     );
   };
 
-  const addDriveFiles = (files: PickedFile[]) => {
+  const addDriveFiles = (files: DriveFileRef[]) => {
     if (!files.length) return;
     setAttachedSources((current) => {
       const next = [...current];
       for (const f of files) {
-        const id = `drive:${f.id}`;
+        const id = `drive:${f.fileId}`;
         if (next.some((s) => s.id === id)) continue;
         next.push({
           id,
           kind: 'drive',
           label: f.name,
-          drive: { fileId: f.id, name: f.name, mimeType: f.mimeType, url: f.url },
+          drive: f,
         });
       }
       return next;
     });
   };
 
-  const openDrivePicker = async () => {
-    if (disabled || loading || driveLoading) return;
+  const openDrivePicker = () => {
+    if (disabled || loading) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
-    setDriveLoading(true);
-    try {
-      await loadGooglePickerApi();
-      openPicker((files) => {
-        addDriveFiles(files);
-      });
-    } catch (err) {
-      console.error('[AssistantComposer] Drive picker failed', err);
-      toast.error('Could not open Google Drive picker');
-    } finally {
-      setDriveLoading(false);
-    }
+    setDriveBrowserOpen(true);
   };
 
   const removeSource = (id: string) => {
