@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useGmailContacts, useGmailSend } from "../hooks";
 import { GmailRecipientInput } from "./GmailRecipientInput";
 import { GoogleDrivePicker } from "@/components/drive/GoogleDrivePicker";
+import { downloadDriveFile } from "@/lib/googleDriveClient";
 import { toast } from "sonner";
 import type { GmailOutgoingAttachment } from "../api";
 import { TemplateSuggestionPalette } from "@/components/teacher/templates/TemplateSuggestionPalette";
@@ -400,7 +401,12 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
       <GoogleDrivePicker
         open={drivePickerOpen}
         onClose={() => setDrivePickerOpen(false)}
-        onAttach={handleDriveAttach}
+        confirmLabel="Attach"
+        onConfirm={async (files) => {
+          const downloaded = [];
+          for (const f of files) downloaded.push(await downloadDriveFile(f));
+          handleDriveAttach(downloaded);
+        }}
       />
     </>
   );

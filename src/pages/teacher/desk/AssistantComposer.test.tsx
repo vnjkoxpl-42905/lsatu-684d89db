@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AssistantComposer } from './AssistantComposer';
 
 vi.mock('@/lib/googleDrive', () => {
@@ -10,8 +10,31 @@ vi.mock('@/lib/googleDrive', () => {
   };
 });
 
+// The in-app Drive picker (GoogleDrivePicker) calls the `gdrive` edge function
+// with a Supabase session, so stub the auth client to hand back a token.
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    auth: { getSession: vi.fn(async () => ({ data: { session: { access_token: 'test-token' } } })) },
+  },
+}));
+
 import { openPicker as mockedOpenPicker } from '@/lib/googleDrive';
 const openPickerMock = mockedOpenPicker as unknown as ReturnType<typeof vi.fn>;
+
+// A Drive file as the `gdrive` list action returns it (webViewLink, not url).
+const driveListFile = {
+  id: 'gdrive-abc-123',
+  name: 'Lesson plan.pdf',
+  mimeType: 'application/pdf',
+  webViewLink: 'https://drive.google.com/file/d/gdrive-abc-123/view',
+};
+
+function mockDriveList(files: Array<Record<string, unknown>>) {
+  vi.spyOn(global, 'fetch').mockResolvedValue({
+    ok: true,
+    json: async () => ({ ok: true, files, nextPageToken: null }),
+  } as unknown as Response);
+}
 
 function renderComposer(
   props: Partial<React.ComponentProps<typeof AssistantComposer>> = {},
@@ -36,6 +59,17 @@ function renderComposer(
 }
 
 describe('AssistantComposer', () => {
+  beforeEach(() => {
+    // GoogleDrivePicker builds request URLs with `new URL()`, which needs a real base.
+    vi.stubEnv('VITE_SUPABASE_URL', 'https://test.supabase.co');
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'test-key');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
   it('submits non-empty text with Enter', () => {
     const onSubmit = vi.fn();
     renderComposer({ value: 'Make this warmer', onSubmit });
@@ -162,13 +196,6 @@ describe('AssistantComposer', () => {
     expect(screen.getByRole('menuitem', { name: 'Student upload/source material' })).toBeInTheDocument();
   });
 
-  const fakeFile = {
-    id: 'gdrive-abc-123',
-    name: 'Lesson plan.pdf',
-    mimeType: 'application/pdf',
-    url: 'https://drive.google.com/file/d/gdrive-abc-123/view',
-  };
-
   it('toggles a Google Drive connector chip without opening the picker', () => {
     openPickerMock.mockClear();
     renderComposer();
@@ -201,17 +228,16 @@ describe('AssistantComposer', () => {
   });
 
   it('opens the Drive picker from "Attach from Drive" and drops a chip with the picked file name', async () => {
-    openPickerMock.mockImplementationOnce((cb: (files: typeof fakeFile[]) => void) => {
-      cb([fakeFile]);
-    });
+    mockDriveList([driveListFile]);
     renderComposer();
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
 
-    await waitFor(() => {
-      expect(openPickerMock).toHaveBeenCalled();
-    });
+    // Pick the file in the Google-style picker, then confirm.
+    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Attach' }));
+
     expect(await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove Lesson plan.pdf' }));
@@ -219,27 +245,28 @@ describe('AssistantComposer', () => {
   });
 
   it('does not add a chip when the user cancels the Drive picker', async () => {
-    openPickerMock.mockImplementationOnce(() => {
-      // user closes the picker without selecting; callback is never invoked
-    });
+    mockDriveList([driveListFile]);
     renderComposer();
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
 
-    await waitFor(() => {
-      expect(openPickerMock).toHaveBeenCalled();
-    });
+    // Cancel without selecting anything.
+    await screen.findByRole('button', { name: 'Lesson plan.pdf' });
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
     expect(screen.queryByRole('button', { name: /^Remove Lesson plan/ })).not.toBeInTheDocument();
   });
 
   it('forwards Drive file metadata to onSubmit and clears the chips', async () => {
     const onSubmit = vi.fn();
-    openPickerMock.mockImplementationOnce((cb: (files: typeof fakeFile[]) => void) => cb([fakeFile]));
+    mockDriveList([driveListFile]);
     renderComposer({ value: 'Draft a reply', onSubmit });
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Attach' }));
     await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' });
     fireEvent.keyDown(screen.getByLabelText('Assistant instructions'), { key: 'Enter', shiftKey: false });
 

@@ -1,25 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, Search, SlidersHorizontal, X, FileText, Users, LayoutGrid, List as ListIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { GoogleDriveIcon } from "@/components/icons/GoogleDriveIcon";
+import { driveAuthHeaders, type DriveFile } from "@/lib/googleDriveClient";
 import { cn } from "@/lib/utils";
 
-interface DriveFile {
-  id: string;
-  name: string;
-  mimeType: string;
-  size?: string;
-  modifiedTime?: string;
-  iconLink?: string;
-  thumbnailLink?: string;
-  shared?: boolean;
-}
+export type { DriveFile } from "@/lib/googleDriveClient";
 
 interface GoogleDrivePickerProps {
   open: boolean;
   onClose: () => void;
-  /** Called when the user confirms one or more files. The picker downloads them and returns their bytes. */
-  onAttach: (files: Array<{ filename: string; mimeType: string; dataBase64: string; size: number }>) => void;
+  /**
+   * Called with the selected Drive files when the user confirms. May return a
+   * Promise; the picker shows a busy state until it resolves, then closes. Throw
+   * to surface an error inside the picker and keep it open.
+   */
+  onConfirm: (files: DriveFile[]) => void | Promise<void>;
+  /** Header label next to the Drive logo. Defaults to "Select files". */
+  title?: string;
+  /** Confirm-button label. Defaults to "Select". */
+  confirmLabel?: string;
 }
 
 type Scope = "recent" | "mydrive" | "sharedwithme" | "starred";
@@ -31,65 +30,19 @@ const TABS: Array<{ scope: Scope; label: string }> = [
   { scope: "starred", label: "Starred" },
 ];
 
-async function authHeaders() {
-  const session = (await supabase.auth.getSession()).data.session;
-  return {
-    Authorization: `Bearer ${session?.access_token ?? ""}`,
-    apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-  };
-}
-
 async function fetchDrivePage(scope: Scope, q: string, pageToken: string | null) {
   const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
   url.searchParams.set("action", "list");
   url.searchParams.set("scope", scope);
   if (q) url.searchParams.set("q", q);
   if (pageToken) url.searchParams.set("pageToken", pageToken);
-  const res = await fetch(url.toString(), { headers: await authHeaders() });
+  const res = await fetch(url.toString(), { headers: await driveAuthHeaders() });
   const json = await res.json();
   if (!json?.ok) throw new Error(json?.error ?? "Failed to load Drive");
   return {
     files: (json.files ?? []) as DriveFile[],
     nextPageToken: (json.nextPageToken ?? null) as string | null,
   };
-}
-
-async function downloadDriveFile(file: DriveFile): Promise<{ filename: string; mimeType: string; dataBase64: string; size: number }> {
-  const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
-  url.searchParams.set("action", "download");
-  url.searchParams.set("id", file.id);
-  // Default export: gdrive picks PDF for Google-native formats.
-  if (file.mimeType.startsWith("application/vnd.google-apps.")) {
-    url.searchParams.set("format", "pdf");
-  }
-  const res = await fetch(url.toString(), { headers: await authHeaders() });
-  if (!res.ok) {
-    let msg = `Download failed (${res.status})`;
-    try { const j = await res.json(); if (j?.error) msg = j.error; } catch { /* binary */ }
-    throw new Error(msg);
-  }
-  const blob = await res.blob();
-  // Suggested filename from Content-Disposition; fallback to name (with .pdf for native).
-  const disp = res.headers.get("Content-Disposition") ?? "";
-  const m = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disp);
-  const suggestedName = m?.[1]
-    ? decodeURIComponent(m[1])
-    : file.mimeType.startsWith("application/vnd.google-apps.")
-      ? `${file.name}.pdf`
-      : file.name;
-  const mimeType = res.headers.get("Content-Type")?.split(";")[0]?.trim()
-    || (file.mimeType.startsWith("application/vnd.google-apps.") ? "application/pdf" : file.mimeType);
-
-  const buf = await blob.arrayBuffer();
-  const bytes = new Uint8Array(buf);
-  // Encode in 32KB chunks to avoid blowing the call stack on large files.
-  let bin = "";
-  const CHUNK = 0x8000;
-  for (let i = 0; i < bytes.length; i += CHUNK) {
-    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
-  }
-  const dataBase64 = btoa(bin);
-  return { filename: suggestedName, mimeType, dataBase64, size: bytes.length };
 }
 
 // --- Date bucketing, mirrors Google's "Yesterday / Earlier this week / Last week" headers ---
@@ -143,7 +96,7 @@ function Thumb({ file }: { file: DriveFile }) {
         url.searchParams.set("sz", "400");
         if (file.thumbnailLink) url.searchParams.set("link", file.thumbnailLink);
         if (file.mimeType) url.searchParams.set("mime", file.mimeType);
-        const res = await fetch(url.toString(), { headers: await authHeaders() });
+        const res = await fetch(url.toString(), { headers: await driveAuthHeaders() });
         if (!res.ok) throw new Error("no thumb");
         const blob = await res.blob();
         if (cancelled) return;
@@ -170,7 +123,7 @@ function Thumb({ file }: { file: DriveFile }) {
   );
 }
 
-export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePickerProps) {
+export function GoogleDrivePicker({ open, onClose, onConfirm, title = "Select files", confirmLabel = "Select" }: GoogleDrivePickerProps) {
   const [scope, setScope] = useState<Scope>("recent");
   const [query, setQuery] = useState("");
   const [debounced, setDebounced] = useState("");
@@ -223,16 +176,12 @@ export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePicker
     });
   }
 
-  async function handleAttach() {
+  async function handleConfirm() {
     if (!selectedList.length) return;
     setAttaching(true);
     setError(null);
     try {
-      const downloaded = [];
-      for (const f of selectedList) {
-        downloaded.push(await downloadDriveFile(f));
-      }
-      onAttach(downloaded);
+      await onConfirm(selectedList);
       onClose();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -251,12 +200,12 @@ export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePicker
       onClick={(e) => { if (e.target === e.currentTarget && !attaching) onClose(); }}
     >
       {/* Pure-white Google Picker chrome, independent of the app theme. */}
-      <div className="flex w-[920px] max-w-full flex-col overflow-hidden rounded-2xl bg-white text-[#202124] shadow-2xl" style={{ height: "min(86vh, 760px)" }}>
-        {/* Header: logo + Select files + search + close */}
+      <div className="flex h-[min(86vh,760px)] w-[920px] max-w-full flex-col overflow-hidden rounded-2xl bg-white text-[#202124] shadow-2xl">
+        {/* Header: logo + title + search + close */}
         <div className="flex items-center gap-4 px-5 py-3">
           <div className="flex shrink-0 items-center gap-2">
             <GoogleDriveIcon className="h-6 w-6" />
-            <span className="text-[15px] font-medium text-[#3c4043]">Select files</span>
+            <span className="text-[15px] font-medium text-[#3c4043]">{title}</span>
           </div>
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#5f6368]" />
@@ -310,7 +259,6 @@ export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePicker
               type="button"
               onClick={() => setView("list")}
               aria-label="List view"
-              aria-pressed={view === "list"}
               className={cn("rounded-full p-1.5 hover:bg-black/5", view === "list" ? "text-[#1a73e8]" : "text-[#5f6368]")}
             >
               <ListIcon className="h-5 w-5" />
@@ -319,7 +267,6 @@ export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePicker
               type="button"
               onClick={() => setView("grid")}
               aria-label="Grid view"
-              aria-pressed={view === "grid"}
               className={cn("rounded-full p-1.5 hover:bg-black/5", view === "grid" ? "text-[#1a73e8]" : "text-[#5f6368]")}
             >
               <LayoutGrid className="h-5 w-5" />
@@ -430,12 +377,12 @@ export function GoogleDrivePicker({ open, onClose, onAttach }: GoogleDrivePicker
           </button>
           <button
             type="button"
-            onClick={handleAttach}
+            onClick={handleConfirm}
             disabled={!selectedList.length || attaching}
             className="flex items-center gap-2 rounded-full bg-[#1a73e8] px-6 py-2 text-[14px] font-medium text-white hover:bg-[#1765cc] disabled:cursor-not-allowed disabled:bg-[#dadce0] disabled:text-[#5f6368]"
           >
             {attaching ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Select
+            {confirmLabel}
           </button>
         </div>
       </div>
