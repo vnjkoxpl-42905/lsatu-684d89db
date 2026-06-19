@@ -365,12 +365,47 @@ async function listCalendarEvents(args: ToolArgs): Promise<ToolResult> {
 
 type ToolArgs = Record<string, unknown>;
 type DbRow = Record<string, unknown>;
+// content is a string for most turns, or an array of OpenAI-style multimodal
+// parts ({ type: "text" } | { type: "image_url", image_url: { url } }) when the
+// user attaches screenshots. The Lovable gateway forwards both to Gemini.
+type ContentPart =
+  | { type: "text"; text: string }
+  | { type: "image_url"; image_url: { url: string } };
 type ChatMessage = {
   role: "system" | "user" | "assistant" | "tool";
-  content?: string;
+  content?: string | ContentPart[];
   tool_call_id?: string;
   tool_calls?: ToolCall[];
 };
+
+// Cap a single inbound image data URL. ~7MB of base64 ≈ ~5MB binary, matching
+// the client-side limit. Anything larger is rejected, never silently dropped.
+const MAX_IMAGE_DATA_URL_CHARS = 7_500_000;
+const MAX_IMAGE_PARTS = 4;
+
+function sanitizeContent(raw: unknown): string | ContentPart[] | { error: string } {
+  if (typeof raw === "string") return raw;
+  if (!Array.isArray(raw)) return asString(raw);
+  const parts: ContentPart[] = [];
+  let imageCount = 0;
+  for (const part of raw) {
+    if (!isRecord(part)) continue;
+    if (part.type === "text") {
+      const text = asString(part.text);
+      if (text.length > 20_000) return { error: "Message text too large (max 20000 chars)" };
+      parts.push({ type: "text", text });
+    } else if (part.type === "image_url") {
+      const url = isRecord(part.image_url) ? asString(part.image_url.url) : "";
+      if (!url.startsWith("data:image/") && !url.startsWith("https://")) {
+        return { error: "Unsupported image source" };
+      }
+      if (url.length > MAX_IMAGE_DATA_URL_CHARS) return { error: "Attached image is too large (max ~5MB)" };
+      if (++imageCount > MAX_IMAGE_PARTS) return { error: "Too many images (max 4)" };
+      parts.push({ type: "image_url", image_url: { url } });
+    }
+  }
+  return parts;
+}
 type ToolCall = {
   id: string;
   function?: {
@@ -605,9 +640,16 @@ Deno.serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
+      const content = sanitizeContent(m.content);
+      if (isRecord(content) && typeof content.error === "string") {
+        return new Response(JSON.stringify({ error: content.error }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
       validMessages.push({
         role: asString(m.role) as ChatMessage["role"],
-        content: asString(m.content),
+        content: content as string | ContentPart[],
       });
     }
 

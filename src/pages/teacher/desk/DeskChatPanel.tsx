@@ -28,9 +28,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
 
   const submit = (sources?: import('./AssistantComposer').ComposerSubmitSources) => {
     const text = input.trim();
-    if (!text) return;
+    const images = sources?.images ?? [];
+    if (!text && images.length === 0) return;
+    if (localPreview || isLoading) return;
     setInput('');
-    const parts = [text];
+    const parts = text ? [text] : [];
     if (sources?.labels.length) {
       parts.push(`[Attached context: ${sources.labels.join(', ')}]`);
     }
@@ -43,7 +45,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
     if (sources?.driveConnector) context.driveConnector = true;
     if (sources?.gmailConnector) context.gmailConnector = true;
     if (sources?.calendarConnector) context.calendarConnector = true;
-    send(parts.join('\n\n'), Object.keys(context).length ? context : undefined);
+    sendMessage(
+      parts.join('\n\n'),
+      Object.keys(context).length ? context : undefined,
+      images.length ? images : undefined,
+    );
   };
 
   return (
@@ -75,13 +81,32 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                       : 'border-black/12 bg-white/70 text-black/80',
                   )}
                 >
+                  {message.images?.length ? (
+                    <div className="mb-2 flex flex-wrap gap-1.5">
+                      {message.images.map((img, index) => (
+                        <a
+                          key={`${message.id}-img-${index}`}
+                          href={img.dataUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block overflow-hidden rounded-md border border-black/15"
+                        >
+                          <img
+                            src={img.dataUrl}
+                            alt={img.name}
+                            className="h-24 w-24 object-cover transition hover:opacity-90"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
                   {message.pending && !message.content ? (
                     <Loader2 className="h-4 w-4 animate-spin text-black/40" />
-                  ) : (
+                  ) : message.content ? (
                     <div className="prose prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5">
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
             ))}

@@ -9,10 +9,18 @@ export interface OperatorToolResult {
   result: { ok: boolean; data?: unknown; error?: string };
 }
 
+export interface OperatorImage {
+  /** data URL (data:image/...;base64,...) for inline display + gateway upload. */
+  dataUrl: string;
+  name: string;
+}
+
 export interface OperatorMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  /** Attached screenshots — kept in memory for display only, not persisted. */
+  images?: OperatorImage[];
   tool_results?: OperatorToolResult[];
   pending?: boolean;
   created_at: string;
@@ -172,9 +180,9 @@ export function useOperatorChat() {
   }, [user]);
 
   const sendMessage = useCallback(
-    (text: string, context?: OperatorChatContext): Promise<void> => {
+    (text: string, context?: OperatorChatContext, images?: OperatorImage[]): Promise<void> => {
       const run = async () => {
-        if (!text.trim() || !user) return;
+        if ((!text.trim() && !images?.length) || !user) return;
         setError(null);
         setIsLoading(true);
 
@@ -182,6 +190,7 @@ export function useOperatorChat() {
           id: uid(),
           role: 'user',
           content: text,
+          images: images?.length ? images : undefined,
           created_at: new Date().toISOString(),
         };
         const placeholderId = uid();
@@ -206,9 +215,22 @@ export function useOperatorChat() {
 
           // Build history from the synchronous mirror, excluding the pending
           // placeholder we just added.
-          const history = messagesRef.current
+          const history: { role: string; content: unknown }[] = messagesRef.current
             .filter((m) => !m.pending)
             .map((m) => ({ role: m.role, content: m.content }));
+
+          // Attach the screenshots to the final user turn as OpenAI-style
+          // multimodal parts so Gemini actually sees them. Images ride only this
+          // request; they are never persisted, so later turns stay text-only.
+          if (images?.length) {
+            const last = history[history.length - 1];
+            if (last && last.role === 'user') {
+              last.content = [
+                ...(text.trim() ? [{ type: 'text', text }] : []),
+                ...images.map((img) => ({ type: 'image_url', image_url: { url: img.dataUrl } })),
+              ];
+            }
+          }
 
           const body: Record<string, unknown> = { messages: history };
           if (context) body.context = context;

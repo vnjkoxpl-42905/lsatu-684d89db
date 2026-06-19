@@ -3,6 +3,7 @@ import {
   ArrowUp,
   ChevronRight,
   FileText,
+  Image as ImageIcon,
   Library,
   Loader2,
   Paperclip,
@@ -39,9 +40,17 @@ interface AttachedSource {
   drive?: DriveFileRef;
 }
 
+export interface ComposerImage {
+  id: string;
+  name: string;
+  /** data URL (data:image/...;base64,...). */
+  dataUrl: string;
+}
+
 export interface ComposerSubmitSources {
   labels: string[];
   drive: DriveFileRef[];
+  images: ComposerImage[];
   driveConnector: boolean;
   gmailConnector: boolean;
   calendarConnector: boolean;
@@ -50,6 +59,18 @@ export interface ComposerSubmitSources {
 const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
 const GMAIL_CONNECTOR_ID = 'gmailConnector:gmail';
 const CALENDAR_CONNECTOR_ID = 'calendarConnector:google-calendar';
+
+const MAX_IMAGES = 4;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error ?? new Error('Could not read image'));
+    reader.readAsDataURL(file);
+  });
+}
 
 
 export function AssistantComposer({
@@ -73,12 +94,73 @@ export function AssistantComposer({
   readOnlyMessage?: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
   const [attachedSources, setAttachedSources] = useState<AttachedSource[]>([]);
+  const [images, setImages] = useState<ComposerImage[]>([]);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
-  const canSubmit = value.trim().length > 0 && !loading && !disabled;
+  const canSubmit = (value.trim().length > 0 || images.length > 0) && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
+
+  const addImageFiles = useCallback(
+    async (files: FileList | File[]) => {
+      if (disabled || loading) return;
+      const incoming = Array.from(files).filter((file) => file.type.startsWith('image/'));
+      if (incoming.length === 0) return;
+      setImageError(null);
+
+      let tooLarge = false;
+      const accepted: ComposerImage[] = [];
+      for (const file of incoming) {
+        if (file.size > MAX_IMAGE_BYTES) {
+          tooLarge = true;
+          continue;
+        }
+        try {
+          const dataUrl = await readAsDataUrl(file);
+          accepted.push({
+            id: `${file.name}-${file.size}-${file.lastModified}`,
+            name: file.name || 'screenshot.png',
+            dataUrl,
+          });
+        } catch (err) {
+          setImageError(err instanceof Error ? err.message : 'Could not read image');
+        }
+      }
+
+      let overflow = false;
+      setImages((current) => {
+        const merged = [...current];
+        for (const img of accepted) {
+          if (merged.some((m) => m.id === img.id)) continue;
+          if (merged.length >= MAX_IMAGES) {
+            overflow = true;
+            break;
+          }
+          merged.push(img);
+        }
+        return merged;
+      });
+      if (tooLarge) setImageError('Each image must be under 5MB.');
+      else if (overflow) setImageError(`You can attach up to ${MAX_IMAGES} images.`);
+    },
+    [disabled, loading],
+  );
+
+  const removeImage = (id: string) => {
+    setImages((current) => current.filter((img) => img.id !== id));
+    setImageError(null);
+  };
+
+  const openImagePicker = () => {
+    if (disabled || loading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    fileInputRef.current?.click();
+  };
 
   const adjustHeight = useCallback((reset?: boolean) => {
     const textarea = textareaRef.current;
@@ -111,9 +193,12 @@ export function AssistantComposer({
     const driveConnector = attachedSources.some((s) => s.kind === 'driveConnector');
     const gmailConnector = attachedSources.some((s) => s.kind === 'gmailConnector');
     const calendarConnector = attachedSources.some((s) => s.kind === 'calendarConnector');
-    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector || gmailConnector || calendarConnector;
-    onSubmit(hasAny ? { labels, drive, driveConnector, gmailConnector, calendarConnector } : undefined);
+    const hasAny =
+      labels.length > 0 || drive.length > 0 || images.length > 0 || driveConnector || gmailConnector || calendarConnector;
+    onSubmit(hasAny ? { labels, drive, images, driveConnector, gmailConnector, calendarConnector } : undefined);
     setAttachedSources([]);
+    setImages([]);
+    setImageError(null);
     requestAnimationFrame(() => adjustHeight(true));
   };
 
@@ -182,8 +267,41 @@ export function AssistantComposer({
   return (
     <div className="mt-5 w-full">
       <DriveBrowserDialog open={driveBrowserOpen} onOpenChange={setDriveBrowserOpen} onAttach={addDriveFiles} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        aria-label="Attach screenshot"
+        className="hidden"
+        onChange={(event) => {
+          if (event.target.files?.length) void addImageFiles(event.target.files);
+          event.target.value = '';
+        }}
+      />
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
-      <div className="relative rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <div
+        className={cn(
+          'relative rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]',
+          isDragging && 'border-white/70 ring-2 ring-white/30',
+        )}
+        onDragOver={(event) => {
+          if (disabled || loading) return;
+          if (Array.from(event.dataTransfer.types).includes('Files')) {
+            event.preventDefault();
+            setIsDragging(true);
+          }
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={(event) => {
+          if (disabled || loading) return;
+          if (event.dataTransfer.files?.length) {
+            event.preventDefault();
+            void addImageFiles(event.dataTransfer.files);
+          }
+          setIsDragging(false);
+        }}
+      >
         <Textarea
           ref={textareaRef}
           value={value}
@@ -195,6 +313,16 @@ export function AssistantComposer({
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
               submit();
+            }
+          }}
+          onPaste={(event) => {
+            const files = Array.from(event.clipboardData?.items ?? [])
+              .filter((item) => item.kind === 'file' && item.type.startsWith('image/'))
+              .map((item) => item.getAsFile())
+              .filter((file): file is File => file !== null);
+            if (files.length) {
+              event.preventDefault();
+              void addImageFiles(files);
             }
           }}
           aria-label="Assistant instructions"
@@ -225,6 +353,9 @@ export function AssistantComposer({
             </button>
             {attachedSources.map((source) => (
               <SourceChip key={source.id} source={source} onRemove={() => removeSource(source.id)} disabled={disabled || loading} />
+            ))}
+            {images.map((img) => (
+              <ImagePreviewChip key={img.id} image={img} onRemove={() => removeImage(img.id)} disabled={disabled || loading} />
             ))}
             {actionMenuOpen ? (
               <div
@@ -268,9 +399,10 @@ export function AssistantComposer({
                   }
                 />
                 <ComposerMenuItem
-                  icon={<Paperclip className="h-5 w-5" strokeWidth={1.9} />}
-                  label="Attach file"
-                  onClick={() => addSource('file', 'Attach file')}
+                  icon={<ImageIcon className="h-5 w-5" strokeWidth={1.8} />}
+                  label="Attach screenshot"
+                  description="Upload or paste an image for the assistant to read"
+                  onClick={openImagePicker}
                   disabled={disabled || loading}
                 />
                 <ComposerMenuItem
@@ -322,6 +454,11 @@ export function AssistantComposer({
           </div>
         </div>
       </div>
+      {imageError ? (
+        <div className="mt-2 text-[11px] font-medium text-red-400" role="alert">
+          {imageError}
+        </div>
+      ) : null}
       <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
         <ActionChip
           icon={<Wand2 className="h-3.5 w-3.5" strokeWidth={1.75} />}
@@ -385,6 +522,31 @@ function SourceChip({
         disabled={disabled}
         aria-label={`Remove ${source.label}`}
         className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-55"
+      >
+        <X className="h-3 w-3" strokeWidth={2} />
+      </button>
+    </span>
+  );
+}
+
+function ImagePreviewChip({
+  image,
+  onRemove,
+  disabled,
+}: {
+  image: ComposerImage;
+  onRemove: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <span className="group relative inline-flex h-12 w-12 overflow-hidden rounded-lg border border-zinc-700 bg-[#242424]">
+      <img src={image.dataUrl} alt={image.name} className="h-full w-full object-cover" />
+      <button
+        type="button"
+        onClick={onRemove}
+        disabled={disabled}
+        aria-label={`Remove ${image.name}`}
+        className="absolute right-0.5 top-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-black/70 text-zinc-200 transition hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-55"
       >
         <X className="h-3 w-3" strokeWidth={2} />
       </button>

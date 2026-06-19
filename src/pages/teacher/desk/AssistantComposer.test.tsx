@@ -175,7 +175,7 @@ describe('AssistantComposer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
 
     expect(screen.getByRole('menuitem', { name: /Google Drive/ })).toBeInTheDocument();
-    expect(screen.getByRole('menuitem', { name: 'Attach file' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /Attach screenshot/ })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Attach from Drive/ })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: 'Attach material' })).toBeInTheDocument();
   });
@@ -223,6 +223,7 @@ describe('AssistantComposer', () => {
     expect(onSubmit).toHaveBeenCalledWith({
       labels: [],
       drive: [],
+      images: [],
       driveConnector: true,
       gmailConnector: false,
       calendarConnector: false,
@@ -282,6 +283,7 @@ describe('AssistantComposer', () => {
           url: 'https://drive.google.com/file/d/gdrive-abc-123/view',
         },
       ],
+      images: [],
       driveConnector: false,
       gmailConnector: false,
       calendarConnector: false,
@@ -314,5 +316,25 @@ describe('AssistantComposer', () => {
     expect(onUtilityCommand.mock.calls[0][0]).toContain('Improve the writing');
     expect(onUtilityCommand.mock.calls[1][0]).toContain('Canvas-style draft reply');
     expect(onUtilityCommand.mock.calls[2][0]).toContain('Recommend the next useful LSAT work');
+  });
+
+  it('attaches a screenshot via the file input and forwards it (image-only, no text) to onSubmit', async () => {
+    const { onSubmit } = renderComposer();
+
+    const file = new File(['fake-bytes'], 'shot.png', { type: 'image/png' });
+    fireEvent.change(screen.getByLabelText('Attach screenshot'), { target: { files: [file] } });
+
+    // A preview thumbnail with a remove control appears once the file is read.
+    await screen.findByRole('button', { name: 'Remove shot.png' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Send command' }));
+
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+    const payload = onSubmit.mock.calls[0][0];
+    expect(payload.images).toHaveLength(1);
+    expect(payload.images[0].name).toBe('shot.png');
+    expect(payload.images[0].dataUrl).toMatch(/^data:/);
+    // Chips clear after send.
+    expect(screen.queryByRole('button', { name: 'Remove shot.png' })).not.toBeInTheDocument();
   });
 });
