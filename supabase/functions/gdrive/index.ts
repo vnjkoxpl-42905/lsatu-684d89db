@@ -216,10 +216,12 @@ Deno.serve(async (req) => {
         }
       }
 
-      // No preview available → 404 so the client renders its icon fallback.
-      return new Response(JSON.stringify({ ok: false, error: "no thumbnail" }), {
-        status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      // No preview available → return 200 with fallback flag so the client renders
+      // its icon fallback without surfacing a runtime/network error in the preview overlay.
+      return new Response(
+        JSON.stringify({ ok: false, error: "THUMBNAIL_UNAVAILABLE", fallback: true }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
     }
 
     if (action === "formats") {
