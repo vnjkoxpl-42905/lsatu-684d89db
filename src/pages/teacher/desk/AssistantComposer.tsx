@@ -235,10 +235,34 @@ export function AssistantComposer({
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
                   description="Use Drive as a context source for the next message"
-                  onClick={toggleDriveConnector}
+                  onClick={() => toggleConnector(DRIVE_CONNECTOR_ID, 'driveConnector', 'Google Drive')}
                   disabled={disabled || loading}
                   trailing={
                     driveConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
+                  icon={<GmailIcon className="h-5 w-5" />}
+                  label="Gmail"
+                  description="Use Gmail as a context source for the next message"
+                  onClick={() => toggleConnector(GMAIL_CONNECTOR_ID, 'gmailConnector', 'Gmail')}
+                  disabled={disabled || loading}
+                  trailing={
+                    gmailConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
+                  icon={<GoogleCalendarIcon className="h-5 w-5" />}
+                  label="Google Calendar"
+                  description="Use Calendar as a context source for the next message"
+                  onClick={() => toggleConnector(CALENDAR_CONNECTOR_ID, 'calendarConnector', 'Google Calendar')}
+                  disabled={disabled || loading}
+                  trailing={
+                    calendarConnectorActive ? (
                       <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
                     ) : undefined
                   }
