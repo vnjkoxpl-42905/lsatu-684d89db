@@ -222,6 +222,147 @@ async function searchGoogleDrive(args: ToolArgs): Promise<ToolResult> {
   return { ok: true, data: { files, note: "File contents are not readable yet; only metadata + links are available." } };
 }
 
+const GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1";
+const GCAL_GATEWAY = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3";
+
+const SEARCH_GMAIL_TOOL = {
+  type: "function",
+  function: {
+    name: "search_gmail",
+    description:
+      "Search the connected Gmail inbox. Returns recent messages with From, Subject, Date, and snippet. Use Gmail search operators in `query` (e.g. `from:`, `is:unread`, `subject:`, `newer_than:7d`).",
+    parameters: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Gmail search query. Empty = most recent inbox messages." },
+        maxResults: { type: "number", description: "Max messages to return (default 10, max 20)" },
+      },
+      additionalProperties: false,
+    },
+  },
+} as const;
+
+const LIST_GCAL_TOOL = {
+  type: "function",
+  function: {
+    name: "list_calendar_events",
+    description:
+      "List upcoming events on the connected Google Calendar (primary calendar). Returns event id, summary, start/end, location, and htmlLink.",
+    parameters: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Optional free-text search across events." },
+        timeMin: { type: "string", description: "RFC3339 lower bound. Defaults to now." },
+        timeMax: { type: "string", description: "RFC3339 upper bound. Defaults to 14 days from now." },
+        maxResults: { type: "number", description: "Max events (default 10, max 25)" },
+      },
+      additionalProperties: false,
+    },
+  },
+} as const;
+
+async function searchGmail(args: ToolArgs): Promise<ToolResult> {
+  const key = Deno.env.get("GOOGLE_MAIL_API_KEY");
+  if (!key) {
+    return {
+      ok: false,
+      error: "Gmail connector is not linked to this workspace. Ask the admin to link Gmail in Lovable connectors.",
+    };
+  }
+  const q = typeof args.query === "string" ? args.query.trim() : "";
+  const maxResults = Math.min(Math.max(Number(args.maxResults ?? 10) || 10, 1), 20);
+  const params = new URLSearchParams();
+  params.set("maxResults", String(maxResults));
+  if (q) params.set("q", q);
+
+  const listRes = await fetch(`${GMAIL_GATEWAY}/users/me/messages?${params}`, {
+    headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "X-Connection-Api-Key": key },
+  });
+  const listTxt = await listRes.text();
+  if (!listRes.ok) {
+    if (listRes.status === 401 || listRes.status === 403) {
+      return { ok: false, error: "Gmail connector not authorized — ask the admin to relink it." };
+    }
+    return { ok: false, error: `Gmail error ${listRes.status}: ${listTxt.slice(0, 200)}` };
+  }
+  let listData: { messages?: Array<{ id: string }> } = {};
+  try { listData = listTxt ? JSON.parse(listTxt) : {}; } catch { /* ignore */ }
+  const ids = (listData.messages ?? []).slice(0, maxResults).map((m) => m.id).filter(Boolean);
+
+  const messages = await Promise.all(
+    ids.map(async (id) => {
+      const metaParams = new URLSearchParams();
+      metaParams.set("format", "metadata");
+      ["From", "Subject", "Date", "To"].forEach((h) => metaParams.append("metadataHeaders", h));
+      const r = await fetch(`${GMAIL_GATEWAY}/users/me/messages/${id}?${metaParams}`, {
+        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "X-Connection-Api-Key": key },
+      });
+      if (!r.ok) return null;
+      const m = await r.json() as { id?: string; snippet?: string; payload?: { headers?: Array<{ name: string; value: string }> } };
+      const headers = m.payload?.headers ?? [];
+      const h = (n: string) => headers.find((x) => x.name?.toLowerCase() === n.toLowerCase())?.value ?? "";
+      return {
+        id: m.id,
+        from: h("From"),
+        to: h("To"),
+        subject: h("Subject"),
+        date: h("Date"),
+        snippet: m.snippet ?? "",
+      };
+    }),
+  );
+
+  return { ok: true, data: { messages: messages.filter(Boolean) } };
+}
+
+async function listCalendarEvents(args: ToolArgs): Promise<ToolResult> {
+  const key = Deno.env.get("GOOGLE_CALENDAR_API_KEY");
+  if (!key) {
+    return {
+      ok: false,
+      error: "Google Calendar connector is not linked to this workspace. Ask the admin to link Google Calendar in Lovable connectors.",
+    };
+  }
+  const q = typeof args.query === "string" ? args.query.trim() : "";
+  const now = new Date();
+  const defaultMax = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+  const timeMin = typeof args.timeMin === "string" && args.timeMin ? args.timeMin : now.toISOString();
+  const timeMax = typeof args.timeMax === "string" && args.timeMax ? args.timeMax : defaultMax.toISOString();
+  const maxResults = Math.min(Math.max(Number(args.maxResults ?? 10) || 10, 1), 25);
+
+  const params = new URLSearchParams();
+  params.set("singleEvents", "true");
+  params.set("orderBy", "startTime");
+  params.set("timeMin", timeMin);
+  params.set("timeMax", timeMax);
+  params.set("maxResults", String(maxResults));
+  if (q) params.set("q", q);
+
+  const r = await fetch(`${GCAL_GATEWAY}/calendars/primary/events?${params}`, {
+    headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "X-Connection-Api-Key": key },
+  });
+  const txt = await r.text();
+  if (!r.ok) {
+    if (r.status === 401 || r.status === 403) {
+      return { ok: false, error: "Google Calendar connector not authorized — ask the admin to relink it." };
+    }
+    return { ok: false, error: `Google Calendar error ${r.status}: ${txt.slice(0, 200)}` };
+  }
+  let data: { items?: Array<Record<string, unknown>> } = {};
+  try { data = txt ? JSON.parse(txt) : {}; } catch { /* ignore */ }
+  const events = (data.items ?? []).map((e) => ({
+    id: e.id,
+    summary: e.summary,
+    description: e.description,
+    location: e.location,
+    start: e.start,
+    end: e.end,
+    htmlLink: e.htmlLink,
+    attendees: e.attendees,
+  }));
+  return { ok: true, data: { events } };
+}
+
 type ToolArgs = Record<string, unknown>;
 type DbRow = Record<string, unknown>;
 type ChatMessage = {
