@@ -171,6 +171,7 @@ export function AssistantComposer({
 
   return (
     <div className="mt-5 w-full">
+      <DriveBrowserDialog open={driveBrowserOpen} onOpenChange={setDriveBrowserOpen} onAttach={addDriveFiles} />
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
       <div className="relative rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <Textarea
