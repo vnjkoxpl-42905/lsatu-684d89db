@@ -67,6 +67,7 @@ export interface ComposerSubmitSources {
   driveConnector: boolean;
   gmailConnector: boolean;
   calendarConnector: boolean;
+  model: string;
 }
 
 const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
