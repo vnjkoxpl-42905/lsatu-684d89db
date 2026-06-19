@@ -28,6 +28,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { DriveBrowserDialog } from './DriveBrowserDialog';
 import { ImageLightbox } from './ImageLightbox';
+import { ModelPicker, DEFAULT_MODEL_ID, AVAILABLE_MODELS } from './ModelPicker';
+
+const MODEL_STORAGE_KEY = 'desk.assistant.model';
 
 interface SeedAction {
   label: string;
