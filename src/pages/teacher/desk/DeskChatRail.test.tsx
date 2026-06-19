@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DeskChatRail } from './DeskChatRail';
 
@@ -43,32 +43,36 @@ describe('DeskChatRail', () => {
     expect(chatContext.openConversation).toHaveBeenCalledWith('conversation-1');
   });
 
-  it('confirms before deleting a saved chat', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
+  it('opens an in-app delete modal instead of a browser confirm', () => {
+    const confirmSpy = vi.spyOn(window, 'confirm');
     render(<DeskChatRail />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete Review Dakota assignment' }));
 
-    expect(window.confirm).toHaveBeenCalledWith(
-      'Delete this chat? This removes the saved conversation and its messages.',
-    );
-    expect(chatContext.deleteConversation).toHaveBeenCalledWith('conversation-1');
-  });
-
-  it('does not delete when confirmation is cancelled', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(false);
-    render(<DeskChatRail />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Delete Review Dakota assignment' }));
-
+    expect(confirmSpy).not.toHaveBeenCalled();
+    const dialog = screen.getByRole('alertdialog', { name: 'Delete chat?' });
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveTextContent('This will permanently delete Review Dakota assignment and its messages.');
+    expect(within(dialog).getByText('Review Dakota assignment')).toHaveClass('font-semibold');
     expect(chatContext.deleteConversation).not.toHaveBeenCalled();
   });
 
-  it('does not open the chat when deleting it', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
+  it('closes the delete modal without deleting when cancelled', () => {
     render(<DeskChatRail />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete Review Dakota assignment' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    expect(screen.queryByRole('alertdialog', { name: 'Delete chat?' })).not.toBeInTheDocument();
+    expect(chatContext.deleteConversation).not.toHaveBeenCalled();
+  });
+
+  it('deletes from the modal without opening the chat', () => {
+    render(<DeskChatRail />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete Review Dakota assignment' }));
+    const dialog = screen.getByRole('alertdialog', { name: 'Delete chat?' });
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Delete' }));
 
     expect(chatContext.deleteConversation).toHaveBeenCalledWith('conversation-1');
     expect(chatContext.openConversation).not.toHaveBeenCalled();

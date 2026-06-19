@@ -32,6 +32,54 @@ const uid = () =>
     ? crypto.randomUUID()
     : Math.random().toString(36).slice(2);
 
+const SMALL_TITLE_WORDS = new Set(['and', 'or', 'for', 'to', 'of', 'in', 'on', 'with', 'from', 'by']);
+
+function toTitleCase(text: string) {
+  return text
+    .split(' ')
+    .filter(Boolean)
+    .map((word, index) => {
+      if (/^[A-Z0-9]{2,}$/.test(word)) return word;
+      const lower = word.toLowerCase();
+      if (index > 0 && SMALL_TITLE_WORDS.has(lower)) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(' ');
+}
+
+function truncateTitle(text: string, maxLength = 52) {
+  if (text.length <= maxLength) return text;
+  const clipped = text.slice(0, maxLength).replace(/\s+\S*$/, '').trim();
+  return clipped || text.slice(0, maxLength).trim();
+}
+
+export function titleFromFirstUserMessage(text: string) {
+  const cleaned = text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !/^\[(attached context|google drive files):/i.test(line))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^[“"'`]+|[”"'`.?!,:;]+$/g, '')
+    .trim();
+
+  if (!cleaned) return 'New conversation';
+
+  let title = cleaned
+    .replace(/^(can|could|would|will)\s+you\s+/i, '')
+    .replace(/^please\s+/i, '')
+    .replace(/^(help\s+me|i\s+want\s+you\s+to|i\s+need\s+you\s+to)\s+/i, '')
+    .replace(/^please\s+/i, '')
+    .replace(/\b(a|an|the)\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  title = title.replace(/^refine\s+my\s+(.+?)\s+process$/i, '$1 refinement process');
+
+  if (!title) return 'New conversation';
+  return truncateTitle(toTitleCase(title)) || 'New conversation';
+}
+
 export function useOperatorChat() {
   const { user } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
@@ -151,7 +199,7 @@ export function useOperatorChat() {
           const convId = await ensureConversation();
           await supabase.from('operator_messages').insert({ conversation_id: convId, role: 'user', content: text });
           if (isFirstUserTurn) {
-            const title = text.trim().replace(/\s+/g, ' ').slice(0, 60) || 'New conversation';
+            const title = titleFromFirstUserMessage(text);
             await supabase.from('operator_conversations').update({ title }).eq('id', convId);
             loadConversationList();
           }
