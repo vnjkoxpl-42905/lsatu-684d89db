@@ -20,6 +20,15 @@ export interface ScheduleEventRow {
 
 export const scheduleEventsQueryKey = ['schedule_events'] as const;
 
+export function getTeacherCalendarTodoWindow(now = new Date()) {
+  const dayMs = 24 * 60 * 60 * 1000;
+  return {
+    startsAfter: new Date(now.getTime() - dayMs).toISOString(),
+    startsBefore: new Date(now.getTime() + dayMs).toISOString(),
+    endsAfter: now.toISOString(),
+  };
+}
+
 export function useUpcomingScheduleEvents(enabled = true) {
   return useQuery<ScheduleEventRow[]>({
     queryKey: scheduleEventsQueryKey,
@@ -27,15 +36,15 @@ export function useUpcomingScheduleEvents(enabled = true) {
     refetchInterval: () => (typeof document !== 'undefined' && document.visibilityState === 'visible' ? 60_000 : false),
     refetchOnWindowFocus: true,
     queryFn: async () => {
-      const now = new Date().toISOString();
-      const horizon = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+      const window = getTeacherCalendarTodoWindow();
       const { data, error } = await supabase
         .from('schedule_events' as never)
         .select('*')
         .is('deleted_at', null)
         .neq('status', 'cancelled')
-        .gt('end_at', now)
-        .lte('start_at', horizon)
+        .gt('end_at', window.endsAfter)
+        .gte('start_at', window.startsAfter)
+        .lte('start_at', window.startsBefore)
         .order('start_at', { ascending: true })
         .limit(50);
       if (error) throw error;

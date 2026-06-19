@@ -15,6 +15,63 @@ function latestSenderIsAdmin(thread: GmailThreadSummary, adminEmail: string | nu
   return normalizedEmail(parsed.email) === normalizedEmail(adminEmail);
 }
 
+const automatedLocalParts = [
+  'automated',
+  'bounce',
+  'daemon',
+  'digest',
+  'do-not-reply',
+  'donotreply',
+  'mailer-daemon',
+  'newsletter',
+  'no-reply',
+  'noreply',
+  'notification',
+  'notifications',
+  'postmaster',
+  'updates',
+];
+
+const automatedSenderNames = [
+  'github',
+  'doodle',
+  'mailchimp',
+  'mailer daemon',
+  'newsletter',
+  'notifications',
+  'substack',
+];
+
+const automatedDomains = [
+  'github.com',
+  'doodle.com',
+  'mailchimp.com',
+  'sendgrid.net',
+  'substack.com',
+];
+
+const automatedCategoryLabels = new Set(['CATEGORY_PROMOTIONS', 'CATEGORY_SOCIAL', 'CATEGORY_UPDATES', 'CATEGORY_FORUMS']);
+
+function domainMatches(domain: string, blockedDomain: string) {
+  return domain === blockedDomain || domain.endsWith(`.${blockedDomain}`);
+}
+
+export function isLikelyHumanGmailSender(thread: GmailThreadSummary) {
+  const parsed = parseAddress(thread.from || '');
+  const email = normalizedEmail(parsed.email);
+  const [localPart = '', domain = ''] = email.split('@');
+  const senderName = (parsed.name || '').trim().toLowerCase();
+  const labelIds = thread.labelIds ?? [];
+
+  if (!email || !domain) return false;
+  if (labelIds.some((label) => automatedCategoryLabels.has(label))) return false;
+  if (automatedLocalParts.some((part) => localPart === part || localPart.includes(part))) return false;
+  if (automatedDomains.some((blockedDomain) => domainMatches(domain, blockedDomain))) return false;
+  if (automatedSenderNames.some((name) => senderName === name || senderName.includes(name))) return false;
+
+  return true;
+}
+
 function gmailTiming(internalDate: string | number | undefined) {
   const ms = Number(internalDate ?? 0);
   if (!Number.isFinite(ms) || ms <= 0) return 'Email';
@@ -28,6 +85,7 @@ function gmailTiming(internalDate: string | number | undefined) {
 
 export function gmailThreadToTodo(thread: GmailThreadSummary, adminEmail: string | null): GmailTodoItem | null {
   if (latestSenderIsAdmin(thread, adminEmail)) return null;
+  if (!isLikelyHumanGmailSender(thread)) return null;
   const parsed = parseAddress(thread.from || '');
   const internalDate = Number(thread.internalDate ?? 0);
   return {
@@ -57,7 +115,7 @@ export function useGmailTodoSource(enabled = true) {
   const profileQuery = useGmailProfile({ enabled });
   const threadsQuery = useGmailThreads({
     labelIds: ['INBOX'],
-    q: 'in:inbox newer_than:30d',
+    q: 'in:inbox newer_than:30d -category:promotions -category:social -category:updates -category:forums',
     maxResults: 25,
     enabled,
   });

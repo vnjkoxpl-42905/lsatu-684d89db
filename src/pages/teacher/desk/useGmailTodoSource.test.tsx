@@ -48,4 +48,21 @@ describe('gmailThreadToTodo', () => {
       ),
     ).toBeNull();
   });
+
+  it.each([
+    ['GitHub notification', 'GitHub <notifications@github.com>'],
+    ['Doodle notification', 'Doodle <no-reply@doodle.com>'],
+    ['newsletter', 'LSAT Updates <newsletter@example.org>'],
+    ['mailer daemon', 'Mailer Daemon <mailer-daemon@googlemail.com>'],
+  ])('does not turn %s into a teacher to-do', (_label, from) => {
+    expect(
+      gmailThreadToTodo(
+        thread({
+          id: `thread-${_label}`,
+          from,
+        }),
+        'joshua@example.com',
+      ),
+    ).toBeNull();
+  });
 });
