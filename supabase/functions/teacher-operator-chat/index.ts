@@ -861,6 +861,29 @@ Deno.serve(async (req) => {
       result: ToolResult;
     }> = [];
 
+    // Resolve model: explicit allow-listed pick, "auto" heuristic, or default.
+    const requestedModel = typeof deskContext?.model === "string" ? deskContext.model : null;
+    const lastUserMsg = [...validMessages].reverse().find((m) => m.role === "user");
+    const lastUserText = typeof lastUserMsg?.content === "string"
+      ? lastUserMsg.content
+      : Array.isArray(lastUserMsg?.content)
+        ? lastUserMsg.content.filter((p: { type?: string; text?: string }) => p.type === "text").map((p) => p.text ?? "").join(" ")
+        : "";
+    const hasImageInput = validMessages.some((m) =>
+      Array.isArray(m.content) && m.content.some((p: { type?: string }) => p?.type === "image_url"),
+    );
+    const totalChars = validMessages.reduce((sum, m) => sum + (typeof m.content === "string" ? m.content.length : 0), 0);
+    const toolsEnabled = activeTools.length > TOOLS.length;
+
+    let chatModel: string;
+    if (requestedModel === "auto" || !requestedModel) {
+      chatModel = pickAutoModel({ text: lastUserText, hasImages: hasImageInput, toolsEnabled, totalChars });
+    } else if (ALLOWED_MODELS.has(requestedModel)) {
+      chatModel = requestedModel;
+    } else {
+      chatModel = DEFAULT_MODEL;
+    }
+
     let iter = 0;
     while (iter++ < 4) {
       const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -870,7 +893,7 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
+          model: chatModel,
           messages: baseMessages,
           tools: activeTools,
           tool_choice: "auto",
