@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowUp,
+  ChevronRight,
   Cloud,
   FileText,
   Library,
   Loader2,
   Paperclip,
+  Plus,
   Sparkles,
   Wand2,
 } from 'lucide-react';
@@ -42,6 +44,7 @@ export function AssistantComposer({
   readOnlyMessage?: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
   const canSubmit = value.trim().length > 0 && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
@@ -76,7 +79,22 @@ export function AssistantComposer({
     onUtilityCommand?.(command);
   };
 
+  const openFileSource = () => {
+    if (!onAttachFile || disabled || loading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    onAttachFile();
+  };
+
+  const openDrive = () => {
+    if (!onOpenDrive || disabled || loading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    onOpenDrive();
+  };
+
   const attachMaterial = (label: string) => {
+    setActionMenuOpen(false);
     setMaterialOpen(false);
     runUtility(`Attach ${label.toLowerCase()} context to this Teacher Desk task.`);
   };
@@ -84,7 +102,7 @@ export function AssistantComposer({
   return (
     <div className="mt-5 w-full">
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
-      <div className="relative overflow-hidden rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <div className="relative rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <Textarea
           ref={textareaRef}
           value={value}
@@ -109,57 +127,74 @@ export function AssistantComposer({
           )}
         />
         <div className="flex items-center justify-between px-3 pb-3">
-          <button
-            type="button"
-            onClick={onAttachFile}
-            disabled={!onAttachFile}
-            aria-label="Attach file"
-            title={onAttachFile ? 'Open student upload/source material' : 'File attach is not connected here yet'}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-white/85 transition disabled:opacity-85"
-          >
-            <Paperclip className="h-5 w-5" strokeWidth={2} />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setMaterialOpen((current) => !current)}
-                aria-expanded={materialOpen}
-                aria-haspopup="menu"
-                className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-dashed border-zinc-600 px-3 text-sm text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800"
-              >
-                <Library className="h-4 w-4" strokeWidth={1.75} />
-                Attach material
-              </button>
-              {materialOpen ? (
-                <div
-                  role="menu"
-                  className="absolute bottom-11 right-0 z-20 w-64 overflow-hidden rounded-xl border border-zinc-700 bg-[#111111] p-1.5 text-sm text-zinc-200 shadow-2xl"
-                >
-                  {MATERIAL_TYPES.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      role="menuitem"
-                      onClick={() => attachMaterial(item)}
-                      disabled={!canUseAssistantActions}
-                      className="flex w-full items-center rounded-lg px-3 py-2 text-left transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
+          <div className="relative flex items-center gap-1.5">
             <button
               type="button"
-              onClick={onOpenDrive}
-              disabled={!onOpenDrive}
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-zinc-700 px-3 text-sm text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800 disabled:opacity-55"
+              onClick={() => {
+                setActionMenuOpen((current) => !current);
+                setMaterialOpen(false);
+              }}
+              disabled={disabled || loading}
+              aria-label="Open composer actions"
+              aria-expanded={actionMenuOpen}
+              aria-haspopup="menu"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#242424] text-zinc-200 transition hover:bg-[#303030] disabled:cursor-not-allowed disabled:opacity-55"
             >
-              <Cloud className="h-4 w-4" strokeWidth={1.75} />
-              Google Drive
+              <Plus className="h-5 w-5" strokeWidth={2} />
             </button>
+            <button
+              type="button"
+              onClick={openFileSource}
+              disabled={!onAttachFile || disabled || loading}
+              aria-label="Attach file"
+              title={onAttachFile ? 'Open student upload/source material' : 'File attach is not connected here yet'}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/85 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
+            >
+              <Paperclip className="h-5 w-5" strokeWidth={2} />
+            </button>
+            {actionMenuOpen ? (
+              <div
+                role="menu"
+                className="absolute bottom-11 left-0 z-20 w-72 overflow-hidden rounded-2xl border border-zinc-700 bg-[#303030] p-1.5 text-sm text-zinc-100 shadow-2xl"
+              >
+                <ComposerMenuItem
+                  icon={<Paperclip className="h-5 w-5" strokeWidth={1.9} />}
+                  label="Attach file"
+                  onClick={openFileSource}
+                  disabled={!onAttachFile || disabled || loading}
+                />
+                <ComposerMenuItem
+                  icon={<Library className="h-5 w-5" strokeWidth={1.8} />}
+                  label="Attach material"
+                  onClick={() => setMaterialOpen((current) => !current)}
+                  trailing={<ChevronRight className={cn('h-4 w-4 transition', materialOpen && 'rotate-90')} strokeWidth={1.9} />}
+                />
+                {materialOpen ? (
+                  <div className="my-1 border-y border-white/10 py-1">
+                    {MATERIAL_TYPES.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        role="menuitem"
+                        onClick={() => attachMaterial(item)}
+                        disabled={!canUseAssistantActions}
+                        className="flex w-full items-center rounded-xl px-9 py-2 text-left text-[13px] text-zinc-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                <ComposerMenuItem
+                  icon={<Cloud className="h-5 w-5" strokeWidth={1.8} />}
+                  label="Google Drive"
+                  onClick={openDrive}
+                  disabled={!onOpenDrive || disabled || loading}
+                />
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={submit}
@@ -184,7 +219,7 @@ export function AssistantComposer({
         />
         <ActionChip
           icon={<FileText className="h-3.5 w-3.5" strokeWidth={1.75} />}
-          label={"Canvas\u00a0"}
+          label="Canvas Draft reply"
           disabled={!canUseAssistantActions}
           onClick={() => runUtility('Create a concise Canvas-style draft reply for this Teacher Desk task.')}
         />
@@ -209,6 +244,34 @@ const MATERIAL_TYPES = [
   'Recap or note',
   'Student upload/source material',
 ];
+
+function ComposerMenuItem({
+  icon,
+  label,
+  trailing,
+  disabled,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  trailing?: React.ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      onClick={onClick}
+      disabled={disabled}
+      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-zinc-100 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
+    >
+      <span className="text-zinc-100">{icon}</span>
+      <span className="min-w-0 flex-1">{label}</span>
+      {trailing}
+    </button>
+  );
+}
 
 function ActionChip({
   icon,

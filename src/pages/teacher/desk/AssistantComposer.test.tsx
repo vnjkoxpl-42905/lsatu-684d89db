@@ -116,18 +116,30 @@ describe('AssistantComposer', () => {
     renderComposer({ placeholder: 'Ask Joshua a question...' });
 
     expect(screen.getByPlaceholderText('Ask Joshua a question...')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Open composer actions' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Attach file' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Attach material' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Google Drive' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Attach material' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Google Drive' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Improve writing' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Canvas/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Canvas Draft reply' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Recommend next work' })).toBeInTheDocument();
+  });
+
+  it('opens a ChatGPT-style action menu with real teacher utilities', () => {
+    renderComposer();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+
+    expect(screen.getByRole('menuitem', { name: 'Attach file' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Attach material' })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: 'Google Drive' })).toBeInTheDocument();
   });
 
   it('opens a material-type picker with real LSAT U material categories', () => {
     renderComposer();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Attach material' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Attach material' }));
 
     expect(screen.getByRole('menuitem', { name: 'Guided drill' })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: 'Bootcamp lesson/module' })).toBeInTheDocument();
@@ -145,7 +157,8 @@ describe('AssistantComposer', () => {
     renderComposer({ onAttachFile, onOpenDrive });
 
     fireEvent.click(screen.getByRole('button', { name: 'Attach file' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Google Drive' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
 
     expect(onAttachFile).toHaveBeenCalledTimes(1);
     expect(onOpenDrive).toHaveBeenCalledTimes(1);
@@ -156,9 +169,10 @@ describe('AssistantComposer', () => {
     renderComposer({ onUtilityCommand });
 
     fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
-    fireEvent.click(screen.getByRole('button', { name: /Canvas/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas Draft reply' }));
     fireEvent.click(screen.getByRole('button', { name: 'Recommend next work' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Attach material' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Attach material' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Guided drill' }));
 
     expect(onUtilityCommand).toHaveBeenCalledTimes(4);
