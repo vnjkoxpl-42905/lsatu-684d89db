@@ -170,6 +170,9 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                         localPreview={localPreview}
                       />
                     ))}
+                    {links.map((link, index) => (
+                      <LinkCard key={`${message.id}-link-${index}-${link.id}`} result={link} />
+                    ))}
                   </div>
                 );
               })}
