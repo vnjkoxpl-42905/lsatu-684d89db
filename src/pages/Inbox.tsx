@@ -129,7 +129,15 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
-  const [source, setSource] = useState<'app' | 'gmail' | 'drive'>('app');
+  const [source, setSource] = useState<'app' | 'gmail' | 'drive'>(() => {
+    const pane = new URLSearchParams(location.search).get('pane');
+    return pane === 'gmail' || pane === 'drive' ? pane : 'app';
+  });
+
+  useEffect(() => {
+    const pane = new URLSearchParams(location.search).get('pane');
+    if (pane === 'gmail' || pane === 'drive') setSource(pane);
+  }, [location.search]);
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;

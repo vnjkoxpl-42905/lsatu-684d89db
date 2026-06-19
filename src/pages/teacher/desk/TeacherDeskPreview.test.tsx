@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import TeacherDeskPreview from './TeacherDeskPreview';
 
@@ -103,11 +104,11 @@ vi.mock('./DeskChatRail', () => ({
 }));
 
 vi.mock('./DeskTodoRail', () => ({
-  DeskTodoRail: ({ tasks }: { tasks: Array<{ id: string; verb: string; reason: string }> }) => (
+  DeskTodoRail: ({ items }: { items: Array<{ id: string; label: string; preview: string }> }) => (
     <aside aria-label="To-do rail">
-      {tasks.map((task) => (
-        <div key={task.id}>
-          {task.verb}: {task.reason}
+      {items.map((item) => (
+        <div key={item.id}>
+          {item.label}: {item.preview}
         </div>
       ))}
     </aside>
@@ -120,21 +121,24 @@ function LocationProbe() {
 }
 
 function renderDesk(initialEntry = '/teacher') {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
   return render(
-    <MemoryRouter initialEntries={[initialEntry]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-      <Routes>
-        <Route
-          path="/teacher"
-          element={
-            <>
-              <LocationProbe />
-              <TeacherDeskPreview />
-            </>
-          }
-        />
-        <Route path="*" element={<LocationProbe />} />
-      </Routes>
-    </MemoryRouter>,
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={[initialEntry]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <Routes>
+          <Route
+            path="/teacher"
+            element={
+              <>
+                <LocationProbe />
+                <TeacherDeskPreview />
+              </>
+            }
+          />
+          <Route path="*" element={<LocationProbe />} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 }
 

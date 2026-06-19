@@ -15,6 +15,7 @@ export function useGmailSend() {
       const tid = vars.threadId ?? result.threadId;
       if (tid) qc.invalidateQueries({ queryKey: gmailThreadQueryKey(tid) });
       qc.invalidateQueries({ queryKey: ["gmail", "threads"] });
+      qc.invalidateQueries({ queryKey: ["teacher-todo-queue"] });
       toast.success(vars.threadId ? "Reply sent" : "Message sent");
     },
     onError: (err) => {

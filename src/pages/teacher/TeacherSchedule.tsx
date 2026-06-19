@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CalendarDays,
   ChevronLeft,
@@ -37,6 +37,7 @@ import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 const QUICK_TYPES: { value: ClassroomItemType; label: string }[] = [
   { value: 'note', label: 'Note' },
@@ -49,8 +50,32 @@ export default function TeacherSchedule() {
   const qc = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const studentId = searchParams.get('student');
+  const eventId = searchParams.get('event');
   const selected = useSelectedHubStudent(studentId);
   const { data: items = [], isLoading } = useStudentClassroomItems(studentId);
+  const focusedEventQuery = useQuery({
+    queryKey: ['schedule_events', 'focus', eventId],
+    enabled: !!eventId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('schedule_events' as never)
+        .select('id,google_event_id,title,description,location,start_at,end_at,html_link,status')
+        .or(`id.eq.${eventId},google_event_id.eq.${eventId}`)
+        .maybeSingle();
+      if (error) throw error;
+      return data as {
+        id: string;
+        google_event_id: string | null;
+        title: string;
+        description: string | null;
+        location: string | null;
+        start_at: string;
+        end_at: string;
+        html_link: string | null;
+        status: string;
+      } | null;
+    },
+  });
 
   const [monthAnchor, setMonthAnchor] = useState<Date>(new Date());
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
@@ -59,6 +84,14 @@ export default function TeacherSchedule() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const event = focusedEventQuery.data;
+    if (!event) return;
+    const day = startOfDay(parseISO(event.start_at));
+    setMonthAnchor(day);
+    setPickedDay(day);
+  }, [focusedEventQuery.data]);
 
   const setStudentId = (id: string) =>
     setSearchParams((p) => {
@@ -158,6 +191,25 @@ export default function TeacherSchedule() {
       </aside>
 
       <section className="p-6 space-y-5 overflow-y-auto">
+        {focusedEventQuery.data ? (
+          <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-zinc-100">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">Google Calendar event</div>
+            <h2 className="mt-1 text-xl font-semibold tracking-tight">{focusedEventQuery.data.title}</h2>
+            <div className="mt-2 text-sm text-zinc-300">
+              {format(parseISO(focusedEventQuery.data.start_at), 'EEE, MMM d · h:mm a')} - {format(parseISO(focusedEventQuery.data.end_at), 'h:mm a')}
+            </div>
+            {focusedEventQuery.data.location ? <div className="mt-1 text-sm text-zinc-400">{focusedEventQuery.data.location}</div> : null}
+            {focusedEventQuery.data.description ? (
+              <div className="mt-3 whitespace-pre-wrap text-sm leading-6 text-zinc-300">{focusedEventQuery.data.description}</div>
+            ) : null}
+            {focusedEventQuery.data.html_link ? (
+              <a href={focusedEventQuery.data.html_link} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-sm font-semibold text-amber-200 underline">
+                Open in Google Calendar
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+
         {!studentId ? (
           <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-12 text-center text-sm text-zinc-500">
             Select a student to view their schedule.

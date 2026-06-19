@@ -14,6 +14,7 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import type { ExternalWorkUpload } from '@/hooks/useExternalWorkUploads';
 import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
+import type { DeskTaskTodoItem } from './teacherTodoTypes';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
 export type WorkspaceKey = 'today' | 'students' | 'inbox' | 'library' | 'admin';
@@ -298,6 +299,25 @@ export function studentToAssignTask(student: HubStudentRow): DeskTask {
 
 export function sortTasks(tasks: DeskTask[]) {
   return [...tasks].sort((a, b) => b.priority - a.priority);
+}
+
+export function deskTaskToTodoItem(task: DeskTask): DeskTaskTodoItem {
+  return {
+    id: `desk-task:${task.id}`,
+    sourceKind: 'desk-task',
+    sourceId: task.id,
+    deskTaskId: task.id,
+    deskSourceKind: task.sourceKind,
+    priorityBand: 'work',
+    label: task.verb,
+    subject: task.subject,
+    title: task.title,
+    preview: task.reason,
+    timing: task.timing,
+    sortScore: 1_000 + task.priority,
+    openPath: task.openPath,
+    dismissExpiresAt: null,
+  };
 }
 
 /**

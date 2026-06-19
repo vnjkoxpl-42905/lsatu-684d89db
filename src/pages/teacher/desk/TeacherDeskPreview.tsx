@@ -34,6 +34,7 @@ import { DeskStudentsSurface } from './DeskStudentsSurface';
 import { DeskAdminSurface } from './DeskAdminSurface';
 import { DeskWorkspacePlaceholder } from './DeskWorkspacePlaceholder';
 import { useNextSession } from './useNextSession';
+import { useTeacherTodoQueue } from './useTeacherTodoQueue';
 
 const FLOOR_GRID_STYLE: React.CSSProperties = {
   transform: 'perspective(440px) rotateX(62deg)',
@@ -196,7 +197,7 @@ export default function TeacherDeskPreview() {
     return map;
   }, [students]);
 
-  const todoTasks = useMemo<DeskTask[]>(() => {
+  const legacyTasks = useMemo<DeskTask[]>(() => {
     if (localPreview) {
       return sortTasks([...PREVIEW_TASKS.reply, ...PREVIEW_TASKS.review, ...PREVIEW_TASKS.assign]);
     }
@@ -230,6 +231,7 @@ export default function TeacherDeskPreview() {
   }, [classroomItems, conversations, drafts, localPreview, studentById, students, uploads]);
 
   const isLoading = !localPreview && (studentsLoading || inboxLoading || draftsLoading || uploadsLoading || classroomItemsLoading);
+  const todoQueue = useTeacherTodoQueue(legacyTasks, { externalSources: !localPreview });
 
   const workspaceParam = searchParams.get('ws');
   const workspace: WorkspaceKey = isWorkspaceKey(workspaceParam) ? workspaceParam : 'today';
@@ -298,7 +300,7 @@ export default function TeacherDeskPreview() {
             </main>
 
             <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-              <DeskTodoRail tasks={todoTasks} loading={isLoading} onOpen={(path) => navigate(path)} />
+              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(path)} />
             </aside>
           </div>
         </div>
