@@ -101,15 +101,18 @@ export function AssistantComposer({
 
   const submit = () => {
     if (!canSubmit) return;
+    const connectorKinds: SourceKind[] = ['drive', 'driveConnector', 'gmailConnector', 'calendarConnector'];
     const labels = attachedSources
-      .filter((s) => s.kind !== 'drive' && s.kind !== 'driveConnector')
+      .filter((s) => !connectorKinds.includes(s.kind))
       .map((s) => s.label);
     const drive = attachedSources
       .filter((s): s is AttachedSource & { drive: DriveFileRef } => s.kind === 'drive' && !!s.drive)
       .map((s) => s.drive);
     const driveConnector = attachedSources.some((s) => s.kind === 'driveConnector');
-    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector;
-    onSubmit(hasAny ? { labels, drive, driveConnector } : undefined);
+    const gmailConnector = attachedSources.some((s) => s.kind === 'gmailConnector');
+    const calendarConnector = attachedSources.some((s) => s.kind === 'calendarConnector');
+    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector || gmailConnector || calendarConnector;
+    onSubmit(hasAny ? { labels, drive, driveConnector, gmailConnector, calendarConnector } : undefined);
     setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
