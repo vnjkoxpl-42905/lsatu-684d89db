@@ -1512,6 +1512,51 @@ export type Database = {
           },
         ]
       }
+      lsatu_content_index: {
+        Row: {
+          body: string | null
+          chunk_index: number
+          created_at: string
+          embedding: string | null
+          id: string
+          kind: string
+          metadata: Json
+          source_id: string
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          body?: string | null
+          chunk_index?: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          kind: string
+          metadata?: Json
+          source_id: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          body?: string | null
+          chunk_index?: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          source_id?: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       message_attachments: {
         Row: {
           created_at: string
@@ -2980,6 +3025,20 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      fts_lsatu_content: {
+        Args: { kind_filter?: string[]; match_count?: number; q: string }
+        Returns: {
+          id: string
+          kind: string
+          metadata: Json
+          rank: number
+          snippet: string
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+        }[]
+      }
       get_assignment_counts_per_student: {
         Args: never
         Returns: {
@@ -3010,6 +3069,24 @@ export type Database = {
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
         Returns: boolean
+      }
+      match_lsatu_content: {
+        Args: {
+          kind_filter?: string[]
+          match_count?: number
+          query_embedding: string
+        }
+        Returns: {
+          id: string
+          kind: string
+          metadata: Json
+          similarity: number
+          snippet: string
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+        }[]
       }
       move_to_dlq: {
         Args: {
