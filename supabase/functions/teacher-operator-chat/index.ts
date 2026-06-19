@@ -647,13 +647,42 @@ Deno.serve(async (req) => {
         }
       : null;
 
+    const gmailConnectorOn = deskContext?.gmailConnector === true;
+    const gmailKeyPresent = Boolean(Deno.env.get("GOOGLE_MAIL_API_KEY"));
+    const gmailNote = gmailConnectorOn
+      ? {
+          role: "system" as const,
+          content: gmailKeyPresent
+            ? "Gmail connector is ENABLED for this turn. When the user asks about email, the inbox, or messages from specific people, call search_gmail (Gmail search operators like `from:`, `is:unread`, `subject:`, `newer_than:7d` work in `query`). You return From, Subject, Date, and snippet. You CANNOT read full message bodies, send, or modify mail."
+            : "The user enabled the Gmail connector chip, but no Gmail connection is linked in this workspace. Tell the user to link Gmail in Lovable connectors before you can search email.",
+        }
+      : null;
+
+    const calendarConnectorOn = deskContext?.calendarConnector === true;
+    const calendarKeyPresent = Boolean(Deno.env.get("GOOGLE_CALENDAR_API_KEY"));
+    const calendarNote = calendarConnectorOn
+      ? {
+          role: "system" as const,
+          content: calendarKeyPresent
+            ? "Google Calendar connector is ENABLED for this turn. When the user asks about upcoming events, schedule, or meetings, call list_calendar_events. You return event summary, start/end, location, and link. You CANNOT create or modify events."
+            : "The user enabled the Google Calendar connector chip, but no Google Calendar connection is linked in this workspace. Tell the user to link Google Calendar in Lovable connectors before you can list events.",
+        }
+      : null;
+
     const baseMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
       ...(contextNote ? [contextNote] : []),
       ...(driveNote ? [driveNote] : []),
+      ...(gmailNote ? [gmailNote] : []),
+      ...(calendarNote ? [calendarNote] : []),
       ...validMessages,
     ];
-    const activeTools = driveConnectorOn && driveKeyPresent ? [...TOOLS, SEARCH_GDRIVE_TOOL] : TOOLS;
+    const activeTools = [
+      ...TOOLS,
+      ...(driveConnectorOn && driveKeyPresent ? [SEARCH_GDRIVE_TOOL] : []),
+      ...(gmailConnectorOn && gmailKeyPresent ? [SEARCH_GMAIL_TOOL] : []),
+      ...(calendarConnectorOn && calendarKeyPresent ? [LIST_GCAL_TOOL] : []),
+    ];
     const toolResultsForClient: Array<{
       name: string;
       arguments: ToolArgs;
