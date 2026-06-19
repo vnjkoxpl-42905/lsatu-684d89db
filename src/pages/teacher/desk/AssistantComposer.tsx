@@ -633,6 +633,7 @@ export function AssistantComposer({
             ) : null}
           </div>
           <div className="flex items-center gap-2">
+            <ModelPicker value={selectedModel} onChange={handleModelChange} disabled={disabled || loading} />
             <button
               type="button"
               onClick={submit}
