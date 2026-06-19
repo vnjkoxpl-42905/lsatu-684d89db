@@ -29,13 +29,13 @@ async function verifyAdmin(req: Request) {
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
   const authHeader = req.headers.get("Authorization");
-  if (!authHeader) throw new Error("Missing auth");
+  if (!authHeader?.startsWith("Bearer ")) throw new Error("Missing auth");
+  const token = authHeader.slice("Bearer ".length);
 
-  const anonClient = createClient(supabaseUrl, anonKey, {
-    global: { headers: { Authorization: authHeader } },
-  });
-  const { data: { user }, error } = await anonClient.auth.getUser();
-  if (error || !user) throw new Error("Unauthorized");
+  const anonClient = createClient(supabaseUrl, anonKey);
+  const { data: claimsData, error } = await anonClient.auth.getClaims(token);
+  if (error || !claimsData?.claims?.sub) throw new Error("Unauthorized");
+  const user = { id: claimsData.claims.sub as string };
 
   const admin = createClient(supabaseUrl, serviceRoleKey);
   const { data: roleData } = await admin
