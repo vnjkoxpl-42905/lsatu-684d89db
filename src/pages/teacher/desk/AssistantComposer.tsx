@@ -11,11 +11,10 @@ import {
   Wand2,
   X,
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { loadGooglePickerApi, openPicker, type PickedFile } from '@/lib/googleDrive';
+import { DriveBrowserDialog } from './DriveBrowserDialog';
 
 interface SeedAction {
   label: string;
@@ -71,7 +70,7 @@ export function AssistantComposer({
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
   const [attachedSources, setAttachedSources] = useState<AttachedSource[]>([]);
-  const [driveLoading, setDriveLoading] = useState(false);
+  const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
   const canSubmit = value.trim().length > 0 && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
 
@@ -125,40 +124,29 @@ export function AssistantComposer({
     );
   };
 
-  const addDriveFiles = (files: PickedFile[]) => {
+  const addDriveFiles = (files: DriveFileRef[]) => {
     if (!files.length) return;
     setAttachedSources((current) => {
       const next = [...current];
       for (const f of files) {
-        const id = `drive:${f.id}`;
+        const id = `drive:${f.fileId}`;
         if (next.some((s) => s.id === id)) continue;
         next.push({
           id,
           kind: 'drive',
           label: f.name,
-          drive: { fileId: f.id, name: f.name, mimeType: f.mimeType, url: f.url },
+          drive: f,
         });
       }
       return next;
     });
   };
 
-  const openDrivePicker = async () => {
-    if (disabled || loading || driveLoading) return;
+  const openDrivePicker = () => {
+    if (disabled || loading) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
-    setDriveLoading(true);
-    try {
-      await loadGooglePickerApi();
-      openPicker((files) => {
-        addDriveFiles(files);
-      });
-    } catch (err) {
-      console.error('[AssistantComposer] Drive picker failed', err);
-      toast.error('Could not open Google Drive picker');
-    } finally {
-      setDriveLoading(false);
-    }
+    setDriveBrowserOpen(true);
   };
 
   const removeSource = (id: string) => {
@@ -182,6 +170,7 @@ export function AssistantComposer({
 
   return (
     <div className="mt-5 w-full">
+      <DriveBrowserDialog open={driveBrowserOpen} onOpenChange={setDriveBrowserOpen} onAttach={addDriveFiles} />
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
       <div className="relative rounded-2xl border border-neutral-700 bg-[#151515] shadow-[0_16px_40px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <Textarea
@@ -252,10 +241,9 @@ export function AssistantComposer({
                 <ComposerMenuItem
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Attach from Drive"
-                  description="Pick specific files with the Google Picker"
+                  description="Browse and pick files from your connected Drive"
                   onClick={openDrivePicker}
-                  disabled={disabled || loading || driveLoading}
-                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
+                  disabled={disabled || loading}
                 />
                 <ComposerMenuItem
                   icon={<Library className="h-5 w-5" strokeWidth={1.8} />}

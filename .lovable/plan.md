@@ -1,43 +1,40 @@
-## Goal
+## Problem
 
-Make the Google Drive connector chip actually search Drive via the AI assistant — no fake prompt text. When `driveConnector` is on, the model gets a real `search_google_drive` tool wired to the existing `gdrive` Edge Function (which is already connected to the workspace Google Drive connector).
+"Attach from Drive" opens Google's client-side Picker, which triggers an OAuth sign-in to `accounts.google.com`. Your Chrome "Work" profile's admin policy blocks that origin (`ERR_BLOCKED_BY_RESPONSE`), so the picker can never load. This is the same managed-account block we hit before — it is not a code bug we can fix from inside the picker flow.
 
-## Changes
+But we don't need the Google Picker at all anymore. The workspace already has the Google Drive connector linked, and the `gdrive` edge function can list/search Drive files server-side without any per-user OAuth. So the right fix is to **retire the Google Picker path** and replace "Attach from Drive" with an in-app Drive browser that calls our own backend.
 
-### 1. `supabase/functions/teacher-operator-chat/index.ts` (backend)
+## Plan
 
-- Add a new tool definition `search_google_drive`:
-  - params: `query` (string, optional), `pageSize` (number, max 25, default 10)
-  - description makes clear it returns file names, ids, mimeTypes, modifiedTime, webViewLink — and cannot read file contents yet.
-- Implement it in `runTool` by calling the gateway directly (same pattern as `gdrive/index.ts`): `GET https://connector-gateway.lovable.dev/google_drive/drive/v3/files` with `Authorization: Bearer LOVABLE_API_KEY` and `X-Connection-Api-Key: GOOGLE_DRIVE_API_KEY`. Fields: `files(id,name,mimeType,modifiedTime,webViewLink,iconLink)`. Trim result to a compact array.
-- Gate the tool: only include `search_google_drive` in the `tools` array when `deskContext.driveConnector === true` AND `GOOGLE_DRIVE_API_KEY` is set. If the user enabled the chip but the connector isn't linked, append a system note: "Google Drive connector chip is on but no Google Drive connection is linked in this workspace; tell the user to link Google Drive."
-- Extend `DeskContext` with `driveConnector?: boolean` and append a short system note when true: "Google Drive connector is ENABLED. Use search_google_drive to find files. You can return names, links, and ids. You cannot read file contents yet — say so if asked to summarize a file."
-- Return tool error string verbatim on gateway failure (401/403 → "Google Drive connector not authorized — relink it").
+### 1. New in-app Drive file picker (frontend)
 
-### 2. `src/pages/teacher/desk/DeskChatPanel.tsx` and `src/pages/teacher/desk/MiniChat.tsx` (frontend)
+Create `src/pages/teacher/desk/DriveBrowserDialog.tsx` — a small modal that:
+- Calls `supabase.functions.invoke('gdrive', { method: 'GET', ... })` with `?action=list&q=<search>` to fetch the connected workspace Drive listing.
+- Shows a search input + a scrollable list of files (name, mimeType icon, modified time).
+- Multi-select with checkboxes; "Attach N files" returns the picks as `{ id, name, mimeType, url }[]`.
+- Empty/loading/error states. No `accounts.google.com` redirect anywhere.
 
-- Stop appending the `[Google Drive connector: enabled — server-side Drive search is not wired yet…]` text block.
-- Instead, pass `driveConnector: true` through the structured `context` arg already supported by `useOperatorChat.sendMessage(text, context)`. (MiniChat path uses the same hook indirectly — pass through whichever send signature it uses; if it doesn't accept context yet, thread it through.)
-- Keep `[Google Drive files: …]` text for explicitly picked Drive files (separate, unchanged behavior).
+### 2. Replace the picker call in `AssistantComposer.tsx`
 
-### 3. `src/hooks/useOperatorChat.ts`
+- Remove the `loadGooglePickerApi` / `openPicker` import + call from the "Attach from Drive" menu item.
+- Open `DriveBrowserDialog` instead. On confirm, map results into the existing `drive` source chips (same `DriveFileRef` shape) so the rest of the composer keeps working.
 
-- Extend `OperatorChatContext` type to include `driveConnector?: boolean` so it's forwarded in the request body to the edge function.
+### 3. Leave the connector chip alone
 
-### 4. Tests
+The "Google Drive" connector chip behavior shipped last turn (real `search_google_drive` tool wired to `gdrive` connector) stays as-is. This change only fixes the manual "Attach from Drive" flow.
 
-- Update `AssistantComposer.test.tsx` only if existing assertions check the old "not wired yet" text (they don't — they only assert `driveConnector: true` is forwarded, which still holds).
-- No new tests required for the edge function (existing project has no edge-function test harness).
+### 4. Retire `src/lib/googleDrive.ts` from the composer path
 
-## What this does NOT do
+Stop importing `loadGooglePickerApi`/`openPicker` in `AssistantComposer.tsx`. The file stays (still used by `/admin/drive-files`), but the Teacher Desk no longer touches the Google Picker. Optionally, in a follow-up, convert `/admin/drive-files` to the same in-app browser to fully retire the picker.
 
-- Does not read Drive file contents (Docs/PDF text extraction). The tool description and assistant system note state this honestly; if the user asks to summarize a file, the assistant will say it can only return names/links for now.
-- Does not change the manual "Attach from Drive" picker behavior.
-- No DB schema changes.
+### 5. Verification
 
-## Verification
+- Open Teacher Desk → click + → "Attach from Drive" → dialog opens, lists real files from the workspace Drive (no `accounts.google.com` round-trip, no `ERR_BLOCKED_BY_RESPONSE`).
+- Select 1–2 files → they appear as chips → send → assistant receives them in the existing `[Google Drive files: …]` block.
 
-1. Deploy `teacher-operator-chat`.
-2. In Teacher Desk: enable the Google Drive chip → ask "what files do you see in Google Drive?" → assistant calls `search_google_drive` and lists real file names + links.
-3. With chip off → same question → assistant should not call the tool (tool isn't in its toolset for that turn).
-4. If `GOOGLE_DRIVE_API_KEY` missing → assistant tells the user to link Google Drive.
+## What this does NOT change
+
+- The Google Drive connector chip and `search_google_drive` tool (shipped previously) — unchanged.
+- The `DriveAttachmentPicker` for the saved Drive library — unchanged.
+- No backend changes; `gdrive` edge function already supports `action=list&q=…`.
+- No new secrets or OAuth setup. No need to touch your Work Chrome profile.
