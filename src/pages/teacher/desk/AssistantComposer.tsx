@@ -22,7 +22,7 @@ interface SeedAction {
   onClick: () => void;
 }
 
-type SourceKind = 'file' | 'drive' | 'material';
+type SourceKind = 'file' | 'drive' | 'material' | 'driveConnector';
 
 export interface DriveFileRef {
   fileId: string;
@@ -41,7 +41,11 @@ interface AttachedSource {
 export interface ComposerSubmitSources {
   labels: string[];
   drive: DriveFileRef[];
+  driveConnector: boolean;
 }
+
+const DRIVE_CONNECTOR_ID = 'driveConnector:google-drive';
+
 
 export function AssistantComposer({
   value,
@@ -93,16 +97,18 @@ export function AssistantComposer({
   const submit = () => {
     if (!canSubmit) return;
     const labels = attachedSources
-      .filter((s) => s.kind !== 'drive')
+      .filter((s) => s.kind !== 'drive' && s.kind !== 'driveConnector')
       .map((s) => s.label);
     const drive = attachedSources
       .filter((s): s is AttachedSource & { drive: DriveFileRef } => s.kind === 'drive' && !!s.drive)
       .map((s) => s.drive);
-    const hasAny = labels.length > 0 || drive.length > 0;
-    onSubmit(hasAny ? { labels, drive } : undefined);
+    const driveConnector = attachedSources.some((s) => s.kind === 'driveConnector');
+    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector;
+    onSubmit(hasAny ? { labels, drive, driveConnector } : undefined);
     setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
+
 
   const runUtility = (command: string) => {
     if (!canUseAssistantActions) return;
@@ -159,6 +165,21 @@ export function AssistantComposer({
     setAttachedSources((current) => current.filter((source) => source.id !== id));
   };
 
+  const toggleDriveConnector = () => {
+    if (disabled || loading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    setAttachedSources((current) => {
+      if (current.some((s) => s.id === DRIVE_CONNECTOR_ID)) {
+        return current.filter((s) => s.id !== DRIVE_CONNECTOR_ID);
+      }
+      return [...current, { id: DRIVE_CONNECTOR_ID, kind: 'driveConnector', label: 'Google Drive' }];
+    });
+  };
+
+  const driveConnectorActive = attachedSources.some((s) => s.id === DRIVE_CONNECTOR_ID);
+
+
   return (
     <div className="mt-5 w-full">
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
@@ -211,10 +232,30 @@ export function AssistantComposer({
                 className="absolute bottom-11 left-0 z-20 w-72 overflow-hidden rounded-2xl border border-zinc-700 bg-[#303030] p-1.5 text-sm text-zinc-100 shadow-2xl"
               >
                 <ComposerMenuItem
+                  icon={<GoogleDriveIcon className="h-5 w-5" />}
+                  label="Google Drive"
+                  description="Use Drive as a context source for the next message"
+                  onClick={toggleDriveConnector}
+                  disabled={disabled || loading}
+                  trailing={
+                    driveConnectorActive ? (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-emerald-300">On</span>
+                    ) : undefined
+                  }
+                />
+                <ComposerMenuItem
                   icon={<Paperclip className="h-5 w-5" strokeWidth={1.9} />}
                   label="Attach file"
                   onClick={() => addSource('file', 'Attach file')}
                   disabled={disabled || loading}
+                />
+                <ComposerMenuItem
+                  icon={<GoogleDriveIcon className="h-5 w-5" />}
+                  label="Attach from Drive"
+                  description="Pick specific files with the Google Picker"
+                  onClick={openDrivePicker}
+                  disabled={disabled || loading || driveLoading}
+                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
                 />
                 <ComposerMenuItem
                   icon={<Library className="h-5 w-5" strokeWidth={1.8} />}
@@ -238,13 +279,7 @@ export function AssistantComposer({
                     ))}
                   </div>
                 ) : null}
-                <ComposerMenuItem
-                  icon={<GoogleDriveIcon className="h-5 w-5" />}
-                  label="Google Drive"
-                  onClick={openDrivePicker}
-                  disabled={disabled || loading || driveLoading}
-                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
-                />
+
               </div>
             ) : null}
           </div>
@@ -300,10 +335,11 @@ const MATERIAL_TYPES = [
 ];
 
 function SourceChipIcon({ kind }: { kind: SourceKind }) {
-  if (kind === 'drive') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
+  if (kind === 'drive' || kind === 'driveConnector') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
   if (kind === 'file') return <Paperclip className="h-3.5 w-3.5" strokeWidth={1.9} />;
   return <Library className="h-3.5 w-3.5" strokeWidth={1.8} />;
 }
+
 
 function SourceChip({
   source,
@@ -334,12 +370,14 @@ function SourceChip({
 function ComposerMenuItem({
   icon,
   label,
+  description,
   trailing,
   disabled,
   onClick,
 }: {
   icon: React.ReactNode;
   label: string;
+  description?: string;
   trailing?: React.ReactNode;
   disabled?: boolean;
   onClick: () => void;
@@ -353,11 +391,15 @@ function ComposerMenuItem({
       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-zinc-100 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
     >
       <span className="text-zinc-100">{icon}</span>
-      <span className="min-w-0 flex-1">{label}</span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span>{label}</span>
+        {description ? <span className="text-[11px] text-zinc-400">{description}</span> : null}
+      </span>
       {trailing}
     </button>
   );
 }
+
 
 function ActionChip({
   icon,
