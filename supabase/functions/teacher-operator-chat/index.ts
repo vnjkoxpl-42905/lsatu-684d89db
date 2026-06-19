@@ -379,6 +379,8 @@ async function runTool(
           data: { student, recent_sessions: sessions ?? [] },
         };
       }
+      case "search_google_drive":
+        return await searchGoogleDrive(args);
       default:
         return { ok: false, error: `Unknown tool: ${name}` };
     }
