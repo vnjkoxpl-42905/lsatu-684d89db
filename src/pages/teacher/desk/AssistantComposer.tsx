@@ -11,9 +11,11 @@ import {
   Wand2,
   X,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { loadGooglePickerApi, openPicker, type PickedFile } from '@/lib/googleDrive';
 
 interface SeedAction {
   label: string;
@@ -22,10 +24,23 @@ interface SeedAction {
 
 type SourceKind = 'file' | 'drive' | 'material';
 
+export interface DriveFileRef {
+  fileId: string;
+  name: string;
+  mimeType: string;
+  url: string;
+}
+
 interface AttachedSource {
   id: string;
   kind: SourceKind;
   label: string;
+  drive?: DriveFileRef;
+}
+
+export interface ComposerSubmitSources {
+  labels: string[];
+  drive: DriveFileRef[];
 }
 
 export function AssistantComposer({
@@ -40,7 +55,7 @@ export function AssistantComposer({
 }: {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: (attachedSources?: string[]) => void;
+  onSubmit: (sources?: ComposerSubmitSources) => void;
   loading: boolean;
   disabled: boolean;
   placeholder: string;
@@ -52,6 +67,7 @@ export function AssistantComposer({
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
   const [attachedSources, setAttachedSources] = useState<AttachedSource[]>([]);
+  const [driveLoading, setDriveLoading] = useState(false);
   const canSubmit = value.trim().length > 0 && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
 
@@ -76,7 +92,14 @@ export function AssistantComposer({
 
   const submit = () => {
     if (!canSubmit) return;
-    onSubmit(attachedSources.length ? attachedSources.map((source) => source.label) : undefined);
+    const labels = attachedSources
+      .filter((s) => s.kind !== 'drive')
+      .map((s) => s.label);
+    const drive = attachedSources
+      .filter((s): s is AttachedSource & { drive: DriveFileRef } => s.kind === 'drive' && !!s.drive)
+      .map((s) => s.drive);
+    const hasAny = labels.length > 0 || drive.length > 0;
+    onSubmit(hasAny ? { labels, drive } : undefined);
     setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
@@ -94,6 +117,42 @@ export function AssistantComposer({
     setAttachedSources((current) =>
       current.some((source) => source.id === id) ? current : [...current, { id, kind, label }],
     );
+  };
+
+  const addDriveFiles = (files: PickedFile[]) => {
+    if (!files.length) return;
+    setAttachedSources((current) => {
+      const next = [...current];
+      for (const f of files) {
+        const id = `drive:${f.id}`;
+        if (next.some((s) => s.id === id)) continue;
+        next.push({
+          id,
+          kind: 'drive',
+          label: f.name,
+          drive: { fileId: f.id, name: f.name, mimeType: f.mimeType, url: f.url },
+        });
+      }
+      return next;
+    });
+  };
+
+  const openDrivePicker = async () => {
+    if (disabled || loading || driveLoading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    setDriveLoading(true);
+    try {
+      await loadGooglePickerApi();
+      openPicker((files) => {
+        addDriveFiles(files);
+      });
+    } catch (err) {
+      console.error('[AssistantComposer] Drive picker failed', err);
+      toast.error('Could not open Google Drive picker');
+    } finally {
+      setDriveLoading(false);
+    }
   };
 
   const removeSource = (id: string) => {
@@ -182,8 +241,9 @@ export function AssistantComposer({
                 <ComposerMenuItem
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
-                  onClick={() => addSource('drive', 'Google Drive')}
-                  disabled={disabled || loading}
+                  onClick={openDrivePicker}
+                  disabled={disabled || loading || driveLoading}
+                  trailing={driveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
                 />
               </div>
             ) : null}
