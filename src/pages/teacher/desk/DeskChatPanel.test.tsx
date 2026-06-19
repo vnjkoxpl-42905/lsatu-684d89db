@@ -40,6 +40,9 @@ describe('DeskChatPanel layout', () => {
     const canvas = screen.getByRole('region', { name: 'Collaborative Workspace' });
     expect(within(canvas).getByRole('heading', { name: 'Collaborative Workspace' })).toBeInTheDocument();
     expect(screen.getByLabelText('Assistant instructions')).toBeInTheDocument();
+    fireEvent.click(within(canvas).getByRole('button', { name: 'Create' }));
+    expect(screen.getByRole('menuitem', { name: 'Export as Markdown' })).toBeInTheDocument();
+    fireEvent.keyDown(document, { key: 'Escape' });
 
     fireEvent.click(within(canvas).getByRole('button', { name: 'Close canvas' }));
 

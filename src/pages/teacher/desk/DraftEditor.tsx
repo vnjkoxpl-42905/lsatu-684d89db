@@ -17,7 +17,7 @@ interface Selection {
  * The editable draft body for the Teacher Desk Draft Bubble (./CONTEXT.md →
  * "Draft Bubble" / "Ask for Changes"). A plain-markdown textarea is the source of
  * truth (drafts stay markdown end to end), with a ChatGPT-canvas-style selection
- * toolbar: highlight text to get Bold / Italic / Link and "Ask for Changes ⌘K",
+ * toolbar: highlight text to get Bold / Italic / Link and "Ask Gemini ⌘K",
  * which revises ONLY the selected fragment via the polish-message edge function
  * (instruction mode) and splices the result back in place.
  */
@@ -28,6 +28,7 @@ export function DraftEditor({
   ariaLabel,
   placeholder = 'Edit the draft, highlight text to format or ask for changes...',
   textareaClassName,
+  openAiOnSelection = false,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -35,6 +36,7 @@ export function DraftEditor({
   ariaLabel: string;
   placeholder?: string;
   textareaClassName?: string;
+  openAiOnSelection?: boolean;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<Selection | null>(null);
@@ -50,13 +52,15 @@ export function DraftEditor({
 
   // Read the current selection from the textarea. anchor lets a keyboard-driven
   // selection (no mouse event) still place the toolbar sensibly.
-  const capture = useCallback((anchor?: { x: number; y: number }) => {
-    const el = ref.current;
+  const capture = useCallback((anchor?: { x: number; y: number }, source?: HTMLTextAreaElement, clearWhenEmpty = true, activateAi = false) => {
+    const el = source ?? ref.current;
     if (!el) return;
     const start = el.selectionStart;
     const end = el.selectionEnd;
     if (end <= start) {
-      setSel((current) => (current && mode === 'idle' ? null : current));
+      if (clearWhenEmpty) {
+        setSel((current) => (current && mode === 'idle' ? null : current));
+      }
       return;
     }
     const point =
@@ -66,6 +70,10 @@ export function DraftEditor({
         return { x: rect.left + rect.width / 2, y: rect.top + 28 };
       })();
     setSel({ start, end, x: point.x, y: point.y });
+    if (activateAi && mode === 'idle') {
+      setMode('ai');
+      setField('');
+    }
   }, [mode]);
 
   // Splice a replacement over the active selection and keep it selected.
@@ -138,9 +146,14 @@ export function DraftEditor({
         ref={ref}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        onMouseUp={(event) => capture({ x: event.clientX, y: event.clientY })}
+        onFocus={(event) => capture(undefined, event.currentTarget, false)}
+        onMouseUpCapture={(event) => capture({ x: event.clientX, y: event.clientY }, event.currentTarget, true, openAiOnSelection)}
+        onMouseUp={(event) => capture({ x: event.clientX, y: event.clientY }, event.currentTarget, true, openAiOnSelection)}
+        onSelect={(event) => capture(undefined, event.currentTarget, false, openAiOnSelection)}
         onKeyUp={(event) => {
-          if (event.shiftKey || event.key === 'ArrowLeft' || event.key === 'ArrowRight') capture();
+          if (event.shiftKey || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            capture(undefined, event.currentTarget, true, openAiOnSelection);
+          }
         }}
         onKeyDown={(event) => {
           if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
@@ -167,7 +180,14 @@ export function DraftEditor({
           className="z-50 -translate-x-1/2 -translate-y-full"
           onMouseDown={(event) => event.preventDefault() /* keep the textarea selection alive */}
         >
-          <div className="flex items-center gap-0.5 border border-black/20 bg-[#11181c] p-1 text-white shadow-lg">
+          <div
+            role={mode === 'ai' ? 'group' : undefined}
+            aria-label={mode === 'ai' ? 'Ask Gemini' : undefined}
+            className={cn(
+              'flex items-center border border-white/10 bg-[#11181c] text-white shadow-xl',
+              mode === 'ai' ? 'gap-2 rounded-xl bg-[#272a2d] p-2' : 'gap-0.5 rounded-lg p-1',
+            )}
+          >
             {mode === 'idle' ? (
               <>
                 <ToolBtn label="Bold" onClick={() => wrap('**', '**')}>
@@ -184,17 +204,21 @@ export function DraftEditor({
                   type="button"
                   onClick={() => { if (canUseAi) { setMode('ai'); setField(''); } }}
                   disabled={!canUseAi}
-                  className="inline-flex h-6 items-center gap-1 px-1.5 text-[11px] font-semibold transition hover:bg-white/15 disabled:opacity-40"
-                  title={canUseAi ? 'Ask for changes (⌘K)' : 'Connects on the live teacher desk'}
+                  className="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-[12px] font-medium text-zinc-200 transition hover:bg-white/15 disabled:opacity-40"
+                  title={canUseAi ? 'Ask Gemini (⌘K)' : 'Connects on the live teacher desk'}
                 >
-                  <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} /> Ask for changes
+                  <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} /> Ask Gemini
                   <kbd className="ml-0.5 hidden rounded bg-white/15 px-1 text-[9px] sm:inline">⌘K</kbd>
                 </button>
               </>
             ) : (
-              <div className="flex items-center gap-1 pl-1">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/55">
-                  {mode === 'ai' ? 'Revise' : 'Link'}
+              <div className="flex items-center gap-2 pl-1">
+                <Sparkles
+                  className={cn('h-4 w-4 text-zinc-400', mode === 'link' ? 'hidden' : undefined)}
+                  strokeWidth={1.6}
+                />
+                <span className={cn('text-[12px] font-medium text-zinc-400', mode === 'ai' ? undefined : 'text-[10px] uppercase tracking-[0.12em] text-white/55')}>
+                  {mode === 'ai' ? 'Ask Gemini' : 'Link'}
                 </span>
                 <input
                   value={field}
@@ -207,23 +231,29 @@ export function DraftEditor({
                     }
                   }}
                   autoFocus
-                  placeholder={mode === 'ai' ? 'e.g. make this warmer' : 'https://…'}
-                  className="h-6 w-44 bg-white/10 px-2 text-[12px] text-white outline-none placeholder:text-white/40"
+                  disabled={mode === 'ai' && !canUseAi}
+                  placeholder={mode === 'ai' ? 'Ask Gemini' : 'https://…'}
+                  className={cn(
+                    'h-8 bg-transparent px-2 text-[14px] text-white outline-none placeholder:text-zinc-400',
+                    mode === 'ai' ? 'w-64' : 'w-44 bg-white/10 text-[12px]',
+                    mode === 'ai' && !canUseAi ? 'cursor-not-allowed opacity-60' : undefined,
+                  )}
                 />
                 <button
                   type="button"
                   onClick={() => (mode === 'ai' ? revise() : submitLink())}
-                  disabled={!field.trim() || revising}
-                  className="inline-flex h-6 items-center gap-1 bg-white px-2 text-[11px] font-semibold text-[#11181c] transition hover:bg-white/85 disabled:opacity-50"
+                  disabled={(mode === 'ai' && !canUseAi) || !field.trim() || revising}
+                  aria-label={mode === 'ai' ? 'Apply Gemini edit' : undefined}
+                  className="inline-flex h-8 items-center gap-1 rounded-lg bg-white px-3 text-[12px] font-semibold text-[#11181c] transition hover:bg-white/85 disabled:opacity-50"
                 >
                   {revising ? <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} /> : null}
-                  {mode === 'ai' ? 'Revise' : 'Add'}
+                  {mode === 'ai' ? 'Apply' : 'Add'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setMode('idle')}
                   aria-label="Cancel"
-                  className="inline-flex h-6 w-6 items-center justify-center text-white/60 transition hover:bg-white/15"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-white/60 transition hover:bg-white/15"
                 >
                   <X className="h-3 w-3" strokeWidth={1.5} />
                 </button>

@@ -11,17 +11,17 @@ import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat'
 
 const STARTER_CANVAS = `# Collaborative Workspace
 
-Welcome to your collaborative canvas. This space is designed for us to work together on your writing, brainstorming, planning, or analysis.
+Welcome to your clean canvas! We can use this space to collaborate on whatever you are working on today.
 
-## How We Can Use This Space
+## 🌟 What are we working on?
 
-- **Writing & Editing:** Paste an essay, article, story, or professional email here. I can provide constructive feedback, proofread, or help you polish your ideas while preserving your authentic voice.
-- **Brainstorming:** Map out ideas, outline a project, or draft a plan.
-- **Refining:** We can work iteratively. You make edits, and I will offer guidance, suggestions, and critique as we go.
+- **Drafting:** Paste your essay, story, email, or article here.
+- **Brainstorming:** Drop your rough notes, outlines, or ideas.
+- **Coding:** Paste your code or describe the application you want to build.
 
-## Get Started
+## 👇 Paste your work here
 
-To begin, simply reply in the chat and let me know what you'd like to do, or paste your text directly into this document.`;
+_Replace this line with your work, or reply in the chat with your goals._`;
 
 /** Pull the renderable draft cards out of an assistant turn's tool results. */
 function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyData[] {
