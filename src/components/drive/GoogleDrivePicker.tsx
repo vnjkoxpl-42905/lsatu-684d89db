@@ -97,7 +97,12 @@ function Thumb({ file }: { file: DriveFile }) {
         if (file.thumbnailLink) url.searchParams.set("link", file.thumbnailLink);
         if (file.mimeType) url.searchParams.set("mime", file.mimeType);
         const res = await fetch(url.toString(), { headers: await driveAuthHeaders() });
-        if (!res.ok) throw new Error("no thumb");
+        const ct = res.headers.get("Content-Type") ?? "";
+        if (!res.ok || !ct.startsWith("image/")) {
+          // Drain the body so it doesn't leak, then fall back to the icon.
+          try { await res.arrayBuffer(); } catch { /* ignore */ }
+          throw new Error("no thumb");
+        }
         const blob = await res.blob();
         if (cancelled) return;
         objectUrl = URL.createObjectURL(blob);
