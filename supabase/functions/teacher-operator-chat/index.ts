@@ -689,6 +689,8 @@ async function runTool(
           data: { student, recent_sessions: sessions ?? [] },
         };
       }
+      case "find_link":
+        return await findLink(args, ctx.admin);
       case "search_google_drive":
         return await searchGoogleDrive(args);
       case "search_gmail":
