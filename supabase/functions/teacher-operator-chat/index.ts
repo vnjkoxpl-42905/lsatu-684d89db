@@ -489,11 +489,24 @@ Deno.serve(async (req) => {
           }
         : null;
 
+    const driveConnectorOn = deskContext?.driveConnector === true;
+    const driveKeyPresent = Boolean(Deno.env.get("GOOGLE_DRIVE_API_KEY"));
+    const driveNote = driveConnectorOn
+      ? {
+          role: "system" as const,
+          content: driveKeyPresent
+            ? "Google Drive connector is ENABLED for this turn. When the user asks about Drive files or workspace documents, call search_google_drive to find them. You can return real names, ids, mimeTypes, and webViewLinks. You CANNOT read file contents yet — if asked to summarize a file, say you can only return names and links for now."
+            : "The user enabled the Google Drive connector chip, but no Google Drive connection is linked in this workspace. Tell the user to link Google Drive in Lovable connectors before you can search Drive.",
+        }
+      : null;
+
     const baseMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
       ...(contextNote ? [contextNote] : []),
+      ...(driveNote ? [driveNote] : []),
       ...validMessages,
     ];
+    const activeTools = driveConnectorOn && driveKeyPresent ? [...TOOLS, SEARCH_GDRIVE_TOOL] : TOOLS;
     const toolResultsForClient: Array<{
       name: string;
       arguments: ToolArgs;
@@ -511,7 +524,7 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
           messages: baseMessages,
-          tools: TOOLS,
+          tools: activeTools,
           tool_choice: "auto",
         }),
       });
