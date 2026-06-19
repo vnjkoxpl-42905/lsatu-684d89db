@@ -4,6 +4,8 @@ import { Loader2, Sparkles } from 'lucide-react';
 import { useOperatorChatContext } from '@/components/teacher/ai-ta/OperatorChatProvider';
 import { cn } from '@/lib/utils';
 import { AssistantComposer } from './AssistantComposer';
+import { ImageLightbox } from './ImageLightbox';
+import type { OperatorImage } from '@/hooks/useOperatorChat';
 
 /**
  * Center chat surface for the Teacher Desk. Light "instrument-panel" transcript
@@ -14,6 +16,7 @@ import { AssistantComposer } from './AssistantComposer';
 export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
   const { messages, isLoading, error, sendMessage } = useOperatorChatContext();
   const [input, setInput] = useState('');
+  const [previewImage, setPreviewImage] = useState<OperatorImage | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const empty = messages.length === 0;
 
@@ -54,6 +57,14 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
 
   return (
     <div className="flex w-full max-w-[680px] flex-col lg:h-full lg:min-h-0">
+      <ImageLightbox
+        src={previewImage?.dataUrl ?? null}
+        alt={previewImage?.name ?? ''}
+        open={previewImage !== null}
+        onOpenChange={(next) => {
+          if (!next) setPreviewImage(null);
+        }}
+      />
       <div
         ref={scrollRef}
         className="min-h-0 flex-1 overflow-y-auto border border-black/18 bg-white/22 p-5 backdrop-blur-[1px]"
@@ -84,11 +95,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                   {message.images?.length ? (
                     <div className="mb-2 flex flex-wrap gap-1.5">
                       {message.images.map((img, index) => (
-                        <a
+                        <button
                           key={`${message.id}-img-${index}`}
-                          href={img.dataUrl}
-                          target="_blank"
-                          rel="noreferrer"
+                          type="button"
+                          onClick={() => setPreviewImage(img)}
+                          aria-label={`Preview ${img.name}`}
                           className="block overflow-hidden rounded-md border border-black/15"
                         >
                           <img
@@ -96,7 +107,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                             alt={img.name}
                             className="h-24 w-24 object-cover transition hover:opacity-90"
                           />
-                        </a>
+                        </button>
                       ))}
                     </div>
                   ) : null}

@@ -337,4 +337,15 @@ describe('AssistantComposer', () => {
     // Chips clear after send.
     expect(screen.queryByRole('button', { name: 'Remove shot.png' })).not.toBeInTheDocument();
   });
+
+  it('opens a preview popup when an attached thumbnail is clicked', async () => {
+    renderComposer();
+
+    const file = new File(['fake-bytes'], 'shot.png', { type: 'image/png' });
+    fireEvent.change(screen.getByLabelText('Attach screenshot'), { target: { files: [file] } });
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview shot.png' }));
+
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+  });
 });

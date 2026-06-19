@@ -18,6 +18,7 @@ import { GoogleCalendarIcon } from '@/components/icons/GoogleCalendarIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { DriveBrowserDialog } from './DriveBrowserDialog';
+import { ImageLightbox } from './ImageLightbox';
 
 interface SeedAction {
   label: string;
@@ -101,6 +102,7 @@ export function AssistantComposer({
   const [images, setImages] = useState<ComposerImage[]>([]);
   const [imageError, setImageError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [previewImage, setPreviewImage] = useState<ComposerImage | null>(null);
   const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
   const canSubmit = (value.trim().length > 0 || images.length > 0) && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
@@ -267,6 +269,14 @@ export function AssistantComposer({
   return (
     <div className="mt-5 w-full">
       <DriveBrowserDialog open={driveBrowserOpen} onOpenChange={setDriveBrowserOpen} onAttach={addDriveFiles} />
+      <ImageLightbox
+        src={previewImage?.dataUrl ?? null}
+        alt={previewImage?.name ?? ''}
+        open={previewImage !== null}
+        onOpenChange={(next) => {
+          if (!next) setPreviewImage(null);
+        }}
+      />
       <input
         ref={fileInputRef}
         type="file"
@@ -355,7 +365,13 @@ export function AssistantComposer({
               <SourceChip key={source.id} source={source} onRemove={() => removeSource(source.id)} disabled={disabled || loading} />
             ))}
             {images.map((img) => (
-              <ImagePreviewChip key={img.id} image={img} onRemove={() => removeImage(img.id)} disabled={disabled || loading} />
+              <ImagePreviewChip
+                key={img.id}
+                image={img}
+                onRemove={() => removeImage(img.id)}
+                onPreview={() => setPreviewImage(img)}
+                disabled={disabled || loading}
+              />
             ))}
             {actionMenuOpen ? (
               <div
@@ -532,15 +548,24 @@ function SourceChip({
 function ImagePreviewChip({
   image,
   onRemove,
+  onPreview,
   disabled,
 }: {
   image: ComposerImage;
   onRemove: () => void;
+  onPreview: () => void;
   disabled?: boolean;
 }) {
   return (
     <span className="group relative inline-flex h-12 w-12 overflow-hidden rounded-lg border border-zinc-700 bg-[#242424]">
-      <img src={image.dataUrl} alt={image.name} className="h-full w-full object-cover" />
+      <button
+        type="button"
+        onClick={onPreview}
+        aria-label={`Preview ${image.name}`}
+        className="block h-full w-full"
+      >
+        <img src={image.dataUrl} alt={image.name} className="h-full w-full object-cover transition group-hover:opacity-80" />
+      </button>
       <button
         type="button"
         onClick={onRemove}
