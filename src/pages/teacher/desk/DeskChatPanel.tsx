@@ -75,6 +75,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
     if (sources?.driveConnector) context.driveConnector = true;
     if (sources?.gmailConnector) context.gmailConnector = true;
     if (sources?.calendarConnector) context.calendarConnector = true;
+    if (sources?.model) context.model = sources.model;
     sendMessage(
       parts.join('\n\n'),
       Object.keys(context).length ? context : undefined,
