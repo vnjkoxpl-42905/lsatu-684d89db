@@ -4,6 +4,10 @@ The glossary for the Teacher Desk **page** itself (`/teacher`, the `desk/` surfa
 
 The page-level concept (what the desk is *for*) lives in the parent glossary under **Teacher Desk** and **Today**. This file does not restate that; it names the regions.
 
+> **Update (chat-first desk):** the left rail's **Tools** section (Reply/Review/Assign mode list + Next cards) has been replaced by a ChatGPT-style saved-chats rail. The desk now reads: Workspace options → **New chat** → **Saved chats** (`DeskChatRail`); the center is a light assistant transcript + composer (`DeskChatPanel`); the right rail is a light task/to-do list (`DeskTodoRail`). The chat session is shared via `OperatorChatProvider`.
+>
+> Superseded (kept on disk, no longer imported, pending a cleanup decision): `ModeList.tsx`, `DeskCube.tsx`, `WorkSurface.tsx`, `ActionContextPanel.tsx`, `MiniChat.tsx`. The region glossary below still describes the pre-chat task surface for reference.
+
 ## Region glossary
 
 ### Desk Header

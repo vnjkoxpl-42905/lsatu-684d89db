@@ -143,9 +143,18 @@ export function useOperatorChat() {
           { id: placeholderId, role: 'assistant', content: '', pending: true, created_at: new Date().toISOString() },
         ]);
 
+        // First user turn of this conversation: title it from the message so the
+        // saved-chats history is readable (otherwise every row reads "New conversation").
+        const isFirstUserTurn = !messagesRef.current.some((m) => m.role === 'user' && !m.pending && m.id !== userMsg.id);
+
         try {
           const convId = await ensureConversation();
           await supabase.from('operator_messages').insert({ conversation_id: convId, role: 'user', content: text });
+          if (isFirstUserTurn) {
+            const title = text.trim().replace(/\s+/g, ' ').slice(0, 60) || 'New conversation';
+            await supabase.from('operator_conversations').update({ title }).eq('id', convId);
+            loadConversationList();
+          }
 
           // Build history from the synchronous mirror, excluding the pending
           // placeholder we just added.
