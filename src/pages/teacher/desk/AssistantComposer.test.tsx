@@ -235,6 +235,7 @@ describe('AssistantComposer', () => {
       driveConnector: true,
       gmailConnector: false,
       calendarConnector: false,
+      model: 'google/gemini-3-flash-preview',
     });
   });
 
