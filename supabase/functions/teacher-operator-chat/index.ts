@@ -170,6 +170,29 @@ const TOOLS = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "find_link",
+      description:
+        "Semantic search across every addressable surface in LSAT U: guided drills, individual drill questions (PT###-S#-Q##), activities, bootcamp days and lessons, concepts, student pages, top-level routes, teaching assets. Returns up to N results, each with title, kind, url, and a short snippet. Call this WHENEVER the user asks for, refers to, or wants to open any specific thing in the app. Prefer specific queries ('negation station guided drill', 'PT159 section 1 question 5', 'causation station day 3', 'dakota profile') over vague ones.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "What the user is looking for, in their own words." },
+          limit: { type: "number", description: "Max results (default 5, max 10)" },
+          kinds: {
+            type: "array",
+            items: { type: "string" },
+            description:
+              "Optional filter: 'guided_drill' | 'drill_question' | 'activity' | 'bootcamp_day' | 'bootcamp_lesson' | 'concept' | 'question_type_strategy' | 'tactical_pattern' | 'student' | 'teaching_asset' | 'route'.",
+          },
+        },
+        required: ["query"],
+        additionalProperties: false,
+      },
+    },
+  },
 ];
 
 interface ToolResult {
