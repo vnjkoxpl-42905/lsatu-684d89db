@@ -369,12 +369,14 @@ function SourceChip({
 function ComposerMenuItem({
   icon,
   label,
+  description,
   trailing,
   disabled,
   onClick,
 }: {
   icon: React.ReactNode;
   label: string;
+  description?: string;
   trailing?: React.ReactNode;
   disabled?: boolean;
   onClick: () => void;
@@ -388,11 +390,15 @@ function ComposerMenuItem({
       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-zinc-100 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-55"
     >
       <span className="text-zinc-100">{icon}</span>
-      <span className="min-w-0 flex-1">{label}</span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span>{label}</span>
+        {description ? <span className="text-[11px] text-zinc-400">{description}</span> : null}
+      </span>
       {trailing}
     </button>
   );
 }
+
 
 function ActionChip({
   icon,
