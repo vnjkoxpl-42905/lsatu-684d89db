@@ -119,6 +119,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
             <div className="space-y-4">
               {messages.map((message) => {
                 const drafts = message.role === 'assistant' ? draftsFromToolResults(message.tool_results) : [];
+                const links = message.role === 'assistant' ? linksFromToolResults(message.tool_results) : [];
                 const showBubble = !!message.content || !!message.images?.length || !!message.pending;
                 return (
                   <div
