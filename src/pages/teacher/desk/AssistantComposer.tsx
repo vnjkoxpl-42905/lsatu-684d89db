@@ -97,16 +97,18 @@ export function AssistantComposer({
   const submit = () => {
     if (!canSubmit) return;
     const labels = attachedSources
-      .filter((s) => s.kind !== 'drive')
+      .filter((s) => s.kind !== 'drive' && s.kind !== 'driveConnector')
       .map((s) => s.label);
     const drive = attachedSources
       .filter((s): s is AttachedSource & { drive: DriveFileRef } => s.kind === 'drive' && !!s.drive)
       .map((s) => s.drive);
-    const hasAny = labels.length > 0 || drive.length > 0;
-    onSubmit(hasAny ? { labels, drive } : undefined);
+    const driveConnector = attachedSources.some((s) => s.kind === 'driveConnector');
+    const hasAny = labels.length > 0 || drive.length > 0 || driveConnector;
+    onSubmit(hasAny ? { labels, drive, driveConnector } : undefined);
     setAttachedSources([]);
     requestAnimationFrame(() => adjustHeight(true));
   };
+
 
   const runUtility = (command: string) => {
     if (!canUseAssistantActions) return;
