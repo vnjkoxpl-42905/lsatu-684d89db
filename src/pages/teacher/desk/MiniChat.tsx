@@ -26,9 +26,9 @@ export function MiniChat({
   const draftsInto = variant === 'draft';
 
   const send = useCallback(
-    (text: string) => {
+    (text: string, extraContext?: Record<string, unknown>) => {
       if (!text.trim() || localPreview || isLoading) return;
-      sendMessage(text, buildTaskContext(task));
+      sendMessage(text, { ...buildTaskContext(task), ...(extraContext ?? {}) });
     },
     [isLoading, localPreview, sendMessage, task],
   );
@@ -45,13 +45,8 @@ export function MiniChat({
       const drive = sources.drive.map((f) => `${f.name} (${f.url})`).join(', ');
       parts.push(`[Google Drive files: ${drive}]`);
     }
-    if (sources?.driveConnector) {
-      parts.push(
-        '[Google Drive connector: enabled — server-side Drive search is not wired yet, so use only Drive files explicitly attached in this message.]',
-      );
-    }
 
-    send(parts.join('\n\n'));
+    send(parts.join('\n\n'), sources?.driveConnector ? { driveConnector: true } : undefined);
   };
 
   return (
