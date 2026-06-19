@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowUp,
   ChevronRight,
-  Cloud,
   FileText,
   Library,
   Loader2,
@@ -11,6 +10,7 @@ import {
   Sparkles,
   Wand2,
 } from 'lucide-react';
+import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
@@ -186,7 +186,7 @@ export function AssistantComposer({
                   </div>
                 ) : null}
                 <ComposerMenuItem
-                  icon={<Cloud className="h-5 w-5" strokeWidth={1.8} />}
+                  icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
                   onClick={openDrive}
                   disabled={!onOpenDrive || disabled || loading}
