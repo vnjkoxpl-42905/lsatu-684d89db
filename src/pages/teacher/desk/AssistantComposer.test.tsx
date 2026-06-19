@@ -235,7 +235,7 @@ describe('AssistantComposer', () => {
       driveConnector: true,
       gmailConnector: false,
       calendarConnector: false,
-      model: 'google/gemini-3-flash-preview',
+      model: 'auto',
     });
   });
 
@@ -296,7 +296,7 @@ describe('AssistantComposer', () => {
       driveConnector: false,
       gmailConnector: false,
       calendarConnector: false,
-      model: 'google/gemini-3-flash-preview',
+      model: 'auto',
     });
     expect(screen.queryByRole('button', { name: 'Remove Lesson plan.pdf' })).not.toBeInTheDocument();
   });

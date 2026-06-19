@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Sparkles } from 'lucide-react';
+import { Check, ChevronDown, Sparkles, Wand2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +13,16 @@ export interface ModelOption {
   id: string;
   label: string;
   short: string;
-  provider: 'Google — Gemini' | 'OpenAI — ChatGPT';
+  provider: 'Auto' | 'Google — Gemini' | 'OpenAI — ChatGPT';
   hint: string;
 }
 
+export const AUTO_MODEL_ID = 'auto';
+
 export const AVAILABLE_MODELS: ModelOption[] = [
+  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'picks the cheapest model that can do the job' },
   // Gemini
-  { id: 'google/gemini-3-flash-preview', short: 'Gemini 3 Flash', label: 'Gemini 3 Flash (preview)', provider: 'Google — Gemini', hint: 'default · fast' },
+  { id: 'google/gemini-3-flash-preview', short: 'Gemini 3 Flash', label: 'Gemini 3 Flash (preview)', provider: 'Google — Gemini', hint: 'fast default' },
   { id: 'google/gemini-3.1-flash-lite', short: 'Gemini 3.1 Lite', label: 'Gemini 3.1 Flash Lite', provider: 'Google — Gemini', hint: 'cheapest' },
   { id: 'google/gemini-3.5-flash', short: 'Gemini 3.5 Flash', label: 'Gemini 3.5 Flash', provider: 'Google — Gemini', hint: 'fast + strong' },
   { id: 'google/gemini-3.1-pro-preview', short: 'Gemini 3.1 Pro', label: 'Gemini 3.1 Pro (preview)', provider: 'Google — Gemini', hint: 'smartest preview' },
@@ -39,13 +42,13 @@ export const AVAILABLE_MODELS: ModelOption[] = [
   { id: 'openai/gpt-5.5-pro', short: 'GPT-5.5 Pro', label: 'GPT-5.5 Pro', provider: 'OpenAI — ChatGPT', hint: 'premium' },
 ];
 
-export const DEFAULT_MODEL_ID = 'google/gemini-3-flash-preview';
+export const DEFAULT_MODEL_ID = AUTO_MODEL_ID;
 
 export function getModelOption(id: string | null | undefined): ModelOption {
   return AVAILABLE_MODELS.find((m) => m.id === id) ?? AVAILABLE_MODELS[0];
 }
 
-const PROVIDERS: ModelOption['provider'][] = ['Google — Gemini', 'OpenAI — ChatGPT'];
+const PROVIDERS: ModelOption['provider'][] = ['Auto', 'Google — Gemini', 'OpenAI — ChatGPT'];
 
 export function ModelPicker({
   value,
@@ -57,20 +60,25 @@ export function ModelPicker({
   disabled?: boolean;
 }) {
   const active = getModelOption(value);
+  const isAuto = active.id === AUTO_MODEL_ID;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
           disabled={disabled}
-          title={active.id}
+          title={isAuto ? 'Auto — picks the cheapest capable model' : active.id}
           aria-label={`Model: ${active.label}`}
           className={cn(
             'inline-flex h-9 items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-900/60 px-2.5 text-[12px] font-medium text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-800',
             'disabled:cursor-not-allowed disabled:opacity-50',
           )}
         >
-          <Sparkles className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.8} />
+          {isAuto ? (
+            <Wand2 className="h-3.5 w-3.5 text-[#c8841f]" strokeWidth={1.9} />
+          ) : (
+            <Sparkles className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.8} />
+          )}
           <span className="max-w-[120px] truncate">{active.short}</span>
           <ChevronDown className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.8} />
         </button>

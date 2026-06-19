@@ -182,6 +182,9 @@ interface DeskContext {
   model?: string;
 }
 
+const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+const CHEAP_MODEL = "google/gemini-2.5-flash-lite";
+const SMART_MODEL = "google/gemini-2.5-pro";
 const ALLOWED_MODELS = new Set<string>([
   "google/gemini-3-flash-preview",
   "google/gemini-3.1-flash-lite",
@@ -201,7 +204,28 @@ const ALLOWED_MODELS = new Set<string>([
   "openai/gpt-5.5",
   "openai/gpt-5.5-pro",
 ]);
-const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+
+/**
+ * Auto routing: pick the cheapest model likely to satisfy the task.
+ * - Image inputs or large context → multimodal/strong model
+ * - Long input or "reasoning" cues → SMART_MODEL
+ * - Tools enabled (Drive/Gmail/Calendar) → DEFAULT_MODEL (good tool calling, fast)
+ * - Trivial short prompts → CHEAP_MODEL
+ */
+function pickAutoModel(opts: {
+  text: string;
+  hasImages: boolean;
+  toolsEnabled: boolean;
+  totalChars: number;
+}): string {
+  const t = opts.text.toLowerCase();
+  if (opts.hasImages) return "google/gemini-2.5-flash";
+  if (opts.totalChars > 12000) return SMART_MODEL;
+  const reasoningCues = /\b(analy[sz]e|reason|prove|why|explain in depth|step[- ]by[- ]step|plan|strategi[sz]e|compare|critique|rubric|grade|debug|refactor|architect|derive)\b/;
+  if (reasoningCues.test(t) || opts.text.length > 1500) return SMART_MODEL;
+  if (opts.toolsEnabled) return DEFAULT_MODEL;
+  return CHEAP_MODEL;
+}
 
 const GDRIVE_GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
 
@@ -837,8 +861,28 @@ Deno.serve(async (req) => {
       result: ToolResult;
     }> = [];
 
+    // Resolve model: explicit allow-listed pick, "auto" heuristic, or default.
     const requestedModel = typeof deskContext?.model === "string" ? deskContext.model : null;
-    const chatModel = requestedModel && ALLOWED_MODELS.has(requestedModel) ? requestedModel : DEFAULT_MODEL;
+    const lastUserMsg = [...validMessages].reverse().find((m) => m.role === "user");
+    const lastUserText = typeof lastUserMsg?.content === "string"
+      ? lastUserMsg.content
+      : Array.isArray(lastUserMsg?.content)
+        ? lastUserMsg.content.filter((p: { type?: string; text?: string }) => p.type === "text").map((p) => p.text ?? "").join(" ")
+        : "";
+    const hasImageInput = validMessages.some((m) =>
+      Array.isArray(m.content) && m.content.some((p: { type?: string }) => p?.type === "image_url"),
+    );
+    const totalChars = validMessages.reduce((sum, m) => sum + (typeof m.content === "string" ? m.content.length : 0), 0);
+    const toolsEnabled = activeTools.length > TOOLS.length;
+
+    let chatModel: string;
+    if (requestedModel === "auto" || !requestedModel) {
+      chatModel = pickAutoModel({ text: lastUserText, hasImages: hasImageInput, toolsEnabled, totalChars });
+    } else if (ALLOWED_MODELS.has(requestedModel)) {
+      chatModel = requestedModel;
+    } else {
+      chatModel = DEFAULT_MODEL;
+    }
 
     let iter = 0;
     while (iter++ < 4) {
