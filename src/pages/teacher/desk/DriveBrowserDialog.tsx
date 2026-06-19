@@ -48,14 +48,20 @@ export function DriveBrowserDialog({
     setLoading(true);
     setError(null);
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) throw new Error('Not signed in');
+      const base = import.meta.env.VITE_SUPABASE_URL as string;
       const params = new URLSearchParams({ action: 'list' });
       if (q) params.set('q', q);
-      const { data, error: err } = await supabase.functions.invoke(`gdrive?${params.toString()}`, {
-        method: 'GET',
+      const res = await fetch(`${base}/functions/v1/gdrive?${params.toString()}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (err) throw err;
-      if (data?.ok === false) throw new Error(data?.error ?? 'Failed to load Drive');
-      setFiles((data?.files ?? []) as DriveFile[]);
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json?.ok === false) {
+        throw new Error(json?.error ?? `Drive request failed (${res.status})`);
+      }
+      setFiles((json?.files ?? []) as DriveFile[]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to load Drive';
       setError(msg);
