@@ -39,8 +39,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
       parts.push(`[Google Drive files: ${drive}]`);
     }
 
-    const context = sources?.driveConnector ? { driveConnector: true } : undefined;
-    send(parts.join('\n\n'), context);
+    const context: Record<string, unknown> = {};
+    if (sources?.driveConnector) context.driveConnector = true;
+    if (sources?.gmailConnector) context.gmailConnector = true;
+    if (sources?.calendarConnector) context.calendarConnector = true;
+    send(parts.join('\n\n'), Object.keys(context).length ? context : undefined);
   };
 
   return (
