@@ -11,7 +11,6 @@ import {
   Wand2,
   X,
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { GoogleDriveIcon } from '@/components/icons/GoogleDriveIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
