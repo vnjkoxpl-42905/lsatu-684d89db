@@ -12,121 +12,17 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatRelativeShort } from "@/lib/time";
-
-// The primary admin account is protected: it can never be demoted (by anyone,
-// including itself), which also guarantees the system always has at least one
-// admin and can never be locked out. Enforced authoritatively in the
-// admin-manage-users edge function; mirrored here for UI affordances.
-const PRIMARY_ADMIN_EMAIL = "contact@aspiringattorneys.com";
-
-const isPrimaryAdmin = (email: string | null | undefined) =>
-  (email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL;
-
-interface ManagedUser {
-  class_id: string;
-  email: string;
-  display_name: string | null;
-  role: string;
-  last_seen_at: string | null;
-  has_bootcamp_access: boolean;
-  has_classroom_access: boolean;
-  has_analytics_access: boolean;
-  has_schedule_access: boolean;
-  has_practice_access: boolean;
-  has_drill_access: boolean;
-  has_waj_access: boolean;
-  has_flagged_access: boolean;
-  has_chat_access: boolean;
-  has_export_access: boolean;
-  has_ta_access: boolean;
-}
-
-interface Analytics {
-  total_users: number;
-  active_today: number;
-  active_week: number;
-  admin_count: number;
-  feature_adoption: Record<string, number>;
-  total_attempts: number;
-  week_attempts: number;
-}
-
-const FLAG_GROUPS = [
-  {
-    label: "Core",
-    flags: [
-      { key: "has_practice_access", label: "Practice" },
-      { key: "has_drill_access", label: "Drill" },
-    ],
-  },
-  {
-    label: "Modules",
-    flags: [
-      { key: "has_bootcamp_access", label: "Bootcamps" },
-      { key: "has_classroom_access", label: "Classroom" },
-      { key: "has_analytics_access", label: "Analytics" },
-      { key: "has_schedule_access", label: "Schedule" },
-    ],
-  },
-  {
-    label: "Tools",
-    flags: [
-      { key: "has_waj_access", label: "WAJ" },
-      { key: "has_flagged_access", label: "Flagged" },
-      { key: "has_chat_access", label: "Chat" },
-      { key: "has_export_access", label: "Export" },
-      { key: "has_ta_access", label: "TA" },
-    ],
-  },
-] as const;
-
-const ALL_FLAG_KEYS = FLAG_GROUPS.flatMap(g => g.flags.map(f => f.key));
-const ALL_FLAG_LABELS: Record<string, string> = {};
-FLAG_GROUPS.forEach(g => g.flags.forEach(f => { ALL_FLAG_LABELS[f.key] = f.label; }));
-
-// Build a template by listing the keys that should be true; everything
-// else gets explicitly set to false so the template fully describes the
-// resulting access state.
-function template(enabled: string[]): Record<string, boolean> {
-  const out: Record<string, boolean> = {};
-  for (const k of ALL_FLAG_KEYS) out[k] = enabled.includes(k);
-  return out;
-}
-
-const ROLE_TEMPLATES: { id: string; label: string; description: string; flags: Record<string, boolean> }[] = [
-  {
-    id: "trial",
-    label: "Trial",
-    description: "Practice and Drill only.",
-    flags: template(["has_practice_access", "has_drill_access"]),
-  },
-  {
-    id: "standard",
-    label: "Standard",
-    description: "All student tools, no TA workspace.",
-    flags: template([
-      "has_practice_access",
-      "has_drill_access",
-      "has_classroom_access",
-      "has_analytics_access",
-      "has_schedule_access",
-      "has_waj_access",
-      "has_flagged_access",
-      "has_chat_access",
-      "has_bootcamp_access",
-    ]),
-  },
-  {
-    id: "full",
-    label: "Full",
-    description: "Everything except TA access.",
-    flags: template(ALL_FLAG_KEYS.filter(k => k !== "has_ta_access")),
-  },
-];
-
-function templateMatches(user: Record<string, unknown>, t: Record<string, boolean>): boolean {
-  return ALL_FLAG_KEYS.every(k => Boolean(user[k]) === t[k]);
-}
+import {
+  ALL_FLAG_KEYS,
+  ALL_FLAG_LABELS,
+  FLAG_GROUPS,
+  ROLE_TEMPLATES,
+  computeAdminAnalytics,
+  isPrimaryAdmin,
+  templateMatches,
+  type AdminAnalytics,
+  type ManagedUser,
+} from "@/lib/adminUsers";
 
 // Relative time rendering delegated to src/lib/time.ts so the admin
 // dashboard, hub, and notification bell all read the same way.
@@ -141,7 +37,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
   const navigate = useNavigate();
   const { is_admin, loading: permLoading } = useUserPermissions();
   const [users, setUsers] = useState<ManagedUser[]>([]);
-  const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [analytics, setAnalytics] = useState<AdminAnalytics | null>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
@@ -175,7 +71,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
       if (!analyticsRes.error && analyticsRes.data) {
         setAnalytics(analyticsRes.data);
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error("Failed to load data");
       console.error(e);
     } finally {
@@ -188,25 +84,8 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
     fetchData();
   }, [is_admin, fetchData]);
 
-  // Compute analytics from users data if server analytics failed
-  const computedAnalytics: Analytics = analytics || {
-    total_users: users.length,
-    active_today: users.filter(u => {
-      if (!u.last_seen_at) return false;
-      return Date.now() - new Date(u.last_seen_at).getTime() < 24 * 60 * 60 * 1000;
-    }).length,
-    active_week: users.filter(u => {
-      if (!u.last_seen_at) return false;
-      return Date.now() - new Date(u.last_seen_at).getTime() < 7 * 24 * 60 * 60 * 1000;
-    }).length,
-    admin_count: users.filter(u => u.role === "admin").length,
-    feature_adoption: ALL_FLAG_KEYS.reduce((acc, key) => {
-      acc[key] = users.filter(u => u[key as keyof ManagedUser] === true).length;
-      return acc;
-    }, {} as Record<string, number>),
-    total_attempts: 0,
-    week_attempts: 0,
-  };
+  // Compute analytics from users data if server analytics failed.
+  const computedAnalytics = computeAdminAnalytics(users, analytics);
 
   const toggleAccess = async (classId: string, field: string, value: boolean) => {
     setUsers(prev => prev.map(u => u.class_id === classId ? { ...u, [field]: value } : u));
@@ -225,7 +104,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
   const bulkUser = async (classId: string, value: boolean) => {
     const prev = users.find(u => u.class_id === classId);
     if (!prev) return;
-    const updated: any = { ...prev };
+    const updated = { ...prev } as ManagedUser & Record<string, boolean | string | null>;
     ALL_FLAG_KEYS.forEach(k => { updated[k] = value; });
     setUsers(us => us.map(u => u.class_id === classId ? updated : u));
     try {
@@ -583,4 +462,3 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
     </div>
   );
 }
-

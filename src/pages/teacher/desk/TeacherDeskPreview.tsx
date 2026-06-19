@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,16 +14,21 @@ import {
   conversationToReplyTask,
   draftToReviewTask,
   isWithinDays,
+  isWorkspaceKey,
   sortTasks,
   studentToAssignTask,
   uploadToReviewTask,
   type DeskMode,
   type DeskTask,
+  type WorkspaceKey,
 } from './deskTasks';
 import { GlobalRail } from './GlobalRail';
 import { DeskChatRail } from './DeskChatRail';
 import { DeskChatPanel } from './DeskChatPanel';
 import { DeskTodoRail } from './DeskTodoRail';
+import { DeskStudentsSurface } from './DeskStudentsSurface';
+import { DeskAdminSurface } from './DeskAdminSurface';
+import { DeskWorkspacePlaceholder } from './DeskWorkspacePlaceholder';
 import { useNextSession } from './useNextSession';
 
 const FLOOR_GRID_STYLE: React.CSSProperties = {
@@ -168,6 +173,7 @@ const PREVIEW_TASKS: Record<DeskMode, DeskTask[]> = {
  */
 export default function TeacherDeskPreview() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
 
   const localPreview = isLocalPreviewHost() && !user;
@@ -216,6 +222,19 @@ export default function TeacherDeskPreview() {
 
   const isLoading = !localPreview && (studentsLoading || inboxLoading || draftsLoading || uploadsLoading);
 
+  const workspaceParam = searchParams.get('ws');
+  const workspace: WorkspaceKey = isWorkspaceKey(workspaceParam) ? workspaceParam : 'today';
+
+  const selectWorkspace = (key: WorkspaceKey) => {
+    const next = new URLSearchParams(searchParams);
+    if (key === 'today') {
+      next.delete('ws');
+    } else {
+      next.set('ws', key);
+    }
+    setSearchParams(next, { replace: true });
+  };
+
   const todayLabel = format(new Date(), 'd MMMM');
   const weekdayLabel = format(new Date(), 'EEE');
   const nextSessionCue = useMemo(() => {
@@ -258,12 +277,15 @@ export default function TeacherDeskPreview() {
 
           <div className="grid flex-1 grid-cols-1 lg:min-h-0 lg:grid-cols-[300px_minmax(0,1fr)_320px]">
             <aside className="flex flex-col gap-8 border-b border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-b-0 lg:border-r">
-              <GlobalRail onOpen={(path) => navigate(path)} />
+              <GlobalRail active={workspace} onSelect={selectWorkspace} />
               <DeskChatRail />
             </aside>
 
             <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:min-h-0 lg:overflow-hidden">
-              <DeskChatPanel localPreview={localPreview} />
+              {workspace === 'today' ? <DeskChatPanel localPreview={localPreview} /> : null}
+              {workspace === 'students' ? <DeskStudentsSurface /> : null}
+              {workspace === 'admin' ? <DeskAdminSurface /> : null}
+              {workspace === 'inbox' || workspace === 'library' ? <DeskWorkspacePlaceholder workspace={workspace} /> : null}
             </main>
 
             <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">

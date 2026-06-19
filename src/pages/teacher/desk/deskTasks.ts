@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
 import {
   ClipboardList,
+  BookOpen,
   FileText,
   MessageSquare,
-  Pencil,
   Shield,
   Sparkles,
   Users,
@@ -15,6 +15,7 @@ import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
+export type WorkspaceKey = 'today' | 'students' | 'inbox' | 'library' | 'admin';
 export type ContextKey = 'student' | 'source';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap';
 
@@ -89,13 +90,17 @@ export const MODE_META: Record<
   },
 };
 
-export const GLOBAL_RAIL: { label: string; path: string; Icon: LucideIcon; active?: boolean }[] = [
-  { label: 'Today', path: '/teacher', Icon: Sparkles, active: true },
-  { label: 'Students', path: '/teacher/students', Icon: Users },
-  { label: 'Assign', path: '/teacher/library/assignments/new', Icon: ClipboardList },
-  { label: 'Teach', path: '/teacher/whiteboard', Icon: Pencil },
-  { label: 'Admin', path: '/teacher/admin', Icon: Shield },
+export const DESK_WORKSPACES: { key: WorkspaceKey; label: string; Icon: LucideIcon }[] = [
+  { key: 'today', label: 'Today', Icon: Sparkles },
+  { key: 'students', label: 'Students', Icon: Users },
+  { key: 'inbox', label: 'Inbox', Icon: MessageSquare },
+  { key: 'library', label: 'Library', Icon: BookOpen },
+  { key: 'admin', label: 'Admin', Icon: Shield },
 ];
+
+export function isWorkspaceKey(value: string | null): value is WorkspaceKey {
+  return value === 'today' || value === 'students' || value === 'inbox' || value === 'library' || value === 'admin';
+}
 
 export function studentName(student?: Pick<HubStudentRow, 'display_name' | 'email'> | null) {
   return student?.display_name?.trim() || student?.email || 'Student';
