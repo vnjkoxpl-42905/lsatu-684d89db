@@ -234,7 +234,9 @@ export function AssistantComposer({
     const calendarConnector = attachedSources.some((s) => s.kind === 'calendarConnector');
     const hasAny =
       labels.length > 0 || drive.length > 0 || images.length > 0 || driveConnector || gmailConnector || calendarConnector;
-    onSubmit(hasAny ? { labels, drive, images, driveConnector, gmailConnector, calendarConnector } : undefined);
+    onSubmit(hasAny
+      ? { labels, drive, images, driveConnector, gmailConnector, calendarConnector, model: selectedModel }
+      : { labels: [], drive: [], images: [], driveConnector: false, gmailConnector: false, calendarConnector: false, model: selectedModel });
     setAttachedSources([]);
     setImages([]);
     setImageError(null);
