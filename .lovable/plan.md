@@ -1,53 +1,125 @@
-## Add Gmail + Google Calendar context-source chips
+# Universal "find me a link to anything" for the Teacher Desk assistant
 
-Mirror the existing Google Drive connector chip in the Teacher Desk composer. The chips toggle a context source for the next message; the assistant then has a matching server-side tool to actually search Gmail / Calendar.
+Goal: from the Teacher Desk chat (`/teacher`), I can ask for **any** surface in LSAT U — a guided drill, an activity, a bootcamp lesson, a specific drill question, a student page, etc. — and the assistant replies with:
 
-### Frontend — `src/pages/teacher/desk/AssistantComposer.tsx`
+1. A short answer naming the thing,
+2. A clickable link that opens it **in the chat** (inline button) **and** in a new tab,
+3. Optional follow-up actions (assign to student, copy link).
 
-1. Extend `SourceKind` from `'driveConnector'` to a union covering `'gmailConnector'` and `'calendarConnector'`.
-2. Add stable IDs: `GMAIL_CONNECTOR_ID`, `CALENDAR_CONNECTOR_ID` (Drive ID already exists).
-3. Generalize `toggleDriveConnector` into a single `toggleConnector(kind, id, label)` (or three thin wrappers).
-4. In the `+` menu, add two new `ComposerMenuItem`s directly under Google Drive:
-   - Gmail — "Use Gmail as a context source for the next message" (`MailIcon` from a small new `GmailIcon` component, matching the colored G-mail glyph from screenshot 2)
-   - Google Calendar — same copy pattern (new `GoogleCalendarIcon` matching the 31 glyph)
-   - Each shows an "On" badge when active, same as Drive.
-5. Update `ComposerSubmitSources` to add `gmailConnector: boolean` and `calendarConnector: boolean`; compute them in `submit()` like Drive.
-6. Update `SourceChipIcon` to return the right icon per connector kind.
+Scope stays on `/teacher` only. No student-facing changes. No content editing.
 
-### Icons — `src/components/icons/`
+---
 
-Create `GmailIcon.tsx` and `GoogleCalendarIcon.tsx` (small SVGs matching the official brand glyphs in screenshot 2). Pattern identical to existing `GoogleDriveIcon`.
+## What gets built in this app
 
-### Pass-through — `DeskChatPanel.tsx` and `MiniChat.tsx`
+### 1. New edge function: `teacher-link-search`
+Input: `{ query: string, limit?: number }`. Output: `{ results: Array<{ kind, id, title, subtitle, url, score, snippet }> }`.
 
-In both, where `submit()` builds `context`, extend from `{ driveConnector: true }` to include `gmailConnector` / `calendarConnector` whenever the respective chip is on. The label-suffix `[Attached context: …]` block already handles arbitrary labels — no change needed for the visible name.
+Internally it:
+- Embeds the query via Lovable AI Gateway (`google/gemini-embedding-001`).
+- Runs `match_lsatu_content(query_embedding, match_count)` against a new `pgvector` table `lsatu_content_index` (see schema below).
+- Falls back to FTS on `title || subtitle || body` when pgvector returns nothing.
+- Admin-only (checks `has_role(auth.uid(),'admin')`).
 
-### Backend — `supabase/functions/teacher-operator-chat/index.ts`
+### 2. New AI SDK tool wired into `teacher-operator-chat`
+Tool name: `find_link`. The model calls it whenever the user asks for, refers to, or would benefit from a deep link. The tool calls `teacher-link-search` and returns the top 1-5 results to the model. The model is instructed to **always** present results as a `LinkCard` part (renders as a pill in the chat with "Open here" and "Open in new tab" buttons), not as raw markdown URLs.
 
-1. Extend `DeskContext` with `gmailConnector?: boolean` and `calendarConnector?: boolean`.
-2. Add gateway constants:
-   - `GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1"`
-   - `GCAL_GATEWAY  = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3"`
-3. Add two new tools mirroring `SEARCH_GDRIVE_TOOL`:
-   - `search_gmail({ query?, maxResults? })` → calls `/users/me/messages?q=…&maxResults=…`, then `messages.get?format=metadata` for headers (From/Subject/Date) to return readable rows. Reads `GOOGLE_MAIL_API_KEY`.
-   - `list_calendar_events({ query?, timeMin?, timeMax?, maxResults? })` → calls `/calendars/primary/events` with `q`, `timeMin` (default now), `singleEvents=true`, `orderBy=startTime`. Reads `GOOGLE_CALENDAR_API_KEY`.
-   - Same error handling pattern as `searchGoogleDrive` (401/403 → "not authorized — relink", graceful missing-key message).
-4. Route both in the `runTool` switch.
-5. Add two new system notes parallel to `driveNote`:
-   - When `gmailConnector` is on + key present: "Gmail connector ENABLED — when the user asks about email/inbox/messages, call `search_gmail`. You return From/Subject/Date/snippet; cannot reply or modify."
-   - Same shape for Calendar.
-6. Build `activeTools` by conditionally appending each enabled tool (Drive | Gmail | Calendar).
+A second tool `open_link` returns a structured part the UI renders as an inline preview iframe inside the chat bubble (for drills/activities only — bootcamps open in new tab to avoid auth issues inside an iframe).
 
-### Verification
+### 3. Chat UI additions (Teacher Desk only)
+- New message part type `link_card` rendered in `DeskChatPanel` / `MiniChat`: title, subtitle, kind badge, "Open in chat" (mounts the route in a right-side slide-over panel inside the desk), "Open in new tab" (`window.open(url, "_blank")`), "Assign…" (opens existing assign flow when kind is drill/activity/bootcamp-day).
+- Right-side slide-over `DeskLinkPreview` that renders the route inside the desk via React Router's `MemoryRouter` for safe in-chat preview. Falls back to new tab if route requires features the memory router can't satisfy.
 
-- Open Teacher Desk `+` menu → see three connector items (Drive, Gmail, Calendar) above Attach file, each with brand icon.
-- Toggle Gmail chip → "On" badge appears, chip shows in composer pill row with Gmail icon, removable.
-- Send "what's in my inbox this week?" with Gmail chip on → assistant invokes `search_gmail` and returns real subjects/senders.
-- Same for Calendar with "what's on my calendar tomorrow?".
-- Drive chip behavior unchanged.
+### 4. Schema: `lsatu_content_index`
+```
+id uuid pk
+kind text          -- 'guided_drill' | 'activity' | 'bootcamp_day' | 'bootcamp_lesson'
+                   -- | 'drill_question' | 'concept' | 'question_type_strategy'
+                   -- | 'tactical_pattern' | 'student' | 'teaching_asset' | 'route'
+source_id text     -- qid, slug, uuid, route path, etc.
+title text
+subtitle text
+body text          -- chunked text used for embedding
+url text           -- canonical in-app URL (see route map below)
+metadata jsonb
+embedding vector(3072)
+updated_at timestamptz
+```
+Plus `match_lsatu_content(query_embedding, match_count)` SQL function and an HNSW index. RLS: admin-only `SELECT`; service role full access (population runs from the user's external indexer).
 
-### Out of scope
+Populating the index is **out of scope for this app** — the user is handing the spec below to a separate AI tool that will write rows into `lsatu_content_index` via the service role.
 
-- Per-message file/attach picker for Gmail / Calendar (could add later, matching `DriveBrowserDialog`).
-- Reading email bodies or writing/sending email/events.
-- Existing "Attach from Drive" picker stays unchanged.
+---
+
+## Spec to hand to the external indexer AI
+
+> Paste this verbatim into the other tool. It's everything it needs to build and maintain the index.
+
+### Goal
+Populate Supabase table `public.lsatu_content_index` with one row per addressable "thing" in the LSAT U app, so a Teacher Desk assistant can semantic-search it and return deep links. The teacher must be able to ask in plain English ("the drill on negation", "Dakota's last activity", "Causation Station day 3", "PT159 S1 Q5") and get the correct in-app URL back.
+
+### Connection
+- Supabase project ref: `atrcqxpmqrynmtvvyjju`
+- Write with the **service role** key (server-side only).
+- Embeddings: `POST https://ai.gateway.lovable.dev/v1/embeddings`, header `Lovable-API-Key: $LOVABLE_API_KEY`, body `{ "model": "google/gemini-embedding-001", "input": "<chunk>" }`. Output is `data[0].embedding` (length 3072).
+
+### Table contract
+Insert/upsert by `(kind, source_id)`. Chunk long `body` into 800-1500 char chunks with ~150 char overlap; one row per chunk; keep `title`/`subtitle`/`url` identical across chunks of the same source; embed `title + "\n" + subtitle + "\n" + chunk`.
+
+### Kinds and where to pull them from
+
+| kind | source | source_id | title / subtitle | url pattern |
+|---|---|---|---|---|
+| `guided_drill` | `guided_drills` table; markdown in `data/guided-drills/*.md`; HTML in `public/guided-drill-html/` (see `MANIFEST.md`) | `guided_drills.id` | `name` / `week` + `section` | `/drill?guidedDrillId={id}&present=guided` |
+| `drill_question` | `attempts`/question catalog; QIDs follow `PT###-S#-Q##` | qid | qid / question type | `/drill?qids={qid}&mode=type-drill&present=smart` |
+| `activity` | `activities` table; items in `activities.items` jsonb | `activities.id` | `title` / `subtitle` | `/activity/{id}` (confirm with current `App.tsx`) |
+| `bootcamp_day` | `src/bootcamps/*/` content + `src/lib/bootcampDays.ts` | `{slug}/day-{n}` | bootcamp name / day title | `/bootcamp/{slug}/day/{n}` (see `bootcamps.ts`) |
+| `bootcamp_lesson` | per-bootcamp lesson modules (e.g. Intro to LR, Causation Station, Principle & Flaw, Fallacy Flaw, Main Conclusion) | `{slug}/{lesson-id}` | lesson title / bootcamp name | `/bootcamp/{slug}/{lesson-id}` |
+| `concept` | `concept_library` table | `concept_library.id` | `name` / category | `/concepts/{slug}` if route exists, else omit url |
+| `question_type_strategy` | `question_type_strategies` table | row id | type name / "strategy" | `/strategies/{type}` if route exists |
+| `tactical_pattern` | `tactical_patterns` table | row id | name / "pattern" | none required; still indexable |
+| `teaching_asset` | `teaching_assets` table; use `search_teaching_assets` excerpts | `teaching_assets.id` | `title` / `asset_type` | `/teacher/assets/{id}` if route exists |
+| `student` | `students_safe` view | `class_id` | `display_name` / email-hash | `/teacher/student/{class_id}` (confirm exact route) |
+| `route` | static map of top-level admin/teacher routes (Foyer, Inbox, Schedule, Analytics, Bootcamps index, Activity Centre, Smart Drill, WAJ, Admin, Settings) | path | route label / short description | the path itself |
+
+For URL patterns you can't confirm from the codebase, leave `url` `NULL` and put the candidate in `metadata.url_guess`; the app side will reconcile.
+
+### Body content to embed (per kind)
+- **guided_drill**: name, week, section, learning goals, every question stem + question type tag.
+- **drill_question**: stem, answer choices, official answer, explanation if present, question type, reasoning type, tactical patterns.
+- **activity**: title, subtitle, instructions, every item prompt, every item answer/feedback.
+- **bootcamp_day / lesson**: lesson copy, drill prompts inside the lesson, key vocab, sample questions.
+- **concept / strategy / pattern**: full definition + examples.
+- **teaching_asset**: `content_text` from the table.
+- **student**: display name + any tags/notes from `student_context` (admin-readable). Do NOT embed PII beyond what's already in `students_safe`.
+- **route**: human description of what lives at that path.
+
+### Refresh
+- Initial backfill: full sweep.
+- Ongoing: nightly delta using `updated_at` on each source table, plus a webhook from new `guided_drills` / `activities` inserts.
+- Always `upsert` on `(kind, source_id, chunk_index)` and delete chunks whose `updated_at` is older than the source row.
+
+### Quality bar
+- For any of these example asks, the top-1 result must be the obviously-correct row:
+  - "negation drill" → the Negation Station guided drill
+  - "PT159 section 1 question 5" → that drill question
+  - "causation station day 3" → that bootcamp day
+  - "intro to LR conclusion lesson" → the Main Conclusion lesson
+  - "dakota's profile" → Dakota's student page
+  - "schedule" → `/teacher/schedule` (or equivalent)
+
+---
+
+## Out of scope
+- Building the external indexer (the user is doing this with another tool).
+- Student-facing access.
+- Editing content from chat.
+- Floating site-wide chat launcher.
+
+## Files I'll touch
+- `supabase/migrations/<ts>_lsatu_content_index.sql` (table, RLS, GRANTs, HNSW index, `match_lsatu_content` function)
+- `supabase/functions/teacher-link-search/index.ts` (new)
+- `supabase/functions/teacher-operator-chat/index.ts` (add `find_link` + `open_link` tools, system prompt update, route map constants)
+- `src/pages/teacher/desk/DeskChatPanel.tsx`, `MiniChat.tsx`, `AssistantComposer.tsx` (render new `link_card` part, wire actions)
+- `src/pages/teacher/desk/DeskLinkPreview.tsx` (new slide-over)
+- Small additions to `src/integrations/supabase/types.ts` after the migration regenerates types.

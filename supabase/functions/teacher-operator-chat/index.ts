@@ -39,6 +39,16 @@ Operating principles:
 - If he asks for multiple versions (e.g. cleaner, warmer, more concise), call create_draft once
   per version, each with a distinct variant_label.
 
+Universal link retrieval:
+- LSAT U has thousands of addressable surfaces: guided drills, individual drill questions
+  (PT###-S#-Q##), activities, bootcamp days/lessons, concepts, student pages, routes.
+- WHENEVER Joshua asks for "the link to", "open", "show me", "find", "where is", or refers
+  to any specific content by name (e.g. "negation station", "causation day 3", "PT159 S1 Q5",
+  "dakota's profile") — call find_link with a focused query. Do NOT guess URLs.
+- After find_link returns, reply in one short line ("Here it is:") and let the link card
+  render. Never paste raw URLs inline if the card will render — the user already sees Open/New tab buttons.
+- If find_link returns no good match, say so honestly and ask a clarifying question.
+
 Tone: warm, sharp, efficient. You are his right hand.`;
 
 const TOOLS = [
@@ -156,6 +166,29 @@ const TOOLS = [
         type: "object",
         properties: { student_id: { type: "string" } },
         required: ["student_id"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "find_link",
+      description:
+        "Semantic search across every addressable surface in LSAT U: guided drills, individual drill questions (PT###-S#-Q##), activities, bootcamp days and lessons, concepts, student pages, top-level routes, teaching assets. Returns up to N results, each with title, kind, url, and a short snippet. Call this WHENEVER the user asks for, refers to, or wants to open any specific thing in the app. Prefer specific queries ('negation station guided drill', 'PT159 section 1 question 5', 'causation station day 3', 'dakota profile') over vague ones.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "What the user is looking for, in their own words." },
+          limit: { type: "number", description: "Max results (default 5, max 10)" },
+          kinds: {
+            type: "array",
+            items: { type: "string" },
+            description:
+              "Optional filter: 'guided_drill' | 'drill_question' | 'activity' | 'bootcamp_day' | 'bootcamp_lesson' | 'concept' | 'question_type_strategy' | 'tactical_pattern' | 'student' | 'teaching_asset' | 'route'.",
+          },
+        },
+        required: ["query"],
         additionalProperties: false,
       },
     },
@@ -656,6 +689,8 @@ async function runTool(
           data: { student, recent_sessions: sessions ?? [] },
         };
       }
+      case "find_link":
+        return await findLink(args, ctx.admin);
       case "search_google_drive":
         return await searchGoogleDrive(args);
       case "search_gmail":
@@ -669,6 +704,97 @@ async function runTool(
     console.error("tool error", name, e);
     return { ok: false, error: errorMessage(e, "tool failure") };
   }
+}
+
+async function findLink(
+  args: ToolArgs,
+  admin: ReturnType<typeof createClient>,
+): Promise<ToolResult> {
+  const query = typeof args.query === "string" ? args.query.trim() : "";
+  if (!query) return { ok: false, error: "query is required" };
+  const limit = Math.min(Math.max(Number(args.limit ?? 5) || 5, 1), 10);
+  const kinds = Array.isArray(args.kinds)
+    ? (args.kinds.filter((k) => typeof k === "string") as string[])
+    : null;
+
+  // 1) Embed the query via Lovable AI Gateway.
+  let queryEmbedding: number[] | null = null;
+  try {
+    const er = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
+    });
+    if (er.ok) {
+      const ej = (await er.json()) as { data?: Array<{ embedding?: number[] }> };
+      queryEmbedding = ej.data?.[0]?.embedding ?? null;
+    } else {
+      console.warn("embedding failed", er.status, await er.text());
+    }
+  } catch (e) {
+    console.warn("embedding threw", e);
+  }
+
+  type MatchRow = {
+    id: string;
+    kind: string;
+    source_id: string;
+    title: string | null;
+    subtitle: string | null;
+    url: string | null;
+    metadata: Record<string, unknown> | null;
+    snippet: string | null;
+    similarity?: number;
+    rank?: number;
+  };
+
+  let rows: MatchRow[] = [];
+
+  if (queryEmbedding) {
+    const { data, error } = await admin.rpc(table("match_lsatu_content") as never, {
+      query_embedding: queryEmbedding as unknown,
+      match_count: limit,
+      kind_filter: kinds && kinds.length ? kinds : null,
+    } as never);
+    if (error) console.warn("match_lsatu_content error", error.message);
+    rows = (data as MatchRow[] | null) ?? [];
+  }
+
+  // 2) FTS fallback (or supplement) when semantic returned nothing.
+  if (!rows.length) {
+    const { data, error } = await admin.rpc(table("fts_lsatu_content") as never, {
+      q: query,
+      match_count: limit,
+      kind_filter: kinds && kinds.length ? kinds : null,
+    } as never);
+    if (error) console.warn("fts_lsatu_content error", error.message);
+    rows = (data as MatchRow[] | null) ?? [];
+  }
+
+  const results = rows.map((r) => ({
+    id: r.id,
+    kind: r.kind,
+    source_id: r.source_id,
+    title: r.title ?? "(untitled)",
+    subtitle: r.subtitle ?? null,
+    url: r.url ?? null,
+    snippet: r.snippet ?? null,
+    score: r.similarity ?? r.rank ?? null,
+  }));
+
+  return {
+    ok: true,
+    data: {
+      query,
+      results,
+      note: results.length
+        ? undefined
+        : "Index is empty or no match. The content index may not be populated yet.",
+    },
+  };
 }
 
 Deno.serve(async (req) => {
