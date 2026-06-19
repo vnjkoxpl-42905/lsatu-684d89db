@@ -179,7 +179,29 @@ interface DeskContext {
   driveConnector?: boolean;
   gmailConnector?: boolean;
   calendarConnector?: boolean;
+  model?: string;
 }
+
+const ALLOWED_MODELS = new Set<string>([
+  "google/gemini-3-flash-preview",
+  "google/gemini-3.1-flash-lite",
+  "google/gemini-3.5-flash",
+  "google/gemini-3.1-pro-preview",
+  "google/gemini-2.5-pro",
+  "google/gemini-2.5-flash",
+  "google/gemini-2.5-flash-lite",
+  "openai/gpt-5",
+  "openai/gpt-5-mini",
+  "openai/gpt-5-nano",
+  "openai/gpt-5.2",
+  "openai/gpt-5.4",
+  "openai/gpt-5.4-mini",
+  "openai/gpt-5.4-nano",
+  "openai/gpt-5.4-pro",
+  "openai/gpt-5.5",
+  "openai/gpt-5.5-pro",
+]);
+const DEFAULT_MODEL = "google/gemini-3-flash-preview";
 
 const GDRIVE_GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
 
