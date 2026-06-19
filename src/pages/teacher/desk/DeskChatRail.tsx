@@ -1,5 +1,6 @@
+import type { MouseEvent } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useOperatorChatContext } from '@/components/teacher/ai-ta/OperatorChatProvider';
 import { cn } from '@/lib/utils';
 
@@ -10,7 +11,14 @@ import { cn } from '@/lib/utils';
  * Reads the shared OperatorChat session so it stays in sync with the center.
  */
 export function DeskChatRail() {
-  const { conversations, conversationId, newConversation, openConversation } = useOperatorChatContext();
+  const { conversations, conversationId, newConversation, openConversation, deleteConversation } = useOperatorChatContext();
+
+  const handleDelete = (event: MouseEvent<HTMLButtonElement>, id: string) => {
+    event.stopPropagation();
+    const confirmed = window.confirm('Delete this chat? This removes the saved conversation and its messages.');
+    if (!confirmed) return;
+    deleteConversation(id);
+  };
 
   return (
     <div>
@@ -33,23 +41,39 @@ export function DeskChatRail() {
         <div className="space-y-1.5">
           {conversations.map((conversation) => {
             const active = conversation.id === conversationId;
+            const title = conversation.title || 'New conversation';
             return (
-              <button
+              <div
                 key={conversation.id}
-                type="button"
-                onClick={() => openConversation(conversation.id)}
                 className={cn(
-                  'w-full border px-3 py-2.5 text-left transition',
+                  'group flex w-full items-stretch border transition',
                   active
                     ? 'border-black bg-black text-white'
                     : 'border-transparent text-black/65 hover:border-black/15 hover:bg-white/25',
                 )}
               >
-                <div className="truncate text-sm font-semibold">{conversation.title || 'New conversation'}</div>
-                <div className={cn('mt-0.5 text-[11px] tabular-nums', active ? 'text-white/60' : 'text-black/42')}>
-                  {formatDistanceToNow(new Date(conversation.updated_at), { addSuffix: true })}
-                </div>
-              </button>
+                <button type="button" onClick={() => openConversation(conversation.id)} className="min-w-0 flex-1 px-3 py-2.5 text-left">
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-semibold">{title}</div>
+                    <div className={cn('mt-0.5 text-[11px] tabular-nums', active ? 'text-white/60' : 'text-black/42')}>
+                      {formatDistanceToNow(new Date(conversation.updated_at), { addSuffix: true })}
+                    </div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  aria-label={`Delete ${title}`}
+                  onClick={(event) => handleDelete(event, conversation.id)}
+                  className={cn(
+                    'm-2 ml-0 inline-flex h-7 w-7 shrink-0 items-center justify-center border opacity-0 transition focus:opacity-100 group-hover:opacity-100',
+                    active
+                      ? 'border-white/18 text-white/55 hover:bg-white/10 hover:text-white'
+                      : 'border-black/12 text-black/38 hover:bg-black hover:text-white',
+                  )}
+                >
+                  <Trash2 className="h-3.5 w-3.5" strokeWidth={1.7} />
+                </button>
+              </div>
             );
           })}
         </div>

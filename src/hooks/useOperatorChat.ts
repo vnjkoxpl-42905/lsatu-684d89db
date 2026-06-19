@@ -235,6 +235,25 @@ export function useOperatorChat() {
     [loadMessages],
   );
 
+  const deleteConversation = useCallback(
+    async (id: string) => {
+      if (!user) return;
+      setError(null);
+      const { error: e } = await supabase.from('operator_conversations').delete().eq('admin_id', user.id).eq('id', id);
+      if (e) {
+        setError(e.message);
+        return;
+      }
+      if (conversationIdRef.current === id) {
+        conversationIdRef.current = null;
+        setConversationId(null);
+        applyMessages(() => []);
+      }
+      await loadConversationList();
+    },
+    [applyMessages, loadConversationList, user],
+  );
+
   return {
     messages,
     conversations,
@@ -243,6 +262,7 @@ export function useOperatorChat() {
     sendMessage,
     newConversation,
     openConversation,
+    deleteConversation,
     conversationId,
   };
 }
