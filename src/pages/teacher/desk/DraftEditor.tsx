@@ -26,11 +26,15 @@ export function DraftEditor({
   onChange,
   canUseAi,
   ariaLabel,
+  placeholder = 'Edit the draft, highlight text to format or ask for changes...',
+  textareaClassName,
 }: {
   value: string;
   onChange: (value: string) => void;
   canUseAi: boolean;
   ariaLabel: string;
+  placeholder?: string;
+  textareaClassName?: string;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [sel, setSel] = useState<Selection | null>(null);
@@ -150,8 +154,11 @@ export function DraftEditor({
         }}
         autoFocus
         aria-label={ariaLabel}
-        placeholder="Edit the draft, highlight text to format or ask for changes…"
-        className="min-h-[120px] w-full resize-y border border-black/16 bg-white/80 px-3 py-2 text-[13px] leading-relaxed outline-none placeholder:text-black/35 focus:border-black"
+        placeholder={placeholder}
+        className={cn(
+          'min-h-[120px] w-full resize-y border border-black/16 bg-white/80 px-3 py-2 text-[13px] leading-relaxed outline-none placeholder:text-black/35 focus:border-black',
+          textareaClassName,
+        )}
       />
 
       {sel ? (

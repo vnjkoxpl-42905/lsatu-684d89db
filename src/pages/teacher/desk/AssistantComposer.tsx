@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowUp,
   ChevronRight,
-  FileText,
+  CopyPlus,
   Image as ImageIcon,
   Library,
   Loader2,
@@ -82,6 +82,7 @@ export function AssistantComposer({
   disabled,
   placeholder,
   onUtilityCommand,
+  onOpenCanvas,
   readOnlyMessage,
 }: {
   value: string;
@@ -92,6 +93,7 @@ export function AssistantComposer({
   placeholder: string;
   seedAction?: SeedAction;
   onUtilityCommand?: (command: string) => void;
+  onOpenCanvas?: () => void;
   readOnlyMessage?: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -106,6 +108,7 @@ export function AssistantComposer({
   const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
   const canSubmit = (value.trim().length > 0 || images.length > 0) && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
+  const canOpenCanvas = !loading && Boolean(onOpenCanvas);
 
   const addImageFiles = useCallback(
     async (files: FileList | File[]) => {
@@ -208,6 +211,13 @@ export function AssistantComposer({
   const runUtility = (command: string) => {
     if (!canUseAssistantActions) return;
     onUtilityCommand?.(command);
+  };
+
+  const openCanvas = () => {
+    if (!canOpenCanvas) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    onOpenCanvas?.();
   };
 
   const addSource = (kind: SourceKind, label: string) => {
@@ -379,6 +389,13 @@ export function AssistantComposer({
                 className="absolute bottom-11 left-0 z-20 w-72 overflow-hidden rounded-2xl border border-zinc-700 bg-[#303030] p-1.5 text-sm text-zinc-100 shadow-2xl"
               >
                 <ComposerMenuItem
+                  icon={<CopyPlus className="h-5 w-5" strokeWidth={1.8} />}
+                  label="Canvas"
+                  description="Open a collaborative workspace beside this chat"
+                  onClick={openCanvas}
+                  disabled={!canOpenCanvas}
+                />
+                <ComposerMenuItem
                   icon={<GoogleDriveIcon className="h-5 w-5" />}
                   label="Google Drive"
                   description="Use Drive as a context source for the next message"
@@ -453,6 +470,16 @@ export function AssistantComposer({
 
               </div>
             ) : null}
+            <button
+              type="button"
+              onClick={openCanvas}
+              disabled={!canOpenCanvas}
+              aria-label="Open canvas"
+              className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full bg-[#4a4a4a] px-2.5 text-xs font-medium text-zinc-100 transition hover:bg-[#5a5a5a] disabled:cursor-not-allowed disabled:opacity-55"
+            >
+              <CopyPlus className="h-3.5 w-3.5" strokeWidth={1.8} />
+              <span>Canvas</span>
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -483,10 +510,10 @@ export function AssistantComposer({
           onClick={() => runUtility('Improve the writing in this Teacher Desk task. Keep Joshua’s voice and preserve the substance.')}
         />
         <ActionChip
-          icon={<FileText className="h-3.5 w-3.5" strokeWidth={1.75} />}
-          label="Canvas Draft reply"
-          disabled={!canUseAssistantActions}
-          onClick={() => runUtility('Create a concise Canvas-style draft reply for this Teacher Desk task.')}
+          icon={<CopyPlus className="h-3.5 w-3.5" strokeWidth={1.75} />}
+          label="Canvas"
+          disabled={!canOpenCanvas}
+          onClick={openCanvas}
         />
         <ActionChip
           icon={<Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />}

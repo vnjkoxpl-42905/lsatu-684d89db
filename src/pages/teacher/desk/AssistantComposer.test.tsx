@@ -165,7 +165,8 @@ describe('AssistantComposer', () => {
     expect(screen.queryByRole('button', { name: 'Attach material' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Google Drive' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Improve writing' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Canvas Draft reply' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Canvas' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Canvas Draft reply' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Recommend next work' })).toBeInTheDocument();
   });
 
@@ -174,6 +175,7 @@ describe('AssistantComposer', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
 
+    expect(screen.getByRole('menuitem', { name: /Canvas/ })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Google Drive/ })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Attach screenshot/ })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: /Attach from Drive/ })).toBeInTheDocument();
@@ -304,18 +306,53 @@ describe('AssistantComposer', () => {
     expect(onUtilityCommand).not.toHaveBeenCalled();
   });
 
+  it('opens Canvas without sending a utility command or submitting the composer', () => {
+    const onUtilityCommand = vi.fn();
+    const onOpenCanvas = vi.fn();
+    const onSubmit = vi.fn();
+    renderComposer({ onUtilityCommand, onOpenCanvas, onSubmit });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
+
+    expect(onOpenCanvas).toHaveBeenCalledTimes(1);
+    expect(onUtilityCommand).not.toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it('opens Canvas from the composer action picker', () => {
+    const onOpenCanvas = vi.fn();
+    const onUtilityCommand = vi.fn();
+    renderComposer({ onOpenCanvas, onUtilityCommand });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /Canvas/ }));
+
+    expect(onOpenCanvas).toHaveBeenCalledTimes(1);
+    expect(onUtilityCommand).not.toHaveBeenCalled();
+  });
+
+  it('keeps Canvas available when the assistant composer is read-only', () => {
+    const onOpenCanvas = vi.fn();
+    renderComposer({ disabled: true, onOpenCanvas });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
+
+    expect(onOpenCanvas).toHaveBeenCalledTimes(1);
+  });
+
   it('sends teacher utility commands through the provided command handler', () => {
     const onUtilityCommand = vi.fn();
-    renderComposer({ onUtilityCommand });
+    const onOpenCanvas = vi.fn();
+    renderComposer({ onUtilityCommand, onOpenCanvas });
 
     fireEvent.click(screen.getByRole('button', { name: 'Improve writing' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Canvas Draft reply' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
     fireEvent.click(screen.getByRole('button', { name: 'Recommend next work' }));
 
-    expect(onUtilityCommand).toHaveBeenCalledTimes(3);
+    expect(onUtilityCommand).toHaveBeenCalledTimes(2);
     expect(onUtilityCommand.mock.calls[0][0]).toContain('Improve the writing');
-    expect(onUtilityCommand.mock.calls[1][0]).toContain('Canvas-style draft reply');
-    expect(onUtilityCommand.mock.calls[2][0]).toContain('Recommend the next useful LSAT work');
+    expect(onUtilityCommand.mock.calls[1][0]).toContain('Recommend the next useful LSAT work');
+    expect(onOpenCanvas).toHaveBeenCalledTimes(1);
   });
 
   it('attaches a screenshot via the file input and forwards it (image-only, no text) to onSubmit', async () => {
