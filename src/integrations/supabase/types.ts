@@ -2585,6 +2585,36 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_todo_dismissals: {
+        Row: {
+          admin_user_id: string
+          created_at: string
+          dismissed_at: string
+          expires_at: string | null
+          id: string
+          source_id: string
+          source_kind: string
+        }
+        Insert: {
+          admin_user_id: string
+          created_at?: string
+          dismissed_at?: string
+          expires_at?: string | null
+          id?: string
+          source_id: string
+          source_kind: string
+        }
+        Update: {
+          admin_user_id?: string
+          created_at?: string
+          dismissed_at?: string
+          expires_at?: string | null
+          id?: string
+          source_id?: string
+          source_kind?: string
+        }
+        Relationships: []
+      }
       teaching_assets: {
         Row: {
           asset_type: string
