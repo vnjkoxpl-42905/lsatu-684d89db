@@ -71,7 +71,7 @@ export function AssistantComposer({
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const [materialOpen, setMaterialOpen] = useState(false);
   const [attachedSources, setAttachedSources] = useState<AttachedSource[]>([]);
-  const [driveLoading, setDriveLoading] = useState(false);
+  const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
   const canSubmit = value.trim().length > 0 && !loading && !disabled;
   const canUseAssistantActions = !loading && !disabled && Boolean(onUtilityCommand);
 
