@@ -1,64 +1,43 @@
 ## Goal
 
-Make the **Google Drive** option in the Teacher Desk composer behave like ChatGPT's connector chip — a toggleable source flag for the next message — and stop launching the Google Picker as the primary action. Keep manual file picking available as a separate menu item, and be truthful that we cannot yet read Drive content server-side.
+Make the Google Drive connector chip actually search Drive via the AI assistant — no fake prompt text. When `driveConnector` is on, the model gets a real `search_google_drive` tool wired to the existing `gdrive` Edge Function (which is already connected to the workspace Google Drive connector).
 
-## Behavior changes
+## Changes
 
-### Composer menu (`+` button)
-Replace the current single "Google Drive" item with two clearly separated entries:
+### 1. `supabase/functions/teacher-operator-chat/index.ts` (backend)
 
-1. **Google Drive** (connector chip)
-   - Click → no picker, no navigation, no OAuth popup.
-   - Adds a single removable chip in the composer labeled **"Google Drive"** with the Drive icon.
-   - Re-clicking the menu item toggles the chip off. The chip's × also removes it.
-   - Chip is a singleton (only one Drive connector chip at a time, separate from any file chips).
+- Add a new tool definition `search_google_drive`:
+  - params: `query` (string, optional), `pageSize` (number, max 25, default 10)
+  - description makes clear it returns file names, ids, mimeTypes, modifiedTime, webViewLink — and cannot read file contents yet.
+- Implement it in `runTool` by calling the gateway directly (same pattern as `gdrive/index.ts`): `GET https://connector-gateway.lovable.dev/google_drive/drive/v3/files` with `Authorization: Bearer LOVABLE_API_KEY` and `X-Connection-Api-Key: GOOGLE_DRIVE_API_KEY`. Fields: `files(id,name,mimeType,modifiedTime,webViewLink,iconLink)`. Trim result to a compact array.
+- Gate the tool: only include `search_google_drive` in the `tools` array when `deskContext.driveConnector === true` AND `GOOGLE_DRIVE_API_KEY` is set. If the user enabled the chip but the connector isn't linked, append a system note: "Google Drive connector chip is on but no Google Drive connection is linked in this workspace; tell the user to link Google Drive."
+- Extend `DeskContext` with `driveConnector?: boolean` and append a short system note when true: "Google Drive connector is ENABLED. Use search_google_drive to find files. You can return names, links, and ids. You cannot read file contents yet — say so if asked to summarize a file."
+- Return tool error string verbatim on gateway failure (401/403 → "Google Drive connector not authorized — relink it").
 
-2. **Attach from Drive** (manual picker — existing behavior, relabeled)
-   - Click → loads gapi + opens the Google Picker.
-   - Selected files become individual `drive` file chips (current behavior).
-   - Stays under the existing `Attach file` / `Attach material` grouping.
+### 2. `src/pages/teacher/desk/DeskChatPanel.tsx` and `src/pages/teacher/desk/MiniChat.tsx` (frontend)
 
-### Submit payload
-Extend `ComposerSubmitSources` so the assistant request knows the connector is on:
+- Stop appending the `[Google Drive connector: enabled — server-side Drive search is not wired yet…]` text block.
+- Instead, pass `driveConnector: true` through the structured `context` arg already supported by `useOperatorChat.sendMessage(text, context)`. (MiniChat path uses the same hook indirectly — pass through whichever send signature it uses; if it doesn't accept context yet, thread it through.)
+- Keep `[Google Drive files: …]` text for explicitly picked Drive files (separate, unchanged behavior).
 
-```ts
-export interface ComposerSubmitSources {
-  labels: string[];
-  drive: DriveFileRef[];        // picked files (existing)
-  driveConnector: boolean;       // NEW: connector chip toggled on
-}
-```
+### 3. `src/hooks/useOperatorChat.ts`
 
-### MiniChat + DeskChatPanel
-In both `submit` functions, when `sources?.driveConnector` is true, append a truthful tag to the outgoing message body, e.g.:
+- Extend `OperatorChatContext` type to include `driveConnector?: boolean` so it's forwarded in the request body to the edge function.
 
-```
-[Google Drive connector: enabled — note: server-side Drive search is not wired yet, so the assistant can only use Drive files explicitly attached in this message.]
-```
+### 4. Tests
 
-This honors the "do not fake it" rule from the chat-agent contract: the assistant is informed Drive is selected as a source, and is told plainly that without attached files it cannot read arbitrary Drive content.
+- Update `AssistantComposer.test.tsx` only if existing assertions check the old "not wired yet" text (they don't — they only assert `driveConnector: true` is forwarded, which still holds).
+- No new tests required for the edge function (existing project has no edge-function test harness).
 
-## Files to change
+## What this does NOT do
 
-- `src/pages/teacher/desk/AssistantComposer.tsx`
-  - Add `'driveConnector'` to `SourceKind` and a `connector?: 'drive'` discriminator on `AttachedSource`.
-  - New `toggleDriveConnector()` handler wired to the menu's **Google Drive** item (no async, no picker).
-  - Keep `openDrivePicker()` but rename its menu item to **Attach from Drive** and move it next to **Attach file**.
-  - Render the connector chip with the Drive icon and label "Google Drive"; chip remove clears it.
-  - Update `submit()` to include `driveConnector: attachedSources.some(s => s.kind === 'driveConnector')` in the payload, and treat the connector as "has something attached" so it submits even with no text? No — keep current rule (text required); the connector only travels alongside a real message.
+- Does not read Drive file contents (Docs/PDF text extraction). The tool description and assistant system note state this honestly; if the user asks to summarize a file, the assistant will say it can only return names/links for now.
+- Does not change the manual "Attach from Drive" picker behavior.
+- No DB schema changes.
 
-- `src/pages/teacher/desk/MiniChat.tsx` and `src/pages/teacher/desk/DeskChatPanel.tsx`
-  - Read `sources?.driveConnector` and append the truthful tag described above to `parts` before sending.
+## Verification
 
-- `src/pages/teacher/desk/AssistantComposer.test.tsx`
-  - Adjust/add a test: clicking **Google Drive** in the menu adds a "Google Drive" chip and does not call `loadGooglePickerApi` / `openPicker`. Clicking **Attach from Drive** still opens the picker. Submitting with the chip on calls `onSubmit` with `driveConnector: true`.
-
-## Not changing
-
-- `src/lib/googleDrive.ts` (picker helper) — still used by **Attach from Drive** and by `src/pages/admin/DriveFiles.tsx`.
-- `src/components/inbox/DriveAttachmentPicker.tsx` and Gmail-side flows — unrelated to the composer chip.
-- No backend or edge function changes. Server-side Drive search remains unwired; the connector flag is informational until that's built.
-
-## Out of scope (call out, don't build)
-
-- Real server-side Drive search/read for the connector. When that's wanted, the next step is an edge function that uses the stored Drive token from `lib/googleDrive.ts` (or the `google_drive` connector gateway) to search files matching the message and inject excerpts. Today the chip is a declared intent only.
+1. Deploy `teacher-operator-chat`.
+2. In Teacher Desk: enable the Google Drive chip → ask "what files do you see in Google Drive?" → assistant calls `search_google_drive` and lists real file names + links.
+3. With chip off → same question → assistant should not call the tool (tool isn't in its toolset for that turn).
+4. If `GOOGLE_DRIVE_API_KEY` missing → assistant tells the user to link Google Drive.
