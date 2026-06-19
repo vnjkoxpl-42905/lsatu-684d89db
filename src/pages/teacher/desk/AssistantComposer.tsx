@@ -335,10 +335,11 @@ const MATERIAL_TYPES = [
 ];
 
 function SourceChipIcon({ kind }: { kind: SourceKind }) {
-  if (kind === 'drive') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
+  if (kind === 'drive' || kind === 'driveConnector') return <GoogleDriveIcon className="h-3.5 w-3.5" />;
   if (kind === 'file') return <Paperclip className="h-3.5 w-3.5" strokeWidth={1.9} />;
   return <Library className="h-3.5 w-3.5" strokeWidth={1.8} />;
 }
+
 
 function SourceChip({
   source,
