@@ -162,19 +162,21 @@ export function AssistantComposer({
     setAttachedSources((current) => current.filter((source) => source.id !== id));
   };
 
-  const toggleDriveConnector = () => {
+  const toggleConnector = (id: string, kind: SourceKind, label: string) => {
     if (disabled || loading) return;
     setActionMenuOpen(false);
     setMaterialOpen(false);
     setAttachedSources((current) => {
-      if (current.some((s) => s.id === DRIVE_CONNECTOR_ID)) {
-        return current.filter((s) => s.id !== DRIVE_CONNECTOR_ID);
+      if (current.some((s) => s.id === id)) {
+        return current.filter((s) => s.id !== id);
       }
-      return [...current, { id: DRIVE_CONNECTOR_ID, kind: 'driveConnector', label: 'Google Drive' }];
+      return [...current, { id, kind, label }];
     });
   };
 
   const driveConnectorActive = attachedSources.some((s) => s.id === DRIVE_CONNECTOR_ID);
+  const gmailConnectorActive = attachedSources.some((s) => s.id === GMAIL_CONNECTOR_ID);
+  const calendarConnectorActive = attachedSources.some((s) => s.id === CALENDAR_CONNECTOR_ID);
 
 
   return (
