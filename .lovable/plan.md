@@ -1,22 +1,48 @@
-The "After" orb's silver effect doesn't match the reference. Mine is a flat radial silver; the reference is a chrome sweep — a bright diagonal white highlight band running from upper-left to lower-right, with darker steel-grey at the top-right and bottom-left edges, plus a subtle rim shadow.
+## Goal
 
-## Changes (CSS only, `src/features/activity-centre/activities-home.css`)
+Make "Google Drive" in the Teacher Desk composer behave like ChatGPT's connector chip:
+- click it → open the real Google Drive Picker in-place
+- picked files become removable chips in the composer
+- on submit, those files travel with the message as real context (name + Drive link)
+- never navigates away from `/teacher`
+- nothing is faked: if the user cancels the picker, no chip is added
 
-**`.act-orb--after`** — replace the radial gradient with a layered chrome effect:
-1. Base: `conic-gradient` rotated so the brightest band sits on a diagonal — sequence roughly `#9c968a → #d8d4cc → #ffffff → #f0ece4 → #8d8678 → #2b2925 → #9c968a` to produce the bright sweep + dark cheek.
-2. Overlay: a soft `linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.55) 48%, transparent 66%)` to intensify the diagonal highlight.
-3. Inset shadow: `inset 0 -8px 24px rgba(0,0,0,0.18), inset 0 8px 18px rgba(255,255,255,0.4)` for the rim/sheen.
-4. Drop shadow: keep the existing soft cast shadow.
+The real Drive picker is already wired in `src/lib/googleDrive.ts` (used today by `src/pages/admin/DriveFiles.tsx`). We reuse it.
 
-**`.act-orb--before`** — keep pure `#000`, just add `inset 0 -10px 30px rgba(255,255,255,0.04)` for a barely-there rim like the reference.
+## Changes
 
-**Text colors inside the After orb** — bump label to `hsl(var(--act-ink) / 0.55)` and body to `hsl(var(--act-ink))` so they read against the brightest part of the chrome.
+### 1. `src/pages/teacher/desk/AssistantComposer.tsx`
+- Extend `AttachedSource` so `drive` chips can carry file metadata: `{ id, kind, label, drive?: { fileId, name, mimeType, url } }`.
+- Replace the current `addSource('drive', 'Google Drive')` click handler with a new `openDrivePicker()` flow:
+  - Close the menu immediately.
+  - Set a local `driveLoading` state, show a small spinner on the menu item.
+  - `await loadGooglePickerApi()` then `openPicker((files) => …)` from `@/lib/googleDrive`.
+  - For each picked file, push a chip with `kind: 'drive'`, `label: file.name`, and the `drive` metadata. De-dupe by `fileId`.
+  - On error, surface a toast (`sonner`) — do not add a chip.
+- Update `submit()` to forward structured Drive context, not just labels:
+  - New `onSubmit` signature: `onSubmit(sources?: { labels: string[]; drive: Array<{ fileId; name; mimeType; url }> })`.
+  - Existing non-drive chips still contribute their label.
+- Keep keyboard, a11y, and the existing chip remove behavior.
 
-## Out of scope
+### 2. `src/pages/teacher/desk/DeskChatPanel.tsx` and `MiniChat.tsx`
+- Update their `submit(sources)` to read the new shape.
+- Build the outgoing message so the assistant has real handles:
+  - If labels present: `[Attached context: <labels>]`
+  - If drive files present: append `[Google Drive files: name (url), name (url), …]` with the real `webViewLink` from the picker.
+- No backend changes — the message text carries the references. We do not pretend to read file contents; the assistant gets verifiable Drive links it can quote back.
 
-- No layout/component edits.
-- Accent orange, canvas, typography, and Before orb stay as-is.
+### 3. `src/pages/teacher/desk/AssistantComposer.test.tsx`
+- Mock `@/lib/googleDrive` so `loadGooglePickerApi` resolves and `openPicker` invokes its callback with a fake `PickedFile[]`.
+- Update the existing Google Drive tests:
+  - Clicking the "Google Drive" menu item triggers the picker, and the picked file's name becomes the chip label (e.g. `Remove Lesson plan.pdf`), not the literal "Google Drive".
+  - De-dupe test keys off `fileId`, not label.
+  - `onSubmit` is called with the new `{ labels, drive }` shape; `drive[0].url` matches the mocked file URL.
+- Add a test for "user cancels the picker → no chip is added".
 
-## Files touched
+## Non-goals
+- No new Edge Function, no connector wiring, no server-side Drive fetch.
+- No change to `Attach file` / `Attach material` flows.
+- No change to `/teacher` routing — the picker is an in-page overlay served by Google.
 
-- `src/features/activity-centre/activities-home.css` only.
+## Risk
+The Drive picker requires the user to consent to the existing OAuth client on first use. That's identical to today's `/admin/drive-files` flow, so no new infra needed.

@@ -1,6 +1,17 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { AssistantComposer } from './AssistantComposer';
+
+vi.mock('@/lib/googleDrive', () => {
+  const openPicker = vi.fn();
+  return {
+    loadGooglePickerApi: vi.fn(async () => {}),
+    openPicker,
+  };
+});
+
+import { openPicker as mockedOpenPicker } from '@/lib/googleDrive';
+const openPickerMock = mockedOpenPicker as unknown as ReturnType<typeof vi.fn>;
 
 function renderComposer(
   props: Partial<React.ComponentProps<typeof AssistantComposer>> = {},
@@ -150,41 +161,87 @@ describe('AssistantComposer', () => {
     expect(screen.getByRole('menuitem', { name: 'Student upload/source material' })).toBeInTheDocument();
   });
 
-  it('drops a removable source chip when a source is picked', () => {
+  const fakeFile = {
+    id: 'gdrive-abc-123',
+    name: 'Lesson plan.pdf',
+    mimeType: 'application/pdf',
+    url: 'https://drive.google.com/file/d/gdrive-abc-123/view',
+  };
+
+  it('opens the Drive picker and drops a chip with the picked file name', async () => {
+    openPickerMock.mockImplementationOnce((cb: (files: typeof fakeFile[]) => void) => {
+      cb([fakeFile]);
+    });
     renderComposer();
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
 
-    // The picked source now shows as a removable chip, not a navigation.
-    const removeButton = screen.getByRole('button', { name: 'Remove Google Drive' });
-    expect(removeButton).toBeInTheDocument();
-
-    fireEvent.click(removeButton);
+    await waitFor(() => {
+      expect(openPickerMock).toHaveBeenCalled();
+    });
+    expect(await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' })).toBeInTheDocument();
+    // Never shows a literal "Google Drive" chip — the chip is the file itself.
     expect(screen.queryByRole('button', { name: 'Remove Google Drive' })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Lesson plan.pdf' }));
+    expect(screen.queryByRole('button', { name: 'Remove Lesson plan.pdf' })).not.toBeInTheDocument();
   });
 
-  it('does not duplicate a chip when the same source is picked twice', () => {
+  it('does not add a chip when the user cancels the Drive picker', async () => {
+    openPickerMock.mockImplementationOnce(() => {
+      // user closes the picker without selecting; callback is never invoked
+    });
     renderComposer();
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
+
+    await waitFor(() => {
+      expect(openPickerMock).toHaveBeenCalled();
+    });
+    expect(screen.queryByRole('button', { name: /^Remove / })).not.toBeInTheDocument();
+  });
+
+  it('does not duplicate a chip when the same Drive file is picked twice', async () => {
+    openPickerMock.mockImplementation((cb: (files: typeof fakeFile[]) => void) => cb([fakeFile]));
+    renderComposer();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
+    await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' });
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
 
-    expect(screen.getAllByRole('button', { name: 'Remove Google Drive' })).toHaveLength(1);
+    await waitFor(() => {
+      expect(openPickerMock.mock.calls.length).toBeGreaterThanOrEqual(2);
+    });
+    expect(screen.getAllByRole('button', { name: 'Remove Lesson plan.pdf' })).toHaveLength(1);
+    openPickerMock.mockReset();
   });
 
-  it('forwards attached source labels to onSubmit and clears them', () => {
+  it('forwards Drive file metadata to onSubmit and clears the chips', async () => {
     const onSubmit = vi.fn();
+    openPickerMock.mockImplementationOnce((cb: (files: typeof fakeFile[]) => void) => cb([fakeFile]));
     renderComposer({ value: 'Draft a reply', onSubmit });
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: 'Google Drive' }));
+    await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' });
     fireEvent.keyDown(screen.getByLabelText('Assistant instructions'), { key: 'Enter', shiftKey: false });
 
-    expect(onSubmit).toHaveBeenCalledWith(['Google Drive']);
-    expect(screen.queryByRole('button', { name: 'Remove Google Drive' })).not.toBeInTheDocument();
+    expect(onSubmit).toHaveBeenCalledWith({
+      labels: [],
+      drive: [
+        {
+          fileId: 'gdrive-abc-123',
+          name: 'Lesson plan.pdf',
+          mimeType: 'application/pdf',
+          url: 'https://drive.google.com/file/d/gdrive-abc-123/view',
+        },
+      ],
+    });
+    expect(screen.queryByRole('button', { name: 'Remove Lesson plan.pdf' })).not.toBeInTheDocument();
   });
 
   it('picks a material type as a chip instead of firing a utility command', () => {

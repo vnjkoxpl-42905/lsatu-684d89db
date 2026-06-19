@@ -26,11 +26,19 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
     sendMessage(text);
   };
 
-  const submit = (sources?: string[]) => {
+  const submit = (sources?: import('./AssistantComposer').ComposerSubmitSources) => {
     const text = input.trim();
     if (!text) return;
     setInput('');
-    send(sources?.length ? `${text}\n\n[Attached context: ${sources.join(', ')}]` : text);
+    const parts = [text];
+    if (sources?.labels.length) {
+      parts.push(`[Attached context: ${sources.labels.join(', ')}]`);
+    }
+    if (sources?.drive.length) {
+      const drive = sources.drive.map((f) => `${f.name} (${f.url})`).join(', ');
+      parts.push(`[Google Drive files: ${drive}]`);
+    }
+    send(parts.join('\n\n'));
   };
 
   return (
