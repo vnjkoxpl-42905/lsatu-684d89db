@@ -125,6 +125,15 @@ export function AssistantComposer({
   const [isDragging, setIsDragging] = useState(false);
   const [previewImage, setPreviewImage] = useState<ComposerImage | null>(null);
   const [driveBrowserOpen, setDriveBrowserOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>(() => {
+    if (typeof window === 'undefined') return DEFAULT_MODEL_ID;
+    const saved = window.localStorage.getItem(MODEL_STORAGE_KEY);
+    return saved && AVAILABLE_MODELS.some((m) => m.id === saved) ? saved : DEFAULT_MODEL_ID;
+  });
+  const handleModelChange = useCallback((id: string) => {
+    setSelectedModel(id);
+    if (typeof window !== 'undefined') window.localStorage.setItem(MODEL_STORAGE_KEY, id);
+  }, []);
   const [promptHelperOpen, setPromptHelperOpen] = useState(false);
   const [promptHelperText, setPromptHelperText] = useState('');
   const [polishingPrompt, setPolishingPrompt] = useState(false);
