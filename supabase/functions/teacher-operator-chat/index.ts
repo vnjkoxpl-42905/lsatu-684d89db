@@ -837,6 +837,9 @@ Deno.serve(async (req) => {
       result: ToolResult;
     }> = [];
 
+    const requestedModel = typeof deskContext?.model === "string" ? deskContext.model : null;
+    const chatModel = requestedModel && ALLOWED_MODELS.has(requestedModel) ? requestedModel : DEFAULT_MODEL;
+
     let iter = 0;
     while (iter++ < 4) {
       const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -846,7 +849,7 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
+          model: chatModel,
           messages: baseMessages,
           tools: activeTools,
           tool_choice: "auto",
