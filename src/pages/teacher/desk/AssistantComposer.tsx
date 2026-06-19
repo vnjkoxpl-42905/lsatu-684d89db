@@ -165,6 +165,21 @@ export function AssistantComposer({
     setAttachedSources((current) => current.filter((source) => source.id !== id));
   };
 
+  const toggleDriveConnector = () => {
+    if (disabled || loading) return;
+    setActionMenuOpen(false);
+    setMaterialOpen(false);
+    setAttachedSources((current) => {
+      if (current.some((s) => s.id === DRIVE_CONNECTOR_ID)) {
+        return current.filter((s) => s.id !== DRIVE_CONNECTOR_ID);
+      }
+      return [...current, { id: DRIVE_CONNECTOR_ID, kind: 'driveConnector', label: 'Google Drive' }];
+    });
+  };
+
+  const driveConnectorActive = attachedSources.some((s) => s.id === DRIVE_CONNECTOR_ID);
+
+
   return (
     <div className="mt-5 w-full">
       {readOnlyMessage ? <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black/40">{readOnlyMessage}</div> : null}
