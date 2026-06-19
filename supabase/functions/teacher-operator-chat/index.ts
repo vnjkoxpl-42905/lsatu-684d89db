@@ -179,6 +179,52 @@ interface DeskContext {
   driveConnector?: boolean;
   gmailConnector?: boolean;
   calendarConnector?: boolean;
+  model?: string;
+}
+
+const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+const CHEAP_MODEL = "google/gemini-2.5-flash-lite";
+const SMART_MODEL = "google/gemini-2.5-pro";
+const ALLOWED_MODELS = new Set<string>([
+  "google/gemini-3-flash-preview",
+  "google/gemini-3.1-flash-lite",
+  "google/gemini-3.5-flash",
+  "google/gemini-3.1-pro-preview",
+  "google/gemini-2.5-pro",
+  "google/gemini-2.5-flash",
+  "google/gemini-2.5-flash-lite",
+  "openai/gpt-5",
+  "openai/gpt-5-mini",
+  "openai/gpt-5-nano",
+  "openai/gpt-5.2",
+  "openai/gpt-5.4",
+  "openai/gpt-5.4-mini",
+  "openai/gpt-5.4-nano",
+  "openai/gpt-5.4-pro",
+  "openai/gpt-5.5",
+  "openai/gpt-5.5-pro",
+]);
+
+/**
+ * Auto routing: pick the cheapest model likely to satisfy the task.
+ * - Image inputs or large context → multimodal/strong model
+ * - Long input or "reasoning" cues → SMART_MODEL
+ * - Tools enabled (Drive/Gmail/Calendar) → DEFAULT_MODEL (good tool calling, fast)
+ * - Trivial short prompts → CHEAP_MODEL
+ */
+function pickAutoModel(opts: {
+  text: string;
+  hasImages: boolean;
+  toolsEnabled: boolean;
+  totalChars: number;
+}): string {
+  const t = opts.text.toLowerCase();
+  if (opts.hasImages) return "google/gemini-2.5-flash";
+  if (opts.totalChars > 12000) return SMART_MODEL;
+  const reasoningCues = /\b(analy[sz]e|reason|prove|why|explain in depth|step[- ]by[- ]step|plan|strategi[sz]e|compare|critique|rubric|grade|debug|refactor|architect|derive)\b/;
+  if (reasoningCues.test(t) || opts.text.length > 1500) return SMART_MODEL;
+  if (opts.toolsEnabled) return DEFAULT_MODEL;
+  return CHEAP_MODEL;
 }
 
 const GDRIVE_GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
