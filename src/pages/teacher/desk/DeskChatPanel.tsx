@@ -5,7 +5,17 @@ import { useOperatorChatContext } from '@/components/teacher/ai-ta/OperatorChatP
 import { cn } from '@/lib/utils';
 import { AssistantComposer } from './AssistantComposer';
 import { ImageLightbox } from './ImageLightbox';
-import type { OperatorImage } from '@/hooks/useOperatorChat';
+import { DraftReplyCard, type DraftReplyData } from './DraftReplyCard';
+import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
+
+/** Pull the renderable draft cards out of an assistant turn's tool results. */
+function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyData[] {
+  if (!toolResults?.length) return [];
+  return toolResults
+    .filter((tr) => tr.name === 'create_draft' && tr.result?.ok)
+    .map((tr) => (tr.result?.data as { draft?: DraftReplyData })?.draft)
+    .filter((d): d is DraftReplyData => !!d && typeof d.draft_markdown === 'string');
+}
 
 /**
  * Center chat surface for the Teacher Desk. Light "instrument-panel" transcript
@@ -82,45 +92,61 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           </div>
         ) : (
           <div className="space-y-4">
-            {messages.map((message) => (
-              <div key={message.id} className={cn('flex flex-col', message.role === 'user' ? 'items-end' : 'items-start')}>
+            {messages.map((message) => {
+              const drafts = message.role === 'assistant' ? draftsFromToolResults(message.tool_results) : [];
+              const showBubble = !!message.content || !!message.images?.length || !!message.pending;
+              return (
                 <div
-                  className={cn(
-                    'max-w-[88%] px-3.5 py-2.5 text-sm leading-relaxed',
-                    message.role === 'user'
-                      ? 'bg-[#c8841f]/12 text-black/80'
-                      : 'bg-white/70 text-black/80',
-                  )}
+                  key={message.id}
+                  className={cn('flex flex-col gap-2.5', message.role === 'user' ? 'items-end' : 'items-start')}
                 >
-                  {message.images?.length ? (
-                    <div className="mb-2 flex flex-wrap gap-1.5">
-                      {message.images.map((img, index) => (
-                        <button
-                          key={`${message.id}-img-${index}`}
-                          type="button"
-                          onClick={() => setPreviewImage(img)}
-                          aria-label={`Preview ${img.name}`}
-                          className="block overflow-hidden rounded-md border border-black/15"
-                        >
-                          <img
-                            src={img.dataUrl}
-                            alt={img.name}
-                            className="h-24 w-24 object-cover transition hover:opacity-90"
-                          />
-                        </button>
-                      ))}
+                  {showBubble ? (
+                    <div
+                      className={cn(
+                        'max-w-[88%] px-3.5 py-2.5 text-sm leading-relaxed',
+                        message.role === 'user'
+                          ? 'bg-[#c8841f]/12 text-black/80'
+                          : 'bg-white/70 text-black/80',
+                      )}
+                    >
+                      {message.images?.length ? (
+                        <div className="mb-2 flex flex-wrap gap-1.5">
+                          {message.images.map((img, index) => (
+                            <button
+                              key={`${message.id}-img-${index}`}
+                              type="button"
+                              onClick={() => setPreviewImage(img)}
+                              aria-label={`Preview ${img.name}`}
+                              className="block overflow-hidden rounded-md border border-black/15"
+                            >
+                              <img
+                                src={img.dataUrl}
+                                alt={img.name}
+                                className="h-24 w-24 object-cover transition hover:opacity-90"
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                      {message.pending && !message.content ? (
+                        <Loader2 className="h-4 w-4 animate-spin text-black/40" />
+                      ) : message.content ? (
+                        <div className="prose prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5">
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                      ) : null}
                     </div>
                   ) : null}
-                  {message.pending && !message.content ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-black/40" />
-                  ) : message.content ? (
-                    <div className="prose prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5">
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </div>
-                  ) : null}
+                  {drafts.map((draft, index) => (
+                    <DraftReplyCard
+                      key={draft.id ?? `${message.id}-draft-${index}`}
+                      draft={draft}
+                      localPreview={localPreview}
+                    />
+                  ))}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

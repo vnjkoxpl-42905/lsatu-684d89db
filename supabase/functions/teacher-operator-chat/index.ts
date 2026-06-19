@@ -32,6 +32,12 @@ Operating principles:
 - If a request is ambiguous (which student? which week? how many questions?), ask one
   short clarifying question instead of guessing.
 - Use markdown sparingly: bold names and counts, short bullet lists when listing.
+- Whenever he asks you to draft a reply, message, or email, ALWAYS use create_draft so it
+  renders as an editable draft card he can approve - never paste the draft as plain chat text.
+  Use channel 'email' (with to/subject when known) for emails, otherwise the student message
+  channel. Keep your own chat reply to one short line; the draft lives in the card.
+- If he asks for multiple versions (e.g. cleaner, warmer, more concise), call create_draft once
+  per version, each with a distinct variant_label.
 
 Tone: warm, sharp, efficient. You are his right hand.`;
 
@@ -71,11 +77,14 @@ const TOOLS = [
     function: {
       name: "create_draft",
       description:
-        "Create a pending draft (recap, message, next-assignment recommendation, classroom announcement) for a single student. Joshua reviews and approves before anything is sent.",
+        "Create a pending draft (a reply, recap, message, next-assignment recommendation, classroom announcement, or email) that renders as an inline draft card on the Teacher Desk for Joshua to edit and approve. Nothing is sent automatically. Use this whenever Joshua asks you to draft a reply, message, or email. To offer multiple versions, call this once per version, each with a distinct variant_label.",
       parameters: {
         type: "object",
         properties: {
-          student_id: { type: "string" },
+          student_id: {
+            type: "string",
+            description: "The student this draft is for. Required for channel 'student_message'; omit for channel 'email'.",
+          },
           draft_type: {
             type: "string",
             enum: [
@@ -86,6 +95,25 @@ const TOOLS = [
               "classroom_update_bundle",
             ],
           },
+          channel: {
+            type: "string",
+            enum: ["student_message", "email"],
+            description:
+              "Where this draft is headed. 'student_message' (default) sends in the 1:1 student thread; 'email' sends via Gmail. Use 'email' when Joshua asks to draft an email.",
+          },
+          variant_label: {
+            type: "string",
+            description:
+              "Short label for this version when offering alternatives, e.g. 'Clean version', 'Slightly warmer', 'More concise'. Omit for a single draft.",
+          },
+          to: {
+            type: "string",
+            description: "Email recipient address. Only for channel 'email' when known.",
+          },
+          subject: {
+            type: "string",
+            description: "Email subject line. Only for channel 'email'.",
+          },
           prompt: {
             type: "string",
             description: "What Joshua asked you to draft (1 line).",
@@ -93,10 +121,10 @@ const TOOLS = [
           draft_markdown: {
             type: "string",
             description:
-              "The actual draft body. Markdown. Address the student by name when relevant.",
+              "The actual draft body. Markdown. Address the recipient by name when relevant.",
           },
         },
-        required: ["student_id", "draft_type", "draft_markdown"],
+        required: ["draft_type", "draft_markdown"],
         additionalProperties: false,
       },
     },
@@ -477,6 +505,31 @@ async function runTool(
         };
       }
       case "create_draft": {
+        const channel = args.channel === "email" ? "email" : "student_message";
+        // Echo the card-only fields back so the desk renders labels/recipient
+        // without needing new ai_ta_drafts columns.
+        const extras = {
+          channel,
+          variant_label: asString(args.variant_label) || undefined,
+          to: asString(args.to) || undefined,
+          subject: asString(args.subject) || undefined,
+        };
+        // Email drafts are headed to Gmail, not a student thread, so they are not
+        // persisted as student drafts — just rendered inline and sent on approval.
+        if (channel === "email") {
+          return {
+            ok: true,
+            data: {
+              draft: {
+                id: crypto.randomUUID(),
+                draft_type: asString(args.draft_type, "message"),
+                draft_markdown: asString(args.draft_markdown),
+                prompt: asString(args.prompt) || null,
+                ...extras,
+              },
+            },
+          };
+        }
         const { data, error } = await admin
           .from(table("ai_ta_drafts"))
           .insert({
@@ -493,7 +546,7 @@ async function runTool(
           .select("id, draft_type, student_id, draft_markdown, prompt")
           .single();
         if (error) throw error;
-        return { ok: true, data: { draft: data } };
+        return { ok: true, data: { draft: { ...data, ...extras } } };
       }
       case "send_message": {
         // Find or create the 1:1 conversation between admin and student.
@@ -610,7 +663,38 @@ Deno.serve(async (req) => {
       });
     }
 
-    const payload = (await req.json()) as { messages?: unknown; context?: unknown };
+    const payload = (await req.json()) as {
+      messages?: unknown;
+      context?: unknown;
+      action?: unknown;
+      student_id?: unknown;
+      body?: unknown;
+    };
+
+    // Direct action: the Teacher Desk draft card sends the exact, user-approved
+    // body to the student. Reuses the proven send_message tool logic (find-or-
+    // create the 1:1 thread, insert) with no AI in the loop, so the body is sent
+    // verbatim. Confirmation already happened client-side on the card.
+    if (asString(payload.action) === "send_student_message") {
+      const studentId = asString(payload.student_id);
+      const messageBody = asString(payload.body);
+      if (!studentId || !messageBody.trim()) {
+        return new Response(JSON.stringify({ error: "student_id and body are required" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const result = await runTool(
+        "send_message",
+        { student_id: studentId, body: messageBody },
+        { adminId, admin, context: null },
+      );
+      return new Response(JSON.stringify(result), {
+        status: result.ok ? 200 : 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const messages = payload.messages ?? [];
     const context = payload.context ?? null;
     const deskContext: DeskContext | null = isRecord(context) ? (context as DeskContext) : null;
