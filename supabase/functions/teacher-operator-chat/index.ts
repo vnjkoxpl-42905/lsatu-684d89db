@@ -524,6 +524,10 @@ async function runTool(
       }
       case "search_google_drive":
         return await searchGoogleDrive(args);
+      case "search_gmail":
+        return await searchGmail(args);
+      case "list_calendar_events":
+        return await listCalendarEvents(args);
       default:
         return { ok: false, error: `Unknown tool: ${name}` };
     }
