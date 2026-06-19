@@ -67,11 +67,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
       />
       <div
         ref={scrollRef}
-        className="min-h-0 flex-1 overflow-y-auto border border-black/18 bg-white/22 p-5 backdrop-blur-[1px]"
+        className="min-h-0 flex-1 overflow-y-auto px-1 py-5"
       >
         {empty ? (
           <div className="flex h-full min-h-[280px] flex-col items-center justify-center text-center">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-black/15 bg-white/40">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-black/[0.04]">
               <Sparkles className="h-5 w-5 text-[#c8841f]" strokeWidth={1.6} />
             </span>
             <h2 className="mt-4 text-lg font-semibold tracking-tight">What can I help you get done?</h2>
@@ -86,10 +86,10 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
               <div key={message.id} className={cn('flex flex-col', message.role === 'user' ? 'items-end' : 'items-start')}>
                 <div
                   className={cn(
-                    'max-w-[88%] border px-3.5 py-2.5 text-sm leading-relaxed',
+                    'max-w-[88%] px-3.5 py-2.5 text-sm leading-relaxed',
                     message.role === 'user'
-                      ? 'border-[#c8841f]/30 bg-[#c8841f]/12 text-black/80'
-                      : 'border-black/12 bg-white/70 text-black/80',
+                      ? 'bg-[#c8841f]/12 text-black/80'
+                      : 'bg-white/70 text-black/80',
                   )}
                 >
                   {message.images?.length ? (
