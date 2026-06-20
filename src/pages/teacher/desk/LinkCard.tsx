@@ -191,7 +191,7 @@ export function LinkCard({ result }: { result: LinkResult }) {
       {url && confirmOpen ? (
         <ConfirmSendDialog
           student={confirmOpen}
-          link={{ title: result.title, url: absoluteUrl(url) }}
+          link={{ title: result.title, url: absoluteUrl(url), path: isInternal(url) ? toInternalPath(url) : absoluteUrl(url) }}
           onClose={() => setConfirmOpen(null)}
         />
       ) : null}
