@@ -346,15 +346,47 @@ function ConfirmSendDialog({
   );
 }
 
+function normalizeTitle(t: string): string {
+  return t
+    .toLowerCase()
+    .replace(/centre/g, 'center')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function isTeacherOnlyUrl(u?: string | null): boolean {
+  if (!u) return false;
+  return u.startsWith('/teacher/') || u.startsWith('/admin/');
+}
+
+/**
+ * Flatten find_link tool results and collapse teacher/admin duplicates so the
+ * teacher sees ONE student-facing card per concept. When a student URL and a
+ * teacher URL share the same normalized title, the student one wins.
+ */
 export function linksFromToolResults(
   toolResults?: Array<{ name: string; result: { ok: boolean; data?: unknown } }>,
 ): LinkResult[] {
   if (!toolResults?.length) return [];
-  const out: LinkResult[] = [];
+  const flat: LinkResult[] = [];
   for (const tr of toolResults) {
     if (tr.name !== 'find_link' || !tr.result?.ok) continue;
     const data = tr.result.data as { results?: LinkResult[] } | undefined;
-    if (Array.isArray(data?.results)) out.push(...data.results);
+    if (Array.isArray(data?.results)) flat.push(...data.results);
   }
-  return out;
+
+  const byKey = new Map<string, LinkResult>();
+  for (const r of flat) {
+    const key = normalizeTitle(r.title);
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, r);
+      continue;
+    }
+    // Prefer the student-facing (non-teacher) variant.
+    if (isTeacherOnlyUrl(existing.url) && !isTeacherOnlyUrl(r.url)) {
+      byKey.set(key, r);
+    }
+  }
+  return Array.from(byKey.values());
 }
