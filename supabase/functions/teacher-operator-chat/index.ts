@@ -1188,6 +1188,13 @@ Deno.serve(async (req) => {
       });
     }
 
+    const deterministicAssignmentOffer = await buildAssignmentOfferFromHistory({ admin, validMessages });
+    if (deterministicAssignmentOffer) {
+      return new Response(JSON.stringify(deterministicAssignmentOffer), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Tool-using loop. We use non-streaming first to handle tool calls cleanly,
     // then stream the final assistant message back to the client.
     // Typed per-task scope from the Teacher Desk. The desk renders create_draft
