@@ -49,6 +49,7 @@ const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
 const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"));
 const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
 const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
+const AdminInspector = React.lazy(() => import("./pages/admin/Inspector"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 const Journal = React.lazy(() => import("./pages/Journal"));
 const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
@@ -138,6 +139,9 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* TEMP dev preview - remove */}
+            <Route path="/dev/drive-picker" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/dev/DrivePickerPreview")))}</React.Suspense>} />
+
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -210,6 +214,15 @@ const App = () => {
                 <AdminErrorBoundary routeLabel="/admin/ta">
                   <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                     <TAPage />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/inspector" element={
+              <ProtectedRoute flag="has_ta_access">
+                <AdminErrorBoundary routeLabel="/admin/inspector">
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <AdminInspector />
                   </React.Suspense>
                 </AdminErrorBoundary>
               </ProtectedRoute>

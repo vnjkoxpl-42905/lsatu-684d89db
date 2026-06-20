@@ -54,6 +54,15 @@ function stripSharedPassageMetadataPrefix(text: string): string {
   return text.replace(sharedPassageMetadataPrefixPattern, '').trim();
 }
 
+function normalizeProseHardWraps(text: string): string {
+  return text
+    .replace(/\r\n?/g, '\n')
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.replace(/[ \t]*\n[ \t]*/g, ' ').replace(/[ \t]{2,}/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n\n');
+}
+
 function getSharedPassageRange(text: string): { start: number; end: number } | null {
   const match = text.match(sharedPassageRangePattern);
   if (!match) return null;
@@ -89,6 +98,8 @@ export function normalizeStimulusText(text: string): string {
       .replace(new RegExp(`\\s+${sharedRange.start}\\.$`), '')
       .trim();
   }
+
+  normalized = normalizeProseHardWraps(normalized);
 
   return normalizeDialogueSpeakerBreaks(normalized);
 }
@@ -200,6 +211,17 @@ function normalizeQuestionTextFields<T extends {
   for (const item of normalized) {
     if (typeof item.stimulus === 'string') {
       item.stimulus = normalizeStimulusText(item.stimulus);
+    }
+    if (typeof item.questionStem === 'string') {
+      item.questionStem = normalizeProseHardWraps(item.questionStem);
+    }
+    if (item.answerChoices) {
+      for (const key of Object.keys(item.answerChoices)) {
+        const text = item.answerChoices[key];
+        if (typeof text === 'string') {
+          item.answerChoices[key] = normalizeProseHardWraps(text);
+        }
+      }
     }
   }
 

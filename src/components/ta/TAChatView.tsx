@@ -1,7 +1,15 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AlertTriangle, Loader2, Send } from "lucide-react";
+import { AlertTriangle, Loader2, Send, ScanSearch } from "lucide-react";
 import { toast } from "sonner";
 import { useTAChat, type TAInteraction } from "@/hooks/useTAChat";
+import { useInspector } from "@/hooks/useInspector";
+import InspectorReport from "@/components/inspector/InspectorReport";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -44,6 +52,8 @@ function Bubble({ interaction }: { interaction: TAInteraction }) {
 
 export default function TAChatView({ studentId, studentName }: Props) {
   const { interactions, isLoading, error, send } = useTAChat(studentId);
+  const inspect = useInspector();
+  const [inspectOpen, setInspectOpen] = useState(false);
   const [input, setInput] = useState("");
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteIndex, setPaletteIndex] = useState(0);
@@ -102,7 +112,29 @@ export default function TAChatView({ studentId, studentName }: Props) {
 
   const handleSend = async (text?: string) => {
     const msg = (text ?? input).trim();
-    if (!msg || send.isPending) return;
+    if (!msg || send.isPending || inspect.isPending) return;
+
+    // /inspect routes to the Platform Inspector instead of the TA chat. The
+    // structured report renders in an overlay so the persisted ta_interactions
+    // thread stays focused on student work.
+    const inspectMatch = msg.match(/^\/inspect\b\s*(.*)$/is);
+    if (inspectMatch) {
+      const target = inspectMatch[1].trim();
+      if (!target) {
+        toast.error("Name what to inspect, e.g. /inspect Negation Station");
+        return;
+      }
+      if (!text) setInput("");
+      setPaletteOpen(false);
+      setInspectOpen(true);
+      try {
+        await inspect.mutateAsync({ target });
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Inspection failed");
+      }
+      return;
+    }
+
     try {
       const result = await send.mutateAsync(msg);
       if (!text) setInput("");
@@ -268,7 +300,7 @@ export default function TAChatView({ studentId, studentName }: Props) {
           />
           <Button
             onClick={() => handleSend()}
-            disabled={send.isPending || !input.trim()}
+            disabled={send.isPending || inspect.isPending || !input.trim()}
             size="icon"
             aria-label="Send"
           >
@@ -280,6 +312,29 @@ export default function TAChatView({ studentId, studentName }: Props) {
           </Button>
         </div>
       </div>
+
+      <Dialog open={inspectOpen} onOpenChange={setInspectOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-zinc-950 border-zinc-800">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-zinc-100">
+              <ScanSearch className="h-4 w-4 text-zinc-400" />
+              Platform Inspector
+            </DialogTitle>
+          </DialogHeader>
+          {inspect.isPending ? (
+            <div className="flex items-center justify-center gap-2 py-12 text-zinc-500 text-sm">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Exploring the codebase and sampling data…
+            </div>
+          ) : inspect.data ? (
+            <InspectorReport report={inspect.data} />
+          ) : (
+            <div className="py-8 text-center text-sm text-zinc-500">
+              Nothing to show.
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

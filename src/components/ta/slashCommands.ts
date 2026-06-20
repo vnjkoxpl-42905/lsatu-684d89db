@@ -7,6 +7,7 @@ import {
   BookMarked,
   ListChecks,
   Presentation,
+  ScanSearch,
 } from "lucide-react";
 
 export interface SlashCommand {
@@ -79,6 +80,13 @@ export const SLASH_COMMANDS: SlashCommand[] = [
     description: "Prepare for the next session with this student",
     prefill:
       "Prepare me for my next session with this student. Use the most recent transcript, session notes, and any screenshots in their context. Output: agenda (bulleted), 3 discussion prompts, and the single most important follow-up from last session.",
+  },
+  {
+    id: "inspect",
+    icon: ScanSearch,
+    label: "/inspect",
+    description: "Audit any unit of the platform for bugs, content, and gaps",
+    prefill: "/inspect ",
   },
 ];
 
