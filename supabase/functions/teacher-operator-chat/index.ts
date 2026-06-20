@@ -16,6 +16,25 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
 
+const ROUTE_FALLBACKS = [
+  { kind: "route", source_id: "/teacher", title: "Teacher Desk", subtitle: "Main assistant workspace", url: "/teacher", body: "teacher desk assistant today dashboard chat" },
+  { kind: "route", source_id: "/teacher/library/activities", title: "Activity Center", subtitle: "Teacher activity library", url: "/teacher/library/activities", body: "activity centre activity center activities assign launch teacher library" },
+  { kind: "route", source_id: "/activities", title: "Activity Centre", subtitle: "Student activity centre", url: "/activities", body: "activity centre activity center student activities assigned work" },
+  { kind: "route", source_id: "/teacher/library/guided-drills", title: "Guided Drills", subtitle: "Teacher guided drill library", url: "/teacher/library/guided-drills", body: "guided drills guided drill library teacher assign launch" },
+  { kind: "route", source_id: "/drill", title: "Smart Drill", subtitle: "Adaptive drilling surface", url: "/drill", body: "smart drill drilling practice questions adaptive drill" },
+  { kind: "route", source_id: "/teacher/students", title: "Students", subtitle: "Teacher student roster", url: "/teacher/students", body: "students roster profiles learners teacher" },
+  { kind: "route", source_id: "/teacher/schedule", title: "Schedule", subtitle: "Teacher schedule", url: "/teacher/schedule", body: "schedule calendar sessions meetings teacher" },
+  { kind: "route", source_id: "/teacher/whiteboard", title: "Whiteboard", subtitle: "Teacher smartboard", url: "/teacher/whiteboard", body: "whiteboard smartboard canvas teaching board" },
+  { kind: "route", source_id: "/teacher/library", title: "Teacher Library", subtitle: "Assignments, recaps, uploads, bootcamps", url: "/teacher/library", body: "library assignments recaps uploads bootcamps teacher" },
+  { kind: "route", source_id: "/teacher/insights", title: "Bootcamp Insights", subtitle: "Teacher bootcamp analytics", url: "/teacher/insights", body: "bootcamp insights analytics progress teacher" },
+  { kind: "route", source_id: "/bootcamps", title: "Bootcamps", subtitle: "Student bootcamp index", url: "/bootcamps", body: "bootcamps lessons causation intro principle flaw abstraction" },
+  { kind: "route", source_id: "/bootcamp/causation-station", title: "Causation Station", subtitle: "Bootcamp", url: "/bootcamp/causation-station", body: "causation station causal reasoning bootcamp" },
+  { kind: "route", source_id: "/bootcamp/intro-to-lr", title: "Intro to LR", subtitle: "Bootcamp", url: "/bootcamp/intro-to-lr", body: "intro to logical reasoning main conclusion structure bootcamp" },
+  { kind: "route", source_id: "/bootcamp/principle-flaw", title: "Principle and Flaw", subtitle: "Bootcamp", url: "/bootcamp/principle-flaw", body: "principle flaw bootcamp questions" },
+  { kind: "route", source_id: "/bootcamp/fallacy-flaw", title: "Flaw and Famous Flaws", subtitle: "Bootcamp", url: "/bootcamp/fallacy-flaw", body: "fallacy flaw famous flaws bootcamp" },
+  { kind: "route", source_id: "/journal", title: "Wrong Answer Journal", subtitle: "Journal", url: "/journal", body: "wrong answer journal waj review missed questions" },
+] as const;
+
 const SYSTEM_PROMPT = `You are Joshua's AI Teaching Operator for LSAT U.
 
 You are not a chat bot - you are an operator. Joshua talks to you like a chief of staff.
@@ -25,6 +44,7 @@ You do those things by calling the tools available to you.
 
 Operating principles:
 - Be concise. Reply in a few sentences max unless he asks for detail.
+- Keep continuity across turns. Resolve pronouns and short replies ("yes", "that", "open it") from the prior messages and tool results before asking a new question.
 - Always confirm scope before destructive actions. Never message students or post to
   classrooms without his explicit go-ahead - create a draft and let him approve.
 - When he names a student, call find_students first to resolve the id. Don't guess.
@@ -47,7 +67,8 @@ Universal link retrieval:
   "dakota's profile") — call find_link with a focused query. Do NOT guess URLs.
 - After find_link returns, reply in one short line ("Here it is:") and let the link card
   render. Never paste raw URLs inline if the card will render — the user already sees Open/New tab buttons.
-- If find_link returns no good match, say so honestly and ask a clarifying question.
+- If the user confirms a suggestion with "yes", reuse the prior corrected title/query and call find_link again.
+- If find_link returns no good match, use the tool note to explain whether the live content index is empty, then offer the closest built-in route if one exists.
 
 Tone: warm, sharp, efficient. You are his right hand.`;
 
