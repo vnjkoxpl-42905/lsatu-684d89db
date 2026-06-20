@@ -594,6 +594,32 @@ function normalizeSearchText(value: string) {
   return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+function looksLikeAssignmentRequest(text: string) {
+  const t = normalizeSearchText(text);
+  return /\b(assign|send|give|drop)\b/.test(t) && /\b(student|activity|drill|bootcamp|station|homework|page|resource|link|to)\b/.test(t)
+    || /\bnot a message\b/.test(t);
+}
+
+function extractResourceQueryFromAssignment(text: string, studentName?: string | null) {
+  let q = normalizeSearchText(text)
+    .replace(/\b(it s|its|this is|that is|i want|i want to|please|can you|could you|not a message|message)\b/g, " ")
+    .replace(/\b(assign|send|give|drop|assigned|activity|drill|bootcamp|page|resource|link|student|to|for|the|a|an)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (studentName) {
+    for (const token of normalizeSearchText(studentName).split(/\s+/)) {
+      if (token.length > 1) q = q.replace(new RegExp(`\\b${token}\\b`, "g"), " ");
+    }
+  }
+  q = q.replace(/\s+/g, " ").trim();
+  if (/\bnefation\b/.test(q)) q = q.replace(/\bnefation\b/g, "negation");
+  return q;
+}
+
+function pickStudentFacingResult(results: DbRow[]) {
+  return results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/")) ?? results[0] ?? null;
+}
+
 function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
   if (kinds?.length && !kinds.includes("route")) return [];
   const q = normalizeSearchText(query);
