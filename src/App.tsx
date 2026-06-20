@@ -440,46 +440,23 @@ const App = () => {
                     } />
                     <Route path="access" element={<Navigate to="/teacher/admin" replace />} />
                     <Route path="permissions" element={<Navigate to="/teacher/admin" replace />} />
-                    <Route path="library" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherLibrary />
-                      </React.Suspense>
-                    }>
-                      <Route path="assignments" element={
-                        <React.Suspense fallback={<div />}><TeacherAssignmentsOverview /></React.Suspense>
-                      } />
-                      <Route path="assignments/new" element={
-                        <React.Suspense fallback={<div />}><TeacherAssignments /></React.Suspense>
-                      } />
-                      <Route path="recaps" element={
-                        <React.Suspense fallback={<div />}><TeacherRecaps /></React.Suspense>
-                      } />
-                      <Route path="uploads" element={
-                        <React.Suspense fallback={<div />}><TeacherUploads /></React.Suspense>
-                      } />
-                      <Route path="bootcamps" element={
-                        <React.Suspense fallback={<div />}><TeacherBootcamps /></React.Suspense>
-                      } />
-                      {/* Smartboard moved to top-level /teacher/whiteboard. Keep a
-                          redirect so old links and the saved-session query survive. */}
-                      <Route path="smartboard" element={<RedirectSmartboardToWhiteboard />} />
-                      <Route path="guided-drills" element={
-                        <React.Suspense fallback={<div />}><AdminGuidedDrills /></React.Suspense>
-                      } />
-                      <Route path="activities" element={
-                        <React.Suspense fallback={<div />}><TeacherActivities /></React.Suspense>
-                      } />
-                      <Route path="analytics" element={
-                        <React.Suspense fallback={<div />}><TeacherAnalyticsBridge /></React.Suspense>
-                      } />
-                    </Route>
-                    {/* legacy redirects. NOTE: bare `bootcamps` is handled above
-                        (-> Insights, the analytics surface it historically showed).
-                        `smartboard` is handled inside the library block (-> Whiteboard). */}
-                    <Route path="assignments" element={<Navigate to="/teacher/library/assignments" replace />} />
-                    <Route path="recaps" element={<Navigate to="/teacher/library/recaps" replace />} />
-                    <Route path="uploads" element={<Navigate to="/teacher/library/uploads" replace />} />
-                    <Route path="analytics-bridge" element={<Navigate to="/teacher/library/analytics" replace />} />
+                    {/* Library moved into the Teacher Desk. All /teacher/library/*
+                        routes redirect to the desk-native Library workspace. */}
+                    <Route path="library" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="library/assignments" element={<Navigate to="/teacher?ws=library&tab=assignments" replace />} />
+                    <Route path="library/assignments/new" element={<Navigate to="/teacher?ws=library&tab=bootcamps" replace />} />
+                    <Route path="library/bootcamps" element={<Navigate to="/teacher?ws=library&tab=bootcamps" replace />} />
+                    <Route path="library/guided-drills" element={<Navigate to="/teacher?ws=library&tab=guided-drills" replace />} />
+                    <Route path="library/activities" element={<Navigate to="/teacher?ws=library&tab=activities" replace />} />
+                    <Route path="library/recaps" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="library/uploads" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="library/analytics" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
+                    {/* legacy top-level aliases */}
+                    <Route path="assignments" element={<Navigate to="/teacher?ws=library&tab=assignments" replace />} />
+                    <Route path="recaps" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="uploads" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="analytics-bridge" element={<Navigate to="/teacher?ws=library" replace />} />
                   </Route>
 
                   {/* Admin-only Bootcamp Reference Library. Never exposed to students. Moved outside nesting to fix 404. */}
