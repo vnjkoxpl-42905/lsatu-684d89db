@@ -54,7 +54,7 @@ const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 const Journal = React.lazy(() => import("./pages/Journal"));
 const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
 const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
-const TeacherActivities = React.lazy(() => import("./pages/teacher/TeacherActivities"));
+
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
