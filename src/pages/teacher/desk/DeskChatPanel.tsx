@@ -7,7 +7,8 @@ import { AssistantComposer } from './AssistantComposer';
 import { ImageLightbox } from './ImageLightbox';
 import { DraftReplyCard, type DraftReplyData } from './DraftReplyCard';
 import { DeskCanvasPanel } from './DeskCanvasPanel';
-import { LinkCard, linksFromToolResults } from './LinkCard';
+import { DeskResourcePreviewPanel, type DeskResourcePreview } from './DeskResourcePreviewPanel';
+import { LinkCard, linksFromToolResults, type LinkResult } from './LinkCard';
 import { AssignmentOfferCard, type AssignmentOfferData } from './AssignmentOfferCard';
 import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
 
@@ -24,6 +25,10 @@ Welcome to your clean canvas! We can use this space to collaborate on whatever y
 ## 👇 Paste your work here
 
 _Replace this line with your work, or reply in the chat with your goals._`;
+
+type DeskSidePanel =
+  | { type: 'canvas' }
+  | { type: 'resource'; resource: DeskResourcePreview };
 
 /** Pull the renderable draft cards out of an assistant turn's tool results. */
 function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyData[] {
@@ -52,10 +57,12 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
   const { messages, isLoading, error, sendMessage } = useOperatorChatContext();
   const [input, setInput] = useState('');
   const [previewImage, setPreviewImage] = useState<OperatorImage | null>(null);
-  const [canvasOpen, setCanvasOpen] = useState(false);
+  const [sidePanel, setSidePanel] = useState<DeskSidePanel | null>(null);
   const [canvasBody, setCanvasBody] = useState(STARTER_CANVAS);
   const scrollRef = useRef<HTMLDivElement>(null);
   const empty = messages.length === 0;
+  const panelOpen = sidePanel !== null;
+  const canvasOpen = sidePanel?.type === 'canvas';
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -93,11 +100,22 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
     );
   };
 
+  const openResourceBesideChat = (result: LinkResult & { url: string }, kindLabel: string) => {
+    setSidePanel({
+      type: 'resource',
+      resource: {
+        title: result.title,
+        kindLabel,
+        url: result.url,
+      },
+    });
+  };
+
   return (
     <div
       className={cn(
         'flex w-full flex-col lg:h-full lg:min-h-0',
-        canvasOpen ? 'max-w-[1440px] gap-5 xl:flex-row' : 'max-w-[680px]',
+        panelOpen ? 'max-w-[1440px] gap-5 xl:flex-row' : 'max-w-[680px]',
       )}
     >
       <ImageLightbox
@@ -108,7 +126,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           if (!next) setPreviewImage(null);
         }}
       />
-      <div className={cn('flex min-h-0 min-w-0 flex-col', canvasOpen ? 'xl:w-[430px] xl:shrink-0' : 'flex-1')}>
+      <div className={cn('flex min-h-0 min-w-0 flex-col', panelOpen ? 'xl:w-[430px] xl:shrink-0' : 'flex-1')}>
         <div
           ref={scrollRef}
           className="min-h-0 flex-1 overflow-y-auto px-1 py-5"
@@ -184,7 +202,11 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                       <AssignmentOfferCard key={offer.id ?? `${message.id}-assignment-${index}`} offer={offer} />
                     ))}
                     {links.map((link, index) => (
-                      <LinkCard key={`${message.id}-link-${index}-${link.id}`} result={link} />
+                      <LinkCard
+                        key={`${message.id}-link-${index}-${link.id}`}
+                        result={link}
+                        onOpenBesideChat={openResourceBesideChat}
+                      />
                     ))}
                   </div>
                 );
@@ -204,9 +226,9 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           loading={isLoading}
           disabled={localPreview}
           onUtilityCommand={send}
-          onOpenCanvas={() => setCanvasOpen(true)}
+          onOpenCanvas={() => setSidePanel({ type: 'canvas' })}
           canvasOpen={canvasOpen}
-          onCloseCanvas={() => setCanvasOpen(false)}
+          onCloseCanvas={() => setSidePanel(null)}
           readOnlyMessage={
             localPreview ? 'Assistant is read-only in local preview. It connects on the live teacher desk.' : undefined
           }
@@ -214,13 +236,16 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
         />
       </div>
 
-      {canvasOpen ? (
+      {sidePanel?.type === 'canvas' ? (
         <DeskCanvasPanel
           value={canvasBody}
           onChange={setCanvasBody}
           canUseAi={!localPreview}
-          onClose={() => setCanvasOpen(false)}
+          onClose={() => setSidePanel(null)}
         />
+      ) : null}
+      {sidePanel?.type === 'resource' ? (
+        <DeskResourcePreviewPanel resource={sidePanel.resource} onClose={() => setSidePanel(null)} />
       ) : null}
     </div>
   );

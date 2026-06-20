@@ -1,4 +1,4 @@
-import { ExternalLink, Copy, Check, X, Send, Search } from 'lucide-react';
+import { ExternalLink, Copy, Check, X, Send, Search, PanelRightOpen } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -60,7 +60,13 @@ function absoluteUrl(url: string): string {
     : url;
 }
 
-export function LinkCard({ result }: { result: LinkResult }) {
+export function LinkCard({
+  result,
+  onOpenBesideChat,
+}: {
+  result: LinkResult;
+  onOpenBesideChat?: (result: LinkResult & { url: string }, kindLabel: string) => void;
+}) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -76,6 +82,11 @@ export function LinkCard({ result }: { result: LinkResult }) {
     if (!url) return;
     if (isInternal(url)) navigate(toInternalPath(url));
     else window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const openBesideChat = () => {
+    if (!url || !onOpenBesideChat) return;
+    onOpenBesideChat({ ...result, url: isInternal(url) ? toInternalPath(url) : absoluteUrl(url) }, kindLabel);
   };
 
   const openNewTab = () => {
@@ -124,14 +135,30 @@ export function LinkCard({ result }: { result: LinkResult }) {
 
       {url ? (
         <div className="mt-2 flex flex-wrap gap-1.5">
+          {onOpenBesideChat ? (
+            <button
+              type="button"
+              onClick={openBesideChat}
+              className={cn(
+                'inline-flex items-center gap-1 rounded-full bg-black px-2.5 py-1',
+                'text-[11px] font-medium text-white hover:bg-black/85',
+              )}
+              title="Open beside this chat"
+            >
+              <PanelRightOpen className="h-3 w-3" />
+              Open beside chat
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={openInApp}
             className={cn(
-              'inline-flex items-center gap-1 rounded-full bg-black px-2.5 py-1',
-              'text-[11px] font-medium text-white hover:bg-black/85',
+              'inline-flex items-center gap-1 rounded-full px-2.5 py-1',
+              onOpenBesideChat
+                ? 'border border-black/15 bg-white text-[11px] text-black/70 hover:bg-black/[0.04]'
+                : 'bg-black text-[11px] font-medium text-white hover:bg-black/85',
             )}
-            title="Confirm — open here"
+            title="Open full page"
           >
             <Check className="h-3 w-3" />
             Confirm & open

@@ -1,23 +1,40 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import { DeskChatPanel } from './DeskChatPanel';
+import type { OperatorMessage } from '@/hooks/useOperatorChat';
+
+let mockMessages: OperatorMessage[] = [];
 
 vi.mock('@/components/teacher/ai-ta/OperatorChatProvider', () => ({
   useOperatorChatContext: () => ({
-    messages: [],
+    messages: mockMessages,
     isLoading: false,
     error: null,
     sendMessage: vi.fn(),
   }),
 }));
 
+vi.mock('@/hooks/useHubStudents', () => ({
+  useHubStudents: () => ({ rows: [], loading: false }),
+}));
+
+function renderChat(localPreview = false) {
+  return render(
+    <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+      <DeskChatPanel localPreview={localPreview} />
+    </MemoryRouter>,
+  );
+}
+
 describe('DeskChatPanel layout', () => {
   beforeEach(() => {
     Element.prototype.scrollTo = vi.fn();
+    mockMessages = [];
   });
 
   it('bottom-anchors the composer by making the transcript the growable scroll area', () => {
-    render(<DeskChatPanel localPreview />);
+    renderChat(true);
 
     const emptyHeading = screen.getByText('What can I help you get done?');
     const transcript = emptyHeading.parentElement?.parentElement;
@@ -33,7 +50,7 @@ describe('DeskChatPanel layout', () => {
   });
 
   it('opens and closes the collaborative canvas from the composer action', () => {
-    render(<DeskChatPanel localPreview={false} />);
+    renderChat(false);
 
     fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
 
@@ -51,7 +68,7 @@ describe('DeskChatPanel layout', () => {
   });
 
   it('removes the canvas from the page through the composer Canvas chip close button', () => {
-    render(<DeskChatPanel localPreview={false} />);
+    renderChat(false);
 
     fireEvent.click(screen.getByRole('button', { name: 'Canvas' }));
     expect(screen.getByRole('region', { name: 'Collaborative Workspace' })).toBeInTheDocument();
@@ -61,5 +78,46 @@ describe('DeskChatPanel layout', () => {
 
     expect(screen.queryByRole('region', { name: 'Collaborative Workspace' })).not.toBeInTheDocument();
     expect(screen.getByText('What can I help you get done?')).toBeInTheDocument();
+  });
+
+  it('opens assistant link results beside the chat without replacing the transcript', () => {
+    mockMessages = [
+      {
+        id: 'assistant-activity-link',
+        role: 'assistant',
+        content: 'I found the Activity Centre.',
+        created_at: '2026-06-20T12:00:00.000Z',
+        tool_results: [
+          {
+            name: 'find_link',
+            arguments: { query: 'activity centre' },
+            result: {
+              ok: true,
+              data: {
+                results: [
+                  {
+                    id: 'activity-centre',
+                    kind: 'route',
+                    source_id: '/activities',
+                    title: 'Activity Centre',
+                    subtitle: 'Student activity centre',
+                    url: '/activities',
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+    ];
+
+    renderChat(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open beside chat' }));
+
+    const preview = screen.getByRole('region', { name: 'Resource preview' });
+    expect(within(preview).getByRole('heading', { name: 'Activity Centre' })).toBeInTheDocument();
+    expect(screen.getByText('I found the Activity Centre.')).toBeInTheDocument();
+    expect(screen.getByTitle('Activity Centre preview')).toHaveAttribute('src', 'http://localhost:3000/activities');
   });
 });
