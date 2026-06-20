@@ -8,6 +8,7 @@ import { ImageLightbox } from './ImageLightbox';
 import { DraftReplyCard, type DraftReplyData } from './DraftReplyCard';
 import { DeskCanvasPanel } from './DeskCanvasPanel';
 import { LinkCard, linksFromToolResults } from './LinkCard';
+import { AssignmentOfferCard, type AssignmentOfferData } from './AssignmentOfferCard';
 import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
 
 const STARTER_CANVAS = `# Collaborative Workspace
@@ -31,6 +32,14 @@ function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyDa
     .filter((tr) => tr.name === 'create_draft' && tr.result?.ok)
     .map((tr) => (tr.result?.data as { draft?: DraftReplyData })?.draft)
     .filter((d): d is DraftReplyData => !!d && typeof d.draft_markdown === 'string');
+}
+
+function assignmentOffersFromToolResults(toolResults?: OperatorToolResult[]): AssignmentOfferData[] {
+  if (!toolResults?.length) return [];
+  return toolResults
+    .filter((tr) => tr.name === 'create_assignment_offer' && tr.result?.ok)
+    .map((tr) => (tr.result?.data as { assignment_offer?: AssignmentOfferData })?.assignment_offer)
+    .filter((o): o is AssignmentOfferData => !!o && !!o.student_id && !!o.resource?.title);
 }
 
 /**
@@ -119,6 +128,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
             <div className="space-y-4">
               {messages.map((message) => {
                 const drafts = message.role === 'assistant' ? draftsFromToolResults(message.tool_results) : [];
+                const assignmentOffers = message.role === 'assistant' ? assignmentOffersFromToolResults(message.tool_results) : [];
                 const links = message.role === 'assistant' ? linksFromToolResults(message.tool_results) : [];
                 const showBubble = !!message.content || !!message.images?.length || !!message.pending;
                 return (
@@ -169,6 +179,9 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                         draft={draft}
                         localPreview={localPreview}
                       />
+                    ))}
+                    {assignmentOffers.map((offer, index) => (
+                      <AssignmentOfferCard key={offer.id ?? `${message.id}-assignment-${index}`} offer={offer} />
                     ))}
                     {links.map((link, index) => (
                       <LinkCard key={`${message.id}-link-${index}-${link.id}`} result={link} />

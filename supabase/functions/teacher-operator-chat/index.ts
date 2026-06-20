@@ -70,6 +70,16 @@ Universal link retrieval:
 - If the user confirms a suggestion with "yes", reuse the prior corrected title/query and call find_link again.
 - If find_link returns no good match, use the tool note to explain whether the live content index is empty, then offer the closest built-in route if one exists.
 
+Assignments:
+- If Joshua says to "send", "assign", "give", or "drop" an activity, drill, bootcamp, page,
+  link, or resource to a student, this means create an ASSIGNMENT notification, not a free-form
+  message. Do not ask "what message should I send?"
+- For assignment requests: call find_students for the student, call find_link for the resource,
+  then call create_assignment_offer with the resolved student and best student-facing resource.
+  The UI will render Confirm/Deny; no assignment is created until Joshua confirms the card.
+- If Joshua corrects you with "it's not a message" or similar, immediately switch to the
+  assignment flow above using the named/latest resource and student from conversation memory.
+
 Tone: warm, sharp, efficient. You are his right hand.`;
 
 const TOOLS = [
@@ -210,6 +220,28 @@ const TOOLS = [
           },
         },
         required: ["query"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "create_assignment_offer",
+      description:
+        "Prepare a confirm/deny assignment card for sending an activity, guided drill, bootcamp, page, or resource to a student. This does NOT send a message and does NOT create the assignment; the UI asks Joshua to confirm.",
+      parameters: {
+        type: "object",
+        properties: {
+          student_id: { type: "string", description: "Resolved student auth/class id from find_students." },
+          student_name: { type: "string", description: "Student display name, if known." },
+          resource_title: { type: "string", description: "Resolved assignment/resource title." },
+          resource_kind: { type: "string", description: "activity | guided_drill | bootcamp_module | drill_question | route | link | other" },
+          source_id: { type: "string", description: "Resource source_id from find_link when available." },
+          url: { type: "string", description: "Student-facing URL/path from find_link when available." },
+          subtitle: { type: "string", description: "Short subtitle/description from find_link when available." },
+        },
+        required: ["student_id", "resource_title"],
         additionalProperties: false,
       },
     },
@@ -562,6 +594,164 @@ function normalizeSearchText(value: string) {
   return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+function looksLikeAssignmentRequest(text: string) {
+  const t = normalizeSearchText(text);
+  return /\b(assign|send|give|drop)\b/.test(t) && /\b(activity|drill|bootcamp|station|homework|page|resource|link|question|questions)\b/.test(t)
+    || /\bnot a message\b/.test(t);
+}
+
+function extractResourceQueryFromAssignment(text: string, studentName?: string | null) {
+  let q = normalizeSearchText(text)
+    .replace(/\b(it s|its|this is|that is|i want|i want to|iwantto|wantto|please|can you|could you|not a message|message)\b/g, " ")
+    .replace(/\b(assign|send|give|drop|assigned|activity|drill|bootcamp|page|resource|link|student|to|for|the|a|an)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (studentName) {
+    for (const token of normalizeSearchText(studentName).split(/\s+/)) {
+      if (token.length > 1) q = q.replace(new RegExp(`\\b${token}\\b`, "g"), " ");
+    }
+  }
+  q = q.replace(/\s+/g, " ").trim();
+  if (/\bnefation\b/.test(q)) q = q.replace(/\bnefation\b/g, "negation");
+  return q;
+}
+
+function pickStudentFacingResult(results: DbRow[]) {
+  return results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/")) ?? results[0] ?? null;
+}
+
+async function findDirectAssignableResource(
+  admin: ReturnType<typeof createClient<any, "public", any>>,
+  query: string,
+): Promise<DbRow | null> {
+  const slug = normalizeSearchText(query).replace(/\s+/g, "-");
+  const { data: activity, error: activityError } = await admin
+    .from(table("activities"))
+    .select("id, slug, title, subtitle")
+    .or(`slug.eq.${slug},title.ilike.%${query.replace(/[%_,]/g, "")}%`)
+    .limit(1)
+    .maybeSingle();
+  if (activityError) console.warn("direct activity lookup failed", activityError.message);
+  if (activity) {
+    const row = activity as DbRow;
+    return {
+      id: asString(row.id),
+      kind: "activity",
+      source_id: asString(row.id),
+      title: asString(row.title),
+      subtitle: asString(row.subtitle) || "Activity Centre",
+      url: "/activities",
+      snippet: "Student-facing activity assignment",
+      score: 100,
+    };
+  }
+
+  const { data: drill, error: drillError } = await admin
+    .from(table("guided_drills"))
+    .select("id, slug, title, category")
+    .or(`slug.eq.${slug},title.ilike.%${query.replace(/[%_,]/g, "")}%`)
+    .limit(1)
+    .maybeSingle();
+  if (drillError) console.warn("direct guided drill lookup failed", drillError.message);
+  if (drill) {
+    const row = drill as DbRow;
+    return {
+      id: asString(row.id),
+      kind: "guided_drill",
+      source_id: asString(row.id),
+      title: asString(row.title),
+      subtitle: asString(row.category) || "Guided drill",
+      url: "/guided",
+      snippet: "Student-facing guided drill assignment",
+      score: 100,
+    };
+  }
+
+  return null;
+}
+
+function textOfMessage(message: ChatMessage) {
+  if (typeof message.content === "string") return message.content;
+  if (Array.isArray(message.content)) {
+    return message.content
+      .filter((part): part is { type: "text"; text: string } => part.type === "text")
+      .map((part) => part.text)
+      .join(" ");
+  }
+  return "";
+}
+
+async function buildAssignmentOfferFromHistory(opts: {
+  admin: ReturnType<typeof createClient<any, "public", any>>;
+  validMessages: ChatMessage[];
+}): Promise<{ content: string; tool_results: Array<{ name: string; arguments: ToolArgs; result: ToolResult }> } | null> {
+  const userTexts = opts.validMessages.filter((m) => m.role === "user").map(textOfMessage).filter(Boolean);
+  const lastUserText = userTexts[userTexts.length - 1] ?? "";
+  if (!looksLikeAssignmentRequest(lastUserText)) return null;
+
+  const allUserText = userTexts.slice(-6).join(" \n ");
+  const { data: students } = await opts.admin
+    .from(table("profiles"))
+    .select("class_id, display_name")
+    .limit(200);
+  const normalizedAll = normalizeSearchText(allUserText);
+  const student = ((students ?? []) as DbRow[])
+    .filter((s) => {
+      const name = normalizeSearchText(asString(s.display_name));
+      const tokens = name.split(/\s+/).filter((token) => token.length > 1);
+      return tokens.length > 0 && tokens.some((token) => normalizedAll.includes(token));
+    })
+    .sort((a, b) => normalizeSearchText(asString(b.display_name)).length - normalizeSearchText(asString(a.display_name)).length)[0];
+
+  if (!student) return null;
+  const studentName = asString(student.display_name);
+  let resourceQuery = extractResourceQueryFromAssignment(lastUserText, studentName);
+  if (!resourceQuery || resourceQuery.length < 3) {
+    for (const text of [...userTexts].reverse()) {
+      resourceQuery = extractResourceQueryFromAssignment(text, studentName);
+      if (resourceQuery && resourceQuery.length >= 3) break;
+    }
+  }
+  if (!resourceQuery || resourceQuery.length < 3) return null;
+
+  const linkArgs = { query: resourceQuery, limit: 5 };
+  const directResource = await findDirectAssignableResource(opts.admin, resourceQuery);
+  const linkResult = directResource
+    ? { ok: true, data: { query: resourceQuery, results: [directResource] } }
+    : await findLink(linkArgs, opts.admin);
+  const results = isRecord(linkResult.data) && Array.isArray(linkResult.data.results)
+    ? (linkResult.data.results as DbRow[])
+    : [];
+  const resource = pickStudentFacingResult(results);
+  if (!resource) return null;
+
+  const offer = {
+    id: crypto.randomUUID(),
+    student_id: asString(student.class_id),
+    student_name: studentName || null,
+    resource: {
+      title: asString(resource.title, resourceQuery),
+      kind: asString(resource.kind, "resource"),
+      source_id: asString(resource.source_id) || null,
+      url: asString(resource.url) || null,
+      subtitle: asString(resource.subtitle) || asString(resource.snippet) || null,
+    },
+  };
+
+  return {
+    content: `Confirm this assignment for **${studentName || "the student"}**.`,
+    tool_results: [
+      {
+        name: "find_students",
+        arguments: { query: studentName || asString(student.class_id), limit: 10 },
+        result: { ok: true, data: { students: [{ id: asString(student.class_id), name: studentName }] } },
+      },
+      { name: "find_link", arguments: linkArgs, result: linkResult },
+      { name: "create_assignment_offer", arguments: {}, result: { ok: true, data: { assignment_offer: offer } } },
+    ],
+  };
+}
+
 function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
   if (kinds?.length && !kinds.includes("route")) return [];
   const q = normalizeSearchText(query);
@@ -798,6 +988,28 @@ async function runTool(
       }
       case "find_link":
         return await findLink(args, ctx.admin);
+      case "create_assignment_offer": {
+        const studentId = asString(args.student_id).trim();
+        const resourceTitle = asString(args.resource_title).trim();
+        if (!studentId || !resourceTitle) return { ok: false, error: "student_id and resource_title are required" };
+        return {
+          ok: true,
+          data: {
+            assignment_offer: {
+              id: crypto.randomUUID(),
+              student_id: studentId,
+              student_name: asString(args.student_name) || null,
+              resource: {
+                title: resourceTitle,
+                kind: asString(args.resource_kind) || "resource",
+                source_id: asString(args.source_id) || null,
+                url: asString(args.url) || null,
+                subtitle: asString(args.subtitle) || null,
+              },
+            },
+          },
+        };
+      }
       case "search_google_drive":
         return await searchGoogleDrive(args);
       case "search_gmail":
@@ -1026,6 +1238,13 @@ Deno.serve(async (req) => {
       validMessages.push({
         role: asString(m.role) as ChatMessage["role"],
         content: content as string | ContentPart[],
+      });
+    }
+
+    const deterministicAssignmentOffer = await buildAssignmentOfferFromHistory({ admin, validMessages });
+    if (deterministicAssignmentOffer) {
+      return new Response(JSON.stringify(deterministicAssignmentOffer), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
