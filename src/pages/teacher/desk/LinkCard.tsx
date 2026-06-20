@@ -1,9 +1,10 @@
-import { ExternalLink, ArrowUpRight, Copy, Check, X, Send, Search } from 'lucide-react';
+import { ExternalLink, Copy, Check, X, Send, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
+import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -190,7 +191,7 @@ export function LinkCard({ result }: { result: LinkResult }) {
       {url && confirmOpen ? (
         <ConfirmSendDialog
           student={confirmOpen}
-          link={{ title: result.title, url: absoluteUrl(url) }}
+          link={{ title: result.title, url: absoluteUrl(url), path: isInternal(url) ? toInternalPath(url) : absoluteUrl(url) }}
           onClose={() => setConfirmOpen(null)}
         />
       ) : null}
@@ -275,27 +276,30 @@ function ConfirmSendDialog({
   onClose,
 }: {
   student: HubStudentRow;
-  link: { title: string; url: string };
+  link: { title: string; url: string; path: string };
   onClose: () => void;
 }) {
-  const defaultBody = `Hi ${student.display_name ?? 'there'} — here's something to look at:\n\n${link.title}\n${link.url}`;
+  const { user } = useAuth();
+  const defaultBody = `Take a look at: ${link.title}`;
   const [body, setBody] = useState(defaultBody);
   const [sending, setSending] = useState(false);
 
   const send = async () => {
+    if (!user) {
+      toast.error('Not signed in');
+      return;
+    }
     setSending(true);
     try {
-      const { data, error } = await supabase.functions.invoke('teacher-operator-chat', {
-        body: {
-          action: 'send_student_message',
-          student_id: student.class_id,
-          body,
-        },
+      const result = await notifyStudentOfClassroomItem({
+        adminUserId: user.id,
+        studentId: student.class_id,
+        title: link.title,
+        route: link.path,
+        description: body.trim() || undefined,
+        assignmentType: 'assignment',
       });
-      if (error || (data as { ok?: boolean })?.ok === false) {
-        throw new Error(error?.message ?? (data as { error?: string })?.error ?? 'Send failed');
-      }
-      toast.success(`Sent to ${student.display_name ?? 'student'}`);
+      toast.success(`${summarizeNotifyResult(result)} → ${student.display_name ?? 'student'}`);
       onClose();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Send failed');
@@ -342,15 +346,47 @@ function ConfirmSendDialog({
   );
 }
 
+function normalizeTitle(t: string): string {
+  return t
+    .toLowerCase()
+    .replace(/centre/g, 'center')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function isTeacherOnlyUrl(u?: string | null): boolean {
+  if (!u) return false;
+  return u.startsWith('/teacher/') || u.startsWith('/admin/');
+}
+
+/**
+ * Flatten find_link tool results and collapse teacher/admin duplicates so the
+ * teacher sees ONE student-facing card per concept. When a student URL and a
+ * teacher URL share the same normalized title, the student one wins.
+ */
 export function linksFromToolResults(
   toolResults?: Array<{ name: string; result: { ok: boolean; data?: unknown } }>,
 ): LinkResult[] {
   if (!toolResults?.length) return [];
-  const out: LinkResult[] = [];
+  const flat: LinkResult[] = [];
   for (const tr of toolResults) {
     if (tr.name !== 'find_link' || !tr.result?.ok) continue;
     const data = tr.result.data as { results?: LinkResult[] } | undefined;
-    if (Array.isArray(data?.results)) out.push(...data.results);
+    if (Array.isArray(data?.results)) flat.push(...data.results);
   }
-  return out;
+
+  const byKey = new Map<string, LinkResult>();
+  for (const r of flat) {
+    const key = normalizeTitle(r.title);
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, r);
+      continue;
+    }
+    // Prefer the student-facing (non-teacher) variant.
+    if (isTeacherOnlyUrl(existing.url) && !isTeacherOnlyUrl(r.url)) {
+      byKey.set(key, r);
+    }
+  }
+  return Array.from(byKey.values());
 }
