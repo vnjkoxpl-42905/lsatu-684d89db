@@ -1,67 +1,70 @@
-import React, { useState } from 'react';
-import { ClipboardList, Flame, Sparkles, Target, ExternalLink } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { ClipboardList, Flame, Sparkles, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const TeacherAssignmentsOverview = React.lazy(() => import('../TeacherAssignmentsOverview'));
-const TeacherBootcamps = React.lazy(() => import('../TeacherBootcamps'));
-const AdminGuidedDrills = React.lazy(() => import('@/pages/admin/GuidedDrills'));
-const TeacherActivities = React.lazy(() => import('../TeacherActivities'));
+import { DeskLibraryAssignmentsSurface } from './library/DeskLibraryAssignmentsSurface';
+import { DeskLibraryBootcampsSurface } from './library/DeskLibraryBootcampsSurface';
+import { DeskLibraryGuidedDrillsSurface } from './library/DeskLibraryGuidedDrillsSurface';
+import { DeskLibraryActivitiesSurface } from './library/DeskLibraryActivitiesSurface';
 
 type TabKey = 'assignments' | 'bootcamps' | 'guided-drills' | 'activities';
 
-const TABS: { key: TabKey; label: string; Icon: React.ComponentType<{ className?: string }>; href: string }[] = [
-  { key: 'assignments', label: 'Assignments', Icon: ClipboardList, href: '/teacher/library/assignments' },
-  { key: 'bootcamps', label: 'Bootcamps', Icon: Flame, href: '/teacher/library/bootcamps' },
-  { key: 'guided-drills', label: 'Guided Drills', Icon: Target, href: '/teacher/library/guided-drills' },
-  { key: 'activities', label: 'Activities', Icon: Sparkles, href: '/teacher/library/activities' },
+const TABS: { key: TabKey; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
+  { key: 'assignments', label: 'Assignments', Icon: ClipboardList },
+  { key: 'bootcamps', label: 'Bootcamps', Icon: Flame },
+  { key: 'guided-drills', label: 'Guided Drills', Icon: Target },
+  { key: 'activities', label: 'Activities', Icon: Sparkles },
 ];
 
+function isTab(value: string | null): value is TabKey {
+  return value === 'assignments' || value === 'bootcamps' || value === 'guided-drills' || value === 'activities';
+}
+
 /**
- * Embedded teacher library inside the Teacher Desk workspace.
- * Replaces the "coming soon" placeholder so assignments, bootcamps, guided
- * drills, and activities are all assignable directly from the desk.
+ * Library inside the Teacher Desk. All four tabs are desk-native surfaces
+ * (white/glass) — the legacy /teacher/library/* routes redirect here.
  */
 export function DeskLibrarySurface() {
-  const [tab, setTab] = useState<TabKey>('assignments');
-  const navigate = useNavigate();
-  const current = TABS.find((t) => t.key === tab) ?? TABS[0];
+  const [params, setParams] = useSearchParams();
+  const fromUrl = params.get('tab');
+  const [tab, setTab] = useState<TabKey>(isTab(fromUrl) ? fromUrl : 'assignments');
+
+  useEffect(() => {
+    if (isTab(fromUrl) && fromUrl !== tab) setTab(fromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromUrl]);
+
+  const selectTab = (key: TabKey) => {
+    setTab(key);
+    const next = new URLSearchParams(params);
+    next.set('tab', key);
+    setParams(next, { replace: true });
+  };
 
   return (
     <section className="flex h-full w-full flex-col">
-      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-black/10 px-2 pb-3">
-        <nav className="flex flex-wrap items-center gap-1">
-          {TABS.map(({ key, label, Icon }) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setTab(key)}
-              className={cn(
-                'inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition',
-                tab === key
-                  ? 'bg-black text-white'
-                  : 'text-black/55 hover:bg-black/5 hover:text-black',
-              )}
-            >
-              <Icon className="h-3.5 w-3.5" /> {label}
-            </button>
-          ))}
-        </nav>
-        <button
-          type="button"
-          onClick={() => navigate(current.href)}
-          className="inline-flex items-center gap-1.5 border border-black/15 px-2.5 py-1.5 text-[11px] font-semibold text-black/55 transition hover:border-black/40 hover:text-black"
-        >
-          Open full page <ExternalLink className="h-3 w-3" strokeWidth={1.5} />
-        </button>
-      </div>
-      <div className="min-h-0 flex-1 overflow-y-auto bg-zinc-950 text-zinc-100">
-        <React.Suspense fallback={<div className="p-6 text-sm text-zinc-500">Loading…</div>}>
-          {tab === 'assignments' && <TeacherAssignmentsOverview />}
-          {tab === 'bootcamps' && <TeacherBootcamps />}
-          {tab === 'guided-drills' && <AdminGuidedDrills />}
-          {tab === 'activities' && <TeacherActivities />}
-        </React.Suspense>
+      <nav className="flex shrink-0 flex-wrap items-center gap-1 border-b border-black/10 px-2 pb-2">
+        {TABS.map(({ key, label, Icon }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => selectTab(key)}
+            className={cn(
+              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition',
+              tab === key
+                ? 'border-b-2 border-amber-500 text-black'
+                : 'border-b-2 border-transparent text-black/55 hover:text-black',
+            )}
+          >
+            <Icon className="h-3.5 w-3.5" /> {label}
+          </button>
+        ))}
+      </nav>
+      <div className="min-h-0 flex-1">
+        {tab === 'assignments' && <DeskLibraryAssignmentsSurface />}
+        {tab === 'bootcamps' && <DeskLibraryBootcampsSurface />}
+        {tab === 'guided-drills' && <DeskLibraryGuidedDrillsSurface />}
+        {tab === 'activities' && <DeskLibraryActivitiesSurface />}
       </div>
     </section>
   );
