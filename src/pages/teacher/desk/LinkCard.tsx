@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { summarizeNotifyResult } from '@/lib/classroomNotify';
+import { assignResourceToStudent } from '@/lib/teacherAssignResource';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -149,7 +150,7 @@ export function LinkCard({ result }: { result: LinkResult }) {
             className="inline-flex items-center gap-1 rounded-full border border-[#c8841f]/40 bg-[#c8841f]/10 px-2.5 py-1 text-[11px] font-medium text-[#8a5a10] hover:bg-[#c8841f]/15"
           >
             <Send className="h-3 w-3" />
-            Send to student
+            Assign to student
           </button>
           <button
             type="button"
@@ -191,7 +192,14 @@ export function LinkCard({ result }: { result: LinkResult }) {
       {url && confirmOpen ? (
         <ConfirmSendDialog
           student={confirmOpen}
-          link={{ title: result.title, url: absoluteUrl(url), path: isInternal(url) ? toInternalPath(url) : absoluteUrl(url) }}
+          link={{
+            title: result.title,
+            kind: result.kind,
+            source_id: result.source_id,
+            url: absoluteUrl(url),
+            path: isInternal(url) ? toInternalPath(url) : absoluteUrl(url),
+            subtitle: result.subtitle ?? result.snippet ?? null,
+          }}
           onClose={() => setConfirmOpen(null)}
         />
       ) : null}
@@ -227,8 +235,8 @@ function StudentPickerDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Send to student</DialogTitle>
-          <DialogDescription>Pick a student. You'll confirm before anything is sent.</DialogDescription>
+        <DialogTitle>Assign to student</DialogTitle>
+        <DialogDescription>Pick a student. You'll confirm before the assignment is created.</DialogDescription>
         </DialogHeader>
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-black/40" />
@@ -276,12 +284,10 @@ function ConfirmSendDialog({
   onClose,
 }: {
   student: HubStudentRow;
-  link: { title: string; url: string; path: string };
+  link: { title: string; kind: string; source_id: string; url: string; path: string; subtitle?: string | null };
   onClose: () => void;
 }) {
   const { user } = useAuth();
-  const defaultBody = `Take a look at: ${link.title}`;
-  const [body, setBody] = useState(defaultBody);
   const [sending, setSending] = useState(false);
 
   const send = async () => {
@@ -291,15 +297,20 @@ function ConfirmSendDialog({
     }
     setSending(true);
     try {
-      const result = await notifyStudentOfClassroomItem({
+      const result = await assignResourceToStudent({
         adminUserId: user.id,
         studentId: student.class_id,
-        title: link.title,
-        route: link.path,
-        description: body.trim() || undefined,
-        assignmentType: 'assignment',
+        resource: {
+          title: link.title,
+          kind: link.kind,
+          source_id: link.source_id,
+          url: link.path,
+          subtitle: link.subtitle,
+        },
       });
-      toast.success(`${summarizeNotifyResult(result)} → ${student.display_name ?? 'student'}`);
+      toast.success(`${result.reusedExisting ? 'Already assigned' : 'Assigned'} → ${student.display_name ?? 'student'}`, {
+        description: summarizeNotifyResult(result.notify),
+      });
       onClose();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Send failed');
@@ -312,17 +323,16 @@ function ConfirmSendDialog({
     <Dialog open onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm — send to {student.display_name ?? 'student'}?</DialogTitle>
+          <DialogTitle>Confirm — assign to {student.display_name ?? 'student'}?</DialogTitle>
           <DialogDescription>
-            This drops a message in your 1:1 thread with this student.
+            This creates the assignment and sends the student a notification that opens it.
           </DialogDescription>
         </DialogHeader>
-        <textarea
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          rows={6}
-          className="w-full resize-none rounded-md border border-black/15 bg-white px-3 py-2 text-sm text-black/85 focus:outline-none focus:ring-2 focus:ring-[#c8841f]/40"
-        />
+        <div className="rounded-md border border-black/10 bg-black/[0.03] px-3 py-2 text-sm text-black/75">
+          <div className="text-[10px] uppercase tracking-wider text-[#c8841f]">Assignment</div>
+          <div className="font-semibold text-black/85">{link.title}</div>
+          {link.subtitle ? <div className="mt-1 text-xs text-black/50">{link.subtitle}</div> : null}
+        </div>
         <DialogFooter className="gap-2 sm:gap-2">
           <button
             type="button"
@@ -335,10 +345,10 @@ function ConfirmSendDialog({
           <button
             type="button"
             onClick={send}
-            disabled={sending || !body.trim()}
+            disabled={sending}
             className="inline-flex items-center gap-1 rounded-full bg-[#c8841f] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#b07418] disabled:opacity-50"
           >
-            <Check className="h-3 w-3" /> {sending ? 'Sending…' : 'Confirm & send'}
+            <Check className="h-3 w-3" /> {sending ? 'Assigning…' : 'Confirm & assign'}
           </button>
         </DialogFooter>
       </DialogContent>
