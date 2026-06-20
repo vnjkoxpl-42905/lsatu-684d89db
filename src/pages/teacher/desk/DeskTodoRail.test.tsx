@@ -60,13 +60,14 @@ const gmailItem: TeacherTodoItem = {
   openPath: '/inbox?pane=gmail&t=thread-1',
 };
 
-function renderRail(items: TeacherTodoItem[] = [gmailItem]) {
+function renderRail(items: TeacherTodoItem[] = [gmailItem], onOpen = vi.fn()) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
-  return render(
+  const result = render(
     <QueryClientProvider client={queryClient}>
-      <DeskTodoRail items={items} loading={false} onOpen={vi.fn()} />
+      <DeskTodoRail items={items} loading={false} onOpen={onOpen} />
     </QueryClientProvider>,
   );
+  return { ...result, onOpen };
 }
 
 describe('DeskTodoRail', () => {
@@ -113,5 +114,14 @@ describe('DeskTodoRail', () => {
         expect.anything(),
       );
     });
+  });
+
+  it('can rewrite Gmail open paths for embedded teacher inbox routing', () => {
+    const onOpen = vi.fn();
+    renderRail([gmailItem], onOpen);
+
+    fireEvent.click(screen.getByRole('button', { name: /open source/i }));
+
+    expect(onOpen).toHaveBeenCalledWith('/inbox?pane=gmail&t=thread-1');
   });
 });

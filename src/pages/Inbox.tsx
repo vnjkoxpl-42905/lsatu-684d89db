@@ -7,26 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   ArrowLeft,
-  ChevronDown,
-  Search,
   MessageCircle,
   Inbox as InboxIcon,
-  Mail,
-  HardDrive,
-  PenLine,
-  Plus,
+  Search,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
-import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
-import { GmailPane } from '@/features/admin-inbox/gmail/components/GmailPane';
-import { DrivePanel } from '@/components/inbox/DrivePanel';
 import { initialsFromName, needsReply, otherParticipantName } from '@/components/inbox/inboxDisplay';
-import { AdminIntelligencePanel } from '@/components/inbox/AdminIntelligencePanel';
+import { AdminInboxCommandCenter } from '@/components/inbox/AdminInboxCommandCenter';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -129,16 +121,6 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
-  const [source, setSource] = useState<'app' | 'gmail' | 'drive'>(() => {
-    const pane = new URLSearchParams(location.search).get('pane');
-    return pane === 'gmail' || pane === 'drive' ? pane : 'app';
-  });
-
-  useEffect(() => {
-    const pane = new URLSearchParams(location.search).get('pane');
-    if (pane === 'gmail' || pane === 'drive') setSource(pane);
-  }, [location.search]);
-
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
     if (is_admin) return applyAdminFilters(conversations, user.id, filter, query);
@@ -186,6 +168,18 @@ export default function Inbox() {
     query.trim().length > 0
       ? 'No threads match your search.'
       : FILTER_EMPTY_LABEL[filter];
+
+  if (is_admin) {
+    return (
+      <AdminInboxCommandCenter
+        activeId={activeId}
+        onSelectThread={(id) => navigate(`/inbox/${id}${location.search}`)}
+        onClearThread={() => navigate(`/inbox${location.search}`)}
+        composeTarget={composeTarget}
+        onComposeTargetHandled={clearComposeTarget}
+      />
+    );
+  }
 
   return (
     <div
@@ -245,64 +239,13 @@ export default function Inbox() {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {is_admin && (
-              <div className="inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.06] p-1">
-                <button
-                  onClick={() => setSource('app')}
-                  className={cn(
-                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
-                    source === 'app' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1.5"><InboxIcon className="w-3 h-3" /> Messages</span>
-                </button>
-                <button
-                  onClick={() => setSource('gmail')}
-                  className={cn(
-                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
-                    source === 'gmail' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1.5"><Mail className="w-3 h-3" /> Gmail</span>
-                </button>
-                <button
-                  onClick={() => setSource('drive')}
-                  className={cn(
-                    'px-2.5 py-1.5 text-[11px] font-black rounded-xl transition-colors',
-                    source === 'drive' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1.5"><HardDrive className="w-3 h-3" /> Drive</span>
-                </button>
-              </div>
-            )}
-            {is_admin ? (
-              <NewConversationDialog
-                showTrigger={source === 'app'}
-                autoOpenWith={composeTarget}
-                onAutoOpenHandled={clearComposeTarget}
-                onCreated={(id) => navigate(`/inbox/${id}`)}
-                triggerLabel={active ? 'New' : 'New command'}
-                triggerIcon={active ? <ChevronDown className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-                triggerClassName="rounded-2xl bg-[#a14f43] px-3 font-black text-white hover:bg-[#8d453a]"
-              />
-            ) : null}
-          </div>
+          <div className="flex items-center gap-2" />
         </div>
       </header>
 
       {/* TODO: migrate to has_admin_inbox_access flag per CLAUDE.md "granular flags not roles."
           Tracking ticket TBD. Until then, is_admin matches the existing admin-inbox gate. */}
-      {is_admin && source === 'gmail' ? (
-        <div className="mx-auto min-h-0 w-full max-w-[1680px] flex-1 overflow-hidden bg-white text-foreground">
-          <GmailPane />
-        </div>
-      ) : is_admin && source === 'drive' ? (
-        <div className="mx-auto min-h-0 w-full max-w-[1680px] flex-1 overflow-hidden bg-white text-foreground">
-          <DrivePanel />
-        </div>
-      ) : showEmptyStudent ? (
+      {showEmptyStudent ? (
         <div className="mx-auto min-h-0 w-full max-w-7xl flex-1">
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>
@@ -402,9 +345,6 @@ export default function Inbox() {
               </div>
             )}
           </main>
-          {is_admin && (
-            <AdminIntelligencePanel conversation={active} ownId={user?.id ?? null} />
-          )}
         </div>
       )}
     </div>

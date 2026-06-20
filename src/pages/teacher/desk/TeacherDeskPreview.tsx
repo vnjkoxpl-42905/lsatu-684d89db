@@ -35,6 +35,7 @@ import { DeskAdminSurface } from './DeskAdminSurface';
 import { DeskWorkspacePlaceholder } from './DeskWorkspacePlaceholder';
 import { useNextSession } from './useNextSession';
 import { useTeacherTodoQueue } from './useTeacherTodoQueue';
+import { AdminInboxCommandCenter } from '@/components/inbox/AdminInboxCommandCenter';
 
 const FLOOR_GRID_STYLE: React.CSSProperties = {
   transform: 'perspective(440px) rotateX(62deg)',
@@ -49,6 +50,17 @@ const FLOOR_GRID_STYLE: React.CSSProperties = {
 function isLocalPreviewHost() {
   if (!import.meta.env.DEV || typeof window === 'undefined') return false;
   return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+}
+
+function teacherDeskPathForSource(path: string) {
+  if (!path.startsWith('/inbox')) return path;
+  const url = new URL(path, 'http://lsatu.local');
+  const next = new URLSearchParams();
+  next.set('ws', 'inbox');
+  url.searchParams.forEach((value, key) => {
+    next.set(key, value);
+  });
+  return `/teacher?${next.toString()}`;
 }
 
 const PREVIEW_STUDENTS: HubStudentRow[] = [
@@ -296,11 +308,12 @@ export default function TeacherDeskPreview() {
               {workspace === 'today' ? <DeskChatPanel localPreview={localPreview} /> : null}
               {workspace === 'students' ? <DeskStudentsSurface /> : null}
               {workspace === 'admin' ? <DeskAdminSurface /> : null}
-              {workspace === 'inbox' || workspace === 'library' ? <DeskWorkspacePlaceholder workspace={workspace} /> : null}
+              {workspace === 'inbox' ? <AdminInboxCommandCenter embedded /> : null}
+              {workspace === 'library' ? <DeskWorkspacePlaceholder workspace={workspace} /> : null}
             </main>
 
             <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(path)} />
+              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
             </aside>
           </div>
         </div>

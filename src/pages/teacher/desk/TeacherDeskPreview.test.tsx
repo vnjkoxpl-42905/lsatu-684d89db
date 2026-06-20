@@ -43,7 +43,23 @@ vi.mock('@/hooks/useHubStudents', () => ({
 }));
 
 vi.mock('@/hooks/useInbox', () => ({
-  useInbox: () => ({ conversations: [], loading: false }),
+  useInbox: () => ({ conversations: [], loading: false, unreadCount: 0, refresh: vi.fn() }),
+}));
+
+vi.mock('@/hooks/useUserPermissions', () => ({
+  useUserPermissions: () => ({ is_admin: true, loading: false }),
+}));
+
+vi.mock('@/features/admin-inbox/gmail/components/GmailPane', () => ({
+  GmailPane: () => <section aria-label="Gmail workspace">Gmail pane</section>,
+}));
+
+vi.mock('@/components/inbox/DrivePanel', () => ({
+  DrivePanel: () => <section aria-label="Drive workspace">Drive pane</section>,
+}));
+
+vi.mock('@/components/inbox/NewConversationDialog', () => ({
+  NewConversationDialog: () => <button type="button">New command</button>,
 }));
 
 vi.mock('@/hooks/useAITADrafts', () => ({
@@ -104,13 +120,20 @@ vi.mock('./DeskChatRail', () => ({
 }));
 
 vi.mock('./DeskTodoRail', () => ({
-  DeskTodoRail: ({ items }: { items: Array<{ id: string; label: string; preview: string }> }) => (
+  DeskTodoRail: ({
+    items,
+    onOpen,
+  }: {
+    items: Array<{ id: string; label: string; preview: string }>;
+    onOpen: (path: string) => void;
+  }) => (
     <aside aria-label="To-do rail">
       {items.map((item) => (
         <div key={item.id}>
           {item.label}: {item.preview}
         </div>
       ))}
+      <button type="button" onClick={() => onOpen('/inbox?pane=gmail&t=thread-1')}>Open Gmail task</button>
     </aside>
   ),
 }));
@@ -174,5 +197,33 @@ describe('TeacherDeskPreview workspace rail', () => {
 
     expect(screen.getByTestId('location')).toHaveTextContent('/teacher');
     expect(screen.getByLabelText('Today chat')).toBeInTheDocument();
+  });
+
+  it('opens the inbox command center inside the desk', () => {
+    renderDesk('/teacher?ws=inbox');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox');
+    expect(screen.getByRole('heading', { name: 'Messages Command Center' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Messages$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Gmail$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Drive$/i })).toBeInTheDocument();
+    expect(screen.getByLabelText('Saved chats')).toBeInTheDocument();
+    expect(screen.getByLabelText('To-do rail')).toBeInTheDocument();
+    expect(screen.queryByText(/Inbox is coming into the desk/i)).not.toBeInTheDocument();
+  });
+
+  it('opens the Gmail pane from the teacher inbox query state', () => {
+    renderDesk('/teacher?ws=inbox&pane=gmail&t=thread-1');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox&pane=gmail&t=thread-1');
+    expect(screen.getByLabelText('Gmail workspace')).toBeInTheDocument();
+  });
+
+  it('routes inbox to-do links into the teacher inbox workspace', () => {
+    renderDesk('/teacher');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open Gmail task' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox&pane=gmail&t=thread-1');
   });
 });
