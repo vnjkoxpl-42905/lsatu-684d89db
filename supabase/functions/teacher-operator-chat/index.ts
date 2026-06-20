@@ -558,6 +558,92 @@ function errorMessage(error: unknown, fallback: string) {
   return error instanceof Error ? error.message : fallback;
 }
 
+function normalizeSearchText(value: string) {
+  return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
+  if (kinds?.length && !kinds.includes("route")) return [];
+  const q = normalizeSearchText(query);
+  if (!q) return [];
+  const tokens = q.split(/\s+/).filter((token) => token.length > 1);
+  return ROUTE_FALLBACKS.map((route) => {
+    const haystack = normalizeSearchText(`${route.title} ${route.subtitle} ${route.url} ${route.body}`);
+    let score = 0;
+    if (haystack.includes(q)) score += 8;
+    for (const token of tokens) {
+      if (haystack.includes(token)) score += token.length >= 5 ? 3 : 1;
+    }
+    return { ...route, score };
+  })
+    .filter((route) => route.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((route) => ({
+      id: route.source_id,
+      kind: route.kind,
+      source_id: route.source_id,
+      title: route.title,
+      subtitle: route.subtitle,
+      url: route.url,
+      snippet: route.body,
+      score: route.score,
+    }));
+}
+
+async function loadConversationMemory(
+  admin: ReturnType<typeof createClient>,
+  adminId: string,
+  conversationId: string | null,
+) {
+  if (!conversationId) return null;
+  const { data: conversation, error: convError } = await admin
+    .from(table("operator_conversations"))
+    .select("id, title, updated_at")
+    .eq("id", conversationId)
+    .eq("admin_id", adminId)
+    .maybeSingle();
+  if (convError || !conversation) return null;
+
+  const { data: recent } = await admin
+    .from(table("operator_messages"))
+    .select("role, content, tool_results, created_at")
+    .eq("conversation_id", conversationId)
+    .order("created_at", { ascending: false })
+    .limit(12);
+
+  const lines = ((recent ?? []) as DbRow[])
+    .reverse()
+    .map((m) => {
+      const role = asString(m.role, "message");
+      const content = asString(m.content).replace(/\s+/g, " ").trim().slice(0, 700);
+      const toolResults = Array.isArray(m.tool_results) ? m.tool_results : [];
+      const links = toolResults
+        .filter((tr) => isRecord(tr) && tr.name === "find_link")
+        .flatMap((tr) => {
+          const result = isRecord(tr.result) ? tr.result : null;
+          const data = result && isRecord(result.data) ? result.data : null;
+          return Array.isArray(data?.results) ? data.results : [];
+        })
+        .filter(isRecord)
+        .slice(0, 3)
+        .map((r) => `${asString(r.title)} → ${asString(r.url)}`)
+        .filter(Boolean);
+      return `- ${role}: ${content}${links.length ? ` [links: ${links.join("; ")}]` : ""}`;
+    })
+    .filter((line) => line.trim().length > 12);
+
+  return {
+    role: "system" as const,
+    content: [
+      "CONVERSATION MEMORY:",
+      `- active saved chat: ${asString((conversation as DbRow).title, "New conversation")}`,
+      "- Use this to understand follow-ups, corrections, confirmations, and pronouns. Do not say you lack memory unless asked about another chat.",
+      ...lines,
+    ].join("\n"),
+  };
+}
+
 async function runTool(
   name: string,
   args: ToolArgs,
