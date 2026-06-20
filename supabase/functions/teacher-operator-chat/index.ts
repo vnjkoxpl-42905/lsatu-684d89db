@@ -955,6 +955,7 @@ Deno.serve(async (req) => {
     const payload = (await req.json()) as {
       messages?: unknown;
       context?: unknown;
+      conversation_id?: unknown;
       action?: unknown;
       student_id?: unknown;
       body?: unknown;
@@ -986,6 +987,7 @@ Deno.serve(async (req) => {
 
     const messages = payload.messages ?? [];
     const context = payload.context ?? null;
+    const conversationId = asString(payload.conversation_id) || null;
     const deskContext: DeskContext | null = isRecord(context) ? (context as DeskContext) : null;
     if (!Array.isArray(messages)) {
       return new Response(JSON.stringify({ error: "messages must be an array" }), {
@@ -1084,8 +1086,11 @@ Deno.serve(async (req) => {
         }
       : null;
 
+    const memoryNote = await loadConversationMemory(admin, adminId, conversationId);
+
     const baseMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
+      ...(memoryNote ? [memoryNote] : []),
       ...(contextNote ? [contextNote] : []),
       ...(driveNote ? [driveNote] : []),
       ...(gmailNote ? [gmailNote] : []),
