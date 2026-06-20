@@ -32,7 +32,7 @@ import { DeskChatPanel } from './DeskChatPanel';
 import { DeskTodoRail } from './DeskTodoRail';
 import { DeskStudentsSurface } from './DeskStudentsSurface';
 import { DeskAdminSurface } from './DeskAdminSurface';
-import { DeskWorkspacePlaceholder } from './DeskWorkspacePlaceholder';
+
 import { DeskLibrarySurface } from './DeskLibrarySurface';
 import { useNextSession } from './useNextSession';
 import { useTeacherTodoQueue } from './useTeacherTodoQueue';
