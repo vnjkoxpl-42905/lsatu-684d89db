@@ -815,7 +815,7 @@ async function runTool(
 
 async function findLink(
   args: ToolArgs,
-  admin: ReturnType<typeof createClient>,
+  admin: ReturnType<typeof createClient<any, "public", any>>,
 ): Promise<ToolResult> {
   const query = typeof args.query === "string" ? args.query.trim() : "";
   if (!query) return { ok: false, error: "query is required" };
