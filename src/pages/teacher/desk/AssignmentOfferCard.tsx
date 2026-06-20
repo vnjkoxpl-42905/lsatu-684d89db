@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Check, Loader2, Send, X } from 'lucide-react';
+import { Check, Loader2, PanelRightOpen, Send, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { assignResourceToStudent, type AssignableResource } from '@/lib/teacherAssignResource';
 import { summarizeNotifyResult } from '@/lib/classroomNotify';
+import type { DeskResourcePreview } from './DeskResourcePreviewPanel';
 
 export interface AssignmentOfferData {
   id?: string;
@@ -12,7 +13,32 @@ export interface AssignmentOfferData {
   resource: AssignableResource;
 }
 
-export function AssignmentOfferCard({ offer }: { offer: AssignmentOfferData }) {
+const KIND_LABELS: Record<string, string> = {
+  activity: 'Activity',
+  guided_drill: 'Guided drill',
+  drill_question: 'Drill question',
+  bootcamp_module: 'Bootcamp',
+  route: 'Page',
+  link: 'Link',
+};
+
+function toPreviewUrl(url?: string | null) {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.origin === window.location.origin ? `${parsed.pathname}${parsed.search}${parsed.hash}` : parsed.href;
+  } catch {
+    return url.startsWith('/') ? url : null;
+  }
+}
+
+export function AssignmentOfferCard({
+  offer,
+  onOpenBesideChat,
+}: {
+  offer: AssignmentOfferData;
+  onOpenBesideChat?: (resource: DeskResourcePreview) => void;
+}) {
   const { user } = useAuth();
   const [dismissed, setDismissed] = useState(false);
   const [sending, setSending] = useState(false);
@@ -22,6 +48,8 @@ export function AssignmentOfferCard({ offer }: { offer: AssignmentOfferData }) {
 
   const studentName = offer.student_name || 'the student';
   const title = offer.resource.title;
+  const previewUrl = toPreviewUrl(offer.resource.url);
+  const kindLabel = KIND_LABELS[(offer.resource.kind ?? '').toLowerCase()] ?? offer.resource.kind ?? 'Resource';
 
   const confirm = async () => {
     if (!user) {
@@ -76,6 +104,16 @@ export function AssignmentOfferCard({ offer }: { offer: AssignmentOfferData }) {
         </div>
       ) : (
         <div className="mt-2 flex flex-wrap gap-1.5">
+          {previewUrl && onOpenBesideChat ? (
+            <button
+              type="button"
+              onClick={() => onOpenBesideChat({ title, kindLabel, url: previewUrl })}
+              disabled={sending}
+              className="inline-flex items-center gap-1 rounded-full border border-black/15 bg-white px-2.5 py-1 text-[11px] text-black/70 hover:bg-black/[0.04] disabled:opacity-50"
+            >
+              <PanelRightOpen className="h-3 w-3" /> Open beside chat
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={confirm}

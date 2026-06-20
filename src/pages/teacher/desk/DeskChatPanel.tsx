@@ -199,15 +199,21 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
                       />
                     ))}
                     {assignmentOffers.map((offer, index) => (
-                      <AssignmentOfferCard key={offer.id ?? `${message.id}-assignment-${index}`} offer={offer} />
-                    ))}
-                    {links.map((link, index) => (
-                      <LinkCard
-                        key={`${message.id}-link-${index}-${link.id}`}
-                        result={link}
-                        onOpenBesideChat={openResourceBesideChat}
+                      <AssignmentOfferCard
+                        key={offer.id ?? `${message.id}-assignment-${index}`}
+                        offer={offer}
+                        onOpenBesideChat={(resource) => setSidePanel({ type: 'resource', resource })}
                       />
                     ))}
+                    {assignmentOffers.length === 0
+                      ? links.map((link, index) => (
+                          <LinkCard
+                            key={`${message.id}-link-${index}-${link.id}`}
+                            result={link}
+                            onOpenBesideChat={openResourceBesideChat}
+                          />
+                        ))
+                      : null}
                   </div>
                 );
               })}

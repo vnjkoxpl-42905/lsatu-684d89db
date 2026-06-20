@@ -19,6 +19,10 @@ vi.mock('@/hooks/useHubStudents', () => ({
   useHubStudents: () => ({ rows: [], loading: false }),
 }));
 
+vi.mock('@/contexts/AuthContext', () => ({
+  useAuth: () => ({ user: { id: 'admin-1' } }),
+}));
+
 function renderChat(localPreview = false) {
   return render(
     <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
@@ -119,5 +123,70 @@ describe('DeskChatPanel layout', () => {
     expect(within(preview).getByRole('heading', { name: 'Activity Centre' })).toBeInTheDocument();
     expect(screen.getByText('I found the Activity Centre.')).toBeInTheDocument();
     expect(screen.getByTitle('Activity Centre preview')).toHaveAttribute('src', 'http://localhost:3000/activities');
+  });
+
+  it('renders assignment offers as the primary action and opens their resource beside chat', () => {
+    mockMessages = [
+      {
+        id: 'assistant-assignment-offer',
+        role: 'assistant',
+        content: 'Confirm this assignment for **Dakota Brown**.',
+        created_at: '2026-06-20T12:00:00.000Z',
+        tool_results: [
+          {
+            name: 'find_link',
+            arguments: { query: 'negation station' },
+            result: {
+              ok: true,
+              data: {
+                results: [
+                  {
+                    id: 'negation-station',
+                    kind: 'activity',
+                    source_id: 'activity-negation',
+                    title: 'Negation Station',
+                    subtitle: 'Statement Negation Drill',
+                    url: '/activities',
+                  },
+                ],
+              },
+            },
+          },
+          {
+            name: 'create_assignment_offer',
+            arguments: {},
+            result: {
+              ok: true,
+              data: {
+                assignment_offer: {
+                  id: 'offer-1',
+                  student_id: 'student-dakota',
+                  student_name: 'Dakota Brown',
+                  resource: {
+                    title: 'Negation Station',
+                    kind: 'activity',
+                    source_id: 'activity-negation',
+                    url: '/activities',
+                    subtitle: 'Statement Negation Drill',
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    ];
+
+    renderChat(false);
+
+    expect(screen.getByText('Send Negation Station')).toBeInTheDocument();
+    expect(screen.getByText('to Dakota Brown')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Assign to student' })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open beside chat' }));
+
+    const preview = screen.getByRole('region', { name: 'Resource preview' });
+    expect(within(preview).getByRole('heading', { name: 'Negation Station' })).toBeInTheDocument();
+    expect(screen.getByTitle('Negation Station preview')).toHaveAttribute('src', 'http://localhost:3000/activities');
   });
 });

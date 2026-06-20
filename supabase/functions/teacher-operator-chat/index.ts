@@ -4,6 +4,15 @@
 // create AI TA drafts) from a single chat surface.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import {
+  buildResourceQuery,
+  inferKindHints,
+  normalizeResolverText,
+  pickBestResourceCandidate,
+  resolveCommandIntent,
+  resolveLatestResourceQuery,
+  type ResourceCandidate,
+} from "../_shared/platformResourceResolver.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -574,6 +583,8 @@ type ToolCall = {
   };
 };
 
+type SupabaseAdminClient = ReturnType<typeof createClient>;
+
 function table(name: string) {
   return name as never;
 }
@@ -591,37 +602,61 @@ function errorMessage(error: unknown, fallback: string) {
 }
 
 function normalizeSearchText(value: string) {
-  return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
+  return normalizeResolverText(value);
 }
 
 function looksLikeAssignmentRequest(text: string) {
-  const t = normalizeSearchText(text);
-  return /\b(assign|send|give|drop)\b/.test(t) && /\b(activity|drill|bootcamp|station|homework|page|resource|link|question|questions)\b/.test(t)
-    || /\bnot a message\b/.test(t);
+  return resolveCommandIntent(text) === "assign";
 }
 
 function extractResourceQueryFromAssignment(text: string, studentName?: string | null) {
-  let q = normalizeSearchText(text)
-    .replace(/\b(it s|its|this is|that is|i want|i want to|iwantto|wantto|please|can you|could you|not a message|message)\b/g, " ")
-    .replace(/\b(assign|send|give|drop|assigned|activity|drill|bootcamp|page|resource|link|student|to|for|the|a|an)\b/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (studentName) {
-    for (const token of normalizeSearchText(studentName).split(/\s+/)) {
-      if (token.length > 1) q = q.replace(new RegExp(`\\b${token}\\b`, "g"), " ");
-    }
-  }
-  q = q.replace(/\s+/g, " ").trim();
-  if (/\bnefation\b/.test(q)) q = q.replace(/\bnefation\b/g, "negation");
-  return q;
+  return buildResourceQuery(text, studentName);
 }
 
-function pickStudentFacingResult(results: DbRow[]) {
-  return results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/")) ?? results[0] ?? null;
+function pickStudentFacingResult(results: DbRow[], query = "") {
+  const candidates = results.map(toResourceCandidate);
+  const picked = query ? pickBestResourceCandidate(candidates, query, inferKindHints(query)) : null;
+  return picked
+    ? fromResourceCandidate(picked)
+    : results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/"))
+    ?? results[0]
+    ?? null;
+}
+
+function toResourceCandidate(row: DbRow): ResourceCandidate {
+  return {
+    id: asString(row.id) || `${asString(row.kind)}:${asString(row.source_id)}`,
+    kind: asString(row.kind),
+    source_id: asString(row.source_id),
+    title: asString(row.title, "(untitled)"),
+    subtitle: asString(row.subtitle) || null,
+    url: asString(row.url) || null,
+    snippet: asString(row.snippet) || null,
+    score: typeof row.score === "number"
+      ? row.score
+      : typeof row.similarity === "number"
+        ? row.similarity
+        : typeof row.rank === "number"
+          ? row.rank
+          : null,
+  };
+}
+
+function fromResourceCandidate(candidate: ResourceCandidate): DbRow {
+  return {
+    id: candidate.id,
+    kind: candidate.kind,
+    source_id: candidate.source_id,
+    title: candidate.title,
+    subtitle: candidate.subtitle ?? null,
+    url: candidate.url ?? null,
+    snippet: candidate.snippet ?? null,
+    score: candidate.score ?? null,
+  };
 }
 
 async function findDirectAssignableResource(
-  admin: ReturnType<typeof createClient<any, "public", any>>,
+  admin: SupabaseAdminClient,
   query: string,
 ): Promise<DbRow | null> {
   const slug = normalizeSearchText(query).replace(/\s+/g, "-");
@@ -670,6 +705,49 @@ async function findDirectAssignableResource(
   return null;
 }
 
+async function findExactIndexedResources(
+  admin: SupabaseAdminClient,
+  query: string,
+  limit: number,
+  kinds: string[] | null,
+): Promise<DbRow[]> {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return [];
+  const slug = normalized.replace(/\s+/g, "-");
+  const safeQuery = query.replace(/[%_,]/g, "").trim();
+  const filters = [
+    `source_id.eq.${slug}`,
+    `source_id.eq.${query}`,
+    `title.ilike.${safeQuery}`,
+    `title.ilike.%${safeQuery}%`,
+    `url.ilike.%${slug}%`,
+  ];
+
+  let builder = admin
+    .from(table("lsatu_content_index"))
+    .select("id, kind, source_id, title, subtitle, url, metadata, body")
+    .or(filters.join(","))
+    .limit(Math.max(1, Math.min(limit, 10)));
+  if (kinds?.length) builder = builder.in("kind", kinds);
+
+  const { data, error } = await builder;
+  if (error) {
+    console.warn("exact content index lookup failed", error.message);
+    return [];
+  }
+
+  return ((data ?? []) as DbRow[]).map((row) => ({
+    id: asString(row.id),
+    kind: asString(row.kind),
+    source_id: asString(row.source_id),
+    title: asString(row.title, asString(row.source_id)),
+    subtitle: asString(row.subtitle) || null,
+    url: asString(row.url) || null,
+    snippet: asString(row.body).slice(0, 400) || null,
+    score: 100,
+  }));
+}
+
 function textOfMessage(message: ChatMessage) {
   if (typeof message.content === "string") return message.content;
   if (Array.isArray(message.content)) {
@@ -682,7 +760,7 @@ function textOfMessage(message: ChatMessage) {
 }
 
 async function buildAssignmentOfferFromHistory(opts: {
-  admin: ReturnType<typeof createClient<any, "public", any>>;
+  admin: SupabaseAdminClient;
   validMessages: ChatMessage[];
 }): Promise<{ content: string; tool_results: Array<{ name: string; arguments: ToolArgs; result: ToolResult }> } | null> {
   const userTexts = opts.validMessages.filter((m) => m.role === "user").map(textOfMessage).filter(Boolean);
@@ -707,14 +785,12 @@ async function buildAssignmentOfferFromHistory(opts: {
   const studentName = asString(student.display_name);
   let resourceQuery = extractResourceQueryFromAssignment(lastUserText, studentName);
   if (!resourceQuery || resourceQuery.length < 3) {
-    for (const text of [...userTexts].reverse()) {
-      resourceQuery = extractResourceQueryFromAssignment(text, studentName);
-      if (resourceQuery && resourceQuery.length >= 3) break;
-    }
+    resourceQuery = resolveLatestResourceQuery(userTexts, studentName);
   }
   if (!resourceQuery || resourceQuery.length < 3) return null;
 
-  const linkArgs = { query: resourceQuery, limit: 5 };
+  const kindHints = inferKindHints(`${lastUserText} ${resourceQuery}`);
+  const linkArgs = { query: resourceQuery, limit: 5, kinds: kindHints.length ? kindHints : undefined };
   const directResource = await findDirectAssignableResource(opts.admin, resourceQuery);
   const linkResult = directResource
     ? { ok: true, data: { query: resourceQuery, results: [directResource] } }
@@ -722,7 +798,7 @@ async function buildAssignmentOfferFromHistory(opts: {
   const results = isRecord(linkResult.data) && Array.isArray(linkResult.data.results)
     ? (linkResult.data.results as DbRow[])
     : [];
-  const resource = pickStudentFacingResult(results);
+  const resource = pickStudentFacingResult(results, resourceQuery);
   if (!resource) return null;
 
   const offer = {
@@ -782,7 +858,7 @@ function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
 }
 
 async function loadConversationMemory(
-  admin: ReturnType<typeof createClient<any, "public", any>>,
+  admin: SupabaseAdminClient,
   adminId: string,
   conversationId: string | null,
 ): Promise<ChatMessage | null> {
@@ -837,7 +913,7 @@ async function loadConversationMemory(
 async function runTool(
   name: string,
   args: ToolArgs,
-  ctx: { adminId: string; admin: ReturnType<typeof createClient<any, "public", any>>; context?: DeskContext | null },
+  ctx: { adminId: string; admin: SupabaseAdminClient; context?: DeskContext | null },
 ): Promise<ToolResult> {
   const { admin, adminId } = ctx;
   try {
@@ -1027,14 +1103,24 @@ async function runTool(
 
 async function findLink(
   args: ToolArgs,
-  admin: ReturnType<typeof createClient<any, "public", any>>,
+  admin: SupabaseAdminClient,
 ): Promise<ToolResult> {
   const query = typeof args.query === "string" ? args.query.trim() : "";
   if (!query) return { ok: false, error: "query is required" };
   const limit = Math.min(Math.max(Number(args.limit ?? 5) || 5, 1), 10);
-  const kinds = Array.isArray(args.kinds)
+  const explicitKinds = Array.isArray(args.kinds)
     ? (args.kinds.filter((k) => typeof k === "string") as string[])
     : null;
+  const inferredKinds = inferKindHints(query);
+  const kinds = explicitKinds && explicitKinds.length ? explicitKinds : inferredKinds.length ? inferredKinds : null;
+
+  const exactRows: DbRow[] = [];
+  const directResource = await findDirectAssignableResource(admin, query);
+  if (directResource && (!kinds?.length || kinds.includes(asString(directResource.kind)))) {
+    exactRows.push(directResource);
+  }
+  exactRows.push(...(await findExactIndexedResources(admin, query, limit, kinds)));
+  exactRows.push(...(routeFallbacks(query, limit, kinds) as DbRow[]));
 
   // 1) Embed the query via Lovable AI Gateway.
   let queryEmbedding: number[] | null = null;
@@ -1104,9 +1190,13 @@ async function findLink(
     snippet: r.snippet ?? null,
     score: r.similarity ?? r.rank ?? null,
   }));
-  const fallbackResults = routeFallbacks(query, limit, kinds);
+  const exactCandidates = exactRows.map(toResourceCandidate);
+  const bestExact = pickBestResourceCandidate(exactCandidates, query, kinds ?? inferredKinds);
   const seen = new Set<string>();
-  const results = [...dbResults, ...fallbackResults]
+  const orderedExact = bestExact
+    ? [fromResourceCandidate(bestExact), ...exactRows.filter((r) => `${asString(r.kind)}:${asString(r.source_id)}` !== `${bestExact.kind}:${bestExact.source_id}`)]
+    : exactRows;
+  const results = [...orderedExact, ...dbResults]
     .filter((r) => {
       const key = `${r.kind}:${r.source_id}`;
       if (seen.has(key)) return false;
@@ -1120,8 +1210,26 @@ async function findLink(
     data: {
       query,
       results,
+      diagnostics: {
+        resolver: "platform_resource_resolver_v1",
+        inferred_kinds: inferredKinds,
+        exact_candidates: exactRows.slice(0, 5).map((r) => ({
+          kind: asString(r.kind),
+          source_id: asString(r.source_id),
+          title: asString(r.title),
+          url: asString(r.url) || null,
+        })),
+        selected: results[0]
+          ? {
+              kind: results[0].kind,
+              source_id: results[0].source_id,
+              title: results[0].title,
+              url: results[0].url ?? null,
+            }
+          : null,
+      },
       note: results.length
-        ? dbResults.length ? undefined : "The semantic content index is empty or had no match; returned the closest built-in route fallback."
+        ? dbResults.length || exactRows.length ? undefined : "The semantic content index is empty or had no match; returned the closest built-in route fallback."
         : "Index is empty or no match. The content index may not be populated yet.",
     },
   };

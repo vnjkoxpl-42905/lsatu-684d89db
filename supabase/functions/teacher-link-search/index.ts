@@ -3,6 +3,12 @@
 // can render as LinkCards.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import {
+  inferKindHints,
+  normalizeResolverText,
+  pickBestResourceCandidate,
+  type ResourceCandidate,
+} from "../_shared/platformResourceResolver.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -35,7 +41,7 @@ const ROUTE_FALLBACKS = [
 ] as const;
 
 function normalizeSearchText(value: string) {
-  return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
+  return normalizeResolverText(value);
 }
 
 function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
@@ -78,6 +84,65 @@ interface MatchRow {
   rank?: number;
 }
 
+type SupabaseAdminClient = ReturnType<typeof createClient>;
+
+async function findExactIndexedResources(
+  admin: SupabaseAdminClient,
+  query: string,
+  limit: number,
+  kinds: string[] | null,
+): Promise<MatchRow[]> {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return [];
+  const slug = normalized.replace(/\s+/g, "-");
+  const safeQuery = query.replace(/[%_,]/g, "").trim();
+  const filters = [
+    `source_id.eq.${slug}`,
+    `source_id.eq.${query}`,
+    `title.ilike.${safeQuery}`,
+    `title.ilike.%${safeQuery}%`,
+    `url.ilike.%${slug}%`,
+  ];
+
+  let builder = admin
+    .from("lsatu_content_index")
+    .select("id, kind, source_id, title, subtitle, url, metadata, body")
+    .or(filters.join(","))
+    .limit(Math.max(1, Math.min(limit, 10)));
+  if (kinds?.length) builder = builder.in("kind", kinds);
+
+  const { data, error } = await builder;
+  if (error) {
+    console.warn("exact content index lookup failed", error.message);
+    return [];
+  }
+
+  return ((data ?? []) as Array<Record<string, unknown>>).map((row) => ({
+    id: String(row.id ?? ""),
+    kind: String(row.kind ?? ""),
+    source_id: String(row.source_id ?? ""),
+    title: String(row.title ?? row.source_id ?? ""),
+    subtitle: typeof row.subtitle === "string" ? row.subtitle : null,
+    url: typeof row.url === "string" ? row.url : null,
+    metadata: row.metadata && typeof row.metadata === "object" ? row.metadata as Record<string, unknown> : null,
+    snippet: typeof row.body === "string" ? row.body.slice(0, 400) : null,
+    rank: 100,
+  }));
+}
+
+function toResourceCandidate(row: MatchRow): ResourceCandidate {
+  return {
+    id: row.id,
+    kind: row.kind,
+    source_id: row.source_id,
+    title: row.title ?? row.source_id,
+    subtitle: row.subtitle,
+    url: row.url,
+    snippet: row.snippet,
+    score: row.similarity ?? row.rank ?? null,
+  };
+}
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -116,7 +181,12 @@ Deno.serve(async (req) => {
   const query = (body.query ?? "").trim();
   if (!query) return json({ error: "query is required" }, 400);
   const limit = Math.min(Math.max(Number(body.limit ?? 5) || 5, 1), 10);
-  const kinds = Array.isArray(body.kinds) && body.kinds.length ? body.kinds : null;
+  const inferredKinds = inferKindHints(query);
+  const kinds = Array.isArray(body.kinds) && body.kinds.length ? body.kinds : inferredKinds.length ? inferredKinds : null;
+  const exactRows = [
+    ...(await findExactIndexedResources(admin, query, limit, kinds)),
+    ...(routeFallbacks(query, limit, kinds) as MatchRow[]),
+  ];
 
   // Embed via Lovable AI Gateway.
   let queryEmbedding: number[] | null = null;
@@ -172,8 +242,44 @@ Deno.serve(async (req) => {
     snippet: r.snippet,
     score: r.similarity ?? r.rank ?? null,
   }));
+  const bestExact = pickBestResourceCandidate(exactRows.map(toResourceCandidate), query, kinds ?? inferredKinds);
+  const orderedExact = bestExact
+    ? [
+        {
+          id: bestExact.id,
+          kind: bestExact.kind,
+          source_id: bestExact.source_id,
+          title: bestExact.title,
+          subtitle: bestExact.subtitle ?? null,
+          url: bestExact.url ?? null,
+          snippet: bestExact.snippet ?? null,
+          score: bestExact.score ?? null,
+        },
+        ...exactRows
+          .filter((r) => `${r.kind}:${r.source_id}` !== `${bestExact.kind}:${bestExact.source_id}`)
+          .map((r) => ({
+            id: r.id,
+            kind: r.kind,
+            source_id: r.source_id,
+            title: r.title ?? r.source_id,
+            subtitle: r.subtitle,
+            url: r.url,
+            snippet: r.snippet,
+            score: r.similarity ?? r.rank ?? null,
+          })),
+      ]
+    : exactRows.map((r) => ({
+        id: r.id,
+        kind: r.kind,
+        source_id: r.source_id,
+        title: r.title ?? r.source_id,
+        subtitle: r.subtitle,
+        url: r.url,
+        snippet: r.snippet,
+        score: r.similarity ?? r.rank ?? null,
+      }));
   const seen = new Set<string>();
-  const results = [...dbResults, ...routeFallbacks(query, limit, kinds)]
+  const results = [...orderedExact, ...dbResults]
     .filter((r) => {
       const key = `${r.kind}:${r.source_id}`;
       if (seen.has(key)) return false;
@@ -184,8 +290,26 @@ Deno.serve(async (req) => {
 
   return json({
     results,
+    diagnostics: {
+      resolver: "platform_resource_resolver_v1",
+      inferred_kinds: inferredKinds,
+      exact_candidates: exactRows.slice(0, 5).map((r) => ({
+        kind: r.kind,
+        source_id: r.source_id,
+        title: r.title,
+        url: r.url,
+      })),
+      selected: results[0]
+        ? {
+            kind: results[0].kind,
+            source_id: results[0].source_id,
+            title: results[0].title,
+            url: results[0].url ?? null,
+          }
+        : null,
+    },
     note: results.length && !dbResults.length
-      ? "The semantic content index is empty or had no match; returned the closest built-in route fallback."
+      ? "The semantic content index is empty or had no match; returned exact matches and route fallbacks."
       : undefined,
   });
 });
