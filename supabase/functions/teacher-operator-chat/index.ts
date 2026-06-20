@@ -830,6 +830,28 @@ async function runTool(
       }
       case "find_link":
         return await findLink(args, ctx.admin);
+      case "create_assignment_offer": {
+        const studentId = asString(args.student_id).trim();
+        const resourceTitle = asString(args.resource_title).trim();
+        if (!studentId || !resourceTitle) return { ok: false, error: "student_id and resource_title are required" };
+        return {
+          ok: true,
+          data: {
+            assignment_offer: {
+              id: crypto.randomUUID(),
+              student_id: studentId,
+              student_name: asString(args.student_name) || null,
+              resource: {
+                title: resourceTitle,
+                kind: asString(args.resource_kind) || "resource",
+                source_id: asString(args.source_id) || null,
+                url: asString(args.url) || null,
+                subtitle: asString(args.subtitle) || null,
+              },
+            },
+          },
+        };
+      }
       case "search_google_drive":
         return await searchGoogleDrive(args);
       case "search_gmail":
