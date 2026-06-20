@@ -232,7 +232,7 @@ export function useOperatorChat() {
             }
           }
 
-          const body: Record<string, unknown> = { messages: history };
+          const body: Record<string, unknown> = { messages: history, conversation_id: convId };
           if (context) body.context = context;
           const { data, error: invokeErr } = await supabase.functions.invoke('teacher-operator-chat', { body });
           if (invokeErr) throw invokeErr;
