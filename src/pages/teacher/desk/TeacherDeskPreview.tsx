@@ -33,6 +33,7 @@ import { DeskTodoRail } from './DeskTodoRail';
 import { DeskStudentsSurface } from './DeskStudentsSurface';
 import { DeskAdminSurface } from './DeskAdminSurface';
 import { DeskWorkspacePlaceholder } from './DeskWorkspacePlaceholder';
+import { DeskLibrarySurface } from './DeskLibrarySurface';
 import { useNextSession } from './useNextSession';
 import { useTeacherTodoQueue } from './useTeacherTodoQueue';
 import { AdminInboxCommandCenter } from '@/components/inbox/AdminInboxCommandCenter';
@@ -309,7 +310,7 @@ export default function TeacherDeskPreview() {
               {workspace === 'students' ? <DeskStudentsSurface /> : null}
               {workspace === 'admin' ? <DeskAdminSurface /> : null}
               {workspace === 'inbox' ? <AdminInboxCommandCenter embedded /> : null}
-              {workspace === 'library' ? <DeskWorkspacePlaceholder workspace={workspace} /> : null}
+              {workspace === 'library' ? <DeskLibrarySurface /> : null}
             </main>
 
             <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
