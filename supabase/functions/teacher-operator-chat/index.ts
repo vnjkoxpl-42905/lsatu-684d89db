@@ -1037,7 +1037,7 @@ Deno.serve(async (req) => {
     const contextNote =
       deskContext?.surface === "teacher_desk"
         ? {
-            role: "system",
+            role: "system" as const,
             content: [
               "DESK CONTEXT (the user seeded this from the Teacher Desk; your create_draft output renders as an inline approval card the user edits/approves):",
               `- task mode: ${deskContext.mode ?? "unknown"}`,
@@ -1051,7 +1051,7 @@ Deno.serve(async (req) => {
             ]
               .filter(Boolean)
               .join("\n"),
-          }
+          } satisfies ChatMessage
         : null;
 
     const driveConnectorOn = deskContext?.driveConnector === true;
@@ -1116,7 +1116,7 @@ Deno.serve(async (req) => {
     const lastUserText = typeof lastUserMsg?.content === "string"
       ? lastUserMsg.content
       : Array.isArray(lastUserMsg?.content)
-        ? lastUserMsg.content.filter((p: { type?: string; text?: string }) => p.type === "text").map((p) => p.text ?? "").join(" ")
+        ? lastUserMsg.content.filter((p): p is { type: "text"; text: string } => p.type === "text").map((p) => p.text ?? "").join(" ")
         : "";
     const hasImageInput = validMessages.some((m) =>
       Array.isArray(m.content) && m.content.some((p: { type?: string }) => p?.type === "image_url"),
