@@ -279,9 +279,11 @@ const App = () => {
                 reachable for local preview without TeacherShell's admin gate. */}
             <Route path="/teacher" element={
               <ProtectedRoute requireAdmin>
-                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                  <TeacherDeskPreview />
-                </React.Suspense>
+                <QuestionBankProvider>
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <TeacherDeskPreview />
+                  </React.Suspense>
+                </QuestionBankProvider>
               </ProtectedRoute>
             } />
 
