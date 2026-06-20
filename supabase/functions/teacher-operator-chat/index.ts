@@ -596,13 +596,13 @@ function normalizeSearchText(value: string) {
 
 function looksLikeAssignmentRequest(text: string) {
   const t = normalizeSearchText(text);
-  return /\b(assign|send|give|drop)\b/.test(t) && /\b(student|activity|drill|bootcamp|station|homework|page|resource|link|to)\b/.test(t)
+  return /\b(assign|send|give|drop)\b/.test(t) && /\b(activity|drill|bootcamp|station|homework|page|resource|link|question|questions)\b/.test(t)
     || /\bnot a message\b/.test(t);
 }
 
 function extractResourceQueryFromAssignment(text: string, studentName?: string | null) {
   let q = normalizeSearchText(text)
-    .replace(/\b(it s|its|this is|that is|i want|i want to|please|can you|could you|not a message|message)\b/g, " ")
+    .replace(/\b(it s|its|this is|that is|i want|i want to|iwantto|wantto|please|can you|could you|not a message|message)\b/g, " ")
     .replace(/\b(assign|send|give|drop|assigned|activity|drill|bootcamp|page|resource|link|student|to|for|the|a|an)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
