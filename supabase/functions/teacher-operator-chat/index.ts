@@ -620,6 +620,85 @@ function pickStudentFacingResult(results: DbRow[]) {
   return results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/")) ?? results[0] ?? null;
 }
 
+function textOfMessage(message: ChatMessage) {
+  if (typeof message.content === "string") return message.content;
+  if (Array.isArray(message.content)) {
+    return message.content
+      .filter((part): part is { type: "text"; text: string } => part.type === "text")
+      .map((part) => part.text)
+      .join(" ");
+  }
+  return "";
+}
+
+async function buildAssignmentOfferFromHistory(opts: {
+  admin: ReturnType<typeof createClient<any, "public", any>>;
+  validMessages: ChatMessage[];
+}): Promise<{ content: string; tool_results: Array<{ name: string; arguments: ToolArgs; result: ToolResult }> } | null> {
+  const userTexts = opts.validMessages.filter((m) => m.role === "user").map(textOfMessage).filter(Boolean);
+  const lastUserText = userTexts[userTexts.length - 1] ?? "";
+  if (!looksLikeAssignmentRequest(lastUserText)) return null;
+
+  const allUserText = userTexts.slice(-6).join(" \n ");
+  const { data: students } = await opts.admin
+    .from(table("profiles"))
+    .select("class_id, display_name")
+    .limit(200);
+  const normalizedAll = normalizeSearchText(allUserText);
+  const student = ((students ?? []) as DbRow[])
+    .filter((s) => {
+      const name = normalizeSearchText(asString(s.display_name));
+      const tokens = name.split(/\s+/).filter((token) => token.length > 1);
+      return tokens.length > 0 && tokens.some((token) => normalizedAll.includes(token));
+    })
+    .sort((a, b) => normalizeSearchText(asString(b.display_name)).length - normalizeSearchText(asString(a.display_name)).length)[0];
+
+  if (!student) return null;
+  const studentName = asString(student.display_name);
+  let resourceQuery = extractResourceQueryFromAssignment(lastUserText, studentName);
+  if (!resourceQuery || resourceQuery.length < 3) {
+    for (const text of [...userTexts].reverse()) {
+      resourceQuery = extractResourceQueryFromAssignment(text, studentName);
+      if (resourceQuery && resourceQuery.length >= 3) break;
+    }
+  }
+  if (!resourceQuery || resourceQuery.length < 3) return null;
+
+  const linkArgs = { query: resourceQuery, limit: 5 };
+  const linkResult = await findLink(linkArgs, opts.admin);
+  const results = isRecord(linkResult.data) && Array.isArray(linkResult.data.results)
+    ? (linkResult.data.results as DbRow[])
+    : [];
+  const resource = pickStudentFacingResult(results);
+  if (!resource) return null;
+
+  const offer = {
+    id: crypto.randomUUID(),
+    student_id: asString(student.class_id),
+    student_name: studentName || null,
+    resource: {
+      title: asString(resource.title, resourceQuery),
+      kind: asString(resource.kind, "resource"),
+      source_id: asString(resource.source_id) || null,
+      url: asString(resource.url) || null,
+      subtitle: asString(resource.subtitle) || asString(resource.snippet) || null,
+    },
+  };
+
+  return {
+    content: `Confirm this assignment for **${studentName || "the student"}**.`,
+    tool_results: [
+      {
+        name: "find_students",
+        arguments: { query: studentName || asString(student.class_id), limit: 10 },
+        result: { ok: true, data: { students: [{ id: asString(student.class_id), name: studentName }] } },
+      },
+      { name: "find_link", arguments: linkArgs, result: linkResult },
+      { name: "create_assignment_offer", arguments: {}, result: { ok: true, data: { assignment_offer: offer } } },
+    ],
+  };
+}
+
 function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
   if (kinds?.length && !kinds.includes("route")) return [];
   const q = normalizeSearchText(query);
