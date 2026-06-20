@@ -70,6 +70,16 @@ Universal link retrieval:
 - If the user confirms a suggestion with "yes", reuse the prior corrected title/query and call find_link again.
 - If find_link returns no good match, use the tool note to explain whether the live content index is empty, then offer the closest built-in route if one exists.
 
+Assignments:
+- If Joshua says to "send", "assign", "give", or "drop" an activity, drill, bootcamp, page,
+  link, or resource to a student, this means create an ASSIGNMENT notification, not a free-form
+  message. Do not ask "what message should I send?"
+- For assignment requests: call find_students for the student, call find_link for the resource,
+  then call create_assignment_offer with the resolved student and best student-facing resource.
+  The UI will render Confirm/Deny; no assignment is created until Joshua confirms the card.
+- If Joshua corrects you with "it's not a message" or similar, immediately switch to the
+  assignment flow above using the named/latest resource and student from conversation memory.
+
 Tone: warm, sharp, efficient. You are his right hand.`;
 
 const TOOLS = [
@@ -210,6 +220,28 @@ const TOOLS = [
           },
         },
         required: ["query"],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "create_assignment_offer",
+      description:
+        "Prepare a confirm/deny assignment card for sending an activity, guided drill, bootcamp, page, or resource to a student. This does NOT send a message and does NOT create the assignment; the UI asks Joshua to confirm.",
+      parameters: {
+        type: "object",
+        properties: {
+          student_id: { type: "string", description: "Resolved student auth/class id from find_students." },
+          student_name: { type: "string", description: "Student display name, if known." },
+          resource_title: { type: "string", description: "Resolved assignment/resource title." },
+          resource_kind: { type: "string", description: "activity | guided_drill | bootcamp_module | drill_question | route | link | other" },
+          source_id: { type: "string", description: "Resource source_id from find_link when available." },
+          url: { type: "string", description: "Student-facing URL/path from find_link when available." },
+          subtitle: { type: "string", description: "Short subtitle/description from find_link when available." },
+        },
+        required: ["student_id", "resource_title"],
         additionalProperties: false,
       },
     },
