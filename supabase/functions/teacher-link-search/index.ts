@@ -15,6 +15,56 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
 
+const ROUTE_FALLBACKS = [
+  { kind: "route", source_id: "/teacher", title: "Teacher Desk", subtitle: "Main assistant workspace", url: "/teacher", body: "teacher desk assistant today dashboard chat" },
+  { kind: "route", source_id: "/teacher/library/activities", title: "Activity Center", subtitle: "Teacher activity library", url: "/teacher/library/activities", body: "activity centre activity center activities assign launch teacher library" },
+  { kind: "route", source_id: "/activities", title: "Activity Centre", subtitle: "Student activity centre", url: "/activities", body: "activity centre activity center student activities assigned work" },
+  { kind: "route", source_id: "/teacher/library/guided-drills", title: "Guided Drills", subtitle: "Teacher guided drill library", url: "/teacher/library/guided-drills", body: "guided drills guided drill library teacher assign launch" },
+  { kind: "route", source_id: "/drill", title: "Smart Drill", subtitle: "Adaptive drilling surface", url: "/drill", body: "smart drill drilling practice questions adaptive drill" },
+  { kind: "route", source_id: "/teacher/students", title: "Students", subtitle: "Teacher student roster", url: "/teacher/students", body: "students roster profiles learners teacher" },
+  { kind: "route", source_id: "/teacher/schedule", title: "Schedule", subtitle: "Teacher schedule", url: "/teacher/schedule", body: "schedule calendar sessions meetings teacher" },
+  { kind: "route", source_id: "/teacher/whiteboard", title: "Whiteboard", subtitle: "Teacher smartboard", url: "/teacher/whiteboard", body: "whiteboard smartboard canvas teaching board" },
+  { kind: "route", source_id: "/teacher/library", title: "Teacher Library", subtitle: "Assignments, recaps, uploads, bootcamps", url: "/teacher/library", body: "library assignments recaps uploads bootcamps teacher" },
+  { kind: "route", source_id: "/teacher/insights", title: "Bootcamp Insights", subtitle: "Teacher bootcamp analytics", url: "/teacher/insights", body: "bootcamp insights analytics progress teacher" },
+  { kind: "route", source_id: "/bootcamps", title: "Bootcamps", subtitle: "Student bootcamp index", url: "/bootcamps", body: "bootcamps lessons causation intro principle flaw abstraction" },
+  { kind: "route", source_id: "/bootcamp/causation-station", title: "Causation Station", subtitle: "Bootcamp", url: "/bootcamp/causation-station", body: "causation station causal reasoning bootcamp" },
+  { kind: "route", source_id: "/bootcamp/intro-to-lr", title: "Intro to LR", subtitle: "Bootcamp", url: "/bootcamp/intro-to-lr", body: "intro to logical reasoning main conclusion structure bootcamp" },
+  { kind: "route", source_id: "/bootcamp/principle-flaw", title: "Principle and Flaw", subtitle: "Bootcamp", url: "/bootcamp/principle-flaw", body: "principle flaw bootcamp questions" },
+  { kind: "route", source_id: "/bootcamp/fallacy-flaw", title: "Flaw and Famous Flaws", subtitle: "Bootcamp", url: "/bootcamp/fallacy-flaw", body: "fallacy flaw famous flaws bootcamp" },
+  { kind: "route", source_id: "/journal", title: "Wrong Answer Journal", subtitle: "Journal", url: "/journal", body: "wrong answer journal waj review missed questions" },
+] as const;
+
+function normalizeSearchText(value: string) {
+  return value.toLowerCase().replace(/centre/g, "center").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
+  if (kinds?.length && !kinds.includes("route")) return [];
+  const q = normalizeSearchText(query);
+  if (!q) return [];
+  const tokens = q.split(/\s+/).filter((token) => token.length > 1);
+  return ROUTE_FALLBACKS.map((route) => {
+    const haystack = normalizeSearchText(`${route.title} ${route.subtitle} ${route.url} ${route.body}`);
+    let score = 0;
+    if (haystack.includes(q)) score += 8;
+    for (const token of tokens) if (haystack.includes(token)) score += token.length >= 5 ? 3 : 1;
+    return { ...route, score };
+  })
+    .filter((route) => route.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((route) => ({
+      id: route.source_id,
+      kind: route.kind,
+      source_id: route.source_id,
+      title: route.title,
+      subtitle: route.subtitle,
+      url: route.url,
+      snippet: route.body,
+      score: route.score,
+    }));
+}
+
 interface MatchRow {
   id: string;
   kind: string;
@@ -74,7 +124,8 @@ Deno.serve(async (req) => {
     const er = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Lovable-API-Key": LOVABLE_API_KEY,
+        "X-Lovable-AIG-SDK": "edge-function",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
@@ -111,7 +162,7 @@ Deno.serve(async (req) => {
     rows = (data as MatchRow[] | null) ?? [];
   }
 
-  const results = rows.map((r) => ({
+  const dbResults = rows.map((r) => ({
     id: r.id,
     kind: r.kind,
     source_id: r.source_id,
@@ -121,6 +172,20 @@ Deno.serve(async (req) => {
     snippet: r.snippet,
     score: r.similarity ?? r.rank ?? null,
   }));
+  const seen = new Set<string>();
+  const results = [...dbResults, ...routeFallbacks(query, limit, kinds)]
+    .filter((r) => {
+      const key = `${r.kind}:${r.source_id}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
 
-  return json({ results });
+  return json({
+    results,
+    note: results.length && !dbResults.length
+      ? "The semantic content index is empty or had no match; returned the closest built-in route fallback."
+      : undefined,
+  });
 });
