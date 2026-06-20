@@ -147,7 +147,7 @@ export async function assignResourceToStudent(input: {
       if (existingError) throw existingError;
 
       let assignment = existing as { id: string } | null;
-      let reusedExisting = Boolean(assignment?.id);
+      const reusedExisting = Boolean(assignment?.id);
       if (!assignment) {
         const { data, error } = await supabase
           .from('activity_assignments')
