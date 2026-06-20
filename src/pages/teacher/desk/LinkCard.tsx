@@ -276,27 +276,30 @@ function ConfirmSendDialog({
   onClose,
 }: {
   student: HubStudentRow;
-  link: { title: string; url: string };
+  link: { title: string; url: string; path: string };
   onClose: () => void;
 }) {
-  const defaultBody = `Hi ${student.display_name ?? 'there'} — here's something to look at:\n\n${link.title}\n${link.url}`;
+  const { user } = useAuth();
+  const defaultBody = `Take a look at: ${link.title}`;
   const [body, setBody] = useState(defaultBody);
   const [sending, setSending] = useState(false);
 
   const send = async () => {
+    if (!user) {
+      toast.error('Not signed in');
+      return;
+    }
     setSending(true);
     try {
-      const { data, error } = await supabase.functions.invoke('teacher-operator-chat', {
-        body: {
-          action: 'send_student_message',
-          student_id: student.class_id,
-          body,
-        },
+      const result = await notifyStudentOfClassroomItem({
+        adminUserId: user.id,
+        studentId: student.class_id,
+        title: link.title,
+        route: link.path,
+        description: body.trim() || undefined,
+        assignmentType: 'assignment',
       });
-      if (error || (data as { ok?: boolean })?.ok === false) {
-        throw new Error(error?.message ?? (data as { error?: string })?.error ?? 'Send failed');
-      }
-      toast.success(`Sent to ${student.display_name ?? 'student'}`);
+      toast.success(`${summarizeNotifyResult(result)} → ${student.display_name ?? 'student'}`);
       onClose();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Send failed');
