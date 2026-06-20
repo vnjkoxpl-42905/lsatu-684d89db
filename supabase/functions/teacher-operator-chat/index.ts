@@ -592,10 +592,10 @@ function routeFallbacks(query: string, limit: number, kinds: string[] | null) {
 }
 
 async function loadConversationMemory(
-  admin: ReturnType<typeof createClient>,
+  admin: ReturnType<typeof createClient<any, "public", any>>,
   adminId: string,
   conversationId: string | null,
-) {
+): Promise<ChatMessage | null> {
   if (!conversationId) return null;
   const { data: conversation, error: convError } = await admin
     .from(table("operator_conversations"))
@@ -647,7 +647,7 @@ async function loadConversationMemory(
 async function runTool(
   name: string,
   args: ToolArgs,
-  ctx: { adminId: string; admin: ReturnType<typeof createClient>; context?: DeskContext | null },
+  ctx: { adminId: string; admin: ReturnType<typeof createClient<any, "public", any>>; context?: DeskContext | null },
 ): Promise<ToolResult> {
   const { admin, adminId } = ctx;
   try {
