@@ -620,6 +620,56 @@ function pickStudentFacingResult(results: DbRow[]) {
   return results.find((r) => !asString(r.url).startsWith("/teacher/") && !asString(r.url).startsWith("/admin/")) ?? results[0] ?? null;
 }
 
+async function findDirectAssignableResource(
+  admin: ReturnType<typeof createClient<any, "public", any>>,
+  query: string,
+): Promise<DbRow | null> {
+  const slug = normalizeSearchText(query).replace(/\s+/g, "-");
+  const { data: activity, error: activityError } = await admin
+    .from(table("activities"))
+    .select("id, slug, title, subtitle")
+    .or(`slug.eq.${slug},title.ilike.%${query.replace(/[%_,]/g, "")}%`)
+    .limit(1)
+    .maybeSingle();
+  if (activityError) console.warn("direct activity lookup failed", activityError.message);
+  if (activity) {
+    const row = activity as DbRow;
+    return {
+      id: asString(row.id),
+      kind: "activity",
+      source_id: asString(row.id),
+      title: asString(row.title),
+      subtitle: asString(row.subtitle) || "Activity Centre",
+      url: "/activities",
+      snippet: "Student-facing activity assignment",
+      score: 100,
+    };
+  }
+
+  const { data: drill, error: drillError } = await admin
+    .from(table("guided_drills"))
+    .select("id, slug, title, category")
+    .or(`slug.eq.${slug},title.ilike.%${query.replace(/[%_,]/g, "")}%`)
+    .limit(1)
+    .maybeSingle();
+  if (drillError) console.warn("direct guided drill lookup failed", drillError.message);
+  if (drill) {
+    const row = drill as DbRow;
+    return {
+      id: asString(row.id),
+      kind: "guided_drill",
+      source_id: asString(row.id),
+      title: asString(row.title),
+      subtitle: asString(row.category) || "Guided drill",
+      url: "/guided",
+      snippet: "Student-facing guided drill assignment",
+      score: 100,
+    };
+  }
+
+  return null;
+}
+
 function textOfMessage(message: ChatMessage) {
   if (typeof message.content === "string") return message.content;
   if (Array.isArray(message.content)) {
@@ -665,7 +715,10 @@ async function buildAssignmentOfferFromHistory(opts: {
   if (!resourceQuery || resourceQuery.length < 3) return null;
 
   const linkArgs = { query: resourceQuery, limit: 5 };
-  const linkResult = await findLink(linkArgs, opts.admin);
+  const directResource = await findDirectAssignableResource(opts.admin, resourceQuery);
+  const linkResult = directResource
+    ? { ok: true, data: { query: resourceQuery, results: [directResource] } }
+    : await findLink(linkArgs, opts.admin);
   const results = isRecord(linkResult.data) && Array.isArray(linkResult.data.results)
     ? (linkResult.data.results as DbRow[])
     : [];
