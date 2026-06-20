@@ -881,7 +881,7 @@ async function findLink(
     rows = (data as MatchRow[] | null) ?? [];
   }
 
-  const results = rows.map((r) => ({
+  const dbResults = rows.map((r) => ({
     id: r.id,
     kind: r.kind,
     source_id: r.source_id,
@@ -891,6 +891,16 @@ async function findLink(
     snippet: r.snippet ?? null,
     score: r.similarity ?? r.rank ?? null,
   }));
+  const fallbackResults = routeFallbacks(query, limit, kinds);
+  const seen = new Set<string>();
+  const results = [...dbResults, ...fallbackResults]
+    .filter((r) => {
+      const key = `${r.kind}:${r.source_id}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
 
   return {
     ok: true,
@@ -898,7 +908,7 @@ async function findLink(
       query,
       results,
       note: results.length
-        ? undefined
+        ? dbResults.length ? undefined : "The semantic content index is empty or had no match; returned the closest built-in route fallback."
         : "Index is empty or no match. The content index may not be populated yet.",
     },
   };
