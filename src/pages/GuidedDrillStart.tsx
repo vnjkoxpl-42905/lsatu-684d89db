@@ -97,6 +97,12 @@ export default function GuidedDrillStart({
     findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
   ), [drill, slug]);
 
+  // Pool size for the native launch fallback (drills without a curated HTML page).
+  const fallbackPoolSize = React.useMemo(() => {
+    if (launchPage || !drill || qbLoading) return null;
+    return resolveGuidedDrillPool(drill.bank_filter).length;
+  }, [launchPage, drill, qbLoading]);
+
   const handleReturn = React.useCallback(() => {
     if (onReturn) {
       onReturn();
@@ -268,10 +274,84 @@ export default function GuidedDrillStart({
     return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
   }
 
+  // No curated HTML launch page for this drill — render a native launch card
+  // that starts the drill straight from its question pool.
   if (!launchPage) {
+    if (!drill) {
+      return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
+    }
+
+    const want = drill.question_count ?? 0;
+    const poolShort = fallbackPoolSize != null && want > 0 && fallbackPoolSize < want;
+    const canStart = qbLoading || fallbackPoolSize == null || fallbackPoolSize > 0;
+
     return (
-      <div className="min-h-screen bg-background text-foreground p-8">
-        Approved launch page not found.
+      <div className="flex min-h-screen items-center justify-center bg-background p-8 text-foreground">
+        <div className="w-full max-w-lg rounded-xl border border-border bg-card p-8 shadow-sm">
+          {drill.category && (
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              {drill.category}
+            </div>
+          )}
+          <h1 className="mt-1 text-2xl font-bold">{drill.title}</h1>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {drill.reasoning_types?.map((r) => (
+              <span key={r} className="rounded border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                {r}
+              </span>
+            ))}
+            {drill.question_types?.map((q) => (
+              <span key={q} className="rounded border border-border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground">
+                {q}
+              </span>
+            ))}
+          </div>
+
+          <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <dt className="text-muted-foreground">Questions</dt>
+              <dd className="font-semibold">{want > 0 ? want : '—'}</dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Available in bank</dt>
+              <dd className="font-semibold">
+                {fallbackPoolSize == null ? 'Loading…' : fallbackPoolSize}
+              </dd>
+            </div>
+            {drill.estimated_minutes != null && (
+              <div>
+                <dt className="text-muted-foreground">Estimated time</dt>
+                <dd className="font-semibold">{drill.estimated_minutes} min</dd>
+              </div>
+            )}
+          </dl>
+
+          {poolShort && (
+            <p className="mt-4 text-xs text-amber-600">
+              Only {fallbackPoolSize} of {want} questions are available in the bank. The drill will run with
+              what's available.
+            </p>
+          )}
+
+          <div className="mt-8 flex items-center gap-3">
+            <button
+              type="button"
+              disabled={!canStart}
+              onClick={() => void handleStart()}
+              className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {qbLoading ? 'Loading question bank…' : 'Start drill'}
+            </button>
+            <button
+              type="button"
+              onClick={handleReturn}
+              className="inline-flex items-center justify-center rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
+            >
+              Back
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
