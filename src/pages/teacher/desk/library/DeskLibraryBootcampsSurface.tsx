@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState, type ComponentType } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Loader2, Play, Send } from 'lucide-react';
+import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sheet';
 import { CardCarousel } from '@/components/ui/card-carousel';
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
+import BootcampGate from '@/components/hub/BootcampGate';
 import {
   createClassroomItem,
   resolveItemRoute,
@@ -19,8 +20,27 @@ import {
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
-import { openRoute } from '@/lib/utils';
 import { useHubStudents } from '@/hooks/useHubStudents';
+
+// Bootcamp pages are full-screen SPA routes; they render blank inside an
+// iframe (separate context loses the session). Mounting the page component
+// inline in this same React tree keeps auth/context, so the preview works.
+const PrincipleFlawBootcamp = lazy(() => import('@/pages/PrincipleFlawBootcamp'));
+const IntroToLrBootcamp = lazy(() => import('@/pages/IntroToLrBootcamp'));
+const CausationStation = lazy(() => import('@/pages/CausationStation'));
+const FallacyFlawBootcamp = lazy(() => import('@/pages/FallacyFlawBootcamp'));
+const AbstractBootcamp = lazy(() => import('@/topics/abstract'));
+
+const BOOTCAMP_INLINE: Record<
+  string,
+  { Comp: ComponentType; routePath: string; title: string; bootcampIdOverride?: string }
+> = {
+  'principle-flaw': { Comp: PrincipleFlawBootcamp, routePath: '/bootcamp/principle-flaw', title: 'Principle and Flaw' },
+  'intro-to-lr': { Comp: IntroToLrBootcamp, routePath: '/bootcamp/intro-to-lr', title: 'Intro to LR' },
+  'causation-station': { Comp: CausationStation, routePath: '/bootcamp/causation-station', title: 'Causation Station' },
+  'fallacy-flaw': { Comp: FallacyFlawBootcamp, routePath: '/bootcamp/fallacy-flaw', title: 'Flaw and Famous Flaws' },
+  abstraction: { Comp: AbstractBootcamp, routePath: '/topics/abstract', title: 'Abstract', bootcampIdOverride: 'abstraction' },
+};
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'principle-flaw': 14,
@@ -38,6 +58,7 @@ export function DeskLibraryBootcampsSurface() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const { rows: students } = useHubStudents();
+  const [openBootcamp, setOpenBootcamp] = useState<BootcampDef | null>(null);
 
   const [assignBootcamp, setAssignBootcamp] = useState<BootcampDef | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -110,6 +131,40 @@ export function DeskLibraryBootcampsSurface() {
     }
   };
 
+  if (openBootcamp) {
+    const cfg = BOOTCAMP_INLINE[openBootcamp.id];
+    const Comp = cfg?.Comp;
+    return (
+      <section className="flex h-full w-full flex-col">
+        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
+          <button
+            type="button"
+            onClick={() => setOpenBootcamp(null)}
+            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+          >
+            <ArrowLeft className="h-3 w-3" /> Back to bootcamps
+          </button>
+          <span className="truncate text-sm font-semibold text-black">{openBootcamp.title}</span>
+        </header>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          {Comp && cfg ? (
+            <Suspense fallback={<div className="px-6 py-8 text-sm text-black/45">Loading bootcamp…</div>}>
+              <BootcampGate
+                routePath={cfg.routePath}
+                title={cfg.title}
+                bootcampIdOverride={cfg.bootcampIdOverride}
+              >
+                <Comp />
+              </BootcampGate>
+            </Suspense>
+          ) : (
+            <div className="px-6 py-8 text-sm text-black/45">Preview unavailable for this bootcamp.</div>
+          )}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
@@ -134,7 +189,7 @@ export function DeskLibraryBootcampsSurface() {
               <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
                 <button
                   type="button"
-                  onClick={() => openRoute(b.route)}
+                  onClick={() => setOpenBootcamp(b)}
                   className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25"
                 >
                   <Play className="h-3 w-3" /> Open
