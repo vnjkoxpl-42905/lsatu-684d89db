@@ -11,7 +11,11 @@ import {
   type AssignmentStatus,
 } from "@/hooks/useStudentAssignments";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
-import { GuidedDrillIntroCard } from "@/components/drill/GuidedDrillIntroCard";
+import { GuidedDrillLaunchFrame } from "@/components/drill/GuidedDrillLaunchFrame";
+import {
+  buildGuidedDrillLaunchHtml,
+  splitInstructionColumns,
+} from "@/lib/guidedDrillLaunch";
 
 function StatusBadge({ status }: { status: AssignmentStatus }) {
   const map: Record<AssignmentStatus, { label: string; cls: string }> = {
@@ -82,34 +86,24 @@ export default function ClassroomAssignmentDetail() {
       Math.max(1, Math.ceil(assignment.question_qids.length * 2))
     : 0;
 
-  // Render the full-page intro card before transitioning to the drill.
+  // Render the full-page premium launch screen before transitioning to the
+  // drill — identical format to every other guided drill.
   if (showCard && assignment && parentSet && isGuided) {
+    const { left, right } = splitInstructionColumns(parentSet.instructions_markdown);
+    const html = buildGuidedDrillLaunchHtml({
+      title: parentSet.title,
+      estimatedMinutes: parentSet.estimated_minutes,
+      questionCount: assignment.question_qids.length,
+      leftMd: left,
+      rightMd: right,
+    });
     return (
-      <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-          <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-5xl mx-auto">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowCard(false)}
-              className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              Back
-            </Button>
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <LogoutButton />
-            </div>
-          </div>
-        </header>
-        <GuidedDrillIntroCard
-          set={parentSet}
-          questionCount={assignment.question_qids.length}
-          onStart={navigateToDrill}
-          onCancel={() => setShowCard(false)}
-        />
-      </div>
+      <GuidedDrillLaunchFrame
+        html={html}
+        title={parentSet.title}
+        onStart={navigateToDrill}
+        onReturn={() => setShowCard(false)}
+      />
     );
   }
 

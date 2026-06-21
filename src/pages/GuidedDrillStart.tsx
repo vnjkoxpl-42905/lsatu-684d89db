@@ -16,7 +16,8 @@ import {
   findGuidedDrillHtmlByDrill,
   findGuidedDrillHtmlBySlug,
 } from '@/data/guidedDrillHtmlManifest';
-import { GuidedDrillIntroCard } from '@/components/drill/GuidedDrillIntroCard';
+import { GuidedDrillLaunchFrame } from '@/components/drill/GuidedDrillLaunchFrame';
+import { buildGuidedDrillLaunchHtml } from '@/lib/guidedDrillLaunch';
 import { toast } from 'sonner';
 import type { TypeDrillConfig } from '@/types/drill';
 import {
@@ -57,8 +58,6 @@ export default function GuidedDrillStart({
   const slugBootcampOverride = slug ? getPracticePool(slug) : undefined;
   const bootcampOverride: PracticePool | undefined = stateBootcampOverride ?? slugBootcampOverride;
 
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
-  const cleanupIframeListenersRef = React.useRef<(() => void) | null>(null);
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
   const [loading, setLoading] = React.useState(true);
@@ -224,49 +223,6 @@ export default function GuidedDrillStart({
     });
   }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride]);
 
-  const wireIframeControls = React.useCallback(() => {
-    cleanupIframeListenersRef.current?.();
-    cleanupIframeListenersRef.current = null;
-
-    const doc = iframeRef.current?.contentDocument;
-    if (!doc) return;
-
-    const onClick = (event: MouseEvent) => {
-      const target = event.target instanceof Element ? event.target : null;
-      if (!target) return;
-
-      if (target.closest('[data-start-drill="true"]')) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        void handleStart();
-        return;
-      }
-
-      if (target.closest('[data-return="true"]')) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        handleReturn();
-      }
-    };
-
-    doc.addEventListener('click', onClick, true);
-    cleanupIframeListenersRef.current = () => doc.removeEventListener('click', onClick, true);
-  }, [handleReturn, handleStart]);
-
-  React.useEffect(() => {
-    const onMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.type === 'lsatu:start-guided-drill') void handleStart();
-    };
-
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
-  }, [handleStart]);
-
-  React.useEffect(() => () => cleanupIframeListenersRef.current?.(), []);
-
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
   }
@@ -275,20 +231,13 @@ export default function GuidedDrillStart({
     return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
   }
 
-  // No curated HTML launch page for this drill — render the native two-column
-  // instruction card from the drill's stored instruction_card content, then
-  // start the drill straight from its question pool.
+  // No curated HTML launch page for this drill — build the identical premium
+  // launch page from the drill's stored instruction_card content so every drill
+  // renders in the same format (serif hero, black START card, notes drawer).
   if (!launchPage) {
     if (!drill) {
       return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
     }
-
-    const leftMd = drill.instruction_card?.left_md?.trim() ?? '';
-    const rightMd = drill.instruction_card?.right_md?.trim() ?? '';
-    const instructionsMarkdown = [
-      leftMd ? `### Left Column\n${leftMd}` : '',
-      rightMd ? `### Right Column\n${rightMd}` : '',
-    ].filter(Boolean).join('\n\n') || null;
 
     const count =
       drill.question_qids?.length ||
@@ -296,40 +245,30 @@ export default function GuidedDrillStart({
       fallbackPoolSize ||
       0;
 
+    const html = buildGuidedDrillLaunchHtml({
+      title: drill.title,
+      estimatedMinutes: drill.estimated_minutes,
+      questionCount: count,
+      leftMd: drill.instruction_card?.left_md ?? null,
+      rightMd: drill.instruction_card?.right_md ?? null,
+    });
+
     return (
-      <div className="min-h-screen overflow-y-auto bg-background text-foreground">
-        <GuidedDrillIntroCard
-          set={{
-            title: drill.title,
-            description: null,
-            question_qids: drill.question_qids ?? [],
-            instructions_markdown: instructionsMarkdown,
-            instruction_layout: rightMd ? 'two_column' : 'single_column',
-            guided_set_type: drill.category,
-            question_type: drill.question_types?.[0] ?? null,
-            reasoning_type: drill.reasoning_types?.[0] ?? null,
-            question_feature: drill.question_features?.[0] ?? null,
-            estimated_minutes: drill.estimated_minutes,
-            source_pts: null,
-            difficulty_min: drill.difficulty_min,
-            difficulty_max: drill.difficulty_max,
-            start_button_label: drill.start_button_label || 'Start drill',
-          }}
-          questionCount={count}
-          onStart={() => void handleStart()}
-          onCancel={handleReturn}
-        />
-      </div>
+      <GuidedDrillLaunchFrame
+        html={html}
+        title={drill.title}
+        onStart={() => void handleStart()}
+        onReturn={handleReturn}
+      />
     );
   }
 
   return (
-    <iframe
-      ref={iframeRef}
+    <GuidedDrillLaunchFrame
       src={launchPage.htmlPath}
-      title={`${launchPage.title} launch page`}
-      className="block h-screen w-full border-0 bg-background"
-      onLoad={wireIframeControls}
+      title={launchPage.title}
+      onStart={() => void handleStart()}
+      onReturn={handleReturn}
     />
   );
 }
