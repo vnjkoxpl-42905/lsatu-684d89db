@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
+import { Loader2, Play, Send } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -36,7 +36,6 @@ export function DeskLibraryBootcampsSurface() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const { rows: students } = useHubStudents();
-  const [openBootcamp, setOpenBootcamp] = useState<BootcampDef | null>(null);
 
   const [assignBootcamp, setAssignBootcamp] = useState<BootcampDef | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -109,30 +108,6 @@ export function DeskLibraryBootcampsSurface() {
     }
   };
 
-  if (openBootcamp) {
-    return (
-      <section className="flex h-full w-full flex-col">
-        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
-          <button
-            type="button"
-            onClick={() => setOpenBootcamp(null)}
-            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
-          >
-            <ArrowLeft className="h-3 w-3" /> Back to bootcamps
-          </button>
-          <span className="truncate text-sm font-semibold text-black">{openBootcamp.title}</span>
-        </header>
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <iframe
-            title={openBootcamp.title}
-            src={openBootcamp.route}
-            className="h-full w-full border-0"
-          />
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
@@ -151,13 +126,14 @@ export function DeskLibraryBootcampsSurface() {
                 <div className="mt-0.5 text-xs text-black/55">{b.description}</div>
               </div>
               <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setOpenBootcamp(b)}
+                <a
+                  href={b.route}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25"
                 >
                   <Play className="h-3 w-3" /> Open
-                </button>
+                </a>
                 <button
                   type="button"
                   onClick={() => openAssign(b)}
