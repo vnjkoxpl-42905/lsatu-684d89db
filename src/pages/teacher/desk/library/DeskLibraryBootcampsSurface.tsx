@@ -176,12 +176,12 @@ export function DeskLibraryBootcampsSurface() {
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
-          {!studentId ? (
-            <div className="border border-dashed border-black/15 bg-white/30 px-6 py-12 text-center text-sm text-black/45">
-              Pick a student on the left.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          {!studentId && (
+            <p className="mb-4 text-xs text-black/45">
+              Browse the bootcamps below. Pick a student on the left to assign one and set its dates.
+            </p>
+          )}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {BOOTCAMPS.map((b) => {
                 const item = findItem(b.id);
                 const assigned = !!item;
@@ -223,7 +223,12 @@ export function DeskLibraryBootcampsSurface() {
                         </button>
                       </div>
                     </div>
-                    {expanded && (
+                    {expanded && !studentId && (
+                      <div className="mt-auto border-t border-black/10 px-4 py-3 text-xs text-black/45">
+                        Pick a student on the left to set dates and assign this bootcamp.
+                      </div>
+                    )}
+                    {expanded && studentId && (
                       <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-black/10 px-4 py-3">
                         <AssignmentDateField
                           label="Start"
@@ -258,8 +263,7 @@ export function DeskLibraryBootcampsSurface() {
                   </div>
                 );
               })}
-            </div>
-          )}
+          </div>
         </div>
       </section>
     </div>
