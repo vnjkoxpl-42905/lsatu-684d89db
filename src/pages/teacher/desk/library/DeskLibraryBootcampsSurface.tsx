@@ -18,6 +18,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { DeskStudentPicker } from './DeskStudentPicker';
+import { CardCarousel } from '@/components/ui/card-carousel';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'principle-flaw': 14,
@@ -181,14 +182,17 @@ export function DeskLibraryBootcampsSurface() {
               Pick a student on the left.
             </div>
           ) : (
-            <ul className="space-y-2">
-              {BOOTCAMPS.map((b) => {
+            <CardCarousel
+              items={BOOTCAMPS}
+              getKey={(b) => b.id}
+              slidesPerPage={2}
+              renderItem={(b) => {
                 const item = findItem(b.id);
                 const assigned = !!item;
                 const { start, end } = getDates(b.id);
                 const expanded = expandedId === b.id;
                 return (
-                  <li key={b.id} className="border border-black/12 bg-white/35">
+                  <div className="flex h-full flex-col border border-black/12 bg-white/35">
                     <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center">
                       <div className="min-w-0 flex-1">
                         <div className="text-sm font-medium text-black">
@@ -224,7 +228,7 @@ export function DeskLibraryBootcampsSurface() {
                       </div>
                     </div>
                     {expanded && (
-                      <div className="flex flex-wrap items-center gap-2 border-t border-black/10 px-4 py-3">
+                      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-black/10 px-4 py-3">
                         <AssignmentDateField
                           label="Start"
                           value={start}
@@ -255,10 +259,10 @@ export function DeskLibraryBootcampsSurface() {
                         </label>
                       </div>
                     )}
-                  </li>
+                  </div>
                 );
-              })}
-            </ul>
+              }}
+            />
           )}
         </div>
       </section>
