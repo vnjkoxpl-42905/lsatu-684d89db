@@ -23,7 +23,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
+import { cn, openRoute } from '@/lib/utils';
 
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
@@ -207,14 +207,13 @@ export function DeskLibraryGuidedDrillsSurface() {
                     questionCount={d.question_qids?.length || d.question_count || (ps ?? 0)}
                   />
                   <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-                    <a
-                      href={`/guided-drills/${d.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => openRoute(`/guided-drills/${d.slug}`)}
                       className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
                     >
                       <Play className="h-3 w-3" /> Open
-                    </a>
+                    </button>
                     <button
                       type="button"
                       onClick={() => setAssignDrill(d)}

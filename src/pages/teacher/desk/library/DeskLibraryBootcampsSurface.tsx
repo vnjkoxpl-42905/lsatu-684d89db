@@ -19,6 +19,7 @@ import {
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
+import { openRoute } from '@/lib/utils';
 import { useHubStudents } from '@/hooks/useHubStudents';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
@@ -131,14 +132,13 @@ export function DeskLibraryBootcampsSurface() {
                 <p className="mt-0.5 text-xs text-black/55">{b.description}</p>
               </div>
               <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-                <a
-                  href={b.route}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => openRoute(b.route)}
                   className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25"
                 >
                   <Play className="h-3 w-3" /> Open
-                </a>
+                </button>
                 <button
                   type="button"
                   onClick={() => openAssign(b)}

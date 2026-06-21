@@ -4,7 +4,7 @@ import { BarChart3, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
-import { cn } from '@/lib/utils';
+import { cn, openRoute } from '@/lib/utils';
 import {
   useAdminActivities,
   useAssignActivity,
@@ -150,12 +150,12 @@ function ActivityCard({
         (a) => a.activity_id === activity.id && a.status !== 'completed',
       );
       if (active) {
-        window.open(`/activities/${active.id}`, '_blank', 'noopener,noreferrer');
+        openRoute(`/activities/${active.id}`);
         return;
       }
       const res = await assign(activity, user.id);
       if (res.ok && res.id) {
-        window.open(`/activities/${res.id}`, '_blank', 'noopener,noreferrer');
+        openRoute(`/activities/${res.id}`);
       } else {
         toast.error(res.error || 'Could not open activity');
       }
