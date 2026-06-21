@@ -10,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { CardCarousel } from '@/components/ui/card-carousel';
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import {
   createClassroomItem,
@@ -118,12 +119,16 @@ export function DeskLibraryBootcampsSurface() {
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {BOOTCAMPS.map((b) => (
-            <div key={b.id} className="flex h-full flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55">
+        <CardCarousel
+          items={BOOTCAMPS}
+          getKey={(b) => b.id}
+          slidesPerPage={3}
+          slideClassName="h-auto"
+          renderItem={(b) => (
+            <article className="flex h-full flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55">
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium text-black">{b.title}</div>
-                <div className="mt-0.5 text-xs text-black/55">{b.description}</div>
+                <h3 className="text-sm font-semibold text-black">{b.title}</h3>
+                <p className="mt-0.5 text-xs text-black/55">{b.description}</p>
               </div>
               <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
                 <a
@@ -142,9 +147,9 @@ export function DeskLibraryBootcampsSurface() {
                   <Send className="h-3 w-3" /> Assign
                 </button>
               </div>
-            </div>
-          ))}
-        </div>
+            </article>
+          )}
+        />
       </div>
 
       {/* Assign sheet */}

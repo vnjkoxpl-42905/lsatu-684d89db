@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { ArrowLeft, BarChart3, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
+import { BarChart3, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,7 +9,6 @@ import {
   useAdminActivities,
   useAssignActivity,
   ActivityResults,
-  ActivityRunner,
   listAssignmentsForStudent,
   type Activity,
 } from '@/features/activity-centre';
@@ -23,7 +22,6 @@ export function DeskLibraryActivitiesSurface() {
   const { activities, loading, error } = useAdminActivities();
   const [students, setStudents] = useState<StudentRow[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
-  const [running, setRunning] = useState<{ assignmentId: string; title: string } | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -44,26 +42,6 @@ export function DeskLibraryActivitiesSurface() {
       );
     })();
   }, []);
-
-  if (running) {
-    return (
-      <section className="flex h-full w-full flex-col">
-        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
-          <button
-            type="button"
-            onClick={() => setRunning(null)}
-            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
-          >
-            <ArrowLeft className="h-3 w-3" /> Back to activities
-          </button>
-          <span className="truncate text-sm font-semibold text-black">{running.title}</span>
-        </header>
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <ActivityRunner assignmentId={running.assignmentId} preview />
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="flex h-full w-full flex-col">
@@ -95,7 +73,6 @@ export function DeskLibraryActivitiesSurface() {
                 students={students}
                 open={openId === a.id}
                 onToggle={() => setOpenId((cur) => (cur === a.id ? null : a.id))}
-                onOpenRunner={(assignmentId) => setRunning({ assignmentId, title: a.title })}
               />
             ))}
           </div>
@@ -110,13 +87,11 @@ function ActivityCard({
   students,
   open,
   onToggle,
-  onOpenRunner,
 }: {
   activity: Activity;
   students: StudentRow[];
   open: boolean;
   onToggle: () => void;
-  onOpenRunner: (assignmentId: string) => void;
 }) {
   const { user } = useAuth();
   const { assign, assigning } = useAssignActivity();
@@ -175,12 +150,12 @@ function ActivityCard({
         (a) => a.activity_id === activity.id && a.status !== 'completed',
       );
       if (active) {
-        onOpenRunner(active.id);
+        window.open(`/activities/${active.id}`, '_blank', 'noopener,noreferrer');
         return;
       }
       const res = await assign(activity, user.id);
       if (res.ok && res.id) {
-        onOpenRunner(res.id);
+        window.open(`/activities/${res.id}`, '_blank', 'noopener,noreferrer');
       } else {
         toast.error(res.error || 'Could not open activity');
       }
