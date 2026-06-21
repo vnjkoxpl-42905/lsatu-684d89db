@@ -78,7 +78,7 @@ const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
 const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
-const Memory = React.lazy(() => import("./pages/Memory"));
+
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
