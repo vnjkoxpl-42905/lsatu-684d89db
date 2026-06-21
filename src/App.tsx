@@ -78,6 +78,7 @@ const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
 const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
+const Memory = React.lazy(() => import("./pages/Memory"));
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -132,9 +133,6 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* TEMP dev preview - remove */}
-            <Route path="/dev/drive-picker" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/dev/DrivePickerPreview")))}</React.Suspense>} />
-
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
