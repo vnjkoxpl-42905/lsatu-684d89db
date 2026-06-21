@@ -98,8 +98,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "",
-      "right_md": ""
+      "left_md": "## This set has 7 **Principle-Strengthen**\n## questions from tests 55-59\n\nAll of these examples are the much-more common style of Principle-Strengthen in which the _answers_ are principles. They often feel more like **Sufficient Assumption** than Strengthen, because the correct answer is usually a conditional rule that is triggered by the Evidence and results in the Conclusion.\n\nBut the question stem is technically a Strengthen task (which answer _most_ justifies), so we're not supposed to ask ourselves, \"Does this answer prove the conclusion\", even though in many cases it will. In some rare cases, though, the correct answer could be as weakly worded as a Necessary Assumption.\n\nNevertheless, our primary approach to these is to expect a conditional logic answer, so we pre-phrase by articulating an \"IF premise, THEN conclusion\" reasoning move.\n\nMost of the answers will be conditionals. If so, we want to be very **stubborn with the outcome** . The right side of the rule should match the conclusion (or at least sound like wording that would strongly support the conclusion). We want to be **flexible with the trigger** .\n\nOther answers feel more like comparative ideas that help _Weigh Tradeoffs_ or establish priorities. When arguments seem to be balancing competing ideas (a pro and a con / this obligation with that obligation), then when the author issues her judgment in the conclusion, she's revealing whether she cares more about the good thing or the bad thing, whether she cares more about this obligation or that obligation.\n\nGiven this argument, we'd anticipate a conditional answer\n_Billy lied to our customers. Thus he shouldn't be on our staff anymore._\n\n(A) A person can be on the staff only if they are consistently truthful with customers\n\nGiven this argument, we might see a weighing-tradeoffs answer\n_Billy is extremely dependable, although she lied to our customers. Clearly, she shouldn't be on our staff._\n\n(A) Dependability is a less important trait in a staff member than is honesty.",
+      "right_md": "## Try these 7 problems, **untimed**\n\n- Once you find the Conclusion and identify the main Supporting Idea(s), you will generally want to articulate an, \"If [premise], then [conclusion]\" linking idea.\n\n- If, otherwise, you felt like the argument was grappling with competing interests, then articulate how the author is weighing tradeoffs:  \"she cares more about X than about Y\".\n\n- Try to get rid of a lot answers quickly because they don't have any good matching language for the conclusion, or because the matching language for the conclusion is being put on the **left** of the conditional arrow.\n\n- Correct answers will often, if not usually, be written in contrapositive form, so be willing to try that move. If you read \"should be on staff only if consistently truthful\", then you have to make your brain say, \"Okay, this is saying _if you're_ **_not_** _consistently truthful, should_ **_not_** _on staff_ \"."
     },
     "bank_filter": {
       "qtypes": [
@@ -131,8 +131,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "",
-      "right_md": ""
+      "left_md": "Find the gap between a Rule and its Application\non these five **Principle-Strengthen** questions\n\n_example_\nPRINCIPLE: Lies are justified if they do more good than harm.\nAPPLICATION: Jason falsely claimed that Sharon has a driver's license to spare her getting mocked by her friends. Since he did manage to spare her the mockery, he was justified in lying.\n\nIn order to use this Rule to prove that a lie was justified, we have to establish the trigger:\n_the lie did more good than harm_\n\nSo the correct answer would need to convince us that \"keeping Sharon from getting mocked = did more good than harm\".\n\n(Note: there are two styles of Principle-Strengthen question:  _Principles in Stimulus vs. Principle in Answers_ . The latter kind is more than 10x more common, but the former kind shows up more on modern tests than it used to)",
+      "right_md": "- Think about each Principle as having some criteria that must be met to trigger the rule, and having an outcome that matches up with the Application's conclusion.\n\n- The Application will (almost?) always conclude the right side of the Principle.\n\n- What we're being tested on is how the Evidence in the Application paragraph failed to clearly trigger the legal definition of the Principle.\n\n- Think about which part(s) of the Principle's trigger wasn't clearly established, and keep that mantra in your head as you consider answer choices."
     },
     "bank_filter": {
       "qtypes": [
@@ -3050,8 +3050,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "",
-      "right_md": ""
+      "left_md": "This set contains **four RC passages** , each one with a different Framework.\n\nThere is an Old / New, a Problem / Solution, a Present Debate, and a Challenge Position, along with the Main Point or Primary Purpose question accompanying that passage.\n\nRead each passage, trying to discern the Framework and reading for the Framework Fill-In's. Think about the main point through the lens of the author's purpose. _Why_ is the author writing about this topic? If she could have us read only one sentence, which one would best capture her purpose in writing the passage?",
+      "right_md": "## Attempt these four passages\n## and the accompanying questions, **untimed.**"
     },
     "bank_filter": {
       "qtypes": [],
