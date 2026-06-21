@@ -61,42 +61,26 @@ export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunne
     [assignment],
   );
 
-  // Resume reconstruction: runs once when the assignment loads. Replays the
-  // attempt log to decide where to drop the student (intro / mid-run / review).
+  // Open behavior: runs once when the assignment loads. A completed activity
+  // opens to its review summary; everything else opens to the homepage (intro)
+  // and Start begins fresh at question 1. We deliberately do NOT resume
+  // mid-drill — the homepage is always the entry point for an unfinished run.
   useEffect(() => {
     if (!assignment || !user || hydrated || hydratingRef.current) return;
     hydratingRef.current = true;
 
     (async () => {
-      let log;
-      try {
-        log = await listItemResponses(assignment.id, user.id);
-      } catch (e) {
-        console.error("[activity:resume:load] failed", e);
-        // Fall back to a clean start rather than blocking the student.
-        setPhase(assignment.status === "completed" ? "done" : "intro");
-        setHydrated(true);
-        return;
-      }
-
-      const progress = reconstructProgress(items, log);
-      setVerdicts(progress.verdicts);
-      setResponses(progress.responses);
-
       if (assignment.status === "completed") {
-        setPhase("done");
-      } else if (items.length > 0 && progress.resolvedCount >= items.length) {
-        // Every item resolved but never finalized: complete it now, then review.
+        // Load the attempt log only to render the stored answers in the summary.
         try {
-          await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
-          await syncClassroomItemStatusBySource("activity_assignments", assignment.id, "completed");
+          const log = await listItemResponses(assignment.id, user.id);
+          const progress = reconstructProgress(items, log);
+          setVerdicts(progress.verdicts);
+          setResponses(progress.responses);
         } catch (e) {
-          console.error("[activity:resume:complete] failed", e);
+          console.error("[activity:review:load] failed", e);
         }
         setPhase("done");
-      } else if (progress.resolvedCount > 0 || assignment.status === "in_progress") {
-        setIndex(progress.resolvedCount);
-        setPhase("running");
       } else {
         setPhase("intro");
       }
