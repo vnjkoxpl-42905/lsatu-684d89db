@@ -18,7 +18,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { DeskStudentPicker } from './DeskStudentPicker';
-import { CardCarousel } from '@/components/ui/card-carousel';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'principle-flaw': 14,

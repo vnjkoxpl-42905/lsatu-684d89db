@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-import { CardCarousel } from '@/components/ui/card-carousel';
 import {
   useAdminActivities,
   useAssignActivity,
