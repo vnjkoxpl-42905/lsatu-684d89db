@@ -10,6 +10,7 @@ import {
   useAssignActivity,
   ActivityResults,
   ActivityRunner,
+  listAssignmentsForStudent,
   type Activity,
 } from '@/features/activity-centre';
 
@@ -163,12 +164,28 @@ function ActivityCard({
   const handleOpen = async () => {
     if (!user) return;
     setPreviewing(true);
-    const res = await assign(activity, user.id);
-    setPreviewing(false);
-    if (res.ok && res.id) {
-      onOpenRunner(res.id);
-    } else {
-      toast.error(res.error || 'Could not create preview assignment');
+    try {
+      // Reuse an existing active self-assignment if one exists — a unique index
+      // blocks a second non-completed (student, activity) row, so re-assigning
+      // would fail. Otherwise create a fresh self-assignment.
+      const existing = await listAssignmentsForStudent(user.id);
+      const active = existing.find(
+        (a) => a.activity_id === activity.id && a.status !== 'completed',
+      );
+      if (active) {
+        onOpenRunner(active.id);
+        return;
+      }
+      const res = await assign(activity, user.id);
+      if (res.ok && res.id) {
+        onOpenRunner(res.id);
+      } else {
+        toast.error(res.error || 'Could not open activity');
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Could not open activity');
+    } finally {
+      setPreviewing(false);
     }
   };
 
