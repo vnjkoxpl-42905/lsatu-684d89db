@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
+import { CardCarousel } from '@/components/ui/card-carousel';
 import {
   useAdminActivities,
   useAssignActivity,
@@ -86,18 +87,22 @@ export function DeskLibraryActivitiesSurface() {
           </div>
         )}
 
-        <div className="space-y-2">
-          {activities.map((a) => (
-            <ActivityCard
-              key={a.id}
-              activity={a}
-              students={students}
-              open={openId === a.id}
-              onToggle={() => setOpenId((cur) => (cur === a.id ? null : a.id))}
-              onOpenRunner={(assignmentId) => setRunning({ assignmentId, title: a.title })}
-            />
-          ))}
-        </div>
+        {activities.length > 0 && (
+          <CardCarousel
+            items={activities}
+            getKey={(a) => a.id}
+            slidesPerPage={2}
+            renderItem={(a) => (
+              <ActivityCard
+                activity={a}
+                students={students}
+                open={openId === a.id}
+                onToggle={() => setOpenId((cur) => (cur === a.id ? null : a.id))}
+                onOpenRunner={(assignmentId) => setRunning({ assignmentId, title: a.title })}
+              />
+            )}
+          />
+        )}
       </div>
     </section>
   );

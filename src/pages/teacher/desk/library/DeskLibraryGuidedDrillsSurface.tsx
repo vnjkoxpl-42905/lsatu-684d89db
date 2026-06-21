@@ -23,6 +23,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import { CardCarousel } from '@/components/ui/card-carousel';
 
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
@@ -185,16 +186,16 @@ export function DeskLibraryGuidedDrillsSurface() {
             No drills match your filters.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-            {filtered.map((d) => {
+          <CardCarousel
+            items={filtered}
+            getKey={(d) => d.id}
+            slidesPerPage={2}
+            renderItem={(d) => {
               const ps = poolSize(d);
               const need = d.question_count ?? 0;
               const poolBad = ps != null && need > 0 && ps < need;
               return (
-                <article
-                  key={d.id}
-                  className="flex flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55"
-                >
+                <article className="flex h-full flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <div className="text-[10px] font-mono uppercase tracking-wider text-black/45">
@@ -221,7 +222,7 @@ export function DeskLibraryGuidedDrillsSurface() {
                       </span>
                     ))}
                   </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
                     <button
                       type="button"
                       onClick={() => setOpenDrill(d)}
@@ -239,8 +240,8 @@ export function DeskLibraryGuidedDrillsSurface() {
                   </div>
                 </article>
               );
-            })}
-          </div>
+            }}
+          />
         )}
       </div>
 
