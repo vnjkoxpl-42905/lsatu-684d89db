@@ -182,17 +182,14 @@ export function DeskLibraryBootcampsSurface() {
               Pick a student on the left.
             </div>
           ) : (
-            <CardCarousel
-              items={BOOTCAMPS}
-              getKey={(b) => b.id}
-              slidesPerPage={2}
-              renderItem={(b) => {
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {BOOTCAMPS.map((b) => {
                 const item = findItem(b.id);
                 const assigned = !!item;
                 const { start, end } = getDates(b.id);
                 const expanded = expandedId === b.id;
                 return (
-                  <div className="flex h-full flex-col border border-black/12 bg-white/35">
+                  <div key={b.id} className="flex h-full flex-col border border-black/12 bg-white/35">
                     <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center">
                       <div className="min-w-0 flex-1">
                         <div className="text-sm font-medium text-black">
@@ -261,8 +258,8 @@ export function DeskLibraryBootcampsSurface() {
                     )}
                   </div>
                 );
-              }}
-            />
+              })}
+            </div>
           )}
         </div>
       </section>

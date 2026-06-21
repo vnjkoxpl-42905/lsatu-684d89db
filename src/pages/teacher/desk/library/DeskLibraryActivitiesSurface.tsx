@@ -88,20 +88,18 @@ export function DeskLibraryActivitiesSurface() {
         )}
 
         {activities.length > 0 && (
-          <CardCarousel
-            items={activities}
-            getKey={(a) => a.id}
-            slidesPerPage={2}
-            renderItem={(a) => (
+          <div className="space-y-2">
+            {activities.map((a) => (
               <ActivityCard
+                key={a.id}
                 activity={a}
                 students={students}
                 open={openId === a.id}
                 onToggle={() => setOpenId((cur) => (cur === a.id ? null : a.id))}
                 onOpenRunner={(assignmentId) => setRunning({ assignmentId, title: a.title })}
               />
-            )}
-          />
+            ))}
+          </div>
         )}
       </div>
     </section>
