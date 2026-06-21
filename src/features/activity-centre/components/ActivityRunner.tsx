@@ -36,8 +36,14 @@ function scoreFor(verdicts: Record<number, Verdict | null>, total: number): numb
  * as ungraded practice via "Practice again": that run writes nothing and never
  * touches the graded score.
  */
-export function ActivityRunner() {
-  const { assignmentId } = useParams<{ assignmentId: string }>();
+export interface ActivityRunnerProps {
+  /** When embedded (not routed), the assignment id to run. Falls back to the URL param. */
+  assignmentId?: string;
+}
+
+export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunnerProps = {}) {
+  const params = useParams<{ assignmentId: string }>();
+  const assignmentId = assignmentIdProp ?? params.assignmentId;
   const { user } = useAuth();
   const { assignment, loading, error } = useStudentActivity(assignmentId);
 

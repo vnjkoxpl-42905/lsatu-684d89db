@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Loader2, Play, Send } from 'lucide-react';
+import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
 import GuidedDrillStart from '@/pages/GuidedDrillStart';
 import { toast } from 'sonner';
-import ReactMarkdown from 'react-markdown';
 import {
   listGuidedDrills,
   createAssignments,
@@ -37,7 +36,6 @@ export function DeskLibraryGuidedDrillsSurface() {
   const [search, setSearch] = useState('');
   const [weekFilter, setWeekFilter] = useState<number | 'all'>('all');
   const [rtFilter, setRtFilter] = useState<string | 'all'>('all');
-  const [previewDrill, setPreviewDrill] = useState<GuidedDrill | null>(null);
   const [openDrill, setOpenDrill] = useState<GuidedDrill | null>(null);
   const [assignDrill, setAssignDrill] = useState<GuidedDrill | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -226,13 +224,6 @@ export function DeskLibraryGuidedDrillsSurface() {
                   <div className="mt-1 flex flex-wrap items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => setPreviewDrill(d)}
-                      className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
-                    >
-                      <FileText className="h-3 w-3" /> Preview
-                    </button>
-                    <button
-                      type="button"
                       onClick={() => setOpenDrill(d)}
                       className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
                     >
@@ -252,34 +243,6 @@ export function DeskLibraryGuidedDrillsSurface() {
           </div>
         )}
       </div>
-
-      {/* Preview sheet */}
-      <Sheet open={!!previewDrill} onOpenChange={(o) => !o && setPreviewDrill(null)}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
-          <SheetHeader>
-            <SheetTitle>{previewDrill?.title}</SheetTitle>
-          </SheetHeader>
-          {previewDrill && (
-            <div className="mt-4 space-y-4">
-              <div className="text-xs text-muted-foreground">
-                Week {previewDrill.week} · {previewDrill.category} ·{' '}
-                {previewDrill.estimated_minutes ? `${previewDrill.estimated_minutes} min` : 'untimed'} ·{' '}
-                {previewDrill.question_count ?? '?'} questions
-              </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="prose prose-sm max-w-none rounded border p-3 dark:prose-invert">
-                  <h4>Left column</h4>
-                  <ReactMarkdown>{previewDrill.instruction_card.left_md || '_(no content)_'}</ReactMarkdown>
-                </div>
-                <div className="prose prose-sm max-w-none rounded border p-3 dark:prose-invert">
-                  <h4>Right column</h4>
-                  <ReactMarkdown>{previewDrill.instruction_card.right_md || '_(no content)_'}</ReactMarkdown>
-                </div>
-              </div>
-            </div>
-          )}
-        </SheetContent>
-      </Sheet>
 
       {/* Assign sheet */}
       <Sheet open={!!assignDrill} onOpenChange={(o) => !o && closeAssign()}>

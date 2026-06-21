@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { BarChart3, ChevronDown, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
+import { ArrowLeft, BarChart3, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,6 +9,7 @@ import {
   useAdminActivities,
   useAssignActivity,
   ActivityResults,
+  ActivityRunner,
   type Activity,
 } from '@/features/activity-centre';
 
@@ -22,6 +22,7 @@ export function DeskLibraryActivitiesSurface() {
   const { activities, loading, error } = useAdminActivities();
   const [students, setStudents] = useState<StudentRow[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [running, setRunning] = useState<{ assignmentId: string; title: string } | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -42,6 +43,26 @@ export function DeskLibraryActivitiesSurface() {
       );
     })();
   }, []);
+
+  if (running) {
+    return (
+      <section className="flex h-full w-full flex-col">
+        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
+          <button
+            type="button"
+            onClick={() => setRunning(null)}
+            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+          >
+            <ArrowLeft className="h-3 w-3" /> Back to activities
+          </button>
+          <span className="truncate text-sm font-semibold text-black">{running.title}</span>
+        </header>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <ActivityRunner assignmentId={running.assignmentId} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="flex h-full w-full flex-col">
@@ -72,6 +93,7 @@ export function DeskLibraryActivitiesSurface() {
               students={students}
               open={openId === a.id}
               onToggle={() => setOpenId((cur) => (cur === a.id ? null : a.id))}
+              onOpenRunner={(assignmentId) => setRunning({ assignmentId, title: a.title })}
             />
           ))}
         </div>
@@ -85,14 +107,15 @@ function ActivityCard({
   students,
   open,
   onToggle,
+  onOpenRunner,
 }: {
   activity: Activity;
   students: StudentRow[];
   open: boolean;
   onToggle: () => void;
+  onOpenRunner: (assignmentId: string) => void;
 }) {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { assign, assigning } = useAssignActivity();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [previewing, setPreviewing] = useState(false);
@@ -137,13 +160,13 @@ function ActivityCard({
     }
   };
 
-  const handleTryIt = async () => {
+  const handleOpen = async () => {
     if (!user) return;
     setPreviewing(true);
     const res = await assign(activity, user.id);
     setPreviewing(false);
     if (res.ok && res.id) {
-      navigate(`/activities/${res.id}`);
+      onOpenRunner(res.id);
     } else {
       toast.error(res.error || 'Could not create preview assignment');
     }
@@ -152,25 +175,32 @@ function ActivityCard({
   return (
     <div className="border border-black/12 bg-white/35">
       <div className="flex items-center gap-2 p-4">
-        <button type="button" onClick={onToggle} className="flex flex-1 items-center justify-between gap-4 text-left">
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-black">{activity.title}</p>
-            <p className="mt-0.5 truncate text-[11px] text-black/55">
-              {activity.subtitle} · {activity.items.length} items · {activity.item_format}
-            </p>
-          </div>
-          <ChevronDown
-            className={cn('h-4 w-4 shrink-0 text-black/50 transition-transform', open && 'rotate-180')}
-          />
-        </button>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-black">{activity.title}</p>
+          <p className="mt-0.5 truncate text-[11px] text-black/55">
+            {activity.subtitle} · {activity.items.length} items · {activity.item_format}
+          </p>
+        </div>
         <button
           type="button"
-          onClick={handleTryIt}
+          onClick={handleOpen}
           disabled={previewing || assigning}
           className="inline-flex shrink-0 items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25 disabled:opacity-50"
         >
           <Play className="h-3 w-3" />
-          {previewing ? 'Opening…' : 'Try it'}
+          {previewing ? 'Opening…' : 'Open'}
+        </button>
+        <button
+          type="button"
+          onClick={onToggle}
+          className={cn(
+            'inline-flex shrink-0 items-center gap-1.5 border px-2.5 py-1 text-xs font-semibold transition',
+            open
+              ? 'border-amber-500/40 bg-amber-500/25 text-amber-900'
+              : 'border-amber-500/30 bg-amber-500/15 text-amber-800 hover:bg-amber-500/25',
+          )}
+        >
+          <Send className="h-3 w-3" /> Assign
         </button>
       </div>
 
