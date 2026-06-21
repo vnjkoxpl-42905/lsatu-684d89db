@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
-import GuidedDrillStart from '@/pages/GuidedDrillStart';
+import { Loader2, Play, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   listGuidedDrills,
@@ -17,6 +16,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CardCarousel } from '@/components/ui/card-carousel';
+import { GuidedDrillCardPreview } from '@/components/drill/GuidedDrillCardPreview';
 import {
   Sheet,
   SheetContent,
@@ -37,7 +37,6 @@ export function DeskLibraryGuidedDrillsSurface() {
   const [search, setSearch] = useState('');
   const [weekFilter, setWeekFilter] = useState<number | 'all'>('all');
   const [rtFilter, setRtFilter] = useState<string | 'all'>('all');
-  const [openDrill, setOpenDrill] = useState<GuidedDrill | null>(null);
   const [assignDrill, setAssignDrill] = useState<GuidedDrill | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [scheduledFor, setScheduledFor] = useState('');
@@ -131,26 +130,6 @@ export function DeskLibraryGuidedDrillsSurface() {
     }
   };
 
-  if (openDrill) {
-    return (
-      <section className="flex h-full w-full flex-col">
-        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
-          <button
-            type="button"
-            onClick={() => setOpenDrill(null)}
-            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
-          >
-            <ArrowLeft className="h-3 w-3" /> Back to drills
-          </button>
-          <span className="truncate text-sm font-semibold text-black">{openDrill.title}</span>
-        </header>
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <GuidedDrillStart slug={openDrill.slug} onReturn={() => setOpenDrill(null)} />
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
@@ -189,7 +168,7 @@ export function DeskLibraryGuidedDrillsSurface() {
           <CardCarousel
             items={filtered}
             getKey={(d) => d.id}
-            slidesPerPage={2}
+            slidesPerPage={3}
             slideClassName="h-auto"
             renderItem={(d) => {
               const ps = poolSize(d);
@@ -223,14 +202,19 @@ export function DeskLibraryGuidedDrillsSurface() {
                       </span>
                     ))}
                   </div>
+                  <GuidedDrillCardPreview
+                    drill={d}
+                    questionCount={d.question_qids?.length || d.question_count || (ps ?? 0)}
+                  />
                   <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setOpenDrill(d)}
+                    <a
+                      href={`/guided-drills/${d.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
                     >
                       <Play className="h-3 w-3" /> Open
-                    </button>
+                    </a>
                     <button
                       type="button"
                       onClick={() => setAssignDrill(d)}
