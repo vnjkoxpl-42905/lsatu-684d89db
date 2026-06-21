@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { format, addDays } from 'date-fns';
 import { toast } from 'sonner';
 import { Switch } from '@/components/ui/switch';
@@ -39,6 +40,8 @@ export function DeskLibraryBootcampsSurface() {
   const { data: items = [] } = useStudentClassroomItems(studentId);
   const [busy, setBusy] = useState<string | null>(null);
   const [draftDates, setDraftDates] = useState<Record<string, { start?: Date; end?: Date }>>({});
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [openBootcamp, setOpenBootcamp] = useState<BootcampDef | null>(null);
 
   const findItem = (bootcampId: string) =>
     items.find(
@@ -135,6 +138,30 @@ export function DeskLibraryBootcampsSurface() {
     }
   };
 
+  if (openBootcamp) {
+    return (
+      <section className="flex h-full w-full flex-col">
+        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
+          <button
+            type="button"
+            onClick={() => setOpenBootcamp(null)}
+            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+          >
+            <ArrowLeft className="h-3 w-3" /> Back to bootcamps
+          </button>
+          <span className="truncate text-sm font-semibold text-black">{openBootcamp.title}</span>
+        </header>
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <iframe
+            title={openBootcamp.title}
+            src={openBootcamp.route}
+            className="h-full w-full border-0"
+          />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <div className="flex h-full w-full">
       <DeskStudentPicker selectedId={studentId} onSelect={setStudentId} />
@@ -159,42 +186,75 @@ export function DeskLibraryBootcampsSurface() {
                 const item = findItem(b.id);
                 const assigned = !!item;
                 const { start, end } = getDates(b.id);
+                const expanded = expandedId === b.id;
                 return (
-                  <li
-                    key={b.id}
-                    className="flex flex-col gap-3 border border-black/12 bg-white/35 px-4 py-3 sm:flex-row sm:items-center"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-black">{b.title}</div>
-                      <div className="mt-0.5 text-xs text-black/55">{b.description}</div>
+                  <li key={b.id} className="border border-black/12 bg-white/35">
+                    <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center">
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium text-black">
+                          {b.title}
+                          {assigned && (
+                            <span className="ml-2 align-middle text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
+                              assigned
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 text-xs text-black/55">{b.description}</div>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setOpenBootcamp(b)}
+                          className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25"
+                        >
+                          <Play className="h-3 w-3" /> Open
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setExpandedId(expanded ? null : b.id)}
+                          className={cn(
+                            'inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs font-semibold transition',
+                            expanded
+                              ? 'border-amber-500/40 bg-amber-500/25 text-amber-900'
+                              : 'border-amber-500/30 bg-amber-500/15 text-amber-800 hover:bg-amber-500/25',
+                          )}
+                        >
+                          <Send className="h-3 w-3" /> Assign
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <AssignmentDateField
-                        label="Start"
-                        value={start}
-                        disabled={busy === b.id}
-                        onChange={(d) => {
-                          const newEnd = end && end >= d ? end : defaultEnd(b.id, d);
-                          setDates(b.id, { start: d, end: newEnd });
-                          if (assigned) updateDates(b, d, newEnd);
-                        }}
-                      />
-                      <AssignmentDateField
-                        label="End"
-                        value={end}
-                        minDate={start}
-                        disabled={busy === b.id}
-                        onChange={(d) => {
-                          setDates(b.id, { end: d });
-                          if (assigned) updateDates(b, start, d);
-                        }}
-                      />
-                      {busy === b.id ? (
-                        <Loader2 className="h-4 w-4 animate-spin text-black/50" />
-                      ) : (
-                        <Switch checked={assigned} onCheckedChange={(v) => toggle(b, v)} />
-                      )}
-                    </div>
+                    {expanded && (
+                      <div className="flex flex-wrap items-center gap-2 border-t border-black/10 px-4 py-3">
+                        <AssignmentDateField
+                          label="Start"
+                          value={start}
+                          disabled={busy === b.id}
+                          onChange={(d) => {
+                            const newEnd = end && end >= d ? end : defaultEnd(b.id, d);
+                            setDates(b.id, { start: d, end: newEnd });
+                            if (assigned) updateDates(b, d, newEnd);
+                          }}
+                        />
+                        <AssignmentDateField
+                          label="End"
+                          value={end}
+                          minDate={start}
+                          disabled={busy === b.id}
+                          onChange={(d) => {
+                            setDates(b.id, { end: d });
+                            if (assigned) updateDates(b, start, d);
+                          }}
+                        />
+                        <label className="flex items-center gap-2 text-xs text-black/65">
+                          {busy === b.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-black/50" />
+                          ) : (
+                            <Switch checked={assigned} onCheckedChange={(v) => toggle(b, v)} />
+                          )}
+                          {assigned ? 'Assigned' : 'Off'}
+                        </label>
+                      </div>
+                    )}
                   </li>
                 );
               })}
