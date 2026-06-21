@@ -39,9 +39,15 @@ function scoreFor(verdicts: Record<number, Verdict | null>, total: number): numb
 export interface ActivityRunnerProps {
   /** When embedded (not routed), the assignment id to run. Falls back to the URL param. */
   assignmentId?: string;
+  /**
+   * Teacher preview: always start at the intro regardless of saved status, and
+   * write nothing. Reuses the no-write `practice` path so previews never touch
+   * real assignment data or scores.
+   */
+  preview?: boolean;
 }
 
-export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunnerProps = {}) {
+export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string }>();
   const assignmentId = assignmentIdProp ?? params.assignmentId;
   const { user } = useAuth();
@@ -52,8 +58,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunne
   const [verdicts, setVerdicts] = useState<Record<number, Verdict | null>>({});
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [hydrated, setHydrated] = useState(false);
-  // Ungraded re-run of a completed activity: no DB writes, no score overwrite.
-  const [practice, setPractice] = useState(false);
+  // Ungraded run with no DB writes / score overwrite. True for teacher previews
+  // and for a "Practice again" re-run of a completed activity.
+  const [practice, setPractice] = useState(preview);
   const hydratingRef = useRef(false);
 
   const items = useMemo(
@@ -70,6 +77,12 @@ export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunne
     hydratingRef.current = true;
 
     (async () => {
+      // Teacher preview: always enter at the intro, never load saved progress.
+      if (preview) {
+        setPhase("intro");
+        setHydrated(true);
+        return;
+      }
       if (assignment.status === "completed") {
         // Load the attempt log only to render the stored answers in the summary.
         try {
@@ -86,7 +99,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp }: ActivityRunne
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated]);
+  }, [assignment, user, items, hydrated, preview]);
 
   // Mirror progress into the Classroom feed row so a completed activity stops
   // showing "Start". Best-effort: the assignment is the source of truth.

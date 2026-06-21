@@ -59,7 +59,7 @@ export function DeskLibraryActivitiesSurface() {
           <span className="truncate text-sm font-semibold text-black">{running.title}</span>
         </header>
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <ActivityRunner assignmentId={running.assignmentId} />
+          <ActivityRunner assignmentId={running.assignmentId} preview />
         </div>
       </section>
     );
