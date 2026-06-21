@@ -30,8 +30,23 @@ function safeReturnPath(value: string | null): string {
   return value;
 }
 
-export default function GuidedDrillStart() {
-  const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
+export interface GuidedDrillStartProps {
+  /** When embedded (not routed), the drill slug to render. Falls back to the URL param. */
+  slug?: string;
+  /** When embedded, the assignment id to render. Falls back to the URL param. */
+  assignmentId?: string;
+  /** When embedded, called instead of navigating away on return. */
+  onReturn?: () => void;
+}
+
+export default function GuidedDrillStart({
+  slug: slugProp,
+  assignmentId: assignmentIdProp,
+  onReturn,
+}: GuidedDrillStartProps = {}) {
+  const params = useParams<{ assignmentId?: string; slug?: string }>();
+  const assignmentId = assignmentIdProp ?? params.assignmentId;
+  const slug = slugProp ?? params.slug;
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -83,8 +98,12 @@ export default function GuidedDrillStart() {
   ), [drill, slug]);
 
   const handleReturn = React.useCallback(() => {
+    if (onReturn) {
+      onReturn();
+      return;
+    }
     navigate(safeReturnPath(searchParams.get('returnTo')));
-  }, [navigate, searchParams]);
+  }, [onReturn, navigate, searchParams]);
 
   const handleStart = React.useCallback(async () => {
     if (!drill && !bootcampOverride) return;

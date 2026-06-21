@@ -47,6 +47,9 @@ The left-side block labeled NEXT: the single suggested next teacher action (or "
 ### Desk Cube
 The centered wireframe cube plus the CURRENT MODE label naming the active mode (Reply / Review / Assign mode). Its only job is to show which mode is active; it carries no data the teacher acts on. (Tension to resolve later: the parent glossary's instrument-panel direction warns against "decorative cube visuals that do not serve teaching work.")
 
+### To-Do Rail
+The right column (`DeskTodoRail`): a light task/to-do list. **Today-scoped** — it belongs to the Today workspace only and must not render on other Workspace Tabs (Library, Students, Admin, Inbox). When a non-Today tab is active, the rail is absent and the desk content area takes its width. (Earlier behavior rendered it on every workspace; that was the bug.)
+
 ### Stage
 The center column: the region that holds the currently selected task and the means to act on it. Today it contains a task card (title + preview) and the MiniChat beneath it. The shape of the Stage is the main thing under redesign.
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ExternalLink, FileText, Loader2, Send } from 'lucide-react';
+import { ArrowLeft, FileText, Loader2, Play, Send } from 'lucide-react';
+import GuidedDrillStart from '@/pages/GuidedDrillStart';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -37,6 +38,7 @@ export function DeskLibraryGuidedDrillsSurface() {
   const [weekFilter, setWeekFilter] = useState<number | 'all'>('all');
   const [rtFilter, setRtFilter] = useState<string | 'all'>('all');
   const [previewDrill, setPreviewDrill] = useState<GuidedDrill | null>(null);
+  const [openDrill, setOpenDrill] = useState<GuidedDrill | null>(null);
   const [assignDrill, setAssignDrill] = useState<GuidedDrill | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [scheduledFor, setScheduledFor] = useState('');
@@ -130,6 +132,26 @@ export function DeskLibraryGuidedDrillsSurface() {
     }
   };
 
+  if (openDrill) {
+    return (
+      <section className="flex h-full w-full flex-col">
+        <header className="flex shrink-0 items-center gap-3 border-b border-black/10 px-6 py-3">
+          <button
+            type="button"
+            onClick={() => setOpenDrill(null)}
+            className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+          >
+            <ArrowLeft className="h-3 w-3" /> Back to drills
+          </button>
+          <span className="truncate text-sm font-semibold text-black">{openDrill.title}</span>
+        </header>
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <GuidedDrillStart slug={openDrill.slug} onReturn={() => setOpenDrill(null)} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
@@ -209,14 +231,13 @@ export function DeskLibraryGuidedDrillsSurface() {
                     >
                       <FileText className="h-3 w-3" /> Preview
                     </button>
-                    <a
-                      href={`/guided-drills/${d.slug}?returnTo=/teacher?ws=library`}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => setOpenDrill(d)}
                       className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
                     >
-                      <ExternalLink className="h-3 w-3" /> Open HTML
-                    </a>
+                      <Play className="h-3 w-3" /> Open
+                    </button>
                     <button
                       type="button"
                       onClick={() => setAssignDrill(d)}
@@ -326,6 +347,7 @@ function FilterSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      title={options.find((o) => o.value === value)?.label ?? 'Filter'}
       className="h-8 border border-black/15 bg-white/40 px-2 text-sm text-black focus-visible:border-black/35 focus-visible:outline-none"
     >
       {options.map((o) => (

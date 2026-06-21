@@ -27,6 +27,7 @@ import {
   type WorkspaceKey,
 } from './deskTasks';
 import { GlobalRail } from './GlobalRail';
+import { cn } from '@/lib/utils';
 import { DeskChatRail } from './DeskChatRail';
 import { DeskChatPanel } from './DeskChatPanel';
 import { DeskTodoRail } from './DeskTodoRail';
@@ -299,7 +300,14 @@ export default function TeacherDeskPreview() {
             </div>
           </header>
 
-          <div className="grid flex-1 grid-cols-1 lg:min-h-0 lg:grid-cols-[300px_minmax(0,1fr)_320px]">
+          <div
+            className={cn(
+              'grid flex-1 grid-cols-1 lg:min-h-0',
+              workspace === 'today'
+                ? 'lg:grid-cols-[300px_minmax(0,1fr)_320px]'
+                : 'lg:grid-cols-[300px_minmax(0,1fr)]',
+            )}
+          >
             <aside className="flex flex-col gap-8 border-b border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-b-0 lg:border-r">
               <GlobalRail active={workspace} onSelect={selectWorkspace} />
               <DeskChatRail />
@@ -313,9 +321,11 @@ export default function TeacherDeskPreview() {
               {workspace === 'library' ? <DeskLibrarySurface /> : null}
             </main>
 
-            <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
-            </aside>
+            {workspace === 'today' ? (
+              <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
+                <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
+              </aside>
+            ) : null}
           </div>
         </div>
       </div>
