@@ -2492,16 +2492,9 @@ function DrillContent() {
     setTutorChatOpen(true);
   };
 
-  // The drill toolbar's Notes control now opens the unified tutor panel on its
-  // Notes tab (the standalone docked Notes panel is folded in).
+  // The drill toolbar's Notes control opens the docked slide-over Notes panel.
   const toggleNotesPanel = () => {
-    if (tutorChatOpen && tutorInitialTab === 'notes') {
-      setTutorChatOpen(false);
-      setTutorQuestionSnapshot(null);
-      setTutorInitialTab(undefined);
-    } else {
-      openTutorForCurrent('notes');
-    }
+    setNotesOpen((prev) => !prev);
   };
 
   const renderTutorOverlay = () => (
@@ -2777,7 +2770,7 @@ function DrillContent() {
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
             notesButtonVisible={usesSmartChrome}
-            notesOpen={tutorChatOpen && tutorInitialTab === 'notes'}
+            notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
           />
           <OfficialQuestionPane
