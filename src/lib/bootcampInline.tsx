@@ -4,11 +4,35 @@ import { lazy, type ComponentType } from 'react';
 // (a fresh context loses the session). Mounting the page component inline in the
 // same React tree keeps auth/context, so it renders. Shared by the inline-open
 // view and the scaled card preview.
-const PrincipleFlawBootcamp = lazy(() => import('@/pages/PrincipleFlawBootcamp'));
-const IntroToLrBootcamp = lazy(() => import('@/pages/IntroToLrBootcamp'));
-const CausationStation = lazy(() => import('@/pages/CausationStation'));
-const FallacyFlawBootcamp = lazy(() => import('@/pages/FallacyFlawBootcamp'));
-const AbstractBootcamp = lazy(() => import('@/topics/abstract'));
+
+// Stale-chunk safe lazy: if the dynamic import fails or resolves to a module
+// without a default export (post-deploy hash mismatch), force a one-time hard
+// reload instead of throwing "Cannot read properties of undefined (reading
+// 'default')" and blanking the screen.
+const RELOAD_KEY = '__bootcamp_chunk_reload__';
+function safeLazy<T extends ComponentType<any>>(factory: () => Promise<{ default: T }>) {
+  return lazy(async () => {
+    try {
+      const mod = await factory();
+      if (!mod || !mod.default) throw new Error('missing default export');
+      return mod;
+    } catch (err) {
+      try {
+        if (!sessionStorage.getItem(RELOAD_KEY)) {
+          sessionStorage.setItem(RELOAD_KEY, '1');
+          window.location.reload();
+        }
+      } catch {}
+      throw err;
+    }
+  });
+}
+
+const PrincipleFlawBootcamp = safeLazy(() => import('@/pages/PrincipleFlawBootcamp'));
+const IntroToLrBootcamp = safeLazy(() => import('@/pages/IntroToLrBootcamp'));
+const CausationStation = safeLazy(() => import('@/pages/CausationStation'));
+const FallacyFlawBootcamp = safeLazy(() => import('@/pages/FallacyFlawBootcamp'));
+const AbstractBootcamp = safeLazy(() => import('@/topics/abstract'));
 
 export interface BootcampInlineCfg {
   Comp: ComponentType;
