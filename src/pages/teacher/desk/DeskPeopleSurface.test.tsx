@@ -149,6 +149,13 @@ describe('DeskPeopleSurface', () => {
 
     expect(screen.getByText('Templates')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Trial/i })).toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Analytics' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Schedule' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'WAJ' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Flagged' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Chat' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Export' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'TA' })).not.toBeInTheDocument();
     expect(screen.getByText('Role Management')).toBeInTheDocument();
     expect(screen.getByText('Protected primary admin')).toBeInTheDocument();
   });
@@ -160,7 +167,10 @@ describe('DeskPeopleSurface', () => {
     fireEvent.click(within(row).getByRole('button', { name: /Expand Meghan Mullins/i }));
 
     expect(screen.getByRole('switch', { name: 'Practice' })).toBeChecked();
-    expect(screen.getByRole('switch', { name: 'Export' })).not.toBeChecked();
+    expect(screen.getByRole('switch', { name: 'Drill' })).toBeChecked();
+    expect(screen.getByRole('switch', { name: 'Bootcamps' })).toBeChecked();
+    expect(screen.getByRole('switch', { name: 'Classroom' })).toBeChecked();
+    expect(screen.queryByRole('switch', { name: 'Export' })).not.toBeInTheDocument();
     expect(within(row).getByRole('button', { name: /Grant All/i })).toBeInTheDocument();
     expect(within(row).getByRole('button', { name: /Revoke All/i })).toBeInTheDocument();
   });

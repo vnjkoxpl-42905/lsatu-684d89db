@@ -41,27 +41,25 @@ export const FLAG_GROUPS = [
     ],
   },
   {
-    label: 'Modules',
+    label: 'Programs',
     flags: [
       { key: 'has_bootcamp_access', label: 'Bootcamps' },
       { key: 'has_classroom_access', label: 'Classroom' },
-      { key: 'has_analytics_access', label: 'Analytics' },
-      { key: 'has_schedule_access', label: 'Schedule' },
-    ],
-  },
-  {
-    label: 'Tools',
-    flags: [
-      { key: 'has_waj_access', label: 'WAJ' },
-      { key: 'has_flagged_access', label: 'Flagged' },
-      { key: 'has_chat_access', label: 'Chat' },
-      { key: 'has_export_access', label: 'Export' },
-      { key: 'has_ta_access', label: 'TA' },
     ],
   },
 ] as const;
 
-export const ALL_FLAG_KEYS = FLAG_GROUPS.flatMap((group) => group.flags.map((flag) => flag.key));
+export const CONFIGURABLE_FLAG_KEYS = FLAG_GROUPS.flatMap((group) => group.flags.map((flag) => flag.key));
+export const DEFAULT_ON_FLAG_KEYS = [
+  'has_analytics_access',
+  'has_schedule_access',
+  'has_waj_access',
+  'has_flagged_access',
+  'has_chat_access',
+  'has_export_access',
+  'has_ta_access',
+] as const;
+export const ALL_FLAG_KEYS = [...CONFIGURABLE_FLAG_KEYS, ...DEFAULT_ON_FLAG_KEYS];
 
 export const ALL_FLAG_LABELS: Record<string, string> = {};
 FLAG_GROUPS.forEach((group) => group.flags.forEach((flag) => {
@@ -70,7 +68,8 @@ FLAG_GROUPS.forEach((group) => group.flags.forEach((flag) => {
 
 export function accessTemplate(enabled: string[]): Record<string, boolean> {
   const out: Record<string, boolean> = {};
-  for (const key of ALL_FLAG_KEYS) out[key] = enabled.includes(key);
+  for (const key of CONFIGURABLE_FLAG_KEYS) out[key] = enabled.includes(key);
+  for (const key of DEFAULT_ON_FLAG_KEYS) out[key] = true;
   return out;
 }
 
@@ -84,29 +83,24 @@ export const ROLE_TEMPLATES: { id: string; label: string; description: string; f
   {
     id: 'standard',
     label: 'Standard',
-    description: 'All student tools, no TA workspace.',
+    description: 'Core tools plus classroom.',
     flags: accessTemplate([
       'has_practice_access',
       'has_drill_access',
       'has_classroom_access',
-      'has_analytics_access',
-      'has_schedule_access',
-      'has_waj_access',
-      'has_flagged_access',
-      'has_chat_access',
       'has_bootcamp_access',
     ]),
   },
   {
     id: 'full',
     label: 'Full',
-    description: 'Everything except TA access.',
-    flags: accessTemplate(ALL_FLAG_KEYS.filter((key) => key !== 'has_ta_access')),
+    description: 'All configurable access.',
+    flags: accessTemplate(CONFIGURABLE_FLAG_KEYS),
   },
 ];
 
 export function templateMatches(user: Record<string, unknown>, template: Record<string, boolean>): boolean {
-  return ALL_FLAG_KEYS.every((key) => Boolean(user[key]) === template[key]);
+  return CONFIGURABLE_FLAG_KEYS.every((key) => Boolean(user[key]) === template[key]);
 }
 
 export function computeAdminAnalytics(users: ManagedUser[], analytics: AdminAnalytics | null): AdminAnalytics {

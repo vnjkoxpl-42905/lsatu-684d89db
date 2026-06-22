@@ -23,6 +23,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import {
   ALL_FLAG_KEYS,
+  CONFIGURABLE_FLAG_KEYS,
+  DEFAULT_ON_FLAG_KEYS,
   FLAG_GROUPS,
   ROLE_TEMPLATES,
   computeAdminAnalytics,
@@ -109,7 +111,7 @@ export function DeskPeopleSurface() {
         roleFilter === 'all' ||
         (roleFilter === 'students' && person.role !== 'admin') ||
         (roleFilter === 'admins' && person.role === 'admin') ||
-        (roleFilter === 'access' && enabledCount < ALL_FLAG_KEYS.length);
+        (roleFilter === 'access' && enabledCount < CONFIGURABLE_FLAG_KEYS.length);
       return matchesSearch && matchesRole;
     });
   }, [people, roleFilter, search]);
@@ -135,11 +137,14 @@ export function DeskPeopleSurface() {
     ALL_FLAG_KEYS.forEach((key) => {
       updated[key] = value;
     });
+    DEFAULT_ON_FLAG_KEYS.forEach((key) => {
+      updated[key] = true;
+    });
     setUsers((current) => current.map((user) => (user.class_id === classId ? updated : user)));
     try {
       const res = await supabase.functions.invoke('admin-manage-users', {
         method: 'POST',
-        body: { action: 'bulk_user', class_id: classId, value },
+        body: { action: 'apply_template', class_id: classId, flags: accessTemplateForBulk(value) },
       });
       if (res.error) throw res.error;
       toast.success(value ? 'All access granted' : 'All access revoked');
@@ -222,7 +227,7 @@ export function DeskPeopleSurface() {
             <h3 className="text-sm font-semibold text-black/65">Feature Adoption</h3>
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-            {ALL_FLAG_KEYS.map((key) => {
+            {CONFIGURABLE_FLAG_KEYS.map((key) => {
               const count = computedAnalytics.feature_adoption[key] || 0;
               const maxAdoption = Math.max(...Object.values(computedAnalytics.feature_adoption), 1);
               const pct = (count / maxAdoption) * 100;
@@ -399,7 +404,7 @@ function PersonRow({
           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-black/45">
             <span className="truncate font-mono">{person.email}</span>
             <span>{formatRelativeShort(person.last_seen_at)}</span>
-            <span>{enabledCount}/{ALL_FLAG_KEYS.length} access</span>
+            <span>{enabledCount}/{CONFIGURABLE_FLAG_KEYS.length} configurable</span>
           </div>
         </div>
       </div>
@@ -543,7 +548,18 @@ function RoleBadge({ user }: { user: Pick<ManagedUser, 'role' | 'email'> }) {
 }
 
 function enabledAccessCount(user: ManagedUser) {
-  return ALL_FLAG_KEYS.filter((key) => user[key as keyof ManagedUser] === true).length;
+  return CONFIGURABLE_FLAG_KEYS.filter((key) => user[key as keyof ManagedUser] === true).length;
+}
+
+function accessTemplateForBulk(value: boolean): Record<string, boolean> {
+  const flags: Record<string, boolean> = {};
+  CONFIGURABLE_FLAG_KEYS.forEach((key) => {
+    flags[key] = value;
+  });
+  DEFAULT_ON_FLAG_KEYS.forEach((key) => {
+    flags[key] = true;
+  });
+  return flags;
 }
 
 export default DeskPeopleSurface;
