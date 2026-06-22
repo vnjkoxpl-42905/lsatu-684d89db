@@ -432,8 +432,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Politician: Union leaders argue that increases in multinational control of manufacturing have shifted labor to nations without strong worker protections, resulting in a corresponding global decrease in workers’ average wages. Given that these leaders have a vested interest in seeing wages remain high, they would naturally want to convince legislators to oppose multinational control. Thus, legislators should reject this argument. The reasoning in the politician’s argument is flawed in that the argument",
+    "stimulus": "Politician: Union leaders argue that increases in multinational control of manufacturing have shifted labor to nations without strong worker protections, resulting in a corresponding global decrease in workers’ average wages. Given that these leaders have a vested interest in seeing wages remain high, they would naturally want to convince legislators to oppose multinational control. Thus, legislators should reject this argument.",
+    "questionStem": "The reasoning in the politician’s argument is flawed in that the argument",
     "answerChoices": {
       "A": "treats the mere fact that certain people are union members as sufficient to cast doubt on all of the viewpoints expressed by those people",
       "B": "presumes, without providing justification, that anyone whose political motivations are clearly discernible is an unreliable source of information to legislators",
