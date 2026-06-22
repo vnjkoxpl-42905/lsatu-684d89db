@@ -17,6 +17,7 @@ import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
 export interface MainhubSidebarProps {
   displayName?: string | null;
+  onPracticeHubClick?: () => void;
 }
 
 type NavItem = {
@@ -40,7 +41,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
-export default function MainhubSidebar(_props: MainhubSidebarProps) {
+export default function MainhubSidebar({ onPracticeHubClick }: MainhubSidebarProps) {
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
@@ -98,6 +99,23 @@ export default function MainhubSidebar(_props: MainhubSidebarProps) {
             location.pathname === p.replace(/\/$/, "") ||
             location.pathname.startsWith(p),
           );
+          const baseClassName = [
+            "flex w-full items-center gap-3 border-l-2 px-6 py-3 text-left text-sm transition-colors active:opacity-75",
+            "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
+          ].join(" ");
+          if (to === "/practice" && onPracticeHubClick) {
+            return (
+              <button
+                key={to}
+                type="button"
+                onClick={onPracticeHubClick}
+                className={baseClassName}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
+              </button>
+            );
+          }
           return (
             <NavLink
               key={to}

@@ -185,7 +185,12 @@ class SplineBoundary extends React.Component<{ children: React.ReactNode }, { ha
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
-export default function Practice() {
+interface PracticeHubContentProps {
+  embedded?: boolean;
+  onBackToMainHub?: () => void;
+}
+
+export function PracticeHubContent({ embedded = false, onBackToMainHub }: PracticeHubContentProps) {
   const navigate = useNavigate();
   const { user, authReady, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -360,22 +365,40 @@ export default function Practice() {
     <div className="min-h-screen bg-background">
 
       {/* ── Header — minimal, no branding ──────────────────────────────────── */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-        <div className="px-4 lg:px-8 py-5 flex items-center max-w-7xl mx-auto">
-          <button
-            type="button"
-            onClick={() => navigate('/foyer')}
-            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
-            aria-label="Back to Main Hub"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Main Hub
-          </button>
-        </div>
-      </header>
+      {!embedded && (
+        <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
+          <div className="px-4 lg:px-8 py-5 flex items-center max-w-7xl mx-auto">
+            <button
+              type="button"
+              onClick={() => navigate('/foyer')}
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+              aria-label="Back to Main Hub"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Main Hub
+            </button>
+          </div>
+        </header>
+      )}
 
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-16 animate-fade-in">
+      <div className={cn(
+        'max-w-7xl mx-auto px-4 lg:px-8 pb-16 animate-fade-in',
+        embedded ? 'pt-12 md:pt-16' : 'pt-10',
+      )}>
+        {embedded && onBackToMainHub && (
+          <div className="mb-5">
+            <button
+              type="button"
+              onClick={onBackToMainHub}
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+              aria-label="Back to Main Hub"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Main Hub
+            </button>
+          </div>
+        )}
 
         {/* ── Row 1 — Hero (intentionally dark on both themes) ────────────────
              With recent activity: surfaces the Resume CTA (Wave 3 / Item M),
@@ -627,4 +650,8 @@ export default function Practice() {
       </div>
     </div>
   );
+}
+
+export default function Practice() {
+  return <PracticeHubContent />;
 }

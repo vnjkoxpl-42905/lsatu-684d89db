@@ -9,7 +9,9 @@ import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
 import MainhubDock from "@/components/mainhub/MainhubDock";
 import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 import SmartLRTrainingCard from "@/components/mainhub/SmartLRTrainingCard";
+import { PracticeHubContent } from "@/pages/Practice";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
+import { StoryScroll, StorySection } from "@/components/ui/story-scroll";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -76,6 +78,9 @@ export default function AcademyMainhub() {
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   const [helpOpen, setHelpOpen] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const mainhubPanelRef = React.useRef<HTMLDivElement>(null);
+  const practicePanelRef = React.useRef<HTMLDivElement>(null);
   
 
   React.useEffect(() => {
@@ -180,65 +185,93 @@ export default function AcademyMainhub() {
     return () => setOrbitalActive(false);
   }, [setOrbitalActive]);
 
+  const scrollToMainhub = React.useCallback(() => {
+    mainhubPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const scrollToPracticeHub = React.useCallback(() => {
+    setMenuOpen(false);
+    practicePanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   if (!authReady || !user) return null;
 
   return (
-    <div className="relative flex h-[100dvh] w-full overflow-hidden bg-background text-foreground">
-      <aside
-        data-tour="mainhub-sidebar"
-        className="hidden shrink-0 border-r border-border md:flex"
-        style={{ width: "min(320px, 30vw)", minWidth: 280 }}
-      >
-        <MainhubSidebar displayName={displayName} />
-      </aside>
-
-      <Sheet>
-        <SheetTrigger
-          aria-label="Open menu"
-          className="absolute left-4 top-4 z-20 rounded-md p-2 text-muted-foreground transition hover:text-foreground active:opacity-70 md:hidden"
-        >
-          <Menu className="h-5 w-5" />
-        </SheetTrigger>
-        <SheetContent side="left" className="w-[320px] p-0">
-          <MainhubSidebar displayName={displayName} />
-        </SheetContent>
-      </Sheet>
-
-      <main className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-8 pb-24 md:px-6">
-        <div className="pointer-events-none absolute right-8 top-7 z-10">
-          <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
-            <MainhubDock />
-            <MainhubAccountButton displayName={displayName} />
-          </div>
-        </div>
-
-        <div className="relative flex h-full w-full max-w-[1060px] items-center justify-center gap-8 2xl:max-w-[1100px] 2xl:gap-12">
-          <div className="hidden w-[320px] shrink-0 xl:flex 2xl:w-[360px]">
-            <SmartLRTrainingCard />
-          </div>
-
-          <section
-            aria-label="Mainhub orbital workspace"
-            className="relative flex h-full min-h-[560px] min-w-0 flex-1 items-center justify-center pl-6 2xl:pl-10"
+    <>
+      <StoryScroll aria-label="Main Hub workspace" className="bg-background text-foreground">
+        <StorySection aria-label="Main Hub screen" innerClassName="h-[100dvh]">
+          <div
+            ref={mainhubPanelRef}
+            className="relative flex h-[100dvh] w-full overflow-hidden bg-background text-foreground"
           >
-            <div
-              data-tour="mainhub-orbital"
-              className="absolute left-1/2 top-1/2 h-[500px] w-[460px] max-w-full -translate-x-1/2 -translate-y-1/2"
+            <aside
+              data-tour="mainhub-sidebar"
+              className="hidden shrink-0 border-r border-border md:flex"
+              style={{ width: "min(320px, 30vw)", minWidth: 280 }}
             >
-              <RadialOrbitalTimeline
-                timelineData={mainhubNodes}
-                onActivate={onOrbitalActivate}
-              />
+              <MainhubSidebar displayName={displayName} onPracticeHubClick={scrollToPracticeHub} />
+            </aside>
+
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger
+                aria-label="Open menu"
+                className="absolute left-4 top-4 z-20 rounded-md p-2 text-muted-foreground transition hover:text-foreground active:opacity-70 md:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[320px] p-0">
+                <MainhubSidebar displayName={displayName} onPracticeHubClick={scrollToPracticeHub} />
+              </SheetContent>
+            </Sheet>
+
+            <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-8 pb-24 md:px-6">
+              <div className="pointer-events-none absolute right-8 top-7 z-10">
+                <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
+                  <MainhubDock />
+                  <MainhubAccountButton displayName={displayName} />
+                </div>
+              </div>
+
+              <div className="relative flex h-full w-full max-w-[1060px] items-center justify-center gap-8 2xl:max-w-[1100px] 2xl:gap-12">
+                <div className="hidden w-[320px] shrink-0 xl:flex 2xl:w-[360px]">
+                  <SmartLRTrainingCard />
+                </div>
+
+                <section
+                  aria-label="Mainhub orbital workspace"
+                  className="relative flex h-full min-h-[560px] min-w-0 flex-1 items-center justify-center pl-6 2xl:pl-10"
+                >
+                  <div
+                    data-tour="mainhub-orbital"
+                    className="absolute left-1/2 top-1/2 h-[500px] w-[460px] max-w-full -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <RadialOrbitalTimeline
+                      timelineData={mainhubNodes}
+                      onActivate={onOrbitalActivate}
+                    />
+                  </div>
+                </section>
+              </div>
             </div>
-          </section>
-        </div>
-      </main>
+          </div>
+        </StorySection>
+
+        <StorySection
+          aria-label="Practice Hub section"
+          className="!items-stretch !justify-start bg-background"
+          innerClassName="min-h-screen"
+        >
+          <div ref={practicePanelRef} id="mainhub-practice" className="min-h-screen w-full">
+            <PracticeHubContent embedded onBackToMainHub={scrollToMainhub} />
+          </div>
+        </StorySection>
+      </StoryScroll>
 
       <MainhubHelpControl
         open={helpOpen}
         onOpenChange={setHelpOpen}
       />
-    </div>
+    </>
   );
 }
 
@@ -314,7 +347,9 @@ function MainhubHelpControl({
 
   React.useEffect(() => {
     return () => {
-      mediaRecorderRef.current?.state === "recording" && mediaRecorderRef.current.stop();
+      if (mediaRecorderRef.current?.state === "recording") {
+        mediaRecorderRef.current.stop();
+      }
       mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
     };
   }, []);
