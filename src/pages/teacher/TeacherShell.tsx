@@ -9,7 +9,6 @@ import {
   PencilRuler,
   BarChart3,
   ArrowLeft,
-  Shield,
   Archive,
   GraduationCap,
   Zap,
@@ -31,14 +30,13 @@ type NavItem = {
  */
 const PRIMARY_NAV: NavItem[] = [
   { to: '/teacher', label: 'Command', Icon: Sparkles, end: true },
-  { to: '/teacher/students', label: 'Students', Icon: Users },
+  { to: '/teacher?ws=people', label: 'People', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
   { to: '/teacher/activities', label: 'Activities', Icon: Zap },
   { to: '/teacher/whiteboard', label: 'Whiteboard', Icon: PencilRuler },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
-  { to: '/teacher/admin', label: 'Admin', Icon: Shield },
 ];
 
 /**

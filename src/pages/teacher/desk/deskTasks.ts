@@ -4,7 +4,6 @@ import {
   BookOpen,
   FileText,
   MessageSquare,
-  Shield,
   Sparkles,
   Users,
   type LucideIcon,
@@ -17,7 +16,7 @@ import type { Conversation } from '@/hooks/useInbox';
 import type { DeskTaskTodoItem } from './teacherTodoTypes';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
-export type WorkspaceKey = 'today' | 'students' | 'inbox' | 'library' | 'admin';
+export type WorkspaceKey = 'today' | 'people' | 'inbox' | 'library';
 export type ContextKey = 'student' | 'source';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap' | 'schedule';
 
@@ -74,8 +73,8 @@ export const MODE_META: Record<
     label: 'Review',
     description: 'Drafts, uploads, and student work requiring judgment.',
     empty: 'No reviews waiting',
-    emptyActionLabel: 'Open students',
-    emptyActionPath: '/teacher/students',
+    emptyActionLabel: 'Open People',
+    emptyActionPath: '/teacher?ws=people',
     viewAllLabel: 'Open Review',
     viewAllPath: '/teacher/command?tab=drafts',
     Icon: FileText,
@@ -94,14 +93,18 @@ export const MODE_META: Record<
 
 export const DESK_WORKSPACES: { key: WorkspaceKey; label: string; Icon: LucideIcon }[] = [
   { key: 'today', label: 'Today', Icon: Sparkles },
-  { key: 'students', label: 'Students', Icon: Users },
+  { key: 'people', label: 'People', Icon: Users },
   { key: 'inbox', label: 'Inbox', Icon: MessageSquare },
   { key: 'library', label: 'Library', Icon: BookOpen },
-  { key: 'admin', label: 'Admin', Icon: Shield },
 ];
 
 export function isWorkspaceKey(value: string | null): value is WorkspaceKey {
-  return value === 'today' || value === 'students' || value === 'inbox' || value === 'library' || value === 'admin';
+  return value === 'today' || value === 'people' || value === 'inbox' || value === 'library';
+}
+
+export function normalizeWorkspaceKey(value: string | null): WorkspaceKey {
+  if (value === 'students' || value === 'admin') return 'people';
+  return isWorkspaceKey(value) ? value : 'today';
 }
 
 export function studentName(student?: Pick<HubStudentRow, 'display_name' | 'email'> | null) {

@@ -8,7 +8,7 @@ import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 
 /**
  * Roster pane shared by desk library surfaces (Assignments, Bootcamps).
- * Mirrors DeskStudentsSurface's white/glass look so all desk panes feel
+ * Mirrors the desk People surface's white/glass look so all desk panes feel
  * like the same product.
  */
 export function DeskStudentPicker({

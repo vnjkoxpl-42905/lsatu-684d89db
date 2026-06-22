@@ -138,6 +138,10 @@ vi.mock('./DeskTodoRail', () => ({
   ),
 }));
 
+vi.mock('./DeskPeopleSurface', () => ({
+  DeskPeopleSurface: () => <section aria-label="People workspace">People directory</section>,
+}));
+
 function LocationProbe() {
   const location = useLocation();
   return <div data-testid="location">{location.pathname + location.search}</div>;
@@ -174,24 +178,37 @@ describe('TeacherDeskPreview workspace rail', () => {
     vi.useRealTimers();
   });
 
-  it('selects Students inside the desk instead of routing to the old students page', () => {
+  it('selects People inside the desk instead of keeping separate Students and Admin workspaces', () => {
     renderDesk();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Students' }));
+    fireEvent.click(screen.getByRole('button', { name: 'People' }));
 
-    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=students');
-    expect(screen.getByText('Meghan Mullins')).toBeInTheDocument();
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=people');
+    expect(screen.getByLabelText('People workspace')).toBeInTheDocument();
     expect(screen.getByLabelText('Saved chats')).toBeInTheDocument();
     expect(screen.getByLabelText('To-do rail')).toBeInTheDocument();
     expect(screen.getByText('Schedule: Timed LR review')).toBeInTheDocument();
     expect(screen.queryByText(/No active assignment/i)).not.toBeInTheDocument();
   });
 
+  it('maps legacy students and admin desk queries into the People workspace', () => {
+    renderDesk('/teacher?ws=students');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=people');
+    expect(screen.getByLabelText('People workspace')).toBeInTheDocument();
+
+    renderDesk('/teacher?ws=admin');
+
+    expect(screen.getAllByTestId('location').at(-1)).toHaveTextContent('/teacher?ws=people');
+    expect(screen.getAllByLabelText('People workspace').length).toBeGreaterThan(0);
+  });
+
   it('restores a workspace from the ws query param and clears it for Today', () => {
     renderDesk('/teacher?ws=library');
 
     expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=library');
-    expect(screen.getByRole('heading', { name: 'Library' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Library' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('heading', { name: 'Assignments' })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Today' }));
 

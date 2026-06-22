@@ -80,7 +80,7 @@ export default function TeacherToday() {
           label="Roster"
           value={students.length}
           Icon={ClipboardList}
-          onClick={() => navigate('/teacher/students')}
+          onClick={() => navigate('/teacher?ws=people')}
         />
       </div>
 

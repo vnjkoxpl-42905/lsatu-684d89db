@@ -66,7 +66,7 @@ export default function TeacherStudentDetail() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate('/teacher/students')}
+          onClick={() => navigate('/teacher?ws=people')}
           className="text-zinc-400 hover:text-zinc-100"
         >
           <ArrowLeft className="w-4 h-4 mr-1.5" />

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -18,10 +18,10 @@ import {
   draftToReviewTask,
   isWithinDays,
   isWithinUpcomingDays,
-  isWorkspaceKey,
   sortTasks,
   studentToAssignTask,
   uploadToReviewTask,
+  normalizeWorkspaceKey,
   type DeskMode,
   type DeskTask,
   type WorkspaceKey,
@@ -31,8 +31,7 @@ import { cn } from '@/lib/utils';
 import { DeskChatRail } from './DeskChatRail';
 import { DeskChatPanel } from './DeskChatPanel';
 import { DeskTodoRail } from './DeskTodoRail';
-import { DeskStudentsSurface } from './DeskStudentsSurface';
-import { DeskAdminSurface } from './DeskAdminSurface';
+import { DeskPeopleSurface } from './DeskPeopleSurface';
 
 import { DeskLibrarySurface } from './DeskLibrarySurface';
 import { useNextSession } from './useNextSession';
@@ -248,7 +247,14 @@ export default function TeacherDeskPreview() {
   const todoQueue = useTeacherTodoQueue(legacyTasks, { externalSources: !localPreview });
 
   const workspaceParam = searchParams.get('ws');
-  const workspace: WorkspaceKey = isWorkspaceKey(workspaceParam) ? workspaceParam : 'today';
+  const workspace: WorkspaceKey = normalizeWorkspaceKey(workspaceParam);
+
+  useEffect(() => {
+    if (workspaceParam !== 'students' && workspaceParam !== 'admin') return;
+    const next = new URLSearchParams(searchParams);
+    next.set('ws', 'people');
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams, workspaceParam]);
 
   const selectWorkspace = (key: WorkspaceKey) => {
     const next = new URLSearchParams(searchParams);
@@ -303,9 +309,7 @@ export default function TeacherDeskPreview() {
           <div
             className={cn(
               'grid flex-1 grid-cols-1 lg:min-h-0',
-              workspace === 'today'
-                ? 'lg:grid-cols-[300px_minmax(0,1fr)_320px]'
-                : 'lg:grid-cols-[300px_minmax(0,1fr)]',
+              'lg:grid-cols-[300px_minmax(0,1fr)_320px]',
             )}
           >
             <aside className="flex flex-col gap-8 border-b border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-b-0 lg:border-r">
@@ -315,17 +319,14 @@ export default function TeacherDeskPreview() {
 
             <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:min-h-0 lg:overflow-hidden">
               {workspace === 'today' ? <DeskChatPanel localPreview={localPreview} /> : null}
-              {workspace === 'students' ? <DeskStudentsSurface /> : null}
-              {workspace === 'admin' ? <DeskAdminSurface /> : null}
+              {workspace === 'people' ? <DeskPeopleSurface /> : null}
               {workspace === 'inbox' ? <AdminInboxCommandCenter embedded /> : null}
               {workspace === 'library' ? <DeskLibrarySurface /> : null}
             </main>
 
-            {workspace === 'today' ? (
-              <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-                <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
-              </aside>
-            ) : null}
+            <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
+              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
+            </aside>
           </div>
         </div>
       </div>

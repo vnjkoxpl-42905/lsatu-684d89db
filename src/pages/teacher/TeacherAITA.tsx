@@ -265,7 +265,7 @@ function CommandCenter() {
       title: 'Student plans',
       detail: 'Open roster, plan, recaps, and per-student actions.',
       Icon: Users,
-      action: () => navigate('/teacher/students'),
+      action: () => navigate('/teacher?ws=people'),
     },
     {
       title: 'Insights',
@@ -468,7 +468,7 @@ function CommandCenter() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => navigate('/teacher/students')}
+                  onClick={() => navigate('/teacher?ws=people')}
                   className="h-8 text-zinc-300 hover:bg-zinc-900"
                 >
                   View all

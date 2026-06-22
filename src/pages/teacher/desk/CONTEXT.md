@@ -21,18 +21,18 @@ Borrowed from the instrument-panel reference's top metadata line. It is a readou
 ### Workspace Tabs
 The left-side global navigation labeled WORKSPACE: the top-level Teacher Workspace **areas** — the big places Joshua goes. These are deliberately distinct from the **Task Modes** (Reply/Review/Assign), which live *inside* the Today/Desk page. A Workspace Tab is a destination you leave the desk for; a Task Mode is work you do on the desk. No tab may duplicate a mode. (Renders as a vertical rail today; "tabs" is the chosen product term.)
 
-**Ratified tab set (5):**
+**Ratified tab set (4):**
 - Today → `/teacher` (the desk itself)
-- Students → `/teacher/students`
+- People → `/teacher?ws=people`
 - Inbox → `/teacher/conversations`
 - Library → `/teacher/library`
-- Admin → `/teacher/admin`
+- Student detail routes such as `/teacher/students/:studentId` remain deep profile routes, but the list/admin workspace is People.
 
 Removed from the prior set:
 - **Assign** — deleted as a tab. It duplicated **Assign mode** and made the page confusing; Assign now lives *only* as a desk Task Mode.
 - **Teach** (`/teacher/whiteboard`) — dropped as a top-level tab. The whiteboard surface still exists and **moves under Library** (alongside assignments, recaps, activities). It is reached via Library, not the rail.
 
-The old `deskTasks.ts` `GLOBAL_RAIL` (Today/Students/Assign/Teach/Admin) is the implementation to update to match.
+The old separate Students/Admin rail split was collapsed into People so roster context and access controls live together.
 
 ### Task Modes
 The left-side list of the three Today task modes, each with a live count of items waiting. Selecting a mode changes what the Stage shows. These are the "Today Task Groups" from the parent glossary, rendered as the desk's mode selector.

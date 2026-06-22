@@ -64,7 +64,6 @@ const ClassroomRecaps = React.lazy(() => import("./pages/ClassroomRecaps"));
 const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
 const TeacherDeskPreview = React.lazy(() => import("./pages/teacher/TeacherDeskPreview"));
 const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
-const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents"));
 const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
 const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
 const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
@@ -74,7 +73,6 @@ const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherCon
 const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
-const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
 const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
@@ -150,7 +148,7 @@ const App = () => {
             <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
-            <Route path="/admin" element={<Navigate to="/teacher/admin" replace />} />
+            <Route path="/admin" element={<Navigate to="/teacher?ws=people" replace />} />
             <Route path="/admin/board" element={
               <ProtectedRoute flag="has_classroom_access">
                 <AdminErrorBoundary routeLabel="/admin/board">
@@ -371,11 +369,7 @@ const App = () => {
                         <TeacherToday />
                       </React.Suspense>
                     } />
-                    <Route path="students" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherStudents />
-                      </React.Suspense>
-                    } />
+                    <Route path="students" element={<Navigate to="/teacher?ws=people" replace />} />
                     <Route path="students/:studentId" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherStudentDetail />
@@ -419,18 +413,14 @@ const App = () => {
                     <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
                     <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
                     <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
-                    <Route path="admin" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherAdmin />
-                      </React.Suspense>
-                    } />
+                    <Route path="admin" element={<Navigate to="/teacher?ws=people" replace />} />
                     <Route path="templates" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherTemplates />
                       </React.Suspense>
                     } />
-                    <Route path="access" element={<Navigate to="/teacher/admin" replace />} />
-                    <Route path="permissions" element={<Navigate to="/teacher/admin" replace />} />
+                    <Route path="access" element={<Navigate to="/teacher?ws=people" replace />} />
+                    <Route path="permissions" element={<Navigate to="/teacher?ws=people" replace />} />
                     {/* Library moved into the Teacher Desk. All /teacher/library/*
                         routes redirect to the desk-native Library workspace. */}
                     <Route path="library" element={<Navigate to="/teacher?ws=library" replace />} />

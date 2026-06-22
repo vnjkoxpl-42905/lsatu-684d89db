@@ -58,7 +58,7 @@ export default function TutorCorpus() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <Link to="/teacher/admin" className="inline-flex items-center gap-1.5 text-[13px] text-zinc-400 hover:text-zinc-200 mb-5">
+        <Link to="/teacher?ws=people" className="inline-flex items-center gap-1.5 text-[13px] text-zinc-400 hover:text-zinc-200 mb-5">
           <ArrowLeft className="h-4 w-4" /> Admin
         </Link>
 
