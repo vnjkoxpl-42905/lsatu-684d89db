@@ -27,6 +27,8 @@ export interface BootcampTheme {
   inkSoft: string;
   /** Accent block + highlight color. */
   accent: string;
+  /** Optional second accent for bootcamps whose real app uses a two-color identity. */
+  accentAlt?: string;
   /** Text that sits on top of the accent block. */
   accentInk: string;
 }
@@ -43,7 +45,7 @@ export const BOOTCAMPS: BootcampDef[] = [
   {
     id: 'principle-flaw',
     title: 'Principle & Flaw',
-    description: 'Two-week LR bootcamp',
+    description: 'Principle questions, flaw patterns, and parallel-flaw transfer.',
     route: '/bootcamp/principle-flaw',
     // Dark zinc + emerald (src/bootcamps/principle-flaw).
     theme: {
@@ -58,7 +60,7 @@ export const BOOTCAMPS: BootcampDef[] = [
   {
     id: 'intro-to-lr',
     title: 'Intro to LR',
-    description: 'Foundational LR skills',
+    description: 'Argument anatomy, premises, conclusions, and main-conclusion reps.',
     route: '/bootcamp/intro-to-lr',
     // Cream editorial + emerald/amber serif (src/bootcamps/main-conclusion).
     theme: {
@@ -73,22 +75,23 @@ export const BOOTCAMPS: BootcampDef[] = [
   {
     id: 'causation-station',
     title: 'Causation Station',
-    description: 'Causal reasoning patterns',
+    description: 'Association vs causation, alternate causes, reverse causality, and causal strengthen/weaken.',
     route: '/bootcamp/causation-station',
-    // Dark, electric cyan accent (Zap / causal arrows).
+    // Neon punk magenta/cyan (src/references/bootcamps/causation-station).
     theme: {
       style: 'dark',
-      bg: '#0a0f12',
-      ink: '#ecfeff',
-      inkSoft: '#7d9aa3',
-      accent: '#22d3ee',
-      accentInk: '#042f2e',
+      bg: '#050816',
+      ink: '#EAF2FF',
+      inkSoft: '#9BB0C8',
+      accent: '#FF1AFF',
+      accentAlt: '#00FFF0',
+      accentInk: '#050816',
     },
   },
   {
     id: 'fallacy-flaw',
     title: 'Flaw & Famous Flaws',
-    description: '18 canonical logical flaws',
+    description: 'Canonical flaw families, answer-choice traps, and diagnosis drills.',
     route: '/bootcamp/fallacy-flaw',
     // Cream editorial + crimson accent (src/bootcamps/fallacy-flaw-v2).
     theme: {
@@ -104,7 +107,7 @@ export const BOOTCAMPS: BootcampDef[] = [
     id: 'abstraction',
     title: 'Abstract',
     description:
-      'Strip-Down + Decode. The bilingual fluency foundation topic that every other LR bootcamp builds on.',
+      'Strip-down, decode, match-to-stimulus, method patterns, and trap catching.',
     route: '/topics/abstract',
     // Neo-brutalist: electric yellow, paper bg, hard black borders (src/topics/abstract).
     theme: {

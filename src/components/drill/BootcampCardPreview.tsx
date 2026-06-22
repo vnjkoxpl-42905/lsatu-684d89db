@@ -60,6 +60,10 @@ export function BootcampCardPreview({
   }
 
   if (theme.style === 'dark') {
+    const accentStyle = theme.accentAlt
+      ? { background: `linear-gradient(90deg, ${theme.accent}, ${theme.accentAlt})`, color: theme.accentInk }
+      : { background: theme.accent, color: theme.accentInk };
+
     // Dark control-room: low-light background, accent hairline + glow chip.
     return (
       <div
@@ -73,18 +77,21 @@ export function BootcampCardPreview({
           </span>
           <span
             className="h-2 w-2 rounded-full"
-            style={{ background: theme.accent, boxShadow: `0 0 10px ${theme.accent}` }}
+            style={{ background: theme.accentAlt ?? theme.accent, boxShadow: `0 0 10px ${theme.accentAlt ?? theme.accent}` }}
           />
         </div>
         <h3 className="font-serif text-2xl leading-tight">{title}</h3>
         <div>
-          <div className="mb-2 h-px w-10" style={{ background: theme.accent }} />
+          <div
+            className="mb-2 h-px w-10"
+            style={{ background: theme.accentAlt ? `linear-gradient(90deg, ${theme.accent}, ${theme.accentAlt})` : theme.accent }}
+          />
           <p className="line-clamp-2 text-[11px]" style={{ color: theme.inkSoft }}>
             {description}
           </p>
           <span
             className="mt-3 inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-[10px] font-semibold"
-            style={{ background: theme.accent, color: theme.accentInk }}
+            style={accentStyle}
           >
             Open bootcamp →
           </span>

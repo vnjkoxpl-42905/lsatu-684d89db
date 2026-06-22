@@ -37,6 +37,18 @@ function defaultEnd(bootcampId: string, start: Date): Date {
   return addDays(start, days - 1);
 }
 
+function openButtonStyle(b: BootcampDef) {
+  const background = b.theme.accentAlt
+    ? `linear-gradient(90deg, ${b.theme.accent}, ${b.theme.accentAlt})`
+    : b.theme.accent;
+
+  return {
+    background,
+    borderColor: b.theme.accent,
+    color: b.theme.accentInk,
+  };
+}
+
 export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
   const { user } = useAuth();
   const qc = useQueryClient();
@@ -170,7 +182,8 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
                 <button
                   type="button"
                   onClick={() => setOpenBootcamp(b)}
-                  className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25"
+                  className="inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs font-semibold shadow-sm transition hover:brightness-105"
+                  style={openButtonStyle(b)}
                 >
                   <Play className="h-3 w-3" /> Open
                 </button>
