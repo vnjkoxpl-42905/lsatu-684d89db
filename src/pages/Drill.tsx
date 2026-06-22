@@ -2770,7 +2770,7 @@ function DrillContent() {
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
             notesButtonVisible={usesSmartChrome}
-            notesOpen={tutorChatOpen && tutorInitialTab === 'notes'}
+            notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
           />
           <OfficialQuestionPane
