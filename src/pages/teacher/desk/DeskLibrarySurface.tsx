@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ClipboardList, Flame, Sparkles, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useDeskLibraryView } from '@/hooks/useDeskLibraryView';
+import { LibraryViewSwitcher } from '@/components/teacher/desk/library/LibraryViewSwitcher';
 import { DeskLibraryAssignmentsSurface } from './library/DeskLibraryAssignmentsSurface';
 import { DeskLibraryBootcampsSurface } from './library/DeskLibraryBootcampsSurface';
 import { DeskLibraryGuidedDrillsSurface } from './library/DeskLibraryGuidedDrillsSurface';
@@ -28,6 +30,7 @@ export function DeskLibrarySurface() {
   const [params, setParams] = useSearchParams();
   const fromUrl = params.get('tab');
   const [tab, setTab] = useState<TabKey>(isTab(fromUrl) ? fromUrl : 'assignments');
+  const [view, setView] = useDeskLibraryView();
 
   useEffect(() => {
     if (isTab(fromUrl) && fromUrl !== tab) setTab(fromUrl);
@@ -59,12 +62,15 @@ export function DeskLibrarySurface() {
             <Icon className="h-3.5 w-3.5" /> {label}
           </button>
         ))}
+        <div className="ml-auto">
+          <LibraryViewSwitcher value={view} onChange={setView} />
+        </div>
       </nav>
       <div className="min-h-0 flex-1">
-        {tab === 'assignments' && <DeskLibraryAssignmentsSurface />}
-        {tab === 'bootcamps' && <DeskLibraryBootcampsSurface />}
-        {tab === 'guided-drills' && <DeskLibraryGuidedDrillsSurface />}
-        {tab === 'activities' && <DeskLibraryActivitiesSurface />}
+        {tab === 'assignments' && <DeskLibraryAssignmentsSurface view={view} />}
+        {tab === 'bootcamps' && <DeskLibraryBootcampsSurface view={view} />}
+        {tab === 'guided-drills' && <DeskLibraryGuidedDrillsSurface view={view} />}
+        {tab === 'activities' && <DeskLibraryActivitiesSurface view={view} />}
       </div>
     </section>
   );

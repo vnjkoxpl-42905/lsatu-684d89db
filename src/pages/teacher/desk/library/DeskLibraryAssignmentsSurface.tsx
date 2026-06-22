@@ -18,6 +18,8 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { formatRelativeShort } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import StudentAssignmentDetail from '@/components/teacher/StudentAssignmentDetail';
+import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
+import type { LibraryView } from '@/hooks/useDeskLibraryView';
 import { DeskStudentPicker } from './DeskStudentPicker';
 
 const TYPE_ICONS: Record<ClassroomItem['type'], React.ComponentType<{ className?: string }>> = {
@@ -53,7 +55,7 @@ const STATE_TONE: Record<AssignmentState, { bg: string; text: string; label: str
   not_started: { bg: 'bg-black/8', text: 'text-black/60', label: 'Not started' },
 };
 
-export function DeskLibraryAssignmentsSurface() {
+export function DeskLibraryAssignmentsSurface({ view }: { view: LibraryView }) {
   const [studentId, setStudentId] = useState<string | null>(null);
   const { rows: students } = useHubStudents();
   const student = students.find((s) => s.class_id === studentId) ?? null;
@@ -96,15 +98,57 @@ export function DeskLibraryAssignmentsSurface() {
           ) : visible.length === 0 ? (
             <EmptyHint>No active assignments yet for this student.</EmptyHint>
           ) : (
-            <ul className="space-y-2">
-              {visible.map((item) => (
-                <AssignmentRow
-                  key={item.id}
-                  item={item}
-                  onOpen={() => setOpenItem(item)}
-                />
-              ))}
-            </ul>
+            <LibraryViews
+              view={view}
+              items={visible.map((item): LibraryItem => {
+                const Icon = TYPE_ICONS[item.type];
+                const tone = STATE_TONE[classifyItem(item)];
+                const route = resolveItemRoute(item);
+                return {
+                  id: item.id,
+                  title: item.title,
+                  subtitle: `${TYPE_LABELS[item.type]} · ${formatRelativeShort(item.updated_at) || 'just now'}`,
+                  meta: (
+                    <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-semibold', tone.bg, tone.text)}>
+                      {tone.label}
+                    </span>
+                  ),
+                  renderPreview: () => (
+                    <div className="flex h-full flex-col items-center justify-center gap-3 rounded border border-black/10 bg-white/40 p-6 text-center">
+                      <div className="flex h-12 w-12 items-center justify-center border border-black/10 bg-white/60">
+                        <Icon className="h-6 w-6 text-black/55" />
+                      </div>
+                      <div className="text-sm font-semibold text-black">{item.title}</div>
+                      <div className="text-[11px] text-black/50">
+                        {TYPE_LABELS[item.type]} · {tone.label}
+                      </div>
+                    </div>
+                  ),
+                  actions: (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setOpenItem(item)}
+                        className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+                      >
+                        Open
+                      </button>
+                      {route && (
+                        <a
+                          href={route}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ml-auto inline-flex items-center gap-1.5 border border-black/12 px-2 py-1 text-black/55 transition hover:border-black/35 hover:text-black"
+                          title="Open student view"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" strokeWidth={1.5} />
+                        </a>
+                      )}
+                    </>
+                  ),
+                };
+              })}
+            />
           )}
         </div>
 
@@ -123,46 +167,6 @@ function EmptyHint({ children }: { children: React.ReactNode }) {
     <div className="border border-dashed border-black/15 bg-white/30 px-6 py-12 text-center text-sm text-black/45">
       {children}
     </div>
-  );
-}
-
-function AssignmentRow({ item, onOpen }: { item: ClassroomItem; onOpen: () => void }) {
-  const Icon = TYPE_ICONS[item.type];
-  const state = classifyItem(item);
-  const tone = STATE_TONE[state];
-  const route = resolveItemRoute(item);
-  return (
-    <li className="flex items-center gap-3 border border-black/12 bg-white/35 px-4 py-3 transition hover:border-black/30 hover:bg-white/55">
-      <button type="button" onClick={onOpen} className="flex min-w-0 flex-1 items-center gap-3 text-left">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-black/10 bg-white/40">
-          <Icon className="h-4 w-4 text-black/60" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="truncate text-sm font-medium text-black">{item.title}</span>
-            <span className={cn('shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold', tone.bg, tone.text)}>
-              {tone.label}
-            </span>
-          </div>
-          <div className="mt-0.5 flex items-center gap-2 text-[11px] text-black/45">
-            <span>{TYPE_LABELS[item.type]}</span>
-            <span className="h-1 w-1 rounded-full bg-black/25" />
-            <span>{formatRelativeShort(item.updated_at) || 'just now'}</span>
-          </div>
-        </div>
-      </button>
-      {route && (
-        <a
-          href={route}
-          target="_blank"
-          rel="noreferrer"
-          className="shrink-0 border border-black/12 p-1.5 text-black/55 transition hover:border-black/35 hover:text-black"
-          title="Open student view"
-        >
-          <ExternalLink className="h-3.5 w-3.5" strokeWidth={1.5} />
-        </a>
-      )}
-    </li>
   );
 }
 

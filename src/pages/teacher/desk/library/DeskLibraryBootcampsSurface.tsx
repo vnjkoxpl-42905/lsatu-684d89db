@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, type ComponentType } from 'react';
+import { Suspense, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Loader2, Play, Send } from 'lucide-react';
 import { format, addDays } from 'date-fns';
@@ -10,9 +10,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { CardCarousel } from '@/components/ui/card-carousel';
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import BootcampGate from '@/components/hub/BootcampGate';
+import { BootcampCardPreview } from '@/components/drill/BootcampCardPreview';
+import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
+import type { LibraryView } from '@/hooks/useDeskLibraryView';
 import {
   createClassroomItem,
   resolveItemRoute,
@@ -20,27 +22,8 @@ import {
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
+import { BOOTCAMP_INLINE } from '@/lib/bootcampInline';
 import { useHubStudents } from '@/hooks/useHubStudents';
-
-// Bootcamp pages are full-screen SPA routes; they render blank inside an
-// iframe (separate context loses the session). Mounting the page component
-// inline in this same React tree keeps auth/context, so the preview works.
-const PrincipleFlawBootcamp = lazy(() => import('@/pages/PrincipleFlawBootcamp'));
-const IntroToLrBootcamp = lazy(() => import('@/pages/IntroToLrBootcamp'));
-const CausationStation = lazy(() => import('@/pages/CausationStation'));
-const FallacyFlawBootcamp = lazy(() => import('@/pages/FallacyFlawBootcamp'));
-const AbstractBootcamp = lazy(() => import('@/topics/abstract'));
-
-const BOOTCAMP_INLINE: Record<
-  string,
-  { Comp: ComponentType; routePath: string; title: string; bootcampIdOverride?: string }
-> = {
-  'principle-flaw': { Comp: PrincipleFlawBootcamp, routePath: '/bootcamp/principle-flaw', title: 'Principle and Flaw' },
-  'intro-to-lr': { Comp: IntroToLrBootcamp, routePath: '/bootcamp/intro-to-lr', title: 'Intro to LR' },
-  'causation-station': { Comp: CausationStation, routePath: '/bootcamp/causation-station', title: 'Causation Station' },
-  'fallacy-flaw': { Comp: FallacyFlawBootcamp, routePath: '/bootcamp/fallacy-flaw', title: 'Flaw and Famous Flaws' },
-  abstraction: { Comp: AbstractBootcamp, routePath: '/topics/abstract', title: 'Abstract', bootcampIdOverride: 'abstraction' },
-};
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'principle-flaw': 14,
@@ -54,7 +37,7 @@ function defaultEnd(bootcampId: string, start: Date): Date {
   return addDays(start, days - 1);
 }
 
-export function DeskLibraryBootcampsSurface() {
+export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
   const { user } = useAuth();
   const qc = useQueryClient();
   const { rows: students } = useHubStudents();
@@ -175,18 +158,15 @@ export function DeskLibraryBootcampsSurface() {
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
-        <CardCarousel
-          items={BOOTCAMPS}
-          getKey={(b) => b.id}
-          slidesPerPage={3}
-          slideClassName="h-auto"
-          renderItem={(b) => (
-            <article className="flex h-full flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55">
-              <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-semibold text-black">{b.title}</h3>
-                <p className="mt-0.5 text-xs text-black/55">{b.description}</p>
-              </div>
-              <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+        <LibraryViews
+          view={view}
+          items={BOOTCAMPS.map((b): LibraryItem => ({
+            id: b.id,
+            title: b.title,
+            subtitle: b.description,
+            renderPreview: ({ live }) => <BootcampCardPreview bootcamp={b} live={live} />,
+            actions: (
+              <>
                 <button
                   type="button"
                   onClick={() => setOpenBootcamp(b)}
@@ -201,9 +181,9 @@ export function DeskLibraryBootcampsSurface() {
                 >
                   <Send className="h-3 w-3" /> Assign
                 </button>
-              </div>
-            </article>
-          )}
+              </>
+            ),
+          }))}
         />
       </div>
 

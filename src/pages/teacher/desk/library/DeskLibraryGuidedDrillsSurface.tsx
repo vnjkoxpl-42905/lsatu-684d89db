@@ -15,8 +15,9 @@ import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CardCarousel } from '@/components/ui/card-carousel';
 import { GuidedDrillCardPreview } from '@/components/drill/GuidedDrillCardPreview';
+import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
+import type { LibraryView } from '@/hooks/useDeskLibraryView';
 import {
   Sheet,
   SheetContent,
@@ -27,7 +28,7 @@ import { cn, openRoute } from '@/lib/utils';
 
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
-export function DeskLibraryGuidedDrillsSurface() {
+export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) {
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const { isLoading: qbLoading } = useQuestionBank();
@@ -165,48 +166,31 @@ export function DeskLibraryGuidedDrillsSurface() {
             No drills match your filters.
           </div>
         ) : (
-          <CardCarousel
-            items={filtered}
-            getKey={(d) => d.id}
-            slidesPerPage={3}
-            slideClassName="h-auto"
-            renderItem={(d) => {
+          <LibraryViews
+            view={view}
+            items={filtered.map((d): LibraryItem => {
               const ps = poolSize(d);
               const need = d.question_count ?? 0;
               const poolBad = ps != null && need > 0 && ps < need;
-              return (
-                <article className="flex h-full flex-col gap-3 border border-black/12 bg-white/35 p-4 transition hover:border-black/30 hover:bg-white/55">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-black/45">
-                        W{d.week}.{d.order_in_week}
-                      </div>
-                      <h3 className="mt-0.5 truncate text-sm font-semibold text-black">{d.title}</h3>
-                      {d.category && (
-                        <div className="text-[11px] text-black/55">{d.category}</div>
-                      )}
-                    </div>
-                    <span className={cn('shrink-0 text-[11px] tabular-nums', poolBad ? 'text-amber-700' : 'text-black/45')}>
-                      pool {ps ?? '…'}{need ? `/${need}` : ''}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {d.reasoning_types.map((r) => (
-                      <span key={r} className="border border-black/15 bg-white/40 px-1.5 py-0.5 text-[10px] text-black/65">
-                        {r}
-                      </span>
-                    ))}
-                    {d.question_types.map((q) => (
-                      <span key={q} className="border border-black/10 bg-black/5 px-1.5 py-0.5 text-[10px] text-black/55">
-                        {q}
-                      </span>
-                    ))}
-                  </div>
+              return {
+                id: d.id,
+                eyebrow: `W${d.week}.${d.order_in_week}`,
+                title: d.title,
+                subtitle: d.category ?? undefined,
+                badges: [...d.reasoning_types, ...d.question_types],
+                meta: (
+                  <span className={cn('tabular-nums', poolBad ? 'text-amber-700' : 'text-black/45')}>
+                    pool {ps ?? '…'}{need ? `/${need}` : ''}
+                  </span>
+                ),
+                renderPreview: () => (
                   <GuidedDrillCardPreview
                     drill={d}
                     questionCount={d.question_qids?.length || d.question_count || (ps ?? 0)}
                   />
-                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+                ),
+                actions: (
+                  <>
                     <button
                       type="button"
                       onClick={() => openRoute(`/guided-drills/${d.slug}`)}
@@ -221,10 +205,10 @@ export function DeskLibraryGuidedDrillsSurface() {
                     >
                       <Send className="h-3 w-3" /> Assign
                     </button>
-                  </div>
-                </article>
-              );
-            }}
+                  </>
+                ),
+              };
+            })}
           />
         )}
       </div>
