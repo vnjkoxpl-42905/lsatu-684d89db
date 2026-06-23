@@ -140,14 +140,14 @@ export default function TimedFinalSet() {
           <Flag className="w-10 h-10 text-brutal-ink" />
         </div>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-brutal-ink uppercase italic leading-tight">
-          Timed final set
+          Simulated timed final set
         </h1>
         <p className="text-base sm:text-lg font-bold text-brutal-ink-soft max-w-xl mx-auto leading-snug">
-          A simulated section. You have{" "}
+          This is a synthetic mixed-practice checkpoint for launch. You have{" "}
           <span className="bg-brutal-yellow px-2 border-2 border-brutal-ink font-black text-brutal-ink">
             7 minutes 30 seconds
           </span>{" "}
-          to clear {FINAL_SET_QUESTIONS.length} mixed Role, Method, and Flaw questions.
+          to clear {FINAL_SET_QUESTIONS.length} Role, Method, and Flaw-style questions.
         </p>
         <button
           type="button"

@@ -3,19 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Home } from './components/Home';
 import { FlawCatalog } from './components/FlawCatalog';
 import { IntroLesson } from './components/IntroLesson';
 import { GuidedDrills } from './components/GuidedDrills';
 import { Flashcards } from './components/Flashcards';
+import { MistakeJournal } from './components/MistakeJournal';
 
 type View = 'home' | 'intro' | 'catalog' | 'flashcards' | 'drills' | 'journal';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<View>('home');
+  const [currentView, setCurrentView] = useState<View>(() => {
+    const saved = localStorage.getItem('fallacyFlaw:v2:view') as View | null;
+    return saved && ['home', 'intro', 'catalog', 'flashcards', 'drills', 'journal'].includes(saved) ? saved : 'home';
+  });
   const [selectedDrillId, setSelectedDrillId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    localStorage.setItem('fallacyFlaw:v2:view', currentView);
+  }, [currentView]);
 
   const handleGoToDrills = (drillId?: string) => {
     setSelectedDrillId(drillId);
@@ -71,11 +79,7 @@ export default function App() {
         {currentView === 'catalog' && <FlawCatalog />}
         {currentView === 'flashcards' && <Flashcards />}
         {currentView === 'drills' && <GuidedDrills initialDrillId={selectedDrillId} onClearInitialDrill={() => setSelectedDrillId(undefined)} />}
-        {currentView === 'journal' && (
-          <div className="flex-1 flex justify-center items-center h-full">
-            <p className="font-serif italic text-xl text-[#1a1a1a]/50">Mistake Journal coming soon...</p>
-          </div>
-        )}
+        {currentView === 'journal' && <MistakeJournal />}
       </main>
     </div>
   );

@@ -13,6 +13,8 @@ export type ActionType = 'note' | 'tool' | 'reference' | 'checkpoint' | 'drill' 
 
 export interface PathAction {
   id: string;
+  completionId?: string;
+  routeId?: string;
   type: ActionType;
   title: string;
   route: string;
@@ -30,6 +32,8 @@ const [FIRST_SENTENCE_MAIN_CONCLUSION_CARD, REBUTTAL_MAIN_CONCLUSION_CARD] = MAI
 export const INTEGRATED_PATH: PathAction[] = [
   {
     id: 'three-parts-lr-question',
+    completionId: 'MC-LSN-1.1',
+    routeId: '/lessons/1.1',
     type: 'note',
     title: 'The Three Parts of an LR Question',
     route: '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
@@ -38,6 +42,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'so-an-argument',
+    completionId: 'MC-LSN-1.3',
+    routeId: '/lessons/1.3',
     type: 'note',
     title: 'So, An Argument',
     route: '/bootcamp/intro-to-lr/lessons/notes/so-an-argument',
@@ -46,6 +52,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'premises',
+    completionId: 'MC-LSN-1.4',
+    routeId: '/lessons/1.4',
     type: 'note',
     title: 'Premises',
     route: '/bootcamp/intro-to-lr/lessons/notes/premises',
@@ -54,6 +62,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'conclusions',
+    completionId: 'MC-LSN-1.5',
+    routeId: '/lessons/1.5',
     type: 'note',
     title: 'Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/conclusions',
@@ -62,6 +72,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'five-types-of-conclusions',
+    completionId: 'MC-LSN-1.6',
+    routeId: '/lessons/1.6',
     type: 'note',
     title: 'Five Types of Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/five-types-of-conclusions',
@@ -70,6 +82,7 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'conclusion-type-lab',
+    completionId: 'MC-DRL-CT',
     type: 'drill',
     title: 'Conclusion Type Lab',
     route: '/bootcamp/intro-to-lr/drills/conclusion-type-lab',
@@ -79,6 +92,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'beyond-premises-and-conclusions',
+    completionId: 'MC-LSN-1.7',
+    routeId: '/lessons/1.7',
     type: 'note',
     title: 'Beyond Premises and Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
@@ -87,6 +102,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'two-part-conclusion-check',
+    completionId: 'MC-LSN-1.8',
+    routeId: '/lessons/1.8',
     type: 'note',
     title: 'The 2-Part Conclusion Check',
     route: '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
@@ -95,6 +112,7 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'main-conclusion-lab',
+    completionId: 'MC-DRL-MCL',
     type: 'drill',
     title: 'Main Conclusion Lab',
     route: '/bootcamp/intro-to-lr/drills/main-conclusion-lab',
@@ -104,6 +122,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'first-sentence-vs-rebuttal-structures',
+    completionId: 'MC-LSN-1.9',
+    routeId: '/lessons/1.9',
     type: 'note',
     title: 'First-Sentence vs Rebuttal Structures',
     route: '/bootcamp/intro-to-lr/lessons/notes/first-sentence-vs-rebuttal-structures',
@@ -112,6 +132,7 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'first-sentence-vs-rebuttal-lab',
+    completionId: 'MC-DRL-CLS',
     type: 'drill',
     title: 'First-Sentence vs Rebuttal Lab',
     route: '/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab',

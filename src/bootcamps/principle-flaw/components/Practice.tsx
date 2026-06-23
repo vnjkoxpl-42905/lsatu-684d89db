@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { questionBank, practiceSets, QuestionRef, PracticeSet, flashcards, StudyResource } from '../data';
+import { questionBank, practiceSets, QuestionRef, flashcards, StudyResource, scheduleData } from '../data';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Target, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, ListChecks, HelpCircle, Zap, BookOpen, Clock, Copy, Check, PlayCircle, Lock } from 'lucide-react';
 import { Button } from './ui/button';
@@ -14,6 +14,18 @@ import { useQuestionBank } from '@/contexts/QuestionBankContext';
 function pfQid(q: QuestionRef): string {
   return `PT${q.pt}-S${q.section}-Q${q.question}`;
 }
+
+const RESOURCE_TO_SET: Record<string, string> = {
+  'flaw-worksheet': 'flaw-worksheet-set',
+  'flaw-pm-1': 'flaw-l1-set',
+  'flaw-pm-2': 'flaw-l2-set',
+  'flaw-pm-3': 'flaw-l3-set',
+  'flaw-pm-4': 'flaw-l4-set',
+  'principle-strengthen-hw': 'prin-st-set',
+  'strengthen-app-hw': 'str-app-set',
+  'principle-conform-hw': 'prin-cf-set',
+  'parallel-flaw-bridge': 'par-fl-bridge-set',
+};
 
 function OpenInlineButton({ q, onOpen, available }: { q: QuestionRef; onOpen: () => void; available: boolean }) {
   if (!available) {
@@ -237,17 +249,39 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
     });
   };
 
+  const todaysSetIds = React.useMemo(() => {
+    const day = scheduleData.find((item) => item.day === currentDay);
+    return new Set((day?.do ?? []).map((resourceId) => RESOURCE_TO_SET[resourceId]).filter(Boolean));
+  }, [currentDay]);
+
+  const orderedPracticeSets = React.useMemo(() => {
+    return [...practiceSets].sort((left, right) => {
+      const leftToday = todaysSetIds.has(left.id);
+      const rightToday = todaysSetIds.has(right.id);
+      if (leftToday === rightToday) return 0;
+      return leftToday ? -1 : 1;
+    });
+  }, [todaysSetIds]);
+
   const SetView = () => (
     <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="grid grid-cols-1 gap-12">
-        {practiceSets.map((set) => (
-          <section key={set.id} className="space-y-6">
+        {orderedPracticeSets.map((set) => {
+          const isToday = todaysSetIds.has(set.id);
+          return (
+          <section key={set.id} className="space-y-6" data-current-day-set={isToday ? 'true' : undefined}>
             <div className="flex items-end justify-between border-b border-zinc-900/50 pb-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                    <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.3em]">{set.stage}</span>
                    <div className="w-1 h-1 rounded-full bg-zinc-800" />
                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{set.whenToDo}</span>
+                   {isToday && (
+                     <>
+                       <div className="w-1 h-1 rounded-full bg-zinc-800" />
+                       <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Day {currentDay}</span>
+                     </>
+                   )}
                 </div>
                 <h3 className="text-3xl font-serif italic text-zinc-50 leading-tight">{set.title}</h3>
                 <p className="text-zinc-500 text-sm font-light italic">{set.purpose}</p>
@@ -325,7 +359,8 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
                </div>
             </div>
           </section>
-        ))}
+        );
+        })}
       </div>
     </div>
   );
@@ -434,4 +469,3 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
     </div>
   );
 }
-

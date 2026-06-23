@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { supabase } from '@/integrations/supabase/client';
+import { bootcampIdFromRoute, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 
 interface Props {
   /**
@@ -57,8 +58,8 @@ export default function BootcampGate({
   const navigate = useNavigate();
   const bootcampId =
     bootcampIdOverride ??
-    routePath.replace(/^\/bootcamp\//, '').replace(/\/.*$/, '');
-  const acceptedRoutePaths = [routePath, ...(legacyRoutePaths ?? [])];
+    bootcampIdFromRoute(routePath);
+  const explicitRoutePaths = [routePath, ...(legacyRoutePaths ?? [])];
 
   const { data: assigned, isLoading } = useQuery<boolean>({
     queryKey: ['bootcamp-gate', user?.id, routePath, bootcampId],
@@ -75,11 +76,13 @@ export default function BootcampGate({
         source_id: string | null;
         metadata_json: Record<string, unknown> | null;
       }>;
-      return rows.some((r) => {
-        if (r.source_id && acceptedRoutePaths.includes(r.source_id)) return true;
-        const mid = r.metadata_json?.bootcamp_id;
-        return mid === bootcampId;
-      });
+      return rows.some(
+        (r) =>
+          classroomItemMatchesBootcamp(r, bootcampId) ||
+          (r.source_id
+            ? explicitRoutePaths.some((path) => r.source_id === path || r.source_id?.startsWith(`${path}/`))
+            : false),
+      );
     },
   });
 

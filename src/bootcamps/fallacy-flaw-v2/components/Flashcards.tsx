@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FLAW_CATALOG, FlawCard } from '../data/flaws';
 import { ANSWER_CHOICE_FLASHCARDS, AnswerChoiceFlashcard } from '../data/flawAnswerChoiceFlashcards';
@@ -139,11 +139,17 @@ const getTrapCardContent = (flaw: FlawCard) => {
 };
 
 export function Flashcards() {
-  const [selectedFlawId, setSelectedFlawId] = useState<string | null>(null);
+  const [selectedFlawId, setSelectedFlawId] = useState<string | null>(() => localStorage.getItem('fallacyFlaw:v2:flashcards:selected'));
   const [reshuffleTrigger, setReshuffleTrigger] = useState(0);
 
   // Flashcard review state using basic useState for v1
-  const [reviewState, setReviewState] = useState<Record<string, 'got_it' | 'review_again'>>({});
+  const [reviewState, setReviewState] = useState<Record<string, 'got_it' | 'review_again'>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('fallacyFlaw:v2:flashcards:reviews') ?? '{}');
+    } catch {
+      return {};
+    }
+  });
 
   // Generate all possible cards
   const allCards = useMemo(() => {
@@ -256,8 +262,25 @@ export function Flashcards() {
     return [...filtered].sort(() => Math.random() - 0.5);
   }, [allCards, selectedFlawId, reshuffleTrigger]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() => Number(localStorage.getItem('fallacyFlaw:v2:flashcards:index') ?? 0) || 0);
   const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    if (selectedFlawId) localStorage.setItem('fallacyFlaw:v2:flashcards:selected', selectedFlawId);
+    else localStorage.removeItem('fallacyFlaw:v2:flashcards:selected');
+  }, [selectedFlawId]);
+
+  useEffect(() => {
+    localStorage.setItem('fallacyFlaw:v2:flashcards:index', String(currentIndex));
+  }, [currentIndex]);
+
+  useEffect(() => {
+    localStorage.setItem('fallacyFlaw:v2:flashcards:reviews', JSON.stringify(reviewState));
+  }, [reviewState]);
+
+  useEffect(() => {
+    if (currentIndex >= filteredCards.length) setCurrentIndex(0);
+  }, [currentIndex, filteredCards.length]);
 
   const handleNext = () => {
     if (currentIndex < filteredCards.length - 1) {
@@ -482,4 +505,3 @@ export function Flashcards() {
     </div>
   );
 }
-

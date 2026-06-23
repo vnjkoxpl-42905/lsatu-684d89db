@@ -84,14 +84,7 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
     fullMark: 100,
   }));
 
-  // Default chart data if no stats yet
-  const displayChartData = chartData.length >= 3 ? chartData : [
-    { subject: 'Necessary', A: 80 },
-    { subject: 'Causal', A: 65 },
-    { subject: 'Sampling', A: 45 },
-    { subject: 'Part/Whole', A: 90 },
-    { subject: 'Ad Hom', A: 70 },
-  ];
+  const displayChartData = chartData;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -167,20 +160,28 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
               </div>
 
               <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart cx="50%" cy="50%" outerRadius="80%" data={displayChartData}>
-                    <PolarGrid stroke="#fff" strokeOpacity={0.1} />
-                    <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fill: '#fff', fillOpacity: 0.4 }} />
-                    <Radar
-                      name="Accuracy"
-                      dataKey="A"
-                      stroke="#fff"
-                      fill="#fff"
-                      fillOpacity={0.15}
-                    />
-                    <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', fontSize: '10px', textTransform: 'uppercase' }} />
-                  </RadarChart>
-                </ResponsiveContainer>
+                {displayChartData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={displayChartData}>
+                      <PolarGrid stroke="#fff" strokeOpacity={0.1} />
+                      <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fill: '#fff', fillOpacity: 0.4 }} />
+                      <Radar
+                        name="Accuracy"
+                        dataKey="A"
+                        stroke="#fff"
+                        fill="#fff"
+                        fillOpacity={0.15}
+                      />
+                      <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', fontSize: '10px', textTransform: 'uppercase' }} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex h-full items-center justify-center border border-white/10 text-center">
+                    <p className="max-w-xs text-xs font-bold uppercase tracking-[0.22em] text-white/30">
+                      Accuracy chart appears after your first saved flaw drill.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-8">

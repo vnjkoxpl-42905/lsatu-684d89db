@@ -121,19 +121,21 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
   const [learnTargetSection, setLearnTargetSection] = useState<string | null>(null);
 
   const navigateToResource = (resource: Partial<StudyResource>) => {
-    if (resource.category?.includes('Flaw')) {
+    const category = resource.category ?? '';
+    const id = resource.id ?? resource.title;
+    if (category.includes('Homework') || category.includes('Practice')) {
+      setTabAndScroll('practice');
+    } else if (category.includes('Flaw')) {
       setLearnSubTab('flaw');
       setLearnTargetSection(resource.id === 'flaw-notes-strategy' ? 'flaw-styles' : 'flaw-intro');
       setTabAndScroll('learn');
-    } else if (resource.category?.includes('Principle')) {
+    } else if (category.includes('Principle')) {
       setLearnSubTab('principle');
       setLearnTargetSection('principle-intro');
       setTabAndScroll('learn');
-    } else if (resource.category?.includes('Homework')) {
-      setTabAndScroll('practice');
-    } else if (resource.id === 'Review Log') {
+    } else if (id === 'Review Log') {
       setTabAndScroll('review');
-    } else if (resource.id === 'Schedule') {
+    } else if (id === 'Schedule') {
       setTabAndScroll('schedule');
     }
     setTimeout(() => setLearnTargetSection(null), 100);
@@ -238,22 +240,25 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
         </main>
       </div>
 
-      {/* Mobile sub-nav for the bootcamp (in-flow, not fixed, so it doesn't fight the host) */}
+      {/* Mobile sub-nav for the bootcamp */}
       <nav
-        className="lg:hidden border-t backdrop-blur-md print:hidden relative z-10"
+        className="lg:hidden sticky bottom-0 border-t backdrop-blur-md print:hidden z-40"
         style={{ background: 'color-mix(in srgb, var(--pf-nav-bg) 95%, transparent)', borderColor: 'var(--pf-nav-border)' }}
       >
-        <ul className="flex items-stretch">
+        <ul className="grid grid-cols-4 sm:grid-cols-8">
           {[
+            { tab: 'start' as Tab, label: 'Start', icon: <LayoutDashboard size={18} /> },
             { tab: 'today' as Tab, label: 'Today', icon: <CheckSquare size={18} /> },
+            { tab: 'schedule' as Tab, label: 'Plan', icon: <Calendar size={18} /> },
             { tab: 'learn' as Tab, label: 'Learn', icon: <FileText size={18} /> },
             { tab: 'flashcards' as Tab, label: 'Cards', icon: <Zap size={18} /> },
             { tab: 'practice' as Tab, label: 'Practice', icon: <Target size={18} /> },
             { tab: 'review' as Tab, label: 'Review', icon: <BookOpen size={18} /> },
+            { tab: 'profile' as Tab, label: 'Profile', icon: <User size={18} /> },
           ].map((item) => {
             const isActive = activeTab === item.tab;
             return (
-              <li key={item.tab} className="flex-1">
+              <li key={item.tab}>
                 <button onClick={() => setTabAndScroll(item.tab)}
                   className={`relative w-full h-16 flex flex-col items-center justify-center gap-1 transition-colors duration-150 active:scale-[0.94] transition-transform ${isActive ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-200'}`}
                   aria-label={item.label} aria-current={isActive ? 'page' : undefined}>

@@ -20,7 +20,7 @@ describe('nextTrainingStep', () => {
   it('fresh student → start at Lesson 1', () => {
     const step = nextTrainingStep(null, LESSONS);
     expect(step.kind).toBe('start');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.1');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question');
     expect(step.cta).toMatch(/Begin/i);
     // No internal IDs in any visible string.
     expect(step.title + step.subtitle + step.cta + step.eyebrow).not.toMatch(/MC-|NT-|M1\b/);
@@ -33,16 +33,16 @@ describe('nextTrainingStep', () => {
     };
     const step = nextTrainingStep(progress, LESSONS);
     expect(step.kind).toBe('continue-lesson');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.5');
-    expect(step.title).toContain('Lesson 5');
-    expect(step.subtitle).toContain('4 of 12');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/notes/conclusions');
+    expect(step.title).toContain('Conclusions');
+    expect(step.subtitle).toContain('3 of 11');
   });
 
-  it('teaching lessons done → simulator-ready (no gate drill required)', () => {
+  it('canonical note lessons done → next integrated drill', () => {
     const progress: ProgressLike = { completed_lessons: LESSONS.map((l) => l.id), completed_drills: [] };
     const step = nextTrainingStep(progress, LESSONS);
-    expect(step.kind).toBe('simulator-ready');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/simulator/bank');
+    expect(step.kind).toBe('unlock-drill');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/conclusion-type-lab');
   });
 
   it('mid-teaching with stray legacy lesson 13 completion does NOT short-circuit to simulator', () => {
@@ -52,7 +52,7 @@ describe('nextTrainingStep', () => {
     };
     const step = nextTrainingStep(progress, LESSONS);
     expect(step.kind).toBe('continue-lesson');
-    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/1.3');
+    expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/notes/so-an-argument');
   });
 
   it('never leaks internal IDs into student-visible strings', () => {

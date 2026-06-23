@@ -1,12 +1,14 @@
 /**
  * Bootcamp Runner — pure logic for "what is the student's next training step?"
  *
- * Reads from real progress (completed_lessons, completed_drills) plus the static
- * lesson list. No fake claims: if no progress exists, the next step is Lesson 1.
- * If everything is done, the next step is the Simulator (the post-gate state).
+ * Reads from real progress (completed_lessons, completed_drills) plus the
+ * integrated note/lab path. No fake claims: if no progress exists, the next
+ * step is the first note. If everything is done, the next step is practice.
  *
  * Consumed by ModuleIndex (the bootcamp landing page) and tested by runner.test.ts.
  */
+
+import { INTRO_LR_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 const BC = '/bootcamp/intro-to-lr';
 
@@ -44,7 +46,7 @@ export interface NextStep {
   secondary?: { label: string; href: string };
 }
 
-const TOTAL_LESSONS = 12;
+const INTEGRATED_COMPLETION_ACTIONS = INTRO_LR_PATH.filter((action) => action.completionId);
 
 /** Rank lesson numbers like "1.5" / "1.10" by the integer second component. */
 function lessonRank(num: string): number {
@@ -60,16 +62,17 @@ export function nextTrainingStep(
   progress: ProgressLike | null,
   lessons: readonly LessonRow[],
 ): NextStep {
-  const sorted = [...lessons]
-    .filter((l) => /^1\.\d+$/.test(l.number))
-    .sort((a, b) => lessonRank(a.number) - lessonRank(b.number));
-
   const completedLessons = new Set(progress?.completed_lessons ?? []);
   const completedDrills = new Set(progress?.completed_drills ?? []);
+  const isActionComplete = (action: (typeof INTRO_LR_PATH)[number]) => {
+    if (!action.completionId) return false;
+    if (action.type === 'note') return completedLessons.has(action.completionId);
+    if (action.type === 'drill' || action.type === 'practice') return completedDrills.has(action.completionId);
+    return false;
+  };
 
-  // Empty progress → start at Lesson 1.
-  if (completedLessons.size === 0) {
-    const first = sorted[0];
+  if (completedLessons.size === 0 && completedDrills.size === 0) {
+    const first = INTRO_LR_PATH[0];
     return {
       kind: 'start',
       eyebrow: 'Start training',
@@ -77,40 +80,36 @@ export function nextTrainingStep(
       subtitle:
         'Begin with the foundation: arguments, support, and conclusions.',
       cta: 'Begin Lesson 1',
-      href: first ? `${BC}/lessons/${first.number}` : `${BC}/lessons/1.1`,
+      href: first?.route ?? `${BC}/lessons/notes/three-parts-lr-question`,
     };
   }
 
-  const teaching = sorted.filter((l) => lessonRank(l.number) <= TOTAL_LESSONS);
-  const firstUndoneTeaching = teaching.find((l) => !completedLessons.has(l.id));
-  const teachingDoneCount = teaching.filter((l) => completedLessons.has(l.id)).length;
+  const firstUndoneAction = INTEGRATED_COMPLETION_ACTIONS.find((action) => !isActionComplete(action));
+  const doneCount = INTEGRATED_COMPLETION_ACTIONS.filter(isActionComplete).length;
 
-  // 1) Mid-teaching: any of 1.1–1.12 not yet done → continue there.
-  if (firstUndoneTeaching) {
-    const lessonNumber = firstUndoneTeaching.number;
-    const lessonInt = lessonNumber.split('.')[1] ?? lessonNumber;
+  if (firstUndoneAction) {
+    const isNote = firstUndoneAction.type === 'note';
     return {
-      kind: 'continue-lesson',
-      eyebrow: teachingDoneCount === 0 ? 'Start training' : 'Pick up where you left off',
-      title: `Lesson ${lessonInt}: ${firstUndoneTeaching.title}`,
+      kind: isNote ? 'continue-lesson' : 'unlock-drill',
+      eyebrow: doneCount === 0 ? 'Start training' : 'Pick up where you left off',
+      title: firstUndoneAction.title,
       subtitle:
-        teachingDoneCount === 0
-          ? 'Build the foundation first, then move lesson by lesson through the core LR patterns.'
-          : `${teachingDoneCount} of ${teaching.length} teaching lessons cleared. One click and you are back in the seat.`,
-      cta: teachingDoneCount === 0 ? `Begin Lesson ${lessonInt}` : `Continue Lesson ${lessonInt}`,
-      href: `${BC}/lessons/${lessonNumber}`,
+        doneCount === 0
+          ? 'Build the foundation first, then move through the core LR patterns.'
+          : `${doneCount} of ${INTEGRATED_COMPLETION_ACTIONS.length} path steps cleared. One click and you are back in the seat.`,
+      cta: isNote ? 'Continue lesson' : 'Open drill',
+      href: firstUndoneAction.route,
     };
   }
 
-  // 2) Teaching done → live training.
   return {
     kind: 'simulator-ready',
-    eyebrow: 'Live training',
-    title: 'Run a Simulator question',
+    eyebrow: 'Core path cleared',
+    title: 'Run timed practice',
     subtitle:
-      'Real LSAT-format items with the full five-choice answer set. Every miss is tagged so you can see the pattern.',
-    cta: 'Open Simulator',
-    href: `${BC}/simulator/bank`,
+      'Move from guided reps into real LSAT-format items with the full five-choice answer set.',
+    cta: 'Open Practice',
+    href: `${BC}/practice-drills`,
     secondary: { label: 'See your dashboard', href: `${BC}/diagnostics/dashboard` },
   };
 }

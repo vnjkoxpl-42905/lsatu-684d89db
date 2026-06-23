@@ -3,8 +3,9 @@ import { useLocation, Link } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 import { ArrowDown, ArrowRight, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getNextAction, getPreviousAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
+import { getCurrentAction, getNextAction, getPreviousAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+import { useModuleProgress } from "@/bootcamps/main-conclusion/hooks/useModuleProgress";
 
 interface IntroNotesShellProps {
   eyebrow?: string;
@@ -29,6 +30,8 @@ const getActionLabel = (type: ActionType, direction: 'next' | 'prev' = 'next') =
 
 export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNotesShellProps) {
   const { pathname } = useLocation();
+  const { markLessonComplete } = useModuleProgress();
+  const currentAction = getCurrentAction(pathname);
   const nextAction = getNextAction(pathname);
   const prevAction = getPreviousAction(pathname);
   const isPremisesNote = pathname.endsWith("/lessons/notes/premises");
@@ -36,6 +39,17 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  const recordCurrentNoteComplete = () => {
+    if (currentAction?.type !== 'note' || !currentAction.completionId || !currentAction.routeId) return;
+    void markLessonComplete(currentAction.completionId, currentAction.routeId).catch((error) => {
+      console.error('[IntroNotesShell] note completion failed', {
+        lessonId: currentAction.completionId,
+        routeId: currentAction.routeId,
+        error,
+      });
+    });
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -188,6 +202,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                     {nextAction ? (
                       <Link 
                         to={nextAction.route} 
+                        onClick={recordCurrentNoteComplete}
                         className="group flex-1 flex flex-col items-end gap-6 rounded-[24px] p-8 bg-white border border-[oklch(0.2_0.01_60/0.08)] shadow-[0_8px_24px_oklch(0.2_0.01_60/0.04)] transition-all duration-300 ease-eased hover:-translate-y-1 hover:border-[oklch(0.2_0.01_60/0.15)] hover:shadow-[0_24px_48px_-12px_oklch(0.2_0.01_60/0.08)]"
                       >
                         <div className="flex items-center gap-2 rounded-full bg-[oklch(0.15_0.01_60)] px-6 py-3 text-[oklch(0.96_0.01_60)] transition-all duration-300 group-hover:bg-[oklch(0.1_0.01_60)]">

@@ -51,7 +51,7 @@ const App: React.FC = () => {
   const NavItem: React.FC<{ current: View; target: View; label: string; onClick: (v: View) => void }> = ({ current, target, label, onClick }) => (
     <button
       onClick={() => onClick(target)}
-      className={`px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+      className={`shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${
         current === target
           ? 'text-punk-cyan drop-shadow-neon-cyan'
           : 'text-punk-sub hover:text-punk-text'
@@ -87,8 +87,8 @@ const App: React.FC = () => {
       {showOnboarding && <OnboardingGuide onClose={handleCloseOnboarding} />}
       <div className="w-full max-w-7xl">
         {isLoggedIn && (
-          <header className="flex items-center mb-8 justify-end">
-            <nav className="bg-punk-panel/50 backdrop-blur-sm border border-punk-sub/20 rounded-full px-2">
+          <header className="sticky top-0 z-20 mb-8 flex justify-end bg-punk-base/80 py-2 backdrop-blur-sm">
+            <nav className="flex max-w-full gap-1 overflow-x-auto rounded-full border border-punk-sub/20 bg-punk-panel/50 px-2">
               <NavItem current={view} target="dashboard" label="Dashboard" onClick={setView} />
               <NavItem current={view} target="flashcards" label="Flashcards" onClick={setView} />
               <NavItem current={view} target="journal" label="Journal" onClick={setView} />

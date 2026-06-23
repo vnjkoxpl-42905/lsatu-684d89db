@@ -4,10 +4,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader2, Lock } from 'lucide-react';
+import { ArrowLeft, BookOpen, Loader2, Lock } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import { BUILD_SHA, BUILD_TIME } from '@/lib/buildInfo';
+import { BOOTCAMPS, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 
 function IL({ children }: { children: React.ReactNode }) {
   return (
@@ -16,59 +17,6 @@ function IL({ children }: { children: React.ReactNode }) {
     </span>
   );
 }
-
-const BOOTCAMPS = [
-  {
-    id: 'abstraction',
-    title: 'Abstract',
-    emoji: '🧬',
-    description:
-      'The LSAT-ese to plain English translation bootcamp. Decode abstract answer-choice language, classify terms by translation category (assumption / causal / comparison / evidence / evaluation), map X/Y inside method-of-reasoning phrases, and translate LSAT question stems on demand. The decoding skill the other 20 bootcamps lean on, taught with 7 drills, flashcards, decoder cards, a 17-pattern methods library, and procedural reference cards.',
-    stats: ['Chapter + 7 Drills', 'Flashcards + Decoder', 'Methods Library'],
-    route: '/topics/abstract',
-    accentClass: 'bg-amber-500/10 border-amber-500/20',
-  },
-  {
-    id: 'causation-station',
-    title: 'Causation Station',
-    emoji: '⚗️',
-    description:
-      'A focused bootcamp to master causal reasoning, one of the most frequently tested skills on the LSAT. Train across 4 progressive modules: spot causation vs. correlation, identify alternate explanations, test relationships, and apply skills to real LSAT questions.',
-    stats: ['4 Modules', '76 Questions', 'Flashcards + Journal'],
-    route: '/bootcamp/causation-station',
-    accentClass: 'bg-sky-500/10 border-sky-500/20',
-  },
-  {
-    id: 'intro-to-lr',
-    title: 'Intro to LR',
-    emoji: '🛠️',
-    description:
-      'Six modules, gate-driven, and diagnosis-based. 12 voice-led lessons; Reference + Indicator Vault; 9 drills with Stage-Gate engine; 20-question Simulator with Trap Master 7-trait diagnostic; Hard Sentences cluster decomposer; Diagnostics dashboard with SM-2 spaced repetition. Unlock cascade starts at Lesson 1.1.',
-    stats: ['6 Modules', '86 Surfaces', 'SM-2 SRS'],
-    route: '/bootcamp/intro-to-lr',
-    accentClass: 'bg-amber-500/10 border-amber-500/20',
-  },
-  {
-    id: 'principle-flaw',
-    title: 'Principle & Flaw',
-    emoji: '⚖️',
-    description:
-      'A 14-day, voice-led program covering Flaw (Levels 1 through 4), Principle Strengthen, Strengthen Application, Principle Conform, and Parallel Flaw bridging, with daily question sets pulled live from the LSAT U question bank, a Learn hub, flashcards with SRS, and a structured Review Log.',
-    stats: ['14-Day Plan', '47 PT Questions', 'Flashcards + Review Log'],
-    route: '/bootcamp/principle-flaw',
-    accentClass: 'bg-emerald-500/10 border-emerald-500/20',
-  },
-  {
-    id: 'fallacy-flaw',
-    title: 'Flaw & Famous Flaws',
-    emoji: '🎭',
-    description:
-      'Four modules covering 18 canonical logical flaws: causal, conditional, sampling/comparison/scope, plus a famous-flaws capstone with real LSAT timing. Drill, flashcards, and mistake journal.',
-    stats: ['4 Modules', '18 Flaw Types', 'Flashcards + Journal'],
-    route: '/bootcamp/fallacy-flaw',
-    accentClass: 'bg-teal-500/10 border-teal-500/20',
-  },
-] as const;
 
 export default function BootcampsPage() {
   const navigate = useNavigate();
@@ -80,24 +28,28 @@ export default function BootcampsPage() {
     if (authReady && !user) navigate('/auth');
   }, [user, authReady, navigate]);
 
-  const assignedIds = React.useMemo(() => {
-    const set = new Set<string>();
-    for (const it of items) {
-      if (it.type !== 'bootcamp_module' || it.status === 'archived') continue;
-      const id = (it.metadata_json as { bootcamp_id?: string } | null)?.bootcamp_id;
-      if (typeof id === 'string') set.add(id);
-      // Fallback: source_id may be the route, e.g. /bootcamp/principle-flaw
-      if (typeof it.source_id === 'string') {
-        const slug = it.source_id.replace(/^\/bootcamp\//, '').replace(/\/.*$/, '');
-        if (slug) set.add(slug);
-      }
-    }
-    return set;
+  const assignedBootcampIds = React.useMemo(() => {
+    return new Set(
+      BOOTCAMPS.filter((bc) =>
+        items.some(
+          (it) =>
+            it.type === 'bootcamp_module' &&
+            it.status !== 'archived' &&
+            classroomItemMatchesBootcamp(
+              {
+                source_id: it.source_id,
+                metadata_json: it.metadata_json as Record<string, unknown> | null,
+              },
+              bc.id,
+            ),
+        ),
+      ).map((bc) => bc.id),
+    );
   }, [items]);
 
   const visible = is_admin
     ? BOOTCAMPS
-    : BOOTCAMPS.filter((b) => assignedIds.has(b.id));
+    : BOOTCAMPS.filter((b) => assignedBootcampIds.has(b.id));
 
   const loading = !authReady || permsLoading || (!is_admin && itemsLoading);
 
@@ -162,9 +114,14 @@ export default function BootcampsPage() {
                 className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col sm:flex-row gap-6 items-start"
               >
                 <div
-                  className={`w-12 h-12 rounded-xl ${bc.accentClass} flex items-center justify-center flex-shrink-0`}
+                  className="w-12 h-12 rounded-xl border flex items-center justify-center flex-shrink-0"
+                  style={{
+                    backgroundColor: bc.theme.bg,
+                    borderColor: bc.theme.accent,
+                    color: bc.theme.accent,
+                  }}
                 >
-                  <span className="text-xl">{bc.emoji}</span>
+                  <BookOpen className="w-5 h-5" strokeWidth={1.75} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

@@ -180,17 +180,30 @@ const DrillPlayer: React.FC<DrillPlayerProps> = ({ module, onEndDrill }) => {
         setIsRevealed(true);
 
         const isCorrect = answerIndex === currentQuestion.correctIndex;
+        const attempt: Attempt = {
+          questionId: currentQuestion.id,
+          answerIndex: answerIndex,
+          correct: isCorrect,
+          responseTimeMs: responseTimeMs,
+          hintsUsed: 0,
+        };
 
-        setAttempts(prev => [
-          ...prev,
-          {
-            questionId: currentQuestion.id,
-            answerIndex: answerIndex,
-            correct: isCorrect,
-            responseTimeMs: responseTimeMs,
-            hintsUsed: 0,
-          },
-        ]);
+        setAttempts(prev => [...prev, attempt]);
+        try {
+          const key = 'causationCoachAttemptHistory';
+          const prior = JSON.parse(localStorage.getItem(key) ?? '[]');
+          const next = [
+            ...prior,
+            {
+              ...attempt,
+              moduleId: module.id,
+              completedAt: new Date().toISOString(),
+            },
+          ].slice(-250);
+          localStorage.setItem(key, JSON.stringify(next));
+        } catch (error) {
+          console.error('Failed to save causation attempt history', error);
+        }
     }
   };
 

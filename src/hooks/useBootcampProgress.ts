@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { updateClassroomItem } from '@/lib/classroomItems';
+import { classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 
 /**
  * Autosaves bootcamp progress back to the student's classroom_items row
@@ -31,14 +32,20 @@ export function useBootcampProgress(opts: {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('classroom_items')
-        .select('id, metadata_json, status')
+        .select('id, source_id, metadata_json, status')
         .eq('student_id', user!.id)
         .eq('type', 'bootcamp_module')
         .neq('status', 'archived')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      const match = (data ?? []).find(
-        (r) => (r.metadata_json as { bootcamp_id?: string } | null)?.bootcamp_id === bootcampId,
+      const match = (data ?? []).find((r) =>
+        classroomItemMatchesBootcamp(
+          {
+            source_id: r.source_id,
+            metadata_json: r.metadata_json as Record<string, unknown> | null,
+          },
+          bootcampId,
+        ),
       );
       return match?.id ?? null;
     },

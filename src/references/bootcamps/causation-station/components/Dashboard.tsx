@@ -12,8 +12,10 @@ import Card from './common/Card';
 import Button from './common/Button';
 import KpiCard from './KpiCard';
 import Modal from '../assets/Modal';
-import { MODULES, MOCK_DASHBOARD_STATS } from '../constants';
+import { MODULES } from '../constants';
 import { Module } from '../constants';
+import { ALL_QUESTIONS } from '../data/questions';
+import type { QuestionModuleId } from '../types';
 
 interface DashboardProps {
   studentName: string;
@@ -22,7 +24,13 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ studentName, onStartDrill, onShowGuide }) => {
-  const stats = MOCK_DASHBOARD_STATS;
+  const [attemptHistory, setAttemptHistory] = useState<Array<{
+    questionId: string;
+    moduleId: QuestionModuleId;
+    correct: boolean;
+    responseTimeMs: number;
+    completedAt: string;
+  }>>([]);
   const [savedDrillModuleId, setSavedDrillModuleId] = useState<string | null>(null);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [isOverwriteModalOpen, setIsOverwriteModalOpen] = useState(false);
@@ -51,7 +59,62 @@ const Dashboard: React.FC<DashboardProps> = ({ studentName, onStartDrill, onShow
 
   useEffect(() => {
     checkSavedProgress();
+    try {
+      setAttemptHistory(JSON.parse(localStorage.getItem('causationCoachAttemptHistory') ?? '[]'));
+    } catch (error) {
+      console.error("Failed to parse causation attempt history:", error);
+      localStorage.removeItem('causationCoachAttemptHistory');
+      setAttemptHistory([]);
+    }
   }, []);
+
+  const stats = useMemo(() => {
+    const total = attemptHistory.length;
+    const correct = attemptHistory.filter((a) => a.correct).length;
+    const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+    const avgTimePerQuestion =
+      total > 0 ? Math.round(attemptHistory.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / total / 1000) : 0;
+    let currentStreak = 0;
+    for (let i = attemptHistory.length - 1; i >= 0; i -= 1) {
+      if (!attemptHistory[i].correct) break;
+      currentStreak += 1;
+    }
+    const moduleProgress = MODULES.reduce((acc, module) => {
+      const attempts = attemptHistory.filter((a) => a.moduleId === module.id);
+      const moduleCorrect = attempts.filter((a) => a.correct).length;
+      acc[module.id] = {
+        accuracy: attempts.length > 0 ? Math.round((moduleCorrect / attempts.length) * 100) : 0,
+        avgTime:
+          attempts.length > 0
+            ? Math.round(attempts.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / attempts.length / 1000)
+            : 0,
+        questionsAttempted: attempts.length,
+      };
+      return acc;
+    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; questionsAttempted: number }>);
+    const recentPerformance = attemptHistory.slice(-20).reduce((chunks, attempt, index) => {
+      const bucket = Math.floor(index / 5);
+      chunks[bucket] = chunks[bucket] ?? [];
+      chunks[bucket].push(attempt);
+      return chunks;
+    }, [] as typeof attemptHistory[]).map((chunk, index) => ({
+      name: `Set ${index + 1}`,
+      accuracy: chunk.length > 0 ? Math.round((chunk.filter((a) => a.correct).length / chunk.length) * 100) : 0,
+    }));
+    const performanceByConcept = MODULES.map((module) => ({
+      concept: module.name.replace('Module ', '').slice(0, 18),
+      accuracy: moduleProgress[module.id].accuracy,
+    }));
+    const errorAnalysis = MODULES.map((module) => {
+      const attempts = attemptHistory.filter((a) => a.moduleId === module.id);
+      const misses = attempts.filter((a) => !a.correct).length;
+      return {
+        reason: module.name.replace('Module ', '').slice(0, 14),
+        percentage: total > 0 ? Math.round((misses / total) * 100) : 0,
+      };
+    });
+    return { overallAccuracy, avgTimePerQuestion, currentStreak, moduleProgress, recentPerformance, performanceByConcept, errorAnalysis };
+  }, [attemptHistory]);
 
   const handleDrillButtonClick = (module: Module) => {
     setSelectedModuleForAction(module);
@@ -159,6 +222,15 @@ const Dashboard: React.FC<DashboardProps> = ({ studentName, onStartDrill, onShow
         </Button>
       </div>
 
+      {attemptHistory.length === 0 && !savedDrillModuleId ? (
+        <Card className="mb-8">
+          <h3 className="text-xl font-bold text-punk-text mb-2">No drill data yet</h3>
+          <p className="text-punk-sub">
+            Start any module to populate accuracy, timing, journal entries, and next-action guidance.
+          </p>
+        </Card>
+      ) : null}
+
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <KpiCard title="Overall Accuracy" value={`${stats.overallAccuracy}%`} description="Across all modules" />
@@ -175,12 +247,14 @@ const Dashboard: React.FC<DashboardProps> = ({ studentName, onStartDrill, onShow
                 {MODULES.map(module => {
                 const moduleStats = stats.moduleProgress[module.id];
                 const isResume = module.id === savedDrillModuleId;
+                const availableCount = ALL_QUESTIONS[module.id]?.length ?? 0;
                 
                 return (
                 <div key={module.id} className="bg-punk-base/50 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div className="flex-grow w-full flex flex-col">
                     <h4 className="font-semibold text-punk-text">{module.name}</h4>
                     <p className="text-sm text-punk-sub mb-2">{module.description}</p>
+                    <p className="text-xs text-punk-sub/80 mb-2">{availableCount} questions in the local bank</p>
                     
                     <div className="mt-2 space-y-4">
                         <div>

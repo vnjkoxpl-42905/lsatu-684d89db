@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { getPreviousAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
-import type { IntroDrillDefinition } from './introDrills';
+import { INTRO_DRILLS, type IntroDrillDefinition } from './introDrills';
 
 export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
   const { pathname } = useLocation();
@@ -26,7 +26,7 @@ export function IntroDrillPage({ drill }: { drill: IntroDrillDefinition }) {
           <section className="grid min-h-[76vh] grid-cols-1 items-center gap-14 py-10 md:grid-cols-[1fr_minmax(320px,390px)] md:py-16">
             <div className="space-y-8">
               <p className="text-[10px] font-bold uppercase tracking-[0.38em] text-[oklch(0.2_0.01_60/0.46)]">
-                Intro to LR · Drill {drill.number} of 5
+                Intro to LR · Drill {drill.number} of {INTRO_DRILLS.length}
               </p>
               <h1 className="max-w-[12ch] font-serif text-[clamp(3.9rem,9vw,7.5rem)] italic font-medium leading-[0.9] tracking-[-0.06em] text-[oklch(0.15_0.01_60)]">
                 {drill.title}

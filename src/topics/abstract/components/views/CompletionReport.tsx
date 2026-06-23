@@ -396,10 +396,10 @@ export default function CompletionReport() {
         <div className="flex flex-wrap gap-4">
           <button
             type="button"
-            onClick={() => setCurrentView(hasData ? "drill" : "lesson")}
+            onClick={() => setCurrentView(hasData ? "module" : "dashboard")}
             className="inline-flex items-center gap-3 px-6 py-4 bg-brutal-ink text-brutal-paper border-4 border-brutal-ink font-black uppercase tracking-widest text-sm brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-transform min-h-[44px]"
           >
-            {hasData ? "Target weakest trap" : "Open first lesson"}
+            {hasData ? "Open module practice" : "Back to module map"}
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
           {hasData && bootcampState.finalSetScore === undefined ? (
