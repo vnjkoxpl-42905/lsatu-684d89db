@@ -65,6 +65,9 @@ export default function AdminChatHub() {
       return null;
     }
   });
+  // When no student is selected the TA tab runs the global action agent.
+  // `picking` flips it to the student picker for adding per-student context.
+  const [picking, setPicking] = useState(false);
 
   useEffect(() => {
     try {
@@ -242,7 +245,7 @@ export default function AdminChatHub() {
                         : 'All caught up'
                     : taSelected
                       ? 'TA chat'
-                      : 'Pick a student'}
+                      : 'Action agent'}
                 </div>
               </div>
               <button
@@ -276,7 +279,10 @@ export default function AdminChatHub() {
               />
               <TabButton
                 active={tab === 'ta'}
-                onClick={() => setTab('ta')}
+                onClick={() => {
+                  setTab('ta');
+                  setPicking(false);
+                }}
                 icon={<GraduationCap className="w-3.5 h-3.5" />}
                 label="Teaching Assistant"
               />
@@ -342,20 +348,50 @@ export default function AdminChatHub() {
                     className="h-full flex flex-col"
                   >
                     {taSelected ? (
-                      <TAChatView studentId={taSelected} studentName={taSelectedName} />
-                    ) : (
+                      <TAChatView
+                        studentId={taSelected}
+                        studentName={taSelectedName}
+                        backend="ta-agent"
+                      />
+                    ) : picking ? (
                       <div className="flex-1 min-h-0 flex flex-col">
-                        <div className="px-4 py-2 border-b border-border flex items-center gap-2 shrink-0">
-                          <Users className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                            Pick a student for TA context
+                        <div className="px-4 py-2 border-b border-border flex items-center justify-between gap-2 shrink-0">
+                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                            <Users className="h-3.5 w-3.5" />
+                            Pick a student for context
                           </span>
+                          <button
+                            type="button"
+                            onClick={() => setPicking(false)}
+                            className="text-[11px] text-muted-foreground hover:text-foreground"
+                          >
+                            Back to agent
+                          </button>
                         </div>
                         <div className="flex-1 min-h-0">
                           <StudentSelector
                             selectedId={taSelected}
-                            onSelect={(id) => setTaSelected(id)}
+                            onSelect={(id) => {
+                              setTaSelected(id);
+                              setPicking(false);
+                            }}
                           />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex-1 min-h-0 flex flex-col">
+                        <div className="px-4 py-2 border-b border-border flex items-center justify-end shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setPicking(true)}
+                            className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+                          >
+                            <Users className="h-3.5 w-3.5" />
+                            Add student context
+                          </button>
+                        </div>
+                        <div className="flex-1 min-h-0">
+                          <TAChatView studentId={null} studentName={null} backend="ta-agent" />
                         </div>
                       </div>
                     )}

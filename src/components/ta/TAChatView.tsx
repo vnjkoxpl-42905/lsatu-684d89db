@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AlertTriangle, Loader2, Send, ScanSearch } from "lucide-react";
 import { toast } from "sonner";
-import { useTAChat, type TAInteraction } from "@/hooks/useTAChat";
+import { useTAChat, type TABackend, type TAInteraction } from "@/hooks/useTAChat";
 import { useInspector } from "@/hooks/useInspector";
 import InspectorReport from "@/components/inspector/InspectorReport";
+import ActionCard from "./ActionCard";
+import type { ActionProposal } from "@/lib/agentActions";
 import {
   Dialog,
   DialogContent,
@@ -20,8 +22,11 @@ import AttachmentBar from "./AttachmentBar";
 import { SLASH_COMMANDS, filterSlashCommands, type SlashCommand } from "./slashCommands";
 
 interface Props {
-  studentId: string;
+  /** null = global agent thread; student resolved by name from the message. */
+  studentId: string | null;
   studentName?: string | null;
+  /** "ta-chat" (default) = per-student draft workflow. "ta-agent" = action agent. */
+  backend?: TABackend;
 }
 
 const TEXTAREA_MIN_PX = 60;
@@ -50,8 +55,9 @@ function Bubble({ interaction }: { interaction: TAInteraction }) {
   );
 }
 
-export default function TAChatView({ studentId, studentName }: Props) {
-  const { interactions, isLoading, error, send } = useTAChat(studentId);
+export default function TAChatView({ studentId, studentName, backend = "ta-chat" }: Props) {
+  const { interactions, isLoading, error, send, confirmAction, cancelAction } =
+    useTAChat(studentId, backend);
   const inspect = useInspector();
   const [inspectOpen, setInspectOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -136,12 +142,9 @@ export default function TAChatView({ studentId, studentName }: Props) {
     }
 
     try {
-      const result = await send.mutateAsync(msg);
+      await send.mutateAsync(msg);
       if (!text) setInput("");
       setPaletteOpen(false);
-      if (result.parse_error === "malformed_draft") {
-        toast.warning("TA response had a malformed draft — raw text saved.");
-      }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Send failed");
     }
@@ -149,6 +152,18 @@ export default function TAChatView({ studentId, studentName }: Props) {
 
   const handleRevise = async (instructions: string) => {
     await handleSend(`Revise the draft: ${instructions}`);
+  };
+
+  const handleConfirmAction = async (
+    interactionId: string,
+    proposal: ActionProposal,
+  ) => {
+    const res = await confirmAction.mutateAsync({ interactionId, proposal });
+    toast.success(res.summary);
+  };
+
+  const handleCancelAction = async (interactionId: string) => {
+    await cancelAction.mutateAsync(interactionId);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -186,10 +201,12 @@ export default function TAChatView({ studentId, studentName }: Props) {
     <div className="flex flex-col h-full min-h-0">
       <div className="px-4 py-3 border-b border-zinc-800 shrink-0">
         <div className="text-[10px] uppercase tracking-wider text-zinc-500">
-          Student
+          {studentId ? "Student" : "Agent"}
         </div>
         <div className="text-sm font-medium text-zinc-100 truncate">
-          {studentName?.trim() || "Unnamed student"}
+          {studentId
+            ? studentName?.trim() || "Unnamed student"
+            : "Resolve students by name — e.g. “assign Negation Station to Maya”"}
         </div>
       </div>
 
@@ -215,6 +232,28 @@ export default function TAChatView({ studentId, studentName }: Props) {
           </div>
         ) : (
           interactions.map((i) => {
+            if (i.action_proposal && i.role === "assistant") {
+              return (
+                <div key={i.id} className="flex justify-start">
+                  <div className="max-w-[85%] space-y-1">
+                    <div className="text-[10px] uppercase tracking-wider text-zinc-500 px-1">
+                      TA
+                    </div>
+                    <div className="rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words bg-zinc-800 text-zinc-100">
+                      {i.message}
+                    </div>
+                    <ActionCard
+                      interactionId={i.id}
+                      proposal={i.action_proposal}
+                      actionStatus={i.action_status}
+                      onConfirm={handleConfirmAction}
+                      onCancel={handleCancelAction}
+                      onPick={(label) => handleSend(label)}
+                    />
+                  </div>
+                </div>
+              );
+            }
             if (i.draft_content && i.role === "assistant") {
               return (
                 <div key={i.id} className="flex justify-start">
@@ -252,7 +291,9 @@ export default function TAChatView({ studentId, studentName }: Props) {
       </div>
 
       <div className="border-t border-zinc-800 p-3 bg-zinc-950 shrink-0 space-y-2">
-        <AttachmentBar studentId={studentId} studentName={studentName} />
+        {studentId && (
+          <AttachmentBar studentId={studentId} studentName={studentName} />
+        )}
 
         {showChips && (
           <div className="flex flex-wrap gap-1.5">

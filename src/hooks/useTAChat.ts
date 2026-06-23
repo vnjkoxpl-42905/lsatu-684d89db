@@ -5,6 +5,13 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  executeActionProposal,
+  isActionProposal,
+  type ActionProposal,
+  type Proposal,
+} from "@/lib/agentActions";
 
 export interface DraftPayload {
   title: string;
@@ -14,11 +21,13 @@ export interface DraftPayload {
 
 export interface TAInteraction {
   id: string;
-  student_id: string;
+  student_id: string | null;
   role: "admin" | "assistant";
   message: string;
   draft_content: DraftPayload | null;
   draft_status: "pending" | "approved" | "rejected" | null;
+  action_proposal: Proposal | null;
+  action_status: "pending" | "confirmed" | "cancelled" | "failed" | null;
   asset_ids: string[];
   created_by: string | null;
   created_at: string;
@@ -26,14 +35,26 @@ export interface TAInteraction {
 
 interface SendResult {
   content: string;
-  draft: DraftPayload | null;
+  action_proposal?: Proposal | null;
+  draft?: DraftPayload | null;
   interaction_id: string;
-  parse_error?: "malformed_draft";
 }
 
-export function useTAChat(studentId: string | null) {
+export type TABackend = "ta-chat" | "ta-agent";
+
+// Sentinel key for the global (no student selected) agent thread.
+const GLOBAL_KEY = "__global__";
+
+/**
+ * @param studentId  null only in agent mode (global thread).
+ * @param backend    "ta-chat" (default) preserves the per-student draft + /prep
+ *                   workflow. "ta-agent" enables the action agent (corner chat).
+ */
+export function useTAChat(studentId: string | null, backend: TABackend = "ta-chat") {
   const qc = useQueryClient();
-  const queryKey = ["ta-interactions", studentId] as const;
+  const { user } = useAuth();
+  const threadKey = studentId ?? GLOBAL_KEY;
+  const queryKey = ["ta-interactions", threadKey] as const;
 
   const {
     data: interactions = [],
@@ -41,49 +62,40 @@ export function useTAChat(studentId: string | null) {
     error,
   } = useQuery<TAInteraction[]>({
     queryKey,
-    enabled: !!studentId,
     queryFn: async () => {
-      if (!studentId) return [];
-      const { data, error } = await supabase
+      let q = supabase
         .from("ta_interactions")
         .select("*")
-        .eq("student_id", studentId)
         .order("created_at", { ascending: true })
         .limit(200);
+      q = studentId ? q.eq("student_id", studentId) : q.is("student_id", null);
+      const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as unknown as TAInteraction[];
     },
   });
 
-  // Realtime: INSERT events on this student's interactions. Both /admin/ta and
-  // the Mainhub widget subscribe so edits in one surface reconcile the other.
+  // Realtime: INSERT/UPDATE on this thread's interactions reconcile the cache.
+  // The global thread (student_id IS NULL) can't be server-filtered, so it
+  // listens broadly and filters client-side before invalidating.
   useEffect(() => {
-    if (!studentId) return;
     const channel = supabase
-      .channel(
-        `ta-chat-${studentId}-${Math.random().toString(36).slice(2)}`
-      )
+      .channel(`ta-chat-${threadKey}-${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "ta_interactions",
-          filter: `student_id=eq.${studentId}`,
-        },
-        () => {
-          qc.invalidateQueries({ queryKey });
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "ta_interactions",
-          filter: `student_id=eq.${studentId}`,
-        },
-        () => {
+        studentId
+          ? {
+              event: "*",
+              schema: "public",
+              table: "ta_interactions",
+              filter: `student_id=eq.${studentId}`,
+            }
+          : { event: "*", schema: "public", table: "ta_interactions" },
+        (payload) => {
+          if (!studentId) {
+            const row = (payload.new ?? payload.old) as { student_id?: string | null } | null;
+            if (row && row.student_id != null) return; // not the global thread
+          }
           qc.invalidateQueries({ queryKey });
         }
       )
@@ -91,14 +103,16 @@ export function useTAChat(studentId: string | null) {
     return () => {
       supabase.removeChannel(channel);
     };
-    // queryKey is derived from studentId — the eslint deps warning is spurious.
+    // queryKey is derived from threadKey — the deps warning is spurious.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentId, qc]);
+  }, [studentId, threadKey, qc]);
 
   const send = useMutation<SendResult, Error, string>({
     mutationFn: async (message: string) => {
-      if (!studentId) throw new Error("Select a student first");
-      const { data, error } = await supabase.functions.invoke("ta-chat", {
+      if (backend === "ta-chat" && !studentId) {
+        throw new Error("Select a student first");
+      }
+      const { data, error } = await supabase.functions.invoke(backend, {
         body: { student_id: studentId, message },
       });
       if (error) throw error;
@@ -112,5 +126,48 @@ export function useTAChat(studentId: string | null) {
     },
   });
 
-  return { interactions, isLoading, error, send };
+  // Confirm a pending action: run the real mutation, then mark the interaction
+  // confirmed. On failure mark it failed and rethrow so the UI can toast.
+  const confirmAction = useMutation<
+    { summary: string },
+    Error,
+    { interactionId: string; proposal: ActionProposal }
+  >({
+    mutationFn: async ({ interactionId, proposal }) => {
+      if (!user) throw new Error("Not signed in");
+      if (!isActionProposal(proposal)) throw new Error("Not an action proposal");
+      try {
+        const res = await executeActionProposal(proposal, user.id);
+        await supabase
+          .from("ta_interactions")
+          .update({ action_status: "confirmed" })
+          .eq("id", interactionId);
+        return { summary: res.summary };
+      } catch (e) {
+        await supabase
+          .from("ta_interactions")
+          .update({ action_status: "failed" })
+          .eq("id", interactionId);
+        throw e instanceof Error ? e : new Error("Action failed");
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey });
+    },
+  });
+
+  const cancelAction = useMutation<void, Error, string>({
+    mutationFn: async (interactionId: string) => {
+      const { error } = await supabase
+        .from("ta_interactions")
+        .update({ action_status: "cancelled" })
+        .eq("id", interactionId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey });
+    },
+  });
+
+  return { interactions, isLoading, error, send, confirmAction, cancelAction };
 }
