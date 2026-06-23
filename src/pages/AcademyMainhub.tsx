@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { FileText, Loader2, Menu, MessageCircle, Mic, Paperclip, Send, Smile, Square, X } from "lucide-react";
+import { FileText, Loader2, Menu, Mic, Paperclip, Send, Smile, Square, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
 import MainhubDock from "@/components/mainhub/MainhubDock";
 import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 import SmartLRTrainingCard from "@/components/mainhub/SmartLRTrainingCard";
+import MainhubScrollHint from "@/components/mainhub/MainhubScrollHint";
+import MainhubAvatarFab from "@/components/mainhub/MainhubAvatarFab";
 import { PracticeHubContent } from "@/pages/Practice";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { StoryScroll, StorySection } from "@/components/ui/story-scroll";
@@ -253,6 +255,8 @@ export default function AcademyMainhub() {
                 </section>
               </div>
             </div>
+
+            <MainhubScrollHint onClick={scrollToPracticeHub} />
           </div>
         </StorySection>
 
@@ -502,17 +506,7 @@ function MainhubHelpControl({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => onOpenChange(!open)}
-        aria-expanded={open}
-        aria-label="Get help from Joshua"
-        title="Get help from Joshua"
-        data-help-overlay
-        className="fixed bottom-5 right-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-black/10 bg-[#141414] text-white shadow-[0_14px_35px_rgba(15,23,42,0.18)] transition hover:bg-[#242424] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      >
-        <MessageCircle className="h-5 w-5" strokeWidth={1.8} aria-hidden />
-      </button>
+      <MainhubAvatarFab open={open} onToggle={() => onOpenChange(!open)} />
 
       {open && (
         <section
