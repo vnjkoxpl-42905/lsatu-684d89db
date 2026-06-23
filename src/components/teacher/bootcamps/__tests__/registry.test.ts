@@ -23,8 +23,18 @@ describe("bootcamp topic registry", () => {
     const abstract = findTopic("abstract");
     expect(abstract).toBeDefined();
     expect(abstract?.name).toBe("Abstract");
-    expect(abstract?.drills.length).toBe(7);
-    expect(abstract?.chapterSections.length).toBe(5);
+    // Drills mirror the DrillType enum students actually attempt.
+    expect(abstract?.drills.length).toBe(9);
+    // Eight published lessons are the canonical chapter sections.
+    expect(abstract?.chapterSections.length).toBe(8);
+  });
+
+  it("Abstract reads its own attempts table, and its chapterSections length matches chapterSectionCount", () => {
+    const abstract = findTopic("abstract");
+    expect(abstract?.attemptsSource?.table).toBe("abstract_drill_attempts");
+    expect(abstract?.attemptsSource?.modeColumn).toBe("drill_type");
+    // The completion denominator must equal the number of counted sections.
+    expect(abstract?.chapterSections.length).toBe(abstract?.chapterSectionCount);
   });
 
   it("each topic's drill attemptMode strings are unique within the topic", () => {

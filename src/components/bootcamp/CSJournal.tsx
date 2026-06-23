@@ -8,6 +8,7 @@ type StoredAttempt = {
   answerIndex: number;
   correct: boolean;
   completedAt: string;
+  ungraded?: boolean;
 };
 
 const CSJournal: React.FC = () => {
@@ -20,7 +21,9 @@ const CSJournal: React.FC = () => {
     }
 
     return attempts
-      .filter((attempt) => !attempt.correct)
+      // Ungraded free-response (M2/M3) attempts have no wrong-answer choice to
+      // review, so they do not belong in the wrong-answer journal.
+      .filter((attempt) => !attempt.correct && !attempt.ungraded)
       .map((attempt) => {
         const question = (ALL_QUESTIONS[attempt.moduleId] ?? []).find((q) => q.id === attempt.questionId);
         return question ? { attempt, question } : null;

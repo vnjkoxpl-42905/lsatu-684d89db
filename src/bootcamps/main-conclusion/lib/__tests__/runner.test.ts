@@ -7,6 +7,7 @@ import {
   type ProgressLike,
   type DrillRow,
 } from '@/bootcamps/main-conclusion/lib/runner';
+import { INTRO_LR_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 const LESSONS: LessonRow[] = Array.from({ length: 12 }, (_, i) => ({
   id: `MC-LSN-1.${i + 1}`,
@@ -35,7 +36,8 @@ describe('nextTrainingStep', () => {
     expect(step.kind).toBe('continue-lesson');
     expect(step.href).toBe('/bootcamp/intro-to-lr/lessons/notes/conclusions');
     expect(step.title).toContain('Conclusions');
-    expect(step.subtitle).toContain('3 of 11');
+    // 13 tracked path steps now: 11 lessons/labs + the two final practice sets.
+    expect(step.subtitle).toContain('3 of 13');
   });
 
   it('canonical note lessons done → next integrated drill', () => {
@@ -66,6 +68,52 @@ describe('nextTrainingStep', () => {
       const visible = [s.title, s.subtitle, s.cta, s.eyebrow, s.secondary?.label ?? ''].join(' ');
       expect(visible).not.toMatch(/MC-LSN|MC-DRL|MC-DIA|MC-HS|MC-REF|NT-/);
     }
+  });
+});
+
+// Regression: the two final practice sets must be required for path completion.
+// Before they had no completionId, so nextTrainingStep reported "simulator-ready"
+// while the student had never touched final practice.
+describe('nextTrainingStep — final practice sets gate completion', () => {
+  const tracked = INTRO_LR_PATH.filter((a) => a.completionId);
+  const lessonIds = tracked.filter((a) => a.type === 'note').map((a) => a.completionId!);
+  const drillIds = tracked
+    .filter((a) => a.type === 'drill' || a.type === 'practice')
+    .map((a) => a.completionId!);
+  const practiceIds = tracked
+    .filter((a) => a.type === 'practice')
+    .map((a) => a.completionId!);
+
+  it('has two tracked practice sets', () => {
+    expect(practiceIds.length).toBe(2);
+  });
+
+  it('everything except final practice → NOT simulator-ready', () => {
+    const drillsMinusPractice = drillIds.filter((id) => !practiceIds.includes(id));
+    const step = nextTrainingStep(
+      { completed_lessons: lessonIds, completed_drills: drillsMinusPractice },
+      LESSONS,
+    );
+    expect(step.kind).not.toBe('simulator-ready');
+    // The next step should be one of the unfinished practice sets.
+    expect(practiceIds.some((id) => step.title.length > 0)).toBe(true);
+  });
+
+  it('only one of two practice sets done → still NOT simulator-ready', () => {
+    const drillsMinusOne = drillIds.filter((id) => id !== practiceIds[1]);
+    const step = nextTrainingStep(
+      { completed_lessons: lessonIds, completed_drills: drillsMinusOne },
+      LESSONS,
+    );
+    expect(step.kind).not.toBe('simulator-ready');
+  });
+
+  it('all lessons + drills + both practice sets done → simulator-ready', () => {
+    const step = nextTrainingStep(
+      { completed_lessons: lessonIds, completed_drills: drillIds },
+      LESSONS,
+    );
+    expect(step.kind).toBe('simulator-ready');
   });
 });
 

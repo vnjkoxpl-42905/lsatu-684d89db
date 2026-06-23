@@ -7,7 +7,9 @@ import {
   getCurrentAction,
   getCurrentActionIndex,
   getNextAction,
+  type PathAction,
 } from '@/bootcamps/main-conclusion/content/introToLrPath';
+import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
 export function IntegratedPathRail() {
   const { pathname, hash } = useLocation();
@@ -16,6 +18,22 @@ export function IntegratedPathRail() {
   const currentIndex = getCurrentActionIndex(currentPath);
   const nextAction = getNextAction(currentPath);
   const totalSteps = INTEGRATED_PATH.length;
+
+  // Completion comes from persisted progress, not route position. A step is
+  // "done" only when its completion id is actually recorded; untracked step
+  // types (tools, references, capstones) fall back to the already-passed
+  // heuristic so the rail still advances visually.
+  const { progress } = useModuleProgress();
+  const completedLessons = new Set(progress?.completed_lessons ?? []);
+  const completedDrills = new Set(progress?.completed_drills ?? []);
+  const isPersistedComplete = (action: PathAction): boolean => {
+    if (!action.completionId) return false;
+    if (action.type === 'note') return completedLessons.has(action.completionId);
+    if (action.type === 'drill' || action.type === 'practice') {
+      return completedDrills.has(action.completionId);
+    }
+    return false;
+  };
 
   return (
     <>
@@ -38,9 +56,11 @@ export function IntegratedPathRail() {
 
           <ol className="space-y-1">
             {INTEGRATED_PATH.map((action, index) => {
-              const isCompleted = currentIndex >= 0 && index < currentIndex;
+              const isCompleted =
+                isPersistedComplete(action) ||
+                (!action.completionId && currentIndex >= 0 && index < currentIndex);
               const isCurrent = currentIndex >= 0 && index === currentIndex;
-              const isUpcoming = currentIndex < 0 || index > currentIndex;
+              const isUpcoming = !isCompleted && !isCurrent;
               const isNext = currentIndex >= 0 && index === currentIndex + 1;
 
               return (

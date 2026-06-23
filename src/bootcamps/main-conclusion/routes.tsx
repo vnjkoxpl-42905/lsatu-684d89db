@@ -11,7 +11,6 @@
  */
 
 import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { WorkspaceShell } from '@/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell';
 import { LockedRoute } from '@/bootcamps/main-conclusion/components/workspace-shell/LockedRoute';
 import { ModuleIndex } from '@/bootcamps/main-conclusion/modules/ModuleIndex';
@@ -26,9 +25,7 @@ import { DrillsIndex } from '@/bootcamps/main-conclusion/modules/drills/DrillsIn
 import { DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillShell';
 import { ActiveDrillShell } from '@/bootcamps/main-conclusion/modules/drills/ActiveDrillShell';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
-import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
 import { IntroPathLearningLayout } from '@/bootcamps/main-conclusion/components/IntroPathLearningLayout';
-import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 import {
   SimulatorOverview,
   QuestionBank,
@@ -57,44 +54,6 @@ import { Journal } from '@/bootcamps/main-conclusion/modules/journal/Journal';
 import { Settings } from '@/bootcamps/main-conclusion/modules/settings/Settings';
 import { NewGuidedIntro } from '@/bootcamps/main-conclusion/modules/lessons/NewGuidedIntro';
 import { IntroLessonPage, type IntroLessonPageId } from '@/bootcamps/main-conclusion/modules/lessons/notes/IntroLessonPage';
-
-const PRACTICE_RUNNER_SETS = {
-  'first-sentence': {
-    title: 'First-Sentence Main Conclusion',
-    qids: ['MC-SIM-Q1', 'MC-SIM-Q2', 'MC-SIM-Q3', 'MC-SIM-Q4', 'MC-SIM-Q5', 'MC-SIM-Q6'],
-  },
-  rebuttal: {
-    title: 'Rebuttal Main Conclusion',
-    qids: ['MC-SIM-Q8', 'MC-SIM-Q9', 'MC-SIM-Q10', 'MC-SIM-Q11'],
-  },
-} as const;
-
-function PracticeRunnerWrapper() {
-  const { practiceSlug } = useParams();
-  const navigate = useNavigate();
-  
-  const aliasMap: Record<string, keyof typeof PRACTICE_RUNNER_SETS> = {
-    'first-sentence': 'first-sentence',
-    'first-sentence-conclusions': 'first-sentence',
-    'rebuttal': 'rebuttal',
-    'rebuttal-conclusions': 'rebuttal',
-  };
-
-  const setKey = practiceSlug ? aliasMap[practiceSlug] : null;
-  const set = setKey ? PRACTICE_RUNNER_SETS[setKey] : null;
-
-  if (!set) {
-    return (
-      <div className="p-12 text-center">
-        <h2 className="text-2xl font-serif italic mb-4">Practice set not found</h2>
-        <Button onClick={() => navigate('/bootcamp/intro-to-lr/practice-drills')}>Back to Practice</Button>
-      </div>
-    );
-  }
-
-  const items = (SIMULATOR_DATA as any[]).filter((item: any) => (set.qids as readonly string[]).includes(item.id));
-  return <PracticeRunner items={items} title={set.title} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
-}
 
 function DrillRouteSwitch() {
   const { pathname } = useLocation();
@@ -309,10 +268,6 @@ export function BootcampRoutes() {
         <Route
           path="practice-drills"
           element={<PracticeDrillsIndex />}
-        />
-        <Route
-          path="practice-drills/:practiceSlug"
-          element={<PracticeRunnerWrapper />}
         />
         <Route
           path="simulator"

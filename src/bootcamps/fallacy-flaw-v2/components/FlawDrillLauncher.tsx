@@ -23,6 +23,11 @@ interface Props {
   className?: string;
 }
 
+// Below this many tagged bank questions, a flaw does not have a robust drill
+// queue. We present it as lesson-only rather than launching a 1-3 question
+// "drill" that misrepresents the inventory.
+const MIN_DRILL_QUESTIONS = 4;
+
 export const FlawDrillLauncher: React.FC<Props> = ({
   flawId,
   flawName,
@@ -38,14 +43,20 @@ export const FlawDrillLauncher: React.FC<Props> = ({
     [flawId, isLoading],
   );
 
+  const lessonOnly = questions.length > 0 && questions.length < MIN_DRILL_QUESTIONS;
   const drillLocked =
     !permissions.loading && !permissions.is_admin && !permissions.has_drill_access;
-  const disabled = isLoading || permissions.loading || questions.length === 0;
+  const disabled =
+    isLoading || permissions.loading || questions.length === 0 || lessonOnly;
 
   const handleClick = () => {
     if (permissions.loading) return;
     if (drillLocked) {
       toast.error("LSAT question drills are not enabled for your account yet.");
+      return;
+    }
+    if (lessonOnly) {
+      toast.info("This flaw is lesson-only for now. Study the flaw card; a full drill queue is coming as more questions are tagged.");
       return;
     }
     if (questions.length === 0) {
@@ -94,6 +105,8 @@ export const FlawDrillLauncher: React.FC<Props> = ({
           ? "LSAT question drills are not enabled for your account yet"
           : count === 0
           ? "No LSAT bank questions tagged for this flaw yet"
+          : lessonOnly
+          ? `Lesson only for now (${count} tagged question${count === 1 ? '' : 's'})`
           : `Apply ${flawName} to ${count} LSAT questions`
       }
     >
@@ -110,6 +123,8 @@ export const FlawDrillLauncher: React.FC<Props> = ({
         ? "Drill locked"
         : count === 0
         ? "Not yet available"
+        : lessonOnly
+        ? "Lesson only"
         : variant === "compact"
         ? "Apply"
         : "Start LSAT Questions"}

@@ -163,6 +163,9 @@ export default function GuidedDrillStart({
       params.set('returnTo', ov.returnTo);
       params.set('focus', ov.title);
       params.set('source', ov.source);
+      // Carry the pool slug so /drill can mark this practice set complete in
+      // module progress when the student finishes (see runner path-completion).
+      params.set('practiceSlug', ov.slug);
       navigate(`/drill?${params.toString()}`);
       return;
     }

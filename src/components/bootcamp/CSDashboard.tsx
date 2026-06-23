@@ -24,6 +24,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
     correct: boolean;
     responseTimeMs: number;
     completedAt: string;
+    ungraded?: boolean;
   }>>([]);
   const [savedDrillModuleId, setSavedDrillModuleId] = useState<string | null>(null);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
@@ -64,31 +65,43 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
 
   const stats = useMemo(() => {
     const total = attemptHistory.length;
-    const correct = attemptHistory.filter((attempt) => attempt.correct).length;
-    const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+    // Accuracy is computed only over graded attempts. Module 2/3 free-response
+    // attempts are ungraded and would otherwise drag accuracy to zero.
+    const graded = attemptHistory.filter((attempt) => !attempt.ungraded);
+    const correct = graded.filter((attempt) => attempt.correct).length;
+    const overallAccuracy = graded.length > 0 ? Math.round((correct / graded.length) * 100) : 0;
     const avgTime =
       total > 0
         ? Math.round(attemptHistory.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / total / 1000)
         : 0;
+    // Streak counts consecutive graded-correct answers; ungraded attempts are
+    // skipped rather than breaking the streak.
     let currentStreak = 0;
     for (let i = attemptHistory.length - 1; i >= 0; i -= 1) {
+      if (attemptHistory[i].ungraded) continue;
       if (!attemptHistory[i].correct) break;
       currentStreak += 1;
     }
     const moduleProgress = MODULES.reduce((acc, module) => {
       const attempts = attemptHistory.filter((attempt) => attempt.moduleId === module.id);
-      const moduleCorrect = attempts.filter((attempt) => attempt.correct).length;
+      const gradedAttempts = attempts.filter((attempt) => !attempt.ungraded);
+      const moduleCorrect = gradedAttempts.filter((attempt) => attempt.correct).length;
+      // "Seen" = unique questions touched, not raw attempt count, so reattempts
+      // do not inflate progress.
+      const uniqueSeen = new Set(attempts.map((attempt) => attempt.questionId)).size;
       acc[module.id] = {
-        accuracy: attempts.length > 0 ? Math.round((moduleCorrect / attempts.length) * 100) : 0,
+        accuracy: gradedAttempts.length > 0 ? Math.round((moduleCorrect / gradedAttempts.length) * 100) : 0,
         avgTime:
           attempts.length > 0
             ? Math.round(attempts.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / attempts.length / 1000)
             : 0,
-        attempted: attempts.length,
+        seen: uniqueSeen,
+        attempts: attempts.length,
+        graded: gradedAttempts.length,
         available: ALL_QUESTIONS[module.id]?.length ?? 0,
       };
       return acc;
-    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; attempted: number; available: number }>);
+    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; seen: number; attempts: number; graded: number; available: number }>);
     return { total, overallAccuracy, avgTime, currentStreak, moduleProgress };
   }, [attemptHistory]);
 
@@ -96,7 +109,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
     if (savedDrillModuleId) {
       return MODULES.find((module) => module.id === savedDrillModuleId) ?? MODULES[0];
     }
-    return MODULES.find((module) => stats.moduleProgress[module.id].attempted === 0) ?? MODULES[0];
+    return MODULES.find((module) => stats.moduleProgress[module.id].seen === 0) ?? MODULES[0];
   }, [savedDrillModuleId, stats.moduleProgress]);
 
   const handleDrillButtonClick = (module: Module) => {
@@ -233,12 +246,14 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
                   <div className="grid grid-cols-3 gap-3 mt-4 max-w-md">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Accuracy</p>
-                      <p className="text-sm font-semibold text-foreground">{moduleStats.accuracy}%</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {moduleStats.graded > 0 ? `${moduleStats.accuracy}%` : '—'}
+                      </p>
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Seen</p>
                       <p className="text-sm font-semibold text-foreground">
-                        {moduleStats.attempted}/{moduleStats.available}
+                        {moduleStats.seen}/{moduleStats.available}
                       </p>
                     </div>
                     <div>

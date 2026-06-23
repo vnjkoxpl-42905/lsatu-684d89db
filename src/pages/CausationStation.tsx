@@ -2,22 +2,66 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, Layers, StickyNote, Zap } from 'lucide-react';
-import { Module } from '@/data/causationStation/constants';
+import { Module, MODULES } from '@/data/causationStation/constants';
 import CSDashboard from '@/components/bootcamp/CSDashboard';
-import CSDrillPlayer from '@/components/bootcamp/CSDrillPlayer';
+import CSDrillPlayer, { MODULE_COMPLETION_KEY } from '@/components/bootcamp/CSDrillPlayer';
 import CSFlashcards from '@/components/bootcamp/CSFlashcards';
 import CSJournal from '@/components/bootcamp/CSJournal';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
+import { useBootcampProgress } from '@/hooks/useBootcampProgress';
 import { cn } from '@/lib/utils';
 
 type CSView = 'dashboard' | 'drill' | 'flashcards' | 'journal';
+
+// Completion model: one full run through each of the 4 modules. Module ids map
+// to 1-indexed "days" for the shared classroom-progress hook.
+const MODULE_ORDER: string[] = MODULES.map((m) => m.id);
+
+function readCompletedModuleDays(): number[] {
+  try {
+    const raw = localStorage.getItem(MODULE_COMPLETION_KEY);
+    const ids: string[] = raw ? JSON.parse(raw) : [];
+    return ids
+      .map((id) => MODULE_ORDER.indexOf(id))
+      .filter((i) => i >= 0)
+      .map((i) => i + 1);
+  } catch (error) {
+    console.error('Failed to read causation module completion:', error);
+    return [];
+  }
+}
 
 const CausationStation: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [view, setView] = React.useState<CSView>('dashboard');
   const [selectedModule, setSelectedModule] = React.useState<Module | null>(null);
+  const [completedDays, setCompletedDays] = React.useState<number[]>(() => readCompletedModuleDays());
+
+  // Refresh completion when a module finishes (same-tab event) or another tab
+  // writes (storage event), and whenever we return to a non-drill view.
+  React.useEffect(() => {
+    const refresh = () => setCompletedDays(readCompletedModuleDays());
+    window.addEventListener('causation-module-complete', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('causation-module-complete', refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (view !== 'drill') setCompletedDays(readCompletedModuleDays());
+  }, [view]);
+
+  // Mirror module completion to the student's classroom card so teachers see
+  // in_progress / completed instead of a card that never moves.
+  useBootcampProgress({
+    bootcampId: 'causation-station',
+    completedDays,
+    totalDays: MODULE_ORDER.length,
+  });
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -54,16 +98,17 @@ const CausationStation: React.FC = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-y-2">
           <button
             onClick={() => navigate('/classroom')}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Classroom
+            <span className="hidden sm:inline">Back to Classroom</span>
+            <span className="sm:hidden">Classroom</span>
           </button>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 order-last w-full justify-center sm:order-none sm:w-auto sm:justify-start">
             <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium mr-3">Causation Station</span>
             {view !== 'drill' && (
               <nav className="flex items-center gap-1">
@@ -74,8 +119,10 @@ const CausationStation: React.FC = () => {
             )}
           </div>
 
-          <LogoutButton />
-          <ThemeToggle />
+          <div className="flex items-center gap-1.5 shrink-0">
+            <LogoutButton />
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 

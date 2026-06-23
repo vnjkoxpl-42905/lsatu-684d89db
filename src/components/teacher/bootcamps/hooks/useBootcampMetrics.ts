@@ -15,6 +15,66 @@ function surfaceError(label: string, err: unknown) {
   toast.error(`Could not load ${label}.`, { description: msg });
 }
 
+// Normalized attempt row, source-agnostic. `mode` holds whichever column the
+// topic matches drills against (`attempts.mode` or, for topics with their own
+// table, that table's mode column). `ts` is the activity timestamp.
+interface NormalizedAttempt {
+  user_id: string | null;
+  correct: boolean;
+  mode: string;
+  ts: string | null;
+}
+
+// Reads a topic's drill attempts from the correct table. Default is the shared
+// `attempts` table; topics declaring `attemptsSource` read their own table.
+// Throws on error so callers can surface a labeled toast and let React Query
+// render an error state instead of silent zeros.
+async function fetchTopicAttempts(
+  topic: BootcampTopicDef,
+  opts?: { userId?: string },
+): Promise<NormalizedAttempt[]> {
+  const modes = topic.drills.map((d) => d.attemptMode);
+
+  if (topic.attemptsSource?.table === "abstract_drill_attempts") {
+    let q = supabase
+      .from("abstract_drill_attempts")
+      .select("user_id, correct, drill_type, completed_at")
+      .in("drill_type", modes);
+    if (opts?.userId) q = q.eq("user_id", opts.userId);
+    const { data, error } = await q;
+    if (error) throw error;
+    return (data ?? []).map((r) => ({
+      user_id: r.user_id,
+      correct: !!r.correct,
+      mode: r.drill_type,
+      ts: r.completed_at,
+    }));
+  }
+
+  let q = supabase
+    .from("attempts")
+    .select("user_id, correct, mode, timestamp_iso")
+    .in("mode", modes);
+  if (opts?.userId) q = q.eq("user_id", opts.userId);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []).map((r) => ({
+    user_id: r.user_id,
+    correct: !!r.correct,
+    mode: r.mode,
+    ts: r.timestamp_iso,
+  }));
+}
+
+// Only chapter_progress rows whose section_id is one of the topic's canonical
+// sections count toward completion. Abstract mirrors many non-lesson rows
+// (translator_stem_*, gauntlet_*, module_*) into chapter_progress for activity
+// tracking; counting those would push completion past 100%.
+function canonicalSectionFilter(topic: BootcampTopicDef): (sectionId: string) => boolean {
+  const canonical = new Set(topic.chapterSections.map((s) => s.id));
+  return (sectionId: string) => canonical.has(sectionId);
+}
+
 export interface TopicAggregate {
   topicId: string;
   studentsEnrolled: number;
@@ -35,13 +95,17 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
     queryFn: async (): Promise<TopicAggregate[]> => {
       const out: TopicAggregate[] = [];
       for (const topic of topics) {
-        const modes = topic.drills.map((d) => d.attemptMode);
+        const isCanonicalSection = canonicalSectionFilter(topic);
 
-        const [attemptsRes, chapterRes, flashcardRes] = await Promise.all([
-          supabase
-            .from("attempts")
-            .select("user_id, correct, mode")
-            .in("mode", modes),
+        let attempts: NormalizedAttempt[];
+        try {
+          attempts = await fetchTopicAttempts(topic);
+        } catch (err) {
+          surfaceError(`${topic.name} attempts`, err);
+          throw err;
+        }
+
+        const [chapterRes, flashcardRes] = await Promise.all([
           supabase
             .from("chapter_progress")
             .select("user_id, section_id")
@@ -52,10 +116,6 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
             .eq("topic_tag", topic.topicTag),
         ]);
 
-        if (attemptsRes.error) {
-          surfaceError(`${topic.name} attempts`, attemptsRes.error);
-          throw attemptsRes.error;
-        }
         if (chapterRes.error) {
           surfaceError(`${topic.name} chapter progress`, chapterRes.error);
           throw chapterRes.error;
@@ -65,7 +125,6 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
           throw flashcardRes.error;
         }
 
-        const attempts = attemptsRes.data ?? [];
         const chapter = chapterRes.data ?? [];
         const flashcards = flashcardRes.data ?? [];
 
@@ -121,6 +180,7 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
         const sectionsPerStudent: Record<string, Set<string>> = {};
         for (const c of chapter) {
           if (!c.user_id) continue;
+          if (!isCanonicalSection(c.section_id)) continue;
           (sectionsPerStudent[c.user_id] ??= new Set()).add(c.section_id);
         }
         const completionRatios = Object.values(sectionsPerStudent).map(
@@ -171,16 +231,20 @@ export function useBootcampStudents(topic: BootcampTopicDef | undefined) {
     enabled: !!topic,
     queryFn: async (): Promise<BootcampStudentRow[]> => {
       if (!topic) return [];
-      const modes = topic.drills.map((d) => d.attemptMode);
+      const isCanonicalSection = canonicalSectionFilter(topic);
 
-      const [studentsRes, profilesRes, attemptsRes, chapterRes, flashRes] =
+      let attempts: NormalizedAttempt[];
+      try {
+        attempts = await fetchTopicAttempts(topic);
+      } catch (err) {
+        surfaceError("drill attempts", err);
+        throw err;
+      }
+
+      const [studentsRes, profilesRes, chapterRes, flashRes] =
         await Promise.all([
           supabase.from("students").select("user_id, class_id"),
           supabase.from("profiles").select("class_id, display_name"),
-          supabase
-            .from("attempts")
-            .select("user_id, correct, timestamp_iso")
-            .in("mode", modes),
           supabase
             .from("chapter_progress")
             .select("user_id, section_id, last_viewed_at")
@@ -198,10 +262,6 @@ export function useBootcampStudents(topic: BootcampTopicDef | undefined) {
       if (profilesRes.error) {
         surfaceError("student profiles", profilesRes.error);
         throw profilesRes.error;
-      }
-      if (attemptsRes.error) {
-        surfaceError("drill attempts", attemptsRes.error);
-        throw attemptsRes.error;
       }
       if (chapterRes.error) {
         surfaceError("chapter progress", chapterRes.error);
@@ -249,18 +309,20 @@ export function useBootcampStudents(topic: BootcampTopicDef | undefined) {
         }
       }
 
-      for (const a of attemptsRes.data ?? []) {
-        bump(a.user_id, a.timestamp_iso);
+      for (const a of attempts) {
+        bump(a.user_id, a.ts);
         if (a.user_id) {
           perStudent[a.user_id].attempts.push({
             correct: a.correct,
-            ts: a.timestamp_iso,
+            ts: a.ts,
           });
         }
       }
       for (const c of chapterRes.data ?? []) {
         bump(c.user_id, c.last_viewed_at);
-        if (c.user_id) perStudent[c.user_id].sections.add(c.section_id);
+        if (c.user_id && isCanonicalSection(c.section_id)) {
+          perStudent[c.user_id].sections.add(c.section_id);
+        }
       }
       for (const f of flashRes.data ?? []) {
         bump(f.user_id, f.reviewed_at);
@@ -305,17 +367,15 @@ export function useDrillBreakdown(topic: BootcampTopicDef | undefined) {
     enabled: !!topic,
     queryFn: async (): Promise<DrillBreakdownRow[]> => {
       if (!topic) return [];
-      const modes = topic.drills.map((d) => d.attemptMode);
-      const { data, error } = await supabase
-        .from("attempts")
-        .select("mode, correct")
-        .in("mode", modes);
-      if (error) {
+      let data: NormalizedAttempt[];
+      try {
+        data = await fetchTopicAttempts(topic);
+      } catch (error) {
         surfaceError("drill breakdown", error);
         throw error;
       }
       return topic.drills.map((d) => {
-        const rows = (data ?? []).filter((r) => r.mode === d.attemptMode);
+        const rows = data.filter((r) => r.mode === d.attemptMode);
         const correct = rows.filter((r) => r.correct).length;
         return {
           attemptMode: d.attemptMode,
@@ -355,19 +415,21 @@ export function useStudentTopicDetail(
     enabled: !!studentUserId && !!topic,
     queryFn: async (): Promise<StudentTopicDetail | null> => {
       if (!studentUserId || !topic) return null;
-      const modes = topic.drills.map((d) => d.attemptMode);
 
-      const [chapterRes, attemptsRes, flashRes] = await Promise.all([
+      let attempts: NormalizedAttempt[];
+      try {
+        attempts = await fetchTopicAttempts(topic, { userId: studentUserId });
+      } catch (err) {
+        surfaceError("drill attempts", err);
+        throw err;
+      }
+
+      const [chapterRes, flashRes] = await Promise.all([
         supabase
           .from("chapter_progress")
           .select("section_id, last_viewed_at")
           .eq("user_id", studentUserId)
           .eq("topic_tag", topic.topicTag),
-        supabase
-          .from("attempts")
-          .select("mode, correct, timestamp_iso")
-          .eq("user_id", studentUserId)
-          .in("mode", modes),
         supabase
           .from("flashcard_reviews")
           .select("card_id, due_at, interval_days, reviewed_at")
@@ -378,10 +440,6 @@ export function useStudentTopicDetail(
       if (chapterRes.error) {
         surfaceError("chapter progress", chapterRes.error);
         throw chapterRes.error;
-      }
-      if (attemptsRes.error) {
-        surfaceError("drill attempts", attemptsRes.error);
-        throw attemptsRes.error;
       }
       if (flashRes.error) {
         surfaceError("flashcard reviews", flashRes.error);
@@ -394,9 +452,7 @@ export function useStudentTopicDetail(
       }));
 
       const drillStats: DrillBreakdownRow[] = topic.drills.map((d) => {
-        const rows = (attemptsRes.data ?? []).filter(
-          (r) => r.mode === d.attemptMode,
-        );
+        const rows = attempts.filter((r) => r.mode === d.attemptMode);
         const correct = rows.filter((r) => r.correct).length;
         return {
           attemptMode: d.attemptMode,
@@ -436,9 +492,7 @@ export function useStudentTopicDetail(
 
       const allTs = [
         ...sectionsViewed.map((s) => s.last_viewed_at),
-        ...((attemptsRes.data ?? [])
-          .map((a) => a.timestamp_iso)
-          .filter(Boolean) as string[]),
+        ...(attempts.map((a) => a.ts).filter(Boolean) as string[]),
         ...(flashRes.data ?? []).map((f) => f.reviewed_at),
       ];
       const lastActivityIso = allTs.length

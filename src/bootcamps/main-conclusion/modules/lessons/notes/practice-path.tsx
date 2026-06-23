@@ -106,7 +106,7 @@ export default function PracticePathNotes() {
             label="Practice Set"
             name="Rebuttal Main Conclusion Practice"
             purpose="Get extra reps on the rebuttal pattern once the structure is familiar."
-            to="/bootcamp/intro-to-lr/practice-drills/rebuttal-conclusions"
+            to="/guided-drills/rebuttal-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr"
           />
         </div>
       </section>

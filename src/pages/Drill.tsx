@@ -79,6 +79,9 @@ import {
   type DrillRouteState,
 } from '@/lib/drillRouteState';
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
+import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
+import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
+import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -110,6 +113,12 @@ function DrillContent() {
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const isMcPractice = searchParams.get('source') === 'intro-to-lr-practice-drills';
+  // Maps the finished MC practice set back to its module-progress completion id
+  // so the Intro to LR path cannot report "core path cleared" before the final
+  // practice sets are actually done.
+  const mcPracticeCompletionId = isMcPractice
+    ? getPracticePool(searchParams.get('practiceSlug') ?? '')?.completionId
+    : undefined;
   const bootcampPracticeReturnTo =
     returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
       ? returnTo
@@ -1739,6 +1748,30 @@ function DrillContent() {
     } catch (e) {
       toast.error('Failed to save section attempts. Your section may be incomplete.');
       throw e;
+    }
+
+    // Flaw & Famous Flaws: mirror the outcome into the bootcamp's own
+    // performance store so its dashboard and mistake journal stop reading empty.
+    if (origin === 'fallacy-flaw' && contextFocus) {
+      const outcomes = Array.from(updatedAttempts.values())
+        .filter((a) => a.selectedAnswer)
+        .map((a) => ({ correct: !!a.correct, timeMs: a.timeMs }));
+      recordFlawPerformance(contextFocus, outcomes);
+    }
+
+    // Intro to LR final practice sets: record path completion so the learner
+    // path reflects the work. Failure is surfaced, not swallowed.
+    if (isMcPractice && mcPracticeCompletionId && user) {
+      try {
+        await recordPracticeDrillCompletion(user.id, mcPracticeCompletionId);
+      } catch (err) {
+        console.error('[drill:mc-practice:complete] progress write failed', {
+          userId: user.id,
+          completionId: mcPracticeCompletionId,
+          err,
+        });
+        toast.error("Couldn't record practice completion on your path. Your attempts saved; let Joshua know.");
+      }
     }
 
     // Build automatic review set based on rules (using updated session)

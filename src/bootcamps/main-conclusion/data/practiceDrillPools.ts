@@ -15,6 +15,13 @@
 export interface PracticePool {
   slug: string;
   title: string;
+  /**
+   * Module-progress completion id written to completed_drills when this
+   * practice set is finished. Keeps the learner path's final practice sets
+   * tracked (see introToLrPath.ts + runner.ts) so the path cannot report
+   * "core path cleared" until they are done.
+   */
+  completionId: string;
   qtypes: readonly string[];
   qfeatures: readonly string[];
   difficulties: readonly number[];
@@ -28,6 +35,7 @@ export const MAIN_CONCLUSION_PRACTICE_POOLS = {
   'first-sentence-conclusions': {
     slug: 'first-sentence-conclusions',
     title: 'First-Sentence Main Conclusion',
+    completionId: 'MC-PRC-FS',
     qtypes: ['Main Conclusion'],
     qfeatures: ['First Sentence Conclusion'],
     difficulties: [1, 2, 3, 4, 5],
@@ -40,12 +48,13 @@ export const MAIN_CONCLUSION_PRACTICE_POOLS = {
       'PT138-S3-Q11',
       'PT139-S4-Q1',
     ],
-    returnTo: '/bootcamp/intro-to-lr/practice-drills',
+    returnTo: '/bootcamp/intro-to-lr',
     source: 'intro-to-lr-practice-drills',
   },
   'rebuttal-conclusions': {
     slug: 'rebuttal-conclusions',
     title: 'Rebuttal Main Conclusion',
+    completionId: 'MC-PRC-RB',
     qtypes: ['Main Conclusion'],
     qfeatures: ['Rebuttals'],
     difficulties: [1, 2, 3],
@@ -58,7 +67,7 @@ export const MAIN_CONCLUSION_PRACTICE_POOLS = {
       'PT131-S1-Q1',
       'PT132-S4-Q1',
     ],
-    returnTo: '/bootcamp/intro-to-lr/practice-drills',
+    returnTo: '/bootcamp/intro-to-lr',
     source: 'intro-to-lr-practice-drills',
   },
 } as const satisfies Record<string, PracticePool>;

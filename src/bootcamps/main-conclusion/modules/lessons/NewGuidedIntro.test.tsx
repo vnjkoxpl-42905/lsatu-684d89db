@@ -63,7 +63,7 @@ describe('NewGuidedIntro', () => {
     fireEvent.click(within(firstSentenceCard as HTMLElement).getByRole('link', { name: /view instructions/i }));
 
     expect(screen.getByTestId('guided-drill-path')).toHaveTextContent(
-      '/guided-drills/first-sentence-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr%2Fpractice-drills',
+      '/guided-drills/first-sentence-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr',
     );
     expect(screen.getByTestId('guided-drill-state')).toHaveTextContent('first-sentence-conclusions');
     expect(screen.getByTestId('guided-drill-state')).toHaveTextContent('First-Sentence Main Conclusion');
@@ -77,7 +77,7 @@ describe('NewGuidedIntro', () => {
     fireEvent.click(within(rebuttalCard as HTMLElement).getByRole('link', { name: /view instructions/i }));
 
     expect(screen.getByTestId('guided-drill-path')).toHaveTextContent(
-      '/guided-drills/rebuttal-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr%2Fpractice-drills',
+      '/guided-drills/rebuttal-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr',
     );
     expect(screen.getByTestId('guided-drill-state')).toHaveTextContent('rebuttal-conclusions');
     expect(screen.getByTestId('guided-drill-state')).toHaveTextContent('Rebuttal Main Conclusion');

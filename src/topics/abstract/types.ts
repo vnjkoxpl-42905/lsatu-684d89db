@@ -211,16 +211,6 @@ export interface AbstractChoice {
   structureType?: string;
 }
 
-export interface FinalSetQuestion {
-  id: string;
-  ptRef: string;
-  stimulus: string;
-  questionStem: string;
-  choices: { letter: 'A' | 'B' | 'C' | 'D' | 'E'; text: string }[];
-  correctLetter: 'A' | 'B' | 'C' | 'D' | 'E';
-  explanation: string;
-}
-
 // BootcampMutationResult: standard LSATU {ok}|{ok:false,error} contract.
 // Mirrors the AttemptResult shape used by hooks like useRecordChapterSection
 // so callers can branch on .ok without learning a new pattern.

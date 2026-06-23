@@ -4,16 +4,6 @@ import { Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
 import CSQuestionCard from './CSQuestionCard';
 import CSModuleIntro from './CSModuleIntro';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 
 interface CSDrillPlayerProps {
   module: Module;
@@ -31,6 +21,24 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 const ATTEMPT_HISTORY_KEY = 'causationCoachAttemptHistory';
 
+// Modules the student has finished at least one full run through. Read by
+// CausationStation to report classroom completion via useBootcampProgress.
+export const MODULE_COMPLETION_KEY = 'causationCoachCompletedModules';
+
+export function markCausationModuleComplete(moduleId: string): void {
+  try {
+    const raw = localStorage.getItem(MODULE_COMPLETION_KEY);
+    const done: string[] = raw ? JSON.parse(raw) : [];
+    if (!done.includes(moduleId)) {
+      localStorage.setItem(MODULE_COMPLETION_KEY, JSON.stringify([...done, moduleId]));
+      // Let same-tab listeners (CausationStation) refresh.
+      window.dispatchEvent(new Event('causation-module-complete'));
+    }
+  } catch (error) {
+    console.error('Failed to record causation module completion:', error);
+  }
+}
+
 const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -46,11 +54,6 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
   const [questionTime, setQuestionTime] = useState(0);
   const [questionStartTime, setQuestionStartTime] = useState(0);
   const [highlights, setHighlights] = useState<Record<string, { start: number; end: number }[]>>({});
-
-  // Modal states
-  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
-  const [isOverwriteModalOpen, setIsOverwriteModalOpen] = useState(false);
-  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
   const isModule4 = module.id === 'strengthen-weaken';
   const score = useMemo(() => attempts.filter(a => a.correct).length, [attempts]);
@@ -118,6 +121,8 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
         }
 
         if (availableQuestions.length === 0) {
+          // Whole bank seen at least once: the module run is complete.
+          markCausationModuleComplete(module.id);
           setBankExhausted(true);
         } else {
           const shuffledAvailable = shuffleArray(availableQuestions);
@@ -168,6 +173,39 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
     ) {
       setIsRevealed(true);
       setShowModelAnswer(true);
+
+      // Module 2/3 are free-response: there is no right/wrong index, but the
+      // work still happened. Record an ungraded attempt so the dashboard and
+      // journal reflect M2/M3 activity instead of looking empty. Ungraded
+      // attempts are excluded from accuracy (see CSDashboard).
+      const responseTimeMs = questionStartTime ? Date.now() - questionStartTime : 0;
+      setAttempts(prev => [
+        ...prev,
+        {
+          questionId: currentQuestion.id,
+          answerIndex: -1,
+          correct: false,
+          responseTimeMs,
+          hintsUsed: 0,
+          ungraded: true,
+        },
+      ]);
+
+      try {
+        const previous = JSON.parse(localStorage.getItem(ATTEMPT_HISTORY_KEY) ?? '[]');
+        const ungradedAttempt = {
+          questionId: currentQuestion.id,
+          moduleId: module.id,
+          answerIndex: -1,
+          correct: false,
+          responseTimeMs,
+          completedAt: new Date().toISOString(),
+          ungraded: true,
+        };
+        localStorage.setItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, ungradedAttempt].slice(-200)));
+      } catch (error) {
+        console.error('Failed to save causation free-response attempt history:', error);
+      }
     } else if (typeof data.choiceIndex !== 'undefined') {
       const answerIndex = data.choiceIndex;
       const responseTimeMs = Date.now() - questionStartTime;
@@ -207,6 +245,8 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
   const goToQuestion = (index: number) => {
     if (index < 0) return;
     if (index >= questions.length) {
+      // Finished a full run through this module's drill.
+      markCausationModuleComplete(module.id);
       localStorage.removeItem('causationCoachDrillProgress');
       onEndDrill();
       return;
@@ -339,68 +379,6 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
           </button>
         </div>
       </div>
-
-      {/* Resume Modal */}
-      <AlertDialog open={isResumeModalOpen} onOpenChange={setIsResumeModalOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Drill in Progress</AlertDialogTitle>
-            <AlertDialogDescription>
-              You have an unfinished drill for this module. Would you like to resume where you left off or start a new one? Starting a new drill will erase your previous progress.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => {
-              localStorage.removeItem('causationCoachDrillProgress');
-              loadQuestions();
-              setIsResumeModalOpen(false);
-            }}>Start New</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setIsResumeModalOpen(false)}>Resume Drill</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Overwrite Modal */}
-      <AlertDialog open={isOverwriteModalOpen} onOpenChange={setIsOverwriteModalOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Discard Existing Progress?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Starting a new drill will erase your previous progress. Are you sure you want to continue?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setIsOverwriteModalOpen(false)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              localStorage.removeItem('causationCoachDrillProgress');
-              loadQuestions();
-              setIsOverwriteModalOpen(false);
-            }}>Discard & Start</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Reset Modal */}
-      <AlertDialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Reset Module Progress?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will reset the question bank for this module. You will start seeing questions you've already answered again.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setIsResetModalOpen(false)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              const usedIdsKey = `causationCoachUsedIds_${module.id}`;
-              localStorage.removeItem(usedIdsKey);
-              localStorage.removeItem('causationCoachDrillProgress');
-              loadQuestions();
-              setIsResetModalOpen(false);
-            }}>Reset Module</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };

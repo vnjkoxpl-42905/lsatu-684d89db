@@ -142,7 +142,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'first-sentence-main-conclusion',
-    type: 'drill',
+    completionId: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.completionId,
+    type: 'practice',
     title: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool.title,
     route: buildPracticeDrillHref(FIRST_SENTENCE_MAIN_CONCLUSION_CARD.pool),
     description: FIRST_SENTENCE_MAIN_CONCLUSION_CARD.description,
@@ -159,7 +160,8 @@ export const INTEGRATED_PATH: PathAction[] = [
   },
   {
     id: 'rebuttal-main-conclusion',
-    type: 'drill',
+    completionId: REBUTTAL_MAIN_CONCLUSION_CARD.pool.completionId,
+    type: 'practice',
     title: REBUTTAL_MAIN_CONCLUSION_CARD.pool.title,
     route: buildPracticeDrillHref(REBUTTAL_MAIN_CONCLUSION_CARD.pool),
     description: REBUTTAL_MAIN_CONCLUSION_CARD.description,
@@ -179,8 +181,6 @@ export const INTEGRATED_PATH: PathAction[] = [
 export const INTRO_LR_PATH = INTEGRATED_PATH;
 
 const PRACTICE_ALIAS_MAP: Record<string, string> = {
-  '/bootcamp/intro-to-lr/practice-drills/first-sentence': '/bootcamp/intro-to-lr/practice-drills/first-sentence-conclusions',
-  '/bootcamp/intro-to-lr/practice-drills/rebuttal': '/bootcamp/intro-to-lr/practice-drills/rebuttal-conclusions',
   '/bootcamp/intro-to-lr/simulator/answer-key-views': '/bootcamp/intro-to-lr/simulator/bank',
   '/bootcamp/intro-to-lr/reference/fabs': '/bootcamp/intro-to-lr/reference/indicators',
   '/bootcamp/intro-to-lr/reference/concession-decoder': '/bootcamp/intro-to-lr/reference/rebuttal-structure',

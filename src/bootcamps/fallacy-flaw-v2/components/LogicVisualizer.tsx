@@ -229,13 +229,15 @@ export function LogicVisualizer({ flawId }: LogicVisualizerProps) {
       );
 
     default:
+      // Not every flaw has a bespoke diagram. This is an intentional state, not
+      // a placeholder: the written breakdown below carries the full teaching.
       return (
-        <div className="flex flex-col items-center justify-center py-16 gap-6 grayscale opacity-30">
-          <div className="w-24 h-24 rounded-full border-2 border-dashed border-[#1a1a1a] flex items-center justify-center text-4xl">
-            ?
+        <div className="flex flex-col items-center justify-center py-14 gap-5 text-center">
+          <div className="w-16 h-16 rounded-full border border-[#1a1a1a]/15 bg-[#1a1a1a]/[0.03] flex items-center justify-center text-2xl">
+            ✦
           </div>
-          <p className="text-[10px] uppercase font-bold tracking-[0.2em] max-w-[200px] text-center leading-relaxed">
-            Visual breakdown currently in development for this fallacy.
+          <p className="text-[11px] uppercase font-bold tracking-[0.2em] max-w-[260px] leading-relaxed text-[#1a1a1a]/55">
+            This flaw is taught through the written breakdown below.
           </p>
         </div>
       );

@@ -47,6 +47,8 @@ export interface Attempt {
   responseTimeMs: number;
   hintsUsed: number;
   tutorExplanation?: string;
+  /** Free-response (Module 2/3) attempts have no graded correct/incorrect. */
+  ungraded?: boolean;
 }
 
 export interface JournalEntry {

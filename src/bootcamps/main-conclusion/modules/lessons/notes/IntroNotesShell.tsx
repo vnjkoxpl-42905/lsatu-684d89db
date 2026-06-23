@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
-import { ArrowDown, ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getCurrentAction, getNextAction, getPreviousAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
@@ -206,7 +206,8 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                         className="group flex-1 flex flex-col items-end gap-6 rounded-[24px] p-8 bg-white border border-[oklch(0.2_0.01_60/0.08)] shadow-[0_8px_24px_oklch(0.2_0.01_60/0.04)] transition-all duration-300 ease-eased hover:-translate-y-1 hover:border-[oklch(0.2_0.01_60/0.15)] hover:shadow-[0_24px_48px_-12px_oklch(0.2_0.01_60/0.08)]"
                       >
                         <div className="flex items-center gap-2 rounded-full bg-[oklch(0.15_0.01_60)] px-6 py-3 text-[oklch(0.96_0.01_60)] transition-all duration-300 group-hover:bg-[oklch(0.1_0.01_60)]">
-                          <span className="text-[11px] uppercase tracking-[0.2em] font-bold">Continue</span>
+                          <Check className="h-4 w-4" />
+                          <span className="text-[11px] uppercase tracking-[0.2em] font-bold">Mark Complete &amp; Continue</span>
                           <ArrowRight className="h-4 w-4" />
                         </div>
                         <div className="w-full text-right">

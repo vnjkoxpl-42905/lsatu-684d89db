@@ -7,8 +7,10 @@
  *   - No StrictMode root, no full-screen fixed background (ElegantShape moved
  *     to absolute inside the bootcamp container so it doesn't bleed into the
  *     rest of the app).
- *   - Mobile bottom nav is suppressed in favor of LSAT U's existing chrome
- *     (the host page provides the global Return-to-Mainhub header).
+ *   - The bootcamp keeps its own mobile bottom sub-nav (lg:hidden) for tab
+ *     switching; the host page layers the global Return-to-Mainhub header above
+ *     it. (The original standalone bundle's app-level mobile chrome was dropped
+ *     in favor of LSAT U's.)
  *   - All localStorage keys are namespaced under `pf:` (see lib/streak,
  *     components/*, etc.).
  */

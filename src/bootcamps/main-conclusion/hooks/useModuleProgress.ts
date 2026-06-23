@@ -20,7 +20,7 @@ const DRILL_ROUTE_ALIASES: Record<string, string> = {
 // Per-user progress record id is deterministic on user.id so we always read+update
 // the same row. (Uses crypto.subtle elsewhere; for the id stub here we accept newId
 // fallback. Keep one stable progress row per user.)
-function progressIdFor(userId: string): string {
+export function progressIdFor(userId: string): string {
   // Deterministic UUIDv5-like derivation: hash userId into a stable string.
   // Simple FNV-1a 32-bit; collision risk is acceptable since the progress row is
   // user-scoped (table key already partitions by user).
