@@ -82,6 +82,7 @@ import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
+import { StudentCornerBubble } from "./components/inbox/StudentCornerBubble";
 import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 import GuidedTour from "./components/mainhub/GuidedTour";
@@ -546,6 +547,7 @@ const App = () => {
             } />
           </Routes>
           <FloatingMessenger />
+          <StudentCornerBubble />
           <AdminChatHub />
           <FloatingHelpButton />
           <GuidedTour />

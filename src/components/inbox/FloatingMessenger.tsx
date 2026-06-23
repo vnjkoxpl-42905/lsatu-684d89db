@@ -29,6 +29,7 @@ import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { isParticipantOnline } from './inboxPresence';
+import { setMessengerOpen } from './messengerOpenBus';
 
 const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub', '/topics/abstract'];
 
@@ -86,6 +87,13 @@ export function FloatingMessenger() {
   );
 
   const reducedMotion = useReducedMotion();
+
+  // Publish open state so the proactive StudentCornerBubble can stay quiet
+  // while the full messenger is on screen.
+  useEffect(() => {
+    setMessengerOpen(open);
+    return () => setMessengerOpen(false);
+  }, [open]);
 
   if (!authReady || !user || permsLoading) return null;
   // Admins use the consolidated AdminChatHub instead.

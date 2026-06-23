@@ -11,7 +11,7 @@ interface StudentRow {
 
 interface Props {
   selectedId: string | null;
-  onSelect: (studentId: string) => void;
+  onSelect: (studentId: string, displayName: string | null) => void;
 }
 
 export default function StudentSelector({ selectedId, onSelect }: Props) {
@@ -72,7 +72,7 @@ export default function StudentSelector({ selectedId, onSelect }: Props) {
                 <li key={s.class_id}>
                   <button
                     type="button"
-                    onClick={() => onSelect(s.class_id)}
+                    onClick={() => onSelect(s.class_id, s.display_name)}
                     className={
                       "w-full text-left px-3 py-2.5 flex items-center gap-2.5 text-sm transition " +
                       (active

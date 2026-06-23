@@ -6,13 +6,18 @@
 //   - FloatingActions Sparkles (bootcamp AI Tutor — kept on its own surface)
 //
 // One bubble, one fly-out, two tabs: Students | Teaching Assistant.
+//
+// Unified student focus: a single `focusedStudent` is the source of truth for
+// BOTH tabs. Pick a student once (search or a thread) and the message thread
+// AND the AI action agent both target them. A pill in the header shows who is
+// focused; ✕ clears it. `profiles.class_id` IS the auth user id, so the same
+// id drives inbox-participant matching and the TA agent's `studentId`.
 
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
-import { MessageSquare, ArrowLeft, ExternalLink, X, GraduationCap, Users } from 'lucide-react';
-import { toast } from 'sonner';
+import { MessageSquare, ArrowLeft, ExternalLink, X, GraduationCap, Users, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,8 +29,6 @@ import { NewConversationDialog } from '@/components/inbox/NewConversationDialog'
 import StudentSelector from '@/components/ta/StudentSelector';
 import TAChatView from '@/components/ta/TAChatView';
 import { subscribeTAWidget } from '@/components/ta/taWidgetBus';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
 
 const HIDDEN_ROUTES = [
   '/auth',
@@ -37,9 +40,22 @@ const HIDDEN_ROUTES = [
   '/teacher/conversations',
 ];
 const TAB_LS_KEY = 'admin-chat-hub-tab';
-const TA_LS_KEY = 'ta-selected-student';
+const FOCUS_LS_KEY = 'admin-chat-hub-focus';
 
 type Tab = 'students' | 'ta';
+
+interface FocusedStudent {
+  /** profiles.class_id, which IS the auth user id. */
+  id: string;
+  name: string | null;
+}
+
+function initialsOf(name: string | null): string {
+  const n = (name ?? '').trim();
+  if (!n) return '?';
+  const parts = n.split(/\s+/);
+  return (parts[0]?.[0] ?? '') + (parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '');
+}
 
 export default function AdminChatHub() {
   const location = useLocation();
@@ -57,16 +73,18 @@ export default function AdminChatHub() {
       return 'students';
     }
   });
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [taSelected, setTaSelected] = useState<string | null>(() => {
+  const [focused, setFocused] = useState<FocusedStudent | null>(() => {
     try {
-      return localStorage.getItem(TA_LS_KEY);
+      const raw = localStorage.getItem(FOCUS_LS_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as FocusedStudent;
+      return parsed && typeof parsed.id === 'string' ? parsed : null;
     } catch {
       return null;
     }
   });
-  // When no student is selected the TA tab runs the global action agent.
-  // `picking` flips it to the student picker for adding per-student context.
+  // When focused, `picking` flips the body to the student search so the admin
+  // can switch focus without losing the pill.
   const [picking, setPicking] = useState(false);
 
   useEffect(() => {
@@ -79,11 +97,12 @@ export default function AdminChatHub() {
 
   useEffect(() => {
     try {
-      if (taSelected) localStorage.setItem(TA_LS_KEY, taSelected);
+      if (focused) localStorage.setItem(FOCUS_LS_KEY, JSON.stringify(focused));
+      else localStorage.removeItem(FOCUS_LS_KEY);
     } catch {
       /* ignore */
     }
-  }, [taSelected]);
+  }, [focused]);
 
   // External trigger: ⌘J / subscribeTAWidget bus opens hub on TA tab.
   useEffect(
@@ -91,38 +110,29 @@ export default function AdminChatHub() {
       subscribeTAWidget(() => {
         setTab('ta');
         setOpen(true);
+        setPicking(false);
       }),
     [],
   );
 
-  const { data: taSelectedProfile } = useQuery<{ display_name: string | null } | null>({
-    queryKey: ['ta-student-name', taSelected],
-    enabled: !!taSelected && open && tab === 'ta',
-    queryFn: async () => {
-      if (!taSelected) return null;
-      const { data } = await supabase
-        .from('profiles')
-        .select('display_name')
-        .eq('class_id', taSelected)
-        .maybeSingle();
-      return data ?? null;
-    },
-  });
-  const taSelectedName = taSelectedProfile?.display_name ?? null;
+  // The inbox thread for the focused student (if one exists). class_id === user_id,
+  // so we match the focused id against conversation participants.
+  const focusedThread = useMemo(() => {
+    if (!focused || !user) return null;
+    return (
+      conversations.find((c) =>
+        c.participants.some((p) => p.user_id === focused.id),
+      ) ?? null
+    );
+  }, [conversations, focused, user]);
 
-  const active = useMemo(
-    () => conversations.find((c) => c.id === activeId) ?? null,
-    [conversations, activeId],
-  );
-
-  const activeHeaderName = useMemo(() => {
-    if (!active || !user) return null;
-    const others = active.participants.filter((p) => p.user_id !== user.id);
-    const realNames = others
-      .map((o) => o.display_name?.trim())
-      .filter((n): n is string => !!n);
-    return realNames.join(', ') || active.subject || 'Conversation';
-  }, [active, user]);
+  const focusedName = useMemo(() => {
+    if (!focused) return null;
+    if (focused.name?.trim()) return focused.name.trim();
+    // Fall back to the participant display name resolved by the inbox RPC.
+    const part = focusedThread?.participants.find((p) => p.user_id === focused.id);
+    return part?.display_name?.trim() || null;
+  }, [focused, focusedThread]);
 
   if (!authReady || !user || permsLoading) return null;
   if (!is_admin) return null;
@@ -134,7 +144,17 @@ export default function AdminChatHub() {
 
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
-    if (!next) setActiveId(null);
+    if (!next) setPicking(false);
+  };
+
+  const selectFocus = (id: string, name: string | null) => {
+    setFocused({ id, name });
+    setPicking(false);
+  };
+
+  const clearFocus = () => {
+    setFocused(null);
+    setPicking(false);
   };
 
   const openFullPage = () => {
@@ -142,7 +162,7 @@ export default function AdminChatHub() {
     if (tab === 'ta') {
       navigate('/admin/ta');
     } else {
-      navigate(active ? `/inbox/${active.id}` : '/inbox');
+      navigate(focusedThread ? `/inbox/${focusedThread.id}` : '/inbox');
     }
   };
 
@@ -194,22 +214,12 @@ export default function AdminChatHub() {
 
             {/* Header */}
             <div className="flex items-center gap-2 px-4 h-14 border-b border-border shrink-0">
-              {tab === 'students' && active ? (
+              {picking ? (
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setActiveId(null)}
-                  aria-label="Back to conversations"
-                  className="shrink-0"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              ) : tab === 'ta' && taSelected ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setTaSelected(null)}
-                  aria-label="Back to student list"
+                  onClick={() => setPicking(false)}
+                  aria-label="Cancel student search"
                   className="shrink-0"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -228,24 +238,22 @@ export default function AdminChatHub() {
               )}
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold truncate">
-                  {tab === 'students'
-                    ? active
-                      ? activeHeaderName
-                      : 'Messages'
-                    : taSelected
-                      ? taSelectedName?.trim() || 'Student'
+                  {picking
+                    ? 'Focus a student'
+                    : tab === 'students'
+                      ? 'Messages'
                       : 'Teaching Assistant'}
                 </div>
                 <div className="text-[11px] text-muted-foreground truncate">
-                  {tab === 'students'
-                    ? active
-                      ? active.subject || 'Messages and PDF attachments'
-                      : unreadCount > 0
+                  {picking
+                    ? 'Pick one student for both messages and the agent'
+                    : tab === 'students'
+                      ? unreadCount > 0
                         ? `${unreadCount} unread`
-                        : 'All caught up'
-                    : taSelected
-                      ? 'TA chat'
-                      : 'Action agent'}
+                        : 'Messages and PDF attachments'
+                      : focused
+                        ? 'Targeting one student'
+                        : 'Action agent — resolves names from your message'}
                 </div>
               </div>
               <button
@@ -265,139 +273,161 @@ export default function AdminChatHub() {
               </SheetPrimitive.Close>
             </div>
 
+            {/* Focus pill bar */}
+            {!picking && (
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
+                {focused ? (
+                  <>
+                    <span className="inline-flex items-center gap-2 min-w-0 rounded-full bg-primary/10 text-foreground pl-1.5 pr-1 py-1 max-w-full">
+                      <span
+                        className="w-6 h-6 rounded-full bg-primary/20 text-primary text-[10px] font-semibold flex items-center justify-center shrink-0 uppercase"
+                        aria-hidden="true"
+                      >
+                        {initialsOf(focusedName)}
+                      </span>
+                      <span className="text-[12px] font-medium truncate">
+                        {focusedName || 'Student'}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={clearFocus}
+                        className="rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors shrink-0"
+                        aria-label="Clear focused student"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setPicking(true)}
+                      className="ml-auto text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-accent shrink-0"
+                    >
+                      Switch
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPicking(true)}
+                    className="inline-flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <UserPlus className="w-3.5 h-3.5" />
+                    Focus a student
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* Tabs */}
-            <div className="flex border-b border-border shrink-0">
-              <TabButton
-                active={tab === 'students'}
-                onClick={() => {
-                  setTab('students');
-                  setActiveId(null);
-                }}
-                icon={<MessageSquare className="w-3.5 h-3.5" />}
-                label="Students"
-                badge={unreadCount}
-              />
-              <TabButton
-                active={tab === 'ta'}
-                onClick={() => {
-                  setTab('ta');
-                  setPicking(false);
-                }}
-                icon={<GraduationCap className="w-3.5 h-3.5" />}
-                label="Teaching Assistant"
-              />
-            </div>
+            {!picking && (
+              <div className="flex border-b border-border shrink-0">
+                <TabButton
+                  active={tab === 'students'}
+                  onClick={() => setTab('students')}
+                  icon={<MessageSquare className="w-3.5 h-3.5" />}
+                  label="Students"
+                  badge={unreadCount}
+                />
+                <TabButton
+                  active={tab === 'ta'}
+                  onClick={() => setTab('ta')}
+                  icon={<GraduationCap className="w-3.5 h-3.5" />}
+                  label="Teaching Assistant"
+                />
+              </div>
+            )}
 
             {/* Body */}
             <div className="flex-1 min-h-0 overflow-hidden">
-              <AnimatePresence mode="wait" initial={false}>
-                {tab === 'students' ? (
-                  <motion.div
-                    key="students"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="h-full"
-                  >
-                    {active ? (
-                      <ConversationView
-                        conversation={active}
-                        onMessageSent={refresh}
-                        hideHeader
-                      />
-                    ) : (
-                      <div className="h-full flex flex-col">
-                        <div className="px-4 py-2 border-b border-border flex items-center justify-between gap-2">
-                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                            <Users className="w-3 h-3" />
-                            Conversations
-                          </span>
-                          <NewConversationDialog
-                            onCreated={(id) => {
-                              refresh();
-                              setActiveId(id);
-                            }}
+              {picking ? (
+                <StudentSelector selectedId={focused?.id ?? null} onSelect={selectFocus} />
+              ) : (
+                <AnimatePresence mode="wait" initial={false}>
+                  {tab === 'students' ? (
+                    <motion.div
+                      key="students"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="h-full"
+                    >
+                      {focused ? (
+                        focusedThread ? (
+                          <ConversationView
+                            conversation={focusedThread}
+                            onMessageSent={refresh}
+                            hideHeader
                           />
-                        </div>
-                        <div className="flex-1 overflow-y-auto">
-                          {loading ? (
-                            <div className="p-8 text-center text-sm text-muted-foreground">
-                              Loading…
+                        ) : (
+                          <div className="h-full flex flex-col items-center justify-center gap-3 px-8 text-center">
+                            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                              <MessageSquare className="w-5 h-5 text-muted-foreground" />
                             </div>
-                          ) : (
-                            <ThreadList
-                              conversations={conversations}
-                              activeId={activeId}
-                              onSelect={setActiveId}
-                              variant="admin"
-                              emptyLabel="No conversations yet. Start one with a student."
+                            <div className="text-sm font-medium">
+                              No conversation with {focusedName || 'this student'} yet
+                            </div>
+                            <div className="text-[12px] text-muted-foreground">
+                              Start a thread to send messages and attachments.
+                            </div>
+                            <NewConversationDialog
+                              onCreated={() => refresh()}
                             />
-                          )}
+                          </div>
+                        )
+                      ) : (
+                        <div className="h-full flex flex-col">
+                          <div className="px-4 py-2 border-b border-border flex items-center justify-between gap-2">
+                            <span className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                              <Users className="w-3 h-3" />
+                              Conversations
+                            </span>
+                            <NewConversationDialog onCreated={() => refresh()} />
+                          </div>
+                          <div className="flex-1 overflow-y-auto">
+                            {loading ? (
+                              <div className="p-8 text-center text-sm text-muted-foreground">
+                                Loading…
+                              </div>
+                            ) : (
+                              <ThreadList
+                                conversations={conversations}
+                                activeId={null}
+                                onSelect={(id) => {
+                                  const conv = conversations.find((c) => c.id === id);
+                                  const other = conv?.participants.find(
+                                    (p) => p.user_id !== user.id,
+                                  );
+                                  if (other) selectFocus(other.user_id, other.display_name ?? null);
+                                }}
+                                variant="admin"
+                                emptyLabel="No conversations yet. Focus a student to start one."
+                              />
+                            )}
+                          </div>
                         </div>
+                      )}
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="ta"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="h-full flex flex-col"
+                    >
+                      <div className="flex-1 min-h-0">
+                        <TAChatView
+                          studentId={focused?.id ?? null}
+                          studentName={focusedName}
+                          backend="ta-agent"
+                        />
                       </div>
-                    )}
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="ta"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="h-full flex flex-col"
-                  >
-                    {taSelected ? (
-                      <TAChatView
-                        studentId={taSelected}
-                        studentName={taSelectedName}
-                        backend="ta-agent"
-                      />
-                    ) : picking ? (
-                      <div className="flex-1 min-h-0 flex flex-col">
-                        <div className="px-4 py-2 border-b border-border flex items-center justify-between gap-2 shrink-0">
-                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                            <Users className="h-3.5 w-3.5" />
-                            Pick a student for context
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setPicking(false)}
-                            className="text-[11px] text-muted-foreground hover:text-foreground"
-                          >
-                            Back to agent
-                          </button>
-                        </div>
-                        <div className="flex-1 min-h-0">
-                          <StudentSelector
-                            selectedId={taSelected}
-                            onSelect={(id) => {
-                              setTaSelected(id);
-                              setPicking(false);
-                            }}
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex-1 min-h-0 flex flex-col">
-                        <div className="px-4 py-2 border-b border-border flex items-center justify-end shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setPicking(true)}
-                            className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground"
-                          >
-                            <Users className="h-3.5 w-3.5" />
-                            Add student context
-                          </button>
-                        </div>
-                        <div className="flex-1 min-h-0">
-                          <TAChatView studentId={null} studentName={null} backend="ta-agent" />
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              )}
             </div>
           </SheetPrimitive.Content>
         </SheetPrimitive.Portal>
