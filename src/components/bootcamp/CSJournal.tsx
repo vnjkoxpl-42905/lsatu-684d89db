@@ -1,7 +1,33 @@
 import React from 'react';
-import { MOCK_JOURNAL_ENTRIES } from '@/data/causationStation/constants';
+import { ALL_QUESTIONS } from '@/data/causationStation/questions';
+import { Question, QuestionModuleId } from '@/types/causationStation';
+
+type StoredAttempt = {
+  questionId: string;
+  moduleId: QuestionModuleId;
+  answerIndex: number;
+  correct: boolean;
+  completedAt: string;
+};
 
 const CSJournal: React.FC = () => {
+  const entries = React.useMemo(() => {
+    let attempts: StoredAttempt[] = [];
+    try {
+      attempts = JSON.parse(localStorage.getItem('causationCoachAttemptHistory') ?? '[]');
+    } catch (error) {
+      console.error('Failed to parse causation attempt history for journal', error);
+    }
+
+    return attempts
+      .filter((attempt) => !attempt.correct)
+      .map((attempt) => {
+        const question = (ALL_QUESTIONS[attempt.moduleId] ?? []).find((q) => q.id === attempt.questionId);
+        return question ? { attempt, question } : null;
+      })
+      .filter(Boolean) as Array<{ attempt: StoredAttempt; question: Question }>;
+  }, []);
+
   return (
     <div>
       <h2 className="text-xl font-bold text-foreground mb-2">Mistake Journal</h2>
@@ -9,35 +35,36 @@ const CSJournal: React.FC = () => {
         Every great mind keeps a record of their toughest challenges. This is your personalized log of questions you've struggled with. Review them, understand the traps, and never make the same mistake twice.
       </p>
 
-      {MOCK_JOURNAL_ENTRIES.length === 0 ? (
+      {entries.length === 0 ? (
         <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
           <p className="text-sm text-muted-foreground">Your journal is empty for now. Incorrect answers from your drills will appear here automatically.</p>
         </div>
       ) : (
         <div className="space-y-8">
-          {MOCK_JOURNAL_ENTRIES.map((entry, index) => (
-            <div key={`${entry.question.id}-${index}`} className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col md:flex-row gap-6">
+          {entries.map(({ attempt, question }, index) => (
+            <div key={`${question.id}-${index}`} className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col md:flex-row gap-6">
               <div className="md:w-1/2">
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
-                  Question ({entry.question.id})
+                  Question ({question.id})
                 </h3>
                 <div className="rounded-lg bg-muted/50 border border-border p-4 mb-3">
-                  <p className="text-sm text-foreground italic leading-relaxed">{entry.question.stem}</p>
+                  <p className="text-sm text-foreground italic leading-relaxed">{question.stem}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {entry.tags.map(tag => (
-                    <span
-                      key={tag}
-                      className="text-xs font-medium bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 px-2.5 py-0.5 rounded-full"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
+                  <span className="text-xs font-medium bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 px-2.5 py-0.5 rounded-full">
+                    #{question.moduleId}
+                  </span>
+                  <span className="text-xs font-medium bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 px-2.5 py-0.5 rounded-full">
+                    {new Date(attempt.completedAt).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
               <div className="md:w-1/2">
-                <h3 className="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wide mb-2">Your Analysis</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{entry.notes}</p>
+                <h3 className="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wide mb-2">Review Prompt</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  You picked choice {String.fromCharCode(65 + attempt.answerIndex)}. Re-read the causal claim, name the author's causal move, then explain why choice {String.fromCharCode(65 + question.correctIndex)} is better.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-4">{question.explanation}</p>
               </div>
             </div>
           ))}

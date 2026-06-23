@@ -29,6 +29,8 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return newArray;
 };
 
+const ATTEMPT_HISTORY_KEY = 'causationCoachAttemptHistory';
+
 const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -173,17 +175,32 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
       setIsRevealed(true);
 
       const isCorrect = answerIndex === currentQuestion.correctIndex;
+      const attempt = {
+        questionId: currentQuestion.id,
+        moduleId: module.id,
+        answerIndex,
+        correct: isCorrect,
+        responseTimeMs,
+        completedAt: new Date().toISOString(),
+      };
 
       setAttempts(prev => [
         ...prev,
         {
-          questionId: currentQuestion.id,
-          answerIndex: answerIndex,
-          correct: isCorrect,
-          responseTimeMs: responseTimeMs,
+          questionId: attempt.questionId,
+          answerIndex: attempt.answerIndex,
+          correct: attempt.correct,
+          responseTimeMs: attempt.responseTimeMs,
           hintsUsed: 0,
         },
       ]);
+
+      try {
+        const previous = JSON.parse(localStorage.getItem(ATTEMPT_HISTORY_KEY) ?? '[]');
+        localStorage.setItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, attempt].slice(-200)));
+      } catch (error) {
+        console.error('Failed to save causation attempt history:', error);
+      }
     }
   };
 

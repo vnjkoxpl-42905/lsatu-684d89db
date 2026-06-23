@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MODULES, Module } from '@/data/causationStation/constants';
+import { ALL_QUESTIONS } from '@/data/causationStation/questions';
+import { QuestionModuleId } from '@/types/causationStation';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +18,13 @@ interface CSDashboardProps {
 }
 
 const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
+  const [attemptHistory, setAttemptHistory] = useState<Array<{
+    questionId: string;
+    moduleId: QuestionModuleId;
+    correct: boolean;
+    responseTimeMs: number;
+    completedAt: string;
+  }>>([]);
   const [savedDrillModuleId, setSavedDrillModuleId] = useState<string | null>(null);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [isOverwriteModalOpen, setIsOverwriteModalOpen] = useState(false);
@@ -44,7 +53,51 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
 
   useEffect(() => {
     checkSavedProgress();
+    try {
+      setAttemptHistory(JSON.parse(localStorage.getItem('causationCoachAttemptHistory') ?? '[]'));
+    } catch (error) {
+      console.error('Failed to parse causation attempt history:', error);
+      localStorage.removeItem('causationCoachAttemptHistory');
+      setAttemptHistory([]);
+    }
   }, []);
+
+  const stats = useMemo(() => {
+    const total = attemptHistory.length;
+    const correct = attemptHistory.filter((attempt) => attempt.correct).length;
+    const overallAccuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+    const avgTime =
+      total > 0
+        ? Math.round(attemptHistory.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / total / 1000)
+        : 0;
+    let currentStreak = 0;
+    for (let i = attemptHistory.length - 1; i >= 0; i -= 1) {
+      if (!attemptHistory[i].correct) break;
+      currentStreak += 1;
+    }
+    const moduleProgress = MODULES.reduce((acc, module) => {
+      const attempts = attemptHistory.filter((attempt) => attempt.moduleId === module.id);
+      const moduleCorrect = attempts.filter((attempt) => attempt.correct).length;
+      acc[module.id] = {
+        accuracy: attempts.length > 0 ? Math.round((moduleCorrect / attempts.length) * 100) : 0,
+        avgTime:
+          attempts.length > 0
+            ? Math.round(attempts.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / attempts.length / 1000)
+            : 0,
+        attempted: attempts.length,
+        available: ALL_QUESTIONS[module.id]?.length ?? 0,
+      };
+      return acc;
+    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; attempted: number; available: number }>);
+    return { total, overallAccuracy, avgTime, currentStreak, moduleProgress };
+  }, [attemptHistory]);
+
+  const recommendedModule = useMemo(() => {
+    if (savedDrillModuleId) {
+      return MODULES.find((module) => module.id === savedDrillModuleId) ?? MODULES[0];
+    }
+    return MODULES.find((module) => stats.moduleProgress[module.id].attempted === 0) ?? MODULES[0];
+  }, [savedDrillModuleId, stats.moduleProgress]);
 
   const handleDrillButtonClick = (module: Module) => {
     setSelectedModuleForAction(module);
@@ -129,11 +182,40 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
 
   return (
     <div>
-      <div className="rounded-xl bg-card border border-border shadow-sm p-8 mb-8 text-center">
-        <p className="text-foreground text-sm font-medium">No data yet</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Start a module to generate your first stats.
-        </p>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6">
+        {[
+          ['Accuracy', `${stats.overallAccuracy}%`],
+          ['Attempted', `${stats.total}`],
+          ['Avg. time', `${stats.avgTime}s`],
+          ['Streak', `${stats.currentStreak}`],
+        ].map(([label, value]) => (
+          <div key={label} className="rounded-xl bg-card border border-border shadow-sm p-4">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+            <p className="text-2xl font-semibold text-foreground mt-1">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="rounded-xl bg-card border border-border shadow-sm p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Recommended next</p>
+          <h3 className="text-sm font-semibold text-foreground mt-1">
+            {savedDrillModuleId && recommendedModule ? `Resume ${recommendedModule.name}` : recommendedModule?.name}
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1 max-w-xl">
+            {stats.total === 0
+              ? 'Start a module to populate accuracy, journal entries, and next-action guidance.'
+              : 'Continue with the least-worked module or resume the active drill.'}
+          </p>
+        </div>
+        {recommendedModule ? (
+          <button
+            onClick={() => handleDrillButtonClick(recommendedModule)}
+            className="rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+          >
+            {savedDrillModuleId ? 'Resume Drill' : 'Start Drill'}
+          </button>
+        ) : null}
       </div>
 
       <div className="rounded-xl bg-card border border-border shadow-sm p-5">
@@ -141,12 +223,29 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
         <div className="space-y-6">
           {MODULES.map(mod => {
             const isResume = mod.id === savedDrillModuleId;
+            const moduleStats = stats.moduleProgress[mod.id];
 
             return (
               <div key={mod.id} className="rounded-xl bg-card border border-border shadow-sm p-5 flex flex-col sm:flex-row justify-between items-start gap-4">
                 <div className="flex-grow w-full flex flex-col">
                   <h4 className="text-sm font-semibold text-foreground">{mod.name}</h4>
                   <p className="text-xs text-muted-foreground mt-0.5">{mod.description}</p>
+                  <div className="grid grid-cols-3 gap-3 mt-4 max-w-md">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Accuracy</p>
+                      <p className="text-sm font-semibold text-foreground">{moduleStats.accuracy}%</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Seen</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {moduleStats.attempted}/{moduleStats.available}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Avg.</p>
+                      <p className="text-sm font-semibold text-foreground">{moduleStats.avgTime}s</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-2 flex-shrink-0 self-center">
