@@ -44,4 +44,3 @@ confirms the scopes/secrets already exist, **no Lovable pass is required at all.
 - No edge-function rewrites — new functions follow existing repo patterns.
 - No model/provider change — V1 uses the existing Gateway (Gemini).
 - No student-facing changes.
-</content>

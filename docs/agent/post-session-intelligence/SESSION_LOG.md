@@ -185,3 +185,51 @@ build on Joshua's go. Migration-apply + function-deploy still gated on Joshua.
 ### Result
 Phase 1A code complete and verified locally. Nothing applied/deployed; no student impact.
 Next: Joshua approves migration-apply + function-deploy, then E2E verify, then Phase 1B.
+
+---
+
+## 2026-06-24 — Phase 1A/1B blocker hardening (Codex / GPT-5)
+
+Joshua asked to fix only the two remaining completion blockers: admin route/auth behavior
+and ingest rollback/orphan cleanup. Scope stayed limited: no deploys, no migrations, no
+Phase 1B deploy, no synthesis, no publish, no notifications/chat/homework/quiz/cron, and
+no student-facing output.
+
+### Built
+- `src/components/ProtectedRoute.tsx` now redirects anonymous users on admin/flagged
+  protected routes to `/auth?returnTo=...` while preserving the existing localhost/dev
+  bypass. Signed-in non-admin users still see `LockedModule`.
+- `src/lib/authRedirect.ts` now accepts only safe internal `returnTo` paths and routes
+  successful auth back to the preserved destination.
+- `src/components/ProtectedRoute.test.tsx` covers the anonymous admin redirect, signed-in
+  non-admin locked state, and local dev bypass.
+- `supabase/functions/_shared/sessionIngestCore.ts` now tracks `storagePath`, exposes
+  `cleanupStoredTranscript`, and treats unique violations explicitly.
+- `supabase/functions/ingest-session-note/index.ts` now cleans up created
+  `student_context`, `student_sessions`, and storage artifacts if a required late ledger
+  write fails. Unique ledger races re-query the existing ingestion and return
+  `already_ingested` instead of leaving partial transcript/session rows.
+- `supabase/functions/scan-session-notes/index.ts` now cleans up transcript artifacts if
+  a resolve ledger update fails after creating storage/session/context rows.
+
+### Verified
+- Commit pushed to `main`: `159bdd6609332101e82d4544608b0ea644fc6507`
+  (`fix(session-intelligence): harden auth and ingest integrity`).
+- `HEAD` and `origin/main` both point at the blocker commit.
+- Targeted tests passed: `npm test -- --run src/lib/resolveStudentAuthId.test.ts
+  src/components/ProtectedRoute.test.tsx` → 14/14 passing.
+- Local preview route check: `curl -I http://localhost:4173/teacher/session-ingest`
+  returned `HTTP/1.1 200 OK`.
+- Production-build check passed with larger heap:
+  `NODE_OPTIONS=--max-old-space-size=6144 npm run build`.
+- Typecheck was attempted. The completed run failed only in unrelated pre-existing
+  untracked files: `src/pages/teacher/desk/AssistantCommandLine.tsx` and
+  `src/topics/abstract/data/finalSet.ts`. A later repeat invocation hung silently and
+  was stopped rather than conflating that with blocker status.
+
+### Current phase after this pass
+- Phase 1A remains deployed but needs Lovable redeploy of the frontend and
+  `ingest-session-note` for these hardening fixes to be live.
+- Phase 1A E2E is safe after that redeploy.
+- Phase 1B remains code complete on `main` but not deployed; deploy remains Joshua's
+  Lovable task.

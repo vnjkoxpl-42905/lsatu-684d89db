@@ -81,4 +81,3 @@ a fast-follow once a real email is confirmed; the parser + calendar hints are al
 - [ ] Student-facing AI · "AI Joshua" autonomy
 - [ ] Analytics / Insights dossier tabs (no real data backing in V1)
 - [ ] Automatic consultation ingestion
-</content>

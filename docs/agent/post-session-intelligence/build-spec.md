@@ -399,4 +399,3 @@ admin login + real data), and every checklist includes explicit error-path tests
    forces the service-role attribution path.
 3. **`notifications.type` for session notes** (§6, Phase 3): add a `recap`/`note` type or
    reuse an existing one for the session-bundle notifier.
-</content>

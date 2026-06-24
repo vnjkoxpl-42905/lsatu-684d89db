@@ -1,6 +1,7 @@
 # Post-Session Intelligence Pipeline
 
-**Status: SPEC ONLY. No implementation. No schema. No migrations. No production change.**
+**Status: active phased build. Phase 1A is deployed live via Lovable, Phase 1B is
+code complete on `main` but not deployed, and Phase 2 has not started.**
 
 This folder holds the planning bundle for moving LSAT U toward a mostly hands-off
 post-session intelligence pipeline: after a Google Meet tutoring session, the
@@ -23,6 +24,17 @@ richer dossier inside the Teacher Workspace.
 | `SESSION_LOG.md` | Running log: inspected, decided, asked/answered, files touched, pending approvals. |
 | `HANDOFF.md` | Cold-start handoff for a future Claude/Codex session. |
 | `STATUS.md` | Phase checklist with state per phase. |
+
+## Current phase
+
+We are between **Phase 1A verification** and **Phase 1B deployment**:
+
+- **Phase 1A — manual single ingest:** deployed live via Lovable. Joshua still needs
+  to run the real Gemini Notes Doc E2E at `/teacher/session-ingest`.
+- **Phase 1B — scan window + resolution queue:** code complete on `main`, awaiting
+  Joshua's Lovable deploy. Do not deploy it directly from Codex.
+- **Phase 2 — synthesis + dossier:** planned, not started. It remains gated on real
+  Phase 1A evidence and the follow-up matching/auto-attach decision.
 
 ## The one correction the inspection forced
 
@@ -52,6 +64,6 @@ build on existing rails, not a greenfield integration. See `repo-inspection-summ
 
 ## Next step
 
-Send `build-spec.md` to Codex via `codex-review-prompt.md` for a red-team pass
-**before** any implementation begins.
-</content>
+Joshua runs the Phase 1A E2E with a real Gemini Notes Google Doc. After the real
+email/Doc format is confirmed, the next build step is enabling confident auto-attach
+in `scan-session-notes` only when email + name + calendar agreement are all present.

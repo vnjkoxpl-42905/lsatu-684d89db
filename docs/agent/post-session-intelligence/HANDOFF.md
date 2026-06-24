@@ -115,4 +115,3 @@ is conservative and queues everything.
   `conversations`/`messages` via `src/lib/adminConversation.ts`.
 - Roster: `HubStudentList`. Dossier target: `src/pages/teacher/TeacherStudentDetail.tsx`.
 - Google: `supabase/functions/{gmail,gdrive,gcal-list-calendars,gcal-sync-pull}`.
-</content>

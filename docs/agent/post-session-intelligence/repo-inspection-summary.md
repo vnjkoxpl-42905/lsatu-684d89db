@@ -143,4 +143,3 @@ an attendees-storage extension (build-spec §3d, `lovable-handoff-prompt.md`).
 4. Dossier tab shell + Sessions/Transcripts tab.
 5. Review-queue + resolution-queue UI (on top of `ai_ta_drafts`).
 6. Manual Scan button now; cron later.
-</content>

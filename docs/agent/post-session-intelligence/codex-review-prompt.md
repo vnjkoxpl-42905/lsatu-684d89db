@@ -62,4 +62,3 @@ Then verify against the REAL repo and report findings. Specifically check:
 Output: a prioritized list of (a) factual corrections to the spec, (b) safety risks,
 (c) scope/phasing concerns, (d) reuse opportunities missed. Be specific with file paths
 and table/column names. Do not implement.
-</content>
