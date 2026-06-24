@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { TimerControls } from '@/components/drill/TimerControls';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
+import type { DrawerTab, DrillDetailsMeta } from '@/components/drill/official/DrillNotesPanel';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
@@ -249,6 +250,8 @@ function DrillContent() {
   const [officialFontScale, setOfficialFontScale] = React.useState(1);
   // Smart Drill docked notes panel open state.
   const [notesOpen, setNotesOpen] = React.useState(false);
+  // Active tab inside the docked drill drawer (Notes | Details).
+  const [drawerTab, setDrawerTab] = React.useState<DrawerTab>('notes');
   
   const timer = useTimerContextSafe();
 
@@ -2525,10 +2528,28 @@ function DrillContent() {
     setTutorChatOpen(true);
   };
 
-  // The drill toolbar's Notes control opens the docked slide-over Notes panel.
+  // The drill toolbar's Notes control opens the docked drawer on the Notes tab.
   const toggleNotesPanel = () => {
-    setNotesOpen((prev) => !prev);
+    setNotesOpen((prev) => {
+      const next = !prev;
+      if (next) setDrawerTab('notes');
+      return next;
+    });
   };
+
+  // Metadata for the drawer's Details tab, drawn from the active question.
+  const drawerMeta = React.useMemo<DrillDetailsMeta | null>(() => {
+    if (!currentQuestion) return null;
+    return {
+      pt: currentQuestion.pt,
+      section: currentQuestion.section,
+      qnum: currentQuestion.qnum,
+      qtype: currentQuestion.qtype,
+      reasoningType: currentQuestion.reasoningType,
+      questionFeatures: currentQuestion.questionFeatures,
+      difficulty: currentQuestion.difficulty,
+    };
+  }, [currentQuestion]);
 
   const renderTutorOverlay = () => (
     <>
@@ -2765,6 +2786,9 @@ function DrillContent() {
           notesPanelEnabled={usesSmartChrome}
           notesPanelOpen={notesOpen}
           onNotesPanelClose={() => setNotesOpen(false)}
+          notesPanelMeta={drawerMeta}
+          notesPanelTab={drawerTab}
+          onNotesPanelTabChange={setDrawerTab}
           tutorToggleVisible={false}
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {

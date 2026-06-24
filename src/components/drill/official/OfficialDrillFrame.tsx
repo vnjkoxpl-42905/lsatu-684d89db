@@ -2,7 +2,10 @@ import * as React from "react";
 import { Play, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
-import DrillNotesPanel from "@/components/drill/official/DrillNotesPanel";
+import DrillNotesPanel, {
+  type DrawerTab,
+  type DrillDetailsMeta,
+} from "@/components/drill/official/DrillNotesPanel";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +30,12 @@ interface Props {
   notesPanelOpen?: boolean;
   /** Close handler for the docked Notes panel. */
   onNotesPanelClose?: () => void;
+  /** Active question metadata for the drawer's Details tab. */
+  notesPanelMeta?: DrillDetailsMeta | null;
+  /** Controlled active drawer tab. */
+  notesPanelTab?: DrawerTab;
+  /** Tab change handler for the drawer. */
+  onNotesPanelTabChange?: (tab: DrawerTab) => void;
 }
 
 /**
@@ -46,6 +55,9 @@ export default function OfficialDrillFrame({
   notesPanelEnabled,
   notesPanelOpen,
   onNotesPanelClose,
+  notesPanelMeta,
+  notesPanelTab,
+  onNotesPanelTabChange,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -122,7 +134,14 @@ export default function OfficialDrillFrame({
                 notesPanelOpen ? "w-[380px] pl-2 sm:pl-4" : "w-0",
               )}
             >
-              {notesPanelOpen && <DrillNotesPanel onClose={onNotesPanelClose} />}
+              {notesPanelOpen && (
+                <DrillNotesPanel
+                  onClose={onNotesPanelClose}
+                  meta={notesPanelMeta}
+                  activeTab={notesPanelTab}
+                  onTabChange={onNotesPanelTabChange}
+                />
+              )}
             </div>
 
             {/* mobile scrim + overlay drawer */}
@@ -140,7 +159,12 @@ export default function OfficialDrillFrame({
                 notesPanelOpen ? "translate-x-0" : "translate-x-full pointer-events-none",
               )}
             >
-              <DrillNotesPanel onClose={onNotesPanelClose} />
+              <DrillNotesPanel
+                onClose={onNotesPanelClose}
+                meta={notesPanelMeta}
+                activeTab={notesPanelTab}
+                onTabChange={onNotesPanelTabChange}
+              />
             </div>
           </>
         )}
