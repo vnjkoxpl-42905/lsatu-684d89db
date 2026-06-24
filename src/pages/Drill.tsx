@@ -2554,19 +2554,8 @@ function DrillContent() {
     });
   };
 
-  // Metadata for the drawer's Details tab, drawn from the active question.
-  const drawerMeta = React.useMemo<DrillDetailsMeta | null>(() => {
-    if (!currentQuestion) return null;
-    return {
-      pt: currentQuestion.pt,
-      section: currentQuestion.section,
-      qnum: currentQuestion.qnum,
-      qtype: currentQuestion.qtype,
-      reasoningType: currentQuestion.reasoningType,
-      questionFeatures: currentQuestion.questionFeatures,
-      difficulty: currentQuestion.difficulty,
-    };
-  }, [currentQuestion]);
+
+
 
   const renderTutorOverlay = () => (
     <>
