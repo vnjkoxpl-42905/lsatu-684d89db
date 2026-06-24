@@ -5,19 +5,17 @@
     "category": "Pacing",
     "estimated_minutes": 40,
     "question_count": 5,
-    "difficulty_min": 3,
+    "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Must Be True",
-      "Most Strongly Supported"
+      "Most Strongly Supported",
+      "Must Be True"
     ],
     "question_features": [
       "Important Pivot"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -26,31 +24,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Must Be True",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "features": [
         "Important Pivot"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
+      "reasoning_types": [],
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 4,
     "order_in_week": 1,
-    "source_file": "00_pre_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S3-Q24",
-      "PT104-S1-Q3",
-      "PT104-S1-Q19",
-      "PT104-S1-Q22",
-      "PT104-S4-Q14"
-    ]
+    "source_file": "00_pre_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "BLENDED SET: Parallel + Paradox",
@@ -58,20 +45,16 @@
     "category": "Pacing",
     "estimated_minutes": 40,
     "question_count": 6,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Parallel Reasoning",
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact",
-      "Alternatives"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
       "Comparison",
-      "Conditional Logic"
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -83,30 +66,15 @@
         "Parallel Reasoning",
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact",
-        "Alternatives"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 4,
     "order_in_week": 2,
-    "source_file": "00_pre_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT108-S2-Q16",
-      "PT113-S4-Q14",
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT131-S3-Q16",
-      "PT135-S2-Q19"
-    ]
+    "source_file": "00_pre_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Strengthen (set 2)",
@@ -120,7 +88,8 @@
       "Principle-Strengthen"
     ],
     "question_features": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Conditional Conclusion"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -135,27 +104,17 @@
         "Principle-Strengthen"
       ],
       "features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 4,
     "order_in_week": 1,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S2-Q25",
-      "PT101-S3-Q20",
-      "PT101-S3-Q26",
-      "PT102-S2-Q23",
-      "PT102-S4-Q5",
-      "PT105-S1-Q14"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Strengthen + Application (Set 1)",
@@ -170,7 +129,8 @@
       "Principle-Conform"
     ],
     "question_features": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Conditional Conclusion"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -186,25 +146,17 @@
         "Principle-Conform"
       ],
       "features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 4,
     "order_in_week": 2,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S2-Q25",
-      "PT101-S3-Q20",
-      "PT101-S3-Q26",
-      "PT102-S2-Q11"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Reconcile the Pivot (set 2)",
@@ -215,16 +167,14 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Must Be True",
-      "Most Strongly Supported"
+      "Most Strongly Supported",
+      "Must Be True"
     ],
     "question_features": [
       "Important Pivot"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -233,35 +183,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Must Be True",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "features": [
         "Important Pivot"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 9
     },
     "week": 4,
     "order_in_week": 3,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S3-Q24",
-      "PT104-S1-Q3",
-      "PT104-S1-Q19",
-      "PT104-S1-Q22",
-      "PT104-S4-Q14",
-      "PT104-S4-Q23",
-      "PT105-S4-Q1",
-      "PT107-S1-Q21",
-      "PT107-S3-Q17"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Chains - Set 2",
@@ -269,7 +204,7 @@
     "category": "Process",
     "estimated_minutes": 70,
     "question_count": 9,
-    "difficulty_min": 3,
+    "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
       "Most Strongly Supported",
@@ -297,28 +232,14 @@
       "features": [
         "Causal Chains"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 3,
+      "reasoning_types": [],
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 9
     },
     "week": 4,
     "order_in_week": 4,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT103-S2-Q9",
-      "PT104-S1-Q19",
-      "PT105-S1-Q20",
-      "PT106-S1-Q16",
-      "PT106-S1-Q22",
-      "PT107-S1-Q8",
-      "PT107-S4-Q3",
-      "PT107-S4-Q4",
-      "PT107-S4-Q5"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Difference-Maker (First Taste)",
@@ -337,8 +258,7 @@
     ],
     "reasoning_types": [
       "Comparison",
-      "Causation",
-      "Conditional Logic"
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -353,26 +273,14 @@
       "features": [
         "Causal Difference-Maker"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 4,
     "order_in_week": 5,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT103-S2-Q2",
-      "PT104-S1-Q3",
-      "PT104-S1-Q12",
-      "PT105-S2-Q6",
-      "PT107-S1-Q21"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Missing Links (color-coded) Set 2",
@@ -380,15 +288,16 @@
     "category": "Process",
     "estimated_minutes": 60,
     "question_count": 7,
-    "difficulty_min": 3,
+    "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Principle-Strengthen",
       "Sufficient Assumption",
-      "Necessary Assumption"
+      "Necessary Assumption",
+      "Principle-Strengthen"
     ],
     "question_features": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -400,32 +309,22 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Principle-Strengthen",
         "Sufficient Assumption",
-        "Necessary Assumption"
+        "Necessary Assumption",
+        "Principle-Strengthen"
       ],
       "features": [
-        "Missing Link / Idea"
+        "Missing Link / Idea",
+        "Links Between Premises"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
+      "reasoning_types": [],
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 4,
     "order_in_week": 6,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S3-Q10",
-      "PT101-S3-Q19",
-      "PT102-S2-Q23",
-      "PT102-S4-Q18",
-      "PT102-S4-Q25",
-      "PT103-S3-Q9"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Medium) Set 1",
@@ -436,10 +335,13 @@
     "difficulty_min": 3,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Principle-Strengthen",
-      "Evaluate",
-      "Necessary Assumption"
+      "Strengthen",
+      "Weaken",
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -447,6 +349,7 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
+      "Causation",
       "Comparison"
     ],
     "start_button_label": "Start",
@@ -456,34 +359,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
         "Conditional Diagramming",
         "Explain Curious Fact",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 6
     },
     "week": 4,
     "order_in_week": 7,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S2-Q17"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Famous Flaw (Easier) Set 1",
@@ -500,8 +396,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Causation",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -515,31 +410,14 @@
       "features": [
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 12
     },
     "week": 4,
     "order_in_week": 8,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q8",
-      "PT102-S3-Q1",
-      "PT102-S4-Q4",
-      "PT103-S1-Q3",
-      "PT103-S2-Q1",
-      "PT103-S2-Q4",
-      "PT103-S3-Q10",
-      "PT104-S4-Q7",
-      "PT104-S4-Q10",
-      "PT105-S4-Q8",
-      "PT105-S4-Q13",
-      "PT106-S1-Q9"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Intermediate Conclusion - (Set 1)",
@@ -550,13 +428,15 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Main Conclusion",
-      "Role"
+      "Role",
+      "Main Conclusion"
     ],
     "question_features": [
       "Intermediate Conclusions"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Comparison"
+    ],
     "start_button_label": "Continue",
     "instruction_card": {
       "left_md": "Try these five questions that test us on the presence (or absence) of _Intermediate Conclusions_.\n\n**Role** and **Main Conclusion** questions usually \"hide\" the conclusion by making it the **very first claim**, or by making it some **rebuttal claim**.\n\nThey will also sometimes complicate our assessment of the argument's structure by throwing in multiples conclusions.\n\nArguments need a claim we call the Conclusion, and some Support for that claim, which we call the evidence or the premise(s).\n\nSome of those supporting premises can _themselves_ also be considered conclusions, if _they_ are supported by at least one claim. The more common name for a _supported premise_ is an Intermediate Conclusion, or a Subsidiary Conclusion.\n\nAny time you're asking yourself, \"Is this claim a Conclusion?\", you should ask yourself \"_why should I believe this claim? did the author provide a supporting reason?_\" If it's really a Conclusion, then you'll be able to point to at least one claim that sounds like a reason offered for why we should believe that claim.\n\nIf a claim **has** support, we can call it a Conclusion.  \nIf it **provides** support, we can call it a Premise.  \nIf it **has** support and also **provides** support, an Intermediate Conclusion.\n\nIn the Assumption / Objection family, when an argument has this three part structure,  \n_Premise → Intermediate Conclusion → Main Conclusion_  \nthen the correct answer might deal with the connection between Premise and Intermediate Conclusion, or it might deal with the connection between the Intermediate and the Main Conclusion. Hence, we sort of have twice as much to worry about. We need to think about what assumptions are being made with each move, or what objections we might make.",
@@ -564,8 +444,8 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Main Conclusion",
-        "Role"
+        "Role",
+        "Main Conclusion"
       ],
       "features": [
         "Intermediate Conclusions"
@@ -577,14 +457,7 @@
     },
     "week": 4,
     "order_in_week": 9,
-    "source_file": "01_week_4_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT106-S3-Q14",
-      "PT107-S1-Q11",
-      "PT111-S1-Q16",
-      "PT112-S4-Q13",
-      "PT115-S2-Q22"
-    ]
+    "source_file": "01_week_4_blue_lr_guided_drills.md"
   },
   {
     "title": "Famous Flaws (Medium) Set 1",
@@ -601,8 +474,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Causation",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -616,24 +488,14 @@
       "features": [
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 8,
     "order_in_week": 1,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q8",
-      "PT101-S2-Q23",
-      "PT102-S4-Q17",
-      "PT103-S3-Q10",
-      "PT105-S4-Q8"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 6",
@@ -644,10 +506,14 @@
     "difficulty_min": 3,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
-      "Principle-Strengthen",
+      "Most Strongly Supported",
       "Must Be True",
-      "Parallel Reasoning"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -663,35 +529,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming",
         "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 8,
     "order_in_week": 2,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q11",
-      "PT101-S2-Q13",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Must Be False (Medium) Set 1",
@@ -699,15 +557,15 @@
     "category": "Process",
     "estimated_minutes": 36,
     "question_count": 4,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 5,
     "question_types": [
       "Must Be False"
     ],
-    "question_features": [
-      "Conditional Diagramming"
+    "question_features": [],
+    "reasoning_types": [
+      "Conditional Logic"
     ],
-    "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "This is a set of four **Must Be False** questions, taken from tests 52, 56, and 57.\n\nThe correct answer contradicts something we're told or something that's implied by the paragraph. If we negated every answer choice and turned the question stem into \"Which of the following, **must be true**\", we'd get the same correct answer.\n\nSo if it fits your common sense better, you could think of a Must Be False question stem as saying, \"Which answer's negation Must Be True (or is Most Supported, if it's a squishier sense of must be false)?\"\n\nWhat does it mean to contradict _something we're told?_\n\n**Stimulus:** Marsha is taller than her classmate Simon.  \n**Correct answer:** Marsha is the shortest person in her class\n\n**Stimulus:** Lemonade tastes bitter unless sugar is added.  \n**Correct answer:** Marsha's new sugar-free lemonade has the natural zest of lemons without any bitterness to the taste.\n\nWhat does it mean to contradict _something that's implied?_\n\n**Stimulus:** Marsha is taller than her classmate Simon. Taller students are always more feared than shorter students.  \n**Correct answer:** Simon is the most feared person in his class\n\n**Stimulus:** There were more students at Valley High in 2022 than there were in 2021. By law, the school must maintain the same student to teacher ratio every year.  \n**Correct answer:** No teachers have been hired or fired from Valley High in the past two years.",
@@ -717,23 +575,15 @@
       "qtypes": [
         "Must Be False"
       ],
-      "features": [
-        "Conditional Diagramming"
-      ],
+      "features": [],
       "reasoning_types": [],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 4
     },
     "week": 8,
     "order_in_week": 3,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S4-Q15",
-      "PT102-S4-Q16",
-      "PT102-S4-Q26",
-      "PT103-S3-Q12"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Parallel Flaw + Famous Flaws (Set 2)",
@@ -750,7 +600,8 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Conditional Logic"
+      "Conditional Logic",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -764,23 +615,14 @@
       "features": [
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 8,
     "order_in_week": 4,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT103-S3-Q13",
-      "PT104-S1-Q11",
-      "PT104-S4-Q13",
-      "PT106-S1-Q3",
-      "PT106-S3-Q21"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Relative vs. Absolute",
@@ -788,17 +630,18 @@
     "category": "Patterns",
     "estimated_minutes": 50,
     "question_count": 7,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
+      "Most Strongly Supported",
+      "Must Be True",
       "Flaw"
     ],
     "question_features": [
       "Relative vs. Absolute"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -807,31 +650,21 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "features": [
         "Relative vs. Absolute"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 7
     },
     "week": 8,
     "order_in_week": 5,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S3-Q25",
-      "PT103-S3-Q19",
-      "PT107-S4-Q14",
-      "PT123-S3-Q4",
-      "PT124-S1-Q22",
-      "PT127-S2-Q1",
-      "PT131-S1-Q12"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Science + Strengthen / Weaken",
@@ -847,10 +680,12 @@
     ],
     "question_features": [
       "Science",
-      "Plausibility"
+      "Plausibility",
+      "Missing Link / Idea"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -864,28 +699,17 @@
       ],
       "features": [
         "Science",
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 8
     },
     "week": 8,
     "order_in_week": 6,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S3-Q21",
-      "PT102-S4-Q24",
-      "PT103-S2-Q25",
-      "PT104-S1-Q18",
-      "PT106-S1-Q23",
-      "PT106-S3-Q25",
-      "PT107-S4-Q20",
-      "PT109-S1-Q17"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Conform + Principle in Stimulus (set 1)",
@@ -916,26 +740,14 @@
       "features": [
         "Principles in Stimulus"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 8,
     "order_in_week": 7,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT106-S1-Q10",
-      "PT106-S3-Q23",
-      "PT108-S3-Q16",
-      "PT115-S2-Q11",
-      "PT116-S3-Q5",
-      "PT118-S4-Q21",
-      "PT121-S1-Q4",
-      "PT123-S2-Q7"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Conform + Principles in Answers (Set 1)",
@@ -951,7 +763,10 @@
     "question_features": [
       "Principles in Answers"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Conditional Logic",
+      "Comparison"
+    ],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "These 5 problems are all **Principle-Conform** with principles in the answers, taken from tests 50-54. The question stems look something like this.\n\n- Which of the following principles most conforms to the reasoning in the argument?\n- Which of the following most accurately expresses the principle underlying the reasoning above?\n\nWe often think of this question as the \"Necessary Assumption\" version of Principle. They're similar in that we would be wary of any answer whose wording seems go beyond what the author said (either in Strength or Scope).\n\nThey're different in the sense that on Necessary Assumption the correct answer is only linking together Premise and Conclusion language about 40% of the time, whereas with Principle-Conform, it will be linking Premise and Conclusion language about 90% of the time.\n\nIt's essentially the same mindset as a Principle-Strengthen question. We are still pre-phrasing \"IF evidence, THEN conclusion\" and then expecting our correct answer to _Link_ language from the Evidence to the Conclusion's language. All that's different is that because the question stem says _conform_ to the author's reasoning, we can't pick an answer that's overly strong. (That usually doesn't matter, but occasionally it does)",
@@ -971,14 +786,7 @@
     },
     "week": 8,
     "order_in_week": 8,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q11",
-      "PT102-S2-Q24",
-      "PT102-S4-Q14",
-      "PT105-S4-Q12",
-      "PT105-S4-Q24"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Most Supported + Causal",
@@ -986,8 +794,8 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 5,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -1010,24 +818,14 @@
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 5
     },
     "week": 8,
     "order_in_week": 9,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q8",
-      "PT104-S1-Q3",
-      "PT108-S2-Q17",
-      "PT126-S1-Q5",
-      "PT143-S4-Q5"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Quantifiers: Trait Overlap inferences",
@@ -1035,11 +833,11 @@
     "category": "Process",
     "estimated_minutes": 70,
     "question_count": 8,
-    "difficulty_min": 3,
+    "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Must Be True",
       "Most Strongly Supported",
+      "Must Be True",
       "Flaw"
     ],
     "question_features": [
@@ -1055,33 +853,21 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Must Be True",
         "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "features": [
         "Quantifiers"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
+      "reasoning_types": [],
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 8,
     "order_in_week": 10,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q11",
-      "PT101-S3-Q15",
-      "PT104-S1-Q22",
-      "PT106-S3-Q8",
-      "PT107-S1-Q18",
-      "PT109-S1-Q9",
-      "PT109-S3-Q8",
-      "PT109-S4-Q21"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Must Be False (Medium) Set 2",
@@ -1089,15 +875,15 @@
     "category": "Process",
     "estimated_minutes": 40,
     "question_count": 4,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 5,
     "question_types": [
       "Must Be False"
     ],
-    "question_features": [
-      "Conditional Diagramming"
+    "question_features": [],
+    "reasoning_types": [
+      "Conditional Logic"
     ],
-    "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "This is a set of four **Must Be False** questions, taken from tests 62, 69, and 71.\n\nThe correct answer contradicts something we're told or something that's implied by the paragraph. If we negated every answer choice and turned the question stem into \"Which of the following, **must be true**\", we'd get the same correct answer.\n\nSo if it fits your common sense better, you could think of a Must Be False question stem as saying, \"Which answer's negation Must Be True (or is Most Supported, if it's a squishier sense of must be false)?\"\n\nWhat does it mean to contradict _something we're told?_\n\n**Stimulus:** Marsha is taller than her classmate Simon.  \n**Correct answer:** Marsha is the shortest person in her class\n\n**Stimulus:** Lemonade tastes bitter unless sugar is added.  \n**Correct answer:** Marsha's new sugar-free lemonade has the natural zest of lemons without any bitterness to the taste.\n\nWhat does it mean to contradict _something that's implied?_\n\n**Stimulus:** Marsha is taller than her classmate Simon. Taller students are always more feared than shorter students.  \n**Correct answer:** Simon is the most feared person in his class\n\n**Stimulus:** There were more students at Valley High in 2022 than there were in 2021. By law, the school must maintain the same student to teacher ratio every year.  \n**Correct answer:** No teachers have been hired or fired from Valley High in the past two years.",
@@ -1107,23 +893,15 @@
       "qtypes": [
         "Must Be False"
       ],
-      "features": [
-        "Conditional Diagramming"
-      ],
+      "features": [],
       "reasoning_types": [],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 4
     },
     "week": 8,
     "order_in_week": 11,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S4-Q15",
-      "PT102-S4-Q16",
-      "PT102-S4-Q26",
-      "PT103-S3-Q12"
-    ]
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Difference-Maker (Set 1)",
@@ -1157,25 +935,14 @@
       "features": [
         "Causal Difference-Maker"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 6
     },
     "week": 5,
     "order_in_week": 1,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S3-Q11",
-      "PT102-S3-Q24",
-      "PT104-S1-Q3",
-      "PT104-S1-Q12",
-      "PT105-S2-Q6"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Easier) Set 4",
@@ -1187,14 +954,19 @@
     "difficulty_max": 2,
     "question_types": [
       "Most Strongly Supported",
+      "Must Be True",
+      "Sufficient Assumption",
+      "Parallel Reasoning",
       "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
       "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming"
     ],
     "reasoning_types": [
-      "Comparison"
+      "Conditional Logic"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1204,33 +976,25 @@
     "bank_filter": {
       "qtypes": [
         "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
         "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
         "Flaw"
       ],
       "features": [
         "Conditional Diagramming"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "count": 9
     },
     "week": 5,
     "order_in_week": 2,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S2-Q5",
-      "PT101-S3-Q2",
-      "PT101-S3-Q7",
-      "PT101-S3-Q16",
-      "PT101-S3-Q21",
-      "PT102-S2-Q2",
-      "PT102-S2-Q3",
-      "PT102-S2-Q9"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Anti-Causal - Set 2",
@@ -1241,15 +1005,16 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
+      "Weaken",
       "Flaw",
-      "Strengthen",
-      "Weaken"
+      "Strengthen"
     ],
     "question_features": [
       "Anti-Causal"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1258,33 +1023,21 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Weaken",
         "Flaw",
-        "Strengthen",
-        "Weaken"
+        "Strengthen"
       ],
       "features": [
         "Anti-Causal"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 5,
     "order_in_week": 3,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q9",
-      "PT103-S1-Q15",
-      "PT103-S3-Q3",
-      "PT105-S2-Q12",
-      "PT105-S4-Q9",
-      "PT106-S1-Q5",
-      "PT107-S1-Q7",
-      "PT111-S1-Q8"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 1",
@@ -1292,17 +1045,15 @@
     "category": "Pacing",
     "estimated_minutes": 56,
     "question_count": 6,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1313,28 +1064,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 5,
     "order_in_week": 4,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13",
-      "PT159-S3-Q11"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Medium) Set 3",
@@ -1345,10 +1083,13 @@
     "difficulty_min": 3,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Principle-Strengthen",
-      "Evaluate",
-      "Necessary Assumption"
+      "Strengthen",
+      "Weaken",
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -1356,6 +1097,7 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
+      "Causation",
       "Comparison"
     ],
     "start_button_label": "Start",
@@ -1365,34 +1107,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
         "Conditional Diagramming",
         "Explain Curious Fact",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 6
     },
     "week": 5,
     "order_in_week": 5,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S2-Q17"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Difference-Maker (set 2)",
@@ -1404,7 +1139,8 @@
     "difficulty_max": 4,
     "question_types": [
       "Most Strongly Supported",
-      "Must Be True"
+      "Must Be True",
+      "Necessary Assumption"
     ],
     "question_features": [
       "Causal Difference-Maker"
@@ -1421,34 +1157,20 @@
     "bank_filter": {
       "qtypes": [
         "Most Strongly Supported",
-        "Must Be True"
+        "Must Be True",
+        "Necessary Assumption"
       ],
       "features": [
         "Causal Difference-Maker"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 5,
     "order_in_week": 6,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S3-Q11",
-      "PT102-S3-Q24",
-      "PT104-S1-Q3",
-      "PT104-S1-Q12",
-      "PT105-S2-Q6",
-      "PT106-S1-Q22",
-      "PT107-S1-Q21",
-      "PT107-S4-Q3",
-      "PT108-S2-Q17"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Describing Arguments (set 2)",
@@ -1457,17 +1179,15 @@
     "estimated_minutes": 70,
     "question_count": 10,
     "difficulty_min": 1,
-    "difficulty_max": 4,
+    "difficulty_max": 5,
     "question_types": [
-      "Method of Reasoning",
       "Role",
+      "Method of Reasoning",
       "Main Conclusion"
     ],
-    "question_features": [
-      "Focused on Evidence"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1476,35 +1196,19 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "features": [
-        "Focused on Evidence"
-      ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "count": 10
     },
     "week": 5,
     "order_in_week": 7,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q10",
-      "PT101-S2-Q12",
-      "PT101-S2-Q15",
-      "PT101-S3-Q3",
-      "PT101-S3-Q17",
-      "PT102-S2-Q1",
-      "PT102-S2-Q7",
-      "PT102-S3-Q6",
-      "PT102-S3-Q8"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Agree/Disagree - Set 2",
@@ -1518,10 +1222,11 @@
       "Agree/Disagree"
     ],
     "question_features": [
-      "2-Speaker"
+      "2-Speaker",
+      "Battle of Opinions"
     ],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1533,25 +1238,17 @@
         "Agree/Disagree"
       ],
       "features": [
-        "2-Speaker"
+        "2-Speaker",
+        "Battle of Opinions"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 5,
     "order_in_week": 8,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q14",
-      "PT101-S3-Q1",
-      "PT102-S4-Q22",
-      "PT103-S1-Q16",
-      "PT104-S1-Q1"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 1",
@@ -1562,11 +1259,14 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
       "Most Strongly Supported",
-      "Principle-Strengthen",
       "Must Be True",
-      "Parallel Reasoning"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming"
@@ -1581,37 +1281,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
         "Most Strongly Supported",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 5,
     "order_in_week": 9,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q2",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q11",
-      "PT101-S2-Q13",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Evaluate - First Taste",
@@ -1624,12 +1313,10 @@
     "question_types": [
       "Evaluate"
     ],
-    "question_features": [
-      "Plausibility",
-      "Alternatives"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1640,29 +1327,15 @@
       "qtypes": [
         "Evaluate"
       ],
-      "features": [
-        "Plausibility",
-        "Alternatives"
-      ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 5,
     "order_in_week": 10,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q16",
-      "PT103-S1-Q22",
-      "PT104-S4-Q6",
-      "PT106-S2-Q7",
-      "PT108-S2-Q9",
-      "PT112-S1-Q24",
-      "PT114-S4-Q19"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Evaluate (set 1)",
@@ -1675,12 +1348,10 @@
     "question_types": [
       "Evaluate"
     ],
-    "question_features": [
-      "Plausibility",
-      "Alternatives"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1691,26 +1362,15 @@
       "qtypes": [
         "Evaluate"
       ],
-      "features": [
-        "Plausibility",
-        "Alternatives"
-      ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 4
     },
     "week": 5,
     "order_in_week": 11,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q16",
-      "PT103-S1-Q22",
-      "PT104-S4-Q6",
-      "PT106-S2-Q7"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Most Supported + Causal Difference-Maker",
@@ -1719,7 +1379,7 @@
     "estimated_minutes": 46,
     "question_count": 4,
     "difficulty_min": 2,
-    "difficulty_max": 3,
+    "difficulty_max": 4,
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -1742,23 +1402,14 @@
       "features": [
         "Causal Difference-Maker"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
-      "difficulty_max": 3,
+      "difficulty_max": 4,
       "count": 4
     },
     "week": 5,
     "order_in_week": 12,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT104-S1-Q3",
-      "PT104-S1-Q12",
-      "PT105-S2-Q6"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 2",
@@ -1766,8 +1417,8 @@
     "category": "Process",
     "estimated_minutes": 56,
     "question_count": 7,
-    "difficulty_min": 3,
-    "difficulty_max": 4,
+    "difficulty_min": 2,
+    "difficulty_max": 5,
     "question_types": [
       "Sufficient Assumption",
       "Principle-Strengthen"
@@ -1791,25 +1442,14 @@
       "features": [
         "Conditional Diagramming"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
-      "difficulty_max": 4,
+      "reasoning_types": [],
+      "difficulty_min": 2,
+      "difficulty_max": 5,
       "count": 7
     },
     "week": 5,
     "order_in_week": 13,
-    "source_file": "02_week_5_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S4-Q26",
-      "PT120-S3-Q21",
-      "PT123-S2-Q23",
-      "PT124-S3-Q25",
-      "PT125-S2-Q26",
-      "PT126-S3-Q21",
-      "PT127-S3-Q16"
-    ]
+    "source_file": "02_week_5_blue_lr_guided_drills.md"
   },
   {
     "title": "Abstract + Flaw (set 2)",
@@ -1827,6 +1467,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
+      "Comparison",
       "Conditional Logic"
     ],
     "start_button_label": "Start",
@@ -1842,28 +1483,14 @@
         "Abstract Answers",
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 10
     },
     "week": 9,
     "order_in_week": 1,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q23",
-      "PT102-S4-Q17",
-      "PT102-S4-Q23",
-      "PT103-S2-Q15",
-      "PT104-S4-Q25",
-      "PT105-S2-Q22",
-      "PT106-S2-Q18",
-      "PT106-S2-Q22",
-      "PT106-S3-Q20",
-      "PT107-S3-Q10"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Science + Sufficient Assumption",
@@ -1877,7 +1504,9 @@
       "Sufficient Assumption"
     ],
     "question_features": [
-      "Missing Link / Idea"
+      "Science",
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -1892,26 +1521,18 @@
         "Sufficient Assumption"
       ],
       "features": [
-        "Missing Link / Idea"
+        "Science",
+        "Missing Link / Idea",
+        "Conditional Conclusion"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 6
     },
     "week": 9,
     "order_in_week": 2,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q21",
-      "PT101-S2-Q24",
-      "PT101-S3-Q10",
-      "PT101-S3-Q19",
-      "PT102-S4-Q18",
-      "PT103-S3-Q21"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "EXCEPT (set 1)",
@@ -1919,18 +1540,19 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 5,
-    "difficulty_min": 4,
+    "difficulty_min": 3,
     "difficulty_max": 5,
     "question_types": [
+      "Strengthen",
       "Weaken",
-      "Strengthen"
+      "Paradox"
     ],
     "question_features": [
       "EXCEPT"
     ],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -1939,30 +1561,21 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Strengthen",
         "Weaken",
-        "Strengthen"
+        "Paradox"
       ],
       "features": [
         "EXCEPT"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 4,
+      "reasoning_types": [],
+      "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 5
     },
     "week": 9,
     "order_in_week": 3,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q19",
-      "PT101-S2-Q20",
-      "PT101-S3-Q22",
-      "PT105-S1-Q16",
-      "PT105-S1-Q19"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Weaken + Explain Curious Fact",
@@ -1994,24 +1607,14 @@
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 5
     },
     "week": 9,
     "order_in_week": 4,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q19",
-      "PT101-S3-Q22",
-      "PT102-S4-Q24",
-      "PT103-S1-Q9",
-      "PT103-S2-Q12"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Harder) Set 1",
@@ -2022,14 +1625,18 @@
     "difficulty_min": 4,
     "difficulty_max": 5,
     "question_types": [
-      "Flaw",
+      "Most Strongly Supported",
+      "Must Be True",
       "Sufficient Assumption",
-      "Principle-Conform",
+      "Parallel Reasoning",
+      "Parallel Flaw",
       "Principle-Strengthen",
-      "Must Be True"
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Contrapositive Logic"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -2041,35 +1648,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
-        "Principle-Conform",
+        "Parallel Reasoning",
+        "Parallel Flaw",
         "Principle-Strengthen",
-        "Must Be True"
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 8
     },
     "week": 9,
     "order_in_week": 5,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q21",
-      "PT101-S2-Q22",
-      "PT101-S2-Q23",
-      "PT101-S2-Q24",
-      "PT101-S2-Q25",
-      "PT101-S3-Q10",
-      "PT101-S3-Q11"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Must Be False (Harder) Set 2",
@@ -2077,14 +1676,12 @@
     "category": "Process",
     "estimated_minutes": 54,
     "question_count": 6,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 5,
     "question_types": [
       "Must Be False"
     ],
-    "question_features": [
-      "Conditional Diagramming"
-    ],
+    "question_features": [],
     "reasoning_types": [
       "Conditional Logic"
     ],
@@ -2097,27 +1694,15 @@
       "qtypes": [
         "Must Be False"
       ],
-      "features": [
-        "Conditional Diagramming"
-      ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 2,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 6
     },
     "week": 9,
     "order_in_week": 6,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S4-Q15",
-      "PT102-S4-Q16",
-      "PT102-S4-Q26",
-      "PT103-S3-Q12",
-      "PT111-S4-Q22",
-      "PT122-S1-Q7"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Strengthen / Weaken + Science",
@@ -2133,10 +1718,12 @@
     ],
     "question_features": [
       "Science",
-      "Plausibility"
+      "Plausibility",
+      "Missing Link / Idea"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2150,30 +1737,17 @@
       ],
       "features": [
         "Science",
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 10
     },
     "week": 9,
     "order_in_week": 7,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q10",
-      "PT102-S2-Q15",
-      "PT102-S3-Q21",
-      "PT102-S4-Q24",
-      "PT103-S1-Q9",
-      "PT103-S2-Q5",
-      "PT103-S2-Q25",
-      "PT104-S1-Q18",
-      "PT106-S1-Q15",
-      "PT106-S1-Q23"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Anti-Causal (Hard Mini-Set)",
@@ -2205,22 +1779,14 @@
       "features": [
         "Anti-Causal"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 3
     },
     "week": 9,
     "order_in_week": 8,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT111-S1-Q8",
-      "PT114-S4-Q13",
-      "PT123-S2-Q14"
-    ]
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Harder) Set 2",
@@ -2231,13 +1797,18 @@
     "difficulty_min": 4,
     "difficulty_max": 5,
     "question_types": [
-      "Flaw",
+      "Most Strongly Supported",
+      "Must Be True",
       "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
       "Principle-Conform",
-      "Principle-Strengthen"
+      "Flaw"
     ],
     "question_features": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Contrapositive Logic"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -2249,33 +1820,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
         "Principle-Conform",
-        "Principle-Strengthen"
+        "Flaw"
       ],
       "features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 10,
     "order_in_week": 1,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q21",
-      "PT101-S2-Q22",
-      "PT101-S2-Q23",
-      "PT101-S2-Q24",
-      "PT101-S2-Q25",
-      "PT101-S3-Q10"
-    ]
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Quantifiers Set 2",
@@ -2286,16 +1851,15 @@
     "difficulty_min": 3,
     "difficulty_max": 5,
     "question_types": [
-      "Must Be True",
       "Most Strongly Supported",
+      "Must Be True",
       "Flaw"
     ],
     "question_features": [
       "Quantifiers"
     ],
     "reasoning_types": [
-      "Conditional Logic",
-      "Comparison"
+      "Conditional Logic"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -2304,34 +1868,21 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Must Be True",
         "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "features": [
         "Quantifiers"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 8
     },
     "week": 10,
     "order_in_week": 2,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q11",
-      "PT101-S3-Q15",
-      "PT104-S1-Q20",
-      "PT104-S1-Q22",
-      "PT104-S1-Q23",
-      "PT105-S1-Q17",
-      "PT106-S2-Q19",
-      "PT106-S3-Q8"
-    ]
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 1",
@@ -2339,17 +1890,15 @@
     "category": "Process",
     "estimated_minutes": 46,
     "question_count": 5,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2360,27 +1909,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 5
     },
     "week": 10,
     "order_in_week": 3,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13"
-    ]
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
   },
   {
     "title": "EXCEPT (set 2)",
@@ -2391,15 +1928,18 @@
     "difficulty_min": 3,
     "difficulty_max": 5,
     "question_types": [
+      "Strengthen",
+      "Weaken",
+      "Paradox",
       "Flaw",
-      "Must Be True",
-      "Paradox"
+      "Must Be True"
     ],
     "question_features": [
       "EXCEPT"
     ],
     "reasoning_types": [
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2408,30 +1948,23 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
         "Flaw",
-        "Must Be True",
-        "Paradox"
+        "Must Be True"
       ],
       "features": [
         "EXCEPT"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 5
     },
     "week": 10,
     "order_in_week": 4,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q11",
-      "PT101-S2-Q18"
-    ]
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Harder) Set 3",
@@ -2442,17 +1975,21 @@
     "difficulty_min": 5,
     "difficulty_max": 5,
     "question_types": [
-      "Sufficient Assumption",
-      "Principle-Conform",
       "Most Strongly Supported",
-      "Must Be True"
+      "Must Be True",
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Contrapositive Logic"
     ],
     "reasoning_types": [
-      "Conditional Logic",
-      "Comparison"
+      "Conditional Logic"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2461,33 +1998,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Sufficient Assumption",
-        "Principle-Conform",
         "Most Strongly Supported",
-        "Must Be True"
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 5,
       "difficulty_max": 5,
       "count": 6
     },
     "week": 10,
     "order_in_week": 5,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q21",
-      "PT101-S2-Q22",
-      "PT101-S2-Q24",
-      "PT101-S3-Q24",
-      "PT102-S2-Q13",
-      "PT102-S2-Q21"
-    ]
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 2",
@@ -2497,18 +2028,13 @@
     "question_count": 7,
     "difficulty_min": 3,
     "difficulty_max": 4,
-    "question_types": [
-      "Method of Reasoning",
-      "Weaken",
-      "Most Strongly Supported",
-      "Strengthen",
-      "Parallel Flaw"
-    ],
+    "question_types": [],
     "question_features": [
       "Explain Curious Fact"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2516,35 +2042,18 @@
       "right_md": "# Try these 7 questions, in 11 minutes\n\n(1.5x = 17 mins, 2x = 22 mins)\n\nWhat is the **Curious Fact?** (ask it as a question)\n\n- what language tips us off?\n\nWhat is the **Author's Explanation / Hypothesis?**\n\n- Is there a causal verb in the conclusion?\n- Remember to spell out every link in the causal chain that author is envisioning, from initial Cause to ultimate Effect.\n\nDoes the correct answer deal with an **Alternate Explanation?**\n\n- If so, _Reverse Causality_ or _Third Factor?_\n\nOr does the answer deal with the **plausibility** of the Author's Explanation?\n\n- If no, does it use \"covariation\" data points, or some other means? (covariation means stuff like _No Cause, No Effect_ as a strengthener, or stuff like _Cause w/o Effect_ or _Effect w/o Cause_ as a weakener)\n\n---"
     },
     "bank_filter": {
-      "qtypes": [
-        "Method of Reasoning",
-        "Weaken",
-        "Most Strongly Supported",
-        "Strengthen",
-        "Parallel Flaw"
-      ],
+      "qtypes": [],
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 7,
     "order_in_week": 1,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q4",
-      "PT101-S3-Q17",
-      "PT101-S3-Q22",
-      "PT102-S2-Q8",
-      "PT102-S2-Q10",
-      "PT102-S4-Q12",
-      "PT102-S4-Q24"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Complete the Analogy (set 3)",
@@ -2555,8 +2064,8 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Method of Reasoning",
-      "Most Strongly Supported"
+      "Most Strongly Supported",
+      "Method of Reasoning"
     ],
     "question_features": [
       "Analogies"
@@ -2571,32 +2080,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Method of Reasoning"
       ],
       "features": [
         "Analogies"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 7,
     "order_in_week": 2,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT109-S1-Q2",
-      "PT113-S3-Q17",
-      "PT114-S2-Q20",
-      "PT115-S4-Q3",
-      "PT118-S4-Q12",
-      "PT123-S2-Q3",
-      "PT125-S2-Q10",
-      "PT125-S4-Q2"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumes Similarity (Mini-Set)",
@@ -2607,8 +2104,8 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Strengthen",
-      "Weaken"
+      "Weaken",
+      "Strengthen"
     ],
     "question_features": [
       "Assumes Similarity"
@@ -2623,29 +2120,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Strengthen",
-        "Weaken"
+        "Weaken",
+        "Strengthen"
       ],
       "features": [
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 5
     },
     "week": 7,
     "order_in_week": 3,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT106-S1-Q1",
-      "PT107-S4-Q1",
-      "PT107-S4-Q9",
-      "PT112-S1-Q2",
-      "PT117-S2-Q8"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 3",
@@ -2656,10 +2144,14 @@
     "difficulty_min": 4,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
-      "Principle-Strengthen",
+      "Most Strongly Supported",
+      "Must Be True",
       "Sufficient Assumption",
-      "Must Be True"
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -2675,34 +2167,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
-        "Must Be True"
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming",
         "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 7,
     "order_in_week": 4,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25",
-      "PT101-S3-Q10",
-      "PT101-S3-Q11",
-      "PT101-S3-Q15",
-      "PT101-S3-Q20"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 3",
@@ -2712,18 +2197,13 @@
     "question_count": 7,
     "difficulty_min": 3,
     "difficulty_max": 4,
-    "question_types": [
-      "Method of Reasoning",
-      "Weaken",
-      "Most Strongly Supported",
-      "Strengthen",
-      "Parallel Flaw"
-    ],
+    "question_types": [],
     "question_features": [
       "Explain Curious Fact"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2731,35 +2211,18 @@
       "right_md": "# Try these 7 questions untimed\n\nwhile rehearsing these steps:\n\nWhat is the **Curious Fact?**\n\n- what language tips us off? is there an _Asymmetric Comparison?_\n- ask yourself the Curious Fact: \"Why is it that ... [curious fact]?\"\n\nWhat is the **Author's Explanation / Hypothesis?**\n\n- Is there a verb or expression in the conclusion indicating that the author is making a causal claim?\n- Make sure that you spell out every step in the author's causal story. It's very common for an author to fail to mention each step in the causal chain that gets them from their causal explanation to the actual curious fact.\n\nDoes the correct answer deal with an **Alternate Explanation?**\n\n- If so, _Reverse Causality_ or _Third Factor?_\n\nOr does the answer deal with the **plausibility** of the Author's Explanation?\n\n- If no, does it use \"covariation\" data points, or some other means? (covariation means stuff like _No Cause, No Effect_ as a strengthener, or stuff like _Cause w/o Effect_ or _Effect w/o Cause_ as a weakener)\n\nDoes the correct answer deal with an **Alternate Explanation?**\n\n- Is it dealing with the idea of _Reverse Causality?_\n- Is it dealing with the idea of a _Third Factor?_\n\n---"
     },
     "bank_filter": {
-      "qtypes": [
-        "Method of Reasoning",
-        "Weaken",
-        "Most Strongly Supported",
-        "Strengthen",
-        "Parallel Flaw"
-      ],
+      "qtypes": [],
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 7,
     "order_in_week": 5,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q4",
-      "PT101-S3-Q17",
-      "PT101-S3-Q22",
-      "PT102-S2-Q8",
-      "PT102-S2-Q10",
-      "PT102-S4-Q12",
-      "PT102-S4-Q24"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Chains (Mini Set)",
@@ -2767,7 +2230,7 @@
     "category": "Patterns",
     "estimated_minutes": 36,
     "question_count": 4,
-    "difficulty_min": 3,
+    "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
       "Most Strongly Supported",
@@ -2793,23 +2256,14 @@
       "features": [
         "Causal Chains"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 3,
+      "reasoning_types": [],
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 4
     },
     "week": 7,
     "order_in_week": 6,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT103-S2-Q9",
-      "PT104-S1-Q19",
-      "PT105-S1-Q20",
-      "PT106-S1-Q16"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Evaluate (set 2)",
@@ -2822,12 +2276,10 @@
     "question_types": [
       "Evaluate"
     ],
-    "question_features": [
-      "Plausibility",
-      "Alternatives"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2838,29 +2290,15 @@
       "qtypes": [
         "Evaluate"
       ],
-      "features": [
-        "Plausibility",
-        "Alternatives"
-      ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 7,
     "order_in_week": 7,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q16",
-      "PT103-S1-Q22",
-      "PT104-S4-Q6",
-      "PT106-S2-Q7",
-      "PT108-S2-Q9",
-      "PT112-S1-Q24",
-      "PT114-S4-Q19"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 4",
@@ -2871,10 +2309,14 @@
     "difficulty_min": 3,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
-      "Principle-Strengthen",
+      "Most Strongly Supported",
       "Must Be True",
-      "Parallel Reasoning"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -2890,36 +2332,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming",
         "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 9
     },
     "week": 7,
     "order_in_week": 8,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q11",
-      "PT101-S2-Q13",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Intermediate Conclusions Set 2",
@@ -2930,13 +2363,15 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Main Conclusion",
-      "Role"
+      "Role",
+      "Main Conclusion"
     ],
     "question_features": [
       "Intermediate Conclusions"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Comparison"
+    ],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "Try these five questions that test us on the presence (or absence) of _Intermediate Conclusions_.\n\n**Role** and **Main Conclusion** questions usually \"hide\" the conclusion by making it the **very first claim**, or by making it some **rebuttal claim**.\n\nThey will also sometimes complicate our assessment of the argument's structure by throwing in multiples conclusions.\n\nArguments need a claim we call the Conclusion, and some Support for that claim, which we call the evidence or the premise(s).\n\nSome of those supporting premises can _themselves_ also be considered conclusions, if _they_ are supported by at least one claim. The more common name for a _supported premise_ is an Intermediate Conclusion, or a Subsidiary Conclusion.\n\nAny time you're asking yourself, \"Is this claim a Conclusion?\", you should ask yourself \"_why should I believe this claim? did the author provide a supporting reason?_\" If it's really a Conclusion, then you'll be able to point to at least one claim that sounds like a reason offered for why we should believe that claim.\n\nIf a claim **has** support, we can call it a Conclusion.  \nIf it **provides** support, we can call it a Premise.  \nIf it **has** support and also **provides** support, an Intermediate Conclusion.",
@@ -2944,8 +2379,8 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Main Conclusion",
-        "Role"
+        "Role",
+        "Main Conclusion"
       ],
       "features": [
         "Intermediate Conclusions"
@@ -2957,14 +2392,7 @@
     },
     "week": 7,
     "order_in_week": 9,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT106-S3-Q14",
-      "PT107-S1-Q11",
-      "PT111-S1-Q16",
-      "PT112-S4-Q13",
-      "PT115-S2-Q22"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Describing Arguments (set 3)",
@@ -2973,17 +2401,15 @@
     "estimated_minutes": 50,
     "question_count": 6,
     "difficulty_min": 1,
-    "difficulty_max": 4,
+    "difficulty_max": 5,
     "question_types": [
-      "Method of Reasoning",
       "Role",
+      "Method of Reasoning",
       "Main Conclusion"
     ],
-    "question_features": [
-      "Focused on Evidence"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -2992,31 +2418,19 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "features": [
-        "Focused on Evidence"
-      ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 7,
     "order_in_week": 10,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q10",
-      "PT101-S2-Q12",
-      "PT101-S2-Q15",
-      "PT101-S3-Q3",
-      "PT101-S3-Q17"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Chains - Set 3",
@@ -3024,18 +2438,15 @@
     "category": "Patterns",
     "estimated_minutes": 60,
     "question_count": 8,
-    "difficulty_min": 3,
-    "difficulty_max": 4,
-    "question_types": [
-      "Must Be True",
-      "Necessary Assumption"
-    ],
+    "difficulty_min": 1,
+    "difficulty_max": 5,
+    "question_types": [],
     "question_features": [
       "Causal Chains"
     ],
     "reasoning_types": [
       "Causation",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3043,34 +2454,18 @@
       "right_md": "# Try these 8 questions untimed.\n\nWork on understanding the causal chain,  \nbefore you look at answers\n\nOn Assumption questions, causal chain arguments might create a **missing link**.\n\nEXAMPLE: _Stress causes Anton to sweat. So, Anton probably gets sweaty when he plays chess._\n\nThis argument is assuming a missing link between playing chess and being stressed.\n\n**CONCLUSION**  \nplay chess ---------------> sweat\n\n**SUPPORT**  \nplay chess → stress → sweat  \n**ASSUMED** / **PREMISE**\n\nCausal chain arguments might create a **missing fact**.\n\nEXAMPLE: _Playing chess gives Anton stress, and he tends to get sweaty when he's stressed. Thus, he will probably be sweating tonight._\n\nThis argument is assuming that Anton will be playing chess tonight. It set up a causal chain and seems to be expecting the effect we get at the end of the chain, but it never triggered the causal chain.\n\nWhen you're trying to organize a causal chain on your paper, be patient trying to find the right causal sequence. Put **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea. Then, go seek out something that has to do with causing the left side, or something that could be caused by the right side.\n\nRemember, on **Most Supported**, if you know that A leads to B, which leads to C, it's pretty fair to say \"if you cut back on A, you'll get less C\"."
     },
     "bank_filter": {
-      "qtypes": [
-        "Must Be True",
-        "Necessary Assumption"
-      ],
+      "qtypes": [],
       "features": [
         "Causal Chains"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
-      "difficulty_max": 4,
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 8
     },
     "week": 7,
     "order_in_week": 11,
-    "source_file": "03_week_7_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT104-S1-Q19",
-      "PT107-S4-Q4",
-      "PT107-S4-Q5",
-      "PT109-S1-Q19",
-      "PT110-S3-Q5",
-      "PT113-S4-Q15",
-      "PT119-S3-Q15",
-      "PT122-S4-Q20"
-    ]
+    "source_file": "03_week_7_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Strengthen (Set 1)",
@@ -3084,7 +2479,8 @@
       "Principle-Strengthen"
     ],
     "question_features": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Conditional Conclusion"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -3099,27 +2495,17 @@
         "Principle-Strengthen"
       ],
       "features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 11,
     "order_in_week": 1,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S2-Q25",
-      "PT101-S3-Q20",
-      "PT101-S3-Q26",
-      "PT102-S2-Q23",
-      "PT104-S1-Q24",
-      "PT105-S1-Q14"
-    ]
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 2",
@@ -3129,12 +2515,7 @@
     "question_count": 8,
     "difficulty_min": 4,
     "difficulty_max": 5,
-    "question_types": [
-      "Weaken",
-      "Necessary Assumption",
-      "Strengthen",
-      "Most Strongly Supported"
-    ],
+    "question_types": [],
     "question_features": [
       "Explain Curious Fact"
     ],
@@ -3148,36 +2529,18 @@
       "right_md": "# Try these 8 problems, in 13 minutes\n\n**(1) Locate the Curious Fact in the evidence, and _ask_ the curious question.**\n\n**(2) Spell out the author's explanation for the curious fact, because the author is often conveying a lot of implicit ideas within their conclusion:**\n\n**(3) Think about _Alternate Explanations_ for the Curious Fact.**  \nConsider _Reverse Causality, Third Factor, Awareness vs. Incidence, Return to Normalcy_\n\n**(4) Think about what could help us assess the _Plausibility_ of the Author's Explanation.**  \nConsider _Covariation_ (No Cause, No Effect / Effect without Cause / Cause without Effect), or _Presence / Motive / Method_ ideas (suspect was at the scene of the crime / suspect had incentive to do it / here's how the suspect could have done it).\n\n**Flaw, Weaken, Evaluate**, more likely to be supplying an Alternate Explanation.  \n**Sufficient Assumption**, more likely to rule out any hope of Alternate Explanation.  \n**Strengthen, Necessary Assumption**, more likely to be addressing Plausibility of the Author's Explanation.\n\n---"
     },
     "bank_filter": {
-      "qtypes": [
-        "Weaken",
-        "Necessary Assumption",
-        "Strengthen",
-        "Most Strongly Supported"
-      ],
+      "qtypes": [],
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 8
     },
     "week": 11,
     "order_in_week": 2,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q19",
-      "PT101-S3-Q18",
-      "PT101-S3-Q22",
-      "PT101-S3-Q23",
-      "PT102-S2-Q8",
-      "PT102-S4-Q24",
-      "PT103-S2-Q12",
-      "PT103-S3-Q14"
-    ]
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Harder) Set 1",
@@ -3188,17 +2551,23 @@
     "difficulty_min": 4,
     "difficulty_max": 5,
     "question_types": [
-      "Flaw",
+      "Sufficient Assumption",
       "Necessary Assumption",
+      "Principle-Strengthen",
+      "Strengthen",
       "Weaken",
-      "Sufficient Assumption"
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ],
     "reasoning_types": [
-      "Conditional Logic",
-      "Comparison"
+      "Causation",
+      "Comparison",
+      "Conditional Logic"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3207,34 +2576,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Sufficient Assumption",
         "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
         "Weaken",
-        "Sufficient Assumption"
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 11,
     "order_in_week": 3,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q17",
-      "PT101-S2-Q19",
-      "PT101-S2-Q20",
-      "PT101-S2-Q21",
-      "PT101-S2-Q23",
-      "PT101-S2-Q24"
-    ]
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Speedwalking LR (set 1)",
@@ -3245,16 +2607,21 @@
     "difficulty_min": 1,
     "difficulty_max": 1,
     "question_types": [
-      "Method of Reasoning",
-      "Main Conclusion",
+      "Paradox",
       "Flaw",
+      "Role",
+      "Main Conclusion",
       "Necessary Assumption",
-      "Strengthen"
+      "Sufficient Assumption",
+      "Strengthen",
+      "Weaken",
+      "Method of Reasoning",
+      "Must Be True"
     ],
     "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3263,41 +2630,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
-        "Main Conclusion",
+        "Paradox",
         "Flaw",
+        "Role",
+        "Main Conclusion",
         "Necessary Assumption",
-        "Strengthen"
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
       ],
       "features": [],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 1,
       "count": 15
     },
     "week": 11,
     "order_in_week": 4,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q15",
-      "PT101-S3-Q2",
-      "PT101-S3-Q13",
-      "PT102-S3-Q8",
-      "PT102-S3-Q14",
-      "PT103-S1-Q4",
-      "PT103-S2-Q1",
-      "PT103-S2-Q13",
-      "PT103-S3-Q5",
-      "PT104-S1-Q5",
-      "PT104-S1-Q6",
-      "PT104-S4-Q2",
-      "PT104-S4-Q10",
-      "PT105-S1-Q3"
-    ]
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 4",
@@ -3305,17 +2657,15 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 5,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3326,27 +2676,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 5
     },
     "week": 8,
     "order_in_week": 1,
-    "source_file": "04_week_8_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13"
-    ]
+    "source_file": "04_week_8_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumes Similarity (set 1)",
@@ -3357,8 +2695,8 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Strengthen",
-      "Weaken"
+      "Weaken",
+      "Strengthen"
     ],
     "question_features": [
       "Assumes Similarity"
@@ -3373,31 +2711,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Strengthen",
-        "Weaken"
+        "Weaken",
+        "Strengthen"
       ],
       "features": [
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 7
     },
     "week": 8,
     "order_in_week": 2,
-    "source_file": "04_week_8_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT106-S1-Q1",
-      "PT107-S4-Q1",
-      "PT107-S4-Q9",
-      "PT112-S1-Q2",
-      "PT117-S2-Q8",
-      "PT119-S2-Q25",
-      "PT123-S2-Q9"
-    ]
+    "source_file": "04_week_8_blue_lr_guided_drills.md"
   },
   {
     "title": "Anti-Causal - Set 3",
@@ -3429,25 +2756,14 @@
       "features": [
         "Anti-Causal"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 6
     },
     "week": 8,
     "order_in_week": 3,
-    "source_file": "04_week_8_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT105-S2-Q12",
-      "PT105-S4-Q9",
-      "PT106-S1-Q5",
-      "PT111-S1-Q8",
-      "PT112-S1-Q2",
-      "PT113-S4-Q11"
-    ]
+    "source_file": "04_week_8_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Medium) Set 5",
@@ -3458,11 +2774,14 @@
     "difficulty_min": 4,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
-      "Principle-Strengthen",
-      "Sufficient Assumption",
+      "Most Strongly Supported",
       "Must Be True",
-      "Most Strongly Supported"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -3478,38 +2797,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Principle-Strengthen",
-        "Sufficient Assumption",
+        "Most Strongly Supported",
         "Must Be True",
-        "Most Strongly Supported"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming",
         "Contrapositive Logic"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 8,
     "order_in_week": 4,
-    "source_file": "04_week_8_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25",
-      "PT101-S3-Q10",
-      "PT101-S3-Q11",
-      "PT101-S3-Q15",
-      "PT101-S3-Q20",
-      "PT101-S3-Q25",
-      "PT101-S3-Q26",
-      "PT102-S2-Q8"
-    ]
+    "source_file": "04_week_8_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Harder) Set 2",
@@ -3520,18 +2828,22 @@
     "difficulty_min": 4,
     "difficulty_max": 5,
     "question_types": [
-      "Necessary Assumption",
-      "Weaken",
       "Sufficient Assumption",
       "Principle-Conform",
-      "Strengthen"
+      "Necessary Assumption",
+      "Parallel Flaw",
+      "Strengthen",
+      "Weaken",
+      "Evaluate"
     ],
     "question_features": [
-      "Explain Curious Fact"
+      "Conditional Diagramming",
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ],
     "reasoning_types": [
-      "Comparison",
       "Causation",
+      "Comparison",
       "Conditional Logic"
     ],
     "start_button_label": "Start",
@@ -3541,39 +2853,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Necessary Assumption",
-        "Weaken",
         "Sufficient Assumption",
         "Principle-Conform",
-        "Strengthen"
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
       ],
       "features": [
-        "Explain Curious Fact"
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 10
     },
     "week": 12,
     "order_in_week": 1,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q17",
-      "PT101-S2-Q19",
-      "PT101-S2-Q20",
-      "PT101-S2-Q21",
-      "PT101-S2-Q22",
-      "PT101-S2-Q24",
-      "PT101-S3-Q10",
-      "PT101-S3-Q18",
-      "PT101-S3-Q22",
-      "PT101-S3-Q23"
-    ]
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 3",
@@ -3581,17 +2881,15 @@
     "category": "Process",
     "estimated_minutes": 56,
     "question_count": 5,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3602,27 +2900,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 5
     },
     "week": 12,
     "order_in_week": 2,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13"
-    ]
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Harder) Set 4",
@@ -3633,10 +2919,14 @@
     "difficulty_min": 4,
     "difficulty_max": 5,
     "question_types": [
-      "Flaw",
+      "Most Strongly Supported",
+      "Must Be True",
       "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
       "Principle-Conform",
-      "Principle-Strengthen"
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming"
@@ -3651,33 +2941,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
         "Principle-Conform",
-        "Principle-Strengthen"
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "count": 7
     },
     "week": 12,
     "order_in_week": 3,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q21",
-      "PT101-S2-Q22",
-      "PT101-S2-Q23",
-      "PT101-S2-Q24",
-      "PT101-S2-Q25",
-      "PT101-S3-Q10"
-    ]
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
   },
   {
     "title": "Speedwalking LR (set 2)",
@@ -3688,16 +2971,21 @@
     "difficulty_min": 1,
     "difficulty_max": 1,
     "question_types": [
-      "Method of Reasoning",
-      "Main Conclusion",
+      "Paradox",
       "Flaw",
+      "Role",
+      "Main Conclusion",
       "Necessary Assumption",
-      "Strengthen"
+      "Sufficient Assumption",
+      "Strengthen",
+      "Weaken",
+      "Method of Reasoning",
+      "Must Be True"
     ],
     "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3706,41 +2994,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
-        "Main Conclusion",
+        "Paradox",
         "Flaw",
+        "Role",
+        "Main Conclusion",
         "Necessary Assumption",
-        "Strengthen"
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
       ],
       "features": [],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 1,
       "count": 15
     },
     "week": 12,
     "order_in_week": 4,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q15",
-      "PT101-S3-Q2",
-      "PT101-S3-Q13",
-      "PT102-S3-Q8",
-      "PT102-S3-Q14",
-      "PT103-S1-Q4",
-      "PT103-S2-Q1",
-      "PT103-S2-Q13",
-      "PT103-S3-Q5",
-      "PT104-S1-Q5",
-      "PT104-S1-Q6",
-      "PT104-S4-Q2",
-      "PT104-S4-Q10",
-      "PT105-S1-Q3"
-    ]
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
   },
   {
     "title": "First Sentence Conclusions",
@@ -3748,11 +3021,11 @@
     "category": "Patterns",
     "estimated_minutes": 30,
     "question_count": 6,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Role",
-      "Main Conclusion"
+      "Main Conclusion",
+      "Role"
     ],
     "question_features": [
       "First Sentence Conclusion"
@@ -3767,30 +3040,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Role",
-        "Main Conclusion"
+        "Main Conclusion",
+        "Role"
       ],
       "features": [
         "First Sentence Conclusion"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 1,
     "order_in_week": 1,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q10",
-      "PT102-S4-Q1",
-      "PT103-S2-Q8",
-      "PT105-S1-Q1",
-      "PT105-S1-Q2",
-      "PT105-S1-Q11"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "The Core Connection",
@@ -3801,8 +3064,11 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Flaw",
       "Weaken",
+      "Strengthen",
       "Principle-Strengthen",
       "Evaluate"
     ],
@@ -3811,7 +3077,7 @@
       "Links Between Premises"
     ],
     "reasoning_types": [
-      "Comparison"
+      "Conditional Logic"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -3820,8 +3086,11 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Flaw",
         "Weaken",
+        "Strengthen",
         "Principle-Strengthen",
         "Evaluate"
       ],
@@ -3829,25 +3098,14 @@
         "Missing Link / Idea",
         "Links Between Premises"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 7
     },
     "week": 1,
     "order_in_week": 2,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Easier) Set 1",
@@ -3858,19 +3116,21 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Flaw",
-      "Weaken",
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Principle-Strengthen",
-      "Evaluate",
-      "Necessary Assumption"
+      "Strengthen",
+      "Weaken",
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Conditional Logic",
+      "Comparison"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -3879,38 +3139,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
         "Missing Link / Idea",
         "Argue the Anti-Conclusion"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 9
     },
     "week": 1,
     "order_in_week": 3,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4",
-      "PT101-S3-Q5",
-      "PT101-S3-Q6"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "Framework Sampler",
@@ -3946,18 +3194,15 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 6,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
       "Comparison",
-      "Conditional Logic"
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -3968,29 +3213,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 1,
     "order_in_week": 5,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT131-S3-Q16",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (First Taste)",
@@ -4000,18 +3231,13 @@
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 3,
-    "question_types": [
-      "Method of Reasoning",
-      "Flaw",
-      "Strengthen",
-      "Parallel Flaw",
-      "Weaken"
-    ],
+    "question_types": [],
     "question_features": [
       "Explain Curious Fact"
     ],
     "reasoning_types": [
-      "Causation"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -4019,36 +3245,18 @@
       "right_md": "# Try these 8 questions untimed,\n\nwhile rehearsing these steps:\n\n## What is the Curious Fact?\n\n- what language tips us off? is there an asymmetric comparison?\n- _ask_ yourself the Curious Fact: _why/how is it that [curious fact]?_\n\n## What is the Author's Explanation / Hypothesis?\n\n- Is there a verb or expression in the conclusion indicating that the author is making a causal claim?\n\n- Make sure that you spell out every step in the author's causal story. It's very common for an author to fail to mention each step in the causal chain that gets them from their causal explanation to the actual curious fact.\n\n## Does the correct answer deal with an Alternate Explanation?\n\n- Is it dealing with the idea of _Reverse Causality?_\n\n- Is it dealing with the idea of a _Third Factor?_\n\nOr does it address the **plausibility** of the Author's Explanation?\n\n- Is it addressing plausibility via covariation? (strengthening by No Cause / No Effect, or More Cause / More Effect data points or weakening by Cause without Effect, or Effect without Cause data points)\n\n- Or is it addressing plausibility some other way? (placing the suspect at the scene of the crime, or explaining the motive/mechanism by which the crime would have taken place)\n\n---"
     },
     "bank_filter": {
-      "qtypes": [
-        "Method of Reasoning",
-        "Flaw",
-        "Strengthen",
-        "Parallel Flaw",
-        "Weaken"
-      ],
+      "qtypes": [],
       "features": [
         "Explain Curious Fact"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 8
     },
     "week": 1,
     "order_in_week": 6,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q4",
-      "PT101-S3-Q17",
-      "PT102-S2-Q9",
-      "PT102-S2-Q10",
-      "PT102-S4-Q6",
-      "PT102-S4-Q12",
-      "PT103-S1-Q9"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "Flaw - First Taste",
@@ -4064,7 +3272,9 @@
     "question_features": [
       "Famous Flaws"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Comparison"
+    ],
     "start_button_label": "Continue",
     "instruction_card": {
       "left_md": "# Try out some Flaw questions,\n\nto get a feel for how they look and how they work.\n\n## keywords\n\nvulnerable to criticism, flaw, questionable reasoning, errors of reasoning\n\n## examples\n\nThe argument is most vulnerable to criticism because it ...  \nFred commits which of the following errors of reasoning?  \nThe publicist's reasoning is flawed because she ...\n\n## stimulus tendencies\n\nThese are arguments that either have a noteworthy Assumption, are vulnerable to a certain sort of Objection, or make some sort of Dubious / Illicit Move.",
@@ -4084,16 +3294,7 @@
     },
     "week": 1,
     "order_in_week": 7,
-    "source_file": "week_1_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q8",
-      "PT102-S3-Q1",
-      "PT102-S4-Q4",
-      "PT103-S1-Q3",
-      "PT103-S2-Q1",
-      "PT103-S2-Q4",
-      "PT103-S3-Q10"
-    ]
+    "source_file": "week_1_blue_lr_guided_drills.md"
   },
   {
     "title": "Sampling",
@@ -4126,28 +3327,14 @@
         "Sampling",
         "Part vs. Whole"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 2,
     "order_in_week": 1,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT103-S1-Q3",
-      "PT106-S3-Q2",
-      "PT106-S3-Q20",
-      "PT108-S2-Q12",
-      "PT111-S4-Q18",
-      "PT114-S2-Q25",
-      "PT118-S3-Q13",
-      "PT118-S4-Q10",
-      "PT119-S4-Q12",
-      "PT124-S1-Q25"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Abstract + Flaw (set 1)",
@@ -4165,7 +3352,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -4180,28 +3367,14 @@
         "Abstract Answers",
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 2,
     "order_in_week": 2,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q8",
-      "PT101-S2-Q23",
-      "PT102-S3-Q1",
-      "PT102-S3-Q23",
-      "PT102-S4-Q4",
-      "PT102-S4-Q17",
-      "PT103-S1-Q3",
-      "PT103-S2-Q4",
-      "PT103-S3-Q8",
-      "PT103-S3-Q10"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Must Be True - First Taste",
@@ -4209,17 +3382,13 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 6,
-    "difficulty_min": 3,
+    "difficulty_min": 1,
     "difficulty_max": 5,
     "question_types": [
       "Must Be True"
     ],
-    "question_features": [
-      "Ruling Out Options"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison",
       "Conditional Logic"
     ],
     "start_button_label": "Continue",
@@ -4231,29 +3400,15 @@
       "qtypes": [
         "Must Be True"
       ],
-      "features": [
-        "Ruling Out Options"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 3,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 6
     },
     "week": 2,
     "order_in_week": 3,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q11",
-      "PT101-S3-Q8",
-      "PT101-S3-Q11",
-      "PT101-S3-Q15",
-      "PT102-S2-Q21",
-      "PT102-S3-Q24"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Easier) Set 1",
@@ -4265,17 +3420,19 @@
     "difficulty_max": 3,
     "question_types": [
       "Most Strongly Supported",
-      "Parallel Flaw",
-      "Flaw",
-      "Principle-Strengthen",
       "Must Be True",
-      "Parallel Reasoning"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming"
     ],
     "reasoning_types": [
-      "Comparison"
+      "Conditional Logic"
     ],
     "start_button_label": "Continue",
     "instruction_card": {
@@ -4285,36 +3442,25 @@
     "bank_filter": {
       "qtypes": [
         "Most Strongly Supported",
-        "Parallel Flaw",
-        "Flaw",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 9
     },
     "week": 2,
     "order_in_week": 4,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S2-Q5",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q11",
-      "PT101-S2-Q13",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Reconcile the Pivot (First Taste)",
@@ -4322,7 +3468,7 @@
     "category": "Patterns",
     "estimated_minutes": 50,
     "question_count": 5,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
       "Most Strongly Supported",
@@ -4332,8 +3478,7 @@
       "Important Pivot"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -4348,24 +3493,14 @@
       "features": [
         "Important Pivot"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 2,
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 5
     },
     "week": 2,
     "order_in_week": 5,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT104-S1-Q3",
-      "PT104-S1-Q22",
-      "PT104-S4-Q23",
-      "PT105-S4-Q1",
-      "PT107-S1-Q21"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Missing Links: First Taste",
@@ -4376,16 +3511,15 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Principle-Strengthen",
+      "Sufficient Assumption",
       "Necessary Assumption",
-      "Sufficient Assumption"
+      "Principle-Strengthen"
     ],
     "question_features": [
       "Missing Link / Idea"
     ],
     "reasoning_types": [
-      "Conditional Logic",
-      "Causation"
+      "Conditional Logic"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -4394,32 +3528,21 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Principle-Strengthen",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Sufficient Assumption"
+        "Principle-Strengthen"
       ],
       "features": [
         "Missing Link / Idea"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 2,
     "order_in_week": 6,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S3-Q13",
-      "PT101-S3-Q19",
-      "PT102-S4-Q18",
-      "PT103-S1-Q4",
-      "PT103-S3-Q9"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Necessary Assumption - First Taste",
@@ -4427,7 +3550,7 @@
     "category": "Process",
     "estimated_minutes": 60,
     "question_count": 10,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
       "Necessary Assumption"
@@ -4451,29 +3574,14 @@
       "features": [
         "Defender"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
-      "difficulty_min": 2,
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 10
     },
     "week": 2,
     "order_in_week": 7,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S3-Q5",
-      "PT102-S2-Q6",
-      "PT102-S2-Q12",
-      "PT102-S3-Q2",
-      "PT102-S3-Q13",
-      "PT102-S4-Q9",
-      "PT103-S1-Q8",
-      "PT103-S1-Q14",
-      "PT103-S2-Q7",
-      "PT103-S2-Q10"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Easier) Set 2",
@@ -4484,9 +3592,12 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Flaw",
-      "Weaken",
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Principle-Strengthen",
+      "Strengthen",
+      "Weaken",
+      "Flaw",
       "Evaluate"
     ],
     "question_features": [
@@ -4495,6 +3606,7 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
+      "Causation",
       "Comparison"
     ],
     "start_button_label": "Start",
@@ -4504,9 +3616,12 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
         "Evaluate"
       ],
       "features": [
@@ -4514,24 +3629,14 @@
         "Explain Curious Fact",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 2,
     "order_in_week": 8,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S3-Q2"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Most Supported - First Taste",
@@ -4544,9 +3649,7 @@
     "question_types": [
       "Most Strongly Supported"
     ],
-    "question_features": [
-      "Ruling Out Options"
-    ],
+    "question_features": [],
     "reasoning_types": [
       "Comparison",
       "Causation"
@@ -4560,30 +3663,15 @@
       "qtypes": [
         "Most Strongly Supported"
       ],
-      "features": [
-        "Ruling Out Options"
-      ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "count": 8
     },
     "week": 2,
     "order_in_week": 9,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S3-Q7",
-      "PT102-S2-Q3",
-      "PT102-S2-Q8",
-      "PT102-S2-Q13",
-      "PT102-S2-Q19",
-      "PT102-S3-Q3",
-      "PT102-S3-Q19"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Causal Chains",
@@ -4594,7 +3682,8 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Most Strongly Supported"
+      "Most Strongly Supported",
+      "Must Be True"
     ],
     "question_features": [
       "Causal Chains"
@@ -4610,27 +3699,20 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "features": [
         "Causal Chains"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 3
     },
     "week": 2,
     "order_in_week": 10,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q3",
-      "PT103-S2-Q9",
-      "PT105-S1-Q20"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Easier) Set 3",
@@ -4641,16 +3723,20 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Flaw",
-      "Weaken",
+      "Sufficient Assumption",
+      "Necessary Assumption",
       "Principle-Strengthen",
-      "Evaluate",
-      "Necessary Assumption"
+      "Strengthen",
+      "Weaken",
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
+      "Missing Link / Idea",
       "Argue the Anti-Conclusion"
     ],
     "reasoning_types": [
+      "Conditional Logic",
       "Comparison"
     ],
     "start_button_label": "Start",
@@ -4660,35 +3746,26 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
+        "Missing Link / Idea",
         "Argue the Anti-Conclusion"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 8
     },
     "week": 2,
     "order_in_week": 11,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4",
-      "PT101-S3-Q5"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Missing Links (color-coded)",
@@ -4699,12 +3776,13 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Principle-Strengthen",
+      "Sufficient Assumption",
       "Necessary Assumption",
-      "Sufficient Assumption"
+      "Principle-Strengthen"
     ],
     "question_features": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -4716,34 +3794,22 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Principle-Strengthen",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Sufficient Assumption"
+        "Principle-Strengthen"
       ],
       "features": [
-        "Missing Link / Idea"
+        "Missing Link / Idea",
+        "Links Between Premises"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 9
     },
     "week": 2,
     "order_in_week": 12,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S3-Q13",
-      "PT101-S3-Q19",
-      "PT102-S4-Q18",
-      "PT103-S1-Q4",
-      "PT103-S3-Q9",
-      "PT104-S1-Q16",
-      "PT105-S1-Q8",
-      "PT105-S1-Q18"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Conform - (First Taste)",
@@ -4751,7 +3817,7 @@
     "category": "Process",
     "estimated_minutes": 24,
     "question_count": 6,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
       "Principle-Conform"
@@ -4760,7 +3826,8 @@
       "Principles in Answers"
     ],
     "reasoning_types": [
-      "Conditional Logic"
+      "Conditional Logic",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -4774,24 +3841,14 @@
       "features": [
         "Principles in Answers"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
-      "difficulty_min": 2,
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 2,
     "order_in_week": 13,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q11",
-      "PT102-S4-Q14",
-      "PT105-S4-Q12",
-      "PT107-S1-Q19",
-      "PT107-S4-Q17",
-      "PT109-S3-Q6"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Principle-Strengthen - (First Taste)",
@@ -4805,7 +3862,8 @@
       "Principle-Strengthen"
     ],
     "question_features": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Conditional Conclusion"
     ],
     "reasoning_types": [
       "Conditional Logic"
@@ -4820,24 +3878,17 @@
         "Principle-Strengthen"
       ],
       "features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 4
     },
     "week": 2,
     "order_in_week": 14,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT102-S4-Q5",
-      "PT105-S1-Q24",
-      "PT105-S4-Q7"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "Strengthen - (First Taste)",
@@ -4851,7 +3902,8 @@
       "Strengthen"
     ],
     "question_features": [
-      "Plausibility"
+      "Plausibility",
+      "Missing Link / Idea"
     ],
     "reasoning_types": [
       "Causation",
@@ -4867,27 +3919,17 @@
         "Strengthen"
       ],
       "features": [
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 2,
     "order_in_week": 15,
-    "source_file": "week_2_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q10",
-      "PT102-S4-Q6",
-      "PT104-S1-Q5",
-      "PT104-S4-Q2",
-      "PT104-S4-Q16",
-      "PT106-S1-Q1"
-    ]
+    "source_file": "week_2_blue_lr_guided_drills.md"
   },
   {
     "title": "EXCEPT - First Taste",
@@ -4895,19 +3937,19 @@
     "category": "Process",
     "estimated_minutes": 50,
     "question_count": 5,
-    "difficulty_min": 2,
+    "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
       "Paradox",
-      "Most Strongly Supported",
-      "Strengthen"
+      "Strengthen",
+      "Most Strongly Supported"
     ],
     "question_features": [
       "EXCEPT"
     ],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -4917,30 +3959,20 @@
     "bank_filter": {
       "qtypes": [
         "Paradox",
-        "Most Strongly Supported",
-        "Strengthen"
+        "Strengthen",
+        "Most Strongly Supported"
       ],
       "features": [
         "EXCEPT"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
+      "reasoning_types": [],
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 5
     },
     "week": 3,
     "order_in_week": 1,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S3-Q14",
-      "PT102-S2-Q19",
-      "PT104-S4-Q16",
-      "PT106-S1-Q1",
-      "PT106-S3-Q4"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Anti-Causal - Set 1",
@@ -4951,9 +3983,9 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
+      "Weaken",
       "Flaw",
-      "Strengthen",
-      "Weaken"
+      "Strengthen"
     ],
     "question_features": [
       "Anti-Causal"
@@ -4969,31 +4001,21 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Weaken",
         "Flaw",
-        "Strengthen",
-        "Weaken"
+        "Strengthen"
       ],
       "features": [
         "Anti-Causal"
       ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 5
     },
     "week": 3,
     "order_in_week": 2,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q9",
-      "PT103-S1-Q15",
-      "PT103-S3-Q3",
-      "PT103-S3-Q5",
-      "PT105-S2-Q12"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Explain Curious Fact (Easier) Set 1",
@@ -5001,17 +4023,15 @@
     "category": "Process",
     "estimated_minutes": 46,
     "question_count": 6,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5022,28 +4042,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 3,
     "order_in_week": 3,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13",
-      "PT159-S3-Q11"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Analogies (set 1)",
@@ -5076,24 +4083,14 @@
       "features": [
         "Analogies"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 3,
     "order_in_week": 4,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT104-S4-Q22",
-      "PT119-S4-Q7",
-      "PT123-S2-Q3",
-      "PT129-S2-Q18",
-      "PT133-S2-Q5",
-      "PT134-S2-Q13"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Break the Comparison!",
@@ -5104,9 +4101,9 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
-      "Necessary Assumption",
-      "Weaken",
       "Flaw",
+      "Weaken",
+      "Necessary Assumption",
       "Strengthen"
     ],
     "question_features": [
@@ -5114,8 +4111,7 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5124,36 +4120,23 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Necessary Assumption",
-        "Weaken",
         "Flaw",
+        "Weaken",
+        "Necessary Assumption",
         "Strengthen"
       ],
       "features": [
         "Assumes Difference",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 8
     },
     "week": 3,
     "order_in_week": 5,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S3-Q13",
-      "PT102-S4-Q9",
-      "PT103-S2-Q5",
-      "PT103-S2-Q22",
-      "PT103-S3-Q11",
-      "PT104-S1-Q13",
-      "PT104-S4-Q2",
-      "PT104-S4-Q9"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Agree/Disagree - Set 1",
@@ -5167,10 +4150,11 @@
       "Agree/Disagree"
     ],
     "question_features": [
-      "2-Speaker"
+      "2-Speaker",
+      "Battle of Opinions"
     ],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5182,28 +4166,17 @@
         "Agree/Disagree"
       ],
       "features": [
-        "2-Speaker"
+        "2-Speaker",
+        "Battle of Opinions"
       ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "count": 8
     },
     "week": 3,
     "order_in_week": 6,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q14",
-      "PT101-S3-Q1",
-      "PT102-S4-Q22",
-      "PT103-S1-Q16",
-      "PT104-S1-Q1",
-      "PT105-S1-Q15",
-      "PT105-S2-Q13",
-      "PT106-S2-Q21"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Rebuttal Conclusions",
@@ -5239,13 +4212,7 @@
     },
     "week": 3,
     "order_in_week": 7,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q15",
-      "PT102-S2-Q7",
-      "PT102-S4-Q1",
-      "PT103-S2-Q8"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Describing Arguments (set 1)",
@@ -5254,17 +4221,15 @@
     "estimated_minutes": 50,
     "question_count": 5,
     "difficulty_min": 1,
-    "difficulty_max": 4,
+    "difficulty_max": 5,
     "question_types": [
-      "Method of Reasoning",
       "Role",
+      "Method of Reasoning",
       "Main Conclusion"
     ],
-    "question_features": [
-      "Focused on Evidence"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5273,30 +4238,19 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "features": [
-        "Focused on Evidence"
-      ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "count": 5
     },
     "week": 3,
     "order_in_week": 8,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q10",
-      "PT101-S2-Q12",
-      "PT101-S2-Q15",
-      "PT101-S3-Q3"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Easier) Set 4",
@@ -5307,7 +4261,11 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
+      "Sufficient Assumption",
+      "Necessary Assumption",
+      "Principle-Conform",
       "Flaw",
+      "Strengthen",
       "Weaken",
       "Evaluate"
     ],
@@ -5316,8 +4274,8 @@
       "Argue the Anti-Conclusion"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Conditional Logic",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5326,7 +4284,11 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Conform",
         "Flaw",
+        "Strengthen",
         "Weaken",
         "Evaluate"
       ],
@@ -5334,25 +4296,14 @@
         "Missing Link / Idea",
         "Argue the Anti-Conclusion"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 6
     },
     "week": 3,
     "order_in_week": 9,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S2-Q16",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Fill in the Blank (Logical Completion) - First Taste",
@@ -5368,7 +4319,9 @@
     "question_features": [
       "Logical Completion"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Comparison"
+    ],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "# Fill in the Blank\n\nalso known as Logical Completion\n\nMost of the time, the blank is prefaced by a Conclusion indicator (so, thus, therefore, hence), and so we're trying to pick the most logical conclusion, which really means we're doing a **Most Supported** question.\n\nSometimes, the blank is prefaced by a Support indicator (because, since), which means we're either doing a Strengthen question, if we're supporting a Conclusion, or we're doing a Paradox question, if we're supporting a surprising claim that goes against the background facts.",
@@ -5388,13 +4341,7 @@
     },
     "week": 3,
     "order_in_week": 10,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT102-S2-Q3",
-      "PT113-S2-Q9",
-      "PT113-S4-Q1",
-      "PT115-S2-Q6"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Complete the Analogy (set 1)",
@@ -5425,23 +4372,14 @@
       "features": [
         "Analogies"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 5
     },
     "week": 3,
     "order_in_week": 11,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT119-S4-Q7",
-      "PT123-S2-Q3",
-      "PT129-S2-Q18",
-      "PT133-S2-Q5",
-      "PT134-S2-Q13"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Conditional Logic (Easier) Set 2",
@@ -5453,15 +4391,20 @@
     "difficulty_max": 3,
     "question_types": [
       "Most Strongly Supported",
-      "Flaw",
-      "Principle-Strengthen",
       "Must Be True",
-      "Parallel Reasoning"
+      "Sufficient Assumption",
+      "Parallel Reasoning",
+      "Parallel Flaw",
+      "Principle-Strengthen",
+      "Principle-Conform",
+      "Flaw"
     ],
     "question_features": [
       "Conditional Diagramming"
     ],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Conditional Logic"
+    ],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "Focus on finding **Conditional Indicator** words and using them as a way to organize how you write the **If / Then** rule.\n\nWrite or think through the contrapositive as well. Beware the temptation to make illegal Backwards or Opposite moves.\n\nThe LR question types that most often would prompt us to consider diagramming the Conditional Logic are\n\n- Must Be True\n- Most Supported\n- Assumption (mostly Sufficient, but some Necessary)\n- Parallel / Parallel Flaw\n- Principle-Strengthen\n- Principle-Conform",
@@ -5470,10 +4413,13 @@
     "bank_filter": {
       "qtypes": [
         "Most Strongly Supported",
-        "Flaw",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "features": [
         "Conditional Diagramming"
@@ -5485,16 +4431,7 @@
     },
     "week": 3,
     "order_in_week": 12,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q11",
-      "PT101-S2-Q13",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Weaken + Comparison",
@@ -5503,7 +4440,7 @@
     "estimated_minutes": 50,
     "question_count": 6,
     "difficulty_min": 1,
-    "difficulty_max": 3,
+    "difficulty_max": 4,
     "question_types": [
       "Weaken"
     ],
@@ -5512,8 +4449,7 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5528,25 +4464,14 @@
         "Assumes Difference",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
-      "difficulty_max": 3,
+      "difficulty_max": 4,
       "count": 6
     },
     "week": 3,
     "order_in_week": 13,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT103-S2-Q5",
-      "PT112-S1-Q2",
-      "PT112-S1-Q8",
-      "PT117-S2-Q8",
-      "PT119-S2-Q25",
-      "PT122-S2-Q8"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Complete the Analogy (set 2)",
@@ -5557,17 +4482,18 @@
     "difficulty_min": 1,
     "difficulty_max": 3,
     "question_types": [
+      "Necessary Assumption",
+      "Strengthen",
+      "Principle-Conform",
       "Most Strongly Supported",
       "Flaw",
-      "Weaken",
-      "Necessary Assumption"
+      "Weaken"
     ],
     "question_features": [
       "Analogies"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5576,36 +4502,24 @@
     },
     "bank_filter": {
       "qtypes": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle-Conform",
         "Most Strongly Supported",
         "Flaw",
-        "Weaken",
-        "Necessary Assumption"
+        "Weaken"
       ],
       "features": [
         "Analogies"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Causation"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "count": 9
     },
     "week": 3,
     "order_in_week": 14,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q2",
-      "PT101-S2-Q6",
-      "PT101-S2-Q7",
-      "PT101-S2-Q8",
-      "PT101-S3-Q2",
-      "PT101-S3-Q4",
-      "PT101-S3-Q5",
-      "PT101-S3-Q6",
-      "PT101-S3-Q7"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Role + Main Conclusion (set 1)",
@@ -5620,7 +4534,9 @@
       "Main Conclusion"
     ],
     "question_features": [],
-    "reasoning_types": [],
+    "reasoning_types": [
+      "Comparison"
+    ],
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "**Role** and **Main Conclusion** questions usually \"hide\" the conclusion by making it the **very first claim**, or by making it some **rebuttal claim**.\n\n**Opinion** indicators (should, probably, ought to) and **Pivot** indicators (but, yet, however) are very helpful for understanding which claims we should assign to which roles in the argument.\n\n**Arguments** need a claim we call the **Conclusion**, and some Support for that claim, which we call the evidence or the premise(s).\n\nSome of those supporting premises can _themselves_ also be considered conclusions, if _they_ are supported by at least one claim. The more common name for a _supported premise_ is an Intermediate Conclusion, or a Subsidiary Conclusion.\n\nAny time you're asking yourself, \"Is this claim a Conclusion?\", you should ask yourself \"_why should I believe this claim? did the author provide a supporting reason?_\" If it's really a Conclusion, then you'll be able to point to at least one claim that sounds like a reason why you should believe that claim.\n\nIf a claim **has** support, we can call it a Conclusion.  \nIf it **provides** support, we can call it a Premise.  \nIf it **has** support and also **provides** support, an Intermediate Conclusion.",
@@ -5639,16 +4555,7 @@
     },
     "week": 3,
     "order_in_week": 15,
-    "source_file": "week_3_blue_lr_guided_drills.md",
-    "question_qids": [
-      "PT101-S2-Q10",
-      "PT101-S2-Q15",
-      "PT102-S2-Q1",
-      "PT103-S3-Q4",
-      "PT105-S1-Q1",
-      "PT105-S1-Q2",
-      "PT105-S4-Q6"
-    ]
+    "source_file": "week_3_blue_lr_guided_drills.md"
   },
   {
     "title": "Assumption Family (Medium) Set 2",
@@ -5659,11 +4566,13 @@
     "difficulty_min": 3,
     "difficulty_max": 4,
     "question_types": [
-      "Flaw",
-      "Principle-Strengthen",
-      "Evaluate",
+      "Sufficient Assumption",
       "Necessary Assumption",
-      "Weaken"
+      "Principle-Strengthen",
+      "Strengthen",
+      "Weaken",
+      "Flaw",
+      "Evaluate"
     ],
     "question_features": [
       "Conditional Diagramming",
@@ -5671,8 +4580,8 @@
       "Assumes Similarity"
     ],
     "reasoning_types": [
-      "Comparison",
-      "Conditional Logic"
+      "Causation",
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5681,40 +4590,27 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Flaw",
-        "Principle-Strengthen",
-        "Evaluate",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Weaken"
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "features": [
         "Conditional Diagramming",
         "Explain Curious Fact",
         "Assumes Similarity"
       ],
-      "reasoning_types": [
-        "Comparative Reasoning",
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "count": 10
     },
     "week": 10,
     "order_in_week": 6,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT101-S2-Q1",
-      "PT101-S2-Q6",
-      "PT101-S2-Q8",
-      "PT101-S2-Q9",
-      "PT101-S2-Q16",
-      "PT101-S2-Q17",
-      "PT101-S2-Q20",
-      "PT101-S2-Q23",
-      "PT101-S2-Q25",
-      "PT101-S3-Q4"
-    ]
+    "source_file": "lsatlab-studyplan"
   },
   {
     "title": "Explain Curious Fact (Easier) Set 2",
@@ -5722,17 +4618,15 @@
     "category": "Pacing",
     "estimated_minutes": 25,
     "question_count": 6,
-    "difficulty_min": 2,
-    "difficulty_max": 4,
+    "difficulty_min": 1,
+    "difficulty_max": 5,
     "question_types": [
       "Paradox"
     ],
-    "question_features": [
-      "Explain Curious Fact"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation",
-      "Comparison"
+      "Comparison",
+      "Causation"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5743,28 +4637,15 @@
       "qtypes": [
         "Paradox"
       ],
-      "features": [
-        "Explain Curious Fact"
-      ],
-      "reasoning_types": [
-        "Causation",
-        "Comparative Reasoning"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
       "count": 6
     },
     "week": 11,
     "order_in_week": 5,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT117-S2-Q15",
-      "PT127-S2-Q13",
-      "PT135-S2-Q19",
-      "PT140-S3-Q16",
-      "PT153-S3-Q13",
-      "PT159-S3-Q11"
-    ]
+    "source_file": "lsatlab-studyplan"
   },
   {
     "title": "Famous Flaws (Easier)",
@@ -5781,7 +4662,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5795,23 +4676,14 @@
       "features": [
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "count": 5
     },
     "week": 10,
     "order_in_week": 7,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT102-S3-Q1",
-      "PT102-S4-Q4",
-      "PT103-S1-Q3",
-      "PT103-S2-Q1",
-      "PT103-S2-Q4"
-    ]
+    "source_file": "lsatlab-studyplan"
   },
   {
     "title": "Famous Flaws (Easier) Set 2",
@@ -5828,7 +4700,7 @@
       "Famous Flaws"
     ],
     "reasoning_types": [
-      "Conditional Logic"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5842,23 +4714,14 @@
       "features": [
         "Famous Flaws"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "count": 5
     },
     "week": 10,
     "order_in_week": 8,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT102-S3-Q1",
-      "PT102-S4-Q4",
-      "PT103-S1-Q3",
-      "PT103-S2-Q1",
-      "PT103-S2-Q4"
-    ]
+    "source_file": "lsatlab-studyplan"
   },
   {
     "title": "Missing Links Set 2",
@@ -5869,8 +4732,9 @@
     "difficulty_min": 3,
     "difficulty_max": 5,
     "question_types": [
-      "Principle-Strengthen",
-      "Sufficient Assumption"
+      "Sufficient Assumption",
+      "Necessary Assumption",
+      "Principle-Strengthen"
     ],
     "question_features": [
       "Missing Link / Idea"
@@ -5885,30 +4749,21 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Principle-Strengthen",
-        "Sufficient Assumption"
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
       ],
       "features": [
         "Missing Link / Idea"
       ],
-      "reasoning_types": [
-        "Conditional Reasoning"
-      ],
+      "reasoning_types": [],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "count": 6
     },
     "week": 12,
     "order_in_week": 5,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT101-S2-Q9",
-      "PT101-S2-Q21",
-      "PT101-S2-Q24",
-      "PT101-S3-Q10",
-      "PT101-S3-Q19",
-      "PT102-S2-Q23"
-    ]
+    "source_file": "lsatlab-studyplan"
   },
   {
     "title": "Describing Arguments (Match Family)",
@@ -5917,17 +4772,15 @@
     "estimated_minutes": 35,
     "question_count": 10,
     "difficulty_min": 1,
-    "difficulty_max": 4,
+    "difficulty_max": 5,
     "question_types": [
-      "Method of Reasoning",
       "Role",
+      "Method of Reasoning",
       "Main Conclusion"
     ],
-    "question_features": [
-      "Focused on Evidence"
-    ],
+    "question_features": [],
     "reasoning_types": [
-      "Causation"
+      "Comparison"
     ],
     "start_button_label": "Start",
     "instruction_card": {
@@ -5936,34 +4789,18 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "features": [
-        "Focused on Evidence"
-      ],
-      "reasoning_types": [
-        "Causation"
-      ],
+      "features": [],
+      "reasoning_types": [],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "count": 10
     },
     "week": 13,
     "order_in_week": 1,
-    "source_file": "lsatlab-studyplan",
-    "question_qids": [
-      "PT101-S2-Q3",
-      "PT101-S2-Q10",
-      "PT101-S2-Q12",
-      "PT101-S2-Q15",
-      "PT101-S3-Q3",
-      "PT101-S3-Q17",
-      "PT102-S2-Q1",
-      "PT102-S2-Q7",
-      "PT102-S3-Q6",
-      "PT102-S3-Q8"
-    ]
+    "source_file": "lsatlab-studyplan"
   }
 ]

@@ -5,9 +5,8 @@
     "lr_questions": 3964,
     "feature_vocab": 60,
     "classification_counts": {
-      "verified-by-qids": 71,
+      "ready": 87,
       "blended": 26,
-      "override-set": 16,
       "defer-rc": 1
     },
     "violations": 0
@@ -26,9 +25,6 @@
       "current_question_features": [
         "Reconcile the Pivot"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -37,50 +33,28 @@
         "Important Pivot"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Must Be True",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "final_question_features": [
         "Important Pivot"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation",
-        "Conditional Logic"
+        "Comparison"
       ],
-      "observed_features": [
-        "Important Pivot 100%",
-        "Causal Difference-Maker 40%",
-        "Alternatives 20%",
-        "Anti-Causal 20%",
-        "Causal Chains 20%",
-        "Dense Stimulus 20%",
-        "Explain Curious Fact 20%",
-        "Math-y Stuff 20%",
-        "Medical 20%",
-        "Percentages 20%",
-        "Quantifiers 20%",
-        "Rebuttals 20%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 48,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q24",
         "PT104-S1-Q3",
         "PT104-S1-Q19",
         "PT104-S1-Q22",
         "PT104-S4-Q14"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -97,9 +71,6 @@
       "current_question_features": [
         "Blended Set"
       ],
-      "current_reasoning_types": [
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Parallel Reasoning",
         "Paradox"
@@ -109,52 +80,31 @@
         "Alternatives"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
-      "relaxation": "strict",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Parallel Reasoning",
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact",
-        "Alternatives"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
         "Comparison",
-        "Conditional Logic"
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 67%",
-        "Alternatives 50%",
-        "Missing Link / Idea 33%",
-        "Science 33%",
-        "Timeframes 33%",
-        "Anti-Causal 17%",
-        "Breadcrumbs 17%",
-        "Defender 17%",
-        "Plans / Recommendations 17%",
-        "Plausibility 17%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 313,
+      "pool_sample": [
+        "PT101-S2-Q13",
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 10,
-      "selected": 6,
-      "question_qids": [
-        "PT108-S2-Q16",
-        "PT113-S4-Q14",
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT131-S3-Q16",
-        "PT135-S2-Q19"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": []
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
     },
     {
       "slug": "w4-01-principle-strengthen-set-2",
@@ -168,7 +118,6 @@
       "current_question_features": [
         "Principle-Strengthen"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Principle-Strengthen"
       ],
@@ -177,46 +126,30 @@
         "Conditional Conclusion"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Strengthen"
       ],
       "final_question_features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Missing Link / Idea 29%",
-        "Abstract Answers 14%",
-        "Plans / Recommendations 14%",
-        "Weighing Tradeoffs 14%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 68,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S2-Q25",
         "PT101-S3-Q20",
         "PT101-S3-Q26",
-        "PT102-S2-Q23",
-        "PT102-S4-Q5",
-        "PT105-S1-Q14"
+        "PT102-S2-Q23"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w4-02-principle-strengthen-application-set-1",
@@ -231,7 +164,6 @@
       "current_question_features": [
         "Principle-Strengthen"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Principle-Strengthen",
         "Principle-Conform"
@@ -241,45 +173,31 @@
         "Conditional Conclusion"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Strengthen",
         "Principle-Conform"
       ],
       "final_question_features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Weighing Tradeoffs 40%",
-        "Abstract Answers 20%",
-        "Missing Link / Idea 20%",
-        "Plans / Recommendations 20%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 136,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S2-Q25",
         "PT101-S3-Q20",
         "PT101-S3-Q26",
         "PT102-S2-Q11"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w4-03-reconcile-the-pivot-set-2",
@@ -294,9 +212,6 @@
       "current_question_features": [
         "Reconcile the Pivot"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -305,57 +220,28 @@
         "Important Pivot"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Must Be True",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "final_question_features": [
         "Important Pivot"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation",
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Important Pivot 100%",
-        "Causal Difference-Maker 33%",
-        "Dense Stimulus 22%",
-        "Math-y Stuff 22%",
-        "Rebuttals 22%",
-        "Alternatives 11%",
-        "Anti-Causal 11%",
-        "Belief / Knowledge / Intent 11%",
-        "Breadcrumbs 11%",
-        "Causal Chains 11%",
-        "Explain Curious Fact 11%",
-        "Medical 11%",
-        "Percentages 11%",
-        "Quantifiers 11%",
-        "Timeframes 11%"
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 48,
-      "selected": 9,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q24",
         "PT104-S1-Q3",
         "PT104-S1-Q19",
         "PT104-S1-Q22",
-        "PT104-S4-Q14",
-        "PT104-S4-Q23",
-        "PT105-S4-Q1",
-        "PT107-S1-Q21",
-        "PT107-S3-Q17"
+        "PT104-S4-Q14"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -373,9 +259,6 @@
       "current_question_features": [
         "Causal Chains"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -385,10 +268,6 @@
         "Causal Chains"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
@@ -402,42 +281,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Causal Chains 100%",
-        "Causal Difference-Maker 22%",
-        "Dense Stimulus 22%",
-        "Important Pivot 22%",
-        "Medical 22%",
-        "Missing Link / Idea 22%",
-        "New Concept in Conclusion 22%",
-        "Rebuttals 22%",
-        "Science 22%",
-        "Anti-Causal 11%",
-        "Binaries 11%",
-        "Contrapositive Logic 11%",
-        "Defender 11%",
-        "Explain Curious Fact 11%",
-        "Plans / Recommendations 11%",
-        "Plausibility 11%",
-        "Sufficient vs. Necessary Flaw 11%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 36,
-      "selected": 9,
-      "question_qids": [
+      "pool_sample": [
         "PT103-S2-Q9",
         "PT104-S1-Q19",
         "PT105-S1-Q20",
         "PT106-S1-Q16",
-        "PT106-S1-Q22",
-        "PT107-S1-Q8",
-        "PT107-S4-Q3",
-        "PT107-S4-Q4",
-        "PT107-S4-Q5"
+        "PT106-S1-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -454,9 +308,6 @@
       "current_question_features": [
         "Causal Difference-Maker"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -465,10 +316,6 @@
         "Causal Difference-Maker"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
@@ -479,33 +326,19 @@
       ],
       "final_reasoning_types": [
         "Comparison",
-        "Causation",
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Causal Difference-Maker 100%",
-        "Important Pivot 33%",
-        "Alternatives 17%",
-        "Breadcrumbs 17%",
-        "Dense Stimulus 17%",
-        "Explain Curious Fact 17%",
-        "Proposition/Generalization 17%",
-        "Rebuttals 17%"
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 66,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q2",
         "PT103-S2-Q2",
         "PT104-S1-Q3",
         "PT104-S1-Q12",
-        "PT105-S2-Q6",
-        "PT107-S1-Q21"
+        "PT105-S2-Q6"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -523,7 +356,6 @@
       "current_question_features": [
         "Missing Links / Common Terms / Color-Coding"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -534,55 +366,32 @@
         "Links Between Premises"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Principle-Strengthen",
         "Sufficient Assumption",
-        "Necessary Assumption"
+        "Necessary Assumption",
+        "Principle-Strengthen"
       ],
       "final_question_features": [
-        "Missing Link / Idea"
+        "Missing Link / Idea",
+        "Links Between Premises"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 100%",
-        "New Concept in Conclusion 29%",
-        "Principles in Answers 29%",
-        "Conditional Conclusion 14%",
-        "Defender 14%",
-        "First Sentence Conclusion 14%",
-        "Plans / Recommendations 14%",
-        "Predictions 14%",
-        "Quantifiers 14%",
-        "Science 14%",
-        "Timeframes 14%",
-        "Untriggered Conditional 14%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 235,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S3-Q10",
         "PT101-S3-Q19",
         "PT102-S2-Q23",
-        "PT102-S4-Q18",
-        "PT102-S4-Q25",
-        "PT103-S3-Q9"
+        "PT102-S4-Q18"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Links Between Premises"
-      ]
+      "notes": []
     },
     {
       "slug": "w4-07-assumption-family-medium-set-1",
@@ -602,11 +411,6 @@
       "current_question_features": [
         "Three Main Reasoning Structures"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic",
-        "Comparisons",
-        "Causation"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -622,16 +426,15 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -639,38 +442,22 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
+        "Causation",
         "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 33%",
-        "Missing Link / Idea 33%",
-        "Defender 17%",
-        "Famous Flaws 17%",
-        "Part vs. Whole 17%",
-        "Plans / Recommendations 17%",
-        "Principles in Answers 17%",
-        "Rebuttals 17%",
-        "Sampling 17%",
-        "Timeframes 17%"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
-      "pool_available": 879,
-      "selected": 6,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S2-Q17"
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Explain Curious Fact, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w4-08-famous-flaw-easier-set-1",
@@ -684,7 +471,6 @@
       "current_question_features": [
         "Famous Flaws"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -692,10 +478,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -704,40 +486,19 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Causation",
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Rebuttals 33%",
-        "Sufficient vs. Necessary Flaw 25%",
-        "Abstract Answers 8%",
-        "Alternatives 8%",
-        "Belief / Knowledge / Intent 8%",
-        "Conditional Diagramming 8%",
-        "Explain Curious Fact 8%",
-        "Part vs. Whole 8%"
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 174,
-      "selected": 12,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q8",
         "PT102-S3-Q1",
         "PT102-S4-Q4",
         "PT103-S1-Q3",
-        "PT103-S2-Q1",
-        "PT103-S2-Q4",
-        "PT103-S3-Q10",
-        "PT104-S4-Q7",
-        "PT104-S4-Q10",
-        "PT105-S4-Q8",
-        "PT105-S4-Q13",
-        "PT106-S1-Q9"
+        "PT103-S2-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -754,7 +515,6 @@
       "current_question_features": [
         "Intermediate Conclusions"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Main Conclusion"
@@ -763,43 +523,28 @@
         "Intermediate Conclusions"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Main Conclusion",
-        "Role"
+        "Role",
+        "Main Conclusion"
       ],
       "final_question_features": [
         "Intermediate Conclusions"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Intermediate Conclusions 100%",
-        "Rebuttals 60%",
-        "Dense Stimulus 40%",
-        "Important Pivot 40%",
-        "Science 40%",
-        "First Sentence Conclusion 20%",
-        "Implied Conclusion 20%",
-        "Refute a Conditional 20%",
-        "Timeframes 20%"
+      "final_reasoning_types": [
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 38,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT106-S3-Q14",
         "PT107-S1-Q11",
         "PT111-S1-Q16",
         "PT112-S4-Q13",
         "PT115-S2-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -815,7 +560,6 @@
       "current_question_features": [
         "Famous Flaws"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -823,10 +567,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -835,29 +575,19 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Causation",
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Abstract Answers 20%",
-        "Dense Stimulus 20%",
-        "Rebuttals 20%",
-        "Sufficient vs. Necessary Flaw 20%"
+        "Comparison"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "pool_available": 107,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q8",
         "PT101-S2-Q23",
         "PT102-S4-Q17",
         "PT103-S3-Q10",
         "PT105-S4-Q8"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -872,9 +602,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -891,16 +618,16 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -909,35 +636,19 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 25%",
-        "Famous Flaws 25%",
-        "Missing Link / Idea 25%",
-        "Principles in Answers 25%",
-        "Abstract Answers 13%",
-        "Dense Stimulus 13%",
-        "Quantifiers 13%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 4,
-      "pool_available": 829,
-      "selected": 8,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q11",
-        "PT101-S2-Q13",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25"
+      "pool_available": 104,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S1-Q8",
+        "PT107-S1-Q22"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w8-03-must-be-false-medium-set-1",
@@ -951,9 +662,6 @@
       "current_question_features": [
         "First / Medium Must Be False"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Must Be False"
       ],
@@ -961,39 +669,28 @@
         "Conditional Diagramming"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Must Be False"
       ],
-      "final_question_features": [
-        "Conditional Diagramming"
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Causal Chains 25%",
-        "EXCEPT 25%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 18,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S4-Q15",
         "PT102-S4-Q16",
         "PT102-S4-Q26",
-        "PT103-S3-Q12"
+        "PT103-S3-Q12",
+        "PT111-S4-Q22"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Conditional Diagramming"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -1008,7 +705,6 @@
       "current_question_features": [
         "Famous Flaws"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Parallel Flaw"
       ],
@@ -1016,10 +712,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Parallel Flaw"
@@ -1028,29 +720,20 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Sufficient vs. Necessary Flaw 60%",
-        "Part vs. Whole 40%",
-        "Conditional Conclusion 20%",
-        "Conditional Diagramming 20%",
-        "Explain Curious Fact 20%"
+        "Conditional Logic",
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 30,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT103-S3-Q13",
         "PT104-S1-Q11",
         "PT104-S4-Q13",
         "PT106-S1-Q3",
         "PT106-S3-Q21"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1066,9 +749,6 @@
       "current_question_features": [
         "Relative vs. Absolute"
       ],
-      "current_reasoning_types": [
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -1078,52 +758,29 @@
         "Relative vs. Absolute"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
-      "relaxation": "strict",
+      "relaxation": "band±1",
       "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "final_question_features": [
         "Relative vs. Absolute"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
+        "Comparison"
       ],
-      "observed_features": [
-        "Relative vs. Absolute 100%",
-        "Argue the Anti-Conclusion 43%",
-        "Rebuttals 43%",
-        "Famous Flaws 29%",
-        "Math-y Stuff 29%",
-        "Medical 29%",
-        "Alternatives 14%",
-        "Anti-Causal 14%",
-        "Conditional Conclusion 14%",
-        "Explain Curious Fact 14%",
-        "Important Pivot 14%",
-        "Net Effect 14%",
-        "Percentages 14%",
-        "Timeframes 14%"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 18,
-      "selected": 7,
-      "question_qids": [
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 21,
+      "pool_sample": [
         "PT101-S3-Q25",
         "PT103-S3-Q19",
         "PT107-S4-Q14",
         "PT123-S3-Q4",
-        "PT124-S1-Q22",
-        "PT127-S2-Q1",
-        "PT131-S1-Q12"
+        "PT124-S1-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1140,7 +797,6 @@
       "current_question_features": [
         "Science-heavy Stimulus"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Strengthen",
         "Weaken"
@@ -1151,10 +807,6 @@
         "Missing Link / Idea"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Strengthen",
@@ -1162,49 +814,26 @@
       ],
       "final_question_features": [
         "Science",
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Plausibility 75%",
-        "Explain Curious Fact 63%",
-        "Science 50%",
-        "Alternatives 25%",
-        "Causal Difference-Maker 25%",
-        "Conditional Conclusion 25%",
-        "EXCEPT 25%",
-        "2-Speaker 13%",
-        "Defender 13%",
-        "Dense Stimulus 13%",
-        "Focused on Evidence 13%",
-        "Links Between Premises 13%",
-        "Missing Link / Idea 13%",
-        "Rebuttals 13%",
-        "Repetitive Answers 13%",
-        "Untriggered Conditional 13%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "pool_available": 63,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q21",
         "PT102-S4-Q24",
         "PT103-S2-Q25",
         "PT104-S1-Q18",
-        "PT106-S1-Q23",
-        "PT106-S3-Q25",
-        "PT107-S4-Q20",
-        "PT109-S1-Q17"
+        "PT106-S1-Q23"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea"
-      ]
+      "notes": []
     },
     {
       "slug": "w8-07-principle-conform-principle-in-stimulus-set-1",
@@ -1218,7 +847,6 @@
       "current_question_features": [
         "Principle in Stimulus"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Principle-Conform"
       ],
@@ -1226,10 +854,6 @@
         "Principles in Stimulus"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Conform"
@@ -1240,30 +864,17 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Stimulus 100%",
-        "Belief / Knowledge / Intent 13%",
-        "Conditional Diagramming 13%",
-        "Contrapositive Logic 13%",
-        "Principles in Answers 13%",
-        "Sufficient vs. Necessary Flaw 13%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 28,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT106-S1-Q10",
         "PT106-S3-Q23",
         "PT108-S3-Q16",
         "PT115-S2-Q11",
-        "PT116-S3-Q5",
-        "PT118-S4-Q21",
-        "PT121-S1-Q4",
-        "PT123-S2-Q7"
+        "PT116-S3-Q5"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1279,7 +890,6 @@
       "current_question_features": [
         "Principles in Answers"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Principle-Conform"
       ],
@@ -1287,10 +897,6 @@
         "Principles in Answers"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Conform"
@@ -1298,27 +904,21 @@
       "final_question_features": [
         "Principles in Answers"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Missing Link / Idea 40%",
-        "Plans / Recommendations 40%",
-        "Weighing Tradeoffs 40%",
-        "Important Pivot 20%"
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 67,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q11",
         "PT102-S2-Q24",
         "PT102-S4-Q14",
         "PT105-S4-Q12",
         "PT105-S4-Q24"
       ],
-      "classification": "verified-by-qids",
-      "changed": false,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1334,9 +934,6 @@
       "current_question_features": [
         "Causal Relationship"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported"
       ],
@@ -1344,11 +941,7 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
-      "relaxation": "strict",
+      "relaxation": "band±1",
       "final_question_types": [
         "Most Strongly Supported"
       ],
@@ -1359,29 +952,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Alternatives 60%",
-        "Causal Difference-Maker 40%",
-        "Rebuttals 40%",
-        "Important Pivot 20%",
-        "Plausibility 20%",
-        "Proposition/Generalization 20%",
-        "Timeframes 20%"
-      ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 12,
-      "selected": 5,
-      "question_qids": [
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 18,
+      "pool_sample": [
         "PT102-S2-Q8",
         "PT104-S1-Q3",
+        "PT106-S2-Q10",
         "PT108-S2-Q17",
-        "PT126-S1-Q5",
-        "PT143-S4-Q5"
+        "PT126-S1-Q5"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1399,9 +980,6 @@
       "current_question_features": [
         "Trait Overlap Inferences"
       ],
-      "current_reasoning_types": [
-        "Quantifiers"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -1411,14 +989,10 @@
         "Quantifiers"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Must Be True",
         "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "final_question_features": [
@@ -1427,31 +1001,17 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Quantifiers 100%",
-        "Abstract Answers 25%",
-        "2-Speaker 13%",
-        "Dense Stimulus 13%",
-        "Famous Flaws 13%",
-        "Important Pivot 13%",
-        "Sufficient vs. Necessary Flaw 13%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 46,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q11",
         "PT101-S3-Q15",
         "PT104-S1-Q22",
         "PT106-S3-Q8",
-        "PT107-S1-Q18",
-        "PT109-S1-Q9",
-        "PT109-S3-Q8",
-        "PT109-S4-Q21"
+        "PT107-S1-Q18"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1467,9 +1027,6 @@
       "current_question_features": [
         "Medium Must Be False"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Must Be False"
       ],
@@ -1477,39 +1034,28 @@
         "Conditional Diagramming"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Must Be False"
       ],
-      "final_question_features": [
-        "Conditional Diagramming"
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Causal Chains 25%",
-        "EXCEPT 25%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 18,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S4-Q15",
         "PT102-S4-Q16",
         "PT102-S4-Q26",
-        "PT103-S3-Q12"
+        "PT103-S3-Q12",
+        "PT111-S4-Q22"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Conditional Diagramming"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -1525,9 +1071,6 @@
       "current_question_features": [
         "Causal Difference-Maker"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -1536,10 +1079,6 @@
         "Causal Difference-Maker"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
@@ -1552,27 +1091,17 @@
         "Comparison",
         "Causation"
       ],
-      "observed_features": [
-        "Causal Difference-Maker 100%",
-        "Important Pivot 33%",
-        "Alternatives 17%",
-        "Explain Curious Fact 17%",
-        "Rebuttals 17%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 62,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q2",
         "PT101-S3-Q11",
         "PT102-S3-Q24",
         "PT104-S1-Q3",
-        "PT104-S1-Q12",
-        "PT105-S2-Q6"
+        "PT104-S1-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1586,9 +1115,6 @@
         "Mixed LR question types"
       ],
       "current_question_features": [
-        "Conditional Logic"
-      ],
-      "current_reasoning_types": [
         "Conditional Logic"
       ],
       "target_types": [
@@ -1605,60 +1131,36 @@
         "Conditional Diagramming"
       ],
       "blended": true,
-      "band": [
-        1,
-        2
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
         "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
         "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming"
       ],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 22%",
-        "Math-y Stuff 22%",
-        "Alternatives 11%",
-        "Analogies 11%",
-        "Anti-Causal 11%",
-        "Causal Chains 11%",
-        "Causal Difference-Maker 11%",
-        "Conditional Diagramming 11%",
-        "Explain Curious Fact 11%",
-        "Focused on Evidence 11%",
-        "Logical Completion 11%",
-        "Medical 11%",
-        "Part vs. Whole 11%",
-        "Rebuttals 11%",
-        "Repetitive Answers 11%"
+        "Conditional Logic"
       ],
       "difficulty_min": 1,
       "difficulty_max": 2,
-      "pool_available": 732,
-      "selected": 9,
-      "question_qids": [
-        "PT101-S2-Q2",
-        "PT101-S2-Q5",
-        "PT101-S3-Q2",
-        "PT101-S3-Q7",
-        "PT101-S3-Q16",
+      "pool_available": 54,
+      "pool_sample": [
         "PT101-S3-Q21",
-        "PT102-S2-Q2",
-        "PT102-S2-Q3",
-        "PT102-S2-Q9"
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming"
-      ]
+      "notes": []
     },
     {
       "slug": "w5-03-anti-causal-set-2",
@@ -1674,9 +1176,6 @@
       "current_question_features": [
         "Anti-Causal"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Weaken",
         "Flaw",
@@ -1686,50 +1185,30 @@
         "Anti-Causal"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Weaken",
         "Flaw",
-        "Strengthen",
-        "Weaken"
+        "Strengthen"
       ],
       "final_question_features": [
         "Anti-Causal"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Anti-Causal 100%",
-        "Argue the Anti-Conclusion 38%",
-        "Plans / Recommendations 38%",
-        "Explain Curious Fact 25%",
-        "Alternatives 13%",
-        "Medical 13%",
-        "Plausibility 13%",
-        "Rebuttals 13%",
-        "Timeframes 13%",
-        "Untriggered Conditional 13%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 70,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q9",
         "PT103-S1-Q15",
         "PT103-S3-Q3",
         "PT105-S2-Q12",
-        "PT105-S4-Q9",
-        "PT106-S1-Q5",
-        "PT107-S1-Q7",
-        "PT111-S1-Q8"
+        "PT105-S4-Q9"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1745,9 +1224,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -1755,48 +1231,30 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
-      "relaxation": "band±1",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Timeframes 50%",
-        "Breadcrumbs 33%",
-        "EXCEPT 33%",
-        "Alternatives 17%",
-        "Dense Stimulus 17%",
-        "Missing Link / Idea 17%",
-        "Plausibility 17%",
-        "Science 17%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 6,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13",
-        "PT159-S3-Q11"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": []
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
     },
     {
       "slug": "w5-05-assumption-family-medium-set-3",
@@ -1816,11 +1274,6 @@
       "current_question_features": [
         "Three Main Reasoning Types"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic",
-        "Comparisons",
-        "Causation"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -1836,16 +1289,15 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -1853,38 +1305,22 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
+        "Causation",
         "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 33%",
-        "Missing Link / Idea 33%",
-        "Defender 17%",
-        "Famous Flaws 17%",
-        "Part vs. Whole 17%",
-        "Plans / Recommendations 17%",
-        "Principles in Answers 17%",
-        "Rebuttals 17%",
-        "Sampling 17%",
-        "Timeframes 17%"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
-      "pool_available": 879,
-      "selected": 6,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S2-Q17"
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Explain Curious Fact, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w5-06-causal-difference-maker-set-2",
@@ -1900,9 +1336,6 @@
       "current_question_features": [
         "Causal Difference-Maker"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -1912,14 +1345,11 @@
         "Causal Difference-Maker"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
-        "Must Be True"
+        "Must Be True",
+        "Necessary Assumption"
       ],
       "final_question_features": [
         "Causal Difference-Maker"
@@ -1928,35 +1358,17 @@
         "Comparison",
         "Causation"
       ],
-      "observed_features": [
-        "Causal Difference-Maker 100%",
-        "Important Pivot 40%",
-        "Causal Chains 20%",
-        "Explain Curious Fact 20%",
-        "Rebuttals 20%",
-        "Alternatives 10%",
-        "Breadcrumbs 10%",
-        "Dense Stimulus 10%",
-        "Plans / Recommendations 10%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 67,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q2",
         "PT101-S3-Q11",
         "PT102-S3-Q24",
         "PT104-S1-Q3",
-        "PT104-S1-Q12",
-        "PT105-S2-Q6",
-        "PT106-S1-Q22",
-        "PT107-S1-Q21",
-        "PT107-S4-Q3",
-        "PT108-S2-Q17"
+        "PT104-S1-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -1974,7 +1386,6 @@
       "current_question_features": [
         "Describing Arguments"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Method of Reasoning",
@@ -1984,59 +1395,30 @@
         "Focused on Evidence"
       ],
       "blended": false,
-      "band": [
-        1,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "final_question_features": [
-        "Focused on Evidence"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "2-Speaker 30%",
-        "Abstract Answers 20%",
-        "Explain Curious Fact 20%",
-        "Important Pivot 20%",
-        "Rebuttals 20%",
-        "Science 20%",
-        "Analogies 10%",
-        "First Sentence Conclusion 10%",
-        "Medical 10%",
-        "Plausibility 10%",
-        "Predictions 10%",
-        "Ruling Out Options 10%"
+        "Comparison"
       ],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "pool_available": 407,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q10",
         "PT101-S2-Q12",
         "PT101-S2-Q15",
-        "PT101-S3-Q3",
-        "PT101-S3-Q17",
-        "PT102-S2-Q1",
-        "PT102-S2-Q7",
-        "PT102-S3-Q6",
-        "PT102-S3-Q8"
+        "PT101-S3-Q3"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Focused on Evidence"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -2051,7 +1433,6 @@
       "current_question_features": [
         "Timed Agree/Disagree"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Agree/Disagree"
       ],
@@ -2060,42 +1441,30 @@
         "Battle of Opinions"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Agree/Disagree"
       ],
       "final_question_features": [
-        "2-Speaker"
+        "2-Speaker",
+        "Battle of Opinions"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "2-Speaker 100%",
-        "Alternatives 20%",
-        "Explain Curious Fact 20%"
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 79,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q14",
         "PT101-S3-Q1",
         "PT102-S4-Q22",
         "PT103-S1-Q16",
         "PT104-S1-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Battle of Opinions"
-      ]
+      "notes": []
     },
     {
       "slug": "w5-09-conditional-logic-medium-set-1",
@@ -2107,9 +1476,6 @@
         "Mixed LR question types"
       ],
       "current_question_features": [
-        "Conditional Logic"
-      ],
-      "current_reasoning_types": [
         "Conditional Logic"
       ],
       "target_types": [
@@ -2126,17 +1492,16 @@
         "Conditional Diagramming"
       ],
       "blended": true,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
         "Most Strongly Supported",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming"
@@ -2144,38 +1509,19 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 20%",
-        "Famous Flaws 20%",
-        "Missing Link / Idea 20%",
-        "Principles in Answers 20%",
-        "Abstract Answers 10%",
-        "Causal Difference-Maker 10%",
-        "Dense Stimulus 10%",
-        "Quantifiers 10%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
-      "pool_available": 1343,
-      "selected": 10,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q2",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q11",
-        "PT101-S2-Q13",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25",
-        "PT101-S3-Q4"
+      "pool_available": 128,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT105-S4-Q17",
+        "PT106-S1-Q14"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming"
-      ]
+      "notes": []
     },
     {
       "slug": "w5-10-evaluate-first-taste",
@@ -2189,7 +1535,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Evaluate"
       ],
@@ -2198,55 +1543,29 @@
         "Alternatives"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Evaluate"
       ],
-      "final_question_features": [
-        "Plausibility",
-        "Alternatives"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 29%",
-        "Math-y Stuff 29%",
-        "Medical 14%",
-        "Net Effect 14%",
-        "Part vs. Whole 14%",
-        "Percentages 14%",
-        "Plans / Recommendations 14%",
-        "Rebuttals 14%",
-        "Refute a Conditional 14%",
-        "Relative vs. Absolute 14%",
-        "Sampling 14%",
-        "Untriggered Conditional 14%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 26,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q16",
         "PT103-S1-Q22",
         "PT104-S4-Q6",
         "PT106-S2-Q7",
-        "PT108-S2-Q9",
-        "PT112-S1-Q24",
-        "PT114-S4-Q19"
+        "PT108-S2-Q9"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Plausibility, Alternatives"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -2261,7 +1580,6 @@
       "current_question_features": [
         "Evaluate"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Evaluate"
       ],
@@ -2270,50 +1588,29 @@
         "Alternatives"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Evaluate"
       ],
-      "final_question_features": [
-        "Plausibility",
-        "Alternatives"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 50%",
-        "Math-y Stuff 25%",
-        "Medical 25%",
-        "Net Effect 25%",
-        "Part vs. Whole 25%",
-        "Percentages 25%",
-        "Plans / Recommendations 25%",
-        "Rebuttals 25%",
-        "Sampling 25%",
-        "Untriggered Conditional 25%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 26,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q16",
         "PT103-S1-Q22",
         "PT104-S4-Q6",
-        "PT106-S2-Q7"
+        "PT106-S2-Q7",
+        "PT108-S2-Q9"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Plausibility, Alternatives"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -2328,9 +1625,6 @@
       "current_question_features": [
         "Causal Difference-Maker"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported"
       ],
@@ -2338,10 +1632,6 @@
         "Causal Difference-Maker"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported"
@@ -2353,25 +1643,17 @@
         "Comparison",
         "Causation"
       ],
-      "observed_features": [
-        "Causal Difference-Maker 100%",
-        "Alternatives 25%",
-        "Explain Curious Fact 25%",
-        "Important Pivot 25%",
-        "Rebuttals 25%"
-      ],
       "difficulty_min": 2,
-      "difficulty_max": 3,
+      "difficulty_max": 4,
       "pool_available": 53,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q2",
         "PT104-S1-Q3",
         "PT104-S1-Q12",
-        "PT105-S2-Q6"
+        "PT105-S2-Q6",
+        "PT106-S1-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -2388,9 +1670,6 @@
       "current_question_features": [
         "Conditional Logic"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Principle-Strengthen"
@@ -2399,11 +1678,7 @@
         "Conditional Diagramming"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
-      "relaxation": "strict",
+      "relaxation": "band±1",
       "final_question_types": [
         "Sufficient Assumption",
         "Principle-Strengthen"
@@ -2414,35 +1689,17 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Conditional Diagramming 100%",
-        "Missing Link / Idea 43%",
-        "New Concept in Conclusion 43%",
-        "Conditional Conclusion 29%",
-        "First Sentence Conclusion 29%",
-        "Untriggered Conditional 29%",
-        "Binaries 14%",
-        "Causal Chains 14%",
-        "Dense Stimulus 14%",
-        "Links Between Premises 14%",
-        "Principles in Stimulus 14%",
-        "Quantifiers 14%"
+      "difficulty_min": 2,
+      "difficulty_max": 5,
+      "pool_available": 33,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT106-S1-Q24",
+        "PT117-S3-Q7",
+        "PT117-S4-Q26"
       ],
-      "difficulty_min": 3,
-      "difficulty_max": 4,
-      "pool_available": 18,
-      "selected": 7,
-      "question_qids": [
-        "PT117-S4-Q26",
-        "PT120-S3-Q21",
-        "PT123-S2-Q23",
-        "PT124-S3-Q25",
-        "PT125-S2-Q26",
-        "PT126-S3-Q21",
-        "PT127-S3-Q16"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -2458,7 +1715,6 @@
       "current_question_features": [
         "Abstract Answer Choices"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -2467,10 +1723,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -2480,40 +1732,20 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
+        "Comparison",
         "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 80%",
-        "Abstract Answers 40%",
-        "Rebuttals 30%",
-        "Conditional Diagramming 20%",
-        "Sufficient vs. Necessary Flaw 20%",
-        "2-Speaker 10%",
-        "Argue the Anti-Conclusion 10%",
-        "Assumes Difference 10%",
-        "Dense Stimulus 10%",
-        "EXCEPT 10%",
-        "First Sentence Conclusion 10%",
-        "Sampling 10%"
       ],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "pool_available": 86,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q23",
         "PT102-S4-Q17",
         "PT102-S4-Q23",
         "PT103-S2-Q15",
-        "PT104-S4-Q25",
-        "PT105-S2-Q22",
-        "PT106-S2-Q18",
-        "PT106-S2-Q22",
-        "PT106-S3-Q20",
-        "PT107-S3-Q10"
+        "PT104-S4-Q25"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -2529,7 +1761,6 @@
       "current_question_features": [
         "Science-heavy Stimulus"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption"
       ],
@@ -2539,47 +1770,31 @@
         "Conditional Conclusion"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Sufficient Assumption"
       ],
       "final_question_features": [
-        "Missing Link / Idea"
+        "Science",
+        "Missing Link / Idea",
+        "Conditional Conclusion"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 100%",
-        "Conditional Diagramming 33%",
-        "New Concept in Conclusion 33%",
-        "First Sentence Conclusion 17%",
-        "Links Between Premises 17%",
-        "Quantifiers 17%",
-        "Untriggered Conditional 17%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 61,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q21",
         "PT101-S2-Q24",
         "PT101-S3-Q10",
         "PT101-S3-Q19",
-        "PT102-S4-Q18",
-        "PT103-S3-Q21"
+        "PT102-S4-Q18"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Science, Conditional Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w9-03-except-set-1",
@@ -2595,9 +1810,6 @@
       "current_question_features": [
         "EXCEPT"
       ],
-      "current_reasoning_types": [
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Strengthen",
         "Weaken",
@@ -2607,42 +1819,30 @@
         "EXCEPT"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Strengthen",
         "Weaken",
-        "Strengthen"
+        "Paradox"
       ],
       "final_question_features": [
         "EXCEPT"
       ],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "EXCEPT 100%",
-        "Explain Curious Fact 40%",
-        "Alternatives 20%",
-        "Argue the Anti-Conclusion 20%",
-        "Focused on Evidence 20%"
-      ],
-      "difficulty_min": 4,
+      "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 39,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q19",
         "PT101-S2-Q20",
         "PT101-S3-Q22",
         "PT105-S1-Q16",
         "PT105-S1-Q19"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -2658,9 +1858,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Weaken"
       ],
@@ -2668,10 +1865,6 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Weaken"
@@ -2683,28 +1876,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Alternatives 40%",
-        "EXCEPT 40%",
-        "Conditional Conclusion 20%",
-        "Plausibility 20%",
-        "Repetitive Answers 20%",
-        "Science 20%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 71,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q19",
         "PT101-S3-Q22",
         "PT102-S4-Q24",
         "PT103-S1-Q9",
         "PT103-S2-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -2720,9 +1902,6 @@
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -2738,58 +1917,37 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
-        "Principle-Conform",
+        "Parallel Reasoning",
+        "Parallel Flaw",
         "Principle-Strengthen",
-        "Must Be True"
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 50%",
-        "Causal Difference-Maker 25%",
-        "Conditional Diagramming 25%",
-        "Principles in Answers 25%",
-        "Abstract Answers 13%",
-        "Argue the Anti-Conclusion 13%",
-        "Battle of Opinions 13%",
-        "Dense Stimulus 13%",
-        "Famous Flaws 13%",
-        "First Sentence Conclusion 13%",
-        "Links Between Premises 13%",
-        "Weighing Tradeoffs 13%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 5,
-      "pool_available": 678,
-      "selected": 8,
-      "question_qids": [
-        "PT101-S2-Q1",
+      "pool_available": 101,
+      "pool_sample": [
         "PT101-S2-Q21",
-        "PT101-S2-Q22",
-        "PT101-S2-Q23",
         "PT101-S2-Q24",
-        "PT101-S2-Q25",
-        "PT101-S3-Q10",
-        "PT101-S3-Q11"
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w9-06-must-be-false-harder-set-2",
@@ -2803,9 +1961,6 @@
       "current_question_features": [
         "Harder Must Be False"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Must Be False"
       ],
@@ -2813,44 +1968,28 @@
         "Conditional Diagramming"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Must Be False"
       ],
-      "final_question_features": [
-        "Conditional Diagramming"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Causal Chains 17%",
-        "EXCEPT 17%",
-        "Science 17%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 18,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S4-Q15",
         "PT102-S4-Q16",
         "PT102-S4-Q26",
         "PT103-S3-Q12",
-        "PT111-S4-Q22",
-        "PT122-S1-Q7"
+        "PT111-S4-Q22"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Conditional Diagramming"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -2866,7 +2005,6 @@
       "current_question_features": [
         "Science-heavy Stimulus"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Strengthen",
         "Weaken"
@@ -2877,10 +2015,6 @@
         "Missing Link / Idea"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Strengthen",
@@ -2888,54 +2022,26 @@
       ],
       "final_question_features": [
         "Science",
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Plausibility 60%",
-        "Explain Curious Fact 50%",
-        "Conditional Conclusion 30%",
-        "Science 30%",
-        "Alternatives 20%",
-        "Argue the Anti-Conclusion 20%",
-        "Defender 20%",
-        "Missing Link / Idea 20%",
-        "2-Speaker 10%",
-        "Assumes Difference 10%",
-        "EXCEPT 10%",
-        "Intermediate Conclusions 10%",
-        "Links Between Premises 10%",
-        "Math-y Stuff 10%",
-        "Plans / Recommendations 10%",
-        "Predictions 10%",
-        "Rebuttals 10%",
-        "Repetitive Answers 10%",
-        "Untriggered Conditional 10%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 95,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q10",
         "PT102-S2-Q15",
         "PT102-S3-Q21",
         "PT102-S4-Q24",
-        "PT103-S1-Q9",
-        "PT103-S2-Q5",
-        "PT103-S2-Q25",
-        "PT104-S1-Q18",
-        "PT106-S1-Q15",
-        "PT106-S1-Q23"
+        "PT103-S1-Q9"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea"
-      ]
+      "notes": []
     },
     {
       "slug": "w9-08-anti-causal-hard-mini-set",
@@ -2949,9 +2055,6 @@
       "current_question_features": [
         "Anti-Causal"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Weaken"
       ],
@@ -2959,10 +2062,6 @@
         "Anti-Causal"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Weaken"
@@ -2974,26 +2073,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Anti-Causal 100%",
-        "Argue the Anti-Conclusion 67%",
-        "Explain Curious Fact 33%",
-        "Medical 33%",
-        "Plans / Recommendations 33%",
-        "Rebuttals 33%",
-        "Science 33%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "pool_available": 12,
-      "selected": 3,
-      "question_qids": [
+      "pool_sample": [
         "PT111-S1-Q8",
         "PT114-S4-Q13",
-        "PT123-S2-Q14"
+        "PT123-S2-Q14",
+        "PT124-S1-Q8",
+        "PT130-S3-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -3008,9 +2098,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -3027,56 +2114,37 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
         "Principle-Conform",
-        "Principle-Strengthen"
+        "Flaw"
       ],
       "final_question_features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 57%",
-        "Conditional Diagramming 29%",
-        "Principles in Answers 29%",
-        "Abstract Answers 14%",
-        "Argue the Anti-Conclusion 14%",
-        "Battle of Opinions 14%",
-        "Causal Difference-Maker 14%",
-        "Dense Stimulus 14%",
-        "Famous Flaws 14%",
-        "First Sentence Conclusion 14%",
-        "Links Between Premises 14%",
-        "Weighing Tradeoffs 14%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 5,
-      "pool_available": 678,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q1",
+      "pool_available": 101,
+      "pool_sample": [
         "PT101-S2-Q21",
-        "PT101-S2-Q22",
-        "PT101-S2-Q23",
         "PT101-S2-Q24",
-        "PT101-S2-Q25",
-        "PT101-S3-Q10"
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w10-02-quantifiers-set-2",
@@ -3092,9 +2160,6 @@
       "current_question_features": [
         "Trait Overlap Inferences"
       ],
-      "current_reasoning_types": [
-        "Quantifiers"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True",
@@ -3104,47 +2169,29 @@
         "Quantifiers"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Must Be True",
         "Most Strongly Supported",
+        "Must Be True",
         "Flaw"
       ],
       "final_question_features": [
         "Quantifiers"
       ],
       "final_reasoning_types": [
-        "Conditional Logic",
-        "Comparison"
-      ],
-      "observed_features": [
-        "Quantifiers 100%",
-        "Math-y Stuff 25%",
-        "Abstract Answers 13%",
-        "Dense Stimulus 13%",
-        "Important Pivot 13%",
-        "Percentages 13%"
+        "Conditional Logic"
       ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 56,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q11",
         "PT101-S3-Q15",
         "PT104-S1-Q20",
         "PT104-S1-Q22",
-        "PT104-S1-Q23",
-        "PT105-S1-Q17",
-        "PT106-S2-Q19",
-        "PT106-S3-Q8"
+        "PT104-S1-Q23"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -3160,9 +2207,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -3170,47 +2214,29 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
-      "relaxation": "band-1to5",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Breadcrumbs 40%",
-        "EXCEPT 40%",
-        "Timeframes 40%",
-        "Dense Stimulus 20%",
-        "Missing Link / Idea 20%",
-        "Plausibility 20%",
-        "Science 20%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 5,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": [
-        "pool relaxed (band-1to5)"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -3229,10 +2255,6 @@
       "current_question_features": [
         "EXCEPT"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Strengthen",
         "Weaken",
@@ -3244,46 +2266,34 @@
         "EXCEPT"
       ],
       "blended": true,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
         "Flaw",
-        "Must Be True",
-        "Paradox"
+        "Must Be True"
       ],
       "final_question_features": [
         "EXCEPT"
       ],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 40%",
-        "Famous Flaws 20%",
-        "Math-y Stuff 20%",
-        "Missing Link / Idea 20%",
-        "Quantifiers 20%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 3,
       "difficulty_max": 5,
-      "pool_available": 975,
-      "selected": 5,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q11",
-        "PT101-S2-Q18"
+      "pool_available": 47,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S2-Q20",
+        "PT101-S3-Q22",
+        "PT103-S2-Q22",
+        "PT104-S1-Q25"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: EXCEPT"
-      ]
+      "notes": []
     },
     {
       "slug": "w10-05-conditional-logic-harder-set-3",
@@ -3296,9 +2306,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -3315,56 +2322,37 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        5,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Sufficient Assumption",
-        "Principle-Conform",
         "Most Strongly Supported",
-        "Must Be True"
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Contrapositive Logic"
       ],
       "final_reasoning_types": [
-        "Conditional Logic",
-        "Comparison"
-      ],
-      "observed_features": [
-        "Conditional Diagramming 50%",
-        "Missing Link / Idea 33%",
-        "Weighing Tradeoffs 33%",
-        "Battle of Opinions 17%",
-        "Binaries 17%",
-        "Causal Difference-Maker 17%",
-        "First Sentence Conclusion 17%",
-        "Links Between Premises 17%",
-        "Math-y Stuff 17%",
-        "Principles in Answers 17%",
-        "Principles in Stimulus 17%",
-        "Repetitive Answers 17%"
+        "Conditional Logic"
       ],
       "difficulty_min": 5,
       "difficulty_max": 5,
-      "pool_available": 299,
-      "selected": 6,
-      "question_qids": [
+      "pool_available": 46,
+      "pool_sample": [
         "PT101-S2-Q21",
-        "PT101-S2-Q22",
         "PT101-S2-Q24",
         "PT101-S3-Q24",
-        "PT102-S2-Q13",
-        "PT102-S2-Q21"
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w7-01-explain-curious-fact-medium-set-2",
@@ -3378,59 +2366,31 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [],
       "target_features": [
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
-      "final_question_types": [
-        "Method of Reasoning",
-        "Weaken",
-        "Most Strongly Supported",
-        "Strengthen",
-        "Parallel Flaw"
-      ],
+      "final_question_types": [],
       "final_question_features": [
         "Explain Curious Fact"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Plausibility 43%",
-        "Alternatives 29%",
-        "EXCEPT 29%",
-        "Abstract Answers 14%",
-        "Breadcrumbs 14%",
-        "Conditional Conclusion 14%",
-        "Focused on Evidence 14%",
-        "Proposition/Generalization 14%",
-        "Repetitive Answers 14%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "pool_available": 178,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q4",
         "PT101-S3-Q17",
         "PT101-S3-Q22",
         "PT102-S2-Q8",
-        "PT102-S2-Q10",
-        "PT102-S4-Q12",
-        "PT102-S4-Q24"
+        "PT102-S2-Q10"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": []
     },
@@ -3448,7 +2408,6 @@
       "current_question_features": [
         "Complete the Analogy"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Most Strongly Supported",
         "Method of Reasoning"
@@ -3457,14 +2416,10 @@
         "Analogies"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Method of Reasoning",
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Method of Reasoning"
       ],
       "final_question_features": [
         "Analogies"
@@ -3472,31 +2427,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Analogies 100%",
-        "Abstract Answers 50%",
-        "2-Speaker 38%",
-        "Rebuttals 38%",
-        "Timeframes 25%",
-        "Assumes Similarity 13%",
-        "Logical Completion 13%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 28,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT109-S1-Q2",
         "PT113-S3-Q17",
         "PT114-S2-Q20",
         "PT115-S4-Q3",
-        "PT118-S4-Q12",
-        "PT123-S2-Q3",
-        "PT125-S2-Q10",
-        "PT125-S4-Q2"
+        "PT118-S4-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -3513,9 +2454,6 @@
       "current_question_features": [
         "Assumes Similarity"
       ],
-      "current_reasoning_types": [
-        "Comparison"
-      ],
       "target_types": [
         "Weaken",
         "Strengthen"
@@ -3524,14 +2462,10 @@
         "Assumes Similarity"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Strengthen",
-        "Weaken"
+        "Weaken",
+        "Strengthen"
       ],
       "final_question_features": [
         "Assumes Similarity"
@@ -3539,34 +2473,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Assumes Similarity 100%",
-        "Anti-Causal 40%",
-        "EXCEPT 40%",
-        "Net Effect 40%",
-        "Plans / Recommendations 40%",
-        "Predictions 40%",
-        "Science 40%",
-        "Argue the Anti-Conclusion 20%",
-        "Medical 20%",
-        "Plausibility 20%",
-        "Rebuttals 20%",
-        "Timeframes 20%",
-        "Weighing Tradeoffs 20%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 22,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT106-S1-Q1",
         "PT107-S4-Q1",
         "PT107-S4-Q9",
         "PT112-S1-Q2",
         "PT117-S2-Q8"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -3581,9 +2498,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -3600,16 +2514,16 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        4,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
-        "Must Be True"
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -3618,35 +2532,19 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Abstract Answers 29%",
-        "Missing Link / Idea 29%",
-        "Principles in Answers 29%",
-        "Argue the Anti-Conclusion 14%",
-        "Causal Difference-Maker 14%",
-        "Dense Stimulus 14%",
-        "Famous Flaws 14%",
-        "Quantifiers 14%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 4,
-      "pool_available": 379,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25",
-        "PT101-S3-Q10",
-        "PT101-S3-Q11",
-        "PT101-S3-Q15",
-        "PT101-S3-Q20"
+      "pool_available": 55,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S4-Q23",
+        "PT110-S2-Q11"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w7-05-explain-curious-fact-medium-set-3",
@@ -3660,59 +2558,31 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [],
       "target_features": [
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
-      "final_question_types": [
-        "Method of Reasoning",
-        "Weaken",
-        "Most Strongly Supported",
-        "Strengthen",
-        "Parallel Flaw"
-      ],
+      "final_question_types": [],
       "final_question_features": [
         "Explain Curious Fact"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Plausibility 43%",
-        "Alternatives 29%",
-        "EXCEPT 29%",
-        "Abstract Answers 14%",
-        "Breadcrumbs 14%",
-        "Conditional Conclusion 14%",
-        "Focused on Evidence 14%",
-        "Proposition/Generalization 14%",
-        "Repetitive Answers 14%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
       "pool_available": 178,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q4",
         "PT101-S3-Q17",
         "PT101-S3-Q22",
         "PT102-S2-Q8",
-        "PT102-S2-Q10",
-        "PT102-S4-Q12",
-        "PT102-S4-Q24"
+        "PT102-S2-Q10"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": []
     },
@@ -3729,9 +2599,6 @@
       "current_question_features": [
         "Causal Chains"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -3740,10 +2607,6 @@
         "Causal Chains"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
@@ -3756,26 +2619,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Causal Chains 100%",
-        "Anti-Causal 25%",
-        "Binaries 25%",
-        "Important Pivot 25%",
-        "Medical 25%",
-        "Science 25%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 27,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT103-S2-Q9",
         "PT104-S1-Q19",
         "PT105-S1-Q20",
-        "PT106-S1-Q16"
+        "PT106-S1-Q16",
+        "PT106-S1-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -3791,7 +2645,6 @@
       "current_question_features": [
         "Evaluate"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Evaluate"
       ],
@@ -3800,55 +2653,29 @@
         "Alternatives"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Evaluate"
       ],
-      "final_question_features": [
-        "Plausibility",
-        "Alternatives"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 29%",
-        "Math-y Stuff 29%",
-        "Medical 14%",
-        "Net Effect 14%",
-        "Part vs. Whole 14%",
-        "Percentages 14%",
-        "Plans / Recommendations 14%",
-        "Rebuttals 14%",
-        "Refute a Conditional 14%",
-        "Relative vs. Absolute 14%",
-        "Sampling 14%",
-        "Untriggered Conditional 14%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 26,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q16",
         "PT103-S1-Q22",
         "PT104-S4-Q6",
         "PT106-S2-Q7",
-        "PT108-S2-Q9",
-        "PT112-S1-Q24",
-        "PT114-S4-Q19"
+        "PT108-S2-Q9"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Plausibility, Alternatives"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -3862,9 +2689,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -3881,16 +2705,16 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Principle-Strengthen",
+        "Most Strongly Supported",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -3899,36 +2723,19 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 22%",
-        "Famous Flaws 22%",
-        "Missing Link / Idea 22%",
-        "Principles in Answers 22%",
-        "Abstract Answers 11%",
-        "Dense Stimulus 11%",
-        "Quantifiers 11%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 4,
-      "pool_available": 829,
-      "selected": 9,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q11",
-        "PT101-S2-Q13",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25",
-        "PT101-S3-Q4"
+      "pool_available": 104,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S1-Q8",
+        "PT107-S1-Q22"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w7-09-intermediate-conclusions-set-2",
@@ -3943,7 +2750,6 @@
       "current_question_features": [
         "Intermediate Conclusions"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Main Conclusion"
@@ -3952,43 +2758,28 @@
         "Intermediate Conclusions"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Main Conclusion",
-        "Role"
+        "Role",
+        "Main Conclusion"
       ],
       "final_question_features": [
         "Intermediate Conclusions"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Intermediate Conclusions 100%",
-        "Rebuttals 60%",
-        "Dense Stimulus 40%",
-        "Important Pivot 40%",
-        "Science 40%",
-        "First Sentence Conclusion 20%",
-        "Implied Conclusion 20%",
-        "Refute a Conditional 20%",
-        "Timeframes 20%"
+      "final_reasoning_types": [
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 38,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT106-S3-Q14",
         "PT107-S1-Q11",
         "PT111-S1-Q16",
         "PT112-S4-Q13",
         "PT115-S2-Q22"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -4006,7 +2797,6 @@
       "current_question_features": [
         "Describing Arguments"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Method of Reasoning",
@@ -4016,52 +2806,30 @@
         "Focused on Evidence"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "final_question_features": [
-        "Focused on Evidence"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Abstract Answers 33%",
-        "Explain Curious Fact 33%",
-        "2-Speaker 17%",
-        "First Sentence Conclusion 17%",
-        "Important Pivot 17%",
-        "Plausibility 17%",
-        "Rebuttals 17%",
-        "Ruling Out Options 17%",
-        "Science 17%"
+        "Comparison"
       ],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "pool_available": 407,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q10",
         "PT101-S2-Q12",
         "PT101-S2-Q15",
-        "PT101-S3-Q3",
-        "PT101-S3-Q17"
+        "PT101-S3-Q3"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Focused on Evidence"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -4077,9 +2845,6 @@
       "current_question_features": [
         "Causal Chains"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Necessary Assumption",
         "Must Be True"
@@ -4088,55 +2853,30 @@
         "Causal Chains"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
-      "relaxation": "strict",
-      "final_question_types": [
-        "Must Be True",
-        "Necessary Assumption"
-      ],
+      "relaxation": "keep-feature",
+      "final_question_types": [],
       "final_question_features": [
         "Causal Chains"
       ],
       "final_reasoning_types": [
         "Causation",
-        "Conditional Logic"
+        "Comparison"
       ],
-      "observed_features": [
-        "Causal Chains 100%",
-        "Missing Link / Idea 88%",
-        "New Concept in Conclusion 63%",
-        "Dense Stimulus 50%",
-        "Anti-Causal 13%",
-        "Defender 13%",
-        "Explain Curious Fact 13%",
-        "First Sentence Conclusion 13%",
-        "Important Pivot 13%",
-        "Links Between Premises 13%",
-        "Medical 13%",
-        "Plausibility 13%",
-        "Science 13%"
-      ],
-      "difficulty_min": 3,
-      "difficulty_max": 4,
-      "pool_available": 14,
-      "selected": 8,
-      "question_qids": [
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 73,
+      "pool_sample": [
+        "PT102-S2-Q3",
+        "PT103-S2-Q9",
+        "PT103-S3-Q12",
         "PT104-S1-Q19",
-        "PT107-S4-Q4",
-        "PT107-S4-Q5",
-        "PT109-S1-Q19",
-        "PT110-S3-Q5",
-        "PT113-S4-Q15",
-        "PT119-S3-Q15",
-        "PT122-S4-Q20"
+        "PT105-S1-Q20"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": []
+      "notes": [
+        "pool widened by dropping type constraint"
+      ]
     },
     {
       "slug": "w11-01-principle-strengthen-set-1",
@@ -4150,9 +2890,6 @@
       "current_question_features": [
         "Principle-Strengthen / Conditional Principle"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Principle-Strengthen"
       ],
@@ -4161,50 +2898,30 @@
         "Conditional Conclusion"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Strengthen"
       ],
       "final_question_features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Missing Link / Idea 43%",
-        "Abstract Answers 14%",
-        "First Sentence Conclusion 14%",
-        "Intermediate Conclusions 14%",
-        "Net Effect 14%",
-        "New Concept in Conclusion 14%",
-        "Plans / Recommendations 14%",
-        "Weighing Tradeoffs 14%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 50,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S2-Q25",
         "PT101-S3-Q20",
         "PT101-S3-Q26",
-        "PT102-S2-Q23",
-        "PT104-S1-Q24",
-        "PT105-S1-Q14"
+        "PT102-S2-Q23"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w11-02-explain-curious-fact-harder-set-2",
@@ -4218,25 +2935,13 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [],
       "target_features": [
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
-      "final_question_types": [
-        "Weaken",
-        "Necessary Assumption",
-        "Strengthen",
-        "Most Strongly Supported"
-      ],
+      "final_question_types": [],
       "final_question_features": [
         "Explain Curious Fact"
       ],
@@ -4244,35 +2949,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Alternatives 38%",
-        "EXCEPT 25%",
-        "Conditional Conclusion 13%",
-        "Defender 13%",
-        "Math-y Stuff 13%",
-        "Net Effect 13%",
-        "Plausibility 13%",
-        "Proposition/Generalization 13%",
-        "Rebuttals 13%",
-        "Repetitive Answers 13%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 5,
       "pool_available": 152,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q19",
         "PT101-S3-Q18",
         "PT101-S3-Q22",
         "PT101-S3-Q23",
-        "PT102-S2-Q8",
-        "PT102-S4-Q24",
-        "PT103-S2-Q12",
-        "PT103-S3-Q14"
+        "PT102-S2-Q8"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": []
     },
@@ -4294,11 +2981,6 @@
       "current_question_features": [
         "Three Main Reasoning Structures"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic",
-        "Comparisons",
-        "Causation"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -4314,58 +2996,39 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Sufficient Assumption",
         "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
         "Weaken",
-        "Sufficient Assumption"
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
-        "Conditional Diagramming"
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
       ],
       "final_reasoning_types": [
-        "Conditional Logic",
-        "Comparison"
-      ],
-      "observed_features": [
-        "Missing Link / Idea 43%",
-        "Argue the Anti-Conclusion 29%",
-        "Conditional Diagramming 29%",
-        "EXCEPT 29%",
-        "Abstract Answers 14%",
-        "Defender 14%",
-        "Dense Stimulus 14%",
-        "Explain Curious Fact 14%",
-        "Famous Flaws 14%",
-        "Focused on Evidence 14%",
-        "Links Between Premises 14%",
-        "Plans / Recommendations 14%",
-        "Timeframes 14%"
+        "Causation",
+        "Comparison",
+        "Conditional Logic"
       ],
       "difficulty_min": 4,
       "difficulty_max": 5,
-      "pool_available": 685,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q17",
+      "pool_available": 190,
+      "pool_sample": [
         "PT101-S2-Q19",
-        "PT101-S2-Q20",
         "PT101-S2-Q21",
-        "PT101-S2-Q23",
-        "PT101-S2-Q24"
+        "PT101-S2-Q24",
+        "PT101-S3-Q18",
+        "PT101-S3-Q22"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Explain Curious Fact, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w11-04-speedwalking-lr-set-1",
@@ -4388,10 +3051,6 @@
       "current_question_features": [
         "Speedwalking LR"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Paradox",
         "Flaw",
@@ -4406,70 +3065,35 @@
       ],
       "target_features": [],
       "blended": true,
-      "band": [
-        1,
-        1
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Method of Reasoning",
-        "Main Conclusion",
+        "Paradox",
         "Flaw",
+        "Role",
+        "Main Conclusion",
         "Necessary Assumption",
-        "Strengthen"
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
       ],
       "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
-      ],
-      "observed_features": [
-        "Plans / Recommendations 27%",
-        "Abstract Answers 20%",
-        "Missing Link / Idea 20%",
-        "Plausibility 20%",
-        "Rebuttals 20%",
-        "2-Speaker 13%",
-        "Analogies 13%",
-        "Defender 13%",
-        "Explain Curious Fact 13%",
-        "Famous Flaws 13%",
-        "Science 13%",
-        "Anti-Causal 7%",
-        "Argue the Anti-Conclusion 7%",
-        "Assumes Difference 7%",
-        "Assumes Similarity 7%",
-        "Focused on Evidence 7%",
-        "Important Pivot 7%",
-        "Net Effect 7%",
-        "New Concept in Conclusion 7%",
-        "Predictions 7%",
-        "Ruling Out Options 7%",
-        "Sufficient vs. Necessary Flaw 7%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 1,
       "pool_available": 301,
-      "selected": 15,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q15",
         "PT101-S3-Q2",
         "PT101-S3-Q13",
-        "PT102-S3-Q8",
-        "PT102-S3-Q14",
-        "PT103-S1-Q4",
-        "PT103-S2-Q1",
-        "PT103-S2-Q13",
-        "PT103-S3-Q5",
-        "PT104-S1-Q5",
-        "PT104-S1-Q6",
-        "PT104-S4-Q2",
-        "PT104-S4-Q10",
-        "PT105-S1-Q3"
+        "PT102-S3-Q8"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
       "notes": []
     },
@@ -4485,9 +3109,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -4495,46 +3116,30 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        3,
-        4
-      ],
-      "relaxation": "band±1",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Breadcrumbs 40%",
-        "EXCEPT 40%",
-        "Timeframes 40%",
-        "Dense Stimulus 20%",
-        "Missing Link / Idea 20%",
-        "Plausibility 20%",
-        "Science 20%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 5,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": []
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
     },
     {
       "slug": "w8-02-assumes-similarity-set-1",
@@ -4549,9 +3154,6 @@
       "current_question_features": [
         "Assumes Similarity"
       ],
-      "current_reasoning_types": [
-        "Comparison"
-      ],
       "target_types": [
         "Weaken",
         "Strengthen"
@@ -4560,14 +3162,10 @@
         "Assumes Similarity"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Strengthen",
-        "Weaken"
+        "Weaken",
+        "Strengthen"
       ],
       "final_question_features": [
         "Assumes Similarity"
@@ -4575,38 +3173,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Assumes Similarity 100%",
-        "Net Effect 43%",
-        "Predictions 43%",
-        "Anti-Causal 29%",
-        "EXCEPT 29%",
-        "Plans / Recommendations 29%",
-        "Science 29%",
-        "Timeframes 29%",
-        "Alternatives 14%",
-        "Argue the Anti-Conclusion 14%",
-        "Explain Curious Fact 14%",
-        "Medical 14%",
-        "Plausibility 14%",
-        "Rebuttals 14%",
-        "Weighing Tradeoffs 14%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 22,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT106-S1-Q1",
         "PT107-S4-Q1",
         "PT107-S4-Q9",
         "PT112-S1-Q2",
-        "PT117-S2-Q8",
-        "PT119-S2-Q25",
-        "PT123-S2-Q9"
+        "PT117-S2-Q8"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -4622,9 +3199,6 @@
       "current_question_features": [
         "Anti-Causal"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Weaken"
       ],
@@ -4632,10 +3206,6 @@
         "Anti-Causal"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Weaken"
@@ -4647,31 +3217,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Anti-Causal 100%",
-        "Argue the Anti-Conclusion 50%",
-        "Rebuttals 50%",
-        "Medical 33%",
-        "Plans / Recommendations 33%",
-        "Assumes Similarity 17%",
-        "Plausibility 17%",
-        "Timeframes 17%",
-        "Untriggered Conditional 17%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 24,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT105-S2-Q12",
         "PT105-S4-Q9",
         "PT106-S1-Q5",
         "PT111-S1-Q8",
-        "PT112-S1-Q2",
-        "PT113-S4-Q11"
+        "PT112-S1-Q2"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -4686,9 +3242,6 @@
       ],
       "current_question_features": [
         "Conditional Logic / Conditional Keywords"
-      ],
-      "current_reasoning_types": [
-        "Conditional Logic"
       ],
       "target_types": [
         "Most Strongly Supported",
@@ -4705,17 +3258,16 @@
         "Contrapositive Logic"
       ],
       "blended": true,
-      "band": [
-        4,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Principle-Strengthen",
-        "Sufficient Assumption",
+        "Most Strongly Supported",
         "Must Be True",
-        "Most Strongly Supported"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -4724,44 +3276,19 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Answers 30%",
-        "Abstract Answers 20%",
-        "Missing Link / Idea 20%",
-        "Alternatives 10%",
-        "Argue the Anti-Conclusion 10%",
-        "Causal Difference-Maker 10%",
-        "Dense Stimulus 10%",
-        "Explain Curious Fact 10%",
-        "Famous Flaws 10%",
-        "Math-y Stuff 10%",
-        "Proposition/Generalization 10%",
-        "Quantifiers 10%",
-        "Relative vs. Absolute 10%",
-        "Weighing Tradeoffs 10%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 4,
-      "pool_available": 379,
-      "selected": 10,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25",
-        "PT101-S3-Q10",
-        "PT101-S3-Q11",
-        "PT101-S3-Q15",
-        "PT101-S3-Q20",
-        "PT101-S3-Q25",
-        "PT101-S3-Q26",
-        "PT102-S2-Q8"
+      "pool_available": 55,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S4-Q23",
+        "PT110-S2-Q11"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Contrapositive Logic"
-      ]
+      "notes": []
     },
     {
       "slug": "w12-01-assumption-family-harder-set-2",
@@ -4781,7 +3308,6 @@
       "current_question_features": [
         "Assumption Family Continuum / Timed Harder Set"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Principle-Conform",
@@ -4797,69 +3323,39 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Necessary Assumption",
-        "Weaken",
         "Sufficient Assumption",
         "Principle-Conform",
-        "Strengthen"
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
       ],
       "final_question_features": [
-        "Explain Curious Fact"
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
       ],
       "final_reasoning_types": [
-        "Comparison",
         "Causation",
+        "Comparison",
         "Conditional Logic"
-      ],
-      "observed_features": [
-        "Explain Curious Fact 40%",
-        "EXCEPT 30%",
-        "Missing Link / Idea 30%",
-        "Alternatives 20%",
-        "Conditional Diagramming 20%",
-        "Defender 20%",
-        "Argue the Anti-Conclusion 10%",
-        "Battle of Opinions 10%",
-        "Causal Difference-Maker 10%",
-        "First Sentence Conclusion 10%",
-        "Focused on Evidence 10%",
-        "Links Between Premises 10%",
-        "Math-y Stuff 10%",
-        "Net Effect 10%",
-        "Plans / Recommendations 10%",
-        "Principles in Answers 10%",
-        "Rebuttals 10%",
-        "Timeframes 10%",
-        "Weighing Tradeoffs 10%"
       ],
       "difficulty_min": 4,
       "difficulty_max": 5,
-      "pool_available": 529,
-      "selected": 10,
-      "question_qids": [
-        "PT101-S2-Q17",
+      "pool_available": 166,
+      "pool_sample": [
         "PT101-S2-Q19",
-        "PT101-S2-Q20",
         "PT101-S2-Q21",
-        "PT101-S2-Q22",
         "PT101-S2-Q24",
-        "PT101-S3-Q10",
         "PT101-S3-Q18",
-        "PT101-S3-Q22",
-        "PT101-S3-Q23"
+        "PT101-S3-Q22"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w12-02-explain-curious-fact-harder-set-3",
@@ -4873,9 +3369,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -4883,47 +3376,29 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        4,
-        5
-      ],
-      "relaxation": "band-1to5",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Breadcrumbs 40%",
-        "EXCEPT 40%",
-        "Timeframes 40%",
-        "Dense Stimulus 20%",
-        "Missing Link / Idea 20%",
-        "Plausibility 20%",
-        "Science 20%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 5,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": [
-        "pool relaxed (band-1to5)"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -4936,9 +3411,6 @@
         "Mixed LR question types"
       ],
       "current_question_features": [
-        "Conditional Logic"
-      ],
-      "current_reasoning_types": [
         "Conditional Logic"
       ],
       "target_types": [
@@ -4955,16 +3427,16 @@
         "Conditional Diagramming"
       ],
       "blended": true,
-      "band": [
-        4,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
+        "Most Strongly Supported",
+        "Must Be True",
         "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
         "Principle-Conform",
-        "Principle-Strengthen"
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming"
@@ -4972,35 +3444,17 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 57%",
-        "Conditional Diagramming 29%",
-        "Principles in Answers 29%",
-        "Abstract Answers 14%",
-        "Argue the Anti-Conclusion 14%",
-        "Battle of Opinions 14%",
-        "Causal Difference-Maker 14%",
-        "Dense Stimulus 14%",
-        "Famous Flaws 14%",
-        "First Sentence Conclusion 14%",
-        "Links Between Premises 14%",
-        "Weighing Tradeoffs 14%"
-      ],
       "difficulty_min": 4,
       "difficulty_max": 5,
-      "pool_available": 678,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q1",
+      "pool_available": 80,
+      "pool_sample": [
         "PT101-S2-Q21",
-        "PT101-S2-Q22",
-        "PT101-S2-Q23",
         "PT101-S2-Q24",
-        "PT101-S2-Q25",
-        "PT101-S3-Q10"
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
       "notes": []
     },
@@ -5025,10 +3479,6 @@
       "current_question_features": [
         "Speedwalking LR"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning",
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Paradox",
         "Flaw",
@@ -5043,70 +3493,35 @@
       ],
       "target_features": [],
       "blended": true,
-      "band": [
-        1,
-        1
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Method of Reasoning",
-        "Main Conclusion",
+        "Paradox",
         "Flaw",
+        "Role",
+        "Main Conclusion",
         "Necessary Assumption",
-        "Strengthen"
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
       ],
       "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
-      ],
-      "observed_features": [
-        "Plans / Recommendations 27%",
-        "Abstract Answers 20%",
-        "Missing Link / Idea 20%",
-        "Plausibility 20%",
-        "Rebuttals 20%",
-        "2-Speaker 13%",
-        "Analogies 13%",
-        "Defender 13%",
-        "Explain Curious Fact 13%",
-        "Famous Flaws 13%",
-        "Science 13%",
-        "Anti-Causal 7%",
-        "Argue the Anti-Conclusion 7%",
-        "Assumes Difference 7%",
-        "Assumes Similarity 7%",
-        "Focused on Evidence 7%",
-        "Important Pivot 7%",
-        "Net Effect 7%",
-        "New Concept in Conclusion 7%",
-        "Predictions 7%",
-        "Ruling Out Options 7%",
-        "Sufficient vs. Necessary Flaw 7%"
+        "Comparison",
+        "Causation"
       ],
       "difficulty_min": 1,
       "difficulty_max": 1,
       "pool_available": 301,
-      "selected": 15,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q15",
         "PT101-S3-Q2",
         "PT101-S3-Q13",
-        "PT102-S3-Q8",
-        "PT102-S3-Q14",
-        "PT103-S1-Q4",
-        "PT103-S2-Q1",
-        "PT103-S2-Q13",
-        "PT103-S3-Q5",
-        "PT104-S1-Q5",
-        "PT104-S1-Q6",
-        "PT104-S4-Q2",
-        "PT104-S4-Q10",
-        "PT105-S1-Q3"
+        "PT102-S3-Q8"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
       "notes": []
     },
@@ -5123,7 +3538,6 @@
       "current_question_features": [
         "First Sentence Conclusion"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Main Conclusion",
         "Role"
@@ -5132,14 +3546,10 @@
         "First Sentence Conclusion"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Role",
-        "Main Conclusion"
+        "Main Conclusion",
+        "Role"
       ],
       "final_question_features": [
         "First Sentence Conclusion"
@@ -5147,27 +3557,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "First Sentence Conclusion 100%",
-        "Rebuttals 67%",
-        "Contrapositive Logic 17%",
-        "Plans / Recommendations 17%",
-        "Sufficient vs. Necessary Flaw 17%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 50,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q10",
         "PT102-S4-Q1",
         "PT103-S2-Q8",
         "PT105-S1-Q1",
-        "PT105-S1-Q2",
-        "PT105-S1-Q11"
+        "PT105-S1-Q2"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5189,7 +3589,6 @@
       "current_question_features": [
         "Missing Link / Core Connection"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -5204,14 +3603,13 @@
         "Links Between Premises"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Flaw",
         "Weaken",
+        "Strengthen",
         "Principle-Strengthen",
         "Evaluate"
       ],
@@ -5220,38 +3618,21 @@
         "Links Between Premises"
       ],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Analogies 14%",
-        "Argue the Anti-Conclusion 14%",
-        "EXCEPT 14%",
-        "Famous Flaws 14%",
-        "Missing Link / Idea 14%",
-        "Part vs. Whole 14%",
-        "Principles in Answers 14%",
-        "Rebuttals 14%",
-        "Sampling 14%"
+        "Conditional Logic"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1184,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
+      "pool_available": 246,
+      "pool_sample": [
         "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S3-Q2",
-        "PT101-S3-Q4"
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S4-Q18",
+        "PT103-S1-Q4"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": true,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea, Links Between Premises"
-      ]
+      "notes": []
     },
     {
       "slug": "w1-03-assumption-family-easier-set-1",
@@ -5271,7 +3652,6 @@
       "current_question_features": [
         "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -5286,62 +3666,37 @@
         "Argue the Anti-Conclusion"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
         "Missing Link / Idea",
         "Argue the Anti-Conclusion"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 22%",
-        "Science 22%",
-        "Analogies 11%",
-        "Anti-Causal 11%",
-        "Defender 11%",
-        "EXCEPT 11%",
-        "Famous Flaws 11%",
-        "Missing Link / Idea 11%",
-        "Part vs. Whole 11%",
-        "Plans / Recommendations 11%",
-        "Principles in Answers 11%",
-        "Rebuttals 11%",
-        "Sampling 11%"
+        "Conditional Logic",
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1184,
-      "selected": 9,
-      "question_qids": [
+      "pool_available": 345,
+      "pool_sample": [
         "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
         "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S3-Q2",
-        "PT101-S3-Q4",
         "PT101-S3-Q5",
-        "PT101-S3-Q6"
+        "PT101-S3-Q13",
+        "PT101-S3-Q19"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea, Argue the Anti-Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w1-04-framework-sampler",
@@ -5366,9 +3721,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -5377,51 +3729,29 @@
         "Alternatives"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
-      "relaxation": "band±1",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
         "Comparison",
-        "Conditional Logic"
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 83%",
-        "Breadcrumbs 33%",
-        "EXCEPT 33%",
-        "Missing Link / Idea 33%",
-        "Science 33%",
-        "Timeframes 33%",
-        "Alternatives 17%",
-        "Defender 17%",
-        "Dense Stimulus 17%",
-        "Plausibility 17%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 7,
-      "selected": 6,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT131-S3-Q16",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": [
-        "target feature(s) weak in pool: Alternatives"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -5436,61 +3766,31 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [],
       "target_features": [
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
-      "final_question_types": [
-        "Method of Reasoning",
-        "Flaw",
-        "Strengthen",
-        "Parallel Flaw",
-        "Weaken"
-      ],
+      "final_question_types": [],
       "final_question_features": [
         "Explain Curious Fact"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Plausibility 38%",
-        "Abstract Answers 25%",
-        "Alternatives 25%",
-        "Science 25%",
-        "Anti-Causal 13%",
-        "Argue the Anti-Conclusion 13%",
-        "Breadcrumbs 13%",
-        "EXCEPT 13%",
-        "Focused on Evidence 13%",
-        "Ruling Out Options 13%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 281,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q4",
         "PT101-S3-Q17",
         "PT102-S2-Q9",
-        "PT102-S2-Q10",
-        "PT102-S4-Q6",
-        "PT102-S4-Q12",
-        "PT103-S1-Q9"
+        "PT102-S2-Q10"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": []
     },
@@ -5506,7 +3806,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -5514,10 +3813,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -5525,27 +3820,20 @@
       "final_question_features": [
         "Famous Flaws"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Rebuttals 43%",
-        "Part vs. Whole 14%"
+      "final_reasoning_types": [
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 174,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q8",
         "PT102-S3-Q1",
         "PT102-S4-Q4",
         "PT103-S1-Q3",
-        "PT103-S2-Q1",
-        "PT103-S2-Q4",
-        "PT103-S3-Q10"
+        "PT103-S2-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5562,7 +3850,6 @@
         "Sampling",
         "Part vs. Whole"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -5571,10 +3858,6 @@
         "Part vs. Whole"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -5586,38 +3869,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Famous Flaws 80%",
-        "Sampling 70%",
-        "Part vs. Whole 30%",
-        "Abstract Answers 20%",
-        "First Sentence Conclusion 20%",
-        "Science 20%",
-        "Argue the Anti-Conclusion 10%",
-        "Assumes Similarity 10%",
-        "Belief / Knowledge / Intent 10%",
-        "EXCEPT 10%",
-        "Math-y Stuff 10%",
-        "Plans / Recommendations 10%"
-      ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 34,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT103-S1-Q3",
         "PT106-S3-Q2",
         "PT106-S3-Q20",
         "PT108-S2-Q12",
-        "PT111-S4-Q18",
-        "PT114-S2-Q25",
-        "PT118-S3-Q13",
-        "PT118-S4-Q10",
-        "PT119-S4-Q12",
-        "PT124-S1-Q25"
+        "PT111-S4-Q18"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5633,7 +3895,6 @@
       "current_question_features": [
         "Abstract Answer Choices"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -5642,10 +3903,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -5655,34 +3912,19 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "Famous Flaws 80%",
-        "Rebuttals 40%",
-        "Abstract Answers 30%",
-        "Dense Stimulus 10%",
-        "Part vs. Whole 10%",
-        "Plans / Recommendations 10%"
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 193,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q8",
         "PT101-S2-Q23",
         "PT102-S3-Q1",
         "PT102-S3-Q23",
-        "PT102-S4-Q4",
-        "PT102-S4-Q17",
-        "PT103-S1-Q3",
-        "PT103-S2-Q4",
-        "PT103-S3-Q8",
-        "PT103-S3-Q10"
+        "PT102-S4-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5698,9 +3940,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Must Be True"
       ],
@@ -5708,47 +3947,28 @@
         "Ruling Out Options"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Must Be True"
       ],
-      "final_question_features": [
-        "Ruling Out Options"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison",
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Causal Difference-Maker 33%",
-        "Quantifiers 33%",
-        "Important Pivot 17%",
-        "Weighing Tradeoffs 17%"
-      ],
-      "difficulty_min": 3,
+      "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 182,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q11",
         "PT101-S3-Q8",
         "PT101-S3-Q11",
         "PT101-S3-Q15",
-        "PT102-S2-Q21",
-        "PT102-S3-Q24"
+        "PT102-S2-Q21"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Ruling Out Options"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -5761,9 +3981,6 @@
         "Mixed LR question types"
       ],
       "current_question_features": [
-        "Conditional Logic"
-      ],
-      "current_reasoning_types": [
         "Conditional Logic"
       ],
       "target_types": [
@@ -5780,57 +3997,36 @@
         "Conditional Diagramming"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
-        "Parallel Flaw",
-        "Flaw",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming"
       ],
       "final_reasoning_types": [
-        "Comparison"
-      ],
-      "observed_features": [
-        "Analogies 11%",
-        "Argue the Anti-Conclusion 11%",
-        "Causal Difference-Maker 11%",
-        "Famous Flaws 11%",
-        "Math-y Stuff 11%",
-        "Missing Link / Idea 11%",
-        "Part vs. Whole 11%",
-        "Principles in Answers 11%",
-        "Quantifiers 11%"
+        "Conditional Logic"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1182,
-      "selected": 9,
-      "question_qids": [
-        "PT101-S2-Q2",
-        "PT101-S2-Q5",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q11",
-        "PT101-S2-Q13",
-        "PT101-S3-Q2",
-        "PT101-S3-Q4"
+      "pool_available": 93,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming"
-      ]
+      "notes": []
     },
     {
       "slug": "w2-05-reconcile-the-pivot-first-taste",
@@ -5845,9 +4041,6 @@
       "current_question_features": [
         "Reconcile the Pivot"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -5856,10 +4049,6 @@
         "Important Pivot"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
@@ -5869,33 +4058,19 @@
         "Important Pivot"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Conditional Logic"
+        "Comparison"
       ],
-      "observed_features": [
-        "Important Pivot 100%",
-        "Causal Difference-Maker 40%",
-        "Rebuttals 40%",
-        "Alternatives 20%",
-        "Belief / Knowledge / Intent 20%",
-        "Breadcrumbs 20%",
-        "Dense Stimulus 20%",
-        "Explain Curious Fact 20%",
-        "Quantifiers 20%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 47,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT104-S1-Q3",
         "PT104-S1-Q22",
         "PT104-S4-Q23",
         "PT105-S4-Q1",
         "PT107-S1-Q21"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5913,7 +4088,6 @@
       "current_question_features": [
         "Missing Links"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -5923,49 +4097,29 @@
         "Missing Link / Idea"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Principle-Strengthen",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Sufficient Assumption"
+        "Principle-Strengthen"
       ],
       "final_question_features": [
         "Missing Link / Idea"
       ],
       "final_reasoning_types": [
-        "Conditional Logic",
-        "Causation"
-      ],
-      "observed_features": [
-        "Missing Link / Idea 100%",
-        "New Concept in Conclusion 50%",
-        "Argue the Anti-Conclusion 17%",
-        "Defender 17%",
-        "First Sentence Conclusion 17%",
-        "Plans / Recommendations 17%",
-        "Plausibility 17%",
-        "Principles in Answers 17%",
-        "Quantifiers 17%",
-        "Untriggered Conditional 17%"
+        "Conditional Logic"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 193,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S3-Q13",
         "PT101-S3-Q19",
         "PT102-S4-Q18",
-        "PT103-S1-Q4",
-        "PT103-S3-Q9"
+        "PT103-S1-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -5981,7 +4135,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Necessary Assumption"
       ],
@@ -5989,10 +4142,6 @@
         "Defender"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Necessary Assumption"
@@ -6004,42 +4153,17 @@
         "Comparison",
         "Causation"
       ],
-      "observed_features": [
-        "Defender 100%",
-        "Plans / Recommendations 80%",
-        "Anti-Causal 40%",
-        "Net Effect 40%",
-        "Argue the Anti-Conclusion 30%",
-        "Science 30%",
-        "Conditional Conclusion 20%",
-        "Medical 20%",
-        "Alternatives 10%",
-        "Assumes Difference 10%",
-        "Assumes Similarity 10%",
-        "New Concept in Conclusion 10%",
-        "Predictions 10%",
-        "Sufficient vs. Necessary Flaw 10%",
-        "Timeframes 10%",
-        "Weighing Tradeoffs 10%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 98,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S3-Q5",
         "PT102-S2-Q6",
         "PT102-S2-Q12",
         "PT102-S3-Q2",
-        "PT102-S3-Q13",
-        "PT102-S4-Q9",
-        "PT103-S1-Q8",
-        "PT103-S1-Q14",
-        "PT103-S2-Q7",
-        "PT103-S2-Q10"
+        "PT102-S3-Q13"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6061,11 +4185,6 @@
       "current_question_features": [
         "Three Main Reasoning Types"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic",
-        "Comparisons",
-        "Causation"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -6081,15 +4200,14 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
         "Evaluate"
       ],
       "final_question_features": [
@@ -6098,37 +4216,22 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
+        "Causation",
         "Comparison"
-      ],
-      "observed_features": [
-        "Analogies 17%",
-        "Argue the Anti-Conclusion 17%",
-        "EXCEPT 17%",
-        "Famous Flaws 17%",
-        "Missing Link / Idea 17%",
-        "Part vs. Whole 17%",
-        "Principles in Answers 17%",
-        "Rebuttals 17%",
-        "Sampling 17%"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1184,
-      "selected": 6,
-      "question_qids": [
-        "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S3-Q2"
+      "pool_available": 306,
+      "pool_sample": [
+        "PT102-S2-Q9",
+        "PT102-S2-Q10",
+        "PT102-S4-Q6",
+        "PT102-S4-Q9",
+        "PT103-S1-Q9"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Explain Curious Fact, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w2-09-most-supported-first-taste",
@@ -6142,7 +4245,6 @@
       "current_question_features": [
         "First Taste / Most Supported Variations"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Most Strongly Supported"
       ],
@@ -6150,54 +4252,29 @@
         "Ruling Out Options"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
         "Most Strongly Supported"
       ],
-      "final_question_features": [
-        "Ruling Out Options"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
         "Comparison",
         "Causation"
       ],
-      "observed_features": [
-        "Science 25%",
-        "Alternatives 13%",
-        "Causal Chains 13%",
-        "Causal Difference-Maker 13%",
-        "EXCEPT 13%",
-        "Explain Curious Fact 13%",
-        "Logical Completion 13%",
-        "Math-y Stuff 13%",
-        "Medical 13%",
-        "Proposition/Generalization 13%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 5,
       "pool_available": 394,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q2",
         "PT101-S3-Q7",
         "PT102-S2-Q3",
         "PT102-S2-Q8",
-        "PT102-S2-Q13",
-        "PT102-S2-Q19",
-        "PT102-S3-Q3",
-        "PT102-S3-Q19"
+        "PT102-S2-Q13"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Ruling Out Options"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -6213,9 +4290,6 @@
       "current_question_features": [
         "Causal Chains"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Most Strongly Supported",
         "Must Be True"
@@ -6224,13 +4298,10 @@
         "Causal Chains"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Most Strongly Supported"
+        "Most Strongly Supported",
+        "Must Be True"
       ],
       "final_question_features": [
         "Causal Chains"
@@ -6239,22 +4310,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Causal Chains 100%",
-        "Logical Completion 33%",
-        "Medical 33%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 21,
-      "selected": 3,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q3",
         "PT103-S2-Q9",
-        "PT105-S1-Q20"
+        "PT105-S1-Q20",
+        "PT107-S1-Q8",
+        "PT107-S3-Q5"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6276,7 +4342,6 @@
       "current_question_features": [
         "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -6291,59 +4356,37 @@
         "Argue the Anti-Conclusion"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Weaken",
+        "Sufficient Assumption",
+        "Necessary Assumption",
         "Principle-Strengthen",
-        "Evaluate",
-        "Necessary Assumption"
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
+        "Missing Link / Idea",
         "Argue the Anti-Conclusion"
       ],
       "final_reasoning_types": [
+        "Conditional Logic",
         "Comparison"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 25%",
-        "Analogies 13%",
-        "Anti-Causal 13%",
-        "Defender 13%",
-        "EXCEPT 13%",
-        "Famous Flaws 13%",
-        "Missing Link / Idea 13%",
-        "Part vs. Whole 13%",
-        "Plans / Recommendations 13%",
-        "Principles in Answers 13%",
-        "Rebuttals 13%",
-        "Sampling 13%",
-        "Science 13%"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1184,
-      "selected": 8,
-      "question_qids": [
+      "pool_available": 345,
+      "pool_sample": [
         "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
         "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S3-Q2",
-        "PT101-S3-Q4",
-        "PT101-S3-Q5"
+        "PT101-S3-Q5",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea"
-      ]
+      "notes": []
     },
     {
       "slug": "w2-12-missing-links-color-coded",
@@ -6359,7 +4402,6 @@
       "current_question_features": [
         "Missing Links / Common Terms / Color-Coding"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -6370,58 +4412,32 @@
         "Links Between Premises"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Principle-Strengthen",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Sufficient Assumption"
+        "Principle-Strengthen"
       ],
       "final_question_features": [
-        "Missing Link / Idea"
+        "Missing Link / Idea",
+        "Links Between Premises"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 100%",
-        "New Concept in Conclusion 44%",
-        "Argue the Anti-Conclusion 11%",
-        "Assumes Difference 11%",
-        "Defender 11%",
-        "First Sentence Conclusion 11%",
-        "Intermediate Conclusions 11%",
-        "Links Between Premises 11%",
-        "Plans / Recommendations 11%",
-        "Plausibility 11%",
-        "Principles in Answers 11%",
-        "Quantifiers 11%",
-        "Untriggered Conditional 11%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 196,
-      "selected": 9,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S3-Q13",
         "PT101-S3-Q19",
         "PT102-S4-Q18",
-        "PT103-S1-Q4",
-        "PT103-S3-Q9",
-        "PT104-S1-Q16",
-        "PT105-S1-Q8",
-        "PT105-S1-Q18"
+        "PT103-S1-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Links Between Premises"
-      ]
+      "notes": []
     },
     {
       "slug": "w2-13-principle-conform-first-taste",
@@ -6435,7 +4451,6 @@
       "current_question_features": [
         "First Taste / Principle Matching"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Principle-Conform"
       ],
@@ -6443,10 +4458,6 @@
         "Principles in Answers"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Conform"
@@ -6455,34 +4466,20 @@
         "Principles in Answers"
       ],
       "final_reasoning_types": [
-        "Conditional Logic"
+        "Conditional Logic",
+        "Comparison"
       ],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Missing Link / Idea 50%",
-        "Implicit Principles 33%",
-        "Important Pivot 33%",
-        "New Concept in Conclusion 33%",
-        "Plans / Recommendations 33%",
-        "Intermediate Conclusions 17%",
-        "Links Between Premises 17%",
-        "Plausibility 17%",
-        "Weighing Tradeoffs 17%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 66,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q11",
         "PT102-S4-Q14",
         "PT105-S4-Q12",
         "PT107-S1-Q19",
-        "PT107-S4-Q17",
-        "PT109-S3-Q6"
+        "PT107-S4-Q17"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6498,9 +4495,6 @@
       "current_question_features": [
         "First Taste / Conditional Principle"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Principle-Strengthen"
       ],
@@ -6509,40 +4503,30 @@
         "Conditional Conclusion"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Principle-Strengthen"
       ],
       "final_question_features": [
-        "Principles in Answers"
+        "Principles in Answers",
+        "Conditional Conclusion"
       ],
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Principles in Answers 100%",
-        "Missing Link / Idea 50%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 68,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT102-S4-Q5",
         "PT105-S1-Q24",
-        "PT105-S4-Q7"
+        "PT105-S4-Q7",
+        "PT106-S1-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w2-15-strengthen-first-taste",
@@ -6556,7 +4540,6 @@
       "current_question_features": [
         "First Taste"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Strengthen"
       ],
@@ -6565,53 +4548,31 @@
         "Missing Link / Idea"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Strengthen"
       ],
       "final_question_features": [
-        "Plausibility"
+        "Plausibility",
+        "Missing Link / Idea"
       ],
       "final_reasoning_types": [
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Plausibility 83%",
-        "Explain Curious Fact 50%",
-        "Assumes Similarity 33%",
-        "EXCEPT 33%",
-        "Predictions 33%",
-        "Defender 17%",
-        "Important Pivot 17%",
-        "Missing Link / Idea 17%",
-        "Net Effect 17%",
-        "New Concept in Conclusion 17%",
-        "Plans / Recommendations 17%",
-        "Rebuttals 17%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 59,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q10",
         "PT102-S4-Q6",
         "PT104-S1-Q5",
         "PT104-S4-Q2",
-        "PT104-S4-Q16",
-        "PT106-S1-Q1"
+        "PT104-S4-Q16"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea"
-      ]
+      "notes": []
     },
     {
       "slug": "w3-01-except-first-taste",
@@ -6627,9 +4588,6 @@
       "current_question_features": [
         "EXCEPT"
       ],
-      "current_reasoning_types": [
-        "Comparative Reasoning"
-      ],
       "target_types": [
         "Paradox",
         "Strengthen",
@@ -6639,47 +4597,30 @@
         "EXCEPT"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Paradox",
-        "Most Strongly Supported",
-        "Strengthen"
+        "Strengthen",
+        "Most Strongly Supported"
       ],
       "final_question_features": [
         "EXCEPT"
       ],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "EXCEPT 100%",
-        "Plausibility 40%",
-        "Assumes Similarity 20%",
-        "Important Pivot 20%",
-        "New Concept in Conclusion 20%",
-        "Plans / Recommendations 20%",
-        "Predictions 20%",
-        "Rebuttals 20%",
-        "Science 20%"
-      ],
-      "difficulty_min": 2,
+      "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 33,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S3-Q14",
         "PT102-S2-Q19",
         "PT104-S4-Q16",
         "PT106-S1-Q1",
         "PT106-S3-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6697,9 +4638,6 @@
       "current_question_features": [
         "Anti-Causal"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Weaken",
         "Flaw",
@@ -6709,15 +4647,11 @@
         "Anti-Causal"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Weaken",
         "Flaw",
-        "Strengthen",
-        "Weaken"
+        "Strengthen"
       ],
       "final_question_features": [
         "Anti-Causal"
@@ -6726,28 +4660,17 @@
         "Causation",
         "Comparison"
       ],
-      "observed_features": [
-        "Anti-Causal 100%",
-        "Plans / Recommendations 40%",
-        "Alternatives 20%",
-        "Argue the Anti-Conclusion 20%",
-        "Explain Curious Fact 20%",
-        "Focused on Evidence 20%",
-        "Rebuttals 20%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 66,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q9",
         "PT103-S1-Q15",
         "PT103-S3-Q3",
         "PT103-S3-Q5",
         "PT105-S2-Q12"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6763,9 +4686,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -6773,48 +4693,30 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
-      "relaxation": "band±1",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Timeframes 50%",
-        "Breadcrumbs 33%",
-        "EXCEPT 33%",
-        "Alternatives 17%",
-        "Dense Stimulus 17%",
-        "Missing Link / Idea 17%",
-        "Plausibility 17%",
-        "Science 17%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 6,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13",
-        "PT159-S3-Q11"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": []
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
     },
     {
       "slug": "w3-04-analogies-set-1",
@@ -6829,9 +4731,6 @@
       "current_question_features": [
         "Analogies"
       ],
-      "current_reasoning_types": [
-        "Conditional Reasoning"
-      ],
       "target_types": [
         "Must Be True",
         "Most Strongly Supported"
@@ -6840,10 +4739,6 @@
         "Analogies"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Must Be True",
@@ -6855,34 +4750,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Analogies 100%",
-        "Logical Completion 67%",
-        "Timeframes 50%",
-        "Science 33%",
-        "Assumes Similarity 17%",
-        "Causal Difference-Maker 17%",
-        "Dense Stimulus 17%",
-        "Games-y LR 17%",
-        "Important Pivot 17%",
-        "Medical 17%",
-        "Proposition/Generalization 17%",
-        "Rebuttals 17%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 20,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT104-S4-Q22",
         "PT119-S4-Q7",
         "PT123-S2-Q3",
         "PT129-S2-Q18",
-        "PT133-S2-Q5",
-        "PT134-S2-Q13"
+        "PT133-S2-Q5"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6901,9 +4779,6 @@
       "current_question_features": [
         "Break the Comparison"
       ],
-      "current_reasoning_types": [
-        "Comparison"
-      ],
       "target_types": [
         "Flaw",
         "Weaken",
@@ -6915,15 +4790,11 @@
         "Assumes Similarity"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Necessary Assumption",
-        "Weaken",
         "Flaw",
+        "Weaken",
+        "Necessary Assumption",
         "Strengthen"
       ],
       "final_question_features": [
@@ -6931,41 +4802,19 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
-      ],
-      "observed_features": [
-        "Defender 63%",
-        "Assumes Difference 50%",
-        "Assumes Similarity 50%",
-        "Net Effect 50%",
-        "Plans / Recommendations 50%",
-        "Argue the Anti-Conclusion 38%",
-        "Predictions 38%",
-        "Missing Link / Idea 25%",
-        "Analogies 13%",
-        "EXCEPT 13%",
-        "Plausibility 13%",
-        "Rebuttals 13%",
-        "Science 13%",
-        "Timeframes 13%"
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 114,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q13",
         "PT102-S4-Q9",
         "PT103-S2-Q5",
         "PT103-S2-Q22",
-        "PT103-S3-Q11",
-        "PT104-S1-Q13",
-        "PT104-S4-Q2",
-        "PT104-S4-Q9"
+        "PT103-S3-Q11"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -6981,7 +4830,6 @@
       "current_question_features": [
         "Timed Agree/Disagree"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Agree/Disagree"
       ],
@@ -6990,45 +4838,30 @@
         "Battle of Opinions"
       ],
       "blended": false,
-      "band": [
-        2,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Agree/Disagree"
       ],
       "final_question_features": [
-        "2-Speaker"
+        "2-Speaker",
+        "Battle of Opinions"
       ],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "2-Speaker 100%",
-        "Alternatives 13%",
-        "Explain Curious Fact 13%"
+        "Comparison"
       ],
       "difficulty_min": 2,
       "difficulty_max": 4,
       "pool_available": 79,
-      "selected": 8,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q14",
         "PT101-S3-Q1",
         "PT102-S4-Q22",
         "PT103-S1-Q16",
-        "PT104-S1-Q1",
-        "PT105-S1-Q15",
-        "PT105-S2-Q13",
-        "PT106-S2-Q21"
+        "PT104-S1-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Battle of Opinions"
-      ]
+      "notes": []
     },
     {
       "slug": "w3-07-rebuttal-conclusions",
@@ -7042,7 +4875,6 @@
       "current_question_features": [
         "Rebuttal Conclusions"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Main Conclusion"
       ],
@@ -7050,10 +4882,6 @@
         "Rebuttals"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Main Conclusion"
@@ -7062,27 +4890,17 @@
         "Rebuttals"
       ],
       "final_reasoning_types": [],
-      "observed_features": [
-        "Rebuttals 100%",
-        "First Sentence Conclusion 50%",
-        "Important Pivot 50%",
-        "Analogies 25%",
-        "Contrapositive Logic 25%",
-        "Plans / Recommendations 25%",
-        "Sufficient vs. Necessary Flaw 25%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 67,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q15",
         "PT102-S2-Q7",
         "PT102-S4-Q1",
-        "PT103-S2-Q8"
+        "PT103-S2-Q8",
+        "PT105-S1-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7099,7 +4917,6 @@
       "current_question_features": [
         "Describing Arguments"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Method of Reasoning",
@@ -7109,51 +4926,30 @@
         "Focused on Evidence"
       ],
       "blended": false,
-      "band": [
-        1,
-        2
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "final_question_features": [
-        "Focused on Evidence"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "2-Speaker 20%",
-        "Abstract Answers 20%",
-        "Explain Curious Fact 20%",
-        "First Sentence Conclusion 20%",
-        "Important Pivot 20%",
-        "Plausibility 20%",
-        "Rebuttals 20%",
-        "Ruling Out Options 20%",
-        "Science 20%"
+        "Comparison"
       ],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "pool_available": 407,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q10",
         "PT101-S2-Q12",
         "PT101-S2-Q15",
         "PT101-S3-Q3"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Focused on Evidence"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -7174,7 +4970,6 @@
       "current_question_features": [
         "Idea Math vs Courtroom Debate"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -7189,13 +4984,13 @@
         "Argue the Anti-Conclusion"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Conform",
         "Flaw",
+        "Strengthen",
         "Weaken",
         "Evaluate"
       ],
@@ -7204,36 +4999,22 @@
         "Argue the Anti-Conclusion"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
-      ],
-      "observed_features": [
-        "Analogies 17%",
-        "Argue the Anti-Conclusion 17%",
-        "EXCEPT 17%",
-        "Famous Flaws 17%",
-        "Part vs. Whole 17%",
-        "Rebuttals 17%",
-        "Sampling 17%"
+        "Conditional Logic",
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1249,
-      "selected": 6,
-      "question_qids": [
+      "pool_available": 337,
+      "pool_sample": [
         "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
-        "PT101-S2-Q16",
-        "PT101-S3-Q2",
-        "PT101-S3-Q4"
+        "PT101-S3-Q5",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S2-Q9"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Missing Link / Idea, Argue the Anti-Conclusion"
-      ]
+      "notes": []
     },
     {
       "slug": "w3-10-fill-in-the-blank-logical-completion-first-taste",
@@ -7247,7 +5028,6 @@
       "current_question_features": [
         "Logical Completion"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Most Strongly Supported"
       ],
@@ -7255,10 +5035,6 @@
         "Logical Completion"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported"
@@ -7266,26 +5042,20 @@
       "final_question_features": [
         "Logical Completion"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Logical Completion 100%",
-        "Belief / Knowledge / Intent 25%",
-        "Causal Chains 25%",
-        "Causal Difference-Maker 25%",
-        "Medical 25%"
+      "final_reasoning_types": [
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 51,
-      "selected": 4,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S2-Q3",
         "PT113-S2-Q9",
         "PT113-S4-Q1",
-        "PT115-S2-Q6"
+        "PT115-S2-Q6",
+        "PT119-S4-Q7"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7301,7 +5071,6 @@
       "current_question_features": [
         "Complete the Analogy"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Most Strongly Supported"
       ],
@@ -7309,10 +5078,6 @@
         "Analogies"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported"
@@ -7323,31 +5088,17 @@
       "final_reasoning_types": [
         "Comparison"
       ],
-      "observed_features": [
-        "Analogies 100%",
-        "Logical Completion 80%",
-        "Timeframes 60%",
-        "Science 40%",
-        "Assumes Similarity 20%",
-        "Causal Difference-Maker 20%",
-        "Important Pivot 20%",
-        "Medical 20%",
-        "Proposition/Generalization 20%",
-        "Rebuttals 20%"
-      ],
       "difficulty_min": 1,
       "difficulty_max": 3,
       "pool_available": 19,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT119-S4-Q7",
         "PT123-S2-Q3",
         "PT129-S2-Q18",
         "PT133-S2-Q5",
         "PT134-S2-Q13"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7361,9 +5112,6 @@
         "Mixed LR question types"
       ],
       "current_question_features": [
-        "Conditional Logic"
-      ],
-      "current_reasoning_types": [
         "Conditional Logic"
       ],
       "target_types": [
@@ -7380,49 +5128,36 @@
         "Conditional Diagramming"
       ],
       "blended": true,
-      "band": [
-        2,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Most Strongly Supported",
-        "Flaw",
-        "Principle-Strengthen",
         "Must Be True",
-        "Parallel Reasoning"
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
       ],
       "final_question_features": [
         "Conditional Diagramming"
       ],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Argue the Anti-Conclusion 14%",
-        "Causal Difference-Maker 14%",
-        "Famous Flaws 14%",
-        "Missing Link / Idea 14%",
-        "Principles in Answers 14%",
-        "Quantifiers 14%"
+      "final_reasoning_types": [
+        "Conditional Logic"
       ],
       "difficulty_min": 2,
       "difficulty_max": 3,
-      "pool_available": 964,
-      "selected": 7,
-      "question_qids": [
-        "PT101-S2-Q2",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q11",
-        "PT101-S2-Q13",
-        "PT101-S3-Q4"
+      "pool_available": 81,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming"
-      ]
+      "notes": []
     },
     {
       "slug": "w3-13-weaken-comparison",
@@ -7436,9 +5171,6 @@
       "current_question_features": [
         "Weaken + Comparison"
       ],
-      "current_reasoning_types": [
-        "Comparison"
-      ],
       "target_types": [
         "Weaken"
       ],
@@ -7447,11 +5179,7 @@
         "Assumes Similarity"
       ],
       "blended": false,
-      "band": [
-        1,
-        3
-      ],
-      "relaxation": "strict",
+      "relaxation": "band±1",
       "final_question_types": [
         "Weaken"
       ],
@@ -7460,38 +5188,19 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
-      ],
-      "observed_features": [
-        "Assumes Similarity 67%",
-        "Anti-Causal 33%",
-        "Argue the Anti-Conclusion 33%",
-        "Assumes Difference 33%",
-        "Plans / Recommendations 33%",
-        "Rebuttals 33%",
-        "Science 33%",
-        "Alternatives 17%",
-        "EXCEPT 17%",
-        "Explain Curious Fact 17%",
-        "Medical 17%",
-        "Net Effect 17%",
-        "Plausibility 17%"
+        "Comparison"
       ],
       "difficulty_min": 1,
-      "difficulty_max": 3,
-      "pool_available": 15,
-      "selected": 6,
-      "question_qids": [
+      "difficulty_max": 4,
+      "pool_available": 23,
+      "pool_sample": [
         "PT103-S2-Q5",
-        "PT112-S1-Q2",
-        "PT112-S1-Q8",
-        "PT117-S2-Q8",
-        "PT119-S2-Q25",
-        "PT122-S2-Q8"
+        "PT106-S3-Q17",
+        "PT107-S4-Q9",
+        "PT110-S2-Q17",
+        "PT111-S4-Q20"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7512,7 +5221,6 @@
       "current_question_features": [
         "Complete the Analogy"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Necessary Assumption",
         "Strengthen",
@@ -7525,56 +5233,34 @@
         "Analogies"
       ],
       "blended": true,
-      "band": [
-        1,
-        3
-      ],
       "relaxation": "strict",
       "final_question_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle-Conform",
         "Most Strongly Supported",
         "Flaw",
-        "Weaken",
-        "Necessary Assumption"
+        "Weaken"
       ],
       "final_question_features": [
         "Analogies"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Causation"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 22%",
-        "Science 22%",
-        "Analogies 11%",
-        "Anti-Causal 11%",
-        "Causal Difference-Maker 11%",
-        "Defender 11%",
-        "EXCEPT 11%",
-        "Famous Flaws 11%",
-        "Plans / Recommendations 11%"
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 3,
-      "pool_available": 1425,
-      "selected": 9,
-      "question_qids": [
-        "PT101-S2-Q2",
-        "PT101-S2-Q6",
-        "PT101-S2-Q7",
-        "PT101-S2-Q8",
+      "pool_available": 51,
+      "pool_sample": [
         "PT101-S3-Q2",
-        "PT101-S3-Q4",
-        "PT101-S3-Q5",
-        "PT101-S3-Q6",
-        "PT101-S3-Q7"
+        "PT103-S3-Q11",
+        "PT107-S3-Q1",
+        "PT111-S3-Q8",
+        "PT114-S2-Q5"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Analogies"
-      ]
+      "notes": []
     },
     {
       "slug": "w3-15-role-main-conclusion-set-1",
@@ -7589,48 +5275,32 @@
       "current_question_features": [
         "Role + Main Conclusion"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Main Conclusion"
       ],
       "target_features": [],
       "blended": false,
-      "band": [
-        1,
-        2
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Role",
         "Main Conclusion"
       ],
       "final_question_features": [],
-      "final_reasoning_types": [],
-      "observed_features": [
-        "Rebuttals 57%",
-        "First Sentence Conclusion 43%",
-        "Important Pivot 29%",
-        "Alternatives 14%",
-        "Medical 14%",
-        "Plans / Recommendations 14%",
-        "Predictions 14%"
+      "final_reasoning_types": [
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "pool_available": 123,
-      "selected": 7,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q10",
         "PT101-S2-Q15",
         "PT102-S2-Q1",
         "PT103-S3-Q4",
-        "PT105-S1-Q1",
-        "PT105-S1-Q2",
-        "PT105-S4-Q6"
+        "PT105-S1-Q1"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7652,11 +5322,6 @@
       "current_question_features": [
         "Three Main Reasoning Structures"
       ],
-      "current_reasoning_types": [
-        "Conditional Logic",
-        "Comparisons",
-        "Causation"
-      ],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -7672,17 +5337,15 @@
         "Assumes Similarity"
       ],
       "blended": true,
-      "band": [
-        3,
-        4
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Flaw",
-        "Principle-Strengthen",
-        "Evaluate",
+        "Sufficient Assumption",
         "Necessary Assumption",
-        "Weaken"
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
       ],
       "final_question_features": [
         "Conditional Diagramming",
@@ -7690,47 +5353,22 @@
         "Assumes Similarity"
       ],
       "final_reasoning_types": [
-        "Comparison",
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Argue the Anti-Conclusion 30%",
-        "Famous Flaws 20%",
-        "Missing Link / Idea 20%",
-        "Principles in Answers 20%",
-        "Abstract Answers 10%",
-        "Defender 10%",
-        "Dense Stimulus 10%",
-        "EXCEPT 10%",
-        "Focused on Evidence 10%",
-        "Part vs. Whole 10%",
-        "Plans / Recommendations 10%",
-        "Rebuttals 10%",
-        "Sampling 10%",
-        "Timeframes 10%"
+        "Causation",
+        "Comparison"
       ],
       "difficulty_min": 3,
       "difficulty_max": 4,
-      "pool_available": 879,
-      "selected": 10,
-      "question_qids": [
-        "PT101-S2-Q1",
-        "PT101-S2-Q6",
-        "PT101-S2-Q8",
-        "PT101-S2-Q9",
-        "PT101-S2-Q16",
-        "PT101-S2-Q17",
-        "PT101-S2-Q20",
-        "PT101-S2-Q23",
-        "PT101-S2-Q25",
-        "PT101-S3-Q4"
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
       ],
       "classification": "blended",
-      "changed": true,
       "has_override": false,
-      "notes": [
-        "target feature(s) weak in pool: Conditional Diagramming, Explain Curious Fact, Assumes Similarity"
-      ]
+      "notes": []
     },
     {
       "slug": "w11-explain-curious-fact-easier-set-2",
@@ -7744,9 +5382,6 @@
       "current_question_features": [
         "Explain Curious Fact"
       ],
-      "current_reasoning_types": [
-        "Causation"
-      ],
       "target_types": [
         "Paradox"
       ],
@@ -7754,49 +5389,29 @@
         "Explain Curious Fact"
       ],
       "blended": false,
-      "band": [
-        1,
-        2
-      ],
-      "relaxation": "band-1to5",
+      "relaxation": "keep-type",
       "final_question_types": [
         "Paradox"
       ],
-      "final_question_features": [
-        "Explain Curious Fact"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation",
-        "Comparison"
+        "Comparison",
+        "Causation"
       ],
-      "observed_features": [
-        "Explain Curious Fact 100%",
-        "Timeframes 50%",
-        "Breadcrumbs 33%",
-        "EXCEPT 33%",
-        "Alternatives 17%",
-        "Dense Stimulus 17%",
-        "Missing Link / Idea 17%",
-        "Plausibility 17%",
-        "Science 17%"
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
       ],
-      "difficulty_min": 2,
-      "difficulty_max": 4,
-      "pool_available": 6,
-      "selected": 6,
-      "question_qids": [
-        "PT117-S2-Q15",
-        "PT127-S2-Q13",
-        "PT135-S2-Q19",
-        "PT140-S3-Q16",
-        "PT153-S3-Q13",
-        "PT159-S3-Q11"
-      ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": [
-        "pool relaxed (band-1to5)"
+        "pool widened by dropping feature constraint"
       ]
     },
     {
@@ -7811,7 +5426,6 @@
       "current_question_features": [
         "Famous Flaws"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -7819,10 +5433,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        1,
-        2
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -7831,26 +5441,19 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Rebuttals 60%",
-        "Part vs. Whole 20%"
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "pool_available": 112,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q1",
         "PT102-S4-Q4",
         "PT103-S1-Q3",
         "PT103-S2-Q1",
         "PT103-S2-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7866,7 +5469,6 @@
       "current_question_features": [
         "Famous Flaws"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Flaw"
       ],
@@ -7874,10 +5476,6 @@
         "Famous Flaws"
       ],
       "blended": false,
-      "band": [
-        1,
-        2
-      ],
       "relaxation": "strict",
       "final_question_types": [
         "Flaw"
@@ -7886,26 +5484,19 @@
         "Famous Flaws"
       ],
       "final_reasoning_types": [
-        "Conditional Logic"
-      ],
-      "observed_features": [
-        "Famous Flaws 100%",
-        "Rebuttals 60%",
-        "Part vs. Whole 20%"
+        "Comparison"
       ],
       "difficulty_min": 1,
       "difficulty_max": 2,
       "pool_available": 112,
-      "selected": 5,
-      "question_qids": [
+      "pool_sample": [
         "PT102-S3-Q1",
         "PT102-S4-Q4",
         "PT103-S1-Q3",
         "PT103-S2-Q1",
         "PT103-S2-Q4"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7923,7 +5514,6 @@
       "current_question_features": [
         "Missing Links"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Sufficient Assumption",
         "Necessary Assumption",
@@ -7933,14 +5523,11 @@
         "Missing Link / Idea"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "strict",
       "final_question_types": [
-        "Principle-Strengthen",
-        "Sufficient Assumption"
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
       ],
       "final_question_features": [
         "Missing Link / Idea"
@@ -7948,30 +5535,17 @@
       "final_reasoning_types": [
         "Conditional Logic"
       ],
-      "observed_features": [
-        "Missing Link / Idea 100%",
-        "Conditional Diagramming 33%",
-        "Principles in Answers 33%",
-        "Links Between Premises 17%",
-        "New Concept in Conclusion 17%",
-        "Plans / Recommendations 17%",
-        "Quantifiers 17%",
-        "Untriggered Conditional 17%"
-      ],
       "difficulty_min": 3,
       "difficulty_max": 5,
       "pool_available": 183,
-      "selected": 6,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q9",
         "PT101-S2-Q21",
         "PT101-S2-Q24",
         "PT101-S3-Q10",
-        "PT101-S3-Q19",
-        "PT102-S2-Q23"
+        "PT101-S3-Q19"
       ],
-      "classification": "verified-by-qids",
-      "changed": true,
+      "classification": "ready",
       "has_override": false,
       "notes": []
     },
@@ -7989,7 +5563,6 @@
       "current_question_features": [
         "Describing Arguments"
       ],
-      "current_reasoning_types": [],
       "target_types": [
         "Role",
         "Method of Reasoning",
@@ -7999,59 +5572,30 @@
         "Focused on Evidence"
       ],
       "blended": false,
-      "band": [
-        3,
-        5
-      ],
       "relaxation": "keep-type",
       "final_question_types": [
-        "Method of Reasoning",
         "Role",
+        "Method of Reasoning",
         "Main Conclusion"
       ],
-      "final_question_features": [
-        "Focused on Evidence"
-      ],
+      "final_question_features": [],
       "final_reasoning_types": [
-        "Causation"
-      ],
-      "observed_features": [
-        "2-Speaker 30%",
-        "Abstract Answers 20%",
-        "Explain Curious Fact 20%",
-        "Important Pivot 20%",
-        "Rebuttals 20%",
-        "Science 20%",
-        "Analogies 10%",
-        "First Sentence Conclusion 10%",
-        "Medical 10%",
-        "Plausibility 10%",
-        "Predictions 10%",
-        "Ruling Out Options 10%"
+        "Comparison"
       ],
       "difficulty_min": 1,
-      "difficulty_max": 4,
+      "difficulty_max": 5,
       "pool_available": 407,
-      "selected": 10,
-      "question_qids": [
+      "pool_sample": [
         "PT101-S2-Q3",
         "PT101-S2-Q10",
         "PT101-S2-Q12",
         "PT101-S2-Q15",
-        "PT101-S3-Q3",
-        "PT101-S3-Q17",
-        "PT102-S2-Q1",
-        "PT102-S2-Q7",
-        "PT102-S3-Q6",
-        "PT102-S3-Q8"
+        "PT101-S3-Q3"
       ],
-      "classification": "override-set",
-      "changed": true,
+      "classification": "ready",
       "has_override": true,
       "notes": [
-        "pool relaxed (keep-type)",
-        "dropped feature constraint to fill pool — review",
-        "target feature(s) weak in pool: Focused on Evidence"
+        "pool widened by dropping feature constraint"
       ]
     }
   ]

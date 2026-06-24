@@ -3,10 +3,19 @@
 // emit an idempotent Supabase migration (LR only). Run AFTER
 // scripts/assign-guided-drill-taxonomy.mjs has produced _assignment_proposal.json.
 //
-// For each LR drill it writes the qid-derived signature:
-//   question_types, question_features, reasoning_types (glossary form, display),
-//   difficulty_min/max, question_count, question_qids (ordered, resolvable),
-//   and a synced bank_filter (fallback matcher).
+// Model: each drill is a vetted FILTER (the reattempt pool) plus a per-attempt
+// count N. bank_filter holds that filter; the app (GuidedDrillStart) draws a fresh
+// shuffled N from the pool every attempt, so drills are reattemptable with new
+// sets — matching LSAT Lab. No fixed question_qids are pinned.
+//
+// Per drill it writes: question_types / question_features (the effective filter,
+// also the display badges), reasoning_types (glossary form, display only),
+// difficulty_min/max (effective band), question_count (per-attempt N), and a
+// bank_filter that the app's resolveGuidedDrillPool reproduces exactly:
+//   - qtypes match q.qtype (normalized canonical) -> use the canonical types
+//   - features match q.questionFeatures (canonical) -> use canonical features
+//   - reasoning is NOT constrained (left empty) so it never narrows the pool
+//   - difficulty band = effective band
 // Reading Comprehension (Framework Sampler) is left untouched.
 
 import fs from 'node:fs';
@@ -19,14 +28,6 @@ const GUIDED_DIR = path.join(REPO, 'data', 'guided-drills');
 const SEED = path.join(GUIDED_DIR, '_seed.json');
 const PROPOSAL = path.join(GUIDED_DIR, '_assignment_proposal.json');
 const MIGRATION = path.join(REPO, 'supabase', 'migrations', '20260624000000_guided_drills_taxonomy_final.sql');
-
-// bank_filter matcher lowercase-compares against q.reasoningType, which the loader
-// stores RAW. Map the glossary display form back to the raw bank values.
-const RAW_REASONING = {
-  'Conditional Logic': 'Conditional Reasoning',
-  'Causation': 'Causation',
-  'Comparison': 'Comparative Reasoning',
-};
 
 const readJson = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const sql = (s) => `$gd$${s}$gd$`;
@@ -46,25 +47,24 @@ function main() {
     const r = bySlug.get(drill.slug);
     if (!r || r.skipped) { skipped += 1; continue; } // RC / framework sampler: untouched
 
-    const reasoningDisplay = r.final_reasoning_types || [];
     const bankFilter = {
       qtypes: r.final_question_types || [],
       features: r.final_question_features || [],
-      reasoning_types: reasoningDisplay.map((x) => RAW_REASONING[x] ?? x),
+      reasoning_types: [], // never constrain the pool by reasoning
       difficulty_min: r.difficulty_min ?? null,
       difficulty_max: r.difficulty_max ?? null,
       count: r.question_count ?? null,
     };
 
-    // Mutate the seed entry in place (taxonomy fields only).
+    // Mutate the seed entry in place (taxonomy fields only; instruction_card etc. untouched).
     drill.question_types = r.final_question_types || [];
     drill.question_features = r.final_question_features || [];
-    drill.reasoning_types = reasoningDisplay;
+    drill.reasoning_types = r.final_reasoning_types || [];
     drill.difficulty_min = r.difficulty_min ?? null;
     drill.difficulty_max = r.difficulty_max ?? null;
     drill.question_count = r.question_count ?? null;
-    drill.question_qids = r.question_qids || [];
     drill.bank_filter = bankFilter;
+    delete drill.question_qids; // pool model: no pinned set
 
     updates.push(
       `UPDATE public.guided_drills SET `
@@ -74,7 +74,6 @@ function main() {
       + `difficulty_min=${sqlNum(drill.difficulty_min)}, `
       + `difficulty_max=${sqlNum(drill.difficulty_max)}, `
       + `question_count=${sqlNum(drill.question_count)}, `
-      + `question_qids=${sqlArr(drill.question_qids)}, `
       + `bank_filter=${sql(JSON.stringify(bankFilter))}::jsonb, `
       + `updated_at=now() WHERE slug=${sql(drill.slug)};`,
     );
@@ -84,20 +83,19 @@ function main() {
   fs.writeFileSync(SEED, `${JSON.stringify(seed, null, 2)}\n`);
 
   const header = [
-    '-- Guided-drill taxonomy: final qid-backed assignment (LR only).',
+    '-- Guided-drill taxonomy: vetted reattempt-pool filters (LR only).',
     '-- Generated from data/guided-drills/_seed.json via scripts/apply-guided-drill-taxonomy.mjs.',
-    '-- Each drill gets a deterministic ordered question_qids set plus question_types,',
-    '-- question_features, reasoning_types and difficulty levels DERIVED from those exact',
-    '-- questions. Idempotent (UPDATE by slug). Reading Comprehension (Framework Sampler)',
-    '-- is intentionally untouched: no RC bank exists.',
-    '',
-    "ALTER TABLE public.guided_drills ADD COLUMN IF NOT EXISTS question_qids text[] NOT NULL DEFAULT '{}'::text[];",
+    '-- Each drill is a precise bank_filter (type + feature + difficulty band = the qualified',
+    '-- pool) plus a per-attempt question_count N. The app draws a fresh shuffled N from the',
+    '-- pool each attempt, so drills are reattemptable with new question sets. question_types,',
+    '-- question_features and reasoning_types are the display badges. Idempotent (UPDATE by',
+    '-- slug). Reading Comprehension (Framework Sampler) is intentionally untouched.',
     '',
   ].join('\n');
 
   fs.writeFileSync(MIGRATION, `${header}${updates.join('\n')}\n`);
 
-  console.log('=== Apply guided-drill taxonomy (LR) ===');
+  console.log('=== Apply guided-drill taxonomy (LR, reattempt-pool model) ===');
   console.log('Drills updated:', applied, '| skipped (RC/untouched):', skipped);
   console.log('Wrote:');
   console.log('  ' + path.relative(REPO, SEED));

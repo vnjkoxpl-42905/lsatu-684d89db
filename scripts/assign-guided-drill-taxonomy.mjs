@@ -215,11 +215,16 @@ const orderQ = (a, b) => a.pt - b.pt || a.section - b.section || a.qnum - b.qnum
 // type; Anti-Causal (feature pool 171 < Weaken 339) keeps the feature; EXCEPT
 // keeps the feature; Must Be False keeps the type. Dropping a dimension always
 // flags the drill for human review.
-function buildPool(questions, { types, features, blended, lockTypes, lockFeatures }, band, need) {
+// Builds the vetted REATTEMPT POOL for a drill and reports the EFFECTIVE filter
+// (which type/feature dimensions and which difficulty band actually produce it).
+// The pool must comfortably exceed the per-attempt N so reattempts get fresh sets;
+// `target` is that desired pool floor (≈ N×3). Relaxes difficulty first, then drops
+// the rarer dimension (keeping a human-locked dimension), exactly like before.
+function buildPool(questions, { types, features, lockTypes, lockFeatures }, band, target) {
   const typeSet = new Set(types);
   const featSet = new Set(features);
   const hasType = typeSet.size > 0;
-  const hasFeat = featSet.size > 0 && !blended;
+  const hasFeat = featSet.size > 0;
   const matchType = (q) => typeSet.has(q.qtype);
   const matchFeat = (q) => q.features.some((f) => featSet.has(f));
 
@@ -229,86 +234,47 @@ function buildPool(questions, { types, features, blended, lockTypes, lockFeature
     inBand(q.difficulty, opt.band),
   ).sort(orderQ);
 
+  const result = (matches, level, dropped, effBand) => ({
+    matches, relaxation: level, available: matches.length, dropped,
+    effBand, effType: dropped === 'type' ? false : hasType, effFeat: dropped === 'feature' ? false : hasFeat,
+  });
+
   // Tier 1: keep both dimensions, widen difficulty only.
-  const tiers = [{ level: 'strict', band, type: hasType, feat: hasFeat }];
+  const tiers = [{ level: 'strict', band }];
   if (band) {
-    tiers.push({ level: 'band±1', band: [Math.max(1, band[0] - 1), Math.min(5, band[1] + 1)], type: hasType, feat: hasFeat });
-    tiers.push({ level: 'band-1to5', band: [1, 5], type: hasType, feat: hasFeat });
+    tiers.push({ level: 'band±1', band: [Math.max(1, band[0] - 1), Math.min(5, band[1] + 1)] });
+    tiers.push({ level: 'band-1to5', band: [1, 5] });
   }
   for (const t of tiers) {
-    const matches = filt(t);
-    if (matches.length >= need) return { matches, relaxation: t.level, available: matches.length, dropped: 'none' };
+    const matches = filt({ band: t.band, type: hasType, feat: hasFeat });
+    if (matches.length >= target) return result(matches, t.level, 'none', t.band);
   }
-
-  // Tier 2: must drop a dimension. Keep the rarer (more specific) one.
   const fullBoth = filt({ band: [1, 5], type: hasType, feat: hasFeat });
-  if (fullBoth.length >= need) return { matches: fullBoth, relaxation: 'band-1to5', available: fullBoth.length, dropped: 'none' };
+  if (fullBoth.length >= target || !(hasType && hasFeat)) return result(fullBoth, 'band-1to5', 'none', [1, 5]);
 
-  if (hasType && hasFeat) {
-    // A human-locked dimension is never dropped.
-    const candidates = [];
-    if (!lockTypes) candidates.push({ pool: filt({ band: [1, 5], type: false, feat: true }), dropped: 'type' });
-    if (!lockFeatures) candidates.push({ pool: filt({ band: [1, 5], type: true, feat: false }), dropped: 'feature' });
-    if (candidates.length === 0) {
-      // both locked: best-effort strict pool at full difficulty.
-      const both = filt({ band: [1, 5], type: true, feat: true });
-      return { matches: both, relaxation: 'locked-both', available: both.length, dropped: 'none' };
-    }
-    // prefer the more specific pool that still satisfies need; else the larger.
-    candidates.sort((a, b) => a.pool.length - b.pool.length);
-    const ok = candidates.find((c) => c.pool.length >= need) ?? candidates[candidates.length - 1];
-    return { matches: ok.pool, relaxation: `keep-${ok.dropped === 'feature' ? 'type' : 'feature'}`, available: ok.pool.length, dropped: ok.dropped };
-  }
-
-  // Only one dimension to begin with (blended / no feature / no type).
-  const single = filt({ band: [1, 5], type: hasType, feat: hasFeat });
-  return { matches: single, relaxation: 'band-1to5', available: single.length, dropped: 'none' };
+  // Tier 2: drop a dimension to widen the pool. Keep the rarer (more specific) one.
+  const candidates = [];
+  if (!lockTypes) candidates.push({ pool: filt({ band: [1, 5], type: false, feat: true }), dropped: 'type' });
+  if (!lockFeatures) candidates.push({ pool: filt({ band: [1, 5], type: true, feat: false }), dropped: 'feature' });
+  if (candidates.length === 0) return result(fullBoth, 'locked-both', 'none', [1, 5]);
+  candidates.sort((a, b) => a.pool.length - b.pool.length);
+  const ok = candidates.find((c) => c.pool.length >= target) ?? candidates[candidates.length - 1];
+  return result(ok.pool, `keep-${ok.dropped === 'feature' ? 'type' : 'feature'}`, ok.dropped, [1, 5]);
 }
 
-// ----- Derive final metadata strictly from the selected qids -----
-// Types/reasoning/levels are pure facts of the picks. Features are kept tight:
-// the drill's intended (target) features that the picks actually confirm — never
-// pool-derived noise. When there is no target (blended drills), fall back to the
-// genuinely dominant features. The full observed-feature frequency is surfaced
-// separately for the review pass.
-function deriveFromPicks(picks, targetFeatures) {
-  const n = picks.length || 1;
-  const types = uniq(picks.map((q) => q.qtype)).filter((t) => t !== 'Unknown');
-  // Reasoning: keep types carried by a meaningful share of picks (>=30%, >=2 when
-  // the set is large enough), sorted by prevalence — drops one-off noise.
+// ----- Display reasoning derived from the whole vetted pool -----
+// Display question_types / question_features ARE the effective filter (what defines
+// the reattempt pool). Reasoning is descriptive only (kept out of the filter so it
+// never narrows the pool): the reasoning types carried by a meaningful share of the
+// pool. Difficulty shown is the effective band.
+function deriveReasoning(pool) {
+  const n = pool.length || 1;
   const rFreq = new Map();
-  for (const q of picks) for (const r of uniq(q.reasoningTypes)) if (CANONICAL_REASONING.has(r)) rFreq.set(r, (rFreq.get(r) ?? 0) + 1);
-  const reasoning = [...rFreq.entries()]
-    .filter(([, c]) => c / n >= 0.3 && (n < 4 || c >= 2))
+  for (const q of pool) for (const r of uniq(q.reasoningTypes)) if (CANONICAL_REASONING.has(r)) rFreq.set(r, (rFreq.get(r) ?? 0) + 1);
+  return [...rFreq.entries()]
+    .filter(([, c]) => c / n >= 0.3)
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([r]) => r);
-  const diffs = picks.map((q) => q.difficulty).filter((d) => d != null);
-
-  const freq = new Map();
-  for (const q of picks) for (const f of q.features) freq.set(f, (freq.get(f) ?? 0) + 1);
-  const observed = [...freq.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  const observedTop = observed.map(([f, c]) => `${f} ${Math.round((c / n) * 100)}%`);
-
-  let features;
-  const weak = [];
-  if (targetFeatures.length) {
-    // Confirm each intended feature against the picks; drop ones barely present.
-    features = targetFeatures.filter((f) => (freq.get(f) ?? 0) / n >= 0.25);
-    for (const f of targetFeatures) if (!features.includes(f)) weak.push(f);
-  } else {
-    // Blended / feature-derived: only genuinely dominant features (≥60%, ≥3 hits), cap 3.
-    features = observed.filter(([, c]) => c / n >= 0.6 && c >= 3).slice(0, 3).map(([f]) => f);
-  }
-
-  return {
-    question_types: types,
-    question_features: features,
-    reasoning_types: reasoning,
-    difficulty_min: diffs.length ? Math.min(...diffs) : null,
-    difficulty_max: diffs.length ? Math.max(...diffs) : null,
-    observed_features: observedTop,
-    weak_target_features: weak,
-  };
 }
 
 function main() {
@@ -338,80 +304,60 @@ function main() {
 
     const sig = targetSignature(drill, override, auditRow, bank.featureVocabulary);
     const band = inferBand(drill, override);
+    // Want the reattempt pool to comfortably exceed the per-attempt set so fresh
+    // sets are possible: aim for ≈ N×3 (min 12), but never demand more than exists.
+    const target = Math.max(need * 3, 12);
 
-    // Explicit qid override wins entirely.
-    let picks, relaxation, available, dropped = 'none';
-    if (Array.isArray(override?.question_qids) && override.question_qids.length) {
-      picks = override.question_qids.map((id) => bank.byQid.get(id)).filter(Boolean);
-      relaxation = 'override-qids';
-      available = picks.length;
-    } else {
-      const pool = buildPool(bank.questions, sig, band, need || 1);
-      relaxation = pool.relaxation;
-      available = pool.available;
-      dropped = pool.dropped;
-      picks = need ? pool.matches.slice(0, need) : pool.matches;
-    }
+    const pool = buildPool(bank.questions, sig, band, target);
+    const available = pool.available;
 
-    const qids = picks.map((q) => q.qid);
-    const final = deriveFromPicks(picks, sig.features);
-
-    // Fallbacks if derivation came back empty.
-    if (final.question_types.length === 0) final.question_types = sig.types;
-    if (final.question_features.length === 0) final.question_features = sig.features;
+    // The EFFECTIVE filter is what the app's resolveGuidedDrillPool must reproduce.
+    const finalTypes = pool.effType ? sig.types : [];
+    const finalFeatures = pool.effFeat ? sig.features : [];
+    const finalReasoning = deriveReasoning(pool.matches);
+    const effBand = pool.effBand;
+    const sample = pool.matches.slice(0, 5).map((q) => q.qid); // reference only; not persisted
 
     const notes = [];
     if (countDefaulted) notes.push(`question_count missing in seed — used ${need}${cardCount ? ' (from card)' : ' (default)'}; set explicitly`);
-    if (!['strict', 'band±1', 'override-qids'].includes(relaxation)) notes.push(`pool relaxed (${relaxation})`);
-    if (dropped !== 'none') notes.push(`dropped ${dropped} constraint to fill pool — review`);
-    if (final.weak_target_features.length) notes.push(`target feature(s) weak in pool: ${final.weak_target_features.join(', ')}`);
-    // A drill is human-resolved once an override fixes its metadata signature.
-    const humanResolved = sig.lockTypes || sig.lockFeatures || Array.isArray(override?.question_qids);
+    if (pool.dropped !== 'none') notes.push(`pool widened by dropping ${pool.dropped} constraint`);
+    if (pool.relaxation === 'band-1to5' && band) notes.push('difficulty band widened to 1-5 for pool size');
+
     let classification;
     if (available < need) {
-      classification = 'needs-review';
-      notes.push(`only ${available}/${need} questions available; selected ${picks.length}`);
-    } else if (countDefaulted) {
-      classification = 'needs-review';
-    } else if (humanResolved) {
-      classification = 'override-set';
-    } else if (dropped !== 'none') {
-      classification = 'needs-review';
+      classification = 'short-pool';
+      notes.push(`pool ${available} < per-attempt N ${need} — cannot fill a set`);
+    } else if (available < need * 2) {
+      classification = 'low-variety';
+      notes.push(`pool ${available} gives limited reattempt variety (< ${need * 2})`);
     } else if (sig.blended) {
       classification = 'blended';
     } else {
-      classification = 'verified-by-qids';
+      classification = 'ready';
     }
 
     // ----- hard validation -----
-    for (const t of final.question_types) if (!ALL_TYPES_SET.has(t)) violations.push(`${drill.slug}: non-canonical type "${t}"`);
-    for (const f of final.question_features) if (!bank.featureVocabulary.has(f)) violations.push(`${drill.slug}: feature "${f}" not in bank vocab`);
-    for (const r of final.reasoning_types) if (!CANONICAL_REASONING.has(r)) violations.push(`${drill.slug}: non-canonical reasoning "${r}"`);
-    for (const id of qids) if (!bank.byQid.has(id)) violations.push(`${drill.slug}: qid ${id} not resolvable`);
-    if (final.difficulty_min != null && final.difficulty_max != null && final.difficulty_min > final.difficulty_max) {
-      violations.push(`${drill.slug}: difficulty_min > difficulty_max`);
-    }
-
-    const changed = JSON.stringify(drill.question_types ?? []) !== JSON.stringify(final.question_types)
-      || JSON.stringify(drill.question_features ?? []) !== JSON.stringify(final.question_features)
-      || JSON.stringify(drill.reasoning_types ?? []) !== JSON.stringify(final.reasoning_types);
+    for (const t of finalTypes) if (!ALL_TYPES_SET.has(t)) violations.push(`${drill.slug}: non-canonical type "${t}"`);
+    for (const f of finalFeatures) if (!bank.featureVocabulary.has(f)) violations.push(`${drill.slug}: feature "${f}" not in bank vocab`);
+    for (const r of finalReasoning) if (!CANONICAL_REASONING.has(r)) violations.push(`${drill.slug}: non-canonical reasoning "${r}"`);
+    if (effBand && effBand[0] > effBand[1]) violations.push(`${drill.slug}: difficulty_min > difficulty_max`);
+    if (finalTypes.length === 0 && finalFeatures.length === 0) violations.push(`${drill.slug}: empty filter (no type or feature)`);
 
     return {
       slug: drill.slug, title: drill.title, week: drill.week, category: drill.category,
       question_count: need,
       current_question_types: drill.question_types ?? [],
       current_question_features: drill.question_features ?? [],
-      current_reasoning_types: drill.reasoning_types ?? [],
       target_types: sig.types, target_features: sig.features, blended: sig.blended,
-      band, relaxation,
-      final_question_types: final.question_types,
-      final_question_features: final.question_features,
-      final_reasoning_types: final.reasoning_types,
-      observed_features: final.observed_features,
-      difficulty_min: final.difficulty_min, difficulty_max: final.difficulty_max,
-      pool_available: available, selected: qids.length,
-      question_qids: qids,
-      classification, changed, has_override: !!override, notes,
+      relaxation: pool.relaxation,
+      final_question_types: finalTypes,
+      final_question_features: finalFeatures,
+      final_reasoning_types: finalReasoning,
+      difficulty_min: effBand ? effBand[0] : null,
+      difficulty_max: effBand ? effBand[1] : null,
+      pool_available: available,
+      pool_sample: sample,
+      classification, has_override: !!override, notes,
     };
   });
 
@@ -430,11 +376,11 @@ function main() {
   fs.writeFileSync(OUT_JSON, `${JSON.stringify({ summary, rows }, null, 2)}\n`);
 
   // CSV
-  const cols = ['slug', 'title', 'week', 'classification', 'question_count', 'selected', 'pool_available',
+  const cols = ['slug', 'title', 'week', 'classification', 'question_count', 'pool_available',
     'difficulty_min', 'difficulty_max', 'relaxation',
     'current_question_types', 'final_question_types',
     'current_question_features', 'final_question_features',
-    'final_reasoning_types', 'changed', 'has_override', 'notes'];
+    'final_reasoning_types', 'has_override', 'notes'];
   const cell = (v) => `"${(Array.isArray(v) ? v.join('; ') : String(v ?? '')).replace(/"/g, '""')}"`;
   const csv = [cols.map(cell).join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\n');
   fs.writeFileSync(OUT_CSV, `${csv}\n`);
@@ -442,7 +388,8 @@ function main() {
   // Markdown review table
   const list = (v) => (v?.length ? v.join('; ') : '—');
   let md = '# Guided Drill Assignment Proposal (LR)\n\n';
-  md += 'Read-only proposal. Final metadata is DERIVED from the selected qids. Apply via _seed.json + migration after review.\n\n';
+  md += 'Read-only proposal. Each drill = a vetted FILTER (the reattempt pool) + per-attempt count N.\n';
+  md += 'The app draws a fresh shuffled N from the pool each attempt. Apply via _seed.json + migration after review.\n\n';
   md += '## Summary\n\n';
   md += `- Drills: ${summary.drills}\n- LR questions: ${summary.lr_questions}\n- Feature vocab: ${summary.feature_vocab}\n- Hard violations: ${summary.violations}\n\n`;
   md += '| Classification | Count |\n|---|---:|\n';
