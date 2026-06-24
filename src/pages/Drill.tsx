@@ -99,6 +99,7 @@ function DrillContent() {
   const guidedAssignmentId = searchParams.get('guidedAssignmentId');
   const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
+  const isGuidedDrillRun = Boolean(guidedSetId || guidedAssignmentId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
   const state = React.useMemo<DrillRouteState>(
     () => getResolvedDrillRouteState(searchParams, location.state),
@@ -2595,7 +2596,7 @@ function DrillContent() {
     // Section) for a hand-picked type-drill via `present: 'smart'`, so a chosen
     // question looks identical to the Auto run. Question semantics still follow
     // `mode` — only the chrome + footer switch on this flag.
-    const usesSmartChrome = isAdaptiveMode || state?.present === 'smart';
+    const usesSmartChrome = isAdaptiveMode || state?.present === 'smart' || isGuidedDrillRun;
     // Fixed-queue Smart presentation: smart chrome but not the adaptive engine.
     const isSmartFixedQueue = usesSmartChrome && !isAdaptiveMode;
     const showQuestionList = !isAdaptiveMode;
