@@ -94,7 +94,9 @@
     "question_types": [
       "Principle-Strengthen"
     ],
-    "question_features": [],
+    "question_features": [
+      "Principle-Strengthen"
+    ],
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
@@ -127,7 +129,9 @@
       "Principle-Strengthen",
       "Application"
     ],
-    "question_features": [],
+    "question_features": [
+      "Principle-Strengthen"
+    ],
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
@@ -464,8 +468,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "# Try 5 Famous Flaw problems\n\ntests: 50-54 / levels: 3-4\n\nGet better at spotting some famous flaw moves in the argument, and better at spotting some \"decoy\" famous flaws appearing in wrong answer choices.\n\nMany of the answers are not describing famous flaws. Some of the answer choices that are describing famous flaws will sound like the \"classic\" abstract language definition of that flaw, while others will use more unique or specific language to allude to the famous flaw.",
-      "right_md": "- Set a timer for **8 mins** (1.5x = 12, 2x = 16)\n\n- Try to get an answer to all 5 of these problems.\n\n- Flag any of them that feel like a struggle or a low-confidence guess.\n\n---"
+      "left_md": "## The flaw is usually one of the famous ten\n\nMedium Flaw questions reward pattern recognition. The author makes a reasoning move that breaks in a predictable way, and the LSAT reuses the same handful of breaks again and again. We call these the **Famous Flaws**.\n\nThe ten that show up most:\n- **Necessary vs. Sufficient** (a rule used backwards or negated)\n- **Causation** (correlation treated as cause, reversed cause, third factor)\n- **Sampling** (an unrepresentative group)\n- **Equivocation** (one word, two meanings)\n- **Percent vs. Amount** (a rate confused for a count)\n- **Ad Hominem** (attacking the source, not the claim)\n- **Circular** (the conclusion smuggled into the evidence)\n- **Whole vs. Part**\n- **Appeal to Authority / Popularity**\n- **False Choice** (only two options when more exist)\n\nAt the medium level the trap answers also describe famous flaws. A wrong answer names a real flaw that this argument simply never made.",
+      "right_md": "## Try these 5, then time them\n\nSet a timer for **8 minutes** (1.5x = 12, 2x = 16). Get an answer to all five, and flag any that felt like a low-confidence guess.\n\nFor each argument:\n- Find the conclusion, then ask what the author had to assume to get there.\n- Name the broken move in your own words before you read the answers.\n- Match your prephrase to the famous-flaw list.\n\nWhen you read the answers:\n- A choice can describe a real flaw and still be wrong because the argument never made it. Ask, did this argument actually do this?\n- Some correct answers state the flaw in plain, specific language, not the textbook phrasing. Do not wait for the classic wording.\n\nAfter the timer, take a slow untimed second pass before you confirm. Note any flaw you keep missing."
     },
     "bank_filter": {
       "qtypes": [
@@ -580,8 +584,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "On **Parallel Flaw** questions, the flaw is usually bad conditional logic, bad quantifier logic, or some Famous Flaw.\n\nSpecifically, lookout for this subset of the 10 Famous Flaws:\n\n- Necessary vs. Sufficient\n- Part vs. Whole\n- Ad Hominem\n- Sampling\n- Correlation vs. Causality",
-      "right_md": "# Try these five questions, untimed.\n\nIs the author committing one of the famous flaws?\n\n- Necessary vs. Sufficient\n- Part vs. Whole\n- Ad Hominem\n- Sampling\n- Unproven vs. Proven False\n- Causal\n- Equivocation\n- Circular\n- Self-Contradiction\n- Inappropriate Appeals\n\n---"
+      "left_md": "## Same broken move, new clothes\n\nThis set blends two tasks that lean on the same skill: spotting the **Famous Flaw** in an argument, then finding another argument that breaks the *same* way.\n\nOn **Parallel Flaw**, the correct answer matches the structure of the error, not the topic. A stimulus about vitamins and a correct answer about city budgets can be a perfect match if both commit the same Necessary vs. Sufficient slip.\n\nThe flaws you will see most here:\n- **Necessary vs. Sufficient** (a conditional rule used backwards or negated)\n- **Causation** (correlation read as cause)\n- **Whole vs. Part** and **Part vs. Whole**\n- **Percent vs. Amount**\n- **Equivocation**\n\nName the flaw in abstract terms and the matching gets much easier.",
+      "right_md": "## Work the set untimed first\n\nFor each argument:\n- Find the conclusion and the support, then state the broken move as a rule: \"the author treats a necessary condition as if it were sufficient.\"\n- On **Parallel Flaw**, carry that abstract sentence to the answers and find the one that commits the identical move. Ignore the subject matter.\n- On straight **Flaw**, pick the choice that describes that same move, and watch for traps that name a different famous flaw the argument never made.\n\nCheck answers and explanations as you go. When two answers feel close on a Parallel question, the tie-breaker is usually whether the conclusion type matches: a prediction parallels a prediction, a recommendation parallels a recommendation."
     },
     "bank_filter": {
       "qtypes": [
@@ -1196,8 +1200,8 @@
     "reasoning_types": [],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "TYPE: **Agree / Disagree**  \nLENGTH: 5 questions, 8 mins (1.5x = 12, 2x = 16)  \nTESTS: 50-54  \nLEVEL: 2, 3, 4",
-      "right_md": "- **Read each person's statements**  \n  (don't worry about finding conclusion vs. support)\n\n- After you've read each person's paragraph, **revisit each claim the 1st person made.**\n\n- For each claim, ask yourself,  \n  \"**Did Person 2 agree, disagree, or no comment?**\"\n\n- If there aren't any explicit claims that the 2nd person is agreeing / disagreeing with, then ask yourself whether the 1st person is assuming anything the 2nd person would agree/disagree with.\n\n---"
+      "left_md": "## Find the one claim they actually clash on\n\nAgree / Disagree questions (also called Point at Issue) give you two speakers. The correct answer is the single statement where one speaker would **affirm** it and the other would **deny** it.\n\nMost wrong answers fail one of two tests:\n- Only one speaker addresses it, so we cannot know the other's view.\n- Both speakers would actually take the same side.\n\nYou are not hunting for conclusion versus support here. You are mapping what each person commits to, then finding the one point of genuine collision.",
+      "right_md": "## Try these 5 in 8 minutes\n\n(1.5x = 12, 2x = 16). Read each person's paragraph for what they claim, not for argument structure.\n\nThen, for each claim the first speaker made, ask:\n- Did the second speaker **agree**, **disagree**, or give **no comment**?\n- If no one stated it outright, would the first speaker's reasoning force a view the second speaker rejects?\n\nThe right answer is the claim where one says yes and the other says no. Run each choice through a simple check: could both speakers fill in a clear \"I agree\" or \"I disagree\"? If either has to shrug, that answer is out."
     },
     "bank_filter": {
       "qtypes": [
@@ -1691,7 +1695,9 @@
     "question_count": 3,
     "difficulty_min": null,
     "difficulty_max": null,
-    "question_types": [],
+    "question_types": [
+      "Weaken"
+    ],
     "question_features": [
       "Anti-Causal"
     ],
@@ -2021,7 +2027,10 @@
     "question_count": 5,
     "difficulty_min": null,
     "difficulty_max": null,
-    "question_types": [],
+    "question_types": [
+      "Weaken",
+      "Strengthen"
+    ],
     "question_features": [
       "Assumes Similarity"
     ],
@@ -2030,8 +2039,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "In the world of **Comparisons**, there are several recurring assumptions:\n\n- What was true in the past is also true today.\n- What is true today will be true in the future.\n- What was true for this thing / this group / this person, will also be true for that thing / that group / that person.\n\nWhen authors lean on Comparisons like this, they are **assuming similarities**. We can Weaken these arguments by pointing out salient differences or we can Strengthen these arguments by providing more similarities or affirming the assumed similarity.",
-      "right_md": "# Try these 5 questions, untimed.\n\nFocus on what sort of comparison is being made.\n\nWhere is the author assuming that one thing is similar to another?\n\n---"
+      "left_md": "## Every comparison hides an assumed sameness\n\nIn the world of **Comparisons**, authors lean on a few recurring assumptions:\n- What was true in the **past** is still true **today**.\n- What is true **today** will be true in the **future**.\n- What was true for **this** group, person, or thing is true for **that** one.\n\nWhenever an argument reasons across time or across cases, it is assuming the two sides are similar enough to carry the conclusion.\n\nThat gives you both attack and support:\n- **Weaken** by pointing out a salient difference between the two sides.\n- **Strengthen** by adding a similarity or affirming the assumed one.",
+      "right_md": "## Try these 5, untimed\n\nGo for accuracy and pattern recognition, not speed.\n\nFor each argument:\n- Name the comparison. What two things, groups, or moments is the author treating as alike?\n- Find where that sameness is assumed rather than proven.\n- Prephrase the gap: \"this only works if the two sides are similar in the way that matters.\"\n\nThen judge the answers:\n- A weakener surfaces a **difference** that breaks the link.\n- A strengthener shores up the **similarity**.\n- Wrong answers often raise a difference that does not matter to the conclusion, or restate the comparison without testing it."
     },
     "bank_filter": {
       "qtypes": [],
@@ -2611,7 +2620,10 @@
     "question_count": 7,
     "difficulty_min": null,
     "difficulty_max": null,
-    "question_types": [],
+    "question_types": [
+      "Weaken",
+      "Strengthen"
+    ],
     "question_features": [
       "Assumes Similarity"
     ],
@@ -2620,8 +2632,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "In the world of **Comparisons**, there are several recurring assumptions:\n\n- What was true in the past is also true today.\n- What is true today will be true in the future.\n- What was true for this thing / this group / this person, will also be true for that thing / that group / that person.\n\nWhen authors lean on Comparisons like this, they are **assuming similarities**. We can Weaken these arguments by pointing out salient differences or we can Strengthen these arguments by providing more similarities or affirming the assumed similarity.",
-      "right_md": "# Try these 7 questions, untimed.\n\nFocus on what sort of comparison is being made.\n\nWhere is the author assuming that one thing is similar to another?\n\n---"
+      "left_md": "## Every comparison hides an assumed sameness\n\nIn the world of **Comparisons**, authors lean on a few recurring assumptions:\n- What was true in the **past** is still true **today**.\n- What is true **today** will be true in the **future**.\n- What was true for **this** group, person, or thing is true for **that** one.\n\nWhen an author reasons across time or across cases, the argument only holds if the two sides are similar enough to carry the conclusion. That assumed similarity is the pressure point.\n\n- **Weaken** by pointing out a salient difference between the two sides.\n- **Strengthen** by adding a similarity or affirming the assumed one.",
+      "right_md": "## Try these 7, untimed\n\nGo for accuracy and pattern recognition, not speed.\n\nFor each argument:\n- Name the comparison. What two things, groups, or moments is the author treating as alike?\n- Find where that sameness is assumed rather than proven.\n- Prephrase the gap: \"this only works if the two sides are similar in the way that matters.\"\n\nThen judge the answers:\n- A weakener surfaces a **difference** that breaks the link.\n- A strengthener shores up the **similarity**.\n- Wrong answers often raise a difference that does not matter, or simply restate the comparison without testing it."
     },
     "bank_filter": {
       "qtypes": [],
@@ -2647,7 +2659,9 @@
     "question_count": 6,
     "difficulty_min": null,
     "difficulty_max": null,
-    "question_types": [],
+    "question_types": [
+      "Weaken"
+    ],
     "question_features": [
       "Anti-Causal"
     ],
@@ -2822,8 +2836,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "Try these 7 questions that feature **conditional logic**,  \nfrom tests 65, 71, and June 2007.\n\nThe LR question types that most often would prompt us to consider diagramming the Conditional Logic are\n\n- Must Be True\n- Most Supported\n- Sufficient Assumption\n- Parallel / Parallel Flaw\n- Principle-Strengthen\n- Principle-Conform",
-      "right_md": "- Look out for conditional trigger words.\n\n- Practice diagramming some of them on your paper.\n\n- Look for conditionals that could chain together.\n\n- On Flaw questions with conditional logic, look for authors to abuse conditional logic with illegal reversals or negations.\n\n---"
+      "left_md": "## When to reach for the diagram\n\nThis set mixes question types, but they share one trigger: **conditional logic** dense enough that diagramming pays off. The types that most often reward a diagram:\n- **Must Be True** and **Most Supported**\n- **Sufficient Assumption**\n- **Parallel** and **Parallel Flaw**\n- **Principle-Strengthen** and **Principle-Conform**\n\nThe move is always the same. Translate each conditional into an arrow, chain the arrows that connect, and read off what must follow. The contrapositive is half your toolkit, so write it down.\n\nOn **Flaw** questions with conditional logic, expect the author to abuse a rule with an illegal **reversal** or **negation**: the Necessary vs. Sufficient flaw.",
+      "right_md": "## Try these 7, on paper\n\nFrom tests 65, 71, and June 2007. Keep a pen moving.\n\nFor each stimulus:\n- Spot the conditional **trigger words** (if, only if, unless, no, all, none) and diagram them.\n- Write the **contrapositive** of any rule you diagram.\n- Look for conditionals that **chain** together, then read the chain end to end.\n\nJudging answers:\n- On inference questions, the answer must be forced by the chain, not merely consistent with it.\n- On **Sufficient Assumption**, find the missing link that completes the chain from evidence to conclusion.\n- On **Flaw / Parallel Flaw**, name the illegal move (reversal or negation) and match it exactly."
     },
     "bank_filter": {
       "qtypes": [
