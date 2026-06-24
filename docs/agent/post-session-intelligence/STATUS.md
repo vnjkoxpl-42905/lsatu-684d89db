@@ -38,12 +38,27 @@ pre-existing SECURITY DEFINER warning, unrelated to this change.
 - [ ] End-to-end verify (needs deploy + real Gemini Notes Doc): orphan id refused; re-ingest no duplicate; nothing student-visible
 
 ## Phase 1B — Scan window + resolution queue + calendar corroboration
-**State: planned** (not started)
-- [ ] `scan-session-notes` (Gmail window → predicate §3a → ID resolve §3b → calendar §3d)
-- [ ] Manual "Scan for new session notes" button
-- [ ] Resolution-queue UI (resolved_by / resolved_at / discard_reason)
-- [ ] Calendar corroboration = time+title window (attendee fetch only if approved §3d)
-- [ ] Verify on real Gemini Notes emails; confident attach, ambiguous queue; no dup; no student impact
+**State: in progress — CODE COMPLETE (file-only), awaiting deploy of `scan-session-notes`**
+- [x] `_shared/sessionIngestCore.ts` — shared resolve + Drive export + transcript store
+      (reused by scan/resolve; 1A's deployed function keeps its own copy until its next change)
+- [x] `scan-session-notes` edge function — actions `scan` / `resolve` / `discard`
+      (Gmail window → doc-id + subject-name parse → dedup → calendar time+title window §3d →
+      `needs_match` ledger rows). **NOT deployed.**
+- [x] `useSessionIngestions` hook (list + scan + resolve + discard mutations)
+- [x] "Scan for new session notes" button + resolution-queue UI on `/teacher/session-ingest`
+      (per-row student picker reusing the fail-closed resolver; resolve / discard)
+- [x] Calendar corroboration = time+title window only (schedule_events has no attendees §3d);
+      a hit sets confidence `medium` but never auto-confirms identity
+- [x] Verified: typecheck + lint clean; page renders with honest empty state, no console errors
+- [ ] **Deploy gate (await Joshua):** deploy `scan-session-notes` (no new migration needed —
+      reuses the Phase 1A `session_ingestions` table)
+- [ ] E2E on real Gemini Notes emails: detect → queue → resolve attaches → re-scan no dup
+
+**Decision (autonomous, documented):** V1 scan is CONSERVATIVE — it never auto-attaches.
+Every detected note lands in the resolution queue for a manual student pick, because the
+real Gemini Notes email body format has not yet been validated end-to-end (the Phase 1A
+happy-path E2E will surface it). Confident auto-attach on email+name+calendar agreement is
+a fast-follow once a real email is confirmed; the parser + calendar hints are already wired.
 
 ## Phase 2 — Synthesis + review + dossier
 **State: planned** (not started)
