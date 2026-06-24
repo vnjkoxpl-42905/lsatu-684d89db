@@ -322,3 +322,33 @@ and Phase 1B is code complete but not deployed.
 The planning bundle no longer tells a future agent that Phase 1 is unimplemented or that
 the `session_ingestions` migration is merely authored. Current phase remains **Phase 1A
 hardening redeploy/E2E + Phase 1B Lovable deploy pending**.
+
+---
+
+## 2026-06-24 — Added Phase 1A real-doc E2E runbook (Codex / GPT-5)
+
+Continued the active project-plan ownership pass and inspected the docs for a single
+operator checklist for Joshua's real Gemini Notes E2E.
+
+### Finding
+The E2E requirements existed across `STATUS.md`, `HANDOFF.md`, build-spec, and the
+Lovable prompt, but there was no one checklist with expected evidence and a result
+template. That made it too easy to run the real-doc test without capturing the exact
+signals needed for the next auto-attach decision.
+
+### Added
+- `PHASE-1A-E2E-RUNBOOK.md`
+  - preconditions after Lovable redeploy;
+  - candidate Gemini Notes Doc/Gmail id already found;
+  - happy-path steps;
+  - idempotency check;
+  - bad-input fail-closed check;
+  - student-facing safety checks;
+  - copy/paste result template;
+  - explicit next build decision: confident auto-attach only if real email/Doc signals
+    support email + name + calendar agreement.
+- Linked the runbook from `README.md`, `STATUS.md`, and `HANDOFF.md`.
+
+### Result
+The next human gate is now executable and auditable: Lovable redeploy first, then Joshua
+runs `PHASE-1A-E2E-RUNBOOK.md` and reports the result template.

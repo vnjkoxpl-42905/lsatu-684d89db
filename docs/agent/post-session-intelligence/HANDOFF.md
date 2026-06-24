@@ -18,6 +18,7 @@ dossier in the Teacher Workspace.
 
 - **Repo:** `~/Documents/Claude/02_PROJECTS/LSATU`
 - **Planning folder:** `docs/agent/post-session-intelligence/`
+- **Phase 1A E2E checklist:** `docs/agent/post-session-intelligence/PHASE-1A-E2E-RUNBOOK.md`
 - **Product/decision layer (Obsidian):** `~/Documents/Obsidian Vault/` — product
   context `wiki/synthesis/intro-to-lr-product.md`, teaching voice
   `wiki/concepts/teaching-voice.md`.
@@ -87,8 +88,8 @@ evidence from the Phase 1A E2E and the follow-up auto-attach decision.
 
 ## Next step
 
-First, redeploy the frontend and `ingest-session-note` hardening via Lovable. Then wait
-for Joshua's Phase 1A E2E report, especially the real Gemini Notes email and Doc format.
+First, redeploy the frontend and `ingest-session-note` hardening via Lovable. Then have
+Joshua run `PHASE-1A-E2E-RUNBOOK.md`, especially the real Gemini Notes email and Doc format.
 If the email + Doc provide reliable student email, name, and calendar agreement, the
 next build step is to turn on confident auto-attach in `scan-session-notes`; the parser
 and calendar hints are already wired, but the current deployed-intent behavior is

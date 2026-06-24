@@ -53,7 +53,7 @@ These fixes are **not live until Lovable redeploys the frontend and
 - [x] Verified: typecheck clean, lint clean, 11 resolver tests pass, form renders with real roster
 - [x] Approval gate: migration applied + initial `ingest-session-note` deployed via Lovable
 - [ ] Redeploy gate (await Joshua/Lovable): frontend + `ingest-session-note` from current `main`
-- [ ] End-to-end verify (after redeploy; needs Joshua admin session + real Gemini Notes Doc): happy-path ingest; re-ingest no duplicate; bad/non-Doc id handling; nothing student-visible
+- [ ] End-to-end verify using `PHASE-1A-E2E-RUNBOOK.md` (after redeploy; needs Joshua admin session + real Gemini Notes Doc): happy-path ingest; re-ingest no duplicate; bad/non-Doc id handling; nothing student-visible
 
 ## Phase 1B — Scan window + resolution queue + calendar corroboration
 **State: in progress — CODE COMPLETE (file-only), awaiting Lovable deploy**
