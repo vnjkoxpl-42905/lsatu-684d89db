@@ -2521,8 +2521,6 @@ export type Database = {
       }
       ta_interactions: {
         Row: {
-          action_proposal: Json | null
-          action_status: string | null
           asset_ids: string[]
           created_at: string
           created_by: string | null
@@ -2531,11 +2529,9 @@ export type Database = {
           id: string
           message: string
           role: string
-          student_id: string | null
+          student_id: string
         }
         Insert: {
-          action_proposal?: Json | null
-          action_status?: string | null
           asset_ids?: string[]
           created_at?: string
           created_by?: string | null
@@ -2544,11 +2540,9 @@ export type Database = {
           id?: string
           message: string
           role: string
-          student_id?: string | null
+          student_id: string
         }
         Update: {
-          action_proposal?: Json | null
-          action_status?: string | null
           asset_ids?: string[]
           created_at?: string
           created_by?: string | null
@@ -2557,7 +2551,7 @@ export type Database = {
           id?: string
           message?: string
           role?: string
-          student_id?: string | null
+          student_id?: string
         }
         Relationships: []
       }
