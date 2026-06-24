@@ -1159,7 +1159,10 @@
     const startDrillButtons = Array.from(document.querySelectorAll('[data-start-drill="true"]'));
     startDrillButtons.forEach(button => {
       button.addEventListener('click', () => {
-        window.parent.postMessage({ type: 'lsatu:start-guided-drill' }, window.location.origin);
+        // Use '*' as target origin so this works for both same-origin curated
+        // pages and srcDoc-rendered launch pages (which have opaque "null" origin
+        // and would otherwise throw "Invalid target origin 'null'").
+        try { window.parent.postMessage({ type: 'lsatu:start-guided-drill' }, '*'); } catch (e) {}
       });
     });
 
