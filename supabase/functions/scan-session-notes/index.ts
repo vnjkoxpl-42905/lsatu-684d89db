@@ -22,6 +22,7 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import {
+  cleanupStoredTranscript,
   GMAIL_GATEWAY,
   exportDocText,
   resolveStudentAuthId,
@@ -147,7 +148,14 @@ Deno.serve(async (req) => {
           error_message: null,
         })
         .eq("id", ledgerId);
-      if (updErr) throw updErr;
+      if (updErr) {
+        await cleanupStoredTranscript(admin, {
+          contextId: stored.contextId,
+          sessionId: stored.sessionId,
+          storagePath: stored.storagePath,
+        });
+        throw updErr;
+      }
 
       return jsonRes({
         ok: true, status: "stored", ingestion_id: ledgerId,

@@ -120,8 +120,45 @@ export async function exportDocText(docId: string): Promise<DocExport> {
 export interface StoredTranscript {
   contextId: string;
   sessionId: string;
+  storagePath: string;
   inlineText: boolean;
   byteLength: number;
+}
+
+function isNotFoundStorageError(err: unknown): boolean {
+  const msg = String((err as { message?: string } | null)?.message ?? "").toLowerCase();
+  return msg.includes("not found") || msg.includes("no such object");
+}
+
+/** Best-effort rollback for transcript artifacts created before a later failure. */
+export async function cleanupStoredTranscript(
+  admin: SupabaseClient,
+  args: { contextId: string; sessionId?: string | null; storagePath: string },
+): Promise<void> {
+  const failures: string[] = [];
+
+  if (args.sessionId) {
+    const { error } = await admin.from("student_sessions").delete().eq("id", args.sessionId);
+    if (error) failures.push(`student_sessions:${error.message}`);
+  }
+
+  const { error: removeErr } = await admin.storage.from(BUCKET).remove([args.storagePath]);
+  if (removeErr && !isNotFoundStorageError(removeErr)) {
+    failures.push(`storage:${removeErr.message}`);
+  }
+
+  const { error: ctxErr } = await admin.from("student_context").delete().eq("id", args.contextId);
+  if (ctxErr) failures.push(`student_context:${ctxErr.message}`);
+
+  if (failures.length > 0) {
+    throw new Error(`cleanup_failed:${failures.join(" | ")}`);
+  }
+}
+
+export function isUniqueViolation(err: unknown): boolean {
+  const code = String((err as { code?: string } | null)?.code ?? "");
+  const msg = String((err as { message?: string } | null)?.message ?? "").toLowerCase();
+  return code === "23505" || msg.includes("duplicate key") || msg.includes("unique constraint");
 }
 
 /**
@@ -169,7 +206,8 @@ export async function storeTranscript(
   await admin
     .from("student_context")
     .update({ file_path: storagePath, metadata: { ...rawMeta, full_artifact_path: storagePath } })
-    .eq("id", contextId);
+    .eq("id", contextId)
+    .throwOnError();
 
   const { data: sessionRow, error: sessErr } = await admin
     .from("student_sessions")
@@ -183,11 +221,15 @@ export async function storeTranscript(
       created_by: callerId,
     })
     .select("id").single();
-  if (sessErr) throw sessErr;
+  if (sessErr) {
+    await cleanupStoredTranscript(admin, { contextId, storagePath });
+    throw sessErr;
+  }
 
   return {
     contextId,
     sessionId: sessionRow.id as string,
+    storagePath,
     inlineText: doc.inlineText,
     byteLength: doc.byteLength,
   };

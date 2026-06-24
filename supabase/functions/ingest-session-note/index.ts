@@ -21,6 +21,10 @@
 // this function requires Joshua's explicit OK.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import {
+  cleanupStoredTranscript,
+  isUniqueViolation,
+} from "../_shared/sessionIngestCore.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -51,6 +55,23 @@ async function safeFetch(url: string, init?: RequestInit) {
   const res = await fetch(url, init);
   const txt = await res.text();
   return { res, txt };
+}
+
+async function lookupExistingIngestion(
+  admin: ReturnType<typeof createClient>,
+  gdriveDocId: string,
+  gmailMessageId: string | null,
+) {
+  const { data } = await admin
+    .from("session_ingestions")
+    .select("id, status, transcript_context_id, session_id")
+    .or(
+      gmailMessageId
+        ? `gdrive_doc_id.eq.${gdriveDocId},gmail_message_id.eq.${gmailMessageId}`
+        : `gdrive_doc_id.eq.${gdriveDocId}`,
+    )
+    .maybeSingle();
+  return data;
 }
 
 Deno.serve(async (req) => {
@@ -111,15 +132,7 @@ Deno.serve(async (req) => {
     const studentId = studentClassId; // resolved auth.users.id
 
     // ── Idempotency: never double-ingest the same Doc / email ──
-    const { data: existing } = await admin
-      .from("session_ingestions")
-      .select("id, status, transcript_context_id, session_id")
-      .or(
-        gmailMessageId
-          ? `gdrive_doc_id.eq.${gdriveDocId},gmail_message_id.eq.${gmailMessageId}`
-          : `gdrive_doc_id.eq.${gdriveDocId}`,
-      )
-      .maybeSingle();
+    const existing = await lookupExistingIngestion(admin, gdriveDocId, gmailMessageId);
     if (existing && existing.status !== "error") {
       return jsonRes({
         ok: true,
@@ -216,7 +229,8 @@ Deno.serve(async (req) => {
         file_path: storagePath,
         metadata: { ...rawMeta, full_artifact_path: storagePath },
       })
-      .eq("id", contextId);
+      .eq("id", contextId)
+      .throwOnError();
 
     // ── Link a student_sessions row ──
     const { data: sessionRow, error: sessErr } = await admin
@@ -232,7 +246,10 @@ Deno.serve(async (req) => {
       })
       .select("id")
       .single();
-    if (sessErr) throw sessErr;
+    if (sessErr) {
+      await cleanupStoredTranscript(admin, { contextId, storagePath });
+      throw sessErr;
+    }
     const sessionId = sessionRow.id as string;
 
     // ── Ledger row (idempotency key + audit). status = 'stored' ──
@@ -259,7 +276,29 @@ Deno.serve(async (req) => {
       })
       .select("id")
       .single();
-    if (ledgerErr) throw ledgerErr;
+    if (ledgerErr) {
+      try {
+        await cleanupStoredTranscript(admin, { contextId, sessionId, storagePath });
+      } catch (cleanupErr) {
+        console.error("ingest-session-note cleanup failed", cleanupErr);
+      }
+
+      if (isUniqueViolation(ledgerErr)) {
+        const racedExisting = await lookupExistingIngestion(admin, gdriveDocId, gmailMessageId);
+        if (racedExisting && racedExisting.status !== "error") {
+          return jsonRes({
+            ok: true,
+            already_ingested: true,
+            ingestion_id: racedExisting.id,
+            status: racedExisting.status,
+            transcript_context_id: racedExisting.transcript_context_id,
+            session_id: racedExisting.session_id,
+          });
+        }
+      }
+
+      throw ledgerErr;
+    }
 
     return jsonRes({
       ok: true,

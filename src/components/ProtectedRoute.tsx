@@ -1,4 +1,6 @@
 import { type ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import LockedModule from "@/components/LockedModule";
 
@@ -22,7 +24,9 @@ function isLocalDevAccessAllowed() {
 }
 
 export default function ProtectedRoute({ flag, requireAdmin, children }: ProtectedRouteProps) {
+  const { user } = useAuth();
   const permissions = useUserPermissions();
+  const location = useLocation();
 
   if (permissions.loading) {
     return (
@@ -34,6 +38,16 @@ export default function ProtectedRoute({ flag, requireAdmin, children }: Protect
 
   if (isLocalDevAccessAllowed()) {
     return <>{children}</>;
+  }
+
+  if (!user && (requireAdmin || flag)) {
+    const returnTo = `${location.pathname}${location.search}${location.hash}`;
+    return (
+      <Navigate
+        to={`/auth?returnTo=${encodeURIComponent(returnTo)}`}
+        replace
+      />
+    );
   }
 
   if (requireAdmin) {

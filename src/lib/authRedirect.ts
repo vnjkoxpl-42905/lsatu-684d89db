@@ -1,6 +1,15 @@
 import type { NavigateFunction } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
+function getSafeReturnTo(): string | null {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const returnTo = params.get("returnTo");
+  if (!returnTo) return null;
+  if (!returnTo.startsWith("/") || returnTo.startsWith("//")) return null;
+  return returnTo;
+}
+
 /**
  * Single source of truth for "where does a freshly authenticated user land?"
  *
@@ -14,6 +23,12 @@ export async function redirectAfterAuth(
   navigate: NavigateFunction,
   options?: { replace?: boolean },
 ): Promise<void> {
+  const returnTo = getSafeReturnTo();
+  if (returnTo) {
+    navigate(returnTo, { replace: options?.replace ?? false });
+    return;
+  }
+
   // Default landing is the homepage. Feature access is gated per-flag on
   // profiles (locked by default), so new signups land on /mainhub and see
   // LockedModule on anything an admin hasn't enabled yet.
