@@ -1,7 +1,8 @@
 # Handoff — Post-Session Intelligence Pipeline
 
 For a future Claude/Codex session or a fresh chat. Read this first, then `STATUS.md`,
-then `build-spec.md`.
+then `build-spec.md`. This handoff was refreshed after Phase 1A was deployed via
+Lovable and Phase 1B was completed in code on `main`.
 
 ## Current goal
 
@@ -23,11 +24,19 @@ dossier in the Teacher Workspace.
 
 ## Current status
 
-**Spec complete, revised after Codex red-team, and both pre-build blockers resolved.
-Zero implementation.** No app code, no schema, no migrations, no production change.
-**Phase 1 is split into 1A (buildable slice) and 1B.** 1A now has **no remaining
-blockers** — ID mapping and transcript storage are decided. Awaiting Joshua's go to
-build Phase 1A.
+**Phase 1A is deployed live via Lovable.** The `session_ingestions` migration was
+applied in Lovable's canonical form, `ingest-session-note` is deployed, and local
+types were regenerated. The remaining 1A gate is Joshua's real-doc happy-path E2E at
+`/teacher/session-ingest`; do not substitute a fake transcript or write to a real
+student on a guess.
+
+**Phase 1B is code complete on `main` but not deployed.** The `scan-session-notes`
+function, shared ingest core, hook, and resolution queue UI are implemented. Joshua
+will deploy this through Lovable using `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`.
+Do not deploy it directly.
+
+**Phase 2 has not started.** It remains gated on real Gemini Notes email/Doc format
+evidence from the Phase 1A E2E and the follow-up auto-attach decision.
 
 ## Blockers resolved this pass
 
@@ -68,9 +77,11 @@ build Phase 1A.
 
 ## Next step
 
-Build **Phase 1A** (manual single ingest from a known Gmail/Doc id → safe resolver →
-store transcript → ledger; zero synthesis, zero student impact). No open decisions block
-it.
+Wait for Joshua's Phase 1A E2E report, especially the real Gemini Notes email and Doc
+format. If the email + Doc provide reliable student email, name, and calendar agreement,
+the next build step is to turn on confident auto-attach in `scan-session-notes`; the
+parser and calendar hints are already wired, but the current deployed-intent behavior
+is conservative and queues everything.
 
 ## Remaining open decisions (deferred — do NOT block Phase 1A)
 
@@ -80,15 +91,16 @@ it.
 
 ## Blockers
 
-- **None gating Phase 1A.** Both pre-build blockers resolved (see above).
-- Soft prerequisite: confirm Gmail/Drive connector scopes can read Gemini Notes + export
-  the Doc body (see `lovable-handoff-prompt.md`) — likely already true.
+- Phase 1A happy-path E2E is pending and must be run by Joshua with a real Gemini
+  Notes Doc and his admin session.
+- Phase 1B deployment is pending and must be done by Joshua via Lovable.
+- Confident auto-attach is intentionally disabled until the real email/Doc format is
+  confirmed.
 
 ## Do NOT do yet
 
-- Do not write app code, create UI, or add hooks.
-- Do not apply any migration or create `session_ingestions` in the DB.
-- Do not deploy or modify edge functions.
+- Do not apply migrations or create/modify live Supabase schema directly.
+- Do not deploy or modify edge functions directly.
 - Do not enable cron.
 - Do not publish anything student-facing; do not expose raw transcripts or source labels.
 - Do not redesign the Teacher Workspace or rebuild existing analytics/classroom/

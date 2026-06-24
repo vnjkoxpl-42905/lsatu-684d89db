@@ -2,7 +2,7 @@
 
 States: `not started` · `planned` · `approved` · `in progress` · `complete` · `blocked`
 
-Last updated: 2026-06-24 (Phase 1A built — code complete, migration/function not yet applied/deployed).
+Last updated: 2026-06-24 (Phase 1A deployed via Lovable; Phase 1B code complete on main, awaiting Lovable deploy).
 
 ## Phase 0 — Spec & planning
 **State: complete**
@@ -13,7 +13,7 @@ Last updated: 2026-06-24 (Phase 1A built — code complete, migration/function n
 - [x] Fold Codex corrections into the bundle (predicate, ID duality, RLS/created_by,
       calendar, ledger fields, transcript storage, publish copy, partial approval, dossier rule)
 - [x] Resolve pre-build blockers: ID mapping (§3b, class_id IS auth.users.id) + transcript storage (§5a, bucket canonical)
-- [ ] Joshua approves build of Phase 1A
+- [x] Joshua approves build of Phase 1A
 
 ## Phase 1A — Manual single ingest (admin-only, zero student impact)
 **State: DEPLOYED — live via Lovable (migration applied + function deployed); E2E verification pending**
@@ -28,14 +28,14 @@ pre-existing SECURITY DEFINER warning, unrelated to this change.
 - [x] §3b resolved: class_id IS auth.users.id → use safe `resolveStudentAuthId` helper
 - [x] §5a decided: `student-context` bucket canonical/always; `content_text` only if < ~100 KB
 - [x] Build `resolveStudentAuthId` helper — `src/lib/resolveStudentAuthId.ts` (UUID guard + roster membership + delivery gate, fail closed) + 11 passing unit tests
-- [x] Author `session_ingestions` migration file — `supabase/migrations/20260624150000_create_session_ingestions.sql` (full field set; **NOT applied**)
-- [x] `ingest-session-note` edge function — `supabase/functions/ingest-session-note/index.ts` (admin JWT; Doc id → authoritative `getUserById` resolve → export text → store → ledger; **NOT deployed**)
+- [x] Author `session_ingestions` migration file — Lovable applied canonical migration `20260624204004_2f2c47bc-32b9-4cf0-bb39-43b29e9fd7c4.sql`; earlier local duplicate removed
+- [x] `ingest-session-note` edge function — `supabase/functions/ingest-session-note/index.ts` (admin JWT; Doc id → authoritative `getUserById` resolve → export text → store → ledger); **deployed via Lovable**
 - [x] Transcript: bucket always; `content_text` only if ≤ 100 KB; `metadata.inline_text` flag (§5a)
 - [x] Minimal admin form — `src/pages/teacher/TeacherSessionIngest.tsx` at `/teacher/session-ingest` (admin-only route); manual student pick via resolver
 - [x] Idempotency (`.or()` check on unique gmail_message_id / gdrive_doc_id; unique constraints in migration)
 - [x] Verified: typecheck clean, lint clean, 11 resolver tests pass, form renders with real roster
-- [ ] **Approval gate (await Joshua):** apply migration `20260624150000` + deploy `ingest-session-note`
-- [ ] End-to-end verify (needs deploy + real Gemini Notes Doc): orphan id refused; re-ingest no duplicate; nothing student-visible
+- [x] Approval gate: migration applied + `ingest-session-note` deployed via Lovable
+- [ ] End-to-end verify (needs Joshua admin session + real Gemini Notes Doc): happy-path ingest; re-ingest no duplicate; bad/non-Doc id handling; nothing student-visible
 
 ## Phase 1B — Scan window + resolution queue + calendar corroboration
 **State: in progress — CODE COMPLETE (file-only), awaiting deploy of `scan-session-notes`**

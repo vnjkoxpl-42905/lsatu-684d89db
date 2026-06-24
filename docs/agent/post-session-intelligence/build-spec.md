@@ -1,7 +1,9 @@
 # Build Spec — Post-Session Intelligence Pipeline
 
-Status: spec only. Nothing in this document has been implemented. Read
-`repo-inspection-summary.md` first for the as-found state this spec builds on.
+Status: implementation spec. Phase 1A has since been deployed via Lovable, and Phase
+1B is code complete on `main` but not deployed. This document remains the source for
+the product contract and later phases; use `STATUS.md` for live implementation state.
+Read `repo-inspection-summary.md` first for the as-found state this spec builds on.
 
 ---
 
