@@ -2080,6 +2080,23 @@ function DrillContent() {
     }
   }, [timer]);
 
+  // Metadata for the drawer's Details tab, drawn from the active question.
+  // MUST be declared before any conditional early returns below to keep hook order stable.
+  const drawerMeta = React.useMemo<DrillDetailsMeta | null>(() => {
+    if (!currentQuestion) return null;
+    return {
+      pt: currentQuestion.pt,
+      section: currentQuestion.section,
+      qnum: currentQuestion.qnum,
+      qtype: currentQuestion.qtype,
+      reasoningType: currentQuestion.reasoningType,
+      questionFeatures: currentQuestion.questionFeatures,
+      difficulty: currentQuestion.difficulty,
+    };
+  }, [currentQuestion]);
+
+
+
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
   if (postSectionScreen === 'complete') {
