@@ -76,6 +76,7 @@ const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/Te
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
 const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
+const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSessionIngest"));
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
@@ -462,6 +463,16 @@ const App = () => {
                     <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                         <TutorCorpus />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+
+                  {/* Admin-only Phase 1A manual session-note ingest. Internal tool;
+                      stores transcripts admin-side only, never student-facing. */}
+                  <Route path="/teacher/session-ingest" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <TeacherSessionIngest />
                       </React.Suspense>
                     </ProtectedRoute>
                   } />

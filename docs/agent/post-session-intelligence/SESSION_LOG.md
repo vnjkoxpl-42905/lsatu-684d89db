@@ -1,0 +1,187 @@
+# Session Log — Post-Session Intelligence Pipeline
+
+Append-only-ish running log. Newest entries at the bottom of each section. Keep this
+current so a token-out or new-chat handoff is immediate.
+
+---
+
+## 2026-06-24 — Spec pass (Claude / Opus)
+
+### Inspected
+- Teacher Workspace: `TeacherShell.tsx`, `TeacherDeskPreview.tsx`, all
+  `src/pages/teacher/*` incl. untracked pages, `TeacherStudentDetail.tsx` (read in
+  full — thin: 4 stat cards + 4 action rows, legacy `profiles.class_id`).
+- Reusable systems: inbox (`useInbox`, `adminConversation.ts`), notifications,
+  assignments (`homework_assignments`), `student_context`, `student_sessions`,
+  `ai_ta_drafts`, external uploads, classroom items.
+- Backend: 30 edge functions; Google connectors (`gmail`, `gdrive`, `gcal-*`) confirmed
+  live via Lovable Connector Gateway; AI only via Lovable AI Gateway (Gemini), no
+  Anthropic/OpenAI client.
+- Read migrations directly: `ai_ta_drafts`, `student_sessions`, `student_context`
+  (confirmed enums, FKs, admin-only RLS).
+
+### Key finding
+The source brief assumed Google might be stubbed. It is not — Gmail/Drive/Calendar are
+wired, and half the data model (`ai_ta_drafts` with `session_recap`/
+`classroom_update_bundle`, `student_sessions.transcript_id` → `student_context`,
+`context_type='transcript'`) already fits. Build = orchestration + dossier +
+publish-materialization on existing rails, not greenfield.
+
+### Questions asked → answered (Joshua)
+1. AI model for synthesis → **Gateway now (Gemini), Claude later** (behind config indirection).
+2. Trigger for V1 → **Manual now, cron later** (callable orchestrator + Scan button).
+3. Dossier scope → **Tab shell, real tabs only** (Overview, Sessions/Transcripts, Homework, Notes).
+4. Publish flow → **Approve, then publish separately** (distinct Publish action; partial allowed).
+
+Mid-pass, Joshua added a requirement: include handoff/tracking files (`SESSION_LOG.md`,
+`HANDOFF.md`, `STATUS.md`) in the planning folder and keep them updated.
+
+### Files created (planning only — no app code)
+- `docs/agent/post-session-intelligence/README.md`
+- `docs/agent/post-session-intelligence/build-spec.md`
+- `docs/agent/post-session-intelligence/claude-implementation-plan.md`
+- `docs/agent/post-session-intelligence/codex-review-prompt.md`
+- `docs/agent/post-session-intelligence/repo-inspection-summary.md`
+- `docs/agent/post-session-intelligence/lovable-handoff-prompt.md`
+- `docs/agent/post-session-intelligence/SESSION_LOG.md` (this file)
+- `docs/agent/post-session-intelligence/HANDOFF.md`
+- `docs/agent/post-session-intelligence/STATUS.md`
+
+### Files changed (app/schema)
+- None. No app code, no schema, no migrations, no production behavior touched.
+
+### Pending approval / open
+- Spec needs Codex red-team (`codex-review-prompt.md`) before any build.
+- Then Joshua's go-ahead to start Phase 1.
+- Approvals still required later: applying the `session_ingestions` migration,
+  deploying edge functions, enabling cron, any model/secret change.
+
+### Next action
+Run the Codex review, then report back to Joshua for build approval.
+
+---
+
+## 2026-06-24 — Revision pass after Codex red-team (Claude / Opus)
+
+Codex red-teamed the plan against the real repo: direction right, Phase 1 not ready.
+Verified the relevant repo facts directly before revising (`useHubStudents` flags,
+`src/lib/classroomNotify.ts`, `schedule_events` columns).
+
+### Repo facts confirmed this pass
+- Real flags from `HubStudentRow`: `has_classroom_access`, `has_chat_access`,
+  `has_ta_access`, `has_analytics_access`, `has_schedule_access`, etc. Roster keyed by
+  `class_id`. No generic "enrolled" flag.
+- `schedule_events` (`20260513111010...`) has **no attendee columns**.
+- `notifyStudentOfClassroomItem` hardcodes "New assignment" copy in inbox + bell + email.
+- FK tables (`student_context`/`student_sessions`/`ai_ta_drafts`/`notifications`/
+  `conversation_participants`) key off `auth.users(id)`, not `class_id`.
+- `student_context`/`student_sessions` INSERT RLS requires `created_by = auth.uid()`.
+
+### Corrections applied (10)
+1. Exact matchable predicate `role='student' AND has_classroom_access=true` (§3a) + ID
+   resolution to auth.users.id (§3b).
+2. Phase 1 split into 1A (manual single ingest from known Gmail/Doc id) and 1B (scan
+   window + resolution queue + calendar). Synthesis stays Phase 2, publish Phase 3.
+3. RLS/service-role/audit story: admin JWT for V1 (created_by=auth.uid()); service-role
+   must set created_by + scan_requested_by (§9a).
+4. Calendar claim reduced to time+title window; attendee-email needs direct fetch (§3d).
+5. `session_ingestions` expanded with safety/audit fields incl. unique gmail/doc ids,
+   error_message, attempt_count, last_attempt_at, scan_requested_by, resolved_by, etc. (§9b).
+6. Transcript stored in both `content_text` (if small) and bucket (always); large →
+   truncate + chunk-read (§5a).
+7. Publish: reuse helper only for homework; new session-bundle notifier for note +
+   Joshua chat copy (§6).
+8. Partial approval: per-part flags in draft_json; row status rolls to approved only
+   when all parts approved (§5).
+9. Dossier real-tabs acceptance rule: real query + honest empty state, no mock tabs (§8).
+10. HANDOFF + STATUS updated; open decisions §12 added.
+
+### Files changed (docs only)
+build-spec.md, claude-implementation-plan.md, repo-inspection-summary.md, HANDOFF.md,
+STATUS.md, SESSION_LOG.md, lovable-handoff-prompt.md. No app/schema/migration changes.
+
+### Open decisions gating Phase 1A
+- §3b class_id vs auth.users.id (blocks writes); §5a transcript size bound.
+- Soft: §3d calendar depth, §9a service-role timing, §6 notifications.type for notes.
+
+### Phase 1A readiness
+Ready to build once §3b and §5a are answered. Migration authored-not-applied; function
+deploy and migration apply still gated on Joshua.
+
+---
+
+## 2026-06-24 — Blocker resolution pass (Claude / Opus)
+
+Joshua asked to solve the two pre-build blockers before implementation; Calendar stays
+Phase 1B, notifications/publish/chat stay Phase 3; docs only.
+
+### Blocker 1 — Student ID mapping (RESOLVED by inspection, not assumption)
+Read `supabase/functions/admin-manage-users/index.ts`: email = `emailMap.get(p.class_id)`
+keyed by `auth.users.id` (~L132/142); role = `roleMap.get(p.class_id)` keyed by
+`user_roles.user_id` (~L137/143). Therefore **`profiles.class_id` IS the `auth.users.id`**
+(UUID stored as text; `class_id text PRIMARY KEY` vs `auth.users.id uuid`). Decision:
+build a safe `resolveStudentAuthId(class_id)` helper — validate UUID, confirm auth.users
+row exists, return uuid, **fail closed** on orphans (the `email==='unknown'` case). No raw
+cast; no write against an unresolved id. Helper is a Phase 1A deliverable, reused everywhere.
+
+### Blocker 2 — Raw transcript storage (DECIDED)
+`student-context` bucket = canonical raw store, always. `content_text` populated only when
+transcript < ~100 KB (inline convenience for synthesis). > ~100 KB → bucket only,
+`content_text` null/header, `metadata.full_artifact_path` set; synthesis chunk-reads the
+bucket. Never treat `content_text` as source of truth.
+
+### Scope held
+Calendar corroboration stays Phase 1B; notifications/publish/Joshua chat stay Phase 3.
+Phase 1A scope unchanged otherwise.
+
+### Files changed (docs only)
+build-spec.md (§3b, §5a, §12), claude-implementation-plan.md (Phase 1A), 
+repo-inspection-summary.md (ID model), HANDOFF.md, STATUS.md, SESSION_LOG.md.
+No app/schema/migration changes.
+
+### Result
+Both pre-build blockers resolved. **Phase 1A has no remaining blockers** and is ready to
+build on Joshua's go. Migration-apply + function-deploy still gated on Joshua.
+
+---
+
+## 2026-06-24 — Phase 1A build (Claude / Opus 4.8)
+
+### Built
+- `src/lib/resolveStudentAuthId.ts` — pure fail-closed resolver: `isWellFormedUuid` +
+  `resolveStudentAuthIdFromRoster` (UUID format → roster membership → orphan (`email==='unknown'`)
+  → student role → classroom-access delivery gate). Typed `ResolveFailureReason`.
+- `src/lib/resolveStudentAuthId.test.ts` — 11 vitest cases, all passing.
+- `supabase/migrations/20260624150000_create_session_ingestions.sql` — ledger table
+  (unique `gmail_message_id`/`gdrive_doc_id` dedup, status enum, match fields, artifact
+  FKs, audit/attribution cols, admin-only RLS with `created_by=auth.uid()` on INSERT,
+  updated_at trigger, status + per-student indexes). **NOT applied.**
+- `supabase/functions/ingest-session-note/index.ts` — admin-only POST. Resolves student
+  via authoritative `admin.auth.admin.getUserById` + admin-role + classroom-access checks
+  (fail closed, 422 on orphan/not-student/no-access). Idempotent `.or()` dedup. Exports
+  Doc as `text/plain` via Drive connector gateway. Stores transcript: bucket always
+  (`{studentId}/{contextId}/transcript.txt`, rolls back row on upload failure),
+  `content_text` only when ≤100 KB (`metadata.inline_text`). Links `student_sessions`.
+  Writes `session_ingestions` ledger (status `stored`, `created_by`/`scan_requested_by`/
+  `resolved_by` = caller). ZERO synthesis, ZERO student-facing output. **NOT deployed.**
+- `src/pages/teacher/TeacherSessionIngest.tsx` + route `/teacher/session-ingest`
+  (admin-only, standalone like `/teacher/tutor-corpus`). Doc-id/URL parse, roster picker,
+  optional gmail id, client-side resolver guard, result panel. No nav/dock changes.
+
+### Verified
+- `npx vitest run` resolver suite: 11/11 pass.
+- `npx tsc --noEmit -p tsconfig.app.json`: no errors in new files (fixed one loose-mode
+  union-narrowing access in the form).
+- `npx eslint` new client files: clean.
+- Preview at `/teacher/session-ingest`: form renders, real roster loads (Adriana Varea,
+  Andrew, …), submit disabled until both fields set. Screenshot captured.
+
+### Held at gate (await Joshua's explicit OK)
+- Apply migration `20260624150000`.
+- Deploy `ingest-session-note`.
+- End-to-end run on a real Gemini Notes Doc (needs deploy): orphan refused, re-ingest
+  no duplicate, nothing student-visible.
+
+### Result
+Phase 1A code complete and verified locally. Nothing applied/deployed; no student impact.
+Next: Joshua approves migration-apply + function-deploy, then E2E verify, then Phase 1B.
