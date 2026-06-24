@@ -21,16 +21,18 @@ richer dossier inside the Teacher Workspace.
 | `codex-review-prompt.md` | Copy-paste prompt for Codex to red-team the spec against the real repo before any build. |
 | `repo-inspection-summary.md` | The as-found map (edge functions, tables, hooks, Google connector reality, RLS/auth) so the spec is auditable. |
 | `lovable-handoff-prompt.md` | The narrow Lovable asks only (connector scope/secret verification, later cron). Minimal, to preserve credits. |
+| `PHASE-1A-LOVABLE-DEPLOY.md` | Historical Phase 1A deploy prompt, now retired in-place so it is not pasted again. |
 | `SESSION_LOG.md` | Running log: inspected, decided, asked/answered, files touched, pending approvals. |
 | `HANDOFF.md` | Cold-start handoff for a future Claude/Codex session. |
 | `STATUS.md` | Phase checklist with state per phase. |
 
 ## Current phase
 
-We are between **Phase 1A verification** and **Phase 1B deployment**:
+We are between **Phase 1A hardening redeploy/E2E** and **Phase 1B deployment**:
 
-- **Phase 1A — manual single ingest:** deployed live via Lovable. Joshua still needs
-  to run the real Gemini Notes Doc E2E at `/teacher/session-ingest`.
+- **Phase 1A — manual single ingest:** initially deployed live via Lovable, but the
+  frontend and `ingest-session-note` need redeploy from current `main` before Joshua
+  runs the real Gemini Notes Doc E2E at `/teacher/session-ingest`.
 - **Phase 1B — scan window + resolution queue:** code complete on `main`, awaiting
   Joshua's Lovable deploy. Do not deploy it directly from Codex.
 - **Phase 2 — synthesis + dossier:** planned, not started. It remains gated on real
@@ -64,6 +66,7 @@ build on existing rails, not a greenfield integration. See `repo-inspection-summ
 
 ## Next step
 
-Joshua runs the Phase 1A E2E with a real Gemini Notes Google Doc. After the real
-email/Doc format is confirmed, the next build step is enabling confident auto-attach
-in `scan-session-notes` only when email + name + calendar agreement are all present.
+Joshua runs the updated Lovable prompt at `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`,
+then runs the Phase 1A E2E with a real Gemini Notes Google Doc. After the real email/Doc
+format is confirmed, the next build step is enabling confident auto-attach in
+`scan-session-notes` only when email + name + calendar agreement are all present.

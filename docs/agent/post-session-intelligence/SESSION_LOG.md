@@ -268,3 +268,27 @@ does not contain the final blocker fixes.
 ### Result
 Current phase label is now precise: **between Phase 1A hardening redeploy/E2E and Phase
 1B Lovable deploy**. No app code changed, no schema changed, no deploys performed.
+
+---
+
+## 2026-06-24 — Retired stale Phase 1A deploy prompt (Codex / GPT-5)
+
+Continued the project-plan maintenance pass and inspected the remaining files in
+`docs/agent/post-session-intelligence/` for stale operator instructions.
+
+### Finding
+`PHASE-1A-LOVABLE-DEPLOY.md` still contained the original Phase 1A Lovable prompt with
+the migration SQL and initial `ingest-session-note` deploy instructions. That file is
+now dangerous as an operator artifact because Phase 1A's migration has already been
+applied and the next required action is a redeploy, not another migration/apply pass.
+
+### Updated
+- Replaced `PHASE-1A-LOVABLE-DEPLOY.md` with a historical-only guardrail that says not
+  to paste it into Lovable now.
+- Pointed it to the current prompt:
+  `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`.
+- Updated `README.md` so the current phase and file list reflect the redeploy/E2E gate.
+
+### Result
+The planning bundle no longer contains an obsolete paste-ready Phase 1A migration prompt.
+Next operator action remains the updated Lovable prompt, then Joshua's real-doc E2E.
