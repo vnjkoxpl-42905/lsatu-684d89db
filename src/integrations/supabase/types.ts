@@ -2521,6 +2521,7 @@ export type Database = {
       }
       ta_interactions: {
         Row: {
+          action_status: string | null
           asset_ids: string[]
           created_at: string
           created_by: string | null
@@ -2532,6 +2533,7 @@ export type Database = {
           student_id: string
         }
         Insert: {
+          action_status?: string | null
           asset_ids?: string[]
           created_at?: string
           created_by?: string | null
@@ -2543,6 +2545,7 @@ export type Database = {
           student_id: string
         }
         Update: {
+          action_status?: string | null
           asset_ids?: string[]
           created_at?: string
           created_by?: string | null
