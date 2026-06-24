@@ -2701,6 +2701,7 @@ export type Database = {
       }
       tutor_conversations: {
         Row: {
+          action_status: string | null
           content: string
           correct_answer: string | null
           created_at: string
@@ -2717,6 +2718,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          action_status?: string | null
           content: string
           correct_answer?: string | null
           created_at?: string
@@ -2733,6 +2735,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          action_status?: string | null
           content?: string
           correct_answer?: string | null
           created_at?: string
