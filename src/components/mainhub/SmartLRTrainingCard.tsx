@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Check, ChevronDown, Loader2, Play, Search } from "lucide-react";
+import { Check, ChevronDown, Flame, Loader2, Play, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -180,15 +180,8 @@ export default function SmartLRTrainingCard() {
     navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart`);
   };
 
-  const launchTargetQuestion = searchMatches[0]?.question ?? exactSelectedQuestion;
-
   const startSmartDrill = () => {
     const run = () => {
-      if (launchTargetQuestion) {
-        openQuestion(launchTargetQuestion.qid);
-        return;
-      }
-
       if (pt !== AUTO) {
         const config: TypeDrillConfig = {
           qtypes: [],
@@ -228,37 +221,48 @@ export default function SmartLRTrainingCard() {
 
   const queryIsActive = searchQuery.trim().length > 0;
   const showNoMatches = queryIsActive && !isLoading && searchMatches.length === 0;
-  const actionLabel = launchTargetQuestion
-    ? `Open PT ${launchTargetQuestion.pt} S${launchTargetQuestion.section} Q${launchTargetQuestion.qnum}`
-    : "Start Smart LR Drill";
+  const searchTargetQuestion = searchMatches[0] ?? null;
 
   return (
     <section
       aria-label="Smart LR Training"
-      className="group relative w-full overflow-hidden rounded-[32px] border border-slate-200/50 bg-[#fbfcff] px-5 py-6 text-slate-900 shadow-[0_15px_40px_rgba(15,23,42,0.04)]"
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          startSmartDrill();
-        }
-      }}
+      className="group relative w-full overflow-hidden rounded-[32px] border border-slate-200/50 bg-[#fbfcff] px-6 py-8 text-slate-900 shadow-[0_15px_40px_rgba(15,23,42,0.04)]"
     >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-[32px] ring-1 ring-white/80"
       />
 
-      <div className="relative mb-4 flex items-end justify-between gap-4">
-        <div>
-          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
-            Smart LR
-          </span>
-          <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">
-            Find a question
-          </h2>
+      <div className="relative mb-6 flex flex-col items-center">
+        <div
+          className="relative h-[160px] w-[220px] flex items-center justify-center"
+          role="img"
+          aria-label="Smart LR Score 0"
+        >
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 200 160" aria-hidden>
+            <path
+              d="M 35 130 A 65 65 0 1 1 165 130"
+              fill="none"
+              stroke="#e2e8f0"
+              strokeWidth="10"
+              strokeLinecap="round"
+              className="opacity-70"
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center pt-2">
+            <span className="text-[76px] font-bold tracking-tight text-slate-400/90 leading-none">
+              0
+            </span>
+          </div>
         </div>
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 text-2xl font-bold text-slate-400">
-          0
+
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600 mt-1">
+          Smart LR Score
+        </span>
+
+        <div className="mt-3.5 flex items-center gap-1.5 text-xs font-semibold text-slate-600">
+          <Flame className="h-4 w-4 text-orange-500 fill-orange-500/10" aria-hidden />
+          <span>No streak yet</span>
         </div>
       </div>
 
@@ -293,80 +297,85 @@ export default function SmartLRTrainingCard() {
         />
       </div>
 
-      <div className="relative mb-3">
-        <Search
-          className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-          aria-hidden
-        />
-        <input
-          type="search"
-          value={searchQuery}
-          disabled={isLoading}
-          onChange={(event) => setSearchQuery(event.target.value)}
-          placeholder="Search question text..."
-          aria-label="Search question text"
-          className="h-14 w-full rounded-2xl border border-sky-300 bg-white/80 pl-11 pr-4 text-sm font-medium text-slate-800 outline-none transition-colors placeholder:text-slate-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 disabled:opacity-60"
-        />
-      </div>
-
-      <div className="relative mb-4 min-h-[86px]" aria-live="polite">
-        {searchMatches.length > 0 && (
-          <div className="space-y-2">
-            {searchMatches.map((match) => (
-              <QuestionResultRow
-                key={match.question.qid}
-                match={match}
-                onOpen={() => openQuestion(match.question.qid)}
-              />
-            ))}
-          </div>
-        )}
-
-        {!queryIsActive && exactSelectedQuestion && (
-          <QuestionResultRow
-            match={{
-              question: exactSelectedQuestion,
-              snippet: {
-                before: exactSelectedQuestion.questionStem,
-                match: "",
-                after: "",
-              },
-            }}
-            selected
-            onOpen={() => openQuestion(exactSelectedQuestion.qid)}
-          />
-        )}
-
-        {showNoMatches && (
-          <div className="rounded-2xl border border-slate-200 bg-white/70 px-4 py-3 text-sm font-medium text-slate-500">
-            No matching questions
-          </div>
-        )}
-      </div>
-
       <Button
         type="button"
         onClick={startSmartDrill}
         disabled={isPreparing}
         className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98] disabled:opacity-90"
-        aria-label={actionLabel}
       >
         {isPreparing ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-            Preparing drill...
+            Preparing drill…
           </>
         ) : (
           <>
-            {launchTargetQuestion ? (
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            ) : (
-              <Play className="h-4 w-4" aria-hidden />
-            )}
-            {actionLabel}
+            <Play className="h-4 w-4" aria-hidden />
+            Start Smart LR Drill
           </>
         )}
       </Button>
+
+      <div
+        className="relative mt-4 space-y-2"
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && searchTargetQuestion) {
+            event.preventDefault();
+            openQuestion(searchTargetQuestion.question.qid);
+          }
+        }}
+      >
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            aria-hidden
+          />
+          <input
+            type="search"
+            value={searchQuery}
+            disabled={isLoading}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search question text..."
+            aria-label="Search question text"
+            className="h-11 w-full rounded-2xl border border-sky-300 bg-white/75 pl-10 pr-4 text-sm font-semibold text-slate-700 outline-none transition-colors placeholder:text-slate-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 disabled:opacity-60"
+          />
+        </div>
+
+        <div className="min-h-[42px]" aria-live="polite">
+          {searchMatches.length > 0 && (
+            <div className="space-y-1.5">
+              {searchMatches.map((match) => (
+                <QuestionResultRow
+                  key={match.question.qid}
+                  match={match}
+                  onOpen={() => openQuestion(match.question.qid)}
+                />
+              ))}
+            </div>
+          )}
+
+          {!queryIsActive && exactSelectedQuestion && (
+            <QuestionResultRow
+              match={{
+                question: exactSelectedQuestion,
+                snippet: {
+                  before: exactSelectedQuestion.questionStem,
+                  match: "",
+                  after: "",
+                },
+              }}
+              selected
+              onOpen={() => openQuestion(exactSelectedQuestion.qid)}
+            />
+          )}
+
+          {showNoMatches && (
+            <div className="rounded-2xl border border-slate-200 bg-white/60 px-3 py-2 text-xs font-semibold text-slate-500">
+              No matching questions
+            </div>
+          )}
+        </div>
+      </div>
 
       <div
         aria-hidden
@@ -392,11 +401,11 @@ function QuestionResultRow({
       type="button"
       onClick={onOpen}
       className={cn(
-        "block w-full rounded-2xl border bg-white/80 px-4 py-3 text-left transition-colors",
+        "block w-full rounded-2xl border bg-white/75 px-3 py-2 text-left transition-colors",
         selected ? "border-sky-300 ring-2 ring-sky-100" : "border-slate-200 hover:border-slate-300",
       )}
     >
-      <div className="mb-1 flex items-center gap-2 text-sm font-bold text-slate-800">
+      <div className="mb-0.5 flex items-center gap-2 text-xs font-bold text-slate-800">
         <span>
           PT {question.pt} · S{question.section} · Q{question.qnum}
         </span>
@@ -404,7 +413,7 @@ function QuestionResultRow({
           LR
         </span>
       </div>
-      <p className="line-clamp-2 text-sm leading-5 text-slate-600">
+      <p className="line-clamp-1 text-xs leading-5 text-slate-600">
         {snippet.before}
         {snippet.match ? (
           <mark className="rounded bg-amber-100 px-0.5 text-amber-800">

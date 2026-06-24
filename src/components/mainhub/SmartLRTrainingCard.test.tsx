@@ -50,17 +50,18 @@ describe("SmartLRTrainingCard", () => {
     mockNavigate.mockClear();
   });
 
-  it("shows typed question matches and opens the top match on Enter", () => {
+  it("shows typed question matches and opens the top match from the search field on Enter", () => {
     render(<SmartLRTrainingCard />);
 
-    fireEvent.change(screen.getByLabelText("Search question text"), {
+    const search = screen.getByLabelText("Search question text");
+    fireEvent.change(search, {
       target: { value: "ebsen" },
     });
 
     expect(screen.getByText("PT 151 · S2 · Q8")).toBeInTheDocument();
     expect(screen.getByText("Ebsen")).toBeInTheDocument();
 
-    fireEvent.keyDown(screen.getByLabelText("Smart LR Training"), { key: "Enter" });
+    fireEvent.keyDown(search, { key: "Enter" });
 
     expect(mockNavigate).toHaveBeenCalledWith(
       "/drill?mode=type-drill&qids=PT151-S2-Q8&present=smart",
