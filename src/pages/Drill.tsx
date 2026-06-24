@@ -99,7 +99,6 @@ function DrillContent() {
   const guidedAssignmentId = searchParams.get('guidedAssignmentId');
   const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
-  const isGuidedDrillRun = Boolean(guidedSetId || guidedAssignmentId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
   const state = React.useMemo<DrillRouteState>(
     () => getResolvedDrillRouteState(searchParams, location.state),
@@ -2591,13 +2590,11 @@ function DrillContent() {
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     const isAdaptiveMode = session.mode === 'adaptive';
-    // Presentation is decoupled from mode: the Smart LR Drill card can request
-    // the adaptive chrome (Tutor toggle, notes, Skip/Submit footer, no Complete
-    // Section) for a hand-picked type-drill via `present: 'smart'`, so a chosen
-    // question looks identical to the Auto run. Question semantics still follow
-    // `mode` — only the chrome + footer switch on this flag.
-    const usesSmartChrome = isAdaptiveMode || state?.present === 'smart' || isGuidedDrillRun;
-    // Fixed-queue Smart presentation: smart chrome but not the adaptive engine.
+    // Student-facing LSAT question screens share the same action chrome: notes,
+    // End/Explanation/Skip/Submit footer, and no top "Complete Section" pill.
+    // Question semantics still follow `mode`; this flag only changes the chrome.
+    const usesSmartChrome = true;
+    // Fixed-queue smart presentation: smart chrome but not the adaptive engine.
     const isSmartFixedQueue = usesSmartChrome && !isAdaptiveMode;
     const showQuestionList = !isAdaptiveMode;
     const sectionTimer = session.fullSectionConfig?.timer;
@@ -2768,7 +2765,7 @@ function DrillContent() {
           notesPanelEnabled={usesSmartChrome}
           notesPanelOpen={notesOpen}
           onNotesPanelClose={() => setNotesOpen(false)}
-          tutorToggleVisible={usesSmartChrome}
+          tutorToggleVisible={false}
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
             setTutorMode(next);
