@@ -68,7 +68,9 @@ export function GuidedDrillLaunchFrame({
 
   React.useEffect(() => {
     const onMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      // Accept same-origin (curated pages) AND "null" origin (srcDoc launch
+      // pages have an opaque origin). Payload is harmless metadata.
+      if (event.origin !== window.location.origin && event.origin !== 'null') return;
       if (event.data?.type === 'lsatu:start-guided-drill') onStartRef.current();
     };
     window.addEventListener('message', onMessage);
