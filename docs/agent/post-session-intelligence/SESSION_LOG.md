@@ -292,3 +292,33 @@ applied and the next required action is a redeploy, not another migration/apply 
 ### Result
 The planning bundle no longer contains an obsolete paste-ready Phase 1A migration prompt.
 Next operator action remains the updated Lovable prompt, then Joshua's real-doc E2E.
+
+---
+
+## 2026-06-24 — Updated historical implementation plan to current state (Codex / GPT-5)
+
+Continued the plan-bundle audit for stale phase language.
+
+### Finding
+`claude-implementation-plan.md` and build-spec §10 still described Phase 1 as future work:
+"planning only," "nothing implemented," "ready-to-build," and "migration authored, not
+applied." That conflicted with the current state: Phase 1A was deployed once, the
+canonical migration is already applied, Phase 1A hardening is on `main` but not live,
+and Phase 1B is code complete but not deployed.
+
+### Updated
+- `claude-implementation-plan.md` now reads as a historical implementation plan plus
+  remaining phase map:
+  - Phase 1A built; hardening redeploy/E2E pending.
+  - Phase 1B code complete; Lovable deploy pending.
+  - Phase 2/3 still future.
+- `build-spec.md` §10 now separates:
+  - already built/applied,
+  - still needs Joshua/Lovable,
+  - still future direct-build work.
+- `README.md` top status and file table now match that current state.
+
+### Result
+The planning bundle no longer tells a future agent that Phase 1 is unimplemented or that
+the `session_ingestions` migration is merely authored. Current phase remains **Phase 1A
+hardening redeploy/E2E + Phase 1B Lovable deploy pending**.

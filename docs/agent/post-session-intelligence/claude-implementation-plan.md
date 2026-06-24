@@ -1,8 +1,9 @@
 # Claude Implementation Plan — Post-Session Intelligence Pipeline
 
-Status: planning only. This describes the FUTURE build sequence. Nothing here is
-implemented. Do not start Phase 1 until Joshua approves the spec (ideally after the
-Codex review in `codex-review-prompt.md`).
+Status: historical implementation plan plus remaining phase map. Phase 1A has been
+deployed once via Lovable and then hardened on `main`; that hardening still needs a
+Lovable redeploy before Joshua's real-doc E2E. Phase 1B is code complete on `main` but
+not deployed. Phase 2 and Phase 3 have not started.
 
 ## Guiding constraints
 
@@ -20,60 +21,65 @@ Split into 1A and 1B per the Codex red-team. Both run under the **admin's JWT** 
 trigger), so the existing `created_by = auth.uid()` RLS on `student_context` /
 `student_sessions` is satisfied directly (no service-role path yet — see build-spec §9a).
 
-### Phase 1A — Manual single ingest (the ready-to-build slice)
+### Phase 1A — Manual single ingest (built; redeploy/E2E pending)
 
 **Goal:** from a **known Gmail message id and/or Google Doc id**, fetch the Doc, store
 the transcript, and write a ledger row. Zero synthesis, zero matching automation, zero
-student impact. **No remaining blockers** — the two prior open decisions are resolved
-(ID mapping §3b, transcript storage §5a).
+student impact.
 
-- **Build the safe resolver** `resolveStudentAuthId(class_id)` (build-spec §3b): validate
+**Current state:** built and initially deployed via Lovable. Commit
+`159bdd6609332101e82d4544608b0ea644fc6507` later hardened admin-route redirects and
+ingest rollback/orphan cleanup. That hardening is on `main` but not live until Lovable
+redeploys the frontend and `ingest-session-note`.
+
+- **Built:** safe resolver `resolveStudentAuthId(class_id)` (build-spec §3b): validate
   UUID, confirm the `auth.users` row exists, return the uuid; orphan/invalid → null →
   fail closed (no write). Shared helper (`src/lib/resolveStudentAuthId.ts`) + the same
   guard inside the edge function. Used by every phase.
-- Author `session_ingestions` migration **file** (full field set + unique
-  `gmail_message_id` / `gdrive_doc_id`, attribution columns, admin-only RLS) — see
-  build-spec §9b. **Not applied** without Joshua's OK.
-- Build `ingest-session-note` edge function (admin JWT): given a Gmail/Doc id →
+- **Applied via Lovable:** `session_ingestions` migration, canonical file
+  `supabase/migrations/20260624204004_2f2c47bc-32b9-4cf0-bb39-43b29e9fd7c4.sql`.
+- **Built and initially deployed:** `ingest-session-note` edge function (admin JWT):
+  given a Gmail/Doc id →
   `gdrive` export the Doc → store transcript per build-spec §5a (**bucket always;
   `content_text` only if < ~100 KB**) as `student_context` with
   `created_by = auth.uid()` → create/link a `student_sessions` row → upsert the
   `session_ingestions` ledger row (dedup on the unique ids; `scan_requested_by` /
   `created_by` set).
-- Admin UI: a minimal "Ingest from Doc id" form (paste a Gmail/Doc id, see the stored
+- **Built:** admin UI, a minimal "Ingest from Doc id" form (paste a Gmail/Doc id, see the stored
   transcript + ledger row). No roster automation yet.
 - Student match in 1A is **manual**: the admin picks the student in the form; the
   function calls `resolveStudentAuthId` before writing; an unresolved id is refused
   truthfully (not a silent failure).
 
-**Verify:** ingest a real Doc id → canonical transcript object in the `student-context`
+**Verify after Lovable redeploy:** ingest a real Doc id → canonical transcript object in the `student-context`
 bucket; `content_text` populated only when < ~100 KB; `student_sessions` linked; ledger
 row written; pick an orphan/invalid id → write refused, routed to resolution, nothing
 written; re-ingest the same id → no duplicate (unique constraint / upsert); nothing
 visible to any student.
 
-### Phase 1B — Scan window + resolution queue + calendar corroboration
+### Phase 1B — Scan window + resolution queue + calendar corroboration (code complete; deploy pending)
 
 **Goal:** automate detection and matching across a time window, with a human resolution
 queue for anything uncertain.
 
-- Build `scan-session-notes` (admin JWT): Gmail search window → parse Doc links →
+- **Built:** `scan-session-notes` (admin JWT): Gmail search window → parse Doc links →
   for each, run the matchable-student predicate (build-spec §3a) + ID resolution (§3b)
   + calendar corroboration (§3d, **time+title window** unless attendee fetch is approved)
-  → confident matches auto-attach and ingest (reuse 1A's ingest path); uncertain →
-  `needs_match` ledger rows.
-- Manual **Scan for new session notes** button.
-- **Resolution queue** UI: list `needs_match` rows, pick student or discard
+  → conservative V1 queues detected notes as `needs_match` rows; confident auto-attach is
+  intentionally disabled until Joshua's real email/Doc E2E confirms reliable signals.
+- **Built:** manual **Scan for new session notes** button.
+- **Built:** **Resolution queue** UI: list `needs_match` rows, pick student or discard
   (`resolved_by`/`resolved_at`/`discard_reason`).
 - Idempotency via the ledger unique ids.
 
-**Verify:** run Scan against real Gemini Notes emails; confident matches attach,
-ambiguous ones queue; calendar window raises confidence but never auto-confirms identity
-on its own; re-scan produces no duplicates; no student-visible change.
+**Verify:** run Scan against real Gemini Notes emails; detected notes queue for manual
+resolution in conservative V1; calendar window raises confidence but never auto-confirms
+identity on its own; resolving a queued row attaches the transcript; re-scan produces no
+duplicates; no student-visible change.
 
-**Safe to build directly:** all UI, hooks, the migration file, the edge function code.
-**Waits for approval:** applying the migration, deploying the functions, §3d attendee
-fetch if chosen.
+**Built directly:** UI, hooks, shared ingest core, and edge function code.
+**Waits for Joshua/Lovable:** deploy `scan-session-notes` and `_shared/sessionIngestCore.ts`.
+No migration is needed for Phase 1B.
 
 ---
 

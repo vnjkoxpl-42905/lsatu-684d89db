@@ -344,17 +344,24 @@ dedup key **and** the backing store for the resolution queue.
 
 ## 10. Claude-direct vs Lovable/Supabase-dependent
 
-**Claude can build directly (in a future, approved build):**
-- Orchestrator edge functions `scan-session-notes` and `publish-session-bundle`,
-  following the existing `gmail` / `gdrive` / `ta-agent` patterns.
-- Dossier tab shell + Sessions/Transcripts tab; review-queue and resolution-queue UI;
-  supporting hooks.
-- The `session_ingestions` migration **file** (authored, not applied).
+**Already built / applied:**
+- `session_ingestions` migration was applied via Lovable as
+  `supabase/migrations/20260624204004_2f2c47bc-32b9-4cf0-bb39-43b29e9fd7c4.sql`.
+- Phase 1A `ingest-session-note` and `/teacher/session-ingest` were built and initially
+  deployed.
+- Phase 1B `scan-session-notes`, shared ingest core, hook, scan button, and resolution
+  queue UI are code complete on `main`.
 
-**Needs Joshua's approval before either path:**
-- Applying the migration.
-- Deploying edge functions.
+**Still needs Joshua/Lovable:**
+- Redeploy the frontend and `ingest-session-note` from current `main` so the Phase 1A
+  hardening commit is live before real-doc E2E.
+- Deploy `scan-session-notes` and `_shared/sessionIngestCore.ts` when Joshua chooses to
+  start Phase 1B.
 - Any model/secret configuration change.
+
+**Still future direct-build work:**
+- Phase 2 synthesis + review + dossier tabs.
+- Phase 3 `publish-session-bundle`, AI suggestions, and later cron.
 
 **Lovable/Supabase-dependent (narrow):**
 - Confirm Gmail/Drive/Calendar connector **scopes** cover reading Gemini Notes emails
@@ -362,7 +369,8 @@ dedup key **and** the backing store for the resolution queue.
 - The later **cron** trigger for automatic scanning.
 - Secret presence: `LOVABLE_API_KEY`, Google connector keys.
 
-See `lovable-handoff-prompt.md` — kept minimal.
+See `lovable-handoff-prompt.md` and `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md` for the
+current deploy ask.
 
 ---
 

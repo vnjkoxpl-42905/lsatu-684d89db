@@ -1,7 +1,8 @@
 # Post-Session Intelligence Pipeline
 
-**Status: active phased build. Phase 1A is deployed live via Lovable, Phase 1B is
-code complete on `main` but not deployed, and Phase 2 has not started.**
+**Status: active phased build. Phase 1A was deployed live via Lovable but needs a
+hardening redeploy from current `main`, Phase 1B is code complete on `main` but not
+deployed, and Phase 2 has not started.**
 
 This folder holds the planning bundle for moving LSAT U toward a mostly hands-off
 post-session intelligence pipeline: after a Google Meet tutoring session, the
@@ -17,7 +18,7 @@ richer dossier inside the Teacher Workspace.
 |------|---------|
 | `README.md` | This overview. |
 | `build-spec.md` | Full phased build spec: intent, flow, matching, review, publish, dossier, data model, Claude-vs-Lovable split, per-phase verification. |
-| `claude-implementation-plan.md` | The 3-phase build sequence; what Claude builds directly, what waits for approval, what is out of scope now. |
+| `claude-implementation-plan.md` | Historical 3-phase build sequence updated with current built/deploy-pending state. |
 | `codex-review-prompt.md` | Copy-paste prompt for Codex to red-team the spec against the real repo before any build. |
 | `repo-inspection-summary.md` | The as-found map (edge functions, tables, hooks, Google connector reality, RLS/auth) so the spec is auditable. |
 | `lovable-handoff-prompt.md` | The narrow Lovable asks only (connector scope/secret verification, later cron). Minimal, to preserve credits. |
