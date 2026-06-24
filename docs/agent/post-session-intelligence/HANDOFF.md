@@ -2,7 +2,8 @@
 
 For a future Claude/Codex session or a fresh chat. Read this first, then `STATUS.md`,
 then `build-spec.md`. This handoff was refreshed after Phase 1A was deployed via
-Lovable and Phase 1B was completed in code on `main`.
+Lovable, Phase 1B was completed in code on `main`, and Codex added the
+admin-route/ingest-integrity hardening commit.
 
 ## Current goal
 
@@ -24,16 +25,19 @@ dossier in the Teacher Workspace.
 
 ## Current status
 
-**Phase 1A is deployed live via Lovable.** The `session_ingestions` migration was
-applied in Lovable's canonical form, `ingest-session-note` is deployed, and local
-types were regenerated. The remaining 1A gate is Joshua's real-doc happy-path E2E at
-`/teacher/session-ingest`; do not substitute a fake transcript or write to a real
-student on a guess.
+**Phase 1A was deployed live via Lovable, but live is now behind `main`.** The
+`session_ingestions` migration was applied in Lovable's canonical form,
+`ingest-session-note` was deployed, and local types were regenerated. Since then,
+commit `159bdd6609332101e82d4544608b0ea644fc6507` hardened admin route redirects and
+ingest rollback/orphan cleanup. Before Joshua runs the real-doc Phase 1A E2E,
+Lovable must redeploy the frontend and `ingest-session-note` from current `main`.
+Do not substitute a fake transcript or write to a real student on a guess.
 
 **Phase 1B is code complete on `main` but not deployed.** The `scan-session-notes`
 function, shared ingest core, hook, and resolution queue UI are implemented. Joshua
 will deploy this through Lovable using `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`.
-Do not deploy it directly.
+That Lovable pass should also include the Phase 1A hardening redeploy if it has not
+already happened. Do not deploy it directly.
 
 **Phase 2 has not started.** It remains gated on real Gemini Notes email/Doc format
 evidence from the Phase 1A E2E and the follow-up auto-attach decision.
@@ -45,6 +49,12 @@ evidence from the Phase 1A E2E and the follow-up auto-attach decision.
   helper (validate UUID + confirm auth.users row + fail closed on orphans), don't raw-cast.
 - **Raw transcript storage (§5a):** the `student-context` bucket is canonical/always;
   `content_text` is populated only when the transcript is < ~100 KB.
+- **Admin route/auth behavior:** anonymous admin-route users redirect to
+  `/auth?returnTo=...`; signed-in non-admin users still see locked/access-denied; local
+  dev bypass remains.
+- **Ingest data integrity:** late required-write failures clean up created transcript
+  storage/context/session artifacts; duplicate/race paths intentionally return
+  `already_ingested` after re-querying the ledger.
 
 ## Codex corrections folded in (read build-spec for detail)
 
@@ -77,11 +87,12 @@ evidence from the Phase 1A E2E and the follow-up auto-attach decision.
 
 ## Next step
 
-Wait for Joshua's Phase 1A E2E report, especially the real Gemini Notes email and Doc
-format. If the email + Doc provide reliable student email, name, and calendar agreement,
-the next build step is to turn on confident auto-attach in `scan-session-notes`; the
-parser and calendar hints are already wired, but the current deployed-intent behavior
-is conservative and queues everything.
+First, redeploy the frontend and `ingest-session-note` hardening via Lovable. Then wait
+for Joshua's Phase 1A E2E report, especially the real Gemini Notes email and Doc format.
+If the email + Doc provide reliable student email, name, and calendar agreement, the
+next build step is to turn on confident auto-attach in `scan-session-notes`; the parser
+and calendar hints are already wired, but the current deployed-intent behavior is
+conservative and queues everything.
 
 ## Remaining open decisions (deferred — do NOT block Phase 1A)
 
@@ -91,8 +102,10 @@ is conservative and queues everything.
 
 ## Blockers
 
-- Phase 1A happy-path E2E is pending and must be run by Joshua with a real Gemini
-  Notes Doc and his admin session.
+- Phase 1A hardening redeploy is pending: Lovable must redeploy the frontend and
+  `ingest-session-note` from current `main`.
+- Phase 1A happy-path E2E is pending after that redeploy and must be run by Joshua
+  with a real Gemini Notes Doc and his admin session.
 - Phase 1B deployment is pending and must be done by Joshua via Lovable.
 - Confident auto-attach is intentionally disabled until the real email/Doc format is
   confirmed.

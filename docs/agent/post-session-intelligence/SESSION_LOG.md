@@ -233,3 +233,38 @@ no student-facing output.
 - Phase 1A E2E is safe after that redeploy.
 - Phase 1B remains code complete on `main` but not deployed; deploy remains Joshua's
   Lovable task.
+
+---
+
+## 2026-06-24 — Deploy-gate documentation correction (Codex / GPT-5)
+
+Continued the active project-plan ownership pass. Re-read `STATUS.md`, `HANDOFF.md`,
+`lovable-handoff-prompt.md`, the external Phase 1B Lovable prompt, and current git state
+after the blocker-hardening commit.
+
+### Finding
+The planning bundle still described Phase 1A as simply "deployed live via Lovable."
+That was incomplete after commit `159bdd6609332101e82d4544608b0ea644fc6507`, because the
+live Lovable deployment does not include:
+- the admin-route redirect fix (`/auth?returnTo=...`);
+- the `ingest-session-note` rollback/orphan cleanup hardening.
+
+If left uncorrected, Joshua could run the real-doc Phase 1A E2E against a live build that
+does not contain the final blocker fixes.
+
+### Updated
+- `STATUS.md` now states Phase 1A is deployed but the live build is behind `main`, and
+  explicitly adds the redeploy gate: frontend + `ingest-session-note`.
+- `HANDOFF.md` now names the hardening commit, explains the redeploy requirement before
+  the real-doc E2E, and keeps Phase 1B deploy as Joshua/Lovable-owned.
+- `lovable-handoff-prompt.md` now reflects current deploy reality: redeploy Phase 1A
+  hardening first, deploy Phase 1B only when Joshua requests it, do not apply migrations,
+  do not add cron, and do not create student-facing output.
+- `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md` was updated to match the same deploy gate:
+  frontend + `ingest-session-note` redeploy from current `main`, then
+  `scan-session-notes` + `_shared/sessionIngestCore.ts`, with no migrations/schema/RLS
+  changes, no cron, no function rewrites, and no student-facing output.
+
+### Result
+Current phase label is now precise: **between Phase 1A hardening redeploy/E2E and Phase
+1B Lovable deploy**. No app code changed, no schema changed, no deploys performed.
