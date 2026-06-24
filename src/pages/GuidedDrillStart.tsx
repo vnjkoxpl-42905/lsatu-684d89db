@@ -25,13 +25,15 @@ import {
   getPracticePool,
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
+import {
+  buildGuidedLaunchReturnPath,
+  parseGuidedResumeIndex,
+  parseGuidedResumeQids,
+  safeGuidedReturnPath,
+  TEACHER_GUIDED_DRILLS_RETURN_TO,
+} from '@/lib/guidedDrillNavigation';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
-
-function safeReturnPath(value: string | null): string {
-  if (!value || !value.startsWith('/') || value.startsWith('//')) return '/classroom';
-  return value;
-}
 
 /**
  * Merge a DB drill row with the bundled local definition so a guided drill
@@ -79,6 +81,26 @@ export default function GuidedDrillStart({
   const stateBootcampOverride = (location.state as any)?.bootcampOverride as PracticePool | undefined;
   const slugBootcampOverride = slug ? getPracticePool(slug) : undefined;
   const bootcampOverride: PracticePool | undefined = stateBootcampOverride ?? slugBootcampOverride;
+  const originReturnTo = safeGuidedReturnPath(
+    searchParams.get('returnTo'),
+    assignmentId ? '/classroom' : TEACHER_GUIDED_DRILLS_RETURN_TO,
+  );
+  const resumeQids = React.useMemo(
+    () => parseGuidedResumeQids(searchParams.get('resumeQids')),
+    [searchParams],
+  );
+  const resumeIndex = React.useMemo(
+    () => parseGuidedResumeIndex(searchParams.get('resumeIndex'), resumeQids),
+    [searchParams, resumeQids],
+  );
+  const launchReturnTo = React.useMemo(
+    () => buildGuidedLaunchReturnPath({
+      assignmentId,
+      slug,
+      originReturnTo,
+    }),
+    [assignmentId, slug, originReturnTo],
+  );
 
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
@@ -139,8 +161,8 @@ export default function GuidedDrillStart({
       onReturn();
       return;
     }
-    navigate(safeReturnPath(searchParams.get('returnTo')));
-  }, [onReturn, navigate, searchParams]);
+    navigate(originReturnTo);
+  }, [onReturn, navigate, originReturnTo]);
 
   const handleStart = React.useCallback(async () => {
     if (!drill && !bootcampOverride) {
@@ -159,7 +181,9 @@ export default function GuidedDrillStart({
       const ov = bootcampOverride;
       const feature = ov.qfeatures[0];
 
-      if (!Array.isArray(ov.qids) || ov.qids.length === 0) {
+      const poolQids = resumeQids.length > 0 ? resumeQids : ov.qids;
+
+      if (!Array.isArray(poolQids) || poolQids.length === 0) {
         toast.error(
           `Practice drill pool is missing or empty for ${ov.slug}. Expected qtype = Main Conclusion, feature = ${feature}, count = ${ov.count}.`,
         );
@@ -167,8 +191,8 @@ export default function GuidedDrillStart({
       }
 
       const known = new Set(questionBank.getAllQuestions().map((q) => q.qid));
-      const validQids = ov.qids.filter((qid) => known.has(qid));
-      const invalidQids = ov.qids.filter((qid) => !known.has(qid));
+      const validQids = poolQids.filter((qid) => known.has(qid));
+      const invalidQids = poolQids.filter((qid) => !known.has(qid));
 
       // eslint-disable-next-line no-console
       console.log('[intro-to-lr-practice-drills] launch', {
@@ -178,7 +202,7 @@ export default function GuidedDrillStart({
         qfeatures: ov.qfeatures,
         difficulties: ov.difficulties,
         count: ov.count,
-        poolQids: ov.qids,
+        poolQids,
         validQids,
         invalidQids,
       });
@@ -196,7 +220,10 @@ export default function GuidedDrillStart({
       const params = new URLSearchParams();
       params.set('mode', 'type-drill');
       params.set('qids', validQids.join(','));
-      params.set('returnTo', ov.returnTo);
+      params.set('returnTo', launchReturnTo);
+      if (resumeIndex != null) {
+        params.set('initialIndex', String(resumeIndex));
+      }
       params.set('focus', ov.title);
       params.set('source', ov.source);
       // Carry the pool slug so /drill can mark this practice set complete in
@@ -207,7 +234,9 @@ export default function GuidedDrillStart({
     }
 
     let selectedQids: string[];
-    if ((bootcampOverride as any)?.selectedQids) {
+    if (resumeQids.length > 0) {
+      selectedQids = resumeQids;
+    } else if ((bootcampOverride as any)?.selectedQids) {
       selectedQids = (bootcampOverride as any).selectedQids;
     } else if (drill) {
       const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
@@ -252,7 +281,10 @@ export default function GuidedDrillStart({
     const drillSearchParams = new URLSearchParams();
     drillSearchParams.set('mode', 'type-drill');
     drillSearchParams.set('qids', selectedQids.join(','));
-    drillSearchParams.set('returnTo', (bootcampOverride as any)?.returnTo ?? safeReturnPath(searchParams.get('returnTo')));
+    drillSearchParams.set('returnTo', launchReturnTo);
+    if (resumeIndex != null) {
+      drillSearchParams.set('initialIndex', String(resumeIndex));
+    }
     if ((bootcampOverride as any)?.title ?? drill?.title) {
       drillSearchParams.set('focus', (bootcampOverride as any)?.title ?? drill!.title);
     }
@@ -268,7 +300,7 @@ export default function GuidedDrillStart({
         practicingLabel: (bootcampOverride as any)?.title ?? drill?.title,
       },
     });
-  }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride, slug]);
+  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, launchReturnTo]);
 
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;

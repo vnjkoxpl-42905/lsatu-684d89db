@@ -18,6 +18,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { GuidedDrillCardPreview } from '@/components/drill/GuidedDrillCardPreview';
 import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
 import type { LibraryView } from '@/hooks/useDeskLibraryView';
+import { TEACHER_GUIDED_DRILLS_RETURN_TO } from '@/lib/guidedDrillNavigation';
 import {
   Sheet,
   SheetContent,
@@ -193,7 +194,7 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
                   <>
                     <button
                       type="button"
-                      onClick={() => openRoute(`/guided-drills/${d.slug}`)}
+                      onClick={() => openRoute(`/guided-drills/${d.slug}?returnTo=${encodeURIComponent(TEACHER_GUIDED_DRILLS_RETURN_TO)}`)}
                       className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
                     >
                       <Play className="h-3 w-3" /> Open

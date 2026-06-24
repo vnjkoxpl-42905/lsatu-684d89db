@@ -22,6 +22,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
+import { TEACHER_GUIDED_DRILLS_RETURN_TO } from '@/lib/guidedDrillNavigation';
 
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
@@ -181,7 +182,7 @@ export default function AdminGuidedDrills() {
                     <td className={`px-3 py-2 text-center ${poolBad ? 'text-amber-500' : 'text-muted-foreground'}`}>{ps ?? '…'}</td>
                     <td className="px-3 py-2">
                       <div className="flex gap-1">
-                        <Link to={`/guided-drills/${d.slug}?returnTo=/teacher/library/guided-drills`}>
+                        <Link to={`/guided-drills/${d.slug}?returnTo=${encodeURIComponent(TEACHER_GUIDED_DRILLS_RETURN_TO)}`}>
                           <Button size="sm" variant="outline">Open HTML</Button>
                         </Link>
                         <Button size="sm" variant="ghost" onClick={() => setPreviewDrill(d)}>Markdown Preview</Button>

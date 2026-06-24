@@ -83,6 +83,7 @@ import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
 import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
+import { appendGuidedResumeParams } from '@/lib/guidedDrillNavigation';
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -113,6 +114,7 @@ function DrillContent() {
   const returnTo = searchParams.get('returnTo');
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
+  const initialIndexParam = searchParams.get('initialIndex');
   const isMcPractice = searchParams.get('source') === 'intro-to-lr-practice-drills';
   // Maps the finished MC practice set back to its module-progress completion id
   // so the Intro to LR path cannot report "core path cleared" before the final
@@ -411,18 +413,23 @@ function DrillContent() {
 
       questionQueue = finalQuestions.map(q => q.qid);
 
+      const requestedInitialIndex = initialIndexParam ? Number.parseInt(initialIndexParam, 10) : 0;
+      const initialIndex = Number.isFinite(requestedInitialIndex)
+        ? Math.min(Math.max(requestedInitialIndex, 0), Math.max(questionQueue.length - 1, 0))
+        : 0;
+
       setSession({
         mode,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
         typeDrillConfig: (mode === 'type-drill' || mode === 'natural-drill') ? (state.config as TypeDrillConfig) : undefined,
         questionQueue,
-        currentIndex: 0,
+        currentIndex: initialIndex,
         attempts: new Map(),
       });
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam]);
 
   // Hydrate adaptive engine from DB before Smart Drill selects its first
   // question. If hydration fails, the selector may proceed with current-session
@@ -2703,6 +2710,10 @@ function DrillContent() {
       : isFullSection
       ? 'Section'
       : 'Practice Drill';
+    const isGuidedDrillReturn = !!returnTo && returnTo.startsWith('/guided');
+    const guidedDrillReturnTo = isGuidedDrillReturn
+      ? appendGuidedResumeParams(returnTo, session.questionQueue, session.currentIndex)
+      : returnTo;
     const mcPracticeTestLabel = currentQuestion.pt
       ? `Practice Test ${currentQuestion.pt}`
       : contextFocus;
@@ -2738,8 +2749,8 @@ function DrillContent() {
       },
     ] : returnTo ? [
       {
-        label: returnTo === '/flagged' ? 'Flagged Questions' : 'Library',
-        onClick: () => navigate(returnTo)
+        label: returnTo === '/flagged' ? 'Flagged Questions' : isGuidedDrillReturn ? 'Guided Drill' : 'Library',
+        onClick: () => navigate(guidedDrillReturnTo)
       },
       {
         label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
