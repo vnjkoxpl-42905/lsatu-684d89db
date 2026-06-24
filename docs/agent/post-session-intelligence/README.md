@@ -24,6 +24,7 @@ richer dossier inside the Teacher Workspace.
 | `lovable-handoff-prompt.md` | The narrow Lovable asks only (connector scope/secret verification, later cron). Minimal, to preserve credits. |
 | `PHASE-1A-LOVABLE-DEPLOY.md` | Historical Phase 1A deploy prompt, now retired in-place so it is not pasted again. |
 | `PHASE-1A-E2E-RUNBOOK.md` | Joshua-run real Gemini Notes E2E checklist and result-report template. |
+| `PHASE-1B-E2E-RUNBOOK.md` | Joshua-run scan/resolution-queue E2E checklist and result-report template. |
 | `SESSION_LOG.md` | Running log: inspected, decided, asked/answered, files touched, pending approvals. |
 | `HANDOFF.md` | Cold-start handoff for a future Claude/Codex session. |
 | `STATUS.md` | Phase checklist with state per phase. |
@@ -69,6 +70,7 @@ build on existing rails, not a greenfield integration. See `repo-inspection-summ
 ## Next step
 
 Joshua runs the updated Lovable prompt at `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`,
-then runs `PHASE-1A-E2E-RUNBOOK.md` with a real Gemini Notes Google Doc. After the real
-email/Doc format is confirmed, the next build step is enabling confident auto-attach
-in `scan-session-notes` only when email + name + calendar agreement are all present.
+then runs `PHASE-1A-E2E-RUNBOOK.md` with a real Gemini Notes Google Doc. After Phase 1B
+is deployed, run `PHASE-1B-E2E-RUNBOOK.md` for scan/resolve/discard. After the real
+email/Doc format is confirmed, the next build step is enabling confident auto-attach in
+`scan-session-notes` only when email + name + calendar agreement are all present.

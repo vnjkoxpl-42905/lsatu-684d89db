@@ -19,6 +19,7 @@ dossier in the Teacher Workspace.
 - **Repo:** `~/Documents/Claude/02_PROJECTS/LSATU`
 - **Planning folder:** `docs/agent/post-session-intelligence/`
 - **Phase 1A E2E checklist:** `docs/agent/post-session-intelligence/PHASE-1A-E2E-RUNBOOK.md`
+- **Phase 1B E2E checklist:** `docs/agent/post-session-intelligence/PHASE-1B-E2E-RUNBOOK.md`
 - **Product/decision layer (Obsidian):** `~/Documents/Obsidian Vault/` — product
   context `wiki/synthesis/intro-to-lr-product.md`, teaching voice
   `wiki/concepts/teaching-voice.md`.
@@ -38,7 +39,8 @@ Do not substitute a fake transcript or write to a real student on a guess.
 function, shared ingest core, hook, and resolution queue UI are implemented. Joshua
 will deploy this through Lovable using `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`.
 That Lovable pass should also include the Phase 1A hardening redeploy if it has not
-already happened. Do not deploy it directly.
+already happened. After deploy, Joshua should run `PHASE-1B-E2E-RUNBOOK.md`. Do not
+deploy it directly.
 
 **Phase 2 has not started.** It remains gated on real Gemini Notes email/Doc format
 evidence from the Phase 1A E2E and the follow-up auto-attach decision.

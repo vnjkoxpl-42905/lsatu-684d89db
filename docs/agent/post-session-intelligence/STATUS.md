@@ -72,7 +72,7 @@ These fixes are **not live until Lovable redeploys the frontend and
       (no new migration needed — reuses the Phase 1A `session_ingestions` table).
       If combining with the Phase 1A hardening redeploy, also redeploy
       `ingest-session-note` and the frontend from current `main`.
-- [ ] E2E on real Gemini Notes emails: detect → queue → resolve attaches → re-scan no dup
+- [ ] E2E using `PHASE-1B-E2E-RUNBOOK.md` on real Gemini Notes emails: detect → queue → resolve attaches → re-scan no dup; discard non-session rows
 
 **Decision (autonomous, documented):** V1 scan is CONSERVATIVE — it never auto-attaches.
 Every detected note lands in the resolution queue for a manual student pick, because the

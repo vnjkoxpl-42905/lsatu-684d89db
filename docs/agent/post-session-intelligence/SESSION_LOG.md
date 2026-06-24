@@ -352,3 +352,33 @@ signals needed for the next auto-attach decision.
 ### Result
 The next human gate is now executable and auditable: Lovable redeploy first, then Joshua
 runs `PHASE-1A-E2E-RUNBOOK.md` and reports the result template.
+
+---
+
+## 2026-06-24 — Added Phase 1B scan/resolve E2E runbook (Codex / GPT-5)
+
+Continued the active project-plan ownership pass and inspected Phase 1B test guidance.
+
+### Finding
+Phase 1B deploy and test expectations existed in `STATUS.md` and
+`~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`, but there was no repo-local result template for
+the scan/resolution queue E2E. The missing template would make it harder to decide
+whether parser/calendar evidence is strong enough for confident auto-attach.
+
+### Added
+- `PHASE-1B-E2E-RUNBOOK.md`
+  - deploy preconditions;
+  - expected conservative V1 behavior;
+  - scan check;
+  - resolve check;
+  - re-scan idempotency check;
+  - discard check;
+  - student-facing safety checks;
+  - copy/paste result template;
+  - explicit next build decision for confident auto-attach.
+- Linked the runbook from `README.md`, `STATUS.md`, and `HANDOFF.md`.
+
+### Result
+Both human-run Phase 1 gates now have dedicated runbooks:
+`PHASE-1A-E2E-RUNBOOK.md` for manual real-doc ingest and
+`PHASE-1B-E2E-RUNBOOK.md` for scan/resolve/discard after Lovable deploy.
