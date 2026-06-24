@@ -2128,6 +2128,106 @@ export type Database = {
         }
         Relationships: []
       }
+      session_ingestions: {
+        Row: {
+          attempt_count: number
+          calendar_event_id: string | null
+          created_at: string
+          created_by: string
+          discard_reason: string | null
+          draft_id: string | null
+          error_message: string | null
+          gdrive_doc_id: string | null
+          gmail_message_id: string | null
+          id: string
+          last_attempt_at: string | null
+          match_confidence: string | null
+          match_reason: string | null
+          matched_student_id: string | null
+          raw_meta: Json
+          raw_subject: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          scan_requested_by: string | null
+          session_id: string | null
+          status: string
+          transcript_context_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attempt_count?: number
+          calendar_event_id?: string | null
+          created_at?: string
+          created_by: string
+          discard_reason?: string | null
+          draft_id?: string | null
+          error_message?: string | null
+          gdrive_doc_id?: string | null
+          gmail_message_id?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          match_confidence?: string | null
+          match_reason?: string | null
+          matched_student_id?: string | null
+          raw_meta?: Json
+          raw_subject?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          scan_requested_by?: string | null
+          session_id?: string | null
+          status?: string
+          transcript_context_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attempt_count?: number
+          calendar_event_id?: string | null
+          created_at?: string
+          created_by?: string
+          discard_reason?: string | null
+          draft_id?: string | null
+          error_message?: string | null
+          gdrive_doc_id?: string | null
+          gmail_message_id?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          match_confidence?: string | null
+          match_reason?: string | null
+          matched_student_id?: string | null
+          raw_meta?: Json
+          raw_subject?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          scan_requested_by?: string | null
+          session_id?: string | null
+          status?: string
+          transcript_context_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_ingestions_draft_id_fkey"
+            columns: ["draft_id"]
+            isOneToOne: false
+            referencedRelation: "ai_ta_drafts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_ingestions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "student_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_ingestions_transcript_context_id_fkey"
+            columns: ["transcript_context_id"]
+            isOneToOne: false
+            referencedRelation: "student_context"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       session_replays: {
         Row: {
           class_id: string
