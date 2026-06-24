@@ -110,13 +110,14 @@ export async function getGuidedDrillBySlug(slug: string): Promise<GuidedDrill | 
  * Resolve the question pool for a guided drill from the in-memory question bank.
  * Filters by qtypes (any) ∩ features (any) ∩ reasoning_types (any) ∩ difficulty range.
  */
-export function resolveGuidedDrillPool(filter: GuidedDrillBankFilter) {
+export function resolveGuidedDrillPool(filter: GuidedDrillBankFilter | null | undefined) {
   const all = questionBank.getAllQuestions();
-  const qtypeSet = new Set((filter.qtypes || []).map((s) => s.toLowerCase()));
-  const featSet = new Set((filter.features || []).map((s) => s.toLowerCase()));
-  const rtSet = new Set((filter.reasoning_types || []).map((s) => s.toLowerCase()));
-  const dmin = filter.difficulty_min ?? null;
-  const dmax = filter.difficulty_max ?? null;
+  const f = filter ?? {};
+  const qtypeSet = new Set((f.qtypes || []).map((s) => s.toLowerCase()));
+  const featSet = new Set((f.features || []).map((s) => s.toLowerCase()));
+  const rtSet = new Set((f.reasoning_types || []).map((s) => s.toLowerCase()));
+  const dmin = f.difficulty_min ?? null;
+  const dmax = f.difficulty_max ?? null;
   return all.filter((q) => {
     if (qtypeSet.size > 0 && !qtypeSet.has((q.qtype || '').toLowerCase())) return false;
     if (featSet.size > 0) {

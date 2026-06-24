@@ -10,6 +10,7 @@ import {
   type GuidedDrill,
   type GuidedDrillAssignment,
 } from '@/lib/guidedDrills';
+import { getLocalGuidedDrillBySlug, isEmptyBankFilter } from '@/lib/guidedDrillsLocal';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { questionBank } from '@/lib/questionLoader';
 import {
@@ -30,6 +31,27 @@ type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill }
 function safeReturnPath(value: string | null): string {
   if (!value || !value.startsWith('/') || value.startsWith('//')) return '/classroom';
   return value;
+}
+
+/**
+ * Merge a DB drill row with the bundled local definition so a guided drill
+ * launches even when the live row is missing or its bank_filter is empty:
+ *   - no DB row → use the local definition outright
+ *   - DB row with empty/absent bank_filter → backfill it (and question_count)
+ *     from the local seed; otherwise keep the DB row as-is.
+ */
+function reconcileWithLocal(drill: GuidedDrill | null, slug: string): GuidedDrill | null {
+  const local = getLocalGuidedDrillBySlug(slug);
+  if (!drill) return local;
+  if (!local) return drill;
+  if (isEmptyBankFilter(drill.bank_filter)) {
+    return {
+      ...drill,
+      bank_filter: local.bank_filter,
+      question_count: drill.question_count ?? local.question_count,
+    };
+  }
+  return drill;
 }
 
 export interface GuidedDrillStartProps {
@@ -80,10 +102,19 @@ export default function GuidedDrillStart({
 
     if (slug) {
       getGuidedDrillBySlug(slug).then((drill) => {
-        setDirectDrill(drill);
+        // Fall back to the bundled definition when the DB row is missing, and
+        // backfill an empty/absent bank_filter from the local seed so the pool
+        // can still resolve client-side. Keeps launches working even when the
+        // live guided_drills row is incomplete or undeployed.
+        setDirectDrill(reconcileWithLocal(drill, slug));
         setLoading(false);
       }).catch((e: unknown) => {
-        toast.error(e instanceof Error ? e.message : 'Failed to load guided drill');
+        const local = getLocalGuidedDrillBySlug(slug);
+        if (local) {
+          setDirectDrill(local);
+        } else {
+          toast.error(e instanceof Error ? e.message : 'Failed to load guided drill');
+        }
         setLoading(false);
       });
       return;
@@ -112,7 +143,12 @@ export default function GuidedDrillStart({
   }, [onReturn, navigate, searchParams]);
 
   const handleStart = React.useCallback(async () => {
-    if (!drill && !bootcampOverride) return;
+    if (!drill && !bootcampOverride) {
+      // eslint-disable-next-line no-console
+      console.error('[guided-drill] start blocked: no drill or override resolved', { slug });
+      toast.error("Couldn't load this drill. Please refresh and try again.");
+      return;
+    }
     if (qbLoading) {
       toast.info('Loading question bank...');
       return;
@@ -188,6 +224,14 @@ export default function GuidedDrillStart({
         selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
       }
     } else {
+      // eslint-disable-next-line no-console
+      console.error('[guided-drill] start blocked: no qids resolved', { slug });
+      toast.error("Couldn't build this drill. Please refresh and try again.");
+      return;
+    }
+
+    if (!selectedQids || selectedQids.length === 0) {
+      toast.error('No questions are available for this drill yet.');
       return;
     }
 
@@ -224,7 +268,7 @@ export default function GuidedDrillStart({
         practicingLabel: (bootcampOverride as any)?.title ?? drill?.title,
       },
     });
-  }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride]);
+  }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride, slug]);
 
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
