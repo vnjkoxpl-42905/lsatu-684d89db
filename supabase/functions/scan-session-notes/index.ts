@@ -182,9 +182,13 @@ Deno.serve(async (req) => {
 
     // ── scan: detect + queue ──
     if (action === "scan") {
-      // Caller may override the search; default is Gemini Notes with a doc link
-      // in a recent window.
-      const query: string = body.q ?? 'subject:(Notes) "docs.google.com/document" newer_than:14d';
+      // Caller may override the search; default anchors on the real Gemini Notes
+      // sender (gemini-notes@google.com) — the authoritative source signal — and
+      // requires a Google Doc link in a recent window. Anchoring on sender (not
+      // just the word "Notes" in any subject) is what makes this match the real
+      // Gmail pattern instead of over-matching unrelated mail.
+      const query: string = body.q ??
+        'from:gemini-notes@google.com "docs.google.com/document" newer_than:14d';
       const max: number = Math.min(body.max ?? 25, 50);
 
       const headers = gmailHeaders();
@@ -241,6 +245,10 @@ Deno.serve(async (req) => {
         const rawMeta = {
           gmail_message_id: m.id, gdrive_doc_id: docId, subject, from,
           parsed_name: parsedName, internal_date: internalDate,
+          // The Gemini Notes email body carries a short summary + suggested next
+          // steps. Persist the snippet so the review queue shows context without
+          // opening the Doc (the Doc itself is read only on resolve).
+          email_summary: (msg.snippet ?? "").trim() || null,
           calendar_window_hit: calendarHit ? { id: calendarHit.id, title: calendarHit.title } : null,
         };
 
