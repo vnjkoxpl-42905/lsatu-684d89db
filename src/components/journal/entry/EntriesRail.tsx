@@ -26,14 +26,29 @@ const GROUPS: { key: Outcome; label: string; dot: string }[] = [
   { key: 'correct', label: 'Correct', dot: 'bg-emerald-500' },
 ];
 
+export interface EntrySuggestion {
+  qid: string;
+  label: string;
+  qtype: string;
+}
+
 interface Props {
   rows: WrongAnswerSmartRow[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onNewEntry: () => void;
+  suggestions?: EntrySuggestion[];
+  onPickSuggestion?: (qid: string) => void;
 }
 
-export function EntriesRail({ rows, selectedId, onSelect, onNewEntry }: Props) {
+export function EntriesRail({
+  rows,
+  selectedId,
+  onSelect,
+  onNewEntry,
+  suggestions = [],
+  onPickSuggestion,
+}: Props) {
   const [filter, setFilter] = React.useState('');
 
   const filtered = React.useMemo(() => {
@@ -120,6 +135,29 @@ export function EntriesRail({ rows, selectedId, onSelect, onNewEntry }: Props) {
           })
         )}
       </div>
+
+      {suggestions.length > 0 && onPickSuggestion && (
+        <div className="border-t border-border px-3 py-3">
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Add your next entry
+          </div>
+          <div className="space-y-1">
+            {suggestions.map((s) => (
+              <button
+                key={s.qid}
+                type="button"
+                onClick={() => onPickSuggestion(s.qid)}
+                className="flex w-full items-center gap-2 rounded-md border border-border px-2 py-1.5 text-left hover:bg-accent"
+              >
+                <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                  {s.label}
+                </span>
+                <span className="line-clamp-1 text-[11px] text-foreground/70">{s.qtype}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

@@ -23,7 +23,9 @@ interface Props {
 export function NewEntryPicker({ open, onOpenChange, onPick }: Props) {
   const [search, setSearch] = React.useState('');
 
+  // Defer the (potentially large) bank read until the dialog is open.
   const all = React.useMemo(() => {
+    if (!open) return [];
     try {
       return questionBank.getAllQuestions();
     } catch {

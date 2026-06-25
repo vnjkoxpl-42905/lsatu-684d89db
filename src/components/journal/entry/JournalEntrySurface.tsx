@@ -30,7 +30,7 @@ import { ensureJournalEntry } from '@/lib/wajService';
 import { questionBank, type LRQuestion } from '@/lib/questionLoader';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useToast } from '@/hooks/use-toast';
-import { EntriesRail } from './EntriesRail';
+import { EntriesRail, outcomeOf } from './EntriesRail';
 import { JournalQuestionPane } from './JournalQuestionPane';
 import { ReviewForm, type JournalDraft } from './ReviewForm';
 import { NewEntryPicker } from './NewEntryPicker';
@@ -196,6 +196,28 @@ export function JournalEntrySurface() {
 
   const question = selected ? questionBank.getQuestion(selected.qid) : undefined;
 
+  // "Add your next entry": suggest questions of the type the student misses
+  // most, that aren't already journaled. Self-contained from loaded data.
+  const suggestions = React.useMemo(() => {
+    const journaled = new Set(rows.map((r) => r.qid));
+    const missTally: Record<string, number> = {};
+    for (const r of rows) {
+      if (outcomeOf(r) === 'wrong') missTally[r.qtype] = (missTally[r.qtype] ?? 0) + 1;
+    }
+    const weakest = Object.entries(missTally).sort((a, b) => b[1] - a[1])[0]?.[0];
+    let pool: LRQuestion[] = [];
+    try {
+      pool = questionBank.getAllQuestions();
+    } catch {
+      pool = [];
+    }
+    const ofType = weakest ? pool.filter((q) => q.qtype === weakest) : pool;
+    return ofType
+      .filter((q) => !journaled.has(q.qid))
+      .slice(0, 6)
+      .map((q) => ({ qid: q.qid, label: `PT${q.pt}.S${q.section}.Q${q.qnum}`, qtype: q.qtype }));
+  }, [rows]);
+
   return (
     <div className="flex h-screen flex-col bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -226,6 +248,11 @@ export function JournalEntrySurface() {
             selectedId={selectedId}
             onSelect={setSelectedId}
             onNewEntry={() => setPickerOpen(true)}
+            suggestions={suggestions}
+            onPickSuggestion={(qid) => {
+              const q = questionBank.getQuestion(qid);
+              if (q) handlePick(q);
+            }}
           />
         </ResizablePanel>
 

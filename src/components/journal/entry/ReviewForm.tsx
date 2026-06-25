@@ -12,6 +12,16 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import type { SelfRating } from '@/lib/wajNotesService';
 
+// ── Onboarding coachmark tour (shown once per user) ──────────────────────────
+const TOUR_KEY = 'waj_review_tour_done_v1';
+type TourKey = 'self_rating' | 'wrong_reasoning' | 'correct_reasoning' | 'lesson';
+const TOUR_STEPS: { key: TourKey; text: string }[] = [
+  { key: 'self_rating', text: 'Start by rating how you did. It sorts this entry into the right bucket.' },
+  { key: 'wrong_reasoning', text: 'Name the specific trap that pulled you to the wrong answer, so you recognize it next time.' },
+  { key: 'correct_reasoning', text: 'Explain in your own words why the correct answer is correct. Bonus: why you dismissed it initially.' },
+  { key: 'lesson', text: 'Distill one takeaway you can carry to the next question of this type.' },
+];
+
 export interface JournalDraft {
   self_rating: SelfRating | null;
   date_taken: string; // YYYY-MM-DD or ''
@@ -35,6 +45,53 @@ function Label({ children }: { children: React.ReactNode }) {
   return <div className="mb-1.5 text-[12px] font-medium text-muted-foreground">{children}</div>;
 }
 
+function TourTip({
+  active,
+  text,
+  stepIndex,
+  total,
+  onBack,
+  onNext,
+}: {
+  active: boolean;
+  text: string;
+  stepIndex: number;
+  total: number;
+  onBack: () => void;
+  onNext: () => void;
+}) {
+  if (!active) return null;
+  return (
+    <div className="mt-2 rounded-md border border-accent-bronze/60 bg-accent-bronze/10 p-3">
+      <p className="text-[12px] leading-relaxed text-foreground/90">{text}</p>
+      <div className="mt-2 flex items-center justify-between">
+        <div className="flex gap-1">
+          {Array.from({ length: total }).map((_, i) => (
+            <span
+              key={i}
+              className={cn('h-1.5 w-1.5 rounded-full', i === stepIndex ? 'bg-accent-bronze' : 'bg-border')}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-2">
+          {stepIndex > 0 && (
+            <button type="button" onClick={onBack} className="text-[11px] text-muted-foreground hover:text-foreground">
+              Back
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onNext}
+            className="rounded bg-accent-bronze px-2.5 py-1 text-[11px] font-medium text-background"
+          >
+            {stepIndex === total - 1 ? 'Got it' : 'Next'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   draft: JournalDraft;
   correctAnswer: string;
@@ -43,6 +100,41 @@ interface Props {
 }
 
 export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onPatch }: Props) {
+  const [tourStep, setTourStep] = React.useState<number>(() => {
+    if (typeof window === 'undefined') return -1;
+    return window.localStorage.getItem(TOUR_KEY) ? -1 : 0;
+  });
+
+  const advance = () => {
+    setTourStep((s) => {
+      const next = s + 1;
+      if (next >= TOUR_STEPS.length) {
+        try {
+          window.localStorage.setItem(TOUR_KEY, '1');
+        } catch {
+          /* ignore storage failures */
+        }
+        return -1;
+      }
+      return next;
+    });
+  };
+  const back = () => setTourStep((s) => Math.max(0, s - 1));
+
+  const tipFor = (key: TourKey) => {
+    const idx = TOUR_STEPS.findIndex((t) => t.key === key);
+    return (
+      <TourTip
+        active={tourStep === idx}
+        text={TOUR_STEPS[idx].text}
+        stepIndex={idx}
+        total={TOUR_STEPS.length}
+        onBack={back}
+        onNext={advance}
+      />
+    );
+  };
+
   return (
     <div className="space-y-5 px-5 py-6">
       {/* How did you do? */}
@@ -66,6 +158,7 @@ export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onP
             );
           })}
         </div>
+        {tipFor('self_rating')}
       </div>
 
       {/* Date taken */}
@@ -124,6 +217,7 @@ export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onP
           value={draft.wrong_reasoning}
           onChange={(e) => onPatch({ wrong_reasoning: e.target.value })}
         />
+        {tipFor('wrong_reasoning')}
       </div>
 
       {/* Correct Reasoning */}
@@ -135,6 +229,7 @@ export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onP
           value={draft.correct_reasoning}
           onChange={(e) => onPatch({ correct_reasoning: e.target.value })}
         />
+        {tipFor('correct_reasoning')}
       </div>
 
       {/* Lesson */}
@@ -146,6 +241,7 @@ export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onP
           value={draft.lesson}
           onChange={(e) => onPatch({ lesson: e.target.value })}
         />
+        {tipFor('lesson')}
       </div>
 
       {/* Other Notes */}
