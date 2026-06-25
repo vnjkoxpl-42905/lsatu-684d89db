@@ -2028,10 +2028,31 @@ function DrillContent() {
           throw error;
         }
         setIsFlagged(true);
+        // Flag -> journal bridge: surface this question in the Wrong Answer
+        // Journal too, recording the current attempt if one was made. Failure
+        // here must not undo the flag, but must not be swallowed either.
+        try {
+          const { ensureJournalEntry } = await import('@/lib/wajService');
+          await ensureJournalEntry({
+            class_id: classId,
+            qid: currentQuestion.qid,
+            pt: currentQuestion.pt,
+            section: currentQuestion.section,
+            qnum: currentQuestion.qnum,
+            qtype: currentQuestion.qtype,
+            level: currentQuestion.difficulty,
+            chosen_answer: selectedAnswer || null,
+            correct_answer: currentQuestion.correctAnswer,
+          });
+        } catch (journalErr) {
+          toast.error("Flagged, but couldn't add to Journal", {
+            description: journalErr instanceof Error ? journalErr.message : String(journalErr),
+          });
+        }
         toast.success("Question flagged", {
           action: {
-            label: "View Flagged",
-            onClick: () => navigate("/flagged"),
+            label: "Open Journal",
+            onClick: () => navigate("/journal"),
           },
         });
       }

@@ -26,12 +26,14 @@ import { cn } from '@/lib/utils';
 import { useClassId } from '@/hooks/useClassId';
 import { getWrongAnswerSmartRows, type WrongAnswerSmartRow } from '@/lib/journalService';
 import { upsertNote, type AnnotationStroke } from '@/lib/wajNotesService';
-import { questionBank } from '@/lib/questionLoader';
+import { ensureJournalEntry } from '@/lib/wajService';
+import { questionBank, type LRQuestion } from '@/lib/questionLoader';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useToast } from '@/hooks/use-toast';
 import { EntriesRail } from './EntriesRail';
 import { JournalQuestionPane } from './JournalQuestionPane';
 import { ReviewForm, type JournalDraft } from './ReviewForm';
+import { NewEntryPicker } from './NewEntryPicker';
 
 const EMPTY_DRAFT: JournalDraft = {
   self_rating: null,
@@ -80,6 +82,8 @@ export function JournalEntrySurface() {
   const [draft, setDraft] = React.useState<JournalDraft>(EMPTY_DRAFT);
   const [annotations, setAnnotations] = React.useState<AnnotationStroke[]>([]);
   const [annotateActive, setAnnotateActive] = React.useState(false);
+  const [pickerOpen, setPickerOpen] = React.useState(false);
+  const [pendingSelectQid, setPendingSelectQid] = React.useState<string | null>(null);
 
   const selected = React.useMemo(
     () => rows.find((r) => r.id === selectedId) ?? null,
@@ -90,6 +94,39 @@ export function JournalEntrySurface() {
   React.useEffect(() => {
     if (!selectedId && rows.length > 0) setSelectedId(rows[0].id);
   }, [rows, selectedId]);
+
+  // After adding a manual entry, select it once it appears in the refetched rows.
+  React.useEffect(() => {
+    if (!pendingSelectQid) return;
+    const row = rows.find((r) => r.qid === pendingSelectQid);
+    if (row) {
+      setSelectedId(row.id);
+      setPendingSelectQid(null);
+    }
+  }, [rows, pendingSelectQid]);
+
+  const handlePick = async (q: LRQuestion) => {
+    if (!classId) return;
+    try {
+      await ensureJournalEntry({
+        class_id: classId,
+        qid: q.qid,
+        pt: q.pt,
+        section: q.section,
+        qnum: q.qnum,
+        qtype: q.qtype,
+        level: q.difficulty,
+      });
+      setPendingSelectQid(q.qid);
+      await queryClient.invalidateQueries({ queryKey: ['journal', 'entries', classId] });
+    } catch (err) {
+      toast({
+        title: 'Could not add entry',
+        description: err instanceof Error ? err.message : String(err),
+        variant: 'destructive',
+      });
+    }
+  };
 
   // Seed draft + annotations when the selected entry changes (NOT on every save).
   React.useEffect(() => {
@@ -188,9 +225,7 @@ export function JournalEntrySurface() {
             rows={rows}
             selectedId={selectedId}
             onSelect={setSelectedId}
-            onNewEntry={() =>
-              toast({ title: 'Add entry', description: 'Flag a question in a drill to journal it. Manual picker coming next.' })
-            }
+            onNewEntry={() => setPickerOpen(true)}
           />
         </ResizablePanel>
 
@@ -280,6 +315,8 @@ export function JournalEntrySurface() {
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
+
+      <NewEntryPicker open={pickerOpen} onOpenChange={setPickerOpen} onPick={handlePick} />
     </div>
   );
 }
