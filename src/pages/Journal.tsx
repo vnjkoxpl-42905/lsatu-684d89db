@@ -1,10 +1,10 @@
 /**
- * Journal — the student's notes + databases workspace (Notion-style).
- * The Wrong Answers feed lives inside as a pinned read-only smart database.
- * Lazy-loaded so the heavy TipTap editor stays out of the main bundle.
+ * Journal — the Wrong Answer Journal: a focused, LSAT-Journal-style 3-pane
+ * deep-review surface (entries / full question / autosaving review form).
+ * Replaces the prior Notion-style workspace.
  */
-import { JournalWorkspace } from '@/components/journal/JournalWorkspace';
+import { JournalEntrySurface } from '@/components/journal/entry/JournalEntrySurface';
 
 export default function Journal() {
-  return <JournalWorkspace />;
+  return <JournalEntrySurface />;
 }

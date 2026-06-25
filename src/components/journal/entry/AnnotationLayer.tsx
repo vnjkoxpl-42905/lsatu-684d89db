@@ -1,0 +1,124 @@
+/**
+ * AnnotationLayer — a dependency-free freehand pen overlay drawn over the
+ * journal question. Strokes are stored in NORMALIZED coordinates (0..1 of the
+ * container box) so they reload correctly at any size. When `active`, the layer
+ * captures pointer events and draws; when inactive it's click-through and just
+ * renders the saved strokes.
+ *
+ * Persistence is the parent's job: `onChange` fires (debounced upstream) with
+ * the full stroke list whenever a stroke completes.
+ */
+import * as React from 'react';
+import type { AnnotationStroke } from '@/lib/wajNotesService';
+
+const PEN_COLOR = 'hsl(var(--accent-bronze))';
+const PEN_SIZE = 2.5;
+
+function strokeToPath(points: number[], w: number, h: number): string {
+  if (points.length < 4) {
+    // a dot
+    const x = (points[0] ?? 0) * w;
+    const y = (points[1] ?? 0) * h;
+    return `M ${x} ${y} L ${x + 0.1} ${y + 0.1}`;
+  }
+  let d = `M ${points[0] * w} ${points[1] * h}`;
+  for (let i = 2; i < points.length - 2; i += 2) {
+    const x0 = points[i] * w;
+    const y0 = points[i + 1] * h;
+    const x1 = points[i + 2] * w;
+    const y1 = points[i + 3] * h;
+    const mx = (x0 + x1) / 2;
+    const my = (y0 + y1) / 2;
+    d += ` Q ${x0} ${y0} ${mx} ${my}`;
+  }
+  return d;
+}
+
+interface Props {
+  active: boolean;
+  strokes: AnnotationStroke[];
+  onChange: (strokes: AnnotationStroke[]) => void;
+}
+
+export function AnnotationLayer({ active, strokes, onChange }: Props) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [size, setSize] = React.useState({ w: 1, h: 1 });
+  const [drawing, setDrawing] = React.useState<number[] | null>(null);
+
+  // Track container size so normalized points map to pixels.
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setSize({ w: el.clientWidth || 1, h: el.clientHeight || 1 });
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const pointFromEvent = (e: React.PointerEvent): [number, number] => {
+    const el = ref.current;
+    if (!el) return [0, 0];
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / (rect.width || 1);
+    const y = (e.clientY - rect.top) / (rect.height || 1);
+    return [Math.min(1, Math.max(0, x)), Math.min(1, Math.max(0, y))];
+  };
+
+  const handleDown = (e: React.PointerEvent) => {
+    if (!active) return;
+    e.preventDefault();
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    const [x, y] = pointFromEvent(e);
+    setDrawing([x, y]);
+  };
+
+  const handleMove = (e: React.PointerEvent) => {
+    if (!active || !drawing) return;
+    const [x, y] = pointFromEvent(e);
+    setDrawing((prev) => (prev ? [...prev, x, y] : [x, y]));
+  };
+
+  const handleUp = () => {
+    if (!active || !drawing) return;
+    const next = [...strokes, { points: drawing, color: PEN_COLOR, size: PEN_SIZE }];
+    setDrawing(null);
+    onChange(next);
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="absolute inset-0 z-20"
+      style={{ pointerEvents: active ? 'auto' : 'none', cursor: active ? 'crosshair' : 'default', touchAction: active ? 'none' : 'auto' }}
+      onPointerDown={handleDown}
+      onPointerMove={handleMove}
+      onPointerUp={handleUp}
+      onPointerLeave={handleUp}
+    >
+      <svg className="h-full w-full" width={size.w} height={size.h}>
+        {strokes.map((s, i) => (
+          <path
+            key={i}
+            d={strokeToPath(s.points, size.w, size.h)}
+            fill="none"
+            stroke={s.color ?? PEN_COLOR}
+            strokeWidth={s.size ?? PEN_SIZE}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+        {drawing && (
+          <path
+            d={strokeToPath(drawing, size.w, size.h)}
+            fill="none"
+            stroke={PEN_COLOR}
+            strokeWidth={PEN_SIZE}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
+      </svg>
+    </div>
+  );
+}
