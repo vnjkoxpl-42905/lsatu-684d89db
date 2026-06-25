@@ -42,8 +42,15 @@ That Lovable pass should also include the Phase 1A hardening redeploy if it has 
 already happened. After deploy, Joshua should run `PHASE-1B-E2E-RUNBOOK.md`. Do not
 deploy it directly.
 
-**Phase 2 has not started.** It remains gated on real Gemini Notes email/Doc format
-evidence from the Phase 1A E2E and the follow-up auto-attach decision.
+**Phase 2 and Phase 3 are now code complete on `main`** (commit `ff443bf`).
+Synthesis (`synthesize-session-bundle`), the per-part review UI, the tabbed
+student dossier, and the client-side publish path are built and pass
+typecheck/lint/build. Only `synthesize-session-bundle` needs a Lovable deploy
+(see `PHASE-2-LOVABLE-DEPLOY.md`); the dossier, review UI, and publish ship on
+the next frontend Publish (publish runs under the admin JWT, no function deploy).
+Synthesis quality should still be validated against a real Gemini Notes
+transcript once one is ingested — the prompt is conservative but unverified on
+real data. The confident auto-attach decision (Phase 1B) is unchanged.
 
 ## Blockers resolved this pass
 
