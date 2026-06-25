@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -7,18 +7,32 @@ import {
   ClipboardList,
   CalendarDays,
   BookOpen,
-  UploadCloud,
+  FileText,
+  Loader2,
+  Wand2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
 import { useStudentExternalUploadsForStudent } from '@/hooks/useExternalWorkUploads';
 import { useStudentWeeklyPlans } from '@/hooks/useWeeklyPlan';
-import { useAITADrafts } from '@/hooks/useAITADrafts';
+import { useAITADrafts, type AITADraft } from '@/hooks/useAITADrafts';
+import { useStudentSessions } from '@/hooks/useStudentSessions';
+import { useStudentContext } from '@/hooks/useStudentContext';
+import { useSynthesizeBundle } from '@/hooks/useSessionBundles';
+import { isSessionBundle, type SessionBundle } from '@/lib/sessionBundle';
+import SessionBundleReview from '@/components/teacher/SessionBundleReview';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 import RecapComposer from '@/components/teacher/RecapComposer';
 import AssignmentBuilder from '@/components/teacher/AssignmentBuilder';
 import { useAuth } from '@/contexts/AuthContext';
+
+// Student dossier — tabbed shell (build-spec §8). Real tabs only: every tab
+// queries a real table and renders an honest empty state. No mock/placeholder
+// tabs. Sessions/Transcripts is the home of the post-session intelligence
+// pipeline output (transcript + synthesized, per-part-approvable bundle).
 
 interface ProfileLite {
   display_name: string | null;
@@ -47,13 +61,15 @@ export default function TeacherStudentDetail() {
   const { data: uploads = [] } = useStudentExternalUploadsForStudent(studentId ?? null);
   const { data: plans = [] } = useStudentWeeklyPlans(studentId ?? null);
   const { data: drafts = [] } = useAITADrafts({ studentId: studentId ?? null });
+  const { data: sessions = [] } = useStudentSessions(studentId ?? '');
+  const { data: context = [] } = useStudentContext(studentId ?? '');
 
   const counts = useMemo(() => ({
     items: items.length,
-    uploads: uploads.length,
+    sessions: sessions.length,
     drafts: drafts.filter((d) => d.status === 'draft').length,
     publishedPlans: plans.filter((p) => p.status === 'published').length,
-  }), [items, uploads, drafts, plans]);
+  }), [items, sessions, drafts, plans]);
 
   const [showAssignBuilder, setShowAssignBuilder] = useState(false);
   const [showRecap, setShowRecap] = useState(false);
@@ -75,9 +91,7 @@ export default function TeacherStudentDetail() {
       </div>
 
       <div className="space-y-1.5">
-        <div className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
-          Student
-        </div>
+        <div className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Student</div>
         <h2 className="text-2xl font-semibold tracking-tight">
           {profile?.display_name?.trim() || 'Student'}
         </h2>
@@ -90,95 +104,234 @@ export default function TeacherStudentDetail() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard label="Classroom items" value={counts.items} Icon={ClipboardList} />
-        <StatCard label="Uploads" value={counts.uploads} Icon={UploadCloud} />
+        <StatCard label="Sessions" value={counts.sessions} Icon={FileText} />
         <StatCard label="Pending drafts" value={counts.drafts} Icon={Sparkles} />
         <StatCard label="Published plans" value={counts.publishedPlans} Icon={CalendarDays} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <ActionRow
-          Icon={ClipboardList}
-          title="Assign drill or homework"
-          description="Push an assignable item into the student's classroom."
-          onClick={() => setShowAssignBuilder(true)}
-        />
-        <ActionRow
-          Icon={BookOpen}
-          title="Post a session recap"
-          description="Write or paste a recap; appears in the student's Classroom."
-          onClick={() => setShowRecap(true)}
-        />
-        <ActionRow
-          Icon={CalendarDays}
-          title="Open weekly plans"
-          description="Build, publish, or archive plans for this student."
-          onClick={() => navigate(`/teacher/weekly-plans?student=${studentId}`)}
-        />
-        <ActionRow
-          Icon={Sparkles}
-          title="Open in StudentHub"
-          description="Snapshot, AI Assistant, Library, full notes."
-          onClick={() => navigate(`/admin/ta?student=${studentId}`)}
-        />
-      </div>
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="bg-zinc-900/60 border border-zinc-800">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="sessions">Sessions / Transcripts</TabsTrigger>
+          <TabsTrigger value="homework">Homework</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+        </TabsList>
 
-      <section className="space-y-3">
-        <h3 className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
-          Recent classroom items
-        </h3>
-        {items.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-sm text-zinc-500">
-            No classroom items yet for this student.
+        {/* Overview */}
+        <TabsContent value="overview" className="mt-4 space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ActionRow Icon={ClipboardList} title="Assign drill or homework"
+              description="Push an assignable item into the student's classroom."
+              onClick={() => setShowAssignBuilder(true)} />
+            <ActionRow Icon={BookOpen} title="Post a session recap"
+              description="Write or paste a recap; appears in the student's Classroom."
+              onClick={() => setShowRecap(true)} />
+            <ActionRow Icon={CalendarDays} title="Open weekly plans"
+              description="Build, publish, or archive plans for this student."
+              onClick={() => navigate(`/teacher/weekly-plans?student=${studentId}`)} />
+            <ActionRow Icon={Sparkles} title="Open in StudentHub"
+              description="Snapshot, AI Assistant, Library, full notes."
+              onClick={() => navigate(`/admin/ta?student=${studentId}`)} />
           </div>
-        ) : (
-          <ul className="space-y-1.5">
-            {items.slice(0, 6).map((it) => (
-              <li
-                key={it.id}
-                className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40"
-              >
-                <div className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0 w-28">
-                  {it.type.replace('_', ' ')}
-                </div>
-                <div className="min-w-0 flex-1 text-sm truncate text-zinc-100">
-                  {it.title}
-                </div>
-                <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">
-                  {it.status.replace('_', ' ')}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+          <section className="space-y-2 pt-2">
+            <SectionLabel>Most recent session</SectionLabel>
+            {sessions.length === 0 ? (
+              <EmptyState>No sessions logged yet.</EmptyState>
+            ) : (
+              <SessionRow session={sessions[0]} />
+            )}
+          </section>
+        </TabsContent>
+
+        {/* Sessions / Transcripts — pipeline output lives here */}
+        <TabsContent value="sessions" className="mt-4 space-y-3">
+          {sessions.length === 0 ? (
+            <EmptyState>
+              No sessions logged yet. Ingested Gemini Notes appear here once matched to this student.
+            </EmptyState>
+          ) : (
+            <ul className="space-y-3">
+              {sessions.map((s) => (
+                <SessionWithBundle
+                  key={s.id}
+                  session={s}
+                  studentClassId={studentId}
+                  drafts={drafts}
+                  transcript={context.find((c) => c.id === s.transcript_id) ?? null}
+                />
+              ))}
+            </ul>
+          )}
+        </TabsContent>
+
+        {/* Homework */}
+        <TabsContent value="homework" className="mt-4 space-y-2">
+          {(() => {
+            const hw = items.filter((it) => it.type === 'homework' || it.type === 'drill');
+            return hw.length === 0 ? (
+              <EmptyState>No homework or drills assigned yet.</EmptyState>
+            ) : (
+              <ul className="space-y-1.5">
+                {hw.map((it) => (
+                  <li key={it.id} className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
+                    <div className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0 w-24">{it.type}</div>
+                    <div className="min-w-0 flex-1 text-sm truncate text-zinc-100">{it.title}</div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">{it.status.replace('_', ' ')}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
+        </TabsContent>
+
+        {/* Notes */}
+        <TabsContent value="notes" className="mt-4 space-y-2">
+          {(() => {
+            const notes = context.filter((c) => c.context_type === 'note' || c.context_type === 'external_score');
+            return notes.length === 0 ? (
+              <EmptyState>No notes recorded yet.</EmptyState>
+            ) : (
+              <ul className="space-y-1.5">
+                {notes.map((n) => (
+                  <li key={n.id} className="px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
+                    <p className="text-sm font-medium text-zinc-100">{n.title}</p>
+                    {n.content_text && (
+                      <p className="mt-1 text-xs text-zinc-400 line-clamp-3 whitespace-pre-wrap">{n.content_text}</p>
+                    )}
+                    <p className="mt-1 text-[10px] uppercase tracking-wider text-zinc-600">
+                      {format(new Date(n.created_at), 'MMM d, yyyy')}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
+        </TabsContent>
+      </Tabs>
 
       {showAssignBuilder && user && (
-        <AssignmentBuilder
-          studentId={studentId}
-          adminUserId={user.id}
-          onClose={() => setShowAssignBuilder(false)}
-        />
+        <AssignmentBuilder studentId={studentId} adminUserId={user.id} onClose={() => setShowAssignBuilder(false)} />
       )}
       {showRecap && user && (
-        <RecapComposer
-          studentId={studentId}
-          adminUserId={user.id}
-          onClose={() => setShowRecap(false)}
-        />
+        <RecapComposer studentId={studentId} adminUserId={user.id} onClose={() => setShowRecap(false)} />
       )}
     </div>
   );
 }
 
-function StatCard({
-  label,
-  value,
-  Icon,
+function SessionWithBundle({
+  session,
+  studentClassId,
+  drafts,
+  transcript,
 }: {
-  label: string;
-  value: number;
-  Icon: React.ComponentType<{ className?: string }>;
+  session: { id: string; scheduled_at: string; status: string; duration_minutes: number | null; source: string | null; transcript_id: string | null };
+  studentClassId: string;
+  drafts: AITADraft[];
+  transcript: { content_text: string | null; file_path: string | null } | null;
 }) {
+  const synth = useSynthesizeBundle();
+  const [showTranscript, setShowTranscript] = useState(false);
+
+  const bundleDraft = useMemo(
+    () =>
+      drafts.find(
+        (d) =>
+          d.draft_type === 'classroom_update_bundle' &&
+          isSessionBundle(d.draft_json) &&
+          (d.draft_json as SessionBundle).source?.session_id === session.id,
+      ) ?? null,
+    [drafts, session.id],
+  );
+
+  async function build() {
+    try {
+      await synth.mutateAsync({ sessionId: session.id, studentClassId, regenerate: false });
+      toast.success('Bundle synthesized. Review the parts below.');
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Synthesis failed');
+    }
+  }
+
+  return (
+    <li className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-zinc-100">
+            {format(new Date(session.scheduled_at), 'MMM d, yyyy · h:mm a')}
+          </p>
+          <p className="text-xs text-zinc-500">
+            {session.status}
+            {session.duration_minutes ? ` · ${session.duration_minutes} min` : ''}
+            {session.source ? ` · ${session.source.replace('_', ' ')}` : ''}
+          </p>
+        </div>
+        {!bundleDraft && session.transcript_id && (
+          <button
+            onClick={build}
+            disabled={synth.isPending}
+            className="inline-flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-500 disabled:opacity-50"
+          >
+            {synth.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
+            Build bundle
+          </button>
+        )}
+      </div>
+
+      {transcript && (
+        <div>
+          <button
+            onClick={() => setShowTranscript((s) => !s)}
+            className="text-xs text-zinc-400 hover:text-zinc-200 underline underline-offset-2"
+          >
+            {showTranscript ? 'Hide transcript' : 'View transcript (admin only)'}
+          </button>
+          {showTranscript && (
+            <pre className="mt-2 max-h-72 overflow-auto rounded-md border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-300 whitespace-pre-wrap">
+              {transcript.content_text
+                ? transcript.content_text
+                : transcript.file_path
+                  ? 'Transcript is stored in the bucket (too large to inline). Open it from storage.'
+                  : 'No transcript content.'}
+            </pre>
+          )}
+        </div>
+      )}
+
+      {bundleDraft && (
+        <div className="border-t border-zinc-800 pt-3">
+          <SessionBundleReview draft={bundleDraft} />
+        </div>
+      )}
+    </li>
+  );
+}
+
+function SessionRow({ session }: { session: { scheduled_at: string; status: string; source: string | null } }) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
+      <FileText className="w-4 h-4 text-zinc-500 shrink-0" />
+      <div className="min-w-0 flex-1 text-sm text-zinc-100">
+        {format(new Date(session.scheduled_at), 'MMM d, yyyy · h:mm a')}
+      </div>
+      <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">{session.status}</span>
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">{children}</h3>;
+}
+
+function EmptyState({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-sm text-zinc-500">
+      {children}
+    </div>
+  );
+}
+
+function StatCard({ label, value, Icon }: { label: string; value: number; Icon: React.ComponentType<{ className?: string }> }) {
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 px-4 py-3">
       <div className="flex items-center gap-2 text-zinc-500">
@@ -190,12 +343,7 @@ function StatCard({
   );
 }
 
-function ActionRow({
-  Icon,
-  title,
-  description,
-  onClick,
-}: {
+function ActionRow({ Icon, title, description, onClick }: {
   Icon: React.ComponentType<{ className?: string }>;
   title: string;
   description: string;

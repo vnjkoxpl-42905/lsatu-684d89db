@@ -2,9 +2,11 @@
 
 States: `not started` · `planned` · `approved` · `in progress` · `complete` · `blocked`
 
-Last updated: 2026-06-24 (Phase 1A deployed via Lovable, but latest hardening
-commit needs Lovable redeploy before E2E; Phase 1B code complete on main,
-awaiting Lovable deploy).
+Last updated: 2026-06-24 (Codex deployed `ingest-session-note` hardening +
+`scan-session-notes` + shared core via Lovable; frontend admin-redirect
+hardening ships on next Publish. Phase 2 synthesis + review + dossier and
+Phase 3 publish are now code complete on `main`; only `synthesize-session-bundle`
+needs a Lovable deploy — publish is client-side and needs no function deploy).
 
 ## Phase 0 — Spec & planning
 **State: complete**
@@ -81,21 +83,43 @@ happy-path E2E will surface it). Confident auto-attach on email+name+calendar ag
 a fast-follow once a real email is confirmed; the parser + calendar hints are already wired.
 
 ## Phase 2 — Synthesis + review + dossier
-**State: planned** (not started)
-- [ ] Synthesis → `ai_ta_drafts` `classroom_update_bundle` (Gemini via gateway, config indirection)
-- [ ] Per-part review/approve UI on `useAITADrafts`; row `status`→`approved` only when all parts approved (§5)
-- [ ] Dossier tab shell: Overview / Sessions+Transcripts / Homework / Notes
-- [ ] Acceptance: every tab queries real data + honest empty state; no mock tabs (§8)
-- [ ] Verify: bundle generates only when transcript supports parts; existing draft flow unregressed
+**State: CODE COMPLETE (file-only) — `synthesize-session-bundle` awaits Lovable deploy**
+- [x] `synthesize-session-bundle` edge function — transcript (inline `content_text` or
+      bucket download) → Lovable Gateway (Gemini) behind `SESSION_SYNTHESIS_MODEL`
+      indirection → strict-JSON bundle → `ai_ta_drafts` `classroom_update_bundle`
+      (`created_by` set), flips ledger to `drafted` + sets `draft_id`. Generates a part
+      only when the transcript supports it; voice + non-negotiables baked into the prompt.
+      **NOT deployed — needs Joshua/Lovable (uses `LOVABLE_API_KEY`).**
+- [x] Bundle model + pure logic in `src/lib/sessionBundle.ts` (part keys, audience,
+      rollup, markdown render). Student parts: note/homework/quiz; admin-only:
+      weakness_tags/drill_recs/next_agenda/private_note (never published).
+- [x] Per-part review/approve/edit UI: `src/components/teacher/SessionBundleReview.tsx`
+      + `src/hooks/useSessionBundles.ts`. Row `status`→`approved` only when every
+      included part is approved (§5); regenerate supported.
+- [x] Dossier tab shell on `TeacherStudentDetail.tsx`: Overview / Sessions+Transcripts /
+      Homework / Notes. Real queries + honest empty states only (§8). Sessions tab hosts
+      transcript view + "Build bundle" + inline review.
+- [x] Verified: typecheck + lint clean on all pipeline files; production build succeeds.
+- [ ] E2E (await Joshua, after `synthesize-session-bundle` deploy + a stored session):
+      build bundle → only transcript-supported parts present → edit/approve parts →
+      row rolls to approved; existing `useAITADrafts` draft flow unregressed.
 
 ## Phase 3 — Publish + suggestions + (later) cron
-**State: planned** (not started)
-- [ ] `publish-session-bundle` (separate from approve; partial publish allowed)
-- [ ] Materialize → classroom_items / homework_assignments
-- [ ] Homework parts reuse `notifyStudentOfClassroomItem`; note + Joshua chat use new session-bundle notifier (§6)
-- [ ] Admin-only AI Suggestions surface
-- [ ] Cron trigger (only after matching proven)
-- [ ] Verify: student sees polished output, no source labels, no raw transcript
+**State: CODE COMPLETE (file-only) — publish is client-side, NO function deploy needed**
+- [x] `publish-session-bundle` materializer as a client lib
+      `src/lib/publishSessionBundle.ts` (runs under admin JWT, satisfies
+      `created_by = auth.uid()` RLS like RecapComposer). Separate from approve;
+      partial publish allowed; idempotent (per-part `posted` in `draft_json`); row
+      → `posted`, ledger → `published`.
+- [x] Materialize → `classroom_items` (note=`session_recap`, homework/quiz=`homework`).
+- [x] Homework/quiz reuse `notifyStudentOfClassroomItem` (assignment copy); the note
+      uses the new `src/lib/sessionBundleNotify.ts` session-recap notifier + Joshua
+      chat message (no source labels, note copy, `notifications.type='message'`) (§6).
+- [ ] Admin-only AI Suggestions surface — deferred (not built; needs its own pass).
+- [ ] Cron trigger — deferred (only after matching proven; forces service-role path §9a).
+- [ ] E2E (await Joshua): approve→publish pushes only approved parts; student sees a
+      polished recap + homework, no source labels, no raw transcript; held parts stay
+      invisible; re-publish skips posted parts.
 
 ## Deferred / explicitly not yet
 - [ ] Student-facing AI · "AI Joshua" autonomy
