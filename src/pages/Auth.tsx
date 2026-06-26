@@ -652,7 +652,13 @@ const FEATURES: FeatureTour[] = [
   },
 ];
 
-const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour) => (
+const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour) => {
+  // Under prefers-reduced-motion, a looping background video still moves, so
+  // paint the static poster instead. Same matchMedia pattern as the scroll
+  // observer below (Auth.tsx); read once on mount, no live listener needed.
+  const reducedMotion = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return (
   <section className="arc-rise" style={{ width: '100%', padding: 'clamp(56px, 8vw, 96px) 32px', maxWidth: 1200, margin: '0 auto' }}>
     <div className={`arc-feature-grid arc-stagger${reverse ? ' is-rev' : ''}`}>
       <div className="arc-feature-copy arc-stagger">
@@ -687,7 +693,16 @@ const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour
           }}>
             <Play size={16} strokeWidth={1.8} fill="currentColor" /> Preview
           </span>
-          {src && (
+          {src && reducedMotion && poster && (
+            // Reduced motion: static poster over the placeholder, no playback.
+            <img
+              src={poster}
+              alt=""
+              aria-hidden="true"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          )}
+          {src && !reducedMotion && (
             <video
               src={src}
               poster={poster}
@@ -705,7 +720,8 @@ const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour
       </div>
     </div>
   </section>
-);
+  );
+};
 
 // ── Marquee ── Auto-scrolling row of LSAT question types. Replaces the
 // "logo wall" beat that Arc puts under its hero. Real subject content,
