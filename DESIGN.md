@@ -1,133 +1,233 @@
-# Design
+---
+name: LSAT U
+description: A premium coaching platform for serious LSAT preparation, documented as it ships today.
+colors:
+  # ── App shell (dark-first HSL token system; hex here is the resolved dark value) ──
+  shell-background: "#0a0a0a"
+  shell-foreground: "#fafafa"
+  shell-card: "#121212"
+  shell-secondary: "#262626"
+  shell-border: "#262626"
+  shell-muted-foreground: "#a3a3a3"
+  shell-primary: "#fafafa"
+  accent-bronze: "#b06a3e"
+  status-success: "#21b659"
+  status-warning: "#f59f0a"
+  status-destructive: "#de3b3b"
+  state-correct: "#0fb781"
+  state-incorrect: "#f53d5c"
+  # ── Drill zone (graphite near-monochrome, light) ──
+  drill-page: "#fafafc"
+  drill-card: "#ffffff"
+  drill-ink: "#1d1d1f"
+  drill-muted: "#86868b"
+  drill-border: "#e5e5ea"
+  drill-correct: "#2f9e64"
+  drill-wrong: "#e5484d"
+  drill-warning: "#d9881f"
+  # ── Inbox island (warm paper, light) ──
+  inbox-paper: "#efe4d3"
+  inbox-paper-bright: "#f7f3ea"
+  inbox-ink: "#151a24"
+  inbox-green: "#2f6a4f"
+  inbox-crimson: "#a14f43"
+  inbox-gold: "#f4d995"
+  # ── Mainhub island (Apple-slate, light) ──
+  mainhub-surface: "#fbfcff"
+  mainhub-slate-border: "#e2e8f0"
+typography:
+  shell-body:
+    fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.6
+    fontFeature: "'rlig' 1, 'calt' 1, 'cv11' 1"
+  drill-title:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+    fontSize: "24px"
+    fontWeight: 650
+    lineHeight: 1.12
+  drill-stimulus:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+    fontSize: "20px"
+    fontWeight: 400
+    lineHeight: 1.6
+  label:
+    fontFamily: "Outfit, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 700
+    letterSpacing: "0.04em"
+rounded:
+  sm: "calc(0.5rem - 4px)"
+  md: "calc(0.5rem - 2px)"
+  lg: "0.5rem"
+  drill-card: "20px"
+  drill-inset: "14px"
+  pill: "9999px"
+spacing:
+  xs: "4px"
+  sm: "8px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+components:
+  button-primary:
+    backgroundColor: "{colors.shell-primary}"
+    textColor: "{colors.shell-background}"
+    rounded: "{rounded.md}"
+    padding: "8px 16px"
+  button-primary-drill:
+    backgroundColor: "{colors.drill-ink}"
+    textColor: "#ffffff"
+    rounded: "{rounded.pill}"
+    padding: "12px 24px"
+    height: "44px"
+  card-shell:
+    backgroundColor: "{colors.shell-card}"
+    textColor: "{colors.shell-foreground}"
+    rounded: "{rounded.lg}"
+  card-drill-stimulus:
+    backgroundColor: "{colors.drill-card}"
+    textColor: "{colors.drill-ink}"
+    rounded: "{rounded.drill-card}"
+    padding: "32px"
+---
 
-> Scope: **LSAT U drills / labs** (the runnable practice surfaces under `src/bootcamps/main-conclusion/modules/drills/`). This is the unified drill design language. Lessons and other bootcamp surfaces keep their own warm-serif identity; drills are deliberately a distinct, sleeker zone.
->
-> Origin decision: the two existing drills disagreed visually. `FirstSentenceVsRebuttalLab` (Apple-HIG, near-white, system sans) and `ConclusionTypeLab` (warm cream, serif, gold). Rather than pick one, we define **one new unified drill system** and re-skin both up to it. The direction is **refined, nuanced, high-end Apple**, not brand-colored: no gold, no blue, no decoration. Color carries meaning, never identity.
+# Design System: LSAT U
 
-## Visual Theme
+## 1. Overview
 
-Refined, sleek, high-end. Apple-HIG restraint applied to a study tool. Near-white surface, generous whitespace, crisp white work-cards floating on soft shadows, a near-monochrome graphite palette. The interface recedes; the argument and the student's thinking are the only things with color. Calm, premium, never clinical, never candy.
+**Creative North Star: "The Coach's Workspace, in Four Rooms"**
 
-The drill is its own visual zone, distinct from the warm-serif lessons. A student moving from a lesson into a drill should feel they have entered a focused workspace, not a different product.
+LSAT U is documented here as it actually ships, not as an idealized single system. The product is one app that currently speaks in four distinct but related visual dialects, each tuned to its room. The chassis (sidebar, foyer, admin, settings) is a disciplined **dark-first graphite** system built on HSL design tokens with a bronze ember of an accent. From that chassis, three lighter rooms open off: the **drill zone** (graphite near-monochrome on near-white, Apple-HIG restraint, color reserved for state), the **inbox** (a warm paper-and-ink editorial surface, the most human room in the app), and the **mainhub island** (an Apple-slate light card stack). The bootcamps then run their own fully scoped worlds (Main Conclusion warm-serif, Fallacy/Flaw verdigris-and-cake, Abstract brutalist) behind `.mc-bootcamp` / `.ff-bootcamp` / `.topic-abstract` wrappers.
 
-## Color Palette
+The through-line is restraint and truthfulness, never decoration. Color carries meaning (correct, wrong, warning, current selection), never identity. Motion conveys state, never theatre. The system explicitly rejects the things its `PRODUCT.md` names as anti-references: SaaS-cream pastels and gradient blobs, Duolingo streak-flame gamification, card-grid hubs that present options instead of computing the next step, and support-desk chat patterns in the messenger.
 
-Strategy: **Restrained / near-monochrome.** A single graphite-to-gray ramp does all structural work. There is no chromatic accent. Chromatic color appears only to signal state (correct, the student's wrong pick, warning) and is muted, not saturated.
+The honest tension in this spec, surfaced rather than hidden: the four rooms do not yet share one token vocabulary. The shell is tokenized; the inbox and mainhub are hand-painted in inline hex. A user crossing room to room can feel the seams. This document records that truth so a future convergence can be deliberate.
 
-### Neutrals (structure, text, chrome)
+**Key Characteristics:**
+- Dark-first shell, light task rooms; depth via near-black layering and soft shadow, not glow.
+- Color is semantic, not brand. The only "brand color" is a bronze ember used sparingly.
+- One accent rule per room; no room runs a saturated identity color across its surface.
+- Heavy use of scoped CSS-variable systems (`.mc-bootcamp`, `.ff-bootcamp`, `.topic-abstract`) so bootcamp worlds never leak into the chassis.
+- Attempt-state colors are deliberately named apart from system-status colors so a self-report can never read as a judgment.
 
-| Token | Value | Role |
-|---|---|---|
-| `page` | `#fafafc` | Page background (cool near-white) |
-| `card` | `#ffffff` | Stimulus + controls + review surfaces |
-| `control` | `#fbfbfd` | Secondary inset surface (controls card) |
-| `ink` | `#1d1d1f` | Primary text; primary button + step-badge fill |
-| `ink-secondary` | `#4b4b4f` | Secondary text |
-| `muted` | `#86868b` | Supporting copy, step copy |
-| `soft` | `#a1a1a6` | Eyebrow labels, faint meta |
-| `border` | `#e5e5ea` | Card + control borders |
-| `hairline` | `#f0f0f2` | Dividers, lightest separation |
+## 2. Colors
 
-Primary action = `ink` fill with white text. This replaces both FSvR's Apple blue and the bootcamp's gold. Confident, legible, brand-neutral.
+The palette is best read as one tokenized chassis plus three hand-painted rooms. Group by role within each.
 
-### Semantic (state only, muted)
+### Primary
+- **Shell Graphite-White** (`#fafafa`, `hsl(0 0% 98%)`): the shell's primary interactive color. On the dark chassis, "primary" is near-white: white fills, white text on dark, white primary buttons with dark text behind them.
+- **Drill Ink** (`#1d1d1f`): the drill zone's primary fill and text. Primary drill buttons are ink-on-white pills. Replaces both the old FSvR Apple-blue and the bootcamp gold so the drill reads brand-neutral.
 
-Used **only** to mark meaning. Never decorative, never a brand accent. Tuned slightly more muted than Apple's stock system colors so the surface reads sophisticated, not loud.
+### Secondary
+- **Bronze Ember** (`#b06a3e`): the one true brand accent, used sparingly as a warm glow (`box-shadow: 0 0 12px rgba(176,106,62,0.2)`) and warm highlight on the dark shell. Its rarity is the point; it is never a surface color.
 
-| Token | Value | Soft bg | Meaning |
-|---|---|---|---|
-| `correct` | `#2f9e64` | `#eaf6ef` | The correct answer; a clean step |
-| `wrong` | `#e5484d` | `#fdecec` | The student's incorrect pick |
-| `warning` | `#d9881f` | `#fbf1e3` | Assisted / recovered / re-run framing |
+### Tertiary (per-room signatures, light surfaces)
+- **Inbox Pine + Clay** (green `#2f6a4f`, crimson `#a14f43`): the inbox's two-voice signature, distinguishing speakers on warm paper. Gold (`#f4d995`) is a sparing accent.
+- **Mainhub Sky-Slate** (slate `#1e293b`–`#e2e8f0`, sky `#7dd3fc`): the mainhub island's Apple-slate scale on a `#fbfcff` surface.
 
-Per-pick reveal convention (the primary pedagogical mandate): on reveal, the **correct** option paints `correct`, the student's **wrong pick** (if any) paints `wrong`, and unpicked options recede to a dimmed neutral. The reveal copy then teaches the predictable weakness of the correct type, tied to what the student actually chose.
+### Neutral
+- **Shell ramp** (`#0a0a0a` background → `#121212` card → `#262626` border/secondary → `#a3a3a3` muted text → `#fafafa` foreground): the dark chassis structure. All defined as HSL tokens; a `.light` class flips the same tokens to a near-white ramp.
+- **Drill ramp** (`#fafafc` page → `#ffffff` card → `#e5e5ea` border → `#f0f0f2` hairline → `#86868b` muted → `#1d1d1f` ink): the drill zone's near-monochrome structure.
+- **Inbox paper** (`#efe4d3` / `#f7f3ea` / `#eadfcf` paper tones, `#151a24` ink, `#5f513f` muted): the warm editorial substrate.
 
-## Typography
+### State (semantic only, never decorative)
+- **Shell status:** success `#21b659` (`142 71% 45%`), warning `#f59f0a` (`38 92% 50%`), destructive `#de3b3b` (`0 72% 51%`).
+- **Attempt state:** correct `#0fb781` (emerald), incorrect `#f53d5c` (rose), with `again`/`easy` aliased to the same hues under distinct names on purpose.
+- **Drill state:** correct `#2f9e64` (soft bg `#eaf6ef`), wrong `#e5484d` (soft bg `#fdecec`), warning `#d9881f` (soft bg `#fbf1e3`).
 
-System sans throughout. No serif in drills (serif stays in lessons). Reading and chrome share one refined sans stack.
+### Named Rules
+**The Meaning-Not-Identity Rule.** Chromatic color appears only to signal state: correct, the student's wrong pick, warning, current selection. No room uses a saturated color as its identity. The bronze ember is the only brand hue, and it stays under 10% of any surface.
 
-```
-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
-             Roboto, Helvetica, Arial, sans-serif;
-```
+**The Self-Report Firewall Rule.** `--state-again` and `--state-easy` are aliased to the same hues as wrong/correct but kept under distinct token names, so a future hue shift to attempt-judgment colors can never silently reframe a spaced-repetition self-report as a right/wrong verdict.
 
-Hierarchy by size + weight, Apple-tight letter-spacing (`0`), generous line-height for the stimulus.
+**The Scoped-World Rule.** Every bootcamp palette lives behind a wrapper class (`.mc-bootcamp`, `.ff-bootcamp`, `.topic-abstract`) with `mc-`/`ff-`/`brutal-` prefixed tokens. Bootcamp color never resolves outside its wrapper and never collides with the shell's HSL tokens.
 
-| Role | Size | Weight | Notes |
-|---|---|---|---|
-| Question / hero title | 24px | 650 | Line-height 1.12 |
-| Stimulus / argument text | 20px | 400 | Line-height 1.6, the close-reading surface |
-| Step title | 18px | 650 | |
-| Body / step copy / feedback | 15px | 400–450 | Line-height 1.45 |
-| Option label | 15px | 600 | |
-| Eyebrow / meta label | 13px | 700 | Uppercase, `soft` color |
-| KPI number (review) | 42px | 700 | |
+## 3. Typography
 
-## Motion
+**Shell Font:** Outfit (with `ui-sans-serif, system-ui, -apple-system` fallback)
+**Drill Font:** native system stack (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI"`)
+**Bootcamp Fonts:** scoped per world (Georgia serif for Main Conclusion lessons and Fallacy/Flaw display, Inter for MC sans).
 
-Restrained Apple motion. Precise and quick, never expressive. The impeccable no-bounce / no-elastic law holds.
+**Character:** The shell runs Outfit, a warm geometric sans, with OpenType features on (`cv11`, `calt`). The drill zone deliberately switches to the native Apple system stack so it reads as a focused, OS-native workspace distinct from the warm-serif lessons. Bootcamps each carry their own pairing.
 
-| Token | Value |
-|---|---|
-| `d-fast` | 150ms |
-| `d-mid` | 180ms |
-| `d-slow` | 240ms |
-| `d-entrance` | 420ms |
-| `ease-state` | `cubic-bezier(0.4, 0, 0.2, 1)` (state transitions) |
-| `ease-entrance` | `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out, entrance only) |
+### Hierarchy
+- **Display / Drill hero title** (650 weight, 24px, line-height 1.12): drill question titles; Apple-tight letter-spacing.
+- **Headline** (600–700, 18–20px): section heads, step titles.
+- **Stimulus / argument text** (400, 20px, line-height 1.6): the close-reading surface in drills; the only place type runs large and airy.
+- **Body** (400, 14px mobile / 16px desktop, line-height 1.6): shell body copy. Cap prose at 65–75ch.
+- **Label / eyebrow** (700, 13px, uppercase, `soft` color): meta labels, eyebrows, section tags.
+- **KPI number** (700, 42px, tabular): drill review scores.
 
-- **Animate only:** `opacity`, `color`, `border-color`, `box-shadow`, `width` (progress bar), and `transform: translateY` for entrance. Never animate layout properties.
-- **Entrance:** each new question view fades in with an 8px rise. Nothing else moves.
-- **State changes** (select, reveal, correct, wrong) read through color and a crisp icon, resolved with a fast `ease-state` transition. No motion theatrics.
-- **Explicitly dropped from FSvR:** success scale-pulse, glow halos, wrong-answer shake/flash, infinite breathing pulse.
-- `prefers-reduced-motion: reduce` collapses all durations to 0ms and removes the entrance transform.
+### Named Rules
+**The No-Serif-In-Drills Rule.** Serif stays in lessons. Drills and the shell are sans-only. A student moving from a warm-serif lesson into a drill should feel they entered a focused workspace, not a different product.
 
-## Components
+**The Tabular-Numerals Rule.** Counters, scores, and KPIs use tabular figures so digits never jitter as values change.
 
-The drill is built from a fixed anatomy so every lab reads as the same surface. `FirstSentenceVsRebuttalLab` is the structural template; the skin is this system.
+## 4. Elevation
 
-1. **Top bar.** Right-aligned. A subtle "Saved" autosave pill (fades in then out, `soft` text + small `correct` dot) and a pill Home / back-to-drill link (`border`, white, `muted` text).
-2. **Header.** Eyebrow (lab name, 13px/700 uppercase, `soft`) on the left, counter on the right (`n / total · k right`, tabular). Question title (24px/650) below. Then a thin progress bar: graphite (`ink`) fill on a `hairline` track, `width` transition.
-3. **Stimulus card.** White, radius 20, `shadow-stimulus`, padding 32-40. Eyebrow "READ FIRST". Argument at 20px/1.6. The isolated conclusion sits in an inset sub-block (neutral `control` fill, `border`, labeled "THE CONCLUSION").
-4. **Options.** Neutral cards in a responsive grid (2-up desktop, 1-up mobile). Resting: white, `border`. Hover: `border` darkens, 1px rise. Selected: `ink` border + `#f5f5f7` fill. After submit, unpicked options dim to ~0.7 and lose border weight. On reveal: correct option paints `correct` (soft bg + border + check icon), the student's wrong pick paints `wrong` (soft bg + border + x icon).
-5. **Reveal / teach block.** Appears in-flow after submit. Opens with a short status label (`Named it` in `correct`, or `It is a {type}` in `warning`), then the explanation that teaches the predictable weakness the correct type carries, written to the student's actual pick. This block is the point of the drill; it gets room.
-6. **Buttons.** Primary: `ink` fill, white text, pill (`r-full`), 44px min height. Secondary / subtle: white, `border`, `ink` text. Disabled: 0.66 opacity, no hover.
-7. **Footer nav.** Prev / Next pills, separated from the body by a `hairline` top border.
-8. **End-of-set review.** Adapted from the FSvR review, in this skin:
-   - **Verdict** (reuses `DrillVerdict` framing): `Calibrated.` at or above threshold, `Re-run open.` below. Score, coach line, concrete next step. Never "Failed," never a grade.
-   - **KPI**: clean-first-try count `k / total` and percent.
-   - **Where it slipped**: a per-type breakdown (each conclusion type with its miss count), the conclusion-type analogue of FSvR's per-component breakdown.
-   - **Callouts**: strongest type (soft `correct`) and weakest type (soft `warning`), the place to start the next review.
-   - **Answer key**: a grid of 44px tappable cells, one per item, bordered by status color, tap to revisit that item's reveal.
-   - **Per-question cards**: expandable, each holding the item's explanation.
-   - **Status taxonomy** (adapted): `clean` (correct first try), `missed` (wrong). Add `recovered` only if a retry path is offered. FSvR's `assisted` does not apply unless a hint/reveal-all is added.
+Hybrid, and split by room. The **dark shell** conveys depth through near-black tonal layering (`#0a0a0a` page → `#121212` card → `#1a1a1a` elevated surface) plus dark-tuned shadows that read as deeper black rather than gray. Glow is rare: a single `--shadow-glow` (`0 0 24px rgba(255,255,255,0.06)`) and the bronze `glow-sm`. The **light rooms** (drill, inbox, mainhub) use soft, low-opacity ambient shadows to float white work-cards on near-white surfaces.
 
-## Layout
+### Shadow Vocabulary
+- **Shell sm/md/lg** (`0 1px 3px rgba(0,0,0,0.4)` → `0 8px 32px rgba(0,0,0,0.7)`): dark-chassis elevation, opacity scaling with lift.
+- **Shell glow** (`0 0 24px rgba(255,255,255,0.06)`): rare ambient halo on key dark surfaces.
+- **Bronze glow-sm** (`0 0 12px rgba(176,106,62,0.2)`): the single warm-accent glow.
+- **Drill stimulus** (`0 20px 48px rgba(0,0,0,0.05)`): the diffuse lift under a floating white work-card.
+- **Drill control / soft** (`0 10px 26px rgba(0,0,0,0.035)` / `0 4px 16px rgba(0,0,0,0.035)`): lighter secondary surfaces.
 
-Single centered column. One canonical structure for every drill.
+### Named Rules
+**The Layer-Don't-Glow Rule.** On the dark shell, depth comes from near-black tonal steps and shadow opacity, not from neon glows. Glow is a rare punctuation, never the structural language.
 
-| Token | Value |
-|---|---|
-| Content width | `min(100%, 760px)`, centered |
-| Page padding | 32px desktop, 16-18px mobile |
-| Section gap | 20-24px |
-| Card padding | 28-40px (stimulus roomiest) |
-| Radius: card | 20px |
-| Radius: inset / control / feedback | 14px |
-| Radius: small (chip, key cell) | 8-12px |
-| Radius: pill (button, progress, chip) | 9999px |
-| Border | `#e5e5ea`; hairline `#f0f0f2` |
-| `shadow-stimulus` | `0 20px 48px rgba(0,0,0,0.05)` |
-| `shadow-control` | `0 10px 26px rgba(0,0,0,0.035)` |
-| `shadow-soft` | `0 4px 16px rgba(0,0,0,0.035)` |
-| Spacing base | 4px |
-| Breakpoints | 900px (grids collapse to 1-up), 640px (full-width buttons, tighter padding) |
-| Focus ring | `outline: 3px solid rgba(29,29,31,0.35); outline-offset: 2px` (graphite, no accent hue) |
+**The Diffuse-Soft-Shadow Rule.** Light-room shadows are large-radius and very low opacity (≤0.05). A drill card floats; it does not cast a hard 2014-app drop shadow.
 
-Touch targets meet 44x44px. Color contrast holds WCAG AA against the near-white surface (graphite text and `ink` buttons clear it comfortably; muted semantic colors are used for fills with sufficient-contrast text, not as small text on white).
+## 5. Components
 
-## What this replaces
+### Buttons
+- **Shape:** shell buttons use the token radius (`0.5rem` / `md` = `calc(0.5rem - 2px)`); drill buttons are full pills (`9999px`).
+- **Shell Primary:** near-white fill (`#fafafa`) with dark text (`#0a0a0a`), `8px 16px` padding. The inverse of the dark surface.
+- **Drill Primary:** ink fill (`#1d1d1f`), white text, pill, 44px min height.
+- **Secondary / Ghost:** bordered, transparent or white fill, foreground text. Disabled at 0.66 opacity, no hover.
+- **Hover / Focus:** subtle background shift and 1px rise; focus ring is graphite (`outline: 3px solid rgba(29,29,31,0.35)`), never an accent hue.
 
-- `ConclusionTypeLab` is rebuilt to this system (it currently uses generic `Card` primitives and the warm-serif tokens).
-- `FirstSentenceVsRebuttalLab` keeps its structure but is re-skinned off its self-contained Apple-blue CSS onto these tokens, so the two drills finally match.
-- New drills compose this anatomy rather than inventing their own.
+### Cards / Containers
+- **Corner Style:** shell `0.5rem`; drill stimulus `20px`, insets `14px`.
+- **Background:** shell cards `#121212` on `#0a0a0a`; drill cards pure white on `#fafafc`.
+- **Shadow Strategy:** see Elevation; dark cards layer, light cards float on diffuse soft shadow.
+- **Border:** 1px `#262626` (shell) or `#e5e5ea` (drill). Hairlines `#f0f0f2`.
+- **Internal Padding:** 28–40px in drills (stimulus roomiest), tighter in shell chrome.
+
+### Inputs / Fields
+- **Style:** bordered (`--input` `#262626` dark, `#e5e5ea` light), token radius, surface-matched fill.
+- **Focus:** border shift to ring color plus the graphite focus ring; no glow.
+- **Mobile:** inputs render at 16px to prevent iOS zoom.
+
+### Navigation
+- **Foyer (primary nav):** `FoyerSidebar` (state blocks + workspace nav) plus `FoyerHeroRing` orbital (3 nodes: Smart Drill, Resume, Ask Joshua). The foyer additionally hosts a `GooeyDock` quick-launch row, allowed only on `/foyer`.
+- **Sidebar:** label + icon rows under a single "Workspace" header, permission-filtered. Default / hover / active states by background tint, not a colored left stripe.
+
+### Signature Component — The Drill Surface
+Every lab composes one fixed anatomy so all drills read as the same surface: top bar (autosave pill + home link) → header (eyebrow + counter + thin graphite progress bar) → white stimulus card with an inset "THE CONCLUSION" sub-block → neutral option grid (2-up desktop, 1-up mobile) → in-flow reveal/teach block → pill footer nav → end-of-set review (verdict, KPI, where-it-slipped breakdown, tappable answer key). On reveal, the correct option paints `correct`, the student's wrong pick paints `wrong`, unpicked options recede. The reveal teaches the predictable weakness of the correct type, written to the student's actual pick. Verdict copy reads `Calibrated.` or `Re-run open.`, never "Failed," never a letter grade.
+
+### Signature Component — The Inbox Thread
+A warm paper-and-ink 1:1 messaging surface, one ongoing thread per student with Joshua. Two-voice color (pine green / clay crimson) distinguishes speakers. Fast enough to feel like messaging, structured enough to feel like coaching. Supports PDF attachments. Not a support ticket, not a legal file.
+
+## 6. Do's and Don'ts
+
+### Do:
+- **Do** build new chassis surfaces on the HSL token vocabulary (`bg-background`, `text-foreground`, `border-border`, `bg-primary`, the `state-*` tokens). The shell is tokenized; extend the tokens, don't inline hex.
+- **Do** keep color semantic. Use `state-correct` / `state-incorrect` / `state-warn` to mark meaning, the bronze ember for rare warmth, and nothing chromatic for pure decoration.
+- **Do** scope any new bootcamp world behind its own wrapper class with prefixed tokens, the way `.mc-bootcamp` / `.ff-bootcamp` / `.topic-abstract` do.
+- **Do** compute the next step and present one CTA. Every hub leads with one computed action, never a grid of equal options.
+- **Do** float light-room cards on diffuse, low-opacity soft shadow (≤0.05), and convey dark-shell depth through near-black layering.
+- **Do** route every progress claim, badge, and CTA to real data. Honest empty states beat fabricated numbers.
+
+### Don't:
+- **Don't** use `border-left` / `border-right` greater than 1px as a colored accent stripe (including via inset box-shadow). Convey active or speaker state with background tint or avatar.
+- **Don't** ship gradient text (`background-clip: text` over a gradient). Emphasis comes from weight and size, in a single solid color.
+- **Don't** spray glassmorphism. The one `backdropBlur.glass` token is for rare, purposeful use, not decoration.
+- **Don't** build the hero-metric template: a giant number plus tiny label plus gradient accent. That is the SaaS-dashboard cliché `PRODUCT.md` rejects.
+- **Don't** add new inline-hex palettes. The inbox and mainhub already diverged into hand-painted warm-paper and Apple-slate; do not start a fifth dialect. If a room needs its own identity, promote it to named tokens.
+- **Don't** import the generic LSAT-prep playbook: card-grid hubs, Duolingo streak flames and XP bars, or support-desk chat patterns ("How can I help you today?"). The product does not reward attendance and the inbox is not a ticket queue.
+- **Don't** animate layout properties (width, height, padding, margin) except the drill progress bar. Animate `opacity`, `transform`, `color`, `box-shadow`. No bounce, no elastic.
+- **Don't** show fabricated telemetry (placeholder energy/status values) as if it were real progress. No fake data, no dead buttons.
