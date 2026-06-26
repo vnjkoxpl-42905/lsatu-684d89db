@@ -349,6 +349,7 @@ export function JournalEntrySurface() {
                   annotateActive={annotateActive}
                   annotations={annotations}
                   onAnnotationsChange={handleAnnotations}
+                  onChooseWrong={(key) => patch({ wrong_answer: key })}
                 />
               )}
             </div>

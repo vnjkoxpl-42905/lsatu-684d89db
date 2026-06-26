@@ -45,6 +45,8 @@ interface Props {
   annotateActive: boolean;
   annotations: AnnotationStroke[];
   onAnnotationsChange: (strokes: AnnotationStroke[]) => void;
+  /** Mark a choice as the student's wrong answer (clicking it in the question). */
+  onChooseWrong?: (key: string) => void;
 }
 
 function ReasoningCallout({ tone, label, text }: { tone: 'wrong' | 'correct'; label: string; text: string }) {
@@ -81,6 +83,7 @@ export function JournalQuestionPane({
   annotateActive,
   annotations,
   onAnnotationsChange,
+  onChooseWrong,
 }: Props) {
   const stimulusText = stripDataArtifacts(question.stimulus ?? '');
   const stemText = stripDataArtifacts(question.questionStem);
@@ -88,6 +91,9 @@ export function JournalQuestionPane({
     ([key, text]) => [key, cleanAnswerChoice(key, String(text))] as const,
   );
   const chosenIsWrong = !!chosenAnswer && chosenAnswer !== correctAnswer;
+  // Show a nudge when the student has written wrong-answer reasoning but hasn't
+  // marked which answer they chose, so the reasoning has nowhere to pin yet.
+  const needsWrongAnswer = !!wrongReasoning.trim() && !chosenIsWrong;
 
   return (
     <div className="relative h-full">
@@ -109,13 +115,36 @@ export function JournalQuestionPane({
             <div className="flex-1 text-[14px] leading-relaxed text-foreground">{stemText}</div>
           </div>
 
+          {needsWrongAnswer && (
+            <div className="ml-9 mt-3 rounded-md border-l-2 border-amber-500 bg-amber-500/10 px-3 py-2 text-[12px] text-amber-200/90">
+              Click the answer you chose below to attach your wrong reasoning to it.
+            </div>
+          )}
+
           <ul className="mt-5 space-y-3">
             {answerEntries.map(([key, text]) => {
               const isCorrect = key === correctAnswer;
               const isChosenWrong = chosenIsWrong && key === chosenAnswer;
+              // Clicking a non-correct choice marks it as the wrong answer chosen.
+              const selectable = !isCorrect && !!onChooseWrong;
               return (
                 <li key={key}>
                   <div
+                    role={selectable ? 'button' : undefined}
+                    tabIndex={selectable ? 0 : undefined}
+                    aria-pressed={selectable ? isChosenWrong : undefined}
+                    title={selectable ? 'Mark as the answer you chose' : undefined}
+                    onClick={selectable ? () => onChooseWrong!(key) : undefined}
+                    onKeyDown={
+                      selectable
+                        ? (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              onChooseWrong!(key);
+                            }
+                          }
+                        : undefined
+                    }
                     className={cn(
                       'grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-lg border p-3 transition-colors',
                       isCorrect
@@ -123,6 +152,8 @@ export function JournalQuestionPane({
                         : isChosenWrong
                         ? 'border-rose-500/70 bg-rose-500/[0.07]'
                         : 'border-border bg-card',
+                      selectable && !isChosenWrong &&
+                        'cursor-pointer hover:border-rose-500/50 hover:bg-rose-500/[0.04]',
                     )}
                   >
                     <span
