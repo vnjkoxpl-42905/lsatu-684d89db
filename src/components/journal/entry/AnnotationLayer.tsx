@@ -17,6 +17,7 @@
  *    lost mid-stroke on real trackpad/mouse input.
  */
 import * as React from 'react';
+import { Eraser } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { AnnotationStroke } from '@/lib/wajNotesService';
 
@@ -30,6 +31,9 @@ const PALETTE: { name: string; value: string }[] = [
   { name: 'Violet', value: '#a78bfa' },
 ];
 const PEN_SIZE = 2.5;
+/** Erase radius in normalized (0..1) units — a stroke with any point within this
+ *  distance of the pointer is removed. */
+const ERASE_RADIUS = 0.02;
 
 function strokeToPath(points: number[], w: number, h: number): string {
   if (points.length < 4) {
@@ -61,6 +65,7 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [size, setSize] = React.useState({ w: 1, h: 1 });
   const [color, setColor] = React.useState(PALETTE[0].value);
+  const [tool, setTool] = React.useState<'pen' | 'eraser'>('pen');
 
   // In-progress stroke kept in a ref so pointermove never reads a stale value
   // and never drops points; `tick` only drives the live-preview re-render.
@@ -96,12 +101,36 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
     return [Math.min(1, Math.max(0, x)), Math.min(1, Math.max(0, y))];
   };
 
+  // Remove any stroke that passes within ERASE_RADIUS of (x, y). Returns true if
+  // something was erased.
+  const eraseAt = (x: number, y: number): boolean => {
+    const next = strokes.filter((s) => {
+      const pts = s.points;
+      for (let i = 0; i < pts.length - 1; i += 2) {
+        const dx = pts[i] - x;
+        const dy = pts[i + 1] - y;
+        if (dx * dx + dy * dy <= ERASE_RADIUS * ERASE_RADIUS) return false;
+      }
+      return true;
+    });
+    if (next.length !== strokes.length) {
+      onChange(next);
+      return true;
+    }
+    return false;
+  };
+
   const handleDown = (e: React.PointerEvent) => {
     if (!active) return;
     e.preventDefault();
     // Capture on the stable container, not the (child) event target.
     ref.current?.setPointerCapture?.(e.pointerId);
     const [x, y] = pointFromEvent(e);
+    if (tool === 'eraser') {
+      drawingRef.current = [x, y]; // marks an active erase gesture
+      eraseAt(x, y);
+      return;
+    }
     drawingRef.current = [x, y];
     renderTick();
   };
@@ -109,6 +138,10 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
   const handleMove = (e: React.PointerEvent) => {
     if (!active || !drawingRef.current) return;
     const [x, y] = pointFromEvent(e);
+    if (tool === 'eraser') {
+      eraseAt(x, y);
+      return;
+    }
     drawingRef.current.push(x, y);
     renderTick();
   };
@@ -117,6 +150,7 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
     const drawing = drawingRef.current;
     if (!active || !drawing) return;
     drawingRef.current = null;
+    if (tool === 'eraser') return;
     if (drawing.length >= 2) {
       onChange([...strokes, { points: drawing, color, size: PEN_SIZE }]);
     } else {
@@ -132,7 +166,7 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
       className="absolute inset-0 z-20"
       style={{
         pointerEvents: active ? 'auto' : 'none',
-        cursor: active ? 'crosshair' : 'default',
+        cursor: active ? (tool === 'eraser' ? 'cell' : 'crosshair') : 'default',
         touchAction: active ? 'none' : 'auto',
       }}
       onPointerDown={handleDown}
@@ -153,17 +187,36 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
               type="button"
               title={c.name}
               aria-label={`Pen color ${c.name}`}
-              aria-pressed={color === c.value}
-              onClick={() => setColor(c.value)}
+              aria-pressed={tool === 'pen' && color === c.value}
+              onClick={() => {
+                setColor(c.value);
+                setTool('pen');
+              }}
               className={cn(
                 'h-5 w-5 rounded-full transition-transform hover:scale-110',
-                color === c.value
+                tool === 'pen' && color === c.value
                   ? 'ring-2 ring-foreground ring-offset-2 ring-offset-background'
                   : 'ring-1 ring-border',
               )}
               style={{ backgroundColor: c.value }}
             />
           ))}
+          <span className="mx-0.5 h-5 w-px bg-border" aria-hidden />
+          <button
+            type="button"
+            title="Eraser"
+            aria-label="Eraser"
+            aria-pressed={tool === 'eraser'}
+            onClick={() => setTool('eraser')}
+            className={cn(
+              'flex h-6 w-6 items-center justify-center rounded-full transition-colors',
+              tool === 'eraser'
+                ? 'bg-foreground text-background'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+            )}
+          >
+            <Eraser size={14} />
+          </button>
         </div>
       )}
 
@@ -179,7 +232,7 @@ export function AnnotationLayer({ active, strokes, onChange }: Props) {
             strokeLinejoin="round"
           />
         ))}
-        {drawing && (
+        {drawing && tool === 'pen' && (
           <path
             d={strokeToPath(drawing, size.w, size.h)}
             fill="none"
