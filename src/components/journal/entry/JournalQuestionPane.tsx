@@ -40,6 +40,7 @@ interface Props {
   displayNumber: number;
   correctAnswer: string;
   chosenAnswer: string | null;
+  questionSummary: string;
   wrongReasoning: string;
   correctReasoning: string;
   annotateActive: boolean;
@@ -78,6 +79,7 @@ export function JournalQuestionPane({
   displayNumber,
   correctAnswer,
   chosenAnswer,
+  questionSummary,
   wrongReasoning,
   correctReasoning,
   annotateActive,
@@ -102,8 +104,20 @@ export function JournalQuestionPane({
 
       <div className="grid h-full grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,50fr)_minmax(0,50fr)]">
         {/* Stimulus */}
-        <div className="min-w-0 overflow-y-auto whitespace-pre-wrap border-border px-6 py-7 text-[15px] leading-[1.7] text-foreground/90 lg:border-r [&_p]:mb-4">
-          {stimulusText}
+        <div className="min-w-0 overflow-y-auto border-border px-6 py-7 lg:border-r">
+          <div className="whitespace-pre-wrap text-[15px] leading-[1.7] text-foreground/90 [&_p]:mb-4">
+            {stimulusText}
+          </div>
+          {questionSummary.trim() && (
+            <div className="mt-5 rounded-md border-l-2 border-accent-bronze bg-accent-bronze/10 px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-accent-bronze">
+                Your question summary
+              </div>
+              <p className="mt-1 whitespace-pre-wrap text-[13px] leading-relaxed text-foreground/90">
+                {questionSummary}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Stem + choices */}

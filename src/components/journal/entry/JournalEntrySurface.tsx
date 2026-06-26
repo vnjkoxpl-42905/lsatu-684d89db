@@ -344,6 +344,7 @@ export function JournalEntrySurface() {
                   displayNumber={question.qnum}
                   correctAnswer={question.correctAnswer}
                   chosenAnswer={draft.wrong_answer || null}
+                  questionSummary={draft.question_summary}
                   wrongReasoning={draft.wrong_reasoning}
                   correctReasoning={draft.correct_reasoning}
                   annotateActive={annotateActive}
