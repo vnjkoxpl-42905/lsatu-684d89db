@@ -5,9 +5,13 @@
  * scored status.
  */
 import * as React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, PanelLeftClose } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { WrongAnswerSmartRow } from '@/lib/journalService';
+
+// The journal loads exclusively from the Logical Reasoning bank, so every
+// entry is an LR question. Surfaced as a section badge to match the reference.
+export const SECTION_BADGE = 'LR';
 
 export type Outcome = 'wrong' | 'unsure' | 'correct';
 
@@ -16,7 +20,8 @@ export function outcomeOf(row: WrongAnswerSmartRow): Outcome {
   return row.status === 'right' ? 'correct' : 'wrong';
 }
 
-function titleOf(row: WrongAnswerSmartRow): string {
+/** Entry headline: the student/AI title when present, else a question-type fallback. */
+export function entryTitle(row: WrongAnswerSmartRow): string {
   return row.note?.title?.trim() || `${row.qtype} · ${row.label}`;
 }
 
@@ -39,6 +44,7 @@ interface Props {
   onNewEntry: () => void;
   suggestions?: EntrySuggestion[];
   onPickSuggestion?: (qid: string) => void;
+  onCollapse?: () => void;
 }
 
 export function EntriesRail({
@@ -48,6 +54,7 @@ export function EntriesRail({
   onNewEntry,
   suggestions = [],
   onPickSuggestion,
+  onCollapse,
 }: Props) {
   const [filter, setFilter] = React.useState('');
 
@@ -71,14 +78,27 @@ export function EntriesRail({
         <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Entries · {rows.length}
         </span>
-        <button
-          type="button"
-          onClick={onNewEntry}
-          className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] font-medium text-foreground hover:bg-accent"
-        >
-          <Plus className="h-3 w-3" />
-          New entry
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={onNewEntry}
+            className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] font-medium text-foreground hover:bg-accent"
+          >
+            <Plus className="h-3 w-3" />
+            New entry
+          </button>
+          {onCollapse && (
+            <button
+              type="button"
+              onClick={onCollapse}
+              title="Collapse entries"
+              aria-label="Collapse entries"
+              className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              <PanelLeftClose className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="px-3 pt-2">
@@ -123,9 +143,12 @@ export function EntriesRail({
                         <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                           {r.label}
                         </span>
+                        <span className="rounded border border-border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          {SECTION_BADGE}
+                        </span>
                       </div>
                       <div className="mt-1 line-clamp-1 text-[12px] text-foreground/90">
-                        {titleOf(r)}
+                        {entryTitle(r)}
                       </div>
                     </button>
                   );

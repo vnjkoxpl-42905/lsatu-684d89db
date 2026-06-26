@@ -18,7 +18,8 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable';
-import { ArrowLeft, Pencil } from 'lucide-react';
+import { ArrowLeft, Pencil, PanelLeftOpen } from 'lucide-react';
+import type { ImperativePanelHandle } from 'react-resizable-panels';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
@@ -30,7 +31,7 @@ import { ensureJournalEntry } from '@/lib/wajService';
 import { questionBank, type LRQuestion } from '@/lib/questionLoader';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useToast } from '@/hooks/use-toast';
-import { EntriesRail, outcomeOf } from './EntriesRail';
+import { EntriesRail, outcomeOf, SECTION_BADGE } from './EntriesRail';
 import { JournalQuestionPane } from './JournalQuestionPane';
 import { ReviewForm, type JournalDraft } from './ReviewForm';
 import { NewEntryPicker } from './NewEntryPicker';
@@ -84,6 +85,8 @@ export function JournalEntrySurface() {
   const [annotateActive, setAnnotateActive] = React.useState(false);
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [pendingSelectQid, setPendingSelectQid] = React.useState<string | null>(null);
+  const railPanelRef = React.useRef<ImperativePanelHandle>(null);
+  const [railCollapsed, setRailCollapsed] = React.useState(false);
 
   const selected = React.useMemo(
     () => rows.find((r) => r.id === selectedId) ?? null,
@@ -242,7 +245,16 @@ export function JournalEntrySurface() {
       </header>
 
       <ResizablePanelGroup direction="horizontal" className="flex-1">
-        <ResizablePanel defaultSize={20} minSize={14} maxSize={30}>
+        <ResizablePanel
+          ref={railPanelRef}
+          defaultSize={20}
+          minSize={14}
+          maxSize={30}
+          collapsible
+          collapsedSize={0}
+          onCollapse={() => setRailCollapsed(true)}
+          onExpand={() => setRailCollapsed(false)}
+        >
           <EntriesRail
             rows={rows}
             selectedId={selectedId}
@@ -253,6 +265,7 @@ export function JournalEntrySurface() {
               const q = questionBank.getQuestion(qid);
               if (q) handlePick(q);
             }}
+            onCollapse={() => railPanelRef.current?.collapse()}
           />
         </ResizablePanel>
 
@@ -263,13 +276,32 @@ export function JournalEntrySurface() {
             {/* Entry header: id chip, type, title, Annotate toggle */}
             {selected && (
               <div className="flex items-center justify-between gap-3 border-b border-border px-6 py-3">
-                <div className="flex items-center gap-2">
-                  <span className="rounded bg-muted px-2 py-0.5 font-mono text-[12px] text-foreground">
+                <div className="flex min-w-0 items-center gap-2">
+                  {railCollapsed && (
+                    <button
+                      type="button"
+                      onClick={() => railPanelRef.current?.expand()}
+                      title="Show entries"
+                      aria-label="Show entries"
+                      className="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+                    >
+                      <PanelLeftOpen className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  <span className="shrink-0 rounded bg-muted px-2 py-0.5 font-mono text-[12px] text-foreground">
                     {selected.label}
                   </span>
-                  <span className="rounded bg-secondary px-2 py-0.5 text-[11px] font-medium text-foreground/80">
+                  <span className="shrink-0 rounded border border-border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {SECTION_BADGE}
+                  </span>
+                  <span className="shrink-0 rounded bg-secondary px-2 py-0.5 text-[11px] font-medium text-foreground/80">
                     {selected.qtype}
                   </span>
+                  {selected.note?.title?.trim() && (
+                    <span className="truncate text-[13px] font-medium text-foreground/90">
+                      {selected.note.title.trim()}
+                    </span>
+                  )}
                 </div>
                 <button
                   type="button"
