@@ -240,6 +240,17 @@ const PAGE_CSS = `
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(2) { transition-delay: 140ms; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(3) { transition-delay: 200ms; }
 
+  /* Feature tour — copy + 16:10 media, copy-first on mobile, alternating on desktop */
+  .lsatu-arc .arc-feature-grid { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  .lsatu-arc .arc-feature-copy { order: 1; }
+  .lsatu-arc .arc-feature-media { order: 2; }
+  @media (min-width: 768px) {
+    .lsatu-arc .arc-feature-grid { grid-template-columns: 2fr 3fr; }
+    .lsatu-arc .arc-feature-grid.is-rev { grid-template-columns: 3fr 2fr; }
+    .lsatu-arc .arc-feature-grid.is-rev .arc-feature-copy { order: 2; }
+    .lsatu-arc .arc-feature-grid.is-rev .arc-feature-media { order: 1; }
+  }
+
   /* Marquee — seamless loop, edge-fade mask */
   .lsatu-arc .arc-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); }
   .lsatu-arc .arc-marquee-track { display: inline-flex; gap: 0; white-space: nowrap; animation: arcMarquee 64s linear infinite; will-change: transform; }
@@ -580,6 +591,102 @@ const ArcPlatformPreview = () => (
         </div>
       </div>
     </div>
+    </div>
+  </section>
+);
+
+// ── Feature tour ── LexPrep-style product videos that stack in as the page
+// rolls down. Each feature is its own StorySection panel (pinned, then covered
+// by the next), so the clips reveal one at a time in the page's own story-scroll
+// motion. Copy + 16:10 media alternate sides. Drop real captures in
+// /public/features (H.264 mp4, 16:10, muted, ~5-10s); until then a warm
+// placeholder shows. Teardown: vault wiki/synthesis/lexprep-scroll-reveal-teardown.md
+type FeatureTour = { eyebrow: string; title: string; blurb: string; src?: string; poster?: string; reverse?: boolean };
+
+const FEATURES: FeatureTour[] = [
+  {
+    eyebrow: 'Practice',
+    title: 'Smart LR Drill',
+    blurb: 'An adaptive engine reads your misses and serves the next question that actually moves your score — not busywork.',
+    src: '/features/smart-drill.mp4',
+    poster: '/features/smart-drill.jpg',
+  },
+  {
+    eyebrow: 'Review',
+    title: 'Wrong Answer Journal',
+    blurb: 'Every miss becomes a worked example: why the trap worked, what the right read was, and the pattern to watch next time.',
+    src: '/features/waj.mp4',
+    poster: '/features/waj.jpg',
+    reverse: true,
+  },
+  {
+    eyebrow: 'Curriculum',
+    title: 'Guided bootcamps',
+    blurb: 'Structured, voice-led courses that build one reasoning skill at a time, from Main Conclusion outward.',
+    src: '/features/bootcamps.mp4',
+    poster: '/features/bootcamps.jpg',
+  },
+  {
+    eyebrow: 'Plan',
+    title: 'A schedule that adapts',
+    blurb: 'A week-by-week plan tuned to your test date and your data, so you always know the next right thing to do.',
+    src: '/features/schedule.mp4',
+    poster: '/features/schedule.jpg',
+    reverse: true,
+  },
+];
+
+const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour) => (
+  <section style={{ width: '100%', padding: 'clamp(56px, 8vw, 96px) 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div className={`arc-feature-grid${reverse ? ' is-rev' : ''}`}>
+      <div className="arc-feature-copy">
+        <span className="arc-eyebrow" style={{ marginBottom: 18 }}>{eyebrow}</span>
+        <h2 style={{
+          fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 600,
+          lineHeight: 1.04, letterSpacing: '-0.03em', marginTop: 18, marginBottom: 16,
+        }}>
+          {title}
+        </h2>
+        <p style={{
+          fontFamily: ARC.serif, fontSize: 'clamp(17px, 1.5vw, 20px)',
+          lineHeight: 1.5, color: ARC.inkSecondary, maxWidth: 460,
+        }}>
+          {blurb}
+        </p>
+      </div>
+      <div className="arc-feature-media">
+        <figure style={{
+          position: 'relative', margin: 0, width: '100%', aspectRatio: '16 / 10',
+          overflow: 'hidden', borderRadius: ARC.radiusCard,
+          border: `1px solid ${ARC.hairline}`, background: ARC.bgTinted,
+          boxShadow: ARC.shadowCard,
+        }}>
+          {/* Placeholder sits behind the video; a loaded clip covers it. Until
+              a real /features/*.mp4 exists, this warm cue shows instead of an
+              empty box or a broken-media icon. */}
+          <span aria-hidden="true" style={{
+            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', gap: 8, color: ARC.inkMuted,
+            fontSize: 13, letterSpacing: '0.04em',
+          }}>
+            <Play size={16} strokeWidth={1.8} fill="currentColor" /> Preview
+          </span>
+          {src && (
+            <video
+              src={src}
+              poster={poster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+              // translateZ(0) forces GPU compositing so the loop stays smooth.
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
+            />
+          )}
+        </figure>
+      </div>
     </div>
   </section>
 );
@@ -1135,6 +1242,11 @@ export default function Auth() {
         <StorySection aria-label="LSAT U workspace preview">
           <ArcPlatformPreview />
         </StorySection>
+        {FEATURES.map((f) => (
+          <StorySection key={f.title} aria-label={f.title}>
+            <ArcFeature {...f} />
+          </StorySection>
+        ))}
         <StorySection aria-label="LSAT question training rhythm">
           <ArcMarquee />
           <ArcCarousel />
