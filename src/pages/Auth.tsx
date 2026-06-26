@@ -16,7 +16,6 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
-import { StoryScroll, StorySection } from '@/components/ui/story-scroll';
 import RadialOrbitalTimeline, { type TimelineItem } from '@/components/ui/radial-orbital-timeline';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -92,6 +91,10 @@ const ARC = {
   sans: '"Outfit", -apple-system, "SF Pro Display", system-ui, sans-serif',
   easeOut: 'cubic-bezier(0.16, 1, 0.3, 1)',
 };
+
+// LexPrep's reveal easing — used by the scroll-into-view blur+fade+rise so the
+// landing's motion mirrors lexprep.ai exactly (per-child stagger cascade).
+const LEX_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
 // ── Page-scoped CSS injected once. Reset, type defaults, motion tokens,
 // reveal animation, marquee, scroll-snap carousel. All motion respects
@@ -226,16 +229,29 @@ const PAGE_CSS = `
   .lsatu-arc .arc-fade { opacity: 0; animation: arcFade 540ms ${ARC.easeOut} forwards; }
   @keyframes arcFade { to { opacity: 1; } }
 
-  /* Scroll-reveal — applied to .arc-rise, toggled by IntersectionObserver */
-  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 560ms ${ARC.easeOut}, transform 560ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); }
-  .lsatu-arc [data-story-scroll] .arc-rise { opacity: 1; transform: none; transition: none; }
+  /* Scroll-reveal — LexPrep-style blur + fade + rise. .arc-rise is the scroll
+     trigger (IntersectionObserver toggles .is-in); single-block sections reveal
+     via this rule, while sections with an inner .arc-stagger cascade child-by-child. */
+  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); filter: blur(10px); transition: opacity 600ms ${LEX_EASE}, transform 600ms ${LEX_EASE}, filter 600ms ${LEX_EASE}; }
+  .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+  /* Stagger cascade — LexPrep's "container + delayed children" model. Direct
+     children of .arc-stagger blur-fade-rise one after another (~120ms step:
+     heading → blurb → media → CTA) once the parent .arc-rise enters view. */
+  .lsatu-arc .arc-stagger > * { opacity: 0; transform: translateY(14px); filter: blur(10px); transition: opacity 600ms ${LEX_EASE}, transform 600ms ${LEX_EASE}, filter 600ms ${LEX_EASE}; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *,
+  .lsatu-arc .arc-rise.is-in .arc-stagger > * { opacity: 1; transform: none; filter: blur(0); }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(1), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(1) { transition-delay: 0ms; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(2), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(2) { transition-delay: 120ms; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(3), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(3) { transition-delay: 240ms; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(4), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(4) { transition-delay: 360ms; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(5), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(5) { transition-delay: 480ms; }
+  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(6), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(6) { transition-delay: 600ms; }
 
   /* Pillar columns — cascade in 60ms apart once the parent section reveals.
      Without this, all three columns arrive together which reads as static. */
   .lsatu-arc .arc-pillar { opacity: 0; transform: translateY(8px); transition: opacity 480ms ${ARC.easeOut}, transform 480ms ${ARC.easeOut}; }
   .lsatu-arc .arc-rise.is-in .arc-pillar { opacity: 1; transform: translateY(0); }
-  .lsatu-arc [data-story-scroll] .arc-pillar { opacity: 1; transform: none; transition: none; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(1) { transition-delay: 80ms; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(2) { transition-delay: 140ms; }
   .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(3) { transition-delay: 200ms; }
@@ -289,7 +305,7 @@ const PAGE_CSS = `
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
+    .lsatu-arc .arc-fade, .lsatu-arc .arc-rise, .lsatu-arc .arc-stagger > * { animation: none; opacity: 1; transform: none; filter: none; transition: none; }
     .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon, .lsatu-arc .arc-pillar, .lsatu-arc .arc-link::after, .lsatu-arc .arc-nav-signin { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
     .lsatu-arc .arc-shell-float { animation: none; }
@@ -450,8 +466,8 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
 // dual-button pattern collapses into a single substantial pill ("Enter LSAT
 // University") with a tiny secondary text link below for new accounts.
 const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
-  <section style={{ padding: 'clamp(72px, 10vw, 132px) 32px 56px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
-    <div className="arc-fade">
+  <section className="arc-rise" style={{ padding: 'clamp(72px, 10vw, 132px) 32px 56px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+    <div className="arc-stagger">
       <span className="arc-eyebrow" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
       <h1 style={{
         fontSize: 'clamp(44px, 7.4vw, 96px)',
@@ -522,7 +538,7 @@ const PREVIEW_NODES: TimelineItem[] = [
 ];
 
 const ArcPlatformPreview = () => (
-  <section className="arc-shell arc-fade" aria-label="LSAT U platform preview">
+  <section className="arc-shell arc-rise" aria-label="LSAT U platform preview">
     <div className="arc-shell-float">
     <div className="arc-shell-frame">
       <div className="arc-shell-bar">
@@ -595,10 +611,10 @@ const ArcPlatformPreview = () => (
   </section>
 );
 
-// ── Feature tour ── LexPrep-style product videos that stack in as the page
-// rolls down. Each feature is its own StorySection panel (pinned, then covered
-// by the next), so the clips reveal one at a time in the page's own story-scroll
-// motion. Copy + 16:10 media alternate sides. Drop real captures in
+// ── Feature tour ── LexPrep-style product videos that reveal as the page
+// scrolls. Each feature section is an .arc-rise scroll trigger whose .arc-stagger
+// grid cascades copy then media into view (blur+fade+rise), mirroring lexprep.ai.
+// Copy + 16:10 media alternate sides. Drop real captures in
 // /public/features (H.264 mp4, 16:10, muted, ~5-10s); until then a warm
 // placeholder shows. Teardown: vault wiki/synthesis/lexprep-scroll-reveal-teardown.md
 type FeatureTour = { eyebrow: string; title: string; blurb: string; src?: string; poster?: string; reverse?: boolean };
@@ -637,9 +653,9 @@ const FEATURES: FeatureTour[] = [
 ];
 
 const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour) => (
-  <section style={{ width: '100%', padding: 'clamp(56px, 8vw, 96px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div className={`arc-feature-grid${reverse ? ' is-rev' : ''}`}>
-      <div className="arc-feature-copy">
+  <section className="arc-rise" style={{ width: '100%', padding: 'clamp(56px, 8vw, 96px) 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div className={`arc-feature-grid arc-stagger${reverse ? ' is-rev' : ''}`}>
+      <div className="arc-feature-copy arc-stagger">
         <span className="arc-eyebrow" style={{ marginBottom: 18 }}>{eyebrow}</span>
         <h2 style={{
           fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 600,
@@ -697,7 +713,7 @@ const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour
 const ArcMarquee = () => {
   const items = [...QUESTION_TYPES, ...QUESTION_TYPES]; // duplicated for seamless loop
   return (
-    <section className="arc-rise" style={{
+    <section className="arc-rise arc-stagger" style={{
       borderTop: `1px solid ${ARC.hairline}`,
       borderBottom: `1px solid ${ARC.hairline}`,
       background: ARC.bgTinted,
@@ -729,7 +745,7 @@ const ArcMarquee = () => {
 // ── Proof quote ── Founder statement of intent. Pull-quote in serif italic.
 const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
   <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 144px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div style={{ maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
+    <div className="arc-stagger" style={{ maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
       <span className="arc-eyebrow" style={{ marginBottom: 28 }}>A statement of intent</span>
       <p style={{
         fontFamily: ARC.serif, fontStyle: 'italic',
@@ -756,7 +772,7 @@ const ArcCarousel = () => {
   useDragScroll(ref);
   return (
     <section className="arc-rise" style={{ padding: '12px 0 80px', maxWidth: 1280, margin: '0 auto' }}>
-      <div style={{ padding: '0 32px', maxWidth: 1100, margin: '0 auto', textAlign: 'center', marginBottom: 48 }}>
+      <div className="arc-stagger" style={{ padding: '0 32px', maxWidth: 1100, margin: '0 auto', textAlign: 'center', marginBottom: 48 }}>
         <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Six habits, one rhythm</span>
         <h2 style={{
           fontSize: 'clamp(32px, 4.4vw, 56px)',
@@ -809,7 +825,7 @@ const ArcCarousel = () => {
 // hairlines. Mirrors Arc's "three benefit blocks" beat without screenshots.
 const ArcPillars = () => (
   <section className="arc-rise" style={{ padding: 'clamp(72px, 10vw, 120px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto 64px', textAlign: 'center' }}>
+    <div className="arc-stagger" style={{ maxWidth: 760, margin: '0 auto 64px', textAlign: 'center' }}>
       <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Built for serious training</span>
       <h2 style={{
         fontSize: 'clamp(28px, 3.8vw, 48px)',
@@ -858,7 +874,7 @@ const ArcPillars = () => (
 // ── Text-only — Arc's "build philosophy" beat. No graphic. Ink + accent link.
 const ArcTextOnly = () => (
   <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 140px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
+    <div className="arc-stagger" style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
       <span className="arc-eyebrow" style={{ marginBottom: 28 }}>The build philosophy</span>
       <h2 style={{
         fontSize: 'clamp(30px, 4vw, 52px)',
@@ -879,7 +895,7 @@ const ArcTextOnly = () => (
 
 // ── Closing CTA ── A final pull. Big serif lockup + single pill button.
 const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
-  <section className="arc-rise" style={{
+  <section className="arc-rise arc-stagger" style={{
     padding: 'clamp(80px, 10vw, 128px) 32px',
     maxWidth: 1200, margin: '0 auto',
     textAlign: 'center',
@@ -1235,35 +1251,19 @@ export default function Auth() {
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
 
       <ArcNav onSignIn={openSignIn} />
-      <StoryScroll aria-label="LSAT U landing story" className="bg-[#FBF8F1]">
-        <StorySection aria-label="Master the LSAT">
-          <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
-        </StorySection>
-        <StorySection aria-label="LSAT U workspace preview">
-          <ArcPlatformPreview />
-        </StorySection>
+      <main aria-label="LSAT U landing" className="bg-[#FBF8F1]">
+        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+        <ArcPlatformPreview />
         {FEATURES.map((f) => (
-          <StorySection key={f.title} aria-label={f.title}>
-            <ArcFeature {...f} />
-          </StorySection>
+          <ArcFeature key={f.title} {...f} />
         ))}
-        <StorySection aria-label="LSAT question training rhythm">
-          <ArcMarquee />
-          <ArcCarousel />
-        </StorySection>
-        <StorySection aria-label="LSAT U statement of intent">
-          <ArcProof onPrimary={openSignIn} />
-        </StorySection>
-        <StorySection aria-label="LSAT U training pillars">
-          <ArcPillars />
-        </StorySection>
-        <StorySection aria-label="LSAT U build philosophy">
-          <ArcTextOnly />
-        </StorySection>
-        <StorySection aria-label="Begin LSAT U training">
-          <ArcFinalCTA onPrimary={openSignIn} />
-        </StorySection>
-      </StoryScroll>
+        <ArcMarquee />
+        <ArcCarousel />
+        <ArcProof onPrimary={openSignIn} />
+        <ArcPillars />
+        <ArcTextOnly />
+        <ArcFinalCTA onPrimary={openSignIn} />
+      </main>
       <ArcFooter />
 
       {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
