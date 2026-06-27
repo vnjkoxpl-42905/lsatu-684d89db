@@ -145,7 +145,7 @@ export default function StudentShell() {
         </div>
       </div>
 
-      {!sidecarOpen && <MainhubHelpControl open={helpOpen} onOpenChange={setHelpOpen} />}
+
 
       <StudySidecar
         open={sidecarOpen}
