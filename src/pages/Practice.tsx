@@ -443,7 +443,7 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
                 </>
               ) : (
                 <>
-                  <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+                  <h1 className="text-3xl md:text-4xl font-bold text-neutral-100">
                     LR Smart Drill
                   </h1>
                   <p className="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed">

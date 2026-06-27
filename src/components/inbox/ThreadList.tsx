@@ -63,7 +63,7 @@ export function ThreadList({
               isAdmin ? 'rounded-2xl px-3.5 py-3.5' : 'rounded-xl px-4 py-4',
               isAdmin
                 ? isActive
-                  ? 'border-[#e6d6bb] bg-[#f8f2e4] text-[#151a24] shadow-[inset_3px_0_#a14f43,0_18px_38px_rgba(0,0,0,0.24)]'
+                  ? 'border-[#e6d6bb] bg-[#f8f2e4] text-[#151a24] shadow-[0_18px_38px_rgba(0,0,0,0.24)]'
                   : 'border-white/10 bg-white/[0.06] text-[#edf2f7] hover:border-white/15 hover:bg-white/[0.09]'
                 : isActive
                   ? 'border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] ring-1 ring-black/5'

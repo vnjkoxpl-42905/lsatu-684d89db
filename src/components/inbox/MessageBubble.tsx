@@ -71,8 +71,7 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
           </div>
 
           <div className="flex flex-col gap-2">
-            {cluster.messages.map((message, index) => {
-              const firstBubble = index === 0;
+            {cluster.messages.map((message) => {
               const hasBody = !!message.body;
               const hasAttachments = message.attachments.length > 0;
 
@@ -93,13 +92,6 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
                           : 'max-w-[620px] border border-[#E6DDD2] bg-white text-[#1F1B16]',
                       )}
                     >
-                      {!isInstructor && firstBubble ? (
-                        <span
-                          className="absolute bottom-[10px] left-0 top-[10px] w-[3px] rounded-r-full"
-                          style={{ backgroundColor: '#2F6A4F' }}
-                          aria-hidden="true"
-                        />
-                      ) : null}
                       {message.body}
                     </div>
                   ) : null}
