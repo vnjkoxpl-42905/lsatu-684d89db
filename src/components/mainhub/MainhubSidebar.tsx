@@ -14,6 +14,7 @@ import {
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 
 export interface MainhubSidebarProps {
   displayName?: string | null;
