@@ -34,6 +34,7 @@ export default function StudentShell() {
   const [sidecarOpen, setSidecarOpen] = React.useState(false);
   const location = useLocation();
   const reduceMotion = useReducedMotion();
+  const mainRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => {
     if (!authReady) return;
@@ -61,6 +62,12 @@ export default function StudentShell() {
       return () => clearTimeout(t);
     }
   }, [displayName]);
+
+  React.useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+  }, [location.pathname, reduceMotion]);
 
   if (!authReady || !user) return null;
 
@@ -118,7 +125,7 @@ export default function StudentShell() {
 
           {/* Center stage. Student pages render here and scroll internally;
               the sidebar and study chat stay put around them. */}
-          <main className="relative h-full w-full overflow-y-auto">
+          <main ref={mainRef} className="relative h-full w-full overflow-y-auto">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={location.pathname}
