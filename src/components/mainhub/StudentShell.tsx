@@ -29,12 +29,16 @@ export default function StudentShell() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
-  const [helpOpen, setHelpOpen] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const [sidecarOpen, setSidecarOpen] = React.useState(false);
-  const location = useLocation();
-  const reduceMotion = useReducedMotion();
-  const mainRef = React.useRef<HTMLElement>(null);
+  const [sidecarOpen, setSidecarOpen] = React.useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    return window.localStorage.getItem("lsatu:sidecarOpen") !== "0";
+  });
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
+    } catch {}
+  }, [sidecarOpen]);
 
   React.useEffect(() => {
     if (!authReady) return;
