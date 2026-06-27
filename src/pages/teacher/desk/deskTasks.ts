@@ -19,6 +19,7 @@ export type DeskMode = 'reply' | 'review' | 'assign';
 export type WorkspaceKey = 'today' | 'people' | 'inbox' | 'library';
 export type ContextKey = 'student' | 'source';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap' | 'schedule';
+export type AssistantScope = 'task' | 'workspace';
 
 export interface DeskTask {
   id: string;

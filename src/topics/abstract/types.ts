@@ -231,3 +231,18 @@ export interface QuestionStem {
   stem: string;
   explanation: string;
 }
+
+export interface FinalSetChoice {
+  letter: 'A' | 'B' | 'C' | 'D' | 'E';
+  text: string;
+}
+
+export interface FinalSetQuestion {
+  id: string;
+  ptRef: string;
+  stimulus: string;
+  questionStem: string;
+  choices: FinalSetChoice[];
+  correctLetter: 'A' | 'B' | 'C' | 'D' | 'E';
+  explanation: string;
+}
