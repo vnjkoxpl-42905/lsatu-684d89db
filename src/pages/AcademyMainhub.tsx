@@ -35,6 +35,8 @@ import {
   findCatalogItem,
   type CatalogItem,
 } from "@/lib/layoutCatalog";
+import { IconLayoutSidebarLeftExpand, IconLayoutSidebarLeftCollapse } from "@tabler/icons-react";
+import StudySidecar from "@/components/mainhub/StudySidecar";
 
 const REQUIRED_ORBITAL_IDS = ["resume", "analytics", "waj"] as const;
 const MAINHUB_EMOJI_CHOICES = ["🙂", "👍", "🔥", "💪", "✅", "🙏", "📌", "🧠", "🎯", "✍️", "📚", "✨"];
@@ -81,6 +83,7 @@ export default function AcademyMainhub() {
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   const [helpOpen, setHelpOpen] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [sidecarOpen, setSidecarOpen] = React.useState(false);
   const mainhubPanelRef = React.useRef<HTMLDivElement>(null);
   const practicePanelRef = React.useRef<HTMLDivElement>(null);
   
@@ -226,9 +229,21 @@ export default function AcademyMainhub() {
               </SheetContent>
             </Sheet>
 
-            <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-8 pb-24 md:px-6">
+            <div className={`relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-8 pb-24 md:px-6 transition-all duration-200${sidecarOpen ? " md:pr-[calc(24rem+1.5rem)]" : ""}`}>
               <div className="pointer-events-none absolute right-8 top-7 z-10">
                 <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
+                  <button
+                    onClick={() => setSidecarOpen((v) => !v)}
+                    aria-label={sidecarOpen ? "Close study assistant" : "Open study assistant"}
+                    title={sidecarOpen ? "Close study assistant" : "Open study assistant"}
+                    className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {sidecarOpen ? (
+                      <IconLayoutSidebarLeftCollapse size={18} />
+                    ) : (
+                      <IconLayoutSidebarLeftExpand size={18} />
+                    )}
+                  </button>
                   <MainhubDock />
                   <MainhubAccountButton displayName={displayName} />
                 </div>
@@ -274,6 +289,12 @@ export default function AcademyMainhub() {
       <MainhubHelpControl
         open={helpOpen}
         onOpenChange={setHelpOpen}
+      />
+
+      <StudySidecar
+        open={sidecarOpen}
+        onClose={() => setSidecarOpen(false)}
+        userName={displayName ?? undefined}
       />
     </>
   );
