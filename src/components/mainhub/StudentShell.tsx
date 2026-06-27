@@ -34,6 +34,9 @@ export default function StudentShell() {
     if (typeof window === "undefined") return true;
     return window.localStorage.getItem("lsatu:sidecarOpen") !== "0";
   });
+  const location = useLocation();
+  const reduceMotion = useReducedMotion();
+  const mainRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
     try {
       window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
