@@ -32,6 +32,8 @@ export default function StudentShell() {
   const [helpOpen, setHelpOpen] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [sidecarOpen, setSidecarOpen] = React.useState(false);
+  const location = useLocation();
+  const reduceMotion = useReducedMotion();
 
   React.useEffect(() => {
     if (!authReady) return;
