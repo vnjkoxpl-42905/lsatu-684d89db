@@ -30,9 +30,15 @@ function titleCase(s: string): string {
 
 export interface MainhubAccountButtonProps {
   displayName?: string | null;
+  variant?: "pill" | "footer";
+  secondaryLabel?: string;
 }
 
-export default function MainhubAccountButton({ displayName }: MainhubAccountButtonProps) {
+export default function MainhubAccountButton({
+  displayName,
+  variant = "pill",
+  secondaryLabel,
+}: MainhubAccountButtonProps) {
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const navigate = useNavigate();
@@ -44,33 +50,60 @@ export default function MainhubAccountButton({ displayName }: MainhubAccountButt
   const formatted = formatParticipantName(rawName, permissions.is_admin);
   const resolved = permissions.is_admin ? formatted : titleCase(formatted);
   const initial = resolved.charAt(0).toUpperCase() || "·";
+  const computedSecondary =
+    secondaryLabel ?? (permissions.is_admin ? "Admin" : undefined);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          aria-label="Account menu"
-          className="flex h-11 shrink-0 items-center gap-2 rounded-full border border-border/40 bg-background/70 pl-1 pr-1 shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:pr-3"
-        >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground text-background">
-            <span className="font-medium" style={{ fontSize: 12 }}>
-              {initial}
+        {variant === "footer" ? (
+          <button
+            type="button"
+            aria-label="Account menu"
+            className="flex w-full items-center gap-2.5 rounded-lg border border-transparent px-2 py-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground text-background">
+              <span className="font-medium" style={{ fontSize: 12 }}>
+                {initial}
+              </span>
             </span>
-          </span>
-          <span className="hidden max-w-[140px] truncate text-sm font-medium text-foreground md:inline">
-            {resolved || "Account"}
-          </span>
-          <ChevronDown
-            className="hidden h-4 w-4 shrink-0 text-muted-foreground md:block"
-            aria-hidden
-          />
-        </button>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-medium text-foreground">
+                {resolved || "Account"}
+              </span>
+              {computedSecondary && (
+                <span className="block truncate text-xs text-muted-foreground">
+                  {computedSecondary}
+                </span>
+              )}
+            </span>
+            <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+          </button>
+        ) : (
+          <button
+            type="button"
+            aria-label="Account menu"
+            className="flex h-11 shrink-0 items-center gap-2 rounded-full border border-border/40 bg-background/70 pl-1 pr-1 shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:pr-3"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground text-background">
+              <span className="font-medium" style={{ fontSize: 12 }}>
+                {initial}
+              </span>
+            </span>
+            <span className="hidden max-w-[140px] truncate text-sm font-medium text-foreground md:inline">
+              {resolved || "Account"}
+            </span>
+            <ChevronDown
+              className="hidden h-4 w-4 shrink-0 text-muted-foreground md:block"
+              aria-hidden
+            />
+          </button>
+        )}
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        align="end"
-        side="bottom"
+        align={variant === "footer" ? "start" : "end"}
+        side={variant === "footer" ? "top" : "bottom"}
         sideOffset={8}
         collisionPadding={12}
         className="w-60 p-1"
