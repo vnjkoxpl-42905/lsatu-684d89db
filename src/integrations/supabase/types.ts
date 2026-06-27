@@ -3089,6 +3089,81 @@ export type Database = {
         }
         Relationships: []
       }
+      wrong_answer_journal_notes: {
+        Row: {
+          annotations: Json | null
+          class_id: string
+          correct_reasoning: string | null
+          created_at: string
+          date_taken: string | null
+          id: string
+          lesson: string | null
+          next_action: string | null
+          other_notes: string | null
+          qid: string
+          question_summary: string | null
+          reattempt_due_at: string | null
+          review_status: string
+          root_cause: string | null
+          self_rating: string | null
+          student_note: string | null
+          title: string | null
+          trap_pattern: string | null
+          updated_at: string
+          user_id: string
+          wrong_answer: string | null
+          wrong_reasoning: string | null
+        }
+        Insert: {
+          annotations?: Json | null
+          class_id: string
+          correct_reasoning?: string | null
+          created_at?: string
+          date_taken?: string | null
+          id?: string
+          lesson?: string | null
+          next_action?: string | null
+          other_notes?: string | null
+          qid: string
+          question_summary?: string | null
+          reattempt_due_at?: string | null
+          review_status?: string
+          root_cause?: string | null
+          self_rating?: string | null
+          student_note?: string | null
+          title?: string | null
+          trap_pattern?: string | null
+          updated_at?: string
+          user_id: string
+          wrong_answer?: string | null
+          wrong_reasoning?: string | null
+        }
+        Update: {
+          annotations?: Json | null
+          class_id?: string
+          correct_reasoning?: string | null
+          created_at?: string
+          date_taken?: string | null
+          id?: string
+          lesson?: string | null
+          next_action?: string | null
+          other_notes?: string | null
+          qid?: string
+          question_summary?: string | null
+          reattempt_due_at?: string | null
+          review_status?: string
+          root_cause?: string | null
+          self_rating?: string | null
+          student_note?: string | null
+          title?: string | null
+          trap_pattern?: string | null
+          updated_at?: string
+          user_id?: string
+          wrong_answer?: string | null
+          wrong_reasoning?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       students_safe: {
