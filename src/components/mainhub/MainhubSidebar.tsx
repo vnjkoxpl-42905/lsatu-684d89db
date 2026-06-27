@@ -116,6 +116,14 @@ export default function MainhubSidebar({ onNavigate }: MainhubSidebarProps) {
           </nav>
         </div>
       </div>
+
+      <div className="mt-auto border-t border-border/60 p-2">
+        <MainhubAccountButton
+          displayName={displayName}
+          variant="footer"
+          secondaryLabel={permissions.is_admin ? "Admin" : "Student"}
+        />
+      </div>
     </aside>
   );
 }
