@@ -43,7 +43,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
-export default function MainhubSidebar({ onNavigate }: MainhubSidebarProps) {
+export default function MainhubSidebar({ displayName, onNavigate }: MainhubSidebarProps) {
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
