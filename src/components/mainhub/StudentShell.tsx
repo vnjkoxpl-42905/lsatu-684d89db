@@ -117,8 +117,21 @@ export default function StudentShell() {
           {/* Center stage. Student pages render here and scroll internally;
               the sidebar and study chat stay put around them. */}
           <main className="relative h-full w-full overflow-y-auto">
-            <Outlet context={{ displayName }} />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={location.pathname}
+                initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(8px)" }}
+                animate={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
+                transition={{ duration: reduceMotion ? 0 : 0.5, ease: [0.4, 0, 0.2, 1] }}
+                className="h-full w-full"
+                style={{ willChange: "opacity, transform, filter" }}
+              >
+                <Outlet context={{ displayName }} />
+              </motion.div>
+            </AnimatePresence>
           </main>
+
         </div>
       </div>
 
