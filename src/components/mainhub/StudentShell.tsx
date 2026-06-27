@@ -125,7 +125,7 @@ export default function StudentShell() {
 
           {/* Center stage. Student pages render here and scroll internally;
               the sidebar and study chat stay put around them. */}
-          <main className="relative h-full w-full overflow-y-auto">
+          <main ref={mainRef} className="relative h-full w-full overflow-y-auto">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={location.pathname}
