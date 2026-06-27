@@ -233,7 +233,7 @@ export default function AcademyMainhub() {
               <div className="pointer-events-none absolute right-8 top-7 z-10">
                 <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
                   <button
-                    onClick={() => setSidecarOpen((v) => !v)}
+                    onClick={() => setSidecarOpen((v) => { if (!v) setHelpOpen(false); return !v; })}
                     aria-label={sidecarOpen ? "Close study assistant" : "Open study assistant"}
                     title={sidecarOpen ? "Close study assistant" : "Open study assistant"}
                     className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors"
@@ -286,10 +286,12 @@ export default function AcademyMainhub() {
         </StorySection>
       </StoryScroll>
 
-      <MainhubHelpControl
-        open={helpOpen}
-        onOpenChange={setHelpOpen}
-      />
+      {!sidecarOpen && (
+        <MainhubHelpControl
+          open={helpOpen}
+          onOpenChange={setHelpOpen}
+        />
+      )}
 
       <StudySidecar
         open={sidecarOpen}
