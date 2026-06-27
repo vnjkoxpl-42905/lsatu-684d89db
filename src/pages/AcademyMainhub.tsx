@@ -139,8 +139,13 @@ export default function AcademyMainhub() {
 
   return (
     <div className="relative flex h-full w-full flex-col items-center overflow-y-auto rounded-xl bg-card/60 px-4 py-8 pb-24 shadow-sm ring-1 ring-inset ring-border/40 md:px-6 @4xl:py-20">
-      <div className="my-auto flex w-full max-w-3xl flex-col items-center gap-6">
-        {/* Orbital ring — kept EXACTLY as-is (same 500×460 box, spin, nodes) */}
+      <div className="my-auto flex w-full max-w-3xl flex-col items-center gap-10">
+        {/* Smart Drill card — now on top */}
+        <div className="w-full max-w-[360px] shrink-0">
+          <SmartLRTrainingCard />
+        </div>
+
+        {/* Orbital ring — moved below the card, no overlap */}
         <section
           aria-label="Mainhub orbital workspace"
           className="relative flex shrink-0 items-center justify-center"
@@ -149,11 +154,6 @@ export default function AcademyMainhub() {
             <RadialOrbitalTimeline timelineData={mainhubNodes} onActivate={onOrbitalActivate} />
           </div>
         </section>
-
-        {/* Smart Drill card — centered below the ring, never overlapping it */}
-        <div className="hidden w-[320px] shrink-0 xl:block 2xl:w-[360px]">
-          <SmartLRTrainingCard />
-        </div>
       </div>
     </div>
   );
