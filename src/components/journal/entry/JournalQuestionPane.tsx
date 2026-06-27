@@ -98,7 +98,7 @@ export function JournalQuestionPane({
   const needsWrongAnswer = !!wrongReasoning.trim() && !chosenIsWrong;
 
   return (
-    <div className="relative h-full">
+    <div className="font-lsat-question relative h-full">
       {/* Freehand annotation overlay (covers stimulus + stem) */}
       <AnnotationLayer active={annotateActive} strokes={annotations} onChange={onAnnotationsChange} />
 

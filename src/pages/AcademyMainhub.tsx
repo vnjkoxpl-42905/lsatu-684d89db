@@ -212,7 +212,7 @@ export default function AcademyMainhub() {
             <aside
               data-tour="mainhub-sidebar"
               className="hidden shrink-0 border-r border-border md:flex"
-              style={{ width: "min(320px, 30vw)", minWidth: 280 }}
+              style={{ width: "15rem" }}
             >
               <MainhubSidebar displayName={displayName} onPracticeHubClick={scrollToPracticeHub} />
             </aside>
@@ -229,8 +229,8 @@ export default function AcademyMainhub() {
               </SheetContent>
             </Sheet>
 
-            <div className={`relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-8 pb-24 md:px-6 transition-all duration-200${sidecarOpen ? " md:pr-[calc(24rem+1.5rem)]" : ""}`}>
-              <div className="pointer-events-none absolute right-8 top-7 z-10">
+            <div className={`relative flex flex-1 flex-col overflow-hidden p-2 transition-all duration-200${sidecarOpen ? " md:pr-[calc(24rem+0.5rem)]" : ""}`}>
+              <div className="pointer-events-none absolute right-6 top-5 z-10">
                 <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
                   <button
                     onClick={() => setSidecarOpen((v) => { if (!v) setHelpOpen(false); return !v; })}
@@ -249,25 +249,30 @@ export default function AcademyMainhub() {
                 </div>
               </div>
 
-              <div className="relative flex h-full w-full max-w-[1060px] items-center justify-center gap-8 2xl:max-w-[1100px] 2xl:gap-12">
-                <div className="hidden w-[320px] shrink-0 xl:flex 2xl:w-[360px]">
-                  <SmartLRTrainingCard />
-                </div>
-
-                <section
-                  aria-label="Mainhub orbital workspace"
-                  className="relative flex h-full min-h-[560px] min-w-0 flex-1 items-center justify-center pl-6 2xl:pl-10"
-                >
-                  <div
-                    data-tour="mainhub-orbital"
-                    className="absolute left-1/2 top-1/2 h-[500px] w-[460px] max-w-full -translate-x-1/2 -translate-y-1/2"
+              {/* lexprep-style inset content card; surrounds the orbital + Smart Drill stack */}
+              <div className="relative flex h-full w-full flex-col items-center overflow-y-auto rounded-xl bg-card/60 px-4 py-8 pb-24 shadow-sm ring-1 ring-inset ring-border/40 md:px-6 @4xl:py-20">
+                <div className="my-auto flex w-full max-w-3xl flex-col items-center gap-6">
+                  {/* Orbital ring — kept EXACTLY as-is (same 500×460 box, spin, nodes) */}
+                  <section
+                    aria-label="Mainhub orbital workspace"
+                    className="relative flex shrink-0 items-center justify-center"
                   >
-                    <RadialOrbitalTimeline
-                      timelineData={mainhubNodes}
-                      onActivate={onOrbitalActivate}
-                    />
+                    <div
+                      data-tour="mainhub-orbital"
+                      className="relative h-[500px] w-[460px] max-w-full"
+                    >
+                      <RadialOrbitalTimeline
+                        timelineData={mainhubNodes}
+                        onActivate={onOrbitalActivate}
+                      />
+                    </div>
+                  </section>
+
+                  {/* Smart Drill card — centered below the ring, never overlapping it */}
+                  <div className="hidden w-[320px] shrink-0 xl:block 2xl:w-[360px]">
+                    <SmartLRTrainingCard />
                   </div>
-                </section>
+                </div>
               </div>
             </div>
 

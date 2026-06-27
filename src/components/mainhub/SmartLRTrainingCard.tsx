@@ -226,7 +226,7 @@ export default function SmartLRTrainingCard() {
   return (
     <section
       aria-label="Smart LR Training"
-      className="group relative w-full overflow-hidden rounded-[32px] border border-slate-200/50 bg-[#fbfcff] px-6 py-8 text-slate-900 shadow-[0_15px_40px_rgba(15,23,42,0.04)]"
+      className="font-lsat-question group relative w-full overflow-hidden rounded-[32px] border border-slate-200/50 bg-[#fbfcff] px-6 py-8 text-slate-900 shadow-[0_15px_40px_rgba(15,23,42,0.04)]"
     >
       <div
         aria-hidden

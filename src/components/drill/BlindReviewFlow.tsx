@@ -194,7 +194,7 @@ export function BlindReviewFlow({ session, selectedQids, onComplete }: BlindRevi
   const questionHighlights = highlights.get(currentQid) || [];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="font-lsat-question min-h-screen flex flex-col">
       {/* Header */}
       <div className="px-6 py-4 border-b bg-card">
         <div className="flex items-center justify-between">

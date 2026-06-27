@@ -175,12 +175,18 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-family: 'Lexend', 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
     font-size: 14px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "rlig" 1, "calt" 1, "cv11" 1;
+  }
+
+  /* Font lock for LSAT-question / Smart Drill surfaces: these must keep the
+     original Outfit stack even though the rest of the app moved to Lexend. */
+  .font-lsat-question {
+    font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
 
   @media (min-width: 640px) {

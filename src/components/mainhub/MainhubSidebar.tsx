@@ -60,84 +60,72 @@ export default function MainhubSidebar({ onPracticeHubClick }: MainhubSidebarPro
   // Append any nav items missing from prefs (e.g. catalog gained a new entry)
   for (const item of NAV_ITEMS) if (!seen.has(item.to)) orderedNav.push(item);
 
+  // lexprep-style nav pill classes (filled rounded item, 13px, size-4.5 icon).
+  const navItemBase =
+    "flex w-full items-center gap-2 rounded-md py-2 pr-1 pl-[9px] text-left text-[0.8125rem] font-medium transition-colors active:scale-[0.99]";
+  const navItemInactive = "text-muted-foreground hover:bg-accent/60 hover:text-foreground";
+  const navItemActive = "bg-accent text-foreground";
+
   return (
     <aside className="flex h-full w-full flex-col bg-background">
-      <div className="flex items-center gap-2 border-b border-border p-6">
-        <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
-          <span
-            className="font-medium text-background"
-            style={{ fontSize: 11 }}
-          >
+      <div className="mb-4 flex items-center gap-2 pl-4 pr-2 pb-2 pt-4">
+        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-foreground">
+          <span className="font-medium text-background" style={{ fontSize: 10 }}>
             L
           </span>
         </div>
         <span
           className="font-medium uppercase text-foreground"
-          style={{ fontSize: 12, letterSpacing: "0.22em" }}
+          style={{ fontSize: 12, letterSpacing: "0.2em" }}
         >
           LSAT U
         </span>
       </div>
 
-      <div className="px-6 py-4 text-sm tracking-wide text-muted-foreground">
-        {today}
+      <div className="flex flex-1 flex-col gap-2 px-1">
+        <div className="mt-1 border-t border-border/60 pt-4">
+          <div className="ml-2 mb-1 text-xs font-medium text-muted-foreground">{today}</div>
+          <div className="ml-2 mb-1 text-xs font-medium text-muted-foreground">Workspace</div>
+
+          <nav className="flex flex-col gap-0.5">
+            {orderedNav.filter((item) => {
+              if (item.adminOnly) return permissions.is_admin;
+              return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
+            }).map(({ to, label, Icon, activePrefixes }) => {
+              const prefixActive = activePrefixes?.some((p) =>
+                location.pathname === p.replace(/\/$/, "") ||
+                location.pathname.startsWith(p),
+              );
+              if (to === "/practice" && onPracticeHubClick) {
+                return (
+                  <button
+                    key={to}
+                    type="button"
+                    onClick={onPracticeHubClick}
+                    className={[navItemBase, navItemInactive].join(" ")}
+                  >
+                    <Icon className="h-[18px] w-[18px] shrink-0" />
+                    <span className="min-w-0 flex-1 truncate">{label}</span>
+                  </button>
+                );
+              }
+              return (
+                <NavLink
+                  key={to}
+                  to={to}
+                  className={({ isActive }) => {
+                    const active = isActive || prefixActive;
+                    return [navItemBase, active ? navItemActive : navItemInactive].join(" ");
+                  }}
+                >
+                  <Icon className="h-[18px] w-[18px] shrink-0" />
+                  <span className="min-w-0 flex-1 truncate">{label}</span>
+                </NavLink>
+              );
+            })}
+          </nav>
+        </div>
       </div>
-
-      <div
-        className="px-6 pb-2 pt-2 text-xs uppercase text-muted-foreground"
-        style={{ letterSpacing: "0.2em" }}
-      >
-        Workspace
-      </div>
-
-      <nav className="flex flex-col">
-        {orderedNav.filter((item) => {
-          if (item.adminOnly) return permissions.is_admin;
-          return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
-        }).map(({ to, label, Icon, activePrefixes }) => {
-          const prefixActive = activePrefixes?.some((p) =>
-            location.pathname === p.replace(/\/$/, "") ||
-            location.pathname.startsWith(p),
-          );
-          const baseClassName = [
-            "flex w-full items-center gap-3 border-l-2 px-6 py-3 text-left text-sm transition-colors active:opacity-75",
-            "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
-          ].join(" ");
-          if (to === "/practice" && onPracticeHubClick) {
-            return (
-              <button
-                key={to}
-                type="button"
-                onClick={onPracticeHubClick}
-                className={baseClassName}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{label}</span>
-              </button>
-            );
-          }
-          return (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) => {
-                const active = isActive || prefixActive;
-                return [
-                  "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors active:opacity-75",
-                  active
-                    ? "border-primary bg-accent/60 text-foreground"
-                    : "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
-                ].join(" ");
-              }}
-            >
-              <Icon className="h-4 w-4" />
-              <span>{label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      <div className="flex-1" />
     </aside>
   );
 }
