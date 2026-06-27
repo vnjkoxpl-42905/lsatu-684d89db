@@ -119,7 +119,6 @@ export default function StudentShell() {
                 )}
               </button>
               <MainhubDock />
-              <MainhubAccountButton displayName={displayName} />
             </div>
           </div>
 
