@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
 import MainhubDock from "@/components/mainhub/MainhubDock";
 
-import MainhubHelpControl from "@/components/mainhub/MainhubHelpControl";
+
 import StudySidecar from "@/components/mainhub/StudySidecar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
@@ -29,12 +29,19 @@ export default function StudentShell() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
-  const [helpOpen, setHelpOpen] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const [sidecarOpen, setSidecarOpen] = React.useState(false);
+  const [sidecarOpen, setSidecarOpen] = React.useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    return window.localStorage.getItem("lsatu:sidecarOpen") !== "0";
+  });
   const location = useLocation();
   const reduceMotion = useReducedMotion();
   const mainRef = React.useRef<HTMLElement>(null);
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
+    } catch {}
+  }, [sidecarOpen]);
 
   React.useEffect(() => {
     if (!authReady) return;
@@ -102,12 +109,7 @@ export default function StudentShell() {
           <div className="pointer-events-none absolute right-6 top-5 z-10">
             <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
               <button
-                onClick={() =>
-                  setSidecarOpen((v) => {
-                    if (!v) setHelpOpen(false);
-                    return !v;
-                  })
-                }
+                onClick={() => setSidecarOpen((v) => !v)}
                 aria-label={sidecarOpen ? "Close study assistant" : "Open study assistant"}
                 title={sidecarOpen ? "Close study assistant" : "Open study assistant"}
                 className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors"
@@ -143,7 +145,7 @@ export default function StudentShell() {
         </div>
       </div>
 
-      {!sidecarOpen && <MainhubHelpControl open={helpOpen} onOpenChange={setHelpOpen} />}
+
 
       <StudySidecar
         open={sidecarOpen}
