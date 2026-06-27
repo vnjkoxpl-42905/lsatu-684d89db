@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
 import MainhubDock from "@/components/mainhub/MainhubDock";
-import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
+
 import MainhubHelpControl from "@/components/mainhub/MainhubHelpControl";
 import StudySidecar from "@/components/mainhub/StudySidecar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -119,7 +119,6 @@ export default function StudentShell() {
                 )}
               </button>
               <MainhubDock />
-              <MainhubAccountButton displayName={displayName} />
             </div>
           </div>
 

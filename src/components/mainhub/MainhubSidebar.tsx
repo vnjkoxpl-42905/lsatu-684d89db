@@ -14,6 +14,7 @@ import {
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 
 export interface MainhubSidebarProps {
   displayName?: string | null;
@@ -42,7 +43,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
-export default function MainhubSidebar({ onNavigate }: MainhubSidebarProps) {
+export default function MainhubSidebar({ displayName, onNavigate }: MainhubSidebarProps) {
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
@@ -114,6 +115,14 @@ export default function MainhubSidebar({ onNavigate }: MainhubSidebarProps) {
             })}
           </nav>
         </div>
+      </div>
+
+      <div className="mt-auto border-t border-border/60 p-2">
+        <MainhubAccountButton
+          displayName={displayName}
+          variant="footer"
+          secondaryLabel={permissions.is_admin ? "Admin" : "Student"}
+        />
       </div>
     </aside>
   );
