@@ -110,8 +110,8 @@ export default function StudentShell() {
             <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
               <button
                 onClick={() => setSidecarOpen((v) => !v)}
-                aria-label={sidecarOpen ? "Close study assistant" : "Open study assistant"}
-                title={sidecarOpen ? "Close study assistant" : "Open study assistant"}
+                aria-label={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
+                title={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
                 className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors"
               >
                 {sidecarOpen ? (

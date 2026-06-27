@@ -8,6 +8,7 @@ import {
   IconThumbUp,
   IconThumbDown,
   IconX,
+  IconGavel,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { useStudyChat } from "@/hooks/useStudyChat";
@@ -108,7 +109,7 @@ export default function StudySidecar({ open, onClose, userName }: StudySidecarPr
           exit={{ x: "100%" }}
           transition={{ type: "spring", stiffness: 320, damping: 38 }}
           className="fixed right-0 top-0 z-40 hidden md:flex h-svh w-96 flex-col border-l border-border/40 bg-background/95 backdrop-blur-md shadow-2xl shadow-black/20"
-          aria-label="Study assistant"
+          aria-label="LSAT U assistant"
         >
           {/* Tab bar */}
           <div className="flex shrink-0 items-center justify-between border-b border-border/30 py-1 mt-px">
@@ -162,7 +163,7 @@ export default function StudySidecar({ open, onClose, userName }: StudySidecarPr
                   <button
                     onClick={onClose}
                     className="cursor-pointer rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-                    aria-label="Close study assistant"
+                    aria-label="Close LSAT U assistant"
                   >
                     <IconX size={16} />
                   </button>
@@ -176,7 +177,8 @@ export default function StudySidecar({ open, onClose, userName }: StudySidecarPr
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
             {activeMessages.length === 0 && !thinking && !streamingContent && (
               <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
-                <p className="text-sm font-medium mb-1">Study assistant</p>
+                <IconGavel className="h-8 w-8 mb-2 text-foreground/80" />
+                <p className="text-lg font-semibold text-foreground mb-1">LSAT U</p>
                 <p className="text-xs max-w-[200px]">
                   Ask about question types, strategies, or your study plan.
                 </p>
