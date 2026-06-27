@@ -63,6 +63,12 @@ export default function StudentShell() {
     }
   }, [displayName]);
 
+  React.useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+  }, [location.pathname, reduceMotion]);
+
   if (!authReady || !user) return null;
 
   return (
