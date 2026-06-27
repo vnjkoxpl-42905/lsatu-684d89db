@@ -80,6 +80,7 @@ const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSes
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
+import StudentShell from "./components/mainhub/StudentShell";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -142,10 +143,8 @@ const App = () => {
             {/* Onboarding. Username setup for new users. */}
             <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Mainhub. Needs QuestionBankProvider for the FIND node's picker. */}
-            <Route path="/mainhub" element={
-              <QuestionBankProvider><AcademyMainhub /></QuestionBankProvider>
-            } />
+            {/* Mainhub + all student sections now live inside the persistent
+                StudentShell layout route (in the /* block below). */}
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
             <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
 
@@ -257,13 +256,7 @@ const App = () => {
               </React.Suspense>
             } />
 
-            {/* Inbox. Messaging, no question bank needed. */}
-            <Route path="/inbox" element={
-              <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-            } />
-            <Route path="/inbox/:conversationId" element={
-              <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-            } />
+            {/* Inbox now renders inside StudentShell (in the /* block below). */}
 
             {/* Canonical Teacher Desk (Today). Rendered full-bleed outside
                 TeacherShell so ProtectedRoute's localhost dev bypass makes it
@@ -283,31 +276,14 @@ const App = () => {
               <QuestionBankProvider>
                 <Routes>
                   <Route path="/" element={<Navigate to="/mainhub" replace />} />
-                  <Route path="/practice" element={
-                    <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
-                  } />
-                  <Route path="/practice/sets" element={
-                    <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
-                  } />
+
+                  {/* Full-screen takeovers: actual LSAT question-doing + activity
+                      runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
                   } />
-                  <Route path="/journal" element={
-                    <ProtectedRoute flag="has_journal_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <Journal />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
                   {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
                   <Route path="/waj" element={<Navigate to="/journal" replace />} />
-                  <Route path="/activities" element={
-                    <ProtectedRoute flag="has_activity_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ActivityCentre />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
                   <Route path="/activities/:assignmentId" element={
                     <ProtectedRoute flag="has_activity_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
@@ -315,38 +291,91 @@ const App = () => {
                       </React.Suspense>
                     </ProtectedRoute>
                   } />
-                  <Route path="/flagged" element={
-                    <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
-                  } />
-                  <Route path="/analytics" element={
-                    <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
-                  } />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/settings/layout" element={<SettingsLayout />} />
-                  <Route path="/classroom" element={
-                    <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
-                  } />
-                  <Route path="/classroom/uploads" element={
-                    <ProtectedRoute flag="has_classroom_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ClassroomUploads />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/classroom/recaps" element={
-                    <ProtectedRoute flag="has_classroom_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ClassroomRecaps />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/classroom/item/:itemId" element={
-                    <ProtectedRoute flag="has_classroom_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ClassroomItem />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
+
+                  {/* Persistent student shell. Sidebar + study chat stay mounted;
+                      these pages swap the center stage instead of redirecting. */}
+                  <Route element={<StudentShell />}>
+                    <Route path="/mainhub" element={<AcademyMainhub />} />
+                    <Route path="/practice" element={
+                      <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
+                    } />
+                    <Route path="/practice/sets" element={
+                      <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
+                    } />
+                    <Route path="/journal" element={
+                      <ProtectedRoute flag="has_journal_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <Journal />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/activities" element={
+                      <ProtectedRoute flag="has_activity_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ActivityCentre />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/flagged" element={
+                      <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
+                    } />
+                    <Route path="/analytics" element={
+                      <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
+                    } />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/settings/layout" element={<SettingsLayout />} />
+                    <Route path="/inbox" element={
+                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+                    } />
+                    <Route path="/inbox/:conversationId" element={
+                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+                    } />
+                    <Route path="/classroom" element={
+                      <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
+                    } />
+                    <Route path="/classroom/uploads" element={
+                      <ProtectedRoute flag="has_classroom_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ClassroomUploads />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/classroom/recaps" element={
+                      <ProtectedRoute flag="has_classroom_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ClassroomRecaps />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/classroom/item/:itemId" element={
+                      <ProtectedRoute flag="has_classroom_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ClassroomItem />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/classroom/ta/:assignmentId" element={
+                      <ProtectedRoute flag="has_classroom_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ClassroomTAAssignmentDetail />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/classroom/:assignmentId" element={
+                      <ProtectedRoute flag="has_classroom_access">
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <ClassroomAssignmentDetail />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/schedule" element={
+                      <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
+                    } />
+                    <Route path="/bootcamps" element={
+                      <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
+                    } />
+                  </Route>
+
                   <Route path="/teacher" element={
                     <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
@@ -477,26 +506,6 @@ const App = () => {
                     </ProtectedRoute>
                   } />
 
-                  <Route path="/classroom/ta/:assignmentId" element={
-                    <ProtectedRoute flag="has_classroom_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ClassroomTAAssignmentDetail />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/classroom/:assignmentId" element={
-                    <ProtectedRoute flag="has_classroom_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ClassroomAssignmentDetail />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/schedule" element={
-                    <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
-                  } />
-                  <Route path="/bootcamps" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
-                  } />
                   <Route path="/bootcamp/causation-station" element={
                     <ProtectedRoute flag="has_bootcamp_access">
                       <BootcampGate routePath="/bootcamp/causation-station" title="Causation Station">

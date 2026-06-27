@@ -17,7 +17,8 @@ import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
 export interface MainhubSidebarProps {
   displayName?: string | null;
-  onPracticeHubClick?: () => void;
+  /** Fired after a nav item is chosen (used to close the mobile sheet). */
+  onNavigate?: () => void;
 }
 
 type NavItem = {
@@ -41,7 +42,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
-export default function MainhubSidebar({ onPracticeHubClick }: MainhubSidebarProps) {
+export default function MainhubSidebar({ onNavigate }: MainhubSidebarProps) {
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
@@ -96,23 +97,11 @@ export default function MainhubSidebar({ onPracticeHubClick }: MainhubSidebarPro
                 location.pathname === p.replace(/\/$/, "") ||
                 location.pathname.startsWith(p),
               );
-              if (to === "/practice" && onPracticeHubClick) {
-                return (
-                  <button
-                    key={to}
-                    type="button"
-                    onClick={onPracticeHubClick}
-                    className={[navItemBase, navItemInactive].join(" ")}
-                  >
-                    <Icon className="h-[18px] w-[18px] shrink-0" />
-                    <span className="min-w-0 flex-1 truncate">{label}</span>
-                  </button>
-                );
-              }
               return (
                 <NavLink
                   key={to}
                   to={to}
+                  onClick={() => onNavigate?.()}
                   className={({ isActive }) => {
                     const active = isActive || prefixActive;
                     return [navItemBase, active ? navItemActive : navItemInactive].join(" ");

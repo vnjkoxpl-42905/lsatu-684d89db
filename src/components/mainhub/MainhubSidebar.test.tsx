@@ -24,23 +24,22 @@ vi.mock("@/hooks/useLayoutPrefs", () => ({
 }));
 
 describe("MainhubSidebar", () => {
-  it("uses the in-page Practice Hub handler when provided", () => {
-    const onPracticeHubClick = vi.fn();
+  it("fires onNavigate when a nav item is clicked (closes the mobile sheet)", () => {
+    const onNavigate = vi.fn();
 
     render(
       <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-        <MainhubSidebar onPracticeHubClick={onPracticeHubClick} />
+        <MainhubSidebar onNavigate={onNavigate} />
       </MemoryRouter>,
     );
 
-    const practiceHub = screen.getByRole("button", { name: /Practice Hub/i });
+    const practiceHub = screen.getByRole("link", { name: /Practice Hub/i });
     fireEvent.click(practiceHub);
 
-    expect(onPracticeHubClick).toHaveBeenCalledTimes(1);
-    expect(practiceHub.closest("a")).toBeNull();
+    expect(onNavigate).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps Practice Hub as a normal route link without the in-page handler", () => {
+  it("keeps Practice Hub as a normal route link", () => {
     render(
       <MemoryRouter initialEntries={["/classroom"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <MainhubSidebar />
