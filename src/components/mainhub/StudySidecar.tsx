@@ -271,9 +271,7 @@ export default function StudySidecar({ open, onClose, userName }: StudySidecarPr
                 <IconSend size={15} />
               </button>
             </div>
-            <p className="mt-1.5 text-center text-[10px] text-muted-foreground/50">
-              AI can make mistakes. Verify important LSAT concepts.
-            </p>
+
           </div>
         </motion.aside>
       )}
