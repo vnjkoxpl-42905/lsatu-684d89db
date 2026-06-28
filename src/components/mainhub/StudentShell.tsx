@@ -146,21 +146,16 @@ export default function StudentShell() {
               <h1 className="truncate pt-0.5 text-sm font-semibold text-foreground">
                 {routeTitle}
               </h1>
-              <div data-tour="mainhub-dock" className="flex items-center gap-2">
+              {!sidecarOpen && (
                 <button
-                  onClick={() => setSidecarOpen((v) => !v)}
-                  aria-label={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
-                  title={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
-                  className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 text-muted-foreground shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:text-foreground"
+                  onClick={() => setSidecarOpen(true)}
+                  aria-label="Open LSAT U chat"
+                  title="Open LSAT U chat"
+                  className="rounded-lg border border-border/40 bg-background/70 p-1.5 text-muted-foreground shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:text-foreground"
                 >
-                  {sidecarOpen ? (
-                    <IconLayoutSidebarLeftCollapse size={18} />
-                  ) : (
-                    <IconLayoutSidebarLeftExpand size={18} />
-                  )}
+                  <IconLayoutSidebarLeftExpand size={16} />
                 </button>
-                <MainhubDock />
-              </div>
+              )}
             </div>
 
             {/* Center stage. Student pages render here and scroll internally;
