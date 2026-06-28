@@ -78,16 +78,12 @@ vi.mock("@/components/mainhub/MainhubAccountButton", () => ({
   ),
 }));
 
-vi.mock("@/components/mainhub/SmartLRTrainingCard", () => ({
-  default: () => <div>Smart LR card</div>,
-}));
-
 vi.mock("@/components/ui/radial-orbital-timeline", () => ({
   default: () => <div>Orbital workspace</div>,
 }));
 
-vi.mock("@/pages/Practice", () => ({
-  PracticeHubContent: () => <div>Embedded Practice Hub</div>,
+vi.mock("@/components/ui/splite", () => ({
+  SplineScene: () => <div aria-hidden="true">Robot scene</div>,
 }));
 
 describe("AcademyMainhub", () => {
@@ -95,15 +91,21 @@ describe("AcademyMainhub", () => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
   });
 
-  it("renders the home stage (orbital ring + Smart Drill card)", () => {
+  it("renders the robot hero, existing orbital ring, and limited practice actions", () => {
     render(
       <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <AcademyMainhub />
       </MemoryRouter>,
     );
 
+    expect(screen.getByRole("heading", { name: "LR Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
-    expect(screen.getByText("Smart LR card")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Full Section/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Build a Set/i })).toBeInTheDocument();
+    expect(screen.queryByText("Smart Builder")).not.toBeInTheDocument();
+    expect(screen.queryByText("My Sets")).not.toBeInTheDocument();
+    expect(screen.queryByText("Study Tools")).not.toBeInTheDocument();
   });
 });
