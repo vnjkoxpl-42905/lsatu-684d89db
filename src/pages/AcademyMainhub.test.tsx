@@ -55,6 +55,26 @@ vi.mock("@/contexts/OrbitalActiveContext", () => ({
   useOrbitalActive: () => ({ setActive: vi.fn() }),
 }));
 
+vi.mock("@/contexts/QuestionBankContext", () => ({
+  useQuestionBank: () => ({ manifest: {}, isLoading: false, error: null }),
+}));
+
+vi.mock("@/lib/questionLoader", () => ({
+  questionBank: {
+    getAllQuestions: () => [
+      {
+        qid: "PT151-S2-Q8",
+        pt: 151,
+        section: 2,
+        qnum: 8,
+        qtype: "main_conclusion",
+        stimulus: "Sample stimulus",
+        questionStem: "Sample question stem",
+      },
+    ],
+  },
+}));
+
 vi.mock("@/hooks/useInbox", () => ({
   useConversationMessages: () => ({ messages: [], loading: false, refresh: vi.fn() }),
 }));
@@ -98,8 +118,13 @@ describe("AcademyMainhub", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole("heading", { name: "LR Smart Drill" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "LR Smart Drill" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByText("Robot scene")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Section" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Question" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Full Section/i })).toBeInTheDocument();

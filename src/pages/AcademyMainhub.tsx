@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
+  ChevronDown,
   Grid3x3,
+  Loader2,
+  Play,
   X,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -20,6 +23,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import { questionBank } from "@/lib/questionLoader";
 import { resolveResumeTarget } from "@/lib/lastActivity";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import { cn } from "@/lib/utils";
@@ -31,6 +35,7 @@ import {
 } from "@/lib/layoutCatalog";
 
 const REQUIRED_ORBITAL_IDS = ["resume", "analytics", "waj"] as const;
+const QUESTION_PICKER_PLACEHOLDER = "";
 
 interface OrbitalRenderInfo {
   date: string;
@@ -187,42 +192,198 @@ function PracticeActionPanel({
 
 function MainhubHero() {
   const navigate = useNavigate();
+  const { manifest, isLoading } = useQuestionBank();
+  const [pt, setPt] = React.useState(QUESTION_PICKER_PLACEHOLDER);
+  const [section, setSection] = React.useState(QUESTION_PICKER_PLACEHOLDER);
+  const [qnum, setQnum] = React.useState(QUESTION_PICKER_PLACEHOLDER);
+
+  const allQuestions = React.useMemo(
+    () => (manifest ? questionBank.getAllQuestions() : []),
+    [manifest],
+  );
+
+  const pts = React.useMemo(
+    () =>
+      Array.from(new Set(allQuestions.map((q) => q.pt))).sort((a, b) => b - a),
+    [allQuestions],
+  );
+
+  const sections = React.useMemo(() => {
+    if (!pt) return [] as number[];
+    return Array.from(
+      new Set(
+        allQuestions
+          .filter((q) => String(q.pt) === pt)
+          .map((q) => q.section),
+      ),
+    ).sort((a, b) => a - b);
+  }, [allQuestions, pt]);
+
+  const qnums = React.useMemo(() => {
+    if (!pt || !section) return [] as number[];
+    return Array.from(
+      new Set(
+        allQuestions
+          .filter((q) => String(q.pt) === pt && String(q.section) === section)
+          .map((q) => q.qnum),
+      ),
+    ).sort((a, b) => a - b);
+  }, [allQuestions, pt, section]);
+
+  const selectedQuestion = React.useMemo(() => {
+    if (!pt || !section || !qnum) return null;
+    return (
+      allQuestions.find(
+        (q) =>
+          String(q.pt) === pt &&
+          String(q.section) === section &&
+          String(q.qnum) === qnum,
+      ) ?? null
+    );
+  }, [allQuestions, pt, section, qnum]);
 
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive" } });
   }, [navigate]);
 
+  const startSpecificQuestion = React.useCallback(() => {
+    if (!selectedQuestion) return;
+    navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(selectedQuestion.qid)}&present=smart`);
+  }, [navigate, selectedQuestion]);
+
   return (
-    <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl border-black/20">
-      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
-      <div className="flex h-full">
-        <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-neutral-100">
-            LR Smart Drill
-          </h1>
-          <p className="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed">
-            Take it one question at a time with your tutor.
-          </p>
-          <div className="mt-5">
+    <Card className="relative min-h-[430px] w-full overflow-hidden rounded-xl border border-black/20 bg-zinc-950 shadow-[0_24px_80px_rgba(15,23,42,0.22)] md:min-h-[360px]">
+      <Spotlight className="-top-48 left-[-120px] md:left-[26%] md:-top-24" fill="white" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_40%,rgba(255,255,255,0.14),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_36%,rgba(14,165,233,0.08)_74%,transparent)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:44px_44px]"
+      />
+
+      <div className="relative z-10 grid min-h-[430px] grid-cols-1 gap-5 p-5 sm:p-6 md:min-h-[360px] md:grid-cols-[0.78fr_1.34fr_0.9fr] md:items-center md:gap-2 lg:grid-cols-[0.7fr_1.42fr_0.88fr]">
+        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-2">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <Play className="h-3.5 w-3.5 fill-white/20" aria-hidden />
+            </span>
             <Button
               onClick={startSmartDrill}
               size="sm"
-              className="bg-white text-black hover:bg-neutral-200 font-medium"
+              className="h-10 rounded-full border border-white/15 bg-white text-sm font-semibold text-black shadow-[0_14px_30px_rgba(255,255,255,0.08)] hover:bg-neutral-200"
             >
               Start Smart Drill
             </Button>
           </div>
         </div>
-        <div className="flex-1 relative hidden md:block">
+
+        <div className="relative flex h-[150px] items-center justify-center md:h-[330px]">
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-[58%] -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl md:h-72 md:w-72"
+          />
           <SplineBoundary>
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full"
+              className="h-full w-full"
             />
           </SplineBoundary>
         </div>
+
+        <div className="rounded-[22px] border border-white/10 bg-white/[0.055] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-md sm:p-4 md:mr-1">
+          <div className="grid grid-cols-1 gap-2.5" aria-label="Specific question launcher">
+            <ConsoleSelect
+              label="PrepTest"
+              value={pt}
+              disabled={isLoading || pts.length === 0}
+              onChange={(value) => {
+                setPt(value);
+                setSection(QUESTION_PICKER_PLACEHOLDER);
+                setQnum(QUESTION_PICKER_PLACEHOLDER);
+              }}
+              options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
+            />
+            <ConsoleSelect
+              label="Section"
+              value={section}
+              disabled={!pt}
+              onChange={(value) => {
+                setSection(value);
+                setQnum(QUESTION_PICKER_PLACEHOLDER);
+              }}
+              options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
+            />
+            <ConsoleSelect
+              label="Question"
+              value={qnum}
+              disabled={!section}
+              onChange={setQnum}
+              options={qnums.map((n) => ({ value: String(n), label: `Question ${n}` }))}
+            />
+          </div>
+
+          <Button
+            type="button"
+            onClick={startSpecificQuestion}
+            disabled={!selectedQuestion}
+            className="mt-3 h-11 w-full rounded-2xl border border-white/15 bg-white text-sm font-semibold text-black shadow-[0_14px_28px_rgba(255,255,255,0.08)] hover:bg-neutral-200 disabled:bg-white/10 disabled:text-white/35 disabled:opacity-100"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                Start
+              </>
+            ) : (
+              "Start"
+            )}
+          </Button>
+        </div>
       </div>
     </Card>
+  );
+}
+
+function ConsoleSelect({
+  label,
+  value,
+  options,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  disabled?: boolean;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="relative block">
+      <span className="sr-only">{label}</span>
+      <select
+        value={value}
+        disabled={disabled}
+        aria-label={label}
+        onChange={(event) => onChange(event.target.value)}
+        className={cn(
+          "h-12 w-full appearance-none rounded-2xl border border-white/10 bg-black/20 px-3 pr-9 text-sm font-semibold text-white outline-none transition",
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10",
+          "disabled:cursor-default disabled:text-white/30",
+        )}
+      >
+        <option value="">{label}</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40"
+        aria-hidden
+      />
+    </label>
   );
 }
 
