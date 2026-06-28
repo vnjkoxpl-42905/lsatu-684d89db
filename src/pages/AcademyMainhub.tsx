@@ -14,6 +14,7 @@ import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useLastActivity } from "@/hooks/useLastActivity";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SectionSelector } from "@/components/drill/SectionSelector";
@@ -192,43 +193,36 @@ function MainhubHero() {
   }, [navigate]);
 
   return (
-    <section className="relative min-h-[300px] overflow-hidden rounded-[18px] border border-black/20 bg-[#050608] text-white shadow-[0_18px_44px_rgba(15,23,42,0.24)] sm:min-h-[340px]">
-      <Spotlight className="-left-40 -top-48 md:left-36 md:-top-32" fill="white" />
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.16),transparent_24%),linear-gradient(112deg,rgba(255,255,255,0.08),transparent_38%,rgba(255,255,255,0.04)_72%,transparent)]"
-      />
-      <div className="relative grid min-h-[300px] grid-cols-1 sm:min-h-[340px] lg:grid-cols-[0.86fr_1.14fr]">
-        <div className="relative z-10 flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-12">
-          <h1 className="text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl">
+    <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl border-black/20">
+      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+      <div className="flex h-full">
+        <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-neutral-100">
             LR Smart Drill
           </h1>
-          <p className="mt-4 max-w-md text-base leading-7 text-white/62">
+          <p className="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed">
             Take it one question at a time with your tutor.
           </p>
-          <div className="mt-8">
+          <div className="mt-5">
             <Button
               onClick={startSmartDrill}
-              className="h-12 rounded-lg bg-white px-5 text-base font-semibold text-black shadow-[0_18px_44px_rgba(255,255,255,0.14)] hover:bg-white/90"
+              size="sm"
+              className="bg-white text-black hover:bg-neutral-200 font-medium"
             >
               Start Smart Drill
             </Button>
           </div>
         </div>
-
-        <div className="relative hidden min-h-[340px] overflow-hidden md:block">
-          <div className="absolute inset-0">
-            <SplineBoundary>
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="h-full w-full opacity-95"
-              />
-            </SplineBoundary>
-          </div>
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#050608_0%,rgba(5,6,8,0.58)_20%,rgba(5,6,8,0.03)_62%),linear-gradient(180deg,rgba(5,6,8,0)_58%,#050608_100%)]" />
+        <div className="flex-1 relative hidden md:block">
+          <SplineBoundary>
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </SplineBoundary>
         </div>
       </div>
-    </section>
+    </Card>
   );
 }
 
