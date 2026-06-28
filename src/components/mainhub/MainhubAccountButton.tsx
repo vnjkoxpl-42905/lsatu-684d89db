@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronDown, User, Sliders, BarChart3 } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, User, Sliders, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
@@ -77,7 +77,11 @@ export default function MainhubAccountButton({
                 </span>
               )}
             </span>
-            <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+            <ChevronsUpDown
+              className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
+              strokeWidth={1.8}
+              aria-hidden
+            />
           </button>
         ) : (
           <button
