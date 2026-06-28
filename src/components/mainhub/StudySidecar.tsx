@@ -18,6 +18,7 @@ interface StudySidecarProps {
   open: boolean;
   onClose: () => void;
   userName?: string;
+  presentation?: "floating" | "docked";
 }
 
 function ThinkingDots() {
@@ -58,7 +59,12 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export default function StudySidecar({ open, onClose, userName }: StudySidecarProps) {
+export default function StudySidecar({
+  open,
+  onClose,
+  userName,
+  presentation = "floating",
+}: StudySidecarProps) {
   const {
     tabs,
     activeTabId,
@@ -99,16 +105,27 @@ export default function StudySidecar({ open, onClose, userName }: StudySidecarPr
     }
   };
 
+  const isDocked = presentation === "docked";
+
   return (
     <AnimatePresence>
       {open && (
         <motion.aside
           key="study-sidecar"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ type: "spring", stiffness: 320, damping: 38 }}
-          className="fixed right-0 top-0 z-40 hidden md:flex h-svh w-96 flex-col border-l border-border/40 bg-background/95 backdrop-blur-md shadow-2xl shadow-black/20"
+          initial={isDocked ? { opacity: 0, x: 18 } : { x: "100%" }}
+          animate={isDocked ? { opacity: 1, x: 0 } : { x: 0 }}
+          exit={isDocked ? { opacity: 0, x: 18 } : { x: "100%" }}
+          transition={
+            isDocked
+              ? { duration: 0.18, ease: [0.4, 0, 0.2, 1] }
+              : { type: "spring", stiffness: 320, damping: 38 }
+          }
+          className={cn(
+            "hidden md:flex w-96 flex-col overflow-hidden bg-background/95 backdrop-blur-md",
+            isDocked
+              ? "relative h-full shrink-0 rounded-xl border border-border/40 shadow-sm shadow-black/5"
+              : "fixed right-0 top-0 z-40 h-svh border-l border-border/40 shadow-2xl shadow-black/20",
+          )}
           aria-label="LSAT U assistant"
         >
           {/* Tab bar */}

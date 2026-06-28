@@ -15,6 +15,26 @@ import StudySidecar from "@/components/mainhub/StudySidecar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 
+const ROUTE_TITLES: Record<string, string> = {
+  "/mainhub": "Home",
+  "/classroom": "Classroom",
+  "/bootcamps": "Bootcamps",
+  "/inbox": "Messages",
+  "/practice": "Practice Hub",
+  "/activities": "Activity Centre",
+  "/schedule": "Schedule",
+  "/teacher": "Teacher Workspace",
+  "/teacher/reference-library": "Reference Library",
+  "/admin/board": "Whiteboard",
+};
+
+function titleForPath(pathname: string) {
+  const match = Object.entries(ROUTE_TITLES)
+    .sort((a, b) => b[0].length - a[0].length)
+    .find(([path]) => pathname === path || pathname.startsWith(`${path}/`));
+  return match?.[1] ?? "Workspace";
+}
+
 /**
  * Persistent student app shell (LexPrep-style).
  *
@@ -37,6 +57,7 @@ export default function StudentShell() {
   const location = useLocation();
   const reduceMotion = useReducedMotion();
   const mainRef = React.useRef<HTMLElement>(null);
+  const routeTitle = React.useMemo(() => titleForPath(location.pathname), [location.pathname]);
   React.useEffect(() => {
     try {
       window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
@@ -83,7 +104,7 @@ export default function StudentShell() {
       <div className="relative flex h-[100dvh] w-full overflow-hidden bg-background text-foreground">
         <aside
           data-tour="mainhub-sidebar"
-          className="hidden shrink-0 border-r border-border md:flex"
+          className="hidden shrink-0 md:flex"
           style={{ width: "15rem" }}
         >
           <MainhubSidebar displayName={displayName} />
@@ -101,18 +122,14 @@ export default function StudentShell() {
           </SheetContent>
         </Sheet>
 
-        <div
-          className={`relative flex flex-1 flex-col overflow-hidden p-2 transition-all duration-200${
-            sidecarOpen ? " md:pr-[calc(24rem+0.5rem)]" : ""
-          }`}
-        >
-          <div className="pointer-events-none absolute right-6 top-5 z-10">
+        <div className="relative flex min-w-0 flex-1 gap-2 overflow-hidden p-2 transition-all duration-200">
+          <div className="pointer-events-none absolute right-6 top-5 z-10 md:hidden">
             <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
               <button
                 onClick={() => setSidecarOpen((v) => !v)}
                 aria-label={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
                 title={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
-                className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors"
+                className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 text-muted-foreground shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:text-foreground"
               >
                 {sidecarOpen ? (
                   <IconLayoutSidebarLeftCollapse size={18} />
@@ -124,34 +141,57 @@ export default function StudentShell() {
             </div>
           </div>
 
-          {/* Center stage. Student pages render here and scroll internally;
-              the sidebar and study chat stay put around them. */}
-          <main ref={mainRef} className="relative h-full w-full overflow-y-auto">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={location.pathname}
-                initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(8px)" }}
-                animate={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
-                transition={{ duration: reduceMotion ? 0 : 0.5, ease: [0.4, 0, 0.2, 1] }}
-                className="h-full w-full"
-                style={{ willChange: "opacity, transform, filter" }}
-              >
-                <Outlet context={{ displayName }} />
-              </motion.div>
-            </AnimatePresence>
-          </main>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="hidden h-8 shrink-0 items-start justify-between gap-4 px-1 md:flex">
+              <h1 className="truncate pt-0.5 text-sm font-semibold text-foreground">
+                {routeTitle}
+              </h1>
+              <div data-tour="mainhub-dock" className="flex items-center gap-2">
+                <button
+                  onClick={() => setSidecarOpen((v) => !v)}
+                  aria-label={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
+                  title={sidecarOpen ? "Close LSAT U chat" : "Open LSAT U chat"}
+                  className="rounded-xl border border-border/40 bg-background/70 px-2.5 py-1.5 text-muted-foreground shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:text-foreground"
+                >
+                  {sidecarOpen ? (
+                    <IconLayoutSidebarLeftCollapse size={18} />
+                  ) : (
+                    <IconLayoutSidebarLeftExpand size={18} />
+                  )}
+                </button>
+                <MainhubDock />
+              </div>
+            </div>
 
+            {/* Center stage. Student pages render here and scroll internally;
+                the sidebar and study chat stay put around them. */}
+            <main ref={mainRef} className="relative min-h-0 w-full flex-1 overflow-y-auto">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={location.pathname}
+                  initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(8px)" }}
+                  animate={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
+                  transition={{ duration: reduceMotion ? 0 : 0.5, ease: [0.4, 0, 0.2, 1] }}
+                  className="h-full w-full"
+                  style={{ willChange: "opacity, transform, filter" }}
+                >
+                  <Outlet context={{ displayName }} />
+                </motion.div>
+              </AnimatePresence>
+            </main>
+          </div>
+
+          <div className="hidden min-h-0 shrink-0 pt-8 md:block">
+            <StudySidecar
+              open={sidecarOpen}
+              onClose={() => setSidecarOpen(false)}
+              userName={displayName ?? undefined}
+              presentation="docked"
+            />
+          </div>
         </div>
       </div>
-
-
-
-      <StudySidecar
-        open={sidecarOpen}
-        onClose={() => setSidecarOpen(false)}
-        userName={displayName ?? undefined}
-      />
     </>
   );
 }

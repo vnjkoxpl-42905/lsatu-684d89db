@@ -138,7 +138,7 @@ export default function AcademyMainhub() {
   }, [setOrbitalActive]);
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center overflow-y-auto rounded-xl bg-card/60 px-4 py-8 pb-24 shadow-sm ring-1 ring-inset ring-border/40 md:px-6 @4xl:py-20">
+    <div className="relative flex h-full w-full flex-col items-center overflow-y-auto rounded-xl border border-border/40 bg-card/60 px-4 py-8 pb-24 shadow-sm shadow-black/5 md:px-6 @4xl:py-20">
       <div className="my-auto flex w-full max-w-3xl flex-col items-center gap-10">
         {/* Smart Drill card — now on top */}
         <div className="w-full max-w-[360px] shrink-0">
