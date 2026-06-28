@@ -14,6 +14,7 @@ import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useLastActivity } from "@/hooks/useLastActivity";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SectionSelector } from "@/components/drill/SectionSelector";
