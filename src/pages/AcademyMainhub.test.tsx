@@ -104,6 +104,8 @@ describe("AcademyMainhub", () => {
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Full Section/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Build a Set/i })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Orbit" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Existing ring")).not.toBeInTheDocument();
     expect(screen.queryByText("Smart Builder")).not.toBeInTheDocument();
     expect(screen.queryByText("My Sets")).not.toBeInTheDocument();
     expect(screen.queryByText("Study Tools")).not.toBeInTheDocument();

@@ -332,27 +332,13 @@ export default function AcademyMainhub() {
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-5">
         <MainhubHero />
 
-        <section className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(460px,0.95fr)_minmax(360px,0.72fr)]">
-          <div className="relative overflow-visible rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_60px_rgba(15,23,42,0.07)] sm:p-6">
-            <div className="mb-3 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                  Main Hub
-                </p>
-                <h2 className="mt-2 text-xl font-semibold tracking-normal text-slate-950">
-                  Orbit
-                </h2>
-              </div>
-              <div className="hidden rounded-full border border-slate-200 px-3 py-1 text-[11px] font-medium text-slate-500 sm:block">
-                Existing ring
-              </div>
-            </div>
-
+        <section className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
+          <div className="relative overflow-visible py-8 sm:py-12 xl:min-h-[640px]">
             <section
               aria-label="Mainhub orbital workspace"
-              className="relative flex shrink-0 items-center justify-center"
+              className="relative flex shrink-0 items-center justify-center overflow-visible"
             >
-              <div data-tour="mainhub-orbital" className="relative h-[500px] w-[460px] max-w-full">
+              <div data-tour="mainhub-orbital" className="relative h-[560px] w-[560px] max-w-full">
                 <RadialOrbitalTimeline timelineData={mainhubNodes} onActivate={onOrbitalActivate} />
               </div>
             </section>
