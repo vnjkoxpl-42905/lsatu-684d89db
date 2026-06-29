@@ -76,7 +76,7 @@ export default function TeacherAnalyticsBridge() {
         source_platform: '7sage',
         processing_status: 'needs_review',
         extracted_text: pasted,
-      });
+      } as any);
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ['external-uploads-by-student', studentId] });
       qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });

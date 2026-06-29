@@ -359,7 +359,7 @@ export async function updateView(
   if (patch.name !== undefined) payload.name = patch.name;
   if (patch.kind !== undefined) payload.kind = patch.kind;
   if (patch.config !== undefined) payload.config = patch.config as unknown as Json;
-  const { error } = await supabase.from('journal_views').update(payload).eq('id', id);
+  const { error } = await supabase.from('journal_views').update(payload as any).eq('id', id);
   if (error) throw error;
 }
 

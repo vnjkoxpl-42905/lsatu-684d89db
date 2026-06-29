@@ -161,7 +161,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data, error: err } = await supabase
         .from("homework_sets")
-        .update(input)
+        .update(input as any)
         .eq("id", id)
         .select()
         .single();

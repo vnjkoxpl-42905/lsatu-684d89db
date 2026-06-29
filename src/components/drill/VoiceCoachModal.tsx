@@ -163,7 +163,7 @@ export function VoiceCoachModal({
           coach_reply_id: data.replyId,
           coach_reply_text: data.coachReply,
           action_taken: null
-        });
+        } as any);
       }
       
     } catch (err) {

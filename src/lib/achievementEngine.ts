@@ -204,7 +204,7 @@ class AchievementEngine {
     
     await supabase
       .from('user_achievements')
-      .insert(userAchievements);
+      .insert(userAchievements as any);
     
     // Award XP
     const totalXP = achievements.reduce((sum, a) => sum + a.xp_reward, 0);
