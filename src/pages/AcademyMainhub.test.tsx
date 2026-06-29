@@ -69,6 +69,7 @@ vi.mock("@/lib/questionLoader", () => ({
         section: 2,
         qnum: 8,
         qtype: "main_conclusion",
+        difficulty: 3,
         stimulus: "Sample stimulus",
         questionStem: "Sample question stem",
       },
@@ -153,6 +154,7 @@ describe("AcademyMainhub", () => {
     expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Section" })).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Question" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Advanced/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();

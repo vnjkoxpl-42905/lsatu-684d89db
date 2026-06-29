@@ -13,6 +13,7 @@ const questions: SmartLRSearchQuestion[] = [
     section: 2,
     qnum: 8,
     qtype: "Strengthen",
+    difficulty: 3,
     stimulus:
       "Recent ads for Ebsen's campaign were sent to too few households to influence popular opinion.",
     questionStem: "Which one of the following most strengthens the argument?",
@@ -23,6 +24,7 @@ const questions: SmartLRSearchQuestion[] = [
     section: 3,
     qnum: 8,
     qtype: "Main Conclusion",
+    difficulty: 2,
     stimulus: "The museum board published new attendance figures.",
     questionStem: "The main conclusion of the argument is that attendance has stabilized.",
   },
@@ -32,6 +34,7 @@ const questions: SmartLRSearchQuestion[] = [
     section: 2,
     qnum: 9,
     qtype: "Flaw",
+    difficulty: 5,
     stimulus: "A restaurant's weekday revenue increased after the schedule changed.",
     questionStem: "The reasoning in the argument is most vulnerable to criticism because it...",
   },
@@ -61,6 +64,37 @@ describe("smart LR question search", () => {
     });
 
     expect(matches.map((match) => match.question.qid)).toEqual(["PT151-S2-Q8"]);
+  });
+
+  it("filters by difficulty and question type", () => {
+    const matches = filterSmartLRQuestionMatches(questions, "", {
+      difficulties: [5],
+      qtypes: ["Flaw"],
+    });
+
+    expect(matches.map((match) => match.question.qid)).toEqual(["PT152-S2-Q9"]);
+    expect(matches[0].snippet).toEqual({
+      before: "",
+      match: "PT152-S2-Q9",
+      after: "",
+    });
+  });
+
+  it("combines PT, section, and text filters", () => {
+    const matches = filterSmartLRQuestionMatches(questions, "attendance", {
+      pts: [151],
+      sections: [3],
+    });
+
+    expect(matches.map((match) => match.question.qid)).toEqual(["PT151-S3-Q8"]);
+  });
+
+  it("returns no matches for incompatible filters", () => {
+    const matches = filterSmartLRQuestionMatches(questions, "attendance", {
+      difficulties: [5],
+    });
+
+    expect(matches).toEqual([]);
   });
 
   it("returns a compact highlighted snippet around the first match", () => {

@@ -2,7 +2,7 @@ import type { LRQuestion } from "@/lib/questionLoader";
 
 export type SmartLRSearchQuestion = Pick<
   LRQuestion,
-  "qid" | "pt" | "section" | "qnum" | "qtype" | "stimulus" | "questionStem"
+  "qid" | "pt" | "section" | "qnum" | "qtype" | "difficulty" | "stimulus" | "questionStem"
 >;
 
 export interface SmartLRQuestionMatch {
@@ -20,6 +20,10 @@ export interface SmartLRQuestionSearchFilters {
   pt?: number;
   section?: number;
   qnum?: number;
+  pts?: number[];
+  sections?: number[];
+  qtypes?: string[];
+  difficulties?: number[];
 }
 
 const SNIPPET_RADIUS = 52;
@@ -86,7 +90,6 @@ export function filterSmartLRQuestionMatches(
   limit = 6,
 ): SmartLRQuestionMatch[] {
   const normalizedQuery = normalizeSmartLRSearchText(query);
-  if (!normalizedQuery) return [];
 
   const matches: SmartLRQuestionMatch[] = [];
 
@@ -94,8 +97,14 @@ export function filterSmartLRQuestionMatches(
     if (filters.pt !== undefined && question.pt !== filters.pt) continue;
     if (filters.section !== undefined && question.section !== filters.section) continue;
     if (filters.qnum !== undefined && question.qnum !== filters.qnum) continue;
+    if (filters.pts?.length && !filters.pts.includes(question.pt)) continue;
+    if (filters.sections?.length && !filters.sections.includes(question.section)) continue;
+    if (filters.qtypes?.length && !filters.qtypes.includes(question.qtype)) continue;
+    if (filters.difficulties?.length && !filters.difficulties.includes(question.difficulty)) continue;
 
-    const snippet = buildSmartLRQuestionSnippet(question, normalizedQuery);
+    const snippet = normalizedQuery
+      ? buildSmartLRQuestionSnippet(question, normalizedQuery)
+      : { before: "", match: question.qid, after: "" };
     if (!snippet) continue;
 
     matches.push({ question, snippet });

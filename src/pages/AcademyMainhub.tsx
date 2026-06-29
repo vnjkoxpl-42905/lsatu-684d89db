@@ -8,6 +8,7 @@ import {
   Grid3x3,
   Loader2,
   Search,
+  SlidersHorizontal,
   X,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -213,6 +214,9 @@ function MainhubHero() {
   const [section, setSection] = React.useState(QUESTION_PICKER_PLACEHOLDER);
   const [qnum, setQnum] = React.useState(QUESTION_PICKER_PLACEHOLDER);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [advancedOpen, setAdvancedOpen] = React.useState(false);
+  const [advancedQType, setAdvancedQType] = React.useState("");
+  const [advancedDifficulty, setAdvancedDifficulty] = React.useState("");
 
   const allQuestions = React.useMemo(
     () => (manifest ? questionBank.getAllQuestions() : []),
@@ -222,6 +226,22 @@ function MainhubHero() {
   const pts = React.useMemo(
     () =>
       Array.from(new Set(allQuestions.map((q) => q.pt))).sort((a, b) => b - a),
+    [allQuestions],
+  );
+
+  const qtypes = React.useMemo(
+    () =>
+      Array.from(new Set(allQuestions.map((q) => q.qtype).filter(Boolean))).sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [allQuestions],
+  );
+
+  const difficulties = React.useMemo(
+    () =>
+      Array.from(new Set(allQuestions.map((q) => q.difficulty)))
+        .filter((n) => Number.isFinite(n))
+        .sort((a, b) => a - b),
     [allQuestions],
   );
 
@@ -268,14 +288,18 @@ function MainhubHero() {
           pt: pt ? Number(pt) : undefined,
           section: section ? Number(section) : undefined,
           qnum: qnum ? Number(qnum) : undefined,
+          qtypes: advancedQType ? [advancedQType] : undefined,
+          difficulties: advancedDifficulty ? [Number(advancedDifficulty)] : undefined,
         },
         6,
       ),
-    [allQuestions, pt, section, qnum, searchQuery],
+    [advancedDifficulty, advancedQType, allQuestions, pt, section, qnum, searchQuery],
   );
 
   const queryIsActive = searchQuery.trim().length > 0;
-  const showNoMatches = queryIsActive && !isLoading && searchMatches.length === 0;
+  const advancedFiltersActive = !!advancedQType || !!advancedDifficulty || (advancedOpen && (!!pt || !!section));
+  const searchIsActive = queryIsActive || advancedFiltersActive;
+  const showNoMatches = searchIsActive && !isLoading && searchMatches.length === 0;
   const searchTargetQuestion = searchMatches[0] ?? null;
 
   const startSmartDrill = React.useCallback(() => {
@@ -294,47 +318,59 @@ function MainhubHero() {
     openQuestion(selectedQuestion.qid);
   }, [openQuestion, selectedQuestion]);
 
+  const clearAdvancedFilters = React.useCallback(() => {
+    setAdvancedQType("");
+    setAdvancedDifficulty("");
+    setPt(QUESTION_PICKER_PLACEHOLDER);
+    setSection(QUESTION_PICKER_PLACEHOLDER);
+    setQnum(QUESTION_PICKER_PLACEHOLDER);
+  }, []);
+
   return (
-    <Card className="relative min-h-[430px] w-full overflow-hidden rounded-xl border border-black/20 bg-zinc-950 shadow-[0_24px_80px_rgba(15,23,42,0.22)] md:min-h-[360px]">
+    <Card className="relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] md:min-h-[390px]">
       <Spotlight className="-top-48 left-[-120px] md:left-[26%] md:-top-24" fill="white" />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_40%,rgba(255,255,255,0.14),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_36%,rgba(14,165,233,0.08)_74%,transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_38%,rgba(255,255,255,0.16),transparent_31%),radial-gradient(circle_at_82%_48%,rgba(14,165,233,0.1),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.07),transparent_34%,rgba(2,6,23,0.24)_76%,transparent)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:44px_44px]"
+        className="pointer-events-none absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:56px_56px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
       />
 
-      <div className="relative z-10 grid min-h-[430px] grid-cols-1 gap-5 p-5 sm:p-6 md:min-h-[360px] md:grid-cols-[0.78fr_1.34fr_0.9fr] md:items-center md:gap-2 lg:grid-cols-[0.7fr_1.42fr_0.88fr]">
-        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-2">
+      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 md:min-h-[390px] md:grid-cols-[minmax(140px,0.52fr)_minmax(340px,1.54fr)_minmax(280px,0.82fr)] md:items-center md:gap-4 lg:grid-cols-[minmax(170px,0.55fr)_minmax(430px,1.7fr)_minmax(300px,0.82fr)] lg:p-8">
+        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-1 lg:pl-4">
           <div className="flex items-center gap-3">
             <Button
               onClick={startSmartDrill}
               size="sm"
-              className="h-10 rounded-full border border-white/15 bg-white text-sm font-semibold text-black shadow-[0_14px_30px_rgba(255,255,255,0.08)] hover:bg-neutral-200"
+              className="h-11 rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black shadow-[0_16px_38px_rgba(255,255,255,0.1)] hover:bg-neutral-200"
             >
               Start Smart Drill
             </Button>
           </div>
         </div>
 
-        <div className="relative flex h-[150px] items-center justify-center md:h-[330px]">
+        <div className="relative flex h-[170px] items-center justify-center md:h-[360px]">
           <div
             aria-hidden
-            className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-[58%] -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl md:h-72 md:w-72"
+            className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-[54%] -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl md:h-80 md:w-80"
           />
           <SplineBoundary>
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="h-full w-full"
+              className="h-full w-full scale-[1.06]"
             />
           </SplineBoundary>
         </div>
 
-        <div className="rounded-[22px] border border-white/10 bg-white/[0.055] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-md sm:p-4 md:mr-1">
+        <div className="rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 md:mr-0 lg:mr-3">
           <div
-            className="mb-2.5 space-y-2"
+            className="mb-3 space-y-2.5"
             onKeyDown={(event) => {
               if (event.key === "Escape" && searchQuery) {
                 event.preventDefault();
@@ -359,15 +395,80 @@ function MainhubHero() {
                 placeholder="Search question text..."
                 aria-label="Search question text"
                 className={cn(
-                  "h-11 w-full rounded-2xl border border-white/10 bg-black/20 pl-9 pr-3 text-sm font-semibold text-white outline-none transition",
-                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] placeholder:text-white/35",
+                  "h-12 w-full rounded-[22px] border border-white/[0.08] bg-black/15 pl-9 pr-3 text-sm font-semibold text-white outline-none transition",
+                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] placeholder:text-white/35",
                   "focus:border-white/35 focus:ring-2 focus:ring-white/10 disabled:cursor-default disabled:text-white/30",
                 )}
               />
             </div>
 
-            {queryIsActive && (
-              <div className="max-h-44 space-y-1.5 overflow-y-auto pr-1" aria-live="polite">
+            <div className="flex items-center justify-between gap-3 px-1">
+              <button
+                type="button"
+                onClick={() => setAdvancedOpen((value) => !value)}
+                className="inline-flex items-center gap-2 rounded-full px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 transition hover:text-white"
+                aria-expanded={advancedOpen}
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden />
+                Advanced
+              </button>
+              {advancedFiltersActive && (
+                <button
+                  type="button"
+                  onClick={clearAdvancedFilters}
+                  className="rounded-full px-1 py-1 text-[11px] font-semibold text-white/45 transition hover:text-white"
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
+
+            {advancedOpen && (
+              <div className="grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 2xl:grid-cols-2">
+                <ConsoleSelect
+                  label="Question type"
+                  value={advancedQType}
+                  disabled={isLoading || qtypes.length === 0}
+                  onChange={setAdvancedQType}
+                  options={qtypes.map((type) => ({ value: type, label: type }))}
+                  compact
+                />
+                <ConsoleSelect
+                  label="Difficulty"
+                  value={advancedDifficulty}
+                  disabled={isLoading || difficulties.length === 0}
+                  onChange={setAdvancedDifficulty}
+                  options={difficulties.map((n) => ({ value: String(n), label: `Difficulty ${n}` }))}
+                  compact
+                />
+                <ConsoleSelect
+                  label="PT filter"
+                  value={pt}
+                  disabled={isLoading || pts.length === 0}
+                  onChange={(value) => {
+                    setPt(value);
+                    setSection(QUESTION_PICKER_PLACEHOLDER);
+                    setQnum(QUESTION_PICKER_PLACEHOLDER);
+                  }}
+                  options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
+                  compact
+                />
+                <ConsoleSelect
+                  label="Section filter"
+                  value={section}
+                  disabled={!pt}
+                  onChange={(value) => {
+                    setSection(value);
+                    setQnum(QUESTION_PICKER_PLACEHOLDER);
+                  }}
+                  options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
+                  compact
+                />
+              </div>
+            )}
+
+            {searchIsActive && (
+              <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1" aria-live="polite">
                 {searchMatches.map((match) => (
                   <QuestionSearchResult
                     key={match.question.qid}
@@ -420,7 +521,7 @@ function MainhubHero() {
             type="button"
             onClick={startSpecificQuestion}
             disabled={!selectedQuestion}
-            className="mt-3 h-11 w-full rounded-2xl border border-white/15 bg-white text-sm font-semibold text-black shadow-[0_14px_28px_rgba(255,255,255,0.08)] hover:bg-neutral-200 disabled:bg-white/10 disabled:text-white/35 disabled:opacity-100"
+            className="mt-3 h-11 w-full rounded-[22px] border border-white/12 bg-white text-sm font-semibold text-black shadow-[0_14px_28px_rgba(255,255,255,0.08)] hover:bg-neutral-200 disabled:bg-white/10 disabled:text-white/35 disabled:opacity-100"
           >
             {isLoading ? (
               <>
@@ -460,7 +561,10 @@ function QuestionSearchResult({
           PT {question.pt} · S{question.section} · Q{question.qnum}
         </span>
         <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
-          LR
+          {question.qtype}
+        </span>
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+          D{question.difficulty}
         </span>
       </div>
       <p className="line-clamp-1 text-xs font-medium leading-5 text-slate-200/90">
@@ -482,15 +586,18 @@ function ConsoleSelect({
   options,
   disabled,
   onChange,
+  compact = false,
 }: {
   label: string;
   value: string;
   options: Array<{ value: string; label: string }>;
   disabled?: boolean;
   onChange: (value: string) => void;
+  compact?: boolean;
 }) {
   return (
     <Select
+      key={`${label}-${value || "empty"}`}
       value={value || undefined}
       disabled={disabled}
       onValueChange={onChange}
@@ -498,7 +605,8 @@ function ConsoleSelect({
       <SelectTrigger
         aria-label={label}
         className={cn(
-          "h-12 w-full rounded-2xl border border-white/10 bg-black/20 px-3 text-sm font-semibold text-white outline-none transition",
+          compact ? "h-10 rounded-[18px] text-xs" : "h-12 rounded-[22px] text-sm",
+          "w-full border border-white/[0.08] bg-black/15 px-3 font-semibold text-white outline-none transition",
           "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10 focus:ring-offset-0",
           "disabled:cursor-default disabled:text-white/30 disabled:opacity-100",
           "[&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-white/40 [&>svg]:opacity-100",

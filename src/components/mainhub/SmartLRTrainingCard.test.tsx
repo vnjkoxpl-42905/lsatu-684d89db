@@ -12,6 +12,7 @@ const { mockNavigate, mockQuestions } = vi.hoisted(() => ({
       section: 2,
       qnum: 8,
       qtype: "Strengthen",
+      difficulty: 3,
       stimulus:
         "The recent ads for Ebsen's campaign were sent to too few households to serve this purpose effectively.",
       questionStem: "Which one of the following most strengthens the argument?",
@@ -22,6 +23,7 @@ const { mockNavigate, mockQuestions } = vi.hoisted(() => ({
       section: 1,
       qnum: 12,
       qtype: "Flaw",
+      difficulty: 4,
       stimulus: "The report compared two studies about neighborhood traffic.",
       questionStem: "The argument is most vulnerable to criticism on which one of the following grounds?",
     },
