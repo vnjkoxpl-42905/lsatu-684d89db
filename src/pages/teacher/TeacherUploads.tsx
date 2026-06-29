@@ -23,7 +23,7 @@ export default function TeacherUploads() {
       };
       const { error } = await supabase
         .from('external_work_uploads')
-        .update(patch)
+        .update(patch as any)
         .eq('id', id);
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });
