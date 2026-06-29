@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
@@ -44,7 +45,7 @@ vi.mock("@/hooks/useLayoutPrefs", () => ({
 }));
 
 vi.mock("@/hooks/useClassroomItems", () => ({
-  useClassroomItems: () => ({ data: [] }),
+  useClassroomItems: () => ({ data: [], isLoading: false }),
 }));
 
 vi.mock("@/hooks/useLastActivity", () => ({
@@ -76,7 +77,29 @@ vi.mock("@/lib/questionLoader", () => ({
 }));
 
 vi.mock("@/hooks/useInbox", () => ({
+  useInbox: () => ({ conversations: [], loading: false, unreadCount: 0, refresh: vi.fn() }),
   useConversationMessages: () => ({ messages: [], loading: false, refresh: vi.fn() }),
+}));
+
+vi.mock("@/hooks/useNotifications", () => ({
+  useNotifications: () => ({
+    notifications: [],
+    unreadCount: 0,
+    loading: false,
+    error: null,
+    refresh: vi.fn(),
+    markRead: vi.fn(),
+    markAllRead: vi.fn(),
+  }),
+}));
+
+vi.mock("@/hooks/useStudentAssignments", () => ({
+  useStudentAssignments: () => ({ assignments: [], loading: false, error: null, refresh: vi.fn() }),
+  useStudentTAAssignments: () => ({ assignments: [], loading: false, error: null, refresh: vi.fn() }),
+}));
+
+vi.mock("@/lib/guidedDrills", () => ({
+  listAssignmentsForStudent: vi.fn(() => Promise.resolve([])),
 }));
 
 vi.mock("@/lib/joshuaThread", () => ({
@@ -111,11 +134,17 @@ describe("AcademyMainhub", () => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
   });
 
-  it("renders the robot hero, existing orbital ring, and limited practice actions", () => {
+  it("renders the robot hero, existing orbital ring, and today's focus panel", async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
     render(
-      <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-        <AcademyMainhub />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+          <AcademyMainhub />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     expect(screen.queryByRole("heading", { name: "LR Smart Drill" })).not.toBeInTheDocument();
@@ -127,8 +156,11 @@ describe("AcademyMainhub", () => {
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Full Section/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Build a Set/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Today's Focus" })).toBeInTheDocument();
+    expect(await screen.findByText("No tasks assigned for today.")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Launch a Drill" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Full Section/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Build a Set/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Orbit" })).not.toBeInTheDocument();
     expect(screen.queryByText("Existing ring")).not.toBeInTheDocument();
     expect(screen.queryByText("Smart Builder")).not.toBeInTheDocument();

@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowRight,
   BarChart3,
   BookOpen,
   Grid3x3,
@@ -28,6 +27,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { questionBank } from "@/lib/questionLoader";
 import { cn } from "@/lib/utils";
 import {
@@ -107,29 +107,6 @@ const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
     energy: 66,
   },
 };
-
-const PRACTICE_ACTIONS: Array<{
-  id: Extract<DrillMode, "full-section" | "type-drill">;
-  label: string;
-  eyebrow: string;
-  description: string;
-  icon: React.ElementType;
-}> = [
-  {
-    id: "full-section",
-    label: "Full Section",
-    eyebrow: "Timed section",
-    description: "Start the official timed-section workflow.",
-    icon: BookOpen,
-  },
-  {
-    id: "type-drill",
-    label: "Build a Set",
-    eyebrow: "Hand-picked",
-    description: "Filter the bank and assemble a precise question set.",
-    icon: Grid3x3,
-  },
-];
 
 function SplineBoundary({ children }: { children: React.ReactNode }) {
   return (
@@ -656,54 +633,14 @@ export default function AcademyMainhub() {
             </section>
           </div>
 
-          <section className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_60px_rgba(15,23,42,0.07)] sm:p-6">
-            <div className="mb-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                Practice
-              </p>
-              <h2 className="mt-2 text-xl font-semibold tracking-normal text-slate-950">
-                Launch a Drill
-              </h2>
-            </div>
-
+          <section>
             {selectedPracticeAction ? (
               <PracticeActionPanel
                 selectedAction={selectedPracticeAction}
                 onClose={() => setSelectedPracticeAction(null)}
               />
             ) : (
-              <div className="grid grid-cols-1 gap-3">
-                {PRACTICE_ACTIONS.map((action) => {
-                  const Icon = action.icon;
-                  return (
-                    <button
-                      key={action.id}
-                      type="button"
-                      onClick={() => setSelectedPracticeAction(action.id)}
-                      className={cn(
-                        "group relative min-h-[154px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 text-left",
-                        "transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white hover:shadow-[0_18px_48px_rgba(15,23,42,0.1)]",
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-800">
-                          <Icon className="h-4 w-4" aria-hidden />
-                        </span>
-                        <ArrowRight className="mt-2 h-4 w-4 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-700" aria-hidden />
-                      </div>
-                      <div className="mt-6">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                          {action.eyebrow}
-                        </p>
-                        <h3 className="mt-2 text-[17px] font-semibold tracking-normal text-slate-950">
-                          {action.label}
-                        </h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-500">{action.description}</p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+              <TodayFocusPanel />
             )}
           </section>
         </section>
