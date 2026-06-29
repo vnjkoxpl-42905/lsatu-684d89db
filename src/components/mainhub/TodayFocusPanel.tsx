@@ -6,16 +6,16 @@ import {
   ArrowRight,
   Bell,
   BookOpenCheck,
-  ChevronDown,
   ClipboardList,
-  Inbox,
-  Loader2,
-  Sparkles,
+  MessageSquare,
+  RotateCcw,
+  Signal,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
 import { useInbox, type Conversation } from "@/hooks/useInbox";
+import { useLastActivity } from "@/hooks/useLastActivity";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import {
   useStudentAssignments,
@@ -31,40 +31,45 @@ import {
   type GuidedDrillAssignment,
 } from "@/lib/guidedDrills";
 import { resolveItemRoute } from "@/lib/classroomItems";
-import { formatRelativeShort } from "@/lib/time";
+import {
+  labelFor,
+  resolveResumeTarget,
+  type LastActivityRow,
+} from "@/lib/lastActivity";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 
 type GuidedAssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
-interface FocusItem {
+type TodayFocusType =
+  | "assignment"
+  | "message"
+  | "bootcamp"
+  | "set"
+  | "drill"
+  | "notification";
+
+type TodayActionLabel = "Start" | "Continue" | "Reply" | "Resume" | "Review" | "Practice" | "Open";
+
+interface TodayFocusItem {
   id: string;
+  type: TodayFocusType;
   title: string;
-  type: string;
-  reason: string;
-  status: string;
-  action: string;
-  route: string | null;
-  createdAt: string;
-  dueAt?: string | null;
+  sourceLine: string;
+  status?: string;
+  actionLabel: TodayActionLabel;
+  actionCue?: string;
+  route?: string | null;
+  routeState?: unknown;
   priority: number;
-  progress?: number;
+  preview?: string;
+  progress?: string;
+  estimatedTime?: string;
+  updatedAt?: string;
   Icon: React.ElementType;
   onOpen?: () => void | Promise<void>;
 }
 
-const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus | ClassroomItem["status"], string> = {
-  assigned: "Not started",
-  in_progress: "In progress",
-  viewed: "In progress",
-  completed: "Done",
-  draft: "Draft",
-  archived: "Archived",
-};
-
-const ACTION_BY_STATUS: Record<string, string> = {
+const ACTION_BY_STATUS: Record<string, TodayActionLabel> = {
   assigned: "Start",
   in_progress: "Continue",
   viewed: "Continue",
@@ -75,174 +80,249 @@ const ACTION_BY_STATUS: Record<string, string> = {
   archived: "Open",
 };
 
-const CLASSROOM_TYPE_LABEL: Record<ClassroomItem["type"], string> = {
-  drill: "Classroom drill",
-  homework: "Homework",
-  activity: "Activity",
-  bootcamp_module: "Bootcamp",
-  note: "Classroom note",
-  session_recap: "Session recap",
-  announcement: "Announcement",
-  upload_summary: "Classroom upload",
-  weekly_plan_task: "Study plan",
-  smartboard_recap: "Board recap",
+const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus | ClassroomItem["status"], string> = {
+  assigned: "Ready",
+  in_progress: "In progress",
+  viewed: "In progress",
+  completed: "Done",
+  draft: "Draft",
+  archived: "Archived",
 };
 
-function compactDescription(text: string | null | undefined, fallback: string) {
+const TYPE_TONE: Record<TodayFocusType, string> = {
+  assignment: "from-slate-950 via-sky-950 to-slate-950",
+  message: "from-slate-950 via-teal-950 to-slate-950",
+  bootcamp: "from-zinc-950 via-slate-900 to-slate-950",
+  set: "from-slate-950 via-blue-950 to-zinc-950",
+  drill: "from-zinc-950 via-emerald-950 to-slate-950",
+  notification: "from-zinc-950 via-amber-950 to-slate-950",
+};
+
+function compactText(text: string | null | undefined, max = 92) {
   const value = text?.replace(/\s+/g, " ").trim();
-  if (!value) return fallback;
-  return value.length > 96 ? `${value.slice(0, 93)}...` : value;
+  if (!value) return null;
+  return value.length > max ? `${value.slice(0, max - 3)}...` : value;
 }
 
-function statusOrder(status: string) {
-  if (status === "in_progress" || status === "viewed") return 0;
-  if (status === "assigned") return 1;
-  if (status === "completed") return 3;
+function dueLabel(dueAt: string | null | undefined) {
+  if (!dueAt) return null;
+  const date = new Date(dueAt);
+  if (Number.isNaN(date.getTime())) return null;
+  return isToday(date) ? "Due today" : `Due ${format(date, "MMM d")}`;
+}
+
+function statusOrder(status?: string) {
+  if (status === "In progress") return 0;
+  if (status === "Ready") return 1;
+  if (status === "Done") return 3;
   return 2;
+}
+
+function itemSort(a: TodayFocusItem, b: TodayFocusItem) {
+  const priorityDelta = b.priority - a.priority;
+  if (priorityDelta !== 0) return priorityDelta;
+  const statusDelta = statusOrder(a.status) - statusOrder(b.status);
+  if (statusDelta !== 0) return statusDelta;
+  return new Date(b.updatedAt ?? 0).getTime() - new Date(a.updatedAt ?? 0).getTime();
 }
 
 function isActiveStatus(status: string) {
   return status === "assigned" || status === "in_progress" || status === "viewed" || status === "read" || status === "started";
 }
 
-function itemSort(a: FocusItem, b: FocusItem) {
-  const unreadDelta = b.priority - a.priority;
-  if (unreadDelta !== 0) return unreadDelta;
-  const statusDelta = statusOrder(a.status) - statusOrder(b.status);
-  if (statusDelta !== 0) return statusDelta;
-  const aDue = a.dueAt ? new Date(a.dueAt).getTime() : Infinity;
-  const bDue = b.dueAt ? new Date(b.dueAt).getTime() : Infinity;
-  if (aDue !== bDue) return aDue - bDue;
-  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-}
-
-function classroomItemToFocus(item: ClassroomItem): FocusItem | null {
+function classroomItemToFocus(item: ClassroomItem): TodayFocusItem | null {
   if (!isActiveStatus(item.status)) return null;
   const route = resolveItemRoute(item);
+  const due = dueLabel(item.due_at);
+  const type: TodayFocusType = item.type === "bootcamp_module" ? "bootcamp" : "assignment";
+  const isPlan = item.type === "weekly_plan_task";
   return {
     id: `classroom-${item.id}`,
+    type,
     title: item.title,
-    type: CLASSROOM_TYPE_LABEL[item.type] ?? item.type.replace(/_/g, " "),
-    reason: compactDescription(
-      item.description,
-      item.due_at && isToday(new Date(item.due_at))
-        ? "Due today"
-        : item.type === "weekly_plan_task"
+    sourceLine:
+      item.type === "bootcamp_module"
+        ? "Bootcamp progress"
+        : isPlan
           ? "Assigned in your study plan"
-          : "Assigned in Classroom",
-    ),
-    status: STATUS_LABEL[item.status] ?? "Open",
-    action: ACTION_BY_STATUS[item.status] ?? "Open",
+          : "Assigned by Joshua",
+    status: due ?? STATUS_LABEL[item.status] ?? "Ready",
+    actionLabel: ACTION_BY_STATUS[item.status] ?? "Open",
+    actionCue: due ?? undefined,
     route,
-    createdAt: item.created_at,
-    dueAt: item.due_at,
-    priority: 30 + item.priority,
-    Icon: item.type === "weekly_plan_task" ? BookOpenCheck : ClipboardList,
+    priority: 900 + item.priority,
+    updatedAt: item.due_at ?? item.created_at,
+    preview: compactText(item.description, 110) ?? undefined,
+    Icon: item.type === "bootcamp_module" || isPlan ? BookOpenCheck : ClipboardList,
   };
 }
 
-function homeworkToFocus(a: StudentAssignment): FocusItem | null {
+function homeworkToFocus(a: StudentAssignment): TodayFocusItem | null {
   if (!isActiveStatus(a.status)) return null;
+  const questionCount = a.question_qids?.length ?? 0;
   return {
     id: `homework-${a.id}`,
+    type: "assignment",
     title: a.set_title || "Homework",
-    type: "Homework",
-    reason: compactDescription(
-      a.set_description,
-      `${a.question_qids?.length ?? 0} assigned questions`,
-    ),
+    sourceLine: "Assigned by Joshua",
     status: STATUS_LABEL[a.status],
-    action: ACTION_BY_STATUS[a.status],
+    actionLabel: ACTION_BY_STATUS[a.status],
+    actionCue: questionCount > 0 ? `${questionCount} questions` : undefined,
     route: `/classroom/${encodeURIComponent(a.id)}`,
-    createdAt: a.created_at,
-    priority: 22,
+    priority: 820,
+    progress: a.score != null ? `${Math.round(a.score)}%` : undefined,
+    updatedAt: a.created_at,
+    preview: compactText(a.set_description, 110) ?? undefined,
     Icon: ClipboardList,
-    progress: a.score != null ? Math.round(a.score) : undefined,
   };
 }
 
-function taToFocus(a: StudentTAAssignment): FocusItem | null {
+function taToFocus(a: StudentTAAssignment): TodayFocusItem | null {
   if (!isActiveStatus(a.status)) return null;
   return {
     id: `ta-${a.id}`,
-    title: a.title || "TA assignment",
-    type: "Instructor assigned",
-    reason: a.pdf_url ? "PDF attached from Joshua" : "Assigned by Joshua",
+    type: "assignment",
+    title: a.title || "Instructor assignment",
+    sourceLine: a.pdf_url ? "Assigned by Joshua" : "Assigned by Joshua",
     status: STATUS_LABEL[a.status],
-    action: ACTION_BY_STATUS[a.status],
+    actionLabel: ACTION_BY_STATUS[a.status],
+    actionCue: a.pdf_url ? "PDF" : undefined,
     route: `/classroom/ta/${encodeURIComponent(a.id)}`,
-    createdAt: a.assigned_at || a.created_at,
-    priority: 24,
-    Icon: Sparkles,
+    priority: 840,
+    updatedAt: a.assigned_at || a.created_at,
+    Icon: BookOpenCheck,
   };
 }
 
-function guidedToFocus(a: GuidedAssignmentWithDrill): FocusItem | null {
+function guidedToFocus(a: GuidedAssignmentWithDrill): TodayFocusItem | null {
   if (!isActiveStatus(a.status)) return null;
   const count = a.guided_drill?.question_count;
   const minutes = a.guided_drill?.estimated_minutes;
   return {
     id: `guided-${a.id}`,
+    type: "assignment",
     title: a.guided_drill?.title || "Guided drill",
-    type: "Guided drill",
-    reason: [
-      count != null ? `${count} questions` : null,
-      minutes ? `${minutes} min` : null,
-    ].filter(Boolean).join(" · ") || "Assigned guided practice",
-    status: a.status === "assigned" ? "Not started" : "In progress",
-    action: ACTION_BY_STATUS[a.status] ?? "Open",
+    sourceLine: "Assigned guided practice",
+    status: a.status === "assigned" ? "Ready" : "In progress",
+    actionLabel: ACTION_BY_STATUS[a.status] ?? "Open",
+    actionCue: minutes ? `${minutes} min` : count != null ? `${count} questions` : undefined,
+    estimatedTime: minutes ? `${minutes} min` : undefined,
     route: `/guided/${encodeURIComponent(a.id)}?returnTo=${encodeURIComponent("/mainhub")}`,
-    createdAt: a.assigned_at,
-    priority: 23,
+    priority: 830,
+    updatedAt: a.assigned_at,
     Icon: ClipboardList,
   };
 }
 
-function notificationToFocus(n: Notification, markRead: (id: string) => Promise<void>): FocusItem | null {
-  if (n.read) return null;
+function instructorMessageToFocus(c: Conversation): TodayFocusItem | null {
+  if (!c.unread || !c.last_message) return null;
+  const fromInstructor = c.participants.some((p) => p.is_admin && p.user_id === c.last_message?.sender_id);
+  if (!fromInstructor) return null;
   return {
-    id: `notification-${n.id}`,
-    title: n.title,
-    type: n.type === "message" ? "Notification message" : "Notification",
-    reason: compactDescription(n.body, formatRelativeShort(n.created_at)),
-    status: "Unread",
-    action: n.link ? "Open" : "Read",
-    route: n.link,
-    createdAt: n.created_at,
-    priority: n.type === "message" || n.type === "assignment" ? 34 : 18,
-    Icon: n.type === "message" ? Inbox : Bell,
-    onOpen: async () => {
-      await markRead(n.id);
-    },
+    id: `conversation-${c.id}`,
+    type: "message",
+    title: c.subject || "Message from Joshua",
+    sourceLine: "Message from Joshua",
+    status: "New",
+    actionLabel: "Reply",
+    actionCue: "New",
+    route: `/inbox/${encodeURIComponent(c.id)}`,
+    priority: 700,
+    preview: compactText(c.last_message.body, 92) ?? undefined,
+    updatedAt: c.last_message.created_at,
+    Icon: MessageSquare,
   };
 }
 
-function conversationToFocus(c: Conversation): FocusItem | null {
-  if (!c.unread || !c.last_message) return null;
+function notificationToFocus(n: Notification, markRead: (id: string) => Promise<void>): TodayFocusItem | null {
+  if (n.read || n.type === "message") return null;
   return {
-    id: `conversation-${c.id}`,
-    title: c.subject || "New message",
-    type: "Inbox",
-    reason: compactDescription(c.last_message.body, "Unread message"),
-    status: "Unread",
-    action: "Open",
-    route: `/inbox/${encodeURIComponent(c.id)}`,
-    createdAt: c.last_message.created_at,
-    priority: 36,
-    Icon: Inbox,
+    id: `notification-${n.id}`,
+    type: "notification",
+    title: n.title,
+    sourceLine: n.type === "assignment" ? "Assigned by Joshua" : "Notification",
+    status: "New",
+    actionLabel: n.link ? "Open" : "Review",
+    actionCue: n.type === "assignment" ? "New" : undefined,
+    route: n.link,
+    priority: n.type === "assignment" ? 760 : 220,
+    preview: compactText(n.body, 100) ?? undefined,
+    updatedAt: n.created_at,
+    Icon: n.type === "assignment" ? ClipboardList : Bell,
+    onOpen: () => markRead(n.id),
   };
+}
+
+function lastActivityToFocus(row: LastActivityRow | null | undefined): TodayFocusItem | null {
+  if (!row) return null;
+  const snapshot = row.state_snapshot;
+  const target = resolveResumeTarget(snapshot);
+  const label = labelFor(snapshot);
+  if (snapshot.kind === "bootcamp_step") {
+    return {
+      id: `last-${row.activity_id}`,
+      type: "bootcamp",
+      title: label,
+      sourceLine: "Bootcamp progress",
+      status: "In progress",
+      actionLabel: "Continue",
+      route: target.path,
+      routeState: target.state,
+      priority: 520,
+      updatedAt: row.updated_at,
+      Icon: BookOpenCheck,
+    };
+  }
+
+  const total = snapshot.qids.length;
+  const left = Math.max(0, total - snapshot.current_index);
+  const progress = total > 0 ? `${Math.min(100, Math.round((snapshot.current_index / total) * 100))}%` : undefined;
+  return {
+    id: `last-${row.activity_id}`,
+    type: snapshot.kind === "section" ? "set" : "drill",
+    title: label,
+    sourceLine: snapshot.kind === "section" ? "Active practice set" : "Unfinished drill",
+    status: "In progress",
+    actionLabel: "Resume",
+    actionCue: left > 0 ? `${left} left` : undefined,
+    route: target.path,
+    routeState: target.state,
+    priority: snapshot.kind === "section" ? 480 : 460,
+    progress,
+    updatedAt: row.updated_at,
+    Icon: snapshot.kind === "section" ? Signal : RotateCcw,
+  };
+}
+
+function visibleRails(items: TodayFocusItem[], primaryId: string | null) {
+  return items.filter((item) => item.id !== primaryId).slice(0, 2);
 }
 
 export default function TodayFocusPanel() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [expanded, setExpanded] = React.useState(false);
-  const { data: classroomItems = [], isLoading: classroomLoading } = useClassroomItems();
-  const { assignments: homework, loading: homeworkLoading } = useStudentAssignments();
-  const { assignments: taAssignments, loading: taLoading } = useStudentTAAssignments();
-  const { notifications, loading: notificationsLoading, markRead } = useNotifications();
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+
+  const {
+    data: classroomItems = [],
+    isLoading: classroomLoading,
+    isError: classroomError,
+  } = useClassroomItems();
+  const { assignments: homework, loading: homeworkLoading, error: homeworkError } = useStudentAssignments();
+  const { assignments: taAssignments, loading: taLoading, error: taError } = useStudentTAAssignments();
+  const { notifications, loading: notificationsLoading, error: notificationsError, markRead } = useNotifications();
   const { conversations, loading: inboxLoading } = useInbox();
-  const { data: guided = [], isLoading: guidedLoading } = useQuery<GuidedAssignmentWithDrill[]>({
+  const {
+    data: lastActivity = null,
+    isLoading: lastActivityLoading,
+    isError: lastActivityError,
+  } = useLastActivity();
+  const {
+    data: guided = [],
+    isLoading: guidedLoading,
+    isError: guidedError,
+  } = useQuery<GuidedAssignmentWithDrill[]>({
     queryKey: ["guided-drill-assignments", user?.id],
     enabled: !!user,
     staleTime: 60_000,
@@ -255,7 +335,7 @@ export default function TodayFocusPanel() {
     const seenSourceIds = new Set<string>();
     const fromClassroom = classroomItems
       .map(classroomItemToFocus)
-      .filter((item): item is FocusItem => item !== null);
+      .filter((item): item is TodayFocusItem => item !== null);
 
     for (const item of classroomItems) {
       if (item.source_id) seenSourceIds.add(item.source_id);
@@ -264,35 +344,43 @@ export default function TodayFocusPanel() {
     const fromHomework = homework
       .filter((a) => !seenSourceIds.has(a.id))
       .map(homeworkToFocus)
-      .filter((item): item is FocusItem => item !== null);
+      .filter((item): item is TodayFocusItem => item !== null);
     const fromTa = taAssignments
       .filter((a) => !seenSourceIds.has(a.id))
       .map(taToFocus)
-      .filter((item): item is FocusItem => item !== null);
+      .filter((item): item is TodayFocusItem => item !== null);
     const fromGuided = guided
       .filter((a) => !seenSourceIds.has(a.id))
       .map(guidedToFocus)
-      .filter((item): item is FocusItem => item !== null);
+      .filter((item): item is TodayFocusItem => item !== null);
     const fromNotifications = notifications
       .map((n) => notificationToFocus(n, markRead))
-      .filter((item): item is FocusItem => item !== null);
+      .filter((item): item is TodayFocusItem => item !== null);
     const fromMessages = conversations
-      .map(conversationToFocus)
-      .filter((item): item is FocusItem => item !== null);
+      .map(instructorMessageToFocus)
+      .filter((item): item is TodayFocusItem => item !== null);
+    const fromLastActivity = lastActivityToFocus(lastActivity);
 
-    const byId = new Map<string, FocusItem>();
+    const byId = new Map<string, TodayFocusItem>();
     for (const item of [
-      ...fromMessages,
-      ...fromNotifications,
       ...fromClassroom,
-      ...fromHomework,
       ...fromTa,
       ...fromGuided,
+      ...fromHomework,
+      ...fromNotifications,
+      ...fromMessages,
+      ...(fromLastActivity ? [fromLastActivity] : []),
     ]) {
       byId.set(item.id, item);
     }
-    return Array.from(byId.values()).sort(itemSort).slice(0, 8);
-  }, [classroomItems, conversations, guided, homework, markRead, notifications, taAssignments]);
+    return Array.from(byId.values()).sort(itemSort);
+  }, [classroomItems, conversations, guided, homework, lastActivity, markRead, notifications, taAssignments]);
+
+  React.useEffect(() => {
+    if (selectedId && !focusItems.some((item) => item.id === selectedId)) {
+      setSelectedId(null);
+    }
+  }, [focusItems, selectedId]);
 
   const loading =
     classroomLoading ||
@@ -300,146 +388,301 @@ export default function TodayFocusPanel() {
     taLoading ||
     guidedLoading ||
     notificationsLoading ||
-    inboxLoading;
-  const visibleItems = expanded ? focusItems : focusItems.slice(0, 4);
-  const hiddenCount = Math.max(0, focusItems.length - visibleItems.length);
+    inboxLoading ||
+    lastActivityLoading;
+  const hasError =
+    classroomError ||
+    !!homeworkError ||
+    !!taError ||
+    !!notificationsError ||
+    guidedError ||
+    lastActivityError;
+  const primary = focusItems.find((item) => item.id === selectedId) ?? focusItems[0] ?? null;
+  const rails = primary ? visibleRails(focusItems, primary.id) : [];
 
   const openItem = React.useCallback(
-    async (item: FocusItem) => {
+    async (item: TodayFocusItem) => {
       await item.onOpen?.();
-      if (item.route) navigate(item.route);
+      if (item.route) {
+        navigate(item.route, item.routeState ? { state: item.routeState } : undefined);
+      }
     },
     [navigate],
   );
 
   return (
-    <section className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.07)]">
-      <div className="border-b border-slate-100 bg-gradient-to-b from-white to-slate-50/70 px-5 py-4 sm:px-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-              Today
+    <section
+      aria-label="Today"
+      className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-slate-950 shadow-[0_28px_70px_rgba(15,23,42,0.16)]"
+    >
+      <div className="relative overflow-hidden bg-[radial-gradient(circle_at_12%_0%,rgba(148,163,184,0.24),transparent_32%),linear-gradient(180deg,#151b24,#080b11)] p-4 text-white sm:p-5">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:28px_28px]" />
+        <div className="relative">
+          <div className="mb-4 flex items-center justify-between">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-slate-300">
+              TODAY
             </p>
-            <h2 className="mt-1 text-xl font-semibold tracking-normal text-slate-950">
-              Today's Focus
-            </h2>
+            <time className="font-mono text-[11px] font-medium text-slate-400" dateTime={format(new Date(), "yyyy-MM-dd")}>
+              {format(new Date(), "MMM d")}
+            </time>
           </div>
-          {focusItems.length > 0 && (
-            <Badge variant="outline" className="mt-1 rounded-full border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-600">
-              {focusItems.length} open
-            </Badge>
+
+          {loading ? (
+            <TodaySkeleton />
+          ) : hasError ? (
+            <TodayErrorState />
+          ) : primary ? (
+            <div aria-live="polite">
+              <TodayPrimarySurface
+                item={primary}
+                expanded={expanded}
+                onToggle={() => setExpanded((value) => !value)}
+                onActivate={() => void openItem(primary)}
+              />
+              <div className="mt-3 grid gap-2">
+                {rails.map((item) => (
+                  <TodayRailItem
+                    key={item.id}
+                    item={item}
+                    muted={expanded}
+                    onPromote={() => {
+                      setSelectedId(item.id);
+                      setExpanded(false);
+                    }}
+                  />
+                ))}
+                {rails.length === 0 && <EmptyRailQuiet />}
+              </div>
+            </div>
+          ) : (
+            <TodayEmptyState />
           )}
         </div>
       </div>
-
-      {loading ? (
-        <div className="flex min-h-[268px] items-center justify-center gap-2 px-6 py-8 text-sm font-medium text-slate-500">
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          Loading focus items
-        </div>
-      ) : focusItems.length === 0 ? (
-        <div className="min-h-[268px] px-6 py-8">
-          <div className="flex h-full min-h-[210px] flex-col justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/70 px-5 text-center">
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400">
-              <BookOpenCheck className="h-4 w-4" aria-hidden />
-            </div>
-            <h3 className="mt-4 text-base font-semibold text-slate-900">
-              No tasks assigned for today.
-            </h3>
-            <p className="mx-auto mt-2 max-w-[24rem] text-sm leading-6 text-slate-500">
-              Assigned work, unread messages, and important notifications will appear here when they exist.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="p-3 sm:p-4">
-          <div className="space-y-2">
-            <AnimatePresence initial={false}>
-              {visibleItems.map((item) => (
-                <FocusRow key={item.id} item={item} onOpen={() => void openItem(item)} />
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {focusItems.length > 4 && (
-            <button
-              type="button"
-              onClick={() => setExpanded((value) => !value)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-white"
-            >
-              {expanded ? "Show less" : `Show ${hiddenCount} more`}
-              <ChevronDown
-                className={cn("h-3.5 w-3.5 transition", expanded && "rotate-180")}
-                aria-hidden
-              />
-            </button>
-          )}
-        </div>
-      )}
     </section>
   );
 }
 
-function FocusRow({ item, onOpen }: { item: FocusItem; onOpen: () => void }) {
+function TodayPrimarySurface({
+  item,
+  expanded,
+  onToggle,
+  onActivate,
+}: {
+  item: TodayFocusItem;
+  expanded: boolean;
+  onToggle: () => void;
+  onActivate: () => void;
+}) {
   const Icon = item.Icon;
-  const dueLabel = item.dueAt
-    ? isToday(new Date(item.dueAt))
-      ? "Due today"
-      : `Due ${format(new Date(item.dueAt), "MMM d")}`
-    : null;
-
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.16 }}
-      className="group rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_8px_26px_rgba(15,23,42,0.04)] transition hover:border-slate-300 hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)]"
+      className={cn(
+        "group relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_20px_55px_rgba(0,0,0,0.28)]",
+        TYPE_TONE[item.type],
+      )}
+      transition={{ type: "spring", stiffness: 170, damping: 24 }}
     >
-      <div className="flex items-start gap-3">
-        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700">
-          <Icon className="h-4 w-4" aria-hidden />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-              {item.type}
-            </span>
-            {dueLabel && (
-              <span className="text-[11px] font-medium text-slate-500">{dueLabel}</span>
-            )}
-          </div>
-          <h3 className="mt-1 line-clamp-1 text-sm font-semibold text-slate-950">
-            {item.title}
-          </h3>
-          <p className="mt-0.5 line-clamp-2 text-xs leading-5 text-slate-500">
-            {item.reason}
-          </p>
-          {item.progress != null && (
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(255,255,255,0.16),transparent_26%),radial-gradient(circle_at_24%_70%,rgba(125,211,252,0.12),transparent_32%)]" />
+      <div aria-hidden className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.7)_1px,transparent_1px)] [background-size:34px_34px]" />
+      <button
+        type="button"
+        aria-expanded={expanded}
+        onClick={onToggle}
+        className="relative flex min-h-[168px] w-full flex-col items-start text-left outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+      >
+        <div className="flex w-full items-start justify-between gap-4">
+          <div>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+              Next up
+            </p>
             <div className="mt-2 flex items-center gap-2">
-              <Progress value={item.progress} className="h-1.5 bg-slate-100 [&>div]:bg-slate-900" />
-              <span className="shrink-0 text-[11px] font-semibold text-slate-500">
-                {item.progress}%
+              {item.status && (
+                <span className="rounded-full border border-white/15 bg-white/[0.08] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-100">
+                  {item.status}
+                </span>
+              )}
+              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/[0.08] text-slate-200">
+                <Icon className="h-3.5 w-3.5" aria-hidden />
               </span>
             </div>
+          </div>
+          {item.progress && (
+            <span className="font-mono text-[11px] font-semibold text-slate-300">{item.progress}</span>
           )}
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          <span className="text-[11px] font-semibold text-slate-500">{item.status}</span>
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={onOpen}
-            disabled={!item.route && !item.onOpen}
-            className="h-8 rounded-full border-slate-200 bg-white px-3 text-xs font-semibold text-slate-800 hover:bg-slate-950 hover:text-white disabled:opacity-50"
-          >
-            {item.action}
-            <ArrowRight className="ml-1.5 h-3.5 w-3.5" aria-hidden />
-          </Button>
+
+        <div className="mt-auto max-w-[28rem] pb-4 pt-7">
+          <h2 className="text-xl font-semibold leading-tight tracking-normal text-white sm:text-2xl">
+            {item.title}
+          </h2>
+          <p className="mt-2 text-sm font-medium text-slate-300">{item.sourceLine}</p>
+          <AnimatePresence initial={false}>
+            {expanded && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="mt-4 space-y-2 text-sm leading-6 text-slate-300"
+              >
+                <p>{contextLineFor(item)}</p>
+                {item.preview && <p className="line-clamp-2 text-slate-200">{item.type === "message" ? `"${item.preview}"` : item.preview}</p>}
+                {(item.estimatedTime || item.progress) && (
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400">
+                    {[item.estimatedTime, item.progress].filter(Boolean).join(" / ")}
+                  </p>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
+      </button>
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onActivate();
+        }}
+        disabled={!item.route && !item.onOpen}
+        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between border-t border-white/10 bg-white/[0.08] px-5 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-white/[0.13] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
+      >
+        <span>{actionText(item)}</span>
+        <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300">
+          {item.actionCue}
+          <ArrowRight className="h-4 w-4" aria-hidden />
+        </span>
+      </button>
     </motion.div>
   );
+}
+
+function TodayRailItem({
+  item,
+  muted,
+  onPromote,
+}: {
+  item: TodayFocusItem;
+  muted: boolean;
+  onPromote: () => void;
+}) {
+  const Icon = item.Icon;
+  return (
+    <motion.button
+      type="button"
+      layout
+      onClick={onPromote}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-300 hover:border-white/20 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]",
+        muted && "opacity-60",
+      )}
+      transition={{ type: "spring", stiffness: 180, damping: 24 }}
+    >
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.08] text-slate-200">
+        <Icon className="h-3.5 w-3.5" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-semibold">{railTitle(item)}</span>
+        <span className="mt-0.5 block truncate text-xs text-slate-400">{item.sourceLine}</span>
+      </span>
+      <span className="shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300">
+        {item.status ?? item.actionLabel}
+      </span>
+    </motion.button>
+  );
+}
+
+function TodaySkeleton() {
+  return (
+    <div aria-label="Loading today" className="animate-pulse">
+      <div className="min-h-[238px] rounded-[24px] border border-white/10 bg-white/[0.07] p-5">
+        <div className="h-3 w-20 rounded-full bg-white/15" />
+        <div className="mt-7 h-8 w-3/4 rounded-full bg-white/15" />
+        <div className="mt-3 h-4 w-1/2 rounded-full bg-white/10" />
+        <div className="-mx-5 -mb-5 mt-20 h-12 border-t border-white/10 bg-white/[0.06]" />
+      </div>
+      <div className="mt-3 grid gap-2">
+        <div className="h-[58px] rounded-2xl border border-white/10 bg-white/[0.06]" />
+        <div className="h-[58px] rounded-2xl border border-white/10 bg-white/[0.06]" />
+      </div>
+    </div>
+  );
+}
+
+function TodayEmptyState() {
+  return (
+    <div aria-live="polite">
+      <div className="relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-zinc-950 via-slate-900 to-zinc-950 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(148,163,184,0.18),transparent_30%)]" />
+        <div className="relative flex min-h-[198px] flex-col justify-between">
+          <div>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+              Next up
+            </p>
+            <h2 className="mt-8 text-2xl font-semibold tracking-normal text-white">
+              All caught up
+            </h2>
+            <p className="mt-2 text-sm text-slate-300">Nothing assigned for today.</p>
+          </div>
+          <div className="border-t border-white/10 pt-4 text-xs font-medium text-slate-500">
+            Assigned work and instructor messages will appear here when they exist.
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 grid gap-2">
+        <EmptyRailQuiet />
+      </div>
+    </div>
+  );
+}
+
+function TodayErrorState() {
+  return (
+    <div>
+      <div className="min-h-[238px] rounded-[24px] border border-white/10 bg-gradient-to-br from-zinc-950 via-slate-900 to-zinc-950 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+          Next up
+        </p>
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold tracking-normal text-white">Couldn&apos;t load today.</h2>
+          <p className="mt-2 text-sm text-slate-400">Refresh the page to try again.</p>
+        </div>
+      </div>
+      <div className="mt-3 grid gap-2">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-slate-400">
+          Today is temporarily unavailable.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EmptyRailQuiet() {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-500">
+      No secondary focus items.
+    </div>
+  );
+}
+
+function contextLineFor(item: TodayFocusItem) {
+  if (item.type === "message") return "This is next because Joshua sent an unread message.";
+  if (item.type === "bootcamp") return "This is next because you have bootcamp progress in motion.";
+  if (item.type === "drill" || item.type === "set") return "This is next because you have unfinished practice.";
+  if (item.type === "notification") return "This is next because a new notification is waiting.";
+  return "This is next because it is assigned work.";
+}
+
+function actionText(item: TodayFocusItem) {
+  if (item.actionLabel === "Start" && item.type === "bootcamp") return "Start lesson";
+  if (item.actionLabel === "Practice") return "Practice";
+  if (item.actionLabel === "Resume") return "Resume drill";
+  return item.actionLabel;
+}
+
+function railTitle(item: TodayFocusItem) {
+  if (item.type === "message") return "Message from Joshua";
+  if (item.type === "drill") return "Smart LR Drill";
+  if (item.type === "bootcamp") return "Bootcamp Lesson";
+  return item.title;
 }

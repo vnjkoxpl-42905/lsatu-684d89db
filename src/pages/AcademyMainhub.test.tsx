@@ -158,8 +158,9 @@ describe("AcademyMainhub", () => {
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
     expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Today's Focus" })).toBeInTheDocument();
-    expect(await screen.findByText("No tasks assigned for today.")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Today" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
+    expect(screen.getByText("Nothing assigned for today.")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Launch a Drill" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Full Section/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Build a Set/i })).not.toBeInTheDocument();
