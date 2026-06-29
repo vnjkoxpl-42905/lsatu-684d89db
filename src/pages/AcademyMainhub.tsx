@@ -355,27 +355,35 @@ function MainhubHero() {
           </div>
         </div>
 
-        <div className="relative flex h-[170px] items-center justify-center overflow-hidden md:h-[360px]">
+        <div className="relative flex h-[170px] items-center justify-center md:h-[360px]">
+          {/* Soft radial spotlight behind robot */}
           <div
             aria-hidden
-            className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-[54%] -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl md:h-80 md:w-80"
-          />
-          <SplineBoundary>
-            <SplineScene
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="h-full w-full scale-[1.06]"
-            />
-          </SplineBoundary>
-          {/* Vignette to mask the baked-in grid floor from the Spline scene */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               background:
-                "radial-gradient(ellipse 55% 70% at 50% 50%, transparent 0%, transparent 40%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.95) 100%)",
+                "radial-gradient(ellipse at center, rgba(125,170,210,0.18) 0%, rgba(56,90,130,0.10) 30%, rgba(0,0,0,0) 65%)",
+              filter: "blur(20px)",
             }}
           />
+          <div
+            className="relative h-full w-full"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
+              maskImage:
+                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
+            }}
+          >
+            <SplineBoundary>
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="h-full w-full scale-[1.06]"
+              />
+            </SplineBoundary>
+          </div>
         </div>
+
 
         <div className="rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 md:mr-0 lg:mr-3">
           <div
