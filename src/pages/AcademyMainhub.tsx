@@ -8,6 +8,7 @@ import {
   Grid3x3,
   Loader2,
   Play,
+  Search,
   X,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -33,6 +34,10 @@ import { questionBank } from "@/lib/questionLoader";
 import { resolveResumeTarget } from "@/lib/lastActivity";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import { cn } from "@/lib/utils";
+import {
+  filterSmartLRQuestionMatches,
+  type SmartLRQuestionMatch,
+} from "@/components/mainhub/smartLRQuestionSearch";
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from "@/types/drill";
 import {
   ORBITAL_CATALOG,
@@ -202,6 +207,7 @@ function MainhubHero() {
   const [pt, setPt] = React.useState(QUESTION_PICKER_PLACEHOLDER);
   const [section, setSection] = React.useState(QUESTION_PICKER_PLACEHOLDER);
   const [qnum, setQnum] = React.useState(QUESTION_PICKER_PLACEHOLDER);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const allQuestions = React.useMemo(
     () => (manifest ? questionBank.getAllQuestions() : []),
@@ -248,14 +254,40 @@ function MainhubHero() {
     );
   }, [allQuestions, pt, section, qnum]);
 
+  const searchMatches = React.useMemo(
+    () =>
+      filterSmartLRQuestionMatches(
+        allQuestions,
+        searchQuery,
+        {
+          pt: pt ? Number(pt) : undefined,
+          section: section ? Number(section) : undefined,
+          qnum: qnum ? Number(qnum) : undefined,
+        },
+        6,
+      ),
+    [allQuestions, pt, section, qnum, searchQuery],
+  );
+
+  const queryIsActive = searchQuery.trim().length > 0;
+  const showNoMatches = queryIsActive && !isLoading && searchMatches.length === 0;
+  const searchTargetQuestion = searchMatches[0] ?? null;
+
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive" } });
   }, [navigate]);
 
+  const openQuestion = React.useCallback(
+    (qid: string) => {
+      navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart`);
+    },
+    [navigate],
+  );
+
   const startSpecificQuestion = React.useCallback(() => {
     if (!selectedQuestion) return;
-    navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(selectedQuestion.qid)}&present=smart`);
-  }, [navigate, selectedQuestion]);
+    openQuestion(selectedQuestion.qid);
+  }, [openQuestion, selectedQuestion]);
 
   return (
     <Card className="relative min-h-[430px] w-full overflow-hidden rounded-xl border border-black/20 bg-zinc-950 shadow-[0_24px_80px_rgba(15,23,42,0.22)] md:min-h-[360px]">
@@ -299,6 +331,58 @@ function MainhubHero() {
         </div>
 
         <div className="rounded-[22px] border border-white/10 bg-white/[0.055] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-md sm:p-4 md:mr-1">
+          <div
+            className="mb-2.5 space-y-2"
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && searchQuery) {
+                event.preventDefault();
+                setSearchQuery("");
+              }
+              if (event.key === "Enter" && searchTargetQuestion) {
+                event.preventDefault();
+                openQuestion(searchTargetQuestion.question.qid);
+              }
+            }}
+          >
+            <div className="relative">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
+                aria-hidden
+              />
+              <input
+                type="search"
+                value={searchQuery}
+                disabled={isLoading}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search question text..."
+                aria-label="Search question text"
+                className={cn(
+                  "h-11 w-full rounded-2xl border border-white/10 bg-black/20 pl-9 pr-3 text-sm font-semibold text-white outline-none transition",
+                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] placeholder:text-white/35",
+                  "focus:border-white/35 focus:ring-2 focus:ring-white/10 disabled:cursor-default disabled:text-white/30",
+                )}
+              />
+            </div>
+
+            {queryIsActive && (
+              <div className="max-h-44 space-y-1.5 overflow-y-auto pr-1" aria-live="polite">
+                {searchMatches.map((match) => (
+                  <QuestionSearchResult
+                    key={match.question.qid}
+                    match={match}
+                    onOpen={() => openQuestion(match.question.qid)}
+                  />
+                ))}
+
+                {showNoMatches && (
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-xs font-semibold text-white/50">
+                    No matching questions
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 gap-2.5" aria-label="Specific question launcher">
             <ConsoleSelect
               label="PrepTest"
@@ -348,6 +432,45 @@ function MainhubHero() {
         </div>
       </div>
     </Card>
+  );
+}
+
+function QuestionSearchResult({
+  match,
+  onOpen,
+}: {
+  match: SmartLRQuestionMatch;
+  onOpen: () => void;
+}) {
+  const { question, snippet } = match;
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className={cn(
+        "block w-full rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-left transition",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-white/20 hover:bg-white/[0.08]",
+      )}
+    >
+      <div className="mb-0.5 flex items-center gap-2 text-[11px] font-bold text-white/90">
+        <span>
+          PT {question.pt} · S{question.section} · Q{question.qnum}
+        </span>
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+          LR
+        </span>
+      </div>
+      <p className="line-clamp-1 text-xs leading-5 text-white/58">
+        {snippet.before}
+        {snippet.match ? (
+          <mark className="rounded bg-white/18 px-0.5 text-white">
+            {snippet.match}
+          </mark>
+        ) : null}
+        {snippet.after}
+      </p>
+    </button>
   );
 }
 
