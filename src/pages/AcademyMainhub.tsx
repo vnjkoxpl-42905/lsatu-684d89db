@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
-  ChevronDown,
   Grid3x3,
   Loader2,
   Play,
@@ -18,6 +17,13 @@ import { useLastActivity } from "@/hooks/useLastActivity";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SectionSelector } from "@/components/drill/SectionSelector";
@@ -359,31 +365,45 @@ function ConsoleSelect({
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="relative block">
-      <span className="sr-only">{label}</span>
-      <select
-        value={value}
-        disabled={disabled}
+    <Select
+      value={value || undefined}
+      disabled={disabled}
+      onValueChange={onChange}
+    >
+      <SelectTrigger
         aria-label={label}
-        onChange={(event) => onChange(event.target.value)}
         className={cn(
-          "h-12 w-full appearance-none rounded-2xl border border-white/10 bg-black/20 px-3 pr-9 text-sm font-semibold text-white outline-none transition",
-          "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10",
-          "disabled:cursor-default disabled:text-white/30",
+          "h-12 w-full rounded-2xl border border-white/10 bg-black/20 px-3 text-sm font-semibold text-white outline-none transition",
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10 focus:ring-offset-0",
+          "disabled:cursor-default disabled:text-white/30 disabled:opacity-100",
+          "[&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-white/40 [&>svg]:opacity-100",
+          "[&>span]:line-clamp-1 [&>span]:text-left",
         )}
       >
-        <option value="">{label}</option>
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent
+        position="popper"
+        sideOffset={8}
+        className={cn(
+          "z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-2xl border border-white/15 bg-zinc-950/95 text-white shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl",
+          "[&_[data-radix-select-viewport]]:max-h-[min(304px,calc(100vh-176px))]",
+        )}
+      >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <SelectItem
+            key={option.value}
+            value={option.value}
+            className={cn(
+              "min-h-9 rounded-xl py-2 pl-8 pr-3 text-sm font-semibold text-white/78 outline-none",
+              "focus:bg-white/10 focus:text-white data-[state=checked]:text-white",
+            )}
+          >
             {option.label}
-          </option>
+          </SelectItem>
         ))}
-      </select>
-      <ChevronDown
-        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40"
-        aria-hidden
-      />
-    </label>
+      </SelectContent>
+    </Select>
   );
 }
 
