@@ -22,7 +22,7 @@ export interface SmartLRQuestionSearchFilters {
   qnum?: number;
 }
 
-const SNIPPET_RADIUS = 92;
+const SNIPPET_RADIUS = 52;
 
 export function normalizeSmartLRSearchText(value: string): string {
   return value.replace(/\s+/g, " ").trim();
@@ -62,6 +62,23 @@ export function buildSmartLRSearchSnippet(
   };
 }
 
+function buildSmartLRQuestionSnippet(
+  question: SmartLRSearchQuestion,
+  query: string,
+): SmartLRSearchSnippet | null {
+  const textFields = [question.stimulus ?? "", question.questionStem];
+
+  for (const field of textFields) {
+    const snippet = buildSmartLRSearchSnippet(field, query);
+    if (snippet) return snippet;
+  }
+
+  const qidSnippet = buildSmartLRSearchSnippet(question.qid, query);
+  if (qidSnippet) return qidSnippet;
+
+  return null;
+}
+
 export function filterSmartLRQuestionMatches(
   questions: SmartLRSearchQuestion[],
   query: string,
@@ -78,10 +95,7 @@ export function filterSmartLRQuestionMatches(
     if (filters.section !== undefined && question.section !== filters.section) continue;
     if (filters.qnum !== undefined && question.qnum !== filters.qnum) continue;
 
-    const snippet = buildSmartLRSearchSnippet(
-      getSmartLRQuestionSearchText(question),
-      normalizedQuery,
-    );
+    const snippet = buildSmartLRQuestionSnippet(question, normalizedQuery);
     if (!snippet) continue;
 
     matches.push({ question, snippet });

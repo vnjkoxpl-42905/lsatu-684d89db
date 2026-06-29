@@ -44,6 +44,8 @@ describe("smart LR question search", () => {
     const byStimulus = filterSmartLRQuestionMatches(questions, "ebsen");
     expect(byStimulus.map((match) => match.question.qid)).toEqual(["PT151-S2-Q8"]);
     expect(byStimulus[0].snippet.match).toBe("Ebsen");
+    expect(byStimulus[0].snippet.before).toContain("Recent ads for ");
+    expect(byStimulus[0].snippet.before).not.toContain("PT151-S2-Q8");
 
     const byStem = filterSmartLRQuestionMatches(questions, "main conclusion");
     expect(byStem.map((match) => match.question.qid)).toEqual(["PT151-S3-Q8"]);
@@ -70,5 +72,15 @@ describe("smart LR question search", () => {
     expect(snippet).not.toBeNull();
     expect(snippet?.match).toBe("twelve");
     expect(`${snippet?.before}${snippet?.match}${snippet?.after}`).toContain("twelve");
+  });
+
+  it("keeps qid-only matches compact", () => {
+    const byQid = filterSmartLRQuestionMatches(questions, "pt152-s2-q9");
+
+    expect(byQid[0].snippet).toEqual({
+      before: "",
+      match: "PT152-S2-Q9",
+      after: "",
+    });
   });
 });
