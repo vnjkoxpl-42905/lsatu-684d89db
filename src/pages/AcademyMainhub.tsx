@@ -7,7 +7,6 @@ import {
   BookOpen,
   Grid3x3,
   Loader2,
-  Play,
   Search,
   X,
 } from "lucide-react";
@@ -304,9 +303,6 @@ function MainhubHero() {
       <div className="relative z-10 grid min-h-[430px] grid-cols-1 gap-5 p-5 sm:p-6 md:min-h-[360px] md:grid-cols-[0.78fr_1.34fr_0.9fr] md:items-center md:gap-2 lg:grid-cols-[0.7fr_1.42fr_0.88fr]">
         <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-2">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <Play className="h-3.5 w-3.5 fill-white/20" aria-hidden />
-            </span>
             <Button
               onClick={startSmartDrill}
               size="sm"
