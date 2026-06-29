@@ -90,12 +90,12 @@ const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus | ClassroomItem
 };
 
 const TYPE_TONE: Record<TodayFocusType, string> = {
-  assignment: "from-slate-950 via-sky-950 to-slate-950",
-  message: "from-slate-950 via-teal-950 to-slate-950",
-  bootcamp: "from-zinc-950 via-slate-900 to-slate-950",
-  set: "from-slate-950 via-blue-950 to-zinc-950",
-  drill: "from-zinc-950 via-emerald-950 to-slate-950",
-  notification: "from-zinc-950 via-amber-950 to-slate-950",
+  assignment: "bg-[radial-gradient(circle_at_78%_8%,rgba(82,135,168,0.32),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(234,146,58,0.16),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(9,35,55,0.62)_53%,rgba(7,11,20,0.8))]",
+  message: "bg-[radial-gradient(circle_at_78%_8%,rgba(69,148,143,0.3),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(235,151,70,0.15),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(9,44,48,0.58)_53%,rgba(7,11,20,0.8))]",
+  bootcamp: "bg-[radial-gradient(circle_at_78%_8%,rgba(118,136,161,0.24),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(239,160,75,0.15),transparent_34%),linear-gradient(139deg,rgba(7,10,17,0.8),rgba(24,31,43,0.58)_53%,rgba(7,11,20,0.8))]",
+  set: "bg-[radial-gradient(circle_at_78%_8%,rgba(79,121,190,0.3),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(238,149,62,0.14),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(8,31,62,0.58)_53%,rgba(7,11,20,0.8))]",
+  drill: "bg-[radial-gradient(circle_at_78%_8%,rgba(74,150,139,0.28),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(234,146,58,0.15),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(12,48,43,0.54)_53%,rgba(7,11,20,0.8))]",
+  notification: "bg-[radial-gradient(circle_at_78%_8%,rgba(188,137,77,0.28),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(251,177,83,0.18),transparent_34%),linear-gradient(139deg,rgba(7,10,18,0.8),rgba(59,37,15,0.55)_53%,rgba(7,11,20,0.8))]",
 };
 
 function compactText(text: string | null | undefined, max = 92) {
@@ -183,7 +183,7 @@ function taToFocus(a: StudentTAAssignment): TodayFocusItem | null {
     id: `ta-${a.id}`,
     type: "assignment",
     title: a.title || "Instructor assignment",
-    sourceLine: a.pdf_url ? "Assigned by Joshua" : "Assigned by Joshua",
+    sourceLine: "Assigned by Joshua",
     status: STATUS_LABEL[a.status],
     actionLabel: ACTION_BY_STATUS[a.status],
     actionCue: a.pdf_url ? "PDF" : undefined,
@@ -413,16 +413,16 @@ export default function TodayFocusPanel() {
   return (
     <section
       aria-label="Today"
-      className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-slate-950 shadow-[0_28px_70px_rgba(15,23,42,0.16)]"
+      className="overflow-hidden rounded-[28px] bg-[#070b12] shadow-[0_30px_90px_rgba(8,13,22,0.26)]"
     >
-      <div className="relative overflow-hidden bg-[radial-gradient(circle_at_12%_0%,rgba(148,163,184,0.24),transparent_32%),linear-gradient(180deg,#151b24,#080b11)] p-4 text-white sm:p-5">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="relative overflow-hidden p-4 text-white sm:p-5">
+        <CosmicSunriseBackdrop />
         <div className="relative">
-          <div className="mb-4 flex items-center justify-between">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-slate-300">
+          <div className="mb-4 flex items-center justify-between px-1">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.36em] text-slate-200/90">
               TODAY
             </p>
-            <time className="font-mono text-[11px] font-medium text-slate-400" dateTime={format(new Date(), "yyyy-MM-dd")}>
+            <time className="font-mono text-[11px] font-medium text-slate-300/80" dateTime={format(new Date(), "yyyy-MM-dd")}>
               {format(new Date(), "MMM d")}
             </time>
           </div>
@@ -463,6 +463,41 @@ export default function TodayFocusPanel() {
   );
 }
 
+function CosmicSunriseBackdrop() {
+  return (
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(75,99,132,0.18),transparent_28%),linear-gradient(180deg,#080b12_0%,#05070c_52%,#03060b_100%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(circle_at_12%_14%,rgba(255,255,255,0.72)_0_1px,transparent_1.5px),radial-gradient(circle_at_38%_8%,rgba(255,255,255,0.46)_0_1px,transparent_1.5px),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.54)_0_1px,transparent_1.5px),radial-gradient(circle_at_89%_11%,rgba(255,255,255,0.42)_0_1px,transparent_1.5px),radial-gradient(circle_at_58%_32%,rgba(125,171,213,0.48)_0_1px,transparent_1.5px)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-[5.7rem] h-px bg-gradient-to-r from-transparent via-sky-200/55 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-8 bottom-10 h-28 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(251,164,65,0.4)_0%,rgba(83,145,183,0.28)_28%,rgba(9,23,39,0.1)_55%,transparent_72%)] blur-sm"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-7 left-1/2 h-[82%] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-amber-200/75 to-transparent opacity-70"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-[5.45rem] left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-amber-200/90 blur-[2px] shadow-[0_0_36px_rgba(245,164,70,0.75)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),transparent_18%,transparent_74%,rgba(255,255,255,0.035))]"
+      />
+    </>
+  );
+}
+
 function TodayPrimarySurface({
   item,
   expanded,
@@ -479,37 +514,38 @@ function TodayPrimarySurface({
     <motion.div
       layout
       className={cn(
-        "group relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_20px_55px_rgba(0,0,0,0.28)]",
+        "group relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/[0.08] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(125,191,232,0.08),0_22px_54px_rgba(0,0,0,0.34)] backdrop-blur-xl",
         TYPE_TONE[item.type],
       )}
       transition={{ type: "spring", stiffness: 170, damping: 24 }}
     >
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(255,255,255,0.16),transparent_26%),radial-gradient(circle_at_24%_70%,rgba(125,211,252,0.12),transparent_32%)]" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.7)_1px,transparent_1px)] [background-size:34px_34px]" />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_83%_10%,rgba(177,219,242,0.16),transparent_31%),linear-gradient(90deg,rgba(255,255,255,0.05),transparent_24%,transparent_74%,rgba(105,172,210,0.08))]" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_center,rgba(236,158,78,0.18),transparent_64%)]" />
+      <div aria-hidden className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-100/35 to-transparent" />
       <button
         type="button"
         aria-expanded={expanded}
         onClick={onToggle}
-        className="relative flex min-h-[168px] w-full flex-col items-start text-left outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+        className="relative flex min-h-[168px] w-full flex-col items-start text-left outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12]"
       >
         <div className="flex w-full items-start justify-between gap-4">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-200/85">
               Next up
             </p>
             <div className="mt-2 flex items-center gap-2">
               {item.status && (
-                <span className="rounded-full border border-white/15 bg-white/[0.08] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-100">
+                <span className="rounded-full border border-amber-100/15 bg-amber-100/[0.08] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-50/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                   {item.status}
                 </span>
               )}
-              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/[0.08] text-slate-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-sky-100/15 bg-sky-100/[0.08] text-sky-100/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <Icon className="h-3.5 w-3.5" aria-hidden />
               </span>
             </div>
           </div>
           {item.progress && (
-            <span className="font-mono text-[11px] font-semibold text-slate-300">{item.progress}</span>
+            <span className="font-mono text-[11px] font-semibold text-slate-300/85">{item.progress}</span>
           )}
         </div>
 
@@ -517,19 +553,19 @@ function TodayPrimarySurface({
           <h2 className="text-xl font-semibold leading-tight tracking-normal text-white sm:text-2xl">
             {item.title}
           </h2>
-          <p className="mt-2 text-sm font-medium text-slate-300">{item.sourceLine}</p>
+          <p className="mt-2 text-sm font-medium text-slate-300/90">{item.sourceLine}</p>
           <AnimatePresence initial={false}>
             {expanded && (
               <motion.div
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
-                className="mt-4 space-y-2 text-sm leading-6 text-slate-300"
+                className="mt-4 space-y-2 text-sm leading-6 text-slate-300/90"
               >
                 <p>{contextLineFor(item)}</p>
-                {item.preview && <p className="line-clamp-2 text-slate-200">{item.type === "message" ? `"${item.preview}"` : item.preview}</p>}
+                {item.preview && <p className="line-clamp-2 text-slate-100/95">{item.type === "message" ? `"${item.preview}"` : item.preview}</p>}
                 {(item.estimatedTime || item.progress) && (
-                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400/90">
                     {[item.estimatedTime, item.progress].filter(Boolean).join(" / ")}
                   </p>
                 )}
@@ -545,10 +581,10 @@ function TodayPrimarySurface({
           onActivate();
         }}
         disabled={!item.route && !item.onOpen}
-        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between border-t border-white/10 bg-white/[0.08] px-5 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-white/[0.13] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
+        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between border-t border-white/[0.08] bg-white/[0.06] px-5 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-amber-100/[0.08] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
       >
         <span>{actionText(item)}</span>
-        <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300">
+        <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300/90">
           {item.actionCue}
           <ArrowRight className="h-4 w-4" aria-hidden />
         </span>
@@ -573,19 +609,19 @@ function TodayRailItem({
       layout
       onClick={onPromote}
       className={cn(
-        "flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-300 hover:border-white/20 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]",
+        "flex w-full items-center gap-3 rounded-[20px] border border-white/[0.08] bg-white/[0.045] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(0,0,0,0.16)] backdrop-blur-xl transition duration-300 hover:border-sky-100/18 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
         muted && "opacity-60",
       )}
       transition={{ type: "spring", stiffness: 180, damping: 24 }}
     >
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.08] text-slate-200">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.055] text-slate-200/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
         <Icon className="h-3.5 w-3.5" aria-hidden />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-semibold">{railTitle(item)}</span>
-        <span className="mt-0.5 block truncate text-xs text-slate-400">{item.sourceLine}</span>
+        <span className="mt-0.5 block truncate text-xs text-slate-400/95">{item.sourceLine}</span>
       </span>
-      <span className="shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300">
+      <span className="shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/95">
         {item.status ?? item.actionLabel}
       </span>
     </motion.button>
@@ -595,15 +631,15 @@ function TodayRailItem({
 function TodaySkeleton() {
   return (
     <div aria-label="Loading today" className="animate-pulse">
-      <div className="min-h-[238px] rounded-[24px] border border-white/10 bg-white/[0.07] p-5">
+      <div className="min-h-[238px] rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
         <div className="h-3 w-20 rounded-full bg-white/15" />
-        <div className="mt-7 h-8 w-3/4 rounded-full bg-white/15" />
+        <div className="mt-7 h-8 w-3/4 rounded-full bg-white/14" />
         <div className="mt-3 h-4 w-1/2 rounded-full bg-white/10" />
-        <div className="-mx-5 -mb-5 mt-20 h-12 border-t border-white/10 bg-white/[0.06]" />
+        <div className="-mx-5 -mb-5 mt-20 h-12 border-t border-white/[0.08] bg-white/[0.045]" />
       </div>
       <div className="mt-3 grid gap-2">
-        <div className="h-[58px] rounded-2xl border border-white/10 bg-white/[0.06]" />
-        <div className="h-[58px] rounded-2xl border border-white/10 bg-white/[0.06]" />
+        <div className="h-[58px] rounded-[20px] border border-white/[0.08] bg-white/[0.045] backdrop-blur-xl" />
+        <div className="h-[58px] rounded-[20px] border border-white/[0.08] bg-white/[0.045] backdrop-blur-xl" />
       </div>
     </div>
   );
@@ -612,19 +648,19 @@ function TodaySkeleton() {
 function TodayEmptyState() {
   return (
     <div aria-live="polite">
-      <div className="relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-zinc-950 via-slate-900 to-zinc-950 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(148,163,184,0.18),transparent_30%)]" />
+      <div className="relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_72%_16%,rgba(127,177,211,0.16),transparent_36%),radial-gradient(circle_at_18%_86%,rgba(238,159,74,0.13),transparent_32%)]" />
         <div className="relative flex min-h-[198px] flex-col justify-between">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
               Next up
             </p>
             <h2 className="mt-8 text-2xl font-semibold tracking-normal text-white">
               All caught up
             </h2>
-            <p className="mt-2 text-sm text-slate-300">Nothing assigned for today.</p>
+            <p className="mt-2 text-sm text-slate-300/90">Nothing assigned for today.</p>
           </div>
-          <div className="border-t border-white/10 pt-4 text-xs font-medium text-slate-500">
+          <div className="border-t border-white/[0.08] pt-4 text-xs font-medium text-slate-400/80">
             Assigned work and instructor messages will appear here when they exist.
           </div>
         </div>
@@ -639,17 +675,17 @@ function TodayEmptyState() {
 function TodayErrorState() {
   return (
     <div>
-      <div className="min-h-[238px] rounded-[24px] border border-white/10 bg-gradient-to-br from-zinc-950 via-slate-900 to-zinc-950 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300">
+      <div className="min-h-[238px] rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
           Next up
         </p>
         <div className="mt-12">
           <h2 className="text-2xl font-semibold tracking-normal text-white">Couldn&apos;t load today.</h2>
-          <p className="mt-2 text-sm text-slate-400">Refresh the page to try again.</p>
+          <p className="mt-2 text-sm text-slate-400/90">Refresh the page to try again.</p>
         </div>
       </div>
       <div className="mt-3 grid gap-2">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-slate-400">
+        <div className="rounded-[20px] border border-white/[0.08] bg-white/[0.045] px-4 py-3 text-sm text-slate-400/90 backdrop-blur-xl">
           Today is temporarily unavailable.
         </div>
       </div>
@@ -659,7 +695,7 @@ function TodayErrorState() {
 
 function EmptyRailQuiet() {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-500">
+    <div className="rounded-[20px] border border-white/[0.08] bg-white/[0.035] px-4 py-3 text-sm text-slate-500/90 backdrop-blur-xl">
       No secondary focus items.
     </div>
   );
