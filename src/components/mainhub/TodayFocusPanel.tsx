@@ -90,13 +90,15 @@ const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus | ClassroomItem
 };
 
 const TYPE_TONE: Record<TodayFocusType, string> = {
-  assignment: "bg-[radial-gradient(circle_at_78%_8%,rgba(82,135,168,0.32),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(234,146,58,0.16),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(9,35,55,0.62)_53%,rgba(7,11,20,0.8))]",
-  message: "bg-[radial-gradient(circle_at_78%_8%,rgba(69,148,143,0.3),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(235,151,70,0.15),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(9,44,48,0.58)_53%,rgba(7,11,20,0.8))]",
-  bootcamp: "bg-[radial-gradient(circle_at_78%_8%,rgba(118,136,161,0.24),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(239,160,75,0.15),transparent_34%),linear-gradient(139deg,rgba(7,10,17,0.8),rgba(24,31,43,0.58)_53%,rgba(7,11,20,0.8))]",
-  set: "bg-[radial-gradient(circle_at_78%_8%,rgba(79,121,190,0.3),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(238,149,62,0.14),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(8,31,62,0.58)_53%,rgba(7,11,20,0.8))]",
-  drill: "bg-[radial-gradient(circle_at_78%_8%,rgba(74,150,139,0.28),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(234,146,58,0.15),transparent_34%),linear-gradient(139deg,rgba(5,10,19,0.78),rgba(12,48,43,0.54)_53%,rgba(7,11,20,0.8))]",
-  notification: "bg-[radial-gradient(circle_at_78%_8%,rgba(188,137,77,0.28),transparent_36%),radial-gradient(circle_at_14%_86%,rgba(251,177,83,0.18),transparent_34%),linear-gradient(139deg,rgba(7,10,18,0.8),rgba(59,37,15,0.55)_53%,rgba(7,11,20,0.8))]",
+  assignment: "bg-[radial-gradient(circle_at_82%_0%,rgba(117,163,194,0.22),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(216,158,79,0.16),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.9),rgba(10,21,32,0.82)_54%,rgba(6,8,13,0.92))]",
+  message: "bg-[radial-gradient(circle_at_82%_0%,rgba(111,177,170,0.2),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(216,158,79,0.15),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.9),rgba(9,28,31,0.8)_54%,rgba(6,8,13,0.92))]",
+  bootcamp: "bg-[radial-gradient(circle_at_82%_0%,rgba(148,167,190,0.18),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(216,158,79,0.14),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.91),rgba(22,27,36,0.8)_54%,rgba(6,8,13,0.93))]",
+  set: "bg-[radial-gradient(circle_at_82%_0%,rgba(113,153,203,0.19),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(216,158,79,0.14),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.9),rgba(9,22,40,0.8)_54%,rgba(6,8,13,0.92))]",
+  drill: "bg-[radial-gradient(circle_at_82%_0%,rgba(104,171,159,0.18),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(216,158,79,0.14),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.9),rgba(10,30,29,0.78)_54%,rgba(6,8,13,0.92))]",
+  notification: "bg-[radial-gradient(circle_at_82%_0%,rgba(204,155,87,0.18),transparent_38%),radial-gradient(circle_at_12%_104%,rgba(236,174,91,0.17),transparent_36%),linear-gradient(142deg,rgba(7,10,16,0.91),rgba(38,25,13,0.76)_54%,rgba(6,8,13,0.93))]",
 };
+
+const TODAY_ECLIPSE_IMAGE = "/mainhub/today-eclipse.png";
 
 function compactText(text: string | null | undefined, max = 92) {
   const value = text?.replace(/\s+/g, " ").trim();
@@ -413,10 +415,10 @@ export default function TodayFocusPanel() {
   return (
     <section
       aria-label="Today"
-      className="overflow-hidden rounded-[28px] bg-[#070b12] shadow-[0_30px_90px_rgba(8,13,22,0.26)]"
+      className="overflow-hidden rounded-[34px] bg-[linear-gradient(145deg,rgba(255,255,255,0.11),rgba(111,150,179,0.055)_36%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_34px_100px_rgba(4,7,12,0.28),0_8px_28px_rgba(48,75,101,0.09)]"
     >
-      <div className="relative overflow-hidden p-4 text-white sm:p-5">
-        <CosmicSunriseBackdrop />
+      <div className="relative overflow-hidden rounded-[33px] bg-[#05070b] p-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(104,149,184,0.08)] sm:p-5">
+        <EclipseGlassBackdrop />
         <div className="relative">
           <div className="mb-4 flex items-center justify-between px-1">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.36em] text-slate-200/90">
@@ -463,36 +465,49 @@ export default function TodayFocusPanel() {
   );
 }
 
-function CosmicSunriseBackdrop() {
+function EclipseGlassBackdrop() {
   return (
     <>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(75,99,132,0.18),transparent_28%),linear-gradient(180deg,#080b12_0%,#05070c_52%,#03060b_100%)]"
+        className="pointer-events-none absolute inset-0 opacity-[0.38]"
+        style={{
+          backgroundImage: `url(${TODAY_ECLIPSE_IMAGE})`,
+          backgroundPosition: "50% 48%",
+          backgroundSize: "112% auto",
+        }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(circle_at_12%_14%,rgba(255,255,255,0.72)_0_1px,transparent_1.5px),radial-gradient(circle_at_38%_8%,rgba(255,255,255,0.46)_0_1px,transparent_1.5px),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.54)_0_1px,transparent_1.5px),radial-gradient(circle_at_89%_11%,rgba(255,255,255,0.42)_0_1px,transparent_1.5px),radial-gradient(circle_at_58%_32%,rgba(125,171,213,0.48)_0_1px,transparent_1.5px)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_53%,rgba(255,255,255,0.04)_0%,rgba(3,5,9,0.18)_26%,rgba(3,5,9,0.78)_66%,rgba(3,5,9,0.95)_100%),linear-gradient(180deg,rgba(5,8,13,0.94)_0%,rgba(5,8,13,0.58)_42%,rgba(5,7,11,0.88)_100%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-[5.7rem] h-px bg-gradient-to-r from-transparent via-sky-200/55 to-transparent"
+        className="pointer-events-none absolute inset-0 opacity-[0.11] [background-image:linear-gradient(rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(circle_at_50%_50%,black,transparent_78%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-8 bottom-10 h-28 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(251,164,65,0.4)_0%,rgba(83,145,183,0.28)_28%,rgba(9,23,39,0.1)_55%,transparent_72%)] blur-sm"
+        className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_12%_18%,rgba(255,255,255,0.74)_0_1px,transparent_1.5px),radial-gradient(circle_at_74%_12%,rgba(255,255,255,0.62)_0_1px,transparent_1.5px),radial-gradient(circle_at_88%_31%,rgba(151,192,225,0.64)_0_1px,transparent_1.5px)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-7 left-1/2 h-[82%] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-amber-200/75 to-transparent opacity-70"
+        className="pointer-events-none absolute inset-x-10 bottom-[7.2rem] h-24 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(255,237,209,0.14)_0%,rgba(220,159,74,0.12)_18%,rgba(84,129,157,0.1)_38%,transparent_74%)] blur-lg"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-[5.45rem] left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-amber-200/90 blur-[2px] shadow-[0_0_36px_rgba(245,164,70,0.75)]"
+        className="pointer-events-none absolute inset-x-8 bottom-[8.15rem] h-px bg-gradient-to-r from-transparent via-white/24 to-transparent"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),transparent_18%,transparent_74%,rgba(255,255,255,0.035))]"
+        className="pointer-events-none absolute bottom-[6.8rem] left-1/2 h-12 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-amber-100/28 to-transparent opacity-60 blur-[0.5px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-[7.85rem] left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-amber-100/48 blur-[2px] shadow-[0_0_30px_rgba(235,173,83,0.42)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),transparent_16%,transparent_72%,rgba(255,255,255,0.025))]"
       />
     </>
   );
@@ -513,15 +528,19 @@ function TodayPrimarySurface({
   return (
     <motion.div
       layout
-      className={cn(
-        "group relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/[0.08] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(125,191,232,0.08),0_22px_54px_rgba(0,0,0,0.34)] backdrop-blur-xl",
-        TYPE_TONE[item.type],
-      )}
+      className="group relative min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(126,177,212,0.07)_36%,rgba(255,255,255,0.025)_62%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_22px_62px_rgba(0,0,0,0.24),0_0_30px_rgba(81,123,153,0.08)]"
       transition={{ type: "spring", stiffness: 170, damping: 24 }}
     >
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_83%_10%,rgba(177,219,242,0.16),transparent_31%),linear-gradient(90deg,rgba(255,255,255,0.05),transparent_24%,transparent_74%,rgba(105,172,210,0.08))]" />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_center,rgba(236,158,78,0.18),transparent_64%)]" />
-      <div aria-hidden className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-100/35 to-transparent" />
+      <div
+        className={cn(
+          "relative min-h-[236px] overflow-hidden rounded-[28px] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(107,151,181,0.08)] backdrop-blur-md",
+          TYPE_TONE[item.type],
+        )}
+      >
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,6,10,0.04)_0%,rgba(3,6,10,0.18)_48%,rgba(3,6,10,0.32)_100%),radial-gradient(circle_at_82%_8%,rgba(218,239,255,0.08),transparent_38%),radial-gradient(circle_at_18%_92%,rgba(244,185,111,0.08),transparent_36%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_26%,transparent_72%,rgba(120,176,211,0.04))]" />
+      <div aria-hidden className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.24)_1px,transparent_1px)] [background-size:54px_54px]" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_center,rgba(235,176,101,0.11),transparent_70%)]" />
+      <div aria-hidden className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/26 to-transparent" />
       <button
         type="button"
         aria-expanded={expanded}
@@ -581,14 +600,17 @@ function TodayPrimarySurface({
           onActivate();
         }}
         disabled={!item.route && !item.onOpen}
-        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between border-t border-white/[0.08] bg-white/[0.06] px-5 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-amber-100/[0.08] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
+        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between bg-[linear-gradient(90deg,rgba(255,255,255,0.065),rgba(255,255,255,0.035)_46%,rgba(123,165,193,0.045))] px-5 py-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition duration-500 hover:bg-[linear-gradient(90deg,rgba(244,190,121,0.1),rgba(255,255,255,0.045)_46%,rgba(123,165,193,0.065))] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
       >
         <span>{actionText(item)}</span>
         <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300/90">
           {item.actionCue}
-          <ArrowRight className="h-4 w-4" aria-hidden />
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.065] text-slate-100/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.09)] transition duration-500 group-hover:translate-x-0.5">
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </span>
         </span>
       </button>
+      </div>
     </motion.div>
   );
 }
@@ -609,12 +631,12 @@ function TodayRailItem({
       layout
       onClick={onPromote}
       className={cn(
-        "flex w-full items-center gap-3 rounded-[20px] border border-white/[0.08] bg-white/[0.045] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(0,0,0,0.16)] backdrop-blur-xl transition duration-300 hover:border-sky-100/18 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
+        "flex w-full items-center gap-3 rounded-[21px] bg-[linear-gradient(145deg,rgba(255,255,255,0.062),rgba(255,255,255,0.026)_52%,rgba(77,109,132,0.04))] px-4 py-2.5 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.075),inset_0_-1px_0_rgba(96,130,157,0.055)] ring-1 ring-white/[0.045] backdrop-blur-md transition duration-500 hover:bg-[linear-gradient(145deg,rgba(255,255,255,0.085),rgba(255,255,255,0.036)_52%,rgba(92,130,160,0.055))] hover:ring-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
         muted && "opacity-60",
       )}
       transition={{ type: "spring", stiffness: 180, damping: 24 }}
     >
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.055] text-slate-200/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/[0.045] text-slate-200/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/[0.05]">
         <Icon className="h-3.5 w-3.5" aria-hidden />
       </span>
       <span className="min-w-0 flex-1">
@@ -631,15 +653,15 @@ function TodayRailItem({
 function TodaySkeleton() {
   return (
     <div aria-label="Loading today" className="animate-pulse">
-      <div className="min-h-[238px] rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+      <div className="min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.11),rgba(255,255,255,0.035)_52%,rgba(92,126,151,0.06))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.13),inset_0_-1px_0_rgba(104,149,184,0.08),0_18px_46px_rgba(0,0,0,0.22)] ring-1 ring-white/[0.07] backdrop-blur-md">
         <div className="h-3 w-20 rounded-full bg-white/15" />
         <div className="mt-7 h-8 w-3/4 rounded-full bg-white/14" />
         <div className="mt-3 h-4 w-1/2 rounded-full bg-white/10" />
-        <div className="-mx-5 -mb-5 mt-20 h-12 border-t border-white/[0.08] bg-white/[0.045]" />
+        <div className="-mx-5 -mb-5 mt-20 h-12 bg-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" />
       </div>
       <div className="mt-3 grid gap-2">
-        <div className="h-[58px] rounded-[20px] border border-white/[0.08] bg-white/[0.045] backdrop-blur-xl" />
-        <div className="h-[58px] rounded-[20px] border border-white/[0.08] bg-white/[0.045] backdrop-blur-xl" />
+        <div className="h-[58px] rounded-[23px] bg-white/[0.045] ring-1 ring-white/[0.07] backdrop-blur-md" />
+        <div className="h-[58px] rounded-[23px] bg-white/[0.04] ring-1 ring-white/[0.06] backdrop-blur-md" />
       </div>
     </div>
   );
@@ -648,8 +670,8 @@ function TodaySkeleton() {
 function TodayEmptyState() {
   return (
     <div aria-live="polite">
-      <div className="relative min-h-[238px] overflow-hidden rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_72%_16%,rgba(127,177,211,0.16),transparent_36%),radial-gradient(circle_at_18%_86%,rgba(238,159,74,0.13),transparent_32%)]" />
+      <div className="relative min-h-[238px] overflow-hidden rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.09),rgba(255,255,255,0.035)_52%,rgba(92,126,151,0.055))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.13),inset_0_-1px_0_rgba(104,149,184,0.08),0_18px_46px_rgba(0,0,0,0.22)] ring-1 ring-white/[0.07] backdrop-blur-md">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_72%_16%,rgba(180,213,235,0.11),transparent_38%),radial-gradient(circle_at_18%_88%,rgba(238,174,91,0.12),transparent_34%)]" />
         <div className="relative flex min-h-[198px] flex-col justify-between">
           <div>
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
@@ -660,7 +682,7 @@ function TodayEmptyState() {
             </h2>
             <p className="mt-2 text-sm text-slate-300/90">Nothing assigned for today.</p>
           </div>
-          <div className="border-t border-white/[0.08] pt-4 text-xs font-medium text-slate-400/80">
+          <div className="pt-4 text-xs font-medium text-slate-400/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]">
             Assigned work and instructor messages will appear here when they exist.
           </div>
         </div>
@@ -675,7 +697,7 @@ function TodayEmptyState() {
 function TodayErrorState() {
   return (
     <div>
-      <div className="min-h-[238px] rounded-[24px] border border-white/[0.08] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+      <div className="min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.09),rgba(255,255,255,0.035)_52%,rgba(92,126,151,0.055))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.13),inset_0_-1px_0_rgba(104,149,184,0.08),0_18px_46px_rgba(0,0,0,0.22)] ring-1 ring-white/[0.07] backdrop-blur-md">
         <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
           Next up
         </p>
@@ -685,7 +707,7 @@ function TodayErrorState() {
         </div>
       </div>
       <div className="mt-3 grid gap-2">
-        <div className="rounded-[20px] border border-white/[0.08] bg-white/[0.045] px-4 py-3 text-sm text-slate-400/90 backdrop-blur-xl">
+        <div className="rounded-[23px] bg-white/[0.04] px-4 py-3 text-sm text-slate-400/90 ring-1 ring-white/[0.06] backdrop-blur-md">
           Today is temporarily unavailable.
         </div>
       </div>
@@ -695,7 +717,7 @@ function TodayErrorState() {
 
 function EmptyRailQuiet() {
   return (
-    <div className="rounded-[20px] border border-white/[0.08] bg-white/[0.035] px-4 py-3 text-sm text-slate-500/90 backdrop-blur-xl">
+    <div className="rounded-[23px] bg-white/[0.035] px-4 py-3 text-sm text-slate-500/90 ring-1 ring-white/[0.05] backdrop-blur-md">
       No secondary focus items.
     </div>
   );
