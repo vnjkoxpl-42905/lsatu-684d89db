@@ -449,8 +449,8 @@ function QuestionSearchResult({
       type="button"
       onClick={onOpen}
       className={cn(
-        "block w-full rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-left transition",
-        "shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-white/20 hover:bg-white/[0.08]",
+        "block w-full rounded-2xl border border-white/[0.12] bg-slate-950/80 px-3 py-2 text-left transition",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(0,0,0,0.18)] hover:border-white/[0.22] hover:bg-slate-900/90",
       )}
     >
       <div className="mb-0.5 flex items-center gap-2 text-[11px] font-bold text-white/90">
@@ -461,10 +461,10 @@ function QuestionSearchResult({
           LR
         </span>
       </div>
-      <p className="line-clamp-1 text-xs leading-5 text-white/58">
+      <p className="line-clamp-1 text-xs font-medium leading-5 text-slate-200/90">
         {snippet.before}
         {snippet.match ? (
-          <mark className="rounded bg-white/18 px-0.5 text-white">
+          <mark className="rounded bg-white px-0.5 font-semibold text-slate-950 shadow-[0_0_14px_rgba(255,255,255,0.16)]">
             {snippet.match}
           </mark>
         ) : null}
