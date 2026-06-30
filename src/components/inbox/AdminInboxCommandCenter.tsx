@@ -19,7 +19,6 @@ import { DrivePanel } from '@/components/inbox/DrivePanel';
 import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
 import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
-import { AdminIntelligencePanel } from '@/components/inbox/AdminIntelligencePanel';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
@@ -106,7 +105,7 @@ export function AdminInboxCommandCenter({
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [source, setSource] = useState<InboxSource>(() =>
-    embedded ? defaultSource : sourceFromSearch(location.search, defaultSource),
+    sourceFromSearch(location.search, defaultSource),
   );
   const [embeddedActiveId, setEmbeddedActiveId] = useState<string | null>(null);
 
@@ -127,7 +126,7 @@ export function AdminInboxCommandCenter({
   }, [headerName]);
 
   useEffect(() => {
-    setSource(embedded ? defaultSource : sourceFromSearch(location.search, defaultSource));
+    setSource(sourceFromSearch(location.search, defaultSource));
   }, [defaultSource, embedded, location.search]);
 
   const visibleConversations = useMemo(() => {
@@ -304,7 +303,7 @@ export function AdminInboxCommandCenter({
             'min-h-0 flex-1 md:grid',
             embedded
               ? 'grid-cols-[minmax(230px,320px)_minmax(0,1fr)]'
-              : 'max-w-[1680px] md:grid-cols-[370px_minmax(0,1fr)] xl:grid-cols-[380px_minmax(0,1fr)_360px]',
+              : 'max-w-[1680px] md:grid-cols-[370px_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]',
             !embedded && 'mx-auto w-full',
           )}
         >
@@ -367,8 +366,6 @@ export function AdminInboxCommandCenter({
               </div>
             )}
           </main>
-
-          {!embedded ? <AdminIntelligencePanel conversation={active} ownId={user?.id ?? null} /> : null}
         </div>
       )}
     </div>

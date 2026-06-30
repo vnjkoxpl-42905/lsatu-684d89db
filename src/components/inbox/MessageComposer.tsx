@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Bot,
-  CalendarPlus,
   Check,
   Cloud,
   FileText,
@@ -63,9 +61,7 @@ export function MessageComposer({
   const [templates] = useState<MessageTemplate[]>([]);
   const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
   const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
-  const [composerFocused, setComposerFocused] = useState(false);
   const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>('both');
-  const [messageType, setMessageType] = useState('Coaching reply');
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
@@ -279,17 +275,10 @@ export function MessageComposer({
   };
 
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
-  const smartDeliveryScaffold = {
-    recommended: (file || driveAttachments.length > 0 ? 'both' : 'message') as DeliveryMode,
-    reason: file || driveAttachments.length > 0
-      ? 'Attachment present, so keep an in-app copy and prepare email backup.'
-      : 'No file context yet, so an in-app coaching reply is the lightest path.',
-    signals: [
-      messageType,
-      file || driveAttachments.length > 0 ? 'has attachments' : 'text only',
-      'student activity pending',
-    ],
-  };
+  const recommendedDelivery = (file || driveAttachments.length > 0 ? 'both' : 'message') as DeliveryMode;
+  const deliveryReason = file || driveAttachments.length > 0
+    ? 'Attachment present, so keep an in-app copy and prepare email backup.'
+    : 'No file context yet, so an in-app coaching reply is the lightest path.';
   const deliveryLabel: Record<DeliveryMode, string> = {
     message: 'Message',
     email: 'Email',
@@ -326,8 +315,8 @@ export function MessageComposer({
   };
 
   return (
-    <div className={cn('shrink-0 bg-transparent', isAdmin ? 'px-4 py-4 sm:px-6' : 'px-4 py-5 sm:px-6')}>
-      <div className={cn('mx-auto space-y-4', isAdmin ? 'max-w-4xl' : 'max-w-3xl')}>
+    <div className={cn('shrink-0 bg-transparent', isAdmin ? 'px-3 py-3 sm:px-5' : 'px-4 py-5 sm:px-6')}>
+      <div className={cn('mx-auto space-y-3', isAdmin ? 'max-w-5xl' : 'max-w-3xl')}>
       {file && (
         <div className={cn('flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm shadow-sm', isAdmin ? 'border-[#d8c6ad] bg-[#fffaf0]' : 'border-[#eadfcf] bg-white')}>
           {filePreviewUrl ? (
@@ -430,9 +419,9 @@ export function MessageComposer({
       />
       <div
         className={cn(
-          'relative overflow-hidden rounded-2xl border transition-all',
+          'relative overflow-hidden rounded-[22px] border transition-all',
           isAdmin
-            ? 'border-[#d8c6ad] bg-[#fffaf0] shadow-[0_18px_48px_rgba(52,39,23,0.12)] focus-within:border-[#a14f43]/50'
+            ? 'border-[#d8c6ad] bg-[#fffaf0] shadow-[0_14px_36px_rgba(52,39,23,0.10)] focus-within:border-[#a14f43]/50'
             : 'border-[#eadfcf] bg-white shadow-[0_12px_34px_rgba(63,45,24,0.08)] focus-within:border-[#7f8f69]/50',
         )}
       >
@@ -443,8 +432,8 @@ export function MessageComposer({
                 <Sparkles className="h-3 w-3 text-[#f0d28e]" />
                 Smart: {deliveryLabel[deliveryMode]}
               </span>
-              <span className="hidden text-[11px] font-semibold text-[#7a6b58] sm:inline">
-                Recommended {deliveryLabel[smartDeliveryScaffold.recommended]} · {smartDeliveryScaffold.reason}
+              <span className="hidden text-[11px] font-semibold text-[#7a6b58] md:inline">
+                Recommended {deliveryLabel[recommendedDelivery]} · {deliveryReason}
               </span>
             </div>
             <div className="flex items-center gap-1 rounded-full bg-[#eadfcf] p-1">
@@ -476,50 +465,15 @@ export function MessageComposer({
           ref={textareaRef}
           value={body}
           onChange={(e) => setBodyAndResize(e.target.value)}
-          onFocus={() => setComposerFocused(true)}
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
-          placeholder={isAdmin ? 'Message with files, templates, and assignment context...' : 'Ask Joshua a question or send study context'}
+          placeholder={isAdmin ? 'Message this student...' : 'Ask Joshua a question or send study context'}
           className={cn(
-            'w-full resize-none border-0 bg-transparent px-5 py-4 text-[15px] font-medium shadow-none focus-visible:ring-0',
+            'w-full resize-none border-0 bg-transparent px-5 py-3.5 text-[15px] font-medium shadow-none focus-visible:ring-0',
             isAdmin ? 'text-[#211b16] placeholder:text-[#9a8b76]' : 'text-slate-800 placeholder:text-slate-400',
           )}
-          style={{ height: isAdmin && composerFocused ? '82px' : '54px', overflowY: 'hidden', transition: 'height 160ms ease' }}
+          style={{ height: '54px', overflowY: 'hidden', transition: 'height 160ms ease' }}
         />
-        {isAdmin && composerFocused && (
-          <div className="grid gap-3 border-t border-[#eadfcf] bg-[#fffaf0] px-3 py-3 md:grid-cols-[1fr_auto]">
-            <div className="flex flex-wrap items-center gap-2">
-              {['Coaching reply', 'Assignment note', 'Check-in', 'File follow-up'].map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => setMessageType(label)}
-                  className={cn(
-                    'rounded-full border px-2.5 py-1.5 text-[10px] font-black uppercase tracking-[0.08em] transition',
-                    messageType === label
-                      ? 'border-[#a14f43] bg-[#a14f43] text-white'
-                      : 'border-[#d8c6ad] bg-white/70 text-[#5f513f] hover:border-[#a14f43]/50',
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-center justify-start gap-2 md:justify-end">
-              <button type="button" className="inline-flex items-center gap-1.5 rounded-xl bg-[#eadfcf] px-2.5 py-2 text-[11px] font-black text-[#5f513f]">
-                <Bot className="h-3.5 w-3.5" />
-                Context sources
-              </button>
-              <button type="button" className="inline-flex items-center gap-1.5 rounded-xl bg-[#eadfcf] px-2.5 py-2 text-[11px] font-black text-[#5f513f]">
-                <CalendarPlus className="h-3.5 w-3.5" />
-                Follow-up
-              </button>
-            </div>
-            <div className="md:col-span-2 rounded-xl bg-[#f1e6d4] px-3 py-2 text-[11px] font-semibold text-[#665a4b]">
-              Training scaffold: {smartDeliveryScaffold.signals.join(' / ')}. Override is captured in UI state; backend persistence is pending.
-            </div>
-          </div>
-        )}
         <div className={cn('flex items-center gap-2 border-t px-3 py-2', isAdmin ? 'border-[#eadfcf]' : 'border-slate-50')}>
           <Button
             variant="ghost"

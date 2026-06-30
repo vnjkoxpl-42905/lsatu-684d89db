@@ -21,9 +21,9 @@ import { useStudyChat } from "@/hooks/useStudyChat";
 import { useInbox, type Conversation } from "@/hooks/useInbox";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import { startJoshuaConversation } from "@/lib/joshuaThread";
-import { AdminInboxCommandCenter } from "@/components/inbox/AdminInboxCommandCenter";
 import { ConversationView } from "@/components/inbox/ConversationView";
 import { MessageComposer } from "@/components/inbox/MessageComposer";
+import { ThreadList, ThreadListSkeleton } from "@/components/inbox/ThreadList";
 import { NotificationsList } from "@/components/notifications/NotificationsList";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatRelativeShort } from "@/lib/time";
@@ -188,8 +188,9 @@ export default function StudySidecar({
     if (activeInboxId) {
       return conversations.find((conversation) => conversation.id === activeInboxId) ?? null;
     }
+    if (is_admin) return null;
     return joshuaConversation;
-  }, [activeInboxId, conversations, joshuaConversation]);
+  }, [activeInboxId, conversations, is_admin, joshuaConversation]);
 
   useEffect(() => {
     if (mode === "chat") {
@@ -219,6 +220,77 @@ export default function StudySidecar({
     setInput("");
     void send(text, userName);
   };
+
+  const renderAdminChat = () => (
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-[#111722] text-[#f8eed8]">
+      {activeInboxConversation ? (
+        <>
+          <div className="flex shrink-0 items-center gap-3 border-b border-white/10 bg-[#111722] px-3 py-2.5">
+            <button
+              type="button"
+              onClick={() => setActiveInboxId(null)}
+              className="rounded-lg p-1.5 text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
+              aria-label="Back to conversations"
+            >
+              <IconInbox size={16} />
+            </button>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-semibold text-[#fff6e5]">
+                {activeInboxConversation.participants.find((participant) => participant.user_id !== user?.id)?.display_name
+                  ?? activeInboxConversation.subject
+                  ?? "Student thread"}
+              </div>
+              <div className="truncate text-[11px] text-[#aab4c3]">Student message thread</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate(`/inbox/${activeInboxConversation.id}`)}
+              className="rounded-lg px-2 py-1 text-[11px] font-semibold text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
+            >
+              Full inbox
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 bg-[#f7f3ea] text-foreground">
+            <ConversationView
+              conversation={activeInboxConversation}
+              onMessageSent={() => void refreshInbox()}
+              hideHeader
+              compact
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5">
+            <div>
+              <div className="text-sm font-semibold text-[#fff6e5]">Student chats</div>
+              <div className="text-[11px] text-[#aab4c3]">Pick a thread and message directly.</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate("/inbox")}
+              className="rounded-lg px-2 py-1 text-[11px] font-semibold text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
+            >
+              Open inbox
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            {inboxLoading ? (
+              <ThreadListSkeleton count={5} />
+            ) : (
+              <ThreadList
+                conversations={conversations}
+                activeId={activeInboxId}
+                onSelect={setActiveInboxId}
+                variant="admin"
+                emptyLabel="No student conversations yet."
+              />
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -368,9 +440,7 @@ export default function StudySidecar({
 
           {mode === "chat" ? (
             is_admin ? (
-              <div className="min-h-0 flex-1 overflow-hidden bg-[#111722]">
-                <AdminInboxCommandCenter embedded defaultSource="app" />
-              </div>
+              renderAdminChat()
             ) : (
             <>
               <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
@@ -472,9 +542,7 @@ export default function StudySidecar({
 
           {mode === "inbox" ? (
             is_admin ? (
-              <div className="min-h-0 flex-1 overflow-hidden bg-[#111722]">
-                <AdminInboxCommandCenter embedded defaultSource="gmail" />
-              </div>
+              renderAdminChat()
             ) : (
               <div className="min-h-0 flex-1 overflow-hidden bg-[#fffdf8]">
                 {inboxLoading ? (
