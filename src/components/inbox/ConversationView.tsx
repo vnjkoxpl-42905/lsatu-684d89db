@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ChevronDown, FileText, Mail } from 'lucide-react';
+import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -148,14 +148,6 @@ export function ConversationView({
                   <span className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5', participantOnline ? 'bg-[#dfeee1] text-[#376143]' : 'bg-[#efe4d3] text-[#756957]')}>
                     <span className={cn('w-1.5 h-1.5 rounded-full', participantOnline ? 'bg-emerald-500' : 'bg-[#a79a87]')} />
                     {participantOnline ? 'Online' : 'Away'}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#efe4d3] px-2.5 py-1.5 text-[#756957]">
-                    <Mail className="h-3 w-3" />
-                    Gmail ready
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#efe4d3] px-2.5 py-1.5 text-[#756957]">
-                    <FileText className="h-3 w-3" />
-                    Attach context
                   </span>
                   <Popover>
                     <PopoverTrigger asChild>

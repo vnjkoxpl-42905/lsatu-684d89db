@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { CheckCheck, Mail, Paperclip, TimerReset } from 'lucide-react';
+import { CheckCheck, Paperclip, TimerReset } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 import { isParticipantOnline } from './inboxPresence';
@@ -180,10 +180,6 @@ export function ThreadList({
                       File
                     </span>
                   )}
-                  <span className={cn('inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
-                    <Mail className="h-3 w-3" />
-                    Gmail
-                  </span>
                 </div>
               ) : replyRequired ? (
                 <div className="mt-2.5 inline-flex items-center px-2 py-0.5 text-[9px] uppercase tracking-[0.05em] font-bold bg-red-50 text-red-600 rounded-md ring-1 ring-red-100">

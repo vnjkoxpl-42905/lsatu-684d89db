@@ -1,11 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Check,
   Cloud,
   FileText,
   Image as ImageIcon,
-  Mail,
-  MessageSquareText,
   Paperclip,
   Send,
   Sparkles,
@@ -33,8 +30,6 @@ import {
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
 
-type DeliveryMode = 'message' | 'email' | 'both';
-
 interface MessageComposerProps {
   conversationId: string | null;
   onSent?: () => void;
@@ -61,7 +56,6 @@ export function MessageComposer({
   const [templates] = useState<MessageTemplate[]>([]);
   const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
   const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
-  const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>('both');
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
@@ -275,15 +269,6 @@ export function MessageComposer({
   };
 
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
-  const recommendedDelivery = (file || driveAttachments.length > 0 ? 'both' : 'message') as DeliveryMode;
-  const deliveryReason = file || driveAttachments.length > 0
-    ? 'Attachment present, so keep an in-app copy and prepare email backup.'
-    : 'No file context yet, so an in-app coaching reply is the lightest path.';
-  const deliveryLabel: Record<DeliveryMode, string> = {
-    message: 'Message',
-    email: 'Email',
-    both: 'Both',
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (templatePaletteOpen && filteredTemplates.length > 0) {
@@ -425,34 +410,6 @@ export function MessageComposer({
             : 'border-[#eadfcf] bg-white shadow-[0_12px_34px_rgba(63,45,24,0.08)] focus-within:border-[#7f8f69]/50',
         )}
       >
-        {isAdmin && (
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#eadfcf] bg-[#fff8ea] px-3 py-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#182131] px-2.5 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-[#f7edd7]">
-                <Sparkles className="h-3 w-3 text-[#f0d28e]" />
-                Smart: {deliveryLabel[deliveryMode]}
-              </span>
-              <span className="hidden text-[11px] font-semibold text-[#7a6b58] md:inline">
-                Recommended {deliveryLabel[recommendedDelivery]} · {deliveryReason}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 rounded-full bg-[#eadfcf] p-1">
-              {(['message', 'email', 'both'] as DeliveryMode[]).map((mode) => (
-                <button
-                  key={mode}
-                  type="button"
-                  onClick={() => setDeliveryMode(mode)}
-                  className={cn(
-                    'rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.08em] transition',
-                    deliveryMode === mode ? 'bg-[#a14f43] text-white shadow-sm' : 'text-[#5f513f] hover:bg-white/70',
-                  )}
-                >
-                  {deliveryLabel[mode]}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
         <TemplateSuggestionPalette
           open={templatePaletteOpen}
           templates={filteredTemplates}
@@ -500,12 +457,6 @@ export function MessageComposer({
             >
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </Button>
-          )}
-          {isAdmin && (
-            <div className="hidden items-center gap-1.5 text-[11px] font-black text-[#7a6b58] sm:flex">
-              {deliveryMode === 'message' ? <MessageSquareText className="h-3.5 w-3.5" /> : deliveryMode === 'email' ? <Mail className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
-              {deliveryLabel[deliveryMode]} selected
-            </div>
           )}
           <div className="flex-1" />
           <Button
