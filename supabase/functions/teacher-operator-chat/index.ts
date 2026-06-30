@@ -1531,6 +1531,36 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Intercept explicit save commands ("save memory:", "remember:", "save instruction:",
+    // "save skill:") BEFORE any AI call so they never leak into the model and so the
+    // memory is persisted by the existing Memory OS functions. The client persists the
+    // user message + our returned `content` into operator_messages, so the transcript
+    // stays coherent.
+    const lastValidUser = [...validMessages].reverse().find((m) => m.role === "user");
+    const lastUserCmdText = typeof lastValidUser?.content === "string"
+      ? lastValidUser.content
+      : Array.isArray(lastValidUser?.content)
+        ? (lastValidUser!.content as ContentPart[])
+            .filter((p): p is { type: "text"; text: string } => p?.type === "text")
+            .map((p) => p.text ?? "")
+            .join(" ")
+        : "";
+    const saveCmd = parseSaveCommand(lastUserCmdText);
+    if (saveCmd) {
+      try {
+        const result = await handleSaveCommand(userClient, admin, adminId, saveCmd);
+        return new Response(JSON.stringify({ content: result.content, tool_results: [] }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      } catch (e) {
+        console.error("save command failed", e);
+        return new Response(
+          JSON.stringify({ content: `⚠️ Couldn't save: ${errorMessage(e, "unknown error")}`, tool_results: [] }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+    }
+
     const deterministicAssignmentOffer = await buildAssignmentOfferFromHistory({ admin, validMessages });
     if (deterministicAssignmentOffer) {
       return new Response(JSON.stringify(deterministicAssignmentOffer), {
