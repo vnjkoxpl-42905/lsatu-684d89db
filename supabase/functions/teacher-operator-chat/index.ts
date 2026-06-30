@@ -1237,6 +1237,186 @@ async function findLink(
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Durable Memory & Skills — save commands + recall injection.
+// "save memory:" / "remember:"  → semantic memory
+// "save instruction:"           → procedural memory
+// "save skill:"                 → procedural memory tagged "skill" w/ structured payload
+// All scoped to the operator namespace for the current admin. Service-role
+// queries only; never exposed to students.
+// ─────────────────────────────────────────────────────────────────────────────
+
+type SaveKind = "memory" | "instruction" | "skill";
+
+function parseSaveCommand(text: string): { kind: SaveKind; body: string } | null {
+  const t = text.trimStart();
+  const m = t.match(/^(save\s+memory|remember|save\s+instruction|save\s+skill)\s*:\s*([\s\S]+)$/i);
+  if (!m) return null;
+  const head = m[1].toLowerCase().replace(/\s+/g, " ");
+  const body = m[2].trim();
+  if (!body) return null;
+  if (head === "save skill") return { kind: "skill", body };
+  if (head === "save instruction") return { kind: "instruction", body };
+  return { kind: "memory", body };
+}
+
+function titleFromBody(body: string): string {
+  const firstLine = body.split(/\n/)[0] ?? body;
+  const words = firstLine.trim().split(/\s+/).slice(0, 8).join(" ");
+  return words.length > 80 ? words.slice(0, 77) + "…" : (words || "Saved note");
+}
+
+function buildSkillStructured(body: string): Record<string, unknown> {
+  const firstLine = body.split(/\n/)[0]?.trim() ?? "";
+  return {
+    type: "skill",
+    trigger: firstLine.slice(0, 200),
+    instruction: body,
+  };
+}
+
+async function handleSaveCommand(
+  userClient: ReturnType<typeof createClient>,
+  admin: SupabaseAdminClient,
+  adminId: string,
+  parsed: { kind: SaveKind; body: string },
+): Promise<{ content: string }> {
+  // 1. Ensure the operator namespace exists (auth.uid() = adminId via userClient).
+  const { data: nsData, error: nsErr } = await userClient.rpc("memory_ensure_namespace", {
+    p_owner_type: "operator",
+    p_owner_id: adminId,
+  });
+  if (nsErr) throw nsErr;
+  const namespaceId = typeof nsData === "string" ? nsData : asString(nsData);
+  if (!namespaceId) throw new Error("Could not resolve memory namespace");
+
+  const kindMemory = parsed.kind === "memory" ? "semantic" : "procedural";
+  const title = titleFromBody(parsed.body);
+
+  // 2. Write via the existing memory_write function.
+  const { data: writeData, error: writeErr } = await userClient.rpc("memory_write", {
+    p_namespace_id: namespaceId,
+    p_kind: kindMemory,
+    p_title: title,
+    p_content: parsed.body,
+    p_embedding: null,
+    p_source: "teacher_desk",
+    p_source_authority: "teacher_approved",
+    p_source_refs: [],
+    p_subject_user_id: null,
+    p_visibility: "admin_only",
+    p_claim_key: null,
+    p_confidence: 1.0,
+    p_importance: 0.8,
+  });
+  if (writeErr) throw writeErr;
+  const writeRow = Array.isArray(writeData) ? (writeData[0] as DbRow | undefined) : (writeData as DbRow | undefined);
+  const memoryId = writeRow ? asString(writeRow.memory_id) : "";
+
+  // 3. For instructions/skills, attach tags + structured payload via service role.
+  if (memoryId) {
+    const patch: Record<string, unknown> = {};
+    if (parsed.kind === "skill") {
+      patch.tags = ["skill"];
+      patch.structured = buildSkillStructured(parsed.body);
+    } else if (parsed.kind === "instruction") {
+      patch.tags = ["instruction"];
+    }
+    if (Object.keys(patch).length) {
+      await admin.from("memory_items").update(patch).eq("id", memoryId);
+    }
+  }
+
+  if (parsed.kind === "skill") return { content: "Saved as a skill." };
+  if (parsed.kind === "instruction") return { content: "Saved as an instruction." };
+  return { content: "Saved to memory." };
+}
+
+async function loadDurableMemoryNote(
+  admin: SupabaseAdminClient,
+  adminId: string,
+): Promise<ChatMessage | null> {
+  const { data: ns } = await admin
+    .from("memory_namespaces")
+    .select("id")
+    .eq("owner_type", "operator")
+    .eq("owner_id", adminId)
+    .maybeSingle();
+  const namespaceId = ns ? asString((ns as DbRow).id) : "";
+  if (!namespaceId) return null;
+
+  const { data: rows } = await admin
+    .from("memory_items")
+    .select("id, kind, title, content, tags, structured, pinned, importance, updated_at")
+    .eq("namespace_id", namespaceId)
+    .eq("status", "active")
+    .order("pinned", { ascending: false })
+    .order("updated_at", { ascending: false })
+    .limit(40);
+  const items = (rows ?? []) as DbRow[];
+  if (!items.length) return null;
+
+  const isSkill = (m: DbRow) => {
+    const tags = Array.isArray(m.tags) ? (m.tags as unknown[]) : [];
+    if (tags.some((t) => typeof t === "string" && t.toLowerCase() === "skill")) return true;
+    const s = isRecord(m.structured) ? m.structured : null;
+    return s?.type === "skill";
+  };
+  const isInstruction = (m: DbRow) => {
+    if (m.kind === "procedural" && !isSkill(m)) return true;
+    const tags = Array.isArray(m.tags) ? (m.tags as unknown[]) : [];
+    return tags.some((t) => typeof t === "string" && t.toLowerCase() === "instruction");
+  };
+
+  const pinned = items.filter((m) => m.pinned === true);
+  const skills = items.filter((m) => isSkill(m) && !pinned.includes(m));
+  const instructions = items.filter((m) => isInstruction(m) && !pinned.includes(m) && !skills.includes(m));
+  const semantic = items.filter(
+    (m) => !pinned.includes(m) && !skills.includes(m) && !instructions.includes(m) && m.kind === "semantic",
+  );
+
+  const fmt = (m: DbRow) => {
+    const title = asString(m.title).trim();
+    const content = asString(m.content).replace(/\s+/g, " ").trim().slice(0, 300);
+    return title ? `- ${title}: ${content}` : `- ${content}`;
+  };
+
+  const skillBlock = [...skills, ...pinned.filter(isSkill)].slice(0, 12).map(fmt);
+  const instructionBlock = [...instructions, ...pinned.filter((m) => isInstruction(m) && !isSkill(m))]
+    .slice(0, 12)
+    .map(fmt);
+  const memoryBlock = [
+    ...pinned.filter((m) => !isSkill(m) && !isInstruction(m)),
+    ...semantic,
+  ]
+    .slice(0, 16)
+    .map(fmt);
+
+  if (!skillBlock.length && !instructionBlock.length && !memoryBlock.length) return null;
+
+  const parts: string[] = ["DURABLE MEMORY AND SKILLS"];
+  if (skillBlock.length) {
+    parts.push(
+      "",
+      "SKILLS",
+      "These are reusable procedural playbooks. Apply them when the user's request matches the trigger or use case.",
+      ...skillBlock,
+    );
+  }
+  if (instructionBlock.length) {
+    parts.push("", "INSTRUCTIONS", ...instructionBlock);
+  }
+  if (memoryBlock.length) {
+    parts.push(
+      "",
+      "MEMORIES",
+      "These are saved facts, preferences, and instructions.",
+      ...memoryBlock,
+    );
+  }
+  return { role: "system", content: parts.join("\n") };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
