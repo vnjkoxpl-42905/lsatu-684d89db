@@ -226,6 +226,12 @@ export function useConversationMessages(conversationId: string | null) {
     setLoading(false);
   }, [conversationId]);
 
+  const deleteMessage = useCallback(async (messageId: string) => {
+    const { error } = await supabase.from('messages').delete().eq('id', messageId);
+    if (error) throw error;
+    setMessages((prev) => prev.filter((m) => m.id !== messageId));
+  }, []);
+
   useEffect(() => {
     load();
   }, [load]);
@@ -257,5 +263,5 @@ export function useConversationMessages(conversationId: string | null) {
     };
   }, [conversationId, load]);
 
-  return { messages, loading, refresh: load };
+  return { messages, loading, refresh: load, deleteMessage };
 }

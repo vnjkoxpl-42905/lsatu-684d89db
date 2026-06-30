@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAuth } from '@/contexts/AuthContext';
-import { useConversationMessages, type Conversation, type MessageAttachment } from '@/hooks/useInbox';
+import { useConversationMessages, type Conversation, type Message, type MessageAttachment } from '@/hooks/useInbox';
 import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
 import { AdminIntelligencePanel } from './AdminIntelligencePanel';
@@ -60,9 +61,28 @@ export function ConversationView({
 }: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
-  const { messages, loading, refresh } = useConversationMessages(conversation.id);
+  const { messages, loading, refresh, deleteMessage } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
+
+  const canDeleteMessage = useCallback(
+    (message: Message) => !!user && (message.sender_id === user.id || is_admin),
+    [user, is_admin],
+  );
+
+  const handleDeleteMessage = useCallback(
+    (messageId: string) => {
+      void deleteMessage(messageId)
+        .then(() => {
+          toast.success('Message deleted');
+          onMessageSent?.();
+        })
+        .catch((error: unknown) => {
+          toast.error(error instanceof Error ? error.message : 'Could not delete the message');
+        });
+    },
+    [deleteMessage, onMessageSent],
+  );
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
@@ -99,11 +119,11 @@ export function ConversationView({
   if (!user) return null;
 
   return (
-    <div className={cn('flex h-full flex-col', adminView ? 'bg-[#f7f3ea]' : 'bg-[#fffdf8]')}>
+    <div className={cn('flex h-full flex-col', adminView ? 'bg-[#fafafa]' : 'bg-[#fafafa]')}>
       {!hideHeader && (
         <div className={cn(
           'flex shrink-0 flex-col',
-          adminView ? 'border-b border-[#ded1bd] bg-white/58' : 'border-b border-[#eadfcf] bg-[#fffaf2]/82',
+          adminView ? 'border-b border-zinc-200 bg-white' : 'border-b border-zinc-200 bg-white',
         )}>
           <div className="flex items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
             {onBack && (
@@ -185,9 +205,7 @@ export function ConversationView({
         className={cn(
           'flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-border min-h-0',
           compact ? 'px-4 py-5' : 'px-10 py-12',
-          adminView
-            ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.82),rgba(250,247,239,0.94)),#f7f3ea]'
-            : 'bg-[radial-gradient(circle_at_20%_0%,rgba(184,129,78,0.08),transparent_30%),#fffdf8]',
+          'bg-[#fafafa]',
         )}
       >
         {loading ? (
@@ -208,17 +226,19 @@ export function ConversationView({
             {sections.map((section) => (
               <div key={section.key} className="space-y-6">
                 <div className={cn('flex items-center gap-6', compact ? 'my-6' : 'my-10')}>
-                  <div className={cn('h-px flex-1', adminView ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
-                  <div className={cn('text-[10px] font-black uppercase tracking-[0.2em]', adminView ? 'text-[#9a8160]' : 'text-[#9a8160]')}>
+                  <div className="h-px flex-1 bg-[#e4e4e7]" />
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#a1a1aa]">
                     {section.label}
                   </div>
-                  <div className={cn('h-px flex-1', adminView ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
+                  <div className="h-px flex-1 bg-[#e4e4e7]" />
                 </div>
                 {section.clusters.map((cluster) => (
                   <MessageBubble
                     key={`${section.key}-${cluster.senderId}-${cluster.createdAt}`}
                     cluster={cluster}
                     onPreviewAttachment={setPreviewAttachment}
+                    canDeleteMessage={canDeleteMessage}
+                    onDeleteMessage={handleDeleteMessage}
                   />
                 ))}
               </div>
@@ -227,7 +247,7 @@ export function ConversationView({
         )}
       </div>
 
-      <div className={cn('shrink-0 border-t backdrop-blur-md', adminView ? 'border-[#ded1bd] bg-[#f7f3ea]/92' : 'border-[#eadfcf] bg-[#fffaf2]/90')}>
+      <div className="shrink-0 border-t border-zinc-200 bg-white/92 backdrop-blur-md">
         <MessageComposer
           conversationId={conversation.id}
           onSent={() => { refresh(); onMessageSent?.(); }}

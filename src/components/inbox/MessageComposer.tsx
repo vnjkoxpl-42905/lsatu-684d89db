@@ -303,7 +303,7 @@ export function MessageComposer({
     <div className={cn('shrink-0 bg-transparent', isAdmin ? 'px-3 py-3 sm:px-5' : 'px-4 py-5 sm:px-6')}>
       <div className={cn('mx-auto space-y-3', isAdmin ? 'max-w-5xl' : 'max-w-3xl')}>
       {file && (
-        <div className={cn('flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm shadow-sm', isAdmin ? 'border-[#d8c6ad] bg-[#fffaf0]' : 'border-[#eadfcf] bg-white')}>
+        <div className={cn('flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm shadow-sm', isAdmin ? 'border-zinc-200 bg-zinc-50' : 'border-zinc-200 bg-white')}>
           {filePreviewUrl ? (
             <img
               src={filePreviewUrl}
@@ -320,8 +320,8 @@ export function MessageComposer({
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <div className="truncate text-xs font-bold text-[#211b16]">{file.name}</div>
-            <div className="mt-0.5 text-[11px] text-[#7a6b58]">
+            <div className="truncate text-xs font-bold text-zinc-900">{file.name}</div>
+            <div className="mt-0.5 text-[11px] text-zinc-500">
               {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready. Paste another to replace it.' : 'PDF ready to send'}
             </div>
           </div>
@@ -355,12 +355,12 @@ export function MessageComposer({
         </div>
       )}
       {polished !== null && (
-        <div className="space-y-4 rounded-2xl border border-[#d8c6ad] bg-[#fffaf0] px-5 py-4 shadow-lg ring-1 ring-black/5">
-          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#8b5b42]">
+        <div className="space-y-4 rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-4 shadow-lg ring-1 ring-black/5">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
             <Wand2 className="h-3.5 w-3.5" />
             Composer Polish
           </div>
-          <div className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-[#211b16]">{polished}</div>
+          <div className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-zinc-900">{polished}</div>
           <div className="flex flex-wrap gap-2 pt-1">
             <Button
               size="sm"
@@ -406,8 +406,8 @@ export function MessageComposer({
         className={cn(
           'relative overflow-hidden rounded-[22px] border transition-all',
           isAdmin
-            ? 'border-[#d8c6ad] bg-[#fffaf0] shadow-[0_14px_36px_rgba(52,39,23,0.10)] focus-within:border-[#a14f43]/50'
-            : 'border-[#eadfcf] bg-white shadow-[0_12px_34px_rgba(63,45,24,0.08)] focus-within:border-[#7f8f69]/50',
+            ? 'border-zinc-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-zinc-300'
+            : 'border-zinc-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-zinc-300',
         )}
       >
         <TemplateSuggestionPalette
@@ -427,18 +427,18 @@ export function MessageComposer({
           placeholder={isAdmin ? 'Message this student...' : 'Ask Joshua a question or send study context'}
           className={cn(
             'w-full resize-none border-0 bg-transparent px-5 py-3.5 text-[15px] font-medium shadow-none focus-visible:ring-0',
-            isAdmin ? 'text-[#211b16] placeholder:text-[#9a8b76]' : 'text-slate-800 placeholder:text-slate-400',
+            isAdmin ? 'text-zinc-800 placeholder:text-zinc-400' : 'text-zinc-800 placeholder:text-zinc-400',
           )}
           style={{ height: '54px', overflowY: 'hidden', transition: 'height 160ms ease' }}
         />
-        <div className={cn('flex items-center gap-2 border-t px-3 py-2', isAdmin ? 'border-[#eadfcf]' : 'border-slate-50')}>
+        <div className={cn('flex items-center gap-2 border-t px-3 py-2', isAdmin ? 'border-zinc-100' : 'border-zinc-100')}>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
             aria-label="Attach PDF or screenshot"
-            className={cn('h-9 w-9 rounded-xl', isAdmin ? 'text-[#7a6b58] hover:bg-[#eadfcf] hover:text-[#211b16]' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50')}
+            className={cn('h-9 w-9 rounded-xl', isAdmin ? 'text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600' : 'text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600')}
           >
             <Paperclip className="w-4.5 h-4.5" />
           </Button>
@@ -453,7 +453,7 @@ export function MessageComposer({
               disabled={sending || polishing || body.trim().length < 3 || !conversationId}
               aria-label="Polish with AI"
               title="Polish with AI"
-              className="h-9 w-9 rounded-xl text-[#7a6b58] hover:bg-[#eadfcf] hover:text-[#211b16]"
+              className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
             >
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </Button>
@@ -468,10 +468,8 @@ export function MessageComposer({
             className={cn(
               "h-9 w-9 rounded-xl transition-all",
               canSend
-                ? isAdmin
-                  ? 'bg-[#a14f43] text-white shadow-sm hover:bg-[#8d453a]'
-                  : 'bg-[#203024] text-white shadow-sm hover:bg-[#2c4231]'
-                : "text-slate-300 hover:bg-transparent"
+                ? 'bg-[#18181b] text-white shadow-sm hover:bg-[#27272a]'
+                : "text-zinc-300 hover:bg-transparent"
             )}
           >
             <Send className="w-4.5 h-4.5" />

@@ -1,13 +1,27 @@
+import { useState } from 'react';
 import { format, isToday } from 'date-fns';
+import { Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
-import type { MessageAttachment } from '@/hooks/useInbox';
+import type { Message, MessageAttachment } from '@/hooks/useInbox';
 import type { MessageCluster } from './messageClusters';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface Props {
   cluster: MessageCluster;
   onPreviewAttachment?: (attachment: MessageAttachment) => void;
+  canDeleteMessage?: (message: Message) => boolean;
+  onDeleteMessage?: (messageId: string) => void;
 }
 
 function shortTime(date: Date) {
@@ -29,10 +43,11 @@ function extractRouteAction(body: string) {
   return { displayBody, route };
 }
 
-export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
+export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage }: Props) {
   const navigate = useNavigate();
   const headerTime = shortTime(new Date(cluster.createdAt));
   const isInstructor = cluster.isInstructor;
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   return (
     <div
@@ -75,7 +90,7 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
             </span>
             <span
               className="h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: isInstructor ? '#7A4E2D' : '#2F6A4F' }}
+              style={{ backgroundColor: isInstructor ? '#18181b' : '#2F6A4F' }}
               aria-hidden="true"
             />
             <span
@@ -91,39 +106,57 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
               const hasBody = !!message.body;
               const hasAttachments = message.attachments.length > 0;
               const routeAction = hasBody ? extractRouteAction(message.body) : null;
+              const canDelete = canDeleteMessage?.(message) ?? false;
 
               return (
                 <div
                   key={message.id}
                   className={cn(
-                    'flex min-w-0 flex-col gap-3',
+                    'group/msg flex min-w-0 flex-col gap-3',
                     isInstructor ? 'items-end' : 'items-start',
                   )}
                 >
                   {hasBody ? (
                     <div
                       className={cn(
-                        'relative break-words rounded-[14px] px-[18px] py-[14px] text-[15px] leading-[1.6]',
-                        isInstructor
-                          ? 'max-w-[520px] bg-[#111827] text-[#FFFDF9]'
-                          : 'max-w-[620px] border border-[#E6DDD2] bg-white text-[#1F1B16]',
+                        'flex items-center gap-1.5',
+                        isInstructor ? 'flex-row' : 'flex-row-reverse',
                       )}
                     >
-                      {routeAction?.displayBody || message.body}
-                      {routeAction?.route ? (
+                      {canDelete && onDeleteMessage ? (
                         <button
                           type="button"
-                          onClick={() => navigate(routeAction.route)}
-                          className={cn(
-                            'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-bold transition',
-                            isInstructor
-                              ? 'bg-white text-[#111827] hover:bg-[#f3efe6]'
-                              : 'bg-[#203024] text-white hover:bg-[#2c4231]',
-                          )}
+                          onClick={() => setPendingDelete(message.id)}
+                          className="shrink-0 rounded-full p-1.5 text-zinc-300 opacity-0 transition hover:bg-zinc-100 hover:text-zinc-600 focus:opacity-100 group-hover/msg:opacity-100"
+                          aria-label="Delete message"
                         >
-                          Open assignment
+                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       ) : null}
+                      <div
+                        className={cn(
+                          'relative break-words rounded-[14px] px-[18px] py-[14px] text-[15px] leading-[1.6]',
+                          isInstructor
+                            ? 'max-w-[520px] bg-[#111827] text-[#FFFDF9]'
+                            : 'max-w-[620px] border border-[#e4e4e7] bg-white text-[#1F1B16]',
+                        )}
+                      >
+                        {routeAction?.displayBody || message.body}
+                        {routeAction?.route ? (
+                          <button
+                            type="button"
+                            onClick={() => navigate(routeAction.route)}
+                            className={cn(
+                              'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-bold transition',
+                              isInstructor
+                                ? 'bg-white text-[#111827] hover:bg-[#f4f4f5]'
+                                : 'bg-[#18181b] text-white hover:bg-[#27272a]',
+                            )}
+                          >
+                            Open assignment
+                          </button>
+                        ) : null}
+                      </div>
                     </div>
                   ) : null}
 
@@ -149,6 +182,29 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={!!pendingDelete} onOpenChange={(open) => { if (!open) setPendingDelete(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this message?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently removes the message and any attachments for everyone in the thread. This can't be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 text-white hover:bg-red-700"
+              onClick={() => {
+                if (pendingDelete) onDeleteMessage?.(pendingDelete);
+                setPendingDelete(null);
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

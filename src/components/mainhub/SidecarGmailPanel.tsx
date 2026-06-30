@@ -66,16 +66,16 @@ export default function SidecarGmailPanel() {
   }
 
   return (
-    <div className="flex h-full flex-col bg-[#111722] text-[#f8eed8]">
-      <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5">
+    <div className="flex h-full flex-col bg-white text-foreground">
+      <div className="flex shrink-0 items-center justify-between gap-2 border-b border-zinc-200 px-3 py-2.5">
         <div className="min-w-0">
-          <div className="text-sm font-semibold text-[#fff6e5]">Gmail</div>
-          <div className="truncate text-[11px] text-[#aab4c3]">
+          <div className="text-sm font-semibold text-zinc-900">Gmail</div>
+          <div className="truncate text-[11px] text-zinc-500">
             {adminEmail ?? "Connected inbox"}
           </div>
         </div>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto bg-[#f7f3ea] text-foreground">
+      <div className="min-h-0 flex-1 overflow-y-auto bg-[#fafafa] text-foreground">
         {threadsQuery.isLoading ? (
           <GmailCentered icon={<Loader2 className="h-4 w-4 animate-spin" />} label="Loading Gmail…" dark={false} />
         ) : threadsQuery.isError ? (
@@ -92,7 +92,7 @@ export default function SidecarGmailPanel() {
         ) : (threadsQuery.data?.threads.length ?? 0) === 0 ? (
           <GmailCentered icon={<IconInbox size={20} />} label="No Gmail threads." dark={false} />
         ) : (
-          <ul className="divide-y divide-black/5">
+          <ul className="divide-y divide-zinc-100">
             {threadsQuery.data!.threads.map((t) => {
               const from = parseAddress(t.from);
               return (
@@ -100,28 +100,28 @@ export default function SidecarGmailPanel() {
                   <button
                     type="button"
                     onClick={() => setActiveId(t.id)}
-                    className="flex w-full flex-col gap-0.5 px-4 py-3 text-left transition hover:bg-black/5"
+                    className="flex w-full flex-col gap-0.5 px-4 py-3 text-left transition hover:bg-zinc-100"
                   >
                     <div className="flex items-baseline gap-2">
                       <span
                         className={cn(
                           "min-w-0 flex-1 truncate text-sm",
-                          t.unread ? "font-semibold text-[#211b16]" : "font-medium text-[#3a322a]",
+                          t.unread ? "font-semibold text-zinc-900" : "font-medium text-zinc-600",
                         )}
                       >
                         {from.name || from.email}
                       </span>
-                      <span className="shrink-0 text-[11px] text-[#9a8160]">
+                      <span className="shrink-0 text-[11px] text-zinc-400">
                         {formatThreadDate(t.internalDate ?? t.date)}
                       </span>
                       {t.unread ? (
-                        <span className="h-2 w-2 shrink-0 rounded-full bg-[#c8841f]" aria-label="Unread" />
+                        <span className="h-2 w-2 shrink-0 rounded-full bg-[#18181b]" aria-label="Unread" />
                       ) : null}
                     </div>
-                    <div className="truncate text-xs text-[#6f6253]">
+                    <div className="truncate text-xs text-zinc-600">
                       {t.subject || "(no subject)"}
                     </div>
-                    <div className="truncate text-[11px] text-[#9a8160]">{t.snippet}</div>
+                    <div className="truncate text-[11px] text-zinc-400">{t.snippet}</div>
                   </button>
                 </li>
               );
@@ -182,25 +182,25 @@ function GmailThreadView({
   };
 
   return (
-    <div className="flex h-full flex-col bg-[#111722] text-[#f8eed8]">
-      <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-3 py-2.5">
+    <div className="flex h-full flex-col bg-white text-foreground">
+      <div className="flex shrink-0 items-center gap-3 border-b border-zinc-200 px-3 py-2.5">
         <button
           type="button"
           onClick={onBack}
-          className="rounded-lg p-1.5 text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
+          className="rounded-lg p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-900"
           aria-label="Back to Gmail list"
         >
           <IconInbox size={16} />
         </button>
         <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-semibold text-[#fff6e5]">{subject}</div>
-          <div className="truncate text-[11px] text-[#aab4c3]">
+          <div className="truncate text-sm font-semibold text-zinc-900">{subject}</div>
+          <div className="truncate text-[11px] text-zinc-500">
             {replyTo ? replyTo.name || replyTo.email : "Gmail thread"}
           </div>
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto bg-[#f7f3ea] text-foreground">
+      <div className="min-h-0 flex-1 overflow-y-auto bg-[#fafafa] text-foreground">
         {isLoading ? (
           <GmailCentered icon={<Loader2 className="h-4 w-4 animate-spin" />} label="Loading conversation…" dark={false} />
         ) : isError || !messages.length ? (
@@ -224,8 +224,8 @@ function GmailThreadView({
       </div>
 
       {!isLoading && !isError && messages.length ? (
-        <div className="shrink-0 border-t border-white/10 bg-[#111722] px-3 py-3">
-          <div className="flex items-end gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 focus-within:border-white/25">
+        <div className="shrink-0 border-t border-zinc-200 bg-white px-3 py-3">
+          <div className="flex items-end gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 focus-within:border-zinc-300">
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
@@ -237,7 +237,7 @@ function GmailThreadView({
               }}
               rows={1}
               placeholder={replyTo ? `Reply to ${replyTo.name || replyTo.email}…` : "Write a reply…"}
-              className="max-h-32 min-h-[20px] flex-1 resize-none bg-transparent py-0.5 text-sm leading-5 text-[#f8eed8] placeholder:text-[#7f8aa0] focus:outline-none"
+              className="max-h-32 min-h-[20px] flex-1 resize-none bg-transparent py-0.5 text-sm leading-5 text-zinc-800 placeholder:text-zinc-400 focus:outline-none"
             />
             <button
               type="button"
@@ -246,8 +246,8 @@ function GmailThreadView({
               className={cn(
                 "mb-0.5 shrink-0 rounded-lg p-1.5 transition-colors",
                 canSend
-                  ? "bg-[#c8841f] text-white hover:bg-[#b6741a]"
-                  : "cursor-not-allowed text-[#7f8aa0]",
+                  ? "bg-[#18181b] text-white hover:bg-[#27272a]"
+                  : "cursor-not-allowed text-zinc-300",
               )}
               aria-label="Send reply"
             >
@@ -265,7 +265,7 @@ function GmailCentered({ icon, label, dark = true }: { icon: React.ReactNode; la
     <div
       className={cn(
         "flex h-full flex-col items-center justify-center gap-2 text-sm",
-        dark ? "bg-[#111722] text-[#aab4c3]" : "text-[#7a6b58]",
+        dark ? "bg-white text-zinc-400" : "text-zinc-500",
       )}
     >
       {icon}
@@ -291,15 +291,15 @@ function GmailNotice({
     <div
       className={cn(
         "flex flex-col items-center justify-center px-6 text-center",
-        inline ? "h-full text-[#7a6b58]" : "h-full bg-[#111722]",
+        inline ? "h-full text-zinc-500" : "h-full bg-white",
       )}
     >
-      <div className={cn("rounded-full p-3", inline ? "bg-[#203024]/8 text-[#203024]" : "bg-white/10 text-[#f8eed8]")}>
+      <div className="rounded-full bg-zinc-100 p-3 text-zinc-500">
         <AlertCircle className="h-5 w-5" />
       </div>
-      <div className={cn("mt-4 text-sm font-semibold", inline ? "text-[#211b16]" : "text-[#fff6e5]")}>{title}</div>
+      <div className="mt-4 text-sm font-semibold text-zinc-900">{title}</div>
       {body ? (
-        <div className={cn("mt-1 max-w-[280px] text-xs leading-5", inline ? "text-[#7a6b58]" : "text-[#aab4c3]")}>
+        <div className="mt-1 max-w-[280px] text-xs leading-5 text-zinc-500">
           {body}
         </div>
       ) : null}
@@ -307,12 +307,7 @@ function GmailNotice({
         <button
           type="button"
           onClick={onRetry}
-          className={cn(
-            "mt-4 rounded-lg px-3 py-1.5 text-xs font-semibold transition",
-            inline
-              ? "border border-[#eadfcf] bg-white text-[#7a6b58] hover:bg-[#fffaf2]"
-              : "bg-white/10 text-[#f8eed8] hover:bg-white/15",
-          )}
+          className="mt-4 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50"
         >
           {retryLabel}
         </button>

@@ -9,6 +9,7 @@ import {
   IconMessageCircle,
   IconPlus,
   IconSend,
+  IconSparkles,
   IconThumbDown,
   IconThumbUp,
   IconX,
@@ -37,7 +38,7 @@ interface StudySidecarProps {
   width?: number;
 }
 
-type SidecarMode = "chat" | "inbox" | "notifications";
+type SidecarMode = "chat" | "partner" | "inbox" | "notifications";
 
 function ThinkingDots() {
   return (
@@ -116,7 +117,7 @@ function SourceTab({
       onClick={onClick}
       className={cn(
         "rounded-full px-3 py-1 text-[11px] font-semibold transition-colors",
-        active ? "bg-white/12 text-white" : "text-[#8b94a5] hover:text-white",
+        active ? "bg-[#18181b] text-white shadow-sm" : "text-zinc-500 hover:text-zinc-900",
       )}
     >
       {label}
@@ -141,24 +142,193 @@ function ModeButton({
     <button
       type="button"
       onClick={onClick}
+      title={label}
       aria-label={unreadCount > 0 ? `${label}, ${unreadCount} unread` : label}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold transition-colors",
+        "relative inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-semibold transition-colors",
         active
-          ? "bg-[#161d2d] text-white shadow-sm"
-          : "text-muted-foreground hover:bg-white/80 hover:text-foreground",
+          ? "bg-[#18181b] text-white shadow-sm"
+          : "text-zinc-500 hover:bg-white hover:text-zinc-900",
       )}
     >
       <span className="shrink-0" aria-hidden>
         {icon}
       </span>
-      <span>{label}</span>
+      {active ? <span>{label}</span> : null}
       {unreadCount > 0 ? (
-        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c8841f] px-1 text-[10px] font-bold text-white">
+        <span className={cn(
+          "inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold",
+          active ? "bg-white text-[#18181b]" : "bg-[#18181b] text-white",
+        )}>
           {unreadCount > 9 ? "9+" : unreadCount}
         </span>
       ) : null}
     </button>
+  );
+}
+
+function StudyChatPanel({
+  open,
+  active,
+  userName,
+  header,
+  empty,
+  placeholder,
+}: {
+  open: boolean;
+  active: boolean;
+  userName?: string;
+  header?: { title: string; subtitle: string };
+  empty: { icon: ReactNode; title: string; subtitle: string };
+  placeholder: string;
+}) {
+  const { addTab, activeMessages, thinking, streamingContent, send } = useStudyChat();
+  const [input, setInput] = useState("");
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (active) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [activeMessages.length, streamingContent, active]);
+
+  useEffect(() => {
+    if (open && active) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 220);
+      return () => clearTimeout(timer);
+    }
+  }, [open, active]);
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text || thinking) return;
+    setInput("");
+    void send(text, userName);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSend();
+    }
+  };
+
+  return (
+    <>
+      {header ? (
+        <div className="flex shrink-0 items-center justify-between border-b border-border/30 px-3 py-2">
+          <div className="min-w-0">
+            <div className="truncate text-sm font-semibold text-foreground">{header.title}</div>
+            <div className="truncate text-[11px] text-muted-foreground">{header.subtitle}</div>
+          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={addTab}
+                className="cursor-pointer rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+                aria-label="New conversation"
+              >
+                <IconPlus size={16} />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">New conversation</TooltipContent>
+          </Tooltip>
+        </div>
+      ) : null}
+
+      <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+        {activeMessages.length === 0 && !thinking && !streamingContent ? (
+          <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
+            <div className="mb-2 text-foreground/80" aria-hidden>
+              {empty.icon}
+            </div>
+            <p className="mb-1 text-lg font-semibold text-foreground">{empty.title}</p>
+            <p className="max-w-[220px] text-xs">{empty.subtitle}</p>
+          </div>
+        ) : null}
+
+        {activeMessages.map((message) => (
+          <div
+            key={message.id}
+            className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}
+          >
+            <div
+              className={cn(
+                "max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
+                message.role === "user"
+                  ? "rounded-tr-sm bg-primary text-primary-foreground"
+                  : "rounded-tl-sm bg-muted/60 text-foreground",
+              )}
+            >
+              <div className="whitespace-pre-wrap">{message.content}</div>
+              {message.role === "assistant" ? (
+                <div className="-mb-0.5 mt-1.5 flex items-center gap-0.5">
+                  <CopyButton text={message.content} />
+                  <button className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground">
+                    <IconThumbUp size={13} />
+                  </button>
+                  <button className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground">
+                    <IconThumbDown size={13} />
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        ))}
+
+        {thinking || streamingContent ? (
+          <div className="flex justify-start">
+            <div className="max-w-[85%] rounded-xl rounded-tl-sm bg-muted/60 px-3.5 py-2.5 text-sm leading-relaxed text-foreground">
+              {streamingContent ? (
+                <div className="whitespace-pre-wrap">{streamingContent}</div>
+              ) : (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  Thinking
+                  <ThinkingDots />
+                </span>
+              )}
+            </div>
+          </div>
+        ) : null}
+
+        <div ref={bottomRef} />
+      </div>
+
+      <div className="shrink-0 border-t border-border/30 px-3 py-3">
+        <div className="flex items-end gap-2 rounded-xl border border-border/40 bg-muted/40 px-3 py-2 transition-colors focus-within:border-border/70">
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={handleKeyDown}
+            rows={1}
+            placeholder={placeholder}
+            className="min-h-[20px] max-h-32 flex-1 resize-none bg-transparent py-0.5 text-sm leading-5 placeholder:text-muted-foreground focus:outline-none"
+            style={{
+              height: "auto",
+              overflow: input.split("\n").length > 3 ? "auto" : "hidden",
+            }}
+            onInput={(event) => {
+              const element = event.currentTarget;
+              element.style.height = "auto";
+              element.style.height = `${Math.min(element.scrollHeight, 128)}px`;
+            }}
+          />
+          <button
+            onClick={handleSend}
+            disabled={!input.trim() || thinking}
+            className={cn(
+              "mb-0.5 shrink-0 rounded-lg p-1.5 transition-colors",
+              input.trim() && !thinking
+                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                : "cursor-not-allowed text-muted-foreground",
+            )}
+            aria-label="Send message"
+          >
+            <IconSend size={15} />
+          </button>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -171,13 +341,6 @@ export default function StudySidecar({
 }: StudySidecarProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const {
-    addTab,
-    activeMessages,
-    thinking,
-    streamingContent,
-    send,
-  } = useStudyChat();
   const { is_admin } = useUserPermissions();
   const {
     conversations,
@@ -195,14 +358,11 @@ export default function StudySidecar({
   } = useNotifications();
 
   const [mode, setMode] = useState<SidecarMode>("chat");
-  const [input, setInput] = useState("");
   const [activeInboxId, setActiveInboxId] = useState<string | null>(null);
   const [inboxSource, setInboxSource] = useState<"app" | "gmail">("app");
   const [startingInbox, setStartingInbox] = useState(false);
   const [inboxNotice, setInboxNotice] = useState<string | null>(null);
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const joshuaConversation = useMemo(
     () => resolveJoshuaConversation(conversations, user?.id),
@@ -218,18 +378,6 @@ export default function StudySidecar({
   }, [activeInboxId, conversations, is_admin, joshuaConversation]);
 
   useEffect(() => {
-    if (mode === "chat") {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [activeMessages.length, streamingContent, mode]);
-
-  useEffect(() => {
-    if (open && mode === "chat") {
-      setTimeout(() => inputRef.current?.focus(), 220);
-    }
-  }, [open, mode]);
-
-  useEffect(() => {
     // Students auto-open their single Joshua thread; admins land on the list
     // so they can pick which student to message.
     if (!is_admin && joshuaConversation && !activeInboxId) {
@@ -240,13 +388,6 @@ export default function StudySidecar({
   useEffect(() => {
     if (activeInboxConversation) setInboxNotice(null);
   }, [activeInboxConversation]);
-
-  const handleSend = () => {
-    const text = input.trim();
-    if (!text || thinking) return;
-    setInput("");
-    void send(text, userName);
-  };
 
   const renderAdminChat = () => (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white text-foreground">
@@ -318,8 +459,8 @@ export default function StudySidecar({
   );
 
   const renderAdminInbox = () => (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-[#111722]">
-      <div className="flex shrink-0 items-center gap-1 border-b border-white/10 bg-[#0f151f] px-3 py-2">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white">
+      <div className="flex shrink-0 items-center gap-1 rounded-full border border-zinc-200 bg-[#f4f4f5] p-1 mx-3 my-2">
         <SourceTab active={inboxSource === "app"} label="LSAT U" onClick={() => setInboxSource("app")} />
         <SourceTab active={inboxSource === "gmail"} label="Gmail" onClick={() => setInboxSource("gmail")} />
       </div>
@@ -328,13 +469,6 @@ export default function StudySidecar({
       </div>
     </div>
   );
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      handleSend();
-    }
-  };
 
   const handleResolveInboxConversation = async () => {
     setStartingInbox(true);
@@ -409,13 +543,22 @@ export default function StudySidecar({
           aria-label="LSAT U communication console"
         >
           <div className="flex shrink-0 items-center gap-2 border-b border-border/30 px-3 py-2.5">
-            <div className="flex min-w-0 flex-1 items-center gap-1 rounded-full bg-[#f3efe6] p-1">
+            <div className="flex min-w-0 flex-1 items-center gap-1 rounded-full border border-zinc-200 bg-[#f4f4f5] p-1">
               <ModeButton
                 active={mode === "chat"}
                 label="Chat"
                 icon={<IconMessageCircle size={14} />}
                 onClick={() => {
                   setMode("chat");
+                  setSelectedNotification(null);
+                }}
+              />
+              <ModeButton
+                active={mode === "partner"}
+                label="Study Partner"
+                icon={<IconSparkles size={14} />}
+                onClick={() => {
+                  setMode("partner");
                   setSelectedNotification(null);
                 }}
               />
@@ -452,136 +595,45 @@ export default function StudySidecar({
             </Tooltip>
           </div>
 
-          {mode === "chat" && !is_admin ? (
-            <div className="flex shrink-0 items-center justify-between border-b border-border/30 px-3 py-2">
-              <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-foreground">LSAT U</div>
-                <div className="truncate text-[11px] text-muted-foreground">AI assistant</div>
-              </div>
-              <div className="flex shrink-0 items-center gap-0.5">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={addTab}
-                      className="cursor-pointer rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-                      aria-label="New conversation"
-                    >
-                      <IconPlus size={16} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">New conversation</TooltipContent>
-                </Tooltip>
-              </div>
-            </div>
-          ) : null}
-
           {mode === "chat" ? (
             is_admin ? (
               renderAdminChat()
             ) : (
-            <>
-              <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
-                {activeMessages.length === 0 && !thinking && !streamingContent ? (
-                  <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground">
-                    <IconGavel className="mb-2 h-8 w-8 text-foreground/80" />
-                    <p className="mb-1 text-lg font-semibold text-foreground">LSAT U</p>
-                    <p className="max-w-[200px] text-xs">
-                      Ask about question types, strategies, or your study plan.
-                    </p>
-                  </div>
-                ) : null}
-
-                {activeMessages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}
-                  >
-                    <div
-                      className={cn(
-                        "max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
-                        message.role === "user"
-                          ? "rounded-tr-sm bg-primary text-primary-foreground"
-                          : "rounded-tl-sm bg-muted/60 text-foreground",
-                      )}
-                    >
-                      <div className="whitespace-pre-wrap">{message.content}</div>
-                      {message.role === "assistant" ? (
-                        <div className="-mb-0.5 mt-1.5 flex items-center gap-0.5">
-                          <CopyButton text={message.content} />
-                          <button className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground">
-                            <IconThumbUp size={13} />
-                          </button>
-                          <button className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground">
-                            <IconThumbDown size={13} />
-                          </button>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-
-                {thinking || streamingContent ? (
-                  <div className="flex justify-start">
-                    <div className="max-w-[85%] rounded-xl rounded-tl-sm bg-muted/60 px-3.5 py-2.5 text-sm leading-relaxed text-foreground">
-                      {streamingContent ? (
-                        <div className="whitespace-pre-wrap">{streamingContent}</div>
-                      ) : (
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                          Thinking
-                          <ThinkingDots />
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ) : null}
-
-                <div ref={bottomRef} />
-              </div>
-
-              <div className="shrink-0 border-t border-border/30 px-3 py-3">
-                <div className="flex items-end gap-2 rounded-xl border border-border/40 bg-muted/40 px-3 py-2 transition-colors focus-within:border-border/70">
-                  <textarea
-                    ref={inputRef}
-                    value={input}
-                    onChange={(event) => setInput(event.target.value)}
-                    onKeyDown={handleKeyDown}
-                    rows={1}
-                    placeholder="How can I help?"
-                    className="min-h-[20px] max-h-32 flex-1 resize-none bg-transparent py-0.5 text-sm leading-5 placeholder:text-muted-foreground focus:outline-none"
-                    style={{
-                      height: "auto",
-                      overflow: input.split("\n").length > 3 ? "auto" : "hidden",
-                    }}
-                    onInput={(event) => {
-                      const element = event.currentTarget;
-                      element.style.height = "auto";
-                      element.style.height = `${Math.min(element.scrollHeight, 128)}px`;
-                    }}
-                  />
-                  <button
-                    onClick={handleSend}
-                    disabled={!input.trim() || thinking}
-                    className={cn(
-                      "mb-0.5 shrink-0 rounded-lg p-1.5 transition-colors",
-                      input.trim() && !thinking
-                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                        : "cursor-not-allowed text-muted-foreground",
-                    )}
-                    aria-label="Send message"
-                  >
-                    <IconSend size={15} />
-                  </button>
-                </div>
-              </div>
-            </>
+              <StudyChatPanel
+                open={open}
+                active={mode === "chat"}
+                userName={userName}
+                header={{ title: "LSAT U", subtitle: "AI assistant" }}
+                empty={{
+                  icon: <IconGavel className="h-8 w-8" />,
+                  title: "LSAT U",
+                  subtitle: "Ask about question types, strategies, or your study plan.",
+                }}
+                placeholder="How can I help?"
+              />
             )
+          ) : null}
+
+          {mode === "partner" ? (
+            <StudyChatPanel
+              open={open}
+              active={mode === "partner"}
+              userName={userName}
+              header={{ title: "Study Partner", subtitle: "Think out loud with AI" }}
+              empty={{
+                icon: <IconSparkles className="h-8 w-8" />,
+                title: "Study Partner",
+                subtitle: "Talk through an argument out loud. I'll play your study partner and push back on your reasoning.",
+              }}
+              placeholder="Walk me through how you'd attack this question..."
+            />
           ) : null}
 
           {mode === "inbox" ? (
             is_admin ? (
               renderAdminInbox()
             ) : (
-              <div className="min-h-0 flex-1 overflow-hidden bg-[#fffdf8]">
+              <div className="min-h-0 flex-1 overflow-hidden bg-[#fafafa]">
                 {inboxLoading ? (
                   <div className="flex h-full items-center justify-center text-muted-foreground">
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
@@ -599,28 +651,28 @@ export default function StudySidecar({
                 ) : (
                   <div className="flex h-full flex-col">
                     <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-                      <div className="rounded-full bg-[#203024]/8 p-3 text-[#203024]">
+                      <div className="rounded-full bg-zinc-100 p-3 text-zinc-500">
                         <IconInbox size={20} />
                       </div>
-                      <div className="mt-4 text-sm font-semibold text-[#211b16]">
+                      <div className="mt-4 text-sm font-semibold text-zinc-900">
                         No messages yet. Send Joshua a message here.
                       </div>
-                      <div className="mt-1 max-w-[260px] text-xs leading-5 text-[#7a6b58]">
+                      <div className="mt-1 max-w-[260px] text-xs leading-5 text-zinc-500">
                         This is your real 1:1 thread. The first message will create the conversation and keep future replies in this panel.
                       </div>
                       {inboxNotice ? (
-                        <div className="mt-4 rounded-2xl border border-[#eadfcf] bg-white px-4 py-3 text-xs text-[#7a6b58]">
+                        <div className="mt-4 rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-xs text-zinc-500">
                           {inboxNotice}
                         </div>
                       ) : null}
                       {startingInbox ? (
-                        <div className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-[#7a6b58]">
+                        <div className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-zinc-500">
                           <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
                           Preparing your thread...
                         </div>
                       ) : null}
                     </div>
-                    <div className="shrink-0 border-t border-[#eadfcf] bg-[#fffaf2]/90 backdrop-blur-md">
+                    <div className="shrink-0 border-t border-zinc-200 bg-white/92 backdrop-blur-md">
                       <MessageComposer
                         conversationId={null}
                         onResolveConversation={handleResolveInboxConversation}
@@ -657,22 +709,22 @@ export default function StudySidecar({
               </div>
 
               {selectedNotification ? (
-                <div className="m-3 rounded-2xl border border-[#eadfcf] bg-[#fffaf2] px-4 py-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.14em] text-[#9a8160]">
+                <div className="m-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3">
+                  <div className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400">
                     Notification detail
                   </div>
-                  <div className="mt-2 text-sm font-semibold text-[#211b16]">
+                  <div className="mt-2 text-sm font-semibold text-zinc-900">
                     {selectedNotification.title}
                   </div>
                   {selectedNotification.body ? (
-                    <div className="mt-1 text-xs leading-5 text-[#7a6b58]">
+                    <div className="mt-1 text-xs leading-5 text-zinc-500">
                       {selectedNotification.body}
                     </div>
                   ) : null}
-                  <div className="mt-2 text-[11px] text-[#9a8160]">
+                  <div className="mt-2 text-[11px] text-zinc-400">
                     {formatRelativeShort(selectedNotification.created_at)}
                   </div>
-                  <div className="mt-3 text-xs text-[#7a6b58]">
+                  <div className="mt-3 text-xs text-zinc-500">
                     This notification does not open a destination yet.
                   </div>
                 </div>
