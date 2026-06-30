@@ -605,9 +605,6 @@ Deno.serve(async (req) => {
       return json({ error: "message required (≤10k chars)" }, 400);
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) return json({ error: "LOVABLE_API_KEY not configured" }, 500);
-
     // Selected student (default target + name for the resolver).
     let selectedStudent: ResolvedStudent | null = null;
     if (studentId) {
@@ -641,6 +638,9 @@ Deno.serve(async (req) => {
       proposal = deterministic;
       content = deterministic.summary;
     } else {
+      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+      if (!LOVABLE_API_KEY) return json({ error: "LOVABLE_API_KEY not configured" }, 500);
+
       // Per-student mode keeps the analytics context ta-chat surfaced, so the
       // agent can reason and draft notes with awareness. Global mode has none.
       const contextHeader = selectedStudent
