@@ -7,7 +7,6 @@ import StudySidecar from "./StudySidecar";
 
 const {
   mockNavigate,
-  mockSetActiveTabId,
   mockAddTab,
   mockSend,
   mockRefreshInbox,
@@ -16,7 +15,6 @@ const {
   mockStartJoshuaConversation,
 } = vi.hoisted(() => ({
   mockNavigate: vi.fn(),
-  mockSetActiveTabId: vi.fn(),
   mockAddTab: vi.fn(),
   mockSend: vi.fn(),
   mockRefreshInbox: vi.fn(),
@@ -49,7 +47,7 @@ vi.mock("@/hooks/useStudyChat", () => ({
   useStudyChat: () => ({
     tabs: [{ id: "chat-1", label: "Chat 1", messages: [] }],
     activeTabId: "chat-1",
-    setActiveTabId: mockSetActiveTabId,
+    setActiveTabId: vi.fn(),
     addTab: mockAddTab,
     activeMessages: [],
     thinking: false,
@@ -171,7 +169,6 @@ describe("StudySidecar", () => {
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     mockNavigate.mockReset();
-    mockSetActiveTabId.mockReset();
     mockAddTab.mockReset();
     mockSend.mockReset();
     mockRefreshInbox.mockReset();
@@ -196,6 +193,25 @@ describe("StudySidecar", () => {
     expect(
       screen.getByRole("button", { name: "Notifications, 1 unread" }),
     ).toBeInTheDocument();
+  });
+
+  it("shows assistant context instead of generated chat session labels", () => {
+    renderSidecar();
+
+    expect(screen.queryByText("Chat 1")).not.toBeInTheDocument();
+    expect(screen.getByText("AI assistant")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New conversation" })).toBeInTheDocument();
+  });
+
+  it("keeps chat connected to the study assistant composer", () => {
+    renderSidecar();
+
+    fireEvent.change(screen.getByPlaceholderText("How can I help?"), {
+      target: { value: "Help me with sufficient assumptions" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Send message" }));
+
+    expect(mockSend).toHaveBeenCalledWith("Help me with sufficient assumptions", undefined);
   });
 
   it("renders the real inbox thread in inbox mode", () => {

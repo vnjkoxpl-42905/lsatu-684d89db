@@ -5,7 +5,6 @@ import {
   IconBell,
   IconCopy,
   IconGavel,
-  IconHistory,
   IconInbox,
   IconMessageCircle,
   IconPlus,
@@ -145,9 +144,6 @@ export default function StudySidecar({
   const navigate = useNavigate();
   const { user } = useAuth();
   const {
-    tabs,
-    activeTabId,
-    setActiveTabId,
     addTab,
     activeMessages,
     thinking,
@@ -172,7 +168,6 @@ export default function StudySidecar({
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const tabsScrollRef = useRef<HTMLDivElement>(null);
 
   const joshuaConversation = useMemo(
     () => resolveJoshuaConversation(conversations, user?.id),
@@ -338,26 +333,12 @@ export default function StudySidecar({
           </div>
 
           {mode === "chat" ? (
-            <div className="flex shrink-0 items-center justify-between border-b border-border/30 py-1">
-              <div ref={tabsScrollRef} className="min-w-0 flex-1 overflow-x-auto no-scrollbar">
-                <div className="flex items-center gap-1 pl-2 pb-1 pt-0.5">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTabId(tab.id)}
-                      className={cn(
-                        "shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
-                        tab.id === activeTabId
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-                      )}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
+            <div className="flex shrink-0 items-center justify-between border-b border-border/30 px-3 py-2">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-semibold text-foreground">LSAT U</div>
+                <div className="truncate text-[11px] text-muted-foreground">AI assistant</div>
               </div>
-              <div className="flex shrink-0 items-center gap-0.5 px-1.5 pb-1 pt-0.5">
+              <div className="flex shrink-0 items-center gap-0.5">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
@@ -369,17 +350,6 @@ export default function StudySidecar({
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">New conversation</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      className="cursor-pointer rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-                      aria-label="Conversation history"
-                    >
-                      <IconHistory size={16} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">History</TooltipContent>
                 </Tooltip>
               </div>
             </div>
