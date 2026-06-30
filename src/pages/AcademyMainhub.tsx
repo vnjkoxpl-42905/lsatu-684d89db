@@ -342,8 +342,8 @@ function MainhubHero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
       />
 
-      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 md:min-h-[390px] md:grid-cols-[minmax(140px,0.52fr)_minmax(340px,1.54fr)_minmax(280px,0.82fr)] md:items-center md:gap-4 lg:grid-cols-[minmax(170px,0.55fr)_minmax(430px,1.7fr)_minmax(300px,0.82fr)] lg:p-8">
-        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-1 lg:pl-4">
+      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 md:min-h-[390px] md:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] md:items-center md:gap-5 lg:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] lg:gap-7 lg:p-8 xl:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] xl:gap-9">
+        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-2 lg:pl-6 xl:pl-8">
           <div className="flex items-center gap-3">
             <Button
               onClick={startSmartDrill}
@@ -385,7 +385,7 @@ function MainhubHero() {
         </div>
 
 
-        <div className="rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 md:mr-0 lg:mr-3">
+        <div className="w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 md:mr-0 md:max-w-[410px] md:justify-self-end lg:mr-4 xl:mr-6">
           <div
             className="mb-3 space-y-2.5"
             onKeyDown={(event) => {
@@ -743,7 +743,7 @@ export default function AcademyMainhub() {
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.82))]"
       />
 
-      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-5">
+      <div className="relative mx-auto flex w-full max-w-[112rem] flex-col gap-5">
         <MainhubHero />
 
         <section className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
