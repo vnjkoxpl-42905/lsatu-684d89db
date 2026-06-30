@@ -28,7 +28,10 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
-const GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1";
+const GMAIL_API = "https://gmail.googleapis.com/gmail/v1";
+const GMAIL_OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
+const DIRECT_GMAIL_NOT_CONFIGURED =
+  "Direct Gmail sending is not configured. This command cannot send email without Gmail OAuth credentials.";
 
 
 const corsHeaders = {
@@ -328,6 +331,12 @@ interface EmailSendResult {
   threadId?: string;
 }
 
+interface GmailOAuthTokenResponse {
+  access_token?: string;
+  error?: string;
+  error_description?: string;
+}
+
 function parseEmailCommand(message: string): EmailCommand | null {
   const m = message.match(EMAIL_RE);
   if (!m) return null;
@@ -342,25 +351,32 @@ async function sendGmailMessage(args: {
   subject: string;
   text: string;
 }): Promise<EmailSendResult> {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  const GOOGLE_MAIL_API_KEY = Deno.env.get("GOOGLE_MAIL_API_KEY");
-  if (!LOVABLE_API_KEY) {
-    throw new Error(
-      "Gmail sending is not accessible from backend code: LOVABLE_API_KEY is not configured.",
-    );
-  }
-  if (!GOOGLE_MAIL_API_KEY) {
-    throw new Error(
-      "Gmail sending is not accessible from backend code: GOOGLE_MAIL_API_KEY is not configured, so the Lovable Gmail connector secret is unavailable.",
-    );
+  const clientId = Deno.env.get("GMAIL_CLIENT_ID");
+  const clientSecret = Deno.env.get("GMAIL_CLIENT_SECRET");
+  const refreshToken = Deno.env.get("GMAIL_REFRESH_TOKEN");
+  if (!clientId || !clientSecret || !refreshToken) throw new Error(DIRECT_GMAIL_NOT_CONFIGURED);
+
+  const tokenResponse = await fetch(GMAIL_OAUTH_TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+      grant_type: "refresh_token",
+    }),
+  });
+  const tokenData = (await tokenResponse.json().catch(() => ({}))) as GmailOAuthTokenResponse;
+  if (!tokenResponse.ok || !tokenData.access_token) {
+    const detail = tokenData.error_description ?? tokenData.error ?? `HTTP ${tokenResponse.status}`;
+    throw new Error(`Direct Gmail OAuth failed: ${detail}`);
   }
 
   const raw = buildPlainEmail(args);
-  const response = await fetch(`${GMAIL_GATEWAY}/users/me/messages/send`, {
+  const response = await fetch(`${GMAIL_API}/users/me/messages/send`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "X-Connection-Api-Key": GOOGLE_MAIL_API_KEY,
+      Authorization: `Bearer ${tokenData.access_token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ raw }),
@@ -374,7 +390,7 @@ async function sendGmailMessage(args: {
   }
   if (!response.ok) {
     if (response.status === 401 || response.status === 403) {
-      throw new Error("Gmail connector is not authorized. Relink Gmail in Lovable connectors before sending email.");
+      throw new Error("Direct Gmail OAuth is not authorized for sending email.");
     }
     throw new Error(`Gmail send failed (${response.status}): ${text.slice(0, 300)}`);
   }
