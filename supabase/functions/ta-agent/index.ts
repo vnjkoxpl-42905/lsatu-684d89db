@@ -1,6 +1,6 @@
 // ta-agent — admin-only action agent for the corner chat.
 //
-// Extends the ta-chat pattern (admin verification, Lovable gateway, persistence
+// Extends the ta-chat pattern (admin verification, direct Gemini, persistence
 // to ta_interactions) with the ability to PROPOSE real platform actions that
 // the admin confirms with one click on the client:
 //   - assign a guided drill
@@ -12,7 +12,7 @@
 //   1. Deterministic (no LLM): an explicit "assign <resource> to <name>"
 //      command is resolved directly against the DB. Free + instant.
 //   2. AI (tool calling): anything ambiguous or generative (note copy, fuzzy
-//      intent) goes to the gateway with a tool schema; the model picks a tool,
+//      intent) goes to Gemini with a tool schema; the model picks a tool,
 //      the function resolves targets server-side.
 //
 // Assignment/note actions never mutate student data here. They only resolve
@@ -27,7 +27,8 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
-const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
+const GEMINI_MODEL = Deno.env.get("TA_AGENT_GEMINI_MODEL") ?? "gemini-2.5-flash";
 const GMAIL_API = "https://gmail.googleapis.com/gmail/v1";
 const GMAIL_OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const DIRECT_GMAIL_NOT_CONFIGURED =
@@ -554,6 +555,125 @@ const TOOLS = [
   },
 ];
 
+interface GeminiFunctionDeclaration {
+  name: string;
+  description?: string;
+  parameters: unknown;
+}
+
+interface GeminiContent {
+  role: "user" | "model";
+  parts: Array<{ text: string }>;
+}
+
+interface GeminiFunctionCall {
+  name?: string;
+  args?: Record<string, unknown>;
+}
+
+interface GeminiGenerateContentResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{
+        text?: string;
+        functionCall?: GeminiFunctionCall;
+      }>;
+    };
+    finishReason?: string;
+  }>;
+  error?: {
+    code?: number;
+    message?: string;
+    status?: string;
+  };
+}
+
+function toGeminiFunctionDeclarations(): GeminiFunctionDeclaration[] {
+  return TOOLS.map((tool) => ({
+    name: tool.function.name,
+    description: tool.function.description,
+    parameters: tool.function.parameters,
+  }));
+}
+
+function normalizeGeminiArgs(args: Record<string, unknown> | undefined): Record<string, string> {
+  const normalized: Record<string, string> = {};
+  for (const [key, value] of Object.entries(args ?? {})) {
+    if (value == null) continue;
+    normalized[key] = typeof value === "string" ? value : String(value);
+  }
+  return normalized;
+}
+
+async function callGeminiWithTools(input: {
+  apiKey: string;
+  systemPrompt: string;
+  contextHeader: string | null;
+  history: InteractionRow[];
+  message: string;
+}): Promise<{ text: string; functionCall: { name: string; args: Record<string, string> } | null }> {
+  const systemText = input.contextHeader
+    ? `${input.systemPrompt}\n\n${input.contextHeader}`
+    : input.systemPrompt;
+  const contents: GeminiContent[] = [];
+  for (const h of input.history) {
+    contents.push({
+      role: h.role === "admin" ? "user" : "model",
+      parts: [{ text: h.message }],
+    });
+  }
+  contents.push({ role: "user", parts: [{ text: input.message }] });
+
+  const response = await fetch(
+    `${GEMINI_API_BASE_URL}/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(input.apiKey)}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemText }] },
+        contents,
+        tools: [{ functionDeclarations: toGeminiFunctionDeclarations() }],
+        toolConfig: { functionCallingConfig: { mode: "AUTO" } },
+      }),
+    },
+  );
+
+  const rawText = await response.text();
+  let data: GeminiGenerateContentResponse | null = null;
+  try {
+    data = rawText ? JSON.parse(rawText) as GeminiGenerateContentResponse : null;
+  } catch {
+    data = null;
+  }
+
+  if (!response.ok) {
+    const detail = data?.error?.message || rawText.slice(0, 300) || `HTTP ${response.status}`;
+    console.error("Gemini API error:", response.status, detail);
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(`Gemini rejected the request: ${detail}`);
+    }
+    if (response.status === 429) throw new Error("Gemini rate limited the request. Try again in a moment.");
+    throw new Error(`Gemini request failed (${response.status}): ${detail}`);
+  }
+
+  const parts = data?.candidates?.[0]?.content?.parts ?? [];
+  const functionCall = parts.find((part) => part.functionCall)?.functionCall;
+  if (functionCall?.name) {
+    return {
+      text: parts.map((part) => part.text ?? "").join("").trim(),
+      functionCall: {
+        name: functionCall.name,
+        args: normalizeGeminiArgs(functionCall.args),
+      },
+    };
+  }
+
+  return {
+    text: parts.map((part) => part.text ?? "").join("").trim(),
+    functionCall: null,
+  };
+}
+
 async function buildNoteProposal(
   admin: SupabaseClient,
   studentQuery: string,
@@ -687,49 +807,21 @@ async function runAiLane(
   selectedStudent: ResolvedStudent | null,
   contextHeader: string | null,
 ): Promise<AiResult> {
-  const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-    { role: "system", content: SYSTEM_PROMPT },
-  ];
-  if (contextHeader) messages.push({ role: "system", content: contextHeader });
-  for (const h of history) {
-    messages.push({ role: h.role === "admin" ? "user" : "assistant", content: h.message });
-  }
-  messages.push({ role: "user", content: message });
-
-  const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "google/gemini-3-flash-preview",
-      messages,
-      tools: TOOLS,
-      tool_choice: "auto",
-    }),
+  const gemini = await callGeminiWithTools({
+    apiKey,
+    systemPrompt: SYSTEM_PROMPT,
+    contextHeader,
+    history,
+    message,
   });
-
-  if (!response.ok) {
-    if (response.status === 429) throw new Error("Rate limited. Try again in a moment.");
-    if (response.status === 402) throw new Error("Out of credits. Add funds to continue.");
-    console.error("AI gateway error:", response.status);
-    throw new Error("The agent is having trouble connecting. Try again.");
-  }
-
-  const data = await response.json();
-  const choice = data?.choices?.[0]?.message;
-  const toolCall = choice?.tool_calls?.[0];
+  const toolCall = gemini.functionCall;
 
   if (!toolCall) {
-    return { content: (choice?.content ?? "").trim() || "I'm not sure what to do here.", proposal: null };
+    return { content: gemini.text || "I'm not sure what to do here.", proposal: null };
   }
 
-  let args: Record<string, string> = {};
-  try {
-    args = JSON.parse(toolCall.function.arguments || "{}");
-  } catch {
-    return { content: "I couldn't parse that request. Try rephrasing.", proposal: null };
-  }
-
-  const name = toolCall.function.name as string;
+  const args = toolCall.args;
+  const name = toolCall.name;
   const studentQuery = (args.student ?? "").trim();
 
   if (name === "answer") {
@@ -865,8 +957,8 @@ Deno.serve(async (req) => {
       proposal = deterministic;
       content = deterministic.summary;
     } else {
-      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-      if (!LOVABLE_API_KEY) return json({ error: "LOVABLE_API_KEY not configured" }, 500);
+      const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+      if (!GEMINI_API_KEY) return json({ error: "GEMINI_API_KEY not configured" }, 500);
 
       // Per-student mode keeps the analytics context ta-chat surfaced, so the
       // agent can reason and draft notes with awareness. Global mode has none.
@@ -874,7 +966,7 @@ Deno.serve(async (req) => {
         ? await buildStudentContext(admin, selectedStudent.id, selectedStudent.name)
         : null;
       const ai = await runAiLane(
-        admin, LOVABLE_API_KEY, history, message, selectedStudent, contextHeader,
+        admin, GEMINI_API_KEY, history, message, selectedStudent, contextHeader,
       );
       content = ai.content;
       proposal = ai.proposal;
