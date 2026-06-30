@@ -155,7 +155,12 @@ export default function StudySidecar({
     send,
   } = useStudyChat();
   const { is_admin } = useUserPermissions();
-  const { conversations, loading: inboxLoading, refresh: refreshInbox } = useInbox();
+  const {
+    conversations,
+    loading: inboxLoading,
+    unreadCount: inboxUnreadTotal,
+    refresh: refreshInbox,
+  } = useInbox();
   const {
     notifications,
     unreadCount: notificationUnreadCount,
@@ -178,7 +183,7 @@ export default function StudySidecar({
     () => resolveJoshuaConversation(conversations, user?.id),
     [conversations, user?.id],
   );
-  const inboxUnreadCount = joshuaConversation?.unread ? 1 : 0;
+  const inboxUnreadCount = is_admin ? inboxUnreadTotal : joshuaConversation?.unread ? 1 : 0;
   const activeInboxConversation = useMemo(() => {
     if (activeInboxId) {
       return conversations.find((conversation) => conversation.id === activeInboxId) ?? null;
@@ -338,7 +343,7 @@ export default function StudySidecar({
             </Tooltip>
           </div>
 
-          {mode === "chat" ? (
+          {mode === "chat" && !is_admin ? (
             <div className="flex shrink-0 items-center justify-between border-b border-border/30 px-3 py-2">
               <div className="min-w-0">
                 <div className="truncate text-sm font-semibold text-foreground">LSAT U</div>
@@ -362,6 +367,11 @@ export default function StudySidecar({
           ) : null}
 
           {mode === "chat" ? (
+            is_admin ? (
+              <div className="min-h-0 flex-1 overflow-hidden bg-[#111722]">
+                <AdminInboxCommandCenter embedded defaultSource="app" />
+              </div>
+            ) : (
             <>
               <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
                 {activeMessages.length === 0 && !thinking && !streamingContent ? (
@@ -457,6 +467,7 @@ export default function StudySidecar({
                 </div>
               </div>
             </>
+            )
           ) : null}
 
           {mode === "inbox" ? (

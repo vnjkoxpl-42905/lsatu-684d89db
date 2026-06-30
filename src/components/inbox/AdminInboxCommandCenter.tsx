@@ -105,9 +105,12 @@ export function AdminInboxCommandCenter({
   const { conversations, loading, unreadCount, refresh } = useInbox();
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
-  const [source, setSource] = useState<InboxSource>(() => sourceFromSearch(location.search, defaultSource));
+  const [source, setSource] = useState<InboxSource>(() =>
+    embedded ? defaultSource : sourceFromSearch(location.search, defaultSource),
+  );
+  const [embeddedActiveId, setEmbeddedActiveId] = useState<string | null>(null);
 
-  const activeId = activeIdProp ?? searchParams.get('c');
+  const activeId = activeIdProp ?? (embedded ? embeddedActiveId : searchParams.get('c'));
   const active = useMemo(
     () => conversations.find((c) => c.id === activeId) ?? null,
     [conversations, activeId],
@@ -124,8 +127,8 @@ export function AdminInboxCommandCenter({
   }, [headerName]);
 
   useEffect(() => {
-    setSource(sourceFromSearch(location.search, defaultSource));
-  }, [defaultSource, location.search]);
+    setSource(embedded ? defaultSource : sourceFromSearch(location.search, defaultSource));
+  }, [defaultSource, embedded, location.search]);
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
@@ -143,6 +146,7 @@ export function AdminInboxCommandCenter({
   const updatePane = useCallback(
     (nextSource: InboxSource) => {
       setSource(nextSource);
+      if (embedded) return;
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         if (nextSource === 'app') {
@@ -155,13 +159,18 @@ export function AdminInboxCommandCenter({
         return next;
       });
     },
-    [setSearchParams],
+    [embedded, setSearchParams],
   );
 
   const selectThread = useCallback(
     (id: string) => {
       if (onSelectThread) {
         onSelectThread(id);
+        return;
+      }
+      if (embedded) {
+        setEmbeddedActiveId(id);
+        setSource('app');
         return;
       }
       setSearchParams((prev) => {
@@ -171,7 +180,7 @@ export function AdminInboxCommandCenter({
         return next;
       });
     },
-    [onSelectThread, setSearchParams],
+    [embedded, onSelectThread, setSearchParams],
   );
 
   const clearThread = useCallback(() => {
@@ -179,12 +188,16 @@ export function AdminInboxCommandCenter({
       onClearThread();
       return;
     }
+    if (embedded) {
+      setEmbeddedActiveId(null);
+      return;
+    }
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.delete('c');
       return next;
     });
-  }, [onClearThread, setSearchParams]);
+  }, [embedded, onClearThread, setSearchParams]);
 
   const adminEmptyLabel =
     query.trim().length > 0
