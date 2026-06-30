@@ -42,6 +42,7 @@ interface MessageComposerProps {
   onSent?: () => void;
   onResolveConversation?: () => Promise<string>;
   onConversationResolved?: (conversationId: string) => void;
+  studentFacing?: boolean;
 }
 
 export function MessageComposer({
@@ -49,6 +50,7 @@ export function MessageComposer({
   onSent,
   onResolveConversation,
   onConversationResolved,
+  studentFacing = false,
 }: MessageComposerProps) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
@@ -85,7 +87,7 @@ export function MessageComposer({
     el.style.overflowY = el.scrollHeight > 128 ? 'auto' : 'hidden';
   };
 
-  const isAdmin = !permissions.loading && permissions.is_admin;
+  const isAdmin = !studentFacing && !permissions.loading && permissions.is_admin;
   const showPolish = isAdmin;
   const showDrive = isAdmin;
 

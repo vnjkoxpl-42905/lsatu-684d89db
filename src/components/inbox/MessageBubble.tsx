@@ -1,4 +1,5 @@
 import { format, isToday } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
 import type { MessageAttachment } from '@/hooks/useInbox';
@@ -14,7 +15,22 @@ function shortTime(date: Date) {
   return format(date, 'MMM d, h:mm a');
 }
 
+function extractRouteAction(body: string) {
+  const match = body.match(/(^|\s)(\/[A-Za-z0-9_/?#=&.%:-]+)/);
+  const route = match?.[2];
+  if (!route) return { displayBody: body, route: null };
+
+  const displayBody = body
+    .replace(route, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+    .replace(/\s+([.,!?;:])/g, '$1');
+
+  return { displayBody, route };
+}
+
 export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
+  const navigate = useNavigate();
   const headerTime = shortTime(new Date(cluster.createdAt));
   const isInstructor = cluster.isInstructor;
 
@@ -74,6 +90,7 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
             {cluster.messages.map((message) => {
               const hasBody = !!message.body;
               const hasAttachments = message.attachments.length > 0;
+              const routeAction = hasBody ? extractRouteAction(message.body) : null;
 
               return (
                 <div
@@ -92,7 +109,21 @@ export function MessageBubble({ cluster, onPreviewAttachment }: Props) {
                           : 'max-w-[620px] border border-[#E6DDD2] bg-white text-[#1F1B16]',
                       )}
                     >
-                      {message.body}
+                      {routeAction?.displayBody || message.body}
+                      {routeAction?.route ? (
+                        <button
+                          type="button"
+                          onClick={() => navigate(routeAction.route)}
+                          className={cn(
+                            'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-bold transition',
+                            isInstructor
+                              ? 'bg-white text-[#111827] hover:bg-[#f3efe6]'
+                              : 'bg-[#203024] text-white hover:bg-[#2c4231]',
+                          )}
+                        >
+                          Open assignment
+                        </button>
+                      ) : null}
                     </div>
                   ) : null}
 

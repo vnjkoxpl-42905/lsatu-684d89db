@@ -22,6 +22,7 @@ interface Props {
   hideHeader?: boolean;
   compact?: boolean;
   emptyStateLabel?: string;
+  studentFacing?: boolean;
 }
 
 function ConversationSkeleton() {
@@ -53,6 +54,7 @@ export function ConversationView({
   hideHeader = false,
   compact = false,
   emptyStateLabel = 'No communication logged',
+  studentFacing = false,
 }: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
@@ -78,26 +80,28 @@ export function ConversationView({
     .map((o) => formatParticipantName(o.display_name, o.is_admin))
     .filter((n) => n && n !== 'User');
 
-  const headerName = is_admin
+  const adminView = is_admin && !studentFacing;
+
+  const headerName = adminView
     ? formattedNames.join(', ') || conversation.subject || 'Conversation'
     : formattedNames.find((n) => n) || 'Joshua';
-  const headerSubtitle = is_admin
+  const headerSubtitle = adminView
     ? conversation.subject || 'Student message thread'
     : 'Your coach';
 
   const headerInitial = useMemo(() => {
-    if (!is_admin) return 'J';
+    if (!adminView) return 'J';
     return initialsFromName(headerName);
-  }, [is_admin, headerName]);
+  }, [adminView, headerName]);
 
   if (!user) return null;
 
   return (
-    <div className={cn('flex h-full flex-col', is_admin ? 'bg-[#f7f3ea]' : 'bg-[#fffdf8]')}>
+    <div className={cn('flex h-full flex-col', adminView ? 'bg-[#f7f3ea]' : 'bg-[#fffdf8]')}>
       {!hideHeader && (
         <div className={cn(
           'flex shrink-0 flex-col',
-          is_admin ? 'border-b border-[#ded1bd] bg-white/58' : 'border-b border-[#eadfcf] bg-[#fffaf2]/82',
+          adminView ? 'border-b border-[#ded1bd] bg-white/58' : 'border-b border-[#eadfcf] bg-[#fffaf2]/82',
         )}>
           <div className="flex items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
             {onBack && (
@@ -108,7 +112,7 @@ export function ConversationView({
             <div
               className={cn(
                 'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-[10px] font-black tracking-tight transition-all md:hidden',
-                is_admin
+                adminView
                   ? 'bg-[#151a24] text-[#f7edd7] ring-1 ring-[#151a24]/15'
                   : 'bg-[#203024] text-[#f8eed8] ring-1 ring-[#203024]/15',
               )}
@@ -120,19 +124,19 @@ export function ConversationView({
             <div className="min-w-0 flex-1 md:hidden">
               <div className={cn(
                 'truncate text-xl font-black leading-tight tracking-tight',
-                is_admin ? 'text-[#171b24]' : 'text-[#211b16]',
+                adminView ? 'text-[#171b24]' : 'text-[#211b16]',
               )}>
                 {headerName}
               </div>
               <div className={cn(
                 'mt-1 truncate text-xs font-semibold',
-                is_admin ? 'text-[#756957]' : 'text-[#7a6b58]',
+                adminView ? 'text-[#756957]' : 'text-[#7a6b58]',
               )}>
-                {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
+                {adminView ? headerSubtitle : 'Send questions, context, and files in one thread'}
               </div>
             </div>
             
-            {is_admin && (
+            {adminView && (
               <div className="hidden flex-1 items-center justify-between gap-4 md:flex">
                 <div>
                   <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8b5b42]">Student context attached</div>
@@ -154,7 +158,7 @@ export function ConversationView({
                 </div>
               </div>
             )}
-            {!is_admin && (
+            {!adminView && (
               <div className="hidden md:flex items-center gap-2 text-[11px] font-medium text-slate-500">
                 <span className={cn('h-2 w-2 rounded-full', participantOnline ? 'bg-emerald-500' : 'bg-slate-300')} />
                 <span>{participantOnline ? 'Joshua is online' : 'Joshua is away'}</span>
@@ -169,7 +173,7 @@ export function ConversationView({
         className={cn(
           'flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-border min-h-0',
           compact ? 'px-4 py-5' : 'px-10 py-12',
-          is_admin
+          adminView
             ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.82),rgba(250,247,239,0.94)),#f7f3ea]'
             : 'bg-[radial-gradient(circle_at_20%_0%,rgba(184,129,78,0.08),transparent_30%),#fffdf8]',
         )}
@@ -187,9 +191,9 @@ export function ConversationView({
           <div className={cn(
             'mx-auto',
             compact ? 'space-y-6 max-w-none' : 'space-y-10',
-            !compact && (is_admin ? 'max-w-4xl' : 'max-w-3xl'),
+            !compact && (adminView ? 'max-w-4xl' : 'max-w-3xl'),
           )}>
-            {is_admin && (
+            {adminView && (
               <div className="mx-auto flex max-w-2xl items-center justify-center gap-2 rounded-full border border-[#ded1bd] bg-[#fffaf0]/82 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#8b5b42] shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Conversation is linked to the command context panel
@@ -198,11 +202,11 @@ export function ConversationView({
             {sections.map((section) => (
               <div key={section.key} className="space-y-6">
                 <div className={cn('flex items-center gap-6', compact ? 'my-6' : 'my-10')}>
-                  <div className={cn('h-px flex-1', is_admin ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
-                  <div className={cn('text-[10px] font-black uppercase tracking-[0.2em]', is_admin ? 'text-[#9a8160]' : 'text-[#9a8160]')}>
+                  <div className={cn('h-px flex-1', adminView ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
+                  <div className={cn('text-[10px] font-black uppercase tracking-[0.2em]', adminView ? 'text-[#9a8160]' : 'text-[#9a8160]')}>
                     {section.label}
                   </div>
-                  <div className={cn('h-px flex-1', is_admin ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
+                  <div className={cn('h-px flex-1', adminView ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
                 </div>
                 {section.clusters.map((cluster) => (
                   <MessageBubble
@@ -213,7 +217,7 @@ export function ConversationView({
                 ))}
               </div>
             ))}
-            {is_admin && (
+            {adminView && (
               <div className="ml-auto max-w-lg rounded-2xl border border-[#ded1bd] bg-[#fffaf0] p-4 shadow-[0_16px_34px_rgba(86,61,32,0.10)]">
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#8b5b42]">
                   <CheckCheck className="h-3.5 w-3.5" />
@@ -239,8 +243,12 @@ export function ConversationView({
         )}
       </div>
 
-      <div className={cn('shrink-0 border-t backdrop-blur-md', is_admin ? 'border-[#ded1bd] bg-[#f7f3ea]/92' : 'border-[#eadfcf] bg-[#fffaf2]/90')}>
-        <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
+      <div className={cn('shrink-0 border-t backdrop-blur-md', adminView ? 'border-[#ded1bd] bg-[#f7f3ea]/92' : 'border-[#eadfcf] bg-[#fffaf2]/90')}>
+        <MessageComposer
+          conversationId={conversation.id}
+          onSent={() => { refresh(); onMessageSent?.(); }}
+          studentFacing={studentFacing}
+        />
       </div>
 
       <AttachmentPreviewSheet

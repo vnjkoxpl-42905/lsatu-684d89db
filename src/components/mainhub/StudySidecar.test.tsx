@@ -88,13 +88,16 @@ vi.mock("@/components/inbox/ConversationView", () => ({
     conversation,
     compact,
     emptyStateLabel,
+    studentFacing,
   }: {
     conversation: Conversation;
     compact?: boolean;
     emptyStateLabel?: string;
+    studentFacing?: boolean;
   }) => (
     <div>
       Conversation {conversation.id} {compact ? "compact" : "full"} {emptyStateLabel ?? ""}
+      {studentFacing ? " student-facing" : ""}
     </div>
   ),
 }));
@@ -102,9 +105,11 @@ vi.mock("@/components/inbox/ConversationView", () => ({
 vi.mock("@/components/inbox/MessageComposer", () => ({
   MessageComposer: ({
     conversationId,
+    studentFacing,
   }: {
     conversationId: string | null;
-  }) => <div>Composer {conversationId ?? "none"}</div>,
+    studentFacing?: boolean;
+  }) => <div>Composer {conversationId ?? "none"} {studentFacing ? "student-facing" : ""}</div>,
 }));
 
 function makeConversation(overrides: Partial<Conversation> = {}): Conversation {
@@ -200,7 +205,7 @@ describe("StudySidecar", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Inbox" }));
 
-    expect(screen.getByText(/Conversation thread-1 compact/)).toBeInTheDocument();
+    expect(screen.getByText(/Conversation thread-1 compact .*student-facing/)).toBeInTheDocument();
   });
 
   it("shows an honest empty inbox state with the starter composer when no thread exists", () => {
@@ -209,7 +214,7 @@ describe("StudySidecar", () => {
     fireEvent.click(screen.getByRole("button", { name: "Inbox" }));
 
     expect(screen.getByText("No messages yet. Send Joshua a message here.")).toBeInTheDocument();
-    expect(screen.getByText("Composer none")).toBeInTheDocument();
+    expect(screen.getByText("Composer none student-facing")).toBeInTheDocument();
   });
 
   it("routes message notifications into inbox mode instead of navigating away", () => {
@@ -230,7 +235,7 @@ describe("StudySidecar", () => {
 
     expect(mockMarkRead).toHaveBeenCalledWith("notif-message");
     expect(mockNavigate).not.toHaveBeenCalled();
-    expect(screen.getByText(/Conversation thread-1 compact/)).toBeInTheDocument();
+    expect(screen.getByText(/Conversation thread-1 compact .*student-facing/)).toBeInTheDocument();
   });
 
   it("navigates route-backed notifications to their linked destination", () => {

@@ -496,6 +496,7 @@ export default function StudySidecar({
                   onMessageSent={() => void refreshInbox()}
                   hideHeader
                   compact
+                  studentFacing
                   emptyStateLabel="No messages yet. Send Joshua a message here."
                 />
               ) : (
@@ -531,6 +532,7 @@ export default function StudySidecar({
                         void refreshInbox();
                       }}
                       onSent={() => void refreshInbox()}
+                      studentFacing
                     />
                   </div>
                 </div>
