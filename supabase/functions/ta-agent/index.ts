@@ -344,9 +344,14 @@ async function sendGmailMessage(args: {
 }): Promise<EmailSendResult> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const GOOGLE_MAIL_API_KEY = Deno.env.get("GOOGLE_MAIL_API_KEY");
-  if (!LOVABLE_API_KEY || !GOOGLE_MAIL_API_KEY) {
+  if (!LOVABLE_API_KEY) {
     throw new Error(
-      "Gmail sending is not accessible from backend code: missing LOVABLE_API_KEY or GOOGLE_MAIL_API_KEY.",
+      "Gmail sending is not accessible from backend code: LOVABLE_API_KEY is not configured.",
+    );
+  }
+  if (!GOOGLE_MAIL_API_KEY) {
+    throw new Error(
+      "Gmail sending is not accessible from backend code: GOOGLE_MAIL_API_KEY is not configured, so the Lovable Gmail connector secret is unavailable.",
     );
   }
 
@@ -368,6 +373,9 @@ async function sendGmailMessage(args: {
     data = null;
   }
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Gmail connector is not authorized. Relink Gmail in Lovable connectors before sending email.");
+    }
     throw new Error(`Gmail send failed (${response.status}): ${text.slice(0, 300)}`);
   }
   return (data ?? {}) as EmailSendResult;
