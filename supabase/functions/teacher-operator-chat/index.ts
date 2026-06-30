@@ -1627,9 +1627,11 @@ Deno.serve(async (req) => {
       : null;
 
     const memoryNote = await loadConversationMemory(admin, adminId, conversationId);
+    const durableNote = await loadDurableMemoryNote(admin, adminId);
 
     const baseMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
+      ...(durableNote ? [durableNote] : []),
       ...(memoryNote ? [memoryNote] : []),
       ...(contextNote ? [contextNote] : []),
       ...(driveNote ? [driveNote] : []),
