@@ -6,10 +6,12 @@ import {
   filterSlashCommands,
   type SlashCommand,
 } from "./slashCommands";
+import { getCurrentComposerToken } from "./composerTokens";
 
 interface Props {
   /** Full textarea value. Palette opens when the *current* token starts with `/`. */
   value: string;
+  caret: number;
   open: boolean;
   activeIndex: number;
   onActiveIndexChange: (i: number) => void;
@@ -24,6 +26,7 @@ interface Props {
  */
 export default function SlashCommandPalette({
   value,
+  caret,
   open,
   activeIndex,
   onActiveIndexChange,
@@ -33,12 +36,11 @@ export default function SlashCommandPalette({
   const listRef = useRef<HTMLUListElement>(null);
 
   const filtered = useMemo(() => {
-    // Parse the trailing `/token`. Palette only reads the last run after a
-    // leading `/` at position 0 (simplest rule, matches roadmap: "admin types /").
-    if (!value.startsWith("/")) return SLASH_COMMANDS;
-    const q = value.slice(1).split(/\s/)[0] ?? "";
+    const token = getCurrentComposerToken(value, caret);
+    if (!token.text.startsWith("/")) return SLASH_COMMANDS;
+    const q = token.text.slice(1);
     return filterSlashCommands(q);
-  }, [value]);
+  }, [value, caret]);
 
   useEffect(() => {
     // Keep active index in range when filter narrows.
@@ -104,6 +106,11 @@ export default function SlashCommandPalette({
                     <div className="min-w-0 flex-1">
                       <div className="text-[13px] font-medium text-zinc-100">
                         {cmd.label}
+                        {cmd.comingSoon && (
+                          <span className="ml-2 rounded-full border border-zinc-700 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-zinc-400">
+                            Coming soon
+                          </span>
+                        )}
                       </div>
                       <div className="text-[11px] text-zinc-400 line-clamp-1">
                         {cmd.description}

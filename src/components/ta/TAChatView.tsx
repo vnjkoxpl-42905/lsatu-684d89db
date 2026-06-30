@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Loader2, Send, ScanSearch } from "lucide-react";
 import { toast } from "sonner";
 import { useTAChat, type TABackend, type TAInteraction } from "@/hooks/useTAChat";
@@ -17,9 +17,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import DraftCard from "./DraftCard";
 import SlashCommandPalette from "./SlashCommandPalette";
+import MentionStudentPalette from "./MentionStudentPalette";
 import TypingDots from "./TypingDots";
 import AttachmentBar from "./AttachmentBar";
 import { SLASH_COMMANDS, filterSlashCommands, type SlashCommand } from "./slashCommands";
+import { getCurrentComposerToken, replaceComposerToken } from "./composerTokens";
+import {
+  commandRequiresComingSoon,
+  normalizeTACommand,
+  type ComposerMention,
+} from "./commandNormalization";
+import { useTAStudents, type TAStudentRow } from "@/hooks/useTAStudents";
 
 interface Props {
   /** null = global agent thread; student resolved by name from the message. */
@@ -61,10 +69,15 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
   const inspect = useInspector();
   const [inspectOpen, setInspectOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [caret, setCaret] = useState(0);
+  const [mentions, setMentions] = useState<ComposerMention[]>([]);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteIndex, setPaletteIndex] = useState(0);
+  const [mentionOpen, setMentionOpen] = useState(false);
+  const [mentionIndex, setMentionIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { data: students = [] } = useTAStudents();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -86,38 +99,115 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
     el.style.height = `${next}px`;
   }, [input]);
 
+  const currentToken = useMemo(
+    () => getCurrentComposerToken(input, caret),
+    [input, caret],
+  );
+
   const filtered = paletteOpen
-    ? filterSlashCommands(input.startsWith("/") ? input.slice(1).split(/\s/)[0] ?? "" : "")
+    ? filterSlashCommands(currentToken.text.startsWith("/") ? currentToken.text.slice(1) : "")
     : SLASH_COMMANDS;
 
-  const applyCommand = (cmd: SlashCommand) => {
-    setInput(cmd.prefill);
-    setPaletteOpen(false);
-    setPaletteIndex(0);
-    // Re-focus and place caret at end so admin can edit immediately.
+  const mentionCandidates = useMemo(() => {
+    const q = currentToken.text.startsWith("@")
+      ? currentToken.text.slice(1).toLowerCase()
+      : "";
+    const named = students.filter((student) => student.display_name?.trim());
+    if (!q) return named.slice(0, 8);
+    return named
+      .filter((student) =>
+        (student.display_name ?? "").toLowerCase().includes(q),
+      )
+      .slice(0, 8);
+  }, [currentToken.text, students]);
+
+  const commandPreview = useMemo(
+    () =>
+      input.trim()
+        ? normalizeTACommand({
+            text: input,
+            backend,
+            mentions,
+            students,
+          })
+        : null,
+    [backend, input, mentions, students],
+  );
+
+  const focusComposer = (nextCaret: number) => {
     requestAnimationFrame(() => {
       const el = textareaRef.current;
       if (!el) return;
       el.focus();
-      el.setSelectionRange(cmd.prefill.length, cmd.prefill.length);
+      el.setSelectionRange(nextCaret, nextCaret);
+      setCaret(nextCaret);
     });
   };
 
-  const handleInputChange = (next: string) => {
-    setInput(next);
-    // Open palette when value starts with "/" and we haven't hit a space on
-    // the first token. Close once the admin has moved past `/command ` (space
-    // terminator) so typing real text afterwards doesn't keep the menu up.
-    if (next.startsWith("/") && !next.slice(1).includes(" ")) {
+  const applyCommand = (cmd: SlashCommand, mode: "replace-token" | "replace-all" = "replace-token") => {
+    const next =
+      mode === "replace-token"
+        ? replaceComposerToken(input, currentToken, cmd.prefill)
+        : { value: cmd.prefill, caret: cmd.prefill.length };
+    setInput(next.value);
+    setCaret(next.caret);
+    setPaletteOpen(false);
+    setMentionOpen(false);
+    setPaletteIndex(0);
+    focusComposer(next.caret);
+  };
+
+  const applyMention = (student: TAStudentRow) => {
+    const displayName = student.display_name?.trim() || "Student";
+    const token = `@${displayName.split(/\s+/)[0] ?? displayName}`;
+    const next = replaceComposerToken(input, currentToken, token);
+    setInput(next.value);
+    setCaret(next.caret);
+    setMentions((prev) => [
+      ...prev.filter((m) => m.studentId !== student.class_id),
+      { studentId: student.class_id, displayName, token },
+    ]);
+    setMentionOpen(false);
+    setPaletteOpen(false);
+    setMentionIndex(0);
+    focusComposer(next.caret);
+  };
+
+  const updatePaletteState = (next: string, nextCaret: number) => {
+    const token = getCurrentComposerToken(next, nextCaret);
+    if (token.text.startsWith("/") && !token.text.slice(1).includes(" ")) {
       setPaletteOpen(true);
+      setMentionOpen(false);
       setPaletteIndex(0);
-    } else {
-      setPaletteOpen(false);
+      return;
     }
+    if (token.text.startsWith("@") && !token.text.slice(1).includes(" ")) {
+      setMentionOpen(true);
+      setPaletteOpen(false);
+      setMentionIndex(0);
+      return;
+    }
+    setPaletteOpen(false);
+    setMentionOpen(false);
+  };
+
+  const handleInputChange = (next: string, nextCaret: number) => {
+    setInput(next);
+    setCaret(nextCaret);
+    updatePaletteState(next, nextCaret);
   };
 
   const handleSend = async (text?: string) => {
-    const msg = (text ?? input).trim();
+    const source = (text ?? input).trim();
+    const normalizedIntent =
+      text != null
+        ? null
+        : normalizeTACommand({ text: source, backend, mentions, students });
+    if (normalizedIntent && commandRequiresComingSoon(normalizedIntent)) {
+      toast.info("That command is coming soon. No action was taken.");
+      return;
+    }
+    const msg = (normalizedIntent?.sendText ?? source).trim();
     if (!msg || send.isPending || inspect.isPending) return;
 
     // /inspect routes to the Platform Inspector instead of the TA chat. The
@@ -144,7 +234,9 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
     try {
       await send.mutateAsync(msg);
       if (!text) setInput("");
+      if (!text) setMentions([]);
       setPaletteOpen(false);
+      setMentionOpen(false);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Send failed");
     }
@@ -186,6 +278,28 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
       if (e.key === "Escape") {
         e.preventDefault();
         setPaletteOpen(false);
+        return;
+      }
+    }
+    if (mentionOpen && mentionCandidates.length > 0) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setMentionIndex((i) => (i + 1) % mentionCandidates.length);
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setMentionIndex((i) => (i - 1 + mentionCandidates.length) % mentionCandidates.length);
+        return;
+      }
+      if (e.key === "Tab" || (e.key === "Enter" && !e.metaKey && !e.ctrlKey)) {
+        e.preventDefault();
+        applyMention(mentionCandidates[mentionIndex]);
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setMentionOpen(false);
         return;
       }
     }
@@ -303,7 +417,7 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
                 <button
                   key={cmd.id}
                   type="button"
-                  onClick={() => applyCommand(cmd)}
+                  onClick={() => applyCommand(cmd, "replace-all")}
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900",
                     "px-2.5 py-1 text-[11px] text-zinc-300",
@@ -322,18 +436,33 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
         <div className="relative flex items-end gap-2">
           <SlashCommandPalette
             value={input}
+            caret={caret}
             open={paletteOpen}
             activeIndex={paletteIndex}
             onActiveIndexChange={setPaletteIndex}
             onSelect={applyCommand}
             onClose={() => setPaletteOpen(false)}
           />
+          <MentionStudentPalette
+            value={input}
+            caret={caret}
+            open={mentionOpen}
+            activeIndex={mentionIndex}
+            onActiveIndexChange={setMentionIndex}
+            onSelect={applyMention}
+            onClose={() => setMentionOpen(false)}
+          />
           <Textarea
             ref={textareaRef}
             value={input}
-            onChange={(e) => handleInputChange(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, e.target.selectionStart)}
+            onSelect={(e) => {
+              const nextCaret = e.currentTarget.selectionStart;
+              setCaret(nextCaret);
+              updatePaletteState(e.currentTarget.value, nextCaret);
+            }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask the TA (⌘/Ctrl+Enter to send · / for commands)"
+            placeholder="Ask the TA · / for commands · @ for students"
             rows={1}
             style={{ height: `${TEXTAREA_MIN_PX}px` }}
             className="resize-none flex-1 leading-relaxed"
@@ -352,6 +481,17 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
             )}
           </Button>
         </div>
+        {commandPreview?.preview && (
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-[12px] text-zinc-300">
+            <span className="text-zinc-500">TA understands: </span>
+            <span className="text-zinc-100">{commandPreview.preview}</span>
+            {commandRequiresComingSoon(commandPreview) && (
+              <span className="ml-2 rounded-full border border-zinc-700 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-zinc-400">
+                Coming soon
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       <Dialog open={inspectOpen} onOpenChange={setInspectOpen}>

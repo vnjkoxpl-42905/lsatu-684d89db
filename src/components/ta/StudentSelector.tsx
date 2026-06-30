@@ -1,13 +1,7 @@
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Loader2, Search, User } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
-
-interface StudentRow {
-  class_id: string;
-  display_name: string | null;
-}
+import { useTAStudents } from "@/hooks/useTAStudents";
 
 interface Props {
   selectedId: string | null;
@@ -17,18 +11,7 @@ interface Props {
 export default function StudentSelector({ selectedId, onSelect }: Props) {
   const [query, setQuery] = useState("");
 
-  const { data = [], isLoading, error } = useQuery<StudentRow[]>({
-    queryKey: ["ta-students"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("class_id, display_name")
-        .order("display_name", { ascending: true, nullsFirst: false })
-        .limit(500);
-      if (error) throw error;
-      return (data ?? []) as StudentRow[];
-    },
-  });
+  const { data = [], isLoading, error } = useTAStudents();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

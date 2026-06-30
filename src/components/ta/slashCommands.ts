@@ -8,6 +8,9 @@ import {
   ListChecks,
   Presentation,
   ScanSearch,
+  Sparkles,
+  Reply,
+  MessageSquare,
 } from "lucide-react";
 
 export interface SlashCommand {
@@ -22,6 +25,7 @@ export interface SlashCommand {
    * enough context to do useful work without further prompting.
    */
   prefill: string;
+  comingSoon?: boolean;
 }
 
 export const SLASH_COMMANDS: SlashCommand[] = [
@@ -80,6 +84,29 @@ export const SLASH_COMMANDS: SlashCommand[] = [
     description: "Prepare for the next session with this student",
     prefill:
       "Prepare me for my next session with this student. Use the most recent transcript, session notes, and any screenshots in their context. Output: agenda (bulleted), 3 discussion prompts, and the single most important follow-up from last session.",
+  },
+  {
+    id: "next",
+    icon: Sparkles,
+    label: "/next",
+    description: "Recommend the student's next best work",
+    prefill:
+      "What should this student work on next? Use real recent attempts, wrong-answer journal patterns, and recent assignments. Recommend the single best next step and explain why.",
+  },
+  {
+    id: "reply",
+    icon: Reply,
+    label: "/reply",
+    description: "Draft a student reply without sending it",
+    prefill: "Draft reply to ",
+  },
+  {
+    id: "message",
+    icon: MessageSquare,
+    label: "/message",
+    description: "Coming soon: prepare an inbox message",
+    prefill: "message ",
+    comingSoon: true,
   },
   {
     id: "inspect",

@@ -147,7 +147,7 @@ async function resolveStudent(
   admin: SupabaseClient,
   query: string,
 ): Promise<ResolvedStudent[]> {
-  const q = query.trim();
+  const q = query.trim().replace(/^@+/, "");
   if (!q) return [];
   // profiles.class_id IS the auth user id (== ta_interactions.student_id).
   const { data } = await admin
@@ -320,6 +320,7 @@ async function buildAssignProposal(input: {
 // ---------- Deterministic lane ----------
 
 const ASSIGN_RE = /^\s*assign\s+(.+?)\s+to\s+(.+?)\s*$/i;
+const GIVE_RE = /^\s*give\s+(@?\S+)\s+(.+?)\s*$/i;
 const EMAIL_RE = /^\s*email\s+([^:]+?)\s*:\s*([\s\S]+?)\s*$/i;
 
 interface EmailCommand {
@@ -448,16 +449,32 @@ async function tryDeterministic(
   selectedStudent: ResolvedStudent | null,
 ): Promise<Proposal | null> {
   const m = message.match(ASSIGN_RE);
-  if (!m) return null;
-  const resourceQuery = m[1].trim();
-  const studentQuery = m[2].trim();
-  return buildAssignProposal({
-    admin,
-    kind: "auto",
-    studentQuery,
-    resourceQuery,
-    selectedStudent,
-  });
+  if (m) {
+    const resourceQuery = m[1].trim();
+    const studentQuery = m[2].trim();
+    return buildAssignProposal({
+      admin,
+      kind: "auto",
+      studentQuery,
+      resourceQuery,
+      selectedStudent,
+    });
+  }
+
+  const give = message.match(GIVE_RE);
+  if (give) {
+    const studentQuery = give[1].trim();
+    const resourceQuery = give[2].trim();
+    return buildAssignProposal({
+      admin,
+      kind: "auto",
+      studentQuery,
+      resourceQuery,
+      selectedStudent,
+    });
+  }
+
+  return null;
 }
 
 // ---------- AI lane (tool calling) ----------
