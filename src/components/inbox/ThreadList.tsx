@@ -8,11 +8,14 @@ import { isParticipantOnline } from './inboxPresence';
 
 type Variant = 'admin' | 'student';
 
+type Surface = 'dark' | 'light';
+
 interface Props {
   conversations: Conversation[];
   activeId: string | null;
   onSelect: (id: string) => void;
   variant?: Variant;
+  surface?: Surface;
   emptyLabel?: string;
 }
 
@@ -28,6 +31,7 @@ export function ThreadList({
   activeId,
   onSelect,
   variant = 'admin',
+  surface = 'dark',
   emptyLabel,
 }: Props) {
   const { user } = useAuth();
@@ -42,6 +46,7 @@ export function ThreadList({
   }
 
   const isAdmin = variant === 'admin';
+  const isLight = isAdmin && surface === 'light';
 
   return (
     <div role="list" className={cn('flex flex-col', isAdmin ? 'gap-2 p-3' : 'gap-1 p-2')}>
@@ -61,7 +66,11 @@ export function ThreadList({
             className={cn(
               'group w-full flex items-start gap-3 text-left transition-all relative border',
               isAdmin ? 'rounded-2xl px-3.5 py-3.5' : 'rounded-xl px-4 py-4',
-              isAdmin
+              isLight
+                ? isActive
+                  ? 'border-border bg-muted/60 text-foreground ring-1 ring-border'
+                  : 'border-transparent bg-white text-foreground hover:bg-muted/40'
+                : isAdmin
                 ? isActive
                   ? 'border-[#e6d6bb] bg-[#f8f2e4] text-[#151a24] shadow-[0_18px_38px_rgba(0,0,0,0.24)]'
                   : 'border-white/10 bg-white/[0.06] text-[#edf2f7] hover:border-white/15 hover:bg-white/[0.09]'
@@ -73,7 +82,11 @@ export function ThreadList({
             <div
               className={cn(
                 'relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[10px] font-black tracking-tight transition-all',
-                isAdmin
+                isLight
+                  ? isActive
+                    ? 'bg-foreground text-background shadow-sm'
+                    : 'bg-muted text-foreground ring-1 ring-border'
+                  : isAdmin
                   ? isActive
                     ? 'bg-[#151a24] text-[#f6e9c8] shadow-sm'
                     : 'bg-[#f4d995] text-[#1a1f2b] shadow-sm'
@@ -96,7 +109,11 @@ export function ThreadList({
                   <div
                     className={cn(
                       'truncate text-[13px] tracking-tight',
-                      isAdmin
+                      isLight
+                        ? c.unread
+                          ? 'font-black text-foreground'
+                          : 'font-bold text-foreground/90'
+                        : isAdmin
                         ? isActive
                           ? 'font-black text-[#151a24]'
                           : c.unread
@@ -117,7 +134,9 @@ export function ThreadList({
                 <div
                   className={cn(
                     'shrink-0 text-[10px] font-medium tracking-wide uppercase',
-                    isAdmin
+                    isLight
+                      ? c.unread ? 'text-primary' : 'text-muted-foreground'
+                      : isAdmin
                       ? isActive
                         ? 'text-[#8b5b42]'
                         : c.unread
@@ -134,7 +153,9 @@ export function ThreadList({
                 <div
                   className={cn(
                     'text-[12px] flex-1 line-clamp-1 break-words leading-relaxed',
-                    isAdmin
+                    isLight
+                      ? c.unread ? 'font-semibold text-foreground' : 'text-muted-foreground'
+                      : isAdmin
                       ? isActive
                         ? 'font-semibold text-[#4d4539]'
                         : c.unread
@@ -167,16 +188,13 @@ export function ThreadList({
                       Reply
                     </span>
                   ) : (
-                    <span className={cn('inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                    <span className={cn('inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isLight ? 'bg-muted text-muted-foreground' : isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
                       <CheckCheck className="h-3 w-3" />
                       Read
                     </span>
                   )}
-                  <span className={cn('inline-flex rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
-                    Intro LR
-                  </span>
                   {c.hasAttachments && (
-                    <span className={cn('inline-flex rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
+                    <span className={cn('inline-flex rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em]', isLight ? 'bg-muted text-muted-foreground' : isActive ? 'bg-[#e8dcc7] text-[#5f513f]' : 'bg-white/10 text-[#c9d0dc]')}>
                       File
                     </span>
                   )}

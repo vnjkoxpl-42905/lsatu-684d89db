@@ -205,10 +205,12 @@ export default function StudySidecar({
   }, [open, mode]);
 
   useEffect(() => {
-    if (joshuaConversation && !activeInboxId) {
+    // Students auto-open their single Joshua thread; admins land on the list
+    // so they can pick which student to message.
+    if (!is_admin && joshuaConversation && !activeInboxId) {
       setActiveInboxId(joshuaConversation.id);
     }
-  }, [activeInboxId, joshuaConversation]);
+  }, [is_admin, activeInboxId, joshuaConversation]);
 
   useEffect(() => {
     if (activeInboxConversation) setInboxNotice(null);
@@ -222,35 +224,28 @@ export default function StudySidecar({
   };
 
   const renderAdminChat = () => (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-[#111722] text-[#f8eed8]">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white text-foreground">
       {activeInboxConversation ? (
         <>
-          <div className="flex shrink-0 items-center gap-3 border-b border-white/10 bg-[#111722] px-3 py-2.5">
+          <div className="flex shrink-0 items-center gap-3 border-b border-border/40 bg-white px-3 py-2.5">
             <button
               type="button"
               onClick={() => setActiveInboxId(null)}
-              className="rounded-lg p-1.5 text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
+              className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
               aria-label="Back to conversations"
             >
               <IconInbox size={16} />
             </button>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold text-[#fff6e5]">
+              <div className="truncate text-sm font-semibold text-foreground">
                 {activeInboxConversation.participants.find((participant) => participant.user_id !== user?.id)?.display_name
                   ?? activeInboxConversation.subject
                   ?? "Student thread"}
               </div>
-              <div className="truncate text-[11px] text-[#aab4c3]">Student message thread</div>
+              <div className="truncate text-[11px] text-muted-foreground">Student message thread</div>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate(`/inbox/${activeInboxConversation.id}`)}
-              className="rounded-lg px-2 py-1 text-[11px] font-semibold text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
-            >
-              Full inbox
-            </button>
           </div>
-          <div className="min-h-0 flex-1 bg-[#f7f3ea] text-foreground">
+          <div className="min-h-0 flex-1 bg-[#fbfbfa]">
             <ConversationView
               conversation={activeInboxConversation}
               onMessageSent={() => void refreshInbox()}
@@ -261,29 +256,34 @@ export default function StudySidecar({
         </>
       ) : (
         <>
-          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5">
+          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border/40 bg-white px-3 py-2.5">
             <div>
-              <div className="text-sm font-semibold text-[#fff6e5]">Student chats</div>
-              <div className="text-[11px] text-[#aab4c3]">Pick a thread and message directly.</div>
+              <div className="text-sm font-semibold text-foreground">Messages</div>
+              <div className="text-[11px] text-muted-foreground">Pick a student to reply.</div>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate("/inbox")}
-              className="rounded-lg px-2 py-1 text-[11px] font-semibold text-[#aab4c3] transition hover:bg-white/10 hover:text-white"
-            >
-              Open inbox
-            </button>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-[#fbfbfa]">
             {inboxLoading ? (
               <ThreadListSkeleton count={5} />
+            ) : conversations.length === 0 ? (
+              <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+                <div className="rounded-full bg-muted p-3 text-muted-foreground">
+                  <IconInbox size={20} />
+                </div>
+                <div className="mt-4 text-sm font-semibold text-foreground">
+                  No student messages yet
+                </div>
+                <div className="mt-1 max-w-[260px] text-xs leading-5 text-muted-foreground">
+                  When a student starts a conversation, it will show up here and you can reply directly.
+                </div>
+              </div>
             ) : (
               <ThreadList
                 conversations={conversations}
                 activeId={activeInboxId}
                 onSelect={setActiveInboxId}
                 variant="admin"
-                emptyLabel="No student conversations yet."
+                surface="light"
               />
             )}
           </div>
