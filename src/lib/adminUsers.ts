@@ -32,25 +32,25 @@ export interface AdminAnalytics {
   week_attempts: number;
 }
 
+// People-page access model is intentionally simple: the only per-student
+// permission Joshua grants here is Drill Access (the LSAT question bank).
+// Bootcamp access is NOT a flag, it is driven entirely by classroom_items
+// assignments and enforced by BootcampGate. Everything else students need to
+// function (classroom, chat, waj, ...) is default-on.
 export const FLAG_GROUPS = [
   {
-    label: 'Core',
+    label: 'Access',
     flags: [
-      { key: 'has_practice_access', label: 'Practice' },
       { key: 'has_drill_access', label: 'Drill' },
-    ],
-  },
-  {
-    label: 'Programs',
-    flags: [
-      { key: 'has_bootcamp_access', label: 'Bootcamps' },
-      { key: 'has_classroom_access', label: 'Classroom' },
     ],
   },
 ] as const;
 
 export const CONFIGURABLE_FLAG_KEYS = FLAG_GROUPS.flatMap((group) => group.flags.map((flag) => flag.key));
 export const DEFAULT_ON_FLAG_KEYS = [
+  'has_practice_access',
+  'has_bootcamp_access',
+  'has_classroom_access',
   'has_analytics_access',
   'has_schedule_access',
   'has_waj_access',

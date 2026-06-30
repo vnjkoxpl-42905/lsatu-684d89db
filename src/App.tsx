@@ -372,7 +372,7 @@ const App = () => {
                       <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
                     } />
                     <Route path="/bootcamps" element={
-                      <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
+                      <Bootcamps />
                     } />
                   </Route>
 
@@ -507,11 +507,9 @@ const App = () => {
                   } />
 
                   <Route path="/bootcamp/causation-station" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate routePath="/bootcamp/causation-station" title="Causation Station">
-                        <CausationStation />
-                      </BootcampGate>
-                    </ProtectedRoute>
+                    <BootcampGate routePath="/bootcamp/causation-station" title="Causation Station">
+                      <CausationStation />
+                    </BootcampGate>
                   } />
                   {/* Retired bootcamp slugs. Bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
@@ -523,43 +521,35 @@ const App = () => {
                   <Route path="/bootcamp/abstraction" element={<Navigate to="/topics/abstract" replace />} />
                   <Route path="/bootcamp/abstraction/*" element={<Navigate to="/topics/abstract" replace />} />
                   <Route path="/topics/abstract/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate
-                        routePath="/topics/abstract"
-                        bootcampIdOverride="abstraction"
-                        legacyRoutePaths={["/bootcamp/abstraction"]}
-                        title="Abstract"
-                      >
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <AbstractBootcamp />
-                        </React.Suspense>
-                      </BootcampGate>
-                    </ProtectedRoute>
+                    <BootcampGate
+                      routePath="/topics/abstract"
+                      bootcampIdOverride="abstraction"
+                      legacyRoutePaths={["/bootcamp/abstraction"]}
+                      title="Abstract"
+                    >
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <AbstractBootcamp />
+                      </React.Suspense>
+                    </BootcampGate>
                   } />
                   <Route path="/bootcamp/intro-to-lr/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
-                        <IntroToLrBootcamp />
-                      </BootcampGate>
-                    </ProtectedRoute>
+                    <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
+                      <IntroToLrBootcamp />
+                    </BootcampGate>
                   } />
                   <Route path="/bootcamp/principle-flaw" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate routePath="/bootcamp/principle-flaw" title="Principle and Flaw">
-                        <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
-                          <PrincipleFlawBootcamp />
-                        </React.Suspense>
-                      </BootcampGate>
-                    </ProtectedRoute>
+                    <BootcampGate routePath="/bootcamp/principle-flaw" title="Principle and Flaw">
+                      <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
+                        <PrincipleFlawBootcamp />
+                      </React.Suspense>
+                    </BootcampGate>
                   } />
                   <Route path="/bootcamp/fallacy-flaw" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate routePath="/bootcamp/fallacy-flaw" title="Flaw and Famous Flaws">
-                        <React.Suspense fallback={<div className="min-h-screen bg-[#FAF8F3]" />}>
-                          <FallacyFlawBootcamp />
-                        </React.Suspense>
-                      </BootcampGate>
-                    </ProtectedRoute>
+                    <BootcampGate routePath="/bootcamp/fallacy-flaw" title="Flaw and Famous Flaws">
+                      <React.Suspense fallback={<div className="min-h-screen bg-[#FAF8F3]" />}>
+                        <FallacyFlawBootcamp />
+                      </React.Suspense>
+                    </BootcampGate>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

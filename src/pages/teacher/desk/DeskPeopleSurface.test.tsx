@@ -147,31 +147,40 @@ describe('DeskPeopleSurface', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Expand Joshua/i }));
 
-    expect(screen.getByText('Templates')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Trial/i })).toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'Analytics' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'Schedule' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'WAJ' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'Flagged' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'Chat' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'Export' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('switch', { name: 'TA' })).not.toBeInTheDocument();
+    // The simplified People page only manages Drill access plus role. No
+    // broad permission matrix, templates, or bulk grant/revoke.
+    expect(screen.queryByText('Templates')).not.toBeInTheDocument();
     expect(screen.getByText('Role Management')).toBeInTheDocument();
     expect(screen.getByText('Protected primary admin')).toBeInTheDocument();
   });
 
-  it('exposes access switches when a student row is expanded', async () => {
+  it('shows a single Drill access control per student and no broad bulk actions', async () => {
     renderPeople();
 
     const row = await screen.findByTestId('people-row-student-1');
-    fireEvent.click(within(row).getByRole('button', { name: /Expand Meghan Mullins/i }));
 
-    expect(screen.getByRole('switch', { name: 'Practice' })).toBeChecked();
-    expect(screen.getByRole('switch', { name: 'Drill' })).toBeChecked();
-    expect(screen.getByRole('switch', { name: 'Bootcamps' })).toBeChecked();
-    expect(screen.getByRole('switch', { name: 'Classroom' })).toBeChecked();
-    expect(screen.queryByRole('switch', { name: 'Export' })).not.toBeInTheDocument();
-    expect(within(row).getByRole('button', { name: /Grant All/i })).toBeInTheDocument();
-    expect(within(row).getByRole('button', { name: /Revoke All/i })).toBeInTheDocument();
+    // Drill access status surfaced on the row, with a single revoke action
+    // (the seeded student already has drill access).
+    expect(within(row).getByText(/Drill on/i)).toBeInTheDocument();
+    expect(within(row).getByRole('button', { name: /Revoke Drill Access/i })).toBeInTheDocument();
+
+    // No bootcamp/classroom/practice toggles, no Grant All / Revoke All.
+    expect(screen.queryByRole('switch', { name: 'Bootcamps' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Classroom' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch', { name: 'Practice' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Grant All/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Revoke All/i })).not.toBeInTheDocument();
+  });
+
+  it('toggles Drill access through the row action', async () => {
+    renderPeople();
+
+    const row = await screen.findByTestId('people-row-student-1');
+    fireEvent.click(within(row).getByRole('button', { name: /Revoke Drill Access/i }));
+
+    expect(invokeMock).toHaveBeenCalledWith('admin-manage-users', {
+      method: 'POST',
+      body: { class_id: 'student-1', field: 'has_drill_access', value: false },
+    });
   });
 });

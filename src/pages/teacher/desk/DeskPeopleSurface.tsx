@@ -9,7 +9,6 @@ import {
   Crown,
   Search,
   Shield,
-  Sparkles,
   User,
   UserCheck,
   Users,
@@ -18,25 +17,19 @@ import {
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import {
-  ALL_FLAG_KEYS,
   CONFIGURABLE_FLAG_KEYS,
-  DEFAULT_ON_FLAG_KEYS,
-  FLAG_GROUPS,
-  ROLE_TEMPLATES,
   computeAdminAnalytics,
   isPrimaryAdmin,
-  templateMatches,
   type AdminAnalytics,
   type ManagedUser,
 } from '@/lib/adminUsers';
 import { formatRelativeShort } from '@/lib/time';
 import { cn } from '@/lib/utils';
 
-type RoleFilter = 'all' | 'students' | 'admins' | 'access';
+type RoleFilter = 'all' | 'students' | 'admins' | 'no-drill';
 
 type PeopleRow = ManagedUser & {
   student?: HubStudentRow;
@@ -105,13 +98,12 @@ export function DeskPeopleSurface() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return people.filter((person) => {
-      const enabledCount = enabledAccessCount(person);
       const matchesSearch = !q || person.email?.toLowerCase().includes(q) || person.display_name?.toLowerCase().includes(q);
       const matchesRole =
         roleFilter === 'all' ||
         (roleFilter === 'students' && person.role !== 'admin') ||
         (roleFilter === 'admins' && person.role === 'admin') ||
-        (roleFilter === 'access' && enabledCount < CONFIGURABLE_FLAG_KEYS.length);
+        (roleFilter === 'no-drill' && person.role !== 'admin' && !person.has_drill_access);
       return matchesSearch && matchesRole;
     });
   }, [people, roleFilter, search]);
@@ -127,47 +119,6 @@ export function DeskPeopleSurface() {
     } catch {
       setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: !value } : user)));
       toast.error('Failed to update permission');
-    }
-  };
-
-  const bulkUser = async (classId: string, value: boolean) => {
-    const prev = users.find((user) => user.class_id === classId);
-    if (!prev) return;
-    const updated = { ...prev } as ManagedUser & Record<string, boolean | string | null>;
-    ALL_FLAG_KEYS.forEach((key) => {
-      updated[key] = value;
-    });
-    DEFAULT_ON_FLAG_KEYS.forEach((key) => {
-      updated[key] = true;
-    });
-    setUsers((current) => current.map((user) => (user.class_id === classId ? updated : user)));
-    try {
-      const res = await supabase.functions.invoke('admin-manage-users', {
-        method: 'POST',
-        body: { action: 'apply_template', class_id: classId, flags: accessTemplateForBulk(value) },
-      });
-      if (res.error) throw res.error;
-      toast.success(value ? 'All access granted' : 'All access revoked');
-    } catch {
-      setUsers((current) => current.map((user) => (user.class_id === classId ? prev : user)));
-      toast.error('Bulk action failed');
-    }
-  };
-
-  const applyTemplate = async (classId: string, flags: Record<string, boolean>, label: string) => {
-    const prev = users.find((user) => user.class_id === classId);
-    if (!prev) return;
-    setUsers((current) => current.map((user) => (user.class_id === classId ? ({ ...user, ...flags } as ManagedUser) : user)));
-    try {
-      const res = await supabase.functions.invoke('admin-manage-users', {
-        method: 'POST',
-        body: { action: 'apply_template', class_id: classId, flags },
-      });
-      if (res.error) throw res.error;
-      toast.success(`Applied "${label}"`);
-    } catch {
-      setUsers((current) => current.map((user) => (user.class_id === classId ? prev : user)));
-      toast.error('Template apply failed');
     }
   };
 
@@ -257,7 +208,12 @@ export function DeskPeopleSurface() {
             />
           </div>
           <div className="flex gap-1">
-            {(['all', 'students', 'admins', 'access'] as const).map((filter) => (
+            {([
+              ['all', 'All'],
+              ['students', 'Students'],
+              ['admins', 'Admins'],
+              ['no-drill', 'No Drill'],
+            ] as const).map(([filter, label]) => (
               <button
                 key={filter}
                 type="button"
@@ -267,7 +223,7 @@ export function DeskPeopleSurface() {
                   roleFilter === filter ? 'bg-black text-white' : 'text-black/45 hover:bg-white/25 hover:text-black',
                 )}
               >
-                {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                {label}
               </button>
             ))}
           </div>
@@ -279,8 +235,6 @@ export function DeskPeopleSurface() {
           expandedUser={expandedUser}
           setExpandedUser={setExpandedUser}
           toggleAccess={toggleAccess}
-          bulkUser={bulkUser}
-          applyTemplate={applyTemplate}
           setRole={setRole}
           refresh={fetchData}
         />
@@ -295,8 +249,6 @@ function PeopleList({
   expandedUser,
   setExpandedUser,
   toggleAccess,
-  bulkUser,
-  applyTemplate,
   setRole,
   refresh,
 }: {
@@ -305,8 +257,6 @@ function PeopleList({
   expandedUser: string | null;
   setExpandedUser: (id: string | null) => void;
   toggleAccess: (classId: string, field: string, value: boolean) => void;
-  bulkUser: (classId: string, value: boolean) => void;
-  applyTemplate: (classId: string, flags: Record<string, boolean>, label: string) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   refresh: () => void;
 }) {
@@ -347,10 +297,8 @@ function PeopleList({
           const isExpanded = expandedUser === person.class_id;
           return (
             <div key={person.class_id} data-testid={`people-row-${person.class_id}`} className="bg-white/10">
-              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} bulkUser={bulkUser} />
-              {isExpanded && (
-                <PersonAccessPanel person={person} toggleAccess={toggleAccess} applyTemplate={applyTemplate} setRole={setRole} />
-              )}
+              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} toggleAccess={toggleAccess} />
+              {isExpanded && <PersonAccessPanel person={person} setRole={setRole} />}
             </div>
           );
         })}
@@ -363,15 +311,16 @@ function PersonRow({
   person,
   isExpanded,
   setExpandedUser,
-  bulkUser,
+  toggleAccess,
 }: {
   person: PeopleRow;
   isExpanded: boolean;
   setExpandedUser: (id: string | null) => void;
-  bulkUser: (classId: string, value: boolean) => void;
+  toggleAccess: (classId: string, field: string, value: boolean) => void;
 }) {
   const student = person.student;
-  const enabledCount = enabledAccessCount(person);
+  const hasDrill = Boolean(person.has_drill_access);
+  const isAdmin = person.role === 'admin';
   const displayName = person.display_name || person.email;
 
   return (
@@ -404,27 +353,43 @@ function PersonRow({
           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-black/45">
             <span className="truncate font-mono">{person.email}</span>
             <span>{formatRelativeShort(person.last_seen_at)}</span>
-            <span>{enabledCount}/{CONFIGURABLE_FLAG_KEYS.length} configurable</span>
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 font-semibold',
+                hasDrill ? 'text-emerald-700' : 'text-black/40',
+              )}
+            >
+              <span className={cn('h-1.5 w-1.5 rounded-full', hasDrill ? 'bg-emerald-600' : 'bg-black/25')} />
+              Drill {hasDrill ? 'on' : 'off'}
+            </span>
           </div>
         </div>
       </div>
       <div className="flex flex-wrap justify-end gap-1">
-        <button
-          type="button"
-          onClick={() => bulkUser(person.class_id, true)}
-          className="inline-flex items-center gap-1 border border-emerald-700/20 px-2 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/10"
-        >
-          <UserCheck className="h-3 w-3" strokeWidth={1.5} />
-          Grant All
-        </button>
-        <button
-          type="button"
-          onClick={() => bulkUser(person.class_id, false)}
-          className="inline-flex items-center gap-1 border border-red-700/20 px-2 py-1 text-xs font-semibold text-red-800 transition hover:bg-red-500/10"
-        >
-          <UserX className="h-3 w-3" strokeWidth={1.5} />
-          Revoke All
-        </button>
+        {isAdmin ? (
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-black/40">
+            <Shield className="h-3 w-3" strokeWidth={1.5} />
+            Full access
+          </span>
+        ) : hasDrill ? (
+          <button
+            type="button"
+            onClick={() => toggleAccess(person.class_id, 'has_drill_access', false)}
+            className="inline-flex items-center gap-1 border border-red-700/20 px-2 py-1 text-xs font-semibold text-red-800 transition hover:bg-red-500/10"
+          >
+            <UserX className="h-3 w-3" strokeWidth={1.5} />
+            Revoke Drill Access
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => toggleAccess(person.class_id, 'has_drill_access', true)}
+            className="inline-flex items-center gap-1 border border-emerald-700/20 px-2 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/10"
+          >
+            <UserCheck className="h-3 w-3" strokeWidth={1.5} />
+            Grant Drill Access
+          </button>
+        )}
       </div>
     </div>
   );
@@ -432,65 +397,17 @@ function PersonRow({
 
 function PersonAccessPanel({
   person,
-  toggleAccess,
-  applyTemplate,
   setRole,
 }: {
   person: PeopleRow;
-  toggleAccess: (classId: string, field: string, value: boolean) => void;
-  applyTemplate: (classId: string, flags: Record<string, boolean>, label: string) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
 }) {
   return (
     <div className="space-y-4 border-t border-black/10 px-8 py-4">
-      <div>
-        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">
-          <Sparkles className="h-3 w-3" strokeWidth={1.5} />
-          Templates
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {ROLE_TEMPLATES.map((template) => {
-            const active = templateMatches(person as unknown as Record<string, unknown>, template.flags);
-            return (
-              <button
-                key={template.id}
-                type="button"
-                onClick={() => applyTemplate(person.class_id, template.flags, template.label)}
-                title={template.description}
-                className={cn(
-                  'inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs transition',
-                  active ? 'border-black/30 bg-black/10 text-black' : 'border-black/15 text-black/60 hover:bg-white/25 hover:text-black',
-                )}
-              >
-                {template.label}
-                <span className="text-[10px] text-black/40">{template.description}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {FLAG_GROUPS.map((group) => (
-        <div key={group.label}>
-          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">{group.label}</div>
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-            {group.flags.map((flag) => {
-              const switchId = `people-${person.class_id}-${flag.key}`;
-              return (
-                <label key={flag.key} htmlFor={switchId} className="flex items-center justify-between gap-3 bg-white/20 px-3 py-2 text-xs text-black/60">
-                  <span>{flag.label}</span>
-                  <Switch
-                    id={switchId}
-                    aria-label={flag.label}
-                    checked={person[flag.key as keyof ManagedUser] as boolean}
-                    onCheckedChange={(value) => toggleAccess(person.class_id, flag.key, value)}
-                  />
-                </label>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+      <p className="text-xs leading-relaxed text-black/45">
+        Bootcamp access is controlled by assignment, not here. Assign or archive a bootcamp from the
+        Library to add or remove it from this student's path.
+      </p>
 
       <div className="border-t border-black/10 pt-3">
         <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">Role Management</div>
@@ -545,21 +462,6 @@ function RoleBadge({ user }: { user: Pick<ManagedUser, 'role' | 'email'> }) {
   }
 
   return <span className="border border-black/10 px-1.5 py-0.5 text-[10px] font-semibold text-black/40">Student</span>;
-}
-
-function enabledAccessCount(user: ManagedUser) {
-  return CONFIGURABLE_FLAG_KEYS.filter((key) => user[key as keyof ManagedUser] === true).length;
-}
-
-function accessTemplateForBulk(value: boolean): Record<string, boolean> {
-  const flags: Record<string, boolean> = {};
-  CONFIGURABLE_FLAG_KEYS.forEach((key) => {
-    flags[key] = value;
-  });
-  DEFAULT_ON_FLAG_KEYS.forEach((key) => {
-    flags[key] = true;
-  });
-  return flags;
 }
 
 export default DeskPeopleSurface;
