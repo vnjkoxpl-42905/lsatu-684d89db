@@ -24,6 +24,7 @@ import { startJoshuaConversation } from "@/lib/joshuaThread";
 import { ConversationView } from "@/components/inbox/ConversationView";
 import { MessageComposer } from "@/components/inbox/MessageComposer";
 import { ThreadList, ThreadListSkeleton } from "@/components/inbox/ThreadList";
+import SidecarGmailPanel from "@/components/mainhub/SidecarGmailPanel";
 import { NotificationsList } from "@/components/notifications/NotificationsList";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatRelativeShort } from "@/lib/time";
@@ -100,6 +101,29 @@ function resolveJoshuaConversation(conversations: Conversation[], userId?: strin
   );
 }
 
+function SourceTab({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "rounded-full px-3 py-1 text-[11px] font-semibold transition-colors",
+        active ? "bg-white/12 text-white" : "text-[#8b94a5] hover:text-white",
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
 function ModeButton({
   active,
   label,
@@ -173,6 +197,7 @@ export default function StudySidecar({
   const [mode, setMode] = useState<SidecarMode>("chat");
   const [input, setInput] = useState("");
   const [activeInboxId, setActiveInboxId] = useState<string | null>(null);
+  const [inboxSource, setInboxSource] = useState<"app" | "gmail">("app");
   const [startingInbox, setStartingInbox] = useState(false);
   const [inboxNotice, setInboxNotice] = useState<string | null>(null);
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
@@ -289,6 +314,18 @@ export default function StudySidecar({
           </div>
         </>
       )}
+    </div>
+  );
+
+  const renderAdminInbox = () => (
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-[#111722]">
+      <div className="flex shrink-0 items-center gap-1 border-b border-white/10 bg-[#0f151f] px-3 py-2">
+        <SourceTab active={inboxSource === "app"} label="LSAT U" onClick={() => setInboxSource("app")} />
+        <SourceTab active={inboxSource === "gmail"} label="Gmail" onClick={() => setInboxSource("gmail")} />
+      </div>
+      <div className="min-h-0 flex-1 overflow-hidden">
+        {inboxSource === "gmail" ? <SidecarGmailPanel /> : renderAdminChat()}
+      </div>
     </div>
   );
 
@@ -542,7 +579,7 @@ export default function StudySidecar({
 
           {mode === "inbox" ? (
             is_admin ? (
-              renderAdminChat()
+              renderAdminInbox()
             ) : (
               <div className="min-h-0 flex-1 overflow-hidden bg-[#fffdf8]">
                 {inboxLoading ? (
