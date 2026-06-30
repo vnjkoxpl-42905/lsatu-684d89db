@@ -26,6 +26,8 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -514,7 +516,7 @@ async function runAiLane(
   }
   messages.push({ role: "user", content: message });
 
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({

@@ -7,6 +7,8 @@
 //    the visible message, and persists to ta_interactions.draft_content.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -432,7 +434,7 @@ ${clamp(guidedSetsBlock, 4000)}`;
     ];
 
     const response = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      `${LSATU_GEMINI_PROXY_URL}/chat/completions`,
       {
         method: "POST",
         headers: {

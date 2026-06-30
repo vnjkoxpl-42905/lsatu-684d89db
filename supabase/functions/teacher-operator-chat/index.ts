@@ -4,6 +4,8 @@
 // create AI TA drafts) from a single chat surface.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 import {
   buildResourceQuery,
   inferKindHints,
@@ -1125,7 +1127,7 @@ async function findLink(
   // 1) Embed the query via Lovable AI Gateway.
   let queryEmbedding: number[] | null = null;
   try {
-    const er = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+    const er = await fetch(`${LSATU_GEMINI_PROXY_URL}/embeddings`, {
       method: "POST",
       headers: {
         "Lovable-API-Key": LOVABLE_API_KEY,
@@ -1462,7 +1464,7 @@ Deno.serve(async (req) => {
 
     let iter = 0;
     while (iter++ < 4) {
-      const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      const r = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
         method: "POST",
         headers: {
           "Lovable-API-Key": LOVABLE_API_KEY,
