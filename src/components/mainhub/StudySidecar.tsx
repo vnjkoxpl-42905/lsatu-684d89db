@@ -102,29 +102,6 @@ function resolveJoshuaConversation(conversations: Conversation[], userId?: strin
   );
 }
 
-function SourceTab({
-  active,
-  label,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "rounded-full px-3 py-1 text-[11px] font-semibold transition-colors",
-        active ? "bg-[#18181b] text-white shadow-sm" : "text-zinc-500 hover:text-zinc-900",
-      )}
-    >
-      {label}
-    </button>
-  );
-}
-
 function ModeButton({
   active,
   label,
@@ -359,7 +336,6 @@ export default function StudySidecar({
 
   const [mode, setMode] = useState<SidecarMode>("chat");
   const [activeInboxId, setActiveInboxId] = useState<string | null>(null);
-  const [inboxSource, setInboxSource] = useState<"app" | "gmail">("app");
   const [startingInbox, setStartingInbox] = useState(false);
   const [inboxNotice, setInboxNotice] = useState<string | null>(null);
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
@@ -458,18 +434,6 @@ export default function StudySidecar({
     </div>
   );
 
-  const renderAdminInbox = () => (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white">
-      <div className="flex shrink-0 items-center gap-1 rounded-full border border-zinc-200 bg-[#f4f4f5] p-1 mx-3 my-2">
-        <SourceTab active={inboxSource === "app"} label="LSAT U" onClick={() => setInboxSource("app")} />
-        <SourceTab active={inboxSource === "gmail"} label="Gmail" onClick={() => setInboxSource("gmail")} />
-      </div>
-      <div className="min-h-0 flex-1 overflow-hidden">
-        {inboxSource === "gmail" ? <SidecarGmailPanel /> : renderAdminChat()}
-      </div>
-    </div>
-  );
-
   const handleResolveInboxConversation = async () => {
     setStartingInbox(true);
     setInboxNotice(null);
@@ -496,7 +460,7 @@ export default function StudySidecar({
 
     if (notification.type === "message" || inboxTargetId || inboxLink) {
       setSelectedNotification(null);
-      setMode("inbox");
+      setMode(is_admin ? "chat" : "inbox");
       if (inboxTargetId) {
         setActiveInboxId(inboxTargetId);
         setInboxNotice(null);
@@ -546,8 +510,9 @@ export default function StudySidecar({
             <div className="flex min-w-0 flex-1 items-center gap-1 rounded-full border border-zinc-200 bg-[#f4f4f5] p-1">
               <ModeButton
                 active={mode === "chat"}
-                label="Chat"
+                label={is_admin ? "Messages" : "Chat"}
                 icon={<IconMessageCircle size={14} />}
+                unreadCount={is_admin ? inboxUnreadCount : 0}
                 onClick={() => {
                   setMode("chat");
                   setSelectedNotification(null);
@@ -566,7 +531,7 @@ export default function StudySidecar({
                 active={mode === "inbox"}
                 label="Inbox"
                 icon={<IconInbox size={14} />}
-                unreadCount={inboxUnreadCount}
+                unreadCount={is_admin ? 0 : inboxUnreadCount}
                 onClick={() => {
                   setMode("inbox");
                   setSelectedNotification(null);
@@ -631,7 +596,9 @@ export default function StudySidecar({
 
           {mode === "inbox" ? (
             is_admin ? (
-              renderAdminInbox()
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white">
+                <SidecarGmailPanel />
+              </div>
             ) : (
               <div className="min-h-0 flex-1 overflow-hidden bg-[#fafafa]">
                 {inboxLoading ? (

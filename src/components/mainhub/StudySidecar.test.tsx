@@ -28,6 +28,7 @@ let mockNotifications: Notification[] = [];
 let inboxLoading = false;
 let notificationsLoading = false;
 let notificationsError: string | null = null;
+let mockIsAdmin = false;
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
@@ -41,6 +42,14 @@ vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({
     user: { id: "student-1", email: "student@example.com" },
   }),
+}));
+
+vi.mock("@/hooks/useUserPermissions", () => ({
+  useUserPermissions: () => ({ is_admin: mockIsAdmin }),
+}));
+
+vi.mock("@/components/mainhub/SidecarGmailPanel", () => ({
+  default: () => <div>Gmail panel</div>,
 }));
 
 vi.mock("@/hooks/useStudyChat", () => ({
@@ -180,6 +189,7 @@ describe("StudySidecar", () => {
     inboxLoading = false;
     notificationsLoading = false;
     notificationsError = null;
+    mockIsAdmin = false;
   });
 
   it("shows mode tabs with real unread badges", () => {
@@ -252,6 +262,29 @@ describe("StudySidecar", () => {
     expect(mockMarkRead).toHaveBeenCalledWith("notif-message");
     expect(mockNavigate).not.toHaveBeenCalled();
     expect(screen.getByText(/Conversation thread-1 compact .*student-facing/)).toBeInTheDocument();
+  });
+
+  it("shows LSAT U student messaging under the admin Messages tab", () => {
+    mockIsAdmin = true;
+
+    renderSidecar();
+
+    expect(screen.getByRole("button", { name: "Messages" })).toBeInTheDocument();
+    expect(screen.getByText("Pick a student to reply.")).toBeInTheDocument();
+    expect(screen.queryByText("Gmail panel")).not.toBeInTheDocument();
+  });
+
+  it("opens Gmail only under the admin Inbox tab", () => {
+    mockIsAdmin = true;
+    mockConversations = [makeConversation()];
+
+    renderSidecar();
+
+    fireEvent.click(screen.getByRole("button", { name: "Inbox" }));
+
+    expect(screen.getByText("Gmail panel")).toBeInTheDocument();
+    expect(screen.queryByText("Pick a student to reply.")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Conversation thread-1/)).not.toBeInTheDocument();
   });
 
   it("navigates route-backed notifications to their linked destination", () => {
