@@ -15,9 +15,10 @@
 //      intent) goes to the gateway with a tool schema; the model picks a tool,
 //      the function resolves targets server-side.
 //
-// The function NEVER mutates student data. It only resolves targets and returns
-// a structured ActionProposal (or a disambiguation). The client executes the
-// mutation through existing helpers after the admin clicks Confirm.
+// Assignment/note actions never mutate student data here. They only resolve
+// targets and return a structured ActionProposal (or a disambiguation). The
+// client executes those mutations after the admin clicks Confirm. The explicit
+// "email <student>: <message>" command is a deterministic send-side effect.
 //
 // Modes:
 //   - student_id present  -> per-student thread (default target + context).
@@ -27,6 +28,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+const GMAIL_GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1";
 
 
 const corsHeaders = {
@@ -39,6 +41,10 @@ type ActionKind = "guided_drill" | "homework" | "bootcamp_module" | "note";
 interface ResolvedStudent {
   id: string;
   name: string;
+}
+
+interface ResolvedStudentWithEmail extends ResolvedStudent {
+  email: string;
 }
 
 interface ResolvedResource {
@@ -78,6 +84,28 @@ function json(data: unknown, status = 200) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+}
+
+function b64urlEncode(s: string): string {
+  const bytes = new TextEncoder().encode(s);
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function sanitizeHeaderValue(s: string): string {
+  return s.replace(/[\r\n]/g, " ").trim();
+}
+
+function buildPlainEmail(args: { to: string; subject: string; text: string }): string {
+  return b64urlEncode([
+    `To: ${sanitizeHeaderValue(args.to)}`,
+    `Subject: ${sanitizeHeaderValue(args.subject)}`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/plain; charset="UTF-8"',
+    "",
+    args.text,
+  ].join("\r\n"));
 }
 
 async function verifyAdmin(req: Request) {
@@ -133,6 +161,34 @@ async function resolveStudent(
   return chosen
     .filter((r) => !!r.display_name)
     .map((r) => ({ id: r.class_id, name: r.display_name as string }));
+}
+
+async function resolveStudentWithEmail(
+  admin: SupabaseClient,
+  query: string,
+): Promise<{ student?: ResolvedStudentWithEmail; disambiguation?: Disambiguation; error?: string }> {
+  const matches = await resolveStudent(admin, query);
+  if (matches.length !== 1) {
+    return { disambiguation: disambiguateStudent(query, matches) };
+  }
+
+  const student = matches[0];
+  const { data, error } = await admin.auth.admin.getUserById(student.id);
+  if (error) {
+    console.error("Failed to load student auth user:", error);
+    return { error: `Could not look up an email address for ${student.name}.` };
+  }
+
+  const email = data?.user?.email?.trim();
+  if (!email) {
+    return {
+      error:
+        `No email address is available for ${student.name}. ` +
+        "The profiles row resolves to an auth user, but that auth user has no email.",
+    };
+  }
+
+  return { student: { ...student, email } };
 }
 
 interface ResourceMatch {
@@ -260,6 +316,106 @@ async function buildAssignProposal(input: {
 // ---------- Deterministic lane ----------
 
 const ASSIGN_RE = /^\s*assign\s+(.+?)\s+to\s+(.+?)\s*$/i;
+const EMAIL_RE = /^\s*email\s+([^:]+?)\s*:\s*([\s\S]+?)\s*$/i;
+
+interface EmailCommand {
+  studentQuery: string;
+  message: string;
+}
+
+interface EmailSendResult {
+  id?: string;
+  threadId?: string;
+}
+
+function parseEmailCommand(message: string): EmailCommand | null {
+  const m = message.match(EMAIL_RE);
+  if (!m) return null;
+  const studentQuery = m[1].trim();
+  const emailMessage = m[2].trim();
+  if (!studentQuery || !emailMessage) return null;
+  return { studentQuery, message: emailMessage };
+}
+
+async function sendGmailMessage(args: {
+  to: string;
+  subject: string;
+  text: string;
+}): Promise<EmailSendResult> {
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  const GOOGLE_MAIL_API_KEY = Deno.env.get("GOOGLE_MAIL_API_KEY");
+  if (!LOVABLE_API_KEY || !GOOGLE_MAIL_API_KEY) {
+    throw new Error(
+      "Gmail sending is not accessible from backend code: missing LOVABLE_API_KEY or GOOGLE_MAIL_API_KEY.",
+    );
+  }
+
+  const raw = buildPlainEmail(args);
+  const response = await fetch(`${GMAIL_GATEWAY}/users/me/messages/send`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      "X-Connection-Api-Key": GOOGLE_MAIL_API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ raw }),
+  });
+  const text = await response.text();
+  let data: unknown = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = null;
+  }
+  if (!response.ok) {
+    throw new Error(`Gmail send failed (${response.status}): ${text.slice(0, 300)}`);
+  }
+  return (data ?? {}) as EmailSendResult;
+}
+
+async function persistTurns(input: {
+  admin: SupabaseClient;
+  studentId: string | null;
+  callerId: string;
+  adminMessage: string;
+  assistantMessage: string;
+  actionProposal?: Proposal | null;
+  actionStatus?: string | null;
+}): Promise<string> {
+  const {
+    admin,
+    studentId,
+    callerId,
+    adminMessage,
+    assistantMessage,
+    actionProposal = null,
+    actionStatus = null,
+  } = input;
+  const { error: adminErr } = await admin.from("ta_interactions").insert({
+    student_id: studentId,
+    role: "admin",
+    message: adminMessage,
+    created_by: callerId,
+  });
+  if (adminErr) console.error("Failed to write admin turn:", adminErr);
+
+  const { data: assistantRow, error: assistantErr } = await admin
+    .from("ta_interactions")
+    .insert({
+      student_id: studentId,
+      role: "assistant",
+      message: assistantMessage,
+      action_proposal: actionProposal,
+      action_status: actionStatus,
+    })
+    .select("id")
+    .single();
+  if (assistantErr) {
+    console.error("Failed to write assistant turn:", assistantErr);
+    throw new Error("Response generated but failed to persist.");
+  }
+  return (assistantRow as { id: string }).id;
+}
 
 async function tryDeterministic(
   admin: SupabaseClient,
@@ -605,6 +761,53 @@ Deno.serve(async (req) => {
       return json({ error: "message required (≤10k chars)" }, 400);
     }
 
+    const emailCommand = parseEmailCommand(message);
+    if (emailCommand) {
+      const resolved = await resolveStudentWithEmail(admin, emailCommand.studentQuery);
+      if (resolved.disambiguation) {
+        const content = resolved.disambiguation.summary;
+        const interactionId = await persistTurns({
+          admin,
+          studentId,
+          callerId,
+          adminMessage: message,
+          assistantMessage: content,
+          actionProposal: resolved.disambiguation,
+        });
+        return json({
+          content,
+          action_proposal: resolved.disambiguation,
+          interaction_id: interactionId,
+        });
+      }
+      if (resolved.error) {
+        return json({ error: resolved.error }, 400);
+      }
+      if (!resolved.student) {
+        return json({ error: `No student matches "${emailCommand.studentQuery}".` }, 400);
+      }
+
+      await sendGmailMessage({
+        to: resolved.student.email,
+        subject: "Message from LSAT U",
+        text: emailCommand.message,
+      });
+
+      const content = `Email sent to ${resolved.student.name} at ${resolved.student.email}.`;
+      const interactionId = await persistTurns({
+        admin,
+        studentId: resolved.student.id,
+        callerId,
+        adminMessage: message,
+        assistantMessage: content,
+      });
+      return json({
+        content,
+        action_proposal: null,
+        interaction_id: interactionId,
+      });
+    }
+
     // Selected student (default target + name for the resolver).
     let selectedStudent: ResolvedStudent | null = null;
     if (studentId) {
@@ -659,34 +862,20 @@ Deno.serve(async (req) => {
       proposal && proposal.type === "action" ? "pending" : null;
 
     // ---- Persist both turns ----
-    const { error: adminErr } = await admin.from("ta_interactions").insert({
-      student_id: studentId,
-      role: "admin",
-      message,
-      created_by: callerId,
+    const interactionId = await persistTurns({
+      admin,
+      studentId,
+      callerId,
+      adminMessage: message,
+      assistantMessage: content,
+      actionProposal,
+      actionStatus,
     });
-    if (adminErr) console.error("Failed to write admin turn:", adminErr);
-
-    const { data: assistantRow, error: assistantErr } = await admin
-      .from("ta_interactions")
-      .insert({
-        student_id: studentId,
-        role: "assistant",
-        message: content,
-        action_proposal: actionProposal,
-        action_status: actionStatus,
-      })
-      .select("id")
-      .single();
-    if (assistantErr) {
-      console.error("Failed to write assistant turn:", assistantErr);
-      return json({ error: "Response generated but failed to persist." }, 500);
-    }
 
     return json({
       content,
       action_proposal: actionProposal,
-      interaction_id: (assistantRow as { id: string }).id,
+      interaction_id: interactionId,
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
