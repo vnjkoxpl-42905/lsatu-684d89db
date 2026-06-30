@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Bell, Clock, Flame, GraduationCap, Loader2, MessageSquare, Sparkles, UserPlus } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { useOperatorChatContext } from '@/components/teacher/ai-ta/OperatorChatProvider';
 import { cn } from '@/lib/utils';
 import { AssistantComposer } from './AssistantComposer';
@@ -12,8 +11,6 @@ import { DeskResourcePreviewPanel, type DeskResourcePreview } from './DeskResour
 import { LinkCard, linksFromToolResults, type LinkResult } from './LinkCard';
 import { AssignmentOfferCard, type AssignmentOfferData } from './AssignmentOfferCard';
 import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
-import { useNotifications, type Notification, type NotificationType } from '@/hooks/useNotifications';
-import { formatRelativeShort } from '@/lib/time';
 
 const STARTER_CANVAS = `# Collaborative Workspace
 
@@ -32,21 +29,6 @@ _Replace this line with your work, or reply in the chat with your goals._`;
 type DeskSidePanel =
   | { type: 'canvas' }
   | { type: 'resource'; resource: DeskResourcePreview };
-
-function notificationIcon(type: NotificationType) {
-  switch (type) {
-    case 'assignment':
-      return <GraduationCap className="h-3.5 w-3.5" aria-hidden />;
-    case 'message':
-      return <MessageSquare className="h-3.5 w-3.5" aria-hidden />;
-    case 'reminder':
-      return <Clock className="h-3.5 w-3.5" aria-hidden />;
-    case 'streak':
-      return <Flame className="h-3.5 w-3.5" aria-hidden />;
-    case 'signup':
-      return <UserPlus className="h-3.5 w-3.5" aria-hidden />;
-  }
-}
 
 /** Pull the renderable draft cards out of an assistant turn's tool results. */
 function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyData[] {
@@ -72,9 +54,7 @@ function assignmentOffersFromToolResults(toolResults?: OperatorToolResult[]): As
  * its transcript here.
  */
 export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
-  const navigate = useNavigate();
   const { messages, isLoading, error, sendMessage } = useOperatorChatContext();
-  const { notifications, unreadCount, loading: notificationsLoading, markRead, markAllRead } = useNotifications();
   const [input, setInput] = useState('');
   const [previewImage, setPreviewImage] = useState<OperatorImage | null>(null);
   const [sidePanel, setSidePanel] = useState<DeskSidePanel | null>(null);
@@ -83,7 +63,6 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
   const empty = messages.length === 0;
   const panelOpen = sidePanel !== null;
   const canvasOpen = sidePanel?.type === 'canvas';
-  const recentNotifications = useMemo(() => notifications.slice(0, 6), [notifications]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -132,11 +111,6 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
     });
   };
 
-  const openNotification = async (notification: Notification) => {
-    if (!notification.read) void markRead(notification.id);
-    if (notification.link) navigate(notification.link);
-  };
-
   return (
     <div
       className={cn(
@@ -157,83 +131,6 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           ref={scrollRef}
           className="min-h-0 flex-1 overflow-y-auto px-1 py-5"
         >
-          {!localPreview ? (
-            <section
-              aria-label="Admin notifications"
-              className="mb-5 rounded-[28px] border border-black/8 bg-[#fff8ea] p-3 shadow-[0_18px_48px_rgba(31,24,12,0.08)]"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-2">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#c8841f]/14 text-[#9b6310]">
-                    <Bell className="h-4 w-4" aria-hidden />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold tracking-tight text-black/85">Admin notifications</div>
-                    <div className="text-[11px] font-medium text-black/45">
-                      {unreadCount > 0 ? `${unreadCount} unread in your bell feed` : 'Everything in your bell feed now lands here too'}
-                    </div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => void markAllRead()}
-                  disabled={unreadCount === 0}
-                  className="shrink-0 rounded-full border border-black/10 px-2.5 py-1 text-[11px] font-semibold text-black/55 transition hover:border-black/15 hover:bg-white/80 hover:text-black disabled:cursor-default disabled:opacity-40"
-                >
-                  Mark all read
-                </button>
-              </div>
-
-              <div className="mt-3 space-y-2">
-                {notificationsLoading ? (
-                  <div className="rounded-2xl border border-black/8 bg-white/70 px-3 py-2 text-xs text-black/45">
-                    Loading notifications…
-                  </div>
-                ) : recentNotifications.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-black/10 bg-white/60 px-3 py-3 text-sm text-black/45">
-                    No admin notifications yet.
-                  </div>
-                ) : (
-                  recentNotifications.map((notification) => (
-                    <button
-                      key={notification.id}
-                      type="button"
-                      onClick={() => void openNotification(notification)}
-                      className={cn(
-                        'flex w-full items-start gap-3 rounded-2xl border px-3 py-2.5 text-left transition',
-                        notification.read
-                          ? 'border-black/8 bg-white/72 hover:border-black/12 hover:bg-white'
-                          : 'border-[#e7b765] bg-white hover:border-[#d59c3b] hover:bg-[#fffdf8]',
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          'mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-                          notification.read ? 'bg-black/[0.05] text-black/45' : 'bg-[#c8841f]/14 text-[#9b6310]',
-                        )}
-                      >
-                        {notificationIcon(notification.type)}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <div className="truncate text-sm font-semibold text-black/85">{notification.title}</div>
-                            {notification.body ? (
-                              <div className="mt-0.5 line-clamp-2 text-xs leading-5 text-black/55">{notification.body}</div>
-                            ) : null}
-                          </div>
-                          <div className="shrink-0 text-[11px] font-medium text-black/38">
-                            {formatRelativeShort(notification.created_at)}
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  ))
-                )}
-              </div>
-            </section>
-          ) : null}
-
           {empty ? (
             <div className="flex h-full min-h-[280px] flex-col items-center justify-center text-center">
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-black/[0.04]">

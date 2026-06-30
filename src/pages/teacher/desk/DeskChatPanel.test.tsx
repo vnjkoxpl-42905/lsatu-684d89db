@@ -3,12 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { DeskChatPanel } from './DeskChatPanel';
 import type { OperatorMessage } from '@/hooks/useOperatorChat';
-import type { Notification } from '@/hooks/useNotifications';
 
 let mockMessages: OperatorMessage[] = [];
-let mockNotifications: Notification[] = [];
-const mockMarkRead = vi.fn();
-const mockMarkAllRead = vi.fn();
 
 vi.mock('@/components/teacher/ai-ta/OperatorChatProvider', () => ({
   useOperatorChatContext: () => ({
@@ -16,18 +12,6 @@ vi.mock('@/components/teacher/ai-ta/OperatorChatProvider', () => ({
     isLoading: false,
     error: null,
     sendMessage: vi.fn(),
-  }),
-}));
-
-vi.mock('@/hooks/useNotifications', () => ({
-  useNotifications: () => ({
-    notifications: mockNotifications,
-    unreadCount: mockNotifications.filter((notification) => !notification.read).length,
-    loading: false,
-    error: null,
-    refresh: vi.fn(),
-    markRead: mockMarkRead,
-    markAllRead: mockMarkAllRead,
   }),
 }));
 
@@ -51,9 +35,6 @@ describe('DeskChatPanel layout', () => {
   beforeEach(() => {
     Element.prototype.scrollTo = vi.fn();
     mockMessages = [];
-    mockNotifications = [];
-    mockMarkRead.mockReset();
-    mockMarkAllRead.mockReset();
   });
 
   it('bottom-anchors the composer by making the transcript the growable scroll area', () => {
@@ -209,27 +190,4 @@ describe('DeskChatPanel layout', () => {
     expect(screen.getByTitle('Negation Station preview')).toHaveAttribute('src', 'http://localhost:3000/activities');
   });
 
-  it('shows admin notifications in the desk chat and lets the admin clear them', () => {
-    mockNotifications = [
-      {
-        id: 'notif-1',
-        user_id: 'admin-1',
-        type: 'message',
-        title: 'Meghan replied',
-        body: 'She asked for another weaken drill.',
-        link: '/teacher/conversations?c=thread-1',
-        read: false,
-        created_at: '2026-06-20T12:00:00.000Z',
-      },
-    ];
-
-    renderChat(false);
-
-    expect(screen.getByRole('region', { name: 'Admin notifications' })).toBeInTheDocument();
-    expect(screen.getByText('Meghan replied')).toBeInTheDocument();
-    expect(screen.queryByText('Everything in your bell feed now lands here too')).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Mark all read' }));
-    expect(mockMarkAllRead).toHaveBeenCalledTimes(1);
-  });
 });
