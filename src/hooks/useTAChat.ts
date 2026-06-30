@@ -45,6 +45,23 @@ export type TABackend = "ta-chat" | "ta-agent";
 // Sentinel key for the global (no student selected) agent thread.
 const GLOBAL_KEY = "__global__";
 
+// Pull the real `{ error }` message out of a FunctionsHttpError. supabase-js
+// stashes the failing Response on `.context`; its JSON body carries the
+// backend's actual error text. Returns null if nothing usable is found.
+async function extractEdgeFunctionError(error: unknown): Promise<string | null> {
+  const ctx = (error as { context?: unknown }).context;
+  if (ctx instanceof Response) {
+    try {
+      const body = await ctx.clone().json();
+      const msg = (body as { error?: string })?.error;
+      if (typeof msg === "string" && msg.trim()) return msg;
+    } catch {
+      // not JSON — fall through
+    }
+  }
+  return null;
+}
+
 /**
  * @param studentId  null only in agent mode (global thread).
  * @param backend    "ta-chat" (default) preserves the per-student draft + /prep
@@ -115,7 +132,15 @@ export function useTAChat(studentId: string | null, backend: TABackend = "ta-cha
       const { data, error } = await supabase.functions.invoke(backend, {
         body: { student_id: studentId, message },
       });
-      if (error) throw error;
+      if (error) {
+        // supabase-js wraps a non-2xx response as FunctionsHttpError whose
+        // message is the generic "Edge Function returned a non-2xx status
+        // code". The real backend error ({ error: "..." }) lives in the
+        // Response on error.context — read it so the chat shows, e.g.,
+        // "GEMINI_API_KEY not configured" or Gemini's actual error.
+        const real = await extractEdgeFunctionError(error);
+        throw new Error(real ?? error.message);
+      }
       if ((data as { error?: string })?.error) {
         throw new Error((data as { error: string }).error);
       }
