@@ -16,10 +16,12 @@ import {
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useStudyChat } from "@/hooks/useStudyChat";
 import { useInbox, type Conversation } from "@/hooks/useInbox";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import { startJoshuaConversation } from "@/lib/joshuaThread";
+import { AdminInboxCommandCenter } from "@/components/inbox/AdminInboxCommandCenter";
 import { ConversationView } from "@/components/inbox/ConversationView";
 import { MessageComposer } from "@/components/inbox/MessageComposer";
 import { NotificationsList } from "@/components/notifications/NotificationsList";
@@ -152,6 +154,7 @@ export default function StudySidecar({
     streamingContent,
     send,
   } = useStudyChat();
+  const { is_admin } = useUserPermissions();
   const { conversations, loading: inboxLoading, refresh: refreshInbox } = useInbox();
   const {
     notifications,
@@ -457,60 +460,66 @@ export default function StudySidecar({
           ) : null}
 
           {mode === "inbox" ? (
-            <div className="min-h-0 flex-1 overflow-hidden bg-[#fffdf8]">
-              {inboxLoading ? (
-                <div className="flex h-full items-center justify-center text-muted-foreground">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                  <span className="text-sm">Loading...</span>
-                </div>
-              ) : activeInboxConversation ? (
-                <ConversationView
-                  conversation={activeInboxConversation}
-                  onMessageSent={() => void refreshInbox()}
-                  hideHeader
-                  compact
-                  studentFacing
-                  emptyStateLabel="No messages yet. Send Joshua a message here."
-                />
-              ) : (
-                <div className="flex h-full flex-col">
-                  <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-                    <div className="rounded-full bg-[#203024]/8 p-3 text-[#203024]">
-                      <IconInbox size={20} />
-                    </div>
-                    <div className="mt-4 text-sm font-semibold text-[#211b16]">
-                      No messages yet. Send Joshua a message here.
-                    </div>
-                    <div className="mt-1 max-w-[260px] text-xs leading-5 text-[#7a6b58]">
-                      This is your real 1:1 thread. The first message will create the conversation and keep future replies in this panel.
-                    </div>
-                    {inboxNotice ? (
-                      <div className="mt-4 rounded-2xl border border-[#eadfcf] bg-white px-4 py-3 text-xs text-[#7a6b58]">
-                        {inboxNotice}
-                      </div>
-                    ) : null}
-                    {startingInbox ? (
-                      <div className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-[#7a6b58]">
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                        Preparing your thread...
-                      </div>
-                    ) : null}
+            is_admin ? (
+              <div className="min-h-0 flex-1 overflow-hidden bg-[#111722]">
+                <AdminInboxCommandCenter embedded defaultSource="gmail" />
+              </div>
+            ) : (
+              <div className="min-h-0 flex-1 overflow-hidden bg-[#fffdf8]">
+                {inboxLoading ? (
+                  <div className="flex h-full items-center justify-center text-muted-foreground">
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                    <span className="text-sm">Loading...</span>
                   </div>
-                  <div className="shrink-0 border-t border-[#eadfcf] bg-[#fffaf2]/90 backdrop-blur-md">
-                    <MessageComposer
-                      conversationId={null}
-                      onResolveConversation={handleResolveInboxConversation}
-                      onConversationResolved={(conversationId) => {
-                        setActiveInboxId(conversationId);
-                        void refreshInbox();
-                      }}
-                      onSent={() => void refreshInbox()}
-                      studentFacing
-                    />
+                ) : activeInboxConversation ? (
+                  <ConversationView
+                    conversation={activeInboxConversation}
+                    onMessageSent={() => void refreshInbox()}
+                    hideHeader
+                    compact
+                    studentFacing
+                    emptyStateLabel="No messages yet. Send Joshua a message here."
+                  />
+                ) : (
+                  <div className="flex h-full flex-col">
+                    <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+                      <div className="rounded-full bg-[#203024]/8 p-3 text-[#203024]">
+                        <IconInbox size={20} />
+                      </div>
+                      <div className="mt-4 text-sm font-semibold text-[#211b16]">
+                        No messages yet. Send Joshua a message here.
+                      </div>
+                      <div className="mt-1 max-w-[260px] text-xs leading-5 text-[#7a6b58]">
+                        This is your real 1:1 thread. The first message will create the conversation and keep future replies in this panel.
+                      </div>
+                      {inboxNotice ? (
+                        <div className="mt-4 rounded-2xl border border-[#eadfcf] bg-white px-4 py-3 text-xs text-[#7a6b58]">
+                          {inboxNotice}
+                        </div>
+                      ) : null}
+                      {startingInbox ? (
+                        <div className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-[#7a6b58]">
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                          Preparing your thread...
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="shrink-0 border-t border-[#eadfcf] bg-[#fffaf2]/90 backdrop-blur-md">
+                      <MessageComposer
+                        conversationId={null}
+                        onResolveConversation={handleResolveInboxConversation}
+                        onConversationResolved={(conversationId) => {
+                          setActiveInboxId(conversationId);
+                          void refreshInbox();
+                        }}
+                        onSent={() => void refreshInbox()}
+                        studentFacing
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )
           ) : null}
 
           {mode === "notifications" ? (

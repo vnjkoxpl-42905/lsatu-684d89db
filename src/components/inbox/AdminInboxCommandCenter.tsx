@@ -76,13 +76,14 @@ function applyAdminFilters(
   );
 }
 
-function sourceFromSearch(search: string): InboxSource {
+function sourceFromSearch(search: string, fallback: InboxSource = 'app'): InboxSource {
   const pane = new URLSearchParams(search).get('pane');
-  return pane === 'gmail' || pane === 'drive' ? pane : 'app';
+  return pane === 'gmail' || pane === 'drive' || pane === 'app' ? pane : fallback;
 }
 
 export function AdminInboxCommandCenter({
   embedded = false,
+  defaultSource = 'app',
   activeId: activeIdProp,
   onSelectThread,
   onClearThread,
@@ -90,6 +91,7 @@ export function AdminInboxCommandCenter({
   onComposeTargetHandled,
 }: {
   embedded?: boolean;
+  defaultSource?: InboxSource;
   activeId?: string | null;
   onSelectThread?: (id: string) => void;
   onClearThread?: () => void;
@@ -103,7 +105,7 @@ export function AdminInboxCommandCenter({
   const { conversations, loading, unreadCount, refresh } = useInbox();
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
-  const [source, setSource] = useState<InboxSource>(() => sourceFromSearch(location.search));
+  const [source, setSource] = useState<InboxSource>(() => sourceFromSearch(location.search, defaultSource));
 
   const activeId = activeIdProp ?? searchParams.get('c');
   const active = useMemo(
@@ -122,8 +124,8 @@ export function AdminInboxCommandCenter({
   }, [headerName]);
 
   useEffect(() => {
-    setSource(sourceFromSearch(location.search));
-  }, [location.search]);
+    setSource(sourceFromSearch(location.search, defaultSource));
+  }, [defaultSource, location.search]);
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
