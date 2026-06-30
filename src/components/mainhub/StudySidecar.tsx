@@ -31,6 +31,7 @@ interface StudySidecarProps {
   onClose: () => void;
   userName?: string;
   presentation?: "floating" | "docked";
+  width?: number;
 }
 
 type SidecarMode = "chat" | "inbox" | "notifications";
@@ -140,6 +141,7 @@ export default function StudySidecar({
   onClose,
   userName,
   presentation = "floating",
+  width,
 }: StudySidecarProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -281,11 +283,12 @@ export default function StudySidecar({
               : { type: "spring", stiffness: 320, damping: 38 }
           }
           className={cn(
-            "hidden w-96 flex-col overflow-hidden bg-background/95 backdrop-blur-md md:flex",
+            "hidden flex-col overflow-hidden bg-background/95 backdrop-blur-md md:flex",
             isDocked
               ? "relative h-full shrink-0 rounded-xl border border-border/40 shadow-sm shadow-black/5"
-              : "fixed right-0 top-0 z-40 h-svh border-l border-border/40 shadow-2xl shadow-black/20",
+              : "fixed right-0 top-0 z-40 h-svh w-96 border-l border-border/40 shadow-2xl shadow-black/20",
           )}
+          style={isDocked && width ? { width } : undefined}
           aria-label="LSAT U communication console"
         >
           <div className="flex shrink-0 items-center gap-2 border-b border-border/30 px-3 py-2.5">

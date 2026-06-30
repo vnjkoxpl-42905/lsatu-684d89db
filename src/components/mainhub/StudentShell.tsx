@@ -15,6 +15,11 @@ import StudySidecar from "@/components/mainhub/StudySidecar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 
+const SIDECAR_WIDTH_STORAGE_KEY = "lsatu:sidecarWidth";
+const SIDECAR_MIN_WIDTH = 360;
+const SIDECAR_DEFAULT_WIDTH = 420;
+const SIDECAR_MAX_WIDTH = 640;
+
 const ROUTE_TITLES: Record<string, string> = {
   "/mainhub": "Home",
   "/classroom": "Classroom",
@@ -33,6 +38,23 @@ function titleForPath(pathname: string) {
     .sort((a, b) => b[0].length - a[0].length)
     .find(([path]) => pathname === path || pathname.startsWith(`${path}/`));
   return match?.[1] ?? "Workspace";
+}
+
+function maxSidecarWidth() {
+  if (typeof window === "undefined") return SIDECAR_MAX_WIDTH;
+  return Math.max(SIDECAR_DEFAULT_WIDTH, Math.min(SIDECAR_MAX_WIDTH, window.innerWidth * 0.45));
+}
+
+function clampSidecarWidth(width: number) {
+  return Math.min(Math.max(width, SIDECAR_MIN_WIDTH), maxSidecarWidth());
+}
+
+function readStoredSidecarWidth() {
+  if (typeof window === "undefined") return SIDECAR_DEFAULT_WIDTH;
+  const rawValue = window.localStorage.getItem(SIDECAR_WIDTH_STORAGE_KEY);
+  if (rawValue === null) return clampSidecarWidth(SIDECAR_DEFAULT_WIDTH);
+  const stored = Number(rawValue);
+  return Number.isFinite(stored) ? clampSidecarWidth(stored) : clampSidecarWidth(SIDECAR_DEFAULT_WIDTH);
 }
 
 /**
@@ -54,15 +76,29 @@ export default function StudentShell() {
     if (typeof window === "undefined") return true;
     return window.localStorage.getItem("lsatu:sidecarOpen") !== "0";
   });
+  const [sidecarWidth, setSidecarWidth] = React.useState(readStoredSidecarWidth);
   const location = useLocation();
   const reduceMotion = useReducedMotion();
   const mainRef = React.useRef<HTMLElement>(null);
   const routeTitle = React.useMemo(() => titleForPath(location.pathname), [location.pathname]);
+
   React.useEffect(() => {
     try {
       window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
     } catch {}
   }, [sidecarOpen]);
+
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem(SIDECAR_WIDTH_STORAGE_KEY, String(Math.round(sidecarWidth)));
+    } catch {}
+  }, [sidecarWidth]);
+
+  React.useEffect(() => {
+    const handleResize = () => setSidecarWidth((width) => clampSidecarWidth(width));
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   React.useEffect(() => {
     if (!authReady) return;
@@ -96,6 +132,52 @@ export default function StudentShell() {
       mainRef.current.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     }
   }, [location.pathname, reduceMotion]);
+
+  const handleSidecarResizePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.button > 0) return;
+    event.preventDefault();
+
+    const startX = event.clientX;
+    const startWidth = sidecarWidth;
+    const previousUserSelect = document.body.style.userSelect;
+    document.body.style.userSelect = "none";
+
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      const nextWidth = startWidth + startX - moveEvent.clientX;
+      setSidecarWidth(clampSidecarWidth(nextWidth));
+    };
+
+    const handlePointerUp = () => {
+      document.body.style.userSelect = previousUserSelect;
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+  };
+
+  const resetSidecarWidth = () => {
+    setSidecarWidth(clampSidecarWidth(SIDECAR_DEFAULT_WIDTH));
+  };
+
+  const handleSidecarResizeKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      const direction = event.key === "ArrowLeft" ? 1 : -1;
+      setSidecarWidth((width) => clampSidecarWidth(width + direction * 24));
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      setSidecarWidth(SIDECAR_MIN_WIDTH);
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      setSidecarWidth(maxSidecarWidth());
+    }
+  };
 
   if (!authReady || !user) return null;
 
@@ -177,12 +259,31 @@ export default function StudentShell() {
             </main>
           </div>
 
-          <div className="hidden min-h-0 shrink-0 pt-8 md:block">
+          <div
+            className="relative hidden min-h-0 shrink-0 pt-8 md:block"
+            style={{ width: sidecarOpen ? sidecarWidth : 0 }}
+          >
+            {sidecarOpen ? (
+              <button
+                type="button"
+                aria-label="Resize communication rail"
+                aria-valuemin={SIDECAR_MIN_WIDTH}
+                aria-valuemax={Math.round(maxSidecarWidth())}
+                aria-valuenow={Math.round(sidecarWidth)}
+                className="absolute left-0 top-8 z-20 h-[calc(100%-2rem)] w-3 -translate-x-1/2 cursor-col-resize rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                onPointerDown={handleSidecarResizePointerDown}
+                onDoubleClick={resetSidecarWidth}
+                onKeyDown={handleSidecarResizeKeyDown}
+              >
+                <span className="mx-auto block h-16 w-1 rounded-full bg-border/60 opacity-50 transition-opacity hover:opacity-100" />
+              </button>
+            ) : null}
             <StudySidecar
               open={sidecarOpen}
               onClose={() => setSidecarOpen(false)}
               userName={displayName ?? undefined}
               presentation="docked"
+              width={sidecarWidth}
             />
           </div>
         </div>
