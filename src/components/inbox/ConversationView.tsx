@@ -20,6 +20,8 @@ interface Props {
   /** When true, suppress the internal header — for embedded use inside a
    *  containing surface (e.g. FloatingMessenger) that renders its own. */
   hideHeader?: boolean;
+  compact?: boolean;
+  emptyStateLabel?: string;
 }
 
 function ConversationSkeleton() {
@@ -44,7 +46,14 @@ function ConversationSkeleton() {
   );
 }
 
-export function ConversationView({ conversation, onBack, onMessageSent, hideHeader = false }: Props) {
+export function ConversationView({
+  conversation,
+  onBack,
+  onMessageSent,
+  hideHeader = false,
+  compact = false,
+  emptyStateLabel = 'No communication logged',
+}: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
   const { messages, loading, refresh } = useConversationMessages(conversation.id);
@@ -158,7 +167,8 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
       <div
         ref={scrollRef}
         className={cn(
-          'flex-1 overflow-y-auto px-10 py-12 scrollbar-thin scrollbar-thumb-border min-h-0',
+          'flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-border min-h-0',
+          compact ? 'px-4 py-5' : 'px-10 py-12',
           is_admin
             ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.82),rgba(250,247,239,0.94)),#f7f3ea]'
             : 'bg-[radial-gradient(circle_at_20%_0%,rgba(184,129,78,0.08),transparent_30%),#fffdf8]',
@@ -167,11 +177,18 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         {loading ? (
           <ConversationSkeleton />
         ) : messages.length === 0 ? (
-          <div className="text-center text-sm font-medium text-slate-300 py-32">
-            No communication logged
+          <div className={cn(
+            'text-center text-sm font-medium text-slate-300',
+            compact ? 'py-16' : 'py-32',
+          )}>
+            {emptyStateLabel}
           </div>
         ) : (
-          <div className={cn('mx-auto space-y-10', is_admin ? 'max-w-4xl' : 'max-w-3xl')}>
+          <div className={cn(
+            'mx-auto',
+            compact ? 'space-y-6 max-w-none' : 'space-y-10',
+            !compact && (is_admin ? 'max-w-4xl' : 'max-w-3xl'),
+          )}>
             {is_admin && (
               <div className="mx-auto flex max-w-2xl items-center justify-center gap-2 rounded-full border border-[#ded1bd] bg-[#fffaf0]/82 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#8b5b42] shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
@@ -180,7 +197,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             )}
             {sections.map((section) => (
               <div key={section.key} className="space-y-6">
-                <div className="my-10 flex items-center gap-6">
+                <div className={cn('flex items-center gap-6', compact ? 'my-6' : 'my-10')}>
                   <div className={cn('h-px flex-1', is_admin ? 'bg-[#ded1bd]' : 'bg-[#eadfcf]')} />
                   <div className={cn('text-[10px] font-black uppercase tracking-[0.2em]', is_admin ? 'text-[#9a8160]' : 'text-[#9a8160]')}>
                     {section.label}

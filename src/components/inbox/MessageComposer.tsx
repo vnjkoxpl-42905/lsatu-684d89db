@@ -37,7 +37,19 @@ import {
 
 type DeliveryMode = 'message' | 'email' | 'both';
 
-export function MessageComposer({ conversationId, onSent }: { conversationId: string; onSent?: () => void }) {
+interface MessageComposerProps {
+  conversationId: string | null;
+  onSent?: () => void;
+  onResolveConversation?: () => Promise<string>;
+  onConversationResolved?: (conversationId: string) => void;
+}
+
+export function MessageComposer({
+  conversationId,
+  onSent,
+  onResolveConversation,
+  onConversationResolved,
+}: MessageComposerProps) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
   const [body, setBody] = useState('');
@@ -136,7 +148,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
 
   const polish = async () => {
     const text = body.trim();
-    if (text.length < 3) return;
+    if (text.length < 3 || !conversationId) return;
     setPolishing(true);
     try {
       const { data, error } = await supabase.functions.invoke('polish-message', {
@@ -185,16 +197,23 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
     setSending(true);
 
     try {
+      let resolvedConversationId = conversationId;
+      if (!resolvedConversationId) {
+        if (!onResolveConversation) throw new Error('No conversation available');
+        resolvedConversationId = await onResolveConversation();
+        onConversationResolved?.(resolvedConversationId);
+      }
+
       const { data: msg, error: msgErr } = await supabase
         .from('messages')
-        .insert({ conversation_id: conversationId, sender_id: user.id, body: text })
+        .insert({ conversation_id: resolvedConversationId, sender_id: user.id, body: text })
         .select()
         .single();
       if (msgErr || !msg) throw msgErr ?? new Error('Failed to send');
 
       if (file) {
         const safeName = file.name.replace(/[^\w.\-() ]+/g, '_');
-        const path = `${conversationId}/${msg.id}/${Date.now()}-${safeName}`;
+        const path = `${resolvedConversationId}/${msg.id}/${Date.now()}-${safeName}`;
         const mimeType = file.type || 'application/octet-stream';
         const { error: upErr } = await supabase.storage
           .from('message-attachments')
@@ -392,7 +411,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               size="sm"
               variant="ghost"
               onClick={polish}
-              disabled={sending || polishing || body.trim().length < 3}
+              disabled={sending || polishing || body.trim().length < 3 || !conversationId}
               className="h-8 px-4 text-xs font-bold text-slate-400 rounded-lg hover:bg-slate-50"
             >
               Regenerate
@@ -518,7 +537,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               variant="ghost"
               size="icon"
               onClick={polish}
-              disabled={sending || polishing || body.trim().length < 3}
+              disabled={sending || polishing || body.trim().length < 3 || !conversationId}
               aria-label="Polish with AI"
               title="Polish with AI"
               className="h-9 w-9 rounded-xl text-[#7a6b58] hover:bg-[#eadfcf] hover:text-[#211b16]"
@@ -535,7 +554,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <div className="flex-1" />
           <Button
             onClick={send}
-            disabled={sending || !canSend}
+            disabled={sending || !canSend || (!conversationId && !onResolveConversation)}
             size="icon"
             variant={canSend ? 'default' : 'ghost'}
             aria-label="Send"
