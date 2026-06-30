@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 
 // Activity Centre Coach: judges a student's free-text response to an Activity
 // item against the credited answer(s) and returns a structured verdict plus a
@@ -67,7 +69,7 @@ serve(async (req) => {
       "\nReturn the JSON verdict object now.",
     ].join("\n");
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,

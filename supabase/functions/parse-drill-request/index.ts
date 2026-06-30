@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,7 +55,7 @@ Examples:
 "Causal flaws from recent tests" → qtypes: ["Flaw"], reasoningTypes: ["Causation"], features: ["Causal Difference-Maker","Causal Chains"], difficulties: [1,2,3,4,5], pts: [145-152], set_size: 10
 "Tough conditional reasoning" → qtypes: ["Flaw","Must Be True"], reasoningTypes: ["Conditional Reasoning"], features: ["Conditional Diagramming","Contrapositive Logic"], difficulties: [4,5], pts: all, set_size: 10`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,

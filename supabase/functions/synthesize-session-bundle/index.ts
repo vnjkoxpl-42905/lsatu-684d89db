@@ -27,6 +27,8 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { BUCKET, resolveStudentAuthId } from "../_shared/sessionIngestCore.ts";
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -35,7 +37,7 @@ const corsHeaders = {
 
 // ── Model config indirection (build-spec decision 1) ──────────────────────────
 const SYNTHESIS_MODEL = Deno.env.get("SESSION_SYNTHESIS_MODEL") ?? "google/gemini-3-flash-preview";
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const GATEWAY_URL = `${LSATU_GEMINI_PROXY_URL}/chat/completions`;
 
 // Cap how much transcript we feed the model so a giant Doc cannot blow the
 // context window. The full transcript stays canonical in the bucket.
