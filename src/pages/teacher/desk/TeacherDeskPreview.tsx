@@ -34,6 +34,8 @@ import { DeskTodoRail } from './DeskTodoRail';
 import { DeskPeopleSurface } from './DeskPeopleSurface';
 
 import { DeskLibrarySurface } from './DeskLibrarySurface';
+import { DeskGmailSurface } from './DeskGmailSurface';
+import { DeskDriveSurface } from './DeskDriveSurface';
 import { useNextSession } from './useNextSession';
 import { useTeacherTodoQueue } from './useTeacherTodoQueue';
 import { AdminInboxCommandCenter } from '@/components/inbox/AdminInboxCommandCenter';
@@ -56,9 +58,15 @@ function isLocalPreviewHost() {
 function teacherDeskPathForSource(path: string) {
   if (!path.startsWith('/inbox')) return path;
   const url = new URL(path, 'http://lsatu.local');
+  const pane = url.searchParams.get('pane');
+  // A `pane=gmail|drive` source link folds into the matching top-level
+  // workspace; anything else lands on Messages. `pane` is dropped, every other
+  // param (t, label, cat, q, ...) is preserved so deep links keep their thread.
+  const ws = pane === 'gmail' ? 'gmail' : pane === 'drive' ? 'drive' : 'messages';
   const next = new URLSearchParams();
-  next.set('ws', 'inbox');
+  next.set('ws', ws);
   url.searchParams.forEach((value, key) => {
+    if (key === 'pane') return;
     next.set(key, value);
   });
   return `/teacher?${next.toString()}`;
@@ -250,10 +258,24 @@ export default function TeacherDeskPreview() {
   const workspace: WorkspaceKey = normalizeWorkspaceKey(workspaceParam);
 
   useEffect(() => {
-    if (workspaceParam !== 'students' && workspaceParam !== 'admin') return;
-    const next = new URLSearchParams(searchParams);
-    next.set('ws', 'people');
-    setSearchParams(next, { replace: true });
+    // Legacy students/admin workspaces fold into People.
+    if (workspaceParam === 'students' || workspaceParam === 'admin') {
+      const next = new URLSearchParams(searchParams);
+      next.set('ws', 'people');
+      setSearchParams(next, { replace: true });
+      return;
+    }
+    // Legacy combined Inbox splits into Messages/Gmail/Drive by its old `pane`.
+    // Also catch a bare `pane=gmail|drive` with no `ws`. Strip `pane`, keep
+    // every other param (e.g. `t`) so Gmail deep links preserve the thread.
+    const pane = searchParams.get('pane');
+    if (workspaceParam === 'inbox' || (!workspaceParam && (pane === 'gmail' || pane === 'drive'))) {
+      const nextWs = pane === 'gmail' ? 'gmail' : pane === 'drive' ? 'drive' : 'messages';
+      const next = new URLSearchParams(searchParams);
+      next.set('ws', nextWs);
+      next.delete('pane');
+      setSearchParams(next, { replace: true });
+    }
   }, [searchParams, setSearchParams, workspaceParam]);
 
   const selectWorkspace = (key: WorkspaceKey) => {
@@ -320,7 +342,9 @@ export default function TeacherDeskPreview() {
             <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:min-h-0 lg:overflow-hidden">
               {workspace === 'today' ? <DeskChatPanel localPreview={localPreview} /> : null}
               {workspace === 'people' ? <DeskPeopleSurface /> : null}
-              {workspace === 'inbox' ? <AdminInboxCommandCenter embedded /> : null}
+              {workspace === 'messages' ? <AdminInboxCommandCenter embedded /> : null}
+              {workspace === 'gmail' ? <DeskGmailSurface /> : null}
+              {workspace === 'drive' ? <DeskDriveSurface /> : null}
               {workspace === 'library' ? <DeskLibrarySurface /> : null}
             </main>
 

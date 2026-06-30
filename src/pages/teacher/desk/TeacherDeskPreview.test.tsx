@@ -216,31 +216,56 @@ describe('TeacherDeskPreview workspace rail', () => {
     expect(screen.getByLabelText('Today chat')).toBeInTheDocument();
   });
 
-  it('opens the inbox command center inside the desk', () => {
+  it('redirects legacy inbox to the Messages workspace with no source toggle', () => {
     renderDesk('/teacher?ws=inbox');
 
-    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox');
-    expect(screen.getByRole('heading', { name: 'Messages Command Center' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^Messages$/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^Gmail$/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^Drive$/i })).toBeInTheDocument();
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=messages');
+    expect(screen.getByRole('heading', { name: 'Messages' })).toBeInTheDocument();
+    // The source toggle (visible-text Gmail/Drive buttons) is gone; the rail's
+    // aria-label-only workspace buttons are a separate, expected control.
+    expect(screen.queryByText('Gmail')).not.toBeInTheDocument();
+    expect(screen.queryByText('Drive')).not.toBeInTheDocument();
     expect(screen.getByLabelText('Saved chats')).toBeInTheDocument();
     expect(screen.getByLabelText('To-do rail')).toBeInTheDocument();
-    expect(screen.queryByText(/Inbox is coming into the desk/i)).not.toBeInTheDocument();
   });
 
-  it('opens the Gmail pane from the teacher inbox query state', () => {
+  it('shows the Messages workspace directly with no source toggle', () => {
+    renderDesk('/teacher?ws=messages');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=messages');
+    expect(screen.getByRole('heading', { name: 'Messages' })).toBeInTheDocument();
+    expect(screen.queryByText('Gmail')).not.toBeInTheDocument();
+    expect(screen.queryByText('Drive')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Gmail workspace')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Drive workspace')).not.toBeInTheDocument();
+  });
+
+  it('folds legacy inbox+gmail into the Gmail workspace, preserving the thread', () => {
     renderDesk('/teacher?ws=inbox&pane=gmail&t=thread-1');
 
-    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox&pane=gmail&t=thread-1');
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=gmail&t=thread-1');
     expect(screen.getByLabelText('Gmail workspace')).toBeInTheDocument();
   });
 
-  it('routes inbox to-do links into the teacher inbox workspace', () => {
+  it('folds legacy inbox+drive into the Drive workspace', () => {
+    renderDesk('/teacher?ws=inbox&pane=drive');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=drive');
+    expect(screen.getByLabelText('Drive workspace')).toBeInTheDocument();
+  });
+
+  it('normalizes a bare pane=gmail query into the Gmail workspace', () => {
+    renderDesk('/teacher?pane=gmail');
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=gmail');
+    expect(screen.getByLabelText('Gmail workspace')).toBeInTheDocument();
+  });
+
+  it('routes inbox to-do links into the Gmail workspace, preserving the thread', () => {
     renderDesk('/teacher');
 
     fireEvent.click(screen.getByRole('button', { name: 'Open Gmail task' }));
 
-    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=inbox&pane=gmail&t=thread-1');
+    expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=gmail&t=thread-1');
   });
 });

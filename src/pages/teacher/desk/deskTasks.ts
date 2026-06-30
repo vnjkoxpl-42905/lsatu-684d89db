@@ -3,6 +3,8 @@ import {
   ClipboardList,
   BookOpen,
   FileText,
+  HardDrive,
+  Mail,
   MessageSquare,
   Sparkles,
   Users,
@@ -16,7 +18,7 @@ import type { Conversation } from '@/hooks/useInbox';
 import type { DeskTaskTodoItem } from './teacherTodoTypes';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
-export type WorkspaceKey = 'today' | 'people' | 'inbox' | 'library';
+export type WorkspaceKey = 'today' | 'people' | 'messages' | 'gmail' | 'drive' | 'library';
 export type ContextKey = 'student' | 'source';
 export type SourceKind = 'conversation' | 'draft' | 'upload' | 'assignment-gap' | 'schedule';
 export type AssistantScope = 'task' | 'workspace';
@@ -95,16 +97,26 @@ export const MODE_META: Record<
 export const DESK_WORKSPACES: { key: WorkspaceKey; label: string; Icon: LucideIcon }[] = [
   { key: 'today', label: 'Today', Icon: Sparkles },
   { key: 'people', label: 'People', Icon: Users },
-  { key: 'inbox', label: 'Inbox', Icon: MessageSquare },
+  { key: 'messages', label: 'Messages', Icon: MessageSquare },
+  { key: 'gmail', label: 'Gmail', Icon: Mail },
+  { key: 'drive', label: 'Drive', Icon: HardDrive },
   { key: 'library', label: 'Library', Icon: BookOpen },
 ];
 
 export function isWorkspaceKey(value: string | null): value is WorkspaceKey {
-  return value === 'today' || value === 'people' || value === 'inbox' || value === 'library';
+  return (
+    value === 'today' ||
+    value === 'people' ||
+    value === 'messages' ||
+    value === 'gmail' ||
+    value === 'drive' ||
+    value === 'library'
+  );
 }
 
 export function normalizeWorkspaceKey(value: string | null): WorkspaceKey {
   if (value === 'students' || value === 'admin') return 'people';
+  if (value === 'inbox') return 'messages';
   return isWorkspaceKey(value) ? value : 'today';
 }
 

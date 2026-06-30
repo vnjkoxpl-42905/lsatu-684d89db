@@ -107,6 +107,11 @@ export function AdminInboxCommandCenter({
   const [source, setSource] = useState<InboxSource>(() =>
     sourceFromSearch(location.search, defaultSource),
   );
+  // Embedded in the Teacher Desk, this surface is the Messages workspace only.
+  // Gmail and Drive are their own top-level desk workspaces, so the source
+  // toggle and the Gmail/Drive branches are suppressed and source is forced to
+  // the app threads. Standalone (/inbox) keeps the full 3-way toggle.
+  const effectiveSource: InboxSource = embedded ? 'app' : source;
   const [embeddedActiveId, setEmbeddedActiveId] = useState<string | null>(null);
 
   const activeId = activeIdProp ?? (embedded ? embeddedActiveId : searchParams.get('c'));
@@ -230,7 +235,7 @@ export function AdminInboxCommandCenter({
             </div>
             <div className="min-w-0">
               <h1 className="truncate text-sm font-black leading-tight tracking-tight text-[#fff6e5]">
-                Messages Command Center
+                {embedded ? 'Messages' : 'Messages Command Center'}
               </h1>
               <p className="hidden truncate text-[11px] font-semibold text-[#aab4c3] sm:block">
                 {headerName}
@@ -244,40 +249,42 @@ export function AdminInboxCommandCenter({
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
-            <div className="inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.06] p-1">
-              <button
-                type="button"
-                onClick={() => updatePane('app')}
-                className={cn(
-                  'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
-                  source === 'app' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                )}
-              >
-                <span className="inline-flex items-center gap-1.5"><InboxIcon className="h-3 w-3" /> Messages</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => updatePane('gmail')}
-                className={cn(
-                  'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
-                  source === 'gmail' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                )}
-              >
-                <span className="inline-flex items-center gap-1.5"><Mail className="h-3 w-3" /> Gmail</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => updatePane('drive')}
-                className={cn(
-                  'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
-                  source === 'drive' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
-                )}
-              >
-                <span className="inline-flex items-center gap-1.5"><HardDrive className="h-3 w-3" /> Drive</span>
-              </button>
-            </div>
+            {!embedded ? (
+              <div className="inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.06] p-1">
+                <button
+                  type="button"
+                  onClick={() => updatePane('app')}
+                  className={cn(
+                    'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
+                    source === 'app' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1.5"><InboxIcon className="h-3 w-3" /> Messages</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updatePane('gmail')}
+                  className={cn(
+                    'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
+                    source === 'gmail' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1.5"><Mail className="h-3 w-3" /> Gmail</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updatePane('drive')}
+                  className={cn(
+                    'rounded-xl px-2.5 py-1.5 text-[11px] font-black transition-colors',
+                    source === 'drive' ? 'bg-[#f0d28e] text-[#161b25] shadow-sm' : 'text-[#c9d0dc] hover:bg-white/10 hover:text-white',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1.5"><HardDrive className="h-3 w-3" /> Drive</span>
+                </button>
+              </div>
+            ) : null}
             <NewConversationDialog
-              showTrigger={source === 'app'}
+              showTrigger={effectiveSource === 'app'}
               autoOpenWith={composeTarget}
               onAutoOpenHandled={onComposeTargetHandled}
               onCreated={selectThread}
@@ -289,11 +296,11 @@ export function AdminInboxCommandCenter({
         </div>
       </header>
 
-      {source === 'gmail' ? (
+      {effectiveSource === 'gmail' ? (
         <div className={cn('min-h-0 flex-1 overflow-hidden bg-white text-foreground', maxWidthClassName)}>
           <GmailPane />
         </div>
-      ) : source === 'drive' ? (
+      ) : effectiveSource === 'drive' ? (
         <div className={cn('min-h-0 flex-1 overflow-hidden bg-white text-foreground', maxWidthClassName)}>
           <DrivePanel />
         </div>
