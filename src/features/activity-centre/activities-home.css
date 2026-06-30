@@ -274,7 +274,14 @@
 .act-home .act-edit {
   max-width: 76rem;
   margin: 0 auto;
-  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem) 5rem;
+  /* Fill one viewport and center the column so the detail section (rules +
+     credited answers + Start) is pulled up into view instead of falling
+     below the orbs. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 3vh, 2.5rem) clamp(1.25rem, 4vw, 3rem);
 }
 
 /* --- Breadcrumb (top-left, orange arrows) --- */
@@ -331,13 +338,17 @@
   justify-content: space-between;
   gap: 2rem;
   padding-top: 0.5rem;
-  margin-bottom: clamp(1rem, 2vw, 2rem);
+  margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem);
 }
 
 /* --- Orbs (overlapping circles), pushed left and large --- */
 .act-home .act-orbs {
   position: relative;
-  width: min(100%, 50rem);
+  /* Height-driven so the orb cluster shrinks to fit the viewport instead of
+     forcing a fixed ~736px tall that pushes the detail below the fold. */
+  height: min(52vh, 30rem);
+  width: auto;
+  max-width: 100%;
   aspect-ratio: 1 / 0.92;
   margin: 0 auto 0 0;   /* hug the left edge */
 }
@@ -438,8 +449,8 @@
  * the three credited negations on the right, then the Start action.
  * ===================================================================== */
 .act-home .act-detail {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding-top: clamp(2rem, 4vw, 3rem);
+  margin-top: clamp(1.25rem, 2.5vh, 2rem);
+  padding-top: clamp(1.25rem, 2.5vh, 2rem);
   border-top: 1px solid hsl(var(--act-hairline));
 }
 
@@ -492,4 +503,18 @@
 
 .act-home .act-detail .act-start {
   margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* On narrow screens, drop the one-viewport constraint so content stacks and
+   scrolls naturally and the orbs fall back to width-driven sizing. */
+@media (max-width: 640px) {
+  .act-home .act-edit {
+    min-height: auto;
+    display: block;
+  }
+
+  .act-home .act-orbs {
+    height: auto;
+    width: min(100%, 26rem);
+  }
 }
