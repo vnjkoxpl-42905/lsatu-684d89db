@@ -32,6 +32,13 @@ export function validateInboxAttachment(file: InboxAttachmentInput): string | nu
   return null;
 }
 
+// The Help flow attaches a hidden `context.json` metadata blob alongside a
+// screenshot. It's internal snapshot data, not a real attachment, so it should
+// never render as a file card in any thread view.
+export function isVisibleHelpAttachment(attachment: { file_name: string }): boolean {
+  return attachment.file_name !== 'context.json';
+}
+
 export function classifyInboxAttachmentMime(mimeType: string | null | undefined): InboxAttachmentPreviewKind {
   if (mimeType === 'application/pdf') return 'pdf';
   if ((mimeType ?? '').startsWith('image/')) return 'image';

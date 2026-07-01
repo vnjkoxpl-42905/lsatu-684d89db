@@ -4,6 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
+import { isVisibleHelpAttachment } from '@/lib/inboxAttachments';
 import type { Message, MessageAttachment } from '@/hooks/useInbox';
 import type { MessageCluster } from './messageClusters';
 import {
@@ -104,7 +105,8 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
           <div className="flex flex-col gap-2">
             {cluster.messages.map((message) => {
               const hasBody = !!message.body;
-              const hasAttachments = message.attachments.length > 0;
+              const visibleAttachments = message.attachments.filter(isVisibleHelpAttachment);
+              const hasAttachments = visibleAttachments.length > 0;
               const routeAction = hasBody ? extractRouteAction(message.body) : null;
               const canDelete = canDeleteMessage?.(message) ?? false;
 
@@ -167,7 +169,7 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                         isInstructor ? 'items-end' : 'items-start',
                       )}
                     >
-                      {message.attachments.map((attachment) => (
+                      {visibleAttachments.map((attachment) => (
                         <AttachmentCard
                           key={attachment.id}
                           attachment={attachment}

@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
-import { useConversationMessages, type MessageAttachment } from '@/hooks/useInbox';
+import { useConversationMessages } from '@/hooks/useInbox';
 import { AttachmentCard } from '@/components/inbox/AttachmentCard';
 import {
   getHelpSnapshot,
@@ -21,6 +21,7 @@ import {
   type HelpSnapshot,
 } from '@/lib/helpContextBus';
 import { captureViewportPng } from '@/lib/helpScreenshot';
+import { isVisibleHelpAttachment } from '@/lib/inboxAttachments';
 import { cn } from '@/lib/utils';
 
 // Item A — student-facing Help sheet. Replaces the old single-shot
@@ -30,10 +31,6 @@ interface HelpSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onReplayTour?: () => void;
-}
-
-function isVisibleHelpAttachment(attachment: MessageAttachment) {
-  return attachment.file_name !== 'context.json';
 }
 
 function helpBubbleBody(body: string, hasImageAttachment: boolean) {

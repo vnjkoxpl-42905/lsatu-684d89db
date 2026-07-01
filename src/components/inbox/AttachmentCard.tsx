@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FileText, Download, Cloud, ExternalLink, Image as ImageIcon } from 'lucide-react';
+import { FileText, Download, Cloud, ExternalLink, Eye, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { MessageAttachment } from '@/hooks/useInbox';
@@ -43,7 +43,7 @@ function ImageAttachment({
     };
   }, [attachment.storage_path]);
 
-  const open = () => {
+  const view = () => {
     if (onPreview) {
       onPreview(attachment);
       return;
@@ -52,30 +52,72 @@ function ImageAttachment({
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+  const download = async () => {
+    if (!attachment.storage_path) {
+      toast.error('Attachment unavailable');
+      return;
+    }
+    const { data, error } = await supabase.storage
+      .from('message-attachments')
+      .createSignedUrl(attachment.storage_path, 60 * 60, { download: attachment.file_name });
+    if (error || !data?.signedUrl) {
+      toast.error('Could not download image');
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = data.signedUrl;
+    a.download = attachment.file_name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
   return (
-    <button
-      onClick={open}
-      className="mt-2 block max-w-sm overflow-hidden rounded-2xl border border-[#decdb7] bg-[#fffaf1] text-left shadow-[0_12px_28px_rgba(86,61,32,0.10)] transition hover:border-[#a14f43]/45 hover:bg-white"
+    <div
+      className="group relative mt-2 block max-w-sm overflow-hidden rounded-2xl border border-[#decdb7] bg-[#fffaf1] text-left shadow-[0_12px_28px_rgba(86,61,32,0.10)] transition hover:border-[#a14f43]/45 hover:bg-white"
       title={attachment.file_name}
     >
+      {/* Whole image is clickable = View, so touch devices (no hover) keep working. */}
+      <button type="button" onClick={view} className="block w-full">
+        {url ? (
+          <img
+            src={url}
+            alt={attachment.file_name}
+            className="block max-h-64 w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex items-center gap-2 px-3 py-3 text-xs font-semibold text-[#7a6b58]">
+            <ImageIcon className="w-4 h-4" /> Loading {attachment.file_name}…
+          </div>
+        )}
+      </button>
+
       {url ? (
-        <img
-          src={url}
-          alt={attachment.file_name}
-          className="block max-h-64 w-full object-cover"
-          loading="lazy"
-        />
-      ) : (
-        <div className="flex items-center gap-2 px-3 py-3 text-xs font-semibold text-[#7a6b58]">
-          <ImageIcon className="w-4 h-4" /> Loading {attachment.file_name}…
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-end gap-2 bg-gradient-to-b from-black/45 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
+          <button
+            type="button"
+            onClick={view}
+            className="pointer-events-auto flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold text-[#211b16] shadow-sm transition hover:bg-white"
+          >
+            <Eye className="h-3.5 w-3.5" /> View
+          </button>
+          <button
+            type="button"
+            onClick={download}
+            className="pointer-events-auto flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold text-[#211b16] shadow-sm transition hover:bg-white"
+          >
+            <Download className="h-3.5 w-3.5" /> Download
+          </button>
         </div>
-      )}
+      ) : null}
+
       <div className="flex items-center gap-1.5 border-t border-[#eadfcf] px-3 py-2 text-[11px] font-bold text-[#6f6253]">
         <ImageIcon className="h-3.5 w-3.5 text-[#8b5b42]" />
         <span className="truncate">{attachment.file_name}</span>
         <span className="shrink-0 text-[#a89a88]">· {formatSize(attachment.file_size)}</span>
       </div>
-    </button>
+    </div>
   );
 }
 
