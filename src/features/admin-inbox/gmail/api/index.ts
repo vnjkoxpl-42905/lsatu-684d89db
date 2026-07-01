@@ -9,6 +9,6 @@ export {
   batchModifyThreads,
   batchTrashThreads,
 } from "./gmailThreads";
-export { getMessage, sendMessage, parseAddress } from "./gmailMessages";
+export { getMessage, sendMessage, getAttachment, parseAddress } from "./gmailMessages";
 export { listLabels } from "./gmailLabels";
 export { listRecentContacts, type GmailContact, type ListRecentContactsParams } from "./gmailContacts";

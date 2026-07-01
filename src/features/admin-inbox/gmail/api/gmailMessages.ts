@@ -1,5 +1,5 @@
 import { invokeGmail } from "./gmailClient";
-import type { GmailMessage, SendMessageParams, SendMessageResult } from "./types";
+import type { GmailAttachmentData, GmailMessage, SendMessageParams, SendMessageResult } from "./types";
 
 export function getMessage(id: string, format: "full" | "metadata" | "minimal" | "raw" = "full"): Promise<GmailMessage> {
   return invokeGmail<{ ok: true; message: GmailMessage }>({
@@ -22,6 +22,14 @@ export function sendMessage(params: SendMessageParams): Promise<SendMessageResul
     references: params.references,
     attachments: params.attachments,
   }).then((r) => r.message);
+}
+
+export function getAttachment(messageId: string, attachmentId: string): Promise<GmailAttachmentData> {
+  return invokeGmail<{ ok: true; attachment: GmailAttachmentData }>({
+    action: "getAttachment",
+    messageId,
+    attachmentId,
+  }).then((r) => r.attachment);
 }
 
 /**

@@ -96,6 +96,12 @@ export interface GmailOutgoingAttachment {
   dataBase64: string;
 }
 
+export interface GmailAttachmentData {
+  /** Base64-encoded file contents (standard base64, no data: prefix). */
+  dataBase64: string;
+  size: number | null;
+}
+
 export interface SendMessageParams {
   to: string;
   cc?: string;

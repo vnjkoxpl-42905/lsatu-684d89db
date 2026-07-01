@@ -19,6 +19,10 @@ function b64urlDecode(s: string): string {
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
   return new TextDecoder().decode(bytes);
 }
+function b64urlToBase64(s: string): string {
+  const pad = s.length % 4 === 0 ? "" : "=".repeat(4 - (s.length % 4));
+  return s.replace(/-/g, "+").replace(/_/g, "/") + pad;
+}
 
 function header(headers: any[], name: string): string {
   const h = headers?.find((x) => x.name?.toLowerCase() === name.toLowerCase());
@@ -476,6 +480,24 @@ Deno.serve(async (req) => {
       );
       if (!res.ok) throw new Error(`Gmail getMessage ${res.status}: ${txt.slice(0, 300)}`);
       return jsonResp({ ok: true, message: data });
+    }
+
+    if (action === "getAttachment") {
+      const messageId: string = body.messageId;
+      const attachmentId: string = body.attachmentId;
+      if (!messageId || !attachmentId) throw new Error("messageId and attachmentId required");
+      const { res, data, txt } = await safeFetchJson(
+        `${GATEWAY}/users/me/messages/${messageId}/attachments/${attachmentId}`,
+        { headers: gHeaders },
+      );
+      if (!res.ok) throw new Error(`Gmail getAttachment ${res.status}: ${txt.slice(0, 300)}`);
+      return jsonResp({
+        ok: true,
+        attachment: {
+          dataBase64: b64urlToBase64(String(data?.data ?? "")),
+          size: data?.size ?? null,
+        },
+      });
     }
 
     if (action === "send") {

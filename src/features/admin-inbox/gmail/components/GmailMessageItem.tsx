@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ChevronDown, Paperclip } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { GmailMessage } from "../api";
 import { parseAddress } from "../api";
 import { formatMessageDate } from "../utils/formatDate";
 import { GmailMessageBody } from "./GmailMessageBody";
+import { GmailAttachmentCard } from "./GmailAttachmentCard";
 
 interface GmailMessageItemProps {
   message: GmailMessage;
@@ -69,17 +70,13 @@ export function GmailMessageItem({ message, isLatest, adminEmail }: GmailMessage
         <div className="px-5 pb-5 pl-[68px]">
           <GmailMessageBody html={message.html} text={message.text} />
           {message.attachments.length ? (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-3">
               {message.attachments.map((a) => (
-                <div
+                <GmailAttachmentCard
                   key={a.attachmentId}
-                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-border bg-muted/40 text-xs"
-                  title={`${a.filename} (${Math.round(a.size / 1024)} KB)`}
-                >
-                  <Paperclip className="w-3 h-3 text-muted-foreground" />
-                  <span className="truncate max-w-[180px]">{a.filename}</span>
-                  <span className="text-muted-foreground">{Math.max(1, Math.round(a.size / 1024))}KB</span>
-                </div>
+                  messageId={message.id}
+                  attachment={a}
+                />
               ))}
             </div>
           ) : null}
