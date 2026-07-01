@@ -39,6 +39,24 @@ function renderProtected(initialEntry = "/teacher/session-ingest?foo=1") {
   );
 }
 
+function renderStudentCoreRoute(initialEntry = "/classroom") {
+  return render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Routes>
+        <Route
+          path="/classroom"
+          element={(
+            <ProtectedRoute flag="has_classroom_access" allowSignedIn>
+              <div>student classroom content</div>
+            </ProtectedRoute>
+          )}
+        />
+        <Route path="/auth" element={<AuthLocationProbe />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
 describe("ProtectedRoute", () => {
   const originalLocation = window.location;
 
@@ -108,6 +126,32 @@ describe("ProtectedRoute", () => {
     renderProtected();
 
     expect(screen.getByText("Premium Content Locked")).toBeInTheDocument();
+  });
+
+  it("renders core student routes for signed-in users even when the legacy flag is false", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student-1" } });
+    mockUseUserPermissions.mockReturnValue({
+      loading: false,
+      is_admin: false,
+      has_bootcamp_access: false,
+      has_classroom_access: false,
+      has_analytics_access: false,
+      has_schedule_access: false,
+      has_practice_access: false,
+      has_drill_access: false,
+      has_waj_access: false,
+      has_journal_access: false,
+      has_flagged_access: false,
+      has_chat_access: false,
+      has_export_access: false,
+      has_ta_access: false,
+      has_activity_access: false,
+    });
+
+    renderStudentCoreRoute();
+
+    expect(screen.getByText("student classroom content")).toBeInTheDocument();
+    expect(screen.queryByText("Premium Content Locked")).not.toBeInTheDocument();
   });
 
   it("renders children for admins", () => {

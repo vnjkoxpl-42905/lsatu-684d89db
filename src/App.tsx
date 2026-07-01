@@ -331,45 +331,45 @@ const App = () => {
                       <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
                     } />
                     <Route path="/classroom" element={
-                      <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn><Classroom /></ProtectedRoute>
                     } />
                     <Route path="/classroom/uploads" element={
-                      <ProtectedRoute flag="has_classroom_access">
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <ClassroomUploads />
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
                     <Route path="/classroom/recaps" element={
-                      <ProtectedRoute flag="has_classroom_access">
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <ClassroomRecaps />
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
                     <Route path="/classroom/item/:itemId" element={
-                      <ProtectedRoute flag="has_classroom_access">
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <ClassroomItem />
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
                     <Route path="/classroom/ta/:assignmentId" element={
-                      <ProtectedRoute flag="has_classroom_access">
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <ClassroomTAAssignmentDetail />
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
                     <Route path="/classroom/:assignmentId" element={
-                      <ProtectedRoute flag="has_classroom_access">
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <ClassroomAssignmentDetail />
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
                     <Route path="/schedule" element={
-                      <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
+                      <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />
                     <Route path="/bootcamps" element={
                       <Bootcamps />

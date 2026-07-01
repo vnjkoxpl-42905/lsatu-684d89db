@@ -10,6 +10,12 @@ interface ProtectedRouteProps {
    */
   flag?: PermissionFlag;
   /**
+   * Allow any signed-in user through even when the feature flag is false.
+   * Useful for core student workspace pages that should stay reachable while
+   * their contents are still constrained by row-level data access.
+   */
+  allowSignedIn?: boolean;
+  /**
    * When true, only admin users may render the children. Non-admin
    * users, regardless of feature flags, see LockedModule.
    */
@@ -23,7 +29,7 @@ function isLocalDevAccessAllowed() {
   return import.meta.env.DEV && LOCAL_DEV_HOSTS.has(window.location.hostname);
 }
 
-export default function ProtectedRoute({ flag, requireAdmin, children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, children }: ProtectedRouteProps) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
   const location = useLocation();
@@ -52,6 +58,10 @@ export default function ProtectedRoute({ flag, requireAdmin, children }: Protect
 
   if (requireAdmin) {
     return permissions.is_admin ? <>{children}</> : <LockedModule />;
+  }
+
+  if (allowSignedIn && user) {
+    return <>{children}</>;
   }
 
   if (flag) {
