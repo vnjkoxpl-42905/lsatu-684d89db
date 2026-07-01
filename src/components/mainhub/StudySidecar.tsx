@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   IconBell,
   IconCopy,
-  IconGavel,
   IconInbox,
   IconMessageCircle,
   IconPlus,
@@ -14,14 +13,35 @@ import {
   IconThumbUp,
   IconX,
 } from "@tabler/icons-react";
-import { Loader2 } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  BookOpen,
+  CalendarDays,
+  CheckCircle2,
+  ClipboardList,
+  FileUp,
+  GraduationCap,
+  Loader2,
+  NotebookPen,
+  RotateCcw,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useUserPermissions, type UserPermissions } from "@/hooks/useUserPermissions";
 import { useStudyChat } from "@/hooks/useStudyChat";
 import { useInbox, type Conversation } from "@/hooks/useInbox";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
+import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
+import {
+  useStudentAssignments,
+  useStudentTAAssignments,
+  type StudentAssignment,
+  type StudentTAAssignment,
+} from "@/hooks/useStudentAssignments";
 import { startJoshuaConversation } from "@/lib/joshuaThread";
+import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import { ConversationView } from "@/components/inbox/ConversationView";
 import { MessageComposer } from "@/components/inbox/MessageComposer";
 import { ThreadList, ThreadListSkeleton } from "@/components/inbox/ThreadList";
@@ -38,7 +58,24 @@ interface StudySidecarProps {
   width?: number;
 }
 
-type SidecarMode = "chat" | "partner" | "inbox" | "notifications";
+type SidecarMode = "chat" | "tasks" | "partner" | "inbox" | "notifications";
+
+const ACTIVE_CLASSROOM_STATUSES = new Set<ClassroomItem["status"]>(["assigned", "in_progress"]);
+const ACTIVE_HOMEWORK_STATUSES = new Set<StudentAssignment["status"]>(["assigned", "in_progress"]);
+const ACTIVE_TA_STATUSES = new Set<StudentTAAssignment["status"]>(["assigned", "viewed"]);
+
+function compactText(text: string | null | undefined, max = 88) {
+  const value = text?.replace(/\s+/g, " ").trim();
+  if (!value) return null;
+  return value.length > max ? `${value.slice(0, max - 3)}...` : value;
+}
+
+function dueText(value: string | null | undefined) {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return `Due ${date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+}
 
 function ThinkingDots() {
   return (
@@ -309,6 +346,270 @@ function StudyChatPanel({
   );
 }
 
+interface TaskRow {
+  id: string;
+  title: string;
+  eyebrow: string;
+  description?: string | null;
+  meta?: string | null;
+  route: string;
+  icon: LucideIcon;
+}
+
+function classroomTaskRow(item: ClassroomItem): TaskRow | null {
+  if (!ACTIVE_CLASSROOM_STATUSES.has(item.status)) return null;
+  const route = resolveItemRoute(item);
+  if (!route) return null;
+  return {
+    id: `classroom-${item.id}`,
+    title: item.title,
+    eyebrow: item.type === "bootcamp_module" ? "Bootcamp" : "Assigned by Joshua",
+    description: compactText(item.description),
+    meta: dueText(item.due_at) ?? (item.status === "in_progress" ? "In progress" : "Ready"),
+    route,
+    icon: item.type === "bootcamp_module" ? BookOpen : ClipboardList,
+  };
+}
+
+function homeworkTaskRow(assignment: StudentAssignment): TaskRow | null {
+  if (!ACTIVE_HOMEWORK_STATUSES.has(assignment.status)) return null;
+  return {
+    id: `homework-${assignment.id}`,
+    title: assignment.set_title || "Homework",
+    eyebrow: "Homework",
+    description: compactText(assignment.set_description),
+    meta:
+      assignment.question_qids?.length > 0
+        ? `${assignment.question_qids.length} questions`
+        : assignment.status === "in_progress"
+          ? "In progress"
+          : "Ready",
+    route: `/classroom/${encodeURIComponent(assignment.id)}`,
+    icon: ClipboardList,
+  };
+}
+
+function taTaskRow(assignment: StudentTAAssignment): TaskRow | null {
+  if (!ACTIVE_TA_STATUSES.has(assignment.status)) return null;
+  return {
+    id: `ta-${assignment.id}`,
+    title: assignment.title || "Instructor assignment",
+    eyebrow: "From Joshua",
+    description: assignment.pdf_url ? "PDF assignment" : null,
+    meta: assignment.status === "viewed" ? "In progress" : "Ready",
+    route: `/classroom/ta/${encodeURIComponent(assignment.id)}`,
+    icon: GraduationCap,
+  };
+}
+
+function TaskCard({
+  row,
+  featured = false,
+  onOpen,
+}: {
+  row: TaskRow;
+  featured?: boolean;
+  onOpen: (route: string) => void;
+}) {
+  const Icon = row.icon;
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(row.route)}
+      className={cn(
+        "group flex w-full items-center gap-3 rounded-xl border text-left transition hover:border-zinc-300 hover:bg-white",
+        featured
+          ? "border-zinc-200 bg-white px-3.5 py-3 shadow-sm"
+          : "border-transparent bg-zinc-50 px-3 py-2.5",
+      )}
+    >
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-900 text-white">
+        <Icon className="h-4 w-4" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+          {row.eyebrow}
+        </span>
+        <span className="mt-0.5 block truncate text-sm font-semibold text-zinc-900">
+          {row.title}
+        </span>
+        {row.description || row.meta ? (
+          <span className="mt-0.5 block truncate text-xs text-zinc-500">
+            {[row.description, row.meta].filter(Boolean).join(" · ")}
+          </span>
+        ) : null}
+      </span>
+      <ArrowRight className="h-4 w-4 shrink-0 text-zinc-300 transition group-hover:text-zinc-700" aria-hidden />
+    </button>
+  );
+}
+
+function StudentTasksPanel({
+  permissions,
+  notifications,
+  notificationsLoading,
+  notificationsError,
+  onNotificationClick,
+}: {
+  permissions: UserPermissions;
+  notifications: Notification[];
+  notificationsLoading: boolean;
+  notificationsError: string | null;
+  onNotificationClick: (notification: Notification) => void;
+}) {
+  const navigate = useNavigate();
+  const { data: classroomItems = [], isLoading: classroomLoading } = useClassroomItems();
+  const { assignments: homeworkAssignments, loading: homeworkLoading } = useStudentAssignments();
+  const { assignments: taAssignments, loading: taLoading } = useStudentTAAssignments();
+
+  const nextItem = nextActionFor(classroomItems);
+  const nextRow = nextItem ? classroomTaskRow(nextItem) : null;
+  const classroomRows = classroomItems
+    .map(classroomTaskRow)
+    .filter((row): row is TaskRow => Boolean(row));
+  const fallbackRows =
+    classroomRows.length === 0
+      ? [
+          ...homeworkAssignments.map(homeworkTaskRow),
+          ...taAssignments.map(taTaskRow),
+        ].filter((row): row is TaskRow => Boolean(row))
+      : [];
+  const assignedRows = (classroomRows.length > 0 ? classroomRows : fallbackRows)
+    .filter((row) => row.id !== nextRow?.id)
+    .slice(0, 5);
+  const taskLoading = classroomLoading || homeworkLoading || taLoading;
+  const updates = notifications
+    .filter((notification) => notification.title || notification.link)
+    .slice(0, 4);
+
+  const commands = [
+    { label: "Assigned work", route: "/classroom", icon: ClipboardList, show: permissions.has_classroom_access },
+    { label: "Schedule", route: "/schedule", icon: CalendarDays, show: permissions.has_schedule_access },
+    { label: "Practice", route: "/practice", icon: RotateCcw, show: permissions.has_practice_access },
+    { label: "Activity Centre", route: "/activities", icon: Activity, show: permissions.has_activity_access },
+    { label: "Upload work", route: "/classroom/uploads", icon: FileUp, show: permissions.has_classroom_access },
+    { label: "Recaps", route: "/classroom/recaps", icon: CheckCircle2, show: permissions.has_classroom_access },
+    { label: "Journal", route: "/waj", icon: NotebookPen, show: permissions.has_journal_access || permissions.has_waj_access },
+  ].filter((command) => command.show);
+
+  const openRoute = (route: string) => navigate(route);
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-[#fbfbfa]">
+      <div className="flex shrink-0 items-center justify-between border-b border-border/40 bg-white px-3 py-2.5">
+        <div>
+          <div className="text-sm font-semibold text-foreground">Tasks</div>
+          <div className="text-[11px] text-muted-foreground">Assigned work and quick actions.</div>
+        </div>
+      </div>
+
+      <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-3 py-4">
+        <section>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            Do this next
+          </div>
+          {taskLoading ? (
+            <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-3 text-xs text-zinc-500">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+              Loading tasks...
+            </div>
+          ) : nextRow ? (
+            <TaskCard row={nextRow} featured onOpen={openRoute} />
+          ) : (
+            <div className="rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-500">
+              Nothing urgent right now.
+            </div>
+          )}
+        </section>
+
+        <section>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            Assigned
+          </div>
+          {assignedRows.length > 0 ? (
+            <div className="space-y-2">
+              {assignedRows.map((row) => (
+                <TaskCard key={row.id} row={row} onOpen={openRoute} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-500">
+              No other assigned work.
+            </div>
+          )}
+        </section>
+
+        <section>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            Commands
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {commands.map((command) => {
+              const Icon = command.icon;
+              return (
+                <button
+                  key={command.route}
+                  type="button"
+                  onClick={() => openRoute(command.route)}
+                  className="flex min-h-[72px] flex-col justify-between rounded-xl border border-zinc-200 bg-white px-3 py-3 text-left text-sm font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-zinc-50"
+                >
+                  <Icon className="h-4 w-4 text-zinc-500" aria-hidden />
+                  <span>{command.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            Updates
+          </div>
+          {notificationsLoading ? (
+            <div className="rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-500">
+              Loading updates...
+            </div>
+          ) : notificationsError ? (
+            <div className="rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-500">
+              {notificationsError}
+            </div>
+          ) : updates.length > 0 ? (
+            <div className="space-y-2">
+              {updates.map((notification) => (
+                <button
+                  key={notification.id}
+                  type="button"
+                  onClick={() => onNotificationClick(notification)}
+                  className={cn(
+                    "w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-left transition hover:border-zinc-300 hover:bg-zinc-50",
+                    !notification.read && "border-zinc-300",
+                  )}
+                >
+                  <div className="truncate text-sm font-semibold text-zinc-900">
+                    {notification.title}
+                  </div>
+                  {notification.body ? (
+                    <div className="mt-0.5 line-clamp-2 text-xs text-zinc-500">
+                      {notification.body}
+                    </div>
+                  ) : null}
+                  <div className="mt-1 text-[11px] text-zinc-400">
+                    {formatRelativeShort(notification.created_at)}
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-500">
+              No updates yet.
+            </div>
+          )}
+        </section>
+      </div>
+    </div>
+  );
+}
+
 export default function StudySidecar({
   open,
   onClose,
@@ -318,7 +619,8 @@ export default function StudySidecar({
 }: StudySidecarProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { is_admin } = useUserPermissions();
+  const permissions = useUserPermissions();
+  const { is_admin } = permissions;
   const {
     conversations,
     loading: inboxLoading,
@@ -434,6 +736,63 @@ export default function StudySidecar({
     </div>
   );
 
+  const renderStudentMessages = () => (
+    <div className="min-h-0 flex-1 overflow-hidden bg-[#fafafa]">
+      {inboxLoading ? (
+        <div className="flex h-full items-center justify-center text-muted-foreground">
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+          <span className="text-sm">Loading...</span>
+        </div>
+      ) : activeInboxConversation ? (
+        <ConversationView
+          conversation={activeInboxConversation}
+          onMessageSent={() => void refreshInbox()}
+          hideHeader
+          compact
+          studentFacing
+          emptyStateLabel="No messages yet. Send Joshua a message here."
+        />
+      ) : (
+        <div className="flex h-full flex-col">
+          <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+            <div className="rounded-full bg-zinc-100 p-3 text-zinc-500">
+              <IconInbox size={20} />
+            </div>
+            <div className="mt-4 text-sm font-semibold text-zinc-900">
+              No messages yet. Send Joshua a message here.
+            </div>
+            <div className="mt-1 max-w-[260px] text-xs leading-5 text-zinc-500">
+              This is your real 1:1 thread. The first message will create the conversation and keep future replies in this panel.
+            </div>
+            {inboxNotice ? (
+              <div className="mt-4 rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-xs text-zinc-500">
+                {inboxNotice}
+              </div>
+            ) : null}
+            {startingInbox ? (
+              <div className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-zinc-500">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                Preparing your thread...
+              </div>
+            ) : null}
+          </div>
+          <div className="shrink-0 border-t border-zinc-200 bg-white/92 backdrop-blur-md">
+            <MessageComposer
+              conversationId={null}
+              onResolveConversation={handleResolveInboxConversation}
+              onConversationResolved={(conversationId) => {
+                setActiveInboxId(conversationId);
+                void refreshInbox();
+              }}
+              onSent={() => void refreshInbox()}
+              studentFacing
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   const handleResolveInboxConversation = async () => {
     setStartingInbox(true);
     setInboxNotice(null);
@@ -460,7 +819,7 @@ export default function StudySidecar({
 
     if (notification.type === "message" || inboxTargetId || inboxLink) {
       setSelectedNotification(null);
-      setMode(is_admin ? "chat" : "inbox");
+      setMode("chat");
       if (inboxTargetId) {
         setActiveInboxId(inboxTargetId);
         setInboxNotice(null);
@@ -478,7 +837,7 @@ export default function StudySidecar({
       return;
     }
 
-    setMode("notifications");
+    setMode(is_admin ? "notifications" : "tasks");
     setSelectedNotification(notification);
   };
 
@@ -510,40 +869,54 @@ export default function StudySidecar({
             <div className="flex min-w-0 flex-1 items-center gap-1 rounded-full border border-zinc-200 bg-[#f4f4f5] p-1">
               <ModeButton
                 active={mode === "chat"}
-                label={is_admin ? "Messages" : "Chat"}
+                label="Messages"
                 icon={<IconMessageCircle size={14} />}
-                unreadCount={is_admin ? inboxUnreadCount : 0}
+                unreadCount={inboxUnreadCount}
                 onClick={() => {
                   setMode("chat");
                   setSelectedNotification(null);
                 }}
               />
-              <ModeButton
-                active={mode === "partner"}
-                label="Study Partner"
-                icon={<IconSparkles size={14} />}
-                onClick={() => {
-                  setMode("partner");
-                  setSelectedNotification(null);
-                }}
-              />
-              <ModeButton
-                active={mode === "inbox"}
-                label="Inbox"
-                icon={<IconInbox size={14} />}
-                unreadCount={is_admin ? 0 : inboxUnreadCount}
-                onClick={() => {
-                  setMode("inbox");
-                  setSelectedNotification(null);
-                }}
-              />
-              <ModeButton
-                active={mode === "notifications"}
-                label="Notifications"
-                icon={<IconBell size={14} />}
-                unreadCount={notificationUnreadCount}
-                onClick={() => setMode("notifications")}
-              />
+              {is_admin ? (
+                <>
+                  <ModeButton
+                    active={mode === "partner"}
+                    label="Study Partner"
+                    icon={<IconSparkles size={14} />}
+                    onClick={() => {
+                      setMode("partner");
+                      setSelectedNotification(null);
+                    }}
+                  />
+                  <ModeButton
+                    active={mode === "inbox"}
+                    label="Inbox"
+                    icon={<IconInbox size={14} />}
+                    onClick={() => {
+                      setMode("inbox");
+                      setSelectedNotification(null);
+                    }}
+                  />
+                  <ModeButton
+                    active={mode === "notifications"}
+                    label="Notifications"
+                    icon={<IconBell size={14} />}
+                    unreadCount={notificationUnreadCount}
+                    onClick={() => setMode("notifications")}
+                  />
+                </>
+              ) : (
+                <ModeButton
+                  active={mode === "tasks"}
+                  label="Tasks"
+                  icon={<IconBell size={14} />}
+                  unreadCount={notificationUnreadCount}
+                  onClick={() => {
+                    setMode("tasks");
+                    setSelectedNotification(null);
+                  }}
+                />
+              )}
             </div>
 
             <Tooltip>
@@ -564,19 +937,18 @@ export default function StudySidecar({
             is_admin ? (
               renderAdminChat()
             ) : (
-              <StudyChatPanel
-                open={open}
-                active={mode === "chat"}
-                userName={userName}
-                header={{ title: "LSAT U", subtitle: "AI assistant" }}
-                empty={{
-                  icon: <IconGavel className="h-8 w-8" />,
-                  title: "LSAT U",
-                  subtitle: "Ask about question types, strategies, or your study plan.",
-                }}
-                placeholder="How can I help?"
-              />
+              renderStudentMessages()
             )
+          ) : null}
+
+          {mode === "tasks" && !is_admin ? (
+            <StudentTasksPanel
+              permissions={permissions}
+              notifications={notifications}
+              notificationsLoading={notificationsLoading}
+              notificationsError={notificationsError}
+              onNotificationClick={(notification) => void handleOpenNotification(notification)}
+            />
           ) : null}
 
           {mode === "partner" ? (

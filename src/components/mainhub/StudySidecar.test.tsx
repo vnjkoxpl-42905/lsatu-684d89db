@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Conversation } from "@/hooks/useInbox";
 import type { Notification } from "@/hooks/useNotifications";
+import type { ClassroomItem } from "@/hooks/useClassroomItems";
+import type { StudentAssignment, StudentTAAssignment } from "@/hooks/useStudentAssignments";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import StudySidecar from "./StudySidecar";
 
@@ -25,10 +27,30 @@ const {
 
 let mockConversations: Conversation[] = [];
 let mockNotifications: Notification[] = [];
+let mockClassroomItems: ClassroomItem[] = [];
+let mockStudentAssignments: StudentAssignment[] = [];
+let mockStudentTAAssignments: StudentTAAssignment[] = [];
 let inboxLoading = false;
 let notificationsLoading = false;
 let notificationsError: string | null = null;
 let mockIsAdmin = false;
+let mockPermissions = {
+  has_bootcamp_access: true,
+  has_classroom_access: true,
+  has_analytics_access: true,
+  has_schedule_access: true,
+  has_practice_access: true,
+  has_drill_access: true,
+  has_waj_access: true,
+  has_journal_access: true,
+  has_flagged_access: true,
+  has_chat_access: true,
+  has_export_access: true,
+  has_ta_access: true,
+  has_activity_access: true,
+  is_admin: false,
+  loading: false,
+};
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
@@ -45,7 +67,7 @@ vi.mock("@/contexts/AuthContext", () => ({
 }));
 
 vi.mock("@/hooks/useUserPermissions", () => ({
-  useUserPermissions: () => ({ is_admin: mockIsAdmin }),
+  useUserPermissions: () => ({ ...mockPermissions, is_admin: mockIsAdmin }),
 }));
 
 vi.mock("@/components/mainhub/SidecarGmailPanel", () => ({
@@ -83,6 +105,28 @@ vi.mock("@/hooks/useNotifications", () => ({
     refresh: vi.fn(),
     markRead: mockMarkRead,
     markAllRead: mockMarkAllRead,
+  }),
+}));
+
+vi.mock("@/hooks/useClassroomItems", () => ({
+  useClassroomItems: () => ({
+    data: mockClassroomItems,
+    isLoading: false,
+  }),
+}));
+
+vi.mock("@/hooks/useStudentAssignments", () => ({
+  useStudentAssignments: () => ({
+    assignments: mockStudentAssignments,
+    loading: false,
+    error: null,
+    refresh: vi.fn(),
+  }),
+  useStudentTAAssignments: () => ({
+    assignments: mockStudentTAAssignments,
+    loading: false,
+    error: null,
+    refresh: vi.fn(),
   }),
 }));
 
@@ -166,6 +210,70 @@ function makeNotification(overrides: Partial<Notification> = {}): Notification {
   };
 }
 
+function makeClassroomItem(overrides: Partial<ClassroomItem> = {}): ClassroomItem {
+  return {
+    id: "classroom-1",
+    student_id: "student-1",
+    class_id: "class-1",
+    created_by: "admin-1",
+    type: "homework",
+    title: "Flaw homework",
+    description: "Finish the assigned flaw questions.",
+    content_html: null,
+    content_markdown: null,
+    source_table: "homework_assignments",
+    source_id: "homework-1",
+    status: "assigned",
+    unlock_at: null,
+    due_at: "2026-07-02T12:00:00.000Z",
+    completed_at: null,
+    priority: 10,
+    visible_to_student: true,
+    metadata_json: {},
+    created_at: "2026-06-29T12:00:00.000Z",
+    updated_at: "2026-06-29T12:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function makeStudentAssignment(overrides: Partial<StudentAssignment> = {}): StudentAssignment {
+  return {
+    id: "homework-2",
+    set_id: "set-1",
+    student_id: "student-1",
+    question_qids: ["q1", "q2"],
+    set_title: "Assumption set",
+    set_description: "Assigned assumption questions.",
+    status: "assigned",
+    started_at: null,
+    completed_at: null,
+    score: null,
+    assigned_by: "admin-1",
+    class_id: "class-1",
+    created_at: "2026-06-29T12:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function makeStudentTAAssignment(overrides: Partial<StudentTAAssignment> = {}): StudentTAAssignment {
+  return {
+    id: "ta-1",
+    student_id: "student-1",
+    interaction_id: null,
+    title: "Review this explanation",
+    content_html: "<p>Read this.</p>",
+    asset_ids: [],
+    pdf_url: null,
+    status: "assigned",
+    assigned_by: "admin-1",
+    assigned_at: "2026-06-29T12:00:00.000Z",
+    viewed_at: null,
+    completed_at: null,
+    created_at: "2026-06-29T12:00:00.000Z",
+    ...overrides,
+  };
+}
+
 function renderSidecar() {
   return render(
     <TooltipProvider>
@@ -186,61 +294,111 @@ describe("StudySidecar", () => {
     mockStartJoshuaConversation.mockReset();
     mockConversations = [];
     mockNotifications = [];
+    mockClassroomItems = [];
+    mockStudentAssignments = [];
+    mockStudentTAAssignments = [];
     inboxLoading = false;
     notificationsLoading = false;
     notificationsError = null;
     mockIsAdmin = false;
+    mockPermissions = {
+      has_bootcamp_access: true,
+      has_classroom_access: true,
+      has_analytics_access: true,
+      has_schedule_access: true,
+      has_practice_access: true,
+      has_drill_access: true,
+      has_waj_access: true,
+      has_journal_access: true,
+      has_flagged_access: true,
+      has_chat_access: true,
+      has_export_access: true,
+      has_ta_access: true,
+      has_activity_access: true,
+      is_admin: false,
+      loading: false,
+    };
   });
 
-  it("shows mode tabs with real unread badges", () => {
+  it("shows the student Messages and Tasks tabs with real unread badges", () => {
     mockConversations = [makeConversation({ unread: true })];
     mockNotifications = [makeNotification({ id: "notif-1", read: false })];
 
     renderSidecar();
 
-    expect(screen.getByRole("button", { name: "Chat" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Inbox, 1 unread" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Notifications, 1 unread" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Messages, 1 unread" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Tasks, 1 unread" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Study Partner" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Inbox" })).not.toBeInTheDocument();
   });
 
-  it("shows assistant context instead of generated chat session labels", () => {
+  it("does not render the student AI assistant or study partner composer", () => {
     renderSidecar();
 
     expect(screen.queryByText("Chat 1")).not.toBeInTheDocument();
-    expect(screen.getByText("AI assistant")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "New conversation" })).toBeInTheDocument();
+    expect(screen.queryByText("AI assistant")).not.toBeInTheDocument();
+    expect(screen.queryByText("Study Partner")).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("How can I help?")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "New conversation" })).not.toBeInTheDocument();
+    expect(mockSend).not.toHaveBeenCalled();
   });
 
-  it("keeps chat connected to the study assistant composer", () => {
-    renderSidecar();
-
-    fireEvent.change(screen.getByPlaceholderText("How can I help?"), {
-      target: { value: "Help me with sufficient assumptions" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Send message" }));
-
-    expect(mockSend).toHaveBeenCalledWith("Help me with sufficient assumptions", undefined);
-  });
-
-  it("renders the real inbox thread in inbox mode", () => {
+  it("renders the real Joshua thread in student Messages mode", () => {
     mockConversations = [makeConversation()];
 
     renderSidecar();
 
-    fireEvent.click(screen.getByRole("button", { name: "Inbox" }));
-
     expect(screen.getByText(/Conversation thread-1 compact .*student-facing/)).toBeInTheDocument();
   });
 
-  it("shows an honest empty inbox state with the starter composer when no thread exists", () => {
+  it("shows an honest empty Messages state with the starter composer when no thread exists", () => {
     renderSidecar();
-
-    fireEvent.click(screen.getByRole("button", { name: "Inbox" }));
 
     expect(screen.getByText("No messages yet. Send Joshua a message here.")).toBeInTheDocument();
     expect(screen.getByText("Composer none student-facing")).toBeInTheDocument();
+  });
+
+  it("renders do-this-next from classroom items and opens its resolved route", () => {
+    mockClassroomItems = [makeClassroomItem()];
+
+    renderSidecar();
+
+    fireEvent.click(screen.getByRole("button", { name: "Tasks" }));
+    fireEvent.click(screen.getByRole("button", { name: /Flaw homework/ }));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/classroom/homework-1");
+  });
+
+  it("renders fallback assigned work when classroom items are absent", () => {
+    mockStudentAssignments = [makeStudentAssignment()];
+    mockStudentTAAssignments = [makeStudentTAAssignment()];
+
+    renderSidecar();
+
+    fireEvent.click(screen.getByRole("button", { name: "Tasks" }));
+
+    expect(screen.getByText("Assumption set")).toBeInTheDocument();
+    expect(screen.getByText("Review this explanation")).toBeInTheDocument();
+  });
+
+  it("renders permission-gated task commands", () => {
+    mockPermissions = {
+      ...mockPermissions,
+      has_schedule_access: false,
+      has_activity_access: false,
+      has_journal_access: false,
+      has_waj_access: false,
+    };
+
+    renderSidecar();
+
+    fireEvent.click(screen.getByRole("button", { name: "Tasks" }));
+    fireEvent.click(screen.getByRole("button", { name: "Assigned work" }));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/classroom");
+    expect(screen.queryByRole("button", { name: "Schedule" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Activity Centre" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Journal" })).not.toBeInTheDocument();
   });
 
   it("routes message notifications into inbox mode instead of navigating away", () => {
@@ -256,7 +414,7 @@ describe("StudySidecar", () => {
 
     renderSidecar();
 
-    fireEvent.click(screen.getByRole("button", { name: "Notifications, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tasks, 1 unread" }));
     fireEvent.click(screen.getByRole("button", { name: /Joshua replied/ }));
 
     expect(mockMarkRead).toHaveBeenCalledWith("notif-message");
@@ -299,7 +457,7 @@ describe("StudySidecar", () => {
 
     renderSidecar();
 
-    fireEvent.click(screen.getByRole("button", { name: "Notifications, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tasks, 1 unread" }));
     fireEvent.click(screen.getByRole("button", { name: /Open drill/ }));
 
     expect(mockMarkRead).toHaveBeenCalledWith("notif-route");
