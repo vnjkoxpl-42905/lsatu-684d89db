@@ -278,7 +278,7 @@ function DrillContent() {
       if (classIdLoading) return;
       if (qbLoading) return;
 
-      const mode = state.mode;
+      const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
       let questionQueue: string[] = [];
       let rawQuestions: LRQuestion[] = [];
 
@@ -309,6 +309,14 @@ function DrillContent() {
             qtypes: config.qtypes.length > 0 ? config.qtypes : undefined,
             difficulties: config.difficulties.length > 0 ? config.difficulties : undefined,
             pts: config.pts.length > 0 ? config.pts : undefined,
+            sections: config.sections && config.sections.length > 0 ? config.sections : undefined,
+            qfeatures: config.qfeatures && config.qfeatures.length > 0 ? config.qfeatures : undefined,
+            reasoningTypes:
+              config.reasoningTypes && config.reasoningTypes.length > 0
+                ? config.reasoningTypes
+                : undefined,
+            searchQuery: config.searchQuery,
+            questionNumber: config.questionNumber,
           });
         }
       }

@@ -38,16 +38,17 @@ export function getResolvedDrillRouteState(
 
     const present = searchParams.get("present") === "smart" ? "smart" : undefined;
 
-    return { mode: urlMode as DrillMode, config, present };
+    return { mode: (urlMode === "practice-set" ? "type-drill" : urlMode) as DrillMode, config, present };
   }
 
-  return (locationState || {}) as DrillRouteState;
+  const state = (locationState || {}) as DrillRouteState;
+  return state.mode === "practice-set" ? { ...state, mode: "type-drill" } : state;
 }
 
 export function getTimerConfigForDrillRoute(
   state: DrillRouteState | null | undefined,
 ): DrillTimerRouteConfig | null {
-  if (state?.mode === "type-drill" && state.config) {
+  if ((state?.mode === "type-drill" || state?.mode === "practice-set") && state.config) {
     const config = state.config as TypeDrillConfig;
     if (config.selectedQids && config.selectedQids.length > 0) {
       return { mode: "stopwatch" };

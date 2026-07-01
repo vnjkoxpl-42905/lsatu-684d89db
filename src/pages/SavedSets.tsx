@@ -49,7 +49,7 @@ export default function SavedSets() {
     }
     navigate("/drill", {
       state: {
-        mode: "practice-set",
+        mode: "type-drill",
         config: {
           qtypes: [],
           difficulties: [],
@@ -252,4 +252,3 @@ export default function SavedSets() {
     </div>
   );
 }
-

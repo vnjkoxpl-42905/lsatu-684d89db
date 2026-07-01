@@ -30,6 +30,37 @@ describe("drill route state helpers", () => {
     expect(state.present).toBe("smart");
   });
 
+  it("normalizes legacy practice-set URL launches to type-drill selected qids", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=practice-set&qids=PT118-S4-Q1,PT118-S4-Q2"),
+      null,
+    );
+
+    expect(state.mode).toBe("type-drill");
+    expect((state.config as TypeDrillConfig).selectedQids).toEqual([
+      "PT118-S4-Q1",
+      "PT118-S4-Q2",
+    ]);
+  });
+
+  it("normalizes legacy practice-set location state to type-drill", () => {
+    const config: TypeDrillConfig = {
+      qtypes: [],
+      difficulties: [],
+      pts: [],
+      count: 1,
+      selectedQids: ["PT118-S4-Q1"],
+    };
+
+    const state = getResolvedDrillRouteState(new URLSearchParams(), {
+      mode: "practice-set",
+      config,
+    });
+
+    expect(state.mode).toBe("type-drill");
+    expect((state.config as TypeDrillConfig).selectedQids).toEqual(["PT118-S4-Q1"]);
+  });
+
   it("leaves present undefined when the param is absent", () => {
     const state = getResolvedDrillRouteState(
       new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1"),

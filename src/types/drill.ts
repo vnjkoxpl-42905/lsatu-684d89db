@@ -31,6 +31,7 @@ export interface TypeDrillConfig {
   reasoningTypes?: string[];
   sections?: number[];
   searchQuery?: string;
+  questionNumber?: number;
 }
 
 export interface DrillSession {

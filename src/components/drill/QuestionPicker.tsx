@@ -477,6 +477,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       reasoningTypes: filters.reasoningTypes.length > 0 ? [...filters.reasoningTypes] : undefined,
       sections: filters.sections.length > 0 ? [...filters.sections] : undefined,
       searchQuery: filters.searchQuery.trim() || undefined,
+      questionNumber: filters.questionNumber ?? undefined,
     };
 
     // Wave 3 / Item A — record exposures for the questions we're about to
@@ -607,7 +608,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               Item D order: PrepTest → Section → Q# → Type → Reasoning →
               Features → Levels → Search. Reordered from the legacy layout
               (PT → Type → Reasoning → Features → Section → Levels → Search). */}
-          <div className="flex flex-wrap gap-2 items-center">
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2 items-center rounded-md border border-border/70 bg-muted/20 px-3 py-2">
+              <div className="w-full text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:w-auto sm:min-w-[112px]">
+                Exact lookup
+              </div>
             {/* PrepTest Filter */}
             <Popover>
               <PopoverTrigger asChild>
@@ -687,7 +692,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 aria-label="Question number"
               />
             </div>
+            </div>
 
+            <div className="flex flex-wrap gap-2 items-center rounded-md border border-border/70 bg-muted/20 px-3 py-2">
+              <div className="w-full text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:w-auto sm:min-w-[112px]">
+                Filtered set
+              </div>
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
@@ -949,6 +959,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 className="pl-8"
               />
             </div>
+            </div>
           </div>
           
           {/* Active Filters */}
@@ -957,7 +968,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             filters.reasoningTypes.length > 0 ||
             filters.questionFeatures.length > 0 ||
             filters.sections.length > 0 ||
-            filters.difficulties.length > 0) && (
+            filters.difficulties.length > 0 ||
+            filters.questionNumber !== null ||
+            filters.searchQuery.trim() !== '') && (
             <div className="flex flex-wrap gap-2">
               {filters.prepTests.map(pt => (
                 <Badge key={`pt-${pt}`} variant="secondary" className="gap-1">
@@ -995,6 +1008,30 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('difficulties', diff)} />
                 </Badge>
               ))}
+              {filters.questionNumber !== null && (
+                <Badge variant="secondary" className="gap-1">
+                  Q{filters.questionNumber}
+                  <X
+                    className="h-3 w-3 cursor-pointer"
+                    onClick={() => {
+                      setFilters((prev) => ({ ...prev, questionNumber: null }));
+                      setCurrentPage(1);
+                    }}
+                  />
+                </Badge>
+              )}
+              {filters.searchQuery.trim() !== '' && (
+                <Badge variant="secondary" className="gap-1">
+                  Search: {filters.searchQuery.trim()}
+                  <X
+                    className="h-3 w-3 cursor-pointer"
+                    onClick={() => {
+                      setFilters((prev) => ({ ...prev, searchQuery: '' }));
+                      setCurrentPage(1);
+                    }}
+                  />
+                </Badge>
+              )}
             </div>
           )}
         </div>

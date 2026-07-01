@@ -1745,7 +1745,9 @@ export type Database = {
           class_id: string
           daily_goal_questions: number | null
           daily_goal_streak: number | null
+          daily_digest_email: boolean
           display_name: string | null
+          gcal_push_enabled: boolean
           has_activity_access: boolean
           has_analytics_access: boolean
           has_bootcamp_access: boolean
@@ -1778,7 +1780,9 @@ export type Database = {
           class_id: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          daily_digest_email?: boolean
           display_name?: string | null
+          gcal_push_enabled?: boolean
           has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
@@ -1811,7 +1815,9 @@ export type Database = {
           class_id?: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          daily_digest_email?: boolean
           display_name?: string | null
+          gcal_push_enabled?: boolean
           has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
@@ -2943,10 +2949,12 @@ export type Database = {
           day_date: string
           due_at: string | null
           estimated_minutes: number | null
+          google_event_id: string | null
           id: string
           instructions: string | null
           metadata_json: Json
           sort_order: number
+          source: string
           status: string
           student_id: string
           title: string
@@ -2958,10 +2966,12 @@ export type Database = {
           day_date: string
           due_at?: string | null
           estimated_minutes?: number | null
+          google_event_id?: string | null
           id?: string
           instructions?: string | null
           metadata_json?: Json
           sort_order?: number
+          source?: string
           status?: string
           student_id: string
           title: string
@@ -2973,10 +2983,12 @@ export type Database = {
           day_date?: string
           due_at?: string | null
           estimated_minutes?: number | null
+          google_event_id?: string | null
           id?: string
           instructions?: string | null
           metadata_json?: Json
           sort_order?: number
+          source?: string
           status?: string
           student_id?: string
           title?: string
@@ -3233,6 +3245,10 @@ export type Database = {
           total: number
           viewed: number
         }[]
+      }
+      get_or_create_personal_plan: {
+        Args: { p_student: string }
+        Returns: string
       }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }

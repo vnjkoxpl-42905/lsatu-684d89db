@@ -116,6 +116,22 @@ describe('DeskTodoRail', () => {
     });
   });
 
+  it('inserts the expanded Gmail context into the desk chat', async () => {
+    const onInsertInChat = vi.fn();
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <DeskTodoRail items={[gmailItem]} loading={false} onOpen={vi.fn()} onInsertInChat={onInsertInChat} />
+      </QueryClientProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /expand question/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /insert in chat/i }));
+
+    expect(onInsertInChat).toHaveBeenCalledWith(expect.stringContaining('Use this Gmail thread as context.'));
+    expect(onInsertInChat).toHaveBeenCalledWith(expect.stringContaining('verbatim student email body'));
+  });
+
   it('can rewrite Gmail open paths for embedded teacher inbox routing', () => {
     const onOpen = vi.fn();
     renderRail([gmailItem], onOpen);

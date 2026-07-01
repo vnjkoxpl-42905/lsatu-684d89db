@@ -35,8 +35,10 @@ import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import GoogleCalendarPanel from '@/components/schedule/GoogleCalendarPanel';
+import TodayAgenda from '@/components/schedule/TodayAgenda';
 
 type CalView = 'month' | 'week' | 'day';
+type MainTab = 'today' | 'calendar';
 
 interface TypeMeta {
   label: string;
@@ -245,6 +247,7 @@ export default function Schedule() {
   const navigate = useNavigate();
   const { data: items = [], isLoading } = useClassroomItems();
 
+  const [mainTab, setMainTab] = React.useState<MainTab>('today');
   const [view, setView] = React.useState<CalView>('month');
   const [monthAnchor, setMonthAnchor] = React.useState<Date>(new Date());
   const [weekAnchor, setWeekAnchor] = React.useState<Date>(new Date());
@@ -329,10 +332,31 @@ export default function Schedule() {
             <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
               <div>
                 <h1 className="text-3xl font-semibold tracking-tight">Study Schedule &amp; Agenda</h1>
-                <p className="text-sm text-muted-foreground mt-1.5">Your assigned work, calendared by due date.</p>
+                <p className="text-sm text-muted-foreground mt-1.5">
+                  {mainTab === 'today' ? 'Your to-do list for today.' : 'Your assigned work, calendared by due date.'}
+                </p>
+              </div>
+              <div className="flex items-center p-0.5 bg-muted/50 rounded-lg border border-border/60 gap-0.5">
+                {(['today', 'calendar'] as MainTab[]).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setMainTab(t)}
+                    className={cn(
+                      'px-4 py-1.5 rounded-md text-xs font-medium transition-all duration-150 capitalize',
+                      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                      mainTab === t ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {t}
+                  </button>
+                ))}
               </div>
             </div>
 
+            {mainTab === 'today' && <TodayAgenda />}
+
+            {mainTab === 'calendar' && (
+            <>
             <div className="mb-8">
               <GoogleCalendarPanel />
             </div>
@@ -449,6 +473,8 @@ export default function Schedule() {
                   )}
                 </div>
               </div>
+            )}
+            </>
             )}
           </div>
 

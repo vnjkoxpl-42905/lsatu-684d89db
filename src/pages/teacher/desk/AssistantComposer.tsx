@@ -101,6 +101,7 @@ export function AssistantComposer({
   canvasOpen,
   onCloseCanvas,
   readOnlyMessage,
+  focusSignal,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -114,6 +115,7 @@ export function AssistantComposer({
   canvasOpen?: boolean;
   onCloseCanvas?: () => void;
   readOnlyMessage?: string;
+  focusSignal?: number;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -213,6 +215,12 @@ export function AssistantComposer({
   useEffect(() => {
     adjustHeight();
   }, [adjustHeight, value]);
+
+  useEffect(() => {
+    if (!focusSignal) return;
+    textareaRef.current?.focus();
+    adjustHeight();
+  }, [adjustHeight, focusSignal]);
 
   useEffect(() => {
     const handleResize = () => adjustHeight();

@@ -112,3 +112,161 @@ describe("QuestionBank text formatting normalization", () => {
     expect(question?.answerChoices.A).not.toMatch(/[^\n]\n[^\n]/);
   });
 });
+
+describe("QuestionBank Build a Set filters", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("combines PT, section, and question number for exact lookup", async () => {
+    vi.stubGlobal("fetch", buildQuestionBankFetchStub());
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(
+      bank.getQuestionsByFilter({
+        pts: [120],
+        sections: [3],
+        questionNumber: 14,
+      }).map((question) => question.qid),
+    ).toEqual(["PT120-S3-Q14"]);
+  });
+
+  it("combines PrepTest, question type, and difficulty", async () => {
+    vi.stubGlobal("fetch", buildQuestionBankFetchStub());
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(
+      bank.getQuestionsByFilter({
+        pts: [120],
+        qtypes: ["Flaw"],
+        difficulties: [4],
+      }).map((question) => question.qid),
+    ).toEqual(["PT120-S3-Q14"]);
+  });
+
+  it("combines reasoning type, question type, and difficulty", async () => {
+    vi.stubGlobal("fetch", buildQuestionBankFetchStub());
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(
+      bank.getQuestionsByFilter({
+        reasoningTypes: ["Conditional Reasoning"],
+        qtypes: ["Necessary Assumption"],
+        difficulties: [3],
+      }).map((question) => question.qid),
+    ).toEqual(["PT121-S1-Q7"]);
+  });
+
+  it("filters question features using questionFeatures metadata", async () => {
+    vi.stubGlobal("fetch", buildQuestionBankFetchStub());
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(
+      bank.getQuestionsByFilter({
+        questionFeatures: ["Conditional Diagramming"],
+      }).map((question) => question.qid),
+    ).toEqual(["PT120-S3-Q14", "PT121-S1-Q7"]);
+  });
+
+  it("filters search query across question text and metadata", async () => {
+    vi.stubGlobal("fetch", buildQuestionBankFetchStub());
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(
+      bank.getQuestionsByFilter({
+        searchQuery: "city council",
+      }).map((question) => question.qid),
+    ).toEqual(["PT120-S3-Q14"]);
+  });
+});
+
+function buildQuestionBankFetchStub() {
+  const section120 = [
+    {
+      questionNumber: 14,
+      questionType: "Flaw",
+      reasoningType: ["Conditional Reasoning"],
+      questionFeatures: ["Conditional Diagramming", "Mistaken Reversal"],
+      questionDifficulty: 4,
+      stimulus: "If the city council approves the plan, the park will expand.",
+      questionStem: "The argument is most vulnerable to criticism on which one of the following grounds?",
+      answerChoices: {
+        A: "It mistakes a sufficient condition for a necessary one.",
+        B: "It overlooks a possible compromise.",
+        C: "It cites a survey without a sample size.",
+        D: "It treats correlation as causation.",
+        E: "It assumes public support is unanimous.",
+      },
+      correctAnswer: "A",
+    },
+    {
+      questionNumber: 15,
+      questionType: "Strengthen",
+      reasoningType: ["Causation"],
+      questionFeatures: ["Alternative Cause"],
+      questionDifficulty: 4,
+      stimulus: "The new lights were installed before accidents declined.",
+      questionStem: "Which one of the following most strengthens the argument?",
+      answerChoices: {
+        A: "Nearby streets did not receive new lights.",
+        B: "The lights are inexpensive.",
+        C: "Drivers prefer brighter roads.",
+        D: "The city delayed other work.",
+        E: "Accidents are rare.",
+      },
+      correctAnswer: "A",
+    },
+  ];
+  const section121 = [
+    {
+      questionNumber: 7,
+      questionType: "Necessary Assumption",
+      reasoningType: ["Conditional Reasoning"],
+      questionFeatures: ["Conditional Diagramming"],
+      questionDifficulty: 3,
+      stimulus: "Only certified inspectors can approve the building.",
+      questionStem: "Which one of the following is an assumption required by the argument?",
+      answerChoices: {
+        A: "The inspector who approved it was certified.",
+        B: "The building is old.",
+        C: "Certification is difficult.",
+        D: "Most inspectors are careful.",
+        E: "Approval takes several days.",
+      },
+      correctAnswer: "A",
+    },
+  ];
+
+  return vi.fn(async (input: string | URL) => {
+    const url = String(input);
+    if (url === "/data/PT120-S3-LR.json") {
+      return {
+        ok: true,
+        json: async () => section120,
+      } satisfies Pick<Response, "ok" | "json">;
+    }
+    if (url === "/data/PT121-S1-LR.json") {
+      return {
+        ok: true,
+        json: async () => section121,
+      } satisfies Pick<Response, "ok" | "json">;
+    }
+
+    return {
+      ok: false,
+      json: async () => {
+        throw new Error(`unexpected json() for ${url}`);
+      },
+    } satisfies Pick<Response, "ok" | "json">;
+  });
+}

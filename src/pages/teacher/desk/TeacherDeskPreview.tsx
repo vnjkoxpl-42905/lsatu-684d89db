@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -29,7 +29,7 @@ import {
 import { GlobalRail } from './GlobalRail';
 import { cn } from '@/lib/utils';
 import { DeskChatRail } from './DeskChatRail';
-import { DeskChatPanel } from './DeskChatPanel';
+import { DeskChatPanel, type DeskChatInsert } from './DeskChatPanel';
 import { DeskTodoRail } from './DeskTodoRail';
 import { DeskPeopleSurface } from './DeskPeopleSurface';
 
@@ -209,6 +209,7 @@ export default function TeacherDeskPreview() {
   const { data: uploads = [], isLoading: uploadsLoading } = useAdminUploadsQueue();
   const { items: classroomItems = [], isLoading: classroomItemsLoading } = useAllClassroomItems();
   const { data: nextSession } = useNextSession();
+  const [chatInsert, setChatInsert] = useState<DeskChatInsert | null>(null);
 
   const students = localPreview ? PREVIEW_STUDENTS : loadedStudents;
 
@@ -288,6 +289,13 @@ export default function TeacherDeskPreview() {
     setSearchParams(next, { replace: true });
   };
 
+  const insertInChat = (text: string) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('ws');
+    setSearchParams(next, { replace: true });
+    setChatInsert({ id: Date.now(), text });
+  };
+
   const todayLabel = format(new Date(), 'd MMMM');
   const weekdayLabel = format(new Date(), 'EEE');
   const nextSessionCue = useMemo(() => {
@@ -340,7 +348,13 @@ export default function TeacherDeskPreview() {
             </aside>
 
             <main className="relative flex min-w-0 flex-col items-center px-5 py-6 lg:min-h-0 lg:overflow-hidden">
-              {workspace === 'today' ? <DeskChatPanel localPreview={localPreview} /> : null}
+              {workspace === 'today' ? (
+                <DeskChatPanel
+                  localPreview={localPreview}
+                  insert={chatInsert}
+                  onInsertConsumed={() => setChatInsert(null)}
+                />
+              ) : null}
               {workspace === 'people' ? <DeskPeopleSurface /> : null}
               {workspace === 'messages' ? <AdminInboxCommandCenter embedded /> : null}
               {workspace === 'gmail' ? <DeskGmailSurface /> : null}
@@ -349,7 +363,12 @@ export default function TeacherDeskPreview() {
             </main>
 
             <aside className="flex flex-col border-t border-black/10 px-6 py-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
-              <DeskTodoRail items={todoQueue.items} loading={isLoading || todoQueue.loading} onOpen={(path) => navigate(teacherDeskPathForSource(path))} />
+              <DeskTodoRail
+                items={todoQueue.items}
+                loading={isLoading || todoQueue.loading}
+                onOpen={(path) => navigate(teacherDeskPathForSource(path))}
+                onInsertInChat={insertInChat}
+              />
             </aside>
           </div>
         </div>

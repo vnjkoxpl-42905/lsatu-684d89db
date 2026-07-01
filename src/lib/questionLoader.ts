@@ -848,7 +848,15 @@ export class QuestionBank {
     qtypes?: string[];
     difficulties?: number[];
     pts?: number[];
+    sections?: number[];
+    qfeatures?: string[];
+    questionFeatures?: string[];
+    reasoningTypes?: string[];
+    searchQuery?: string;
+    questionNumber?: number;
   }): LRQuestion[] {
+    const featureFilters = filters.qfeatures ?? filters.questionFeatures ?? [];
+
     return this.getAllQuestions().filter((q) => {
       if (filters.qtypes && filters.qtypes.length > 0 && !filters.qtypes.includes(q.qtype)) {
         return false;
@@ -858,6 +866,38 @@ export class QuestionBank {
       }
       if (filters.pts && filters.pts.length > 0 && !filters.pts.includes(q.pt)) {
         return false;
+      }
+      if (filters.sections && filters.sections.length > 0 && !filters.sections.includes(q.section)) {
+        return false;
+      }
+      if (filters.questionNumber !== undefined && Number.isFinite(filters.questionNumber) && q.qnum !== filters.questionNumber) {
+        return false;
+      }
+      if (
+        featureFilters.length > 0 &&
+        !(q.questionFeatures || []).some((feature) => featureFilters.includes(feature))
+      ) {
+        return false;
+      }
+      if (
+        filters.reasoningTypes &&
+        filters.reasoningTypes.length > 0 &&
+        !(q.reasoningType || []).some((reasoningType) => filters.reasoningTypes!.includes(reasoningType))
+      ) {
+        return false;
+      }
+      if (filters.searchQuery?.trim()) {
+        const query = filters.searchQuery.trim().toLowerCase();
+        const searchable = [
+          q.qid,
+          q.stimulus ?? '',
+          q.questionStem,
+          ...Object.values(q.answerChoices),
+          q.qtype,
+          ...(q.reasoningType || []),
+          ...(q.questionFeatures || []),
+        ].join(' ').toLowerCase();
+        if (!searchable.includes(query)) return false;
       }
       return true;
     });

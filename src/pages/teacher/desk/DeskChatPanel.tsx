@@ -30,6 +30,11 @@ type DeskSidePanel =
   | { type: 'canvas' }
   | { type: 'resource'; resource: DeskResourcePreview };
 
+export interface DeskChatInsert {
+  id: number;
+  text: string;
+}
+
 /** Pull the renderable draft cards out of an assistant turn's tool results. */
 function draftsFromToolResults(toolResults?: OperatorToolResult[]): DraftReplyData[] {
   if (!toolResults?.length) return [];
@@ -53,9 +58,18 @@ function assignmentOffersFromToolResults(toolResults?: OperatorToolResult[]): As
  * shared OperatorChat session, so opening a saved chat from the left rail loads
  * its transcript here.
  */
-export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
+export function DeskChatPanel({
+  localPreview,
+  insert,
+  onInsertConsumed,
+}: {
+  localPreview: boolean;
+  insert?: DeskChatInsert | null;
+  onInsertConsumed?: () => void;
+}) {
   const { messages, isLoading, error, sendMessage } = useOperatorChatContext();
   const [input, setInput] = useState('');
+  const [focusSignal, setFocusSignal] = useState(0);
   const [previewImage, setPreviewImage] = useState<OperatorImage | null>(null);
   const [sidePanel, setSidePanel] = useState<DeskSidePanel | null>(null);
   const [canvasBody, setCanvasBody] = useState(STARTER_CANVAS);
@@ -67,6 +81,16 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    if (!insert) return;
+    setInput((current) => {
+      const trimmed = current.trim();
+      return trimmed ? `${current.trimEnd()}\n\n${insert.text}` : insert.text;
+    });
+    setFocusSignal((current) => current + 1);
+    onInsertConsumed?.();
+  }, [insert, onInsertConsumed]);
 
   const send = (text: string, context?: Record<string, unknown>) => {
     if (!text.trim() || localPreview || isLoading) return;
@@ -235,6 +259,7 @@ export function DeskChatPanel({ localPreview }: { localPreview: boolean }) {
           onOpenCanvas={() => setSidePanel({ type: 'canvas' })}
           canvasOpen={canvasOpen}
           onCloseCanvas={() => setSidePanel(null)}
+          focusSignal={focusSignal}
           readOnlyMessage={
             localPreview ? 'Assistant is read-only in local preview. It connects on the live teacher desk.' : undefined
           }
