@@ -9,7 +9,6 @@ import {
   Loader2,
   Search,
   SlidersHorizontal,
-  X,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
@@ -25,8 +24,6 @@ import {
 } from "@/components/ui/select";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
-import { SectionSelector } from "@/components/drill/SectionSelector";
-import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { questionBank } from "@/lib/questionLoader";
@@ -35,7 +32,6 @@ import {
   filterSmartLRQuestionMatches,
   type SmartLRQuestionMatch,
 } from "@/components/mainhub/smartLRQuestionSearch";
-import type { DrillMode, FullSectionConfig, TypeDrillConfig } from "@/types/drill";
 import { findCatalogItem, type CatalogItem } from "@/lib/layoutCatalog";
 
 const MAINHUB_ORBITAL_CATALOG: CatalogItem[] = [
@@ -120,90 +116,6 @@ function SplineBoundary({ children }: { children: React.ReactNode }) {
     >
       {children}
     </React.Suspense>
-  );
-}
-
-function PracticeActionPanel({
-  selectedAction,
-  onClose,
-}: {
-  selectedAction: Extract<DrillMode, "full-section" | "type-drill">;
-  onClose: () => void;
-}) {
-  const navigate = useNavigate();
-  const { manifest, isLoading, error } = useQuestionBank();
-
-  const handleStartSection = React.useCallback(
-    (config: FullSectionConfig) => {
-      navigate("/drill", { state: { mode: "full-section", config } });
-    },
-    [navigate],
-  );
-
-  const handleStartTypeDrill = React.useCallback(
-    (config: TypeDrillConfig) => {
-      navigate("/drill", { state: { mode: "type-drill", config } });
-    },
-    [navigate],
-  );
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[320px] flex-col items-center justify-center gap-3 rounded-[24px] border border-slate-200 bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border border-slate-200 border-t-slate-900" />
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-          Loading questions...
-        </p>
-        <Button variant="ghost" size="sm" onClick={onClose}>
-          Cancel
-        </Button>
-      </div>
-    );
-  }
-
-  if (error || !manifest) {
-    return (
-      <div className="flex min-h-[320px] flex-col items-center justify-center gap-3 rounded-[24px] border border-slate-200 bg-white px-6 text-center">
-        <p className="text-sm font-medium text-slate-600">
-          {error ?? "Question bank is not ready yet."}
-        </p>
-        <Button variant="ghost" size="sm" onClick={onClose}>
-          Back
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_60px_rgba(15,23,42,0.08)] sm:p-5">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-            Practice Setup
-          </p>
-          <h2 className="mt-1 text-lg font-semibold tracking-normal text-slate-950">
-            {selectedAction === "full-section" ? "Full Section" : "Build a Set"}
-          </h2>
-        </div>
-        <Button type="button" variant="ghost" size="icon" onClick={onClose} aria-label="Close practice setup">
-          <X className="h-4 w-4" aria-hidden />
-        </Button>
-      </div>
-
-      {selectedAction === "full-section" ? (
-        <SectionSelector
-          manifest={manifest}
-          onStartSection={handleStartSection}
-          onCancel={onClose}
-        />
-      ) : (
-        <QuestionPicker
-          manifest={manifest}
-          onStartDrill={handleStartTypeDrill}
-          onCancel={onClose}
-        />
-      )}
-    </div>
   );
 }
 
@@ -663,10 +575,6 @@ function ConsoleSelect({
  */
 export default function AcademyMainhub() {
   const navigate = useNavigate();
-  const [selectedPracticeAction, setSelectedPracticeAction] = React.useState<Extract<
-    DrillMode,
-    "full-section" | "type-drill"
-  > | null>(null);
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
 
@@ -724,7 +632,7 @@ export default function AcademyMainhub() {
       } else if (itemId === "waj") {
         navigate("/journal");
       } else if (itemId === "full-section" || itemId === "type-drill") {
-        setSelectedPracticeAction(itemId);
+        navigate(`/practice?action=${itemId}`);
       }
     },
     [navigate, setOrbitalActive],
@@ -759,14 +667,7 @@ export default function AcademyMainhub() {
           </div>
 
           <section>
-            {selectedPracticeAction ? (
-              <PracticeActionPanel
-                selectedAction={selectedPracticeAction}
-                onClose={() => setSelectedPracticeAction(null)}
-              />
-            ) : (
-              <TodayFocusPanel />
-            )}
+            <TodayFocusPanel />
           </section>
         </section>
       </div>

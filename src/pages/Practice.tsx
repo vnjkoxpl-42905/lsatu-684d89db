@@ -3,7 +3,7 @@
  * renamed because the route is /practice and there is no /home surface.)
  */
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -196,7 +196,20 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
   const { theme, toggleTheme } = useTheme();
   const { manifest, isLoading, error } = useQuestionBank();
   const perms = useUserPermissions();
-  const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(() => {
+    const a = searchParams.get('action');
+    return a === 'full-section' || a === 'type-drill' ? a : null;
+  });
+  // Clears the action panel and strips ?action= so the URL never keeps a stale
+  // param after the user cancels out of a panel opened from the Mainhub orbital.
+  const clearAction = React.useCallback(() => {
+    setSelectedAction(null);
+    if (searchParams.has('action')) {
+      searchParams.delete('action');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   // Official testing format is the DEFAULT for every account. Users can opt
   // back into the classic layout, which is persisted as 'classic'. Anything
   // else (including missing/legacy values) is treated as official.
@@ -295,7 +308,11 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
   };
 
   const handleModeClick = (modeId: DrillMode) => {
-    setSelectedAction((prev) => (prev === modeId ? null : modeId));
+    if (selectedAction === modeId) {
+      clearAction();
+      return;
+    }
+    setSelectedAction(modeId);
   };
 
   const handleModeCardClick = (id: ModeCardId) => {
@@ -316,7 +333,7 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
         <div className="flex flex-col items-center justify-center py-16 gap-3">
           <div className="w-8 h-8 border border-border border-t-foreground/30 rounded-full animate-spin" />
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Loading questions…</p>
-          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={() => setSelectedAction(null)}>Cancel</Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={clearAction}>Cancel</Button>
         </div>
       );
     }
@@ -324,7 +341,7 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
       return (
         <div className="flex flex-col items-center justify-center py-16 gap-3">
           <p className="text-sm text-muted-foreground">{error}</p>
-          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={() => setSelectedAction(null)}>Back</Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={clearAction}>Back</Button>
         </div>
       );
     }
@@ -333,21 +350,21 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
     if (selectedAction === 'full-section') {
       return (
         <div className="animate-slide-up">
-          <SectionSelector manifest={manifest} onStartSection={handleStartSection} onCancel={() => setSelectedAction(null)} />
+          <SectionSelector manifest={manifest} onStartSection={handleStartSection} onCancel={clearAction} />
         </div>
       );
     }
     if (selectedAction === 'type-drill') {
       return (
         <div className="animate-slide-up">
-          <QuestionPicker manifest={manifest} onStartDrill={handleStartTypeDrill} onCancel={() => setSelectedAction(null)} />
+          <QuestionPicker manifest={manifest} onStartDrill={handleStartTypeDrill} onCancel={clearAction} />
         </div>
       );
     }
     if (selectedAction === 'natural-drill') {
       return (
         <div className="animate-slide-up">
-          <NaturalDrillCreator onStartDrill={handleStartNaturalDrill} onCancel={() => setSelectedAction(null)} />
+          <NaturalDrillCreator onStartDrill={handleStartNaturalDrill} onCancel={clearAction} />
         </div>
       );
     }
