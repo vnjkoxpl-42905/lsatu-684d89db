@@ -47,6 +47,7 @@ import { getRecentExposureSet, recordExposures } from '@/lib/questionExposure';
 import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { completeLinkedTodo } from '@/lib/todoActions';
 import type { Json } from '@/integrations/supabase/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
@@ -1643,6 +1644,7 @@ function DrillContent() {
           .eq('id', assignmentId)
           .eq('student_id', user.id);
         if (error) throw error;
+        await completeLinkedTodo(assignmentId);
         toast.success(`Homework complete — ${score.toFixed(0)}%`, {
           action: { label: 'Classroom', onClick: () => navigate('/classroom') },
         });
@@ -1665,6 +1667,7 @@ function DrillContent() {
           .eq('id', guidedAssignmentId)
           .eq('student_id', user.id);
         if (error) throw error;
+        await completeLinkedTodo(guidedAssignmentId);
       } catch (err) {
         console.error('[drill:guided-assignment:complete] update failed', {
           userId: user.id,

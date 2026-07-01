@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { questionBank } from '@/lib/questionLoader';
+import { completeLinkedTodo } from '@/lib/todoActions';
 
 export interface GuidedDrillBankFilter {
   qtypes?: string[];
@@ -203,4 +204,5 @@ export async function markCompleted(assignmentId: string) {
     .update({ completed_at: new Date().toISOString(), status: 'completed' })
     .eq('id', assignmentId);
   if (error) throw error;
+  await completeLinkedTodo(assignmentId);
 }

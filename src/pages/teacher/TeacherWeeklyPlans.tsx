@@ -13,6 +13,7 @@ import { useStudentWeeklyPlans } from '@/hooks/useWeeklyPlan';
 import HubStudentList from '@/components/hub/HubStudentList';
 import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import type { TodoAction } from '@/lib/todoActions';
 
 interface ItemDraft {
   day: string; // yyyy-MM-dd (local)
@@ -20,6 +21,15 @@ interface ItemDraft {
   estimatedMinutes?: number;
   /** ISO datetime — overrides day-end as due_at when set. */
   deadline?: string;
+  /** Optional wiring: launches a real drill/homework when the student taps it. */
+  action?: TodoAction;
+}
+
+/** A launchable assignment the student already has, offered as a task link. */
+interface LinkOption {
+  value: string; // unique key for the <select>
+  label: string;
+  action: TodoAction;
 }
 
 interface TemplateRow {
@@ -68,6 +78,41 @@ export default function TeacherWeeklyPlans() {
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data ?? [];
+    },
+  });
+
+  // Launchable assignments this student already has, offered as task links so a
+  // wired task both opens the surface and auto-completes when finished.
+  const { data: linkOptions = [] } = useQuery<LinkOption[]>({
+    queryKey: ['todo-link-options', studentId],
+    enabled: !!studentId,
+    queryFn: async () => {
+      const opts: LinkOption[] = [];
+      const { data: hw } = await supabase
+        .from('homework_assignments')
+        .select('id,set_title,status')
+        .eq('student_id', studentId as string)
+        .neq('status', 'completed');
+      for (const h of hw ?? []) {
+        opts.push({
+          value: `hw:${h.id}`,
+          label: `Homework: ${h.set_title ?? 'Untitled set'}`,
+          action: { kind: 'homework', ref_id: h.id, route: `/drill?assignmentId=${h.id}` },
+        });
+      }
+      const { data: gd } = await supabase
+        .from('guided_drill_assignments')
+        .select('id,status,guided_drills(title)')
+        .eq('student_id', studentId as string)
+        .neq('status', 'completed');
+      for (const g of (gd ?? []) as unknown as { id: string; guided_drills: { title: string | null } | null }[]) {
+        opts.push({
+          value: `gd:${g.id}`,
+          label: `Drill: ${g.guided_drills?.title ?? 'Guided drill'}`,
+          action: { kind: 'drill', ref_id: g.id, route: `/guided/${g.id}` },
+        });
+      }
+      return opts;
     },
   });
 
@@ -146,6 +191,7 @@ export default function TeacherWeeklyPlans() {
           status: 'assigned',
           unlock_at: unlockAt,
           due_at: dueAt,
+          metadata_json: it.action ? { action: it.action } : {},
         };
       });
 
@@ -454,6 +500,26 @@ export default function TeacherWeeklyPlans() {
                               onChange={(e) => updateItem(i, { deadline: e.target.value || undefined })}
                               className="h-6 text-[11px]"
                             />
+                          </div>
+                          <div>
+                            <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                              Link (optional)
+                            </div>
+                            <select
+                              value={it.action ? linkOptions.find((o) => o.action.ref_id === it.action?.ref_id)?.value ?? '' : ''}
+                              onChange={(e) => {
+                                const opt = linkOptions.find((o) => o.value === e.target.value);
+                                updateItem(i, { action: opt?.action });
+                              }}
+                              className="h-6 w-full text-[11px] rounded-md bg-zinc-950 border border-zinc-800 text-zinc-200 px-1"
+                            >
+                              <option value="">No link (plain task)</option>
+                              {linkOptions.map((o) => (
+                                <option key={o.value} value={o.value}>
+                                  {o.label}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                         </li>
                       ))}

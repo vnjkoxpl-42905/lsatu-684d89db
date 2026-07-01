@@ -1,3 +1,5 @@
+import { supabase } from '@/integrations/supabase/client';
+
 // Task -> action wiring for the student to-do list.
 //
 // A weekly_plan_item may carry an `action` object in metadata_json describing
@@ -50,5 +52,23 @@ export function resolveTodoRoute(action: TodoAction, returnTo = '/schedule'): st
       return ref ? `/bootcamp/${ref}` : '/bootcamps';
     default:
       return null;
+  }
+}
+
+/**
+ * Auto-complete any of the signed-in student's to-do items wired to a just-
+ * finished surface. Matches weekly_plan_items whose metadata_json.action.ref_id
+ * equals refId. RLS scopes the update to the caller's own rows. Non-fatal: the
+ * source assignment stays the source of truth, so failure only logs.
+ */
+export async function completeLinkedTodo(refId: string | null | undefined): Promise<void> {
+  if (!refId) return;
+  const { error } = await supabase
+    .from('weekly_plan_items')
+    .update({ status: 'completed' })
+    .eq('metadata_json->action->>ref_id', refId)
+    .neq('status', 'completed');
+  if (error) {
+    console.error('[todo:auto-complete] failed', { refId, error });
   }
 }
