@@ -13,33 +13,19 @@ export interface ModelOption {
   id: string;
   label: string;
   short: string;
-  provider: 'Auto' | 'Google — Gemini' | 'OpenAI — ChatGPT';
+  provider: 'Auto' | 'Google — Gemini';
   hint: string;
 }
 
 export const AUTO_MODEL_ID = 'auto';
 
+// Only real Google Gemini models the public API accepts with a GEMINI_API_KEY.
+// The gemini-proxy edge function normalises any legacy id into one of these.
 export const AVAILABLE_MODELS: ModelOption[] = [
-  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'picks the cheapest model that can do the job' },
-  // Gemini
-  { id: 'google/gemini-3-flash-preview', short: 'Gemini 3 Flash', label: 'Gemini 3 Flash (preview)', provider: 'Google — Gemini', hint: 'fast default' },
-  { id: 'google/gemini-3.1-flash-lite', short: 'Gemini 3.1 Lite', label: 'Gemini 3.1 Flash Lite', provider: 'Google — Gemini', hint: 'cheapest' },
-  { id: 'google/gemini-3.5-flash', short: 'Gemini 3.5 Flash', label: 'Gemini 3.5 Flash', provider: 'Google — Gemini', hint: 'fast + strong' },
-  { id: 'google/gemini-3.1-pro-preview', short: 'Gemini 3.1 Pro', label: 'Gemini 3.1 Pro (preview)', provider: 'Google — Gemini', hint: 'smartest preview' },
-  { id: 'google/gemini-2.5-pro', short: 'Gemini 2.5 Pro', label: 'Gemini 2.5 Pro', provider: 'Google — Gemini', hint: 'strong reasoning' },
-  { id: 'google/gemini-2.5-flash', short: 'Gemini 2.5 Flash', label: 'Gemini 2.5 Flash', provider: 'Google — Gemini', hint: 'balanced' },
-  { id: 'google/gemini-2.5-flash-lite', short: 'Gemini 2.5 Lite', label: 'Gemini 2.5 Flash Lite', provider: 'Google — Gemini', hint: 'cheap · fast' },
-  // OpenAI
-  { id: 'openai/gpt-5', short: 'GPT-5', label: 'GPT-5', provider: 'OpenAI — ChatGPT', hint: 'all-rounder' },
-  { id: 'openai/gpt-5-mini', short: 'GPT-5 Mini', label: 'GPT-5 Mini', provider: 'OpenAI — ChatGPT', hint: 'balanced' },
-  { id: 'openai/gpt-5-nano', short: 'GPT-5 Nano', label: 'GPT-5 Nano', provider: 'OpenAI — ChatGPT', hint: 'fastest · cheapest' },
-  { id: 'openai/gpt-5.2', short: 'GPT-5.2', label: 'GPT-5.2', provider: 'OpenAI — ChatGPT', hint: 'enhanced reasoning' },
-  { id: 'openai/gpt-5.4', short: 'GPT-5.4', label: 'GPT-5.4', provider: 'OpenAI — ChatGPT', hint: 'advanced reasoning' },
-  { id: 'openai/gpt-5.4-mini', short: 'GPT-5.4 Mini', label: 'GPT-5.4 Mini', provider: 'OpenAI — ChatGPT', hint: 'balanced 5.4' },
-  { id: 'openai/gpt-5.4-nano', short: 'GPT-5.4 Nano', label: 'GPT-5.4 Nano', provider: 'OpenAI — ChatGPT', hint: 'fast 5.4' },
-  { id: 'openai/gpt-5.4-pro', short: 'GPT-5.4 Pro', label: 'GPT-5.4 Pro', provider: 'OpenAI — ChatGPT', hint: 'premium 5.4' },
-  { id: 'openai/gpt-5.5', short: 'GPT-5.5', label: 'GPT-5.5', provider: 'OpenAI — ChatGPT', hint: 'most capable' },
-  { id: 'openai/gpt-5.5-pro', short: 'GPT-5.5 Pro', label: 'GPT-5.5 Pro', provider: 'OpenAI — ChatGPT', hint: 'premium' },
+  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'picks the cheapest Gemini model that fits the task' },
+  { id: 'google/gemini-2.5-pro', short: 'Gemini 2.5 Pro', label: 'Gemini 2.5 Pro', provider: 'Google — Gemini', hint: 'strongest reasoning' },
+  { id: 'google/gemini-2.5-flash', short: 'Gemini 2.5 Flash', label: 'Gemini 2.5 Flash', provider: 'Google — Gemini', hint: 'balanced default · best for tools' },
+  { id: 'google/gemini-2.5-flash-lite', short: 'Gemini 2.5 Lite', label: 'Gemini 2.5 Flash Lite', provider: 'Google — Gemini', hint: 'fastest · cheapest' },
 ];
 
 export const DEFAULT_MODEL_ID = AUTO_MODEL_ID;
@@ -48,7 +34,7 @@ export function getModelOption(id: string | null | undefined): ModelOption {
   return AVAILABLE_MODELS.find((m) => m.id === id) ?? AVAILABLE_MODELS[0];
 }
 
-const PROVIDERS: ModelOption['provider'][] = ['Auto', 'Google — Gemini', 'OpenAI — ChatGPT'];
+const PROVIDERS: ModelOption['provider'][] = ['Auto', 'Google — Gemini'];
 
 export function ModelPicker({
   value,
