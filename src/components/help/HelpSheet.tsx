@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Camera, Send, X, Loader2, Image as ImageIcon, Compass } from 'lucide-react';
+import { Camera, Send, X, Loader2, Compass } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -13,7 +13,8 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
-import { useConversationMessages } from '@/hooks/useInbox';
+import { useConversationMessages, type MessageAttachment } from '@/hooks/useInbox';
+import { AttachmentCard } from '@/components/inbox/AttachmentCard';
 import {
   getHelpSnapshot,
   formatHelpSnapshot,
@@ -31,6 +32,36 @@ interface HelpSheetProps {
   onReplayTour?: () => void;
 }
 
+function isVisibleHelpAttachment(attachment: MessageAttachment) {
+  return attachment.file_name !== 'context.json';
+}
+
+function helpBubbleBody(body: string, hasImageAttachment: boolean) {
+  if (!hasImageAttachment) return body;
+  if (body.trim().startsWith('[Help request]')) {
+    return body.replace('[Help request]', 'Screenshot attached').trim();
+  }
+  return body;
+}
+
+function LocalScreenshotPreview({ file }: { file: File }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const objectUrl = URL.createObjectURL(file);
+    setUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
+
+  return (
+    <img
+      src={url ?? ''}
+      alt="Screenshot preview"
+      className="h-10 w-14 rounded object-cover border border-border"
+    />
+  );
+}
+
 export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpSheetProps) {
   const { user } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
@@ -43,7 +74,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages } = useConversationMessages(conversationId);
+  const { messages, refresh } = useConversationMessages(conversationId);
 
   // Establish the thread once the sheet opens.
   useEffect(() => {
@@ -167,6 +198,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
       // Keep the screenshot field empty so the next message is just text
       // unless the student explicitly clicks "Capture".
       setScreenshot(null);
+      await refresh();
       toast.success('Sent to Joshua');
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Could not send');
@@ -206,26 +238,32 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
           ) : (
             messages.slice(-30).map((m) => {
               const mine = m.sender_id === user?.id;
+              const visibleAttachments = m.attachments.filter(isVisibleHelpAttachment);
+              const hasImageAttachment = visibleAttachments.some((a) =>
+                (a.mime_type ?? '').startsWith('image/'),
+              );
               return (
                 <div key={m.id} className={cn('flex', mine ? 'justify-end' : 'justify-start')}>
-                  <div
-                    className={cn(
-                      'max-w-[85%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words',
-                      mine
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-foreground',
-                    )}
-                  >
-                    {m.body}
-                    {m.attachments.length > 0 && (
-                      <div className="mt-1.5 space-y-1">
-                        {m.attachments.map((a) => (
-                          <div
-                            key={a.id}
-                            className="text-[11px] opacity-80 inline-flex items-center gap-1.5"
-                          >
-                            <ImageIcon className="w-3 h-3" /> {a.file_name}
-                          </div>
+                  <div className={cn('max-w-[88%] space-y-2', mine ? 'items-end' : 'items-start')}>
+                    <div
+                      className={cn(
+                        'rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words',
+                        mine
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted text-foreground',
+                      )}
+                    >
+                      {helpBubbleBody(m.body, hasImageAttachment)}
+                    </div>
+                    {visibleAttachments.length > 0 && (
+                      <div
+                        className={cn(
+                          'flex flex-col gap-2',
+                          mine ? 'items-end' : 'items-start',
+                        )}
+                      >
+                        {visibleAttachments.map((a) => (
+                          <AttachmentCard key={a.id} attachment={a} />
                         ))}
                       </div>
                     )}
@@ -256,11 +294,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
             </div>
           ) : screenshot ? (
             <div className="rounded-md border border-border bg-muted/40 px-2.5 py-2 flex items-center gap-2.5">
-              <img
-                src={URL.createObjectURL(screenshot)}
-                alt="Screenshot preview"
-                className="h-10 w-14 rounded object-cover border border-border"
-              />
+              <LocalScreenshotPreview file={screenshot} />
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-medium truncate">Screenshot ready</div>
                 <div className="text-[10px] text-muted-foreground">
