@@ -215,10 +215,13 @@ async function handleEmbeddings(req: Request, key: string) {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  const key = Deno.env.get("GeminiFreetier") || Deno.env.get("GEMINIFREETIER") || Deno.env.get("GEMINI_FREETIER");
+  const key = Deno.env.get("GeminiFreetier")
+    || Deno.env.get("GEMINIFREETIER")
+    || Deno.env.get("GEMINI_FREETIER")
+    || Deno.env.get("GEMINI_API_KEY");
   if (!key) {
     return new Response(
-      JSON.stringify({ error: { message: "GeminiFreetier secret is not configured" } }),
+      JSON.stringify({ error: { message: "Gemini API key is not configured (set GeminiFreetier or GEMINI_API_KEY)" } }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
