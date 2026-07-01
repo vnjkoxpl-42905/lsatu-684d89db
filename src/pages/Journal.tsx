@@ -6,5 +6,5 @@
 import { JournalEntrySurface } from '@/components/journal/entry/JournalEntrySurface';
 
 export default function Journal() {
-  return <JournalEntrySurface />;
+  return <JournalEntrySurface embedded />;
 }

@@ -303,7 +303,7 @@ const App = () => {
                       <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
                     } />
                     <Route path="/journal" element={
-                      <ProtectedRoute flag="has_journal_access">
+                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]}>
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                           <Journal />
                         </React.Suspense>

@@ -26,6 +26,7 @@ const ROUTE_TITLES: Record<string, string> = {
   "/bootcamps": "Bootcamps",
   "/inbox": "Messages",
   "/practice": "Practice Hub",
+  "/journal": "Wrong Answer Journal",
   "/activities": "Activity Centre",
   "/schedule": "Schedule",
   "/teacher": "Teacher Workspace",
@@ -85,13 +86,17 @@ export default function StudentShell() {
   React.useEffect(() => {
     try {
       window.localStorage.setItem("lsatu:sidecarOpen", sidecarOpen ? "1" : "0");
-    } catch {}
+    } catch {
+      // Ignore storage failures in private or restricted browsing contexts.
+    }
   }, [sidecarOpen]);
 
   React.useEffect(() => {
     try {
       window.localStorage.setItem(SIDECAR_WIDTH_STORAGE_KEY, String(Math.round(sidecarWidth)));
-    } catch {}
+    } catch {
+      // Ignore storage failures in private or restricted browsing contexts.
+    }
   }, [sidecarWidth]);
 
   React.useEffect(() => {

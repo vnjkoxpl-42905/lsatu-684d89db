@@ -6,9 +6,10 @@ import LockedModule from "@/components/LockedModule";
 
 interface ProtectedRouteProps {
   /**
-   * Optional feature flag. Ignored when `requireAdmin` is true.
+   * Optional feature flag, or a list of acceptable feature flags. Ignored when
+   * `requireAdmin` is true.
    */
-  flag?: PermissionFlag;
+  flag?: PermissionFlag | readonly PermissionFlag[];
   /**
    * Allow any signed-in user through even when the feature flag is false.
    * Useful for core student workspace pages that should stay reachable while
@@ -46,7 +47,9 @@ export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, chil
     return <>{children}</>;
   }
 
-  if (!user && (requireAdmin || flag)) {
+  const flags = Array.isArray(flag) ? flag : flag ? [flag] : [];
+
+  if (!user && (requireAdmin || flags.length > 0)) {
     const returnTo = `${location.pathname}${location.search}${location.hash}`;
     return (
       <Navigate
@@ -64,8 +67,8 @@ export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, chil
     return <>{children}</>;
   }
 
-  if (flag) {
-    if (permissions.is_admin || permissions[flag]) {
+  if (flags.length > 0) {
+    if (permissions.is_admin || flags.some((f) => permissions[f])) {
       return <>{children}</>;
     }
     return <LockedModule />;

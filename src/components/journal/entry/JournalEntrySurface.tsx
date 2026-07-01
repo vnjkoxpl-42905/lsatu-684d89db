@@ -36,6 +36,10 @@ import { JournalQuestionPane } from './JournalQuestionPane';
 import { ReviewForm, type JournalDraft } from './ReviewForm';
 import { NewEntryPicker } from './NewEntryPicker';
 
+interface JournalEntrySurfaceProps {
+  embedded?: boolean;
+}
+
 const EMPTY_DRAFT: JournalDraft = {
   self_rating: null,
   date_taken: '',
@@ -66,7 +70,7 @@ function seedDraft(row: WrongAnswerSmartRow): JournalDraft {
   };
 }
 
-export function JournalEntrySurface() {
+export function JournalEntrySurface({ embedded = false }: JournalEntrySurfaceProps = {}) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -222,27 +226,29 @@ export function JournalEntrySurface() {
   }, [rows]);
 
   return (
-    <div className="flex h-screen flex-col bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="flex items-center justify-between px-4 py-3 lg:px-8">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 gap-2 text-muted-foreground hover:bg-accent hover:text-foreground"
-            onClick={() => navigate('/mainhub')}
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Return to Main Hub
-          </Button>
-          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Wrong Answer Journal
-          </span>
-          <div className="flex items-center gap-2">
-            <LogoutButton />
-            <ThemeToggle />
+    <div className={cn('flex flex-col bg-background', embedded ? 'h-full overflow-hidden rounded-lg border border-border' : 'h-screen')}>
+      {!embedded && (
+        <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
+          <div className="flex items-center justify-between px-4 py-3 lg:px-8">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="-ml-2 gap-2 text-muted-foreground hover:bg-accent hover:text-foreground"
+              onClick={() => navigate('/mainhub')}
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Return to Main Hub
+            </Button>
+            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              Wrong Answer Journal
+            </span>
+            <div className="flex items-center gap-2">
+              <LogoutButton />
+              <ThemeToggle />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       <ResizablePanelGroup direction="horizontal" className="flex-1">
         <ResizablePanel

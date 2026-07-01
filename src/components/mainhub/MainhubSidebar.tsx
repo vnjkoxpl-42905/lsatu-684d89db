@@ -9,6 +9,7 @@ import {
   Flame,
   Archive,
   PencilRuler,
+  NotebookPen,
   Sparkles,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -26,7 +27,7 @@ type NavItem = {
   to: string;
   label: string;
   Icon: React.ComponentType<{ className?: string }>;
-  flag?: PermissionFlag;
+  flag?: PermissionFlag | readonly PermissionFlag[];
   adminOnly?: boolean;
   alwaysVisible?: boolean;
   activePrefixes?: readonly string[];
@@ -40,6 +41,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
   { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
+  { to: "/journal", label: "Wrong Answer Journal", Icon: NotebookPen, flag: ["has_journal_access", "has_waj_access"], activePrefixes: ["/journal", "/waj"] },
   { to: "/activities", label: "Activity Centre", Icon: Sparkles, flag: "has_activity_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access", alwaysVisible: true },
 ] as const;
@@ -94,7 +96,8 @@ export default function MainhubSidebar({ displayName, onNavigate }: MainhubSideb
             {orderedNav.filter((item) => {
               if (item.adminOnly) return permissions.is_admin;
               if (item.alwaysVisible) return true;
-              return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
+              const flags = Array.isArray(item.flag) ? item.flag : item.flag ? [item.flag] : [];
+              return permissions.is_admin || flags.some((flag) => permissions[flag]);
             }).map(({ to, label, Icon, activePrefixes }) => {
               const prefixActive = activePrefixes?.some((p) =>
                 location.pathname === p.replace(/\/$/, "") ||
