@@ -1762,6 +1762,7 @@ export type Database = {
           has_waj_access: boolean
           last_practice_date: string | null
           last_seen_at: string | null
+          layout_prefs: Json | null
           level: number | null
           longest_streak: number | null
           overall_answered: number | null
@@ -1794,6 +1795,7 @@ export type Database = {
           has_waj_access?: boolean
           last_practice_date?: string | null
           last_seen_at?: string | null
+          layout_prefs?: Json | null
           level?: number | null
           longest_streak?: number | null
           overall_answered?: number | null
@@ -1826,6 +1828,7 @@ export type Database = {
           has_waj_access?: boolean
           last_practice_date?: string | null
           last_seen_at?: string | null
+          layout_prefs?: Json | null
           level?: number | null
           longest_streak?: number | null
           overall_answered?: number | null
