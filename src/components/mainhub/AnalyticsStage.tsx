@@ -15,6 +15,7 @@ import { ExternalLink, Flame, Target, TrendingUp, ListChecks } from "lucide-reac
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
+import ImportedMetricsPanel from "@/components/analytics/ImportedMetricsPanel";
 import type { DimensionStat, PriorityRow } from "@/lib/mainhubAnalytics";
 
 const ACTIVE_TABS = ["overview", "drills", "priorities"] as const;
@@ -139,6 +140,7 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
             <AccuracyTrendCard analytics={analytics} />
             <PerformanceByTypeCard rows={analytics.byType} />
           </div>
+          <ImportedMetricsPanel variant="light" />
         </TabsContent>
 
         <TabsContent value="drills" className="mt-5 space-y-6">
