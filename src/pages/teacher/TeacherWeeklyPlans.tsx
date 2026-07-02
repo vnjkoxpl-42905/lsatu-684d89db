@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Loader2, CalendarDays, Plus, Send, Save, FolderOpen, X, Sparkles } from 'lucide-react';
+import { Loader2, CalendarDays, Plus, Send, Save, FolderOpen, X, Sparkles, Trash2, ClipboardList } from 'lucide-react';
 import { addDays, endOfDay, format, parseISO, startOfDay, startOfWeek } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,6 +15,10 @@ import HubStudentList from '@/components/hub/HubStudentList';
 import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import type { TodoAction } from '@/lib/todoActions';
+import {
+  parseScheduleTemplateText,
+  type ScheduleTemplateItem as TemplateItem,
+} from '@/lib/scheduleTemplateParser';
 
 interface ItemDraft {
   day: string; // yyyy-MM-dd (local)
@@ -40,14 +45,6 @@ interface TemplateRow {
   created_at: string;
 }
 
-interface TemplateItem {
-  day_offset: number;
-  title: string;
-  estimated_minutes?: number | null;
-  instructions?: string | null;
-  deadline_offset_minutes?: number | null;
-}
-
 export default function TeacherWeeklyPlans() {
   const [searchParams, setSearchParams] = useSearchParams();
   const studentId = searchParams.get('student');
@@ -61,6 +58,11 @@ export default function TeacherWeeklyPlans() {
   const [title, setTitle] = useState('Weekly plan');
   const [items, setItems] = useState<ItemDraft[]>([]);
   const [creating, setCreating] = useState(false);
+  const [templateTitle, setTemplateTitle] = useState('');
+  const [templateDescription, setTemplateDescription] = useState('');
+  const [pastedSchedule, setPastedSchedule] = useState('');
+  const [savingTemplate, setSavingTemplate] = useState(false);
+  const [deletingTemplateId, setDeletingTemplateId] = useState<string | null>(null);
 
   // Templates ─────────────────────────────────────────────────────────
   const { data: templates = [], refetch: refetchTemplates } = useQuery<TemplateRow[]>({
@@ -289,16 +291,9 @@ export default function TeacherWeeklyPlans() {
     }
   };
 
-  const saveAsTemplate = async () => {
-    if (items.length === 0) {
-      toast.error('Add some items first');
-      return;
-    }
-    const tplTitle = window.prompt('Template title', title || 'Weekly plan template');
-    if (!tplTitle) return;
-
+  const itemsToTemplateItems = (sourceItems: ItemDraft[]): TemplateItem[] => {
     const start = parseISO(weekStart);
-    const tplItems: TemplateItem[] = items.map((it) => {
+    return sourceItems.map((it) => {
       const dayDate = parseISO(it.day);
       const offset = Math.round((startOfDay(dayDate).getTime() - startOfDay(start).getTime()) / (24 * 60 * 60 * 1000));
       let deadlineOffset: number | null = null;
@@ -313,36 +308,15 @@ export default function TeacherWeeklyPlans() {
         deadline_offset_minutes: deadlineOffset,
       };
     });
-
-    try {
-      const { error } = await (supabase as unknown as {
-        from: (t: string) => {
-          insert: (v: unknown) => Promise<{ error: { message: string } | null }>;
-        };
-      })
-        .from('schedule_templates')
-        .insert({
-          created_by: user?.id,
-          title: tplTitle,
-          template_type: 'weekly',
-          items_json: tplItems,
-        });
-      if (error) throw error;
-      toast.success('Template saved');
-      refetchTemplates();
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Save failed');
-    }
   };
 
-  const loadTemplate = (tpl: TemplateRow) => {
+  const templateItemsToDrafts = (tplItems: TemplateItem[]): ItemDraft[] => {
     const start = parseISO(weekStart);
-    const next: ItemDraft[] = (tpl.items_json ?? []).map((t) => {
+    return (tplItems ?? []).map((t) => {
       const day = addDays(start, t.day_offset ?? 0);
       let deadline: string | undefined;
       if (typeof t.deadline_offset_minutes === 'number') {
         const d = new Date(start.getTime() + t.deadline_offset_minutes * 60 * 1000);
-        // datetime-local format: yyyy-MM-ddTHH:mm
         deadline = format(d, "yyyy-MM-dd'T'HH:mm");
       }
       return {
@@ -352,9 +326,106 @@ export default function TeacherWeeklyPlans() {
         deadline,
       };
     });
-    setItems(next);
+  };
+
+  const saveTemplate = async (tplItems: TemplateItem[], fallbackTitle: string) => {
+    const cleanTitle = templateTitle.trim() || fallbackTitle.trim();
+    if (!cleanTitle) {
+      toast.error('Name the stored schedule first');
+      return;
+    }
+    if (!user?.id) {
+      toast.error('You must be signed in as an admin to save schedules');
+      return;
+    }
+    if (tplItems.length === 0) {
+      toast.error('Add or paste at least one schedule item');
+      return;
+    }
+
+    setSavingTemplate(true);
+    try {
+      const { error } = await (supabase as unknown as {
+        from: (t: string) => {
+          insert: (v: unknown) => Promise<{ error: { message: string } | null }>;
+        };
+      })
+        .from('schedule_templates')
+        .insert({
+          created_by: user.id,
+          title: cleanTitle,
+          description: templateDescription.trim() || null,
+          template_type: 'weekly',
+          items_json: tplItems.filter((item) => item.title.trim()),
+        });
+      if (error) throw error;
+      toast.success('Stored schedule saved');
+      setTemplateTitle('');
+      setTemplateDescription('');
+      setPastedSchedule('');
+      await refetchTemplates();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Save failed');
+    } finally {
+      setSavingTemplate(false);
+    }
+  };
+
+  const saveBuilderAsTemplate = async () => {
+    if (items.length === 0) {
+      toast.error('Add some items first');
+      return;
+    }
+    if (items.some((it) => !it.title.trim())) {
+      toast.error('Every item needs a title before saving');
+      return;
+    }
+    await saveTemplate(itemsToTemplateItems(items), title || 'Weekly plan template');
+  };
+
+  const savePastedSchedule = async () => {
+    const parsed = parseScheduleTemplateText(pastedSchedule);
+    await saveTemplate(parsed, 'Stored schedule');
+  };
+
+  const loadPastedSchedule = () => {
+    const parsed = parseScheduleTemplateText(pastedSchedule);
+    if (parsed.length === 0) {
+      toast.error('No schedule items found. Use day headings like Monday, Tuesday, or inline labels like Monday: task.');
+      return;
+    }
+    setItems(templateItemsToDrafts(parsed));
+    if (templateTitle.trim()) setTitle(templateTitle.trim());
+    toast.success(`Loaded ${parsed.length} item${parsed.length === 1 ? '' : 's'} into the builder`);
+  };
+
+  const loadTemplate = (tpl: TemplateRow) => {
+    setItems(templateItemsToDrafts(tpl.items_json ?? []));
     if (tpl.title) setTitle(tpl.title);
     toast.success(`Loaded "${tpl.title}"`);
+  };
+
+  const deleteTemplate = async (tpl: TemplateRow) => {
+    setDeletingTemplateId(tpl.id);
+    try {
+      const { error } = await (supabase as unknown as {
+        from: (t: string) => {
+          delete: () => {
+            eq: (k: string, v: string) => Promise<{ error: { message: string } | null }>;
+          };
+        };
+      })
+        .from('schedule_templates')
+        .delete()
+        .eq('id', tpl.id);
+      if (error) throw error;
+      toast.success(`Deleted "${tpl.title}"`);
+      await refetchTemplates();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Delete failed');
+    } finally {
+      setDeletingTemplateId(null);
+    }
   };
 
   // Reset items when student changes so we never publish stale state to the
@@ -414,28 +485,135 @@ export default function TeacherWeeklyPlans() {
               </div>
             </div>
 
-            {/* Templates row */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <Button variant="outline" size="sm" onClick={saveAsTemplate} disabled={items.length === 0}>
-                <Save className="w-3.5 h-3.5 mr-1.5" /> Save as template
-              </Button>
-              {templates.length > 0 && (
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <FolderOpen className="w-3.5 h-3.5 text-zinc-500" />
-                  <span className="text-[11px] text-zinc-500 uppercase tracking-wider">Templates:</span>
-                  {templates.map((tpl) => (
-                    <button
-                      key={tpl.id}
-                      type="button"
-                      onClick={() => loadTemplate(tpl)}
-                      className="text-[11px] px-2 py-1 rounded-full border border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900"
-                    >
-                      {tpl.title}
-                    </button>
-                  ))}
+            <section className="rounded-lg border border-zinc-800 bg-zinc-900/30">
+              <div className="border-b border-zinc-800 px-4 py-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <FolderOpen className="w-4 h-4 text-zinc-400" />
+                  <div>
+                    <h3 className="text-sm font-semibold text-zinc-100">Stored schedules</h3>
+                    <p className="text-xs text-zinc-500">
+                      Save premade weekly schedules, load one for a student, then publish it.
+                    </p>
+                  </div>
                 </div>
-              )}
-            </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={saveBuilderAsTemplate}
+                  disabled={savingTemplate || items.length === 0}
+                >
+                  {savingTemplate ? (
+                    <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                  ) : (
+                    <Save className="w-3.5 h-3.5 mr-1.5" />
+                  )}
+                  Store current plan
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-4 p-4">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs">Stored schedule name</Label>
+                      <Input
+                        value={templateTitle}
+                        onChange={(e) => setTemplateTitle(e.target.value)}
+                        placeholder="Example: RC maintenance week"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Notes</Label>
+                      <Input
+                        value={templateDescription}
+                        onChange={(e) => setTemplateDescription(e.target.value)}
+                        placeholder="Optional internal note"
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-xs">Paste premade schedule</Label>
+                    <Textarea
+                      value={pastedSchedule}
+                      onChange={(e) => setPastedSchedule(e.target.value)}
+                      placeholder={`Monday:\n- Timed LR section (35 min)\n- Blind review misses (45 min)\n\nWednesday: RC passage set (30 min)`}
+                      className="mt-1 min-h-[132px] resize-y text-sm"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={loadPastedSchedule}
+                      disabled={!pastedSchedule.trim()}
+                    >
+                      <ClipboardList className="w-3.5 h-3.5 mr-1.5" />
+                      Load paste into builder
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={savePastedSchedule}
+                      disabled={savingTemplate || !pastedSchedule.trim()}
+                    >
+                      {savingTemplate ? (
+                        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                      ) : (
+                        <Save className="w-3.5 h-3.5 mr-1.5" />
+                      )}
+                      Save pasted schedule
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="rounded-md border border-zinc-800 bg-zinc-950/60">
+                  <div className="px-3 py-2 border-b border-zinc-800 text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
+                    Library
+                  </div>
+                  {templates.length === 0 ? (
+                    <div className="px-3 py-8 text-center text-xs text-zinc-500">
+                      No stored schedules yet.
+                    </div>
+                  ) : (
+                    <ul className="max-h-[260px] overflow-y-auto divide-y divide-zinc-800">
+                      {templates.map((tpl) => (
+                        <li key={tpl.id} className="px-3 py-2.5">
+                          <div className="flex items-start gap-2">
+                            <button
+                              type="button"
+                              onClick={() => loadTemplate(tpl)}
+                              className="min-w-0 flex-1 text-left"
+                            >
+                              <div className="text-sm text-zinc-100 truncate">{tpl.title}</div>
+                              <div className="text-[11px] text-zinc-500">
+                                {tpl.items_json?.length ?? 0} item{(tpl.items_json?.length ?? 0) === 1 ? '' : 's'}
+                                {tpl.description ? ` · ${tpl.description}` : ''}
+                              </div>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => deleteTemplate(tpl)}
+                              disabled={deletingTemplateId === tpl.id}
+                              className="p-1 rounded text-zinc-600 hover:text-zinc-200 hover:bg-zinc-900 disabled:opacity-50"
+                              aria-label={`Delete ${tpl.title}`}
+                            >
+                              {deletingTemplateId === tpl.id ? (
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-2">
               {days.map((d) => (
