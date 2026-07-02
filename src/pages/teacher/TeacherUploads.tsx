@@ -8,6 +8,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminUploadsQueue } from '@/hooks/useExternalWorkUploads';
 import { cn } from '@/lib/utils';
 
+interface ParseResponse {
+  ok?: boolean;
+  status?: string;
+  error?: string;
+  confidence?: number;
+  metricsApplied?: number;
+}
+
 export default function TeacherUploads() {
   const [allFilter, setAllFilter] = useState(false);
   const { data: uploads = [], isLoading, refetch } = useAdminUploadsQueue({ all: allFilter });
@@ -39,16 +47,17 @@ export default function TeacherUploads() {
   const approveApply = async (id: string) => {
     setBusy(id);
     try {
-      const { data, error } = await supabase.functions.invoke('parse-external-work', {
-        body: { uploadId: id, forceApply: true },
-      });
+      const { data, error } = await supabase.functions.invoke<ParseResponse>(
+        'parse-external-work',
+        { body: { uploadId: id, forceApply: true } },
+      );
       if (error) throw error;
-      if (data && (data as any).error) throw new Error((data as any).error);
+      if (data?.error) throw new Error(data.error);
       qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });
       await refetch();
-      toast.success(`Applied ${(data as any)?.metricsApplied ?? 0} metrics`);
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Apply failed');
+      toast.success(`Applied ${data?.metricsApplied ?? 0} metrics`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Apply failed');
     } finally {
       setBusy(null);
     }
@@ -57,16 +66,17 @@ export default function TeacherUploads() {
   const rerunParse = async (id: string) => {
     setBusy(id);
     try {
-      const { data, error } = await supabase.functions.invoke('parse-external-work', {
-        body: { uploadId: id },
-      });
+      const { data, error } = await supabase.functions.invoke<ParseResponse>(
+        'parse-external-work',
+        { body: { uploadId: id } },
+      );
       if (error) throw error;
-      if (data && (data as any).error) throw new Error((data as any).error);
+      if (data?.error) throw new Error(data.error);
       qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });
       await refetch();
       toast.success('Re-parsed');
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Re-parse failed');
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Re-parse failed');
     } finally {
       setBusy(null);
     }
