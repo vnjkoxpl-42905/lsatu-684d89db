@@ -12,7 +12,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import FlaggedQuestionsList from '@/components/analytics/FlaggedQuestionsList';
-import ImportedMetricsPanel from '@/components/analytics/ImportedMetricsPanel';
 import { Flag } from 'lucide-react';
 
 interface AnalyticsData {
@@ -463,10 +462,6 @@ const Analytics = () => {
             </div>
           </>
         )}
-
-        {/* Imported outside work (7Sage / PT). Renders whenever the student has
-            any parsed uploads, even if they have no in-app attempts yet. */}
-        {!loadError && <ImportedMetricsPanel className="mt-12" />}
       </div>
     </div>
   );

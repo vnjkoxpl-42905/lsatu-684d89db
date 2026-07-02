@@ -968,16 +968,12 @@ export type Database = {
       external_work_uploads: {
         Row: {
           applied_to_analytics: boolean
-          confidence_score: number | null
           created_at: string
-          extracted_text: string | null
           file_name: string
           file_type: string | null
           id: string
-          parsed_json: Json | null
           processing_status: string
           reviewed_at: string | null
-          reviewed_by: string | null
           source_platform: string | null
           storage_path: string
           student_id: string
@@ -986,16 +982,12 @@ export type Database = {
         }
         Insert: {
           applied_to_analytics?: boolean
-          confidence_score?: number | null
           created_at?: string
-          extracted_text?: string | null
           file_name: string
           file_type?: string | null
           id?: string
-          parsed_json?: Json | null
           processing_status?: string
           reviewed_at?: string | null
-          reviewed_by?: string | null
           source_platform?: string | null
           storage_path: string
           student_id: string
@@ -1004,72 +996,17 @@ export type Database = {
         }
         Update: {
           applied_to_analytics?: boolean
-          confidence_score?: number | null
           created_at?: string
-          extracted_text?: string | null
           file_name?: string
           file_type?: string | null
           id?: string
-          parsed_json?: Json | null
           processing_status?: string
           reviewed_at?: string | null
-          reviewed_by?: string | null
           source_platform?: string | null
           storage_path?: string
           student_id?: string
           upload_type?: string
           uploaded_by?: string
-        }
-        Relationships: []
-      }
-      student_external_metrics: {
-        Row: {
-          avg_time_ms: number | null
-          captured_at: string | null
-          created_at: string
-          first_accuracy: number | null
-          id: string
-          metric_kind: string
-          period_label: string | null
-          pt_number: string | null
-          question_type: string | null
-          sample_size: number | null
-          scaled_score: number | null
-          source_platform: string | null
-          source_upload_id: string
-          student_id: string
-        }
-        Insert: {
-          avg_time_ms?: number | null
-          captured_at?: string | null
-          created_at?: string
-          first_accuracy?: number | null
-          id?: string
-          metric_kind: string
-          period_label?: string | null
-          pt_number?: string | null
-          question_type?: string | null
-          sample_size?: number | null
-          scaled_score?: number | null
-          source_platform?: string | null
-          source_upload_id: string
-          student_id: string
-        }
-        Update: {
-          avg_time_ms?: number | null
-          captured_at?: string | null
-          created_at?: string
-          first_accuracy?: number | null
-          id?: string
-          metric_kind?: string
-          period_label?: string | null
-          pt_number?: string | null
-          question_type?: string | null
-          sample_size?: number | null
-          scaled_score?: number | null
-          source_platform?: string | null
-          source_upload_id?: string
-          student_id?: string
         }
         Relationships: []
       }

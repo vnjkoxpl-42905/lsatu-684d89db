@@ -1,57 +1,13 @@
 import { useRef, useState } from 'react';
-import {
-  Upload,
-  FileText,
-  Loader2,
-  CheckCircle2,
-  AlertCircle,
-  XCircle,
-} from 'lucide-react';
+import { Upload, FileText, Loader2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ClassroomSection, EmptyHint } from './ClassroomSection';
 import {
   useStudentExternalUploads,
-  type ExternalWorkUpload,
   type UploadType,
 } from '@/hooks/useExternalWorkUploads';
 import { format } from 'date-fns';
-
-/** Live parse status shown next to each recent upload. */
-function StatusChip({ upload }: { upload: ExternalWorkUpload }) {
-  const s = upload.processing_status;
-  if (s === 'parsed' && upload.applied_to_analytics) {
-    return (
-      <span className="inline-flex items-center gap-1 text-emerald-600 shrink-0">
-        <CheckCircle2 className="w-3 h-3" />
-        Imported to your analytics
-      </span>
-    );
-  }
-  if (s === 'needs_review' || s === 'parsed') {
-    return (
-      <span className="inline-flex items-center gap-1 text-amber-600 shrink-0">
-        <AlertCircle className="w-3 h-3" />
-        Joshua will review this
-      </span>
-    );
-  }
-  if (s === 'failed') {
-    return (
-      <span className="inline-flex items-center gap-1 text-destructive shrink-0">
-        <XCircle className="w-3 h-3" />
-        Couldn’t read it
-      </span>
-    );
-  }
-  // uploaded | processing
-  return (
-    <span className="inline-flex items-center gap-1 text-muted-foreground shrink-0">
-      <Loader2 className="w-3 h-3 animate-spin" />
-      Reading…
-    </span>
-  );
-}
 
 const TYPES: { value: UploadType; label: string }[] = [
   { value: '7sage_analytics', label: '7Sage analytics' },
@@ -73,7 +29,7 @@ export function UploadWorkSection() {
     if (!file) return;
     try {
       await submit(file, uploadType);
-      toast.success('Upload received. Reading your metrics now…');
+      toast.success('Upload received. Joshua will review this if needed.');
       if (fileRef.current) fileRef.current.value = '';
     } catch (e: any) {
       toast.error(e?.message ?? 'Upload failed');
@@ -149,7 +105,10 @@ export function UploadWorkSection() {
                 <span className="text-muted-foreground shrink-0">
                   {format(new Date(u.created_at), 'MMM d')}
                 </span>
-                <StatusChip upload={u} />
+                <span className="inline-flex items-center gap-1 text-muted-foreground shrink-0">
+                  <CheckCircle2 className="w-3 h-3" />
+                  Received
+                </span>
               </li>
             ))}
           </ul>

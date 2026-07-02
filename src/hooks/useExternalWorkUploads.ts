@@ -28,15 +28,9 @@ export interface ExternalWorkUpload {
     | 'needs_review'
     | 'failed';
   applied_to_analytics: boolean;
-  extracted_text: string | null;
-  parsed_json: unknown | null;
-  confidence_score: number | null;
   reviewed_at: string | null;
   created_at: string;
 }
-
-/** Statuses that mean parsing is still in flight — poll while any are present. */
-const IN_FLIGHT: ExternalWorkUpload['processing_status'][] = ['uploaded', 'processing'];
 
 const MAX_SIZE = 25 * 1024 * 1024;
 const ALLOWED = new Set([
@@ -68,12 +62,6 @@ export function useStudentExternalUploads() {
       if (error) throw error;
       return (data ?? []) as ExternalWorkUpload[];
     },
-    // While a recent upload is still parsing, poll so the status chip flips
-    // from Processing → Imported / Needs review without a manual refresh.
-    refetchInterval: (query) =>
-      (query.state.data ?? []).some((u) => IN_FLIGHT.includes(u.processing_status))
-        ? 4000
-        : false,
   });
 
   const submit = useCallback(
@@ -111,14 +99,6 @@ export function useStudentExternalUploads() {
           throw error;
         }
         await queryClient.invalidateQueries({ queryKey: ['external-uploads-mine'] });
-        // Kick off auto-parse. Do not block the return on it — the file is
-        // safely stored either way — but refresh status when it settles.
-        supabase.functions
-          .invoke('parse-external-work', { body: { uploadId: (data as ExternalWorkUpload).id } })
-          .catch((err) => console.error('parse-external-work invoke failed', err))
-          .finally(() => {
-            queryClient.invalidateQueries({ queryKey: ['external-uploads-mine'] });
-          });
         return data as ExternalWorkUpload;
       } finally {
         setSubmitting(false);
