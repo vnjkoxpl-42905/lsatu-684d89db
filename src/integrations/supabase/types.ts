@@ -2456,6 +2456,65 @@ export type Database = {
         }
         Relationships: []
       }
+      student_external_metrics: {
+        Row: {
+          avg_time_ms: number | null
+          captured_at: string | null
+          created_at: string
+          first_accuracy: number | null
+          id: string
+          metric_kind: string
+          period_label: string | null
+          pt_number: string | null
+          question_type: string | null
+          sample_size: number | null
+          scaled_score: number | null
+          source_platform: string | null
+          source_upload_id: string
+          student_id: string
+        }
+        Insert: {
+          avg_time_ms?: number | null
+          captured_at?: string | null
+          created_at?: string
+          first_accuracy?: number | null
+          id?: string
+          metric_kind: string
+          period_label?: string | null
+          pt_number?: string | null
+          question_type?: string | null
+          sample_size?: number | null
+          scaled_score?: number | null
+          source_platform?: string | null
+          source_upload_id: string
+          student_id: string
+        }
+        Update: {
+          avg_time_ms?: number | null
+          captured_at?: string | null
+          created_at?: string
+          first_accuracy?: number | null
+          id?: string
+          metric_kind?: string
+          period_label?: string | null
+          pt_number?: string | null
+          question_type?: string | null
+          sample_size?: number | null
+          scaled_score?: number | null
+          source_platform?: string | null
+          source_upload_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_external_metrics_source_upload_id_fkey"
+            columns: ["source_upload_id"]
+            isOneToOne: false
+            referencedRelation: "external_work_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       student_sessions: {
         Row: {
           created_at: string
