@@ -135,7 +135,7 @@ describe("AcademyMainhub", () => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
   });
 
-  it("renders the robot hero, existing orbital ring, and today's focus panel", async () => {
+  it("renders the robot hero, practice + insight stage, and today's focus panel", async () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -156,18 +156,19 @@ describe("AcademyMainhub", () => {
     expect(screen.getByRole("combobox", { name: "Question" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Advanced/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Mainhub orbital workspace" })).toBeInTheDocument();
-    expect(screen.getByText("Orbital workspace")).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: "Practice and insight workspace" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByText("Full Section")).toBeInTheDocument();
+    expect(screen.getByText("Build a Set")).toBeInTheDocument();
+    expect(screen.getByText("Insight preview")).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Today" })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
     expect(screen.getByText("Nothing assigned for today.")).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Launch a Drill" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Full Section/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Build a Set/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Orbit" })).not.toBeInTheDocument();
-    expect(screen.queryByText("Existing ring")).not.toBeInTheDocument();
-    expect(screen.queryByText("Smart Builder")).not.toBeInTheDocument();
-    expect(screen.queryByText("My Sets")).not.toBeInTheDocument();
-    expect(screen.queryByText("Study Tools")).not.toBeInTheDocument();
+    expect(screen.queryByText("Orbital workspace")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("region", { name: "Mainhub orbital workspace" }),
+    ).not.toBeInTheDocument();
   });
 });

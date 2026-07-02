@@ -1,18 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  BarChart3,
-  BookOpen,
-  Grid3x3,
   Loader2,
   Search,
   SlidersHorizontal,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
-import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
+import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
+import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -32,78 +30,8 @@ import {
   filterSmartLRQuestionMatches,
   type SmartLRQuestionMatch,
 } from "@/components/mainhub/smartLRQuestionSearch";
-import { findCatalogItem, type CatalogItem } from "@/lib/layoutCatalog";
 
-const MAINHUB_ORBITAL_CATALOG: CatalogItem[] = [
-  {
-    id: "analytics",
-    label: "Analytics",
-    icon: BarChart3,
-    requires: "has_analytics_access",
-    description: "Performance trends and accuracy by question type.",
-  },
-  {
-    id: "waj",
-    label: "Journal",
-    icon: BookOpen,
-    requires: "has_journal_access",
-    description: "Notes, databases, and missed-question review.",
-  },
-  {
-    id: "full-section",
-    label: "Full Section",
-    icon: BookOpen,
-    description: "Start the official timed-section workflow.",
-  },
-  {
-    id: "type-drill",
-    label: "Build a Set",
-    icon: Grid3x3,
-    description: "Filter the bank and assemble a precise question set.",
-  },
-];
-
-const REQUIRED_ORBITAL_IDS = ["analytics", "waj", "full-section", "type-drill"] as const;
 const QUESTION_PICKER_PLACEHOLDER = "";
-
-interface OrbitalRenderInfo {
-  date: string;
-  content: string;
-  category: string;
-  status: TimelineItem["status"];
-  energy: number;
-}
-
-const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
-  analytics: {
-    date: "Trends",
-    content: "Review your performance trends and accuracy by question type.",
-    category: "Progress",
-    status: "in-progress",
-    energy: 72,
-  },
-  waj: {
-    date: "Notes",
-    content: "Open your Journal — notes, databases, and missed-question review.",
-    category: "Journal",
-    status: "pending",
-    energy: 68,
-  },
-  "full-section": {
-    date: "Timed section",
-    content: "Start the official timed-section workflow.",
-    category: "Practice",
-    status: "pending",
-    energy: 64,
-  },
-  "type-drill": {
-    date: "Hand-picked",
-    content: "Filter the bank and assemble a precise question set.",
-    category: "Practice",
-    status: "pending",
-    energy: 66,
-  },
-};
 
 function SplineBoundary({ children }: { children: React.ReactNode }) {
   return (
@@ -574,75 +502,40 @@ function ConsoleSelect({
  * persistent sidebar, study sidecar, and support chat are owned by the shell.
  */
 export default function AcademyMainhub() {
-  const navigate = useNavigate();
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const userHasAccess = React.useCallback(
-    (item: CatalogItem) => {
-      // Optimistic during perm load: useUserPermissions refetches per mount,
-      // taking 1-3s. The orbital is a nav surface; ProtectedRoute gates the
-      // actual route. Optimism here keeps the mainhub from staying blank.
-      if (perms.loading) return true;
-      if (item.adminOnly) return perms.is_admin;
-      if (item.requires) return perms.is_admin || !!perms[item.requires as PermissionFlag];
-      return true;
-    },
+  const stage = searchParams.get("stage") === "analytics" ? "analytics" : "default";
+  const analyticsTab = searchParams.get("tab") ?? "overview";
+
+  const can = React.useCallback(
+    (flag: PermissionFlag) => perms.loading || perms.is_admin || !!perms[flag],
     [perms],
   );
+  const canOpenAnalytics = can("has_analytics_access");
+  const canOpenJournal = can("has_journal_access");
 
-  const mainhubNodes: TimelineItem[] = React.useMemo(() => {
-    const visibleIds = REQUIRED_ORBITAL_IDS.filter((id) => {
-      const cat = findCatalogItem(MAINHUB_ORBITAL_CATALOG, id);
-      return cat ? userHasAccess(cat) : false;
-    });
-    return visibleIds
-      .map((id) => {
-        const cat = findCatalogItem(MAINHUB_ORBITAL_CATALOG, id);
-        const r = ORBITAL_RENDER[id];
-        if (!cat || !r || !userHasAccess(cat)) return null;
-        // Stable id: position in MAINHUB_ORBITAL_CATALOG. Survives permissions-driven
-        // filter changes so React's key tracks the same DOM element.
-        const stableId = MAINHUB_ORBITAL_CATALOG.findIndex((c) => c.id === id) + 1;
-        const node: TimelineItem = {
-          id: stableId,
-          title: cat.label,
-          date: r.date,
-          content: r.content,
-          category: r.category,
-          icon: cat.icon,
-          relatedIds: [],
-          status: r.status,
-          energy: r.energy,
-        };
-        return node;
-      })
-      .filter((n): n is TimelineItem => n !== null);
-  }, [userHasAccess]);
-
-  const onOrbitalActivate = React.useCallback(
-    (nodeId: number | null) => {
-      // Push orbital-active state for shared mainhub overlay gates.
-      setOrbitalActive(nodeId !== null);
-      if (nodeId === null) return;
-      // nodeId is MAINHUB_ORBITAL_CATALOG position + 1, so look up the catalog id directly.
-      const itemId = MAINHUB_ORBITAL_CATALOG[nodeId - 1]?.id;
-      if (itemId === "analytics") {
-        navigate("/analytics");
-      } else if (itemId === "waj") {
-        navigate("/journal");
-      } else if (itemId === "full-section" || itemId === "type-drill") {
-        navigate(`/practice?action=${itemId}`);
-      }
+  const openAnalytics = React.useCallback(
+    (tab: string = "overview") => {
+      setSearchParams({ stage: "analytics", tab }, { replace: false });
     },
-    [navigate, setOrbitalActive],
+    [setSearchParams],
   );
 
+  const setAnalyticsTab = React.useCallback(
+    (tab: string) => {
+      setSearchParams({ stage: "analytics", tab }, { replace: true });
+    },
+    [setSearchParams],
+  );
+
+  // The analytics stage takes over the below-hero area; suppress mainhub
+  // overlays (chat widget) the same way an expanded orbital node used to.
   React.useEffect(() => {
-    // If user navigates away while a node is expanded, clear orbital-active
-    // so the chat widget reappears on the next route.
+    setOrbitalActive(stage === "analytics");
     return () => setOrbitalActive(false);
-  }, [setOrbitalActive]);
+  }, [setOrbitalActive, stage]);
 
   return (
     <div className="relative h-full w-full overflow-y-auto rounded-xl border border-slate-200/70 bg-[#f7f8fb] px-4 py-4 pb-24 shadow-sm shadow-black/5 md:px-6 md:py-6">
@@ -654,22 +547,29 @@ export default function AcademyMainhub() {
       <div className="relative mx-auto flex w-full max-w-[112rem] flex-col gap-5">
         <MainhubHero />
 
-        <section className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
-          <div className="relative overflow-visible py-8 sm:py-12 xl:min-h-[640px]">
-            <section
-              aria-label="Mainhub orbital workspace"
-              className="relative flex shrink-0 items-center justify-center overflow-visible"
-            >
-              <div data-tour="mainhub-orbital" className="relative h-[560px] w-[560px] max-w-full">
-                <RadialOrbitalTimeline timelineData={mainhubNodes} onActivate={onOrbitalActivate} />
-              </div>
-            </section>
-          </div>
-
-          <section>
-            <TodayFocusPanel />
+        {stage === "analytics" ? (
+          <section aria-label="Analytics workspace" data-tour="mainhub-analytics">
+            <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
-        </section>
+        ) : (
+          <section className="grid grid-cols-1 items-stretch gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
+            <section
+              aria-label="Practice and insight workspace"
+              data-tour="mainhub-practice"
+              className="min-h-[420px]"
+            >
+              <PracticeInsightStage
+                onOpenAnalytics={openAnalytics}
+                canOpenAnalytics={canOpenAnalytics}
+                canOpenJournal={canOpenJournal}
+              />
+            </section>
+
+            <section>
+              <TodayFocusPanel />
+            </section>
+          </section>
+        )}
       </div>
     </div>
   );
