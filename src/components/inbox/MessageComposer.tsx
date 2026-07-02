@@ -3,8 +3,10 @@ import {
   Cloud,
   FileText,
   Image as ImageIcon,
+  Link2,
   Paperclip,
   Send,
+  Smile,
   Sparkles,
   Wand2,
   X,
@@ -12,6 +14,20 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -29,6 +45,13 @@ import {
   classifyInboxAttachmentMime,
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
+
+const QUICK_EMOJIS = [
+  '😀', '😁', '😂', '🙂', '😊', '😍', '😎', '🤔',
+  '👍', '👏', '🙌', '🙏', '💪', '🔥', '✨', '🎉',
+  '✅', '❌', '⭐', '💡', '📚', '📝', '⏰', '🚀',
+  '❤️', '💯', '😅', '😬', '😴', '🤝', '👀', '🎯',
+];
 
 interface MessageComposerProps {
   conversationId: string | null;
@@ -59,6 +82,10 @@ export function MessageComposer({
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
+  const [linkOpen, setLinkOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState('');
+  const [linkText, setLinkText] = useState('');
+  const [emojiOpen, setEmojiOpen] = useState(false);
 
   const errorMessage = (error: unknown, fallback: string) =>
     error instanceof Error ? error.message : fallback;
@@ -180,6 +207,50 @@ export function MessageComposer({
       el.focus();
       el.setSelectionRange(next.length, next.length);
     });
+  };
+
+  const insertAtCursor = (snippet: string, selectInsideOffset?: number) => {
+    const el = textareaRef.current;
+    const start = el ? el.selectionStart : body.length;
+    const end = el ? el.selectionEnd : body.length;
+    const next = body.slice(0, start) + snippet + body.slice(end);
+    setBody(next);
+    setPolished(null);
+    requestAnimationFrame(() => {
+      adjustHeight();
+      const node = textareaRef.current;
+      if (!node) return;
+      node.focus();
+      const caret = start + (selectInsideOffset ?? snippet.length);
+      node.setSelectionRange(caret, caret);
+    });
+  };
+
+  const openLinkDialog = () => {
+    const el = textareaRef.current;
+    const selected = el ? body.slice(el.selectionStart, el.selectionEnd) : '';
+    setLinkText(selected);
+    setLinkUrl('');
+    setLinkOpen(true);
+  };
+
+  const applyLink = () => {
+    let url = linkUrl.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url) && !url.startsWith('mailto:')) {
+      url = `https://${url}`;
+    }
+    const text = linkText.trim();
+    const snippet = text ? `[${text}](${url})` : url;
+    insertAtCursor(snippet);
+    setLinkOpen(false);
+    setLinkUrl('');
+    setLinkText('');
+  };
+
+  const insertEmoji = (emoji: string) => {
+    insertAtCursor(emoji);
+    setEmojiOpen(false);
   };
 
   const send = async () => {
@@ -458,6 +529,46 @@ export function MessageComposer({
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </Button>
           )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={openLinkDialog}
+            disabled={sending}
+            aria-label="Add link"
+            title="Add link"
+            className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+          >
+            <Link2 className="w-4.5 h-4.5" />
+          </Button>
+          <Popover open={emojiOpen} onOpenChange={setEmojiOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={sending}
+                aria-label="Insert emoji"
+                title="Insert emoji"
+                className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+              >
+                <Smile className="w-4.5 h-4.5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="w-auto p-2">
+              <div className="grid grid-cols-8 gap-0.5">
+                {QUICK_EMOJIS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => insertEmoji(emoji)}
+                    className="flex h-8 w-8 items-center justify-center rounded-lg text-lg leading-none transition-colors hover:bg-zinc-100"
+                    aria-label={`Insert ${emoji}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
           <div className="flex-1" />
           <Button
             onClick={send}
@@ -477,6 +588,60 @@ export function MessageComposer({
         </div>
       </div>
       </div>
+
+      <Dialog open={linkOpen} onOpenChange={setLinkOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Add link</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="composer-link-url" className="text-xs font-bold uppercase tracking-wide text-zinc-500">
+                URL
+              </Label>
+              <Input
+                id="composer-link-url"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyLink();
+                  }
+                }}
+                placeholder="https://..."
+                autoFocus
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="composer-link-text" className="text-xs font-bold uppercase tracking-wide text-zinc-500">
+                Text
+              </Label>
+              <Input
+                id="composer-link-text"
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyLink();
+                  }
+                }}
+                placeholder="Optional link text..."
+              />
+            </div>
+          </div>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              onClick={applyLink}
+              disabled={!linkUrl.trim()}
+              className="bg-[#2F6A8D] px-8 text-white hover:bg-[#295d7c]"
+            >
+              Add Link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

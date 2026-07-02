@@ -44,6 +44,49 @@ function extractRouteAction(body: string) {
   return { displayBody, route };
 }
 
+const LINK_PATTERN =
+  /\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)|(https?:\/\/[^\s]+|mailto:[^\s]+)/g;
+
+function renderBody(text: string, isInstructor: boolean) {
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+  const linkClass = cn(
+    'underline underline-offset-2 break-all transition-colors',
+    isInstructor ? 'text-[#BFE3FF] hover:text-white' : 'text-[#2F6A8D] hover:text-[#1f4c66]',
+  );
+
+  LINK_PATTERN.lastIndex = 0;
+  while ((match = LINK_PATTERN.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+    const label = match[1] ?? match[3];
+    let href = match[2] ?? match[3];
+    // Trim trailing punctuation that commonly follows a bare URL in prose.
+    const trailing = !match[1] ? (href.match(/[).,!?;:]+$/)?.[0] ?? '') : '';
+    if (trailing) href = href.slice(0, href.length - trailing.length);
+    const display = !match[1] && trailing ? label.slice(0, label.length - trailing.length) : label;
+
+    nodes.push(
+      <a
+        key={`lnk-${key++}`}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+      >
+        {display}
+      </a>,
+    );
+    if (trailing) nodes.push(trailing);
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+  return nodes.length > 0 ? nodes : text;
+}
+
 export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage }: Props) {
   const navigate = useNavigate();
   const headerTime = shortTime(new Date(cluster.createdAt));
@@ -143,7 +186,7 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                             : 'max-w-[620px] border border-[#e4e4e7] bg-white text-[#1F1B16]',
                         )}
                       >
-                        {routeAction?.displayBody || message.body}
+                        {renderBody(routeAction?.displayBody || message.body, isInstructor)}
                         {routeAction?.route ? (
                           <button
                             type="button"
