@@ -47,6 +47,8 @@ function extractRouteAction(body: string) {
 const LINK_PATTERN =
   /\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)|(https?:\/\/[^\s]+|mailto:[^\s]+)/g;
 
+const JOSHUA_ROBOT_AVATAR_SRC = '/mainhub/joshua-robot-avatar.png';
+
 function renderBody(text: string, isInstructor: boolean) {
   const nodes: React.ReactNode[] = [];
   let lastIndex = 0;
@@ -108,8 +110,28 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
       >
         {cluster.showAvatar ? (
           <div className="pt-[22px] shrink-0">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#E7F2EC] text-[12px] font-bold text-[#2F6A4F]">
-              {cluster.speakerInitials}
+            <div
+              className={cn(
+                'flex h-7 w-7 items-center justify-center overflow-hidden rounded-full',
+                isInstructor
+                  ? 'bg-[#070b11] ring-1 ring-black/10'
+                  : 'bg-[#E7F2EC] text-[12px] font-bold text-[#2F6A4F]',
+              )}
+            >
+              {isInstructor ? (
+                <img
+                  src={JOSHUA_ROBOT_AVATAR_SRC}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  onError={(event) => {
+                    event.currentTarget.style.display = 'none';
+                  }}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                cluster.speakerInitials
+              )}
             </div>
           </div>
         ) : null}

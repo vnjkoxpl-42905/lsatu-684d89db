@@ -66,7 +66,7 @@ describe('buildDaySections', () => {
       speakerRoleLabel: 'Instructor',
       speakerInitials: 'J',
       isOwn: true,
-      showAvatar: false,
+      showAvatar: true,
     });
   });
 
@@ -88,7 +88,7 @@ describe('buildDaySections', () => {
       speakerName: 'Joshua',
       speakerRoleLabel: 'Instructor',
       isOwn: false,
-      showAvatar: false,
+      showAvatar: true,
     });
   });
 

@@ -94,7 +94,7 @@ export function buildDaySections(
         speakerInitials: speaker.speakerInitials,
         isInstructor: speaker.isInstructor,
         isOwn: message.sender_id === ownId,
-        showAvatar: !speaker.isInstructor,
+        showAvatar: true,
         createdAt: message.created_at,
         messages: [],
       };
