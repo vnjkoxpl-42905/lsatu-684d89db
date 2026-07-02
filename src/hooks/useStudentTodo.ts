@@ -124,7 +124,7 @@ export function useStudentTodo(): {
       const title = input.title.trim();
       if (!title) return;
       // Resolve (or lazily create) the durable personal plan that hosts self tasks.
-      const { data: planId, error: planErr } = await supabase.rpc('get_or_create_personal_plan', {
+      const { data: planId, error: planErr } = await (supabase.rpc as any)('get_or_create_personal_plan', {
         p_student: user.id,
       });
       if (planErr || !planId) {
@@ -132,7 +132,7 @@ export function useStudentTodo(): {
         toast.error('Could not add that task. Try again.');
         return;
       }
-      const { error: err } = await supabase.from('weekly_plan_items').insert({
+      const { error: err } = await (supabase.from('weekly_plan_items') as any).insert({
         weekly_plan_id: planId as string,
         student_id: user.id,
         day_date: input.day_date,
