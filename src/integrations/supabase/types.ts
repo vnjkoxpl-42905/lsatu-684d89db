@@ -968,16 +968,12 @@ export type Database = {
       external_work_uploads: {
         Row: {
           applied_to_analytics: boolean
-          confidence_score: number | null
           created_at: string
-          extracted_text: string | null
           file_name: string
           file_type: string | null
           id: string
-          parsed_json: Json | null
           processing_status: string
           reviewed_at: string | null
-          reviewed_by: string | null
           source_platform: string | null
           storage_path: string
           student_id: string
@@ -986,16 +982,12 @@ export type Database = {
         }
         Insert: {
           applied_to_analytics?: boolean
-          confidence_score?: number | null
           created_at?: string
-          extracted_text?: string | null
           file_name: string
           file_type?: string | null
           id?: string
-          parsed_json?: Json | null
           processing_status?: string
           reviewed_at?: string | null
-          reviewed_by?: string | null
           source_platform?: string | null
           storage_path: string
           student_id: string
@@ -1004,72 +996,17 @@ export type Database = {
         }
         Update: {
           applied_to_analytics?: boolean
-          confidence_score?: number | null
           created_at?: string
-          extracted_text?: string | null
           file_name?: string
           file_type?: string | null
           id?: string
-          parsed_json?: Json | null
           processing_status?: string
           reviewed_at?: string | null
-          reviewed_by?: string | null
           source_platform?: string | null
           storage_path?: string
           student_id?: string
           upload_type?: string
           uploaded_by?: string
-        }
-        Relationships: []
-      }
-      student_external_metrics: {
-        Row: {
-          avg_time_ms: number | null
-          captured_at: string | null
-          created_at: string
-          first_accuracy: number | null
-          id: string
-          metric_kind: string
-          period_label: string | null
-          pt_number: string | null
-          question_type: string | null
-          sample_size: number | null
-          scaled_score: number | null
-          source_platform: string | null
-          source_upload_id: string
-          student_id: string
-        }
-        Insert: {
-          avg_time_ms?: number | null
-          captured_at?: string | null
-          created_at?: string
-          first_accuracy?: number | null
-          id?: string
-          metric_kind: string
-          period_label?: string | null
-          pt_number?: string | null
-          question_type?: string | null
-          sample_size?: number | null
-          scaled_score?: number | null
-          source_platform?: string | null
-          source_upload_id: string
-          student_id: string
-        }
-        Update: {
-          avg_time_ms?: number | null
-          captured_at?: string | null
-          created_at?: string
-          first_accuracy?: number | null
-          id?: string
-          metric_kind?: string
-          period_label?: string | null
-          pt_number?: string | null
-          question_type?: string | null
-          sample_size?: number | null
-          scaled_score?: number | null
-          source_platform?: string | null
-          source_upload_id?: string
-          student_id?: string
         }
         Relationships: []
       }
@@ -1808,9 +1745,7 @@ export type Database = {
           class_id: string
           daily_goal_questions: number | null
           daily_goal_streak: number | null
-          daily_digest_email: boolean
           display_name: string | null
-          gcal_push_enabled: boolean
           has_activity_access: boolean
           has_analytics_access: boolean
           has_bootcamp_access: boolean
@@ -1843,9 +1778,7 @@ export type Database = {
           class_id: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
-          daily_digest_email?: boolean
           display_name?: string | null
-          gcal_push_enabled?: boolean
           has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
@@ -1878,9 +1811,7 @@ export type Database = {
           class_id?: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
-          daily_digest_email?: boolean
           display_name?: string | null
-          gcal_push_enabled?: boolean
           has_activity_access?: boolean
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
@@ -3012,12 +2943,10 @@ export type Database = {
           day_date: string
           due_at: string | null
           estimated_minutes: number | null
-          google_event_id: string | null
           id: string
           instructions: string | null
           metadata_json: Json
           sort_order: number
-          source: string
           status: string
           student_id: string
           title: string
@@ -3029,12 +2958,10 @@ export type Database = {
           day_date: string
           due_at?: string | null
           estimated_minutes?: number | null
-          google_event_id?: string | null
           id?: string
           instructions?: string | null
           metadata_json?: Json
           sort_order?: number
-          source?: string
           status?: string
           student_id: string
           title: string
@@ -3046,12 +2973,10 @@ export type Database = {
           day_date?: string
           due_at?: string | null
           estimated_minutes?: number | null
-          google_event_id?: string | null
           id?: string
           instructions?: string | null
           metadata_json?: Json
           sort_order?: number
-          source?: string
           status?: string
           student_id?: string
           title?: string
@@ -3308,10 +3233,6 @@ export type Database = {
           total: number
           viewed: number
         }[]
-      }
-      get_or_create_personal_plan: {
-        Args: { p_student: string }
-        Returns: string
       }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
