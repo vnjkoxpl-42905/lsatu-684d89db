@@ -185,12 +185,18 @@ function MainhubHero() {
   );
 
   const startSmartDrill = React.useCallback(() => {
-    navigate("/drill", { state: { mode: "adaptive" } });
+    navigate("/drill", { state: { mode: "adaptive", returnTo: "/mainhub" } });
   }, [navigate]);
 
   const openQuestion = React.useCallback(
     (qid: string) => {
-      navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart`);
+      const params = new URLSearchParams({
+        mode: "type-drill",
+        qids: qid,
+        present: "smart",
+        returnTo: "/mainhub",
+      });
+      navigate(`/drill?${params.toString()}`);
     },
     [navigate],
   );

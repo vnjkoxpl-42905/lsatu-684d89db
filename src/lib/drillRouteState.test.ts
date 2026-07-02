@@ -21,13 +21,14 @@ describe("drill route state helpers", () => {
 
   it("carries present=smart from the URL for Smart LR Drill hand-picks", () => {
     const state = getResolvedDrillRouteState(
-      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&present=smart"),
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&present=smart&returnTo=%2Fmainhub"),
       null,
     );
 
     expect(state.mode).toBe("type-drill");
     expect((state.config as TypeDrillConfig).selectedQids).toEqual(["PT118-S4-Q1"]);
     expect(state.present).toBe("smart");
+    expect(state.returnTo).toBe("/mainhub");
   });
 
   it("normalizes legacy practice-set URL launches to type-drill selected qids", () => {
@@ -68,6 +69,33 @@ describe("drill route state helpers", () => {
     );
 
     expect(state.present).toBeUndefined();
+  });
+
+  it("preserves a safe returnTo from location state", () => {
+    const config: TypeDrillConfig = {
+      qtypes: [],
+      difficulties: [],
+      pts: [],
+      count: 1,
+      selectedQids: ["PT118-S4-Q1"],
+    };
+
+    const state = getResolvedDrillRouteState(new URLSearchParams(), {
+      mode: "type-drill",
+      config,
+      returnTo: "/practice?action=type-drill",
+    });
+
+    expect(state.returnTo).toBe("/practice?action=type-drill");
+  });
+
+  it("drops unsafe returnTo values", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&returnTo=https%3A%2F%2Fevil.example"),
+      null,
+    );
+
+    expect(state.returnTo).toBeUndefined();
   });
 
   it("uses a stopwatch for URL-launched type drills with explicit qids", () => {

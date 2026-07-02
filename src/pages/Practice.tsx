@@ -3,7 +3,7 @@
  * renamed because the route is /practice and there is no /home surface.)
  */
 import * as React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -192,6 +192,7 @@ interface PracticeHubContentProps {
 
 export function PracticeHubContent({ embedded = false, onBackToMainHub }: PracticeHubContentProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, authReady, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { manifest, isLoading, error } = useQuestionBank();
@@ -292,19 +293,19 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
   };
 
   const handleStartAdaptive = () => {
-    navigate(drillPath, { state: { mode: 'adaptive' } });
+    navigate(drillPath, { state: { mode: 'adaptive', returnTo: `${location.pathname}${location.search}` } });
   };
 
   const handleStartSection = (config: FullSectionConfig) => {
-    navigate(drillPath, { state: { mode: 'full-section', config } });
+    navigate(drillPath, { state: { mode: 'full-section', config, returnTo: `${location.pathname}${location.search}` } });
   };
 
   const handleStartTypeDrill = (config: TypeDrillConfig) => {
-    navigate(drillPath, { state: { mode: 'type-drill', config } });
+    navigate(drillPath, { state: { mode: 'type-drill', config, returnTo: `${location.pathname}${location.search}` } });
   };
 
   const handleStartNaturalDrill = (config: TypeDrillConfig) => {
-    navigate(drillPath, { state: { mode: 'natural-drill', config } });
+    navigate(drillPath, { state: { mode: 'natural-drill', config, returnTo: `${location.pathname}${location.search}` } });
   };
 
   const handleModeClick = (modeId: DrillMode) => {

@@ -4,6 +4,7 @@ export interface DrillRouteState {
   mode?: DrillMode;
   config?: FullSectionConfig | TypeDrillConfig;
   practicingLabel?: string;
+  returnTo?: string;
   /**
    * Presentation hint, independent of `mode`. When 'smart', the runner renders
    * the adaptive Smart-Drill chrome (Tutor toggle, notes, Skip/Submit footer,
@@ -16,6 +17,11 @@ export interface DrillRouteState {
 export interface DrillTimerRouteConfig {
   mode: "countdown" | "stopwatch";
   durationMs?: number;
+}
+
+function safeReturnTo(value: string | null | undefined): string | undefined {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return undefined;
+  return value;
 }
 
 export function getResolvedDrillRouteState(
@@ -37,12 +43,16 @@ export function getResolvedDrillRouteState(
     };
 
     const present = searchParams.get("present") === "smart" ? "smart" : undefined;
+    const returnTo = safeReturnTo(searchParams.get("returnTo"));
 
-    return { mode: (urlMode === "practice-set" ? "type-drill" : urlMode) as DrillMode, config, present };
+    return { mode: (urlMode === "practice-set" ? "type-drill" : urlMode) as DrillMode, config, present, returnTo };
   }
 
   const state = (locationState || {}) as DrillRouteState;
-  return state.mode === "practice-set" ? { ...state, mode: "type-drill" } : state;
+  const returnTo = safeReturnTo(state.returnTo);
+  const normalized: DrillRouteState =
+    state.mode === "practice-set" ? { ...state, mode: "type-drill" as DrillMode } : state;
+  return { ...normalized, returnTo };
 }
 
 export function getTimerConfigForDrillRoute(

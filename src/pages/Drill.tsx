@@ -115,6 +115,7 @@ function DrillContent() {
   // Context params for header/breadcrumbs (survive refresh)
   const origin = searchParams.get('origin');
   const returnTo = searchParams.get('returnTo');
+  const drillReturnTo = state.returnTo ?? (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : undefined);
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const initialIndexParam = searchParams.get('initialIndex');
@@ -2125,7 +2126,7 @@ function DrillContent() {
   };
 
   const handleNavigation = (destination: '/practice' | '/mainhub' | '/dashboard') => {
-    setExitDestination(returnTo || destination);
+    setExitDestination(drillReturnTo || destination);
     setShowExitDialog(true);
   };
 
@@ -2232,7 +2233,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate(returnTo || '/mainhub')}
+          onBack={() => navigate(drillReturnTo || '/mainhub')}
         />
       );
     }
@@ -2244,7 +2245,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate(returnTo || '/mainhub')}
+          onBack={() => navigate(drillReturnTo || '/mainhub')}
         />
       );
     }
@@ -2258,7 +2259,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate(returnTo || '/mainhub')}
+        onBack={() => navigate(drillReturnTo || '/mainhub')}
       />
     );
   }
@@ -2302,7 +2303,7 @@ function DrillContent() {
         <Card className="p-8 max-w-md text-center">
           <h2 className="text-xl font-semibold mb-3">No questions available</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
-          <Button onClick={() => navigate(returnTo || '/mainhub')}>
+          <Button onClick={() => navigate(drillReturnTo || '/mainhub')}>
             Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
           </Button>
         </Card>
@@ -2336,7 +2337,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate(returnTo || '/mainhub');
+            navigate(drillReturnTo || '/mainhub');
           }}
         />
       );
@@ -2383,7 +2384,7 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate(returnTo || '/mainhub')}>
+            <Button onClick={() => navigate(drillReturnTo || '/mainhub')}>
               Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
             </Button>
           </div>
@@ -3033,7 +3034,7 @@ function DrillContent() {
                 }
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
-              onEnd={() => { void handleFinishSection(); }}
+              onEnd={() => handleNavigation('/practice')}
               onAskTutor={() => openTutorForCurrent()}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
@@ -3110,7 +3111,7 @@ function DrillContent() {
 
         {/* Unified Top Bar */}
         <DrillTopBar
-          onBack={() => navigate(returnTo || '/practice')}
+          onBack={() => navigate(drillReturnTo || '/practice')}
           questionLabel={currentQuestion ? (
             window.innerWidth >= 640
               ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`

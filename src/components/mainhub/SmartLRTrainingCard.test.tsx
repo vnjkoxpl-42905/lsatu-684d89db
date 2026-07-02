@@ -66,7 +66,7 @@ describe("SmartLRTrainingCard", () => {
     fireEvent.keyDown(search, { key: "Enter" });
 
     expect(mockNavigate).toHaveBeenCalledWith(
-      "/drill?mode=type-drill&qids=PT151-S2-Q8&present=smart",
+      "/drill?mode=type-drill&qids=PT151-S2-Q8&present=smart&returnTo=%2Fmainhub",
     );
   });
 
@@ -79,7 +79,7 @@ describe("SmartLRTrainingCard", () => {
     fireEvent.click(screen.getByRole("button", { name: /PT 151 · S2 · Q8/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith(
-      "/drill?mode=type-drill&qids=PT151-S2-Q8&present=smart",
+      "/drill?mode=type-drill&qids=PT151-S2-Q8&present=smart&returnTo=%2Fmainhub",
     );
   });
 
@@ -89,7 +89,7 @@ describe("SmartLRTrainingCard", () => {
     fireEvent.click(screen.getByRole("button", { name: "Start Smart LR Drill" }));
 
     expect(mockNavigate).toHaveBeenCalledWith("/drill", {
-      state: { mode: "adaptive" },
+      state: { mode: "adaptive", returnTo: "/mainhub" },
     });
   });
 });

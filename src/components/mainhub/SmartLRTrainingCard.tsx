@@ -166,6 +166,7 @@ export default function SmartLRTrainingCard() {
   }, [allQuestions, pt, section, qnum]);
 
   const [pendingNav, setPendingNav] = useState<null | (() => void)>(null);
+  const smartDrillReturnTo = "/mainhub";
 
   // Wait for question bank to be ready before navigating to /drill, so we
   // don't flash the "Preparing your drill…" gate on the next route.
@@ -177,7 +178,13 @@ export default function SmartLRTrainingCard() {
   }, [pendingNav, isLoading]);
 
   const openQuestion = (qid: string) => {
-    navigate(`/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart`);
+    const params = new URLSearchParams({
+      mode: "type-drill",
+      qids: qid,
+      present: "smart",
+      returnTo: smartDrillReturnTo,
+    });
+    navigate(`/drill?${params.toString()}`);
   };
 
   const startSmartDrill = () => {
@@ -190,11 +197,11 @@ export default function SmartLRTrainingCard() {
           sections: section !== AUTO ? [Number(section)] : [],
           count: 20,
         };
-        navigate("/drill", { state: { mode: "type-drill", config, present: "smart" } });
+        navigate("/drill", { state: { mode: "type-drill", config, present: "smart", returnTo: smartDrillReturnTo } });
         return;
       }
 
-      navigate("/drill", { state: { mode: "adaptive" } });
+      navigate("/drill", { state: { mode: "adaptive", returnTo: smartDrillReturnTo } });
     };
 
     if (isLoading) {
