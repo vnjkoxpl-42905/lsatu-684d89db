@@ -18,7 +18,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable';
-import { ArrowLeft, Pencil, PanelLeftOpen } from 'lucide-react';
+import { ArrowLeft, Pencil, PanelLeftOpen, PanelRightOpen } from 'lucide-react';
 import type { ImperativePanelHandle } from 'react-resizable-panels';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -50,6 +50,13 @@ const EMPTY_DRAFT: JournalDraft = {
   lesson: '',
   other_notes: '',
 };
+
+const AUTO_COLLAPSE_AT = 2140;
+const AUTO_EXPAND_AT = 2280;
+
+function startsCompact(): boolean {
+  return typeof window !== 'undefined' && window.innerWidth <= AUTO_COLLAPSE_AT;
+}
 
 function isoDate(d: string | null | undefined): string {
   if (!d) return '';
@@ -89,8 +96,36 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
   const [annotateActive, setAnnotateActive] = React.useState(false);
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [pendingSelectQid, setPendingSelectQid] = React.useState<string | null>(null);
+  const surfaceRef = React.useRef<HTMLDivElement>(null);
   const railPanelRef = React.useRef<ImperativePanelHandle>(null);
-  const [railCollapsed, setRailCollapsed] = React.useState(false);
+  const reviewPanelRef = React.useRef<ImperativePanelHandle>(null);
+  const [railCollapsed, setRailCollapsed] = React.useState(startsCompact);
+  const [reviewCollapsed, setReviewCollapsed] = React.useState(startsCompact);
+  const autoCompactRef = React.useRef(startsCompact());
+
+  React.useEffect(() => {
+    const node = surfaceRef.current;
+    if (!node || typeof ResizeObserver === 'undefined') return;
+
+    const update = (width: number) => {
+      if (width <= AUTO_COLLAPSE_AT && !autoCompactRef.current) {
+        autoCompactRef.current = true;
+        setRailCollapsed(true);
+        setReviewCollapsed(true);
+      } else if (width >= AUTO_EXPAND_AT && autoCompactRef.current) {
+        autoCompactRef.current = false;
+        setRailCollapsed(false);
+        setReviewCollapsed(false);
+      }
+    };
+
+    update(node.getBoundingClientRect().width);
+    const observer = new ResizeObserver(([entry]) => {
+      update(entry.contentRect.width);
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const selected = React.useMemo(
     () => rows.find((r) => r.id === selectedId) ?? null,
@@ -226,7 +261,10 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
   }, [rows]);
 
   return (
-    <div className={cn('flex flex-col bg-background', embedded ? 'h-full overflow-hidden rounded-lg border border-border' : 'h-screen')}>
+    <div
+      ref={surfaceRef}
+      className={cn('flex flex-col bg-background', embedded ? 'h-full overflow-hidden rounded-lg border border-border' : 'h-screen')}
+    >
       {!embedded && (
         <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
           <div className="flex items-center justify-between px-4 py-3 lg:px-8">
@@ -251,33 +289,37 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
       )}
 
       <ResizablePanelGroup direction="horizontal" className="flex-1">
-        <ResizablePanel
-          ref={railPanelRef}
-          defaultSize={20}
-          minSize={14}
-          maxSize={30}
-          collapsible
-          collapsedSize={0}
-          onCollapse={() => setRailCollapsed(true)}
-          onExpand={() => setRailCollapsed(false)}
-        >
-          <EntriesRail
-            rows={rows}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-            onNewEntry={() => setPickerOpen(true)}
-            suggestions={suggestions}
-            onPickSuggestion={(qid) => {
-              const q = questionBank.getQuestion(qid);
-              if (q) handlePick(q);
-            }}
-            onCollapse={() => railPanelRef.current?.collapse()}
-          />
-        </ResizablePanel>
+        {!railCollapsed && (
+          <>
+            <ResizablePanel
+              ref={railPanelRef}
+              defaultSize={16}
+              minSize={12}
+              maxSize={24}
+              collapsible
+              collapsedSize={0}
+              onCollapse={() => setRailCollapsed(true)}
+              onExpand={() => setRailCollapsed(false)}
+            >
+              <EntriesRail
+                rows={rows}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                onNewEntry={() => setPickerOpen(true)}
+                suggestions={suggestions}
+                onPickSuggestion={(qid) => {
+                  const q = questionBank.getQuestion(qid);
+                  if (q) handlePick(q);
+                }}
+                onCollapse={() => setRailCollapsed(true)}
+              />
+            </ResizablePanel>
 
-        <ResizableHandle withHandle />
+            <ResizableHandle withHandle />
+          </>
+        )}
 
-        <ResizablePanel defaultSize={56}>
+        <ResizablePanel defaultSize={60} minSize={45}>
           <div className="flex h-full flex-col">
             {/* Entry header: id chip, type, title, Annotate toggle */}
             {selected && (
@@ -286,7 +328,7 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
                   {railCollapsed && (
                     <button
                       type="button"
-                      onClick={() => railPanelRef.current?.expand()}
+                      onClick={() => setRailCollapsed(false)}
                       title="Show entries"
                       aria-label="Show entries"
                       className="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -309,19 +351,32 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
                     </span>
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setAnnotateActive((v) => !v)}
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-medium transition-colors',
-                    annotateActive
-                      ? 'border-accent-bronze bg-accent-bronze/15 text-accent-bronze'
-                      : 'border-border text-muted-foreground hover:text-foreground',
+                <div className="flex shrink-0 items-center gap-1.5">
+                  {reviewCollapsed && (
+                    <button
+                      type="button"
+                      onClick={() => setReviewCollapsed(false)}
+                      title="Show review"
+                      aria-label="Show review"
+                      className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+                    >
+                      <PanelRightOpen className="h-3.5 w-3.5" />
+                    </button>
                   )}
-                >
-                  <Pencil className="h-3.5 w-3.5" />
-                  {annotateActive ? 'Annotating' : 'Annotate'}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setAnnotateActive((v) => !v)}
+                    className={cn(
+                      'flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-medium transition-colors',
+                      annotateActive
+                        ? 'border-accent-bronze bg-accent-bronze/15 text-accent-bronze'
+                        : 'border-border text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                    {annotateActive ? 'Annotating' : 'Annotate'}
+                  </button>
+                </div>
               </div>
             )}
 
@@ -363,24 +418,38 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
           </div>
         </ResizablePanel>
 
-        <ResizableHandle withHandle />
+        {!reviewCollapsed && (
+          <>
+            <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={24} minSize={18} maxSize={34}>
-          <div className="h-full overflow-y-auto border-l border-border">
-            {selected && question ? (
-              <ReviewForm
-                draft={draft}
-                correctAnswer={question.correctAnswer}
-                answerKeys={Object.keys(question.answerChoices)}
-                onPatch={patch}
-              />
-            ) : (
-              <div className="px-5 py-6 text-[13px] text-muted-foreground">
-                Select an entry to review.
+            <ResizablePanel
+              ref={reviewPanelRef}
+              defaultSize={24}
+              minSize={18}
+              maxSize={30}
+              collapsible
+              collapsedSize={0}
+              onCollapse={() => setReviewCollapsed(true)}
+              onExpand={() => setReviewCollapsed(false)}
+            >
+              <div className="h-full overflow-y-auto border-l border-border">
+                {selected && question ? (
+                  <ReviewForm
+                    draft={draft}
+                    correctAnswer={question.correctAnswer}
+                    answerKeys={Object.keys(question.answerChoices)}
+                    onPatch={patch}
+                    onCollapse={() => setReviewCollapsed(true)}
+                  />
+                ) : (
+                  <div className="px-5 py-6 text-[13px] text-muted-foreground">
+                    Select an entry to review.
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </ResizablePanel>
+            </ResizablePanel>
+          </>
+        )}
       </ResizablePanelGroup>
 
       <NewEntryPicker open={pickerOpen} onOpenChange={setPickerOpen} onPick={handlePick} />

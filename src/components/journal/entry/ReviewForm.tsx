@@ -8,6 +8,7 @@
  * Correct Reasoning · Lesson · Other Notes.
  */
 import * as React from 'react';
+import { PanelRightClose } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import type { SelfRating } from '@/lib/wajNotesService';
@@ -97,9 +98,10 @@ interface Props {
   correctAnswer: string;
   answerKeys?: string[];
   onPatch: (patch: Partial<JournalDraft>) => void;
+  onCollapse?: () => void;
 }
 
-export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onPatch }: Props) {
+export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onPatch, onCollapse }: Props) {
   const [tourStep, setTourStep] = React.useState<number>(() => {
     if (typeof window === 'undefined') return -1;
     return window.localStorage.getItem(TOUR_KEY) ? -1 : 0;
@@ -137,6 +139,20 @@ export function ReviewForm({ draft, correctAnswer, answerKeys = ANSWER_KEYS, onP
 
   return (
     <div className="space-y-5 px-5 py-6">
+      {onCollapse && (
+        <div className="-mb-1 flex justify-end">
+          <button
+            type="button"
+            onClick={onCollapse}
+            title="Collapse review"
+            aria-label="Collapse review"
+            className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            <PanelRightClose className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* How did you do? */}
       <div>
         <Label>How did you do?</Label>
