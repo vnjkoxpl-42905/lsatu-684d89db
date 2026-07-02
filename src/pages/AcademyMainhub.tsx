@@ -8,6 +8,8 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
@@ -57,6 +59,36 @@ function MainhubHero() {
   const [advancedOpen, setAdvancedOpen] = React.useState(false);
   const [advancedQType, setAdvancedQType] = React.useState("");
   const [advancedDifficulty, setAdvancedDifficulty] = React.useState("");
+  const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
+
+  const { user } = useAuth();
+
+  // Canonical greeting name: profiles.display_name, falling back to metadata/email.
+  React.useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("display_name")
+        .eq("class_id", user.id)
+        .maybeSingle();
+      if (!cancelled) setProfileDisplayName(data?.display_name ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  const firstName = React.useMemo(() => {
+    const raw =
+      profileDisplayName ||
+      (user?.user_metadata?.display_name as string | undefined) ||
+      user?.email?.split("@")[0] ||
+      "";
+    const name = raw.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, "");
+    return name ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : "";
+  }, [profileDisplayName, user]);
 
   const allQuestions = React.useMemo(
     () => (manifest ? questionBank.getAllQuestions() : []),
@@ -199,7 +231,7 @@ function MainhubHero() {
               {todayLabel}
             </p>
             <h2 className="text-xl font-semibold leading-tight text-white sm:text-2xl">
-              Welcome back
+              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
             </h2>
           </div>
           <div className="flex items-center gap-3">
