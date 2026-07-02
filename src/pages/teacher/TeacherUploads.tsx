@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { UploadCloud, Loader2, ExternalLink, Check } from 'lucide-react';
+import { UploadCloud, Loader2, ExternalLink, Check, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -31,6 +31,42 @@ export default function TeacherUploads() {
       toast.success('Updated');
     } catch (e: any) {
       toast.error(e?.message ?? 'Update failed');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const approveApply = async (id: string) => {
+    setBusy(id);
+    try {
+      const { data, error } = await supabase.functions.invoke('parse-external-work', {
+        body: { uploadId: id, forceApply: true },
+      });
+      if (error) throw error;
+      if (data && (data as any).error) throw new Error((data as any).error);
+      qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });
+      await refetch();
+      toast.success(`Applied ${(data as any)?.metricsApplied ?? 0} metrics`);
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Apply failed');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const rerunParse = async (id: string) => {
+    setBusy(id);
+    try {
+      const { data, error } = await supabase.functions.invoke('parse-external-work', {
+        body: { uploadId: id },
+      });
+      if (error) throw error;
+      if (data && (data as any).error) throw new Error((data as any).error);
+      qc.invalidateQueries({ queryKey: ['external-uploads-queue'] });
+      await refetch();
+      toast.success('Re-parsed');
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Re-parse failed');
     } finally {
       setBusy(null);
     }
@@ -105,8 +141,18 @@ export default function TeacherUploads() {
                 </div>
                 <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">
                   {u.processing_status.replace('_', ' ')}
+                  {u.confidence_score != null && (
+                    <span className="ml-1 text-zinc-600">
+                      · {Math.round(u.confidence_score * 100)}%
+                    </span>
+                  )}
                 </span>
               </div>
+              {u.parsed_json != null && (
+                <pre className="mt-2 max-h-48 overflow-auto rounded-md border border-zinc-800 bg-zinc-950/60 p-2 text-[11px] leading-relaxed text-zinc-400">
+                  {JSON.stringify(u.parsed_json, null, 2)}
+                </pre>
+              )}
               <div className="mt-2 flex flex-wrap gap-1.5">
                 <Button
                   size="sm"
@@ -119,12 +165,23 @@ export default function TeacherUploads() {
                 </Button>
                 <Button
                   size="sm"
-                  onClick={() => updateStatus(u.id, 'parsed')}
-                  disabled={busy === u.id}
+                  onClick={() => approveApply(u.id)}
+                  disabled={busy === u.id || u.parsed_json == null}
+                  title={u.parsed_json == null ? 'Nothing parsed to apply yet' : undefined}
                   className="h-7 px-2 text-xs"
                 >
                   <Check className="w-3 h-3 mr-1.5" />
-                  Mark parsed
+                  Approve &amp; apply
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => rerunParse(u.id)}
+                  disabled={busy === u.id}
+                  className="h-7 px-2 text-xs"
+                >
+                  <RefreshCw className="w-3 h-3 mr-1.5" />
+                  Re-run parse
                 </Button>
                 <Button
                   size="sm"

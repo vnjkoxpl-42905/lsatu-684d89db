@@ -35,10 +35,13 @@ export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, chil
   const permissions = useUserPermissions();
   const location = useLocation();
 
+  // `loading` is only true on the true cold load (no cached permissions yet);
+  // cached reads on subsequent navigations return false, so this no longer
+  // flashes on every gated navigation. Use a neutral surface, not pure black.
   if (permissions.loading) {
     return (
-      <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-muted border-t-foreground rounded-full animate-spin" />
       </div>
     );
   }

@@ -248,15 +248,18 @@ export default function StudentShell() {
             {/* Center stage. Student pages render here and scroll internally;
                 the sidebar and study chat stay put around them. */}
             <main ref={mainRef} className="relative min-h-0 w-full flex-1 overflow-y-auto">
-              <AnimatePresence mode="wait" initial={false}>
+              {/* No mode="wait": the incoming page mounts immediately instead of
+                  waiting for the outgoing page to finish exiting, so swaps feel
+                  instant. Short fade only (no blur/translate stack). */}
+              <AnimatePresence initial={false}>
                 <motion.div
                   key={location.pathname}
-                  initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(8px)" }}
-                  animate={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -4, filter: "blur(4px)" }}
-                  transition={{ duration: reduceMotion ? 0 : 0.5, ease: [0.4, 0, 0.2, 1] }}
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.18, ease: [0.4, 0, 0.2, 1] }}
                   className="h-full w-full"
-                  style={{ willChange: "opacity, transform, filter" }}
+                  style={{ willChange: "opacity" }}
                 >
                   <Outlet context={{ displayName }} />
                 </motion.div>
