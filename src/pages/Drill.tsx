@@ -2,6 +2,7 @@ import * as React from "react";
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -93,6 +94,7 @@ function DrillContent() {
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { settings } = useUserSettings();
+  const permissions = useUserPermissions();
   const { isLoading: qbLoading } = useQuestionBank();
 
   // Homework assignments pass mode + qids + assignmentId via URL params so the
@@ -173,6 +175,10 @@ function DrillContent() {
   const [showVoiceChip, setShowVoiceChip] = React.useState(false);
   const [questionStartTime, setQuestionStartTime] = React.useState(performance.now());
   const [hasTimer, setHasTimer] = React.useState(false);
+  const [sessionScreenMuted, setSessionScreenMuted] = React.useState(false);
+  const [sessionTimerPresetSeconds, setSessionTimerPresetSeconds] = React.useState(90);
+  const [sessionTimerRemainingSeconds, setSessionTimerRemainingSeconds] = React.useState(90);
+  const [sessionTimerRunning, setSessionTimerRunning] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
   const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
   // Derived: eliminations for the displayed question only (read-only proxy).
@@ -232,6 +238,49 @@ function DrillContent() {
       /* ignore quota/availability errors */
     }
   }, []);
+
+  React.useEffect(() => {
+    if (!sessionTimerRunning) return;
+    const interval = window.setInterval(() => {
+      setSessionTimerRemainingSeconds((remaining) => {
+        if (remaining <= 1) {
+          window.clearInterval(interval);
+          setSessionTimerRunning(false);
+          return 0;
+        }
+        return remaining - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [sessionTimerRunning]);
+
+  const setTutorSessionTimerPreset = React.useCallback((seconds: number) => {
+    setSessionTimerPresetSeconds(seconds);
+    setSessionTimerRemainingSeconds(seconds);
+    setSessionTimerRunning(false);
+  }, []);
+
+  const resetTutorSessionTimer = React.useCallback(() => {
+    setSessionTimerRemainingSeconds(sessionTimerPresetSeconds);
+    setSessionTimerRunning(false);
+  }, [sessionTimerPresetSeconds]);
+
+  const toggleTutorSessionTimer = React.useCallback(() => {
+    setSessionTimerRunning((running) => {
+      if (running) return false;
+      if (sessionTimerRemainingSeconds === 0) {
+        setSessionTimerRemainingSeconds(sessionTimerPresetSeconds);
+      }
+      return true;
+    });
+  }, [sessionTimerPresetSeconds, sessionTimerRemainingSeconds]);
+
+  const sessionTimerLabel = React.useMemo(() => {
+    const minutes = Math.floor(sessionTimerRemainingSeconds / 60);
+    const seconds = sessionTimerRemainingSeconds % 60;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  }, [sessionTimerRemainingSeconds]);
   const currentViewId = React.useRef<string | null>(null);
 
   // rrweb session replay capture (one row per question in session_replays)
@@ -701,6 +750,9 @@ function DrillContent() {
     setTutorChatMode('pre-answer');
     setVoiceCoachOpen(false);
     setShowVoiceChip(false);
+    setSessionScreenMuted(false);
+    setSessionTimerRemainingSeconds(sessionTimerPresetSeconds);
+    setSessionTimerRunning(false);
     setAnswerLocked(false);
     setQuestionStartTime(performance.now());
     setHighlightHistory([]);
@@ -2832,6 +2884,15 @@ function DrillContent() {
           isPaused={officialIsPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
+          sessionModeVisible={permissions.is_admin || permissions.has_ta_access}
+          sessionScreenMuted={sessionScreenMuted}
+          onSessionScreenMutedChange={setSessionScreenMuted}
+          sessionTimerLabel={sessionTimerLabel}
+          sessionTimerRunning={sessionTimerRunning}
+          sessionTimerPresetSeconds={sessionTimerPresetSeconds}
+          onSessionTimerPresetChange={setTutorSessionTimerPreset}
+          onSessionTimerToggle={toggleTutorSessionTimer}
+          onSessionTimerReset={resetTutorSessionTimer}
           notesPanelEnabled={usesSmartChrome}
           notesPanelOpen={notesOpen}
           onNotesPanelClose={() => setNotesOpen(false)}
@@ -2890,6 +2951,7 @@ function DrillContent() {
             eliminatedAnswers={eliminatedAnswers}
             isFlagged={isFlagged}
             answerRevealed={!!showAnswerRevealed.get(currentQuestion.qid)}
+            contentMuted={sessionScreenMuted}
             correctAnswer={currentQuestion.correctAnswer}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
