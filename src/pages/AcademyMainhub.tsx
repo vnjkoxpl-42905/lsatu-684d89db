@@ -602,11 +602,10 @@ export default function AcademyMainhub() {
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
         ) : (
-          <section className="grid grid-cols-1 items-stretch gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
+          <section className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
             <section
               aria-label="Practice and insight workspace"
               data-tour="mainhub-practice"
-              className="min-h-[420px]"
             >
               <PracticeInsightStage
                 onOpenAnalytics={openAnalytics}
