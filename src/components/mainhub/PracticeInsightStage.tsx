@@ -105,7 +105,7 @@ export default function PracticeInsightStage({
 
       {/* Rotating insight preview */}
       <div
-        className="relative z-10 mt-1 flex-1"
+        className="relative z-10 mt-1"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
