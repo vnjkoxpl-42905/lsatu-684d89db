@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
-import { buildInsightSlides, type RecommendedAction } from "@/components/mainhub/insightSlides";
+import { buildInsightSlides } from "@/components/mainhub/insightSlides";
 
 const ROTATE_MS = 7000;
 
@@ -51,7 +51,6 @@ export default function PracticeInsightStage({
   }, [paused, slides.length]);
 
   const slide = slides[index] ?? slides[0];
-  const recommend: RecommendedAction = slide?.recommend ?? null;
 
   const handleSlideAction = React.useCallback(
     (href: string, tab: string) => {
@@ -85,14 +84,12 @@ export default function PracticeInsightStage({
             icon={Layers}
             title="Full Section"
             description="Start a timed official section."
-            highlighted={recommend === "full-section"}
             onClick={() => navigate("/practice?action=full-section")}
           />
           <PracticeTile
             icon={Grid3x3}
             title="Build a Set"
             description="Assemble a targeted question set."
-            highlighted={recommend === "type-drill"}
             onClick={() => navigate("/practice?action=type-drill")}
           />
         </div>
@@ -179,13 +176,11 @@ function PracticeTile({
   icon: Icon,
   title,
   description,
-  highlighted,
   onClick,
 }: {
   icon: React.ElementType;
   title: string;
   description: string;
-  highlighted: boolean;
   onClick: () => void;
 }) {
   return (
@@ -195,17 +190,10 @@ function PracticeTile({
       className={cn(
         "group flex flex-col items-start gap-2 rounded-[18px] border p-4 text-left transition",
         "border-white/[0.08] bg-white/[0.04] hover:border-white/25 hover:bg-white/[0.09]",
-        highlighted &&
-          "border-white/40 bg-white/[0.10] shadow-[0_0_0_1px_rgba(255,255,255,0.15),0_18px_40px_rgba(0,0,0,0.25)]",
       )}
     >
       <div className="flex w-full items-center justify-between">
         <Icon className="h-5 w-5 text-white/80" aria-hidden />
-        {highlighted && (
-          <span className="rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-black">
-            Suggested
-          </span>
-        )}
       </div>
       <div>
         <div className="text-sm font-semibold text-white">{title}</div>
