@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { MessageSquare, ArrowLeft, ExternalLink, X, GraduationCap, Users, UserPlus } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -62,7 +63,7 @@ export default function AdminChatHub() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
-  const { conversations, loading, unreadCount, refresh } = useInbox();
+  const { conversations, loading, unreadCount, refresh, deleteConversation } = useInbox();
 
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<Tab>(() => {
@@ -402,6 +403,16 @@ export default function AdminChatHub() {
                                 }}
                                 variant="admin"
                                 emptyLabel="No conversations yet. Focus a student to start one."
+                                onDelete={async (id) => {
+                                  try {
+                                    await deleteConversation(id);
+                                    toast.success('Conversation deleted');
+                                  } catch (e) {
+                                    toast.error(
+                                      e instanceof Error ? e.message : 'Could not delete conversation',
+                                    );
+                                  }
+                                }}
                               />
                             )}
                           </div>

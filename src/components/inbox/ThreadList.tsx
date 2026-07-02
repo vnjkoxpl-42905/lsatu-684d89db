@@ -1,7 +1,9 @@
+import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { CheckCheck, Paperclip, TimerReset } from 'lucide-react';
+import { CheckCheck, Paperclip, TimerReset, Trash2 } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 import { isParticipantOnline } from './inboxPresence';
@@ -17,6 +19,8 @@ interface Props {
   variant?: Variant;
   surface?: Surface;
   emptyLabel?: string;
+  /** Admin-only: when provided, each thread gets a trashcan + swipe-to-delete. */
+  onDelete?: (id: string) => void;
 }
 
 function compactTime(iso: string) {
@@ -33,8 +37,11 @@ export function ThreadList({
   variant = 'admin',
   surface = 'dark',
   emptyLabel,
+  onDelete,
 }: Props) {
   const { user } = useAuth();
+  const reducedMotion = useReducedMotion();
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   if (!user) return null;
 
   if (conversations.length === 0) {
@@ -57,10 +64,11 @@ export function ThreadList({
         const replyRequired = needsReply(c, user.id);
         const otherParticipant = c.participants.find((participant) => participant.user_id !== user.id);
         const isOnline = isParticipantOnline(otherParticipant?.last_seen_at);
+        const canDelete = isAdmin && !!onDelete;
+        const confirming = pendingDelete === c.id;
 
-        return (
+        const item = (
           <button
-            key={c.id}
             role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
@@ -206,6 +214,83 @@ export function ThreadList({
               ) : null}
             </div>
           </button>
+        );
+
+        if (!canDelete) {
+          return <div key={c.id}>{item}</div>;
+        }
+
+        return (
+          <div key={c.id} className="group/thread relative overflow-hidden rounded-2xl">
+            {/* Swipe-reveal delete backdrop */}
+            <div className="absolute inset-0 flex items-center justify-end rounded-2xl bg-red-500 pr-5 text-white">
+              <Trash2 className="h-5 w-5" aria-hidden="true" />
+            </div>
+
+            <motion.div
+              drag={confirming ? false : 'x'}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={{ left: 0.6, right: 0 }}
+              dragSnapToOrigin
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -64) setPendingDelete(c.id);
+              }}
+              className="relative"
+            >
+              {item}
+            </motion.div>
+
+            {/* Trashcan button (top-right, always tappable) */}
+            {!confirming && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPendingDelete(c.id);
+                }}
+                className={cn(
+                  'absolute right-2.5 top-2.5 z-10 rounded-lg p-1.5 transition-opacity',
+                  'opacity-0 group-hover/thread:opacity-100 focus-visible:opacity-100',
+                  'bg-background/70 backdrop-blur-sm hover:bg-red-500/10 text-muted-foreground hover:text-red-600',
+                )}
+                aria-label={`Delete conversation with ${name}`}
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+
+            {/* Inline confirm overlay */}
+            {confirming && (
+              <motion.div
+                initial={reducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 z-20 flex items-center justify-between gap-3 rounded-2xl bg-red-500 px-4 text-white"
+              >
+                <span className="min-w-0 truncate text-[13px] font-semibold">
+                  Delete chat with {name}?
+                </span>
+                <div className="flex shrink-0 items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPendingDelete(null)}
+                    className="rounded-lg bg-white/20 px-3 py-1.5 text-[12px] font-semibold hover:bg-white/30"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPendingDelete(null);
+                      onDelete?.(c.id);
+                    }}
+                    className="rounded-lg bg-white px-3 py-1.5 text-[12px] font-black text-red-600 hover:bg-white/90"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </div>
         );
       })}
     </div>

@@ -184,9 +184,20 @@ export function useInbox() {
     };
   }, [user, loadConversations]);
 
+  const deleteConversation = useCallback(async (conversationId: string) => {
+    // Optimistic remove; messages + participants cascade off the conversation row.
+    setConversations((prev) => prev.filter((c) => c.id !== conversationId));
+    const { error } = await supabase.from('conversations').delete().eq('id', conversationId);
+    if (error) {
+      // Restore on failure so the list reflects reality.
+      await loadConversations();
+      throw error;
+    }
+  }, [loadConversations]);
+
   const unreadCount = useMemo(() => conversations.filter((c) => c.unread).length, [conversations]);
 
-  return { conversations, loading, unreadCount, refresh: loadConversations };
+  return { conversations, loading, unreadCount, refresh: loadConversations, deleteConversation };
 }
 
 export function useConversationMessages(conversationId: string | null) {

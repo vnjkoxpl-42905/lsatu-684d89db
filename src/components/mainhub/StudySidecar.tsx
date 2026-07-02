@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type UserPermissions } from "@/hooks/useUserPermissions";
 import { useStudyChat } from "@/hooks/useStudyChat";
+import { toast } from "sonner";
 import { useInbox, type Conversation } from "@/hooks/useInbox";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
@@ -626,6 +627,7 @@ export default function StudySidecar({
     loading: inboxLoading,
     unreadCount: inboxUnreadTotal,
     refresh: refreshInbox,
+    deleteConversation,
   } = useInbox();
   const {
     notifications,
@@ -728,6 +730,7 @@ export default function StudySidecar({
                 onSelect={setActiveInboxId}
                 variant="admin"
                 surface="light"
+                onDelete={handleDeleteConversation}
               />
             )}
           </div>
@@ -792,6 +795,18 @@ export default function StudySidecar({
       )}
     </div>
   );
+
+  const handleDeleteConversation = async (conversationId: string) => {
+    if (activeInboxId === conversationId) setActiveInboxId(null);
+    try {
+      await deleteConversation(conversationId);
+      toast.success("Conversation deleted");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not delete conversation",
+      );
+    }
+  };
 
   const handleResolveInboxConversation = async () => {
     setStartingInbox(true);
