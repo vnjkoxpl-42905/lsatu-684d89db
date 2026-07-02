@@ -142,6 +142,16 @@ function MainhubHero() {
   const showNoMatches = searchIsActive && !isLoading && searchMatches.length === 0;
   const searchTargetQuestion = searchMatches[0] ?? null;
 
+  const todayLabel = React.useMemo(
+    () =>
+      new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+      }),
+    [],
+  );
+
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive" } });
   }, [navigate]);
@@ -183,7 +193,15 @@ function MainhubHero() {
       />
 
       <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 md:min-h-[390px] md:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] md:items-center md:gap-5 lg:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] lg:gap-7 lg:p-8 xl:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] xl:gap-9">
-        <div className="flex min-h-[92px] flex-col justify-center md:min-h-0 md:pl-2 lg:pl-6 xl:pl-8">
+        <div className="flex min-h-[92px] flex-col justify-center gap-4 md:min-h-0 md:pl-2 lg:pl-6 xl:pl-8">
+          <div className="space-y-1">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">
+              {todayLabel}
+            </p>
+            <h2 className="text-xl font-semibold leading-tight text-white sm:text-2xl">
+              Welcome back
+            </h2>
+          </div>
           <div className="flex items-center gap-3">
             <Button
               onClick={startSmartDrill}
