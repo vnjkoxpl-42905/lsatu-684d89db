@@ -4,11 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 function getSafeReturnTo(): string | null {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(window.location.search);
-  const returnTo = params.get("returnTo");
+  // Accept both `returnTo` (legacy) and `next` (used by the OAuth consent flow).
+  const returnTo = params.get("returnTo") ?? params.get("next");
   if (!returnTo) return null;
   if (!returnTo.startsWith("/") || returnTo.startsWith("//")) return null;
   return returnTo;
 }
+
 
 /**
  * Single source of truth for "where does a freshly authenticated user land?"
