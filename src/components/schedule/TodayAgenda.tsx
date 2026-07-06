@@ -13,6 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useStudentTodo, type TodoItem } from '@/hooks/useStudentTodo';
 import { readTodoAction, resolveTodoRoute } from '@/lib/todoActions';
+import { useAssignedTodoFeed, type AssignedTodoRow } from '@/hooks/useAssignedTodoFeed';
 
 const KIND_LABEL: Record<string, string> = {
   drill: 'Drill',
@@ -176,9 +177,55 @@ function Section({ title, count, children }: { title: string; count: number; chi
   );
 }
 
+const KIND_ICON: Record<AssignedTodoRow['kind'], string> = {
+  homework: 'Homework',
+  ta: 'From Joshua',
+  activity: 'Activity',
+  guided: 'Guided drill',
+};
+
+const STATUS_LABEL: Record<AssignedTodoRow['status'], string> = {
+  assigned: 'Not started',
+  in_progress: 'In progress',
+  completed: 'Completed',
+};
+
+function AssignedRow({ row, onOpen }: { row: AssignedTodoRow; onOpen: (r: AssignedTodoRow) => void }) {
+  const done = row.status === 'completed';
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(row)}
+      className="w-full group flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card hover:bg-accent/30 transition-colors text-left"
+    >
+      <span className="shrink-0" aria-hidden>
+        {done ? (
+          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+        ) : (
+          <Circle className="w-5 h-5 text-muted-foreground" />
+        )}
+      </span>
+      <span className="flex-1 min-w-0">
+        <p className={cn('text-sm font-medium truncate', done && 'line-through text-muted-foreground')}>
+          {row.title}
+        </p>
+        <p className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-2 flex-wrap">
+          <span>{KIND_ICON[row.kind]}</span>
+          <span>·</span>
+          <span>{row.subtitle}</span>
+          <span>·</span>
+          <span className={cn(done && 'text-emerald-600')}>{STATUS_LABEL[row.status]}</span>
+        </p>
+      </span>
+      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+    </button>
+  );
+}
+
 export default function TodayAgenda() {
   const navigate = useNavigate();
   const { items, loading, toggleComplete, moveToDay, addTask, deleteTask } = useStudentTodo();
+  const { rows: assigned, loading: assignedLoading } = useAssignedTodoFeed();
   const today = startOfDay(new Date());
   const todayKey = ymd(today);
 
@@ -187,12 +234,17 @@ export default function TodayAgenda() {
     if (route) navigate(route);
   };
 
+  const openAssigned = (r: AssignedTodoRow) => navigate(r.route);
+
   const overdue = items.filter((i) => isOverdue(i, today));
   const todays = items.filter(
     (i) => !isOverdue(i, today) && ymd(startOfDay(new Date(i.day_date))) === todayKey,
   );
 
-  if (loading) {
+  const openAssigned$ = assigned.filter((r) => r.status !== 'completed');
+  const doneAssigned = assigned.filter((r) => r.status === 'completed');
+
+  if (loading || assignedLoading) {
     return (
       <div className="flex items-center justify-center py-24 text-sm text-muted-foreground">
         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -201,7 +253,8 @@ export default function TodayAgenda() {
     );
   }
 
-  const empty = overdue.length === 0 && todays.length === 0;
+  const empty =
+    overdue.length === 0 && todays.length === 0 && assigned.length === 0;
 
   return (
     <div className="max-w-2xl space-y-8">
@@ -216,6 +269,14 @@ export default function TodayAgenda() {
               onDelete={deleteTask}
               onOpen={openItem}
             />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Assigned by Joshua" count={openAssigned$.length}>
+        <div className="space-y-2">
+          {openAssigned$.map((r) => (
+            <AssignedRow key={r.key} row={r} onOpen={openAssigned} />
           ))}
         </div>
       </Section>
@@ -248,6 +309,14 @@ export default function TodayAgenda() {
         )}
         <AddTaskRow onAdd={(title) => addTask({ title, day_date: todayKey })} />
       </div>
+
+      <Section title="Recently completed" count={doneAssigned.length}>
+        <div className="space-y-2">
+          {doneAssigned.slice(0, 8).map((r) => (
+            <AssignedRow key={r.key} row={r} onOpen={openAssigned} />
+          ))}
+        </div>
+      </Section>
     </div>
   );
 }
