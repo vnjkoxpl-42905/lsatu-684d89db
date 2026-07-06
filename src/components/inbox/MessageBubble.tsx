@@ -94,7 +94,7 @@ function renderBody(text: string, isInstructor: boolean) {
   return nodes.length > 0 ? nodes : text;
 }
 
-export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage }: Props) {
+export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage, lastSeenOwnMessageId, otherLastReadAt }: Props) {
   const navigate = useNavigate();
   const headerTime = shortTime(new Date(cluster.createdAt));
   const isInstructor = cluster.isInstructor;
