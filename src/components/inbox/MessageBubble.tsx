@@ -23,6 +23,11 @@ interface Props {
   onPreviewAttachment?: (attachment: MessageAttachment) => void;
   canDeleteMessage?: (message: Message) => boolean;
   onDeleteMessage?: (messageId: string) => void;
+  /** Id of the caller's own most-recent message the other participant has
+   *  opened past. When it matches a message in this cluster, we render a
+   *  "Seen · <time>" indicator underneath. */
+  lastSeenOwnMessageId?: string | null;
+  otherLastReadAt?: string | null;
 }
 
 function shortTime(date: Date) {
