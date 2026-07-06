@@ -252,6 +252,8 @@ export function ConversationView({
                     onPreviewAttachment={setPreviewAttachment}
                     canDeleteMessage={canDeleteMessage}
                     onDeleteMessage={handleDeleteMessage}
+                    lastSeenOwnMessageId={lastSeenOwnMessageId}
+                    otherLastReadAt={otherLastReadAt}
                   />
                 ))}
               </div>
