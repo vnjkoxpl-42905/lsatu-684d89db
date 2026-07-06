@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { formatRelativeShort } from "@/lib/time";
 import { track } from "@/lib/analytics";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
+import { isParticipantOnline } from "@/components/inbox/inboxPresence";
 
 interface Props {
   selectedId: string | null;
