@@ -98,6 +98,19 @@ export function ConversationView({
     : [];
   const primaryOther = others[0] ?? null;
   const participantOnline = isParticipantOnline(primaryOther?.last_seen_at);
+  const otherLastReadAt = primaryOther?.last_read_at ?? null;
+  // Find the id of the caller's most-recently-sent message that the other
+  // participant has already opened past — that's the one we mark "Seen".
+  const lastSeenOwnMessageId = useMemo(() => {
+    if (!user || !otherLastReadAt) return null;
+    const readMs = new Date(otherLastReadAt).getTime();
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const m = messages[i];
+      if (m.sender_id !== user.id) continue;
+      if (new Date(m.created_at).getTime() <= readMs) return m.id;
+    }
+    return null;
+  }, [messages, otherLastReadAt, user]);
   const formattedNames = others
     .map((o) => formatParticipantName(o.display_name, o.is_admin))
     .filter((n) => n && n !== 'User');
