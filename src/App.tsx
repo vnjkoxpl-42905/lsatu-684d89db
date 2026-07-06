@@ -12,6 +12,12 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
+import { usePresenceHeartbeat } from "./hooks/usePresenceHeartbeat";
+
+function PresenceHeartbeatMount() {
+  usePresenceHeartbeat();
+  return null;
+}
 import Practice from "./pages/Practice";
 import SavedSets from "./pages/SavedSets";
 import AcademyMainhub from "./pages/AcademyMainhub";
@@ -133,6 +139,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PresenceHeartbeatMount />
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
