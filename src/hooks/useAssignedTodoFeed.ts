@@ -102,7 +102,7 @@ export function useAssignedTodoFeed(): {
         subtitle: a.subtitle || 'Activity',
         status: normalizeStatus(a.status),
         createdAt: a.created_at,
-        route: `/activity/${encodeURIComponent(a.id)}`,
+        route: `/activities/${encodeURIComponent(a.id)}`,
       });
     }
     // Open work first, then completed; newest within each bucket.
