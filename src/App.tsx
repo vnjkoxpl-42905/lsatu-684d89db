@@ -133,6 +133,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PresenceHeartbeatMount />
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
