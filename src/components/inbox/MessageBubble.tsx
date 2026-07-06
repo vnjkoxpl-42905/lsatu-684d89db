@@ -251,6 +251,11 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                 </div>
               );
             })}
+            {cluster.isOwn && lastSeenOwnMessageId && cluster.messages.some((m) => m.id === lastSeenOwnMessageId) ? (
+              <div className="mt-1 flex justify-end pr-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8a7f6d]">
+                Seen{otherLastReadAt ? ` · ${shortTime(new Date(otherLastReadAt))}` : ''}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
