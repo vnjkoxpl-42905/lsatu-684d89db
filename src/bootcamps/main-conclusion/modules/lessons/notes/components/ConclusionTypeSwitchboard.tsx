@@ -80,11 +80,20 @@ const titleByType: Record<ConclusionTypeId, string> = {
 };
 
 export function ConclusionTypeSwitchboard() {
+  const shuffledExamples = useMemo(() => {
+    const arr = [...examples];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
   const [exampleIndex, setExampleIndex] = useState(0);
   const [selectedType, setSelectedType] = useState<ConclusionTypeId | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
-  const example = examples[exampleIndex] ?? examples[0];
+  const example = shuffledExamples[exampleIndex] ?? shuffledExamples[0];
   const selectionCorrect = selectedType === example.correctType;
 
   const correctLabel = useMemo(
@@ -98,17 +107,18 @@ export function ConclusionTypeSwitchboard() {
   }
 
   function nextExample() {
-    setExampleIndex((current) => (current + 1) % examples.length);
+    setExampleIndex((current) => (current + 1) % shuffledExamples.length);
     setSelectedType(null);
     setSubmitted(false);
   }
+
 
   return (
     <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
       <div className="space-y-5">
         <div className="space-y-2">
           <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
-            One active pass • Question {exampleIndex + 1} of {examples.length}
+            One active pass • Question {exampleIndex + 1} of {shuffledExamples.length}
           </div>
           <h3 className="font-serif text-[36px] italic leading-[1.1] text-[#1a1a1a]">
             Name the kind of conclusion before the page tells you
@@ -118,7 +128,7 @@ export function ConclusionTypeSwitchboard() {
           </p>
         </div>
 
-        {exampleIndex < examples.length ? (
+        {exampleIndex < shuffledExamples.length ? (
           <motion.div
             key={exampleIndex}
             initial={{ opacity: 0, y: 10 }}
