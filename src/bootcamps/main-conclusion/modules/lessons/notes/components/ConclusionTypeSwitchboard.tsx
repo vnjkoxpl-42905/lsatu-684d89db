@@ -118,7 +118,7 @@ export function ConclusionTypeSwitchboard() {
       <div className="space-y-5">
         <div className="space-y-2">
           <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-[rgba(26,26,26,0.48)]">
-            One active pass • Question {exampleIndex + 1} of {examples.length}
+            One active pass • Question {exampleIndex + 1} of {shuffledExamples.length}
           </div>
           <h3 className="font-serif text-[36px] italic leading-[1.1] text-[#1a1a1a]">
             Name the kind of conclusion before the page tells you
