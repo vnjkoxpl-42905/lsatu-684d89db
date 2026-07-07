@@ -128,7 +128,7 @@ export function ConclusionTypeSwitchboard() {
           </p>
         </div>
 
-        {exampleIndex < examples.length ? (
+        {exampleIndex < shuffledExamples.length ? (
           <motion.div
             key={exampleIndex}
             initial={{ opacity: 0, y: 10 }}
