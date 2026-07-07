@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Home, RotateCcw, X as XIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, Home, Lightbulb, RotateCcw, Sparkles, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import confetti from 'canvas-confetti';
+
 
 import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
 import {
