@@ -204,8 +204,9 @@ export function ConclusionTypeLab() {
                       <small>{meta.blurb}</small>
                       <span className="ctlab__option-weakness">{meta.weaknessSignature}</span>
                     </span>
-                    {showCorrect ? <Check aria-label="Correct type" /> : null}
-                    {showWrongPick ? <XIcon aria-label="Your first pick" /> : null}
+                    {showCorrect ? <CheckCircle2 aria-label="Correct type" /> : null}
+                    {showWrongPick ? <XCircle aria-label="Your first pick" /> : null}
+
                   </button>
                 );
               })}
