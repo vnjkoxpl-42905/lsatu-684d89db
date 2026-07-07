@@ -335,7 +335,10 @@ export function PremiseIndicatorLab() {
                           <span className="rounded-full bg-[#D6A64D] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(214,166,77,0.24)]">
                             {activeItem.example.indicator}
                           </span>{" "}
-                          <span>{activeItem.example.premise}</span>
+                          <span className="rounded-full bg-[#F1DFC0] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(241,223,192,0.18)]">
+                            {activeItem.example.premise}
+                          </span>
+
                         </>
                       ) : (
                         <>
