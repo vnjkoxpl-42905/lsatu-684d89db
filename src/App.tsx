@@ -85,6 +85,8 @@ const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
 const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSessionIngest"));
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
+const BookingPass = React.lazy(() => import("./pages/BookingPass"));
+const BookingPasses = React.lazy(() => import("./pages/teacher/BookingPasses"));
 import Inbox from "./pages/Inbox";
 import StudentShell from "./components/mainhub/StudentShell";
 import ProtectedRoute from "./components/ProtectedRoute";
