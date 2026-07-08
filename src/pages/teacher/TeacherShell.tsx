@@ -37,6 +37,7 @@ const PRIMARY_NAV: NavItem[] = [
   { to: '/teacher/activities', label: 'Activities', Icon: Zap },
   { to: '/teacher/whiteboard', label: 'Whiteboard', Icon: PencilRuler },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
+  { to: '/teacher/booking-passes', label: 'Booking passes', Icon: Ticket },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
