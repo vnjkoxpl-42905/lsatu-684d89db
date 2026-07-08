@@ -149,6 +149,9 @@ const App = () => {
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/Trust")))}</React.Suspense>} />
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/OAuthConsent")))}</React.Suspense>} />
+            <Route path="/schedule/pass/:token" element={<React.Suspense fallback={null}><BookingPass /></React.Suspense>} />
+            <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
+
 
             {/* Onboarding. Username setup for new users. */}
             <Route path="/onboarding" element={<Onboarding />} />
