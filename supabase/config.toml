@@ -32,3 +32,9 @@ verify_jwt = true
 
 [functions.gdrive]
 verify_jwt = true
+
+[functions.booking-pass]
+verify_jwt = false
+
+[functions.booking-pass-admin]
+verify_jwt = true
