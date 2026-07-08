@@ -543,6 +543,114 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_pass_redemptions: {
+        Row: {
+          booking_pass_id: string
+          created_at: string
+          end_at: string
+          google_event_id: string | null
+          id: string
+          idempotency_key: string
+          schedule_event_id: string | null
+          start_at: string
+          status: string
+          student_email_snapshot: string | null
+          student_name_snapshot: string | null
+        }
+        Insert: {
+          booking_pass_id: string
+          created_at?: string
+          end_at: string
+          google_event_id?: string | null
+          id?: string
+          idempotency_key: string
+          schedule_event_id?: string | null
+          start_at: string
+          status: string
+          student_email_snapshot?: string | null
+          student_name_snapshot?: string | null
+        }
+        Update: {
+          booking_pass_id?: string
+          created_at?: string
+          end_at?: string
+          google_event_id?: string | null
+          id?: string
+          idempotency_key?: string
+          schedule_event_id?: string | null
+          start_at?: string
+          status?: string
+          student_email_snapshot?: string | null
+          student_name_snapshot?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_pass_redemptions_booking_pass_id_fkey"
+            columns: ["booking_pass_id"]
+            isOneToOne: false
+            referencedRelation: "booking_passes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_pass_redemptions_schedule_event_id_fkey"
+            columns: ["schedule_event_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      booking_passes: {
+        Row: {
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          session_length_minutes?: number
+          status?: string
+          student_email?: string | null
+          student_id?: string | null
+          student_name?: string | null
+          token_hash: string
+          total_credits: number
+          updated_at?: string
+          used_credits?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          session_length_minutes?: number
+          status?: string
+          student_email?: string | null
+          student_id?: string | null
+          student_name?: string | null
+          token_hash?: string
+          total_credits?: number
+          updated_at?: string
+          used_credits?: number
+        }
+        Relationships: []
+      }
       bootcamp_kv: {
         Row: {
           data: Json
@@ -3347,6 +3455,25 @@ export type Database = {
           message: Json
           msg_id: number
           read_ct: number
+        }[]
+      }
+      redeem_booking_pass: {
+        Args: {
+          _end_at: string
+          _google_event_id: string
+          _idempotency_key: string
+          _pass_id: string
+          _schedule_event_id: string
+          _start_at: string
+          _student_email: string
+          _student_name: string
+        }
+        Returns: {
+          redemption_id: string
+          status: string
+          total_credits: number
+          used_credits: number
+          was_existing: boolean
         }[]
       }
       search_teaching_assets: {
