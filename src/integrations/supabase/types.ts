@@ -3368,23 +3368,6 @@ export type Database = {
       }
     }
     Functions: {
-      append_waj_correct: {
-        Args: { p_class_id: string; p_item: Json; p_qid: string }
-        Returns: undefined
-      }
-      append_waj_wrong: {
-        Args: {
-          p_class_id: string
-          p_item: Json
-          p_level?: number
-          p_pt?: number
-          p_qid: string
-          p_qnum?: number
-          p_qtype?: string
-          p_section?: number
-        }
-        Returns: undefined
-      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -3434,28 +3417,6 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
-      }
-      increment_chapter_view: {
-        Args: { p_section_id: string; p_topic_tag: string }
-        Returns: undefined
-      }
-      increment_daily_stats: {
-        Args: {
-          p_class_id: string
-          p_correct: boolean
-          p_date: string
-          p_time_ms: number
-          p_xp: number
-        }
-        Returns: undefined
-      }
-      increment_question_seen: {
-        Args: { p_class_id: string; p_mode: string; p_qid: string }
-        Returns: undefined
-      }
-      increment_xp_total: {
-        Args: { p_class_id: string; p_xp: number }
-        Returns: undefined
       }
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
