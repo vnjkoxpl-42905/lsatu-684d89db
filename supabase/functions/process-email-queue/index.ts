@@ -142,6 +142,7 @@ Deno.serve(async (req) => {
   }
 
   let totalProcessed = 0
+  let logFailures = 0
 
   // 2. Process auth_emails first (priority), then transactional_emails
   for (const queue of ['auth_emails', 'transactional_emails']) {
