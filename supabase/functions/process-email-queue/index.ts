@@ -60,13 +60,21 @@ async function moveToDlq(
   reason: string
 ): Promise<void> {
   const payload = msg.message
-  await supabase.from('email_send_log').insert({
+  const { error: logError } = await supabase.from('email_send_log').insert({
     message_id: payload.message_id,
     template_name: (payload.label || queue) as string,
     recipient_email: payload.to,
     status: 'dlq',
     error_message: reason,
   })
+  if (logError) {
+    console.error('CRITICAL: dlq-log insert failed', {
+      queue,
+      msg_id: msg.msg_id,
+      message_id: payload.message_id,
+      logError,
+    })
+  }
   const { error } = await supabase.rpc('move_to_dlq', {
     source_queue: queue,
     dlq_name: `${queue}_dlq`,
@@ -134,6 +142,7 @@ Deno.serve(async (req) => {
   }
 
   let totalProcessed = 0
+  let logFailures = 0
 
   // 2. Process auth_emails first (priority), then transactional_emails
   for (const queue of ['auth_emails', 'transactional_emails']) {
@@ -271,12 +280,21 @@ Deno.serve(async (req) => {
         )
 
         // Log success
-        await supabase.from('email_send_log').insert({
+        const { error: sentLogError } = await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
           status: 'sent',
         })
+        if (sentLogError) {
+          logFailures++
+          console.error('CRITICAL: sent-log insert failed', {
+            queue,
+            msg_id: msg.msg_id,
+            message_id: payload.message_id,
+            sentLogError,
+          })
+        }
 
         // Delete from queue
         const { error: delError } = await supabase.rpc('delete_email', {
@@ -285,6 +303,29 @@ Deno.serve(async (req) => {
         })
         if (delError) {
           console.error('Failed to delete sent message from queue', { queue, msg_id: msg.msg_id, error: delError })
+
+          // Without a sent-log row AND without a queue delete, the message will
+          // be redelivered when the VT expires and could be sent again. Retry
+          // the delete once immediately; if that also fails, do NOT count the
+          // message as processed — surface it loudly instead.
+          if (sentLogError) {
+            const { error: delRetryError } = await supabase.rpc('delete_email', {
+              queue_name: queue,
+              message_id: msg.msg_id,
+            })
+            if (delRetryError) {
+              console.error('CRITICAL: double-send risk — sent-log AND queue delete failed', {
+                queue,
+                msg_id: msg.msg_id,
+                message_id: payload.message_id,
+                sentLogError,
+                delError,
+                delRetryError,
+              })
+              // Skip counting as processed so operators notice via metrics.
+              continue
+            }
+          }
         }
         totalProcessed++
       } catch (error) {
@@ -298,13 +339,22 @@ Deno.serve(async (req) => {
         })
 
         if (isRateLimited(error)) {
-          await supabase.from('email_send_log').insert({
+          const { error: rlLogError } = await supabase.from('email_send_log').insert({
             message_id: payload.message_id,
             template_name: payload.label || queue,
             recipient_email: payload.to,
             status: 'rate_limited',
             error_message: errorMsg.slice(0, 1000),
           })
+          if (rlLogError) {
+            logFailures++
+            console.error('CRITICAL: rate_limited-log insert failed', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+              rlLogError,
+            })
+          }
 
           const retryAfterSecs = getRetryAfterSeconds(error)
           await supabase
@@ -319,7 +369,7 @@ Deno.serve(async (req) => {
 
           // Stop processing — remaining messages stay in queue (VT expires, retried next cycle)
           return new Response(
-            JSON.stringify({ processed: totalProcessed, stopped: 'rate_limited' }),
+            JSON.stringify({ processed: totalProcessed, log_failures: logFailures, stopped: 'rate_limited' }),
             { headers: { 'Content-Type': 'application/json' } }
           )
         }
@@ -329,20 +379,35 @@ Deno.serve(async (req) => {
         if (isForbidden(error)) {
           await moveToDlq(supabase, queue, msg, 'Emails disabled for this project')
           return new Response(
-            JSON.stringify({ processed: totalProcessed, stopped: 'emails_disabled' }),
+            JSON.stringify({ processed: totalProcessed, log_failures: logFailures, stopped: 'emails_disabled' }),
             { headers: { 'Content-Type': 'application/json' } }
           )
         }
 
         // Log non-429 failures to track real retry attempts.
-        await supabase.from('email_send_log').insert({
+        const { error: failLogError } = await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
           status: 'failed',
           error_message: errorMsg.slice(0, 1000),
         })
-        if (payload?.message_id && typeof payload.message_id === 'string') {
+        if (failLogError) {
+          logFailures++
+          console.error('CRITICAL: failed-log insert failed — retry budget falls back to pgmq read_ct', {
+            queue,
+            msg_id: msg.msg_id,
+            message_id: payload.message_id,
+            read_ct: msg.read_ct,
+            failLogError,
+          })
+          // Fall back to pgmq's read_ct so retries stay bounded even without
+          // a persisted failure counter for this message.
+          if (payload?.message_id && typeof payload.message_id === 'string') {
+            const fallback = Math.max(failedAttempts + 1, msg.read_ct ?? 0)
+            failedAttemptsByMessageId.set(payload.message_id, fallback)
+          }
+        } else if (payload?.message_id && typeof payload.message_id === 'string') {
           failedAttemptsByMessageId.set(payload.message_id, failedAttempts + 1)
         }
 
@@ -357,7 +422,7 @@ Deno.serve(async (req) => {
   }
 
   return new Response(
-    JSON.stringify({ processed: totalProcessed }),
+    JSON.stringify({ processed: totalProcessed, log_failures: logFailures }),
     { headers: { 'Content-Type': 'application/json' } }
   )
 })
