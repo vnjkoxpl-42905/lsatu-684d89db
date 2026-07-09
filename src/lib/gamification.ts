@@ -93,13 +93,14 @@ export const calculateXP = async (
   
   // First time seeing this question type today
   const today = new Date().toISOString().split('T')[0];
-  const { data: todayStats } = await supabase
+  const { data: todayStats, error: todayError } = await supabase
     .from('daily_stats')
     .select('*')
     .eq('class_id', classId)
     .eq('date', today)
-    .single();
-  
+    .maybeSingle();
+  if (todayError) throw todayError;
+
   // Simple check - if no stats today, it's first of any type
   const firstTimeBonus = !todayStats || todayStats.questions_answered === 0 ? 5 : 0;
   
@@ -129,15 +130,20 @@ export const updateDailyStats = async (
 ): Promise<void> => {
   const today = new Date().toISOString().split('T')[0];
   
-  const { data: existing } = await supabase
+  // NOTE: this read-modify-write races when two answers land in quick
+  // succession (common in a drill) and drops an increment. The atomic upsert
+  // RPC (increment_daily_stats) is Phase 2. For now, surface write errors so a
+  // failed stats write is not invisible.
+  const { data: existing, error: readError } = await supabase
     .from('daily_stats')
     .select('*')
     .eq('class_id', classId)
     .eq('date', today)
-    .single();
-  
+    .maybeSingle();
+  if (readError) throw readError;
+
   if (existing) {
-    await supabase
+    const { error } = await supabase
       .from('daily_stats')
       .update({
         questions_answered: existing.questions_answered + 1,
@@ -146,8 +152,9 @@ export const updateDailyStats = async (
         time_spent_ms: existing.time_spent_ms + timeMs
       })
       .eq('id', existing.id);
+    if (error) throw error;
   } else {
-    await supabase
+    const { error } = await supabase
       .from('daily_stats')
       .insert({
         class_id: classId,
@@ -157,5 +164,6 @@ export const updateDailyStats = async (
         xp_earned: xpEarned,
         time_spent_ms: timeMs
       });
+    if (error) throw error;
   }
 };

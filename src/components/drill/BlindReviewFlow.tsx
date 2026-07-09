@@ -11,6 +11,7 @@ import { questionBank } from '@/lib/questionLoader';
 import { normalizeText, cn } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import type { DrillSession } from '@/types/drill';
 
@@ -159,16 +160,21 @@ export function BlindReviewFlow({ session, selectedQids, onComplete }: BlindRevi
   const handleToggleFlag = async () => {
     if (!currentQuestion || !user) return;
     
+    // supabase-js resolves { error } on a failed mutation (it never throws), so
+    // the old bare await + try/catch showed a flag state that was never
+    // persisted. Check the error, toast, and don't flip local state on failure.
+    const wasFlagged = isFlagged;
     try {
-      if (isFlagged) {
-        await supabase
+      if (wasFlagged) {
+        const { error } = await supabase
           .from('flagged_questions')
           .delete()
           .eq('qid', currentQid)
           .eq('user_id', user.id);
+        if (error) throw error;
         setIsFlagged(false);
       } else {
-        await supabase
+        const { error } = await supabase
           .from('flagged_questions')
           .insert({
             qid: currentQid,
@@ -180,10 +186,13 @@ export function BlindReviewFlow({ session, selectedQids, onComplete }: BlindRevi
             class_id: (user.user_metadata as { class_id?: string } | null)?.class_id ?? user.id,
             user_id: user.id,
           });
+        if (error) throw error;
         setIsFlagged(true);
       }
     } catch (err) {
       console.error('Error toggling flag:', err);
+      setIsFlagged(wasFlagged);
+      toast.error('Could not update flag');
     }
   };
 

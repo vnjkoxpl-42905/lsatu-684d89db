@@ -22,39 +22,42 @@ export class QuestionPoolService {
    * Track that a question has been served to the user
    */
   static async markQuestionSeen(qid: string, classId: string, mode: DrillMode): Promise<void> {
-    try {
-      // Check if record exists
-      const { data: existing } = await supabase
-        .from('question_usage')
-        .select('*')
-        .eq('class_id', classId)
-        .eq('qid', qid)
-        .eq('mode', mode)
-        .maybeSingle();
+    // Fire-and-forget telemetry: never throw into the drill flow, but check the
+    // Supabase error explicitly (supabase-js resolves { error }, never throws)
+    // and warn so a real RLS/transport failure is not fully invisible.
+    const { data: existing, error: readError } = await supabase
+      .from('question_usage')
+      .select('*')
+      .eq('class_id', classId)
+      .eq('qid', qid)
+      .eq('mode', mode)
+      .maybeSingle();
 
-      if (existing) {
-        // Update existing record
-        await supabase
-          .from('question_usage')
-          .update({
-            last_seen_at: new Date().toISOString(),
-            times_seen: existing.times_seen + 1
-          })
-          .eq('id', existing.id);
-      } else {
-        // Insert new record
-        await supabase
-          .from('question_usage')
-          .insert({
-            class_id: classId,
-            qid,
-            mode,
-            last_seen_at: new Date().toISOString(),
-            times_seen: 1
-          });
-      }
-    } catch (error) {
-      console.error('Failed to mark question as seen:', error);
+    if (readError) {
+      console.warn('[questionPool] markQuestionSeen read failed:', readError.message);
+      return;
+    }
+
+    if (existing) {
+      const { error } = await supabase
+        .from('question_usage')
+        .update({
+          last_seen_at: new Date().toISOString(),
+          times_seen: existing.times_seen + 1
+        })
+        .eq('id', existing.id);
+      if (error) console.warn('[questionPool] markQuestionSeen update failed:', error.message);
+    } else {
+      const { error } = await supabase
+        .from('question_usage')
+        .insert({
+          class_id: classId,
+          qid,
+          mode,
+          last_seen_at: new Date().toISOString(),
+          times_seen: 1
+        });
+      if (error) console.warn('[questionPool] markQuestionSeen insert failed:', error.message);
     }
   }
 
@@ -89,73 +92,68 @@ export class QuestionPoolService {
    * Mark a question view as answered
    */
   static async markViewAnswered(viewId: string): Promise<void> {
-    try {
-      await supabase
-        .from('question_views')
-        .update({ answered: true })
-        .eq('id', viewId);
-    } catch (error) {
-      console.error('Failed to mark view as answered:', error);
-    }
+    // Fire-and-forget telemetry: check the error and warn, never throw.
+    const { error } = await supabase
+      .from('question_views')
+      .update({ answered: true })
+      .eq('id', viewId);
+    if (error) console.warn('[questionPool] markViewAnswered failed:', error.message);
   }
 
   /**
    * Get all question usage for the user — cross-mode by default
    */
   static async getQuestionUsage(classId: string, mode: DrillMode, crossMode: boolean = true): Promise<Map<string, QuestionUsage>> {
-    try {
-      let query = supabase
-        .from('question_usage')
-        .select('qid, last_seen_at, times_seen')
-        .eq('class_id', classId);
+    // Behavior-affecting: an empty Map silently disables dedupe and serves
+    // repeats with no signal. Throw so the caller can surface "history
+    // unavailable" and decide how to proceed (see Drill.tsx pool load).
+    let query = supabase
+      .from('question_usage')
+      .select('qid, last_seen_at, times_seen')
+      .eq('class_id', classId);
 
-      // Only filter by mode if cross-mode is disabled
-      if (!crossMode) {
-        query = query.eq('mode', mode);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-
-      const usageMap = new Map<string, QuestionUsage>();
-      data?.forEach(item => {
-        const existing = usageMap.get(item.qid);
-        if (!existing || (item.last_seen_at && (!existing.last_seen_at || item.last_seen_at > existing.last_seen_at))) {
-          usageMap.set(item.qid, {
-            qid: item.qid,
-            last_seen_at: item.last_seen_at ?? '',
-            times_seen: (existing?.times_seen ?? 0) + (item.times_seen ?? 1),
-          });
-        }
-      });
-
-      return usageMap;
-    } catch (error) {
-      console.error('Failed to get question usage:', error);
-      return new Map();
+    // Only filter by mode if cross-mode is disabled
+    if (!crossMode) {
+      query = query.eq('mode', mode);
     }
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(`getQuestionUsage failed: ${error.message}`);
+
+    const usageMap = new Map<string, QuestionUsage>();
+    data?.forEach(item => {
+      const existing = usageMap.get(item.qid);
+      if (!existing || (item.last_seen_at && (!existing.last_seen_at || item.last_seen_at > existing.last_seen_at))) {
+        usageMap.set(item.qid, {
+          qid: item.qid,
+          last_seen_at: item.last_seen_at ?? '',
+          times_seen: (existing?.times_seen ?? 0) + (item.times_seen ?? 1),
+        });
+      }
+    });
+
+    return usageMap;
   }
 
   /**
    * Reset question pool for a user (delete all usage records)
    */
   static async resetPool(classId: string, mode?: DrillMode): Promise<void> {
-    try {
-      let query = supabase
-        .from('question_usage')
-        .delete()
-        .eq('class_id', classId);
+    let query = supabase
+      .from('question_usage')
+      .delete()
+      .eq('class_id', classId);
 
-      if (mode) {
-        query = query.eq('mode', mode);
-      }
-
-      await query;
-    } catch (error) {
-      console.error('Failed to reset question pool:', error);
-      throw error;
+    if (mode) {
+      query = query.eq('mode', mode);
     }
+
+    // supabase-js resolves { error } on a failed DELETE (it never throws), so
+    // the old bare `await query` reported success even when zero rows were
+    // deleted. Check and throw so callers can toast a real failure.
+    const { error } = await query;
+    if (error) throw new Error(`resetPool failed: ${error.message}`);
   }
 
   /**

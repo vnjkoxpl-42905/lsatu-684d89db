@@ -90,7 +90,7 @@ export default function Inbox() {
   const location = useLocation();
   const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
-  const { conversations, loading, unreadCount, refresh } = useInbox();
+  const { conversations, loading, error: inboxError, unreadCount, refresh } = useInbox();
 
   const activeId = conversationId || null;
   const active = useMemo(
@@ -314,6 +314,13 @@ export default function Inbox() {
             <div className="flex-1 overflow-y-auto">
               {loading ? (
                 <ThreadListSkeleton count={6} />
+              ) : inboxError ? (
+                <div className="p-4 m-3 rounded-lg border border-destructive/40 bg-destructive/5 text-sm text-destructive flex items-center justify-between gap-3">
+                  <span>{inboxError}. Your messages may be out of date.</span>
+                  <Button size="sm" variant="outline" onClick={() => refresh()}>
+                    Retry
+                  </Button>
+                </div>
               ) : (
                 <ThreadList
                   conversations={visibleConversations}

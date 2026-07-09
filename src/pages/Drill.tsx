@@ -69,7 +69,7 @@ import type {
   FullSectionConfig,
   TypeDrillConfig,
 } from '@/types/drill';
-import { QuestionPoolService } from '@/lib/questionPoolService';
+import { QuestionPoolService, type QuestionUsage } from '@/lib/questionPoolService';
 import { QuestionPoolChip } from '@/components/drill/QuestionPoolChip';
 import { QuestionPoolExhausted } from '@/components/drill/QuestionPoolExhausted';
 import { toast } from 'sonner';
@@ -382,7 +382,15 @@ function DrillContent() {
         ((state.config as TypeDrillConfig).selectedQids?.length ?? 0) > 0;
 
       if (classId && !explicitQids) {
-        const usage = await QuestionPoolService.getQuestionUsage(classId, mode);
+        // Dedupe read can fail (RLS/transport). Don't block the drill: fall back
+        // to an empty usage map (repeats possible) but tell the student why.
+        let usage: Map<string, QuestionUsage> = new Map();
+        try {
+          usage = await QuestionPoolService.getQuestionUsage(classId, mode);
+        } catch (err) {
+          console.error('Failed to load question history for dedupe:', err);
+          toast.error("Couldn't check your question history; some questions may repeat.");
+        }
         const typeDrillConfig = mode === 'type-drill' ? (state.config as TypeDrillConfig) : null;
         const poolSettings = {
           allowRepeats: typeDrillConfig?.unseen_only ? false : settings.allowRepeats,
@@ -3178,9 +3186,14 @@ function DrillContent() {
             <QuestionPoolExhausted
               onReset={async () => {
                 if (classId) {
-                  await QuestionPoolService.resetPool(classId, session?.mode);
-                  toast.success('Question pool reset');
-                  window.location.reload();
+                  try {
+                    await QuestionPoolService.resetPool(classId, session?.mode);
+                    toast.success('Question pool reset');
+                    window.location.reload();
+                  } catch (err) {
+                    console.error('Failed to reset question pool:', err);
+                    toast.error('Failed to reset question pool');
+                  }
                 }
               }}
               onExpandCriteria={() => {

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesInsert } from "@/integrations/supabase/types";
 import type { XPGain, UserStats, AttemptData } from "./gamification";
 import type { StreakUpdate } from "./streakSystem";
 
@@ -155,13 +156,18 @@ class AchievementEngine {
     
     // Check for "perfect 10" - 10 correct in a row
     if (context.attempt.correct) {
-      const { data: recentAttempts } = await supabase
+      const { data: recentAttempts, error: recentError } = await supabase
         .from('attempts')
         .select('correct')
         .eq('class_id', classId)
-        .order('timestamp', { ascending: false })
+        .order('timestamp_iso', { ascending: false })
         .limit(10);
-      
+
+      // The attempts table has no `timestamp` column (only `timestamp_iso`), so
+      // the old order clause returned a PostgREST error and null data, silently
+      // making perfect_10 unwinnable. Surface real read failures.
+      if (recentError) throw recentError;
+
       if (recentAttempts && recentAttempts.length === 10) {
         const allCorrect = recentAttempts.every(a => a.correct);
         
@@ -195,32 +201,38 @@ class AchievementEngine {
     classId: string,
     achievements: Achievement[]
   ): Promise<void> {
-    // Insert user achievements
-    const userAchievements = achievements.map(a => ({
+    // Insert user achievements. Typed against the generated Insert shape (no
+    // `progress` column exists on the table, so the old `as any` masked a
+    // phantom field). Check the error so we never toast "unlocked" for a badge
+    // that was never persisted.
+    const userAchievements: TablesInsert<'user_achievements'>[] = achievements.map(a => ({
       class_id: classId,
       achievement_id: a.id,
-      progress: 100
     }));
-    
-    await supabase
+
+    const { error: insertError } = await supabase
       .from('user_achievements')
-      .insert(userAchievements as any);
-    
-    // Award XP
+      .insert(userAchievements);
+    if (insertError) throw insertError;
+
+    // Award XP. NOTE: read-modify-write on xp_total is a known race (H31); the
+    // atomic RPC replacement is Phase 2. For now, at least surface write errors.
     const totalXP = achievements.reduce((sum, a) => sum + a.xp_reward, 0);
-    
+
     if (totalXP > 0) {
-      const { data: profile } = await supabase
+      const { data: profile, error: profileReadError } = await supabase
         .from('profiles')
         .select('xp_total')
         .eq('class_id', classId)
         .single();
-      
+      if (profileReadError) throw profileReadError;
+
       if (profile) {
-        await supabase
+        const { error: xpError } = await supabase
           .from('profiles')
           .update({ xp_total: profile.xp_total + totalXP })
           .eq('class_id', classId);
+        if (xpError) throw xpError;
       }
     }
   }

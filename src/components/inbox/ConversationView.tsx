@@ -61,7 +61,7 @@ export function ConversationView({
 }: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
-  const { messages, loading, refresh, deleteMessage } = useConversationMessages(conversation.id);
+  const { messages, loading, error: threadError, refresh, deleteMessage } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
 
@@ -223,6 +223,13 @@ export function ConversationView({
       >
         {loading ? (
           <ConversationSkeleton />
+        ) : threadError ? (
+          <div className="mx-auto max-w-sm rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-center text-sm text-destructive">
+            <div>{threadError}.</div>
+            <Button size="sm" variant="outline" className="mt-3" onClick={() => refresh()}>
+              Retry
+            </Button>
+          </div>
         ) : messages.length === 0 ? (
           <div className={cn(
             'text-center text-sm font-medium text-slate-300',

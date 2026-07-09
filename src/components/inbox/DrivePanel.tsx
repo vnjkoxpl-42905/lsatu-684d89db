@@ -354,6 +354,11 @@ export function DrivePanel() {
       const { files, nextPageToken } = await fetchPage(q, null);
       setFiles(files);
       setNextPageToken(nextPageToken);
+    } catch (e: any) {
+      // Without this catch a fetch failure became an unhandled rejection and
+      // left an empty Drive panel with no signal (matches loadMore's handling).
+      console.error('[drive] load failed:', e);
+      toast.error(e?.message ?? 'Failed to load Drive files');
     } finally {
       setLoading(false);
     }

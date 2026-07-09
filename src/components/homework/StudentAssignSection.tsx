@@ -20,6 +20,7 @@ interface StudentAssignSectionProps {
 export default function StudentAssignSection({ set }: StudentAssignSectionProps) {
   const [students, setStudents] = React.useState<Student[]>([]);
   const [loadingStudents, setLoadingStudents] = React.useState(true);
+  const [studentsError, setStudentsError] = React.useState(false);
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = React.useState(false);
 
@@ -34,9 +35,13 @@ export default function StudentAssignSection({ set }: StudentAssignSectionProps)
         .select("class_id, display_name")
         .order("display_name", { ascending: true });
       if (error) {
+        // Don't render an empty list as "no students": a teacher could assign
+        // work to nobody and think it went out. Surface the failure instead.
         console.error("[homework:students:list] failed", { error });
         setStudents([]);
+        setStudentsError(true);
       } else {
+        setStudentsError(false);
         // profiles.class_id is the student's class_id. profiles keys to user via class_id=user_id invariant.
         setStudents(
           (data || []).map((r: { class_id: string; display_name: string | null }) => ({
@@ -112,6 +117,8 @@ export default function StudentAssignSection({ set }: StudentAssignSectionProps)
 
       {loadingStudents ? (
         <p className="text-sm text-zinc-500">Loading students...</p>
+      ) : studentsError ? (
+        <p className="text-sm text-red-400">Could not load the student list. Refresh before assigning.</p>
       ) : students.length === 0 ? (
         <p className="text-sm text-zinc-500">No students found.</p>
       ) : (

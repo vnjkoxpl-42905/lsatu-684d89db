@@ -16,29 +16,34 @@ export const updateStreak = async (classId: string): Promise<StreakUpdate> => {
   const today = new Date().toISOString().split('T')[0];
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   
-  // Get today's stats
-  const { data: todayStats } = await supabase
+  // Get today's stats. maybeSingle(): a missing row is the normal "no practice
+  // yet today" case, not an error; single() would report PGRST116 and make a
+  // real failure indistinguishable from empty.
+  const { data: todayStats, error: todayError } = await supabase
     .from('daily_stats')
     .select('*')
     .eq('class_id', classId)
     .eq('date', today)
-    .single();
-  
+    .maybeSingle();
+  if (todayError) throw todayError;
+
   // Get yesterday's stats
-  const { data: yesterdayStats } = await supabase
+  const { data: yesterdayStats, error: yesterdayError } = await supabase
     .from('daily_stats')
     .select('*')
     .eq('class_id', classId)
     .eq('date', yesterday)
-    .single();
-  
+    .maybeSingle();
+  if (yesterdayError) throw yesterdayError;
+
   // Get profile
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('streak_current, last_practice_date, longest_streak, daily_goal_questions')
     .eq('class_id', classId)
-    .single();
-  
+    .maybeSingle();
+  if (profileError) throw profileError;
+
   if (!profile) {
     return {
       newStreak: 0,
@@ -75,8 +80,11 @@ export const updateStreak = async (classId: string): Promise<StreakUpdate> => {
         streakIncreased = true;
       }
       
-      // Update profile
-      await supabase
+      // Update profile. Throw on failure so the caller never celebrates a
+      // streak that was never persisted (and the next session won't recompute
+      // from stale data as if it had). NOTE: streak_current here is still a
+      // read-modify-write; the atomic RPC is Phase 2.
+      const { error: streakWriteError } = await supabase
         .from('profiles')
         .update({
           streak_current: newStreak,
@@ -84,6 +92,7 @@ export const updateStreak = async (classId: string): Promise<StreakUpdate> => {
           last_practice_date: today
         })
         .eq('class_id', classId);
+      if (streakWriteError) throw streakWriteError;
     }
   }
   
@@ -102,24 +111,26 @@ export const checkStreakAtRisk = async (classId: string): Promise<boolean> => {
   const today = new Date().toISOString().split('T')[0];
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('streak_current, last_practice_date')
     .eq('class_id', classId)
-    .single();
-  
+    .maybeSingle();
+  if (profileError) throw profileError;
+
   if (!profile || profile.streak_current === 0) {
     return false;
   }
-  
+
   // Streak at risk if last practice was yesterday and haven't practiced today
-  const { data: todayStats } = await supabase
+  const { data: todayStats, error: todayError } = await supabase
     .from('daily_stats')
     .select('questions_answered')
     .eq('class_id', classId)
     .eq('date', today)
-    .single();
-  
+    .maybeSingle();
+  if (todayError) throw todayError;
+
   const questionsToday = todayStats?.questions_answered || 0;
   return profile.last_practice_date === yesterday && questionsToday < QUESTIONS_PER_DAY_GOAL;
 };

@@ -60,13 +60,17 @@ export async function logWrongAnswer(params: {
     review: params.review,
   };
 
-  // Check if entry exists
-  const { data: existing } = await supabase
+  // Check if entry exists. Check the read error first: a swallowed select
+  // failure yields existing=null and wrongly takes the insert branch, losing
+  // the appended history item to a duplicate insert or a unique violation.
+  const { data: existing, error: readError } = await supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', params.class_id)
     .eq('qid', params.qid)
     .maybeSingle();
+
+  if (readError) throw readError;
 
   if (existing) {
     // Append to history
@@ -130,13 +134,14 @@ export async function ensureJournalEntry(params: {
   time_ms?: number | null;
   confidence_1_5?: number | null;
 }): Promise<void> {
-  const { data: existing } = await supabase
+  const { data: existing, error: readError } = await supabase
     .from('wrong_answer_journal')
     .select('id')
     .eq('class_id', params.class_id)
     .eq('qid', params.qid)
     .maybeSingle();
 
+  if (readError) throw readError;
   if (existing) return; // already journaled — leave history untouched
 
   const answered = !!params.chosen_answer && !!params.correct_answer;
@@ -185,13 +190,17 @@ export async function logCorrectAnswer(params: {
   time_ms: number;
   confidence_1_5: number | null;
 }) {
-  // Only update if there's an existing WAJ entry (meaning they got it wrong before)
-  const { data: existing } = await supabase
+  // Only update if there's an existing WAJ entry (meaning they got it wrong
+  // before). Check the read error: a swallowed failure yields existing=null and
+  // silently skips recording a correct re-attempt, leaving last_status 'wrong'.
+  const { data: existing, error: readError } = await supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', params.class_id)
     .eq('qid', params.qid)
     .maybeSingle();
+
+  if (readError) throw readError;
 
   if (existing) {
     const historyItem: WAJHistoryItem = {

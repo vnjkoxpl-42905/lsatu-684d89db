@@ -162,7 +162,7 @@ export default function Profile() {
   const loadProfile = async (classIdArg: string) => {
     if (!user || !classIdArg) return;
     try {
-      const { data: profileStats } = await supabase
+      const { data: profileStats, error } = await supabase
         .from('profiles')
         .select(
           'xp_total, streak_current, overall_answered, overall_correct, class_id, level, longest_streak',
@@ -170,9 +170,14 @@ export default function Profile() {
         .eq('class_id', classIdArg)
         .maybeSingle();
 
+      // A swallowed error rendered default (zero) stats as if they were real.
+      // Surface it instead of silently showing a fabricated profile.
+      if (error) throw error;
+
       if (profileStats) setStats(profileStats);
     } catch (err) {
       console.error('Error loading profile:', err);
+      toast.error('Could not load your profile stats');
     } finally {
       setLoading(false);
     }

@@ -62,17 +62,19 @@ export function BadgeGallery() {
     
     try {
       // Get all achievements
-      const { data: allAchievements } = await supabase
+      const { data: allAchievements, error: allError } = await supabase
         .from('achievements')
         .select('*')
         .order('category', { ascending: true });
-      
+      if (allError) throw allError;
+
       // Get user's earned achievements
-      const { data: userAchievements } = await supabase
+      const { data: userAchievements, error: earnedError } = await supabase
         .from('user_achievements')
         .select('achievement_id, earned_at')
         .eq('class_id', classId);
-      
+      if (earnedError) throw earnedError;
+
       const earnedIds = new Set(userAchievements?.map(ua => ua.achievement_id) || []);
       const earnedMap = new Map(userAchievements?.map(ua => [ua.achievement_id, ua.earned_at]) || []);
       

@@ -49,6 +49,7 @@ export function useInbox() {
   const { user } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const loadConversations = useCallback(async () => {
     if (!user) {
@@ -58,14 +59,24 @@ export function useInbox() {
     }
     setLoading(true);
 
-    // Get conversations the user participates in
-    const { data: myParts } = await supabase
+    // Get conversations the user participates in. A swallowed error here (and
+    // in each read below) yielded null -> an empty inbox rendered as if the
+    // student had no messages: a swallowed-error AND a truthful-UI violation.
+    // On any failure we set an error, KEEP the prior conversations, and stop.
+    const { data: myParts, error: partsError } = await supabase
       .from('conversation_participants')
       .select('conversation_id, last_read_at')
       .eq('user_id', user.id);
+    if (partsError) {
+      console.error('[inbox] load participants failed:', partsError);
+      setError('Could not load your messages');
+      setLoading(false);
+      return;
+    }
 
     const convIds = (myParts ?? []).map((p) => p.conversation_id);
     if (convIds.length === 0) {
+      setError(null);
       setConversations([]);
       setLoading(false);
       return;
@@ -75,16 +86,28 @@ export function useInbox() {
       (myParts ?? []).map((p) => [p.conversation_id, p.last_read_at])
     );
 
-    const { data: convs } = await supabase
+    const { data: convs, error: convsError } = await supabase
       .from('conversations')
       .select('*')
       .in('id', convIds)
       .order('last_message_at', { ascending: false });
+    if (convsError) {
+      console.error('[inbox] load conversations failed:', convsError);
+      setError('Could not load your messages');
+      setLoading(false);
+      return;
+    }
 
-    const { data: allParts } = await supabase
+    const { data: allParts, error: allPartsError } = await supabase
       .from('conversation_participants')
       .select('id, conversation_id, user_id, last_read_at')
       .in('conversation_id', convIds);
+    if (allPartsError) {
+      console.error('[inbox] load all participants failed:', allPartsError);
+      setError('Could not load your messages');
+      setLoading(false);
+      return;
+    }
 
     // Resolve display names via SECURITY DEFINER RPC — RLS on `profiles` blocks
     // non-admin cross-user SELECTs, so a direct `.from('profiles').select(...)`
@@ -92,8 +115,12 @@ export function useInbox() {
     // The RPC returns display_name only for users who share a conversation with
     // the caller.
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
-    const { data: nameRows } = await supabase
+    const { data: nameRows, error: namesError } = await supabase
       .rpc('get_conversation_participant_names', { _user_ids: userIds });
+    if (namesError) {
+      // Non-fatal: names just fall back to "Conversation". Warn, don't blank.
+      console.warn('[inbox] participant names RPC failed:', namesError.message);
+    }
     const rows = (nameRows ?? []) as Array<{
       user_id: string;
       display_name: string | null;
@@ -107,11 +134,17 @@ export function useInbox() {
     const adminSet = new Set(rows.filter((r) => r.is_admin).map((r) => r.user_id));
 
     // Last message per conversation
-    const { data: msgs } = await supabase
+    const { data: msgs, error: msgsError } = await supabase
       .from('messages')
       .select('id, conversation_id, body, created_at, sender_id')
       .in('conversation_id', convIds)
       .order('created_at', { ascending: false });
+    if (msgsError) {
+      console.error('[inbox] load messages failed:', msgsError);
+      setError('Could not load your messages');
+      setLoading(false);
+      return;
+    }
     const lastMsgMap = new Map<string, { body: string; created_at: string; sender_id: string }>();
     const msgIdToConv = new Map<string, string>();
     for (const m of msgs ?? []) {
@@ -125,10 +158,14 @@ export function useInbox() {
     const attachmentConvIds = new Set<string>();
     const allMsgIds = Array.from(msgIdToConv.keys());
     if (allMsgIds.length) {
-      const { data: atts } = await supabase
+      const { data: atts, error: attsError } = await supabase
         .from('message_attachments')
         .select('message_id')
         .in('message_id', allMsgIds);
+      if (attsError) {
+        // Non-fatal: worst case the paperclip indicator is missing. Warn only.
+        console.warn('[inbox] attachment presence read failed:', attsError.message);
+      }
       for (const a of atts ?? []) {
         const cid = msgIdToConv.get(a.message_id);
         if (cid) attachmentConvIds.add(cid);
@@ -159,6 +196,7 @@ export function useInbox() {
       };
     });
 
+    setError(null);
     setConversations(enriched);
     setLoading(false);
   }, [user]);
@@ -197,13 +235,14 @@ export function useInbox() {
 
   const unreadCount = useMemo(() => conversations.filter((c) => c.unread).length, [conversations]);
 
-  return { conversations, loading, unreadCount, refresh: loadConversations, deleteConversation };
+  return { conversations, loading, error, unreadCount, refresh: loadConversations, deleteConversation };
 }
 
 export function useConversationMessages(conversationId: string | null) {
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!conversationId) {
@@ -211,19 +250,29 @@ export function useConversationMessages(conversationId: string | null) {
       return;
     }
     setLoading(true);
-    const { data: msgs } = await supabase
+    const { data: msgs, error: msgsError } = await supabase
       .from('messages')
       .select('*')
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true });
+    if (msgsError) {
+      // Don't render an empty thread as if the conversation had no messages.
+      console.error('[inbox] load thread failed:', msgsError);
+      setError('Could not load this conversation');
+      setLoading(false);
+      return;
+    }
 
     const ids = (msgs ?? []).map((m) => m.id);
     const attMap = new Map<string, MessageAttachment[]>();
     if (ids.length) {
-      const { data: atts } = await supabase
+      const { data: atts, error: attsError } = await supabase
         .from('message_attachments')
         .select('*')
         .in('message_id', ids);
+      if (attsError) {
+        console.warn('[inbox] thread attachments read failed:', attsError.message);
+      }
       for (const a of atts ?? []) {
         const arr = attMap.get(a.message_id) ?? [];
         arr.push(a as MessageAttachment);
@@ -231,6 +280,7 @@ export function useConversationMessages(conversationId: string | null) {
       }
     }
 
+    setError(null);
     setMessages(
       (msgs ?? []).map((m) => ({ ...m, attachments: attMap.get(m.id) ?? [] }))
     );
@@ -255,7 +305,11 @@ export function useConversationMessages(conversationId: string | null) {
       .update({ last_read_at: new Date().toISOString() })
       .eq('conversation_id', conversationId)
       .eq('user_id', user.id)
-      .then(() => {});
+      .then(({ error: markError }) => {
+        // Non-blocking, but don't discard the error: a failed mark-as-read
+        // leaves a stale unread badge, so at least log it.
+        if (markError) console.warn('[inbox] mark-as-read failed:', markError.message);
+      });
   }, [conversationId, user, messages.length]);
 
   // Realtime
@@ -274,5 +328,5 @@ export function useConversationMessages(conversationId: string | null) {
     };
   }, [conversationId, load]);
 
-  return { messages, loading, refresh: load, deleteMessage };
+  return { messages, loading, error, refresh: load, deleteMessage };
 }

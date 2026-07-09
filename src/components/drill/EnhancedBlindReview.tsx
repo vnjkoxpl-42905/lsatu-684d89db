@@ -11,6 +11,7 @@ import { questionBank } from '@/lib/questionLoader';
 import { normalizeText, cn } from '@/lib/utils';
 import { QuestionTimer } from '@/lib/questionTimer';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 import type { Highlight, HighlightColor } from '@/lib/highlightUtils';
@@ -166,21 +167,24 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
     
     const isCurrentlyFlagged = flaggedQuestions.has(currentQid);
     
+    // Check the returned { error } (supabase-js never throws on a DB failure)
+    // and only update local flag state after a confirmed write; toast on error.
     try {
       if (isCurrentlyFlagged) {
-        await supabase
+        const { error } = await supabase
           .from('flagged_questions')
           .delete()
           .eq('qid', currentQid)
           .eq('user_id', user.id);
-        
+        if (error) throw error;
+
         setFlaggedQuestions(prev => {
           const next = new Set(prev);
           next.delete(currentQid);
           return next;
         });
       } else {
-        await supabase
+        const { error } = await supabase
           .from('flagged_questions')
           .insert({
             qid: currentQid,
@@ -192,11 +196,13 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
             level: currentQuestion.difficulty,
             class_id: user.user_metadata?.class_id || user.id,
           });
+        if (error) throw error;
 
         setFlaggedQuestions(prev => new Set([...prev, currentQid]));
       }
     } catch (err) {
       console.error('Error toggling flag:', err);
+      toast.error('Could not update flag');
     }
   };
 

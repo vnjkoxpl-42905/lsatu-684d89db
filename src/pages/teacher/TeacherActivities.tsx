@@ -28,8 +28,11 @@ export default function TeacherActivities() {
         .select("class_id, display_name")
         .order("display_name", { ascending: true });
       if (err) {
+        // Don't silently show an empty roster: the teacher could try to assign
+        // to nobody. Surface it so they refresh instead.
         console.error("[activity:students:list] failed", err);
         setStudents([]);
+        toast.error("Could not load the student list. Refresh before assigning.");
         return;
       }
       // profiles.class_id = user_id invariant.

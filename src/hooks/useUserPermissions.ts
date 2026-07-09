@@ -94,7 +94,9 @@ export function useUserPermissions(): UserPermissions {
     enabled: authReady && !!user,
     staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
-    retry: false,
+    // Retry transient failures a couple times, but never retry a dead session
+    // (that path signs the user out).
+    retry: (count, err) => !(err instanceof SessionExpiredError) && count < 2,
     queryFn: async () => {
       const userId = user!.id;
 
@@ -109,6 +111,10 @@ export function useUserPermissions(): UserPermissions {
         .eq("class_id", userId)
         .maybeSingle();
       if (isSessionDeadError(profileErr)) throw new SessionExpiredError();
+      // A non-session read failure (transient network / 5xx) must NOT be
+      // silently converted to all-false permissions; throw so TanStack Query
+      // records the error and retries instead of caching bogus denied flags.
+      if (profileErr) throw profileErr;
 
       // Fetch admin role
       const { data: roleData, error: roleErr } = await supabase
@@ -118,6 +124,7 @@ export function useUserPermissions(): UserPermissions {
         .eq("role", "admin")
         .maybeSingle();
       if (isSessionDeadError(roleErr)) throw new SessionExpiredError();
+      if (roleErr) throw roleErr;
 
       const profileRow = (profile ?? null) as unknown as Record<string, boolean> | null;
       const flagValues = { ...DEFAULT_PERMISSIONS };
@@ -126,12 +133,15 @@ export function useUserPermissions(): UserPermissions {
       }
       flagValues.is_admin = !!roleData;
 
-      // Touch last_seen_at (fire-and-forget)
+      // Touch last_seen_at (fire-and-forget). Non-blocking, but check the
+      // returned error and warn rather than discarding it entirely.
       supabase
         .from("profiles")
         .update({ last_seen_at: new Date().toISOString() })
         .eq("class_id", userId)
-        .then();
+        .then(({ error }) => {
+          if (error) console.warn("[permissions] last_seen_at touch failed:", error.message);
+        });
 
       return flagValues;
     },

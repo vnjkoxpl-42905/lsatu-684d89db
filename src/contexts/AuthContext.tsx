@@ -51,18 +51,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Ensure a students row exists for this auth user so class_id is always resolvable
     const provisionStudentRecord = async (userId: string) => {
-      const { data: existing } = await supabase
+      const { data: existing, error: readError } = await supabase
         .from('students')
         .select('class_id')
         .eq('user_id', userId)
         .maybeSingle();
 
+      // A swallowed read error yields existing=null and wrongly attempts a
+      // duplicate insert; a swallowed insert error leaves the user with no
+      // students row (class_id never resolvable). Surface both.
+      if (readError) {
+        console.error('[auth] provision read failed:', readError.message);
+        return;
+      }
+
       if (!existing) {
-        await supabase.from('students').insert({
+        const { error: insertError } = await supabase.from('students').insert({
           user_id: userId,
           class_id: userId,
           token_hash: userId,
         });
+        // Ignore a unique-violation race (a parallel provision won); log the rest.
+        if (insertError && insertError.code !== '23505') {
+          console.error('[auth] provision insert failed:', insertError.message);
+        }
       }
     };
 

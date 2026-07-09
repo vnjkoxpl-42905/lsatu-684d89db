@@ -740,9 +740,15 @@ export class QuestionBank {
       JSON_FILES.map(async (filename) => {
         try {
           const response = await fetch(filename);
-          if (!response.ok) return null;
+          if (!response.ok) {
+            console.error(`Question bank: ${filename} returned HTTP ${response.status}`);
+            return null;
+          }
           const raw = await response.json();
-          if (!Array.isArray(raw)) return null;
+          if (!Array.isArray(raw)) {
+            console.error(`Question bank: ${filename} is not an array`);
+            return null;
+          }
           return { filename, raw };
         } catch (err) {
           console.error(`Failed to load ${filename}:`, err);
@@ -750,6 +756,16 @@ export class QuestionBank {
         }
       })
     );
+
+    // A silently-shrunk bank looks identical to a legitimately small one. Emit a
+    // loud aggregate so a partial-load regression (bad deploy, 404s) is visible
+    // rather than students just quietly getting fewer questions.
+    const failedCount = results.filter((r) => r === null).length;
+    if (failedCount > 0) {
+      console.error(
+        `Question bank: ${failedCount}/${JSON_FILES.length} section files failed to load; the question pool is incomplete.`,
+      );
+    }
 
     for (const result of results) {
       if (!result) continue;

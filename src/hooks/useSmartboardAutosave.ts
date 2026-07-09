@@ -70,7 +70,6 @@ export function useSmartboardAutosave({
     }
     const signature = JSON.stringify({ e: elements, t: title });
     if (signature === lastSignatureRef.current) return;
-    lastSignatureRef.current = signature;
     setStatus('saving');
     setError(null);
     try {
@@ -81,6 +80,11 @@ export function useSmartboardAutosave({
         sceneJson: scene,
       });
       sessionIdRef.current = result.id;
+      // Only record the signature as saved AFTER the write succeeds. Setting it
+      // before the await meant a failed save (offline/RLS/transient) still
+      // marked the scene "saved", so every later change with identical content
+      // short-circuited and the teacher's board was silently never persisted.
+      lastSignatureRef.current = signature;
       setLastSavedAt(new Date());
       setStatus('saved');
       onSaved?.(result.id);

@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { RecentPerformanceWidget } from '@/components/dashboard/RecentPerformanceWidget';
@@ -227,6 +228,7 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
     avgAccuracy: 0,
   });
   const [statsLoaded, setStatsLoaded] = React.useState(false);
+  const [statsError, setStatsError] = React.useState(false);
   const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
   const { classId, loading: classIdLoading } = useClassId();
 
@@ -260,11 +262,22 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
     if (!user || classIdLoading || !classId) return;
 
     const loadStats = async () => {
-      const { data: attempts } = await supabase
+      const { data: attempts, error } = await supabase
         .from('attempts')
         .select('correct, timestamp_iso')
         .eq('class_id', classId);
 
+      // A swallowed error here rendered "0 Practiced / No attempts yet" to a
+      // student who may have hundreds of attempts: a swallowed-error AND a
+      // fabricated-data violation. Surface it and do not claim stats loaded.
+      if (error) {
+        console.error('Failed to load practice stats:', error);
+        setStatsError(true);
+        toast.error('Could not load your stats');
+        return;
+      }
+
+      setStatsError(false);
       setStatsLoaded(true);
 
       if (attempts && attempts.length > 0) {
@@ -597,9 +610,17 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
                   </div>
                 </div>
 
+                {/* Stats failed to load — honest fallback, not a fake zero. */}
+                {statsError && (
+                  <div className="rounded-xl border border-dashed border-border bg-card/40 p-5 text-sm text-muted-foreground">
+                    Stats unavailable right now. Please refresh to try again.
+                  </div>
+                )}
+
                 {/* Empty-state CTA — only shown after stats load with zero
-                    attempts so we don't flash it during initial load. */}
-                {statsLoaded && stats.totalAttempted === 0 && (
+                    attempts so we don't flash it during initial load, and never
+                    when the load errored (that isn't a true "no attempts"). */}
+                {statsLoaded && !statsError && stats.totalAttempted === 0 && (
                   <div className="rounded-xl border border-dashed border-border bg-card/40 p-5 flex items-center gap-4">
                     <div className="flex-1">
                       <div className="text-sm font-medium text-foreground">No attempts yet.</div>
