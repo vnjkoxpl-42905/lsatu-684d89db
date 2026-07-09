@@ -228,15 +228,23 @@ Deno.serve(async (req) => {
           }
         }
         if (role === "admin") {
-          await admin
+          const { error: upsertError } = await admin
             .from("user_roles")
             .upsert({ user_id, role: "admin" }, { onConflict: "user_id,role" });
+          if (upsertError) {
+            console.error("set_role: upsert failed", { user_id, error: upsertError });
+            throw upsertError;
+          }
         } else {
-          await admin
+          const { error: deleteError } = await admin
             .from("user_roles")
             .delete()
             .eq("user_id", user_id)
             .eq("role", "admin");
+          if (deleteError) {
+            console.error("set_role: delete failed", { user_id, error: deleteError });
+            throw deleteError;
+          }
         }
         return jsonRes({ success: true });
       }
