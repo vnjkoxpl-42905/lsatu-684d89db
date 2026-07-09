@@ -280,12 +280,21 @@ Deno.serve(async (req) => {
         )
 
         // Log success
-        await supabase.from('email_send_log').insert({
+        const { error: sentLogError } = await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
           status: 'sent',
         })
+        if (sentLogError) {
+          logFailures++
+          console.error('CRITICAL: sent-log insert failed', {
+            queue,
+            msg_id: msg.msg_id,
+            message_id: payload.message_id,
+            sentLogError,
+          })
+        }
 
         // Delete from queue
         const { error: delError } = await supabase.rpc('delete_email', {
@@ -294,6 +303,29 @@ Deno.serve(async (req) => {
         })
         if (delError) {
           console.error('Failed to delete sent message from queue', { queue, msg_id: msg.msg_id, error: delError })
+
+          // Without a sent-log row AND without a queue delete, the message will
+          // be redelivered when the VT expires and could be sent again. Retry
+          // the delete once immediately; if that also fails, do NOT count the
+          // message as processed — surface it loudly instead.
+          if (sentLogError) {
+            const { error: delRetryError } = await supabase.rpc('delete_email', {
+              queue_name: queue,
+              message_id: msg.msg_id,
+            })
+            if (delRetryError) {
+              console.error('CRITICAL: double-send risk — sent-log AND queue delete failed', {
+                queue,
+                msg_id: msg.msg_id,
+                message_id: payload.message_id,
+                sentLogError,
+                delError,
+                delRetryError,
+              })
+              // Skip counting as processed so operators notice via metrics.
+              continue
+            }
+          }
         }
         totalProcessed++
       } catch (error) {
