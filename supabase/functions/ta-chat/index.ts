@@ -440,6 +440,7 @@ ${clamp(guidedSetsBlock, 4000)}`;
         headers: {
           Authorization: `Bearer ${LOVABLE_API_KEY}`,
           "Content-Type": "application/json",
+          "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
         },
         body: JSON.stringify({
           // Gemini 3 Flash Preview — best-value flash tier in the Gemini 3 line.

@@ -699,7 +699,7 @@ Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
 
       const pResp = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json", "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "" },
         body: JSON.stringify({
           model: GEN_MODEL,
           messages: [{ role: "system", content: previewPrompt }],
@@ -769,6 +769,7 @@ Return ONLY valid JSON (no prose, no markdown fences) in exactly this shape:
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
+        "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({
         model: GEN_MODEL,

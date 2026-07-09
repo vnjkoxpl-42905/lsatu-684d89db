@@ -208,7 +208,7 @@ Deno.serve(async (req) => {
     // ── Synthesize via the gateway (model behind indirection) ──
     const gwRes = await fetch(GATEWAY_URL, {
       method: "POST",
-      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json", "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "" },
       body: JSON.stringify({
         model: SYNTHESIS_MODEL,
         messages: [
