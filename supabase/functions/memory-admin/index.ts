@@ -68,14 +68,19 @@ async function writeAudit(
   namespaceId: string | null,
   action: string,
   detail: Record<string, unknown>,
-) {
-  await admin.from("memory_audit").insert({
+): Promise<boolean> {
+  const { error } = await admin.from("memory_audit").insert({
     memory_id: memoryId,
     namespace_id: namespaceId,
     action,
     detail,
     actor: callerId,
   });
+  if (error) {
+    console.error("memory-admin: audit insert failed", { action, memoryId, error });
+    return false;
+  }
+  return true;
 }
 
 async function loadItem(admin: Admin, id: string) {
