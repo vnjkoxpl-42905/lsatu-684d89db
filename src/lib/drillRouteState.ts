@@ -12,7 +12,10 @@ export interface DrillRouteState {
    * card sets this so a hand-picked question looks identical to the Auto run.
    */
   present?: "smart";
+  /** True when the runner is launched from a Guided Drill assignment. */
+  isGuidedDrill?: boolean;
 }
+
 
 export interface DrillTimerRouteConfig {
   mode: "countdown" | "stopwatch";
