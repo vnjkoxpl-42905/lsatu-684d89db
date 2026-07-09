@@ -138,14 +138,10 @@ Generate your 2-3 sentence coaching response.`;
     );
     
   } catch (error) {
+    console.error('voice-coach-respond error', error);
     return new Response(
-      JSON.stringify({ 
-        coachReply: 'Your reasoning shows good effort. Look closely at what the stem is actually asking, then try the question again with fresh eyes.',
-        replyId: 'fallback-' + Date.now(),
-        timestamp: new Date().toISOString(),
-        fallback: true
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: 'Coach unavailable, try again' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
