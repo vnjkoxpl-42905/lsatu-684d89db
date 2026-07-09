@@ -168,27 +168,27 @@ Deno.serve(async (req) => {
         if (!Object.keys(updates).length) return jsonRes({ error: "no editable fields" }, 400);
         const { error } = await admin.from("memory_items").update(updates).eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, "edit", { before, updates });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, "edit", { before, updates });
+        return jsonRes({ success: true, audit_written });
       }
       case "pin": {
         const pinned = isRecord(body) ? Boolean(body.value) : true;
         const { error } = await admin.from("memory_items").update({ pinned }).eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, "edit", { pinned });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, "edit", { pinned });
+        return jsonRes({ success: true, audit_written });
       }
       case "archive": {
         const { error } = await admin.from("memory_items").update({ status: "archived" }).eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, "decay", { from: before.status, to: "archived" });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, "decay", { from: before.status, to: "archived" });
+        return jsonRes({ success: true, audit_written });
       }
       case "restore": {
         const { error } = await admin.from("memory_items").update({ status: "active" }).eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, "edit", { from: before.status, to: "active" });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, "edit", { from: before.status, to: "active" });
+        return jsonRes({ success: true, audit_written });
       }
       case "resolve_conflict": {
         const decision = isRecord(body) ? String(body.decision ?? "approved") : "approved";
@@ -202,8 +202,8 @@ Deno.serve(async (req) => {
           })
           .eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, reject ? "reject" : "approve", { resolved: decision });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, reject ? "reject" : "approve", { resolved: decision });
+        return jsonRes({ success: true, audit_written });
       }
       case "approve_skill": {
         const { error } = await admin
@@ -211,15 +211,16 @@ Deno.serve(async (req) => {
           .update({ status: "active", review_state: "approved", needs_review: false })
           .eq("id", id);
         if (error) throw error;
-        await writeAudit(admin, callerId, id, nsId, "approve", { from: before.status, to: "active" });
-        return jsonRes({ success: true });
+        const audit_written = await writeAudit(admin, callerId, id, nsId, "approve", { from: before.status, to: "active" });
+        return jsonRes({ success: true, audit_written });
       }
       case "forget": {
+        // Write audit BEFORE the delete so a deletion is never trace-less.
+        // PII-scrub: keep the action, drop the content; memory_id null so it can't dangle.
+        const audit_written = await writeAudit(admin, callerId, null, nsId, "forget", { forgot_memory: id });
         const { error } = await admin.from("memory_items").delete().eq("id", id);
         if (error) throw error;
-        // PII-scrub: keep the action, drop the content; memory_id null so it can't dangle.
-        await writeAudit(admin, callerId, null, nsId, "forget", { forgot_memory: id });
-        return jsonRes({ success: true });
+        return jsonRes({ success: true, audit_written });
       }
       default:
         return jsonRes({ error: `Unknown action: ${action}` }, 400);
