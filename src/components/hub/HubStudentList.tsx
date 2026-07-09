@@ -3,8 +3,8 @@ import { AlertTriangle, Search, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { formatRelativeShort } from "@/lib/time";
 import { track } from "@/lib/analytics";
+import { formatLastActiveLabel, isUserOnline } from "@/lib/presence";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
 
 interface Props {
@@ -198,7 +198,8 @@ function StudentRow({
   onClick,
   onHover,
 }: RowProps) {
-  const lastSeen = formatRelativeShort(student.last_seen_at);
+  const isOnline = isUserOnline(student.last_seen_at);
+  const lastActiveLabel = formatLastActiveLabel(student.last_seen_at);
 
   return (
     <li data-cursor={index}>
@@ -223,15 +224,27 @@ function StudentRow({
               className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-sky-400 ring-2 ring-zinc-950"
             />
           )}
+          {isOnline && (
+            <span
+              aria-label="Online on LSAT U"
+              className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-zinc-950"
+            />
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="truncate font-medium">
               {student.display_name?.trim() || "Unnamed"}
             </span>
+            {isOnline && (
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Online
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 mt-0.5">
-            <span className="truncate">{lastSeen}</span>
+            <span className="truncate">{lastActiveLabel}</span>
             {student.assignments_total > 0 && (
               <>
                 <span>·</span>

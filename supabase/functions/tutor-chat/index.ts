@@ -495,16 +495,20 @@ serve(async (req) => {
 
     // Log coaching session to database (only if we have a user)
     if (user && supabaseClient) {
-      supabaseClient.from('events').insert({
-        user_id: user.id,
-        event_type: 'coaching_request',
-        metadata: {
-          message_count: messages.length,
-          qid: question.qid,
-          mode: tutorMode,
-          stream: wantsStream === true,
-        }
-      }); // Fire and forget - don't await
+      runInBackground(
+        supabaseClient.from('events').insert({
+          user_id: user.id,
+          event_type: 'coaching_request',
+          metadata: {
+            message_count: messages.length,
+            qid: question.qid,
+            mode: tutorMode,
+            stream: wantsStream === true,
+          }
+        }).then(({ error }) => {
+          if (error) console.error('events insert failed', error);
+        })
+      );
     }
 
     // Build context strings

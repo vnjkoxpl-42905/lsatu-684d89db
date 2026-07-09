@@ -15,6 +15,7 @@ import { INITIAL_UNLOCKED_ROUTES, unlockNext, type ProgressShape } from '@/bootc
 const DRILL_ROUTE_ALIASES: Record<string, string> = {
   'MC-DRL-MCL': '/drills/main-conclusion-lab',
   'MC-DRL-CLS': '/drills/first-sentence-vs-rebuttal-lab',
+  'MC-DRL-CT': '/drills/conclusion-type-lab',
 };
 
 // Per-user progress record id is deterministic on user.id so we always read+update
@@ -53,6 +54,10 @@ export function useModuleProgress(_userId?: string): {
     (async () => {
       try {
         const persist = getPersistence(userId);
+        // Wait for cloud hydration before treating the row as missing, otherwise a
+        // cold cross-device load fabricates a default row and clobbers real progress.
+        await persist.ready();
+        if (cancelled) return;
         let existing = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
         if (!existing) {
           existing = ModuleProgress.parse({

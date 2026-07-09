@@ -56,7 +56,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
-  const [savingToHistory, setSavingToHistory] = React.useState(false);
+  const savedRef = React.useRef(false);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
   // Drives the mount-time donut fill tween. First paint renders the rings
   // empty (dashoffset = full circumference); the rAF below flips this to
@@ -153,8 +153,8 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
   // Save to database
   React.useEffect(() => {
     const saveHistory = async () => {
-      if (!user || savingToHistory) return;
-      setSavingToHistory(true);
+      if (!user || savedRef.current) return;
+      savedRef.current = true;
 
       try {
         // Build by_qtype_json
@@ -181,7 +181,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
         const pt = session.fullSectionConfig?.pt || 0;
         const section = session.fullSectionConfig?.section || 0;
 
-        await supabase.from('section_history').insert({
+        const { error: sectionHistoryError } = await supabase.from('section_history').insert({
           class_id: resolvedClassId,
           pt,
           section,
@@ -200,6 +200,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           by_difficulty_json: byDifficulty,
           br_used: !!brResults,
         });
+        if (sectionHistoryError) throw sectionHistoryError;
 
         // Add wrong answers to WAJ
         const { logWrongAnswer } = await import('@/lib/wajService');

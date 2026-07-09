@@ -21,6 +21,8 @@ export class IndexedDBPersistence implements Persistence {
   private dbp: Promise<IDBPDatabase> | null = null;
   constructor(private userId: string = 'anon') {}
 
+  ready(): Promise<void> { return Promise.resolve(); }
+
   private db(): Promise<IDBPDatabase> {
     if (!this.dbp) {
       this.dbp = openDB(DB_NAME, DB_VERSION, {

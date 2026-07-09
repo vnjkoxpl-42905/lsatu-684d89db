@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { formatLastActiveLabel, isUserOnline } from "@/lib/presence";
 import { formatRelativeShort } from "@/lib/time";
 import {
   useAdminTAAssignmentsForStudent,
@@ -122,7 +123,8 @@ export default function StudentOverview({ studentId }: Props) {
     );
   }
 
-  const lastSeen = formatRelativeShort(student.last_seen_at);
+  const lastSeen = formatLastActiveLabel(student.last_seen_at);
+  const isOnline = isUserOnline(student.last_seen_at);
 
   const activeFlags = FLAG_KEYS.filter((k) => Boolean(student[k]));
 
@@ -137,6 +139,7 @@ export default function StudentOverview({ studentId }: Props) {
         name={student.display_name?.trim() || "Unnamed student"}
         email={resolvedEmail}
         role={student.role}
+        isOnline={isOnline}
         lastSeen={lastSeen}
       />
 
@@ -190,11 +193,13 @@ function ProfileCard({
   name,
   email,
   role,
+  isOnline,
   lastSeen,
 }: {
   name: string;
   email: string | null;
   role: string;
+  isOnline: boolean;
   lastSeen: string;
 }) {
   return (
@@ -204,7 +209,15 @@ function ProfileCard({
           <GraduationCap className="h-5 w-5 text-zinc-400" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium text-zinc-100 truncate">{name}</div>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="text-sm font-medium text-zinc-100 truncate">{name}</div>
+            {isOnline && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Online
+              </span>
+            )}
+          </div>
           <div className="text-[11px] text-zinc-500 truncate">
             {role === "admin" ? "Admin" : "Student"}
           </div>
@@ -214,7 +227,8 @@ function ProfileCard({
         {email && email !== "unknown" && (
           <MetaRow icon={Mail} label="Email" value={email} />
         )}
-        <MetaRow icon={Clock} label="Last seen" value={lastSeen} />
+        <MetaRow icon={Activity} label="Status" value={isOnline ? "Online now" : "Offline"} />
+        <MetaRow icon={Clock} label="Activity" value={lastSeen} />
       </dl>
     </section>
   );

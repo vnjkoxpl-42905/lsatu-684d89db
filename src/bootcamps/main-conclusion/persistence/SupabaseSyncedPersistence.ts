@@ -34,14 +34,17 @@ export class SupabaseSyncedPersistence implements Persistence {
   private pending = new Map<string, PendingWrite>();
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private hydrated = false;
+  private readyPromise: Promise<void>;
 
   constructor(private userId: string) {
     this.local = new V1Persistence(
       new LocalStoragePersistence(userId),
       new IndexedDBPersistence(userId),
     );
-    // Fire and forget — hydration happens in background so the UI doesn't block.
-    void this.hydrate();
+    // Kick off cloud hydration. The UI does not block on it, but callers that
+    // must not fabricate a default over real cloud data await ready() first.
+    // hydrate() never rejects (it catches internally), so ready() always resolves.
+    this.readyPromise = this.hydrate();
 
     // Best-effort flush on tab close.
     if (typeof window !== 'undefined') {
@@ -52,6 +55,10 @@ export class SupabaseSyncedPersistence implements Persistence {
         if (document.visibilityState === 'hidden') void this.flush();
       });
     }
+  }
+
+  ready(): Promise<void> {
+    return this.readyPromise;
   }
 
   private key(table: string, id: string): string {

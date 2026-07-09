@@ -6,6 +6,8 @@ const PREFIX = 'student';
 export class LocalStoragePersistence implements Persistence {
   constructor(private userId: string = 'anon') {}
 
+  ready(): Promise<void> { return Promise.resolve(); }
+
   private k(table: string, id: string): string {
     return `${PREFIX}:${this.userId}:${table}:${id}`;
   }

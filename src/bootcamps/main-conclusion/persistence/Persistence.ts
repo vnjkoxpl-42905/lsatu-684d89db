@@ -7,6 +7,15 @@
  */
 
 export interface Persistence {
+  /**
+   * Resolves once the backing store is safe to read for the first time.
+   * V1Persistence (local-only) is always immediately ready. SupabaseSyncedPersistence
+   * resolves this after its initial cloud hydrate() completes (or definitively fails),
+   * so callers can await it before deciding a record is missing. Prevents fabricating
+   * a default row over real cloud progress on a cold cross-device load.
+   */
+  ready(): Promise<void>;
+
   // Tabular records (KV by table + record id)
   get<T>(table: string, id: string): Promise<T | null>;
   set<T>(table: string, id: string, record: T): Promise<void>;

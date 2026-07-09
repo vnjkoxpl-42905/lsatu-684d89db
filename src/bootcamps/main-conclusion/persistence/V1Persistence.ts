@@ -22,6 +22,8 @@ export class V1Persistence implements Persistence {
     return LS_TABLES.has(table) ? this.ls : this.idb;
   }
 
+  ready(): Promise<void> { return Promise.resolve(); }
+
   get<T>(table: string, id: string): Promise<T | null> { return this.route(table).get<T>(table, id); }
   set<T>(table: string, id: string, record: T): Promise<void> { return this.route(table).set(table, id, record); }
   remove(table: string, id: string): Promise<void> { return this.route(table).remove(table, id); }

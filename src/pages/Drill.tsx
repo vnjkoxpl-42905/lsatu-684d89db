@@ -350,7 +350,7 @@ function DrillContent() {
         // Detect practice-set mode (Build-a-Set)
         if (config.selectedQids && config.selectedQids.length > 0) {
           setIsPracticeSetMode(true);
-          setHasTimer(true); // Enable stopwatch timer
+          setHasTimer(true); // Guided drills use their configured countdown; other fixed queues use stopwatch.
           rawQuestions = config.selectedQids
             .map(qid => questionBank.getQuestion(qid))
             .filter(Boolean) as LRQuestion[];
@@ -2415,7 +2415,7 @@ function DrillContent() {
         toast.error('Session error: missing class ID.');
         return;
       }
-      await supabase.from('blind_review_sessions').insert({
+      const { error: brSessionError } = await supabase.from('blind_review_sessions').insert({
         class_id: classId,
         session_id: sessionId,
         br_items_count: results.length,
@@ -2425,6 +2425,7 @@ function DrillContent() {
         br_confirmed_count: confirmedCount,
         br_median_time_ms: medianTimeMs,
       });
+      if (brSessionError) throw brSessionError;
 
       // Update attempts with BR data
       for (const result of results) {
@@ -2440,7 +2441,7 @@ function DrillContent() {
         const question = questionBank.getQuestion(result.qid);
         if (!question) continue;
 
-        await supabase.from('attempts').insert({
+        const { error: attemptError } = await supabase.from('attempts').insert({
           user_id: user.id,
           class_id: classId,
           qid: result.qid,
@@ -2462,6 +2463,7 @@ function DrillContent() {
           br_outcome: result.correct ? 'correct' : 'incorrect',
           br_delta: brDelta,
         });
+        if (attemptError) throw attemptError;
       }
     } catch (error) {
       toast.error('Failed to save blind review results. Please try again.');
@@ -2709,6 +2711,7 @@ function DrillContent() {
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     const isAdaptiveMode = session.mode === 'adaptive';
+    const isGuidedDrillRunner = !!guidedAssignmentId || !!state.isGuidedDrill || (!!returnTo && returnTo.startsWith('/guided'));
     // Student-facing LSAT question screens share the same action chrome: notes,
     // End/Explanation/Skip/Submit footer, and no top "Complete Section" pill.
     // Question semantics still follow `mode`; this flag only changes the chrome.
@@ -2885,7 +2888,7 @@ function DrillContent() {
           isPaused={officialIsPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
-          sessionModeVisible={permissions.is_admin || permissions.has_ta_access}
+          sessionModeVisible={!isGuidedDrillRunner && (permissions.is_admin || permissions.has_ta_access)}
           sessionScreenMuted={sessionScreenMuted}
           onSessionScreenMutedChange={setSessionScreenMuted}
           sessionTimerLabel={sessionTimerLabel}

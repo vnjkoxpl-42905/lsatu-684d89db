@@ -50,8 +50,22 @@ function mapModel(model: string | undefined): string {
   return "gemini-2.5-flash";
 }
 
-function mapEmbedModel(_model: string | undefined): string {
-  return "text-embedding-004";
+// The content index (match_lsatu_content) stores vector(3072), produced by
+// gemini-embedding-001. Honor the requested model instead of always downgrading
+// to text-embedding-004 (768 dims), which silently breaks semantic search.
+const EMBED_DIMS: Record<string, number> = {
+  "gemini-embedding-001": 3072,
+  "text-embedding-004": 768,
+};
+
+function mapEmbedModel(model: string | undefined): string {
+  let m = (model ?? "").trim().toLowerCase();
+  if (m.startsWith("google/")) m = m.slice("google/".length);
+  if (m.startsWith("openai/")) m = m.slice("openai/".length);
+  if (m in EMBED_DIMS) return m;
+  if (m.includes("gemini-embedding")) return "gemini-embedding-001";
+  // Default to the 3072-dim model so embeddings match the DB vector column.
+  return "gemini-embedding-001";
 }
 
 interface OpenAIToolCall {
@@ -325,6 +339,7 @@ async function handleChat(req: Request, key: string) {
 async function handleEmbeddings(req: Request, key: string) {
   const body = await req.json().catch(() => ({}));
   const model = mapEmbedModel(body.model);
+  const outputDimensionality = EMBED_DIMS[model];
   const inputs: string[] = Array.isArray(body.input) ? body.input.map(String) : [String(body.input ?? "")];
 
   const results: number[][] = [];
@@ -333,7 +348,11 @@ async function handleEmbeddings(req: Request, key: string) {
     const upstream = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: `models/${model}`, content: { parts: [{ text }] } }),
+      body: JSON.stringify({
+        model: `models/${model}`,
+        content: { parts: [{ text }] },
+        ...(outputDimensionality ? { outputDimensionality } : {}),
+      }),
     });
     const data = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
