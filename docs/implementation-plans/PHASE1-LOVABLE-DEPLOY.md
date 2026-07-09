@@ -13,16 +13,23 @@ on a real failure.** Each fix destructures the error and surfaces it.
 > Note: H17 (embedding dims), H18 (gemini-proxy auth), and H19 (tutor-chat fire-and-forget)
 > were already deployed in Phase 0 (see `PHASE0-LOVABLE-DEPLOY.md`). Do not redo them.
 >
-> **Prompt A (H20, admin-manage-users) is ALSO already done** — Lovable commit `90a90ab8`
-> "Added error checks to set_role" landed the upsert/delete `throw` fixes. Skip it. Remaining
-> to paste: **B, C, D, E, F, G** (6 prompts). Verified still-unfixed as of merge `924c420f`:
-> B/C/D/E/F/G all still swallow their errors.
+> **Prompts A and B are ALREADY DONE** (Lovable deployed them mid-session):
+> - A (H20, admin-manage-users) — commit `90a90ab8`, `throw upsertError`/`throw deleteError` in place.
+> - B (H21, process-email-queue) — `log_failures` counter, `CRITICAL: sent-log` guard, and the
+>   `read_ct` retry-budget fallback all landed.
+>
+> **Remaining to paste: C, D, E, F, G (5 prompts).** Verified still swallowing their errors as of
+> this update: gcal-sync-pull (unconditional nextSyncToken), voice-coach-respond (still returns a
+> fabricated coach reply), teacher-operator-chat (participant insert unchecked), synthesize-session-bundle
+> (ledger update unchecked), memory-admin (writeAudit insert unchecked).
 
 ---
 
-## Prompt A — admin-manage-users (H20) — ✅ ALREADY DONE (Lovable 90a90ab8), skip
+## Prompt A — admin-manage-users (H20) — ✅ DONE (Lovable 90a90ab8), skip
 
-## Prompt B — process-email-queue (H21): sent-log insert unchecked breaks dedup/retry accounting
+## Prompt B — process-email-queue (H21) — ✅ DONE (landed mid-session), skip
+
+## Prompt B (original text kept for reference) — process-email-queue (H21): sent-log insert unchecked breaks dedup/retry accounting
 
 ```
 In supabase/functions/process-email-queue/index.ts (around line 274), the email_send_log
