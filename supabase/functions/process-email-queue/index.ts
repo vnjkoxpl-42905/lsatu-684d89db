@@ -379,20 +379,35 @@ Deno.serve(async (req) => {
         if (isForbidden(error)) {
           await moveToDlq(supabase, queue, msg, 'Emails disabled for this project')
           return new Response(
-            JSON.stringify({ processed: totalProcessed, stopped: 'emails_disabled' }),
+            JSON.stringify({ processed: totalProcessed, log_failures: logFailures, stopped: 'emails_disabled' }),
             { headers: { 'Content-Type': 'application/json' } }
           )
         }
 
         // Log non-429 failures to track real retry attempts.
-        await supabase.from('email_send_log').insert({
+        const { error: failLogError } = await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
           status: 'failed',
           error_message: errorMsg.slice(0, 1000),
         })
-        if (payload?.message_id && typeof payload.message_id === 'string') {
+        if (failLogError) {
+          logFailures++
+          console.error('CRITICAL: failed-log insert failed — retry budget falls back to pgmq read_ct', {
+            queue,
+            msg_id: msg.msg_id,
+            message_id: payload.message_id,
+            read_ct: msg.read_ct,
+            failLogError,
+          })
+          // Fall back to pgmq's read_ct so retries stay bounded even without
+          // a persisted failure counter for this message.
+          if (payload?.message_id && typeof payload.message_id === 'string') {
+            const fallback = Math.max(failedAttempts + 1, msg.read_ct ?? 0)
+            failedAttemptsByMessageId.set(payload.message_id, fallback)
+          }
+        } else if (payload?.message_id && typeof payload.message_id === 'string') {
           failedAttemptsByMessageId.set(payload.message_id, failedAttempts + 1)
         }
 
@@ -407,7 +422,7 @@ Deno.serve(async (req) => {
   }
 
   return new Response(
-    JSON.stringify({ processed: totalProcessed }),
+    JSON.stringify({ processed: totalProcessed, log_failures: logFailures }),
     { headers: { 'Content-Type': 'application/json' } }
   )
 })
