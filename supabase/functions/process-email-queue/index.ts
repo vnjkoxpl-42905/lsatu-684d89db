@@ -339,13 +339,22 @@ Deno.serve(async (req) => {
         })
 
         if (isRateLimited(error)) {
-          await supabase.from('email_send_log').insert({
+          const { error: rlLogError } = await supabase.from('email_send_log').insert({
             message_id: payload.message_id,
             template_name: payload.label || queue,
             recipient_email: payload.to,
             status: 'rate_limited',
             error_message: errorMsg.slice(0, 1000),
           })
+          if (rlLogError) {
+            logFailures++
+            console.error('CRITICAL: rate_limited-log insert failed', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+              rlLogError,
+            })
+          }
 
           const retryAfterSecs = getRetryAfterSeconds(error)
           await supabase
@@ -360,7 +369,7 @@ Deno.serve(async (req) => {
 
           // Stop processing — remaining messages stay in queue (VT expires, retried next cycle)
           return new Response(
-            JSON.stringify({ processed: totalProcessed, stopped: 'rate_limited' }),
+            JSON.stringify({ processed: totalProcessed, log_failures: logFailures, stopped: 'rate_limited' }),
             { headers: { 'Content-Type': 'application/json' } }
           )
         }
