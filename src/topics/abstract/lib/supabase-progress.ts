@@ -238,41 +238,15 @@ export async function recordChapterProgress(
   topicTag: string,
   sectionId: string,
 ): Promise<BootcampMutationResult> {
-  const nowIso = new Date().toISOString();
-  const insertRes = await supabase.from("chapter_progress").insert({
-    user_id: userId,
-    topic_tag: topicTag,
-    section_id: sectionId,
-    first_viewed_at: nowIso,
-    last_viewed_at: nowIso,
-    view_count: 1,
+  // Atomic upsert (increment_chapter_view): a single ON CONFLICT statement so a
+  // fast double-fire or two tabs can't lose a view_count increment. The RPC takes
+  // user_id from auth.uid() internally (the userId param is the same current user
+  // and is retained only for the call-site signature).
+  void userId;
+  const { error } = await supabase.rpc("increment_chapter_view", {
+    p_topic_tag: topicTag,
+    p_section_id: sectionId,
   });
-  if (!insertRes.error) return { ok: true };
-  const isUniqueViolation =
-    typeof insertRes.error === "object" &&
-    insertRes.error !== null &&
-    "code" in insertRes.error &&
-    (insertRes.error as { code: string }).code === "23505";
-  if (!isUniqueViolation) return { ok: false, error: insertRes.error };
-
-  const { data, error: selErr } = await supabase
-    .from("chapter_progress")
-    .select("view_count")
-    .eq("user_id", userId)
-    .eq("topic_tag", topicTag)
-    .eq("section_id", sectionId)
-    .maybeSingle();
-  if (selErr) return { ok: false, error: selErr };
-
-  const updateRes = await supabase
-    .from("chapter_progress")
-    .update({
-      last_viewed_at: nowIso,
-      view_count: (data?.view_count ?? 1) + 1,
-    })
-    .eq("user_id", userId)
-    .eq("topic_tag", topicTag)
-    .eq("section_id", sectionId);
-  if (updateRes.error) return { ok: false, error: updateRes.error };
+  if (error) return { ok: false, error };
   return { ok: true };
 }

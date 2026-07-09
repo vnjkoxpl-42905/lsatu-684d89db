@@ -129,41 +129,16 @@ export const updateDailyStats = async (
   correct: boolean
 ): Promise<void> => {
   const today = new Date().toISOString().split('T')[0];
-  
-  // NOTE: this read-modify-write races when two answers land in quick
-  // succession (common in a drill) and drops an increment. The atomic upsert
-  // RPC (increment_daily_stats) is Phase 2. For now, surface write errors so a
-  // failed stats write is not invisible.
-  const { data: existing, error: readError } = await supabase
-    .from('daily_stats')
-    .select('*')
-    .eq('class_id', classId)
-    .eq('date', today)
-    .maybeSingle();
-  if (readError) throw readError;
 
-  if (existing) {
-    const { error } = await supabase
-      .from('daily_stats')
-      .update({
-        questions_answered: existing.questions_answered + 1,
-        correct_answers: existing.correct_answers + (correct ? 1 : 0),
-        xp_earned: existing.xp_earned + xpEarned,
-        time_spent_ms: existing.time_spent_ms + timeMs
-      })
-      .eq('id', existing.id);
-    if (error) throw error;
-  } else {
-    const { error } = await supabase
-      .from('daily_stats')
-      .insert({
-        class_id: classId,
-        date: today,
-        questions_answered: 1,
-        correct_answers: correct ? 1 : 0,
-        xp_earned: xpEarned,
-        time_spent_ms: timeMs
-      });
-    if (error) throw error;
-  }
+  // Atomic single-statement upsert (increment_daily_stats) so two answers landing
+  // in quick succession during a drill can't drop an increment. Surface write
+  // errors so a failed stats write is not invisible.
+  const { error } = await supabase.rpc('increment_daily_stats', {
+    p_class_id: classId,
+    p_date: today,
+    p_xp: xpEarned,
+    p_time_ms: timeMs,
+    p_correct: correct
+  });
+  if (error) throw error;
 };

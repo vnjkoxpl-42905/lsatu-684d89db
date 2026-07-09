@@ -215,25 +215,16 @@ class AchievementEngine {
       .insert(userAchievements);
     if (insertError) throw insertError;
 
-    // Award XP. NOTE: read-modify-write on xp_total is a known race (H31); the
-    // atomic RPC replacement is Phase 2. For now, at least surface write errors.
+    // Award XP via an atomic increment (increment_xp_total) so concurrent awards
+    // can't clobber each other's xp_total. Surface write errors.
     const totalXP = achievements.reduce((sum, a) => sum + a.xp_reward, 0);
 
     if (totalXP > 0) {
-      const { data: profile, error: profileReadError } = await supabase
-        .from('profiles')
-        .select('xp_total')
-        .eq('class_id', classId)
-        .single();
-      if (profileReadError) throw profileReadError;
-
-      if (profile) {
-        const { error: xpError } = await supabase
-          .from('profiles')
-          .update({ xp_total: profile.xp_total + totalXP })
-          .eq('class_id', classId);
-        if (xpError) throw xpError;
-      }
+      const { error: xpError } = await supabase.rpc('increment_xp_total', {
+        p_class_id: classId,
+        p_xp: totalXP
+      });
+      if (xpError) throw xpError;
     }
   }
 }

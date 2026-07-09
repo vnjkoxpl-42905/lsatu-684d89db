@@ -24,41 +24,15 @@ export class QuestionPoolService {
   static async markQuestionSeen(qid: string, classId: string, mode: DrillMode): Promise<void> {
     // Fire-and-forget telemetry: never throw into the drill flow, but check the
     // Supabase error explicitly (supabase-js resolves { error }, never throws)
-    // and warn so a real RLS/transport failure is not fully invisible.
-    const { data: existing, error: readError } = await supabase
-      .from('question_usage')
-      .select('*')
-      .eq('class_id', classId)
-      .eq('qid', qid)
-      .eq('mode', mode)
-      .maybeSingle();
-
-    if (readError) {
-      console.warn('[questionPool] markQuestionSeen read failed:', readError.message);
-      return;
-    }
-
-    if (existing) {
-      const { error } = await supabase
-        .from('question_usage')
-        .update({
-          last_seen_at: new Date().toISOString(),
-          times_seen: existing.times_seen + 1
-        })
-        .eq('id', existing.id);
-      if (error) console.warn('[questionPool] markQuestionSeen update failed:', error.message);
-    } else {
-      const { error } = await supabase
-        .from('question_usage')
-        .insert({
-          class_id: classId,
-          qid,
-          mode,
-          last_seen_at: new Date().toISOString(),
-          times_seen: 1
-        });
-      if (error) console.warn('[questionPool] markQuestionSeen insert failed:', error.message);
-    }
+    // and warn so a real RLS/transport failure is not fully invisible. Atomic
+    // upsert (increment_question_seen) so times_seen can't lose an increment when
+    // the same question is served on two surfaces or the effect double-fires.
+    const { error } = await supabase.rpc('increment_question_seen', {
+      p_class_id: classId,
+      p_qid: qid,
+      p_mode: mode
+    });
+    if (error) console.warn('[questionPool] markQuestionSeen failed:', error.message);
   }
 
   /**

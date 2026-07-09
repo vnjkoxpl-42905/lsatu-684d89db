@@ -60,54 +60,22 @@ export async function logWrongAnswer(params: {
     review: params.review,
   };
 
-  // Check if entry exists. Check the read error first: a swallowed select
-  // failure yields existing=null and wrongly takes the insert branch, losing
-  // the appended history item to a duplicate insert or a unique violation.
-  const { data: existing, error: readError } = await supabase
-    .from('wrong_answer_journal')
-    .select('*')
-    .eq('class_id', params.class_id)
-    .eq('qid', params.qid)
-    .maybeSingle();
+  // Atomic insert-or-append (append_waj_wrong): a single ON CONFLICT upsert so two
+  // concurrent attempts on the same question can't drop a history item, and a read
+  // failure can no longer misroute into a duplicate insert. Throw on error so a
+  // failed journal write is never silent.
+  const { error } = await supabase.rpc('append_waj_wrong', {
+    p_class_id: params.class_id,
+    p_qid: params.qid,
+    p_item: historyItem as unknown as Json,
+    p_pt: params.pt,
+    p_section: params.section,
+    p_qnum: params.qnum,
+    p_qtype: params.qtype,
+    p_level: params.level,
+  });
 
-  if (readError) throw readError;
-
-  if (existing) {
-    // Append to history
-    const currentHistory = (existing.history_json as unknown as WAJHistoryItem[]) || [];
-    const newHistory = [...currentHistory, historyItem];
-    const { error } = await supabase
-      .from('wrong_answer_journal')
-      .update({
-        history_json: newHistory as unknown as Json,
-        last_status: 'wrong',
-        revisit_count: newHistory.length - 1,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('class_id', params.class_id)
-      .eq('qid', params.qid);
-
-    if (error) throw error;
-  } else {
-    // Create new entry
-    const { error } = await supabase
-      .from('wrong_answer_journal')
-      .insert({
-        class_id: params.class_id,
-        qid: params.qid,
-        pt: params.pt,
-        section: params.section,
-        qnum: params.qnum,
-        qtype: params.qtype,
-        level: params.level,
-        first_wrong_at_iso: new Date().toISOString(),
-        last_status: 'wrong',
-        revisit_count: 0,
-        history_json: [historyItem] as unknown as Json,
-      });
-
-    if (error) throw error;
-  }
+  if (error) throw error;
 }
 
 /**
@@ -190,43 +158,25 @@ export async function logCorrectAnswer(params: {
   time_ms: number;
   confidence_1_5: number | null;
 }) {
-  // Only update if there's an existing WAJ entry (meaning they got it wrong
-  // before). Check the read error: a swallowed failure yields existing=null and
-  // silently skips recording a correct re-attempt, leaving last_status 'wrong'.
-  const { data: existing, error: readError } = await supabase
-    .from('wrong_answer_journal')
-    .select('*')
-    .eq('class_id', params.class_id)
-    .eq('qid', params.qid)
-    .maybeSingle();
+  // Atomic append-if-exists (append_waj_correct): update-only, so no row is
+  // created when the student never missed this question, matching prior behavior.
+  // The append is a single statement, so a concurrent write can't drop an item.
+  const historyItem: WAJHistoryItem = {
+    attempt_at_iso: new Date().toISOString(),
+    result: 1,
+    chosen_answer: params.chosen_answer,
+    correct_answer: params.correct_answer,
+    time_ms: params.time_ms,
+    confidence_1_5: params.confidence_1_5,
+  };
 
-  if (readError) throw readError;
+  const { error } = await supabase.rpc('append_waj_correct', {
+    p_class_id: params.class_id,
+    p_qid: params.qid,
+    p_item: historyItem as unknown as Json,
+  });
 
-  if (existing) {
-    const historyItem: WAJHistoryItem = {
-      attempt_at_iso: new Date().toISOString(),
-      result: 1,
-      chosen_answer: params.chosen_answer,
-      correct_answer: params.correct_answer,
-      time_ms: params.time_ms,
-      confidence_1_5: params.confidence_1_5,
-    };
-
-    const currentHistory = (existing.history_json as unknown as WAJHistoryItem[]) || [];
-    const newHistory = [...currentHistory, historyItem];
-    const { error } = await supabase
-      .from('wrong_answer_journal')
-      .update({
-        history_json: newHistory as unknown as Json,
-        last_status: 'right',
-        revisit_count: newHistory.length - 1,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('class_id', params.class_id)
-      .eq('qid', params.qid);
-
-    if (error) throw error;
-  }
+  if (error) throw error;
 }
 
 export async function getWAJEntries(class_id: string, filters?: {
