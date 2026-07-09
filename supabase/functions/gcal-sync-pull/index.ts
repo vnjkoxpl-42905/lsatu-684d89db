@@ -56,6 +56,7 @@ Deno.serve(async (req) => {
     let nextSyncToken: string | undefined;
     let processed = 0;
     let usedFallback = false;
+    const errors: string[] = [];
 
     do {
       const params = new URLSearchParams();
@@ -90,9 +91,13 @@ Deno.serve(async (req) => {
       const items = body.items ?? [];
       for (const ev of items) {
         if (ev.status === "cancelled") {
-          await supabase.from("schedule_events")
+          const { error: cancelErr } = await supabase.from("schedule_events")
             .update({ deleted_at: new Date().toISOString(), status: "cancelled" })
             .eq("google_event_id", ev.id);
+          if (cancelErr) {
+            console.error("gcal-sync-pull cancel update failed", { eventId: ev.id, error: cancelErr.message });
+            errors.push(`cancel ${ev.id}: ${cancelErr.message}`);
+          }
           processed++;
           continue;
         }
@@ -101,7 +106,7 @@ Deno.serve(async (req) => {
         const endAt = ev.end?.dateTime ?? (ev.end?.date ? `${ev.end.date}T00:00:00Z` : null);
         if (!startAt || !endAt) continue;
 
-        await supabase.from("schedule_events").upsert({
+        const { error: upsertErr } = await supabase.from("schedule_events").upsert({
           google_event_id: ev.id,
           calendar_id: calendarId,
           title: ev.summary ?? "(no title)",
@@ -117,6 +122,10 @@ Deno.serve(async (req) => {
           last_synced_at: new Date().toISOString(),
           deleted_at: null,
         }, { onConflict: "google_event_id" });
+        if (upsertErr) {
+          console.error("gcal-sync-pull upsert failed", { eventId: ev.id, error: upsertErr.message });
+          errors.push(`upsert ${ev.id}: ${upsertErr.message}`);
+        }
         processed++;
       }
 
@@ -124,11 +133,26 @@ Deno.serve(async (req) => {
       if (!pageToken) nextSyncToken = body.nextSyncToken;
     } while (pageToken);
 
-    await supabase.from("gcal_sync_state").update({
+    // Guard the sync token: only advance if every write succeeded, otherwise
+    // keep the old token so the next run retries the same window.
+    if (errors.length > 0) {
+      console.error("gcal-sync-pull completed with write errors, sync_token NOT advanced", { processed, errorCount: errors.length });
+      return new Response(JSON.stringify({ ok: false, processed, errors }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { error: stateErr } = await supabase.from("gcal_sync_state").update({
       sync_token: nextSyncToken ?? syncToken ?? null,
       last_synced_at: new Date().toISOString(),
       last_full_sync_at: usedFallback || !syncToken ? new Date().toISOString() : stateRow?.last_full_sync_at,
     }).eq("id", 1);
+    if (stateErr) {
+      console.error("gcal-sync-pull final state update failed", stateErr);
+      return new Response(JSON.stringify({ ok: false, processed, error: `sync_state update failed: ${stateErr.message}` }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(JSON.stringify({ ok: true, processed, calendarId }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
