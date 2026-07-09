@@ -1016,10 +1016,11 @@ async function runTool(
             .single();
           if (cErr) throw cErr;
           convId = asString((newConv as DbRow).id, "");
-          await admin.from(table("conversation_participants")).insert([
+          const { error: pErr } = await admin.from(table("conversation_participants")).insert([
             { conversation_id: convId, user_id: adminId },
             { conversation_id: convId, user_id: studentId },
           ]);
+          if (pErr) throw pErr;
         }
         const { data: msg, error: mErr } = await admin
           .from(table("messages"))

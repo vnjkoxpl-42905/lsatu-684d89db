@@ -286,11 +286,20 @@ Deno.serve(async (req) => {
       draftId = ins.id;
     }
 
+    const wasNewDraft = !(regenerate && existingDraftId?.draft_id);
     if (ledgerId) {
-      await admin
+      const { error: ledgerErr } = await admin
         .from("session_ingestions")
         .update({ draft_id: draftId, status: "drafted", last_attempt_at: new Date().toISOString() })
         .eq("id", ledgerId);
+      if (ledgerErr) {
+        console.error("synthesize-session-bundle: ledger update failed", { ledgerId, draftId, ledgerErr });
+        if (wasNewDraft) {
+          const { error: delErr } = await admin.from("ai_ta_drafts").delete().eq("id", draftId);
+          if (delErr) console.error("synthesize-session-bundle: orphan draft delete failed", { draftId, delErr });
+        }
+        throw ledgerErr;
+      }
     }
 
     return jsonRes({
