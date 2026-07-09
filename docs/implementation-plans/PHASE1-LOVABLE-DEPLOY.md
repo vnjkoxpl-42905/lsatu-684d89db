@@ -12,23 +12,15 @@ on a real failure.** Each fix destructures the error and surfaces it.
 
 > Note: H17 (embedding dims), H18 (gemini-proxy auth), and H19 (tutor-chat fire-and-forget)
 > were already deployed in Phase 0 (see `PHASE0-LOVABLE-DEPLOY.md`). Do not redo them.
+>
+> **Prompt A (H20, admin-manage-users) is ALSO already done** — Lovable commit `90a90ab8`
+> "Added error checks to set_role" landed the upsert/delete `throw` fixes. Skip it. Remaining
+> to paste: **B, C, D, E, F, G** (6 prompts). Verified still-unfixed as of merge `924c420f`:
+> B/C/D/E/F/G all still swallow their errors.
 
 ---
 
-## Prompt A — admin-manage-users (H20): role change reports success on failure
-
-```
-In supabase/functions/admin-manage-users/index.ts, the set_role branch (around line 223)
-awaits `admin.from('user_roles').upsert(...)` and the `.delete()` without checking the
-returned error, then unconditionally returns { success: true }. supabase-js does not throw
-on DB errors, so a failed role change (constraint/RLS/transient) tells the admin UI the role
-changed when it did not.
-
-Fix: destructure `const { error } = await ...` for BOTH the upsert and the delete in set_role,
-and `if (error) throw error;` so the existing catch returns a 500 with the message. Also add an
-error check to the role lookup in verifyAdmin (keep it fail-closed, but log the DB error so a
-failure is distinguishable from "not admin"). Redeploy admin-manage-users.
-```
+## Prompt A — admin-manage-users (H20) — ✅ ALREADY DONE (Lovable 90a90ab8), skip
 
 ## Prompt B — process-email-queue (H21): sent-log insert unchecked breaks dedup/retry accounting
 
