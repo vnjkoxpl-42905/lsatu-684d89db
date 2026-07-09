@@ -74,6 +74,7 @@ serve(async (req) => {
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
+        "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",

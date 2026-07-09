@@ -13,9 +13,21 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, lovable-api-key, x-lovable-aig-sdk",
+    "authorization, x-client-info, apikey, content-type, lovable-api-key, x-lovable-aig-sdk, x-internal-key",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+// Constant-time string comparison — avoids leaking key length/prefix via timing.
+function timingSafeEqual(a: string, b: string): boolean {
+  const enc = new TextEncoder();
+  const ea = enc.encode(a);
+  const eb = enc.encode(b);
+  if (ea.length !== eb.length) return false;
+  let diff = 0;
+  for (let i = 0; i < ea.length; i++) diff |= ea[i] ^ eb[i];
+  return diff === 0;
+}
+
 
 const GATEWAY_BASE = "https://ai.gateway.lovable.dev/v1";
 
@@ -147,7 +159,18 @@ async function handleEmbeddings(req: Request, key: string): Promise<Response> {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Internal-only endpoint — reject anything without the shared key.
+  const internalKey = Deno.env.get("EDGE_INTERNAL_KEY") ?? "";
+  const provided = req.headers.get("x-internal-key") ?? "";
+  if (!internalKey || !timingSafeEqual(provided, internalKey)) {
+    return new Response(
+      JSON.stringify({ error: { message: "Unauthorized" } }),
+      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
+
   const key = Deno.env.get("LOVABLE_API_KEY");
+
   if (!key) {
     return new Response(
       JSON.stringify({ error: { message: "LOVABLE_API_KEY is not configured" } }),

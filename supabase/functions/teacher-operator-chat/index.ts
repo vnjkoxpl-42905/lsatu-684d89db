@@ -1120,6 +1120,7 @@ async function findLink(
         "Lovable-API-Key": LOVABLE_API_KEY,
         "X-Lovable-AIG-SDK": "edge-function",
         "Content-Type": "application/json",
+        "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
     });
@@ -1669,6 +1670,7 @@ Deno.serve(async (req) => {
           "Lovable-API-Key": LOVABLE_API_KEY,
           "X-Lovable-AIG-SDK": "edge-function",
           "Content-Type": "application/json",
+          "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
         },
         body: JSON.stringify({
           model: chatModel,
