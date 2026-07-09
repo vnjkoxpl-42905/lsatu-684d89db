@@ -12,6 +12,12 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
+import { usePresenceHeartbeat } from "./hooks/usePresenceHeartbeat";
+
+function PresenceHeartbeatMount() {
+  usePresenceHeartbeat();
+  return null;
+}
 import Practice from "./pages/Practice";
 import SavedSets from "./pages/SavedSets";
 import AcademyMainhub from "./pages/AcademyMainhub";
@@ -79,6 +85,8 @@ const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
 const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSessionIngest"));
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
+const BookingPass = React.lazy(() => import("./pages/BookingPass"));
+const BookingPasses = React.lazy(() => import("./pages/teacher/BookingPasses"));
 import Inbox from "./pages/Inbox";
 import StudentShell from "./components/mainhub/StudentShell";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -133,12 +141,17 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PresenceHeartbeatMount />
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/Trust")))}</React.Suspense>} />
+            <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/OAuthConsent")))}</React.Suspense>} />
+            <Route path="/schedule/pass/:token" element={<React.Suspense fallback={null}><BookingPass /></React.Suspense>} />
+            <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
+
 
             {/* Onboarding. Username setup for new users. */}
             <Route path="/onboarding" element={<Onboarding />} />

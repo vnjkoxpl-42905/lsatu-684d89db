@@ -23,6 +23,11 @@ interface Props {
   onPreviewAttachment?: (attachment: MessageAttachment) => void;
   canDeleteMessage?: (message: Message) => boolean;
   onDeleteMessage?: (messageId: string) => void;
+  /** Id of the caller's own most-recent message the other participant has
+   *  opened past. When it matches a message in this cluster, we render a
+   *  "Seen · <time>" indicator underneath. */
+  lastSeenOwnMessageId?: string | null;
+  otherLastReadAt?: string | null;
 }
 
 function shortTime(date: Date) {
@@ -89,7 +94,7 @@ function renderBody(text: string, isInstructor: boolean) {
   return nodes.length > 0 ? nodes : text;
 }
 
-export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage }: Props) {
+export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage, lastSeenOwnMessageId, otherLastReadAt }: Props) {
   const navigate = useNavigate();
   const headerTime = shortTime(new Date(cluster.createdAt));
   const isInstructor = cluster.isInstructor;
@@ -246,6 +251,11 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                 </div>
               );
             })}
+            {cluster.isOwn && lastSeenOwnMessageId && cluster.messages.some((m) => m.id === lastSeenOwnMessageId) ? (
+              <div className="mt-1 flex justify-end pr-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8a7f6d]">
+                Seen{otherLastReadAt ? ` · ${shortTime(new Date(otherLastReadAt))}` : ''}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

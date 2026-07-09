@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
-import { formatLastActiveLabel, isUserOnline } from "@/lib/presence";
+import { formatRelativeShort } from "@/lib/time";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
+import { isParticipantOnline } from "@/components/inbox/inboxPresence";
 
 interface Props {
   selectedId: string | null;
@@ -198,8 +199,8 @@ function StudentRow({
   onClick,
   onHover,
 }: RowProps) {
-  const isOnline = isUserOnline(student.last_seen_at);
-  const lastActiveLabel = formatLastActiveLabel(student.last_seen_at);
+  const online = isParticipantOnline(student.last_seen_at);
+  const lastSeen = student.last_seen_at ? formatRelativeShort(student.last_seen_at) : "Never signed in";
 
   return (
     <li data-cursor={index}>
@@ -218,16 +219,16 @@ function StudentRow({
       >
         <div className="h-7 w-7 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 relative">
           <User className="h-3.5 w-3.5 text-zinc-400" />
+          {online && (
+            <span
+              aria-label="Online now"
+              className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-zinc-950"
+            />
+          )}
           {student.has_unread_from_student && (
             <span
               aria-label="Unread message"
               className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-sky-400 ring-2 ring-zinc-950"
-            />
-          )}
-          {isOnline && (
-            <span
-              aria-label="Online on LSAT U"
-              className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-zinc-950"
             />
           )}
         </div>
@@ -236,15 +237,16 @@ function StudentRow({
             <span className="truncate font-medium">
               {student.display_name?.trim() || "Unnamed"}
             </span>
-            {isOnline && (
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            {online && (
+              <span className="shrink-0 rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-400">
                 Online
               </span>
             )}
           </div>
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 mt-0.5">
-            <span className="truncate">{lastActiveLabel}</span>
+            <span className="truncate">
+              {online ? "Active now" : `Last seen ${lastSeen}`}
+            </span>
             {student.assignments_total > 0 && (
               <>
                 <span>·</span>

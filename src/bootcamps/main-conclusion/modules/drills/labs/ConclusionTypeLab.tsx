@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Home, RotateCcw, X as XIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, Home, Lightbulb, RotateCcw, Sparkles, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import confetti from 'canvas-confetti';
+
 
 import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
 import {
@@ -202,8 +204,9 @@ export function ConclusionTypeLab() {
                       <small>{meta.blurb}</small>
                       <span className="ctlab__option-weakness">{meta.weaknessSignature}</span>
                     </span>
-                    {showCorrect ? <Check aria-label="Correct type" /> : null}
-                    {showWrongPick ? <XIcon aria-label="Your first pick" /> : null}
+                    {showCorrect ? <CheckCircle2 aria-label="Correct type" /> : null}
+                    {showWrongPick ? <XCircle aria-label="Your first pick" /> : null}
+
                   </button>
                 );
               })}
@@ -258,6 +261,26 @@ function StimulusCard({ question }: { question: ConclusionTypeQuestion }) {
   );
 }
 
+const ENCOURAGEMENTS_CORRECT = [
+  'Nice — keep that reflex going.',
+  'Locked in. On to the next one.',
+  'That is the pattern. Ride it.',
+  'Clean read. Keep stacking them.',
+];
+
+const ENCOURAGEMENTS_MISS = [
+  'Shake it off — one more read and it clicks.',
+  'Close look this time. You have got this.',
+  'No worries — this is exactly how the reflex builds.',
+  'Reset, re-read the conclusion, keep moving.',
+];
+
+function pickEncouragement(pool: string[], seed: string) {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return pool[hash % pool.length];
+}
+
 function TeachBlock({
   question,
   attempt,
@@ -269,13 +292,85 @@ function TeachBlock({
 }) {
   const isCorrect = attempt.status === 'clean';
   const answerMeta = conclusionTypeMeta(question.answer);
+  const pickedMeta = attempt.firstPick ? conclusionTypeMeta(attempt.firstPick) : null;
+  const encouragement = pickEncouragement(
+    isCorrect ? ENCOURAGEMENTS_CORRECT : ENCOURAGEMENTS_MISS,
+    question.id,
+  );
+
+  useEffect(() => {
+    if (!isCorrect) return;
+    const end = Date.now() + 500;
+    const colors = ['#2f9e64', '#c89f4d', '#6476c8', '#f6e2b6'];
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 60,
+        startVelocity: 45,
+        origin: { x: 0.15, y: 0.75 },
+        colors,
+        disableForReducedMotion: true,
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 60,
+        startVelocity: 45,
+        origin: { x: 0.85, y: 0.75 },
+        colors,
+        disableForReducedMotion: true,
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  }, [isCorrect, question.id]);
 
   return (
-    <div ref={refEl} tabIndex={-1} role="status" aria-live="polite" className="ctlab__teach">
-      <p className={cn('ctlab__result', isCorrect ? 'ctlab__result--correct' : 'ctlab__result--warning')}>
-        {isCorrect ? 'Named it' : `It is a ${answerMeta.label}`}
-      </p>
-      <p>{question.whyType}</p>
+    <div
+      ref={refEl}
+      tabIndex={-1}
+      role="status"
+      aria-live="polite"
+      className={cn(
+        'ctlab__teach',
+        isCorrect ? 'ctlab__teach--correct' : 'ctlab__teach--wrong',
+      )}
+    >
+      <div className={cn('ctlab__verdict', isCorrect ? 'ctlab__verdict--correct' : 'ctlab__verdict--wrong')}>
+        <div className="ctlab__verdict-icon" aria-hidden="true">
+          {isCorrect ? <CheckCircle2 /> : <XCircle />}
+        </div>
+        <div className="ctlab__verdict-copy">
+          <p className="ctlab__verdict-headline">
+            {isCorrect ? (
+              <>
+                <Sparkles aria-hidden="true" /> Correct — you named it!
+              </>
+            ) : (
+              <>Not quite — this one is a {answerMeta.label}.</>
+            )}
+          </p>
+          <p className="ctlab__verdict-sub">{encouragement}</p>
+        </div>
+      </div>
+
+      {!isCorrect && pickedMeta ? (
+        <div className="ctlab__hint">
+          <div className="ctlab__hint-icon" aria-hidden="true">
+            <Lightbulb />
+          </div>
+          <div>
+            <p className="ctlab__eyebrow">Hint</p>
+            <p>
+              You picked <strong>{pickedMeta.label}</strong>, which {pickedMeta.blurb.toLowerCase()} Re-read the
+              conclusion — it actually {answerMeta.blurb.toLowerCase()} That is the tell for a{' '}
+              <strong>{answerMeta.label}</strong>.
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      <p className="ctlab__teach-why">{question.whyType}</p>
       <div className="ctlab__weakness">
         <p className="ctlab__eyebrow">Predictable weakness</p>
         <p>{question.weakness}</p>
@@ -283,6 +378,7 @@ function TeachBlock({
     </div>
   );
 }
+
 
 function SessionReview({
   attempts,

@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://atrcqxpmqrynmtvvyjju.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "lsat-u-mcp",
+      "version": "0.1.0",
+      "title": "LSAT U"
+    },
+    "tools": [
+      {
+        "name": "echo",
+        "title": "Echo",
+        "description": "Echo the input text back. Useful to verify the LSAT U MCP connection is live.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Text to echo back."
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_my_profile",
+        "title": "Get my LSAT U profile",
+        "description": "Return the signed-in user's LSAT U profile: name, target score, test date and study preferences.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_homework",
+        "title": "List my homework assignments",
+        "description": "List homework assignments for the signed-in student, newest first. Optionally filter by status.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "assigned",
+                "in_progress",
+                "completed"
+              ],
+              "description": "Optional status filter."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Max rows to return. Defaults to 25."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_classroom_items",
+        "title": "List my classroom items",
+        "description": "List classroom items (notes, drills, bootcamp modules, homework) shared with the signed-in student by their instructor.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Max items to return. Defaults to 25."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

@@ -468,8 +468,18 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
                     <p className="italic text-gray-700">"We should cancel the picnic because the park is flooded."</p>
                     <p className="font-semibold text-[#1a1a1a]">"Actually, the park is dry and the forecast is clear."</p>
                 </div>
-                <p>You are attacking the facts they used to support the conclusion, not just the conclusion itself.</p>
+                <p>In real life, you'd attack the facts they used to support the conclusion.</p>
+                <div className="relative overflow-hidden rounded-xl border-l-4 border-[#B91C1C] bg-[linear-gradient(180deg,rgba(254,242,242,0.95)_0%,rgba(254,226,226,0.75)_100%)] px-6 py-5 space-y-2">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B91C1C]">Never on the LSAT</p>
+                  <p className="text-[17px] font-semibold text-[#1a1a1a]">Do not attack the premises.</p>
+                  <p className="text-[16px] leading-[1.65] text-[rgba(26,26,26,0.82)]">
+                    The LSAT will <strong>never</strong> ask you to question whether a premise is true. Premises are handed
+                    to you as fact — arguing "actually, the park isn't flooded" is not a move that exists in this test.
+                    If you catch yourself doubting the evidence, stop. That instinct is for real life, not for LR.
+                  </p>
+                </div>
               </div>
+
               
               <PremiseRememberCallout>
                 <p>On the LSAT, premises are given. Accept them as true, then ask what they are being used to support.</p>
