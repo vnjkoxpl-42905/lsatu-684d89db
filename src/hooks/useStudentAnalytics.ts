@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useClassId } from "@/hooks/useClassId";
 import { questionBank } from "@/lib/questionLoader";
+import { localDayISO } from "@/lib/localDate";
 import {
   computeStudentAnalytics,
   type AttemptRow,
@@ -52,7 +53,7 @@ export function useStudentAnalytics(): StudentAnalyticsResult {
           .from("daily_stats")
           .select("questions_answered")
           .eq("class_id", classId)
-          .eq("date", new Date().toISOString().slice(0, 10))
+          .eq("date", localDayISO())
           .maybeSingle(),
       ]);
 

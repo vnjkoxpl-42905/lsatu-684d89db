@@ -585,7 +585,7 @@ const TYPE_SYNONYMS: Record<string, string> = {
 };
 
 // Infer question type from question stem using regex patterns
-function inferTypeFromStem(stem: string): string {
+export function inferTypeFromStem(stem: string): string {
   const lower = stem.toLowerCase();
   
   // Paradox patterns
@@ -600,16 +600,31 @@ function inferTypeFromStem(stem: string): string {
     return 'Weaken';
   }
   
+  // Must Be True / Most Supported / Main Conclusion — checked BEFORE Strengthen
+  // so a "most strongly supported" or "expresses the main conclusion" stem is
+  // not swallowed by the Strengthen includes('supports') check below.
+  if (lower.includes('must be true') || lower.includes('properly inferred')) {
+    return 'Must Be True';
+  }
+  // Match both real MSS phrasings: "most strongly supported by" and "most
+  // strongly supports/support which one of the following".
+  if (/most (strongly )?support(ed|s)?/.test(lower) || lower.includes('most justifies')) {
+    return 'Most Strongly Supported';
+  }
+  if (/main (point|conclusion)/.test(lower) || /expresses the (main )?conclusion/.test(lower)) {
+    return 'Main Conclusion';
+  }
+
   // Strengthen patterns
   if (lower.includes('strengthen') || lower.includes('supports') || lower.includes('justifies')) {
     return 'Strengthen';
   }
-  
+
   // Flaw patterns
   if (lower.includes('flaw') || lower.includes('error') || lower.includes('vulnerable to criticism')) {
     return 'Flaw';
   }
-  
+
   // Assumption patterns
   if (lower.includes('assumption') && (lower.includes('requires') || lower.includes('depends'))) {
     return 'Necessary Assumption';
@@ -617,27 +632,14 @@ function inferTypeFromStem(stem: string): string {
   if (lower.includes('assumption') && lower.includes('if assumed')) {
     return 'Sufficient Assumption';
   }
-  
-  // Must Be True / Most Supported
-  if (lower.includes('must be true') || lower.includes('properly inferred')) {
-    return 'Must Be True';
-  }
-  if (lower.includes('most (strongly )?supported') || lower.includes('most justifies')) {
-    return 'Most Strongly Supported';
-  }
-  
-  // Main Conclusion
-  if (lower.includes('main (point|conclusion)') || lower.includes('expresses the (main )?conclusion')) {
-    return 'Main Conclusion';
-  }
-  
+
   // Method of Reasoning
   if (lower.includes('proceeds by') || lower.includes('method') || lower.includes('technique of argumentation')) {
     return 'Method of Reasoning';
   }
   
   // Role
-  if (lower.includes('role') || lower.includes('claim.*figures')) {
+  if (lower.includes('role') || /claim.*figures/.test(lower)) {
     return 'Role';
   }
   
@@ -658,7 +660,7 @@ function inferTypeFromStem(stem: string): string {
   }
   
   // Agree/Disagree
-  if (lower.includes('disagree') || lower.includes('point.*issue') || lower.includes('dispute')) {
+  if (lower.includes('disagree') || /point.*issue/.test(lower) || lower.includes('dispute')) {
     return 'Agree/Disagree';
   }
   

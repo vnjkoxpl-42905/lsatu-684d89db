@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { localDayISO } from "@/lib/localDate";
 
 export interface XPGain {
   base: number;
@@ -92,7 +93,7 @@ export const calculateXP = async (
   const streakMultiplier = 1 + Math.min(userStats.streak_current * 0.05, 0.5);
   
   // First time seeing this question type today
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDayISO();
   const { data: todayStats, error: todayError } = await supabase
     .from('daily_stats')
     .select('*')
@@ -128,7 +129,7 @@ export const updateDailyStats = async (
   timeMs: number,
   correct: boolean
 ): Promise<void> => {
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDayISO();
 
   // Atomic single-statement upsert (increment_daily_stats) so two answers landing
   // in quick succession during a drill can't drop an increment. Surface write

@@ -44,3 +44,60 @@ describe('markQuestionSeen (atomic RPC)', () => {
     warn.mockRestore();
   });
 });
+
+describe('filterQuestionPool (allowRepeats)', () => {
+  // Minimal LRQuestion stubs; filterQuestionPool only reads qid.
+  const q = (qid: string) => ({ qid }) as any;
+  const questions = [q('A'), q('B'), q('C'), q('D')];
+  // A and B were just seen; C and D are unseen.
+  const seenNow = new Date().toISOString();
+  const usage = new Map<string, any>([
+    ['A', { last_seen_at: seenNow }],
+    ['B', { last_seen_at: seenNow }],
+  ]);
+  const ids = (r: { available: Array<{ qid: string }> }) =>
+    r.available.map(x => x.qid).sort();
+
+  it('allowRepeats + !preferUnseen returns the whole bank even when unseen exist', () => {
+    const r = QuestionPoolService.filterQuestionPool(questions, usage, {
+      allowRepeats: true,
+      preferUnseen: false,
+      recycleAfterDays: 7,
+    });
+    expect(ids(r)).toEqual(['A', 'B', 'C', 'D']);
+  });
+
+  it('allowRepeats + preferUnseen returns only unseen while any exist', () => {
+    const r = QuestionPoolService.filterQuestionPool(questions, usage, {
+      allowRepeats: true,
+      preferUnseen: true,
+      recycleAfterDays: 7,
+    });
+    expect(ids(r)).toEqual(['C', 'D']);
+  });
+
+  it('allowRepeats + preferUnseen falls back to the whole bank once unseen run out', () => {
+    const allSeen = new Map<string, any>([
+      ['A', { last_seen_at: seenNow }],
+      ['B', { last_seen_at: seenNow }],
+      ['C', { last_seen_at: seenNow }],
+      ['D', { last_seen_at: seenNow }],
+    ]);
+    const r = QuestionPoolService.filterQuestionPool(questions, allSeen, {
+      allowRepeats: true,
+      preferUnseen: true,
+      recycleAfterDays: 7,
+    });
+    expect(ids(r)).toEqual(['A', 'B', 'C', 'D']);
+  });
+
+  it('!allowRepeats excludes recently-seen questions', () => {
+    const r = QuestionPoolService.filterQuestionPool(questions, usage, {
+      allowRepeats: false,
+      preferUnseen: false,
+      recycleAfterDays: 7,
+    });
+    // A and B seen today, recycle window 7d -> only unseen C, D available.
+    expect(ids(r)).toEqual(['C', 'D']);
+  });
+});

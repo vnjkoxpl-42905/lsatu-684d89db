@@ -61,51 +61,50 @@ class AchievementEngine {
       .from('achievements')
       .select('*')
       .eq('category', 'milestone');
-    
+
     if (!achievements) return earned;
-    
+
+    // Fetch this student's already-earned achievement ids once (was an N+1
+    // existence query per candidate). Membership is then checked in memory.
+    const earnedIds = await this.getEarnedAchievementIds(classId);
+
     // Check each milestone
     for (const achievement of achievements) {
       const req = achievement.requirement as unknown as { type: string; value: number | string };
-      
+      if (earnedIds.has(achievement.id)) continue;
+
       if (req.type === 'questions_total') {
-        if (totalQuestions === req.value) {
-          // Check if already earned
-          const { data: existing } = await supabase
-            .from('user_achievements')
-            .select('id')
-            .eq('class_id', classId)
-            .eq('achievement_id', achievement.id)
-            .single();
-          
-          if (!existing) {
-            earned.push(achievement);
-          }
+        // Use >= so a milestone still fires if the counter skips the exact
+        // threshold (batched/lost increments); the earnedIds guard prevents
+        // re-awarding.
+        if (typeof req.value === 'number' && totalQuestions >= req.value) {
+          earned.push(achievement);
         }
       }
-      
+
       if (req.type === 'practice_time') {
         const hour = new Date().getHours();
-        const isMatch = 
+        const isMatch =
           (req.value === 'late' && hour >= 0 && hour < 6) ||
           (req.value === 'early' && hour >= 5 && hour < 7);
-        
+
         if (isMatch) {
-          const { data: existing } = await supabase
-            .from('user_achievements')
-            .select('id')
-            .eq('class_id', classId)
-            .eq('achievement_id', achievement.id)
-            .single();
-          
-          if (!existing) {
-            earned.push(achievement);
-          }
+          earned.push(achievement);
         }
       }
     }
-    
+
     return earned;
+  }
+
+  // Returns the set of achievement_ids this class has already earned.
+  private async getEarnedAchievementIds(classId: string): Promise<Set<string>> {
+    const { data, error } = await supabase
+      .from('user_achievements')
+      .select('achievement_id')
+      .eq('class_id', classId);
+    if (error) throw error;
+    return new Set((data ?? []).map(r => r.achievement_id));
   }
   
   private async checkStreakAchievements(

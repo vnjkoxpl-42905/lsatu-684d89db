@@ -8,7 +8,6 @@ import {
   Radar, 
   Tooltip,
 } from 'recharts';
-import { DRILLS } from '../data/drills';
 import { FLAW_CATALOG } from '../data/flaws';
 import { FluidExpandingGrid } from './ui/fluid-expanding-grid';
 import { VIDEO_ASSETS } from '../data/videoAssets';
@@ -52,7 +51,10 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
   useEffect(() => {
     try {
       const savedStats = JSON.parse(localStorage.getItem('lsat_flaw_performance') || '{}');
-      const data = DRILLS.map(drill => {
+      // Build from FLAW_CATALOG (14 unique flaws), not DRILLS (16 entries with
+      // duplicate names), so stats are not double-counted and no duplicate
+      // module cards render.
+      const data = FLAW_CATALOG.map(drill => {
         const val = savedStats[drill.name] || { correct: 0, attempts: 0, totalTime: 0 };
         return {
           id: drill.id,
@@ -191,7 +193,7 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
                 </div>
                 <div>
                   <div className="text-[9px] uppercase tracking-widest text-white/30 font-bold mb-1">Method Mastery</div>
-                  <div className="text-2xl font-serif italic">{Math.round((stats.filter(s => s.attempts > 0).length / DRILLS.length) * 100)}% Coverage</div>
+                  <div className="text-2xl font-serif italic">{Math.round((stats.filter(s => s.attempts > 0).length / FLAW_CATALOG.length) * 100)}% Coverage</div>
                 </div>
               </div>
             </div>
@@ -218,7 +220,7 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
             </div>
              <div className="flex gap-2">
                <div className="px-3 py-1 bg-[#1a1a1a]/5 rounded-full text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]/40">
-                 {DRILLS.length} Modules Available
+                 {FLAW_CATALOG.length} Modules Available
                </div>
              </div>
           </div>

@@ -1521,6 +1521,37 @@ function DrillContent() {
         QuestionPoolService.markQuestionSeen(qid, classId, session.mode);
       }
 
+      // Flip an existing WAJ wrong entry to right when a previously-missed
+      // question is re-served and answered correctly. The session-end batch
+      // (commitSessionAttempts) only logs wrong answers, so without this the
+      // adaptive wrong->right flip never fires append_waj_correct.
+      if (correct) {
+        const { logCorrectAnswer } = await import('@/lib/wajService');
+        try {
+          await logCorrectAnswer({
+            class_id: classId,
+            qid,
+            pt: currentQuestion.pt,
+            section: currentQuestion.section,
+            qnum: currentQuestion.qnum,
+            qtype: currentQuestion.qtype,
+            level: currentQuestion.difficulty,
+            chosen_answer: committedAnswer,
+            correct_answer: currentQuestion.correctAnswer,
+            time_ms: timeMs,
+            confidence_1_5: null,
+          });
+        } catch (error) {
+          console.error('[drill:waj:log] logCorrectAnswer failed (adaptive)', {
+            userId: user?.id,
+            qid,
+            mode: session.mode,
+            error,
+          });
+          toast.error("Your answer was saved, but the journal entry didn't log. Let Joshua know if this keeps happening.");
+        }
+      }
+
       setSession({ ...session, attempts: newAttempts });
 
       const tutorLaunch = resolveTutorLaunch({

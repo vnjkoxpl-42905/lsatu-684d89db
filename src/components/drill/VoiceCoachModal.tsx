@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mic, Square, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,6 +40,12 @@ export function VoiceCoachModal({
   const recognitionRef = React.useRef<any>(null);
   const timerRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = React.useRef<number>(0);
+  // Keep the live transcript in a ref so the mount-time onerror handler and the
+  // 20s auto-stop interval read the current value instead of a stale closure.
+  const transcriptRef = React.useRef('');
+  // Route the interval/onerror through a stable ref so they always call the
+  // latest stopRecording (which itself reads transcriptRef).
+  const stopRef = React.useRef<() => void>(() => {});
 
   React.useEffect(() => {
     if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
@@ -46,11 +53,11 @@ export function VoiceCoachModal({
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-      
+
       recognitionRef.current.onresult = (event: any) => {
         let interimTranscript = '';
         let finalTranscript = '';
-        
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcriptPiece = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
@@ -59,10 +66,12 @@ export function VoiceCoachModal({
             interimTranscript += transcriptPiece;
           }
         }
-        
-        setTranscript(finalTranscript || interimTranscript);
+
+        const next = finalTranscript || interimTranscript;
+        transcriptRef.current = next;
+        setTranscript(next);
       };
-      
+
       recognitionRef.current.onerror = (event: any) => {
         console.error('Speech recognition error:', event.error);
         if (event.error === 'no-speech') {
@@ -72,10 +81,10 @@ export function VoiceCoachModal({
         } else {
           setError('Voice recognition error. Please try again.');
         }
-        stopRecording();
+        stopRef.current();
       };
     }
-    
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
@@ -83,22 +92,27 @@ export function VoiceCoachModal({
 
   const startRecording = async () => {
     try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+      // getUserMedia is only a permission probe here; SpeechRecognition manages
+      // its own capture. Stop the probe tracks immediately so the mic indicator
+      // does not stay lit for the rest of the session.
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(t => t.stop());
+
       setPhase('recording');
+      transcriptRef.current = '';
       setTranscript('');
       setError('');
       startTimeRef.current = Date.now();
-      
+
       timerRef.current = setInterval(() => {
         const elapsed = Date.now() - startTimeRef.current;
         setRecordingDuration(Math.floor(elapsed / 1000));
-        
+
         if (elapsed >= 20000) {
-          stopRecording();
+          stopRef.current();
         }
       }, 100);
-      
+
       if (recognitionRef.current) {
         recognitionRef.current.start();
       }
@@ -112,33 +126,38 @@ export function VoiceCoachModal({
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    
+
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
-    
+
     const duration = Date.now() - startTimeRef.current;
-    
+
     if (duration < 2000) {
       setError('Recording too short. Please speak for at least 2 seconds.');
       setPhase('idle');
       return;
     }
-    
-    if (!transcript || transcript.trim().split(/\s+/).length < 3) {
+
+    const liveTranscript = transcriptRef.current;
+    if (!liveTranscript || liveTranscript.trim().split(/\s+/).length < 3) {
       setError('Could not understand speech. Please speak more clearly.');
       setPhase('idle');
       return;
     }
-    
-    processTranscript(transcript, duration);
+
+    processTranscript(liveTranscript, duration);
   };
+
+  // Always point stopRef at the latest stopRecording closure.
+  stopRef.current = stopRecording;
 
   const processTranscript = async (text: string, durationMs: number) => {
     setPhase('processing');
-    
+
+    let data: any;
     try {
-      const { data, error } = await supabase.functions.invoke('voice-coach-respond', {
+      const result = await supabase.functions.invoke('voice-coach-respond', {
         body: {
           transcript: text,
           question,
@@ -146,52 +165,80 @@ export function VoiceCoachModal({
           showContrast
         }
       });
-      
-      if (error) throw error;
-      
-      setCoachReply(data.coachReply);
-      setPhase('coach-response');
-      
-      const classId = user?.user_metadata?.class_id;
-      if (classId) {
-        await supabase.from('voice_coaching_sessions').insert({
-          class_id: classId,
-          qid: question.qid,
-          voice_duration_ms: durationMs,
-          spoken_words: text,
-          transcript_full: text,
-          coach_reply_id: data.replyId,
-          coach_reply_text: data.coachReply,
-          action_taken: null
-        } as any);
-      }
-      
+
+      if (result.error) throw result.error;
+      data = result.data;
     } catch (err) {
+      // Never show fabricated feedback: surface a real error and let the
+      // student retry rather than presenting a canned reply as analysis.
       console.error('Error processing transcript:', err);
-      setCoachReply('Your reasoning shows good effort. Look closely at what the stem is actually asking, then try the question again with fresh eyes.');
-      setPhase('coach-response');
+      setError('Could not process your explanation. Please try again.');
+      setPhase('idle');
+      return;
+    }
+
+    setCoachReply(data.coachReply);
+    setPhase('coach-response');
+
+    // Logging is separate: a failed insert must not clobber the real reply the
+    // student already sees. Check the returned error and toast on failure.
+    const classId = user?.user_metadata?.class_id;
+    if (classId) {
+      const { error: logError } = await supabase.from('voice_coaching_sessions').insert({
+        class_id: classId,
+        qid: question.qid,
+        voice_duration_ms: durationMs,
+        spoken_words: text,
+        transcript_full: text,
+        coach_reply_id: data.replyId,
+        coach_reply_text: data.coachReply,
+        action_taken: null
+      } as any);
+      if (logError) {
+        console.error('Error saving voice coaching session:', logError);
+        toast.error("Couldn't save this coaching session.");
+      }
     }
   };
 
   const handleAction = async (action: 'try_again' | 'micro_drill' | 'save_journal') => {
     const classId = user?.user_metadata?.class_id;
     if (classId) {
-      await supabase
+      // PostgREST does not honor .order().limit() on UPDATE as "newest row";
+      // select the newest session id first, then update it by id.
+      const { data: latest, error: selError } = await supabase
         .from('voice_coaching_sessions')
-        .update({ action_taken: action })
+        .select('id')
         .eq('class_id', classId)
         .eq('qid', question.qid)
         .order('created_at', { ascending: false })
-        .limit(1);
+        .limit(1)
+        .maybeSingle();
+      if (selError) {
+        console.error('Error finding voice coaching session:', selError);
+      } else if (latest?.id) {
+        const { error: updError } = await supabase
+          .from('voice_coaching_sessions')
+          .update({ action_taken: action })
+          .eq('id', latest.id);
+        if (updError) {
+          console.error('Error recording voice coaching action:', updError);
+        }
+      }
     }
-    
+
     if (action === 'try_again') {
       onTryAgain();
     } else if (action === 'micro_drill') {
-      const { data } = await supabase.functions.invoke('generate-micro-drill', {
+      const { data, error } = await supabase.functions.invoke('generate-micro-drill', {
         body: { qtype: question.qtype, difficulty: question.difficulty, currentQid: question.qid }
       });
-      onMicroDrill(data?.questions || []);
+      if (error || !data?.questions?.length) {
+        console.error('Error generating micro-drill:', error);
+        toast.error("Couldn't build a mini drill right now. Try again in a moment.");
+        return;
+      }
+      onMicroDrill(data.questions);
     } else if (action === 'save_journal') {
       onSaveToJournal();
     }

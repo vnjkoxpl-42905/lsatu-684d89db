@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -40,6 +41,7 @@ import {
 } from "../lib/supabase-progress";
 import { computeNextReview } from "../lib/srs";
 import type { FlashcardRating } from "@/components/teacher/bootcamps/hooks/useFlashcardReviews";
+import { localDayISO, addLocalDays } from "@/lib/localDate";
 
 interface AppContextType {
   currentView: ViewState;
@@ -205,6 +207,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   });
   const [loading, setLoading] = useState(true);
+
+  // Mirror the latest state in a ref so event handlers (e.g. rateCard) can read
+  // current values without doing DB-affecting work inside a setState updater.
+  const bootcampStateRef = useRef(bootcampState);
+  useEffect(() => {
+    bootcampStateRef.current = bootcampState;
+  }, [bootcampState]);
+
+  // Persist the flashcard cache as a side effect of state changes, so setState
+  // updaters can stay pure (no I/O inside them).
+  useEffect(() => {
+    persistCardsCache(bootcampState.cards);
+  }, [bootcampState.cards]);
 
   // Hydrate from Supabase on mount whenever we have an authed user.
   useEffect(() => {
@@ -477,7 +492,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           reviewCount: currentCard.reviewCount + 1,
         },
       };
-      persistCardsCache(nextCards);
       return { ...prev, cards: nextCards };
     });
   }, []);
@@ -485,23 +499,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const rateCard = useCallback(
     async (cardId: string, rating: FlashcardRating): Promise<BootcampMutationResult> => {
       const reviewedAt = new Date().toISOString();
-      let next: ReturnType<typeof computeNextReview> | null = null;
-      let nextReviewCount = 1;
+
+      // Compute the next review OUTSIDE the setState updater. The updater must
+      // stay pure: doing this work inside it (and depending on React's eager-
+      // updater optimization for `next`) meant the DB write below was silently
+      // skipped whenever the provider had a coincident pending update.
+      const currentCard =
+        bootcampStateRef.current.cards[cardId] ||
+        { cardId, status: "unseen" as const, reviewCount: 0 };
+      const next = computeNextReview(rating, currentCard.intervalDays ?? 0, currentCard.reviewCount);
+      const nextReviewCount = currentCard.reviewCount + 1;
+      // Status policy: "again" walks back to "reviewing", "easy" promotes
+      // a card to "mastered" once it's been seen at least twice, every
+      // other rating settles the card at "reviewing".
+      let nextStatus: CardReview["status"] = "reviewing";
+      if (rating === "again") nextStatus = "reviewing";
+      else if (rating === "easy" && nextReviewCount >= 2) nextStatus = "mastered";
 
       setBootcampState((prev) => {
-        const currentCard = prev.cards[cardId] || { cardId, status: "unseen" as const, reviewCount: 0 };
-        next = computeNextReview(rating, currentCard.intervalDays ?? 0, currentCard.reviewCount);
-        nextReviewCount = currentCard.reviewCount + 1;
-        // Status policy: "again" walks back to "reviewing", "easy" promotes
-        // a card to "mastered" once it's been seen at least twice, every
-        // other rating settles the card at "reviewing".
-        let nextStatus: CardReview["status"] = "reviewing";
-        if (rating === "again") nextStatus = "reviewing";
-        else if (rating === "easy" && nextReviewCount >= 2) nextStatus = "mastered";
+        const prevCard =
+          prev.cards[cardId] || { cardId, status: "unseen" as const, reviewCount: 0 };
         const nextCards = {
           ...prev.cards,
           [cardId]: {
-            ...currentCard,
+            ...prevCard,
             status: nextStatus,
             lastReviewedAt: reviewedAt,
             reviewCount: nextReviewCount,
@@ -510,11 +531,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
             dueAtIso: next.dueAtIso,
           },
         };
-        persistCardsCache(nextCards);
         return { ...prev, cards: nextCards };
       });
 
-      if (!user || !next) return { ok: true };
+      if (!user) return { ok: true };
 
       const res = await insertFlashcardReview(user.id, {
         topicTag: TOPIC_TAG,
@@ -606,9 +626,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const bumpStreakActivity = useCallback(() => {
     setBootcampState((prev) => {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = localDayISO();
       if (prev.dailyStreakLastActive === today) return prev;
-      const yesterday = new Date(Date.now() - 86400_000).toISOString().slice(0, 10);
+      const yesterday = addLocalDays(-1);
       const next: BootcampState = {
         ...prev,
         dailyStreak:

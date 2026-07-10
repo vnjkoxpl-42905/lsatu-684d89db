@@ -1,7 +1,16 @@
+import { localDayISO } from '@/lib/localDate';
+
 const STREAK_DATES_KEY = 'pf:streakDates';
 
 function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localDayISO();
+}
+
+// Parse a YYYY-MM-DD string into a Date at LOCAL midnight (new Date('YYYY-MM-DD')
+// parses as UTC, which shifts the calendar day in negative-offset timezones).
+function parseLocalDay(iso: string): Date {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d);
 }
 
 function daysBetween(a: string, b: string): number {
@@ -36,13 +45,13 @@ export function computeStreak(dates: string[] = readStreakDates()): number {
   if (!cursor) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const y = yesterday.toISOString().slice(0, 10);
+    const y = localDayISO(yesterday);
     if (set.has(y)) cursor = y;
     else return 0;
   }
   let count = 0;
-  let probe = new Date(cursor);
-  while (set.has(probe.toISOString().slice(0, 10))) {
+  const probe = parseLocalDay(cursor);
+  while (set.has(localDayISO(probe))) {
     count += 1;
     probe.setDate(probe.getDate() - 1);
   }

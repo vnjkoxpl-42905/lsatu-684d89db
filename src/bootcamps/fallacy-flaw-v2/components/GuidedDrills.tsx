@@ -12,6 +12,7 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import type { TypeDrillConfig } from "@/types/drill";
 import { DRILLS } from "../data/drills";
+import { MIN_DRILL_QUESTIONS } from "./FlawDrillLauncher";
 import { toast } from "sonner";
 import {
   getFeaturesForFlaw,
@@ -39,10 +40,15 @@ export function GuidedDrills({
     () => (selectedDrill ? getQuestionsForFlaw(selectedDrill.id) : []),
     [selectedDrill],
   );
-  const targetedMatches = selectedDrill && targetedQuestions.length > 0
+  // Apply the same lesson-only gate the launcher uses (>= MIN_DRILL_QUESTIONS),
+  // so both entry points agree on whether a targeted flaw is drill-ready.
+  const targetedMatches = selectedDrill && targetedQuestions.length >= MIN_DRILL_QUESTIONS
     ? [{ flawId: selectedDrill.id, label: selectedDrill.name, questions: targetedQuestions }]
     : [];
-  const activeMatches = targetedMatches.length > 0 ? targetedMatches : matches;
+  // When a specific flaw was requested, never silently fall back to ALL flaws
+  // (which then picked a RANDOM flaw): the student asked for X, so give X or
+  // an honest "not enough questions yet" state, not a random Y.
+  const activeMatches = selectedDrill ? targetedMatches : matches;
   const totalAvailable = matches.reduce((n, m) => n + m.questions.length, 0);
   const activeAvailable = activeMatches.reduce((n, m) => n + m.questions.length, 0);
   const drillLocked =

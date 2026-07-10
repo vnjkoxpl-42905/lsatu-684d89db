@@ -1,7 +1,49 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { QuestionBank } from "./questionLoader";
+import { QuestionBank, inferTypeFromStem } from "./questionLoader";
+
+describe("inferTypeFromStem", () => {
+  it("classifies a main conclusion stem", () => {
+    expect(
+      inferTypeFromStem(
+        "Which one of the following most accurately expresses the main conclusion of the argument?",
+      ),
+    ).toBe("Main Conclusion");
+  });
+
+  it("classifies a main point stem", () => {
+    expect(
+      inferTypeFromStem("Which one of the following is the main point of the passage?"),
+    ).toBe("Main Conclusion");
+  });
+
+  it("classifies a most strongly supported stem", () => {
+    expect(
+      inferTypeFromStem(
+        "The statements above, if true, most strongly support which one of the following?",
+      ),
+    ).toBe("Most Strongly Supported");
+  });
+
+  it("does not let Strengthen swallow a most-strongly-supported stem", () => {
+    expect(inferTypeFromStem("most strongly supported")).not.toBe("Strengthen");
+  });
+
+  it("classifies a point at issue stem via the regex (no 'disagree' literal)", () => {
+    expect(
+      inferTypeFromStem(
+        "The point at issue between Aisha and Bruno is whether the policy will succeed.",
+      ),
+    ).toBe("Agree/Disagree");
+  });
+
+  it("still classifies a plain strengthen stem", () => {
+    expect(
+      inferTypeFromStem("Which one of the following, if true, most strengthens the argument?"),
+    ).toBe("Strengthen");
+  });
+});
 
 describe("QuestionBank shared-passage loading", () => {
   afterEach(() => {

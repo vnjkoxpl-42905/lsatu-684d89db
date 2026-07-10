@@ -142,20 +142,17 @@ export class QuestionPoolService {
     const recycleThreshold = new Date(now.getTime() - settings.recycleAfterDays * 24 * 60 * 60 * 1000);
 
     let available: LRQuestion[] = [];
-    let unseen: LRQuestion[] = [];
-    let recycled: LRQuestion[] = [];
+    const unseen: LRQuestion[] = [];
+    const recycled: LRQuestion[] = [];
 
     questions.forEach(q => {
       const usageRecord = usage.get(q.qid);
 
       if (!usageRecord) {
-        // Never seen - always available
+        // Never seen
         unseen.push(q);
-      } else if (settings.allowRepeats) {
-        // Repeats allowed - all questions available
-        available.push(q);
       } else {
-        // Check if enough time has passed to recycle
+        // Seen: eligible to recycle once enough time has passed
         const lastSeen = new Date(usageRecord.last_seen_at);
         if (lastSeen < recycleThreshold) {
           recycled.push(q);
@@ -163,14 +160,19 @@ export class QuestionPoolService {
       }
     });
 
-    // Build final pool based on preferences
-    if (settings.preferUnseen && unseen.length > 0) {
-      available = unseen;
-    } else if (unseen.length > 0 || recycled.length > 0) {
-      available = [...unseen, ...recycled];
-    } else if (settings.allowRepeats) {
-      // Pool exhausted, but repeats allowed
+    // Build final pool based on preferences.
+    // When allowRepeats is on and the student is not asking to prioritise unseen
+    // questions, the whole bank is available (previously this was silently
+    // shrunk to unseen+recycled whenever any unseen question existed, so
+    // allowRepeats behaved like no-repeats until the pool was fully exhausted).
+    if (settings.allowRepeats && !settings.preferUnseen) {
       available = questions;
+    } else if (settings.allowRepeats && settings.preferUnseen) {
+      available = unseen.length > 0 ? unseen : questions;
+    } else if (settings.preferUnseen && unseen.length > 0) {
+      available = unseen;
+    } else {
+      available = [...unseen, ...recycled];
     }
 
     return {

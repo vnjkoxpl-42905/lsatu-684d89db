@@ -58,6 +58,20 @@ export function useStudyChat(): UseStudyChatResult {
     []
   );
 
+  // Append a single message using the latest tab state, so a reply that lands
+  // after the user cleared/edited the tab mid-stream does not clobber those
+  // changes with a stale snapshot.
+  const appendMessageToTab = useCallback(
+    (tabId: string, message: ChatMessage) => {
+      setTabs((prev) =>
+        prev.map((t) =>
+          t.id === tabId ? { ...t, messages: [...t.messages, message] } : t
+        )
+      );
+    },
+    []
+  );
+
   const clearActiveTab = useCallback(() => {
     setTabs((prev) =>
       prev.map((t) => (t.id === activeTabId ? { ...t, messages: [] } : t))
@@ -123,30 +137,40 @@ export function useStudyChat(): UseStudyChatResult {
 
         const decoder = new TextDecoder();
         let accumulated = "";
+        // Carry buffer: SSE frames routinely split across TCP chunks, so hold
+        // the trailing partial line and only process complete lines.
+        let buffer = "";
+
+        const processLine = (line: string) => {
+          if (!line.startsWith("data:")) return;
+          const raw = line.slice(5).trim();
+          if (raw === "[DONE]") return;
+          try {
+            const parsed = JSON.parse(raw);
+            const delta = parsed?.choices?.[0]?.delta?.content;
+            if (typeof delta === "string") {
+              accumulated += delta;
+              setStreamingContent(accumulated);
+            }
+          } catch {
+            // skip malformed SSE line
+          }
+        };
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n");
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
 
           for (const line of lines) {
-            if (!line.startsWith("data:")) continue;
-            const raw = line.slice(5).trim();
-            if (raw === "[DONE]") break;
-            try {
-              const parsed = JSON.parse(raw);
-              const delta = parsed?.choices?.[0]?.delta?.content;
-              if (typeof delta === "string") {
-                accumulated += delta;
-                setStreamingContent(accumulated);
-              }
-            } catch {
-              // skip malformed SSE line
-            }
+            processLine(line);
           }
         }
+        // Flush any complete final line left in the buffer.
+        if (buffer.length > 0) processLine(buffer);
 
         const assistantMsg: ChatMessage = {
           id: makeId(),
@@ -154,11 +178,7 @@ export function useStudyChat(): UseStudyChatResult {
           content: accumulated,
         };
 
-        const tabNow = tabs.find((t) => t.id === activeTabId);
-        appendToTab(activeTabId, [
-          ...(tabNow?.messages ?? nextMessages),
-          assistantMsg,
-        ]);
+        appendMessageToTab(activeTabId, assistantMsg);
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") return;
         const errorMsg: ChatMessage = {
@@ -169,17 +189,13 @@ export function useStudyChat(): UseStudyChatResult {
               ? `Something went wrong: ${err.message}`
               : "Something went wrong. Please try again.",
         };
-        const tabNow = tabs.find((t) => t.id === activeTabId);
-        appendToTab(activeTabId, [
-          ...(tabNow?.messages ?? nextMessages),
-          errorMsg,
-        ]);
+        appendMessageToTab(activeTabId, errorMsg);
       } finally {
         setThinking(false);
         setStreamingContent("");
       }
     },
-    [tabs, activeTabId, thinking, appendToTab]
+    [tabs, activeTabId, thinking, appendToTab, appendMessageToTab]
   );
 
   return {

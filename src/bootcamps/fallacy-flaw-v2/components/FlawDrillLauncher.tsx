@@ -26,7 +26,7 @@ interface Props {
 // Below this many tagged bank questions, a flaw does not have a robust drill
 // queue. We present it as lesson-only rather than launching a 1-3 question
 // "drill" that misrepresents the inventory.
-const MIN_DRILL_QUESTIONS = 4;
+export const MIN_DRILL_QUESTIONS = 4;
 
 export const FlawDrillLauncher: React.FC<Props> = ({
   flawId,

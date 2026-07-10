@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { localDayISO, addLocalDays } from "@/lib/localDate";
 
 export interface StreakUpdate {
   newStreak: number;
@@ -13,8 +14,8 @@ const QUESTIONS_PER_DAY_GOAL = 5;
 
 // Check and update streak status
 export const updateStreak = async (classId: string): Promise<StreakUpdate> => {
-  const today = new Date().toISOString().split('T')[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  const today = localDayISO();
+  const yesterday = addLocalDays(-1);
   
   // Get today's stats. maybeSingle(): a missing row is the normal "no practice
   // yet today" case, not an error; single() would report PGRST116 and make a
@@ -108,8 +109,8 @@ export const updateStreak = async (classId: string): Promise<StreakUpdate> => {
 
 // Check if streak is at risk (practiced yesterday but not today)
 export const checkStreakAtRisk = async (classId: string): Promise<boolean> => {
-  const today = new Date().toISOString().split('T')[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  const today = localDayISO();
+  const yesterday = addLocalDays(-1);
   
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
