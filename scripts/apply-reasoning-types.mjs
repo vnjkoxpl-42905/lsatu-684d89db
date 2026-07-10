@@ -44,11 +44,14 @@ function loadBank() {
   const files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'));
   const docs = []; // { abs, doc, isArrayRoot, questions }
   const idx = new Map();
+  const unparseable = [];
   for (const f of files) {
     const abs = path.join(DATA_DIR, f);
     let doc;
     try { doc = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch (e) {
-      console.error(`[parse] ${f}: ${e.message}`); continue;
+      console.error(`[parse] ${f}: ${e.message}`);
+      unparseable.push(f);
+      continue;
     }
     const isArrayRoot = Array.isArray(doc);
     const questions = isArrayRoot ? doc : (doc.questions || []);
@@ -61,7 +64,7 @@ function loadBank() {
       idx.set(`${pt}-${section}-${qnum}`, q);
     }
   }
-  return { docs, idx };
+  return { docs, idx, unparseable };
 }
 
 // Rewrite reasoningType in place, preserving key order. Slot it after
@@ -80,7 +83,7 @@ function setReasoningType(q, value) {
 }
 
 function run() {
-  const { docs, idx } = loadBank();
+  const { docs, idx, unparseable } = loadBank();
 
   // Phase 1: wipe to []
   for (const q of idx.values()) setReasoningType(q, []);
@@ -133,6 +136,13 @@ function run() {
   for (const q of idx.values()) dist[q.reasoningType.length] = (dist[q.reasoningType.length] || 0) + 1;
   console.log('\nQuestions by # of reasoning types:');
   for (const [k, v] of Object.entries(dist)) console.log(`  ${k}: ${v}`);
+
+  // Exit nonzero when any bank could not be parsed, so this can gate CI /
+  // a pre-push hook instead of silently reporting success.
+  if (unparseable.length) {
+    console.error(`\n[FAIL] ${unparseable.length} unparseable bank(s): ${unparseable.join(', ')}`);
+    process.exit(1);
+  }
 }
 
 run();

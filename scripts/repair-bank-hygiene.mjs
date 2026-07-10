@@ -193,10 +193,19 @@ function recoverCorruptedQtypes() {
   let touched = 0;
   let filesTouched = 0;
   const residuals = [];
+  const unparseable = [];
   for (const f of files) {
     const abs = path.join(DATA_DIR, f);
     let doc;
-    try { doc = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
+    try {
+      doc = JSON.parse(fs.readFileSync(abs, 'utf8'));
+    } catch (err) {
+      // A bank still malformed after repairFences must be reported, not silently
+      // skipped — otherwise the script prints "Done." while a bank stays broken
+      // in production data.
+      unparseable.push({ file: f, message: err.message });
+      continue;
+    }
     const questions = Array.isArray(doc) ? doc : (doc.questions || []);
     let changed = false;
     for (const q of questions) {
@@ -219,7 +228,7 @@ function recoverCorruptedQtypes() {
       filesTouched++;
     }
   }
-  return { touched, filesTouched, residuals };
+  return { touched, filesTouched, residuals, unparseable };
 }
 
 console.log('=== Bank hygiene ===');
@@ -237,4 +246,17 @@ if (rec.residuals.length) {
   }
   if (rec.residuals.length > 20) console.log(`    … and ${rec.residuals.length - 20} more`);
 }
+if (rec.unparseable.length) {
+  console.log(`\n[!] ${rec.unparseable.length} bank(s) still unparseable after fence repair:`);
+  for (const u of rec.unparseable) console.log(`    - ${u.file}: ${u.message}`);
+}
+
 console.log('\nDone.');
+
+// Exit nonzero when problems remain so this can gate CI / a pre-push hook.
+if (rec.residuals.length || rec.unparseable.length) {
+  console.error(
+    `\n[FAIL] ${rec.residuals.length} unrecovered qtype row(s), ${rec.unparseable.length} unparseable bank(s).`,
+  );
+  process.exit(1);
+}
