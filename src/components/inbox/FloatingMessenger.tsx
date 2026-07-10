@@ -25,7 +25,6 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useOrbitalActive } from '@/contexts/OrbitalActiveContext';
 import { ThreadList, ThreadListSkeleton } from './ThreadList';
 import { ConversationView } from './ConversationView';
-import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { isParticipantOnline } from './inboxPresence';
@@ -47,21 +46,21 @@ export function FloatingMessenger() {
 
   // Student auto-pin: prefer the thread that contains an admin participant.
   const studentPrimaryId = useMemo(() => {
-    if (is_admin || !user) return null;
+    if (!user) return null;
     const withAdmin = conversations.find((c) =>
       c.participants.some((p) => p.user_id !== user.id && p.is_admin),
     );
     if (withAdmin) return withAdmin.id;
     if (conversations.length > 0) return conversations[0].id;
     return null;
-  }, [conversations, is_admin, user]);
+  }, [conversations, user]);
 
   // When a student opens the panel, jump straight into their thread.
   useEffect(() => {
-    if (!open || is_admin) return;
+    if (!open) return;
     if (activeId) return;
     if (studentPrimaryId) setActiveId(studentPrimaryId);
-  }, [open, is_admin, activeId, studentPrimaryId]);
+  }, [open, activeId, studentPrimaryId]);
 
   const active = useMemo(
     () => conversations.find((c) => c.id === activeId) ?? null,
@@ -72,9 +71,8 @@ export function FloatingMessenger() {
     if (!active || !user) return null;
     const others = active.participants.filter((p) => p.user_id !== user.id);
     const realNames = others.map((o) => o.display_name?.trim()).filter((n): n is string => !!n);
-    if (!is_admin) return realNames[0] || 'Joshua';
-    return realNames.join(', ') || active.subject || 'Conversation';
-  }, [active, user, is_admin]);
+    return realNames[0] || 'Joshua';
+  }, [active, user]);
 
   const activeOtherParticipant = useMemo(() => {
     if (!active || !user) return null;
@@ -134,7 +132,7 @@ export function FloatingMessenger() {
   };
 
 
-  const showStudentEmpty = !is_admin && !active && !loading && conversations.length === 0;
+  const showStudentEmpty = !active && !loading && conversations.length === 0;
 
   return (
     <>
@@ -267,19 +265,6 @@ export function FloatingMessenger() {
                     transition={{ duration: reducedMotion ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
                     className="h-full flex flex-col"
                   >
-                    {is_admin && (
-                      <div className="px-4 py-2 border-b border-border flex items-center justify-between gap-2">
-                        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                          Conversations
-                        </span>
-                        <NewConversationDialog
-                          onCreated={(id) => {
-                            refresh();
-                            setActiveId(id);
-                          }}
-                        />
-                      </div>
-                    )}
                     <div className="flex-1 overflow-y-auto">
                       {loading ? (
                         <ThreadListSkeleton />
@@ -288,12 +273,8 @@ export function FloatingMessenger() {
                           conversations={conversations}
                           activeId={activeId}
                           onSelect={setActiveId}
-                          variant={is_admin ? 'admin' : 'student'}
-                          emptyLabel={
-                            is_admin
-                              ? 'No conversations yet. Start one with a student.'
-                              : 'No conversations yet.'
-                          }
+                          variant="student"
+                          emptyLabel="No conversations yet."
                         />
                       )}
                     </div>

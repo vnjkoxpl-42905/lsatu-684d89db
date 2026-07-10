@@ -124,19 +124,7 @@ function RedirectAiTaToCommand() {
   return <Navigate to={`/teacher/command${search}`} replace />;
 }
 
-// Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
-// React root is remounting (e.g. from a service-worker replace) vs its child
-// providers re-initializing.
-let APP_MOUNT_COUNT = 0;
-
 const App = () => {
-  React.useEffect(() => {
-    APP_MOUNT_COUNT += 1;
-    console.log('[App mount]', { count: APP_MOUNT_COUNT });
-    return () => {
-      console.log('[App unmount]', { count: APP_MOUNT_COUNT });
-    };
-  }, []);
   return (
   <QueryClientProvider client={queryClient}>
   <ThemeProvider>

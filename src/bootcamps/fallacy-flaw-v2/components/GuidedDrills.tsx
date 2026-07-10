@@ -11,13 +11,14 @@ import { ArrowRight, Loader2, Target } from "lucide-react";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import type { TypeDrillConfig } from "@/types/drill";
-import { DRILLS } from "../data/drills";
+import { FLAW_CATALOG } from "../data/flaws";
 import { MIN_DRILL_QUESTIONS } from "./FlawDrillLauncher";
 import { toast } from "sonner";
 import {
   getFeaturesForFlaw,
   getFlawQuestionGroups,
   getQuestionsForFlaw,
+  normalizeFlawId,
 } from "../lib/flawQuestionMapping";
 
 export function GuidedDrills({
@@ -33,7 +34,12 @@ export function GuidedDrills({
 
   const matches = useMemo(() => (isLoading ? [] : getFlawQuestionGroups()), [isLoading]);
   const selectedDrill = useMemo(
-    () => DRILLS.find((drill) => drill.id === initialDrillId),
+    () =>
+      initialDrillId
+        ? FLAW_CATALOG.find(
+            (flaw) => normalizeFlawId(flaw.id) === normalizeFlawId(initialDrillId),
+          )
+        : undefined,
     [initialDrillId],
   );
   const targetedQuestions = useMemo(

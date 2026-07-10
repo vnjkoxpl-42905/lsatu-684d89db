@@ -5,8 +5,6 @@
 
 // ACTIVE IMPLEMENTATION of the Flaw & Famous Flaws bootcamp (route
 // /bootcamp/fallacy-flaw, mounted via src/pages/FallacyFlawBootcamp.tsx).
-// The legacy src/bootcamps/fallacy-flaw and src/components/bootcamp/FF* trees
-// are NOT wired to the live route; do not edit those for launch changes.
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';

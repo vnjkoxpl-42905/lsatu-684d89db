@@ -121,25 +121,3 @@ export const calculateXP = async (
     total
   };
 };
-
-// Update daily stats
-export const updateDailyStats = async (
-  classId: string,
-  xpEarned: number,
-  timeMs: number,
-  correct: boolean
-): Promise<void> => {
-  const today = localDayISO();
-
-  // Atomic single-statement upsert (increment_daily_stats) so two answers landing
-  // in quick succession during a drill can't drop an increment. Surface write
-  // errors so a failed stats write is not invisible.
-  const { error } = await supabase.rpc('increment_daily_stats', {
-    p_class_id: classId,
-    p_date: today,
-    p_xp: xpEarned,
-    p_time_ms: timeMs,
-    p_correct: correct
-  });
-  if (error) throw error;
-};
