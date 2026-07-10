@@ -173,7 +173,9 @@ function DrillContent() {
   const [tutorInitialTab, setTutorInitialTab] = React.useState<'coach' | 'breakdown' | 'notes' | undefined>(undefined);
   const [wajModalOpen, setWajModalOpen] = React.useState(false);
   const [voiceCoachOpen, setVoiceCoachOpen] = React.useState(false);
-  const [showVoiceChip, setShowVoiceChip] = React.useState(false);
+  // The "Explain your reasoning" voice chip is shown whenever a solution is
+  // revealed (answer committed) and no overlay is already open. Derived, not
+  // stored, so it appears on every reveal path automatically.
   const [questionStartTime, setQuestionStartTime] = React.useState(performance.now());
   const [hasTimer, setHasTimer] = React.useState(false);
   const [sessionScreenMuted, setSessionScreenMuted] = React.useState(false);
@@ -758,7 +760,6 @@ function DrillContent() {
     setTutorUserAnswerSnapshot('');
     setTutorChatMode('pre-answer');
     setVoiceCoachOpen(false);
-    setShowVoiceChip(false);
     setSessionScreenMuted(false);
     setSessionTimerRemainingSeconds(sessionTimerPresetSeconds);
     setSessionTimerRunning(false);
@@ -2743,6 +2744,54 @@ function DrillContent() {
     </>
   );
 
+  // Voice coach: the "Explain your reasoning" chip only makes sense once the
+  // answer is revealed (non-adaptive: showSolution; adaptive Smart Drill:
+  // showAnswerRevealed for this qid). Shared across both layouts so the chip
+  // and its modal are reachable in the official layout too, not just classic.
+  const voiceCoachRevealed =
+    !!currentQuestion && (showSolution || !!showAnswerRevealed.get(currentQuestion.qid));
+
+  const renderVoiceCoachChip = () =>
+    voiceCoachRevealed && !voiceCoachOpen && !tutorChatOpen ? (
+      <div className="mt-6 flex justify-center">
+        <VoiceCoachChip onActivate={() => setVoiceCoachOpen(true)} />
+      </div>
+    ) : null;
+
+  const renderVoiceCoachModal = () => (
+    <VoiceCoachModal
+      open={voiceCoachOpen}
+      question={currentQuestion}
+      selectedAnswer={selectedAnswer}
+      onTryAgain={() => {
+        // For adaptive mode: close and allow retry
+        setVoiceCoachOpen(false);
+      }}
+      onMicroDrill={(questions) => {
+        if (!currentQuestion) return;
+        // Navigate to micro-drill with the 2 generated questions
+        navigate('/drill', {
+          state: {
+            mode: 'type-drill',
+            config: {
+              qtypes: [currentQuestion.qtype],
+              difficulties: [currentQuestion.difficulty],
+              pts: questions.map(q => q.pt),
+              count: 2
+            }
+          }
+        });
+      }}
+      onSaveToJournal={() => {
+        // Open WAJ modal
+        setVoiceCoachOpen(false);
+        setWajModalOpen(true);
+      }}
+      onClose={() => setVoiceCoachOpen(false)}
+      showContrast={settings.showContrast}
+    />
+  );
+
   // ── Official testing-format layout ─────────────────────────────────────
   // Opt-in via /drill?layout=official. Reuses every existing handler so the
   // attempt save / WAJ / blind review / section-complete flow is identical
@@ -3011,6 +3060,7 @@ function DrillContent() {
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
           />
+          {renderVoiceCoachChip()}
           {isAdaptiveMode ? (
             <OfficialSmartDrillBar
               autoReveal={autoReveal}
@@ -3110,6 +3160,7 @@ function DrillContent() {
             />
           )}
         </OfficialDrillFrame>
+        {renderVoiceCoachModal()}
         {renderTutorOverlay()}
       </>
     );
@@ -3269,16 +3320,7 @@ function DrillContent() {
                 );
               })()}
 
-              {showVoiceChip && (
-                <div className="mt-6 flex justify-center">
-                  <VoiceCoachChip
-                    onActivate={() => {
-                      setShowVoiceChip(false);
-                      setVoiceCoachOpen(true);
-                    }}
-                  />
-                </div>
-              )}
+              {renderVoiceCoachChip()}
             </div>
           </div>
         </div>
@@ -3532,36 +3574,7 @@ function DrillContent() {
         onSave={handleWAJSave}
       />
 
-      <VoiceCoachModal
-        open={voiceCoachOpen}
-        question={currentQuestion}
-        selectedAnswer={selectedAnswer}
-        onTryAgain={() => {
-          // For adaptive mode: close and allow retry
-          setVoiceCoachOpen(false);
-        }}
-        onMicroDrill={(questions) => {
-          // Navigate to micro-drill with the 2 generated questions
-          navigate('/drill', {
-            state: {
-              mode: 'type-drill',
-              config: {
-                qtypes: [currentQuestion.qtype],
-                difficulties: [currentQuestion.difficulty],
-                pts: questions.map(q => q.pt),
-                count: 2
-              }
-            }
-          });
-        }}
-        onSaveToJournal={() => {
-          // Open WAJ modal
-          setVoiceCoachOpen(false);
-          setWajModalOpen(true);
-        }}
-        onClose={() => setVoiceCoachOpen(false)}
-        showContrast={settings.showContrast}
-      />
+      {renderVoiceCoachModal()}
 
       {renderTutorOverlay()}
     </div>
