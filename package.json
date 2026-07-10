@@ -8,6 +8,7 @@
     "prebuild": "node scripts/build-question-bank.mjs",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build",
     "build:dev": "NODE_OPTIONS=--max-old-space-size=4096 vite build --mode development",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "lint": "eslint .",
     "lint:changed": "bash scripts/lint-changed.sh",
     "playwright": "playwright test",
