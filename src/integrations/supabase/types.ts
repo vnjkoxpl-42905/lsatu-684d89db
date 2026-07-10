@@ -3388,18 +3388,18 @@ export type Database = {
       attempt_accuracy_rollup: {
         Args: { p_class_id: string }
         Returns: {
-          qtype: string
-          level: number
           bucket: string
-          total: number
           correct: number
+          level: number
+          qtype: string
+          total: number
         }[]
       }
       attempt_totals: {
         Args: { p_class_id: string }
         Returns: {
-          total: number
           correct: number
+          total: number
         }[]
       }
       delete_email: {
@@ -3452,10 +3452,10 @@ export type Database = {
       get_latest_messages: {
         Args: { conv_ids: string[] }
         Returns: {
-          conversation_id: string
-          id: string
           body: string
+          conversation_id: string
           created_at: string
+          id: string
           sender_id: string
         }[]
       }
