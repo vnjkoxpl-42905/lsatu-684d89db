@@ -3385,6 +3385,23 @@ export type Database = {
         }
         Returns: undefined
       }
+      attempt_accuracy_rollup: {
+        Args: { p_class_id: string }
+        Returns: {
+          bucket: string
+          correct: number
+          level: number
+          qtype: string
+          total: number
+        }[]
+      }
+      attempt_totals: {
+        Args: { p_class_id: string }
+        Returns: {
+          correct: number
+          total: number
+        }[]
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -3424,6 +3441,22 @@ export type Database = {
           display_name: string
           is_admin: boolean
           user_id: string
+        }[]
+      }
+      get_conversations_with_attachments: {
+        Args: { conv_ids: string[] }
+        Returns: {
+          conversation_id: string
+        }[]
+      }
+      get_latest_messages: {
+        Args: { conv_ids: string[] }
+        Returns: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          sender_id: string
         }[]
       }
       get_or_create_joshua_conversation: { Args: never; Returns: string }
