@@ -133,12 +133,21 @@ export function useInbox() {
     // admin status is sourced from the RPC (which runs SECURITY DEFINER).
     const adminSet = new Set(rows.filter((r) => r.is_admin).map((r) => r.user_id));
 
-    // Last message per conversation
+    // Last message per conversation.
+    // STOPGAP (H22): this previously downloaded every message in every
+    // conversation. Bound it to the most recent ~5 per conversation (floor 25)
+    // so the list load stays cheap for the admin, who sees every thread. The
+    // proper fix is a DISTINCT ON (conversation_id) RPC (get_latest_messages);
+    // see docs/agent/handoffs PHASE6 for the Lovable-side migration. Trade-off:
+    // a conversation whose only attachment predates the cutoff can lose its
+    // paperclip indicator (already a non-fatal, warn-only signal below).
+    const msgFetchLimit = Math.max(convIds.length * 5, 25);
     const { data: msgs, error: msgsError } = await supabase
       .from('messages')
       .select('id, conversation_id, body, created_at, sender_id')
       .in('conversation_id', convIds)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(msgFetchLimit);
     if (msgsError) {
       console.error('[inbox] load messages failed:', msgsError);
       setError('Could not load your messages');

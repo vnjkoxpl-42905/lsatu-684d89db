@@ -2466,11 +2466,12 @@ function DrillContent() {
       });
       if (brSessionError) throw brSessionError;
 
-      // Update attempts with BR data
-      for (const result of results) {
+      // Update attempts with BR data. Build every row first, then insert in a
+      // single round-trip (was one INSERT per question, i.e. an N-query loop).
+      const attemptRows = results.flatMap((result) => {
         const previousAttempt = session.attempts.get(result.qid);
         const preCorrect = previousAttempt?.correct || false;
-        
+
         let brDelta: string;
         if (!preCorrect && result.correct) brDelta = 'corrected';
         else if (!preCorrect && !result.correct) brDelta = 'stuck';
@@ -2478,9 +2479,9 @@ function DrillContent() {
         else brDelta = 'confirmed';
 
         const question = questionBank.getQuestion(result.qid);
-        if (!question) continue;
+        if (!question) return [];
 
-        const { error: attemptError } = await supabase.from('attempts').insert({
+        return [{
           user_id: user.id,
           class_id: classId,
           qid: result.qid,
@@ -2501,7 +2502,11 @@ function DrillContent() {
           br_changed: result.brChanged,
           br_outcome: result.correct ? 'correct' : 'incorrect',
           br_delta: brDelta,
-        });
+        }];
+      });
+
+      if (attemptRows.length > 0) {
+        const { error: attemptError } = await supabase.from('attempts').insert(attemptRows);
         if (attemptError) throw attemptError;
       }
     } catch (error) {
