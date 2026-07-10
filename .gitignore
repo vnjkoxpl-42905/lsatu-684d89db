@@ -48,3 +48,7 @@ gha-creds-*.json
 .codex/*.local.toml
 .codex/agents/*.local.toml
 .agents/**/*.local.*
+
+# Generated question-bank artifact (built by scripts/build-question-bank.mjs via the
+# npm prebuild hook). Loader falls back to per-file fetches if absent.
+public/data/_bank.generated.json

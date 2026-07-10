@@ -12,7 +12,8 @@
  * the `:root` selector replaced by `.mc-bootcamp` and `body` rules folded in.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* Inter is loaded via <link> in index.html; the render-blocking @import here
+ * was redundant and has been removed (COMPREHENSIVEAUDIT Phase 3). */
 
 .mc-bootcamp {
   /* Brand */

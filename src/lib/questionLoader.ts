@@ -733,10 +733,36 @@ export class QuestionBank {
     return this.loadPromise;
   }
 
-  private async doLoad(): Promise<void> {
+  // Fetch every section via a single merged bank file (built at `npm run build`
+  // by scripts/build-question-bank.mjs) so boot makes ONE request instead of
+  // ~156. Returns null if the merged file is absent or malformed so doLoad can
+  // fall back to the per-file path — the merged file is a pure optimization and
+  // can never be the sole source of the pool. COMPREHENSIVEAUDIT Phase 3.
+  private async fetchMergedBank(): Promise<Array<{ filename: string; raw: any[] }> | null> {
+    try {
+      const response = await fetch('/data/_bank.generated.json');
+      if (!response.ok) return null;
+      const merged = await response.json();
+      if (!Array.isArray(merged) || merged.length === 0) return null;
+      const sections: Array<{ filename: string; raw: any[] }> = [];
+      for (const entry of merged) {
+        if (!entry || typeof entry.filename !== 'string' || !Array.isArray(entry.questions)) {
+          console.error('Question bank: merged bank entry malformed; falling back to per-file load.');
+          return null;
+        }
+        sections.push({ filename: entry.filename, raw: entry.questions });
+      }
+      return sections;
+    } catch {
+      // Missing file / parse error / offline: fall back to per-file fetches.
+      return null;
+    }
+  }
+
+  private async fetchSectionsPerFile(): Promise<Array<{ filename: string; raw: any[] } | null>> {
     // Fetch all section files in parallel — sequential awaits used to take
     // 30-60s with ~190 files; parallel completes in well under a second.
-    const results = await Promise.all(
+    return Promise.all(
       JSON_FILES.map(async (filename) => {
         try {
           const response = await fetch(filename);
@@ -756,6 +782,11 @@ export class QuestionBank {
         }
       })
     );
+  }
+
+  private async doLoad(): Promise<void> {
+    const merged = await this.fetchMergedBank();
+    const results = merged ?? (await this.fetchSectionsPerFile());
 
     // A silently-shrunk bank looks identical to a legitimately small one. Emit a
     // loud aggregate so a partial-load regression (bad deploy, 404s) is visible

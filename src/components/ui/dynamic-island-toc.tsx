@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactNode, useMemo } from "react";
-import { motion, AnimatePresence, Transition } from "motion/react";
+import { motion, AnimatePresence, Transition } from "framer-motion";
 import { X } from "lucide-react";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 

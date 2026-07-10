@@ -18,18 +18,21 @@ function PresenceHeartbeatMount() {
   usePresenceHeartbeat();
   return null;
 }
-import Practice from "./pages/Practice";
+// Heavy student/bootcamp routes are code-split so they stay out of the initial
+// entry chunk (COMPREHENSIVEAUDIT Phase 3). A single top-level Suspense boundary
+// (below, around <Routes>) provides the fallback for all of these.
+const Practice = React.lazy(() => import("./pages/Practice"));
 import SavedSets from "./pages/SavedSets";
-import AcademyMainhub from "./pages/AcademyMainhub";
-import Drill from "./pages/Drill";
+const AcademyMainhub = React.lazy(() => import("./pages/AcademyMainhub"));
+const Drill = React.lazy(() => import("./pages/Drill"));
 import FlaggedQuestions from "./pages/FlaggedQuestions";
-import Analytics from "./pages/Analytics";
-import Auth from "./pages/Auth";
+const Analytics = React.lazy(() => import("./pages/Analytics"));
+const Auth = React.lazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
-import CausationStation from "./pages/CausationStation";
+const CausationStation = React.lazy(() => import("./pages/CausationStation"));
 
 // Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
 // drills, flashcards, gauntlet, final set) are switched internally by the
@@ -39,12 +42,16 @@ const AbstractBootcamp = React.lazy(() => import("./topics/abstract"));
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
-import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
+const IntroToLrBootcamp = React.lazy(() => import("./pages/IntroToLrBootcamp"));
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
+// Hoisted out of render (were inline React.lazy(...) in the route element, which
+// recreated the lazy component every render). COMPREHENSIVEAUDIT Phase 3.
+const Trust = React.lazy(() => import("./pages/Trust"));
+const OAuthConsent = React.lazy(() => import("./pages/OAuthConsent"));
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
 const Homework = React.lazy(() => import("./pages/admin/Homework"));
@@ -142,13 +149,18 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <PresenceHeartbeatMount />
+          {/* Top-level Suspense: covers the routes that are now code-split at
+              module scope (Drill, Auth, Mainhub, Practice, Analytics,
+              CausationStation, IntroToLr). Nested per-route Suspense boundaries
+              still apply for their own fallbacks. COMPREHENSIVEAUDIT Phase 3. */}
+          <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
-            <Route path="/trust" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/Trust")))}</React.Suspense>} />
-            <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/OAuthConsent")))}</React.Suspense>} />
+            <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
+            <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
             <Route path="/schedule/pass/:token" element={<React.Suspense fallback={null}><BookingPass /></React.Suspense>} />
             <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
 
@@ -569,6 +581,7 @@ const App = () => {
               </QuestionBankProvider>
             } />
           </Routes>
+          </React.Suspense>
           <FloatingMessenger />
           <StudentCornerBubble />
           <AdminChatHub />
