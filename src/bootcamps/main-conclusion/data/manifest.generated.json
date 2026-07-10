@@ -1,6 +1,6 @@
 {
   "generator_version": "0.1.0-gate4-step3",
-  "generated_at": "2026-05-01T04:51:35.782Z",
+  "generated_at": "2026-07-06T18:16:32.252Z",
   "entries": [
     {
       "id": "NT-FABS",
@@ -9,11 +9,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.763Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -23,11 +23,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.763Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -37,11 +37,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.763Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -51,11 +51,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.763Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -65,11 +65,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -79,25 +79,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
-      "parity_status": "imported"
-    },
-    {
-      "id": "NT-Stegosaurus-Interrogation",
-      "kind": "named-tool",
-      "source_paths": [
-        "src/content/named-tools.source.ts"
-      ],
-      "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
-      },
-      "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -107,11 +93,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -121,11 +107,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -135,11 +121,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -149,11 +135,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -163,11 +149,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.228Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -177,11 +163,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -191,11 +177,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.764Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -205,11 +191,11 @@
         "src/content/named-tools.source.ts"
       ],
       "source_hashes": {
-        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+        "src/content/named-tools.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/named-tools.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/named-tools.generated.json",
       "parity_status": "imported"
     },
     {
@@ -219,11 +205,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -233,11 +219,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -247,11 +233,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -261,11 +247,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -275,11 +261,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -289,11 +275,11 @@
         "src/content/indicators.source.ts"
       ],
       "source_hashes": {
-        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+        "src/content/indicators.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/indicator-vault.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/indicator-vault.generated.json",
       "parity_status": "imported"
     },
     {
@@ -303,11 +289,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -317,11 +303,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -331,11 +317,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.765Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.229Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -345,11 +331,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.230Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -359,11 +345,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.230Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -373,11 +359,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.230Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -387,11 +373,11 @@
         "src/content/traps.source.ts"
       ],
       "source_hashes": {
-        "src/content/traps.source.ts": "836571c534d3964b"
+        "src/content/traps.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/traps.generated.json",
+      "generated_at": "2026-07-06T18:16:32.230Z",
+      "output_path": "src/bootcamps/main-conclusion/data/traps.generated.json",
       "parity_status": "imported"
     },
     {
@@ -401,11 +387,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -415,11 +401,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -429,11 +415,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.766Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -443,11 +429,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.767Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -457,11 +443,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.767Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -471,11 +457,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.767Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -485,11 +471,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.767Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -499,11 +485,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.767Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -513,11 +499,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.768Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -527,11 +513,11 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.768Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -541,11 +527,53 @@
         "src/content/references.source.ts"
       ],
       "source_hashes": {
-        "src/content/references.source.ts": "23b3771f8b24e4a9"
+        "src/content/references.source.ts": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.768Z",
-      "output_path": "src/data/references.generated.json",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.L",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "missing"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.M",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "missing"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.N",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "missing"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-07-06T18:16:32.231Z",
+      "output_path": "src/bootcamps/main-conclusion/data/references.generated.json",
       "parity_status": "imported"
     },
     {
@@ -556,12 +584,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.768Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -572,12 +600,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.769Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -588,12 +616,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.769Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -604,12 +632,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.769Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -620,12 +648,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.769Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -636,12 +664,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.770Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -652,12 +680,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.770Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -668,12 +696,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.770Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -684,12 +712,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.770Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -700,12 +728,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.771Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -716,12 +744,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.771Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -732,12 +760,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.771Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -748,12 +776,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.772Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -764,12 +792,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.772Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -780,12 +808,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.772Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -796,12 +824,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.772Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -812,12 +840,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.773Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -828,12 +856,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.773Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -844,12 +872,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.773Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -860,12 +888,12 @@
         "src/data/mcfirst.extracted.json"
       ],
       "source_hashes": {
-        "src/content/simulator.source.ts": "2472746c0892b519",
-        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+        "src/content/simulator.source.ts": "missing",
+        "src/data/mcfirst.extracted.json": "missing"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.773Z",
-      "output_path": "src/data/simulator.generated.json",
+      "generated_at": "2026-07-06T18:16:32.232Z",
+      "output_path": "src/bootcamps/main-conclusion/data/simulator.generated.json",
       "parity_status": "imported"
     },
     {
@@ -875,10 +903,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.776Z",
+      "generated_at": "2026-07-06T18:16:32.238Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -889,10 +917,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.776Z",
+      "generated_at": "2026-07-06T18:16:32.238Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -903,10 +931,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.776Z",
+      "generated_at": "2026-07-06T18:16:32.239Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -917,10 +945,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.777Z",
+      "generated_at": "2026-07-06T18:16:32.239Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -931,10 +959,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.777Z",
+      "generated_at": "2026-07-06T18:16:32.239Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -945,10 +973,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.777Z",
+      "generated_at": "2026-07-06T18:16:32.240Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -959,10 +987,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.778Z",
+      "generated_at": "2026-07-06T18:16:32.240Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -973,10 +1001,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.778Z",
+      "generated_at": "2026-07-06T18:16:32.241Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -987,10 +1015,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.778Z",
+      "generated_at": "2026-07-06T18:16:32.241Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1001,10 +1029,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.778Z",
+      "generated_at": "2026-07-06T18:16:32.241Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1015,10 +1043,10 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.779Z",
+      "generated_at": "2026-07-06T18:16:32.242Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1029,10 +1057,24 @@
         "src/data/lessons.generated.json (hand-authored)"
       ],
       "source_hashes": {
-        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.779Z",
+      "generated_at": "2026-07-06T18:16:32.242Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.13",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "0e4f4d1739bc8e74"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-07-06T18:16:32.243Z",
       "output_path": "src/data/lessons.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1046,7 +1088,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.244Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1060,7 +1102,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.244Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1074,7 +1116,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.245Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1088,7 +1130,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.245Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1102,7 +1144,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.247Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1116,7 +1158,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.780Z",
+      "generated_at": "2026-07-06T18:16:32.248Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1130,7 +1172,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.781Z",
+      "generated_at": "2026-07-06T18:16:32.249Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1144,7 +1186,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.781Z",
+      "generated_at": "2026-07-06T18:16:32.249Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1158,7 +1200,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.781Z",
+      "generated_at": "2026-07-06T18:16:32.250Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1172,7 +1214,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.781Z",
+      "generated_at": "2026-07-06T18:16:32.250Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1186,7 +1228,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.781Z",
+      "generated_at": "2026-07-06T18:16:32.250Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1200,7 +1242,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.782Z",
+      "generated_at": "2026-07-06T18:16:32.251Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1214,7 +1256,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.782Z",
+      "generated_at": "2026-07-06T18:16:32.251Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1228,7 +1270,7 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.782Z",
+      "generated_at": "2026-07-06T18:16:32.251Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     },
@@ -1242,14 +1284,14 @@
         "src/data/calibration.generated.json": "e7fa3347387fe86f"
       },
       "importer_version": "0.1.0-gate4-step3",
-      "generated_at": "2026-05-01T04:51:35.782Z",
+      "generated_at": "2026-07-06T18:16:32.252Z",
       "output_path": "src/data/calibration.generated.json",
       "parity_status": "parity-verified"
     }
   ],
   "parity_check_summary": {
-    "lessons_verified": 12,
-    "verbatim_assets_verified": 25,
+    "lessons_verified": 13,
+    "verbatim_assets_verified": 24,
     "drift_warnings": []
   }
 }

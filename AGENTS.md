@@ -2,6 +2,14 @@
 
 This file is the Codex-facing adapter for this repository. It summarizes the Claude-oriented project guidance from `CLAUDE.md` in a smaller format that is fast for Codex to scan. `CLAUDE.md` remains the fuller source of project knowledge.
 
+## Fast Locator
+
+- Live repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
+- Vault root: `/Users/joshuaf/Documents/Obsidian Vault`
+- Canonical path locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+
+If an older note says `~/Documents/Claude/02_PROJECTS/LSATU`, treat it as stale.
+
 ## Project Map
 
 - `src/App.tsx`: route registration and top-level app wiring.

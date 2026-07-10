@@ -26,14 +26,14 @@ export function RrReview() {
       <PageHeader
         eyebrow="Diagnostics"
         title="R&amp;R Review"
-        description="Your recorded restatements from Drill 3.8. Review transcripts. Flag patterns."
+        description="Your recorded restatements. Review transcripts. Flag patterns."
         compact
       />
 
       {d.rrRecordings.length === 0 ? (
         <EmptyState
           title="No recordings yet"
-          body="Run Drill 3.8 to capture your first restatement. Desktop captures audio; mobile captures text."
+          body="Use the restatement workflow to capture your first review. Desktop captures audio; mobile captures text."
           surfaceId="MC-DIA-6.4"
         />
       ) : (

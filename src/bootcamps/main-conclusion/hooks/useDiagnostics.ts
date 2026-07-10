@@ -16,6 +16,7 @@ import {
   type DrillStageGate,
 } from '@/bootcamps/main-conclusion/persistence/records';
 import { useUser } from './useUser';
+import { progressIdFor } from './useModuleProgress';
 
 interface DiagnosticsState {
   loading: boolean;
@@ -55,7 +56,7 @@ export function useDiagnostics(): DiagnosticsState {
         persist.list<TrapsTag>(TABLES.traps_tag),
         persist.list<SrsQueueItem>(TABLES.srs_queue),
         persist.list<RrRecording>(TABLES.rr_recordings_meta),
-        persist.get<ModuleProgress>(TABLES.module_progress, '00000000-0000-4000-8000-000000000010'),
+        persist.get<ModuleProgress>(TABLES.module_progress, progressIdFor(user.id)),
       ]);
       if (cancelled) return;
       setState({

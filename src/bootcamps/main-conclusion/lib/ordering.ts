@@ -1,7 +1,6 @@
 /**
  * Module ordering enforcement (per architecture-plan.md §5).
  *
- * Simulator is always accessible — no drill gate.
  * `ModuleProgress.unlocked_routes` is the source of truth — never derived ad-hoc.
  */
 
@@ -14,11 +13,27 @@ export interface RouteRequirement {
   hint: string;
 }
 
-export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {};
+const SIMULATOR_UNLOCK_ROUTES = [
+  '/simulator',
+  '/simulator/bank',
+  '/simulator/trap-master',
+  '/simulator/answer-key-views',
+  '/simulator/hard-mode',
+];
+
+export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = Object.fromEntries(
+  SIMULATOR_UNLOCK_ROUTES.map((route) => [
+    route,
+    {
+      blocker: 'MC-DRL-CT' as DrillId,
+      hint: 'Complete the three Intro to LR drill labs before moving into Simulator practice.',
+    },
+  ]),
+);
 
 /** Initial unlocks for a brand-new student.
- *  Preview mode: every lesson, drill, reference section, and module entry point is open
- *  so reviewers can walk the full bootcamp without completing the gate cascade.
+ *  Keep teaching and drill prep open, but hold the Simulator until the live
+ *  three-drill path is complete.
  */
 export const INITIAL_UNLOCKED_ROUTES: string[] = [
   '/',
@@ -41,13 +56,9 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   '/reference/named-tools',
   // M3 — every drill
   '/drills',
-  ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
   '/drills/main-conclusion-lab',
   '/drills/first-sentence-vs-rebuttal-lab',
-  '/simulator',
-  '/simulator/bank',
-  '/simulator/trap-master',
-  '/simulator/hard-mode',
+  '/drills/conclusion-type-lab',
   // M5 — Hard Sentences
   '/hard-sentences',
   '/hard-sentences/capstone',
@@ -79,6 +90,9 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
   if (lessonMatch) {
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 12) additions.push(`/lessons/1.${next}`);
+  }
+  if (currentRouteId === '/drills/conclusion-type-lab') {
+    additions.push(...SIMULATOR_UNLOCK_ROUTES);
   }
   return additions;
 }

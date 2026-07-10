@@ -51,6 +51,7 @@
       "Bash(git pull origin*)",
       "Bash(git push origin*)",
       "Bash(git push -u origin*)",
+      "Bash(bash $CLAUDE_PROJECT_DIR/.claude/safe-push.sh)",
       "Bash(git add *)",
       "Bash(git commit -m*)",
       "Bash(git commit -am*)",

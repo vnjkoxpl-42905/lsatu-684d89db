@@ -36,6 +36,16 @@ import { useInbox, type Conversation } from "@/hooks/useInbox";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   useStudentAssignments,
   useStudentTAAssignments,
   type StudentAssignment,
@@ -46,6 +56,7 @@ import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import { ConversationView } from "@/components/inbox/ConversationView";
 import { MessageComposer } from "@/components/inbox/MessageComposer";
 import { ThreadList, ThreadListSkeleton } from "@/components/inbox/ThreadList";
+import { needsReply, otherParticipantName } from "@/components/inbox/inboxDisplay";
 import SidecarGmailPanel from "@/components/mainhub/SidecarGmailPanel";
 import { NotificationsList } from "@/components/notifications/NotificationsList";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -60,10 +71,31 @@ interface StudySidecarProps {
 }
 
 type SidecarMode = "chat" | "tasks" | "partner" | "inbox" | "notifications";
+type AdminMessageView = "priority" | "needs_reply" | "unread" | "attachments" | "all";
+
+interface AdminMessageSection {
+  id: string;
+  label: string;
+  conversations: Conversation[];
+}
 
 const ACTIVE_CLASSROOM_STATUSES = new Set<ClassroomItem["status"]>(["assigned", "in_progress"]);
 const ACTIVE_HOMEWORK_STATUSES = new Set<StudentAssignment["status"]>(["assigned", "in_progress"]);
 const ACTIVE_TA_STATUSES = new Set<StudentTAAssignment["status"]>(["assigned", "viewed"]);
+const ADMIN_MESSAGE_VIEW_LABELS: Record<AdminMessageView, string> = {
+  priority: "Priority",
+  needs_reply: "Needs reply",
+  unread: "Unread",
+  attachments: "With files",
+  all: "All threads",
+};
+const ADMIN_MESSAGE_EMPTY_LABELS: Record<AdminMessageView, string> = {
+  priority: "No student threads yet.",
+  needs_reply: "Nothing is waiting on you right now.",
+  unread: "No unread student threads right now.",
+  attachments: "No student threads with files right now.",
+  all: "No student threads yet.",
+};
 
 function compactText(text: string | null | undefined, max = 88) {
   const value = text?.replace(/\s+/g, " ").trim();
@@ -138,6 +170,82 @@ function resolveJoshuaConversation(conversations: Conversation[], userId?: strin
       ),
     ) ?? null
   );
+}
+
+function sortConversationsByLastMessage(conversations: Conversation[]) {
+  return [...conversations].sort(
+    (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
+  );
+}
+
+function buildAdminMessageSections(
+  conversations: Conversation[],
+  ownId: string,
+  view: AdminMessageView,
+): AdminMessageSection[] {
+  const sorted = sortConversationsByLastMessage(conversations);
+
+  if (view === "all") {
+    return sorted.length > 0 ? [{ id: "all", label: "All threads", conversations: sorted }] : [];
+  }
+
+  if (view === "needs_reply") {
+    return [
+      {
+        id: "needs_reply",
+        label: "Needs reply",
+        conversations: sorted.filter((conversation) => needsReply(conversation, ownId)),
+      },
+    ].filter((section) => section.conversations.length > 0);
+  }
+
+  if (view === "unread") {
+    return [
+      {
+        id: "unread",
+        label: "Unread",
+        conversations: sorted.filter((conversation) => conversation.unread),
+      },
+    ].filter((section) => section.conversations.length > 0);
+  }
+
+  if (view === "attachments") {
+    return [
+      {
+        id: "attachments",
+        label: "With files",
+        conversations: sorted.filter((conversation) => conversation.hasAttachments),
+      },
+    ].filter((section) => section.conversations.length > 0);
+  }
+
+  const needsReplyThreads: Conversation[] = [];
+  const unreadThreads: Conversation[] = [];
+  const attachmentThreads: Conversation[] = [];
+  const recentThreads: Conversation[] = [];
+
+  sorted.forEach((conversation) => {
+    if (conversation.unread) {
+      unreadThreads.push(conversation);
+      return;
+    }
+    if (needsReply(conversation, ownId)) {
+      needsReplyThreads.push(conversation);
+      return;
+    }
+    if (conversation.hasAttachments) {
+      attachmentThreads.push(conversation);
+      return;
+    }
+    recentThreads.push(conversation);
+  });
+
+  return [
+    { id: "needs_reply", label: "Needs reply", conversations: needsReplyThreads },
+    { id: "unread", label: "Unread", conversations: unreadThreads },
+    { id: "attachments", label: "With files", conversations: attachmentThreads },
+    { id: "recent", label: "Recent", conversations: recentThreads },
+  ].filter((section) => section.conversations.length > 0);
 }
 
 function ModeButton({
@@ -640,6 +748,7 @@ export default function StudySidecar({
 
   const [mode, setMode] = useState<SidecarMode>("chat");
   const [activeInboxId, setActiveInboxId] = useState<string | null>(null);
+  const [adminMessageView, setAdminMessageView] = useState<AdminMessageView>("priority");
   const [startingInbox, setStartingInbox] = useState(false);
   const [inboxNotice, setInboxNotice] = useState<string | null>(null);
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
@@ -668,6 +777,21 @@ export default function StudySidecar({
   useEffect(() => {
     if (activeInboxConversation) setInboxNotice(null);
   }, [activeInboxConversation]);
+
+  const adminPickerSections = useMemo(() => {
+    if (!is_admin || !user) return [];
+    return buildAdminMessageSections(conversations, user.id, "priority");
+  }, [conversations, is_admin, user]);
+
+  const adminMessageSections = useMemo(() => {
+    if (!is_admin || !user) return [];
+    return buildAdminMessageSections(conversations, user.id, adminMessageView);
+  }, [adminMessageView, conversations, is_admin, user]);
+
+  const adminVisibleMessageCount = useMemo(
+    () => adminMessageSections.reduce((count, section) => count + section.conversations.length, 0),
+    [adminMessageSections],
+  );
 
   const renderAdminChat = () => (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white text-foreground">
@@ -702,11 +826,82 @@ export default function StudySidecar({
         </>
       ) : (
         <>
-          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border/40 bg-white px-3 py-2.5">
-            <div>
-              <div className="text-sm font-semibold text-foreground">Messages</div>
-              <div className="text-[11px] text-muted-foreground">Pick a student to reply.</div>
+          <div className="shrink-0 border-b border-border/40 bg-white px-3 py-3">
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <div className="text-sm font-semibold text-foreground">Messages</div>
+                <div className="text-[11px] text-muted-foreground">Pick a student to reply.</div>
+              </div>
             </div>
+            {conversations.length > 0 ? (
+              <div className="mt-3 grid gap-2">
+                <div className="grid gap-1.5">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    View
+                  </div>
+                  <Select
+                    value={adminMessageView}
+                    onValueChange={(value) => setAdminMessageView(value as AdminMessageView)}
+                  >
+                    <SelectTrigger
+                      aria-label="Messages view"
+                      className="h-10 rounded-2xl border-zinc-200 bg-[#faf8f3] text-sm font-semibold"
+                    >
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(ADMIN_MESSAGE_VIEW_LABELS).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid gap-1.5">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Choose student
+                  </div>
+                  <Select value={activeInboxId ?? undefined} onValueChange={setActiveInboxId}>
+                    <SelectTrigger
+                      aria-label="Choose student thread"
+                      className="h-10 rounded-2xl border-zinc-200 bg-white text-left text-sm font-semibold"
+                    >
+                      <SelectValue placeholder="Jump to a student thread" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {adminPickerSections.map((section, sectionIndex) => (
+                        <SelectGroup key={section.id}>
+                          {sectionIndex > 0 ? <SelectSeparator /> : null}
+                          <SelectLabel>{section.label}</SelectLabel>
+                          {section.conversations.map((conversation) => {
+                            const name = otherParticipantName(
+                              conversation,
+                              user?.id ?? "",
+                              conversation.subject || "Student thread",
+                            );
+                            const preview =
+                              compactText(
+                                conversation.last_message?.body || conversation.subject || "Open thread",
+                                52,
+                              ) ?? "Open thread";
+                            return (
+                              <SelectItem key={conversation.id} value={conversation.id}>
+                                <div className="flex flex-col">
+                                  <span className="font-semibold">{name}</span>
+                                  <span className="text-xs text-muted-foreground">{preview}</span>
+                                </div>
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            ) : null}
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto bg-[#fbfbfa]">
             {inboxLoading ? (
@@ -723,15 +918,41 @@ export default function StudySidecar({
                   When a student starts a conversation, it will show up here and you can reply directly.
                 </div>
               </div>
+            ) : adminVisibleMessageCount === 0 ? (
+              <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+                <div className="rounded-full bg-muted p-3 text-muted-foreground">
+                  <IconInbox size={20} />
+                </div>
+                <div className="mt-4 text-sm font-semibold text-foreground">
+                  Nothing in this view
+                </div>
+                <div className="mt-1 max-w-[260px] text-xs leading-5 text-muted-foreground">
+                  {ADMIN_MESSAGE_EMPTY_LABELS[adminMessageView]}
+                </div>
+              </div>
             ) : (
-              <ThreadList
-                conversations={conversations}
-                activeId={activeInboxId}
-                onSelect={setActiveInboxId}
-                variant="admin"
-                surface="light"
-                onDelete={handleDeleteConversation}
-              />
+              <div className="space-y-4 px-3 py-3">
+                {adminMessageSections.map((section) => (
+                  <section key={section.id} className="space-y-2">
+                    <div className="flex items-center justify-between px-1">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {section.label}
+                      </div>
+                      <div className="text-[10px] font-semibold text-muted-foreground">
+                        {section.conversations.length}
+                      </div>
+                    </div>
+                    <ThreadList
+                      conversations={section.conversations}
+                      activeId={activeInboxId}
+                      onSelect={setActiveInboxId}
+                      variant="admin"
+                      surface="light"
+                      onDelete={handleDeleteConversation}
+                    />
+                  </section>
+                ))}
+              </div>
             )}
           </div>
         </>

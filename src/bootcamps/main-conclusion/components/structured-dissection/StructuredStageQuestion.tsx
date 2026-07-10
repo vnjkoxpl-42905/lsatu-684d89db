@@ -61,7 +61,7 @@ export function StructuredStageQuestion({ item, state, onAnswer, totalQuestions,
         onStart={onStart}
         totalQuestions={totalQuestions}
         title="Canonical 3.4 Dissection"
-        description="Run the final Drill 3.4 gate in the same structured flow as the Simulator Bank: conclusion, family, support or opposing view, then reveal."
+        description="Run the final drill gate in the same structured flow as the Simulator Bank: conclusion, family, support or opposing view, then reveal."
         eyebrow="Stage 4 Flow"
         buttonLabel="Begin Canonical Stage"
       />

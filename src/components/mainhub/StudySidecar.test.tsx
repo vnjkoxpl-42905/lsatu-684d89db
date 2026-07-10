@@ -432,6 +432,40 @@ describe("StudySidecar", () => {
     expect(screen.queryByText("Gmail panel")).not.toBeInTheDocument();
   });
 
+  it("gives admins organized message controls instead of only a flat thread stack", () => {
+    mockIsAdmin = true;
+    mockConversations = [
+      makeConversation({
+        id: "thread-needs-reply",
+        last_message_at: "2026-07-03T19:00:00.000Z",
+        last_message: {
+          body: "Can you check this drill?",
+          created_at: "2026-07-03T19:00:00.000Z",
+          sender_id: "admin-1",
+        },
+      }),
+      makeConversation({
+        id: "thread-recent",
+        last_message_at: "2026-07-02T18:00:00.000Z",
+        last_message: {
+          body: "Sent over the file.",
+          created_at: "2026-07-02T18:00:00.000Z",
+          sender_id: "student-1",
+        },
+        hasAttachments: true,
+      }),
+    ];
+
+    renderSidecar();
+
+    expect(screen.getByText("View")).toBeInTheDocument();
+    expect(screen.getByText("Choose student")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Messages view" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Choose student thread" })).toBeInTheDocument();
+    expect(screen.getByText("Needs reply")).toBeInTheDocument();
+    expect(screen.getByText("With files")).toBeInTheDocument();
+  });
+
   it("opens Gmail only under the admin Inbox tab", () => {
     mockIsAdmin = true;
     mockConversations = [makeConversation()];

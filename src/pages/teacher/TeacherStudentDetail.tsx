@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeft,
+  Activity,
   Sparkles,
   ClipboardList,
   CalendarDays,
@@ -24,6 +25,7 @@ import { useSynthesizeBundle } from '@/hooks/useSessionBundles';
 import { isSessionBundle, type SessionBundle } from '@/lib/sessionBundle';
 import SessionBundleReview from '@/components/teacher/SessionBundleReview';
 import { format } from 'date-fns';
+import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { toast } from 'sonner';
 import RecapComposer from '@/components/teacher/RecapComposer';
 import AssignmentBuilder from '@/components/teacher/AssignmentBuilder';
@@ -63,6 +65,11 @@ export default function TeacherStudentDetail() {
   const { data: drafts = [] } = useAITADrafts({ studentId: studentId ?? null });
   const { data: sessions = [] } = useStudentSessions(studentId ?? '');
   const { data: context = [] } = useStudentContext(studentId ?? '');
+  const isOnline = isUserOnline(profile?.last_seen_at);
+  const lastActiveLabel = formatLastActiveLabel(profile?.last_seen_at);
+  const lastActiveAbsolute = profile?.last_seen_at
+    ? format(new Date(profile.last_seen_at), 'MMM d, h:mm a')
+    : null;
 
   const counts = useMemo(() => ({
     items: items.length,
@@ -92,14 +99,25 @@ export default function TeacherStudentDetail() {
 
       <div className="space-y-1.5">
         <div className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Student</div>
-        <h2 className="text-2xl font-semibold tracking-tight">
-          {profile?.display_name?.trim() || 'Student'}
-        </h2>
-        {profile?.last_seen_at && (
-          <p className="text-xs text-zinc-500">
-            Last seen {format(new Date(profile.last_seen_at), 'MMM d, h:mm a')}
-          </p>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {profile?.display_name?.trim() || 'Student'}
+          </h2>
+          {isOnline && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Online now
+            </span>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+          <span className="inline-flex items-center gap-1.5">
+            <Activity className="h-3.5 w-3.5" />
+            {isOnline ? 'Online on LSAT U' : 'Offline'}
+          </span>
+          <span>{lastActiveLabel}</span>
+          {lastActiveAbsolute && <span>· {lastActiveAbsolute}</span>}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

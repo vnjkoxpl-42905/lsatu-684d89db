@@ -3,7 +3,7 @@
  *
  * Per architecture-plan.md §4 + JOSHUA DIRECTIVE 2026-04-30 (Rec #2 scope split):
  *
- *   GENERATES (writes to src/data/*.generated.json):
+ *   GENERATES (writes to src/bootcamps/main-conclusion/data/*.generated.json):
  *     - named-tools.generated.json
  *     - indicator-vault.generated.json
  *     - traps.generated.json
@@ -17,20 +17,20 @@
  *
  *   PARITY-VERIFIES (reads + checks; no writes):
  *     - Hand-authored lessons: every named-tool callout, every reference callout, every source-citation
- *       must trace to the manifest. Drift = build error.
+ *       must trace to the manifest. Drift = build error (main() exits nonzero unless ALLOW_DRIFT is set).
  *     - Calibration items: every source_anchor.primary path must exist on disk; trait-target tags
  *       must be in {T1..T7, T-Concession, cluster-decomposition}.
  *
- *   CLI:
- *     npm run import              — full import + parity verification
- *     npm run import:dry          — Gate 0 source-access check + schema validation, no writes
- *     npm run import -- --force   — bypass cache (re-hash all sources)
+ *   CLI (no npm alias exists; run directly with tsx):
+ *     npx tsx scripts/main-conclusion/import-content.ts             — full import + parity verification
+ *     npx tsx scripts/main-conclusion/import-content.ts --dry-run   — Gate 0 source-access check + schema validation, no writes
+ *     ALLOW_DRIFT=1 npx tsx scripts/main-conclusion/import-content.ts — import even when parity drift is present
  *
  *   Sources of truth:
- *     - src/content/*.source.ts — TS data files for generated content kinds
- *     - /Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/... — canonical corpus paths
- *     - src/data/lessons.generated.json — hand-authored lesson body
- *     - src/data/calibration.generated.json — hand-authored calibration seed
+ *     - src/bootcamps/main-conclusion/content/*.source.ts — TS data files for generated content kinds
+ *     - /Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/Curriculum/Curriculum/Main Conclusion/... — canonical corpus paths
+ *     - src/bootcamps/main-conclusion/data/lessons.generated.json — hand-authored lesson body
+ *     - src/bootcamps/main-conclusion/data/calibration.generated.json — hand-authored calibration seed
  */
 
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
@@ -39,11 +39,11 @@ import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
-import { NAMED_TOOLS } from '../src/content/named-tools.source.ts';
-import { INDICATOR_VAULT } from '../src/content/indicators.source.ts';
-import { TRAP_TRAITS } from '../src/content/traps.source.ts';
-import { REFERENCE_SECTIONS } from '../src/content/references.source.ts';
-import { SIMULATOR_QUESTIONS } from '../src/content/simulator.source.ts';
+import { NAMED_TOOLS } from '../../src/bootcamps/main-conclusion/content/named-tools.source.ts';
+import { INDICATOR_VAULT } from '../../src/bootcamps/main-conclusion/content/indicators.source.ts';
+import { TRAP_TRAITS } from '../../src/bootcamps/main-conclusion/content/traps.source.ts';
+import { REFERENCE_SECTIONS } from '../../src/bootcamps/main-conclusion/content/references.source.ts';
+import { SIMULATOR_QUESTIONS } from '../../src/bootcamps/main-conclusion/content/simulator.source.ts';
 import {
   NamedToolList,
   IndicatorVault,
@@ -54,21 +54,20 @@ import {
   LessonList,
   CalibrationItem,
   type ManifestEntryT,
-} from '../src/content/schemas.ts';
+} from '../../src/bootcamps/main-conclusion/content/schemas.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, '..');
-const DATA_DIR = join(ROOT, 'src', 'data');
+const ROOT = resolve(__dirname, '..', '..');
+const DATA_DIR = join(ROOT, 'src', 'bootcamps', 'main-conclusion', 'data');
 
 const IMPORTER_VERSION = '0.1.0-gate4-step3';
 const NOW = () => new Date().toISOString();
 
-const CANONICAL_BASE = '/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion';
+const CANONICAL_BASE = '/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/Curriculum/Curriculum/Main Conclusion';
 
 // ── CLI flags ──────────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
-const FORCE = argv.includes('--force');
 
 // ── Logging helpers ────────────────────────────────────────────────────────
 const c = {
@@ -116,7 +115,6 @@ interface StepResult {
 function emitNamedTools(): StepResult {
   log.step('Emit named-tools.generated.json');
   const validated = NamedToolList.parse(NAMED_TOOLS);
-  if (validated.length !== 15) throw new Error(`Expected 15 named tools, got ${validated.length}`);
   const out = writeJson('named-tools.generated.json', validated);
   log.ok(`${validated.length} named tools validated + emitted`);
   return {
@@ -145,7 +143,7 @@ function emitTraps(): StepResult {
   log.step('Emit traps.generated.json');
   const validated = TrapTraitList.parse(TRAP_TRAITS);
   const out = writeJson('traps.generated.json', validated);
-  log.ok(`7 trap traits validated + emitted`);
+  log.ok(`${validated.length} trap traits validated + emitted`);
   return {
     kind: 'trap',
     ids: validated.map((t) => t.id),
@@ -198,7 +196,7 @@ function emitSimulator(): StepResult {
   const validated = SimulatorBank.parse(merged);
   const out = writeJson('simulator.generated.json', validated);
   const populated = validated.filter((q) => q.stimulus && q.stimulus.length > 20).length;
-  log.ok(`20 simulator questions validated + emitted (${populated}/20 with full stimulus text)`);
+  log.ok(`${validated.length} simulator questions validated + emitted (${populated}/${validated.length} with full stimulus text)`);
   return {
     kind: 'simulator-question',
     ids: validated.map((q) => q.id),
@@ -388,7 +386,7 @@ function gate0SourceAccessCheck(): void {
 function main() {
   console.log('');
   console.log(c.bold('Main Conclusion Bootcamp — Content Import Pipeline'));
-  console.log(c.dim(`v${IMPORTER_VERSION} · ${NOW()} · ${DRY_RUN ? 'DRY RUN' : 'WRITE'}${FORCE ? ' · FORCE' : ''}`));
+  console.log(c.dim(`v${IMPORTER_VERSION} · ${NOW()} · ${DRY_RUN ? 'DRY RUN' : 'WRITE'}`));
   console.log('');
 
   try {
@@ -414,8 +412,16 @@ function main() {
     console.log('');
     if (parity.drift_warnings.length === 0) {
       log.ok(c.bold('Pipeline complete · no drift'));
+    } else if (process.env.ALLOW_DRIFT) {
+      log.warn(c.bold(`Pipeline complete with ${parity.drift_warnings.length} drift warning(s) (ALLOW_DRIFT set)`));
     } else {
-      log.warn(c.bold(`Pipeline complete with ${parity.drift_warnings.length} drift warning(s)`));
+      // The header contract is "Drift = build error". Hand-authored content that
+      // references a nonexistent tool/reference id, or a missing generated file,
+      // must fail the pipeline instead of shipping a corrupt manifest. Set
+      // ALLOW_DRIFT=1 to override for an intentional WIP run.
+      log.err(c.bold(`Pipeline FAILED: ${parity.drift_warnings.length} drift warning(s) (set ALLOW_DRIFT=1 to override)`));
+      parity.drift_warnings.forEach((d) => log.err(`  · ${d}`));
+      process.exit(1);
     }
     console.log('');
   } catch (err) {

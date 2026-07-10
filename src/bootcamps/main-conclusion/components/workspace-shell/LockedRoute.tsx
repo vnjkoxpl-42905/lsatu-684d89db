@@ -7,7 +7,7 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 /**
  * Per architecture-plan.md §5.3.
  * Wraps any gated route; checks module_progress.unlocked_routes; renders LockedState
- * if not unlocked. The Drill 3.4 → Simulator gate (G2.DRL-3.4) flows through here.
+ * if not unlocked. The Intro drill path → Simulator gate flows through here.
  */
 export function LockedRoute({
   routeId,

@@ -47,7 +47,7 @@
     "where": [
       "MC-LSN-1.10",
       "MC-REF-2.H",
-      "MC-DRL-3.7"
+      "MC-DRL-MCL"
     ],
     "source": "Notes/Main Conclusion Synopsis.pdf (S)"
   },
@@ -56,7 +56,8 @@
     "name": "Skeptic's Ear Check",
     "what": "R&R prompt — 'What's the simplest question or challenge to this statement?' — asked after each rephrase.",
     "where": [
-      "MC-DRL-3.8"
+      "MC-REF-2.H",
+      "MC-DIA-6.5"
     ],
     "source": "Homework/R&R Drill Stage 2 Instructions (1).pdf (S)"
   },
@@ -83,7 +84,8 @@
     "name": "R&R Drill (Read & Restate)",
     "what": "Methodology — read piece, cover, rephrase from memory, Skeptic's Ear Check, cumulative recall, full recollection. Desktop with live mic; mobile = text-only fallback in v1.",
     "where": [
-      "MC-DRL-3.8"
+      "MC-REF-2.H",
+      "MC-DIA-6.5"
     ],
     "source": "Homework/R&R Drill Stage 2 Instructions (1).pdf (S)"
   },
@@ -92,7 +94,7 @@
     "name": "X-Ray Scan",
     "what": "Toggle reveal of role colors over a quote/stimulus block. Premise/conclusion/opposing/indicator highlighted by --role-* tokens.",
     "where": [
-      "MC-DRL-3.2",
+      "MC-DRL-MCL",
       "MC-LSN-1.1 through 1.8 quote blocks",
       "MC-SIM-4.5"
     ],
@@ -111,9 +113,11 @@
   {
     "id": "NT-Stage-Gate-Tracker",
     "name": "Stage-Gate Tracker",
-    "what": "Universal drill wrapper. 4 stages × 5 questions, score 4/5 to unlock next, auto-save, PDF export. Drill 3.4 completion gates the Module 4 Simulator.",
+    "what": "Universal drill wrapper. Sequenced reps, auto-save, and completion tracking. The three live Intro drill labs gate the Module 4 Simulator.",
     "where": [
-      "MC-DRL-3.4 (and applied to all Module 3 drills as universal frame)",
+      "MC-DRL-MCL",
+      "MC-DRL-CLS",
+      "MC-DRL-CT",
       "MC-DIA-6.2"
     ],
     "source": "mainconclusionrebuttalvsfirst.netlify.app (S codebase, lifted verbatim)"

@@ -429,14 +429,14 @@ export default function TodayView({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1], delay: 4 * 0.065 }}
           className={`relative flex gap-6 p-6 rounded-3xl border transition-colors duration-200 ${
-            !!dayTasks['log']
+            dayTasks['log']
               ? 'bg-zinc-900/10 border-zinc-900 opacity-60'
               : 'bg-zinc-900/30 border-white/[0.03] shadow-xl shadow-black/20'
           }`}
         >
           <div className="flex flex-col items-center gap-4">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-colors duration-200 ${
-              !!dayTasks['log'] ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : 'text-emerald-500 border-current bg-current/10'
+              dayTasks['log'] ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : 'text-emerald-500 border-current bg-current/10'
             }`}>
               5
             </div>
@@ -444,15 +444,15 @@ export default function TodayView({
           <div className="flex-1 space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${!!dayTasks['log'] ? 'text-zinc-600' : 'text-zinc-400'}`}>Conclusion</span>
-                <h4 className={`text-xl font-serif italic ${!!dayTasks['log'] ? 'text-zinc-500 line-through' : 'text-zinc-100'}`}>Write & Prep</h4>
+                <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${dayTasks['log'] ? 'text-zinc-600' : 'text-zinc-400'}`}>Conclusion</span>
+                <h4 className={`text-xl font-serif italic ${dayTasks['log'] ? 'text-zinc-500 line-through' : 'text-zinc-100'}`}>Write & Prep</h4>
               </div>
               <button
                 onClick={() => toggleChecklistItem('log')}
-                aria-label={!!dayTasks['log'] ? 'Mark Write & Prep as not done' : 'Mark Write & Prep as done'}
+                aria-label={dayTasks['log'] ? 'Mark Write & Prep as not done' : 'Mark Write & Prep as done'}
                 aria-pressed={!!dayTasks['log']}
                 className={`p-2.5 rounded-xl border transition-colors duration-150 active:scale-[0.92] ${
-                  !!dayTasks['log']
+                  dayTasks['log']
                     ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
                     : 'bg-zinc-950/50 border-white/[0.05] text-zinc-700 hover:border-emerald-500/50 hover:text-emerald-500'
                 }`}

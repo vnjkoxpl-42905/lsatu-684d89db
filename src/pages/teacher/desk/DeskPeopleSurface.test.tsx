@@ -26,7 +26,7 @@ vi.mock('@/hooks/useHubStudents', () => ({
         class_id: 'student-1',
         display_name: 'Meghan Mullins',
         email: 'meghan@example.com',
-        last_seen_at: '2026-06-18T12:00:00.000Z',
+        last_seen_at: '2026-06-18T12:58:00.000Z',
         role: 'user',
         has_bootcamp_access: true,
         has_classroom_access: true,
@@ -74,7 +74,7 @@ const users = [
     email: 'meghan@example.com',
     display_name: 'Meghan Mullins',
     role: 'user',
-    last_seen_at: '2026-06-18T12:00:00.000Z',
+    last_seen_at: '2026-06-18T12:58:00.000Z',
     has_bootcamp_access: true,
     has_classroom_access: true,
     has_analytics_access: true,
@@ -137,6 +137,9 @@ describe('DeskPeopleSurface', () => {
     expect(screen.getByText('Meghan Mullins')).toBeInTheDocument();
     expect(screen.getByText('3/4')).toBeInTheDocument();
     expect(screen.getByLabelText('Unread message')).toBeInTheDocument();
+    expect(screen.getByLabelText('Online on LSAT U')).toBeInTheDocument();
+    expect(screen.getByText('Online')).toBeInTheDocument();
+    expect(screen.getByText('Last active 2m ago')).toBeInTheDocument();
     expect(screen.getByText('Joshua')).toBeInTheDocument();
     expect(screen.getByText('Primary admin')).toBeInTheDocument();
 

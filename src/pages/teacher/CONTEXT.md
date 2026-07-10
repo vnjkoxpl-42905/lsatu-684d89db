@@ -93,6 +93,27 @@ A top-level Teacher Workspace area for live-session work: the surfaces Joshua us
 - Not: student files, progress, recaps, or student detail, which belong under Students.
 - Not: pending drafts, uploads to review, or conversations needing reply, which belong under Today.
 
+### Study Schedule
+A student-specific plan of dated LSAT work or sessions that Joshua assigns from the Teacher Workspace. A Study Schedule is created in relation to one student, usually from that student's page or conversation, and the student's context is part of the assignment decision. A Study Schedule may be drafted from an uploaded PDF or HTML file, but it is not active until Joshua reviews and approves it. Once approved, it creates both a student-facing message/notification and rows in the student's LSAT U in-app Schedule. It does not imply writing to the student's personal external calendar.
+
+### Study Schedule Version
+An assigned iteration of a student's Study Schedule. Joshua must be able to either edit the current version or replace it with a new version. Edits keep the same schedule assignment and update the affected rows. Replacements create a new version that supersedes the prior schedule. LSAT U should not infer edit-versus-replacement silently when the consequence is meaningful.
+
+### Study Schedule Cadence
+The expected rhythm of a Study Schedule. Imported schedules are commonly seven-day plans or weekly templates that a student should consistently follow. The schedule should preserve day-by-day structure, recurring timing patterns, and study focus progression instead of flattening the import into unrelated calendar events. If the source contains real dates, the draft should create dated rows. If the source only names weekdays or day numbers, the draft is a weekly template and Joshua must choose the start week before assigning it.
+
+### Schedule Item
+One row in a Study Schedule. A Schedule Item can have an exact time range, a loose time window such as morning or first half of the day, or only a date/day with no specific time. It should tell the student what to do that day even when no precise time exists. Time precision is part of the item and should not be invented when the source only gives a loose window. Draft Schedule Items must let Joshua edit the day/date, time or time window, task/session title, LSAT focus, instructions/notes, item type, and Needs Review status before approval.
+
+### Study Schedule Import
+An approval-gated workflow that turns an uploaded schedule file into a draft Study Schedule. It is a platform workflow, not only a Study Partner feature: it can be launched from Study Partner chat, student pages, conversations, or assignment surfaces when Joshua uploads or attaches a PDF, HTML file, or other readable schedule source. The workflow should use deterministic file reading and structured parsing where possible, use AI only for ambiguous extraction or normalization, infer the intended student only when context is clear, and hold the result for Joshua's review. Study Schedule Import prepares the assignment; it never sends the schedule or syncs it to the student's LSAT U Schedule without explicit teacher confirmation.
+
+### Draft Preparation
+The maximum automatic action allowed during Study Schedule Import. LSAT U may read the uploaded file, extract schedule text, parse rows, infer a likely student from context, normalize dates/times, flag uncertain fields, and organize an editable draft. Draft Preparation stops before any student-visible change: it cannot assign the schedule, notify the student, update the student's LSAT U Schedule, or replace an existing Study Schedule without Joshua's explicit approval.
+
+### Needs Review
+A draft state for imported schedule rows or fields that LSAT U could not read confidently. Needs Review does not mean the import failed; it means Joshua must fix or confirm the unclear parts before the Study Schedule can be assigned. Examples include missing dates, unclear time ranges, ambiguous student context, unreadable PDF text, duplicated rows, or AI-normalized fields with low confidence. Partial imports should still create a draft when useful structure is available; for example, if four of seven days are readable, LSAT U should show those rows and warn that the remaining days may be missing or unreadable. A hard import failure is reserved for files with no useful schedule structure.
+
 ### Admin
 The top-level area for system management and configuration. Admin contains accounts, permissions, feature flags, tutor corpus/admin review, source management that is not student-facing, and system settings.
 

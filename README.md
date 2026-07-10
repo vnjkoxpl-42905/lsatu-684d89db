@@ -4,6 +4,12 @@ Premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind + shadcn/ui, 
 
 For full architecture, commands, and conventions, see [CLAUDE.md](./CLAUDE.md).
 
+## Fast locator
+
+- Repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
+- Vault root: `/Users/joshuaf/Documents/Obsidian Vault`
+- Vault locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+
 ## Working agreement for AI assistants
 
 **Always push to `main` after every task.** Once a code change is complete, stage the relevant files, commit with a descriptive message, and push directly to `main`. Do not create feature branches or pull requests unless explicitly asked. (See the full Git workflow note in [CLAUDE.md](./CLAUDE.md#conventions).)

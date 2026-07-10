@@ -26,7 +26,7 @@ import {
   type AdminAnalytics,
   type ManagedUser,
 } from '@/lib/adminUsers';
-import { formatRelativeShort } from '@/lib/time';
+import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { cn } from '@/lib/utils';
 
 type RoleFilter = 'all' | 'students' | 'admins' | 'no-drill';
@@ -321,6 +321,8 @@ function PersonRow({
   const student = person.student;
   const hasDrill = Boolean(person.has_drill_access);
   const isAdmin = person.role === 'admin';
+  const isOnline = isUserOnline(person.last_seen_at);
+  const lastActiveLabel = formatLastActiveLabel(person.last_seen_at);
   const displayName = person.display_name || person.email;
 
   return (
@@ -339,11 +341,20 @@ function PersonRow({
           {student?.has_unread_from_student && (
             <span aria-label="Unread message" className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-sky-500 ring-2 ring-[#c3cace]" />
           )}
+          {isOnline && (
+            <span aria-label="Online on LSAT U" className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-[#c3cace]" />
+          )}
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="truncate text-sm font-semibold text-black">{person.display_name || 'No name'}</span>
             <RoleBadge user={person} />
+            {isOnline && (
+              <span className="inline-flex items-center gap-1 border border-emerald-700/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-800">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                Online
+              </span>
+            )}
             {student && student.assignments_total > 0 && (
               <span className="font-mono text-xs font-semibold tabular-nums text-black/50">
                 {student.assignments_completed}/{student.assignments_total}
@@ -352,7 +363,7 @@ function PersonRow({
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-black/45">
             <span className="truncate font-mono">{person.email}</span>
-            <span>{formatRelativeShort(person.last_seen_at)}</span>
+            <span>{lastActiveLabel}</span>
             <span
               className={cn(
                 'inline-flex items-center gap-1 font-semibold',

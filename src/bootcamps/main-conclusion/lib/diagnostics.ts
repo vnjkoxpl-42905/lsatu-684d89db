@@ -12,6 +12,8 @@ import type {
   RrRecording,
   SrsQueueItem,
 } from '@/bootcamps/main-conclusion/persistence/records';
+import { INTRO_LR_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
+import { INTRO_DRILLS } from '@/bootcamps/main-conclusion/modules/drills/introDrills';
 
 export type TraitId = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7';
 export const TRAITS: TraitId[] = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
@@ -56,10 +58,15 @@ export interface ModuleProgressView {
   label: string;
 }
 
+const LIVE_LESSON_IDS = INTRO_LR_PATH
+  .filter((action) => action.type === 'note' && action.completionId)
+  .map((action) => action.completionId!);
+const LIVE_DRILL_IDS = INTRO_DRILLS.map((drill) => drill.id);
+
 const MODULE_TOTALS: Record<ModuleProgressView['module'], { lessons?: number; drills?: number; label: string }> = {
-  M1: { lessons: 13, label: 'Lessons' },
+  M1: { lessons: LIVE_LESSON_IDS.length, label: 'Lessons' },
   M2: { label: 'Reference' },
-  M3: { drills: 9, label: 'Drills' },
+  M3: { drills: LIVE_DRILL_IDS.length, label: 'Drills' },
   M4: { label: 'Simulator' },
   M5: { label: 'Hard Sentences' },
   M6: { label: 'Diagnostics' },
@@ -71,8 +78,8 @@ export function moduleViews(progress: ModuleProgress | null): ModuleProgressView
     const total = (meta.lessons ?? 0) + (meta.drills ?? 0);
     let completed = 0;
     if (progress) {
-      if (m === 'M1') completed = progress.completed_lessons.filter((l) => l.startsWith('1.')).length;
-      if (m === 'M3') completed = progress.completed_drills.filter((d) => d.startsWith('MC-DRL-3.')).length;
+      if (m === 'M1') completed = progress.completed_lessons.filter((l) => LIVE_LESSON_IDS.includes(l)).length;
+      if (m === 'M3') completed = progress.completed_drills.filter((d) => LIVE_DRILL_IDS.includes(d)).length;
     }
     const pct = total === 0 ? 0 : completed / total;
     return { module: m, total, completed, pct, label: meta.label };
@@ -122,14 +129,20 @@ export interface WeakSurface {
   dominantTrait: TraitId | null;
 }
 
+const drillRoute = (id: string) => {
+  const drill = INTRO_DRILLS.find((item) => item.id === id);
+  if (!drill) throw new Error(`Unknown Intro to LR drill id: ${id}`);
+  return drill.route.replace('/bootcamp/intro-to-lr', '');
+};
+
 const TRAIT_TO_REMEDIATION: Record<TraitId, { drill: string; route: string; topic: string }> = {
-  T1: { drill: 'MC-DRL-3.5', route: '/drills/3.5', topic: 'Too-strong / scope-creep' },
-  T2: { drill: 'MC-DRL-3.2', route: '/drills/3.2', topic: 'Premise-as-conclusion' },
-  T3: { drill: 'MC-DRL-3.4', route: '/drills/3.4', topic: 'Concession-as-conclusion (Trojan horse)' },
-  T4: { drill: 'MC-DRL-3.7', route: '/drills/3.7', topic: 'Half-the-claim / dropped specifier' },
-  T5: { drill: 'MC-DRL-3.3', route: '/drills/3.3', topic: 'Restated-stimulus / failure to identify load-bearer' },
-  T6: { drill: 'MC-DRL-3.5', route: '/drills/3.5', topic: 'Out-of-scope / generalization' },
-  T7: { drill: 'MC-DRL-3.9', route: '/drills/3.9', topic: 'Intermediate vs main' },
+  T1: { drill: 'MC-DRL-CT', route: drillRoute('MC-DRL-CT'), topic: 'Too-strong / scope-creep' },
+  T2: { drill: 'MC-DRL-MCL', route: drillRoute('MC-DRL-MCL'), topic: 'Premise-as-conclusion' },
+  T3: { drill: 'MC-DRL-CLS', route: drillRoute('MC-DRL-CLS'), topic: 'Concession-as-conclusion (Trojan horse)' },
+  T4: { drill: 'MC-DRL-MCL', route: drillRoute('MC-DRL-MCL'), topic: 'Half-the-claim / dropped specifier' },
+  T5: { drill: 'MC-DRL-MCL', route: drillRoute('MC-DRL-MCL'), topic: 'Restated-stimulus / failure to identify load-bearer' },
+  T6: { drill: 'MC-DRL-CT', route: drillRoute('MC-DRL-CT'), topic: 'Out-of-scope / generalization' },
+  T7: { drill: 'MC-DRL-CLS', route: drillRoute('MC-DRL-CLS'), topic: 'Intermediate vs main' },
 };
 
 export function buildRecommendations(

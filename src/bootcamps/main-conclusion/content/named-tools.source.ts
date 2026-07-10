@@ -38,14 +38,14 @@ export const NAMED_TOOLS: NamedToolEntryT[] = [
     id: 'NT-Pre-Phrase-Goal',
     name: 'Pre-Phrase Goal',
     what: "Pronoun-replacement protocol. Replace 'such laws' / 'this position' / 'they' with the actual reference language before stating the conclusion to yourself. Then compare to answer choices.",
-    where: ['MC-LSN-1.10', 'MC-REF-2.H', 'MC-DRL-3.7'],
+    where: ['MC-LSN-1.10', 'MC-REF-2.H', 'MC-DRL-MCL'],
     source: 'Notes/Main Conclusion Synopsis.pdf (S)',
   },
   {
     id: 'NT-Skeptic-Ear-Check',
     name: "Skeptic's Ear Check",
     what: "R&R prompt — 'What's the simplest question or challenge to this statement?' — asked after each rephrase.",
-    where: ['MC-DRL-3.8'],
+    where: ['MC-REF-2.H', 'MC-DIA-6.5'],
     source: 'Homework/R&R Drill Stage 2 Instructions (1).pdf (S)',
   },
   {
@@ -65,14 +65,14 @@ export const NAMED_TOOLS: NamedToolEntryT[] = [
     id: 'NT-R-R-Drill',
     name: 'R&R Drill (Read & Restate)',
     what: 'Methodology — read piece, cover, rephrase from memory, Skeptic\'s Ear Check, cumulative recall, full recollection. Desktop with live mic; mobile = text-only fallback in v1.',
-    where: ['MC-DRL-3.8'],
+    where: ['MC-REF-2.H', 'MC-DIA-6.5'],
     source: 'Homework/R&R Drill Stage 2 Instructions (1).pdf (S)',
   },
   {
     id: 'NT-X-Ray-Scan',
     name: 'X-Ray Scan',
     what: 'Toggle reveal of role colors over a quote/stimulus block. Premise/conclusion/opposing/indicator highlighted by --role-* tokens.',
-    where: ['MC-DRL-3.2', 'MC-LSN-1.1 through 1.8 quote blocks', 'MC-SIM-4.5'],
+    where: ['MC-DRL-MCL', 'MC-LSN-1.1 through 1.8 quote blocks', 'MC-SIM-4.5'],
     source: 'logicalreasoningfoundation.netlify.app prototype (S codebase)',
   },
   {
@@ -85,8 +85,8 @@ export const NAMED_TOOLS: NamedToolEntryT[] = [
   {
     id: 'NT-Stage-Gate-Tracker',
     name: 'Stage-Gate Tracker',
-    what: 'Universal drill wrapper. 4 stages × 5 questions, score 4/5 to unlock next, auto-save, PDF export. Drill 3.4 completion gates the Module 4 Simulator.',
-    where: ['MC-DRL-3.4 (and applied to all Module 3 drills as universal frame)', 'MC-DIA-6.2'],
+    what: 'Universal drill wrapper. Sequenced reps, auto-save, and completion tracking. The three live Intro drill labs gate the Module 4 Simulator.',
+    where: ['MC-DRL-MCL', 'MC-DRL-CLS', 'MC-DRL-CT', 'MC-DIA-6.2'],
     source: 'mainconclusionrebuttalvsfirst.netlify.app (S codebase, lifted verbatim)',
   },
   {

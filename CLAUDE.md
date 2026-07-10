@@ -10,6 +10,13 @@ LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind +
 
 Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/Documents/Obsidian Vault/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
 
+Path sanity check first:
+
+- Live repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
+- Vault locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+
+If any older note says `~/Documents/Claude/02_PROJECTS/LSATU`, treat that as stale and use the absolute path above.
+
 Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start / Session End), run via two skills:
 
 - **`/pickup`** (start / "brief me"): reads `wiki/tasks.md` → `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then gives a 6-8 line briefing (Now / Next / open threads / suggested next) and waits.
@@ -64,6 +71,7 @@ No Prettier. Formatting is ESLint-only.
 ## Conventions
 
 - **Git workflow:** Always commit and push directly to `main`. Never create feature branches or pull requests unless explicitly asked. After completing any code change: stage relevant files, commit with a descriptive message, and push to `main`.
+- **Push via `.claude/safe-push.sh`, not raw `git push`.** Lovable auto-commits to `main` mid-session; a raw push can get rejected or race a concurrent commit. The script fetches, merges origin/main if it diverged (never rebases, never force-pushes), then pushes.
 - Path alias `@/` → `./src/` (set in `vite.config.ts` and `tsconfig.json`).
 - TypeScript strict mode is **off** (`strictNullChecks: false`, `noImplicitAny: false`, `noUnusedLocals: false`). Do not flip these without explicit approval — it would cascade into a very large diff.
 - Lovable-specific plumbing that must not be removed:
@@ -80,6 +88,10 @@ No Prettier. Formatting is ESLint-only.
 - When creating a Claude skill that Codex should use, also copy it to `.agents/skills/` with its `SKILL.md` and supporting files.
 - When creating a Claude agent that Codex should spawn, also create a matching `.codex/agents/<name>.toml` and place the converted instructions in `developer_instructions`.
 - When adding shared knowledge, put it in `docs/`, `references/`, or `templates/` so every tool can read the same source.
+
+## Verification (must not skip)
+
+Any change to `src/components/` or `src/pages/` is not "done" until it has been viewed running in the app (dev server + browser tool, e.g. Playwright or chrome devtools MCP), with a screenshot or DOM check as evidence. Do not report a UI change complete on the strength of the diff alone. This has been the single biggest recurring failure across past sessions (repeated "it's not working" / "i dont see it" corrections) — treat it as a hard gate, not a suggestion.
 
 ## Product rules (must not regress)
 

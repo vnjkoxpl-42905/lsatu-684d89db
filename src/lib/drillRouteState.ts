@@ -5,6 +5,9 @@ export interface DrillRouteState {
   config?: FullSectionConfig | TypeDrillConfig;
   practicingLabel?: string;
   returnTo?: string;
+  /** True when the runner is launched from a Guided Drill assignment. */
+  isGuidedDrill?: boolean;
+  guidedDurationMinutes?: number;
   /**
    * Presentation hint, independent of `mode`. When 'smart', the runner renders
    * the adaptive Smart-Drill chrome (Tutor toggle, notes, Skip/Submit footer,
@@ -12,8 +15,6 @@ export interface DrillRouteState {
    * card sets this so a hand-picked question looks identical to the Auto run.
    */
   present?: "smart";
-  /** True when the runner is launched from a Guided Drill assignment. */
-  isGuidedDrill?: boolean;
 }
 
 
@@ -25,6 +26,12 @@ export interface DrillTimerRouteConfig {
 function safeReturnTo(value: string | null | undefined): string | undefined {
   if (!value || !value.startsWith("/") || value.startsWith("//")) return undefined;
   return value;
+}
+
+function positiveNumberParam(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
 }
 
 export function getResolvedDrillRouteState(
@@ -47,8 +54,17 @@ export function getResolvedDrillRouteState(
 
     const present = searchParams.get("present") === "smart" ? "smart" : undefined;
     const returnTo = safeReturnTo(searchParams.get("returnTo"));
+    const isGuidedDrill = searchParams.get("guided") === "1" || !!searchParams.get("guidedAssignmentId");
+    const guidedDurationMinutes = positiveNumberParam(searchParams.get("guidedDurationMinutes"));
 
-    return { mode: (urlMode === "practice-set" ? "type-drill" : urlMode) as DrillMode, config, present, returnTo };
+    return {
+      mode: (urlMode === "practice-set" ? "type-drill" : urlMode) as DrillMode,
+      config,
+      present,
+      returnTo,
+      isGuidedDrill,
+      guidedDurationMinutes,
+    };
   }
 
   const state = (locationState || {}) as DrillRouteState;
@@ -61,6 +77,10 @@ export function getResolvedDrillRouteState(
 export function getTimerConfigForDrillRoute(
   state: DrillRouteState | null | undefined,
 ): DrillTimerRouteConfig | null {
+  if (state?.isGuidedDrill && state.guidedDurationMinutes) {
+    return { mode: "countdown", durationMs: state.guidedDurationMinutes * 60 * 1000 };
+  }
+
   if ((state?.mode === "type-drill" || state?.mode === "practice-set") && state.config) {
     const config = state.config as TypeDrillConfig;
     if (config.selectedQids && config.selectedQids.length > 0) {

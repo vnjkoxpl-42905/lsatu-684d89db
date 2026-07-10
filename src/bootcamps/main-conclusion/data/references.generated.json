@@ -27,7 +27,13 @@
       },
       {
         "kind": "list",
-        "items": ["therefore", "thus", "so", "hence", "it follows that"]
+        "items": [
+          "therefore",
+          "thus",
+          "so",
+          "hence",
+          "it follows that"
+        ]
       },
       {
         "kind": "example",
@@ -44,7 +50,12 @@
       },
       {
         "kind": "list",
-        "items": ["For", "After all", "Because", "Since"]
+        "items": [
+          "For",
+          "After all",
+          "Because",
+          "Since"
+        ]
       },
       {
         "kind": "example",
@@ -109,12 +120,32 @@
       },
       {
         "kind": "table",
-        "columns": ["Word", "Role", "Where the conclusion sits"],
+        "columns": [
+          "Word",
+          "Role",
+          "Where the conclusion sits"
+        ],
         "rows": [
-          ["For", "Premise indicator", "In the clause before \"for\""],
-          ["After all", "Premise indicator (background reason)", "Usually in the prior sentence"],
-          ["Because", "Premise indicator", "In the clause before \"because\""],
-          ["Since", "Premise indicator", "In the clause before \"since\" — even when \"since\" leads the sentence"]
+          [
+            "For",
+            "Premise indicator",
+            "In the clause before \"for\""
+          ],
+          [
+            "After all",
+            "Premise indicator (background reason)",
+            "Usually in the prior sentence"
+          ],
+          [
+            "Because",
+            "Premise indicator",
+            "In the clause before \"because\""
+          ],
+          [
+            "Since",
+            "Premise indicator",
+            "In the clause before \"since\" — even when \"since\" leads the sentence"
+          ]
         ]
       },
       {
@@ -148,12 +179,32 @@
       },
       {
         "kind": "table",
-        "columns": ["Position", "Frequency", "Family"],
+        "columns": [
+          "Position",
+          "Frequency",
+          "Family"
+        ],
         "rows": [
-          ["First sentence", "~45%", "First-sentence family"],
-          ["Second sentence after a \"but\"/\"however\" pivot", "~30%", "Rebuttal family"],
-          ["After a since-clause that opens the stimulus", "~10%", "Wildcard"],
-          ["Anywhere else", "~15%", "Mixed"]
+          [
+            "First sentence",
+            "~45%",
+            "First-sentence family"
+          ],
+          [
+            "Second sentence after a \"but\"/\"however\" pivot",
+            "~30%",
+            "Rebuttal family"
+          ],
+          [
+            "After a since-clause that opens the stimulus",
+            "~10%",
+            "Wildcard"
+          ],
+          [
+            "Anywhere else",
+            "~15%",
+            "Mixed"
+          ]
         ]
       },
       {
@@ -174,7 +225,7 @@
       },
       {
         "kind": "p",
-        "text": "Drill 3.4 trains both. The Simulator (Module 4) sorts every canonical question into one family or the other."
+        "text": "The First Sentence vs Rebuttal Lab trains both. The Simulator then sorts every canonical question into one family or the other."
       }
     ]
   },
@@ -210,7 +261,7 @@
       },
       {
         "kind": "p",
-        "text": "When two answer choices both restate the conclusion, the one whose grammatical type matches the stimulus wins. Train this in Drill 3.7."
+        "text": "When two answer choices both restate the conclusion, the one whose grammatical type matches the stimulus wins. Train this in the Conclusion Type Lab."
       }
     ]
   },
@@ -249,7 +300,7 @@
       },
       {
         "kind": "p",
-        "text": "11 of the canonical 20 are Rebuttal-family. Drill 3.4 stage 2 trains nothing but rebuttal recognition."
+        "text": "11 of the canonical 20 are Rebuttal-family. The First Sentence vs Rebuttal Lab trains the habit of waiting for the pivot before naming the author’s claim."
       }
     ]
   },
@@ -320,7 +371,7 @@
       },
       {
         "kind": "p",
-        "text": "Drill 3.7 trains pronoun replacement on the canonical 20 stimuli. After ten reps it becomes automatic."
+        "text": "The Main Conclusion Lab trains pronoun replacement on full stimuli. After enough reps it becomes automatic."
       }
     ]
   },
@@ -490,7 +541,13 @@
       },
       {
         "kind": "list",
-        "items": ["but", "however", "yet", "nevertheless", "nonetheless"]
+        "items": [
+          "but",
+          "however",
+          "yet",
+          "nevertheless",
+          "nonetheless"
+        ]
       },
       {
         "kind": "callout",
@@ -514,7 +571,12 @@
       },
       {
         "kind": "list",
-        "items": ["some people say", "critics argue", "it is commonly believed", "many people think"]
+        "items": [
+          "some people say",
+          "critics argue",
+          "it is commonly believed",
+          "many people think"
+        ]
       },
       {
         "kind": "h2",
@@ -522,7 +584,13 @@
       },
       {
         "kind": "list",
-        "items": ["although", "while", "despite", "granted", "admittedly"]
+        "items": [
+          "although",
+          "while",
+          "despite",
+          "granted",
+          "admittedly"
+        ]
       },
       {
         "kind": "p",
@@ -545,7 +613,14 @@
       },
       {
         "kind": "list",
-        "items": ["should", "ought", "must", "clearly", "likely", "misguided"]
+        "items": [
+          "should",
+          "ought",
+          "must",
+          "clearly",
+          "likely",
+          "misguided"
+        ]
       },
       {
         "kind": "callout",

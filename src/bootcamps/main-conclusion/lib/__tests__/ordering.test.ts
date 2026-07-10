@@ -1,8 +1,3 @@
-/**
- * Module ordering smoke tests (A.4).
- * Simulator has no gate drill — it is always accessible.
- */
-
 import { describe, it, expect } from 'vitest';
 import { unlockNext, INITIAL_UNLOCKED_ROUTES, ROUTE_REQUIREMENTS } from '@/bootcamps/main-conclusion/lib/ordering';
 
@@ -13,18 +8,19 @@ const blank = () => ({
 });
 
 describe('module ordering', () => {
-  it('preview-mode initial unlocks seed every module surface (review-mode bypass per CLAUDE.md)', () => {
+  it('starts a new student on learning and drill surfaces, with simulator locked', () => {
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/lessons/1.1');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/reference');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/drills');
-    // Simulator is always accessible — no gate drill.
-    expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator');
-    expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator/bank');
+    expect(INITIAL_UNLOCKED_ROUTES).not.toContain('/simulator');
+    expect(INITIAL_UNLOCKED_ROUTES).not.toContain('/simulator/bank');
   });
 
-  it('no simulator routes have a drill blocker', () => {
+  it('simulator routes are blocked by completion of the live drill path', () => {
     for (const route of ['/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode']) {
-      expect(ROUTE_REQUIREMENTS[route]).toBeUndefined();
+      expect(ROUTE_REQUIREMENTS[route]).toMatchObject({
+        blocker: 'MC-DRL-CT',
+      });
     }
   });
 
@@ -38,18 +34,28 @@ describe('module ordering', () => {
     expect(unlockNext('/lessons/1.12', blank())).toEqual([]);
   });
 
-  it('completing any drill does NOT unlock simulator routes (no gate)', () => {
-    for (const drill of ['/drills/3.1', '/drills/3.2', '/drills/3.3', '/drills/3.4', '/drills/3.5']) {
+  it('completing early drills does not unlock simulator routes', () => {
+    for (const drill of ['/drills/main-conclusion-lab', '/drills/first-sentence-vs-rebuttal-lab']) {
       const additions = unlockNext(drill, blank());
       expect(additions).not.toContain('/simulator');
       expect(additions).not.toContain('/simulator/bank');
     }
   });
 
+  it('completing the final live intro drill unlocks simulator routes', () => {
+    expect(unlockNext('/drills/conclusion-type-lab', blank())).toEqual([
+      '/simulator',
+      '/simulator/bank',
+      '/simulator/trap-master',
+      '/simulator/answer-key-views',
+      '/simulator/hard-mode',
+    ]);
+  });
+
   it('unlockNext is pure — no mutation of input', () => {
     const progress = blank();
     const before = JSON.stringify(progress);
-    unlockNext('/drills/3.1', progress);
+    unlockNext('/drills/main-conclusion-lab', progress);
     expect(JSON.stringify(progress)).toBe(before);
   });
 });

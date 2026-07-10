@@ -191,7 +191,7 @@ export const REFERENCE_SECTIONS: ReferenceSectionT[] = [
       },
       {
         kind: 'p',
-        text: 'Drill 3.4 trains both. The Simulator (Module 4) sorts every canonical question into one family or the other.',
+        text: 'The First Sentence vs Rebuttal Lab trains both. The Simulator then sorts every canonical question into one family or the other.',
       },
     ],
   },
@@ -229,7 +229,7 @@ export const REFERENCE_SECTIONS: ReferenceSectionT[] = [
       },
       {
         kind: 'p',
-        text: 'When two answer choices both restate the conclusion, the one whose grammatical type matches the stimulus wins. Train this in Drill 3.7.',
+        text: 'When two answer choices both restate the conclusion, the one whose grammatical type matches the stimulus wins. Train this in the Conclusion Type Lab.',
       },
     ],
   },
@@ -270,7 +270,7 @@ export const REFERENCE_SECTIONS: ReferenceSectionT[] = [
       },
       {
         kind: 'p',
-        text: '11 of the canonical 20 are Rebuttal-family. Drill 3.4 stage 2 trains nothing but rebuttal recognition.',
+        text: '11 of the canonical 20 are Rebuttal-family. The First Sentence vs Rebuttal Lab trains the habit of waiting for the pivot before naming the author’s claim.',
       },
     ],
   },
@@ -345,7 +345,7 @@ export const REFERENCE_SECTIONS: ReferenceSectionT[] = [
       },
       {
         kind: 'p',
-        text: 'Drill 3.7 trains pronoun replacement on the canonical 20 stimuli. After ten reps it becomes automatic.',
+        text: 'The Main Conclusion Lab trains pronoun replacement on full stimuli. After enough reps it becomes automatic.',
       },
     ],
   },

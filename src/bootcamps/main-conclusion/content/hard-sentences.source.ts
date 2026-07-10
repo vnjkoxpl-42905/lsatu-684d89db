@@ -198,7 +198,7 @@ export const HARD_SECTIONS: HardSection[] = [
       },
       {
         kind: 'p',
-        text: 'On the LSAT, the most-tempting wrong answer often drops the load-bearing specifier. The student strips the sentence, picks the matching answer, and never realizes they answered a different question. Drill 3.5 (Chain Mapping) trains this. M1.13 capstone calibration items test it explicitly under T4 (Half the claim).',
+        text: 'On the LSAT, the most-tempting wrong answer often drops the load-bearing specifier. The student strips the sentence, picks the matching answer, and never realizes they answered a different question. The hard-sentence cluster work trains this. M1.13 capstone calibration items test it explicitly under T4 (Half the claim).',
       },
     ],
     source: 'spec.html §5.5 + Joshua’s annotated cluster sentences',

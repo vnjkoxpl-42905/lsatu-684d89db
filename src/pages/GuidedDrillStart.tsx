@@ -288,6 +288,12 @@ export default function GuidedDrillStart({
     if ((bootcampOverride as any)?.title ?? drill?.title) {
       drillSearchParams.set('focus', (bootcampOverride as any)?.title ?? drill!.title);
     }
+    if (drill) {
+      drillSearchParams.set('guided', '1');
+      if (drill.estimated_minutes && drill.estimated_minutes > 0) {
+        drillSearchParams.set('guidedDurationMinutes', String(drill.estimated_minutes));
+      }
+    }
     if ((bootcampOverride as any)?.source) {
       drillSearchParams.set('source', (bootcampOverride as any).source);
     }
@@ -298,6 +304,8 @@ export default function GuidedDrillStart({
         mode: 'type-drill',
         config,
         practicingLabel: (bootcampOverride as any)?.title ?? drill?.title,
+        isGuidedDrill: !!drill,
+        guidedDurationMinutes: drill?.estimated_minutes ?? undefined,
       },
     });
   }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, launchReturnTo]);

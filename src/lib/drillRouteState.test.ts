@@ -107,6 +107,20 @@ describe("drill route state helpers", () => {
     expect(getTimerConfigForDrillRoute(state)).toEqual({ mode: "stopwatch" });
   });
 
+  it("uses guided drill estimated minutes as a countdown timer", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&guided=1&guidedDurationMinutes=60"),
+      null,
+    );
+
+    expect(state.isGuidedDrill).toBe(true);
+    expect(state.guidedDurationMinutes).toBe(60);
+    expect(getTimerConfigForDrillRoute(state)).toEqual({
+      mode: "countdown",
+      durationMs: 60 * 60 * 1000,
+    });
+  });
+
   it("preserves countdown timers for state-launched full sections", () => {
     const config: FullSectionConfig = {
       pt: 118,
