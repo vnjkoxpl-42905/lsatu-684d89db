@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { questionBank, shuffleArray } from '@/lib/questionLoader';
 
 interface VoiceCoachModalProps {
   open: boolean;
@@ -230,15 +231,25 @@ export function VoiceCoachModal({
     if (action === 'try_again') {
       onTryAgain();
     } else if (action === 'micro_drill') {
-      const { data, error } = await supabase.functions.invoke('generate-micro-drill', {
-        body: { qtype: question.qtype, difficulty: question.difficulty, currentQid: question.qid }
-      });
-      if (error || !data?.questions?.length) {
-        console.error('Error generating micro-drill:', error);
-        toast.error("Couldn't build a mini drill right now. Try again in a moment.");
+      // Real bank lookup, done client-side: the question bank is static JSON loaded
+      // in the browser (there is no questions table to query from an edge function),
+      // so selection happens here. Pick up to 2 real questions matching this
+      // question's type + difficulty, excluding the one just attempted.
+      if (!questionBank.isReady()) {
+        try {
+          await questionBank.load();
+        } catch (loadErr) {
+          console.error('Micro-drill: question bank failed to load:', loadErr);
+        }
+      }
+      const candidates = questionBank
+        .getQuestionsByFilter({ qtypes: [question.qtype], difficulties: [question.difficulty] })
+        .filter((q) => q.qid !== question.qid);
+      if (candidates.length === 0) {
+        toast.error("No similar questions available for a mini drill right now.");
         return;
       }
-      onMicroDrill(data.questions);
+      onMicroDrill(shuffleArray(candidates).slice(0, 2));
     } else if (action === 'save_journal') {
       onSaveToJournal();
     }

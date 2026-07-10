@@ -262,10 +262,12 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
     if (!user || classIdLoading || !classId) return;
 
     const loadStats = async () => {
-      const { data: attempts, error } = await supabase
-        .from('attempts')
-        .select('correct, timestamp_iso')
-        .eq('class_id', classId);
+      // Server-side total/accuracy aggregate (attempt_totals) instead of pulling
+      // every attempt row for the class and counting client-side. RLS on attempts
+      // still governs via SECURITY INVOKER.
+      const { data: rows, error } = await supabase.rpc('attempt_totals', {
+        p_class_id: classId,
+      });
 
       // A swallowed error here rendered "0 Practiced / No attempts yet" to a
       // student who may have hundreds of attempts: a swallowed-error AND a
@@ -280,13 +282,13 @@ export function PracticeHubContent({ embedded = false, onBackToMainHub }: Practi
       setStatsError(false);
       setStatsLoaded(true);
 
-      if (attempts && attempts.length > 0) {
-        const correct = attempts.filter((a) => a.correct).length;
-        const accuracy = Math.round((correct / attempts.length) * 100);
-
+      const agg = rows?.[0];
+      const total = Number(agg?.total ?? 0);
+      const correct = Number(agg?.correct ?? 0);
+      if (total > 0) {
         setStats({
-          totalAttempted: attempts.length,
-          avgAccuracy: accuracy,
+          totalAttempted: total,
+          avgAccuracy: Math.round((correct / total) * 100),
         });
       }
     };

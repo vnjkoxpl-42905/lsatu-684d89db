@@ -6,6 +6,13 @@ This doc captures the pieces Claude Code could **not** land: prod edge-function 
 prod-DB RPCs (the `atrcqxpmqrynmtvvyjju` project is Lovable-managed, not MCP-reachable), plus
 two items deliberately deferred to their own sessions.
 
+> [!note] 6E update (in-repo authored, ready to deploy)
+> M68, M70, and both RPC clusters below are now **authored + committed in-repo**. The migration
+> and the `send-transactional-email` deploy are handed to Lovable in
+> [[PHASE6-LOVABLE-DEPLOY]]. M70 was resolved fully in-repo (client-side lookup; the
+> `generate-micro-drill` edge function was deleted). The sections below are kept for context; the
+> deploy doc is the live handoff.
+
 ## Already done, do NOT redo
 
 Phase 1 already deployed three of the five edge functions the Phase 6 scope note listed:

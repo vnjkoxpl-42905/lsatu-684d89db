@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useClassId } from '@/hooks/useClassId';
 import { questionBank } from '@/lib/questionLoader';
+import { computeAnalyticsFromRollup, type AnalyticsData, type OpportunityArea } from '@/lib/analyticsRollup';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -14,23 +15,6 @@ import { LogoutButton } from '@/components/LogoutButton';
 import FlaggedQuestionsList from '@/components/analytics/FlaggedQuestionsList';
 import ImportedMetricsPanel from '@/components/analytics/ImportedMetricsPanel';
 import { Flag } from 'lucide-react';
-
-interface AnalyticsData {
-  accuracyByType: Record<string, { correct: number; total: number; accuracy: number }>;
-  accuracyByLevel: Record<number, { correct: number; total: number; accuracy: number }>;
-  accuracyByTypeLevel: Record<string, Record<number, { correct: number; total: number; accuracy: number }>>;
-  trend7d: Record<string, number>;
-  recentMissShare: Record<string, Record<number, number>>;
-}
-
-interface OpportunityArea {
-  type: string;
-  level: number;
-  impact: number;
-  currentAccuracy: number;
-  gap: number;
-  attempts: number;
-}
 
 const Analytics = () => {
   const navigate = useNavigate();
@@ -65,115 +49,20 @@ const Analytics = () => {
     setLoading(true);
     setLoadError(null);
     try {
-      const now = new Date();
-      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-
-      const { data: attempts, error } = await supabase
-        .from('attempts')
-        .select('qtype, level, correct, timestamp_iso')
-        .eq('class_id', classId)
-        .order('timestamp_iso', { ascending: false });
+      // Server-side qtype x level x window rollup (attempt_accuracy_rollup) instead
+      // of downloading every attempt row and bucketing client-side. Each row is
+      // { qtype, level, bucket, total, correct } where bucket is 'current7d' (last
+      // 7 days), 'prev7d' (the 7 days before), or 'older'. RLS on attempts still
+      // governs via SECURITY INVOKER.
+      const { data: rollup, error } = await supabase.rpc('attempt_accuracy_rollup', {
+        p_class_id: classId,
+      });
 
       if (error) throw error;
 
-      const typeStats: Record<string, { correct: number; total: number }> = {};
-      const levelStats: Record<number, { correct: number; total: number }> = {};
-      const typeLevelStats: Record<string, Record<number, { correct: number; total: number }>> = {};
-      const type7d: Record<string, { correct: number; total: number }> = {};
-      const typePrev7d: Record<string, { correct: number; total: number }> = {};
-
-      attempts?.forEach(attempt => {
-        const { qtype, level, correct, timestamp_iso } = attempt;
-        const timestamp = new Date(timestamp_iso);
-
-        if (!typeStats[qtype]) typeStats[qtype] = { correct: 0, total: 0 };
-        typeStats[qtype].total++;
-        if (correct) typeStats[qtype].correct++;
-
-        if (!levelStats[level]) levelStats[level] = { correct: 0, total: 0 };
-        levelStats[level].total++;
-        if (correct) levelStats[level].correct++;
-
-        if (!typeLevelStats[qtype]) typeLevelStats[qtype] = {};
-        if (!typeLevelStats[qtype][level]) typeLevelStats[qtype][level] = { correct: 0, total: 0 };
-        typeLevelStats[qtype][level].total++;
-        if (correct) typeLevelStats[qtype][level].correct++;
-
-        if (timestamp >= sevenDaysAgo) {
-          if (!type7d[qtype]) type7d[qtype] = { correct: 0, total: 0 };
-          type7d[qtype].total++;
-          if (correct) type7d[qtype].correct++;
-        } else if (timestamp >= fourteenDaysAgo) {
-          if (!typePrev7d[qtype]) typePrev7d[qtype] = { correct: 0, total: 0 };
-          typePrev7d[qtype].total++;
-          if (correct) typePrev7d[qtype].correct++;
-        }
-      });
-
-      const accuracyByType: Record<string, { correct: number; total: number; accuracy: number }> = {};
-      Object.entries(typeStats).forEach(([type, stats]) => {
-        accuracyByType[type] = { ...stats, accuracy: stats.total > 0 ? (stats.correct / stats.total) * 100 : 0 };
-      });
-
-      const accuracyByLevel: Record<number, { correct: number; total: number; accuracy: number }> = {};
-      Object.entries(levelStats).forEach(([level, stats]) => {
-        accuracyByLevel[Number(level)] = { ...stats, accuracy: stats.total > 0 ? (stats.correct / stats.total) * 100 : 0 };
-      });
-
-      const accuracyByTypeLevel: Record<string, Record<number, { correct: number; total: number; accuracy: number }>> = {};
-      Object.entries(typeLevelStats).forEach(([type, levels]) => {
-        accuracyByTypeLevel[type] = {};
-        Object.entries(levels).forEach(([level, stats]) => {
-          accuracyByTypeLevel[type][Number(level)] = { ...stats, accuracy: stats.total > 0 ? (stats.correct / stats.total) * 100 : 0 };
-        });
-      });
-
-      const trend7d: Record<string, number> = {};
-      Object.keys(accuracyByType).forEach(type => {
-        const current7d = type7d[type] ? (type7d[type].correct / type7d[type].total) * 100 : 0;
-        const prev7d = typePrev7d[type] ? (typePrev7d[type].correct / typePrev7d[type].total) * 100 : 0;
-        trend7d[type] = current7d - prev7d;
-      });
-
-      const totalMisses = attempts?.filter(a => !a.correct).length || 1;
-      const recentMissShare: Record<string, Record<number, number>> = {};
-      attempts?.forEach(attempt => {
-        if (!attempt.correct) {
-          const { qtype, level } = attempt;
-          if (!recentMissShare[qtype]) recentMissShare[qtype] = {};
-          if (!recentMissShare[qtype][level]) recentMissShare[qtype][level] = 0;
-          recentMissShare[qtype][level]++;
-        }
-      });
-      Object.keys(recentMissShare).forEach(type => {
-        Object.keys(recentMissShare[type]).forEach(level => {
-          recentMissShare[type][Number(level)] /= totalMisses;
-        });
-      });
-
-      setData({ accuracyByType, accuracyByLevel, accuracyByTypeLevel, trend7d, recentMissShare });
-
-      // Opportunity score = (target_accuracy − current_accuracy) × attempt_share.
-      // Target is the LSAT-prep convention for "near-mastery" — a question type
-      // sitting under this accuracy is the highest-leverage place to drill.
-      const TARGET_ACCURACY = 85;
-      const totalAttempts = attempts?.length || 1;
-      const impactScores: OpportunityArea[] = [];
-
-      Object.entries(accuracyByTypeLevel).forEach(([type, levels]) => {
-        Object.entries(levels).forEach(([level, stats]) => {
-          const currentAccuracy = stats.accuracy;
-          const gap = Math.max(0, TARGET_ACCURACY - currentAccuracy);
-          const recentShare = stats.total / totalAttempts;
-          const impact = Math.round(100 * gap * recentShare);
-          if (stats.total >= 3 && impact > 0) {
-            impactScores.push({ type, level: Number(level), impact, currentAccuracy, gap, attempts: stats.total });
-          }
-        });
-      });
-
-      setOpportunities(impactScores.sort((a, b) => b.impact - a.impact).slice(0, 3));
+      const { data: analytics, opportunities } = computeAnalyticsFromRollup(rollup ?? []);
+      setData(analytics);
+      setOpportunities(opportunities);
       setLoading(false);
     } catch (error) {
       console.error('Error loading analytics:', error);

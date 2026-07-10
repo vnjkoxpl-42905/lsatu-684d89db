@@ -133,21 +133,12 @@ export function useInbox() {
     // admin status is sourced from the RPC (which runs SECURITY DEFINER).
     const adminSet = new Set(rows.filter((r) => r.is_admin).map((r) => r.user_id));
 
-    // Last message per conversation.
-    // STOPGAP (H22): this previously downloaded every message in every
-    // conversation. Bound it to the most recent ~5 per conversation (floor 25)
-    // so the list load stays cheap for the admin, who sees every thread. The
-    // proper fix is a DISTINCT ON (conversation_id) RPC (get_latest_messages);
-    // see docs/agent/handoffs PHASE6 for the Lovable-side migration. Trade-off:
-    // a conversation whose only attachment predates the cutoff can lose its
-    // paperclip indicator (already a non-fatal, warn-only signal below).
-    const msgFetchLimit = Math.max(convIds.length * 5, 25);
+    // Last message per conversation via DISTINCT ON RPC (get_latest_messages):
+    // exactly one row per conversation, computed in Postgres, no full-table
+    // download. Replaces the H22 .limit() stopgap that fetched a bounded slice of
+    // recent messages. RLS on `messages` still governs via SECURITY INVOKER.
     const { data: msgs, error: msgsError } = await supabase
-      .from('messages')
-      .select('id, conversation_id, body, created_at, sender_id')
-      .in('conversation_id', convIds)
-      .order('created_at', { ascending: false })
-      .limit(msgFetchLimit);
+      .rpc('get_latest_messages', { conv_ids: convIds });
     if (msgsError) {
       console.error('[inbox] load messages failed:', msgsError);
       setError('Could not load your messages');
@@ -155,30 +146,22 @@ export function useInbox() {
       return;
     }
     const lastMsgMap = new Map<string, { body: string; created_at: string; sender_id: string }>();
-    const msgIdToConv = new Map<string, string>();
     for (const m of msgs ?? []) {
-      msgIdToConv.set(m.id, m.conversation_id);
-      if (!lastMsgMap.has(m.conversation_id)) {
-        lastMsgMap.set(m.conversation_id, { body: m.body, created_at: m.created_at, sender_id: m.sender_id });
-      }
+      lastMsgMap.set(m.conversation_id, { body: m.body, created_at: m.created_at, sender_id: m.sender_id });
     }
 
-    // Per-conversation attachment presence (single query, ids only)
+    // Per-conversation attachment presence via RPC — exact across ALL messages in
+    // the conversation. The old stopgap only inspected recently-fetched messages,
+    // so an attachment older than the cutoff lost its paperclip. Non-fatal: on
+    // failure the indicator is simply missing, so warn (don't blank the inbox).
     const attachmentConvIds = new Set<string>();
-    const allMsgIds = Array.from(msgIdToConv.keys());
-    if (allMsgIds.length) {
-      const { data: atts, error: attsError } = await supabase
-        .from('message_attachments')
-        .select('message_id')
-        .in('message_id', allMsgIds);
-      if (attsError) {
-        // Non-fatal: worst case the paperclip indicator is missing. Warn only.
-        console.warn('[inbox] attachment presence read failed:', attsError.message);
-      }
-      for (const a of atts ?? []) {
-        const cid = msgIdToConv.get(a.message_id);
-        if (cid) attachmentConvIds.add(cid);
-      }
+    const { data: attConvs, error: attsError } = await supabase
+      .rpc('get_conversations_with_attachments', { conv_ids: convIds });
+    if (attsError) {
+      console.warn('[inbox] attachment presence read failed:', attsError.message);
+    }
+    for (const row of attConvs ?? []) {
+      attachmentConvIds.add(row.conversation_id);
     }
 
     const enriched: Conversation[] = (convs ?? []).map((c) => {

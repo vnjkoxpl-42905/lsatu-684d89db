@@ -320,53 +320,108 @@ Deno.serve(async (req) => {
     )
   }
 
-  // 4. Render React Email template to HTML and plain text
-  const html = await renderAsync(
-    React.createElement(template.component, templateData)
-  )
-  const plainText = await renderAsync(
-    React.createElement(template.component, templateData),
-    { plainText: true }
-  )
+  // 4 + 5. Render, resolve subject, and enqueue. templateData is caller-controlled,
+  // so renderAsync(...) and a dynamic template.subject(...) can throw. Without this
+  // try/catch a throw here escaped Deno.serve as a bare 500 WITHOUT corsHeaders (an
+  // opaque CORS failure to the browser caller) and left no `failed` log row. Wrap the
+  // whole render->subject->enqueue body so any throw terminalizes as a logged 500
+  // with corsHeaders, consistent with every earlier error branch.
+  try {
+    // Render React Email template to HTML and plain text
+    const html = await renderAsync(
+      React.createElement(template.component, templateData)
+    )
+    const plainText = await renderAsync(
+      React.createElement(template.component, templateData),
+      { plainText: true }
+    )
 
-  // Resolve subject — supports static string or dynamic function
-  const resolvedSubject =
-    typeof template.subject === 'function'
-      ? template.subject(templateData)
-      : template.subject
+    // Resolve subject — supports static string or dynamic function
+    const resolvedSubject =
+      typeof template.subject === 'function'
+        ? template.subject(templateData)
+        : template.subject
 
-  // 5. Enqueue the pre-rendered email for async processing by the dispatcher.
-  // The dispatcher (process-email-queue) handles sending, retries, and rate-limit backoff.
-
-  // Log pending BEFORE enqueue so we have a record even if enqueue crashes
-  await supabase.from('email_send_log').insert({
-    message_id: messageId,
-    template_name: templateName,
-    recipient_email: effectiveRecipient,
-    status: 'pending',
-  })
-
-  const { error: enqueueError } = await supabase.rpc('enqueue_email', {
-    queue_name: 'transactional_emails',
-    payload: {
+    // Enqueue the pre-rendered email for async processing by the dispatcher.
+    // The dispatcher (process-email-queue) handles sending, retries, and backoff.
+    //
+    // email_send_log is append-only per message_id: this function writes a `pending`
+    // row, and process-email-queue later writes a `sent`/`failed` row keyed by the same
+    // message_id. Readers computing status metrics MUST take the latest row per
+    // message_id (a `pending` with no later terminal row = still in flight); counting
+    // raw `pending` rows over-counts in-flight sends.
+    //
+    // Log pending BEFORE enqueue so we have a record even if enqueue crashes.
+    const { error: pendingError } = await supabase.from('email_send_log').insert({
       message_id: messageId,
-      to: effectiveRecipient,
-      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-      sender_domain: SENDER_DOMAIN,
-      subject: resolvedSubject,
-      html,
-      text: plainText,
-      purpose: 'transactional',
-      label: templateName,
-      idempotency_key: idempotencyKey,
-      unsubscribe_token: unsubscribeToken,
-      queued_at: new Date().toISOString(),
-    },
-  })
+      template_name: templateName,
+      recipient_email: effectiveRecipient,
+      status: 'pending',
+    })
+    if (pendingError) {
+      // Non-fatal: the enqueue below is the real work and message_id still keys the
+      // terminal row from the dispatcher. Warn so a missing pending row is traceable.
+      console.warn('Failed to write pending email_send_log row', {
+        error: pendingError,
+        messageId,
+        templateName,
+      })
+    }
 
-  if (enqueueError) {
-    console.error('Failed to enqueue email', {
-      error: enqueueError,
+    const { error: enqueueError } = await supabase.rpc('enqueue_email', {
+      queue_name: 'transactional_emails',
+      payload: {
+        message_id: messageId,
+        to: effectiveRecipient,
+        from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+        sender_domain: SENDER_DOMAIN,
+        subject: resolvedSubject,
+        html,
+        text: plainText,
+        purpose: 'transactional',
+        label: templateName,
+        idempotency_key: idempotencyKey,
+        unsubscribe_token: unsubscribeToken,
+        queued_at: new Date().toISOString(),
+      },
+    })
+
+    if (enqueueError) {
+      console.error('Failed to enqueue email', {
+        error: enqueueError,
+        templateName,
+        effectiveRecipient,
+      })
+
+      await supabase.from('email_send_log').insert({
+        message_id: messageId,
+        template_name: templateName,
+        recipient_email: effectiveRecipient,
+        status: 'failed',
+        error_message: 'Failed to enqueue email',
+      })
+
+      return new Response(JSON.stringify({ error: 'Failed to enqueue email' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    console.log('Transactional email enqueued', { templateName, effectiveRecipient })
+
+    return new Response(
+      JSON.stringify({ success: true, queued: true }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    )
+  } catch (renderErr) {
+    // A render/subject/enqueue throw is terminal for this send: log a `failed` row and
+    // return a 500 WITH corsHeaders so the browser caller sees a real error, not an
+    // opaque CORS failure.
+    console.error('Failed to render or enqueue email', {
+      error: renderErr instanceof Error ? renderErr.message : String(renderErr),
       templateName,
       effectiveRecipient,
     })
@@ -376,22 +431,22 @@ Deno.serve(async (req) => {
       template_name: templateName,
       recipient_email: effectiveRecipient,
       status: 'failed',
-      error_message: 'Failed to enqueue email',
+      error_message:
+        renderErr instanceof Error
+          ? `Render/enqueue failed: ${renderErr.message}`
+          : 'Render/enqueue failed',
+    }).then(({ error: logErr }) => {
+      if (logErr) {
+        console.error('Also failed to write failed email_send_log row', { error: logErr })
+      }
     })
 
-    return new Response(JSON.stringify({ error: 'Failed to enqueue email' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return new Response(
+      JSON.stringify({ error: 'Failed to prepare email' }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    )
   }
-
-  console.log('Transactional email enqueued', { templateName, effectiveRecipient })
-
-  return new Response(
-    JSON.stringify({ success: true, queued: true }),
-    {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    }
-  )
 })
