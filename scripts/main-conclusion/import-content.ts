@@ -171,7 +171,7 @@ function emitSimulator(): StepResult {
   // when available. Pipeline runs `tsx scripts/extract-mcfirst.ts` is gated by file presence —
   // not invoked here to keep this step pure-data. Run `npm run extract:mcfirst` to refresh.
   const mcfirstPath = join(DATA_DIR, 'mcfirst.extracted.json');
-  let mcfirst: Record<number, any> = {};
+  const mcfirst: Record<number, any> = {};
   if (existsSync(mcfirstPath)) {
     const raw = JSON.parse(readFileSync(mcfirstPath, 'utf-8'));
     for (const q of raw.questions ?? []) mcfirst[q.number] = q;

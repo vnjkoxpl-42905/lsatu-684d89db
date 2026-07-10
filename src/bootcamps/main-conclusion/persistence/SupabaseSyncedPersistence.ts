@@ -175,17 +175,17 @@ export class SupabaseSyncedPersistence implements Persistence {
 
   async transaction<T>(fn: (tx: PersistenceTx) => Promise<T>): Promise<T> {
     // Wrap the inner tx so writes inside the transaction also get queued for sync.
-    const outer = this;
+    // The callbacks are arrow functions, so `this` stays lexically bound here.
     return this.local.transaction(async (innerTx) => {
       const tx: PersistenceTx = {
         get: <U>(t: string, i: string) => innerTx.get<U>(t, i),
         set: async <U>(t: string, i: string, r: U) => {
           await innerTx.set(t, i, r);
-          outer.pending.set(outer.key(t, i), { table: t, id: i, data: r });
+          this.pending.set(this.key(t, i), { table: t, id: i, data: r });
         },
       };
       const result = await fn(tx);
-      outer.scheduleFlush();
+      this.scheduleFlush();
       return result;
     });
   }

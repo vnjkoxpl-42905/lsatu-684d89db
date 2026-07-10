@@ -22,9 +22,12 @@ function ElegantShape({
     gradient?: string;
     mousePosition?: { x: import('framer-motion').MotionValue<number>; y: import('framer-motion').MotionValue<number> };
 }) {
-    // Parallax effect based on mouse position
-    const translateX = useTransform(mousePosition?.x || useMotionValue(0), [0, 1200], [15, -15]);
-    const translateY = useTransform(mousePosition?.y || useMotionValue(0), [0, 800], [15, -15]);
+    // Parallax effect based on mouse position. Fallback motion values are
+    // created unconditionally so hooks run in a stable order every render.
+    const fallbackX = useMotionValue(0);
+    const fallbackY = useMotionValue(0);
+    const translateX = useTransform(mousePosition?.x ?? fallbackX, [0, 1200], [15, -15]);
+    const translateY = useTransform(mousePosition?.y ?? fallbackY, [0, 800], [15, -15]);
 
     return (
         <motion.div
