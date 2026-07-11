@@ -389,16 +389,30 @@ async function main() {
     perFile.push(await processFile(f, bank));
   }
 
+  // Merge results per PT (multiple source files can contribute to one PT).
+  const byPt = new Map(); // ptId -> merged output object
+  for (const r of perFile) {
+    if (!byPt.has(r.ptId)) byPt.set(r.ptId, {});
+    Object.assign(byPt.get(r.ptId), r.output);
+  }
+  await fs.mkdir(OUT_DIR, { recursive: true });
+  const writtenPaths = new Map();
+  for (const [ptId, output] of byPt.entries()) {
+    const outPath = path.join(OUT_DIR, `${ptId}-explanations.json`);
+    await fs.writeFile(outPath, JSON.stringify(output, null, 2) + "\n", "utf8");
+    writtenPaths.set(ptId, outPath);
+  }
+
   await fs.mkdir(path.dirname(REPORT_PATH), { recursive: true });
   const lines = [];
   lines.push(`# LSAT Lab explanation ingest report`);
   lines.push("");
-  lines.push(`Files processed: ${perFile.length}`);
+  lines.push(`Source files processed: ${perFile.length}`);
+  lines.push(`Sidecars written: ${byPt.size}`);
   lines.push("");
   for (const r of perFile) {
-    lines.push(`## ${r.ptId}`);
-    lines.push(`- Source: \`${path.relative(ROOT, r.mdPath)}\``);
-    lines.push(`- Output: \`${path.relative(ROOT, r.outPath)}\``);
+    lines.push(`## ${r.ptId} — \`${path.relative(ROOT, r.mdPath)}\``);
+    lines.push(`- Output: \`${path.relative(ROOT, writtenPaths.get(r.ptId))}\``);
     lines.push(`- Parsed questions: ${r.totalParsed}`);
     lines.push(`- Matched to bank: ${r.matched}`);
     lines.push(`- Not in bank: ${r.unauthored}`);
@@ -417,7 +431,7 @@ async function main() {
 
   const totalMismatch = perFile.reduce((a, r) => a + r.mismatches.length, 0);
   const totalMatched = perFile.reduce((a, r) => a + r.matched, 0);
-  console.log(`Wrote ${perFile.length} sidecar file(s). Matched=${totalMatched} Warnings=${totalMismatch}`);
+  console.log(`Wrote ${byPt.size} sidecar file(s) from ${perFile.length} source(s). Matched=${totalMatched} Warnings=${totalMismatch}`);
   console.log(`Report: ${path.relative(ROOT, REPORT_PATH)}`);
 }
 
