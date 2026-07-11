@@ -86,7 +86,7 @@ async function embedQuery(text: string): Promise<number[]> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
+      ...outboundInternalHeaders(),
       Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
     },
     body: JSON.stringify({ model: EMBED_MODEL, input: text }),
