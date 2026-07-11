@@ -340,8 +340,8 @@ async function processFile(mdPath, bank) {
     if (correctChoice && bankEntry.correctAnswer && correctChoice !== bankEntry.correctAnswer) {
       mismatches.push({ qid, line: q.startLine, kind: "correct_answer_conflict", detail: `explanation marks ${correctChoice} correct; bank says ${bankEntry.correctAnswer}` });
     }
-    if (!correctChoice) {
-      mismatches.push({ qid, line: q.startLine, kind: "no_correct_tag", detail: "no choice tagged Correct in primary style" });
+    if (!correctChoice && !bankEntry.correctAnswer) {
+      mismatches.push({ qid, line: q.startLine, kind: "no_correct_tag", detail: "no choice tagged Correct in primary style and bank has no correctAnswer" });
     }
     const missingLetters = CHOICE_LETTERS.filter((L) => !primary?.choices?.[L]);
     if (missingLetters.length) {
