@@ -18,7 +18,7 @@
       "D": "overlooks the possibility that the cleanup will attract participants who are not residents in the community",
       "E": "defines a term in such a way as to ensure that whatever the outcome, it will be considered a positive outcome"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Sampling",
       "Assumes Similarity",
@@ -255,7 +255,7 @@
       "D": "overlooks the possibility that there is disagreement among students concerning the issue of food vendors",
       "E": "argues that a certain action ought to be undertaken merely on the grounds that it would be popular"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Ruling Out Options"
     ]
@@ -466,7 +466,7 @@
       "D": "fails to address the possibility that the techniques available to economists for the prediction of global recessions will significantly improve",
       "E": "implicitly bases an inference that something will not occur solely on the information that its occurrence is not predictable"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
       "Quantifiers"
@@ -490,7 +490,7 @@
       "D": "People who think they observe supernatural phenomena should not publicize that fact unless they can present corroborating evidence.",
       "E": "A newspaper should not publish a report unless it is confirmed by an independent source."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
       "Causal Chains"
@@ -515,7 +515,7 @@
       "D": "infers merely because something was likely to occur that it did occur",
       "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
       "Anti-Causal"
@@ -539,7 +539,7 @@
       "D": "The government will sell National Telephone, a state-owned utility. The highest bid received was from a company in which citizens of Country F have majority ownership but noncitizens own a minority share. However, the second-highest bid, from a consortium of investors all of whom are citizens of Country F, was almost as high as the highest bid.",
       "E": "The government will sell StateRail, a state-owned railway. The government must place significant restrictions on who can purchase StateRail to ensure that citizens of Country F will gain majority ownership. However, any such restrictions will reduce the price the government receives for StateRail."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Math-y Stuff"
     ]
@@ -562,7 +562,7 @@
       "D": "The makers of Activite charge a handling fee that is considerably more than what it costs them to pack and ship their product.",
       "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Principles in Stimulus",
       "Worst of the Worst"
@@ -586,7 +586,7 @@
       "D": "Of the people who oppose funding a study to determine the feasibility of building a light rail line in the Loffoch Valley, most also believe that the Valley Freeway should be built. Donna opposes increasing funding for a study, so she probably supports building the Valley Freeway.",
       "E": "Of the people who believe that there will be a blizzard tomorrow, most believe it because of the weather report on the Channel 9 news. Eduardo believes that there will be a blizzard tomorrow, so he probably saw the weather report on the Channel 9 news."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact"
     ]
