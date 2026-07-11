@@ -154,14 +154,14 @@ Deno.serve(async (req) => {
 
   const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-  // Exact canonical-id lookup (no embedding cost).
+  // Exact canonical-id lookup. Goes through get_lsat_knowledge_by_canonical_id
+  // which joins lsat_knowledge_sources so ONLY currently-active records are
+  // returned. Ordinary callers may not widen kinds.
   if (body.canonical_id) {
-    const { data, error } = await admin
-      .from("lsatu_content_index")
-      .select("id, kind, source_id, chunk_index, title, subtitle, body, url, metadata")
-      .eq("kind", DEFAULT_KIND)
-      .eq("source_id", String(body.canonical_id))
-      .order("chunk_index", { ascending: true });
+    const { data, error } = await admin.rpc("get_lsat_knowledge_by_canonical_id", {
+      _canonical_id: String(body.canonical_id),
+      _kinds: kinds,
+    });
     if (error) return jsonRes({ error: error.message }, 500);
     const rows = data ?? [];
     return jsonRes({ mode: "exact", results: wantsBody ? rows : redact(rows) });
