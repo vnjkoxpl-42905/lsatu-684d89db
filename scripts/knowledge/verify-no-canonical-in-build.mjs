@@ -22,12 +22,14 @@ const MANIFEST_PATH = join(CONTENT, "logical-reasoning-guide.manifest.json");
 const MD_PATH = join(CONTENT, "logical-reasoning-guide.md");
 
 if (!existsSync(DIST)) {
-  console.log("verify-no-canonical-in-build: dist/ not present, skipping (run after `npm run build`).");
-  process.exit(0);
+  console.error("verify-no-canonical-in-build: dist/ not present.");
+  console.error("This check runs as a postbuild step and must not be skipped.");
+  console.error("Run `npm run build` before invoking this script.");
+  process.exit(2);
 }
 if (!existsSync(MANIFEST_PATH) || !existsSync(MD_PATH)) {
-  console.log("verify-no-canonical-in-build: canonical sources not present, skipping.");
-  process.exit(0);
+  console.error("verify-no-canonical-in-build: canonical sources missing at", CONTENT);
+  process.exit(2);
 }
 
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
