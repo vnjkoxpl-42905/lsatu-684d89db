@@ -24,7 +24,7 @@ type IngestResult = {
 };
 
 export default function LsatKnowledgeImport() {
-  const { isAdmin, loading } = useUserPermissions();
+  const { is_admin: isAdmin, loading } = useUserPermissions();
   const [confirming, setConfirming] = React.useState(false);
   const [running, setRunning] = React.useState(false);
   const [result, setResult] = React.useState<IngestResult | null>(null);
