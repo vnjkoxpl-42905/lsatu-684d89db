@@ -52,7 +52,38 @@
     "styles": {
       "standard": {
         "breakdownMd": "",
-        "choices": {}
+        "choices": {
+          "A": {
+            "text": "arguing that the bad consequences of a practice are outweighed by the good consequences of that practice",
+            "tag": null,
+            "pct": 1,
+            "explanation": ""
+          },
+          "B": {
+            "text": "countering the charge that a practice has a bad consequence by trying to show that the practice does not actually have that consequence",
+            "tag": null,
+            "pct": 3,
+            "explanation": ""
+          },
+          "C": {
+            "text": "rebutting a charge that a practice is radical by contending that the practice is analogous with an existing one",
+            "tag": "Correct",
+            "pct": 90,
+            "explanation": ""
+          },
+          "D": {
+            "text": "rejecting the charge that a practice is immoral by trying to undercut the moral foundation of the charge",
+            "tag": null,
+            "pct": 4,
+            "explanation": ""
+          },
+          "E": {
+            "text": "supporting a moral objection to a practice by trying to show that the practice is actually different from practices that might seem similar",
+            "tag": null,
+            "pct": 2,
+            "explanation": ""
+          }
+        }
       }
     }
   },
