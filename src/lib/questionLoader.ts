@@ -876,6 +876,11 @@ export class QuestionBank {
       }
     }
 
+    // Merge per-question LSAT Lab explanations from
+    // /data/explanations/PT<n>-explanations.json (one file per preptest).
+    // Missing files are non-fatal — most PTs are still unauthored.
+    await this.mergeExplanationSidecars();
+
     // Build manifest
     this.manifest.totalQuestions = this.questions.size;
     
