@@ -1,134 +1,63 @@
-## Booking Pass System — Plan
+## Goal
 
-### 1. Findings (existing surfaces)
+Turn the uploaded LSAT Lab explanation Markdown files (PT157, PT158, PT159, and any future ones you send) into structured, per-question explanations that plug into the existing question bank so drills, review, and the tutor can display them. Report any explanation that can't be matched to a real question.
 
-- `src/App.tsx` — route registration, will add public route `/schedule/pass/:token` and admin `/teacher/booking-passes` (or panel inside teacher desk).
-- `src/pages/Schedule.tsx` + `src/components/schedule/GoogleCalendarPanel.tsx` — student schedule surface, untouched.
-- `src/pages/teacher/desk/scheduleEvents.ts` — TanStack hooks over `schedule_events`.
-- Supabase functions:
-  - `gcal-sync-pull` — pulls busy events into `schedule_events` (admin/cron only).
-  - `gcal-event-write` — admin-only create/update/delete on Google Calendar.
-  - `gcal-list-calendars` — admin only.
-- Tables: `schedule_events`, `gcal_sync_state` (calendar_id = 'primary' default).
+## Where things stand
 
-### 2. Can we reuse gcal functions?
+- Questions live as static JSON at `public/data/PT<n>-S<k>-LR.json` (already includes PT157, PT158, PT159).
+- `LRQuestion` in `src/lib/questionLoader.ts` already has optional `breakdown` and `answerChoiceExplanations` fields, currently authored for 0 / 3,964 questions. The Drill page and `LRQuestionModal` already read them.
+- Uploaded MD files use LSAT Lab's format: `## S<k> · Q<n> — <QuestionType>` headings, then `### Stimulus`, `### Prompt`, `### Standard` / `### Brief` / `### Another Way` (each with `Argument breakdown` and per-choice `**A. text** — Tag (N%)` entries).
 
-Partially. Both existing functions require an authenticated admin, so they cannot be called by a student holding only a pass token. We will:
+## Plan
 
-- **Reuse `schedule_events`** as the source of Joshua's busy times (already synced from Google). No new availability lookup needed.
-- **Add one new edge function** `booking-pass` (public, no JWT verification, token-gated in code) with actions: `info`, `slots`, `book`. It will use the service role to read the pass, read `schedule_events` for conflicts, call the Google Calendar Gateway to create the event, then insert into `schedule_events` + `booking_pass_redemptions` and atomically bump `used_credits`.
+### 1. Add an explanation sidecar format
+- New folder `public/data/explanations/` with one file per preptest, e.g. `PT157-explanations.json`.
+- Shape (keyed by `qid = "PT157-S2-Q1"`):
+  ```
+  {
+    "PT157-S2-Q1": {
+      "styles": {
+        "standard":    { "breakdownMd": "...", "choices": { "A": {"tag": "...", "pct": 5, "text": "..."}, ... } },
+        "brief":       { ... },
+        "anotherWay":  { ... }
+      },
+      "correctChoice": "E"
+    }
+  }
+  ```
+  Verbatim prose preserved; three styles kept because LSAT Lab authors them differently.
+- Also populate the existing typed `answerChoiceExplanations` on the question at load time from the `standard` style (verdict from `correctChoice`, `whyCorrect` / `whyIncorrect` from the choice text) so current UI immediately benefits with no component changes.
 
-### 3. New tables (single migration)
+### 2. Parser + ingest script
+- New `scripts/ingest-lsat-lab-explanations.mjs`:
+  - Input: one or more MD paths (defaults to all files in `Explanations/PT*-explanations.md`).
+  - Parse question headers to derive `pt`, `section`, `qnum`, `qid`.
+  - Split each question into style blocks; capture breakdown block and each `**A. text** — Tag (Npct)` line + trailing paragraph.
+  - Cross-check every parsed question against `public/data/PT<pt>-S<section>-LR.json`:
+    - Verify the question exists.
+    - Verify the correct answer letter matches the JSON's `correctAnswer` (LSAT Lab marks the correct choice with `Correct` tag).
+    - Verify all 5 choices are present.
+  - Write `public/data/explanations/PT<pt>-explanations.json` (merging when multiple sections belong to one PT).
+  - Emit `scripts/out/explanation-ingest-report.md` listing:
+    - files processed, questions matched
+    - mismatches (missing question, wrong correct answer, missing choice, unparseable block) with file + line references
 
-```text
-booking_passes
-  id uuid pk
-  token_hash text unique not null      -- sha256 of raw token; raw token only returned once on create
-  student_id uuid null (auth.users)
-  student_email text null
-  student_name text null
-  total_credits int not null check (>0)
-  used_credits int not null default 0 check (used_credits <= total_credits)
-  session_length_minutes int not null default 60
-  status text not null default 'active'  -- active|exhausted|expired|revoked
-  expires_at timestamptz null
-  notes text null
-  created_by uuid not null (auth.users)
-  created_at / updated_at
+### 3. Loader wiring (minimal)
+- Extend `src/lib/questionLoader.ts` so that when a `PT<n>-S<k>-LR.json` is loaded, the loader also fetches `public/data/explanations/PT<n>-explanations.json` (once, cached) and, per question:
+  - populates `answerChoiceExplanations` from the standard style if absent.
+  - attaches raw `explanations` (all three styles) under a new optional field `LRQuestion.explanations` for future UI surfaces (e.g. "Show another way" toggle in the review modal).
+- No UI changes in this pass beyond that automatic wiring — existing modal will start showing per-choice explanations for PT157/158/159 immediately.
 
-booking_pass_redemptions
-  id uuid pk
-  booking_pass_id uuid fk -> booking_passes on delete cascade
-  schedule_event_id uuid null fk -> schedule_events
-  google_event_id text null
-  start_at timestamptz not null
-  end_at timestamptz not null
-  status text not null           -- booked|cancelled|failed
-  idempotency_key text not null
-  student_name_snapshot text null
-  student_email_snapshot text null
-  created_at
-  unique (booking_pass_id, idempotency_key)
-```
+### 4. Run on the three uploaded files
+- Copy `user-uploads://PT157-explanations.md`, `PT158-explanations.md`, `PT159-explanations.md` into `Explanations/` (overwriting the existing copies), run the script, and share the report so you can see any mismatches before I move on to further PTs.
 
-Grants + RLS:
-- `booking_passes`: authenticated admins full access via `has_role(auth.uid(),'admin')`; students/anon have NO direct table access — all pass reads go through the edge function using service role.
-- `booking_pass_redemptions`: same; students see their bookings only through the edge function response.
-- Service role full access on both.
+## Out of scope for this pass
+- Storing explanations in Supabase or the LSAT knowledge index (these are per-question review content, not shared LR methodology).
+- New UI surfaces for the "Brief" / "Another Way" styles — data will be present, surfacing comes later.
+- Editing question stems, choices, or `correctAnswer` — the script will only report conflicts, never rewrite question data.
 
-Atomic decrement via a `SECURITY DEFINER` function `redeem_booking_pass(_pass_id, _idempotency_key, _start_at, _end_at, ...)` that:
-1. Locks the pass row (`SELECT ... FOR UPDATE`).
-2. Checks status active, not expired, `used_credits < total_credits`.
-3. Inserts redemption (unique idempotency_key prevents duplicates — on conflict return existing row).
-4. Increments `used_credits`; if it reaches `total_credits`, flips status to `exhausted`.
-5. Returns redemption id + remaining credits.
-
-Google event creation happens BEFORE the RPC on the "commit" path; if RPC fails because pass is exhausted, we roll back by deleting the just-created Google event. Idempotency key = client-generated uuid tied to the slot; if the client retries, the unique index makes it a no-op and we skip Google creation on second try.
-
-### 4. Edge function `booking-pass` (public, `verify_jwt = false`)
-
-Actions (POST JSON `{ action, token, ... }`):
-
-- `info` → returns pass state (status, credits remaining, session length, student label, expires_at, booking history summary). Never returns token_hash or admin fields.
-- `slots` → given a date range (next 21 days default), returns candidate slots. Generation:
-  - Business hours window (default 09:00–20:00 local, configurable per-pass later — MVP hardcoded).
-  - Step = `session_length_minutes`.
-  - Filter out slots that overlap any `schedule_events` row (not deleted, not cancelled) in that window.
-  - Filter out slots already claimed by prior `booking_pass_redemptions` with status `booked` (defensive; they should also be in schedule_events).
-  - Skip slots in the past / after `expires_at`.
-- `book` → `{ token, start_at, idempotency_key }`:
-  - Load pass, guard status/expiry/credits/slot-availability re-check (defense against race).
-  - Call Google Calendar Gateway to insert event on `gcal_sync_state.calendar_id` with summary "LSAT session — {student_name/email}".
-  - Insert into `schedule_events` (source = 'booking_pass').
-  - Call `redeem_booking_pass` RPC. On unique-violation for idempotency_key, return the prior redemption without double-charging.
-  - On failure after Google create, delete the Google event and return error.
-
-The function accepts the raw token, hashes it (sha256) and matches `token_hash`. Raw tokens are 32-byte urlsafe base64, generated at pass creation and returned exactly once.
-
-### 5. Frontend
-
-**Admin management** — `src/pages/teacher/BookingPasses.tsx` (linked from Teacher Desk sidebar):
-- List of passes with student label, credits used/total, status, expires_at, created_at, copy-link button.
-- "New pass" dialog: pick student (from `useHubStudents`) or free-text name+email, credits (1/5/10/custom), session length (default 60), optional expiration.
-- On create: show the generated private URL once with a copy button and warning that it won't be shown again.
-- Row actions: copy link (only if token cached in memory from creation; otherwise "regenerate" which rotates token_hash), revoke, view redemption history.
-- Uses direct Supabase queries (admin RLS) for reads; writes via a small admin edge function `booking-pass-admin` OR direct RLS inserts (RLS + `created_by = auth.uid()` check). Token generation happens client-side (`crypto.getRandomValues`) then hashed via edge function on insert to avoid leaking raw token in DB. Simpler: dedicated `booking-pass-admin` action `create` returns `{ pass, raw_token }`.
-
-**Student booking page** — `src/pages/BookingPass.tsx` at `/schedule/pass/:token` (public route, outside auth shell):
-- Layout matches LSAT U premium styling (bronze accents, restrained). Minimal chrome — no student sidebar.
-- States: loading, invalid, revoked, expired, exhausted, active.
-- Active view: header with pass label + "X of Y sessions remaining", session length, then a date picker + list of available slots grouped by day, "Book session" primary CTA.
-- On book: disable button, generate idempotency_key (uuid) once per slot selection, POST to `booking-pass` `book`; on success show confirmation with event time; refresh info + slots.
-- Booking history section below (past + upcoming from this pass).
-- No cancel button in MVP — history rows show "Booked" with a small `TODO: cancellation` note visible only in dev, no user-facing cancel action.
-
-### 6. Preventing double booking / double redemption
-
-- Unique `(booking_pass_id, idempotency_key)` index → repeated submits collapse to one row.
-- `SELECT ... FOR UPDATE` on the pass row inside the RPC serializes concurrent redemptions of the last credit.
-- Slot re-check inside the RPC against `schedule_events` overlapping `[start_at, end_at)` prevents two students (or same student twice) claiming the same slot even if the earlier `slots` response was stale.
-- Google event creation is idempotent per idempotency_key: we store `google_event_id` after insert; on retry we detect the existing redemption row and skip.
-
-### 7. Out of scope for this pass
-
-- Stripe/payments.
-- Cancellation flow with credit restoration (schema supports it; UI leaves TODO comment; no fake button).
-- Per-pass business-hours customization (hardcoded 09:00–20:00 local).
-- Timezone picker (uses browser tz for display; stored as UTC).
-
-### 8. Deliverables
-
-Migration:
-- `supabase/migrations/<ts>_booking_passes.sql` — tables, grants, RLS, `redeem_booking_pass` RPC, updated_at triggers.
-
-Edge functions:
-- `supabase/functions/booking-pass/index.ts` (public, token-gated).
-- `supabase/functions/booking-pass-admin/index.ts` (admin JWT, handles create/rotate/revoke and returns raw token exactly once).
-
-Frontend:
-- `src/pages/BookingPass.tsx` + small subcomponents (`BookingPassSlotList`, `BookingPassStatusCard`).
-- `src/pages/teacher/BookingPasses.tsx` + `CreateBookingPassDialog`, `BookingPassRow`.
-- Route registrations in `src/App.tsx`.
-- Teacher Desk sidebar link.
-
-No changes to existing `Schedule.tsx`, `GoogleCalendarPanel.tsx`, or `scheduleEvents.ts`.
+## Deliverables
+- `scripts/ingest-lsat-lab-explanations.mjs`
+- `public/data/explanations/PT157-explanations.json`, `PT158-...`, `PT159-...`
+- Small edit to `src/lib/questionLoader.ts` to merge explanations at load time
+- `scripts/out/explanation-ingest-report.md` with match/mismatch counts and per-item details
