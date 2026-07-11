@@ -11,7 +11,7 @@
   "question_type_count": 16,
   "reasoning_type_count": 5,
   "canonical_markdown_sha256": "17302707c433b76140e7307ad48c4a5f610f0a9aee50d732707cadbf2038d5c6",
-  "ingestion_jsonl_sha256": "0747f2072f9163dcc30f06d82d12b2aa351112d66457213a419ff0943323a083",
+  "ingestion_jsonl_sha256": "03d3038df275b906170039ec2fdfdac374f3468a9b8a54269e49d6b6400e9fbf",
   "validation": {
     "duplicate_record_ids": false,
     "empty_records": 0,
