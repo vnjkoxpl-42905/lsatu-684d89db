@@ -63,7 +63,7 @@
       "D": "concludes that a claim must be false because of the mere absence of evidence in its favor",
       "E": "concludes that a phenomenon will have a certain property merely because the phenomenon's cause has that property"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
       "Abstract Answers",
@@ -156,7 +156,7 @@
       "D": "Many novels that are available in text versions are not available in audio versions.",
       "E": "The novel in question, unlike most novels, included dialogue in many different dialects that are more understandable when heard than when read."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
       "Sampling",
@@ -208,7 +208,7 @@
       "D": "If the people who occupied the site discovered agriculture thousands of years before people anywhere else are known to have done so, then there are remains of cultivated plants at the site.",
       "E": "It is more likely that the people who occupied the site discovered agriculture thousands of years before people anywhere else did than it is that they ate a wider variety of wild plants than any other people at the time."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Binaries"
     ]
@@ -254,7 +254,7 @@
       "D": "infers that a claim is false on the grounds that an inadequate argument has been given for that claim",
       "E": "presumes that since one part of a whole lacks a certain characteristic, the whole must lack that characteristic as well"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
@@ -277,7 +277,7 @@
       "D": "It is offered as an illustration of the principle that social and political stability do not depend ultimately on force.",
       "E": "It is a premise used to justify the pharaohs' policy of spending scarce resources on structures that have only military utility."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Rebuttals"
     ]
@@ -300,7 +300,7 @@
       "D": "Most researchers oppose the proposed change to the patent system.",
       "E": "The current rules for patent applications facilitate progress in scientific research by rewarding the communication of discoveries."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming"
     ]
@@ -481,7 +481,7 @@
       "D": "Skiff's book will not be published unless it is as important and as well written as he claims it is.",
       "E": "Skiff will not be promoted unless Professor Nguyen urges the dean to do so."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming"
     ]
