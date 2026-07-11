@@ -24,28 +24,30 @@ const CHOICE_LETTERS = ["A", "B", "C", "D", "E"];
 
 const CHOICE_LINE_RE = /^\*\*([A-E])\.\s+([\s\S]*?)\*\*\s+—\s+([^\n]+?)(?:\s+\((\d+)%\s+of students\))?\s*$/;
 
-function splitQuestions(md) {
+function splitQuestions(md, sectionHint) {
   // Split by "## S<k> · Q<n> — <type>" headings.
+  // Falls back to "## Question <n>" / "## Q<n>" headings when the file uses
+  // that layout; in that case the section comes from `sectionHint` (derived
+  // from the filename) or from a preceding "# Section N" header.
   const lines = md.split("\n");
   const questions = [];
   let current = null;
-  const headerRe = /^##\s+S(\d+)\s*·\s*Q(\d+)\s*(?:—\s*(.+))?\s*$/;
+  let currentSection = sectionHint ?? null;
+  const headerReA = /^##\s+S(\d+)\s*·\s*Q(\d+)\s*(?:—\s*(.+))?\s*$/;
+  const headerReB = /^##\s+(?:Question|Q)\s*(\d+)\s*(?:—\s*(.+))?\s*$/i;
+  const sectionHeaderRe = /^#\s+Section\s+(\d+)/i;
   for (let i = 0; i < lines.length; i++) {
-    const m = lines[i].match(headerRe);
-    if (m) {
+    const sh = lines[i].match(sectionHeaderRe);
+    if (sh) currentSection = Number(sh[1]);
+    const mA = lines[i].match(headerReA);
+    const mB = mA ? null : lines[i].match(headerReB);
+    if (mA || mB) {
       if (current) questions.push(current);
-      current = {
-        section: Number(m[1]),
-        qnum: Number(m[2]),
-        qtypeLabel: (m[3] || "").trim(),
-        startLine: i + 1,
-        bodyLines: [],
-      };
+      const section = mA ? Number(mA[1]) : currentSection;
+      const qnum = Number((mA ? mA[2] : mB[1]));
+      const qtypeLabel = ((mA ? mA[3] : mB[2]) || "").trim();
+      current = { section, qnum, qtypeLabel, startLine: i + 1, bodyLines: [] };
     } else if (current) {
-      // Stop at a top-level "# " or "---" separator.
-      if (/^# /.test(lines[i])) {
-        // start of a new top-level section like "# Section 3 (Logical Reasoning)"; keep collecting until next question
-      }
       current.bodyLines.push(lines[i]);
     }
   }
@@ -211,34 +213,114 @@ async function loadQuestionBank() {
   return { map, byPtSection };
 }
 
+// Format C ("## Question N" layout used by PT155-S1 / PT155-S2 files):
+//   ### Answer choices           — plain "**A.** text" (no tag/pct here)
+//   ### Written explanation      — breakdown block
+//   ### Answer choice explanations — "**A — Tag (N% of students)**" then paragraphs
+function parseFormatCChoices(answerLines, explanationLines) {
+  const choices = {};
+  // 1) Plain choice text: **A.** text  (may span multiple lines)
+  {
+    let current = null;
+    let buf = [];
+    const flush = () => {
+      if (!current) return;
+      choices[current] = choices[current] || { text: null, tag: null, pct: null, explanation: "" };
+      choices[current].text = buf.join(" ").replace(/\s+/g, " ").trim();
+    };
+    for (const line of answerLines) {
+      const m = line.match(/^\*\*([A-E])\.\*\*\s+(.*)$/);
+      if (m) {
+        flush();
+        current = m[1];
+        buf = [m[2]];
+      } else if (current) {
+        if (line.trim()) buf.push(line.trim());
+      }
+    }
+    flush();
+  }
+  // 2) Per-choice explanation blocks: **A — Tag (N% of students)**
+  {
+    let current = null;
+    let buf = [];
+    const headerRe = /^\*\*([A-E])\s+—\s+([^\n]+?)(?:\s*\((\d+)%\s+of students\))?\*\*\s*$/;
+    const flush = () => {
+      if (!current) return;
+      const c = choices[current] || (choices[current] = { text: null, tag: null, pct: null, explanation: "" });
+      c.explanation = buf.join("\n").trim();
+    };
+    for (const line of explanationLines) {
+      const m = line.match(headerRe);
+      if (m) {
+        flush();
+        current = m[1];
+        buf = [];
+        const c = choices[current] || (choices[current] = { text: null, tag: null, pct: null, explanation: "" });
+        c.tag = m[2].trim();
+        c.pct = m[3] != null ? Number(m[3]) : null;
+      } else if (current) {
+        buf.push(line);
+      }
+    }
+    flush();
+  }
+  return choices;
+}
+
 async function processFile(mdPath, bank) {
   const filename = path.basename(mdPath);
-  const ptMatch = filename.match(/^PT(\d+)-explanations\.md$/);
+  // Accept PT<n>-explanations.md and PT<n>-S<k>-explanations.md
+  const ptMatch = filename.match(/^PT(\d+)(?:-S(\d+))?-explanations\.md$/);
   if (!ptMatch) throw new Error(`filename not recognized: ${filename}`);
   const ptNum = Number(ptMatch[1]);
   const ptId = `PT${ptNum}`;
+  const sectionHint = ptMatch[2] ? Number(ptMatch[2]) : null;
 
   const md = await fs.readFile(mdPath, "utf8");
-  const questions = splitQuestions(md);
+  const questions = splitQuestions(md, sectionHint);
   const output = {};
   const mismatches = [];
   let matched = 0;
   let unauthored = 0;
 
   for (const q of questions) {
+    if (!q.section) {
+      mismatches.push({
+        qid: `${ptId}-S?-Q${q.qnum}`,
+        line: q.startLine,
+        kind: "unknown_section",
+        detail: "no section header or filename hint",
+      });
+      continue;
+    }
     const qid = `${ptId}-S${q.section}-Q${q.qnum}`;
     const h3Blocks = findH3Blocks(q.bodyLines);
-    const styleMap = {}; // key -> { breakdownMd, choices }
+    const styleMap = {};
 
-    // Determine if there are named style headings.
     const styleBlocks = h3Blocks.filter((b) => STYLE_KEYS[b.heading]);
+    const writtenBlock = h3Blocks.find((b) => /^Written\b/i.test(b.heading));
+    const ansChoiceExplBlock = h3Blocks.find((b) => /^Answer choice explanations/i.test(b.heading));
+
     if (styleBlocks.length > 0) {
       for (const b of styleBlocks) {
         styleMap[STYLE_KEYS[b.heading]] = parseStyle(b.heading, b.lines);
       }
+    } else if (ansChoiceExplBlock) {
+      // Format C
+      const stemBlock = h3Blocks.find((b) => /^Answer choices/i.test(b.heading));
+      const writtenExpl = h3Blocks.find((b) => /^Written explanation/i.test(b.heading));
+      const breakdown = writtenExpl ? trimBlock(writtenExpl.lines) : "";
+      const choices = parseFormatCChoices(
+        stemBlock ? stemBlock.lines : [],
+        ansChoiceExplBlock.lines,
+      );
+      styleMap.standard = { breakdownMd: breakdown, choices };
+    } else if (writtenBlock) {
+      // Format B: "### Written*" contains the standard-style block content
+      styleMap.standard = parseStyle("Written", writtenBlock.lines);
     } else {
-      // Single-style format (PT159): breakdown lives in "### Argument breakdown"
-      // (optional) and choices in "### Answer choices".
+      // Format A single-style (PT159): explicit "Argument breakdown" + "Answer choices"
       const abBlock = h3Blocks.find((b) => /^Argument breakdown/i.test(b.heading));
       const acBlock = h3Blocks.find((b) => /^Answer choices/i.test(b.heading));
       const breakdown = abBlock ? trimBlock(abBlock.lines) : "";
@@ -246,59 +328,30 @@ async function processFile(mdPath, bank) {
       styleMap.standard = { breakdownMd: breakdown, choices };
     }
 
-    // Determine correct letter (prefer standard).
     const primary = styleMap.standard || styleMap.brief || styleMap.anotherWay;
     const correctChoice = correctLetterFromStyle(primary);
 
-    // Cross-check against bank.
     const bankEntry = bank.map.get(qid);
     if (!bankEntry) {
       unauthored += 1;
-      mismatches.push({
-        qid,
-        line: q.startLine,
-        kind: "missing_question",
-        detail: `no question ${qid} in question bank`,
-      });
+      mismatches.push({ qid, line: q.startLine, kind: "missing_question", detail: `no question ${qid} in question bank` });
       continue;
     }
     if (correctChoice && bankEntry.correctAnswer && correctChoice !== bankEntry.correctAnswer) {
-      mismatches.push({
-        qid,
-        line: q.startLine,
-        kind: "correct_answer_conflict",
-        detail: `explanation marks ${correctChoice} correct; bank says ${bankEntry.correctAnswer}`,
-      });
+      mismatches.push({ qid, line: q.startLine, kind: "correct_answer_conflict", detail: `explanation marks ${correctChoice} correct; bank says ${bankEntry.correctAnswer}` });
     }
-    if (!correctChoice) {
-      mismatches.push({
-        qid,
-        line: q.startLine,
-        kind: "no_correct_tag",
-        detail: "no choice tagged Correct in standard style",
-      });
+    if (!correctChoice && !bankEntry.correctAnswer) {
+      mismatches.push({ qid, line: q.startLine, kind: "no_correct_tag", detail: "no choice tagged Correct in primary style and bank has no correctAnswer" });
     }
-    // Check we have 5 choices in the primary style.
     const missingLetters = CHOICE_LETTERS.filter((L) => !primary?.choices?.[L]);
     if (missingLetters.length) {
-      mismatches.push({
-        qid,
-        line: q.startLine,
-        kind: "missing_choices",
-        detail: `standard style missing choices ${missingLetters.join(",")}`,
-      });
+      mismatches.push({ qid, line: q.startLine, kind: "missing_choices", detail: `primary style missing choices ${missingLetters.join(",")}` });
     }
-    // Check any parse errors on any choice.
     for (const [styleKey, style] of Object.entries(styleMap)) {
       for (const L of CHOICE_LETTERS) {
         const c = style.choices?.[L];
         if (c?.parseError) {
-          mismatches.push({
-            qid,
-            line: q.startLine,
-            kind: "choice_parse_error",
-            detail: `${styleKey}.${L}: ${c.parseError}`,
-          });
+          mismatches.push({ qid, line: q.startLine, kind: "choice_parse_error", detail: `${styleKey}.${L}: ${c.parseError}` });
         }
       }
     }
@@ -314,11 +367,7 @@ async function processFile(mdPath, bank) {
     matched += 1;
   }
 
-  const outPath = path.join(OUT_DIR, `${ptId}-explanations.json`);
-  await fs.mkdir(OUT_DIR, { recursive: true });
-  await fs.writeFile(outPath, JSON.stringify(output, null, 2) + "\n", "utf8");
-
-  return { ptId, mdPath, outPath, matched, unauthored, mismatches, totalParsed: questions.length };
+  return { ptId, mdPath, matched, unauthored, mismatches, totalParsed: questions.length, output };
 }
 
 async function main() {
@@ -329,7 +378,7 @@ async function main() {
   } else {
     const entries = await fs.readdir(EXPL_DIR);
     mdFiles = entries
-      .filter((f) => /^PT\d+-explanations\.md$/.test(f))
+      .filter((f) => /^PT\d+(?:-S\d+)?-explanations\.md$/.test(f))
       .map((f) => path.join(EXPL_DIR, f));
   }
   mdFiles.sort();
@@ -340,16 +389,30 @@ async function main() {
     perFile.push(await processFile(f, bank));
   }
 
+  // Merge results per PT (multiple source files can contribute to one PT).
+  const byPt = new Map(); // ptId -> merged output object
+  for (const r of perFile) {
+    if (!byPt.has(r.ptId)) byPt.set(r.ptId, {});
+    Object.assign(byPt.get(r.ptId), r.output);
+  }
+  await fs.mkdir(OUT_DIR, { recursive: true });
+  const writtenPaths = new Map();
+  for (const [ptId, output] of byPt.entries()) {
+    const outPath = path.join(OUT_DIR, `${ptId}-explanations.json`);
+    await fs.writeFile(outPath, JSON.stringify(output, null, 2) + "\n", "utf8");
+    writtenPaths.set(ptId, outPath);
+  }
+
   await fs.mkdir(path.dirname(REPORT_PATH), { recursive: true });
   const lines = [];
   lines.push(`# LSAT Lab explanation ingest report`);
   lines.push("");
-  lines.push(`Files processed: ${perFile.length}`);
+  lines.push(`Source files processed: ${perFile.length}`);
+  lines.push(`Sidecars written: ${byPt.size}`);
   lines.push("");
   for (const r of perFile) {
-    lines.push(`## ${r.ptId}`);
-    lines.push(`- Source: \`${path.relative(ROOT, r.mdPath)}\``);
-    lines.push(`- Output: \`${path.relative(ROOT, r.outPath)}\``);
+    lines.push(`## ${r.ptId} — \`${path.relative(ROOT, r.mdPath)}\``);
+    lines.push(`- Output: \`${path.relative(ROOT, writtenPaths.get(r.ptId))}\``);
     lines.push(`- Parsed questions: ${r.totalParsed}`);
     lines.push(`- Matched to bank: ${r.matched}`);
     lines.push(`- Not in bank: ${r.unauthored}`);
@@ -368,7 +431,7 @@ async function main() {
 
   const totalMismatch = perFile.reduce((a, r) => a + r.mismatches.length, 0);
   const totalMatched = perFile.reduce((a, r) => a + r.matched, 0);
-  console.log(`Wrote ${perFile.length} sidecar file(s). Matched=${totalMatched} Warnings=${totalMismatch}`);
+  console.log(`Wrote ${byPt.size} sidecar file(s) from ${perFile.length} source(s). Matched=${totalMatched} Warnings=${totalMismatch}`);
   console.log(`Report: ${path.relative(ROOT, REPORT_PATH)}`);
 }
 
