@@ -78,21 +78,29 @@ function trimBlock(lines) {
   return arr.join("\n");
 }
 
+// Terse fallback used by "no written explanation" questions (e.g. PT159-S1-Q2):
+//   **A.** choice text — N% of students          (optionally "(Correct)")
+const TERSE_CHOICE_RE = /^\*\*([A-E])\.\*\*\s+(.+?)\s+—\s+(\d+)%\s+of students(?:\s*\((Correct)\))?\s*$/;
+
 function parseChoiceBlock(lines) {
-  // Given lines that are meant to hold answer-choice entries (possibly preceded
-  // by "**Answer choices**" line), split into per-letter chunks.
   const choices = {};
   let currentLetter = null;
   let currentBuf = [];
   const flush = () => {
     if (!currentLetter) return;
     const raw = currentBuf.join("\n").trim();
-    // First line is the "**X. text** — Tag (N%)" line
     const firstNl = raw.indexOf("\n");
     const headerLine = firstNl === -1 ? raw : raw.slice(0, firstNl);
     const rest = firstNl === -1 ? "" : raw.slice(firstNl + 1).trim();
     const m = headerLine.match(CHOICE_LINE_RE);
-    if (!m) {
+    if (m) {
+      choices[currentLetter] = {
+        text: m[2].trim(),
+        tag: m[3].trim(),
+        pct: m[4] != null ? Number(m[4]) : null,
+        explanation: rest,
+      };
+    } else {
       choices[currentLetter] = {
         text: null,
         tag: null,
@@ -100,15 +108,24 @@ function parseChoiceBlock(lines) {
         explanation: raw,
         parseError: "choice header did not match expected format",
       };
-    } else {
-      choices[currentLetter] = {
-        text: m[2].trim(),
-        tag: m[3].trim(),
-        pct: m[4] != null ? Number(m[4]) : null,
-        explanation: rest,
-      };
     }
   };
+  // Prefer the bold-title form; only fall back to terse if no `**A. ` header exists.
+  const hasStandard = lines.some((l) => /^\*\*([A-E])\.\s/.test(l));
+  if (!hasStandard) {
+    for (const line of lines) {
+      const t = line.match(TERSE_CHOICE_RE);
+      if (t) {
+        choices[t[1]] = {
+          text: t[2].trim(),
+          tag: t[4] === "Correct" ? "Correct" : null,
+          pct: Number(t[3]),
+          explanation: "",
+        };
+      }
+    }
+    return choices;
+  }
   for (const line of lines) {
     const m = line.match(/^\*\*([A-E])\.\s/);
     if (m) {
