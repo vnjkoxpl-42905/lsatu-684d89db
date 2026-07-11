@@ -241,6 +241,13 @@ const App = () => {
                 </React.Suspense>
               </AdminErrorBoundary>
             } />
+            <Route path="/admin/lsat-knowledge-import" element={
+              <AdminErrorBoundary routeLabel="/admin/lsat-knowledge-import">
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <LsatKnowledgeImport />
+                </React.Suspense>
+              </AdminErrorBoundary>
+            } />
             <Route path="/admin/bootcamp-reference-lab" element={
               <AdminErrorBoundary routeLabel="/admin/bootcamp-reference-lab">
                 <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
