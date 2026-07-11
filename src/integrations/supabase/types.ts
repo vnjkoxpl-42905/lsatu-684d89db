@@ -1713,6 +1713,51 @@ export type Database = {
         }
         Relationships: []
       }
+      lsatu_content_staging: {
+        Row: {
+          body: string | null
+          chunk_index: number
+          created_at: string
+          embedding: string | null
+          id: string
+          import_version: string
+          kind: string
+          metadata: Json
+          source_id: string
+          subtitle: string | null
+          title: string | null
+          url: string | null
+        }
+        Insert: {
+          body?: string | null
+          chunk_index: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          import_version: string
+          kind: string
+          metadata?: Json
+          source_id: string
+          subtitle?: string | null
+          title?: string | null
+          url?: string | null
+        }
+        Update: {
+          body?: string | null
+          chunk_index?: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          import_version?: string
+          kind?: string
+          metadata?: Json
+          source_id?: string
+          subtitle?: string | null
+          title?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       message_attachments: {
         Row: {
           created_at: string
@@ -3568,6 +3613,10 @@ export type Database = {
           source_queue: string
         }
         Returns: number
+      }
+      promote_lsat_knowledge_version: {
+        Args: { _expected_count: number; _slug: string; _version: string }
+        Returns: Json
       }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }

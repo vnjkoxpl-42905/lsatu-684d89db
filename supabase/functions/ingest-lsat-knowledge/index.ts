@@ -1,15 +1,21 @@
 // Admin-only ingestion for the shared LSAT knowledge layer.
 //
-// Lifecycle enforced here:
-//   - Any prior source row with the same slug stays untouched until the whole
-//     import succeeds. On failure the new attempt is recorded as `failed` with
-//     details; the previously-active version is never demoted.
-//   - The new version row is written `importing` first, flipped to `active`
-//     only after all 158 records embed + upsert + reconcile without error.
-//
-// Per-record + per-embedding validation is done in-function BEFORE anything
-// is written to lsatu_content_index. Embedding requests use bounded retry
-// with exponential backoff.
+// Version-safe, atomic lifecycle:
+//   1. Verify admin caller (JWT + user_roles).
+//   2. Validate manifest, hashes, all 158 records deterministically.
+//   3. Upsert source row for (slug, version) as `importing`. Previous
+//      `active` row for the same slug is NEVER touched here.
+//   4. Clear any leftover staging for this exact version, then write all
+//      records + embeddings to `lsatu_content_staging` keyed by
+//      import_version. Live `lsatu_content_index` is untouched.
+//   5. Call `promote_lsat_knowledge_version(slug, version, expected_count)`.
+//      That RPC runs one transaction that verifies count + embedding dims,
+//      archives the previous active version, replaces live records, and
+//      flips the new row to `active`. Any failure raises and rolls back —
+//      the previous active version and its records stay intact.
+//   6. On any failure at any stage: mark this attempt's row `failed`,
+//      clear its staging, and return a 500 (with CORS). Never touch the
+//      previous active version.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { crypto as denoCrypto } from "https://deno.land/std@0.224.0/crypto/mod.ts";
@@ -49,6 +55,13 @@ async function sha256Hex(input: string): Promise<string> {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// Fail-closed internal key check for outbound calls: only send the header
+// when a real, nonempty secret exists in the environment.
+function internalHeaders(): Record<string, string> {
+  const key = Deno.env.get("EDGE_INTERNAL_KEY");
+  return key && key.length > 0 ? { "X-Internal-Key": key } : {};
+}
+
 async function verifyAdmin(req: Request) {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -75,7 +88,7 @@ async function embedBatchWithRetry(inputs: string[]): Promise<number[][]> {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
+          ...internalHeaders(),
           Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
         },
         body: JSON.stringify({ model: EMBED_MODEL, input: inputs }),
@@ -106,6 +119,8 @@ function validateRecord(rec: any, i: number, version: string): string | null {
   for (const k of REQUIRED_META) if (!(k in meta)) return `${rec.record_id}: metadata missing ${k}`;
   if (rec.authority !== "canonical" || rec.verbatim !== true) return `${rec.record_id}: must be canonical & verbatim`;
   if (rec.source_version !== version) return `${rec.record_id}: source_version mismatch`;
+  if (meta.source_version !== version) return `${rec.record_id}: metadata.source_version mismatch`;
+  if (meta.source_slug !== EXPECTED_SLUG) return `${rec.record_id}: metadata.source_slug mismatch`;
   if (!VALID_ENTITY_TYPES.has(rec.entity_type)) return `${rec.record_id}: invalid entity_type ${rec.entity_type}`;
   if (typeof rec.entity_key !== "string" || !rec.entity_key.trim()) return `${rec.record_id}: entity_key empty`;
   if (typeof rec.section_key !== "string" || !rec.section_key.trim()) return `${rec.record_id}: section_key empty`;
@@ -168,18 +183,18 @@ Deno.serve(async (req) => {
     rec.__source_id = derivedSourceId;
     records.push(rec);
   }
+  const expectedCount = records.length;
 
-  // Look up any existing source row so we can preserve it on failure.
-  const { data: existingSource } = await admin
-    .from("lsat_knowledge_sources").select("id, status, version").eq("slug", EXPECTED_SLUG).maybeSingle();
-  const previouslyActive = existingSource?.status === "active" ? existingSource.version : null;
+  // Look up the currently-active row for this slug (if any) so we can report
+  // it back on success or failure. Never touched here.
+  const { data: prevActive } = await admin
+    .from("lsat_knowledge_sources")
+    .select("version").eq("slug", EXPECTED_SLUG).eq("status", "active").maybeSingle();
+  const previouslyActive: string | null = prevActive?.version ?? null;
 
-  // Idempotent guard: if the same version is already active AND its content
-  // matches (same md sha), still allow re-run (upsert is a no-op essentially).
-
-  // Insert `importing` row (either update-in-place for same version or
-  // insert a new row keyed by (slug, version)). We keep the previous active
-  // row untouched.
+  // Upsert this attempt's source row as `importing`. If the row for
+  // (slug, version) already exists we overwrite it (idempotent re-attempt);
+  // (slug, version) is unique, so we never collide with the active version's row.
   const nowIso = new Date().toISOString();
   const importingRow = {
     slug: EXPECTED_SLUG,
@@ -195,35 +210,29 @@ Deno.serve(async (req) => {
     imported_at: nowIso,
     updated_at: nowIso,
   };
-  // If the row for this slug is currently `active` on a DIFFERENT version we
-  // do not overwrite it — write a fresh row (assumes unique constraint on
-  // (slug, version); if not present the upsert on slug will collide, in which
-  // case we still preserve behaviour by only marking active at the end).
-  // For simplicity and given the table has PK on slug in this repo, we upsert
-  // by slug BUT capture the old status/version to restore on failure.
-  const { error: srcErr } = await admin.from("lsat_knowledge_sources").upsert(importingRow, { onConflict: "slug" });
+  const { error: srcErr } = await admin
+    .from("lsat_knowledge_sources")
+    .upsert(importingRow, { onConflict: "slug,version" });
   if (srcErr) return jsonRes({ error: "failed to write importing source row", detail: srcErr.message }, 500);
 
-  const restoreOnFailure = async (reason: string, details: unknown) => {
-    // Roll the source row forward to `failed` with details; if a previous
-    // active version existed, keep that in metadata so operators can revert.
-    await admin.from("lsat_knowledge_sources").upsert({
-      slug: EXPECTED_SLUG,
-      title: manifest.title ?? "LSAT LR Guide",
-      domain: manifest.domain ?? "logical_reasoning",
-      version,
+  const markFailed = async (reason: string, details: unknown) => {
+    await admin.from("lsat_knowledge_sources").update({
       status: "failed",
-      authority: manifest.authority ?? "canonical",
-      source_format: "markdown",
-      raw_markdown: canonical_markdown,
-      source_sha256: mdSha,
-      metadata: { ...manifest, failure: { reason, details, previously_active_version: previouslyActive } },
-      imported_at: nowIso,
       updated_at: new Date().toISOString(),
-    }, { onConflict: "slug" });
+      metadata: { ...manifest, failure: { reason, details, previously_active_version: previouslyActive } },
+    }).eq("slug", EXPECTED_SLUG).eq("version", version);
+    // Clear staging for this attempt so retrieval can never see it.
+    await admin.from("lsatu_content_staging").delete().eq("import_version", version);
   };
 
-  let processed = 0, upserted = 0, failed = 0;
+  // Fresh staging for this exact version.
+  const { error: clearErr } = await admin.from("lsatu_content_staging").delete().eq("import_version", version);
+  if (clearErr) {
+    await markFailed("staging_clear_failed", clearErr.message);
+    return jsonRes({ ok: false, error: "failed to clear staging", detail: clearErr.message }, 500);
+  }
+
+  let processed = 0, staged = 0, failed = 0;
   const failures: Array<{ record_id: string; reason: string }> = [];
 
   for (let i = 0; i < records.length; i += EMBED_BATCH) {
@@ -240,6 +249,7 @@ Deno.serve(async (req) => {
       const meta = { ...(r.metadata ?? {}), record_id: r.record_id, sort_order: r.sort_order };
       const subtitle = Array.isArray(r.heading_path) ? r.heading_path.join(" › ") : (r.metadata?.section_role ?? "");
       return {
+        import_version: version,
         kind: "lsat_methodology",
         source_id: r.__source_id,
         chunk_index: r.chunk_index,
@@ -252,70 +262,62 @@ Deno.serve(async (req) => {
       };
     });
     const { data: up, error: upErr } = await admin
-      .from("lsatu_content_index")
-      .upsert(rows, { onConflict: "kind,source_id,chunk_index" })
+      .from("lsatu_content_staging")
+      .upsert(rows, { onConflict: "import_version,kind,source_id,chunk_index" })
       .select("id");
     if (upErr) {
-      for (const r of slice) failures.push({ record_id: r.record_id, reason: `upsert: ${upErr.message}` });
+      for (const r of slice) failures.push({ record_id: r.record_id, reason: `stage: ${upErr.message}` });
       failed += slice.length;
       continue;
     }
     processed += slice.length;
-    upserted += (up?.length ?? 0);
+    staged += (up?.length ?? 0);
   }
 
   if (failed > 0) {
-    await restoreOnFailure("record_failures", { failed, failures: failures.slice(0, 20) });
+    await markFailed("record_failures", { failed, failures: failures.slice(0, 20) });
     return jsonRes({
       ok: false,
       slug: EXPECTED_SLUG, version,
-      counts: { processed, upserted, failed, obsolete: 0, total: records.length },
+      counts: { processed, staged, failed, promoted: 0, obsolete: 0, total: records.length },
       failures,
       previously_active_version: previouslyActive,
     }, 500);
   }
 
-  // Reconcile: delete stale rows for this slug (fail hard on error).
-  let obsolete = 0;
-  const keepIds = Array.from(seenIds);
-  const { data: existing, error: exErr } = await admin
-    .from("lsatu_content_index")
-    .select("id, metadata")
-    .eq("kind", "lsat_methodology")
-    .eq("metadata->>source_slug", EXPECTED_SLUG);
-  if (exErr) {
-    await restoreOnFailure("reconcile_query_failed", exErr.message);
-    return jsonRes({ ok: false, error: "reconcile query failed", detail: exErr.message, counts: { processed, upserted, failed, obsolete: 0, total: records.length } }, 500);
-  }
-  const stale = (existing ?? []).filter((row: any) => {
-    const rid = row.metadata?.record_id;
-    return !rid || !keepIds.includes(rid);
-  }).map((r: any) => r.id);
-  if (stale.length > 0) {
-    const { error: delErr } = await admin.from("lsatu_content_index").delete().in("id", stale);
-    if (delErr) {
-      await restoreOnFailure("reconcile_delete_failed", delErr.message);
-      return jsonRes({ ok: false, error: "reconcile delete failed", detail: delErr.message, counts: { processed, upserted, failed, obsolete: 0, total: records.length } }, 500);
-    }
-    obsolete = stale.length;
+  // Atomic promotion. The RPC re-verifies count + embedding dims inside a
+  // single transaction and raises on any mismatch, rolling back cleanly.
+  const { data: promoted, error: promErr } = await admin.rpc("promote_lsat_knowledge_version", {
+    _slug: EXPECTED_SLUG,
+    _version: version,
+    _expected_count: expectedCount,
+  });
+  if (promErr) {
+    await markFailed("promotion_failed", promErr.message);
+    return jsonRes({
+      ok: false,
+      slug: EXPECTED_SLUG, version,
+      error: "promotion_failed",
+      detail: promErr.message,
+      counts: { processed, staged, failed: 0, promoted: 0, obsolete: 0, total: records.length },
+      previously_active_version: previouslyActive,
+    }, 500);
   }
 
-  // Flip to active only after full success.
-  const { error: actErr } = await admin.from("lsat_knowledge_sources").update({
-    status: "active",
-    updated_at: new Date().toISOString(),
-    metadata: { ...manifest, previously_active_version: previouslyActive },
-  }).eq("slug", EXPECTED_SLUG).eq("version", version);
-  if (actErr) {
-    await restoreOnFailure("activate_failed", actErr.message);
-    return jsonRes({ ok: false, error: "failed to activate source", detail: actErr.message }, 500);
-  }
+  const promotedRow = promoted as { promoted: number; obsolete_removed: number; previously_active_version: string | null };
 
   return jsonRes({
     ok: true,
     slug: EXPECTED_SLUG,
     version,
-    counts: { processed, upserted, failed, obsolete, total: records.length },
-    previously_active_version: previouslyActive,
+    counts: {
+      processed,
+      staged,
+      failed: 0,
+      promoted: promotedRow.promoted,
+      obsolete: promotedRow.obsolete_removed,
+      total: records.length,
+    },
+    previously_active_version: promotedRow.previously_active_version ?? previouslyActive,
   });
 });
