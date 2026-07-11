@@ -161,7 +161,7 @@
       "D": "takes for granted that the gains in immune system strength did not themselves influence the patients’ tendency to laugh",
       "E": "presumes, without providing justification, that the patients whose tendency to laugh was greatest to begin with recovered from their illnesses more rapidly than the other patients"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Worst of the Worst"
     ]
@@ -254,7 +254,7 @@
       "D": "illicitly infers that an attribute of a few users of the proposed trail will characterize a majority of users of the trail",
       "E": "attacks the citizens in the group rather than their objection to developing the trail"
     },
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Worst of the Worst"
     ]
@@ -540,7 +540,7 @@
       "D": "James Benson has never done business with the city of Waldville. Since Waldville only maintains business files on individuals that it does business with, it clearly does not have a business file on James Benson.",
       "E": "Conway Flooring has never installed hardwood flooring for any customer in Woodridge. Since Conway Flooring has had a lot of customers in Woodridge, the company clearly does not install hardwood flooring."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT149",
@@ -560,7 +560,7 @@
       "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
       "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Binaries",
       "Quantifiers"

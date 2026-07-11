@@ -17,7 +17,7 @@
       "D": "It uses evidence about an opinion held by the majority of a population in an attempt to justify a conclusion regarding the opinion of a small part of that population.",
       "E": "It takes for granted that the fund-raising letter had some influence on the opinions of most of the people who received it."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
@@ -468,7 +468,7 @@
       "D": "If the company’s president was told about the procedural changes before they were made, then the contract was not violated.",
       "E": "If no lawyer in the company’s legal department was told about the procedural changes before they were made, then the contract was violated."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea"
     ]
@@ -591,7 +591,7 @@
       "D": "Most of the vegetables available at the Valley Food Co-op are organic, but most of the vegetables available at the Jumbo Supermarket are not. Thus, more organic vegetables are available at Valley Food than are available at Jumbo.",
       "E": "The Acme Realty website has photos of most of the houses, but of fewer than half of the condominiums, that Acme is offering for sale. So Acme must have more houses than condominiums for sale."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Math-y Stuff",
       "Quantifiers"

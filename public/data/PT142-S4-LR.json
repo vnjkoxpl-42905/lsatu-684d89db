@@ -286,7 +286,7 @@
       "D": "A qualified neighborhood that requests an interim sweeping will have its streets swept more than once a month.",
       "E": "No street in an unqualified neighborhood will be swept more than once a month even if the neighborhood requests it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT142",

@@ -375,7 +375,7 @@
       "D": "bases a conclusion that an attribute is always irrelevant to success on evidence that it is sometimes irrelevant to success",
       "E": "presents only one instance of a phenomenon as the basis for a broad generalization about that phenomenon"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
@@ -428,7 +428,7 @@
       "D": "If the general assembly does not begin at 7:00 P.M. today, then the standards committee has a quorum.",
       "E": "If the standards committee has a quorum, then the awards committee does not have a quorum."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
@@ -453,7 +453,7 @@
       "D": "For most consumers, a mortgage is a much larger loan than any other loan the consumer obtains.",
       "E": "Most potential borrowers have credit scores that are neither very low nor very high."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Volume Dial"
     ]
@@ -477,7 +477,7 @@
       "D": "The less difficult it is to construct a computer model of a process the better understood is that process.",
       "E": "We should not underestimate the usefulness of computer modeling to the study of human cognition."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
@@ -504,7 +504,7 @@
       "D": "were the only kind of tool that would have been used for canoe making 5,000 years ago",
       "E": "are not known to have been used by the region’s Aboriginal people for any task other than canoe making"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Similarity",
@@ -531,7 +531,7 @@
       "D": "draws a conclusion that simply restates a claim presented in support of that conclusion",
       "E": "concludes that hypnosis videos will be effective simply because they have never been proven to be ineffective"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
       "Plans / Recommendations"
@@ -604,7 +604,7 @@
       "D": "Mr. Schwartz is polite to anyone who is polite to him. So, since all of his colleagues are polite to him, it must be that he is polite to all his colleagues.",
       "E": "If a book is worth reading, it is worth buying. So, since not all books are worth reading, not all books are worth buying."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
