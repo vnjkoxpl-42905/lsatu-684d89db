@@ -1,34 +1,33 @@
 #!/usr/bin/env node
 /**
- * Deterministic Markdown → JSONL generator for the LSAT LR canonical
- * knowledge layer.
+ * TRUE Markdown-derived generator for the LSAT LR canonical knowledge layer.
  *
- * Design:
- *   - The canonical Markdown file (logical-reasoning-guide.md) is the source
- *     of truth for the raw instructional content.
- *   - The pinned JSONL (logical-reasoning-guide.ingestion.jsonl) supplies the
- *     structured record configuration: record_id, heading_path, entity_type,
- *     entity_key, section_key, aliases, related_*, sort_order, chunk_index,
- *     title, subtitle, url, plus the exact body_markdown extracted from the MD.
- *   - This script recomputes body_text, embedding_text, and body_text_sha256
- *     deterministically from body_markdown using the pure function in
- *     lr-md-to-text.mjs. It also recomputes the ingestion JSONL sha256 and
- *     asserts the MD sha256 matches the manifest.
- *   - `--check`: regenerate in memory and fail if the committed JSONL or
- *     manifest hashes differ from the regenerated output.
- *   - default (no flag): regenerate in place and update the manifest hashes.
+ * Inputs:
+ *   - content/lsat/logical-reasoning/logical-reasoning-guide.md
+ *       Canonical instructional Markdown. Only source of body text.
+ *   - content/lsat/logical-reasoning/logical-reasoning-guide.sidecar.json
+ *       Metadata-only sidecar (no body text). Provides record_id,
+ *       canonical_id, entity_type/key, section_key/role, aliases,
+ *       related_*, sort_order, chunk_index, title, heading_path.
+ *   - content/lsat/logical-reasoning/logical-reasoning-guide.manifest.json
+ *       Manifest with counts and expected hashes.
  *
- * Invariants checked in every mode:
- *   - unique record_id
- *   - required top-level + metadata fields present, non-empty
- *   - heading_path non-empty
- *   - aliases / related_* are arrays
- *   - source_version / source_id / authority match manifest
- *   - every body_markdown block appears as a substring in the canonical MD
- *     (whitespace-collapsed) — this is the MD-as-source-of-truth guarantee.
- *   - body_text_sha256 matches body_text
- *   - question_type_count / reasoning_type_count match manifest
- *   - record count matches manifest
+ * Behavior:
+ *   generate (default): parse MD, look up each sidecar record by
+ *     heading_path, extract body_markdown verbatim from MD, derive
+ *     body_text/embedding_text/body_text_sha256 deterministically, and
+ *     write the JSONL + refresh the ingestion_jsonl_sha256 in the manifest.
+ *   --check: regenerate in memory and require byte-for-byte equality
+ *     with the committed JSONL and manifest hashes. Fails non-zero
+ *     otherwise.
+ *
+ * Invariants:
+ *   - Every sidecar record must resolve to exactly one MD heading_path.
+ *   - Every MD leaf section under Question Types / Reasoning Types must
+ *     be claimed by exactly one sidecar record.
+ *   - Extracted body_markdown must be non-empty.
+ *   - canonical_markdown_sha256 must match the manifest.
+ *   - Deterministic ordering by sort_order.
  */
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -39,87 +38,172 @@ import { markdownToPlainText, buildEmbeddingText } from "./lr-md-to-text.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..", "..", "content", "lsat", "logical-reasoning");
 const MD_PATH = resolve(ROOT, "logical-reasoning-guide.md");
+const SIDECAR_PATH = resolve(ROOT, "logical-reasoning-guide.sidecar.json");
 const JSONL_PATH = resolve(ROOT, "logical-reasoning-guide.ingestion.jsonl");
 const MANIFEST_PATH = resolve(ROOT, "logical-reasoning-guide.manifest.json");
 
-const REQUIRED = [
-  "schema_version", "record_id", "source_id", "source_version", "domain",
-  "authority", "verbatim", "kind", "entity_type", "entity_key", "section_key",
-  "heading_path", "title", "chunk_index", "sort_order", "body_markdown",
-  "body_text", "embedding_text", "metadata",
-];
-const REQUIRED_META = [
-  "canonical_id", "source_slug", "source_version", "authority", "verbatim",
-  "heading_path", "entity_type", "entity_key", "section_key", "section_role",
-  "section_occurrence", "aliases", "related_question_types",
-  "related_reasoning_types", "body_text_sha256",
-];
-
+const ENTITY_ROOTS = new Set(["Question Types", "Reasoning Types"]);
 const sha256 = (buf) => createHash("sha256").update(buf).digest("hex");
 const errors = [];
 const fail = (m) => errors.push(m);
-
 const mode = process.argv.includes("--check") ? "check" : "generate";
 
+// ---------- Load inputs ----------
 const mdBuf = readFileSync(MD_PATH);
 const md = mdBuf.toString("utf8");
-const mdNorm = md.replace(/\s+/g, " ");
+const sidecar = JSON.parse(readFileSync(SIDECAR_PATH, "utf8"));
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
 const originalJsonlBuf = readFileSync(JSONL_PATH);
-const inputRecs = originalJsonlBuf.toString("utf8").split(/\r?\n/).filter((l) => l.trim()).map((l, i) => {
-  try { return JSON.parse(l); } catch (e) { fail(`line ${i + 1}: JSON parse failed: ${e.message}`); return null; }
-}).filter(Boolean);
 
-// MD hash guard
+// ---------- MD sha guard ----------
 const mdSha = sha256(mdBuf);
-if (mdSha !== manifest.canonical_markdown_sha256) fail(`markdown sha mismatch: got ${mdSha} expected ${manifest.canonical_markdown_sha256}`);
+if (mdSha !== manifest.canonical_markdown_sha256) {
+  fail(`markdown sha mismatch: got ${mdSha} expected ${manifest.canonical_markdown_sha256}`);
+}
 
-// Regenerate deterministically
-const seen = new Set();
+// ---------- Parse MD into sections keyed by heading_path ----------
+function parseMd(source) {
+  const lines = source.split("\n");
+  // Skip YAML frontmatter if present
+  let i = 0;
+  if (lines[0]?.trim() === "---") {
+    i = 1;
+    while (i < lines.length && lines[i].trim() !== "---") i++;
+    i++;
+  }
+  const stack = ["", "", "", "", ""]; // H1..H5
+  const sections = [];
+  let curPath = null;
+  let curBody = [];
+  const flush = () => {
+    if (curPath !== null) sections.push({ path: curPath.slice(), body: curBody.join("\n").replace(/^\n+/, "").replace(/\n+$/, "") });
+  };
+  for (; i < lines.length; i++) {
+    const ln = lines[i];
+    const h = /^(#{1,5}) (.+?)\s*$/.exec(ln);
+    if (h) {
+      flush();
+      const depth = h[1].length;
+      const text = h[2].trim();
+      stack[depth - 1] = text;
+      for (let j = depth; j < stack.length; j++) stack[j] = "";
+      curPath = stack.filter(Boolean);
+      curBody = [];
+    } else if (curPath !== null) {
+      curBody.push(ln);
+    }
+  }
+  flush();
+  return sections;
+}
+
+const allSections = parseMd(md);
+
+// Drop H1 (document title) so path starts at Question Types / Reasoning Types.
+// The MD H1 is "Logical Reasoning Guide to Question and Reasoning Types".
+const H1 = allSections[0]?.path?.[0] ?? "";
+const normalized = allSections.map((s) => ({
+  path: s.path[0] === H1 ? s.path.slice(1) : s.path.slice(),
+  body: s.body,
+}));
+
+// Index by heading_path (JSON key). Also collect entity-scoped leaves for coverage.
+const byPath = new Map();
+for (const s of normalized) {
+  if (!s.path.length) continue;
+  byPath.set(JSON.stringify(s.path), s.body);
+}
+
+// Leaves = sections whose path root is Question Types / Reasoning Types AND whose body
+// has instructional text (some non-whitespace before the next heading). Sections that
+// only contain sub-headings and nothing else (pure containers) are not records.
+function isEntitySection(path) { return ENTITY_ROOTS.has(path[0]); }
+const entityLeafPaths = new Set();
+for (const s of normalized) {
+  if (!isEntitySection(s.path)) continue;
+  if (s.body.trim().length > 0) entityLeafPaths.add(JSON.stringify(s.path));
+}
+
+// ---------- Build records from sidecar ----------
+if (!Array.isArray(sidecar.records) || sidecar.records.length !== manifest.record_count) {
+  fail(`sidecar record count ${sidecar.records?.length} != manifest ${manifest.record_count}`);
+}
+if (sidecar.source_version !== manifest.source_version) fail(`sidecar version mismatch`);
+if (sidecar.source_slug !== manifest.source_slug) fail(`sidecar slug mismatch`);
+
+const claimed = new Set();
+const seenRecordIds = new Set();
 const questionTypes = new Set();
 const reasoningTypes = new Set();
-const outRecs = inputRecs.map((r) => {
-  for (const k of REQUIRED) if (!(k in r)) fail(`${r.record_id ?? "?"}: missing ${k}`);
-  const meta = r.metadata ?? {};
-  for (const k of REQUIRED_META) if (!(k in meta)) fail(`${r.record_id}: metadata missing ${k}`);
-  if (r.authority !== "canonical") fail(`${r.record_id}: authority must be canonical`);
-  if (r.verbatim !== true) fail(`${r.record_id}: verbatim must be true`);
-  if (r.source_version !== manifest.source_version) fail(`${r.record_id}: source_version mismatch`);
-  if (r.source_id !== manifest.source_slug) fail(`${r.record_id}: source_id must equal manifest.source_slug`);
-  if (!Array.isArray(r.heading_path) || r.heading_path.length === 0) fail(`${r.record_id}: heading_path must be non-empty`);
-  if (!r.body_markdown?.trim()) fail(`${r.record_id}: body_markdown empty`);
-  if (!Array.isArray(meta.aliases)) fail(`${r.record_id}: aliases must be array`);
-  if (!Array.isArray(meta.related_question_types)) fail(`${r.record_id}: related_question_types must be array`);
-  if (!Array.isArray(meta.related_reasoning_types)) fail(`${r.record_id}: related_reasoning_types must be array`);
-  if (!["question_type","reasoning_type"].includes(r.entity_type)) fail(`${r.record_id}: bad entity_type`);
-  if (seen.has(r.record_id)) fail(`duplicate record_id ${r.record_id}`);
-  seen.add(r.record_id);
-  if (r.entity_type === "question_type") questionTypes.add(r.entity_key);
-  if (r.entity_type === "reasoning_type") reasoningTypes.add(r.entity_key);
 
-  // MD-as-source-of-truth: body_markdown must appear in canonical MD
-  const bmNorm = r.body_markdown.replace(/\s+/g, " ").trim();
-  if (bmNorm && !mdNorm.includes(bmNorm)) {
-    // Allow slight tolerance: try without list markers
-    const stripped = bmNorm.replace(/^\s*(?:[-*+]|\d+\.)\s+/gm, "").trim();
-    if (!mdNorm.includes(stripped)) fail(`${r.record_id}: body_markdown not found verbatim in canonical MD`);
-  }
+const sortedSidecar = sidecar.records.slice().sort((a, b) => a.sort_order - b.sort_order);
+const outRecs = [];
+for (const s of sortedSidecar) {
+  const hpKey = JSON.stringify(s.heading_path);
+  if (!byPath.has(hpKey)) { fail(`sidecar ${s.record_id}: heading_path not found in MD: ${hpKey}`); continue; }
+  const bodyMd = byPath.get(hpKey);
+  if (!bodyMd || !bodyMd.trim()) { fail(`sidecar ${s.record_id}: MD section body empty`); continue; }
+  if (claimed.has(hpKey)) { fail(`heading_path claimed twice: ${hpKey}`); }
+  claimed.add(hpKey);
+  if (seenRecordIds.has(s.record_id)) fail(`duplicate record_id ${s.record_id}`);
+  seenRecordIds.add(s.record_id);
+  if (s.entity_type === "question_type") questionTypes.add(s.entity_key);
+  if (s.entity_type === "reasoning_type") reasoningTypes.add(s.entity_key);
 
-  const body_text = markdownToPlainText(r.body_markdown);
-  const embedding_text = buildEmbeddingText(r, body_text);
-  const body_text_sha256 = sha256(Buffer.from(body_text, "utf8"));
-  return {
-    ...r,
-    body_text,
-    embedding_text,
-    metadata: { ...meta, body_text_sha256 },
+  const bodyText = markdownToPlainText(bodyMd);
+  const rec = {
+    schema_version: "1.1",
+    record_id: s.record_id,
+    source_id: manifest.source_slug,
+    source_version: manifest.source_version,
+    domain: manifest.domain,
+    authority: manifest.authority,
+    verbatim: true,
+    kind: "lsat_methodology",
+    entity_type: s.entity_type,
+    entity_key: s.entity_key,
+    section_key: s.section_key,
+    heading_path: s.heading_path,
+    title: s.title,
+    chunk_index: s.chunk_index,
+    sort_order: s.sort_order,
+    body_markdown: bodyMd,
+    body_text: bodyText,
+    embedding_text: "", // set below (needs bodyText)
+    metadata: {
+      canonical_id: s.canonical_id,
+      source_slug: manifest.source_slug,
+      source_version: manifest.source_version,
+      domain: manifest.domain,
+      authority: manifest.authority,
+      verbatim: true,
+      heading_path: s.heading_path,
+      entity_type: s.entity_type,
+      entity_key: s.entity_key,
+      section_key: s.section_key,
+      section_role: s.section_role,
+      section_occurrence: s.section_occurrence,
+      aliases: s.aliases,
+      related_question_types: s.related_question_types,
+      related_reasoning_types: s.related_reasoning_types,
+      body_text_sha256: sha256(Buffer.from(bodyText, "utf8")),
+    },
   };
-});
+  rec.embedding_text = buildEmbeddingText(rec, bodyText);
+  outRecs.push(rec);
+}
 
+// Coverage: every entity leaf in MD must be claimed by a sidecar record.
+for (const key of entityLeafPaths) {
+  if (!claimed.has(key)) fail(`MD leaf section not covered by sidecar: ${key}`);
+}
+
+// Manifest counts
 if (outRecs.length !== manifest.record_count) fail(`record count mismatch: got ${outRecs.length} expected ${manifest.record_count}`);
 if (questionTypes.size !== manifest.question_type_count) fail(`question_type_count mismatch: got ${questionTypes.size} expected ${manifest.question_type_count}`);
 if (reasoningTypes.size !== manifest.reasoning_type_count) fail(`reasoning_type_count mismatch: got ${reasoningTypes.size} expected ${manifest.reasoning_type_count}`);
 
+// ---------- Emit JSONL ----------
 const outJsonl = outRecs.map((r) => JSON.stringify(r)).join("\n") + "\n";
 const outJsonlBuf = Buffer.from(outJsonl, "utf8");
 const outJsonlSha = sha256(outJsonlBuf);
@@ -133,7 +217,7 @@ if (mode === "check") {
     console.error(`--check FAILED (${errors.length} error(s))`);
     process.exit(1);
   }
-  console.log(`OK --check: ${outRecs.length} records, jsonl sha=${outJsonlSha}, md sha=${mdSha}`);
+  console.log(`OK --check: ${outRecs.length} records; jsonl sha=${outJsonlSha}; md sha=${mdSha}`);
   process.exit(0);
 }
 
@@ -145,5 +229,5 @@ if (errors.length) {
 writeFileSync(JSONL_PATH, outJsonlBuf);
 const newManifest = { ...manifest, ingestion_jsonl_sha256: outJsonlSha };
 writeFileSync(MANIFEST_PATH, JSON.stringify(newManifest, null, 2) + "\n");
-console.log(`OK generate: ${outRecs.length} records, jsonl sha=${outJsonlSha}, md sha=${mdSha}`);
+console.log(`OK generate: ${outRecs.length} records; jsonl sha=${outJsonlSha}; md sha=${mdSha}`);
 console.log(`question types=${questionTypes.size}, reasoning types=${reasoningTypes.size}`);
