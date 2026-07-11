@@ -24,28 +24,30 @@ const CHOICE_LETTERS = ["A", "B", "C", "D", "E"];
 
 const CHOICE_LINE_RE = /^\*\*([A-E])\.\s+([\s\S]*?)\*\*\s+—\s+([^\n]+?)(?:\s+\((\d+)%\s+of students\))?\s*$/;
 
-function splitQuestions(md) {
+function splitQuestions(md, sectionHint) {
   // Split by "## S<k> · Q<n> — <type>" headings.
+  // Falls back to "## Question <n>" / "## Q<n>" headings when the file uses
+  // that layout; in that case the section comes from `sectionHint` (derived
+  // from the filename) or from a preceding "# Section N" header.
   const lines = md.split("\n");
   const questions = [];
   let current = null;
-  const headerRe = /^##\s+S(\d+)\s*·\s*Q(\d+)\s*(?:—\s*(.+))?\s*$/;
+  let currentSection = sectionHint ?? null;
+  const headerReA = /^##\s+S(\d+)\s*·\s*Q(\d+)\s*(?:—\s*(.+))?\s*$/;
+  const headerReB = /^##\s+(?:Question|Q)\s*(\d+)\s*(?:—\s*(.+))?\s*$/i;
+  const sectionHeaderRe = /^#\s+Section\s+(\d+)/i;
   for (let i = 0; i < lines.length; i++) {
-    const m = lines[i].match(headerRe);
-    if (m) {
+    const sh = lines[i].match(sectionHeaderRe);
+    if (sh) currentSection = Number(sh[1]);
+    const mA = lines[i].match(headerReA);
+    const mB = mA ? null : lines[i].match(headerReB);
+    if (mA || mB) {
       if (current) questions.push(current);
-      current = {
-        section: Number(m[1]),
-        qnum: Number(m[2]),
-        qtypeLabel: (m[3] || "").trim(),
-        startLine: i + 1,
-        bodyLines: [],
-      };
+      const section = mA ? Number(mA[1]) : currentSection;
+      const qnum = Number((mA ? mA[2] : mB[1]));
+      const qtypeLabel = ((mA ? mA[3] : mB[2]) || "").trim();
+      current = { section, qnum, qtypeLabel, startLine: i + 1, bodyLines: [] };
     } else if (current) {
-      // Stop at a top-level "# " or "---" separator.
-      if (/^# /.test(lines[i])) {
-        // start of a new top-level section like "# Section 3 (Logical Reasoning)"; keep collecting until next question
-      }
       current.bodyLines.push(lines[i]);
     }
   }
