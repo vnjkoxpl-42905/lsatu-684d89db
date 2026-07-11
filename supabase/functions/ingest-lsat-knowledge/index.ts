@@ -192,6 +192,43 @@ Deno.serve(async (req) => {
     .select("version").eq("slug", EXPECTED_SLUG).eq("status", "active").maybeSingle();
   const previouslyActive: string | null = prevActive?.version ?? null;
 
+  // No-op fast path: if the requested (slug, version) is already active AND
+  // its stored source_sha256 matches the payload's canonical markdown hash,
+  // this is a redundant re-ingest. Skip embedding, staging, and promotion so
+  // we never risk flipping the current active version to `importing`/`failed`.
+  const { data: existingSame } = await admin
+    .from("lsat_knowledge_sources")
+    .select("status, source_sha256, metadata")
+    .eq("slug", EXPECTED_SLUG)
+    .eq("version", version)
+    .maybeSingle();
+  if (
+    existingSame &&
+    existingSame.status === "active" &&
+    existingSame.source_sha256 === mdSha &&
+    (existingSame.metadata?.ingestion_jsonl_sha256 ?? manifest.ingestion_jsonl_sha256) === manifest.ingestion_jsonl_sha256
+  ) {
+    const { count: liveCount } = await admin
+      .from("lsatu_content_index")
+      .select("id", { count: "exact", head: true })
+      .eq("kind", "lsat_methodology")
+      .filter("metadata->>source_slug", "eq", EXPECTED_SLUG)
+      .filter("metadata->>source_version", "eq", version);
+    return jsonRes({
+      ok: true,
+      no_op: true,
+      reason: "already_active_matching_hashes",
+      slug: EXPECTED_SLUG,
+      version,
+      counts: {
+        processed: 0, staged: 0, failed: 0,
+        promoted: 0, obsolete: 0, total: expectedCount,
+        live_records: liveCount ?? null,
+      },
+      previously_active_version: version,
+    });
+  }
+
   // Upsert this attempt's source row as `importing`. If the row for
   // (slug, version) already exists we overwrite it (idempotent re-attempt);
   // (slug, version) is unique, so we never collide with the active version's row.

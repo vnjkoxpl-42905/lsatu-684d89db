@@ -3552,6 +3552,22 @@ export type Database = {
           sender_id: string
         }[]
       }
+      get_lsat_knowledge_by_canonical_id: {
+        Args: { _canonical_id: string; _kinds?: string[] }
+        Returns: {
+          body: string
+          chunk_index: number
+          heading_path: Json
+          id: string
+          kind: string
+          metadata: Json
+          record_id: string
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+        }[]
+      }
       get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_student_email: { Args: { _student_id: string }; Returns: string }
       has_role: {
