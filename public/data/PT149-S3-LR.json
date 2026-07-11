@@ -166,7 +166,7 @@
       "D": "requires a considerable length of time",
       "E": "could be done without intending to do so"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
       "Analogies"
@@ -191,7 +191,7 @@
       "D": "The rate of extinction of native plant species on an island tends to increase dramatically after human colonization.",
       "E": "Large land mammals tend to prefer plants from species native to mainland regions over plants from species native to islands."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Plausibility"
@@ -291,7 +291,7 @@
       "D": "In ancient Greece, people did not read silently to themselves.",
       "E": "Only rarely in ancient Greece were prophecies written down on writing tablets."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]
@@ -383,7 +383,7 @@
       "D": "If Plastonica had not opened the plastics factory in the area, it would have opened it somewhere else.",
       "E": "Critics of the tax bill believe that it has not created any jobs in the area."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
       "Defender",
@@ -409,7 +409,7 @@
       "D": "People often change their minds about issues that do not make significant differences to their lives.",
       "E": "People’s evaluations of a situation sometimes depend less on the situation itself than on how it is presented to them."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker",
       "Proposition/Generalization"
@@ -434,7 +434,7 @@
       "D": "Anyone who uses herbal medicines should give those medicines a chance to influence the body gently over several months at least.",
       "E": "One should occasionally skip one’s usual dose of an herbal medicine for a day or two only if doing so will reduce or eliminate toxic side effects from several months of use."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Defender",
       "Medical",
@@ -461,7 +461,7 @@
       "D": "the proposed ban would prohibit smoking in public places",
       "E": "there are cases in which government should attempt to regulate private behavior"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Plans / Recommendations",
       "Principles in Answers",
@@ -486,7 +486,7 @@
       "D": "employs a premise that is incompatible with the conclusion it is supposed to justify",
       "E": "uses a claim that presupposes the truth of its main conclusion as part of the justification for that conclusion"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
       "Plans / Recommendations"
@@ -511,7 +511,7 @@
       "D": "Attaining happiness is the real goal of people who strive for material well-being.",
       "E": "Material well-being does not increase one’s sense of approval of one’s character and projects."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Math-y Stuff"
     ]
@@ -535,7 +535,7 @@
       "D": "Those competitors—and only those—who meet all of the following criteria are eligible for the award: they must be under 19 years of age, be in secondary school, and have played the sport for at least the two years immediately preceding the competition. You meet all the criteria, so you are eligible.",
       "E": "A meal is nutritious only if it includes both carbohydrates and protein. Almost 80 percent of the calories in what I ate for lunch were from fat, so what I ate for lunch was not nutritious."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "EXCEPT",
       "Net Effect"
@@ -559,7 +559,7 @@
       "D": "Bacteria colonies that produce phenazines are better able to fend off other bacteria than are bacteria colonies that do not produce phenazines.",
       "E": "Within bacteria colonies that produce phenazines, interior bacteria are more likely to die than are bacteria along the edges."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
@@ -587,7 +587,7 @@
       "D": "The medieval manuscripts most susceptible to deterioration are those most frequently consulted by researchers.",
       "E": "None of the medieval manuscripts that are rarely consulted by researchers is widely acknowledged to be of cultural significance."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
       "Math-y Stuff",
@@ -613,7 +613,7 @@
       "D": "Usually, a company that sends out direct-mail advertisements has good reason to think that the person to whom the advertisement is sent would be more interested in the product than would the average person.",
       "E": "Products purchased as the result of direct-mail advertising comprise an increasingly large portion of the consumer products purchased each year."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",

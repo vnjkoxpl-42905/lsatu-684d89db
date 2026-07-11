@@ -185,7 +185,7 @@
       "D": "Few artists are endowed with a high degree of creativity.",
       "E": "Anyone endowed with both a high level of artistic skill and a high degree of creativity will produce only a few great works of art."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion"
@@ -209,7 +209,7 @@
       "D": "draws a conclusion about all adults from a sample that is too small to be representative",
       "E": "infers that some members of a group have a particular characteristic merely from the fact that the group as a whole has it"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact"
@@ -261,7 +261,7 @@
       "D": "Austronesian-speaking peoples originated in the homeland where Austronesian languages have been spoken longest.",
       "E": "Austronesian-speaking peoples probably originated in Taiwan and later migrated to other islands."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Intermediate Conclusions"
     ]
@@ -455,7 +455,7 @@
       "D": "There is clear evidence that at least some groups of Neanderthals living more recently than 60,000 years ago developed methods of preserving meat other than smoking it.",
       "E": "The ability to preserve meat through smoking would have made the Neanderthal humans less vulnerable to poor periods of hunting."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives"
@@ -576,7 +576,7 @@
       "D": "It is the argument’s main conclusion and is inferred from two other statements in the argument, one of which is used to support the other.",
       "E": "It is the argument’s main conclusion and is inferred from two other statements in the argument, neither of which is used to support the other."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Intermediate Conclusions"
     ]
