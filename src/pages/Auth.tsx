@@ -16,75 +16,96 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
-import VoidCanvas from '@/components/auth-landing/VoidCanvas';
 import {
-  LANDING_CSS,
-  VOID,
+  ACADEMY_CSS,
+  ACA,
   useReveal,
-  LsxNav,
-  LsxHero,
-  LsxOrbits,
-  LsxChapters,
-  LsxMarquee,
-  LsxHabits,
-  LsxPillars,
-  LsxCredo,
-  LsxFinal,
-  LsxFooter,
-} from '@/components/auth-landing/sections';
+  AcaAmbience,
+  AcaNav,
+  AcaHero,
+  AcaStele,
+  AcaBust,
+  AcaCanon,
+  AcaDisciplines,
+  AcaJustice,
+  AcaMarquee,
+  AcaCredo,
+  AcaFinal,
+  AcaFooter,
+} from '@/components/auth-landing/academy';
+import {
+  FX_CSS,
+  AcaPreloader,
+  AcaCursor,
+  AcaPlumb,
+  GoldSeam,
+  type PlumbStop,
+} from '@/components/auth-landing/fx';
+
+// Plumb-line stops: one per major landing chapter, in page order.
+const PLUMB_STOPS: PlumbStop[] = [
+  { id: 'aca-top', label: 'Top', numeral: 'I' },
+  { id: 'aca-moves', label: 'The twelve moves', numeral: 'II' },
+  { id: 'aca-method', label: 'The method', numeral: 'III' },
+  { id: 'aca-canon', label: 'The canon', numeral: 'IV' },
+  { id: 'aca-disciplines', label: 'The disciplines', numeral: 'V' },
+  { id: 'aca-justice-s', label: 'Judgment', numeral: 'VI' },
+  { id: 'aca-begin', label: 'Begin', numeral: 'VII' },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AUTH PAGE — "The Ascent"
-// A cinematic void-and-ember landing (WebGL atmosphere, generated key imagery,
-// 3D constellation) wrapped around the exact same auth machinery as before:
-// Supabase email/password, Lovable Google OAuth, reset, confirmation,
-// session-expired handling. The dark glass drawer is the destination of the
-// page's narrative.
+// AUTH PAGE — "The Academy"
+// A museum nocturne: generated marble film, an inscribed stele of the twelve
+// LR moves, a three.js particle bust that assembles on scroll, and bronze
+// engraved plates for the four product disciplines. Wrapped around the exact
+// same auth machinery as before: Supabase email/password, Lovable Google
+// OAuth, reset, confirmation, session-expired handling. The drawer is the
+// door the page walks you toward.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-12 sm:h-11 bg-black/50 border-[color:var(--auth-line-2)] focus-visible:border-[color:var(--auth-line-focus)] focus-visible:ring-1 focus-visible:ring-[color:var(--auth-ring-soft)] text-[#EDE7DA] text-base sm:text-sm placeholder:text-[#6E675C] shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-[color:var(--auth-line-2)] focus-visible:border-[color:var(--auth-line-focus)] focus-visible:ring-1 focus-visible:ring-[color:var(--auth-ring-soft)] text-[#EAE5DA] text-base sm:text-sm placeholder:text-[#6E695E] shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-[3px]';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
-  'block text-[10px] uppercase tracking-[0.22em] text-[#847D70] font-medium mb-1.5 ml-0.5 font-mono';
+  'block text-[10px] uppercase tracking-[0.22em] text-[#8A8475] font-medium mb-1.5 ml-0.5 font-mono';
 
 // ── Shared focus ring for drawer controls ──
 const focusRingCls =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--auth-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--auth-surface)]';
 
 // ── Drawer palette + drawer-scoped effects. Global (:root) so it reaches the
-// Vaul portal; namespaced so it can't collide. Warm ember-on-void values that
-// match the landing's design language.
+// Vaul portal; namespaced so it can't collide. Marble-and-bronze-on-obsidian
+// values matching the Academy landing.
 const DRAWER_CSS = `
   :root {
-    --auth-surface: #0C0A08;
-    --auth-line-1: rgb(237 231 218 / 0.05);
-    --auth-line-2: rgb(237 231 218 / 0.08);
-    --auth-line-3: rgb(237 231 218 / 0.12);
-    --auth-line-focus: rgb(232 164 76 / 0.45);
-    --auth-catchlight: rgb(255 203 124 / 0.35);
-    --auth-fill-1: rgb(237 231 218 / 0.04);
-    --auth-fill-hover: rgb(237 231 218 / 0.07);
-    --auth-fill-active: rgb(237 231 218 / 0.10);
-    --auth-indicator: rgb(232 164 76 / 0.14);
-    --auth-ring: rgb(232 164 76 / 0.55);
-    --auth-ring-soft: rgb(232 164 76 / 0.18);
-    --auth-success: #E8C07C;
-    --auth-success-bg: rgb(232 164 76 / 0.10);
-    --auth-success-line: rgb(232 164 76 / 0.25);
+    --auth-surface: #0A0908;
+    --auth-line-1: rgb(234 229 218 / 0.05);
+    --auth-line-2: rgb(234 229 218 / 0.09);
+    --auth-line-3: rgb(234 229 218 / 0.13);
+    --auth-line-focus: rgb(138 216 226 / 0.5);
+    --auth-catchlight: rgb(232 207 150 / 0.5);
+    --auth-fill-1: rgb(234 229 218 / 0.04);
+    --auth-fill-hover: rgb(234 229 218 / 0.07);
+    --auth-fill-active: rgb(234 229 218 / 0.10);
+    --auth-indicator: rgb(198 164 103 / 0.16);
+    --auth-ring: rgb(138 216 226 / 0.55);
+    --auth-ring-soft: rgb(138 216 226 / 0.2);
+    --auth-success: #C6A467;
+    --auth-success-bg: rgb(198 164 103 / 0.10);
+    --auth-success-line: rgb(198 164 103 / 0.30);
   }
-  /* Caustic light — a slow warm gleam traveling the drawer's top edge. */
-  .lsx-caustic { position: absolute; top: 0; left: 0; right: 0; height: 1px; overflow: hidden; pointer-events: none; }
-  .lsx-caustic::after { content: ''; position: absolute; top: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, var(--auth-catchlight), transparent); animation: lsxCaustic 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
-  @keyframes lsxCaustic { 0% { left: -45%; } 50% { left: 100%; } 100% { left: -45%; } }
-  /* Ember bloom behind the drawer's content — clipped by its own wrapper so
+  /* Caustic light — a slow gilded gleam traveling the drawer's top edge. */
+  .aca-caustic { position: absolute; top: 0; left: 0; right: 0; height: 1px; overflow: hidden; pointer-events: none; }
+  .aca-caustic::after { content: ''; position: absolute; top: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, var(--auth-catchlight), transparent); animation: acaCaustic 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+  @keyframes acaCaustic { 0% { left: -45%; } 50% { left: 100%; } 100% { left: -45%; } }
+  /* Bronze bloom behind the drawer's content — clipped by its own wrapper so
      the DrawerContent itself never needs overflow:hidden (which would let
      focus-scroll displace the sheet's inner layout). */
-  .lsx-drawer-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; border-radius: inherit; }
-  .lsx-drawer-bloom { position: absolute; left: 50%; top: -140px; width: 480px; height: 300px; transform: translateX(-50%); background: radial-gradient(50% 50% at 50% 50%, rgb(232 164 76 / 0.13), transparent 70%); filter: blur(10px); }
+  .aca-drawer-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; border-radius: inherit; }
+  .aca-drawer-bloom { position: absolute; left: 50%; top: -140px; width: 480px; height: 300px; transform: translateX(-50%); background: radial-gradient(50% 50% at 50% 50%, rgb(198 164 103 / 0.13), rgb(138 216 226 / 0.05) 55%, transparent 72%); filter: blur(10px); }
   @media (prefers-reduced-motion: reduce) {
-    .lsx-caustic::after { animation: none; left: 27.5%; }
+    .aca-caustic::after { animation: none; left: 27.5%; }
   }
 `;
 
@@ -128,7 +149,7 @@ const FormAlert = ({ error }: { error: { title: string; description?: string } |
       >
         <div
           role="alert"
-          className="mb-4 rounded-lg border border-[#E86A5A]/25 bg-[#E86A5A]/[0.08] px-3.5 py-3"
+          className="mb-4 rounded-[3px] border border-[#E86A5A]/25 bg-[#E86A5A]/[0.08] px-3.5 py-3"
         >
           <p className="text-[12px] font-medium text-[#F1A093]">{error.title}</p>
           {error.description && (
@@ -434,16 +455,16 @@ export default function Auth() {
       aria-live="polite"
       style={{
         minHeight: '100vh',
-        background: VOID.bg,
-        color: VOID.bone,
+        background: ACA.bg,
+        color: ACA.marble,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: VOID.sans,
+        fontFamily: ACA.sans,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
-        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" style={{ color: VOID.ember }} />
+        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" style={{ color: ACA.bronze }} />
         {label}
       </div>
     </div>
@@ -462,25 +483,35 @@ export default function Auth() {
   }
 
   return (
-    <div className="lsx">
-      <style dangerouslySetInnerHTML={{ __html: LANDING_CSS + DRAWER_CSS }} />
+    <div className="aca">
+      <style dangerouslySetInnerHTML={{ __html: ACADEMY_CSS + FX_CSS + DRAWER_CSS }} />
 
-      <VoidCanvas />
+      <AcaAmbience />
+      <AcaPreloader />
+      <AcaCursor />
 
-      <div className="lsx-content">
-        <LsxNav onSignIn={openSignIn} />
+      <div className="aca-content">
+        <AcaNav onSignIn={openSignIn} />
         <main aria-label="LSAT U landing">
-          <LsxHero onCTA={openSignIn} onSignUp={openSignUp} />
-          <LsxOrbits />
-          <LsxMarquee />
-          <LsxChapters />
-          <LsxHabits />
-          <LsxPillars />
-          <LsxCredo onPrimary={openSignIn} />
-          <LsxFinal onPrimary={openSignIn} />
+          <AcaHero onCTA={openSignIn} onSignUp={openSignUp} />
+          <AcaStele />
+          <GoldSeam variant={0} />
+          <AcaBust />
+          <AcaCanon />
+          <GoldSeam variant={1} />
+          <AcaDisciplines />
+          <AcaJustice />
+          <AcaMarquee />
+          <AcaCredo onPrimary={openSignIn} />
+          <GoldSeam variant={2} />
+          <AcaFinal onPrimary={openSignIn} />
         </main>
-        <LsxFooter />
+        <AcaFooter />
       </div>
+
+      {/* After the content in DOM so its 7 stops don't precede the nav and
+          hero CTA in tab order; fixed positioning keeps it visually pinned. */}
+      <AcaPlumb stops={PLUMB_STOPS} />
 
       {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
           Holds two views: main sign-in/sign-up (default) and reset-password
@@ -497,23 +528,37 @@ export default function Auth() {
         }}
       >
         <DrawerContent
-          className="bg-[color:var(--auth-surface)] border-0 border-t border-[color:var(--auth-line-3)] text-[#EDE7DA] outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-[color:var(--auth-catchlight)]"
+          className="bg-[color:var(--auth-surface)] border-0 border-t border-[color:var(--auth-line-3)] text-[#EAE5DA] outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-[color:var(--auth-catchlight)]"
+          onOpenAutoFocus={(e) => {
+            // Vaul skips auto-focus, which strands keyboard users outside the
+            // dialog. Move focus in ourselves: the email field on fine-pointer
+            // devices, the sheet itself on touch (focusing an input there
+            // would pop the keyboard mid slide-up).
+            e.preventDefault();
+            const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            requestAnimationFrame(() => {
+              const target = fine
+                ? (document.getElementById(forgotOpen ? 'auth-reset-email' : 'auth-email') as HTMLElement | null)
+                : (document.querySelector('[data-vaul-drawer]') as HTMLElement | null);
+              target?.focus();
+            });
+          }}
         >
           <DrawerTitle className="sr-only">LSAT U Access</DrawerTitle>
           <DrawerDescription className="sr-only">
             Sign in or create your LSAT U account.
           </DrawerDescription>
 
-          {/* Caustic gleam along the top edge + ember bloom behind content */}
-          <div className="lsx-drawer-clip" aria-hidden="true">
-            <div className="lsx-caustic" />
-            <div className="lsx-drawer-bloom" />
+          {/* Caustic gleam along the top edge + bronze bloom behind content */}
+          <div className="aca-drawer-clip" aria-hidden="true">
+            <div className="aca-caustic" />
+            <div className="aca-drawer-bloom" />
           </div>
 
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
             onClick={() => setModalOpen(false)}
-            className={cn("absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-[#847D70] hover:text-[#EDE7DA] transition-[color,transform] duration-200 ease-out active:scale-90", focusRingCls)}
+            className={cn("absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-[3px] text-[#8A8475] hover:text-[#EAE5DA] transition-[color,transform] duration-200 ease-out active:scale-90", focusRingCls)}
             aria-label="Close"
           >
             <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
@@ -523,10 +568,10 @@ export default function Auth() {
             {forgotOpen ? (
               <>
                 <div className="text-center mb-6">
-                  <h2 className="text-[1.3rem] font-medium tracking-tight text-[#EDE7DA] mb-1.5" style={{ fontFamily: VOID.serif }}>
+                  <h2 className="text-[1.3rem] font-medium tracking-tight text-[#EAE5DA] mb-1.5" style={{ fontFamily: ACA.serif }}>
                     Reset Password
                   </h2>
-                  <p className="text-[11px] text-[#847D70]">
+                  <p className="text-[11px] text-[#8A8475]">
                     Enter your email to receive a reset link.
                   </p>
                 </div>
@@ -535,7 +580,7 @@ export default function Auth() {
                   <div>
                     <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
                     <div className="relative group">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E695E] transition-colors duration-200 group-focus-within:text-[#8AD8E2]" />
                       <Input
                         id="auth-reset-email"
                         type="email"
@@ -557,7 +602,7 @@ export default function Auth() {
                 <button
                   type="button"
                   onClick={() => { setForgotOpen(false); setFormError(null); }}
-                  className={cn("block mx-auto mt-4 text-[11px] text-[#847D70] hover:text-[#EDE7DA] transition-colors py-2.5 rounded", focusRingCls)}
+                  className={cn("block mx-auto mt-4 text-[11px] text-[#8A8475] hover:text-[#EAE5DA] transition-colors py-2.5 rounded-[3px]", focusRingCls)}
                 >
                   Back to sign in
                 </button>
@@ -565,16 +610,19 @@ export default function Auth() {
             ) : (
               <>
                 <div className="text-center mb-7">
-                  <h2 className="text-[1.3rem] font-medium tracking-tight text-[#EDE7DA] mb-1.5" style={{ fontFamily: VOID.serif }}>
-                    LSAT <em style={{ fontStyle: 'italic', color: VOID.ember }}>U</em>
+                  <h2
+                    className="text-[15px] font-medium text-[#EAE5DA] mb-2"
+                    style={{ fontFamily: ACA.inscr, letterSpacing: '0.34em', textIndent: '0.34em' }}
+                  >
+                    LSAT <em style={{ fontStyle: 'normal', color: ACA.bronze }}>U</em>
                   </h2>
-                  <p className="text-[11px] text-[#847D70]">
+                  <p className="text-[11px] text-[#8A8475]">
                     {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
                   </p>
                 </div>
 
                 {/* Segmented control */}
-                <div className="flex p-[3px] mb-6 bg-black/50 border border-[color:var(--auth-line-1)] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
+                <div className="flex p-[3px] mb-6 bg-black/50 border border-[color:var(--auth-line-1)] rounded-[5px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
                   {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
                     const selected = (i === 1) === isSignUp;
                     return (
@@ -584,15 +632,15 @@ export default function Auth() {
                         onClick={() => { setIsSignUp(i === 1); setFormError(null); }}
                         aria-pressed={selected}
                         className={cn(
-                          'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[7px]',
+                          'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[3px]',
                           focusRingCls,
-                          selected ? 'text-[#FFCB7C]' : 'text-[#847D70] hover:text-[#C9C2B4]'
+                          selected ? 'text-[#E8CF96]' : 'text-[#8A8475] hover:text-[#C9C3B4]'
                         )}
                       >
                         {selected && (
                           <motion.div
                             layoutId="seg"
-                            className="absolute inset-0 bg-[color:var(--auth-indicator)] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(232,164,76,0.18)]"
+                            className="absolute inset-0 bg-[color:var(--auth-indicator)] rounded-[3px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(198,164,103,0.2)]"
                             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                           />
                         )}
@@ -607,9 +655,9 @@ export default function Auth() {
                     <div className="w-14 h-14 rounded-full bg-[color:var(--auth-success-bg)] border border-[color:var(--auth-success-line)] flex items-center justify-center mx-auto">
                       <Mail className="w-6 h-6 text-[color:var(--auth-success)]" />
                     </div>
-                    <h3 className="text-lg font-medium text-[#EDE7DA]" style={{ fontFamily: VOID.serif }}>Check your email</h3>
-                    <p className="text-[13px] text-[#A79F91] leading-relaxed max-w-[280px] mx-auto">
-                      We sent a confirmation link to <span className="text-[#FFCB7C] font-medium">{email}</span>. Click the link to activate your account.
+                    <h3 className="text-lg font-medium text-[#EAE5DA]" style={{ fontFamily: ACA.serif }}>Check your email</h3>
+                    <p className="text-[13px] text-[#A6A093] leading-relaxed max-w-[280px] mx-auto">
+                      We sent a confirmation link to <span className="text-[#E8CF96] font-medium">{email}</span>. Click the link to activate your account.
                     </p>
                     <button
                       type="button"
@@ -621,7 +669,7 @@ export default function Auth() {
                         setConfirmPassword('');
                         setName('');
                       }}
-                      className={cn("text-[11px] text-[#847D70] hover:text-[#EDE7DA] transition-colors py-2.5 mt-2 rounded", focusRingCls)}
+                      className={cn("text-[11px] text-[#8A8475] hover:text-[#EAE5DA] transition-colors py-2.5 mt-2 rounded-[3px]", focusRingCls)}
                     >
                       Back to sign in
                     </button>
@@ -659,7 +707,7 @@ export default function Auth() {
                       <div>
                         <label htmlFor="auth-email" className={labelCls}>Email</label>
                         <div className="relative group">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E695E] transition-colors duration-200 group-focus-within:text-[#8AD8E2]" />
                           <Input
                             id="auth-email"
                             type="email"
@@ -683,14 +731,14 @@ export default function Auth() {
                             <button
                               type="button"
                               onClick={() => { setForgotOpen(true); setFormError(null); }}
-                              className={cn("text-[11px] text-[#A79F91] hover:text-[#FFCB7C] transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded", focusRingCls)}
+                              className={cn("text-[11px] text-[#A6A093] hover:text-[#C3EEF4] transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded-[3px]", focusRingCls)}
                             >
                               Forgot?
                             </button>
                           )}
                         </div>
                         <div className="relative group mt-1.5">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E695E] transition-colors duration-200 group-focus-within:text-[#8AD8E2]" />
                           <Input
                             id="auth-password"
                             type={showPassword ? 'text' : 'password'}
@@ -706,7 +754,7 @@ export default function Auth() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className={cn("absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-[#847D70] hover:text-[#EDE7DA] transition-colors", focusRingCls)}
+                            className={cn("absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-[3px] text-[#8A8475] hover:text-[#EAE5DA] transition-colors", focusRingCls)}
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                             aria-pressed={showPassword}
                           >
@@ -718,7 +766,7 @@ export default function Auth() {
                           </button>
                         </div>
                         {isSignUp && (
-                          <p id="auth-password-hint" className="text-[10px] text-[#847D70] mt-1.5 ml-0.5">
+                          <p id="auth-password-hint" className="text-[10px] text-[#8A8475] mt-1.5 ml-0.5">
                             8+ characters
                           </p>
                         )}
@@ -735,7 +783,7 @@ export default function Auth() {
                           >
                             <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
                             <div className="relative group">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
+                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E695E] transition-colors duration-200 group-focus-within:text-[#8AD8E2]" />
                               <Input
                                 id="auth-confirm"
                                 type={showPassword ? 'text' : 'password'}
@@ -761,9 +809,9 @@ export default function Auth() {
                               setRememberMe(e.target.checked);
                               if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
                             }}
-                            className="w-4 h-4 rounded border-[color:var(--auth-line-3)] bg-black/50 accent-[#E8A44C] focus:ring-[color:var(--auth-ring-soft)] cursor-pointer"
+                            className="w-4 h-4 rounded border-[color:var(--auth-line-3)] bg-black/50 accent-[#C6A467] focus:ring-[color:var(--auth-ring-soft)] cursor-pointer"
                           />
-                          <span className="text-[11px] text-[#847D70] group-hover:text-[#C9C2B4] transition-colors">
+                          <span className="text-[11px] text-[#8A8475] group-hover:text-[#C9C3B4] transition-colors">
                             Remember my email
                           </span>
                         </label>
@@ -783,7 +831,7 @@ export default function Auth() {
                     {/* Divider */}
                     <div className="flex items-center gap-3 pt-4">
                       <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
-                      <span className="text-[10px] uppercase tracking-[0.22em] text-[#847D70] font-medium font-mono">or</span>
+                      <span className="text-[10px] uppercase tracking-[0.22em] text-[#8A8475] font-medium font-mono">or</span>
                       <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
                     </div>
 
@@ -794,7 +842,7 @@ export default function Auth() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-[color:var(--auth-fill-1)] border border-[color:var(--auth-line-2)] hover:bg-[color:var(--auth-fill-hover)] active:bg-[color:var(--auth-fill-active)] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-[#C9C2B4] transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
+                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-[3px] bg-[color:var(--auth-fill-1)] border border-[color:var(--auth-line-2)] hover:bg-[color:var(--auth-fill-hover)] active:bg-[color:var(--auth-fill-active)] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-[#C9C3B4] transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
