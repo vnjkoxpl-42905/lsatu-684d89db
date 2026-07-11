@@ -369,25 +369,25 @@ type Chapter = {
 const CHAPTERS: Chapter[] = [
   {
     num: 'I', kicker: 'Practice', title: 'Smart LR Drill',
-    body: 'One beam in, the right rays out. An adaptive engine reads your misses and serves the next question that actually moves your score, not busywork.',
-    img: '/auth/prism.jpg', tag: 'Adaptive selection · live',
+    body: 'The drill reads your misses and serves the question that moves your score next. No busywork, no random sets.',
+    img: '/auth/prism.jpg', tag: 'Adaptive selection',
     detail: 'Input: your misses · Output: your next question',
   },
   {
     num: 'II', kicker: 'Review', title: 'Wrong Answer Journal',
-    body: 'One miss, and the lesson ripples outward. Every wrong answer becomes a worked example: why the trap worked, what the right read was, and the pattern to watch for next time.',
+    body: 'Every miss becomes a worked example: why the trap worked, what the right read was, and the pattern to catch next time.',
     img: '/auth/ripple.jpg', video: '/auth/ripple-loop.mp4', tag: 'One miss · one lesson', reverse: true,
     detail: 'The trap · the right read · the pattern',
   },
   {
     num: 'III', kicker: 'Curriculum', title: 'Guided bootcamps',
-    body: 'The climb is built for you. Structured, voice-led courses that build one reasoning skill at a time, from Main Conclusion outward.',
+    body: 'Structured, voice-led courses that build one reasoning skill at a time, starting where the points are.',
     img: '/auth/stair.jpg', tag: 'One skill at a time',
     detail: 'Main Conclusion first · then the whole family',
   },
   {
     num: 'IV', kicker: 'Plan', title: 'A schedule that adapts',
-    body: 'Your weeks in orbit around one date. A plan tuned to your test date and your data, so you always know the next right thing to do.',
+    body: 'A week-by-week plan built around your test date and your data, so the next right thing to do is always obvious.',
     img: '/auth/orbits.jpg', tag: 'Tuned to your test date', reverse: true,
     detail: 'Your test date · your data · your week',
   },
@@ -446,11 +446,11 @@ const Glyphs = ({ text, base = 0 }: { text: string; base?: number }) => {
 export const LsxHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
   <header className="lsx-hero">
     <div className="lsx-hero-corner" style={{ top: 108, left: 36 }} aria-hidden="true">
-      <span>Logical Reasoning</span>
-      <span>Score band 120 – 180</span>
+      <span>Practice · Review · Coaching</span>
+      <span>In one place</span>
     </div>
     <div className="lsx-hero-corner" style={{ top: 108, right: 36, textAlign: 'right' }} aria-hidden="true">
-      <span>35:00 per section</span>
+      <span>Built by Aspiring Attorneys</span>
       <span>lsatprep.study</span>
     </div>
 
@@ -485,7 +485,7 @@ export const LsxHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () =
 
     <div className="lsx-scrollcue lsx-hero-annot" aria-hidden="true">
       <span className="lsx-scrollcue-line" />
-      <span>Descend</span>
+      <span>Scroll</span>
     </div>
   </header>
 );
@@ -495,12 +495,13 @@ export const LsxOrbits = () => (
     <div className="vr-stagger">
       <span className="lsx-eyebrow">What you train</span>
       <h2 className="lsx-h2" style={{ marginTop: 22 }}>
-        Twelve ways an argument turns.<br />
-        <span className="it">One eye for all of them.</span>
+        Every question is one of twelve moves.<br />
+        <span className="it">Learn to see the move.</span>
       </h2>
       <p className="lsx-body" style={{ maxWidth: 560, margin: '20px auto 0' }}>
-        Every Logical Reasoning question is one of a dozen moves: {QUESTION_TYPES.slice(0, 4).join(', ').toLowerCase()},
-        and the rest of the family. We train them until you recognize the move before you finish the stem.
+        Necessary Assumption, Strengthen, Weaken, Flaw, and the rest of the family. Twelve question
+        types cover everything Logical Reasoning can throw at you. We drill them until you recognize
+        the move before you finish the stem.
       </p>
     </div>
     <div className="lsx-orbit-wrap vr" style={{ marginTop: 8 }}>
