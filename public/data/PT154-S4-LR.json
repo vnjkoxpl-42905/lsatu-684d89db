@@ -175,7 +175,7 @@
       "D": "Only a relatively small minority of those who drive while intoxicated are actually apprehended while doing so.",
       "E": "All countries impose severer penalties on those who cause accidents while driving intoxicated than on those who are merely apprehended while driving intoxicated."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT154",
@@ -307,7 +307,7 @@
       "D": "Restaurants that do not keep late hours are rarely unpopular with neighbors.",
       "E": "New nightclubs invariably produce some benefits for the neighborhoods in which they open."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
@@ -355,7 +355,7 @@
       "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
       "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]
@@ -485,7 +485,7 @@
       "D": "The proportion of teenagers who participate in sports varies greatly from society to society and from decade to decade.",
       "E": "School programs designed to encourage inactive teenagers to participate in sports widely vary in success, with only a few being highly successful."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
       "Worst of the Worst"
