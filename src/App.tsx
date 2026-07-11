@@ -63,6 +63,7 @@ const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"))
 const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
 const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
 const AdminInspector = React.lazy(() => import("./pages/admin/Inspector"));
+const LsatKnowledgeImport = React.lazy(() => import("./pages/LsatKnowledgeImport"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 const Journal = React.lazy(() => import("./pages/Journal"));
 const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
