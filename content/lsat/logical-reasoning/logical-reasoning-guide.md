@@ -273,7 +273,7 @@ You don't have to memorize this list, but if you become more familiar with it, y
 
 If we're reading one person's argument:
 
-=1. Find the conclusion.
+1. Find the conclusion.
 2. Find the support.
 3. Try to characterize the evidence (analogy, counterexample, citing an authority, etc.) or the way that the author arrived at her conclusion (ruling out other options, looking at the implications of a statement the opponent/the author makes, etc.)
 
@@ -377,17 +377,13 @@ We often have to chain together multiple conditionals. When we have a chain of i
 
 If we see words like "some, most, all, few", then the correct answer might be testing that two qualities overlap at least once, or that one group must be bigger than another.
 
-```text
 Most A's are B ....... Most A's are B
 Most A's are C ....... Most B's are ~A
 Some B are C ........More B's than A's
-```
 
-```text
 All A's are B ....... Most A's are B
 Some A's are C ......All B's are C
 Some B are C ....... Most A's are C
-```
 
 There are other mathematical ideas tested, relating to % change, averages, and inequalities.
 
@@ -443,17 +439,13 @@ If we have more than one conditional, chain them together. If we get a condition
 
 If we see words like "some, most, all, few", then the correct answer might be testing that two qualities overlap at least once, or that one group must be bigger than another.
 
-```text
 Most A's are B ........ Most A's are B
 Most A's are C ........ Most B's are ~A
 Some B are C .........More B's than A's
-```
 
-```text
 All A's are B ....... Most A's are B
 Some A's are C ....... All B's are C
 Some B are C ........ .Most A's are C
-```
 
 There are other mathematical ideas tested, relating to % change, averages, and inequalities.
 
@@ -927,7 +919,7 @@ Which of the following, if true, most weakens the argument? Which of the followi
 2. Find the Support.
 3. Figure out how to argue the Anti-Conclusion, by framing the argument as
 
-GIVEN [this evidence], HOW CAN I ARGU E [the Anti-Conclusion]?
+GIVEN [this evidence], HOW CAN I ARGUE [the Anti-Conclusion]?
 
 #### Pre-phrase Goal
 
