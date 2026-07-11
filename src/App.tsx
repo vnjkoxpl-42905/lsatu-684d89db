@@ -63,6 +63,7 @@ const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"))
 const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
 const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
 const AdminInspector = React.lazy(() => import("./pages/admin/Inspector"));
+const LsatKnowledgeImport = React.lazy(() => import("./pages/LsatKnowledgeImport"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 const Journal = React.lazy(() => import("./pages/Journal"));
 const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
@@ -239,6 +240,15 @@ const App = () => {
                   </QuestionBankProvider>
                 </React.Suspense>
               </AdminErrorBoundary>
+            } />
+            <Route path="/admin/lsat-knowledge-import" element={
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/lsat-knowledge-import">
+                  <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    <LsatKnowledgeImport />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/bootcamp-reference-lab" element={
               <AdminErrorBoundary routeLabel="/admin/bootcamp-reference-lab">

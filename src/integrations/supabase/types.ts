@@ -1620,6 +1620,54 @@ export type Database = {
           },
         ]
       }
+      lsat_knowledge_sources: {
+        Row: {
+          authority: string
+          domain: string
+          id: string
+          imported_at: string
+          metadata: Json
+          raw_markdown: string
+          slug: string
+          source_format: string
+          source_sha256: string
+          status: string
+          title: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          authority?: string
+          domain: string
+          id?: string
+          imported_at?: string
+          metadata?: Json
+          raw_markdown: string
+          slug: string
+          source_format?: string
+          source_sha256: string
+          status?: string
+          title: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          authority?: string
+          domain?: string
+          id?: string
+          imported_at?: string
+          metadata?: Json
+          raw_markdown?: string
+          slug?: string
+          source_format?: string
+          source_sha256?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       lsatu_content_index: {
         Row: {
           body: string | null
@@ -1661,6 +1709,51 @@ export type Database = {
           subtitle?: string | null
           title?: string | null
           updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      lsatu_content_staging: {
+        Row: {
+          body: string | null
+          chunk_index: number
+          created_at: string
+          embedding: string | null
+          id: string
+          import_version: string
+          kind: string
+          metadata: Json
+          source_id: string
+          subtitle: string | null
+          title: string | null
+          url: string | null
+        }
+        Insert: {
+          body?: string | null
+          chunk_index: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          import_version: string
+          kind: string
+          metadata?: Json
+          source_id: string
+          subtitle?: string | null
+          title?: string | null
+          url?: string | null
+        }
+        Update: {
+          body?: string | null
+          chunk_index?: number
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          import_version?: string
+          kind?: string
+          metadata?: Json
+          source_id?: string
+          subtitle?: string | null
+          title?: string | null
           url?: string | null
         }
         Relationships: []
@@ -3459,6 +3552,22 @@ export type Database = {
           sender_id: string
         }[]
       }
+      get_lsat_knowledge_by_canonical_id: {
+        Args: { _canonical_id: string; _kinds?: string[] }
+        Returns: {
+          body: string
+          chunk_index: number
+          heading_path: Json
+          id: string
+          kind: string
+          metadata: Json
+          record_id: string
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+        }[]
+      }
       get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_student_email: { Args: { _student_id: string }; Returns: string }
       has_role: {
@@ -3521,6 +3630,10 @@ export type Database = {
         }
         Returns: number
       }
+      promote_lsat_knowledge_version: {
+        Args: { _expected_count: number; _slug: string; _version: string }
+        Returns: Json
+      }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
         Returns: {
@@ -3546,6 +3659,36 @@ export type Database = {
           total_credits: number
           used_credits: number
           was_existing: boolean
+        }[]
+      }
+      retrieve_lsat_knowledge: {
+        Args: {
+          authority_filter?: string
+          entity_key?: string
+          entity_type?: string
+          kinds?: string[]
+          match_count?: number
+          query_embedding: string
+          query_text: string
+          rrf_k?: number
+          section_key?: string
+          source_version_filter?: string
+        }
+        Returns: {
+          body: string
+          chunk_index: number
+          fts_rank: number
+          heading_path: Json
+          id: string
+          kind: string
+          metadata: Json
+          record_id: string
+          score: number
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+          vector_similarity: number
         }[]
       }
       search_teaching_assets: {
