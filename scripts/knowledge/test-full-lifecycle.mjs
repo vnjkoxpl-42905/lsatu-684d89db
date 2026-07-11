@@ -130,13 +130,19 @@ async function main() {
     // ---------- 0. Live embedding smoke test (1 call) ----------
     let s = step("gemini_proxy_embedding_dim_3072");
     try {
+      const internalKey = process.env.EDGE_INTERNAL_KEY;
+      if (!internalKey) throw new Error("EDGE_INTERNAL_KEY unset in this env; cannot smoke-test proxy");
       const url = `${SUPABASE_URL}/functions/v1/gemini-proxy/embeddings`;
       const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${SERVICE_KEY}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${SERVICE_KEY}`,
+          "X-Internal-Key": internalKey,
+        },
         body: JSON.stringify({ model: "google/gemini-embedding-001", input: "test embedding call" }),
       });
-      if (!res.ok) throw new Error(`http ${res.status}: ${await res.text()}`);
+      if (!res.ok) throw new Error(`http ${res.status}: ${(await res.text()).slice(0, 160)}`);
       const j = await res.json();
       const v = j?.data?.[0]?.embedding;
       if (!Array.isArray(v) || v.length !== DIM || v.some((n) => !Number.isFinite(n))) throw new Error(`bad vector shape ${v?.length}`);
