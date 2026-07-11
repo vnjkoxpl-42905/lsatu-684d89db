@@ -1620,6 +1620,54 @@ export type Database = {
           },
         ]
       }
+      lsat_knowledge_sources: {
+        Row: {
+          authority: string
+          domain: string
+          id: string
+          imported_at: string
+          metadata: Json
+          raw_markdown: string
+          slug: string
+          source_format: string
+          source_sha256: string
+          status: string
+          title: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          authority?: string
+          domain: string
+          id?: string
+          imported_at?: string
+          metadata?: Json
+          raw_markdown: string
+          slug: string
+          source_format?: string
+          source_sha256: string
+          status?: string
+          title: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          authority?: string
+          domain?: string
+          id?: string
+          imported_at?: string
+          metadata?: Json
+          raw_markdown?: string
+          slug?: string
+          source_format?: string
+          source_sha256?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       lsatu_content_index: {
         Row: {
           body: string | null
@@ -3546,6 +3594,36 @@ export type Database = {
           total_credits: number
           used_credits: number
           was_existing: boolean
+        }[]
+      }
+      retrieve_lsat_knowledge: {
+        Args: {
+          authority_filter?: string
+          entity_key?: string
+          entity_type?: string
+          kinds?: string[]
+          match_count?: number
+          query_embedding: string
+          query_text: string
+          rrf_k?: number
+          section_key?: string
+          source_version_filter?: string
+        }
+        Returns: {
+          body: string
+          chunk_index: number
+          fts_rank: number
+          heading_path: Json
+          id: string
+          kind: string
+          metadata: Json
+          record_id: string
+          score: number
+          source_id: string
+          subtitle: string
+          title: string
+          url: string
+          vector_similarity: number
         }[]
       }
       search_teaching_assets: {
