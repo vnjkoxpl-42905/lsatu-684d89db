@@ -45,11 +45,29 @@ function jsonRes(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
 
+// Fail-closed: internal access is only granted when the environment secret is
+// a real, nonempty string AND the header matches it exactly. If the env var is
+// missing or empty, internal access is impossible regardless of what header
+// the caller sends. Exported so tests can exercise it directly.
+export function isInternalRequest(req: Request): boolean {
+  const secret = Deno.env.get("EDGE_INTERNAL_KEY");
+  if (!secret || secret.length === 0) return false;
+  const provided = req.headers.get("X-Internal-Key");
+  return typeof provided === "string" && provided.length > 0 && provided === secret;
+}
+
+// Same fail-closed rule for outbound calls: only include the header when we
+// actually have a real secret to send.
+function outboundInternalHeaders(): Record<string, string> {
+  const secret = Deno.env.get("EDGE_INTERNAL_KEY");
+  return secret && secret.length > 0 ? { "X-Internal-Key": secret } : {};
+}
+
 async function verifyCaller(req: Request): Promise<{ userId: string; isAdmin: boolean; internal: boolean }> {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-  const internal = req.headers.get("X-Internal-Key") === (Deno.env.get("EDGE_INTERNAL_KEY") ?? "___never___");
+  const internal = isInternalRequest(req);
   const auth = req.headers.get("Authorization");
   if (!auth?.startsWith("Bearer ")) throw new Error("Missing auth");
   const token = auth.slice(7);
