@@ -37,6 +37,37 @@ export interface LRQuestion {
     D: { verdict: 'correct' | 'incorrect'; whyCorrect?: string; whyIncorrect?: string };
     E: { verdict: 'correct' | 'incorrect'; whyCorrect?: string; whyIncorrect?: string };
   };
+  /**
+   * Raw LSAT Lab explanation payload (per-question review content) ingested
+   * from `public/data/explanations/PT<n>-explanations.json`. Optional — only
+   * populated for preptests we have authored explanations for.
+   */
+  explanations?: LRExplanation;
+}
+
+export interface LRExplanationChoice {
+  text: string | null;
+  tag: string | null;
+  pct: number | null;
+  explanation: string;
+}
+
+export interface LRExplanationStyle {
+  breakdownMd: string;
+  choices: Partial<Record<'A' | 'B' | 'C' | 'D' | 'E', LRExplanationChoice>>;
+}
+
+export interface LRExplanation {
+  pt: string;
+  section: number;
+  qnum: number;
+  qtypeLabel?: string;
+  correctChoice: 'A' | 'B' | 'C' | 'D' | 'E' | null;
+  styles: {
+    standard?: LRExplanationStyle;
+    brief?: LRExplanationStyle;
+    anotherWay?: LRExplanationStyle;
+  };
 }
 
 type RenderableLRQuestionInput = {
