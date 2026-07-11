@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2, Home, LayoutGrid, Clock, Inbox, User, Flame, Play, BarChart3, BookOpen, GraduationCap, Dumbbell, CalendarDays, Archive } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
 import { redirectAfterAuth } from '@/lib/authRedirect';
@@ -16,23 +16,77 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
-import RadialOrbitalTimeline, { type TimelineItem } from '@/components/ui/radial-orbital-timeline';
+import VoidCanvas from '@/components/auth-landing/VoidCanvas';
+import {
+  LANDING_CSS,
+  VOID,
+  useReveal,
+  LsxNav,
+  LsxHero,
+  LsxOrbits,
+  LsxChapters,
+  LsxMarquee,
+  LsxHabits,
+  LsxPillars,
+  LsxCredo,
+  LsxFinal,
+  LsxFooter,
+} from '@/components/auth-landing/sections';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MODULE-LEVEL CONSTANTS
-// Hoisted out of the component so they are never recreated on re-render.
+// AUTH PAGE — "The Ascent"
+// A cinematic void-and-ember landing (WebGL atmosphere, generated key imagery,
+// 3D constellation) wrapped around the exact same auth machinery as before:
+// Supabase email/password, Lovable Google OAuth, reset, confirmation,
+// session-expired handling. The dark glass drawer is the destination of the
+// page's narrative.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-12 sm:h-11 bg-black/50 border-[color:var(--auth-line-2)] focus-visible:border-[color:var(--auth-line-focus)] focus-visible:ring-1 focus-visible:ring-[color:var(--auth-ring-soft)] text-white text-base sm:text-sm placeholder:text-neutral-500 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-[color:var(--auth-line-2)] focus-visible:border-[color:var(--auth-line-focus)] focus-visible:ring-1 focus-visible:ring-[color:var(--auth-ring-soft)] text-[#EDE7DA] text-base sm:text-sm placeholder:text-[#6E675C] shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
-  'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
+  'block text-[10px] uppercase tracking-[0.22em] text-[#847D70] font-medium mb-1.5 ml-0.5 font-mono';
 
-// ── Shared focus ring for drawer controls — visible on the dark glass surface ──
+// ── Shared focus ring for drawer controls ──
 const focusRingCls =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--auth-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--auth-surface)]';
+
+// ── Drawer palette + drawer-scoped effects. Global (:root) so it reaches the
+// Vaul portal; namespaced so it can't collide. Warm ember-on-void values that
+// match the landing's design language.
+const DRAWER_CSS = `
+  :root {
+    --auth-surface: #0C0A08;
+    --auth-line-1: rgb(237 231 218 / 0.05);
+    --auth-line-2: rgb(237 231 218 / 0.08);
+    --auth-line-3: rgb(237 231 218 / 0.12);
+    --auth-line-focus: rgb(232 164 76 / 0.45);
+    --auth-catchlight: rgb(255 203 124 / 0.35);
+    --auth-fill-1: rgb(237 231 218 / 0.04);
+    --auth-fill-hover: rgb(237 231 218 / 0.07);
+    --auth-fill-active: rgb(237 231 218 / 0.10);
+    --auth-indicator: rgb(232 164 76 / 0.14);
+    --auth-ring: rgb(232 164 76 / 0.55);
+    --auth-ring-soft: rgb(232 164 76 / 0.18);
+    --auth-success: #E8C07C;
+    --auth-success-bg: rgb(232 164 76 / 0.10);
+    --auth-success-line: rgb(232 164 76 / 0.25);
+  }
+  /* Caustic light — a slow warm gleam traveling the drawer's top edge. */
+  .lsx-caustic { position: absolute; top: 0; left: 0; right: 0; height: 1px; overflow: hidden; pointer-events: none; }
+  .lsx-caustic::after { content: ''; position: absolute; top: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, var(--auth-catchlight), transparent); animation: lsxCaustic 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+  @keyframes lsxCaustic { 0% { left: -45%; } 50% { left: 100%; } 100% { left: -45%; } }
+  /* Ember bloom behind the drawer's content — clipped by its own wrapper so
+     the DrawerContent itself never needs overflow:hidden (which would let
+     focus-scroll displace the sheet's inner layout). */
+  .lsx-drawer-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; border-radius: inherit; }
+  .lsx-drawer-bloom { position: absolute; left: 50%; top: -140px; width: 480px; height: 300px; transform: translateX(-50%); background: radial-gradient(50% 50% at 50% 50%, rgb(232 164 76 / 0.13), transparent 70%); filter: blur(10px); }
+  @media (prefers-reduced-motion: reduce) {
+    .lsx-caustic::after { animation: none; left: 27.5%; }
+  }
+`;
 
 // ── CTA button — wraps AnimatedButton with auth-specific props ──
 const CTAButton = ({
@@ -60,903 +114,31 @@ const CTAButton = ({
   </AnimatedButton>
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HOMEPAGE LAYOUT — Arc-translated, type-led, image-free.
-// Mirrors arc.net's chromatic restraint, 7-color budget, soft-pill CTAs,
-// flat material, type-as-hero, horizontal proof carousel, looping marquee
-// of subject signals. All copy, content, and meaning are LSAT U's own.
-// No screenshots, no Mainhub imagery, no orbital system, no placeholders.
-// ─────────────────────────────────────────────────────────────────────────────
-
-const ARC = {
-  bg: '#FBF8F1',           // page base — warm off-white, slightly more paper-like than Arc's #FFFCEC
-  bgTinted: '#F5EFE2',     // soft cream — proof block, marquee strip
-  bgSurface: '#FFFDF7',    // near-white — carousel cards on the warm field
-  ink: '#15171D',          // near-black with a faint blue cast
-  inkSecondary: '#6A6F7A', // one mid-grey — secondary text, hairlines bias (AA on cream)
-  inkMuted: '#A4A8B0',     // micro-text, kicker numerals
-  hairline: 'rgba(21,23,29,0.08)',
-  hairlineStrong: 'rgba(21,23,29,0.14)',
-  accent: '#1F3FE3',       // one confident product blue (≈ Arc's #3139FB), used sparingly
-  accentDeep: '#15224A',   // deep ink-blue for emphasis on hover
-  accentSoft: '#E5EAFC',   // tint surface for hover/proof
-  shadowSoft: '0 2px 8px rgba(15,17,29,0.06)',
-  shadowLift: '0 5px 18px rgba(15,17,29,0.08)',
-  shadowCard: '0 1px 2px rgba(15,17,29,0.04), 0 8px 24px rgba(15,17,29,0.06)',
-  radiusSm: '4px',
-  radiusMd: '8px',
-  radiusCard: '14px',
-  radiusPill: '22px',      // Arc's signature soft pill
-  serif: '"Fraunces", "Iowan Old Style", "Times New Roman", serif',
-  sans: '"Outfit", -apple-system, "SF Pro Display", system-ui, sans-serif',
-  easeOut: 'cubic-bezier(0.16, 1, 0.3, 1)',
-};
-
-// LexPrep's reveal easing — used by the scroll-into-view blur+fade+rise so the
-// landing's motion mirrors lexprep.ai exactly (per-child stagger cascade).
-const LEX_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
-
-// ── Page-scoped CSS injected once. Reset, type defaults, motion tokens,
-// reveal animation, marquee, scroll-snap carousel. All motion respects
-// prefers-reduced-motion.
-const PAGE_CSS = `
-  /* Auth drawer palette — single source for the dark sign-in surface. Global
-     (:root) so it reaches the Vaul portal; namespaced so it can't collide.
-     Values are the exact prior literals (no visual change), now tokenized. */
-  :root {
-    --auth-surface: #121212;
-    --auth-line-1: rgb(255 255 255 / 0.05);
-    --auth-line-2: rgb(255 255 255 / 0.06);
-    --auth-line-3: rgb(255 255 255 / 0.10);
-    --auth-line-focus: rgb(255 255 255 / 0.18);
-    --auth-catchlight: rgb(255 255 255 / 0.15);
-    --auth-fill-1: rgb(255 255 255 / 0.04);
-    --auth-fill-hover: rgb(255 255 255 / 0.07);
-    --auth-fill-active: rgb(255 255 255 / 0.10);
-    --auth-indicator: rgb(255 255 255 / 0.08);
-    --auth-ring: rgb(255 255 255 / 0.40);
-    --auth-ring-soft: rgb(255 255 255 / 0.08);
-    --auth-success: #34d399;
-    --auth-success-bg: rgb(16 185 129 / 0.10);
-    --auth-success-line: rgb(16 185 129 / 0.20);
-  }
-  .lsatu-arc { background: ${ARC.bg}; color: ${ARC.ink}; font-family: ${ARC.sans}; min-height: 100vh; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-  .lsatu-arc * { box-sizing: border-box; }
-  .lsatu-arc a { color: inherit; text-decoration: none; }
-  .lsatu-arc h1, .lsatu-arc h2, .lsatu-arc h3 { font-family: ${ARC.serif}; font-weight: 600; letter-spacing: -0.025em; color: ${ARC.ink}; margin: 0; }
-  .lsatu-arc p { margin: 0; }
-
-  /* CTAs — Arc-style soft pill */
-  .lsatu-arc .arc-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 24px; border-radius: ${ARC.radiusPill}; background: ${ARC.ink}; color: ${ARC.bg}; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; border: 0; cursor: pointer; transition: transform 220ms ${ARC.easeOut}, box-shadow 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-cta:focus-visible { outline: 2px solid ${ARC.accent}; outline-offset: 3px; }
-  .lsatu-arc .arc-cta-ghost { background: transparent; color: ${ARC.ink}; border: 1px solid ${ARC.hairline}; }
-  .lsatu-arc .arc-cta-arrow { display: inline-block; transition: transform 220ms ${ARC.easeOut}; }
-  /* Press feedback — instant scale-down on every primary CTA confirms the press. */
-  .lsatu-arc .arc-cta:active { transform: translateY(0) scale(0.98); transition-duration: 90ms; }
-
-  /* Hero entry CTA — single primary, larger pill, soft inset highlight + drop, tiny circular arrow puck */
-  .lsatu-arc .arc-cta-hero { height: 58px; padding: 0 22px 0 30px; border-radius: 30px; font-size: 15.5px; font-weight: 500; gap: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 2px rgba(15,17,29,0.10), 0 10px 28px -4px rgba(15,17,29,0.18); }
-  .lsatu-arc .arc-cta-hero:active { transform: translateY(0) scale(0.98); transition-duration: 90ms; }
-
-  /* Hover effects gated on hover-capable, fine pointers — touch taps shouldn't preview a hover lift. */
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-cta:hover { transform: translateY(-1px); box-shadow: ${ARC.shadowLift}; background: ${ARC.accentDeep}; }
-    .lsatu-arc .arc-cta-ghost:hover { background: ${ARC.bgTinted}; transform: translateY(-1px); box-shadow: ${ARC.shadowSoft}; }
-    .lsatu-arc .arc-cta:hover .arc-cta-arrow { transform: translateX(3px); }
-    .lsatu-arc .arc-cta-hero:hover { transform: translateY(-2px); background: ${ARC.accentDeep}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 4px rgba(15,17,29,0.12), 0 18px 40px -6px rgba(15,17,29,0.26); }
-    .lsatu-arc .arc-cta-hero:hover .arc-cta-icon { background: rgba(255,255,255,0.18); transform: translateX(2px); }
-  }
-  .lsatu-arc .arc-cta-icon { width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.10); display: inline-flex; align-items: center; justify-content: center; transition: transform 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; flex-shrink: 0; }
-  .lsatu-arc .arc-cta-icon svg { width: 12px; height: 12px; }
-  .lsatu-arc .arc-cta-secondary { background: transparent; border: 0; padding: 8px 4px; font-family: ${ARC.sans}; font-size: 13px; font-weight: 500; color: ${ARC.inkSecondary}; cursor: pointer; letter-spacing: -0.005em; transition: color 180ms ${ARC.easeOut}; }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-cta-secondary:hover { color: ${ARC.ink}; }
-  }
-  .lsatu-arc .arc-cta-secondary u { text-decoration-color: ${ARC.hairlineStrong}; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-
-  /* Platform shell preview — soft app-like frame, slim sidebar, skeleton cards. No content, no labels that read as curriculum. */
-  .lsatu-arc .arc-shell { position: relative; margin: 24px auto 0; max-width: 920px; padding: 0 24px; }
-  /* Ambient float lives on the wrapper so it never fights the inner frame's
-     hover-lift (a running keyframe on transform would override :hover transform). */
-  .lsatu-arc .arc-shell-float { animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
-  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 280ms ${ARC.easeOut}, box-shadow 280ms ${ARC.easeOut}, border-color 280ms ${ARC.easeOut}; }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-shell-frame:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 36px 80px -20px rgba(15,17,29,0.24); }
-  }
-  @keyframes arcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-
-  /* Window chrome */
-  .lsatu-arc .arc-shell-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid ${ARC.hairline}; background: ${ARC.bg}; }
-  .lsatu-arc .arc-shell-dots { display: inline-flex; gap: 6px; }
-  .lsatu-arc .arc-shell-dot { width: 9px; height: 9px; border-radius: 999px; background: ${ARC.hairlineStrong}; }
-  .lsatu-arc .arc-shell-title { flex: 1; text-align: center; font-family: ${ARC.serif}; font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.inkSecondary}; }
-  .lsatu-arc .arc-shell-kbd { font-family: ${ARC.sans}; font-size: 10px; font-weight: 500; letter-spacing: 0.02em; color: ${ARC.inkMuted}; padding: 3px 7px; border: 1px solid ${ARC.hairline}; border-radius: 5px; background: ${ARC.bgSurface}; }
-
-  /* Body: 2-column shell */
-  .lsatu-arc .arc-shell-body { display: grid; grid-template-columns: 168px 1fr; min-height: 320px; }
-  .lsatu-arc .arc-shell-side { padding: 18px 12px; border-right: 1px solid ${ARC.hairline}; background: ${ARC.bg}; display: flex; flex-direction: column; gap: 2px; }
-  .lsatu-arc .arc-shell-side-eyebrow { font-family: ${ARC.sans}; font-size: 9.5px; font-weight: 500; letter-spacing: 0.20em; text-transform: uppercase; color: ${ARC.inkMuted}; padding: 0 10px 10px; }
-  .lsatu-arc .arc-shell-nav { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-family: ${ARC.sans}; font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.inkSecondary}; transition: color 200ms ${ARC.easeOut}, background 200ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-shell-nav-icon { display: inline-flex; width: 14px; height: 14px; color: ${ARC.inkMuted}; }
-  .lsatu-arc .arc-shell-nav.is-active { background: ${ARC.bgSurface}; color: ${ARC.ink}; box-shadow: inset 0 0 0 1px ${ARC.hairline}; }
-  .lsatu-arc .arc-shell-nav.is-active .arc-shell-nav-icon { color: ${ARC.accent}; }
-
-  /* Main canvas — dashboard emulation: gauge facade + live orbital */
-  .lsatu-arc .arc-shell-main { background: ${ARC.bgSurface}; }
-  .lsatu-arc .arc-prev-main { display: grid; grid-template-columns: minmax(0, 258px) minmax(0, 1fr); gap: 22px; align-items: center; padding: 24px 26px; min-height: 340px; }
-
-  /* Smart LR Score gauge — static facade in warm tokens */
-  .lsatu-arc .arc-prev-gauge { display: flex; flex-direction: column; align-items: center; padding: 22px 20px 20px; border: 1px solid ${ARC.hairline}; border-radius: 18px; background: ${ARC.bg}; box-shadow: ${ARC.shadowCard}; }
-  .lsatu-arc .arc-prev-dial { position: relative; width: 150px; height: 100px; display: flex; align-items: flex-end; justify-content: center; }
-  .lsatu-arc .arc-prev-dial-svg { position: absolute; inset: 0; width: 100%; height: 100%; color: ${ARC.hairlineStrong}; }
-  .lsatu-arc .arc-prev-dial-num { position: relative; font-family: ${ARC.serif}; font-size: 56px; font-weight: 600; line-height: 0.9; color: ${ARC.inkMuted}; }
-  .lsatu-arc .arc-prev-dial-label { font-family: ${ARC.sans}; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: ${ARC.inkMuted}; margin-top: 8px; }
-  .lsatu-arc .arc-prev-streak { display: inline-flex; align-items: center; gap: 6px; font-family: ${ARC.sans}; font-size: 11.5px; font-weight: 500; color: ${ARC.inkSecondary}; margin-top: 10px; }
-  .lsatu-arc .arc-prev-streak svg { color: #F97316; }
-  .lsatu-arc .arc-prev-selectors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; width: 100%; margin-top: 18px; }
-  .lsatu-arc .arc-prev-chip { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; padding: 7px 9px; border: 1px solid ${ARC.hairline}; border-radius: 11px; background: ${ARC.bgSurface}; font-family: ${ARC.sans}; font-size: 12px; font-weight: 600; color: ${ARC.ink}; }
-  .lsatu-arc .arc-prev-chip em { font-style: normal; font-size: 7.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: ${ARC.inkMuted}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .lsatu-arc .arc-prev-drill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px; padding: 12px; border-radius: 13px; background: ${ARC.ink}; color: #fff; font-family: ${ARC.sans}; font-size: 13px; font-weight: 600; box-shadow: ${ARC.shadowLift}; }
-
-  /* Live orbital — absolutely centered + scaled so its 500px box never drives layout */
-  .lsatu-arc .arc-prev-orbital { position: relative; min-height: 340px; }
-  /* Box is wider than the 400px ring so the component's internal overflow-hidden
-     clips with ~80px margin — enough for the "Wrong Answer Journal" node label. */
-  .lsatu-arc .arc-prev-orbital-scale { position: absolute; top: 50%; left: 50%; width: 560px; height: 520px; transform: translate(-50%, -50%) scale(0.64); transform-origin: center; pointer-events: none; }
-
-  /* Narrow widths — hide the slim sidebar, stack gauge above a smaller orbital
-     (mirrors the real homepage, which hides the gauge card below xl). */
-  @media (max-width: 760px) {
-    .lsatu-arc .arc-shell-body { grid-template-columns: 1fr; }
-    .lsatu-arc .arc-shell-side { display: none; }
-    .lsatu-arc .arc-prev-main { grid-template-columns: 1fr; gap: 14px; padding: 20px 18px; }
-    .lsatu-arc .arc-prev-gauge { max-width: 320px; margin: 0 auto; width: 100%; }
-    .lsatu-arc .arc-prev-orbital { min-height: 260px; }
-    .lsatu-arc .arc-prev-orbital-scale { transform: translate(-50%, -50%) scale(0.5); }
-  }
-  /* Accent link — left-to-right underline reveal on hover (Linear/Vercel-style).
-     The static underline is rendered as a 1px ::after that scales from origin-left.
-     Gated on hover-capable pointers; on touch the link reads as plain accent text. */
-  .lsatu-arc .arc-link { position: relative; color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; padding-bottom: 2px; }
-  .lsatu-arc .arc-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: left center; transition: transform 240ms ${ARC.easeOut}; }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-link::after { transform: scaleX(0); transform-origin: right center; }
-    .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
-    .lsatu-arc .arc-link:hover::after { transform: scaleX(1); transform-origin: left center; }
-  }
-
-  /* First-paint fade */
-  .lsatu-arc .arc-fade { opacity: 0; animation: arcFade 540ms ${ARC.easeOut} forwards; }
-  @keyframes arcFade { to { opacity: 1; } }
-
-  /* Scroll-reveal — LexPrep-style blur + fade + rise. .arc-rise is the scroll
-     trigger (IntersectionObserver toggles .is-in); single-block sections reveal
-     via this rule, while sections with an inner .arc-stagger cascade child-by-child. */
-  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); filter: blur(10px); transition: opacity 600ms ${LEX_EASE}, transform 600ms ${LEX_EASE}, filter 600ms ${LEX_EASE}; }
-  .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); filter: blur(0); }
-
-  /* Stagger cascade — LexPrep's "container + delayed children" model. Direct
-     children of .arc-stagger blur-fade-rise one after another (~120ms step:
-     heading → blurb → media → CTA) once the parent .arc-rise enters view. */
-  .lsatu-arc .arc-stagger > * { opacity: 0; transform: translateY(14px); filter: blur(10px); transition: opacity 600ms ${LEX_EASE}, transform 600ms ${LEX_EASE}, filter 600ms ${LEX_EASE}; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *,
-  .lsatu-arc .arc-rise.is-in .arc-stagger > * { opacity: 1; transform: none; filter: blur(0); }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(1), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(1) { transition-delay: 0ms; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(2), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(2) { transition-delay: 120ms; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(3), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(3) { transition-delay: 240ms; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(4), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(4) { transition-delay: 360ms; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(5), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(5) { transition-delay: 480ms; }
-  .lsatu-arc .arc-rise.is-in.arc-stagger > *:nth-child(6), .lsatu-arc .arc-rise.is-in .arc-stagger > *:nth-child(6) { transition-delay: 600ms; }
-
-  /* Pillar columns — cascade in 60ms apart once the parent section reveals.
-     Without this, all three columns arrive together which reads as static. */
-  .lsatu-arc .arc-pillar { opacity: 0; transform: translateY(8px); transition: opacity 480ms ${ARC.easeOut}, transform 480ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-rise.is-in .arc-pillar { opacity: 1; transform: translateY(0); }
-  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(1) { transition-delay: 80ms; }
-  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(2) { transition-delay: 140ms; }
-  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(3) { transition-delay: 200ms; }
-
-  /* Feature tour — copy + 16:10 media, copy-first on mobile, alternating on desktop */
-  .lsatu-arc .arc-feature-grid { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
-  .lsatu-arc .arc-feature-copy { order: 1; }
-  .lsatu-arc .arc-feature-media { order: 2; }
-  @media (min-width: 768px) {
-    .lsatu-arc .arc-feature-grid { grid-template-columns: 2fr 3fr; }
-    .lsatu-arc .arc-feature-grid.is-rev { grid-template-columns: 3fr 2fr; }
-    .lsatu-arc .arc-feature-grid.is-rev .arc-feature-copy { order: 2; }
-    .lsatu-arc .arc-feature-grid.is-rev .arc-feature-media { order: 1; }
-  }
-
-  /* Marquee — seamless loop, edge-fade mask */
-  .lsatu-arc .arc-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); }
-  .lsatu-arc .arc-marquee-track { display: inline-flex; gap: 0; white-space: nowrap; animation: arcMarquee 64s linear infinite; will-change: transform; }
-  .lsatu-arc .arc-marquee:hover .arc-marquee-track { animation-play-state: paused; }
-  .lsatu-arc .arc-marquee-item { display: inline-flex; align-items: center; gap: 14px; padding: 0 18px; font-family: ${ARC.serif}; font-size: 18px; font-weight: 500; font-style: italic; letter-spacing: -0.01em; color: ${ARC.ink}; }
-  .lsatu-arc .arc-marquee-dot { width: 4px; height: 4px; border-radius: 999px; background: ${ARC.accent}; opacity: 0.55; }
-  @keyframes arcMarquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
-
-  /* Scroll-snap carousel — hide native scrollbar, snap-mandatory.
-     Right-edge mask hints "more cards live this way" without a scrollbar.
-     Mask only on the right; left starts flush so the first card never feels clipped. */
-  .lsatu-arc .arc-carousel-wrap { position: relative; -webkit-mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%); mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%); }
-  .lsatu-arc .arc-carousel { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 32px; padding: 4px 32px 36px; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
-  .lsatu-arc .arc-carousel:active { cursor: grabbing; }
-  .lsatu-arc .arc-carousel::-webkit-scrollbar { display: none; }
-  .lsatu-arc .arc-card { scroll-snap-align: start; flex: 0 0 320px; background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: ${ARC.radiusCard}; padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 12px; min-height: 240px; transition: transform 260ms ${ARC.easeOut}, box-shadow 260ms ${ARC.easeOut}, border-color 260ms ${ARC.easeOut}; }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-card:hover { transform: translateY(-3px); box-shadow: ${ARC.shadowCard}; border-color: ${ARC.hairlineStrong}; }
-  }
-  .lsatu-arc .arc-card-kicker { font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: ${ARC.inkMuted}; }
-  .lsatu-arc .arc-card-title { font-family: ${ARC.serif}; font-size: 24px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: ${ARC.ink}; }
-  .lsatu-arc .arc-card-body { font-size: 14.5px; line-height: 1.55; color: ${ARC.inkSecondary}; margin-top: auto; }
-
-  /* Carousel hint row */
-  .lsatu-arc .arc-carousel-cue { display: flex; align-items: center; gap: 14px; padding: 0 32px 8px; color: ${ARC.inkMuted}; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
-  .lsatu-arc .arc-carousel-cue-line { flex: 1; height: 1px; background: ${ARC.hairline}; }
-
-  /* Eyebrow / kicker text */
-  .lsatu-arc .arc-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: ${ARC.inkSecondary}; }
-
-  /* Top-nav Sign-in button — subtle press feedback + hover-gated tint shift. */
-  .lsatu-arc .arc-nav-signin { display: inline-flex; align-items: center; min-height: 44px; background: transparent; border: 0; padding: 6px 14px; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.ink}; cursor: pointer; border-radius: 8px; transition: background 200ms ${ARC.easeOut}, color 200ms ${ARC.easeOut}, transform 200ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-nav-signin:active { transform: scale(0.97); transition-duration: 90ms; }
-  @media (hover: hover) and (pointer: fine) {
-    .lsatu-arc .arc-nav-signin:hover { background: ${ARC.bgTinted}; color: ${ARC.accent}; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .lsatu-arc .arc-fade, .lsatu-arc .arc-rise, .lsatu-arc .arc-stagger > * { animation: none; opacity: 1; transform: none; filter: none; transition: none; }
-    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon, .lsatu-arc .arc-pillar, .lsatu-arc .arc-link::after, .lsatu-arc .arc-nav-signin { transition: none; }
-    .lsatu-arc .arc-marquee-track { animation: none; }
-    .lsatu-arc .arc-shell-float { animation: none; }
-    .lsatu-arc .arc-shell-card { animation: none; opacity: 1; transform: none; }
-    .lsatu-arc .arc-pillar { opacity: 1; transform: none; }
-    .lsatu-arc .arc-link::after { transform: scaleX(1); }
-  }
-
-  @media (max-width: 720px) {
-    .lsatu-arc .arc-card { flex: 0 0 280px; min-height: 220px; }
-    .lsatu-arc .arc-marquee-item { font-size: 16px; padding: 0 14px; }
-    .lsatu-arc .arc-cta-hero { height: 54px; padding: 0 18px 0 24px; font-size: 14.5px; }
-    .lsatu-arc .arc-shell-body { grid-template-columns: 1fr; }
-    .lsatu-arc .arc-shell-side { display: none; }
-    .lsatu-arc .arc-shell-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .lsatu-arc .arc-shell-card:nth-child(3) { display: none; }
-  }
-`;
-
-// ── Scroll-reveal hook — IntersectionObserver with two safety nets:
-// (1) initial pass reveals anything already at-or-above the current viewport
-//     (covers reload-mid-page and instant-scroll deep links),
-// (2) generous rootMargin so smooth-scrolls always hit the trigger before the
-//     element fully enters view. Reduced-motion bypasses everything.
-function useScrollReveal() {
-  React.useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.lsatu-arc .arc-rise'))
-      .filter((el) => !el.closest('[data-story-scroll]'));
-
-    if (reduced) {
-      els.forEach((el) => el.classList.add('is-in'));
-      return;
-    }
-
-    // Initial pass — anything already in/above the viewport is revealed without animation.
-    const vh = window.innerHeight;
-    els.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      // Reveal if the element top has reached the bottom 92% of the viewport
-      // OR if the element bottom is above the viewport (already scrolled past).
-      if (rect.top < vh * 0.92 || rect.bottom < 0) {
-        el.classList.add('is-in');
-      }
-    });
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-in');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: '0px 0px -4% 0px' },
-    );
-    els.forEach((el) => {
-      if (!el.classList.contains('is-in')) io.observe(el);
-    });
-    return () => io.disconnect();
-  }, []);
-}
-
-// ── Drag-to-scroll hook — mouse drag for the carousel; trackpads/touch use
-// native scroll-snap. Adds Arc-style "grab and pull" feel.
-function useDragScroll(ref: React.RefObject<HTMLElement>) {
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    const onDown = (e: MouseEvent) => {
-      isDown = true;
-      el.classList.add('is-dragging');
-      startX = e.pageX - el.offsetLeft;
-      scrollLeft = el.scrollLeft;
-    };
-    const onLeave = () => { isDown = false; el.classList.remove('is-dragging'); };
-    const onUp = () => { isDown = false; el.classList.remove('is-dragging'); };
-    const onMove = (e: MouseEvent) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - el.offsetLeft;
-      el.scrollLeft = scrollLeft - (x - startX) * 1.4;
-    };
-    el.addEventListener('mousedown', onDown);
-    el.addEventListener('mouseleave', onLeave);
-    el.addEventListener('mouseup', onUp);
-    el.addEventListener('mousemove', onMove);
-    return () => {
-      el.removeEventListener('mousedown', onDown);
-      el.removeEventListener('mouseleave', onLeave);
-      el.removeEventListener('mouseup', onUp);
-      el.removeEventListener('mousemove', onMove);
-    };
-  }, [ref]);
-}
-
-// ── Content tokens — all real LSAT subject signals. No fake metrics. ──
-const QUESTION_TYPES = [
-  'Necessary Assumption',
-  'Strengthen',
-  'Weaken',
-  'Main Conclusion',
-  'Flaw in the Reasoning',
-  'Principle',
-  'Parallel Reasoning',
-  'Resolve the Paradox',
-  'Inference',
-  'Method of Reasoning',
-  'Sufficient Assumption',
-  'Role in Argument',
-];
-
-const HABITS: Array<{ kicker: string; title: string; body: string }> = [
-  { kicker: '01 · Anatomy',  title: 'Find the argument.',     body: 'Every argument is a premise, a conclusion, and the bridge between them. Once you can see that shape on sight, the whole question slows down for you.' },
-  { kicker: '02 · Bridge',   title: 'Test the gap.',          body: 'Strengthen and Weaken questions live in the gap between premise and conclusion. Train your eye on that gap first, and the right answer gets a lot easier to spot.' },
-  { kicker: '03 · Failure',  title: 'Spot the flaw.',         body: 'Most arguments break in the same handful of ways. Learn that short list, and the flaws start jumping out at you instead of hiding.' },
-  { kicker: '04 · Stems',    title: 'Read the stem first.',   body: 'The question stem tells you what to look for. Read it first, every time, so you go into the stimulus knowing exactly what you are hunting.' },
-  { kicker: '05 · Patterns', title: 'Hunt patterns.',         body: 'The same few patterns show up across dozens of questions. Once you start recognizing them, you stop solving from scratch and start moving fast.' },
-  { kicker: '06 · Pace',     title: 'Slow now, fast later.',  body: 'Speed is not something you force. Go slow now and build the instinct, and the speed shows up on its own when it counts.' },
-];
-
-const PILLARS: Array<{ title: string; body: string }> = [
-  { title: 'Adaptive drilling.',   body: 'Your weakest question types come up first, on purpose. We spend your time where the points actually are, not where it feels comfortable.' },
-  { title: 'A coach in the page.', body: 'Coaching is built into every drill. You get feedback right at the moment you would normally trip, so you learn the fix while it still matters.' },
-  { title: 'Real numbers, only.',  body: 'No leaderboards. No vanity streaks. Every number you see is real, tracked over time, and tied to your actual progress.' },
-];
-
-// ── Nav ── Brand mark + Sign-in. Sticky with translucent warm-white blur.
-const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
-  <nav style={{
-    position: 'sticky', top: 0, zIndex: 30,
-    background: ARC.bg + 'F2',
-    backdropFilter: 'saturate(160%) blur(10px)',
-    WebkitBackdropFilter: 'saturate(160%) blur(10px)',
-    borderBottom: `1px solid ${ARC.hairline}`,
-  }}>
-    <div style={{
-      maxWidth: 1200, margin: '0 auto', padding: '18px 32px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    }}>
-      <Link to="/" style={{ fontFamily: ARC.serif, fontSize: 22, fontWeight: 600, letterSpacing: '-0.025em', color: ARC.ink, display: 'inline-flex', alignItems: 'baseline', gap: 6 }}>
-        LSAT
-        <span style={{ color: ARC.accent, fontStyle: 'italic', fontWeight: 500 }}>U</span>
-      </Link>
-      <button type="button" className="arc-nav-signin" onClick={onSignIn}>
-        Sign in
-      </button>
-    </div>
-  </nav>
-);
-
-// ── Hero ── One clear primary entry point. Typography unchanged; the
-// dual-button pattern collapses into a single substantial pill ("Enter LSAT
-// University") with a tiny secondary text link below for new accounts.
-const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
-  <section className="arc-rise" style={{ padding: 'clamp(72px, 10vw, 132px) 32px 56px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
-    <div className="arc-stagger">
-      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
-      <h1 style={{
-        fontSize: 'clamp(44px, 7.4vw, 96px)',
-        fontWeight: 600,
-        lineHeight: 0.94,
-        letterSpacing: '-0.04em',
-        marginTop: 24,
-        marginBottom: 18,
-      }}>
-        Master the LSAT.<br />
-        <span style={{ color: ARC.inkSecondary, fontWeight: 400, fontStyle: 'italic' }}>
-          Own your future.
-        </span>
-      </h1>
-      <p style={{
-        fontFamily: ARC.serif,
-        fontSize: 'clamp(18px, 1.7vw, 22px)',
-        lineHeight: 1.45,
-        color: ARC.inkSecondary,
-        maxWidth: 540,
-        margin: '0 auto 36px',
-        fontStyle: 'italic',
-        fontWeight: 400,
-      }}>
-        Clearer thinking, higher scores.
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
-        <button className="arc-cta arc-cta-hero" onClick={onCTA} aria-label="Enter LSAT University">
-          Enter LSAT University
-          <span aria-hidden="true" className="arc-cta-icon">
-            <svg viewBox="0 0 12 12" fill="none">
-              <path d="M2 6h7.5M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </button>
-        <button type="button" className="arc-cta-secondary" onClick={onSignUp}>
-          Or <u>create an account</u>
-        </button>
-      </div>
-      <p style={{
-        marginTop: 22, fontSize: 12, color: ARC.inkSecondary,
-        letterSpacing: '0.06em',
-      }}>
-        Email or Google · No credit card to start
-      </p>
-    </div>
-  </section>
-);
-
-// ── Platform preview ── A faithful, decorative emulation of the real signed-in
-// homepage (AcademyMainhub): window chrome + product nav, the Smart LR Score
-// gauge card on the left, and the live orbital ring on the right (Resume /
-// Analytics / Wrong Answer Journal nodes spinning around a glowing center). The
-// orbital is the *real* RadialOrbitalTimeline, wrapped in pointer-events-none so
-// it spins/pulses but is non-interactive (no click-expand overlay ever fires).
-// The gauge is a static facade — NOT the live SmartLRTrainingCard (that needs
-// QuestionBankContext + navigating buttons, which would be dead on a public
-// page). Whole preview is aria-hidden / decorative: no real handlers, only the
-// app's honest empty state ("0" score, "No streak yet"). Reads as "this is the
-// dashboard you get", styled in the warm landing tokens.
-
-// Three orbital nodes mirroring the real mainhub (labels + icons match the
-// product exactly). relatedIds empty + never clicked → no expand overlay.
-const PREVIEW_NODES: TimelineItem[] = [
-  { id: 1, title: 'Resume', date: 'Last assignment', content: 'Open the next thing on your plate.', category: 'Classroom', icon: Play, relatedIds: [], status: 'pending', energy: 60 },
-  { id: 2, title: 'Analytics', date: 'Trends', content: 'Performance trends and accuracy by question type.', category: 'Progress', icon: BarChart3, relatedIds: [], status: 'in-progress', energy: 72 },
-  { id: 3, title: 'Wrong Answer Journal', date: 'Review', content: 'Review missed questions and patterns.', category: 'Journal', icon: BookOpen, relatedIds: [], status: 'pending', energy: 68 },
-];
-
-const ArcPlatformPreview = () => (
-  <section className="arc-shell arc-rise" aria-label="LSAT U platform preview">
-    <div className="arc-shell-float">
-    <div className="arc-shell-frame">
-      <div className="arc-shell-bar">
-        <div className="arc-shell-dots" aria-hidden="true">
-          <span className="arc-shell-dot" />
-          <span className="arc-shell-dot" />
-          <span className="arc-shell-dot" />
-        </div>
-        <div className="arc-shell-title">LSAT U · Workspace</div>
-        <div className="arc-shell-kbd">⌘ K</div>
-      </div>
-      <div className="arc-shell-body">
-        <aside className="arc-shell-side" aria-hidden="true">
-          <div className="arc-shell-side-eyebrow">Workspace</div>
-          <div className="arc-shell-nav is-active">
-            <span className="arc-shell-nav-icon"><GraduationCap strokeWidth={1.6} size={14} /></span>
-            Classroom
-          </div>
-          <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><Flame strokeWidth={1.6} size={14} /></span>
-            Bootcamps
-          </div>
-          <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><Dumbbell strokeWidth={1.6} size={14} /></span>
-            Practice Hub
-          </div>
-          <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><CalendarDays strokeWidth={1.6} size={14} /></span>
-            Schedule
-          </div>
-          <div className="arc-shell-nav">
-            <span className="arc-shell-nav-icon"><Archive strokeWidth={1.6} size={14} /></span>
-            Reference Library
-          </div>
-        </aside>
-        <div className="arc-shell-main arc-prev-main" aria-hidden="true">
-          {/* Smart LR Score gauge — static facade (mirrors SmartLRTrainingCard) */}
-          <div className="arc-prev-gauge">
-            <div className="arc-prev-dial">
-              <svg className="arc-prev-dial-svg" viewBox="0 0 200 160" aria-hidden="true">
-                <path d="M 35 130 A 65 65 0 1 1 165 130" fill="none" stroke="currentColor" strokeWidth="10" strokeLinecap="round" />
-              </svg>
-              <span className="arc-prev-dial-num">0</span>
-            </div>
-            <span className="arc-prev-dial-label">Smart LR Score</span>
-            <span className="arc-prev-streak">
-              <Flame size={12} strokeWidth={1.8} />
-              No streak yet
-            </span>
-            <div className="arc-prev-selectors">
-              <span className="arc-prev-chip"><em>Practice Test</em>Auto</span>
-              <span className="arc-prev-chip"><em>Section</em>Auto</span>
-              <span className="arc-prev-chip"><em>Question</em>Auto</span>
-            </div>
-            <div className="arc-prev-drill">
-              <Play size={13} strokeWidth={2} fill="currentColor" />
-              Start Smart LR Drill
-            </div>
-          </div>
-          {/* Live orbital — the real component, non-interactive (spins + pulses) */}
-          <div className="arc-prev-orbital">
-            <div className="arc-prev-orbital-scale">
-              <RadialOrbitalTimeline timelineData={PREVIEW_NODES} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </section>
-);
-
-// ── Feature tour ── LexPrep-style product videos that reveal as the page
-// scrolls. Each feature section is an .arc-rise scroll trigger whose .arc-stagger
-// grid cascades copy then media into view (blur+fade+rise), mirroring lexprep.ai.
-// Copy + 16:10 media alternate sides. Drop real captures in
-// /public/features (H.264 mp4, 16:10, muted, ~5-10s); until then a warm
-// placeholder shows. Teardown: vault wiki/synthesis/lexprep-scroll-reveal-teardown.md
-type FeatureTour = { eyebrow: string; title: string; blurb: string; src?: string; poster?: string; reverse?: boolean };
-
-const FEATURES: FeatureTour[] = [
-  {
-    eyebrow: 'Practice',
-    title: 'Smart LR Drill',
-    blurb: 'An adaptive engine reads your misses and serves the next question that actually moves your score — not busywork.',
-    src: '/features/smart-drill.mp4',
-    poster: '/features/smart-drill.jpg',
-  },
-  {
-    eyebrow: 'Review',
-    title: 'Wrong Answer Journal',
-    blurb: 'Every miss becomes a worked example: why the trap worked, what the right read was, and the pattern to watch next time.',
-    src: '/features/waj.mp4',
-    poster: '/features/waj.jpg',
-    reverse: true,
-  },
-  {
-    eyebrow: 'Curriculum',
-    title: 'Guided bootcamps',
-    blurb: 'Structured, voice-led courses that build one reasoning skill at a time, from Main Conclusion outward.',
-    src: '/features/bootcamps.mp4',
-    poster: '/features/bootcamps.jpg',
-  },
-  {
-    eyebrow: 'Plan',
-    title: 'A schedule that adapts',
-    blurb: 'A week-by-week plan tuned to your test date and your data, so you always know the next right thing to do.',
-    src: '/features/schedule.mp4',
-    poster: '/features/schedule.jpg',
-    reverse: true,
-  },
-];
-
-const ArcFeature = ({ eyebrow, title, blurb, src, poster, reverse }: FeatureTour) => {
-  // Under prefers-reduced-motion, a looping background video still moves, so
-  // paint the static poster instead. Same matchMedia pattern as the scroll
-  // observer below (Auth.tsx); read once on mount, no live listener needed.
-  const reducedMotion = typeof window !== 'undefined'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  return (
-  <section className="arc-rise" style={{ width: '100%', padding: 'clamp(56px, 8vw, 96px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div className={`arc-feature-grid arc-stagger${reverse ? ' is-rev' : ''}`}>
-      <div className="arc-feature-copy arc-stagger">
-        <span className="arc-eyebrow" style={{ marginBottom: 18 }}>{eyebrow}</span>
-        <h2 style={{
-          fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 600,
-          lineHeight: 1.04, letterSpacing: '-0.03em', marginTop: 18, marginBottom: 16,
-        }}>
-          {title}
-        </h2>
-        <p style={{
-          fontFamily: ARC.serif, fontSize: 'clamp(17px, 1.5vw, 20px)',
-          lineHeight: 1.5, color: ARC.inkSecondary, maxWidth: 460,
-        }}>
-          {blurb}
-        </p>
-      </div>
-      <div className="arc-feature-media">
-        <figure style={{
-          position: 'relative', margin: 0, width: '100%', aspectRatio: '16 / 10',
-          overflow: 'hidden', borderRadius: ARC.radiusCard,
-          border: `1px solid ${ARC.hairline}`, background: ARC.bgTinted,
-          boxShadow: ARC.shadowCard,
-        }}>
-          {/* Placeholder sits behind the video; a loaded clip covers it. Until
-              a real /features/*.mp4 exists, this warm cue shows instead of an
-              empty box or a broken-media icon. */}
-          <span aria-hidden="true" style={{
-            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
-            justifyContent: 'center', gap: 8, color: ARC.inkMuted,
-            fontSize: 13, letterSpacing: '0.04em',
-          }}>
-            <Play size={16} strokeWidth={1.8} fill="currentColor" /> Preview
-          </span>
-          {src && reducedMotion && poster && (
-            // Reduced motion: static poster over the placeholder, no playback.
-            <img
-              src={poster}
-              alt=""
-              aria-hidden="true"
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
+// ── Inline drawer alert — auth failures must be visible where the user is
+// looking, not only in a corner toast. role="alert" announces to AT.
+const FormAlert = ({ error }: { error: { title: string; description?: string } | null }) => (
+  <AnimatePresence>
+    {error && (
+      <motion.div
+        initial={{ opacity: 0, y: -6, height: 0 }}
+        animate={{ opacity: 1, y: 0, height: 'auto' }}
+        exit={{ opacity: 0, y: -6, height: 0 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+        style={{ overflow: 'hidden' }}
+      >
+        <div
+          role="alert"
+          className="mb-4 rounded-lg border border-[#E86A5A]/25 bg-[#E86A5A]/[0.08] px-3.5 py-3"
+        >
+          <p className="text-[12px] font-medium text-[#F1A093]">{error.title}</p>
+          {error.description && (
+            <p className="mt-1 text-[11px] leading-relaxed text-[#C9A29A]">{error.description}</p>
           )}
-          {src && !reducedMotion && (
-            <video
-              src={src}
-              poster={poster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-              // translateZ(0) forces GPU compositing so the loop stays smooth.
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
-            />
-          )}
-        </figure>
-      </div>
-    </div>
-  </section>
-  );
-};
-
-// ── Marquee ── Auto-scrolling row of LSAT question types. Replaces the
-// "logo wall" beat that Arc puts under its hero. Real subject content,
-// not fake brand logos.
-const ArcMarquee = () => {
-  const items = [...QUESTION_TYPES, ...QUESTION_TYPES]; // duplicated for seamless loop
-  return (
-    <section className="arc-rise arc-stagger" style={{
-      borderTop: `1px solid ${ARC.hairline}`,
-      borderBottom: `1px solid ${ARC.hairline}`,
-      background: ARC.bgTinted,
-      padding: '20px 0',
-    }}>
-      <div style={{
-        maxWidth: 1200, margin: '0 auto',
-        padding: '0 32px 6px',
-        fontSize: 11, fontWeight: 500,
-        letterSpacing: '0.22em', textTransform: 'uppercase',
-        color: ARC.inkSecondary,
-      }}>
-        What you train
-      </div>
-      <div className="arc-marquee" aria-hidden="true">
-        <div className="arc-marquee-track">
-          {items.map((q, i) => (
-            <span key={i} className="arc-marquee-item">
-              <span className="arc-marquee-dot" />
-              {q}
-            </span>
-          ))}
         </div>
-      </div>
-    </section>
-  );
-};
-
-// ── Proof quote ── Founder statement of intent. Pull-quote in serif italic.
-const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
-  <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 144px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div className="arc-stagger" style={{ maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
-      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>A statement of intent</span>
-      <p style={{
-        fontFamily: ARC.serif, fontStyle: 'italic',
-        fontSize: 'clamp(28px, 3.6vw, 46px)',
-        fontWeight: 500, lineHeight: 1.16, letterSpacing: '-0.025em',
-        margin: '24px 0 28px', color: ARC.ink,
-      }}>
-        “LSAT U is the prep we wish every aspiring attorney had: practice, review, and real progress in one place, all pointed at the score you actually want.”
-      </p>
-      <button className="arc-cta" onClick={onPrimary}>
-        Begin training
-        <span aria-hidden="true" className="arc-cta-arrow">→</span>
-      </button>
-    </div>
-  </section>
+      </motion.div>
+    )}
+  </AnimatePresence>
 );
-
-// ── Carousel ── Horizontal scroll-snap row of LSAT thinking principles.
-// Cards are flat warm-cream surfaces with hairline borders. Drag-to-scroll
-// for mouse, native scroll-snap for trackpad/touch. Six cards fits Arc's
-// proof-row rhythm; mask-fade on the right cues "more to read".
-const ArcCarousel = () => {
-  const ref = React.useRef<HTMLDivElement>(null);
-  useDragScroll(ref);
-  return (
-    <section className="arc-rise" style={{ padding: '12px 0 80px', maxWidth: 1280, margin: '0 auto' }}>
-      <div className="arc-stagger" style={{ padding: '0 32px', maxWidth: 1100, margin: '0 auto', textAlign: 'center', marginBottom: 48 }}>
-        <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Six habits, one rhythm</span>
-        <h2 style={{
-          fontSize: 'clamp(32px, 4.4vw, 56px)',
-          fontWeight: 600, lineHeight: 1.02, letterSpacing: '-0.03em',
-          marginTop: 22, marginBottom: 18,
-        }}>
-          The training,<br />
-          <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>distilled.</span>
-        </h2>
-        <p style={{
-          fontSize: 17, lineHeight: 1.55, color: ARC.inkSecondary,
-          maxWidth: 580, margin: '0 auto',
-        }}>
-          The LSAT really comes down to a small set of habits, practiced until they are second nature. These are the ones we build together, one drill at a time, until they stop feeling like work and just become how you read.
-        </p>
-      </div>
-
-      <div className="arc-carousel-cue" style={{ maxWidth: 1280, margin: '0 auto' }}>
-        <span>Scroll</span>
-        <span className="arc-carousel-cue-line" />
-        <span>Drag · or trackpad</span>
-      </div>
-
-      <div className="arc-carousel-wrap">
-        <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training habits">
-          {HABITS.map((p, i) => (
-            <article key={i} className="arc-card" role="listitem">
-              <div className="arc-card-kicker">{p.kicker}</div>
-              <div className="arc-card-title">{p.title}</div>
-              <div className="arc-card-body">{p.body}</div>
-            </article>
-          ))}
-          {/* Closing card — gentle handoff to CTA */}
-          <article className="arc-card" role="listitem" style={{
-            background: ARC.ink, color: ARC.bg, borderColor: ARC.ink,
-          }}>
-            <div className="arc-card-kicker" style={{ color: ARC.bgTinted, opacity: 0.7 }}>Begin →</div>
-            <div className="arc-card-title" style={{ color: ARC.bg }}>Ready when you are.</div>
-            <div className="arc-card-body" style={{ color: ARC.bgTinted, opacity: 0.85 }}>
-              These habits only stick once you start drilling them. Sign in and let’s get to work.
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// ── Pillars ── Three flat columns. No images, no chrome — just type and
-// hairlines. Mirrors Arc's "three benefit blocks" beat without screenshots.
-const ArcPillars = () => (
-  <section className="arc-rise" style={{ padding: 'clamp(72px, 10vw, 120px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div className="arc-stagger" style={{ maxWidth: 760, margin: '0 auto 64px', textAlign: 'center' }}>
-      <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Built for serious training</span>
-      <h2 style={{
-        fontSize: 'clamp(28px, 3.8vw, 48px)',
-        fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
-        marginTop: 22,
-      }}>
-        It doesn’t just teach the test.<br />
-        <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>It trains the lawyer in you.</span>
-      </h2>
-    </div>
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-      gap: 0,
-      borderTop: `1px solid ${ARC.hairline}`,
-    }}>
-      {PILLARS.map((p, i) => (
-        <div key={i} className="arc-pillar" style={{
-          padding: '40px 28px',
-          borderBottom: `1px solid ${ARC.hairline}`,
-          borderRight: i < PILLARS.length - 1 ? `1px solid ${ARC.hairline}` : 'none',
-        }}>
-          <div style={{
-            fontFamily: ARC.sans, fontSize: 11, fontWeight: 500,
-            letterSpacing: '0.18em', textTransform: 'uppercase',
-            color: ARC.inkMuted, marginBottom: 16,
-          }}>
-            {String(i + 1).padStart(2, '0')}
-          </div>
-          <h3 style={{
-            fontFamily: ARC.serif, fontSize: 26, fontWeight: 500,
-            lineHeight: 1.12, letterSpacing: '-0.02em',
-            marginBottom: 12,
-          }}>
-            {p.title}
-          </h3>
-          <p style={{ fontSize: 15.5, lineHeight: 1.55, color: ARC.inkSecondary }}>
-            {p.body}
-          </p>
-        </div>
-      ))}
-    </div>
-  </section>
-);
-
-// ── Text-only — Arc's "build philosophy" beat. No graphic. Ink + accent link.
-const ArcTextOnly = () => (
-  <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 140px) 32px', maxWidth: 1200, margin: '0 auto' }}>
-    <div className="arc-stagger" style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
-      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>The build philosophy</span>
-      <h2 style={{
-        fontSize: 'clamp(30px, 4vw, 52px)',
-        fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
-        marginTop: 22, marginBottom: 22,
-      }}>
-        Focused LSAT prep, without the noise.
-      </h2>
-      <p style={{ fontSize: 17, lineHeight: 1.6, color: ARC.inkSecondary, marginBottom: 28 }}>
-        LSAT U keeps your study time centered on the work that matters: practice, review, mistakes, and steady improvement.
-      </p>
-      <span className="arc-link" style={{ fontSize: 14, fontFamily: ARC.sans }}>
-        Simple on the surface. Serious where it counts.
-      </span>
-    </div>
-  </section>
-);
-
-// ── Closing CTA ── A final pull. Big serif lockup + single pill button.
-const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
-  <section className="arc-rise arc-stagger" style={{
-    padding: 'clamp(80px, 10vw, 128px) 32px',
-    maxWidth: 1200, margin: '0 auto',
-    textAlign: 'center',
-  }}>
-    <h2 style={{
-      fontSize: 'clamp(36px, 5.6vw, 80px)',
-      fontWeight: 600, lineHeight: 0.98, letterSpacing: '-0.035em',
-      marginBottom: 28,
-    }}>
-      Sit down.<br />
-      <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>Begin.</span>
-    </h2>
-    <button className="arc-cta" onClick={onPrimary} style={{ height: 50, padding: '0 28px', fontSize: 14.5 }}>
-      Begin training
-      <span aria-hidden="true" className="arc-cta-arrow">→</span>
-    </button>
-  </section>
-);
-
-// ── Footer ── One line, Inter-grade, muted. No fake links — the public
-// surface only owns what it can deliver. Privacy and terms are in-app.
-const ArcFooter = () => (
-  <footer style={{
-    borderTop: `1px solid ${ARC.hairline}`,
-    padding: '32px',
-    fontSize: 12,
-    color: ARC.inkSecondary,
-    letterSpacing: '0.04em',
-  }}>
-    <div style={{
-      maxWidth: 1200, margin: '0 auto',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      gap: 12, flexWrap: 'wrap',
-    }}>
-      <span style={{ fontFamily: ARC.serif, fontStyle: 'italic', color: ARC.inkSecondary }}>
-        LSAT U · A training environment for aspiring attorneys.
-      </span>
-      <span>© {new Date().getFullYear()}</span>
-    </div>
-  </footer>
-);
-
-// ─────────────────────────────────────────────────────────────────────────────
-// AUTH PAGE
-// ─────────────────────────────────────────────────────────────────────────────
 
 // How long an oauth_pending flag is allowed to live before it counts as
 // stuck. If the user navigated away mid-OAuth and never came back, the
@@ -969,11 +151,16 @@ export default function Auth() {
   const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
-  // ── Drawer state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof).
+  // ── Drawer state — opens via landing CTAs (nav, hero, credo, final).
   // Default closed so visitors can read the landing page; a session-expired
   // or OAuth bounce explicitly forces it open below.
   const [modalOpen, setModalOpen] = React.useState(false);
   const [forgotOpen, setForgotOpen] = React.useState(false);
+
+  // Inline error surfaced inside the drawer. Toasts are also fired (app
+  // convention), but auth failures must be visible right where the user is
+  // looking, so the drawer renders this alert above the form.
+  const [formError, setFormError] = React.useState<{ title: string; description?: string } | null>(null);
 
   // ── Form state ──
   const [isSignUp, setIsSignUp] = React.useState(false);
@@ -995,8 +182,32 @@ export default function Auth() {
     }
   }, []);
 
-  // Reveal-on-scroll for marketing sections (no library; respects reduced motion).
-  useScrollReveal();
+  // ── OAuth return-leg detection ──
+  // We're "returning from OAuth" if EITHER:
+  //   (a) the sessionStorage flag set on outbound is still present, OR
+  //   (b) the URL itself carries a return-leg signal (?code=, #access_token,
+  //       ?error=, #error=) — covers the case where a user pastes/bookmarks
+  //       a callback URL, or the flag was cleared between renders.
+  // Computing inline at render keeps it a function of current state, not a
+  // stale React state value. The URL check runs once per render but is cheap.
+  const oauthReturning = (() => {
+    if (typeof window === 'undefined') return false;
+    if (sessionStorage.getItem('oauth_pending') === '1') return true;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    return (
+      search.includes('code=') ||
+      search.includes('error=') ||
+      hash.includes('access_token=') ||
+      hash.includes('error=')
+    );
+  })();
+
+  // Reveal-on-scroll for landing sections (no library; respects reduced
+  // motion). Re-arms when the landing view actually renders — the two loading
+  // early-returns below can come first (OAuth return leg), and observing must
+  // start only once the .vr sections exist.
+  useReveal(!(oauthReturning && !user) && !(authReady && user));
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
   // useEffect never fires navigate('/mainhub') while we're in the post-login async block.
@@ -1067,17 +278,20 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormError(null);
     const trimmedEmail = email.trim().toLowerCase();
     try {
       if (isSignUp) {
         if (password !== confirmPassword) {
+          setFormError({ title: 'Passwords do not match', description: 'Retype the confirmation so both fields agree.' });
           toast({ title: 'Passwords do not match', variant: 'destructive' });
           return;
         }
         const { error } = await signUp(trimmedEmail, password, name);
-        if (error)
+        if (error) {
+          setFormError({ title: 'Registration failed', description: error.message });
           toast({ title: 'Registration failed', description: error.message, variant: 'destructive' });
-        else {
+        } else {
           setShowConfirmation(true);
         }
       } else {
@@ -1096,6 +310,7 @@ export default function Auth() {
           // Supabase (network down, DNS failure, blocked by extension).
           // The non-throw path returns { error } already.
           skipAutoRedirectRef.current = false;
+          setFormError({ title: "Couldn't reach the server", description: 'Check your connection and try again.' });
           toast({
             title: "Couldn't reach the server",
             description: 'Check your connection and try again.',
@@ -1122,6 +337,7 @@ export default function Auth() {
             description = 'Wait a couple of minutes before trying again.';
           }
 
+          setFormError({ title, description });
           toast({ title, description, variant: 'destructive' });
         } else {
           // Save or clear email based on "Remember me"
@@ -1150,6 +366,7 @@ export default function Auth() {
 
   const handleGoogleSignIn = async () => {
     if (isLovablePreviewIframe()) {
+      setFormError({ title: 'Google sign-in unavailable in preview', description: 'Open the published URL (lsatu.lovable.app) to sign in with Google. Email/password works here.' });
       toast({
         title: 'Google sign-in unavailable in preview',
         description: 'Open the published URL (lsatu.lovable.app) to sign in with Google. Email/password works here.',
@@ -1167,6 +384,7 @@ export default function Auth() {
       if (result.error) {
         sessionStorage.removeItem('oauth_pending');
         sessionStorage.removeItem('oauth_pending_ts');
+        setFormError({ title: 'Google sign-in failed', description: String(result.error) });
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
       if (result.redirected) return;
@@ -1174,6 +392,7 @@ export default function Auth() {
       sessionStorage.removeItem('oauth_pending');
       sessionStorage.removeItem('oauth_pending_ts');
       const description = err instanceof Error ? err.message : 'Unknown error';
+      setFormError({ title: 'Google sign-in failed', description });
       toast({ title: 'Google sign-in failed', description, variant: 'destructive' });
     } finally {
       setLoading(false);
@@ -1192,6 +411,7 @@ export default function Auth() {
       setForgotOpen(false);
       setResetEmail('');
     } else {
+      setFormError({ title: 'Reset failed', description: error.message });
       toast({
         title: 'Reset failed',
         description: error.message,
@@ -1201,33 +421,11 @@ export default function Auth() {
     setLoading(false);
   };
 
-
-  // CTAs from every Arc section funnel into the auth drawer — preserves
+  // CTAs from every landing section funnel into the auth drawer — preserves
   // the flow exactly. setModalOpen(true) opens the vaul drawer's sign-in
   // form, which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
   const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
   const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
-
-  // ── OAuth return-leg detection ──
-  // We're "returning from OAuth" if EITHER:
-  //   (a) the sessionStorage flag set on outbound is still present, OR
-  //   (b) the URL itself carries a return-leg signal (?code=, #access_token,
-  //       ?error=, #error=) — covers the case where a user pastes/bookmarks
-  //       a callback URL, or the flag was cleared between renders.
-  // Computing inline at render keeps it a function of current state, not a
-  // stale React state value. The URL check runs once per render but is cheap.
-  const oauthReturning = (() => {
-    if (typeof window === 'undefined') return false;
-    if (sessionStorage.getItem('oauth_pending') === '1') return true;
-    const search = window.location.search;
-    const hash = window.location.hash;
-    return (
-      search.includes('code=') ||
-      search.includes('error=') ||
-      hash.includes('access_token=') ||
-      hash.includes('error=')
-    );
-  })();
 
   // Calm loading panel used by both early-return branches.
   const LoadingPanel = ({ label }: { label: string }) => (
@@ -1236,15 +434,16 @@ export default function Auth() {
       aria-live="polite"
       style={{
         minHeight: '100vh',
-        background: ARC.bg,
-        color: ARC.ink,
+        background: VOID.bg,
+        color: VOID.bone,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        fontFamily: VOID.sans,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
-        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" style={{ color: VOID.ember }} />
         {label}
       </div>
     </div>
@@ -1253,7 +452,7 @@ export default function Auth() {
   // Order matters: while the OAuth return is mid-flight (URL or flag says
   // so AND we don't yet have a user), show "Finishing sign in…". As soon as
   // the user is established (and we may still be on /auth for a frame or
-  // two), show "Redirecting…". Either path prevents the marketing page from
+  // two), show "Redirecting…". Either path prevents the landing page from
   // flashing during the resolved-but-not-yet-navigated window.
   if (oauthReturning && !user) {
     return <LoadingPanel label="Finishing sign in…" />;
@@ -1263,24 +462,25 @@ export default function Auth() {
   }
 
   return (
-    <div className="lsatu-arc">
-      <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
+    <div className="lsx">
+      <style dangerouslySetInnerHTML={{ __html: LANDING_CSS + DRAWER_CSS }} />
 
-      <ArcNav onSignIn={openSignIn} />
-      <main aria-label="LSAT U landing" className="bg-[#FBF8F1]">
-        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
-        <ArcPlatformPreview />
-        {FEATURES.map((f) => (
-          <ArcFeature key={f.title} {...f} />
-        ))}
-        <ArcMarquee />
-        <ArcCarousel />
-        <ArcProof onPrimary={openSignIn} />
-        <ArcPillars />
-        <ArcTextOnly />
-        <ArcFinalCTA onPrimary={openSignIn} />
-      </main>
-      <ArcFooter />
+      <VoidCanvas />
+
+      <div className="lsx-content">
+        <LsxNav onSignIn={openSignIn} />
+        <main aria-label="LSAT U landing">
+          <LsxHero onCTA={openSignIn} onSignUp={openSignUp} />
+          <LsxOrbits />
+          <LsxMarquee />
+          <LsxChapters />
+          <LsxHabits />
+          <LsxPillars />
+          <LsxCredo onPrimary={openSignIn} />
+          <LsxFinal onPrimary={openSignIn} />
+        </main>
+        <LsxFooter />
+      </div>
 
       {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
           Holds two views: main sign-in/sign-up (default) and reset-password
@@ -1290,45 +490,52 @@ export default function Auth() {
         open={modalOpen}
         onOpenChange={(open) => {
           setModalOpen(open);
-          if (!open) setForgotOpen(false);
+          if (!open) {
+            setForgotOpen(false);
+            setFormError(null);
+          }
         }}
       >
         <DrawerContent
-          className="bg-[color:var(--auth-surface)] border-0 border-t border-[color:var(--auth-line-3)] text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-[color:var(--auth-catchlight)]"
+          className="bg-[color:var(--auth-surface)] border-0 border-t border-[color:var(--auth-line-3)] text-[#EDE7DA] outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-[color:var(--auth-catchlight)]"
         >
           <DrawerTitle className="sr-only">LSAT U Access</DrawerTitle>
           <DrawerDescription className="sr-only">
             Sign in or create your LSAT U account.
           </DrawerDescription>
 
-          {/* Top specular catch-light */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--auth-catchlight)] to-transparent pointer-events-none" />
+          {/* Caustic gleam along the top edge + ember bloom behind content */}
+          <div className="lsx-drawer-clip" aria-hidden="true">
+            <div className="lsx-caustic" />
+            <div className="lsx-drawer-bloom" />
+          </div>
 
           {/* Close (desktop affordance — mobile users can drag down) */}
           <button
             onClick={() => setModalOpen(false)}
-            className={cn("absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-[color,transform] duration-200 ease-out active:scale-90", focusRingCls)}
+            className={cn("absolute top-3 right-3 z-10 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-[#847D70] hover:text-[#EDE7DA] transition-[color,transform] duration-200 ease-out active:scale-90", focusRingCls)}
             aria-label="Close"
           >
             <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
           </button>
 
-          <div className="pt-2">
+          <div className="pt-2 relative">
             {forgotOpen ? (
               <>
                 <div className="text-center mb-6">
-                  <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
+                  <h2 className="text-[1.3rem] font-medium tracking-tight text-[#EDE7DA] mb-1.5" style={{ fontFamily: VOID.serif }}>
                     Reset Password
                   </h2>
-                  <p className="text-[11px] text-neutral-400">
+                  <p className="text-[11px] text-[#847D70]">
                     Enter your email to receive a reset link.
                   </p>
                 </div>
+                <FormAlert error={formError} />
                 <form onSubmit={handleForgotPassword} className="space-y-4">
                   <div>
                     <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
                     <div className="relative group">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
                       <Input
                         id="auth-reset-email"
                         type="email"
@@ -1349,8 +556,8 @@ export default function Auth() {
                 </form>
                 <button
                   type="button"
-                  onClick={() => setForgotOpen(false)}
-                  className={cn("block mx-auto mt-4 text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 rounded", focusRingCls)}
+                  onClick={() => { setForgotOpen(false); setFormError(null); }}
+                  className={cn("block mx-auto mt-4 text-[11px] text-[#847D70] hover:text-[#EDE7DA] transition-colors py-2.5 rounded", focusRingCls)}
                 >
                   Back to sign in
                 </button>
@@ -1358,10 +565,10 @@ export default function Auth() {
             ) : (
               <>
                 <div className="text-center mb-7">
-                  <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
-                    LSAT U
+                  <h2 className="text-[1.3rem] font-medium tracking-tight text-[#EDE7DA] mb-1.5" style={{ fontFamily: VOID.serif }}>
+                    LSAT <em style={{ fontStyle: 'italic', color: VOID.ember }}>U</em>
                   </h2>
-                  <p className="text-[11px] text-neutral-400">
+                  <p className="text-[11px] text-[#847D70]">
                     {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
                   </p>
                 </div>
@@ -1374,18 +581,18 @@ export default function Auth() {
                       <button
                         key={tab}
                         type="button"
-                        onClick={() => setIsSignUp(i === 1)}
+                        onClick={() => { setIsSignUp(i === 1); setFormError(null); }}
                         aria-pressed={selected}
                         className={cn(
                           'relative w-full min-h-[44px] flex items-center justify-center text-[12px] font-medium transition-colors z-10 rounded-[7px]',
                           focusRingCls,
-                          selected ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'
+                          selected ? 'text-[#FFCB7C]' : 'text-[#847D70] hover:text-[#C9C2B4]'
                         )}
                       >
                         {selected && (
                           <motion.div
                             layoutId="seg"
-                            className="absolute inset-0 bg-[color:var(--auth-indicator)] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(255,255,255,0.06)]"
+                            className="absolute inset-0 bg-[color:var(--auth-indicator)] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(232,164,76,0.18)]"
                             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                           />
                         )}
@@ -1400,9 +607,9 @@ export default function Auth() {
                     <div className="w-14 h-14 rounded-full bg-[color:var(--auth-success-bg)] border border-[color:var(--auth-success-line)] flex items-center justify-center mx-auto">
                       <Mail className="w-6 h-6 text-[color:var(--auth-success)]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white">Check your email</h3>
-                    <p className="text-[13px] text-neutral-400 leading-relaxed max-w-[280px] mx-auto">
-                      We sent a confirmation link to <span className="text-white font-medium">{email}</span>. Click the link to activate your account.
+                    <h3 className="text-lg font-medium text-[#EDE7DA]" style={{ fontFamily: VOID.serif }}>Check your email</h3>
+                    <p className="text-[13px] text-[#A79F91] leading-relaxed max-w-[280px] mx-auto">
+                      We sent a confirmation link to <span className="text-[#FFCB7C] font-medium">{email}</span>. Click the link to activate your account.
                     </p>
                     <button
                       type="button"
@@ -1414,13 +621,14 @@ export default function Auth() {
                         setConfirmPassword('');
                         setName('');
                       }}
-                      className={cn("text-[11px] text-neutral-400 hover:text-white transition-colors py-2.5 mt-2 rounded", focusRingCls)}
+                      className={cn("text-[11px] text-[#847D70] hover:text-[#EDE7DA] transition-colors py-2.5 mt-2 rounded", focusRingCls)}
                     >
                       Back to sign in
                     </button>
                   </div>
                 ) : (
                   <>
+                    <FormAlert error={formError} />
                     <form onSubmit={handleSubmit} className="space-y-4">
                       {/* Name — sign up only */}
                       <AnimatePresence>
@@ -1441,7 +649,7 @@ export default function Auth() {
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               maxLength={50}
-                              className={inputCls}
+                              className={cn(inputCls, 'pl-3')}
                             />
                           </motion.div>
                         )}
@@ -1451,7 +659,7 @@ export default function Auth() {
                       <div>
                         <label htmlFor="auth-email" className={labelCls}>Email</label>
                         <div className="relative group">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
                           <Input
                             id="auth-email"
                             type="email"
@@ -1474,15 +682,15 @@ export default function Auth() {
                           {!isSignUp && (
                             <button
                               type="button"
-                              onClick={() => setForgotOpen(true)}
-                              className={cn("text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded", focusRingCls)}
+                              onClick={() => { setForgotOpen(true); setFormError(null); }}
+                              className={cn("text-[11px] text-[#A79F91] hover:text-[#FFCB7C] transition-colors duration-200 font-medium inline-flex items-center px-2 py-3 -my-2 -mr-1 rounded", focusRingCls)}
                             >
                               Forgot?
                             </button>
                           )}
                         </div>
                         <div className="relative group mt-1.5">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
                           <Input
                             id="auth-password"
                             type={showPassword ? 'text' : 'password'}
@@ -1498,7 +706,7 @@ export default function Auth() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className={cn("absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-neutral-400 hover:text-white transition-colors", focusRingCls)}
+                            className={cn("absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg text-[#847D70] hover:text-[#EDE7DA] transition-colors", focusRingCls)}
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                             aria-pressed={showPassword}
                           >
@@ -1510,7 +718,7 @@ export default function Auth() {
                           </button>
                         </div>
                         {isSignUp && (
-                          <p id="auth-password-hint" className="text-[10px] text-neutral-400 mt-1.5 ml-0.5">
+                          <p id="auth-password-hint" className="text-[10px] text-[#847D70] mt-1.5 ml-0.5">
                             8+ characters
                           </p>
                         )}
@@ -1527,7 +735,7 @@ export default function Auth() {
                           >
                             <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
                             <div className="relative group">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6E675C] transition-colors duration-200 group-focus-within:text-[#E8A44C]" />
                               <Input
                                 id="auth-confirm"
                                 type={showPassword ? 'text' : 'password'}
@@ -1553,9 +761,9 @@ export default function Auth() {
                               setRememberMe(e.target.checked);
                               if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
                             }}
-                            className="w-4 h-4 rounded border-[color:var(--auth-line-3)] bg-black/50 text-white accent-white focus:ring-[color:var(--auth-ring-soft)] cursor-pointer"
+                            className="w-4 h-4 rounded border-[color:var(--auth-line-3)] bg-black/50 accent-[#E8A44C] focus:ring-[color:var(--auth-ring-soft)] cursor-pointer"
                           />
-                          <span className="text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors">
+                          <span className="text-[11px] text-[#847D70] group-hover:text-[#C9C2B4] transition-colors">
                             Remember my email
                           </span>
                         </label>
@@ -1575,7 +783,7 @@ export default function Auth() {
                     {/* Divider */}
                     <div className="flex items-center gap-3 pt-4">
                       <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
-                      <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 font-medium">or</span>
+                      <span className="text-[10px] uppercase tracking-[0.22em] text-[#847D70] font-medium font-mono">or</span>
                       <div className="flex-1 h-px bg-[color:var(--auth-line-2)]" />
                     </div>
 
@@ -1586,7 +794,7 @@ export default function Auth() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-[color:var(--auth-fill-1)] border border-[color:var(--auth-line-2)] hover:bg-[color:var(--auth-fill-hover)] active:bg-[color:var(--auth-fill-active)] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
+                      className={cn("w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-[color:var(--auth-fill-1)] border border-[color:var(--auth-line-2)] hover:bg-[color:var(--auth-fill-hover)] active:bg-[color:var(--auth-fill-active)] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-[#C9C2B4] transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed", focusRingCls)}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
