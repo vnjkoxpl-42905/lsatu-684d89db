@@ -55,7 +55,7 @@ Google Meet: on insert/patch, `conferenceData: { createRequest: { requestId: <id
 ## Data model (one migration)
 
 New tables:
-- **`booking_availability`** (singleton `id=1`, `CHECK (id=1)` like `gcal_sync_state`): `timezone` IANA default `America/Toronto`, `min_notice_minutes` default 720, `buffer_before_minutes`, `buffer_after_minutes`, `slot_increment_minutes` default 30, `daily_cap` nullable, `future_days` default 21, **`busy_calendar_ids` text[] default `'{}'`** (extra conflict-check calendars; UI for it is Phase 6, column exists from day one because retrofitting is painful and `freeBusy.query` takes multiple ids natively — the write calendar stays `gcal_sync_state.calendar_id`).
+- **`booking_availability`** (singleton `id=1`, `CHECK (id=1)` like `gcal_sync_state`): `timezone` IANA default `America/New_York` (confirmed as the primary calendar tz in Phase 0), `min_notice_minutes` default 720, `buffer_before_minutes`, `buffer_after_minutes`, `slot_increment_minutes` default 30, `daily_cap` nullable, `future_days` default 21, **`busy_calendar_ids` text[] default `'{}'`** (extra conflict-check calendars; UI for it is Phase 6, column exists from day one because retrofitting is painful and `freeBusy.query` takes multiple ids natively — the write calendar stays `gcal_sync_state.calendar_id`).
 - **`booking_availability_rules`**: `weekday` 0-6, `start_minute`, `end_minute` (minutes from local midnight); multiple rows/day.
 - **`booking_availability_overrides`**: `date`, `is_closed` bool, `start_minute`/`end_minute` — **multiple rows per date allowed**, same shape as weekly rules, so "Jul 27: open 9-11 and 2-5" works. `is_closed=true` row closes the whole date.
 
