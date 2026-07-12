@@ -143,9 +143,38 @@ async function forward(
   });
 }
 
+// Recursively strip JSON-Schema keywords the Gemini schema subset rejects
+// (additionalProperties, $schema). Safe to run on any tool params — OpenAI
+// accepts JSON Schema without these too.
+const UNSUPPORTED_SCHEMA_KEYS = new Set(["additionalProperties", "$schema"]);
+function stripUnsupportedSchemaKeys(node: any): any {
+  if (Array.isArray(node)) return node.map(stripUnsupportedSchemaKeys);
+  if (node && typeof node === "object") {
+    const out: Record<string, any> = {};
+    for (const [k, v] of Object.entries(node)) {
+      if (UNSUPPORTED_SCHEMA_KEYS.has(k)) continue;
+      out[k] = stripUnsupportedSchemaKeys(v);
+    }
+    return out;
+  }
+  return node;
+}
+
+function sanitizeTools(body: any): void {
+  if (!body || !Array.isArray(body.tools)) return;
+  body.tools = body.tools.map((t: any) => {
+    if (t?.function?.parameters) {
+      t.function.parameters = stripUnsupportedSchemaKeys(t.function.parameters);
+    }
+    if (t?.parameters) t.parameters = stripUnsupportedSchemaKeys(t.parameters);
+    return t;
+  });
+}
+
 async function handleChat(req: Request, key: string): Promise<Response> {
   const body = await req.json().catch(() => ({} as any));
   body.model = mapChatModel(body.model);
+  sanitizeTools(body);
   const stream = !!body.stream;
   return forward("/chat/completions", body, key, stream);
 }
