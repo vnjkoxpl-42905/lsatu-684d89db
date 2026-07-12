@@ -1,9 +1,16 @@
 // Public, token-gated booking pass endpoint.
 // Actions: info | slots | book
+// Direct Google OAuth via _shared/googleCalendar.ts (no Lovable connector gateway).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-
-const GATEWAY = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3";
+import {
+  deleteEvent,
+  freeBusy,
+  getEvent,
+  insertEvent,
+  meetUrlFromEvent,
+  patchEvent,
+} from "../_shared/googleCalendar.ts";
 
 const BUSINESS_START_HOUR = 9;   // local
 const BUSINESS_END_HOUR = 20;    // local
@@ -74,7 +81,7 @@ Deno.serve(async (req) => {
     if (action === "info") {
       const { data: history } = await supabase
         .from("booking_pass_redemptions")
-        .select("id,start_at,end_at,status,google_event_id,created_at")
+        .select("id,start_at,end_at,status,google_event_id,meet_url,created_at")
         .eq("booking_pass_id", pass.id)
         .order("start_at", { ascending: true });
       return json({ pass: publicPass(pass), history: history ?? [] });
@@ -163,56 +170,58 @@ Deno.serve(async (req) => {
         return json({ ok: true, redemption: existing, pass: publicPass(pass), was_existing: true });
       }
 
-      // Conflict pre-check (cheap, before hitting Google)
-      const { data: conflicts } = await supabase
-        .from("schedule_events")
-        .select("id")
-        .is("deleted_at", null)
-        .neq("status", "cancelled")
-        .lt("start_at", endAt.toISOString())
-        .gt("end_at", startAt.toISOString())
-        .limit(1);
-      if (conflicts && conflicts.length > 0) return json({ error: "slot_conflict" }, 409);
-
-      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-      const GOOGLE_CALENDAR_API_KEY = Deno.env.get("GOOGLE_CALENDAR_API_KEY");
-      if (!LOVABLE_API_KEY || !GOOGLE_CALENDAR_API_KEY) return json({ error: "calendar_unavailable" }, 500);
-
       const { data: stateRow } = await supabase
         .from("gcal_sync_state").select("calendar_id").eq("id", 1).maybeSingle();
       const calendarId = stateRow?.calendar_id || "primary";
 
+      // Live freeBusy conflict check (audit A5): catches events added directly in
+      // Google that the schedule_events mirror has not synced yet.
+      try {
+        const fb = await freeBusy([calendarId], startAt.toISOString(), endAt.toISOString());
+        const busy = fb[calendarId] ?? [];
+        const overlaps = busy.some((b) =>
+          new Date(b.start).getTime() < endAt.getTime() && new Date(b.end).getTime() > startAt.getTime()
+        );
+        if (overlaps) return json({ error: "slot_conflict" }, 409);
+      } catch (fbErr) {
+        console.error("freeBusy check failed (continuing to DB re-check)", fbErr);
+      }
+
       const label = studentLabel(pass);
       const description = [
-        "Booked via LSAT U booking pass.",
+        "Booked via LSAT U.",
         pass.student_email ? `Student: ${label} <${pass.student_email}>` : `Student: ${label}`,
-        `Pass credits: ${pass.used_credits + 1}/${pass.total_credits}`,
+        `Session ${pass.used_credits + 1} of ${pass.total_credits}`,
       ].join("\n");
 
-      // Create Google Calendar event
-      const gRes = await fetch(
-        `${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "X-Connection-Api-Key": GOOGLE_CALENDAR_API_KEY,
-            "Content-Type": "application/json",
+      // 1) Insert the Google event WITH a Meet conference but WITHOUT attendees
+      //    (audit A4: no invite email is sent until the credit is safely redeemed).
+      let gEvent: any;
+      try {
+        gEvent = await insertEvent(calendarId, {
+          summary: `LSAT session — ${label}`,
+          description,
+          start: { dateTime: startAt.toISOString() },
+          end: { dateTime: endAt.toISOString() },
+          conferenceData: {
+            createRequest: { requestId: idem, conferenceSolutionKey: { type: "hangoutsMeet" } },
           },
-          body: JSON.stringify({
-            summary: `LSAT session — ${label}`,
-            description,
-            start: { dateTime: startAt.toISOString() },
-            end: { dateTime: endAt.toISOString() },
-          }),
-        },
-      );
-      if (!gRes.ok) {
-        const errText = await gRes.text();
-        console.error("google create failed", gRes.status, errText);
-        return json({ error: "google_create_failed", status: gRes.status, details: errText }, gRes.status);
+          extendedProperties: { private: { lsatu_pass_id: pass.id } },
+        }, { conferenceDataVersion: 1, sendUpdates: "none" });
+      } catch (gErr) {
+        console.error("google insert failed", gErr);
+        return json({ error: "google_create_failed", details: gErr instanceof Error ? gErr.message : String(gErr) }, 502);
       }
-      const gEvent = await gRes.json();
+
+      // Best-effort Meet URL (audit B2/pending rule): retry once if the conference is still pending.
+      let meetUrl = meetUrlFromEvent(gEvent);
+      if (!meetUrl) {
+        try {
+          await new Promise((r) => setTimeout(r, 1200));
+          const refreshed = await getEvent(calendarId, gEvent.id);
+          meetUrl = meetUrlFromEvent(refreshed);
+        } catch (_) { /* non-fatal; booking still confirms, link backfills on sync */ }
+      }
 
       // Mirror to schedule_events
       const { data: se, error: seErr } = await supabase
@@ -227,6 +236,7 @@ Deno.serve(async (req) => {
           all_day: false,
           status: gEvent.status ?? "confirmed",
           html_link: gEvent.htmlLink ?? null,
+          meet_url: meetUrl,
           source: "booking_pass",
           etag: gEvent.etag ?? null,
           last_synced_at: new Date().toISOString(),
@@ -236,7 +246,7 @@ Deno.serve(async (req) => {
         .maybeSingle();
       if (seErr) console.error("schedule_events upsert failed", seErr);
 
-      // Atomic redeem
+      // 2) Atomic redeem (the credit debit + slot re-check)
       const { data: rpc, error: rpcErr } = await supabase.rpc("redeem_booking_pass", {
         _pass_id: pass.id,
         _idempotency_key: idem,
@@ -249,15 +259,9 @@ Deno.serve(async (req) => {
       });
 
       if (rpcErr) {
-        // Roll back Google + schedule_events
+        // Roll back the attendee-less, un-emailed Google event + mirror.
         try {
-          await fetch(`${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events/${gEvent.id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${LOVABLE_API_KEY}`,
-              "X-Connection-Api-Key": GOOGLE_CALENDAR_API_KEY,
-            },
-          });
+          await deleteEvent(calendarId, gEvent.id, { sendUpdates: "none" });
           if (se?.id) {
             await supabase.from("schedule_events")
               .update({ deleted_at: new Date().toISOString(), status: "cancelled" })
@@ -270,12 +274,36 @@ Deno.serve(async (req) => {
         const msg = String(rpcErr.message || "");
         const code = msg.includes("pass_exhausted") ? "pass_exhausted"
           : msg.includes("pass_expired") ? "pass_expired"
-          : msg.includes("slot_conflict") ? "slot_conflict"
+          : msg.includes("slot_conflict") || msg.includes("no_overlapping_bookings") ? "slot_conflict"
           : "redeem_failed";
         return json({ error: code, details: msg }, 409);
       }
 
       const row = Array.isArray(rpc) ? rpc[0] : rpc;
+      const redemptionId = row?.redemption_id;
+
+      // 3) Now that the credit is safely debited, patch the event to add the student
+      //    as an attendee and send the invite + Meet link (audit A4: sendUpdates=all here only).
+      if (pass.student_email) {
+        try {
+          const patched = await patchEvent(calendarId, gEvent.id, {
+            attendees: [{ email: pass.student_email }],
+            extendedProperties: { private: { lsatu_pass_id: pass.id, lsatu_redemption_id: redemptionId } },
+          }, { conferenceDataVersion: 1, sendUpdates: "all" });
+          const patchedMeet = meetUrlFromEvent(patched);
+          if (patchedMeet) meetUrl = patchedMeet;
+        } catch (patchErr) {
+          // Booking is already confirmed; the invite is best-effort. Log and continue.
+          console.error("attendee patch failed (booking still confirmed)", patchErr);
+        }
+      }
+
+      // Persist the Meet URL on the redemption (and refresh the mirror if it changed).
+      if (redemptionId && meetUrl) {
+        await supabase.from("booking_pass_redemptions").update({ meet_url: meetUrl }).eq("id", redemptionId);
+        if (se?.id) await supabase.from("schedule_events").update({ meet_url: meetUrl }).eq("id", se.id);
+      }
+
       const { data: freshPass } = await supabase
         .from("booking_passes").select("*").eq("id", pass.id).maybeSingle();
 
@@ -283,11 +311,12 @@ Deno.serve(async (req) => {
         ok: true,
         pass: publicPass(freshPass ?? pass),
         redemption: {
-          id: row?.redemption_id,
+          id: redemptionId,
           start_at: startAt.toISOString(),
           end_at: endAt.toISOString(),
           google_event_id: gEvent.id,
           html_link: gEvent.htmlLink ?? null,
+          meet_url: meetUrl,
           status: "booked",
         },
         was_existing: !!row?.was_existing,

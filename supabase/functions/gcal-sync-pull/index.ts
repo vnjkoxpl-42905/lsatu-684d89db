@@ -1,19 +1,14 @@
 // Pulls Google Calendar events into schedule_events.
 // Uses incremental syncToken when available; falls back to time-window.
+// Direct Google OAuth via _shared/googleCalendar.ts (no Lovable connector gateway).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-
-const GATEWAY = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3";
+import { listEvents } from "../_shared/googleCalendar.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    const GOOGLE_CALENDAR_API_KEY = Deno.env.get("GOOGLE_CALENDAR_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
-    if (!GOOGLE_CALENDAR_API_KEY) throw new Error("GOOGLE_CALENDAR_API_KEY not configured (link Google Calendar connector)");
-
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -47,11 +42,6 @@ Deno.serve(async (req) => {
     const calendarId = stateRow?.calendar_id || "primary";
     let syncToken: string | null = stateRow?.sync_token ?? null;
 
-    const headers = {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "X-Connection-Api-Key": GOOGLE_CALENDAR_API_KEY,
-    };
-
     let pageToken: string | undefined;
     let nextSyncToken: string | undefined;
     let processed = 0;
@@ -59,34 +49,31 @@ Deno.serve(async (req) => {
     const errors: string[] = [];
 
     do {
-      const params = new URLSearchParams();
-      params.set("singleEvents", "true");
-      params.set("maxResults", "250");
+      const params: Record<string, string> = { singleEvents: "true", maxResults: "250" };
       if (syncToken && !pageToken) {
-        params.set("syncToken", syncToken);
+        params.syncToken = syncToken;
       } else if (!syncToken) {
-        const timeMin = new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString();
-        const timeMax = new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString();
-        params.set("timeMin", timeMin);
-        params.set("timeMax", timeMax);
-        params.set("orderBy", "startTime");
+        params.timeMin = new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString();
+        params.timeMax = new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString();
+        params.orderBy = "startTime";
       }
-      if (pageToken) params.set("pageToken", pageToken);
+      if (pageToken) params.pageToken = pageToken;
 
-      const url = `${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
-      const res = await fetch(url, { headers });
-
-      if (res.status === 410 && syncToken) {
-        // syncToken expired — clear and retry full
-        syncToken = null;
-        pageToken = undefined;
-        usedFallback = true;
-        await supabase.from("gcal_sync_state").update({ sync_token: null }).eq("id", 1);
-        continue;
+      let body: any;
+      try {
+        body = await listEvents(calendarId, params);
+      } catch (err) {
+        const status = (err as { status?: number }).status;
+        if (status === 410 && syncToken) {
+          // syncToken expired — clear and retry full
+          syncToken = null;
+          pageToken = undefined;
+          usedFallback = true;
+          await supabase.from("gcal_sync_state").update({ sync_token: null }).eq("id", 1);
+          continue;
+        }
+        throw err;
       }
-
-      const body = await res.json();
-      if (!res.ok) throw new Error(`Google API ${res.status}: ${JSON.stringify(body)}`);
 
       const items = body.items ?? [];
       for (const ev of items) {

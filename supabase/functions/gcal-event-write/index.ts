@@ -1,8 +1,8 @@
 // Admin-only: create / update / delete events on Google Calendar, then mirror to schedule_events.
+// Direct Google OAuth via _shared/googleCalendar.ts (no Lovable connector gateway).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-
-const GATEWAY = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3";
+import { deleteEvent, insertEvent, patchEvent } from "../_shared/googleCalendar.ts";
 
 interface Body {
   action: "create" | "update" | "delete";
@@ -19,12 +19,6 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    const GOOGLE_CALENDAR_API_KEY = Deno.env.get("GOOGLE_CALENDAR_API_KEY");
-    if (!LOVABLE_API_KEY || !GOOGLE_CALENDAR_API_KEY) {
-      throw new Error("Missing connector credentials");
-    }
-
     const authHeader = req.headers.get("Authorization") ?? "";
     if (!authHeader.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "unauthorized" }), {
@@ -55,12 +49,6 @@ Deno.serve(async (req) => {
     const { data: stateRow } = await supabase.from("gcal_sync_state").select("calendar_id").eq("id", 1).maybeSingle();
     const calendarId = stateRow?.calendar_id || "primary";
 
-    const headers = {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "X-Connection-Api-Key": GOOGLE_CALENDAR_API_KEY,
-      "Content-Type": "application/json",
-    };
-
     function toGEvent(b: Body) {
       const ev: Record<string, unknown> = {
         summary: b.title ?? "(no title)",
@@ -77,31 +65,16 @@ Deno.serve(async (req) => {
       return ev;
     }
 
-    let res: Response;
-    let g: Record<string, unknown> | null = null;
+    let g: any = null;
 
     if (body.action === "create") {
-      res = await fetch(`${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events`, {
-        method: "POST", headers, body: JSON.stringify(toGEvent(body)),
-      });
-      g = await res.json();
-      if (!res.ok) throw new Error(`Google create ${res.status}: ${JSON.stringify(g)}`);
+      g = await insertEvent(calendarId, toGEvent(body), { sendUpdates: "none" });
     } else if (body.action === "update") {
       if (!body.google_event_id) throw new Error("google_event_id required");
-      res = await fetch(`${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events/${body.google_event_id}`, {
-        method: "PATCH", headers, body: JSON.stringify(toGEvent(body)),
-      });
-      g = await res.json();
-      if (!res.ok) throw new Error(`Google update ${res.status}: ${JSON.stringify(g)}`);
+      g = await patchEvent(calendarId, body.google_event_id, toGEvent(body), { sendUpdates: "none" });
     } else if (body.action === "delete") {
       if (!body.google_event_id) throw new Error("google_event_id required");
-      res = await fetch(`${GATEWAY}/calendars/${encodeURIComponent(calendarId)}/events/${body.google_event_id}`, {
-        method: "DELETE", headers,
-      });
-      if (!res.ok && res.status !== 410) {
-        const t = await res.text();
-        throw new Error(`Google delete ${res.status}: ${t}`);
-      }
+      await deleteEvent(calendarId, body.google_event_id, { sendUpdates: "none" });
       await supabase.from("schedule_events")
         .update({ deleted_at: new Date().toISOString(), status: "cancelled" })
         .eq("google_event_id", body.google_event_id);
@@ -113,7 +86,7 @@ Deno.serve(async (req) => {
     }
 
     // Mirror to schedule_events
-    const ev = g as any;
+    const ev = g;
     const isAllDay = !!ev.start?.date;
     const startAt = ev.start?.dateTime ?? (ev.start?.date ? `${ev.start.date}T00:00:00Z` : null);
     const endAt = ev.end?.dateTime ?? (ev.end?.date ? `${ev.end.date}T00:00:00Z` : null);

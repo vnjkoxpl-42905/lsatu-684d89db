@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { CalendarClock, CheckCircle2, Loader2, Lock, Ticket } from "lucide-react";
+import { CalendarClock, CheckCircle2, Loader2, Lock, Ticket, Video } from "lucide-react";
 
 type PassInfo = {
   id: string;
@@ -24,7 +24,9 @@ type HistoryRow = {
   end_at: string;
   status: string;
   google_event_id: string | null;
+  meet_url: string | null;
 };
+type BookedSession = { start_at: string; meet_url: string | null };
 
 const call = async (action: string, token: string, extra: Record<string, unknown> = {}) => {
   const { data, error } = await supabase.functions.invoke("booking-pass", {
@@ -76,6 +78,10 @@ export default function BookingPass() {
   const [selected, setSelected] = useState<string | null>(null);
   const [bookingKey, setBookingKey] = useState<string>(() => crypto.randomUUID());
   const [booking, setBooking] = useState(false);
+  const [justBooked, setJustBooked] = useState<BookedSession | null>(null);
+  const viewerTz = useMemo(() => {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return null; }
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
@@ -115,13 +121,15 @@ export default function BookingPass() {
     if (!selected || !pass) return;
     setBooking(true);
     try {
+      const bookedStart = selected;
       const res = await call("book", token, { start_at: selected, idempotency_key: bookingKey }) as {
-        ok: boolean; pass: PassInfo;
+        ok: boolean; pass: PassInfo; redemption?: { meet_url?: string | null };
       };
       toast.success("Session booked");
       setPass(res.pass);
       setSelected(null);
       setBookingKey(crypto.randomUUID());
+      setJustBooked({ start_at: bookedStart, meet_url: res.redemption?.meet_url ?? null });
       await Promise.all([refresh(), loadSlots()]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Booking failed";
@@ -157,6 +165,36 @@ export default function BookingPass() {
   }
 
   const locked_copy = statusCopy(pass.status);
+
+  if (justBooked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-zinc-950 to-zinc-900 text-zinc-100 flex items-center justify-center p-6">
+        <Card className="max-w-md w-full p-8 bg-zinc-900 border-zinc-800 text-center space-y-4">
+          <CheckCircle2 className="h-12 w-12 mx-auto text-emerald-500" />
+          <div>
+            <h1 className="text-2xl font-semibold">You're booked</h1>
+            <p className="mt-1 text-zinc-300">{formatSlot(justBooked.start_at)}</p>
+            {viewerTz && <p className="text-xs text-zinc-500 mt-1">Times shown in {viewerTz}</p>}
+          </div>
+          <p className="text-sm text-zinc-400">
+            It's on Joshua's Google Calendar and we've emailed you the invite{justBooked.meet_url ? " with the Meet link" : ""}.
+          </p>
+          {justBooked.meet_url ? (
+            <a href={justBooked.meet_url} target="_blank" rel="noreferrer" className="block">
+              <Button size="lg" className="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold">
+                <Video className="h-4 w-4 mr-2" /> Join with Google Meet
+              </Button>
+            </a>
+          ) : (
+            <p className="text-xs text-zinc-500">Your Google Meet link is in the calendar invite.</p>
+          )}
+          <Button variant="ghost" className="w-full text-zinc-400" onClick={() => setJustBooked(null)}>
+            Book another session
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-950 to-zinc-900 text-zinc-100">
@@ -194,7 +232,10 @@ export default function BookingPass() {
         ) : (
           <section className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Available times</h2>
+              <div>
+                <h2 className="text-lg font-semibold">Available times</h2>
+                {viewerTz && <p className="text-xs text-zinc-500">Times shown in {viewerTz}</p>}
+              </div>
               <Button size="sm" variant="ghost" onClick={loadSlots} disabled={slotsLoading}>
                 {slotsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Refresh"}
               </Button>
@@ -260,6 +301,13 @@ export default function BookingPass() {
                     <div className="text-zinc-100">{formatSlot(h.start_at)}</div>
                     <div className="text-xs text-zinc-500">{new Date(h.start_at) > new Date() ? "Upcoming" : "Past"}</div>
                   </div>
+                  {h.meet_url && new Date(h.start_at) > new Date() && h.status === "booked" && (
+                    <a href={h.meet_url} target="_blank" rel="noreferrer">
+                      <Button size="sm" variant="ghost" className="text-emerald-400 hover:text-emerald-300">
+                        <Video className="h-4 w-4 mr-1" /> Join
+                      </Button>
+                    </a>
+                  )}
                   <span className="text-xs uppercase tracking-wider text-zinc-500">{h.status}</span>
                 </Card>
               ))}
