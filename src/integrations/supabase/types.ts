@@ -551,6 +551,8 @@ export type Database = {
           google_event_id: string | null
           id: string
           idempotency_key: string
+          meet_url: string | null
+          needs_gcal_sync: boolean
           schedule_event_id: string | null
           start_at: string
           status: string
@@ -564,6 +566,8 @@ export type Database = {
           google_event_id?: string | null
           id?: string
           idempotency_key: string
+          meet_url?: string | null
+          needs_gcal_sync?: boolean
           schedule_event_id?: string | null
           start_at: string
           status: string
@@ -577,6 +581,8 @@ export type Database = {
           google_event_id?: string | null
           id?: string
           idempotency_key?: string
+          meet_url?: string | null
+          needs_gcal_sync?: boolean
           schedule_event_id?: string | null
           start_at?: string
           status?: string
@@ -2197,6 +2203,7 @@ export type Database = {
           id: string
           last_synced_at: string
           location: string | null
+          meet_url: string | null
           source: string
           start_at: string
           status: string
@@ -2217,6 +2224,7 @@ export type Database = {
           id?: string
           last_synced_at?: string
           location?: string | null
+          meet_url?: string | null
           source?: string
           start_at: string
           status?: string
@@ -2237,6 +2245,7 @@ export type Database = {
           id?: string
           last_synced_at?: string
           location?: string | null
+          meet_url?: string | null
           source?: string
           start_at?: string
           status?: string
