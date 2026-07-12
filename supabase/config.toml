@@ -41,3 +41,6 @@ verify_jwt = true
 
 [functions.mcp]
 verify_jwt = true
+
+[functions.gcal-smoke]
+verify_jwt = true
