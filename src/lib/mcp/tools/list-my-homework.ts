@@ -32,9 +32,9 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     let query = supabase
       .from("homework_assignments")
-      .select("id, set_title, set_description, status, assigned_at, completed_at")
+      .select("id, set_title, set_description, status, created_at, started_at, completed_at")
       .eq("student_id", ctx.getUserId())
-      .order("assigned_at", { ascending: false })
+      .order("created_at", { ascending: false })
       .limit(Math.min(limit ?? 25, 100));
     if (status) query = query.eq("status", status);
     const { data, error } = await query;

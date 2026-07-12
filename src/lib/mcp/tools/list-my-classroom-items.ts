@@ -28,7 +28,7 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("classroom_items")
-      .select("id, type, title, description, status, created_at, metadata")
+      .select("id, type, title, description, status, created_at, metadata_json")
       .eq("student_id", ctx.getUserId())
       .eq("visible_to_student", true)
       .order("created_at", { ascending: false })
