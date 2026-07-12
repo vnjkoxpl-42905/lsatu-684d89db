@@ -33,7 +33,7 @@ function supabaseForUser(ctx) {
 var get_my_profile_default = defineTool2({
   name: "get_my_profile",
   title: "Get my LSAT U profile",
-  description: "Return the signed-in user's LSAT U profile: name, target score, test date and study preferences.",
+  description: "Return the signed-in user's LSAT U profile: display name, level, streak, XP and layout preferences.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -41,7 +41,9 @@ var get_my_profile_default = defineTool2({
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("profiles").select("id, full_name, target_score, test_date, study_preferences, layout_prefs").eq("id", ctx.getUserId()).maybeSingle();
+    const { data, error } = await supabase.from("profiles").select(
+      "class_id, display_name, level, xp_total, streak_current, longest_streak, daily_goal_questions, daily_goal_streak, last_practice_date, layout_prefs"
+    ).eq("class_id", ctx.getUserId()).maybeSingle();
     if (error) {
       return { content: [{ type: "text", text: error.message }], isError: true };
     }
@@ -80,7 +82,7 @@ var list_my_homework_default = defineTool3({
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser2(ctx);
-    let query = supabase.from("homework_assignments").select("id, set_title, set_description, status, assigned_at, completed_at").eq("student_id", ctx.getUserId()).order("assigned_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
+    let query = supabase.from("homework_assignments").select("id, set_title, set_description, status, created_at, started_at, completed_at").eq("student_id", ctx.getUserId()).order("created_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
     if (status) query = query.eq("status", status);
     const { data, error } = await query;
     if (error) {
@@ -120,7 +122,7 @@ var list_my_classroom_items_default = defineTool4({
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser3(ctx);
-    const { data, error } = await supabase.from("classroom_items").select("id, type, title, description, status, created_at, metadata").eq("student_id", ctx.getUserId()).eq("visible_to_student", true).order("created_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
+    const { data, error } = await supabase.from("classroom_items").select("id, type, title, description, status, created_at, metadata_json").eq("student_id", ctx.getUserId()).eq("visible_to_student", true).order("created_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
     if (error) {
       return { content: [{ type: "text", text: error.message }], isError: true };
     }
