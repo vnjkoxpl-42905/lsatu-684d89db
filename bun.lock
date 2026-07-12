@@ -80,6 +80,7 @@
         "sonner": "^1.7.4",
         "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7",
+        "three": "^0.185.1",
         "vaul": "^0.9.9",
         "zod": "^3.23.8",
       },
@@ -1803,6 +1804,8 @@
     "thenify": ["thenify@3.3.1", "", { "dependencies": { "any-promise": "^1.0.0" } }, "sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw=="],
 
     "thenify-all": ["thenify-all@1.6.0", "", { "dependencies": { "thenify": ">= 3.1.0 < 4" } }, "sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA=="],
+
+    "three": ["three@0.185.1", "https://europe-west1-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/three/-/three-0.185.1.tgz", {}, "sha512-5aojFCXKwnjBRZvUnt3WFfEcvUJgkN5LlijRFN95hMy8WVkG4I0QNcJE+OuWvuJ0bOdStrbfXn0pkd6/QyiAlg=="],
 
     "thumbhash": ["thumbhash@0.1.1", "", {}, "sha512-kH5pKeIIBPQXAOni2AiY/Cu/NKdkFREdpH+TLdM0g6WA7RriCv0kPLgP731ady67MhTAqrVG/4mnEeibVuCJcg=="],
 
