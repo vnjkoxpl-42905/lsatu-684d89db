@@ -107,3 +107,7 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 - No typecheck script (use `npx tsc --noEmit -p tsconfig.app.json`), no Prettier config, no CI workflows.
 - `README.md` is a stub.
 - `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`. A `SessionStart` auto-pull hook is wired in `.claude/settings.local.json` (runs `.claude/auto-pull-hook.sh`); Codex mirrors it in `.codex/hooks.json`.
+
+## Skill / agent / command vault
+
+The full skill/agent/command vault lives in the brain root at `~/brain/skills/`, `~/brain/agents/`, `~/brain/commands/` (split into `claude/` and `codex/` subtrees, indexed by `~/brain/skills/INDEX.md`). It is inert storage — nothing here auto-loads. To use a vault skill in this project, symlink it into `.claude/skills/` (Codex: `.agents/skills/`). When you create a new skill/agent/command, save it to BOTH this project's `.claude/<kind>/` and the vault, so the vault stays the complete catalog.
