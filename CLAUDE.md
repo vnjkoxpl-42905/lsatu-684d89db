@@ -54,7 +54,8 @@ Scripts (from `package.json`):
 
 Package manager: **npm**. `package-lock.json` is canonical. A stray `bun.lock` / `bun.lockb` exists in the repo — ignore it, do not switch tooling.
 
-No typecheck script exists. When a typecheck is needed: `npx tsc --noEmit -p tsconfig.app.json`.
+- `npm run typecheck` — `tsc --noEmit -p tsconfig.app.json`. Not optional before a push: `vite build` uses esbuild, which strips types without checking them, so a type error ships and auto-deploys. `.claude/safe-push.sh` gates on this.
+- `npm run test:e2e` / `npm run playwright` — Playwright e2e (`e2e/smoke.spec.ts`).
 
 No Prettier. Formatting is ESLint-only.
 
@@ -106,8 +107,8 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 
 ## Known gaps (do not invent answers)
 
-- Vitest specs exist (37 `src/**/*.test.ts(x)` files as of 2026-06-16); run them with `npm run test`. No Playwright e2e specs exist yet, though `@playwright/test` and `playwright.config.ts` (Lovable wrapper) are installed and there is no `playwright` npm script.
-- No typecheck script (use `npx tsc --noEmit -p tsconfig.app.json`), no Prettier config, no CI workflows.
+- Vitest specs exist (80 `src/**/*.test.ts(x)` files as of 2026-07-16); run them with `npm run test`. Playwright is wired with one e2e spec (`e2e/smoke.spec.ts`), run via `npm run test:e2e`.
+- No Prettier config and no CI workflows. Nothing runs `typecheck`, `lint`, or the tests automatically — `.claude/safe-push.sh` is the only gate, and only for typecheck.
 - `README.md` is a stub.
 - `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`. A `SessionStart` auto-pull hook is wired in `.claude/settings.local.json` (runs `.claude/auto-pull-hook.sh`); Codex mirrors it in `.codex/hooks.json`.
 

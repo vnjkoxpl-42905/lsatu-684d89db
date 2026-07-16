@@ -30,7 +30,8 @@ If an older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02
 - Lint: `npm run lint`
 - Test: `npm run test`
 - Watch tests: `npm run test:watch`
-- Typecheck when needed: `npx tsc --noEmit -p tsconfig.app.json`
+- Typecheck: `npm run typecheck`. Required before a push — `vite build` strips types without checking them, so a type error would ship. `.claude/safe-push.sh` gates on it.
+- E2E: `npm run test:e2e` (Playwright, `e2e/smoke.spec.ts`).
 
 ## Working Rules
 
@@ -84,6 +85,6 @@ This checkout currently has Claude settings and hooks under `.claude/`, but no `
 
 ## Known Gaps
 
-- Vitest specs exist (37 `src/**/*.test.ts(x)` files as of 2026-06-16); run with `npm run test`. No Playwright e2e specs yet, though `@playwright/test` and `playwright.config.ts` are installed with no `playwright` npm script.
-- No dedicated typecheck script (`npx tsc --noEmit -p tsconfig.app.json`) or Prettier config exists.
+- Vitest specs exist (80 `src/**/*.test.ts(x)` files as of 2026-07-16); run with `npm run test`. Playwright is wired with one e2e spec (`e2e/smoke.spec.ts`), run via `npm run test:e2e`.
+- No Prettier config and no CI workflows.
 - `README.md` is still minimal.

@@ -48,3 +48,19 @@ gha-creds-*.json
 .codex/*.local.toml
 .codex/agents/*.local.toml
 .agents/**/*.local.*
+
+# Vault-DB skill activations (symlinks into ~/brain/skills/{claude,codex}).
+# Activation is a machine-local transaction: these resolve only on the machine
+# that has the vault, so tracking them would push dead links to every clone.
+# The vault DB is the source of truth; re-activate with a symlink, never a copy
+# (copies fork -- these did, and kept naming the pre-consolidation vault path).
+.claude/skills/pickup
+.claude/skills/wrapup
+.claude/skills/lsat-lab-mega-set
+.claude/skills/lsat-lab-transcribe
+.claude/skills/lsat-u-architecture
+.claude/skills/lsatu-cc-handoff
+.agents/skills/pickup
+.agents/skills/wrapup
+.agents/skills/lsat-u-architecture
+.agents/skills/lsatu-cc-handoff
