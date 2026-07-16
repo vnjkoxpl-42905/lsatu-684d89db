@@ -37,7 +37,9 @@ smoothness checklist for you.
 > - `scan-session-notes` (new — actions `scan` / `resolve` / `discard`; depends
 >   on `supabase/functions/_shared/sessionIngestCore.ts`, deploy the shared file
 >   with it)
-> - `synthesize-session-bundle` (new)
+> - `synthesize-session-bundle` (new — it calls the internal `gemini-proxy`
+>   function, NOT the Lovable gateway directly, so `gemini-proxy` must already be
+>   deployed and healthy)
 >
 > **3. Confirm these function secrets exist** (all but the last are already used
 > by other deployed functions, so they should already be set):
@@ -46,6 +48,14 @@ smoothness checklist for you.
 > - `LOVABLE_API_KEY` (used by the Drive connector calls AND the AI gateway)
 > - `GOOGLE_DRIVE_API_KEY` (X-Connection-Api-Key for the Drive connector)
 > - `GOOGLE_MAIL_API_KEY` (X-Connection-Api-Key for the Gmail connector)
+> - `EDGE_INTERNAL_KEY` — **REQUIRED on `synthesize-session-bundle`, and it must
+>   be the exact same value `gemini-proxy` already uses.** Since the Phase 0
+>   hardening, `gemini-proxy` rejects any request whose `x-internal-key` header
+>   does not match this secret, and `synthesize-session-bundle` now calls it
+>   instead of the gateway directly. If this secret is missing or different on
+>   either function, every "Build bundle" fails with a 401 from the proxy and
+>   nothing else in the pipeline reports a problem. Please confirm it is set on
+>   BOTH functions with the same value.
 > - `SESSION_SYNTHESIS_MODEL` — OPTIONAL. If unset, the function defaults to
 >   `google/gemini-3-flash-preview`. Only set this to override the model.
 >
@@ -88,7 +98,7 @@ smoothness checklist for you.
 |---|---|---|---|---|---|
 | `ingest-session-note` | 1A | RW `session_ingestions`; R `user_roles`, `profiles`; W `student_context`, `student_sessions` | `student-context` (write) | Drive export | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `LOVABLE_API_KEY`, `GOOGLE_DRIVE_API_KEY` |
 | `scan-session-notes` | 1B | RW `session_ingestions`; R `user_roles`, `schedule_events`, `profiles`; W `student_context`, `student_sessions` (on resolve) | `student-context` (write) | Gmail list/fetch, Drive export (resolve) | + `GOOGLE_MAIL_API_KEY` |
-| `synthesize-session-bundle` | 2 | RW `session_ingestions`; R `student_sessions`, `student_context`, `user_roles`; W `ai_ta_drafts` | `student-context` (read) | Lovable AI gateway `ai.gateway.lovable.dev/v1/chat/completions` | + `SESSION_SYNTHESIS_MODEL` (optional) |
+| `synthesize-session-bundle` | 2 | RW `session_ingestions`; R `student_sessions`, `student_context`, `user_roles`; W `ai_ta_drafts` | `student-context` (read) | internal `gemini-proxy` → Lovable AI gateway (rewired 2026-07-09; was `ai.gateway.lovable.dev` direct) | + `EDGE_INTERNAL_KEY` (**required**, must match `gemini-proxy`), `SESSION_SYNTHESIS_MODEL` (optional) |
 | `_shared/sessionIngestCore.ts` | shared | resolve + Drive export + transcript store/cleanup | `student-context` | Drive | `LOVABLE_API_KEY`, `GOOGLE_DRIVE_API_KEY` |
 
 Phase 3 publish is **client-side** (`publishSessionBundle.ts` +

@@ -2,11 +2,25 @@
 
 States: `not started` · `planned` · `approved` · `in progress` · `complete` · `blocked`
 
-Last updated: 2026-06-24 (Codex deployed `ingest-session-note` hardening +
+Last updated: 2026-07-16.
+
+**The one thing standing between here and a working pipeline is a single Lovable
+deploy pass.** Paste section A of `LOVABLE-CLOUD-SYNC-PROMPT.md` into Lovable; it
+covers all three functions in one go. Everything else is code complete on `main`,
+typecheck/lint clean, and now covered by 40 unit tests.
+
+**Deploy blocker found and fixed in the prompt (2026-07-16):**
+`synthesize-session-bundle` was rewired on 2026-07-09 (commit `a41e4917`) off the
+direct Lovable gateway onto the internal `gemini-proxy`, which since the Phase 0
+hardening rejects any caller whose `x-internal-key` does not match the
+`EDGE_INTERNAL_KEY` secret. The deploy prompt never listed that secret, so a
+deploy from the old prompt would have left **every "Build bundle" failing with a
+silent 401** and nothing else reporting a problem. The prompt now requires
+`EDGE_INTERNAL_KEY` to be set, with the same value, on both functions.
+
+Earlier context (2026-06-24): Codex deployed `ingest-session-note` hardening +
 `scan-session-notes` + shared core via Lovable; frontend admin-redirect
-hardening ships on next Publish. Phase 2 synthesis + review + dossier and
-Phase 3 publish are now code complete on `main`; only `synthesize-session-bundle`
-needs a Lovable deploy — publish is client-side and needs no function deploy).
+hardening ships on next Publish.
 
 ## Phase 0 — Spec & planning
 **State: complete**
@@ -93,6 +107,12 @@ a fast-follow once a real email is confirmed; the parser + calendar hints are al
 - [x] Bundle model + pure logic in `src/lib/sessionBundle.ts` (part keys, audience,
       rollup, markdown render). Student parts: note/homework/quiz; admin-only:
       weakness_tags/drill_recs/next_agenda/private_note (never published).
+- [x] **Tests for the leak invariant** — `src/lib/sessionBundle.test.ts` (17) +
+      `src/lib/publishSessionBundle.test.ts` (12), added 2026-07-16. Publishability
+      is decided by the hardcoded `STUDENT_PART_KEYS` list, never by the
+      model-supplied `audience` field, so a `private_note` the model mislabels
+      `audience: 'student'` still cannot reach a student. That was already true in
+      the code; it now has a test that fails if anyone changes it.
 - [x] Per-part review/approve/edit UI: `src/components/teacher/SessionBundleReview.tsx`
       + `src/hooks/useSessionBundles.ts`. Row `status`→`approved` only when every
       included part is approved (§5); regenerate supported.
@@ -111,6 +131,12 @@ a fast-follow once a real email is confirmed; the parser + calendar hints are al
       `created_by = auth.uid()` RLS like RecapComposer). Separate from approve;
       partial publish allowed; idempotent (per-part `posted` in `draft_json`); row
       → `posted`, ledger → `published`.
+- [x] **Bug fixed 2026-07-16 — empty parts are now fail-closed.** An approved part
+      whose body was edited blank in review (or whose items were emptied) rendered
+      to `''` and was published anyway: the student got a real notification
+      pointing at an empty recap. Publish now skips such a part, reports it as a
+      failed outcome naming the part, and leaves it unposted so it can be fixed and
+      retried. Regression-tested both ways (the test fails if the guard is removed).
 - [x] Materialize → `classroom_items` (note=`session_recap`, homework/quiz=`homework`).
 - [x] Homework/quiz reuse `notifyStudentOfClassroomItem` (assignment copy); the note
       uses the new `src/lib/sessionBundleNotify.ts` session-recap notifier + Joshua

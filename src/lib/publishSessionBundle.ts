@@ -79,6 +79,18 @@ export async function publishSessionBundle(args: PublishArgs): Promise<PublishRe
       const title = (part.title?.trim() || PART_LABELS[key]).slice(0, 200);
       const markdown = partToMarkdown(key, part);
 
+      // An approved part can still render to nothing (body edited blank in
+      // review, or items emptied). Posting it would notify the student about a
+      // blank recap, so fail this part closed and leave it unposted.
+      if (!markdown) {
+        outcomes.push({
+          part: key,
+          ok: false,
+          error: `${PART_LABELS[key]} is empty — add content or exclude the part before publishing.`,
+        });
+        continue;
+      }
+
       if (key === 'session_note') {
         const item = await createClassroomItem({
           studentId,

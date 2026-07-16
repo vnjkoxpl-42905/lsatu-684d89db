@@ -16,13 +16,17 @@ That hardening is not live until Lovable redeploys:
 
 The current Lovable prompt is:
 
-`~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`
+**`docs/agent/post-session-intelligence/LOVABLE-CLOUD-SYNC-PROMPT.md` — section A.**
 
-That prompt now covers both required next deploy actions:
+(This file previously pointed at `~/Downloads/PHASE-1B-LOVABLE-PROMPT.md`, which does
+not exist. The consolidated in-repo prompt superseded it on 2026-06-25 and is the only
+one to use.)
+
+That prompt covers every required deploy action in one pass:
 
 1. Redeploy Phase 1A hardening from current `main`.
-2. Deploy Phase 1B `scan-session-notes` and `_shared/sessionIngestCore.ts` only when
-   Joshua is ready.
+2. Deploy Phase 1B `scan-session-notes` and `_shared/sessionIngestCore.ts`.
+3. Deploy Phase 2 `synthesize-session-bundle`.
 
 Current constraints remain:
 
