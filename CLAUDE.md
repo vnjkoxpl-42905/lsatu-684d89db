@@ -24,18 +24,23 @@ Protocol is canonical in `~/brain/CLAUDE.md` (Session Start / Session End), run 
 
 `wiki/tasks.md` is the living ledger of Now / Next / Done; finished work is struck through with a date so a new session never re-runs it.
 
-Where LSATU truth lives in the vault:
+Where LSATU truth lives in the vault (paths relative to `~/brain`):
 
-LSATU vault content lives under `wiki/domains/lsat-u/` (paths below are relative to `~/brain`):
+The vault was rebuilt on 2026-07-16. **Live** pages:
 
-- Product context: `wiki/domains/lsat-u/synthesis/intro-to-lr-product.md` (flagship Main Conclusion bootcamp)
-- Design system (colors, type, role tokens): `wiki/domains/lsat-u/synthesis/intro-to-lr-design.md`
-- Code/source map: `wiki/domains/lsat-u/synthesis/lsatu-source-map.md`
-- Quality bar all bootcamps finish to: `wiki/domains/lsat-u/synthesis/bootcamp-quality-bar.md`
-- Teaching voice (route ALL student-facing copy through it): `wiki/domains/lsat-u/concepts/teaching-voice.md`
-- Concepts: `wiki/domains/lsat-u/concepts/drill.md`, `wiki/domains/lsat-u/concepts/mainhub.md`
-- Entities: `wiki/domains/lsat-u/entities/intro-to-lr-bootcamp.md`, `lsat-u.md`, `supabase.md`, `lovable.md`
-- Domain index: `wiki/domains/lsat-u/index.md`
+- Teaching voice (route ALL student-facing copy through it): `wiki/teaching-voice.md`
+- The tutoring business (offers, channels, priorities): `wiki/entities/aspiring-attorneys.md`
+- Hubs: `wiki/tasks.md`, `wiki/hot.md`, `wiki/log.md`, `wiki/dashboard.md`, `wiki/index.md`
+- A student's whole record (transcripts, notes, homework): `students/<name>/` — see `students/README.md` for the primary/mirror rule
+- LSAT teaching knowledge: `corpus/index.md` (fills by ingest)
+
+**Archived** — the pre-rebuild product knowledge is read-only reference at `archive/wiki-pre-rebuild-2026-07-16/domains/lsat-u/`; it is not maintained and may be stale. Re-ingest a page through `raw/` if it becomes load-bearing again rather than editing it in place:
+
+- Product context: `…/synthesis/intro-to-lr-product.md` (flagship Main Conclusion bootcamp)
+- Design system (colors, type, role tokens): `…/synthesis/intro-to-lr-design.md`
+- Code/source map: `…/synthesis/lsatu-source-map.md` (regenerable from this codebase)
+- Quality bar all bootcamps finish to: `…/synthesis/bootcamp-quality-bar.md`
+- Concepts, entities, domain index: `…/concepts/`, `…/entities/`, `…/index.md`
 
 Rules: `raw/` is immutable input, never edit it. Read knowledge from `wiki/`, not `raw/`. Use the `obsidian` CLI (`search`, `backlinks`, `read`) for graph traversal (needs the Obsidian app open); flat file reads work without it. When saving deliverables to the vault, use `[[wiki-link]]` syntax and `UPPERCASE-HYPHENATED.md` naming.
 

@@ -8,7 +8,8 @@ For full architecture, commands, and conventions, see [CLAUDE.md](./CLAUDE.md).
 
 - Code repo root (this project): `/Users/joshuaf/brain/projects/lsatu`
 - Vault root (the `~/brain` directory IS the Obsidian vault): `/Users/joshuaf/brain`
-- LSATU vault content: `/Users/joshuaf/brain/wiki/domains/lsat-u/`
+- Live vault knowledge: `/Users/joshuaf/brain/wiki/`, `/Users/joshuaf/brain/students/`, `/Users/joshuaf/brain/corpus/`
+- Pre-2026-07-16 LSATU product knowledge (archived, read-only): `/Users/joshuaf/brain/archive/wiki-pre-rebuild-2026-07-16/domains/lsat-u/`
 
 (Older notes may point at `~/Documents/Obsidian Vault/...` — that path is stale; the vault was consolidated into `~/brain`.)
 
