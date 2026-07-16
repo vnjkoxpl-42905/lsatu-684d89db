@@ -6,9 +6,11 @@ For full architecture, commands, and conventions, see [CLAUDE.md](./CLAUDE.md).
 
 ## Fast locator
 
-- Repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
-- Vault root: `/Users/joshuaf/Documents/Obsidian Vault`
-- Vault locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+- Code repo root (this project): `/Users/joshuaf/brain/projects/lsatu`
+- Vault root (the `~/brain` directory IS the Obsidian vault): `/Users/joshuaf/brain`
+- LSATU vault content: `/Users/joshuaf/brain/wiki/domains/lsat-u/`
+
+(Older notes may point at `~/Documents/Obsidian Vault/...` — that path is stale; the vault was consolidated into `~/brain`.)
 
 ## Working agreement for AI assistants
 

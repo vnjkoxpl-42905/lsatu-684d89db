@@ -8,16 +8,16 @@ LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind +
 
 ## Second brain (product memory)
 
-Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/Documents/Obsidian Vault/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
+Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/brain/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
 
 Path sanity check first:
 
-- Live repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
-- Vault locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+- Vault root (the `~/brain` directory IS the Obsidian vault): `/Users/joshuaf/brain`
+- Code repo root (this project): `/Users/joshuaf/brain/projects/lsatu`
 
-If any older note says `~/Documents/Claude/02_PROJECTS/LSATU`, treat that as stale and use the absolute path above.
+If any older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02_PROJECTS/LSATU`, treat that as stale — the vault was consolidated into `~/brain`. Use the absolute paths above.
 
-Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start / Session End), run via two skills:
+Protocol is canonical in `~/brain/CLAUDE.md` (Session Start / Session End), run via two skills:
 
 - **`/pickup`** (start / "brief me"): reads `wiki/tasks.md` → `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then gives a 6-8 line briefing (Now / Next / open threads / suggested next) and waits.
 - **`/wrapup`** (handoff / "done for today"): proposes which tasks are done (confirm first), strikes them through in `wiki/tasks.md`, refreshes `wiki/hot.md`, appends a dated `wiki/log.md` entry, updates the task anchor, gives a 4-line confirmation.
@@ -26,13 +26,16 @@ Protocol is canonical in `~/Documents/Obsidian Vault/CLAUDE.md` (Session Start /
 
 Where LSATU truth lives in the vault:
 
-- Product context: `wiki/synthesis/intro-to-lr-product.md` (flagship Main Conclusion bootcamp)
-- Design system (colors, type, role tokens): `wiki/synthesis/intro-to-lr-design.md`
-- Code/source map: `wiki/synthesis/lsatu-source-map.md`
-- Quality bar all bootcamps finish to: `wiki/synthesis/bootcamp-quality-bar.md`
-- Teaching voice (route ALL student-facing copy through it): `wiki/concepts/teaching-voice.md`
-- Concepts: `wiki/concepts/drill.md`, `wiki/concepts/mainhub.md`
-- Entities: `wiki/entities/intro-to-lr-bootcamp.md`, `lsat-u.md`, `supabase.md`, `lovable.md`
+LSATU vault content lives under `wiki/domains/lsat-u/` (paths below are relative to `~/brain`):
+
+- Product context: `wiki/domains/lsat-u/synthesis/intro-to-lr-product.md` (flagship Main Conclusion bootcamp)
+- Design system (colors, type, role tokens): `wiki/domains/lsat-u/synthesis/intro-to-lr-design.md`
+- Code/source map: `wiki/domains/lsat-u/synthesis/lsatu-source-map.md`
+- Quality bar all bootcamps finish to: `wiki/domains/lsat-u/synthesis/bootcamp-quality-bar.md`
+- Teaching voice (route ALL student-facing copy through it): `wiki/domains/lsat-u/concepts/teaching-voice.md`
+- Concepts: `wiki/domains/lsat-u/concepts/drill.md`, `wiki/domains/lsat-u/concepts/mainhub.md`
+- Entities: `wiki/domains/lsat-u/entities/intro-to-lr-bootcamp.md`, `lsat-u.md`, `supabase.md`, `lovable.md`
+- Domain index: `wiki/domains/lsat-u/index.md`
 
 Rules: `raw/` is immutable input, never edit it. Read knowledge from `wiki/`, not `raw/`. Use the `obsidian` CLI (`search`, `backlinks`, `read`) for graph traversal (needs the Obsidian app open); flat file reads work without it. When saving deliverables to the vault, use `[[wiki-link]]` syntax and `UPPERCASE-HYPHENATED.md` naming.
 

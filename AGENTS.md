@@ -4,11 +4,11 @@ This file is the Codex-facing adapter for this repository. It summarizes the Cla
 
 ## Fast Locator
 
-- Live repo root: `/Users/joshuaf/Documents/Obsidian Vault/Claude/02_PROJECTS/LSATU`
-- Vault root: `/Users/joshuaf/Documents/Obsidian Vault`
-- Canonical path locator: `/Users/joshuaf/Documents/Obsidian Vault/Projects/lsatu/LOCATOR.md`
+- Vault root (the `~/brain` directory IS the Obsidian vault): `/Users/joshuaf/brain`
+- Code repo root (this project): `/Users/joshuaf/brain/projects/lsatu`
+- LSATU vault content: `/Users/joshuaf/brain/wiki/domains/lsat-u/`
 
-If an older note says `~/Documents/Claude/02_PROJECTS/LSATU`, treat it as stale.
+If an older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02_PROJECTS/LSATU`, treat it as stale — the vault was consolidated into `~/brain`. Use the absolute paths above.
 
 ## Project Map
 
@@ -64,7 +64,9 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 
 ## Session Protocol (second brain)
 
-Product context, status, and decisions live in the Obsidian vault at `~/Documents/Obsidian Vault/`, not this repo. Two repo-local skills in `.agents/skills/` run the session ritual; the canonical protocol is in the vault `CLAUDE.md`.
+Product context, status, and decisions live in the Obsidian vault at `~/brain/`, not this repo. Two repo-local skills in `.agents/skills/` run the session ritual; the canonical protocol is in the vault `CLAUDE.md`.
+
+LSATU vault content lives under `wiki/domains/lsat-u/` (paths relative to `~/brain`): product context `wiki/domains/lsat-u/synthesis/intro-to-lr-product.md`, design system `…/synthesis/intro-to-lr-design.md`, quality bar `…/synthesis/bootcamp-quality-bar.md`, teaching voice `…/concepts/teaching-voice.md`, domain index `…/index.md`. The `wiki/tasks.md`, `wiki/hot.md`, `wiki/dashboard.md`, `wiki/index.md`, and `wiki/log.md` hubs named below are at the vault root, not under the domain.
 
 - `pickup` — start of session. Read `wiki/tasks.md` (the Now / Next / Done ledger) first, then `wiki/hot.md`, `wiki/dashboard.md`, skim `wiki/index.md`, read the latest `wiki/log.md` entry. Emit a 6-8 line briefing (where we left off, Now, Next, open threads, hot, suggested next) and wait. Do not deep-read other pages until pointed at a task.
 - `wrapup` — end of session. Propose which `## Now` tasks finished and confirm before writing; a wrong "Done" is the failure to avoid. Then strike finished items through in `wiki/tasks.md` with a date, refresh `wiki/hot.md`, append a dated `wiki/log.md` entry (newest first, distinct label for same-day sessions), update the task anchor.
