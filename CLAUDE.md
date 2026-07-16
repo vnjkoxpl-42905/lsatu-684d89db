@@ -8,23 +8,23 @@ LSAT U is a premium ed-tech web app: React 18 + Vite 5 + TypeScript + Tailwind +
 
 ## Second brain (product memory)
 
-Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/brain/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
+Product context, design decisions, pedagogy, and status do NOT live in this repo. They live in the Obsidian vault at `~/ai-os/`. This repo is the code; the vault is the decision layer. Read the vault when starting a session, needing product/design/pedagogy context, or making a decision that touches roadmap or UX. Skip it for trivial code edits.
 
 Path sanity check first:
 
-- Vault root (the `~/brain` directory IS the Obsidian vault): `/Users/joshuaf/brain`
-- Code repo root (this project): `/Users/joshuaf/brain/projects/lsatu`
+- Vault root (the `~/ai-os` directory IS the Obsidian vault): `/Users/joshuaf/ai-os`
+- Code repo root (this project): `/Users/joshuaf/ai-os/projects/lsatu`
 
-If any older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02_PROJECTS/LSATU`, treat that as stale — the vault was consolidated into `~/brain`. Use the absolute paths above.
+If any older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02_PROJECTS/LSATU`, treat that as stale — the vault was consolidated into `~/ai-os`. Use the absolute paths above.
 
-Protocol is canonical in `~/brain/CLAUDE.md` (Session Start / Session End), run via two skills:
+Protocol is canonical in `~/ai-os/CLAUDE.md` (Session Start / Session End), run via two skills:
 
 - **`/pickup`** (start / "brief me"): reads `wiki/tasks.md` → `wiki/hot.md` → `wiki/dashboard.md` → `wiki/index.md` → latest `wiki/log.md` entry, then gives a 6-8 line briefing (Now / Next / open threads / suggested next) and waits.
 - **`/wrapup`** (handoff / "done for today"): proposes which tasks are done (confirm first), strikes them through in `wiki/tasks.md`, refreshes `wiki/hot.md`, appends a dated `wiki/log.md` entry, updates the task anchor, gives a 4-line confirmation.
 
 `wiki/tasks.md` is the living ledger of Now / Next / Done; finished work is struck through with a date so a new session never re-runs it.
 
-Where LSATU truth lives in the vault (paths relative to `~/brain`):
+Where LSATU truth lives in the vault (paths relative to `~/ai-os`):
 
 The vault was rebuilt on 2026-07-16. **Live** pages:
 
@@ -119,4 +119,4 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 
 ## Skill / agent / command vault
 
-The full skill/agent/command vault lives in the brain root at `~/brain/skills/`, `~/brain/agents/`, `~/brain/commands/` (split into `claude/` and `codex/` subtrees, indexed by `~/brain/skills/INDEX.md`). It is inert storage — nothing here auto-loads. To use a vault skill in this project, symlink it into `.claude/skills/` (Codex: `.agents/skills/`). When you create a new skill/agent/command, save it to BOTH this project's `.claude/<kind>/` and the vault, so the vault stays the complete catalog.
+The full skill/agent/command vault lives in the brain root at `~/ai-os/skills/`, `~/ai-os/agents/`, `~/ai-os/commands/` (split into `claude/` and `codex/` subtrees, indexed by `~/ai-os/skills/INDEX.md`). It is inert storage — nothing here auto-loads. To use a vault skill in this project, symlink it into `.claude/skills/` (Codex: `.agents/skills/`). When you create a new skill/agent/command, save it to BOTH this project's `.claude/<kind>/` and the vault, so the vault stays the complete catalog.

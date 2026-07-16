@@ -16,15 +16,15 @@ dossier in the Teacher Workspace.
 
 ## Where things live
 
-- **Repo:** `~/brain/projects/lsatu`
+- **Repo:** `~/ai-os/projects/lsatu`
 - **Planning folder:** `docs/agent/post-session-intelligence/`
 - **Phase 1A E2E checklist:** `docs/agent/post-session-intelligence/PHASE-1A-E2E-RUNBOOK.md`
 - **Phase 1B E2E checklist:** `docs/agent/post-session-intelligence/PHASE-1B-E2E-RUNBOOK.md`
-- **Product/decision layer (Obsidian):** `~/brain/` — teaching voice
+- **Product/decision layer (Obsidian):** `~/ai-os/` — teaching voice
   `wiki/teaching-voice.md` (live); pre-2026-07-16 product context archived at
   `archive/wiki-pre-rebuild-2026-07-16/domains/lsat-u/synthesis/intro-to-lr-product.md`.
-- **Student records:** `~/brain/students/<name>/` — transcripts and notes are primary
-  data here; see `~/brain/students/README.md` before writing anything back.
+- **Student records:** `~/ai-os/students/<name>/` — transcripts and notes are primary
+  data here; see `~/ai-os/students/README.md` before writing anything back.
 - **Source brief:** `~/Downloads/lsatu_post_session_intelligence_claude_code_prompt (1).md`
 
 ## Current status

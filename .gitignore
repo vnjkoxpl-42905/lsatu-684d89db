@@ -49,7 +49,7 @@ gha-creds-*.json
 .codex/agents/*.local.toml
 .agents/**/*.local.*
 
-# Vault-DB skill activations (symlinks into ~/brain/skills/{claude,codex}).
+# Vault-DB skill activations (symlinks into ~/ai-os/skills/{claude,codex}).
 # Activation is a machine-local transaction: these resolve only on the machine
 # that has the vault, so tracking them would push dead links to every clone.
 # The vault DB is the source of truth; re-activate with a symlink, never a copy
