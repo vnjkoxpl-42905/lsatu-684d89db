@@ -36,7 +36,6 @@ import {
 import {
   FX_CSS,
   AcaPreloader,
-  AcaCursor,
   AcaPlumb,
   GoldSeam,
   type PlumbStop,
@@ -488,7 +487,6 @@ export default function Auth() {
 
       <AcaAmbience />
       <AcaPreloader />
-      <AcaCursor />
 
       <div className="aca-content">
         <AcaNav onSignIn={openSignIn} />

@@ -5,8 +5,6 @@ import * as React from 'react';
  *
  * Everything here is decorative machinery layered over the page:
  *   - AcaPreloader: an engraved seal that draws itself, then parts like a curtain
- *   - AcaCursor:    a cyan surveyor's reticle that replaces the pointer on fine
- *                   pointer devices and swells over interactive elements
  *   - AcaDust:      a 2D-canvas mote field (hero drift / final-CTA embers)
  *   - AcaPlumb:     a fixed plumb line on the right edge; Roman markers light
  *                   as their section crosses the viewport, click to travel
@@ -63,71 +61,6 @@ export const AcaPreloader = () => {
         </svg>
         <span className="aca-seal-word">LSAT&thinsp;U</span>
       </div>
-    </div>
-  );
-};
-
-// ── Custom cursor — the reticle ──────────────────────────────────────────────
-// A dot that hugs the pointer and a ring that trails it. Interactive targets
-// ([data-cursor] plus native buttons/links/inputs) swell the ring bronze.
-export const AcaCursor = () => {
-  const dotRef = React.useRef<HTMLDivElement>(null);
-  const ringRef = React.useRef<HTMLDivElement>(null);
-  const [on, setOn] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!finePointer() || reducedMotion()) return;
-    const dot = dotRef.current, ring = ringRef.current;
-    if (!dot || !ring) return;
-    setOn(true);
-    document.documentElement.classList.add('aca-nocursor');
-
-    let x = -100, y = -100, rx = -100, ry = -100;
-    let hot = false, down = false, raf = 0, idle: number | undefined;
-    let visible = false;
-
-    const isHot = (t: EventTarget | null) =>
-      t instanceof Element && !!t.closest('a, button, input, label, [role="button"], [data-cursor]');
-
-    const onMove = (e: PointerEvent) => {
-      x = e.clientX; y = e.clientY;
-      if (!visible) { visible = true; rx = x; ry = y; dot.style.opacity = '1'; ring.style.opacity = '1'; }
-      hot = isHot(e.target);
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => { dot.style.opacity = '0'; ring.style.opacity = '0'; visible = false; }, 3600);
-    };
-    const onDown = () => { down = true; };
-    const onUp = () => { down = false; };
-    const onLeave = () => { dot.style.opacity = '0'; ring.style.opacity = '0'; visible = false; };
-
-    const loop = () => {
-      raf = requestAnimationFrame(loop);
-      rx += (x - rx) * 0.22; ry += (y - ry) * 0.22;
-      const scale = down ? 0.72 : hot ? 1.9 : 1;
-      dot.style.transform = `translate3d(${x - 2}px, ${y - 2}px, 0)`;
-      ring.style.transform = `translate3d(${rx - 14}px, ${ry - 14}px, 0) scale(${scale})`;
-      ring.classList.toggle('is-hot', hot);
-    };
-    raf = requestAnimationFrame(loop);
-    window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('pointerdown', onDown, { passive: true });
-    window.addEventListener('pointerup', onUp, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onLeave);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.clearTimeout(idle);
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerdown', onDown);
-      window.removeEventListener('pointerup', onUp);
-      document.documentElement.removeEventListener('pointerleave', onLeave);
-      document.documentElement.classList.remove('aca-nocursor');
-    };
-  }, []);
-
-  return (
-    <div aria-hidden="true" style={{ display: on ? undefined : 'none' }}>
-      <div ref={ringRef} className="aca-cursor-ring" />
-      <div ref={dotRef} className="aca-cursor-dot" />
     </div>
   );
 };
@@ -357,14 +290,6 @@ export const FX_CSS = `
   @keyframes acaSealTick { to { opacity: 1; } }
   .aca-seal-word { font-family: "Cinzel", serif; font-weight: 500; font-size: 13px; letter-spacing: 0.5em; text-indent: 0.5em; color: #C6A467; opacity: 0; animation: acaSealTick 500ms ease 700ms forwards; }
 
-  /* Cursor */
-  @media (hover: hover) and (pointer: fine) {
-    .aca-nocursor, .aca-nocursor .aca a, .aca-nocursor .aca button, .aca-nocursor .aca input, .aca-nocursor .aca label { cursor: none; }
-  }
-  .aca-cursor-dot { position: fixed; top: 0; left: 0; width: 4px; height: 4px; border-radius: 50%; background: #C3EEF4; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 300ms ease; mix-blend-mode: screen; }
-  .aca-cursor-ring { position: fixed; top: 0; left: 0; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(138,216,226,0.55); z-index: 100; pointer-events: none; opacity: 0; transition: opacity 300ms ease, border-color 220ms ease, background 220ms ease; }
-  .aca-cursor-ring.is-hot { border-color: rgba(198,164,103,0.85); background: rgba(198,164,103,0.06); }
-
   /* Dust */
   .aca-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
@@ -391,7 +316,6 @@ export const FX_CSS = `
 
   @media (prefers-reduced-motion: reduce) {
     .aca-seal { display: none; }
-    .aca-cursor-dot, .aca-cursor-ring { display: none; }
     .aca-seam-path { stroke-dashoffset: 0; animation: none; }
     .aca-plumb-dot, .aca-plumb-numeral { transition: none; }
   }
