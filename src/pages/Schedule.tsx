@@ -35,7 +35,6 @@ import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import TodayAgenda from '@/components/schedule/TodayAgenda';
-import BookSessionPanel from '@/components/schedule/BookSessionPanel';
 
 type CalView = 'month' | 'week' | 'day';
 type MainTab = 'today' | 'calendar';
@@ -353,16 +352,10 @@ export default function Schedule() {
               </div>
             </div>
 
-            {mainTab === 'today' && (
-              <>
-                <BookSessionPanel />
-                <TodayAgenda />
-              </>
-            )}
+            {mainTab === 'today' && <TodayAgenda />}
 
             {mainTab === 'calendar' && (
             <>
-            <BookSessionPanel />
 
             {isLoading ? (
               <div className="flex items-center justify-center py-24 text-sm text-muted-foreground">

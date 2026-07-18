@@ -5,6 +5,7 @@ import {
   GraduationCap,
   Dumbbell,
   CalendarDays,
+  CalendarClock,
   MessagesSquare,
   Flame,
   Archive,
@@ -44,6 +45,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/journal", label: "Wrong Answer Journal", Icon: NotebookPen, flag: ["has_journal_access", "has_waj_access"], alwaysVisible: true, activePrefixes: ["/journal", "/waj"] },
   { to: "/activities", label: "Activity Centre", Icon: Sparkles, flag: "has_activity_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access", alwaysVisible: true },
+  { to: "/booking", label: "Booking", Icon: CalendarClock, alwaysVisible: true },
 ] as const;
 
 export default function MainhubSidebar({ displayName, onNavigate }: MainhubSidebarProps) {

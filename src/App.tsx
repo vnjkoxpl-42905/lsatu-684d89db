@@ -41,6 +41,7 @@ const CausationStation = React.lazy(() => import("./pages/CausationStation"));
 const AbstractBootcamp = React.lazy(() => import("./topics/abstract"));
 
 import Schedule from "./pages/Schedule";
+import Booking from "./pages/Booking";
 import Bootcamps from "./pages/Bootcamps";
 const IntroToLrBootcamp = React.lazy(() => import("./pages/IntroToLrBootcamp"));
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
@@ -393,6 +394,9 @@ const App = () => {
                     } />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
+                    } />
+                    <Route path="/booking" element={
+                      <ProtectedRoute allowSignedIn><Booking /></ProtectedRoute>
                     } />
                     <Route path="/bootcamps" element={
                       <Bootcamps />
