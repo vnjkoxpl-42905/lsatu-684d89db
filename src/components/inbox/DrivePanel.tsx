@@ -111,7 +111,10 @@ async function fetchPage(q: string, pageToken: string | null) {
   url.searchParams.set('action', 'list');
   if (q) url.searchParams.set('q', q);
   if (pageToken) url.searchParams.set('pageToken', pageToken);
-  const session = (await supabase.auth.getSession()).data.session;
+  const { waitForAccessToken } = await import('@/lib/waitForSession');
+  const accessToken = await waitForAccessToken();
+  if (!accessToken) throw new Error('Not signed in');
+  const session = { access_token: accessToken };
   const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${session?.access_token ?? ''}`,
@@ -147,7 +150,10 @@ async function fetchThumbnailUrl(file: DriveFile, sz = 400): Promise<string | nu
     // metadata round-trip (one Drive call per thumbnail instead of two).
     if (file.thumbnailLink) url.searchParams.set('link', file.thumbnailLink);
     if (file.mimeType) url.searchParams.set('mime', file.mimeType);
-    const session = (await supabase.auth.getSession()).data.session;
+    const { waitForAccessToken } = await import('@/lib/waitForSession');
+    const accessToken = await waitForAccessToken();
+    if (!accessToken) { thumbCache.set(id, ''); return null; }
+    const session = { access_token: accessToken };
     const res = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${session?.access_token ?? ''}`,
@@ -207,7 +213,10 @@ async function streamDownload(
   url.searchParams.set('action', 'download');
   url.searchParams.set('id', file.id);
   if (format) url.searchParams.set('format', format);
-  const session = (await supabase.auth.getSession()).data.session;
+  const { waitForAccessToken } = await import('@/lib/waitForSession');
+  const accessToken = await waitForAccessToken();
+  if (!accessToken) throw new Error('Not signed in');
+  const session = { access_token: accessToken };
   const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${session?.access_token ?? ''}`,

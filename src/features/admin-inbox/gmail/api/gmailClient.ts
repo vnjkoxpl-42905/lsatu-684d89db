@@ -29,6 +29,14 @@ export interface GmailInvokeBody {
 }
 
 export async function invokeGmail<TResponse>(body: GmailInvokeBody): Promise<TResponse> {
+  // Wait for the Supabase session to hydrate before invoking — otherwise
+  // supabase.functions.invoke fires without a Bearer and the edge function's
+  // requireAdmin returns 401.
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const token = await waitForAccessToken();
+  if (!token) {
+    throw new GmailApiError("Not signed in", 401);
+  }
   const { data, error } = await supabase.functions.invoke("gmail", { body });
   if (error) {
     // supabase-js wraps non-2xx as FunctionsHttpError with a context.response.

@@ -27,7 +27,9 @@ async function fetchDrivePage(q: string, pageToken: string | null) {
   url.searchParams.set("action", "list");
   if (q) url.searchParams.set("q", q);
   if (pageToken) url.searchParams.set("pageToken", pageToken);
-  const session = (await supabase.auth.getSession()).data.session;
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const accessToken = await waitForAccessToken();
+  const session = { access_token: accessToken ?? "" };
   const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${session?.access_token ?? ""}`,
@@ -50,7 +52,9 @@ async function downloadDriveFile(file: DriveFile): Promise<{ filename: string; m
   if (file.mimeType.startsWith("application/vnd.google-apps.")) {
     url.searchParams.set("format", "pdf");
   }
-  const session = (await supabase.auth.getSession()).data.session;
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const accessToken = await waitForAccessToken();
+  const session = { access_token: accessToken ?? "" };
   const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${session?.access_token ?? ""}`,
