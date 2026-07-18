@@ -121,12 +121,13 @@ GRANT EXECUTE ON FUNCTION public.grant_booking_access(uuid, text, text, int, int
 --    eligibility is computed here so the UI needs no table access.
 --    Returns a single JSON object.
 -- ---------------------------------------------------------------------------
+-- NOTE: VOLATILE (the default), NOT STABLE — this function performs UPDATEs
+-- (auto-expire on read), which Postgres forbids inside a STABLE function.
 CREATE OR REPLACE FUNCTION public.get_student_booking(_auth_user_id uuid)
 RETURNS jsonb
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
-STABLE
 AS $$
 DECLARE
   _pass public.booking_passes%ROWTYPE;
@@ -161,7 +162,7 @@ BEGIN
     ) END,
     'redemptions',
     COALESCE((
-      SELECT jsonb_agg(r ORDER BY r.start_at)
+      SELECT jsonb_agg(to_jsonb(r) ORDER BY r.start_at)
       FROM (
         SELECT
           red.id,

@@ -77,7 +77,15 @@ Deno.serve(async (req) => {
       const { data, error } = await supabase.rpc("get_student_booking", {
         _auth_user_id: userId,
       });
-      if (error) throw error;
+      if (error) {
+        console.error("get_student_booking failed", error);
+        return json({
+          error: "info_failed",
+          details: error.message ?? String(error),
+          code: (error as { code?: string }).code ?? null,
+          hint: (error as { hint?: string }).hint ?? null,
+        }, 500);
+      }
       return json(data ?? { pass: null, redemptions: [] });
     }
 
@@ -317,6 +325,11 @@ Deno.serve(async (req) => {
     return json({ error: "unknown_action" }, 400);
   } catch (e) {
     console.error("student-booking error", e);
-    return json({ error: e instanceof Error ? e.message : String(e) }, 500);
+    const msg = e instanceof Error
+      ? e.message
+      : (e && typeof e === "object" && "message" in e)
+        ? String((e as { message: unknown }).message)
+        : JSON.stringify(e);
+    return json({ error: msg }, 500);
   }
 });
