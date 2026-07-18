@@ -15,9 +15,10 @@ export interface DriveFile {
 
 /** Headers for calling the `gdrive` edge function: Supabase session + anon key. */
 export async function driveAuthHeaders() {
-  const session = (await supabase.auth.getSession()).data.session;
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const token = await waitForAccessToken();
   return {
-    Authorization: `Bearer ${session?.access_token ?? ""}`,
+    Authorization: `Bearer ${token ?? ""}`,
     apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
   };
 }
