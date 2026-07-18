@@ -53,8 +53,18 @@ export default function BookSessionPanel() {
   const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
 
   const pass = info?.pass ?? null;
+  // Friendly local-timezone label, e.g. "Eastern Time · 3:14 PM" instead of the
+  // raw IANA name "America/Toronto". Auto-detected from the student's browser.
   const viewerTz = useMemo(() => {
-    try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return null; }
+    try {
+      const now = new Date();
+      const longName = new Intl.DateTimeFormat(undefined, { timeZoneName: "long" })
+        .formatToParts(now).find((p) => p.type === "timeZoneName")?.value;
+      const time = now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+      return longName ? `${longName} · ${time}` : time;
+    } catch {
+      return null;
+    }
   }, []);
 
   const loadSlots = useCallback(async () => {
