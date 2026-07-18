@@ -1971,6 +1971,8 @@ export type Database = {
           last_seen_at: string | null
           layout_prefs: Json | null
           level: number | null
+          onboarding: Json | null
+          onboarding_completed_at: string | null
           longest_streak: number | null
           overall_answered: number | null
           overall_avg_ms: number | null
@@ -2004,6 +2006,8 @@ export type Database = {
           last_seen_at?: string | null
           layout_prefs?: Json | null
           level?: number | null
+          onboarding?: Json | null
+          onboarding_completed_at?: string | null
           longest_streak?: number | null
           overall_answered?: number | null
           overall_avg_ms?: number | null
@@ -2037,6 +2041,8 @@ export type Database = {
           last_seen_at?: string | null
           layout_prefs?: Json | null
           level?: number | null
+          onboarding?: Json | null
+          onboarding_completed_at?: string | null
           longest_streak?: number | null
           overall_answered?: number | null
           overall_avg_ms?: number | null

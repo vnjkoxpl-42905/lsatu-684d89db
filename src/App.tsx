@@ -154,7 +154,7 @@ const App = () => {
             <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
 
 
-            {/* Onboarding. Username setup for new users. */}
+            {/* Onboarding. Name + placement intake for new signups (one-time gate). */}
             <Route path="/onboarding" element={<Onboarding />} />
 
             {/* Mainhub + all student sections now live inside the persistent
