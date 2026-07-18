@@ -70,9 +70,32 @@ Deno.serve(async (req) => {
       const sessionLen = Math.max(15, Math.min(240, Number(body.session_length_minutes) || 60));
       const raw = genToken();
       const hash = await sha256Hex(raw);
+
+      // When granting to a real student account, go through grant_booking_access
+      // so any prior active pass is atomically revoked (one-active-per-student).
+      if (body.student_id) {
+        const { data, error } = await supabase.rpc("grant_booking_access", {
+          _student_id: body.student_id,
+          _student_name: body.student_name || null,
+          _student_email: body.student_email || null,
+          _total_credits: totalCredits,
+          _session_length_minutes: sessionLen,
+          _expires_at: body.expires_at || null,
+          _created_by: user.id,
+          _token_hash: hash,
+        });
+        if (error) {
+          const msg = String(error.message || "");
+          if (msg.includes("student_id_required")) return json({ error: "student_id_required" }, 400);
+          throw error;
+        }
+        return json({ pass: data, raw_token: raw });
+      }
+
+      // Name/email-only pass (no student account): plain insert, unchanged.
       const { data, error } = await supabase.from("booking_passes").insert({
         token_hash: hash,
-        student_id: body.student_id || null,
+        student_id: null,
         student_email: body.student_email || null,
         student_name: body.student_name || null,
         total_credits: totalCredits,
@@ -83,6 +106,32 @@ Deno.serve(async (req) => {
       }).select().single();
       if (error) throw error;
       return json({ pass: data, raw_token: raw });
+    }
+
+    if (action === "get_for_student") {
+      const studentId = String(body.student_id || "");
+      if (!studentId) return json({ error: "student_id_required" }, 400);
+      const { data, error } = await supabase
+        .from("booking_passes")
+        .select("id,total_credits,used_credits,session_length_minutes,status,expires_at,created_at")
+        .eq("student_id", studentId)
+        .eq("status", "active")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return json({ pass: null });
+      return json({
+        pass: {
+          id: data.id,
+          total_credits: data.total_credits,
+          used_credits: data.used_credits,
+          credits_remaining: Math.max(0, data.total_credits - data.used_credits),
+          session_length_minutes: data.session_length_minutes,
+          status: data.status,
+          expires_at: data.expires_at,
+        },
+      });
     }
 
     if (action === "rotate") {

@@ -38,6 +38,7 @@ import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/class
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import StudentBookingPanel from '@/components/teacher/schedule/StudentBookingPanel';
 
 const QUICK_TYPES: { value: ClassroomItemType; label: string }[] = [
   { value: 'note', label: 'Note' },
@@ -216,6 +217,12 @@ export default function TeacherSchedule() {
           </div>
         ) : (
           <>
+            <StudentBookingPanel
+              studentId={studentId}
+              studentName={selected?.display_name ?? null}
+              studentEmail={selected?.email ?? null}
+            />
+
             <header className="flex items-center justify-between gap-3">
               <div>
                 <div className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
