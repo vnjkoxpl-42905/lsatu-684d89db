@@ -307,6 +307,43 @@ Deno.serve(async (req) => {
         if (se?.id) await supabase.from("schedule_events").update({ meet_url: meetUrl }).eq("id", se.id);
       }
 
+      // Confirmation emails to BOTH the student and the admin (best-effort;
+      // booking is already committed regardless of email outcome).
+      const whenText = startAt.toLocaleString("en-US", {
+        weekday: "long", month: "long", day: "numeric",
+        hour: "numeric", minute: "2-digit", timeZoneName: "short",
+      });
+      const adminEmail = Deno.env.get("BOOKING_ADMIN_EMAIL") || "contact@aspiringattorneys.com";
+      const sendConfirmation = async (recipientEmail: string, recipientRole: "student" | "admin") => {
+        try {
+          await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-transactional-email`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+              apikey: Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              templateName: "booking-confirmation",
+              recipientEmail,
+              idempotencyKey: `booking-${redemptionId}-${recipientRole}`.slice(0, 200),
+              templateData: {
+                recipientRole,
+                studentName,
+                studentEmail,
+                whenText,
+                durationMinutes: pass.session_length_minutes,
+                meetUrl,
+              },
+            }),
+          });
+        } catch (mailErr) {
+          console.error(`confirmation email to ${recipientRole} failed`, mailErr);
+        }
+      };
+      if (studentEmail) await sendConfirmation(studentEmail, "student");
+      if (adminEmail) await sendConfirmation(adminEmail, "admin");
+
       return json({
         ok: true,
         redemption: {
