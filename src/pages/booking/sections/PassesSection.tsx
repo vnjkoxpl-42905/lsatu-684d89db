@@ -53,9 +53,10 @@ export default function PassesSection() {
   useEffect(() => { void refresh(); }, [refresh]);
 
   const rows = useMemo(() => {
+    const live = passes.filter(p => p.status !== "revoked");
     const q = query.trim().toLowerCase();
-    if (!q) return passes;
-    return passes.filter(p =>
+    if (!q) return live;
+    return live.filter(p =>
       (p.student_name ?? "").toLowerCase().includes(q) ||
       (p.student_email ?? "").toLowerCase().includes(q) ||
       (p.booking_slug ?? "").toLowerCase().includes(q));
