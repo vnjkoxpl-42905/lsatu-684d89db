@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import {
-  Clock, Copy, ExternalLink, Link2, Loader2, MoreHorizontal, Pencil, Plus, RotateCcw, Search, Ticket, XCircle,
+  Clock, Copy, ExternalLink, Link2, Loader2, MoreHorizontal, Pencil, Plus, RotateCcw, Search, Ticket, Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "../BookingWorkspace";
@@ -80,13 +80,13 @@ export default function PassesSection() {
     } catch (e) { toast.error(e instanceof Error ? e.message : "Rotate failed"); }
   }
 
-  async function revoke(p: Pass) {
-    if (!confirm(`Revoke ${passDisplayName(p)}'s pass permanently? The link stops working immediately.`)) return;
+  async function deleteLink(p: Pass) {
+    if (!confirm(`Delete ${passDisplayName(p)}'s booking link? It will stop working immediately and cannot be restored.`)) return;
     try {
       await bookingAdmin("revoke", { pass_id: p.id });
-      toast.success("Pass revoked");
+      toast.success("Booking link deleted");
       await refresh();
-    } catch (e) { toast.error(e instanceof Error ? e.message : "Revoke failed"); }
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Could not delete booking link"); }
   }
 
   async function copyLink(p: Pass) {
@@ -158,6 +158,12 @@ export default function PassesSection() {
                         <Button size="icon" variant="ghost" className="h-8 w-8" title="Copy link" onClick={() => void copyLink(p)}>
                           <Link2 className="h-4 w-4" />
                         </Button>
+                        {p.status !== "revoked" && (
+                          <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" title="Delete booking link" onClick={() => void deleteLink(p)}>
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete booking link</span>
+                          </Button>
+                        )}
                       </>
                     )}
                     <DropdownMenu>
@@ -170,8 +176,8 @@ export default function PassesSection() {
                         {p.status !== "revoked" && (
                           <>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={() => void revoke(p)}>
-                              <XCircle className="mr-2 h-4 w-4" /> Revoke
+                            <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void deleteLink(p)}>
+                              <Trash2 className="mr-2 h-4 w-4" /> Delete link
                             </DropdownMenuItem>
                           </>
                         )}

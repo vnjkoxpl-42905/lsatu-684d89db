@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Copy, Loader2, Pencil, Plus, Ticket, XCircle, RotateCcw } from "lucide-react";
+import { Copy, Loader2, Pencil, Plus, Ticket, Trash2, RotateCcw } from "lucide-react";
 
 type Pass = {
   id: string;
@@ -94,13 +94,13 @@ export default function BookingPasses() {
     setSessionLen("60"); setExpiresAt("");
   }
 
-  async function revoke(pass: Pass) {
-    if (!confirm(`Revoke pass for ${pass.student_name || pass.student_email}? The link will stop working immediately.`)) return;
+  async function deleteLink(pass: Pass) {
+    if (!confirm(`Delete the booking link for ${pass.student_name || pass.student_email}? It will stop working immediately and cannot be restored.`)) return;
     try {
       await call("revoke", { pass_id: pass.id });
-      toast.success("Pass revoked");
+      toast.success("Booking link deleted");
       await refresh();
-    } catch (e) { toast.error(e instanceof Error ? e.message : "Revoke failed"); }
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Could not delete booking link"); }
   }
 
   async function rotate(pass: Pass) {
@@ -187,8 +187,8 @@ export default function BookingPasses() {
                   <RotateCcw className="h-4 w-4 mr-1" /> Rotate link
                 </Button>
                 {p.status !== "revoked" && (
-                  <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700" onClick={() => revoke(p)}>
-                    <XCircle className="h-4 w-4 mr-1" /> Revoke
+                  <Button size="sm" variant="ghost" className="text-red-600 hover:text-red-700" onClick={() => deleteLink(p)}>
+                    <Trash2 className="h-4 w-4 mr-1" /> Delete link
                   </Button>
                 )}
               </div>
