@@ -3,6 +3,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -50,6 +54,7 @@ export default function BookSessionPanel() {
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [booking, setBooking] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
 
   const pass = info?.pass ?? null;
@@ -121,6 +126,7 @@ export default function BookSessionPanel() {
     try {
       await invoke("book", { start_at: selected, idempotency_key: bookingKey });
       toast.success("Session booked. Check your email for the calendar invite.");
+      setConfirmOpen(false);
       setSelected(null);
       setBookingKey(crypto.randomUUID());
       await qc.invalidateQueries({ queryKey: ["student-booking", "info", user?.id] });
@@ -263,14 +269,39 @@ export default function BookSessionPanel() {
               })}
             </div>
             {selected && (
-              <Button className="mt-4 w-full" onClick={book} disabled={booking}>
-                {booking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Confirm {formatTime(selected)}
+              <Button className="mt-4 w-full" onClick={() => setConfirmOpen(true)} disabled={booking}>
+                Book {formatTime(selected)}
               </Button>
             )}
           </div>
         </div>
       )}
+
+      {/* Confirmation step — only books when the student says yes. */}
+      <AlertDialog open={confirmOpen} onOpenChange={(o) => { if (!booking) setConfirmOpen(o); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm your session</AlertDialogTitle>
+            <AlertDialogDescription>
+              {selected ? (
+                <>Book a {pass.session_length_minutes}-minute session with Joshua on{" "}
+                <span className="font-medium text-foreground">{formatSlot(selected)}</span>? This uses 1 of your{" "}
+                {pass.credits_remaining} remaining sessions.</>
+              ) : "Pick a time first."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={booking}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => { e.preventDefault(); void book(); }}
+              disabled={booking}
+            >
+              {booking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Yes, book it
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {upcoming.length > 0 && (
         <div className="border-t border-border p-6">
