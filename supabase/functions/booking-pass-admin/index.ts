@@ -15,6 +15,33 @@ function genToken(): string {
     .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 
+const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
+
+// base32 (Crockford-ish, no ambiguous chars) — url-safe, human-ish.
+const CODE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
+function genCode(chars = 26): string {
+  // 26 chars * ~4.95 bits ≈ 128 bits of entropy.
+  const bytes = new Uint8Array(chars);
+  crypto.getRandomValues(bytes);
+  let out = "";
+  for (let i = 0; i < chars; i++) out += CODE_ALPHABET[bytes[i] % CODE_ALPHABET.length];
+  return out;
+}
+
+function sanitizeFirstName(name: string | null | undefined, email: string | null | undefined): string {
+  const base = (name?.trim().split(/\s+/)[0] || email?.split("@")[0] || "student").toLowerCase();
+  const cleaned = base.replace(/[^a-z0-9]/g, "");
+  return cleaned.slice(0, 20) || "student";
+}
+
+function genSlug(name: string | null | undefined, email: string | null | undefined): string {
+  return `${sanitizeFirstName(name, email)}-${genCode(26)}`;
+}
+
+function bookingUrl(slug: string): string {
+  return `${APP_ORIGIN}/book/${slug}`;
+}
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -67,29 +94,36 @@ Deno.serve(async (req) => {
     if (action === "create") {
       const totalCredits = Math.max(1, Math.min(50, Number(body.total_credits) || 0));
       if (!totalCredits) return json({ error: "invalid_credits" }, 400);
-      const sessionLen = Math.max(15, Math.min(240, Number(body.session_length_minutes) || 60));
+      const sessionLen = Math.max(15, Math.min(480, Number(body.session_length_minutes) || 70));
       const raw = genToken();
       const hash = await sha256Hex(raw);
 
       // When granting to a real student account, go through grant_booking_access
-      // so any prior active pass is atomically revoked (one-active-per-student).
+      // so any prior active pass is atomically revoked (one-active-per-student)
+      // AND the public booking slug is created in the same transaction.
       if (body.student_id) {
-        const { data, error } = await supabase.rpc("grant_booking_access", {
-          _student_id: body.student_id,
-          _student_name: body.student_name || null,
-          _student_email: body.student_email || null,
-          _total_credits: totalCredits,
-          _session_length_minutes: sessionLen,
-          _expires_at: body.expires_at || null,
-          _created_by: user.id,
-          _token_hash: hash,
-        });
-        if (error) {
+        // Generate slug + retry on the (rare) unique collision.
+        let lastErr: unknown = null;
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const slug = genSlug(body.student_name, body.student_email);
+          const { data, error } = await supabase.rpc("grant_booking_access", {
+            _student_id: body.student_id,
+            _student_name: body.student_name || null,
+            _student_email: body.student_email || null,
+            _total_credits: totalCredits,
+            _session_length_minutes: sessionLen,
+            _expires_at: body.expires_at || null,
+            _created_by: user.id,
+            _token_hash: hash,
+            _booking_slug: slug,
+          });
+          if (!error) return json({ pass: data, raw_token: raw, booking_url: bookingUrl(slug) });
           const msg = String(error.message || "");
           if (msg.includes("student_id_required")) return json({ error: "student_id_required" }, 400);
+          if ((error as { code?: string }).code === "23505") { lastErr = error; continue; } // slug collision → retry
           throw error;
         }
-        return json({ pass: data, raw_token: raw });
+        throw lastErr ?? new Error("slug_collision");
       }
 
       // Name/email-only pass (no student account): plain insert, unchanged.
@@ -128,7 +162,7 @@ Deno.serve(async (req) => {
       if (!studentId) return json({ error: "student_id_required" }, 400);
       const { data, error } = await supabase
         .from("booking_passes")
-        .select("id,total_credits,used_credits,session_length_minutes,status,expires_at,created_at")
+        .select("id,total_credits,used_credits,session_length_minutes,status,expires_at,created_at,booking_slug")
         .eq("student_id", studentId)
         .eq("status", "active")
         .order("created_at", { ascending: false })
@@ -145,8 +179,34 @@ Deno.serve(async (req) => {
           session_length_minutes: data.session_length_minutes,
           status: data.status,
           expires_at: data.expires_at,
+          booking_url: data.booking_slug ? bookingUrl(data.booking_slug) : null,
         },
       });
+    }
+
+    if (action === "regenerate_link") {
+      const studentId = String(body.student_id || "");
+      if (!studentId) return json({ error: "student_id_required" }, 400);
+      // Rotate slug + token_hash atomically; retry on the rare slug collision.
+      let lastErr: unknown = null;
+      // Need the current name/email for a nice slug prefix.
+      const { data: cur } = await supabase
+        .from("booking_passes").select("student_name,student_email")
+        .eq("student_id", studentId).eq("status", "active")
+        .order("created_at", { ascending: false }).limit(1).maybeSingle();
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const slug = genSlug(cur?.student_name, cur?.student_email);
+        const newHash = await sha256Hex(genToken());
+        const { data, error } = await supabase.rpc("regenerate_booking_link", {
+          _student_id: studentId, _new_slug: slug, _new_token_hash: newHash,
+        });
+        if (!error) return json({ booking_url: bookingUrl(String(data)) });
+        const msg = String(error.message || "");
+        if (msg.includes("no_active_pass")) return json({ error: "no_active_pass" }, 404);
+        if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
+        throw error;
+      }
+      throw lastErr ?? new Error("slug_collision");
     }
 
     if (action === "rotate") {

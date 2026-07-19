@@ -94,7 +94,7 @@ const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
 const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSessionIngest"));
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
-const BookingPass = React.lazy(() => import("./pages/BookingPass"));
+const PublicBooking = React.lazy(() => import("./pages/PublicBooking"));
 const BookingPasses = React.lazy(() => import("./pages/teacher/BookingPasses"));
 import Inbox from "./pages/Inbox";
 import StudentShell from "./components/mainhub/StudentShell";
@@ -151,7 +151,8 @@ const App = () => {
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
-            <Route path="/schedule/pass/:token" element={<React.Suspense fallback={null}><BookingPass /></React.Suspense>} />
+            {/* Public, no-login per-student booking link (Calendly-style). */}
+            <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
             <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
 
 

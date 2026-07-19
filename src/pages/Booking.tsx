@@ -1,21 +1,48 @@
+import { useMemo } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import BookSessionPanel from "@/components/schedule/BookSessionPanel";
-import { useStudentBooking } from "@/hooks/useStudentBooking";
+import { supabase } from "@/integrations/supabase/client";
+import CalendlyBookingCard, { type BookingApi } from "@/components/booking/CalendlyBookingCard";
 
-/**
- * Dedicated "Booking" page (its own sidebar tab). Hosts the student booking
- * widget. If the student has no active pass, BookSessionPanel renders nothing,
- * so we show a friendly empty state here instead.
- */
+// In-app booking page (authed). Uses the SAME Calendly-clone card as the public
+// /book/:slug page, fed by the authenticated student-booking function.
+const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
+  const { data, error } = await supabase.functions.invoke("student-booking", { body: { action, ...extra } });
+  if (error) throw new Error(error.message);
+  if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+  return data;
+};
+
 export default function Booking() {
   const navigate = useNavigate();
-  const { data: info, isLoading } = useStudentBooking();
-  const hasAccess = !!info?.pass;
+
+  const api: BookingApi = useMemo(() => ({
+    loadInfo: async () => {
+      const d = (await invoke("info")) as {
+        pass: { credits_remaining: number; session_length_minutes: number; total_credits: number; status: string } | null;
+        redemptions?: { id: string; start_at: string; status: string; meet_url?: string | null }[];
+      };
+      const p = d.pass;
+      return {
+        pass: p ? { credits_remaining: p.credits_remaining, session_length_minutes: p.session_length_minutes, total_credits: p.total_credits, status: p.status } : null,
+        redemptions: d.redemptions ?? [],
+      };
+    },
+    loadSlots: async () => {
+      const d = (await invoke("slots")) as {
+        pass: { credits_remaining: number; session_length_minutes: number } | null;
+        slots: { start_at: string; end_at: string }[];
+      };
+      return { pass: d.pass ?? null, slots: d.slots ?? [] };
+    },
+    book: async (startAtIso, idempotencyKey) => {
+      await invoke("book", { start_at: startAtIso, idempotency_key: idempotencyKey });
+    },
+  }), []);
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-8">
+    <div className="mx-auto w-full max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center gap-3">
         <Button variant="ghost" size="icon" onClick={() => navigate("/mainhub")} aria-label="Back">
           <ArrowLeft className="h-4 w-4" />
@@ -26,16 +53,7 @@ export default function Booking() {
         </div>
       </div>
 
-      <BookSessionPanel />
-
-      {!isLoading && !hasAccess && (
-        <div className="rounded-2xl border border-dashed border-border p-12 text-center">
-          <p className="text-sm font-medium">Booking isn't enabled for you yet.</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Message Joshua to have 1:1 session booking turned on for your account.
-          </p>
-        </div>
-      )}
+      <CalendlyBookingCard api={api} />
     </div>
   );
 }

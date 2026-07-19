@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { CalendarClock, Loader2, Ticket, XCircle } from "lucide-react";
+import { CalendarClock, Link2, Loader2, RefreshCw, Ticket, XCircle } from "lucide-react";
 
 type ActivePass = {
   id: string;
@@ -12,10 +12,11 @@ type ActivePass = {
   session_length_minutes: number;
   status: string;
   expires_at: string | null;
+  booking_url?: string | null;
 };
 
 const DEFAULT_CREDITS = 5;
-const DEFAULT_LENGTH = 60;
+const DEFAULT_LENGTH = 70;
 
 const call = async (action: string, extra: Record<string, unknown> = {}) => {
   const { data, error } = await supabase.functions.invoke("booking-pass-admin", {
@@ -75,7 +76,7 @@ export default function StudentBookingPanel({
 
   async function revoke() {
     if (!pass) return;
-    if (!confirm(`Revoke booking access for ${studentName || "this student"}? They won't be able to book new sessions.`)) return;
+    if (!confirm(`Revoke booking access for ${studentName || "this student"}? Their booking link will stop working and they won't be able to book new sessions.`)) return;
     setBusy(true);
     try {
       await call("revoke", { pass_id: pass.id });
@@ -83,6 +84,35 @@ export default function StudentBookingPanel({
       await refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Revoke failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyLink() {
+    if (!pass?.booking_url) return;
+    try {
+      await navigator.clipboard.writeText(pass.booking_url);
+      toast.success("Booking link copied");
+    } catch {
+      // Fallback: show it so it can be copied manually.
+      toast.message(pass.booking_url);
+    }
+  }
+
+  async function regenerate() {
+    if (!pass) return;
+    if (!confirm("Generate a new booking link? The old link will immediately stop working.")) return;
+    setBusy(true);
+    try {
+      const res = (await call("regenerate_link", { student_id: studentId })) as { booking_url?: string };
+      if (res.booking_url) {
+        try { await navigator.clipboard.writeText(res.booking_url); } catch { /* ignore */ }
+        toast.success("New link generated and copied");
+      }
+      await refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Regenerate failed");
     } finally {
       setBusy(false);
     }
@@ -112,10 +142,16 @@ export default function StudentBookingPanel({
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" onClick={copyLink} disabled={busy || !pass.booking_url}>
+              <Link2 className="mr-1 h-4 w-4" /> Copy link
+            </Button>
             <Button size="sm" variant="outline" onClick={grant} disabled={busy}>
               {busy ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
               Reset to {DEFAULT_CREDITS} sessions
+            </Button>
+            <Button size="sm" variant="ghost" className="text-zinc-400 hover:text-zinc-200" onClick={regenerate} disabled={busy}>
+              <RefreshCw className="mr-1 h-4 w-4" /> New link
             </Button>
             <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-400" onClick={revoke} disabled={busy}>
               <XCircle className="mr-1 h-4 w-4" /> Revoke

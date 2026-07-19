@@ -46,7 +46,7 @@ export default function BookingPasses() {
   const [studentEmail, setStudentEmail] = useState("");
   const [credits, setCredits] = useState("5");
   const [creditsCustom, setCreditsCustom] = useState("");
-  const [sessionLen, setSessionLen] = useState("60");
+  const [sessionLen, setSessionLen] = useState("70");
   const [expiresAt, setExpiresAt] = useState("");
 
   const refresh = useCallback(async () => {
@@ -71,7 +71,7 @@ export default function BookingPasses() {
         student_name: studentName.trim() || null,
         student_email: studentEmail.trim() || null,
         total_credits: total,
-        session_length_minutes: Number(sessionLen) || 60,
+        session_length_minutes: Number(sessionLen) || 70,
         expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
       }) as { pass: Pass; raw_token: string };
       setCreatedLink(buildUrl(res.raw_token));
@@ -198,6 +198,7 @@ export default function BookingPasses() {
                     <SelectItem value="30">30 min</SelectItem>
                     <SelectItem value="45">45 min</SelectItem>
                     <SelectItem value="60">60 min</SelectItem>
+                    <SelectItem value="70">70 min (1 hr 10 min)</SelectItem>
                     <SelectItem value="90">90 min</SelectItem>
                     <SelectItem value="120">120 min</SelectItem>
                   </SelectContent>
