@@ -12,6 +12,9 @@ verify_jwt = false
 [functions.public-booking]
 verify_jwt = false
 
+[functions.booking-upload]
+verify_jwt = false
+
 [functions.handle-email-unsubscribe]
 verify_jwt = false
 

@@ -44,11 +44,13 @@ const gcal: GoogleCal = { insertEvent, patchEvent, getEvent, deleteEvent, freeBu
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    // Body-size cap (2KB) — reject oversized payloads early.
+    // Body-size cap (8KB) — reject oversized payloads early. Files never come
+    // through here (see booking-upload); this only needs headroom for a book
+    // call carrying an optional student_note (validated <=2000 chars below).
     const cl = Number(req.headers.get("content-length") || "0");
-    if (cl > 2048) return json({ error: "payload_too_large" }, 413);
+    if (cl > 8192) return json({ error: "payload_too_large" }, 413);
     const raw = await req.text();
-    if (raw.length > 2048) return json({ error: "payload_too_large" }, 413);
+    if (raw.length > 8192) return json({ error: "payload_too_large" }, 413);
     const body = raw ? JSON.parse(raw) : {};
 
     const action = String(body.action || "");
@@ -139,11 +141,13 @@ Deno.serve(async (req) => {
         const { data: prof } = await supabase.from("profiles").select("email,name,full_name").eq("id", pass.student_id).maybeSingle();
         if (prof?.email) email = prof.email;
       }
+      const studentNote = String(body.student_note || "").slice(0, 2000).trim();
       const result = await bookSession({
         supabase, gcal, pass,
         identity: { student_id: pass.student_id, email, name: pass.student_name || email || "Student" },
         startAtIso: String(body.start_at || ""),
         idempotencyKey: String(body.idempotency_key || ""),
+        studentNote,
         adminEmail: Deno.env.get("BOOKING_ADMIN_EMAIL") || "contact@aspiringattorneys.com",
         supabaseUrl: Deno.env.get("SUPABASE_URL")!,
         serviceKey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,

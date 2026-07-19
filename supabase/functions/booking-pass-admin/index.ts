@@ -305,11 +305,43 @@ Deno.serve(async (req) => {
     if (action === "list_bookings") {
       const { data, error } = await supabase
         .from("booking_pass_redemptions")
-        .select("*, booking_passes(id, student_name, student_email, student_id, session_length_minutes)")
+        .select("*, booking_passes(id, student_name, student_email, student_id, session_length_minutes), external_work_uploads(id, file_name)")
         .order("start_at", { ascending: false })
         .limit(500);
       if (error) throw error;
-      return json({ bookings: data ?? [] });
+      // Flatten to an upload_count so the client doesn't ship file lists it
+      // won't render until the row is expanded (files are fetched on demand).
+      const bookings = (data ?? []).map((b: any) => ({
+        ...b,
+        upload_count: Array.isArray(b.external_work_uploads) ? b.external_work_uploads.length : 0,
+        external_work_uploads: undefined,
+      }));
+      return json({ bookings });
+    }
+
+    // Files a student attached to a specific booking, with short-lived signed
+    // download URLs (private bucket). Admin-only; RLS is bypassed by the service
+    // role, so the admin gate above is the access control.
+    if (action === "get_booking_uploads") {
+      const redemptionId = String(body.redemption_id || "");
+      if (!redemptionId) return json({ error: "redemption_id_required" }, 400);
+      const { data: rows, error } = await supabase
+        .from("external_work_uploads")
+        .select("id, file_name, file_type, storage_path, created_at")
+        .eq("redemption_id", redemptionId)
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      const uploads = [];
+      for (const r of rows ?? []) {
+        const { data: signed } = await supabase.storage
+          .from("external-work-uploads")
+          .createSignedUrl(r.storage_path, 600); // 10 min
+        uploads.push({
+          id: r.id, file_name: r.file_name, file_type: r.file_type,
+          created_at: r.created_at, url: signed?.signedUrl ?? null,
+        });
+      }
+      return json({ uploads });
     }
 
     if (action === "cancel_booking") {

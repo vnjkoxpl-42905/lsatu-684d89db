@@ -5,10 +5,10 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { CalendarX2, Loader2, MoreHorizontal, UserX, Video } from "lucide-react";
+import { CalendarX2, ChevronDown, Download, Loader2, MoreHorizontal, Paperclip, UserX, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "../BookingWorkspace";
-import { bookingAdmin, durationLabel, type Booking } from "../api";
+import { bookingAdmin, durationLabel, type Booking, type BookingUpload } from "../api";
 
 const fmt = (iso: string) =>
   new Date(iso).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
@@ -31,6 +31,23 @@ export default function BookingsSection() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [uploads, setUploads] = useState<Record<string, BookingUpload[] | "loading">>({});
+
+  const toggleExpand = useCallback(async (b: Booking) => {
+    const next = expanded === b.id ? null : b.id;
+    setExpanded(next);
+    if (next && (b.upload_count ?? 0) > 0 && !uploads[b.id]) {
+      setUploads((u) => ({ ...u, [b.id]: "loading" }));
+      try {
+        const res = await bookingAdmin("get_booking_uploads", { redemption_id: b.id }) as { uploads: BookingUpload[] };
+        setUploads((u) => ({ ...u, [b.id]: res.uploads }));
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Failed to load files");
+        setUploads((u) => { const c = { ...u }; delete c[b.id]; return c; });
+      }
+    }
+  }, [expanded, uploads]);
 
   const refresh = useCallback(async () => {
     try {
@@ -96,12 +113,28 @@ export default function BookingsSection() {
               const mins = b.booking_passes?.session_length_minutes
                 ?? Math.round((new Date(b.end_at).getTime() - new Date(b.start_at).getTime()) / 60_000);
               const isUpcomingBooked = b.status === "booked" && new Date(b.start_at).getTime() >= Date.now();
+              const submissionCount = (b.upload_count ?? 0) + (b.student_note ? 1 : 0);
+              const hasSubmission = submissionCount > 0;
+              const isOpen = expanded === b.id;
+              const rowUploads = uploads[b.id];
               return (
-                <div key={b.id} className={cn("flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4", i > 0 && "border-t border-border")}>
+                <div key={b.id} className={cn(i > 0 && "border-t border-border")}>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4">
                   <div className="min-w-[180px] flex-1">
                     <div className="font-semibold">{student}</div>
                     <div className="mt-0.5 text-sm text-muted-foreground">{fmt(b.start_at)} · {durationLabel(mins)}</div>
                   </div>
+                  {hasSubmission && (
+                    <button
+                      onClick={() => void toggleExpand(b)}
+                      className="inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/5 px-2 py-1 text-xs font-medium text-primary transition hover:bg-primary/10"
+                      title="Student attached work or a note"
+                    >
+                      <Paperclip className="h-3.5 w-3.5" />
+                      {b.upload_count ? b.upload_count : ""}{b.upload_count && b.student_note ? " + note" : b.student_note ? "note" : ""}
+                      <ChevronDown className={cn("h-3.5 w-3.5 transition", isOpen && "rotate-180")} />
+                    </button>
+                  )}
                   <BookingStatusChip status={b.status} />
                   {b.meet_url && b.status === "booked" && (
                     <a href={b.meet_url} target="_blank" rel="noreferrer">
@@ -127,6 +160,42 @@ export default function BookingsSection() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   )}
+                </div>
+
+                {hasSubmission && isOpen && (
+                  <div className="border-t border-dashed border-border bg-muted/20 px-5 py-4">
+                    {b.student_note && (
+                      <div className="mb-3">
+                        <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Student's note</div>
+                        <p className="whitespace-pre-wrap text-sm text-foreground">{b.student_note}</p>
+                      </div>
+                    )}
+                    {(b.upload_count ?? 0) > 0 && (
+                      <div>
+                        <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Attached files</div>
+                        {rowUploads === "loading" || rowUploads === undefined ? (
+                          <div className="flex items-center text-sm text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading files…</div>
+                        ) : rowUploads.length === 0 ? (
+                          <p className="text-sm text-muted-foreground">No files.</p>
+                        ) : (
+                          <ul className="space-y-1.5">
+                            {rowUploads.map((f) => (
+                              <li key={f.id} className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-1.5 text-sm">
+                                <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                                <span className="flex-1 truncate">{f.file_name}</span>
+                                {f.url ? (
+                                  <a href={f.url} target="_blank" rel="noreferrer" download>
+                                    <Button size="sm" variant="ghost" className="h-7 text-primary"><Download className="mr-1 h-3.5 w-3.5" /> Download</Button>
+                                  </a>
+                                ) : <span className="text-xs text-muted-foreground">unavailable</span>}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
                 </div>
               );
             })}

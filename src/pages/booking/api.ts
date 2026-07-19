@@ -33,6 +33,8 @@ export type Booking = {
   meet_url: string | null;
   student_name_snapshot: string | null;
   student_email_snapshot: string | null;
+  student_note: string | null;
+  upload_count?: number;
   booking_passes?: {
     id: string;
     student_name: string | null;
@@ -40,6 +42,14 @@ export type Booking = {
     student_id: string | null;
     session_length_minutes: number;
   } | null;
+};
+
+export type BookingUpload = {
+  id: string;
+  file_name: string;
+  file_type: string | null;
+  created_at: string;
+  url: string | null;
 };
 
 // Student-facing links always use the canonical domain, never the current

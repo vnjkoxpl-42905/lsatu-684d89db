@@ -39,8 +39,26 @@ export default function PublicBooking() {
       const d = await callPublic(slug, "slots");
       return { pass: d.pass ?? null, slots: d.slots ?? [] };
     },
-    book: async (startAtIso, idempotencyKey) => {
-      await callPublic(slug, "book", { start_at: startAtIso, idempotency_key: idempotencyKey });
+    book: async (startAtIso, idempotencyKey, studentNote) => {
+      await callPublic(slug, "book", {
+        start_at: startAtIso,
+        idempotency_key: idempotencyKey,
+        ...(studentNote ? { student_note: studentNote } : {}),
+      });
+    },
+    uploadFiles: async (files, idempotencyKey) => {
+      const fd = new FormData();
+      fd.append("slug", slug);
+      fd.append("idempotency_key", idempotencyKey);
+      for (const f of files) fd.append("files", f, f.name);
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/booking-upload`, {
+        method: "POST",
+        headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` },
+        body: fd,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data?.error) throw new Error(data?.error || `upload_failed_${res.status}`);
+      return { uploaded: data.uploaded ?? files.length };
     },
   }), [slug]);
 

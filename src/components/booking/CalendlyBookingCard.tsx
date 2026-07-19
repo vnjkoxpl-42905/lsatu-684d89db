@@ -5,7 +5,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Video } from "lucide-react";
+import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Paperclip, Video, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "@/pages/booking/booking-theme.css";
 
@@ -31,8 +31,16 @@ export type BookingApi = {
   // Load the pass summary. null = no active booking access.
   loadInfo: () => Promise<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] }>;
   loadSlots: () => Promise<{ pass: BookingPassView; slots: BookingSlot[] }>;
-  book: (startAtIso: string, idempotencyKey: string) => Promise<void>;
+  book: (startAtIso: string, idempotencyKey: string, studentNote?: string) => Promise<void>;
+  // Optional booking-time submission. When present, the confirm step shows an
+  // upload card (files + comment). Files upload BEFORE book, keyed by the same
+  // idempotency key so the server links them to the redemption.
+  uploadFiles?: (files: File[], idempotencyKey: string) => Promise<{ uploaded: number }>;
 };
+
+const MAX_UPLOAD_FILES = 5;
+const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
+const MAX_NOTE_CHARS = 2000;
 
 const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -58,6 +66,8 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const [booking, setBooking] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
+  const [files, setFiles] = useState<File[]>([]);
+  const [note, setNote] = useState("");
 
   const pass = info?.pass ?? null;
 
@@ -118,14 +128,40 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
   const daySlots = pickedDay ? (slotsByDay.get(dayKey(pickedDay)) ?? []) : [];
 
+  function addFiles(incoming: FileList | null) {
+    if (!incoming) return;
+    const picked = Array.from(incoming);
+    const tooBig = picked.find((f) => f.size > MAX_UPLOAD_BYTES);
+    if (tooBig) { toast.error(`"${tooBig.name}" is over 20 MB.`); return; }
+    setFiles((prev) => {
+      const merged = [...prev];
+      for (const f of picked) {
+        if (merged.length >= MAX_UPLOAD_FILES) { toast.error(`Up to ${MAX_UPLOAD_FILES} files.`); break; }
+        if (!merged.some((m) => m.name === f.name && m.size === f.size)) merged.push(f);
+      }
+      return merged;
+    });
+  }
+
   async function doBook() {
     if (!selected) return;
     setBooking(true);
     try {
-      await api.book(selected, bookingKey);
-      toast.success("Session booked. Check your email for the calendar invite.");
+      // Upload any attachments FIRST, keyed by the booking idempotency key, so
+      // the server links them to the redemption it's about to create.
+      if (files.length > 0 && api.uploadFiles) {
+        await api.uploadFiles(files, bookingKey);
+      }
+      const trimmedNote = note.trim().slice(0, MAX_NOTE_CHARS);
+      await api.book(selected, bookingKey, trimmedNote || undefined);
+      const extras = files.length > 0
+        ? ` We've got your ${files.length} file${files.length === 1 ? "" : "s"}.`
+        : "";
+      toast.success(`Session booked. Check your email for the calendar invite.${extras}`);
       setConfirmOpen(false);
       setSelected(null);
+      setFiles([]);
+      setNote("");
       setBookingKey(crypto.randomUUID());
       await refreshInfo();
       await loadSlots();
@@ -298,6 +334,66 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
               ) : "Pick a time first."}
             </AlertDialogDescription>
           </AlertDialogHeader>
+
+          {api.uploadFiles && selected && (
+            <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
+              <div>
+                <div className="text-sm font-medium text-foreground">Bringing work to review? (optional)</div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Attach sections, PTs, or anything you want Joshua to look at, and add any updates. Totally skippable.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-primary/40 px-3 py-1.5 text-sm font-medium text-primary transition hover:bg-primary/5">
+                  <Paperclip className="h-4 w-4" />
+                  {files.length > 0 ? "Add more" : "Attach files"}
+                  <input
+                    type="file"
+                    multiple
+                    className="hidden"
+                    disabled={booking || files.length >= MAX_UPLOAD_FILES}
+                    onChange={(e) => { addFiles(e.target.files); e.currentTarget.value = ""; }}
+                  />
+                </label>
+                <span className="text-xs text-muted-foreground">
+                  {files.length}/{MAX_UPLOAD_FILES} · up to 20 MB each
+                </span>
+              </div>
+
+              {files.length > 0 && (
+                <ul className="space-y-1.5">
+                  {files.map((f, i) => (
+                    <li key={`${f.name}-${i}`} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm">
+                      <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <span className="flex-1 truncate">{f.name}</span>
+                      <span className="shrink-0 text-xs text-muted-foreground">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
+                      <button
+                        type="button"
+                        disabled={booking}
+                        onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
+                        className="shrink-0 rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                        aria-label={`Remove ${f.name}`}
+                      ><X className="h-3.5 w-3.5" /></button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div>
+                <textarea
+                  value={note}
+                  onChange={(e) => setNote(e.target.value.slice(0, MAX_NOTE_CHARS))}
+                  disabled={booking}
+                  rows={3}
+                  placeholder="Any updates for Joshua? What you'd like to focus on, where you're stuck…"
+                  className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary/60"
+                />
+                <div className="mt-1 text-right text-[11px] text-muted-foreground">{note.length}/{MAX_NOTE_CHARS}</div>
+              </div>
+            </div>
+          )}
+
           <AlertDialogFooter>
             <AlertDialogCancel disabled={booking}>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={(e) => { e.preventDefault(); void doBook(); }} disabled={booking}>

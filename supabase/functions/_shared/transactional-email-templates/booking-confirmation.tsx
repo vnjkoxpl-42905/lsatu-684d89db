@@ -15,6 +15,8 @@ interface BookingConfirmationProps {
   whenText?: string        // e.g. "Saturday, July 19 · 10:00 AM (Eastern Time)"
   durationMinutes?: number
   meetUrl?: string
+  studentNote?: string     // admin copy only: comment the student left at booking
+  fileNames?: string[]     // admin copy only: files the student attached
 }
 
 const BookingConfirmationEmail = ({
@@ -24,8 +26,11 @@ const BookingConfirmationEmail = ({
   whenText = 'your upcoming session',
   durationMinutes = 60,
   meetUrl,
+  studentNote = '',
+  fileNames = [],
 }: BookingConfirmationProps) => {
   const isAdmin = recipientRole === 'admin'
+  const hasSubmission = isAdmin && (Boolean(studentNote) || fileNames.length > 0)
   return (
     <Html lang="en" dir="ltr">
       <Head />
@@ -53,6 +58,22 @@ const BookingConfirmationEmail = ({
             <Text style={cardTitle}>{whenText}</Text>
             <Text style={cardMeta}>{durationMinutes} minutes</Text>
           </Section>
+
+          {hasSubmission && (
+            <Section style={submissionCard}>
+              <Text style={cardLabel}>STUDENT INCLUDED</Text>
+              {studentNote && <Text style={noteText}>{studentNote}</Text>}
+              {fileNames.length > 0 && (
+                <>
+                  <Text style={fileHeader}>{fileNames.length} file{fileNames.length === 1 ? '' : 's'} attached</Text>
+                  {fileNames.map((n, i) => (
+                    <Text key={i} style={fileItem}>📎 {n}</Text>
+                  ))}
+                  <Text style={fileHint}>Open the Bookings tab to download.</Text>
+                </>
+              )}
+            </Section>
+          )}
 
           {!isAdmin && (
             <Text style={text}>
@@ -83,12 +104,14 @@ export const template = {
       : `Your session with Joshua is booked — ${d?.whenText ?? ''}`,
   displayName: 'Booking confirmation',
   previewData: {
-    recipientRole: 'student',
+    recipientRole: 'admin',
     studentName: 'Alex',
     studentEmail: 'alex@example.com',
     whenText: 'Saturday, July 19 · 10:00 AM (Eastern Time)',
     durationMinutes: 60,
     meetUrl: 'https://meet.google.com/abc-defg-hij',
+    studentNote: 'Here are the two sections I did this week. I struggled with the last LR set, timing ran out.',
+    fileNames: ['PT155-section3.pdf', 'timing-notes.png'],
   },
 } satisfies TemplateEntry
 
@@ -117,4 +140,15 @@ const button = {
   display: 'inline-block',
 }
 const meetHint = { fontSize: '12px', color: '#94A3B8', margin: '10px 0 0', wordBreak: 'break-all' as const }
+const submissionCard = {
+  background: '#F8FAFC',
+  border: '1px solid #E2E8F0',
+  borderRadius: '12px',
+  padding: '16px 18px',
+  margin: '12px 0',
+}
+const noteText = { fontSize: '14px', color: '#334155', lineHeight: '1.6', margin: '4px 0 0', whiteSpace: 'pre-wrap' as const }
+const fileHeader = { fontSize: '13px', fontWeight: 600, color: '#475569', margin: '12px 0 6px' }
+const fileItem = { fontSize: '13px', color: '#334155', margin: '2px 0' }
+const fileHint = { fontSize: '12px', color: '#94A3B8', margin: '8px 0 0' }
 const footer = { fontSize: '12px', color: '#94A3B8', margin: '32px 0 0' }

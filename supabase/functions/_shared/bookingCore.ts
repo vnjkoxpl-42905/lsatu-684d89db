@@ -161,8 +161,10 @@ export async function bookSession(opts: {
   supabaseUrl: string;
   serviceKey: string;
   anonKey: string;
+  studentNote?: string;
 }): Promise<BookResult> {
   const { supabase, gcal, pass, identity, startAtIso, idempotencyKey: idem } = opts;
+  const studentNote = (opts.studentNote || "").trim();
 
   const startAt = new Date(startAtIso);
   if (isNaN(startAt.getTime())) return { ok: false, error: "invalid_start_at", status: 400 };
@@ -198,6 +200,26 @@ export async function bookSession(opts: {
     // Idempotent replay: return the already-booked row.
     const { data: existing } = await supabase.from("booking_pass_redemptions").select("*").eq("id", redemptionId).maybeSingle();
     return { ok: true, redemption: existing, was_existing: true };
+  }
+
+  // ---- Booking-time student submission: persist the note + link any files
+  // staged (by booking-upload) under this (pass, idempotency_key). Done before
+  // gcal so a Google failure never loses the student's note/attachments.
+  let uploadedFileNames: string[] = [];
+  try {
+    if (studentNote) {
+      await supabase.from("booking_pass_redemptions")
+        .update({ student_note: studentNote }).eq("id", redemptionId);
+    }
+    const { data: linked } = await supabase.from("external_work_uploads")
+      .update({ redemption_id: redemptionId, student_id: identity.student_id ?? undefined })
+      .eq("booking_pass_id", pass.id)
+      .eq("booking_idempotency_key", idem)
+      .is("redemption_id", null)
+      .select("file_name");
+    uploadedFileNames = (linked ?? []).map((r: any) => r.file_name).filter(Boolean);
+  } catch (subErr) {
+    console.error("linking booking submission failed (non-fatal)", subErr);
   }
 
   // Resolve the target calendar.
@@ -282,7 +304,13 @@ export async function bookSession(opts: {
           templateName: "booking-confirmation",
           recipientEmail,
           idempotencyKey: `booking-${redemptionId}-${recipientRole}`.slice(0, 200),
-          templateData: { recipientRole, studentName, studentEmail, whenText, durationMinutes: pass.session_length_minutes, meetUrl },
+          templateData: {
+            recipientRole, studentName, studentEmail, whenText,
+            durationMinutes: pass.session_length_minutes, meetUrl,
+            // Only the admin copy surfaces the submission.
+            studentNote: recipientRole === "admin" ? studentNote : "",
+            fileNames: recipientRole === "admin" ? uploadedFileNames : [],
+          },
         }),
       });
     } catch (mailErr) {
