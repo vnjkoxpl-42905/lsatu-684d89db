@@ -44,19 +44,15 @@
 }
 
 .holo-surface {
-  /* Solid burgundy base with a faint drifting highlight — low contrast so the
-     moving edge never reads as flicker on small surfaces like buttons. */
-  background-color: #6e1423;
-  background-image: linear-gradient(110deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 210, 200, 0.14) 45%,
-    rgba(255, 255, 255, 0) 60%);
-  background-size: 300% 100%;
-  animation: booking-holo-shift 14s ease-in-out infinite;
-  color: #fff;
+  /* Static rich burgundy gradient — deliberately NOT animated. The shadcn
+     Button base applies `transition-all` and swaps background-color on hover,
+     which fights any background keyframe animation frame-by-frame and reads
+     as flicker. Buttons stay still; only the wordmark carries the sheen. */
+  background: linear-gradient(120deg, #4f0d1c, #6e1423 45%, #8e1d3a) !important;
+  color: #fff !important;
 }
 
-.holo-surface:hover { filter: brightness(1.08); }
+.holo-surface:hover { filter: brightness(1.12); }
 
 .holo-ring { box-shadow: 0 0 0 1px hsl(347 70% 35% / 0.35), 0 8px 30px hsl(347 70% 25% / 0.12); }
 
