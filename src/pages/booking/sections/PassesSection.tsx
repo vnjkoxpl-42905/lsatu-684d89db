@@ -203,12 +203,25 @@ export default function PassesSection() {
   );
 }
 
+type StudentOption = { id: string; name: string | null; email: string | null };
+
 function CreatePassDialog({ open, onOpenChange, onCreated }: {
   open: boolean; onOpenChange: (o: boolean) => void; onCreated: (link: string) => void;
 }) {
   const defaults = loadDefaults();
+  const [students, setStudents] = useState<StudentOption[] | null>(null);
+  const [studentId, setStudentId] = useState<string>("manual");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (!open || students !== null) return;
+    bookingAdmin("list_students")
+      .then((res) => setStudents((res as { students: StudentOption[] }).students))
+      .catch(() => setStudents([]));
+  }, [open, students]);
+
+  const picked = studentId !== "manual" ? students?.find(s => s.id === studentId) ?? null : null;
   const [credits, setCredits] = useState(String(defaults.credits));
   const [sessionLen, setSessionLen] = useState(String(defaults.sessionLen));
   const [expiresAt, setExpiresAt] = useState(() => {
@@ -220,19 +233,20 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
   async function create() {
     const total = Number(credits);
     if (!total || total < 1) { toast.error("Enter a valid credit amount"); return; }
-    if (!name.trim() && !email.trim()) { toast.error("Add a student name or email"); return; }
+    if (!picked && !name.trim() && !email.trim()) { toast.error("Pick a student or add a name/email"); return; }
     setCreating(true);
     try {
       const res = await bookingAdmin("create", {
-        student_name: name.trim() || null,
-        student_email: email.trim() || null,
+        student_id: picked?.id ?? null,
+        student_name: picked ? (picked.name ?? null) : (name.trim() || null),
+        student_email: picked ? (picked.email ?? null) : (email.trim() || null),
         total_credits: total,
         session_length_minutes: Number(sessionLen) || 70,
         expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
       }) as { raw_token: string; booking_url?: string };
       onCreated(res.booking_url ?? tokenUrl(res.raw_token));
       onOpenChange(false);
-      setName(""); setEmail("");
+      setName(""); setEmail(""); setStudentId("manual");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Create failed");
     } finally { setCreating(false); }
@@ -244,13 +258,36 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
         <DialogHeader><DialogTitle>New booking pass</DialogTitle></DialogHeader>
         <div className="space-y-3">
           <div>
-            <Label>Student name</Label>
-            <Input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Alex Kim" />
+            <Label>Student</Label>
+            <Select value={studentId} onValueChange={setStudentId}>
+              <SelectTrigger>
+                <SelectValue placeholder={students === null ? "Loading students…" : "Choose a student"} />
+              </SelectTrigger>
+              <SelectContent className="booking-holo max-h-72">
+                <SelectItem value="manual">Manual entry (name/email only)</SelectItem>
+                {(students ?? []).map(s => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name || s.email || s.id}{s.name && s.email ? ` — ${s.email}` : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Picking an enrolled student links the pass to their account and gets them a friendly /book link.
+            </p>
           </div>
-          <div>
-            <Label>Student email (optional)</Label>
-            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="alex@example.com" />
-          </div>
+          {!picked && (
+            <>
+              <div>
+                <Label>Student name</Label>
+                <Input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Alex Kim" />
+              </div>
+              <div>
+                <Label>Student email (optional)</Label>
+                <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="alex@example.com" />
+              </div>
+            </>
+          )}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Credits</Label>

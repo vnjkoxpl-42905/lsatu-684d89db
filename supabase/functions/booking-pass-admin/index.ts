@@ -98,6 +98,27 @@ Deno.serve(async (req) => {
       return json({ redemptions: data ?? [] });
     }
 
+    if (action === "list_students") {
+      // Every real student account, for the New Pass picker. Admins excluded.
+      const { data: profiles, error: pErr } = await supabase
+        .from("profiles").select("class_id, display_name");
+      if (pErr) throw pErr;
+      const { data: roles } = await supabase.from("user_roles").select("user_id, role").eq("role", "admin");
+      const adminIds = new Set((roles ?? []).map((r: { user_id: string }) => r.user_id));
+      const { data: authRes, error: aErr } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+      if (aErr) throw aErr;
+      const emailMap = new Map(authRes.users.map((u: { id: string; email?: string }) => [u.id, u.email ?? null]));
+      const students = (profiles ?? [])
+        .filter((p: { class_id: string }) => !adminIds.has(p.class_id))
+        .map((p: { class_id: string; display_name: string | null }) => ({
+          id: p.class_id,
+          name: p.display_name || null,
+          email: emailMap.get(p.class_id) ?? null,
+        }))
+        .sort((a, b) => (a.name || a.email || "").localeCompare(b.name || b.email || ""));
+      return json({ students });
+    }
+
     if (action === "create") {
       const totalCredits = Math.max(1, Math.min(50, Number(body.total_credits) || 0));
       if (!totalCredits) return json({ error: "invalid_credits" }, 400);
