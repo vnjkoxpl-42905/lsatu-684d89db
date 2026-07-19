@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
 
     const action = String(body.action || "");
     const slug = String(body.slug || "");
-    if (!slug || slug.length < 8 || slug.length > 128) return json({ error: "invalid_link" }, 404);
+    if (!slug || slug.length < 3 || slug.length > 128) return json({ error: "invalid_link" }, 404);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,

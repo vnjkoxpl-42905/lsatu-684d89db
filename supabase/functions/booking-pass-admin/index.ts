@@ -37,8 +37,12 @@ function sanitizeFirstName(name: string | null | undefined, email: string | null
   return cleaned.slice(0, 20) || "student";
 }
 
-function genSlug(name: string | null | undefined, email: string | null | undefined): string {
-  return `${sanitizeFirstName(name, email)}-${genCode()}`;
+// Friendly, human slugs for a private tutoring service: just the first name
+// (/book/josh). Only on a collision (two students sharing a name, or a retry)
+// does a short suffix get appended (/book/josh-k3m).
+function genSlug(name: string | null | undefined, email: string | null | undefined, attempt = 0): string {
+  const base = sanitizeFirstName(name, email);
+  return attempt === 0 ? base : `${base}-${genCode(3)}`;
 }
 
 function bookingUrl(slug: string): string {
@@ -108,7 +112,7 @@ Deno.serve(async (req) => {
         // Generate slug + retry on the (rare) unique collision.
         let lastErr: unknown = null;
         for (let attempt = 0; attempt < 3; attempt++) {
-          const slug = genSlug(body.student_name, body.student_email);
+          const slug = genSlug(body.student_name, body.student_email, attempt);
           const { data, error } = await supabase.rpc("grant_booking_access", {
             _student_id: body.student_id,
             _student_name: body.student_name || null,
@@ -198,7 +202,7 @@ Deno.serve(async (req) => {
         .eq("student_id", studentId).eq("status", "active")
         .order("created_at", { ascending: false }).limit(1).maybeSingle();
       for (let attempt = 0; attempt < 3; attempt++) {
-        const slug = genSlug(cur?.student_name, cur?.student_email);
+        const slug = genSlug(cur?.student_name, cur?.student_email, attempt);
         const newHash = await sha256Hex(genToken());
         const { data, error } = await supabase.rpc("regenerate_booking_link", {
           _student_id: studentId, _new_slug: slug, _new_token_hash: newHash,
@@ -336,7 +340,7 @@ Deno.serve(async (req) => {
       if (cur.booking_slug && cur.student_id) {
         let lastErr: unknown = null;
         for (let attempt = 0; attempt < 3; attempt++) {
-          const slug = genSlug(cur.student_name, cur.student_email);
+          const slug = genSlug(cur.student_name, cur.student_email, attempt);
           const newHash = await sha256Hex(genToken());
           const { data, error } = await supabase.rpc("regenerate_booking_link", {
             _student_id: cur.student_id, _new_slug: slug, _new_token_hash: newHash,
