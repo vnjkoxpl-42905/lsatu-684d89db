@@ -215,8 +215,8 @@ function MainhubHero() {
   }, []);
 
   return (
-    <Card className="relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] md:min-h-[390px]">
-      <Spotlight className="-top-48 left-[-120px] md:left-[26%] md:-top-24" fill="white" />
+    <Card className="relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] @[900px]:min-h-[390px]">
+      <Spotlight className="-top-48 left-[-120px] @[900px]:left-[26%] @[900px]:-top-24" fill="white" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_38%,rgba(255,255,255,0.16),transparent_31%),radial-gradient(circle_at_82%_48%,rgba(14,165,233,0.1),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.07),transparent_34%,rgba(2,6,23,0.24)_76%,transparent)]"
@@ -230,8 +230,8 @@ function MainhubHero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
       />
 
-      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 md:min-h-[390px] md:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] md:items-center md:gap-5 lg:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] lg:gap-7 lg:p-8 xl:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] xl:gap-9">
-        <div className="flex min-h-[92px] flex-col justify-center gap-4 md:min-h-0 md:pl-2 lg:pl-6 xl:pl-8">
+      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
+        <div className="flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
           <div className="space-y-1">
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">
               {todayLabel}
@@ -251,7 +251,7 @@ function MainhubHero() {
           </div>
         </div>
 
-        <div className="relative flex h-[170px] items-center justify-center md:h-[360px]">
+        <div className="relative flex h-[170px] items-center justify-center @[900px]:h-[360px]">
           {/* Soft radial spotlight behind robot */}
           <div
             aria-hidden
@@ -281,7 +281,7 @@ function MainhubHero() {
         </div>
 
 
-        <div className="w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 md:mr-0 md:max-w-[410px] md:justify-self-end lg:mr-4 xl:mr-6">
+        <div className="w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
           <div
             className="mb-3 space-y-2.5"
             onKeyDown={(event) => {
@@ -337,7 +337,7 @@ function MainhubHero() {
             </div>
 
             {advancedOpen && (
-              <div className="grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 2xl:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 @[1408px]:grid-cols-2">
                 <ConsoleSelect
                   label="Question type"
                   value={advancedQType}
@@ -594,7 +594,7 @@ export default function AcademyMainhub() {
   }, [setOrbitalActive, stage]);
 
   return (
-    <div className="relative h-full w-full overflow-y-auto rounded-xl border border-slate-200/70 bg-[#f7f8fb] px-4 py-4 pb-24 shadow-sm shadow-black/5 md:px-6 md:py-6">
+    <div className="@container relative h-full w-full overflow-y-auto rounded-xl border border-slate-200/70 bg-[#f7f8fb] px-4 py-4 pb-24 shadow-sm shadow-black/5 md:px-6 md:py-6">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.82))]"
@@ -608,7 +608,7 @@ export default function AcademyMainhub() {
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
         ) : (
-          <section className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
+          <section className="grid grid-cols-1 items-start gap-5 @[980px]:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
             <section
               aria-label="Practice and insight workspace"
               data-tour="mainhub-practice"
