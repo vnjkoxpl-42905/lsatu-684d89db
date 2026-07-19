@@ -7,6 +7,7 @@ import {
 import { toast } from "sonner";
 import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import "@/pages/booking/booking-theme.css";
 
 // Shared Calendly-clone booking card used by BOTH the in-app authed page and the
 // public /book/<slug> page. The data source is injected via `api`, so the same
@@ -85,7 +86,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   }, [api]);
 
   useEffect(() => { void refreshInfo(); }, [refreshInfo]);
-  useEffect(() => { if (pass && pass.credits_remaining > 0) void loadSlots(); }, [pass, loadSlots]);
+  useEffect(() => { if (pass && pass.status !== "paused" && pass.credits_remaining > 0) void loadSlots(); }, [pass, loadSlots]);
 
   const slotsByDay = useMemo(() => {
     const m = new Map<string, BookingSlot[]>();
@@ -142,7 +143,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
   if (infoLoading) {
     return (
-      <div className="flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
+      <div className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading…
       </div>
     );
@@ -151,7 +152,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   // No active pass -> "no sessions available, contact Joshua".
   if (!pass) {
     return (
-      <div className="rounded-2xl border border-dashed border-border p-12 text-center">
+      <div className="booking-holo rounded-2xl border border-dashed border-border bg-card p-12 text-center">
         <p className="text-sm font-medium">No sessions available.</p>
         <p className="mt-1 text-xs text-muted-foreground">Message Joshua to have 1:1 session booking turned on.</p>
       </div>
@@ -163,7 +164,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const upcoming = (info?.redemptions ?? []).filter((r) => r.status === "booked" && new Date(r.start_at) > new Date());
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <div className="booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr]">
         {/* Left: host card (Calendly-style, no student PII) */}
         <div className="border-b border-border p-6 md:border-b-0 md:border-r">
@@ -192,7 +193,11 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
         </div>
 
         {/* Right: date + time picker */}
-        {pass.credits_remaining <= 0 ? (
+        {pass.status === "paused" ? (
+          <div className="p-6 text-sm text-muted-foreground">
+            Booking is paused right now. Message Joshua if you need to schedule a session.
+          </div>
+        ) : pass.credits_remaining <= 0 ? (
           <div className="p-6 text-sm text-muted-foreground">
             You've used all your sessions. Message Joshua if you need more.
           </div>

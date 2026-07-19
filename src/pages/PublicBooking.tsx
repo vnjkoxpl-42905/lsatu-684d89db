@@ -45,8 +45,12 @@ export default function PublicBooking() {
   }), [slug]);
 
   return (
-    <div className="min-h-screen bg-muted/30 px-4 py-10">
+    <div className="booking-holo min-h-screen px-4 py-10">
       <div className="mx-auto w-full max-w-4xl">
+        <div className="mb-6 flex items-center justify-center gap-2.5">
+          <div className="holo-surface flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold">L</div>
+          <span className="holo-text text-2xl font-bold tracking-tight">Booking</span>
+        </div>
         <CalendlyBookingCard api={api} />
         <p className="mt-6 text-center text-xs text-muted-foreground">Powered by LSAT U</p>
       </div>

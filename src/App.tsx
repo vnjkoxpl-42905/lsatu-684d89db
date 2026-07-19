@@ -95,7 +95,7 @@ const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSes
 
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = React.lazy(() => import("./pages/PublicBooking"));
-const BookingPasses = React.lazy(() => import("./pages/teacher/BookingPasses"));
+const BookingWorkspace = React.lazy(() => import("./pages/booking/BookingWorkspace"));
 import Inbox from "./pages/Inbox";
 import StudentShell from "./components/mainhub/StudentShell";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -153,7 +153,9 @@ const App = () => {
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
-            <Route path="/teacher/booking-passes" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingPasses /></React.Suspense></ProtectedRoute>} />
+            {/* Admin "Booking" workspace (Calendly/Cal.com-style, burgundy theme). */}
+            <Route path="/booking/admin/*" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingWorkspace /></React.Suspense></ProtectedRoute>} />
+            <Route path="/teacher/booking-passes" element={<Navigate to="/booking/admin" replace />} />
 
 
             {/* Onboarding. Name + placement intake for new signups (one-time gate). */}

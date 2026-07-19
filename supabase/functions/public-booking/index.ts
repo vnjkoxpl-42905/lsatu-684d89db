@@ -105,7 +105,9 @@ Deno.serve(async (req) => {
 
     // ------------------------------------------------------------------ slots
     if (action === "slots") {
-      if (creditsRemaining <= 0) return json({ pass: { credits_remaining: 0, session_length_minutes: pass.session_length_minutes }, slots: [] });
+      if (pass.status !== "active" || creditsRemaining <= 0) {
+        return json({ pass: { credits_remaining: creditsRemaining, session_length_minutes: pass.session_length_minutes, status: pass.status }, slots: [] });
+      }
       const daysAhead = Math.min(Math.max(Number(body.days_ahead) || BOOKING_CFG.lookaheadDaysDefault, 1), 60);
       const nowMs = Date.now();
       const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000).toISOString();

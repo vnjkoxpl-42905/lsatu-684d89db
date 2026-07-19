@@ -1,0 +1,62 @@
+/* Booking product theme: light Calendly-style base with a deep burgundy
+   holographic accent. Scoped under .booking-holo so it can wrap both the
+   admin workspace and the student-facing booking pages without touching
+   the rest of the app. Overrides the shadcn HSL tokens locally. */
+
+.booking-holo {
+  --background: 350 20% 99%;
+  --foreground: 345 30% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 345 30% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 345 30% 12%;
+  --primary: 347 70% 27%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 348 30% 96%;
+  --secondary-foreground: 347 55% 25%;
+  --muted: 347 20% 96%;
+  --muted-foreground: 345 12% 44%;
+  --accent: 348 45% 94%;
+  --accent-foreground: 347 60% 24%;
+  --destructive: 0 72% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 345 18% 90%;
+  --input: 345 18% 87%;
+  --ring: 347 70% 35%;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+}
+
+/* Iridescent sheen: burgundy -> wine -> rose gold, slow drift. Reserved for
+   the wordmark, primary buttons, and active states. */
+@keyframes booking-holo-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.holo-text {
+  background-image: linear-gradient(100deg, #4f0d1c, #7a1230, #a83250, #c98a94, #7a1230, #4f0d1c);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: booking-holo-shift 7s linear infinite;
+}
+
+.holo-surface {
+  background-image: linear-gradient(110deg, #4f0d1c, #6e1423, #8e1d3a, #b4506b, #6e1423);
+  background-size: 260% 100%;
+  animation: booking-holo-shift 9s linear infinite;
+  color: #fff;
+}
+
+.holo-surface:hover { filter: brightness(1.08); }
+
+.holo-ring { box-shadow: 0 0 0 1px hsl(347 70% 35% / 0.35), 0 8px 30px hsl(347 70% 25% / 0.12); }
+
+/* Soft burgundy-tinted elevation, the Calendly modal-shadow trick re-tinted. */
+.booking-shadow { box-shadow: 0 24px 72px hsl(345 60% 20% / 0.09), 0 0 20px hsl(345 60% 20% / 0.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-text, .holo-surface { animation: none; }
+}

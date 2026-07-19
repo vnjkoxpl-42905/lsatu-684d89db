@@ -231,10 +231,11 @@ Deno.serve(async (req) => {
       if (body.notes !== undefined) patch.notes = body.notes || null;
       if (Object.keys(patch).length === 0) return json({ error: "nothing_to_update" }, 400);
 
-      // Recompute status for non-revoked passes so refilling credits or
-      // extending expiry reactivates an exhausted/expired pass, and shrinking
-      // credits to the used count marks it exhausted.
-      if (cur.status !== "revoked") {
+      // Recompute status for non-revoked, non-paused passes so refilling
+      // credits or extending expiry reactivates an exhausted/expired pass,
+      // and shrinking credits to the used count marks it exhausted. A paused
+      // pass stays paused until explicitly unpaused.
+      if (cur.status !== "revoked" && cur.status !== "paused") {
         const total = (patch.total_credits ?? cur.total_credits) as number;
         const expires = (patch.expires_at !== undefined ? patch.expires_at : cur.expires_at) as string | null;
         const expired = !!expires && new Date(expires).getTime() < Date.now();
@@ -248,6 +249,76 @@ Deno.serve(async (req) => {
         .select().single();
       if (error) throw error;
       return json({ pass: data });
+    }
+
+    if (action === "set_paused") {
+      const passId = String(body.pass_id || "");
+      if (!passId) return json({ error: "pass_id_required" }, 400);
+      const { data: cur, error: curErr } = await supabase
+        .from("booking_passes").select("*").eq("id", passId).single();
+      if (curErr) throw curErr;
+      if (cur.status === "revoked") return json({ error: "pass_revoked" }, 400);
+      let next: string;
+      if (body.paused) {
+        next = "paused";
+      } else {
+        const expired = !!cur.expires_at && new Date(cur.expires_at).getTime() < Date.now();
+        next = expired ? "expired" : (cur.total_credits > cur.used_credits ? "active" : "exhausted");
+      }
+      const { data, error } = await supabase
+        .from("booking_passes")
+        .update({ status: next })
+        .eq("id", passId)
+        .select().single();
+      if (error) throw error;
+      return json({ pass: data });
+    }
+
+    if (action === "list_bookings") {
+      const { data, error } = await supabase
+        .from("booking_pass_redemptions")
+        .select("*, booking_passes(id, student_name, student_email, student_id, session_length_minutes)")
+        .order("start_at", { ascending: false })
+        .limit(500);
+      if (error) throw error;
+      return json({ bookings: data ?? [] });
+    }
+
+    if (action === "cancel_booking") {
+      const redemptionId = String(body.redemption_id || "");
+      if (!redemptionId) return json({ error: "redemption_id_required" }, 400);
+      const { data: red, error: redErr } = await supabase
+        .from("booking_pass_redemptions").select("*").eq("id", redemptionId).single();
+      if (redErr) throw redErr;
+      if (red.status !== "booked") return json({ error: "not_booked" }, 400);
+      const { data, error } = await supabase
+        .from("booking_pass_redemptions")
+        .update({ status: "cancelled" })
+        .eq("id", redemptionId)
+        .select().single();
+      if (error) throw error;
+      // Refund the credit so the student can rebook.
+      const { data: pass } = await supabase
+        .from("booking_passes").select("used_credits,status,total_credits").eq("id", red.booking_pass_id).single();
+      if (pass && pass.used_credits > 0) {
+        const patch: Record<string, unknown> = { used_credits: pass.used_credits - 1 };
+        if (pass.status === "exhausted") patch.status = "active";
+        await supabase.from("booking_passes").update(patch).eq("id", red.booking_pass_id);
+      }
+      return json({ redemption: data });
+    }
+
+    if (action === "mark_no_show") {
+      const redemptionId = String(body.redemption_id || "");
+      if (!redemptionId) return json({ error: "redemption_id_required" }, 400);
+      const { data, error } = await supabase
+        .from("booking_pass_redemptions")
+        .update({ status: "no_show" })
+        .eq("id", redemptionId)
+        .eq("status", "booked")
+        .select().single();
+      if (error) throw error;
+      return json({ redemption: data });
     }
 
     if (action === "rotate") {

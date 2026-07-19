@@ -45,7 +45,7 @@ export default function Booking() {
 
   // Admins manage booking passes; students book with theirs.
   if (loading) return <div className="min-h-screen bg-background" />;
-  if (is_admin) return <Navigate to="/teacher/booking-passes" replace />;
+  if (is_admin) return <Navigate to="/booking/admin" replace />;
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
