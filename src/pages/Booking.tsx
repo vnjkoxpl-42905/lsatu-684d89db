@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { supabase } from "@/integrations/supabase/client";
 import CalendlyBookingCard, { type BookingApi } from "@/components/booking/CalendlyBookingCard";
 
@@ -16,6 +17,7 @@ const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
 
 export default function Booking() {
   const navigate = useNavigate();
+  const { is_admin, loading } = useUserPermissions();
 
   const api: BookingApi = useMemo(() => ({
     loadInfo: async () => {
@@ -40,6 +42,10 @@ export default function Booking() {
       await invoke("book", { start_at: startAtIso, idempotency_key: idempotencyKey });
     },
   }), []);
+
+  // Admins manage booking passes; students book with theirs.
+  if (loading) return <div className="min-h-screen bg-background" />;
+  if (is_admin) return <Navigate to="/teacher/booking-passes" replace />;
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
