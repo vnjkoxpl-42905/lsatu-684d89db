@@ -543,6 +543,48 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_availability: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          start_time: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          start_time: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          start_time?: string
+        }
+        Relationships: []
+      }
+      booking_availability_config: {
+        Row: {
+          id: number
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       booking_pass_redemptions: {
         Row: {
           booking_pass_id: string
@@ -3546,6 +3588,7 @@ export type Database = {
           viewed: number
         }[]
       }
+      get_booking_availability: { Args: never; Returns: Json }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
         Returns: {
@@ -3754,6 +3797,10 @@ export type Database = {
           rank: number
           title: string
         }[]
+      }
+      set_booking_availability: {
+        Args: { _ranges: Json; _timezone: string }
+        Returns: Json
       }
     }
     Enums: {
