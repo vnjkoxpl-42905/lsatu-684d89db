@@ -209,6 +209,47 @@ Deno.serve(async (req) => {
       throw lastErr ?? new Error("slug_collision");
     }
 
+    if (action === "update") {
+      const passId = String(body.pass_id || "");
+      if (!passId) return json({ error: "pass_id_required" }, 400);
+      const { data: cur, error: curErr } = await supabase
+        .from("booking_passes").select("*").eq("id", passId).single();
+      if (curErr) throw curErr;
+
+      const patch: Record<string, unknown> = {};
+      if (body.total_credits !== undefined) {
+        const total = Math.max(1, Math.min(50, Number(body.total_credits) || 0));
+        if (!total) return json({ error: "invalid_credits" }, 400);
+        patch.total_credits = Math.max(total, cur.used_credits);
+      }
+      if (body.session_length_minutes !== undefined) {
+        patch.session_length_minutes = Math.max(15, Math.min(480, Number(body.session_length_minutes) || 70));
+      }
+      if (body.expires_at !== undefined) {
+        patch.expires_at = body.expires_at || null;
+      }
+      if (body.notes !== undefined) patch.notes = body.notes || null;
+      if (Object.keys(patch).length === 0) return json({ error: "nothing_to_update" }, 400);
+
+      // Recompute status for non-revoked passes so refilling credits or
+      // extending expiry reactivates an exhausted/expired pass, and shrinking
+      // credits to the used count marks it exhausted.
+      if (cur.status !== "revoked") {
+        const total = (patch.total_credits ?? cur.total_credits) as number;
+        const expires = (patch.expires_at !== undefined ? patch.expires_at : cur.expires_at) as string | null;
+        const expired = !!expires && new Date(expires).getTime() < Date.now();
+        patch.status = expired ? "expired" : (total > cur.used_credits ? "active" : "exhausted");
+      }
+
+      const { data, error } = await supabase
+        .from("booking_passes")
+        .update(patch)
+        .eq("id", passId)
+        .select().single();
+      if (error) throw error;
+      return json({ pass: data });
+    }
+
     if (action === "rotate") {
       const passId = String(body.pass_id || "");
       if (!passId) return json({ error: "pass_id_required" }, 400);

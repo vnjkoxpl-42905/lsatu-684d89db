@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Copy, Loader2, Plus, Ticket, XCircle, RotateCcw } from "lucide-react";
+import { Copy, Loader2, Pencil, Plus, Ticket, XCircle, RotateCcw } from "lucide-react";
 
 type Pass = {
   id: string;
@@ -41,6 +41,12 @@ export default function BookingPasses() {
   const [showCreate, setShowCreate] = useState(false);
   const [createdLink, setCreatedLink] = useState<string | null>(null);
   const [rotatedFor, setRotatedFor] = useState<string | null>(null);
+
+  const [editPass, setEditPass] = useState<Pass | null>(null);
+  const [editCredits, setEditCredits] = useState("");
+  const [editSessionLen, setEditSessionLen] = useState("70");
+  const [editExpiresAt, setEditExpiresAt] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const [studentName, setStudentName] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
@@ -107,6 +113,33 @@ export default function BookingPasses() {
     } catch (e) { toast.error(e instanceof Error ? e.message : "Rotate failed"); }
   }
 
+  function openEdit(pass: Pass) {
+    setEditPass(pass);
+    setEditCredits(String(pass.total_credits));
+    setEditSessionLen(String(pass.session_length_minutes));
+    setEditExpiresAt(pass.expires_at ? pass.expires_at.slice(0, 10) : "");
+  }
+
+  async function saveEdit() {
+    if (!editPass) return;
+    const total = Number(editCredits);
+    if (!total || total < 1) { toast.error("Enter a valid credit amount"); return; }
+    setSaving(true);
+    try {
+      await call("update", {
+        pass_id: editPass.id,
+        total_credits: total,
+        session_length_minutes: Number(editSessionLen) || 70,
+        expires_at: editExpiresAt ? new Date(editExpiresAt).toISOString() : null,
+      });
+      toast.success("Pass updated");
+      setEditPass(null);
+      await refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Update failed");
+    } finally { setSaving(false); }
+  }
+
   async function copy(url: string) {
     await navigator.clipboard.writeText(url);
     toast.success("Link copied");
@@ -147,6 +180,9 @@ export default function BookingPasses() {
               </div>
               <StatusBadge status={p.status} />
               <div className="flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => openEdit(p)}>
+                  <Pencil className="h-4 w-4 mr-1" /> Edit
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => rotate(p)}>
                   <RotateCcw className="h-4 w-4 mr-1" /> Rotate link
                 </Button>
@@ -215,6 +251,55 @@ export default function BookingPasses() {
             <Button onClick={create} disabled={creating}>
               {creating && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Create pass
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit pass dialog */}
+      <Dialog open={!!editPass} onOpenChange={(o) => { if (!o) setEditPass(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit pass{editPass?.student_name ? ` — ${editPass.student_name}` : ""}</DialogTitle>
+          </DialogHeader>
+          {editPass && (
+            <div className="space-y-3">
+              <div className="text-xs text-muted-foreground">
+                {editPass.used_credits} of {editPass.total_credits} credits used. Raising total credits refills the pass; an exhausted or expired pass reactivates automatically.
+              </div>
+              <div>
+                <Label>Total credits</Label>
+                <div className="flex items-center gap-2">
+                  <Input type="number" min={Math.max(1, editPass.used_credits)} max={50} value={editCredits} onChange={e => setEditCredits(e.target.value)} />
+                  <Button type="button" size="sm" variant="outline" onClick={() => setEditCredits(String((Number(editCredits) || 0) + 1))}>+1</Button>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setEditCredits(String((Number(editCredits) || 0) + 5))}>+5</Button>
+                </div>
+              </div>
+              <div>
+                <Label>Session length</Label>
+                <Select value={editSessionLen} onValueChange={setEditSessionLen}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="30">30 min</SelectItem>
+                    <SelectItem value="45">45 min</SelectItem>
+                    <SelectItem value="60">60 min</SelectItem>
+                    <SelectItem value="70">70 min (1 hr 10 min)</SelectItem>
+                    <SelectItem value="90">90 min</SelectItem>
+                    <SelectItem value="120">120 min</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Expiration (optional)</Label>
+                <Input type="date" value={editExpiresAt} onChange={e => setEditExpiresAt(e.target.value)} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setEditPass(null)}>Cancel</Button>
+            <Button onClick={saveEdit} disabled={saving}>
+              {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              Save changes
             </Button>
           </DialogFooter>
         </DialogContent>
