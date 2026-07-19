@@ -42,12 +42,16 @@ export type Booking = {
   } | null;
 };
 
+// Student-facing links always use the canonical domain, never the current
+// origin (which can be a Lovable preview host).
+const APP_ORIGIN = "https://lsatprep.study";
+
 export function passUrl(p: Pass): string | null {
-  return p.booking_slug ? `${window.location.origin}/book/${p.booking_slug}` : null;
+  return p.booking_slug ? `${APP_ORIGIN}/book/${p.booking_slug}` : null;
 }
 
 export function tokenUrl(rawToken: string): string {
-  return `${window.location.origin}/schedule/pass/${rawToken}`;
+  return `${APP_ORIGIN}/schedule/pass/${rawToken}`;
 }
 
 export function durationLabel(mins: number) {

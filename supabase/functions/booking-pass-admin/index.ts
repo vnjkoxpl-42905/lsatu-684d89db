@@ -19,8 +19,11 @@ const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
 
 // base32 (Crockford-ish, no ambiguous chars) — url-safe, human-ish.
 const CODE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
-function genCode(chars = 26): string {
-  // 26 chars * ~4.95 bits ≈ 128 bits of entropy.
+function genCode(chars = 8): string {
+  // 8 chars * ~4.95 bits ≈ 40 bits — friendly-length links (name-x7k2m9p4)
+  // that stay unguessable in practice behind the public endpoint's per-IP
+  // rate limit. Slug lookups are exact-match, so shorter codes never collide
+  // with brute-force at any realistic rate.
   const bytes = new Uint8Array(chars);
   crypto.getRandomValues(bytes);
   let out = "";
@@ -35,7 +38,7 @@ function sanitizeFirstName(name: string | null | undefined, email: string | null
 }
 
 function genSlug(name: string | null | undefined, email: string | null | undefined): string {
-  return `${sanitizeFirstName(name, email)}-${genCode(26)}`;
+  return `${sanitizeFirstName(name, email)}-${genCode()}`;
 }
 
 function bookingUrl(slug: string): string {
@@ -324,6 +327,27 @@ Deno.serve(async (req) => {
     if (action === "rotate") {
       const passId = String(body.pass_id || "");
       if (!passId) return json({ error: "pass_id_required" }, 400);
+      const { data: cur, error: curErr } = await supabase
+        .from("booking_passes").select("*").eq("id", passId).single();
+      if (curErr) throw curErr;
+
+      // Slug-based passes: the slug IS the link, so rotating must mint a new
+      // slug (the atomic RPC also swaps the token hash). Old URL dies.
+      if (cur.booking_slug && cur.student_id) {
+        let lastErr: unknown = null;
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const slug = genSlug(cur.student_name, cur.student_email);
+          const newHash = await sha256Hex(genToken());
+          const { data, error } = await supabase.rpc("regenerate_booking_link", {
+            _student_id: cur.student_id, _new_slug: slug, _new_token_hash: newHash,
+          });
+          if (!error) return json({ booking_url: bookingUrl(String(data)) });
+          if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
+          throw error;
+        }
+        throw lastErr ?? new Error("slug_collision");
+      }
+
       const raw = genToken();
       const hash = await sha256Hex(raw);
       const { data, error } = await supabase

@@ -73,8 +73,8 @@ export default function PassesSection() {
   async function rotate(p: Pass) {
     if (!confirm("Rotate the link? The old URL stops working and a new one is shown once.")) return;
     try {
-      const res = await bookingAdmin("rotate", { pass_id: p.id }) as { raw_token: string };
-      setCreatedLink(tokenUrl(res.raw_token));
+      const res = await bookingAdmin("rotate", { pass_id: p.id }) as { raw_token?: string; booking_url?: string };
+      setCreatedLink(res.booking_url ?? (res.raw_token ? tokenUrl(res.raw_token) : null));
       await refresh();
     } catch (e) { toast.error(e instanceof Error ? e.message : "Rotate failed"); }
   }
