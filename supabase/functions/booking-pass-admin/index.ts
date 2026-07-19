@@ -108,6 +108,21 @@ Deno.serve(async (req) => {
       return json({ pass: data, raw_token: raw });
     }
 
+    if (action === "get_availability") {
+      const { data, error } = await supabase.rpc("get_booking_availability");
+      if (error) throw error;
+      return json(data ?? { timezone: "America/Toronto", ranges: [] });
+    }
+
+    if (action === "set_availability") {
+      const { data, error } = await supabase.rpc("set_booking_availability", {
+        _timezone: body.timezone || null,
+        _ranges: body.ranges ?? [],
+      });
+      if (error) throw error;
+      return json(data ?? { timezone: "America/Toronto", ranges: [] });
+    }
+
     if (action === "get_for_student") {
       const studentId = String(body.student_id || "");
       if (!studentId) return json({ error: "student_id_required" }, 400);

@@ -39,6 +39,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import StudentBookingPanel from '@/components/teacher/schedule/StudentBookingPanel';
+import WeeklyHoursEditor from '@/components/teacher/schedule/WeeklyHoursEditor';
 
 const QUICK_TYPES: { value: ClassroomItemType; label: string }[] = [
   { value: 'note', label: 'Note' },
@@ -192,6 +193,8 @@ export default function TeacherSchedule() {
       </aside>
 
       <section className="p-6 space-y-5 overflow-y-auto">
+        <WeeklyHoursEditor />
+
         {focusedEventQuery.data ? (
           <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-zinc-100">
             <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">Google Calendar event</div>

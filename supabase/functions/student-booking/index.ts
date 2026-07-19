@@ -37,6 +37,43 @@ type ActivePass = {
   expires_at: string | null;
 };
 
+// The UTC offset (minutes) of a given IANA timezone at a given instant.
+// Positive = east of UTC. Handles DST because it evaluates at that instant.
+function tzOffsetMinutesAt(timeZone: string, at: Date): number {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone, hourCycle: "h23",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit",
+  });
+  const parts = dtf.formatToParts(at);
+  const map: Record<string, number> = {};
+  for (const p of parts) if (p.type !== "literal") map[p.type] = Number(p.value);
+  // The wall-clock time in the target tz, as if it were UTC:
+  const asUtc = Date.UTC(map.year, map.month - 1, map.day, map.hour, map.minute, map.second);
+  return Math.round((asUtc - at.getTime()) / 60000);
+}
+
+// The UTC instant for a given host-local calendar date + wall-clock minutes.
+// Iterates twice to settle DST boundaries.
+function hostLocalToUtc(timeZone: string, y: number, m: number, d: number, minutesOfDay: number): Date {
+  const naiveUtc = Date.UTC(y, m, d, Math.floor(minutesOfDay / 60), minutesOfDay % 60);
+  let guess = new Date(naiveUtc - tzOffsetMinutesAt(timeZone, new Date(naiveUtc)) * 60000);
+  guess = new Date(naiveUtc - tzOffsetMinutesAt(timeZone, guess) * 60000);
+  return guess;
+}
+
+// The host-local Y/M/D + weekday for a UTC instant.
+function hostLocalParts(timeZone: string, at: Date) {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone, year: "numeric", month: "2-digit", day: "2-digit", weekday: "short",
+  });
+  const parts = dtf.formatToParts(at);
+  const map: Record<string, string> = {};
+  for (const p of parts) map[p.type] = p.value;
+  const wdMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  return { y: Number(map.year), m: Number(map.month) - 1, d: Number(map.day), dow: wdMap[map.weekday] };
+}
+
 // Resolve the caller's active booking pass row (full row) by verified auth id.
 async function activePassRow(supabase: any, userId: string) {
   const { data } = await supabase
@@ -116,28 +153,46 @@ Deno.serve(async (req) => {
         end: new Date(e.end_at).getTime(),
       }));
 
-      const tzOffsetMinutes = Number(body.tz_offset_minutes) || 0;
-      const dayMs = 86_400_000;
-      const firstDay = new Date(Date.UTC(rangeStart.getUTCFullYear(), rangeStart.getUTCMonth(), rangeStart.getUTCDate()));
+      // Host weekly availability (falls back to a sane default if unset/RPC absent).
+      let hostTz = "America/Toronto";
+      // ranges[dow] = array of {startMin, endMin} in host-local minutes-of-day.
+      const rangesByDow: Record<number, { startMin: number; endMin: number }[]> = {};
+      try {
+        const { data: avail } = await supabase.rpc("get_booking_availability");
+        if (avail?.timezone) hostTz = avail.timezone;
+        for (const r of (avail?.ranges ?? []) as any[]) {
+          const [sh, sm] = String(r.start_time).split(":").map(Number);
+          const [eh, em] = String(r.end_time).split(":").map(Number);
+          (rangesByDow[r.day_of_week] ??= []).push({ startMin: sh * 60 + sm, endMin: eh * 60 + em });
+        }
+      } catch (_) { /* fall through to default window below */ }
+      const hasConfiguredRanges = Object.keys(rangesByDow).length > 0;
+
       const slots: { start_at: string; end_at: string }[] = [];
-      for (let d = 0; d <= daysAhead; d++) {
-        const dayStartUtc = new Date(firstDay.getTime() + d * dayMs);
-        const winStart = new Date(dayStartUtc.getTime() + (BUSINESS_START_HOUR * 60 - tzOffsetMinutes) * 60_000);
-        const winEnd = new Date(dayStartUtc.getTime() + (BUSINESS_END_HOUR * 60 - tzOffsetMinutes) * 60_000);
-        for (let t = winStart.getTime(); t + sessionMs <= winEnd.getTime(); t += sessionMs) {
-          if (t < rangeStart.getTime()) continue;
-          if (t + sessionMs > rangeEnd.getTime()) break;
-          const conflict = busy.some((b: any) => b.start < t + sessionMs && b.end > t);
-          if (!conflict) {
-            slots.push({
-              start_at: new Date(t).toISOString(),
-              end_at: new Date(t + sessionMs).toISOString(),
-            });
+      // Walk each host-local day in the window and emit slots inside its ranges.
+      for (let d = 0; d <= daysAhead && slots.length < 200; d++) {
+        const dayAnchor = new Date(rangeStart.getTime() + d * 86_400_000);
+        const { y, m, d: dd, dow } = hostLocalParts(hostTz, dayAnchor);
+        const dayRanges = hasConfiguredRanges
+          ? (rangesByDow[dow] ?? [])
+          : [{ startMin: BUSINESS_START_HOUR * 60, endMin: BUSINESS_END_HOUR * 60 }];
+        for (const rng of dayRanges) {
+          for (let mins = rng.startMin; mins + pass.session_length_minutes <= rng.endMin; mins += pass.session_length_minutes) {
+            const startUtc = hostLocalToUtc(hostTz, y, m, dd, mins);
+            const t = startUtc.getTime();
+            if (t < rangeStart.getTime()) continue;
+            if (t + sessionMs > rangeEnd.getTime()) break;
+            const conflict = busy.some((b: any) => b.start < t + sessionMs && b.end > t);
+            if (!conflict) {
+              slots.push({ start_at: new Date(t).toISOString(), end_at: new Date(t + sessionMs).toISOString() });
+            }
+            if (slots.length >= 200) break;
           }
           if (slots.length >= 200) break;
         }
-        if (slots.length >= 200) break;
       }
+      // Slots can come out of order across ranges; sort chronologically.
+      slots.sort((a, b) => a.start_at.localeCompare(b.start_at));
       return json({
         pass: {
           credits_remaining: Math.max(0, pass.total_credits - pass.used_credits),
