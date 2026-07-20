@@ -102,6 +102,8 @@ No Prettier. Formatting is ESLint-only.
 
 Any change to `src/components/` or `src/pages/` is not "done" until it has been viewed running in the app (dev server + browser tool, e.g. Playwright or chrome devtools MCP), with a screenshot or DOM check as evidence. Do not report a UI change complete on the strength of the diff alone. This has been the single biggest recurring failure across past sessions (repeated "it's not working" / "i dont see it" corrections) — treat it as a hard gate, not a suggestion.
 
+**Responsive fixes carry a wider gate: verify across the full emulate matrix BEFORE pushing, not after Joshua reports it.** That means narrow, mid, and wide viewports plus the sidecar-docked case, every time. A responsive defect that gets pushed as "fixed" and does not hold costs a second full session — this has already happened (a pushed Home-page fix that did not survive, then 13 screenshots and 8 emulate cycles to actually close it). One matrix pass before the push is cheaper than either.
+
 ## Product rules (must not regress)
 
 - Foyer (`FoyerSidebar` + `FoyerHeroRing`) is the primary navigation. The Foyer additionally hosts a `GooeyDock` quick-launch row well below the orbital ring; this dock is allowed only on `/foyer`. Do not add docks elsewhere.

@@ -57,6 +57,11 @@ If an older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02
 
 On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the same as `session.questionQueue[session.currentIndex]`. Any per-question UI state must key off `currentQuestion.qid` unless the code path is explicitly limited to queued drills.
 
+## Verification (must not skip)
+
+- Any change to `src/components/` or `src/pages/` is not "done" until it has been viewed running in the app (dev server + a browser tool), with a screenshot or DOM check as evidence. Never report a UI change complete on the strength of the diff alone. This is the single biggest recurring failure across past sessions — a hard gate, not a suggestion.
+- **Responsive fixes carry a wider gate: verify across the full emulate matrix BEFORE pushing, not after Joshua reports it.** Narrow, mid, and wide viewports plus the sidecar-docked case, every time. A pushed "fix" that does not hold costs a second full session; this has already happened once.
+
 ## Workflow Expectations
 
 - Run `npm run build` before wrapping up significant code or documentation work.
