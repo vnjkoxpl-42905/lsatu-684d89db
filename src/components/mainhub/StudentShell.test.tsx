@@ -67,11 +67,10 @@ describe("StudentShell sidecar resizing", () => {
     window.HTMLElement.prototype.scrollTo = vi.fn();
     window.localStorage.clear();
     mockNavigate.mockReset();
-    vi.stubGlobal("innerWidth", 1440);
     Object.defineProperty(window, "innerWidth", {
       configurable: true,
       writable: true,
-      value: 1440,
+      value: 2000,
     });
   });
 
@@ -102,5 +101,36 @@ describe("StudentShell sidecar resizing", () => {
     fireEvent.doubleClick(handle);
 
     expect(screen.getByTestId("study-sidecar")).toHaveStyle({ width: "420px" });
+  });
+
+  it("caps the drag so the center stage keeps its full-template width", () => {
+    // 1680px window: max sidecar = 1680 - 240 sidebar - 24 chrome - 980 stage = 436.
+    Object.defineProperty(window, "innerWidth", { configurable: true, writable: true, value: 1680 });
+    renderShell();
+
+    const handle = screen.getByRole("button", { name: "Resize communication rail" });
+    act(() => {
+      handle.dispatchEvent(
+        new MouseEvent("pointerdown", { bubbles: true, cancelable: true, button: 0, clientX: 900 }),
+      );
+      window.dispatchEvent(new MouseEvent("pointermove", { bubbles: true, clientX: 400 }));
+      window.dispatchEvent(new MouseEvent("pointerup", { bubbles: true }));
+    });
+
+    expect(screen.getByTestId("study-sidecar")).toHaveStyle({ width: "436px" });
+  });
+
+  it("auto-hides the docked rail on narrow windows and opens it as a floating overlay", () => {
+    Object.defineProperty(window, "innerWidth", { configurable: true, writable: true, value: 1440 });
+    renderShell();
+
+    // No docked sidecar and no resize handle in the narrow band.
+    expect(screen.queryByTestId("study-sidecar")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Resize communication rail" })).toBeNull();
+
+    // The header toggle opens the floating overlay instead.
+    fireEvent.click(screen.getByRole("button", { name: "Open LSAT U chat" }));
+    const sidecar = screen.getByTestId("study-sidecar");
+    expect(sidecar).not.toHaveStyle({ width: "420px" });
   });
 });

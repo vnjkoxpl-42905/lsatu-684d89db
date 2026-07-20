@@ -19,6 +19,23 @@ const SIDECAR_WIDTH_STORAGE_KEY = "lsatu:sidecarWidth";
 const SIDECAR_MIN_WIDTH = 360;
 const SIDECAR_DEFAULT_WIDTH = 420;
 const SIDECAR_MAX_WIDTH = 640;
+const SIDEBAR_WIDTH = 240;
+// Outer padding (p-2 = 16px) + flex gap between stage and sidecar (gap-2 = 8px).
+const SHELL_CHROME_WIDTH = 24;
+// The mainhub's 3-column hero template fires at a 900px CONTAINER-query width.
+// The container box subtracts its own horizontal padding (md:px-6 = 48px) and a
+// vertical scrollbar (~16px) before measuring, so the raw stage element must be
+// ~64px wider than 900 for the template to actually render. This is the floor
+// the sidecar must never squeeze the stage below.
+const CENTER_STAGE_MIN_WIDTH = 980;
+// Narrowest window where sidebar + minimum sidecar + full template all fit.
+const DOCK_MIN_WINDOW_WIDTH =
+  SIDEBAR_WIDTH + SHELL_CHROME_WIDTH + SIDECAR_MIN_WIDTH + CENTER_STAGE_MIN_WIDTH;
+
+function canDockSidecar() {
+  if (typeof window === "undefined") return true;
+  return window.innerWidth >= DOCK_MIN_WINDOW_WIDTH;
+}
 
 const ROUTE_TITLES: Record<string, string> = {
   "/mainhub": "Home",
@@ -43,7 +60,9 @@ function titleForPath(pathname: string) {
 
 function maxSidecarWidth() {
   if (typeof window === "undefined") return SIDECAR_MAX_WIDTH;
-  return Math.max(SIDECAR_DEFAULT_WIDTH, Math.min(SIDECAR_MAX_WIDTH, window.innerWidth * 0.45));
+  const roomLeftByTemplate =
+    window.innerWidth - SIDEBAR_WIDTH - SHELL_CHROME_WIDTH - CENTER_STAGE_MIN_WIDTH;
+  return Math.max(SIDECAR_MIN_WIDTH, Math.min(SIDECAR_MAX_WIDTH, roomLeftByTemplate));
 }
 
 function clampSidecarWidth(width: number) {
@@ -78,6 +97,12 @@ export default function StudentShell() {
     return window.localStorage.getItem("lsatu:sidecarOpen") !== "0";
   });
   const [sidecarWidth, setSidecarWidth] = React.useState(readStoredSidecarWidth);
+  // Whether the window is wide enough for the sidecar to dock without
+  // squeezing the center stage below the full template. When it isn't, the
+  // sidecar auto-hides and opens as a floating overlay instead (ephemeral,
+  // closed by default, not persisted).
+  const [canDock, setCanDock] = React.useState(canDockSidecar);
+  const [floatOpen, setFloatOpen] = React.useState(false);
   const location = useLocation();
   const reduceMotion = useReducedMotion();
   const mainRef = React.useRef<HTMLElement>(null);
@@ -100,7 +125,10 @@ export default function StudentShell() {
   }, [sidecarWidth]);
 
   React.useEffect(() => {
-    const handleResize = () => setSidecarWidth((width) => clampSidecarWidth(width));
+    const handleResize = () => {
+      setSidecarWidth((width) => clampSidecarWidth(width));
+      setCanDock(canDockSidecar());
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -233,9 +261,9 @@ export default function StudentShell() {
               <h1 className="truncate pt-0.5 text-sm font-semibold text-foreground">
                 {routeTitle}
               </h1>
-              {!sidecarOpen && (
+              {(canDock ? !sidecarOpen : !floatOpen) && (
                 <button
-                  onClick={() => setSidecarOpen(true)}
+                  onClick={() => (canDock ? setSidecarOpen(true) : setFloatOpen(true))}
                   aria-label="Open LSAT U chat"
                   title="Open LSAT U chat"
                   className="rounded-lg border border-border/40 bg-background/70 p-1.5 text-muted-foreground shadow-sm shadow-black/5 backdrop-blur-md transition-colors hover:text-foreground"
@@ -267,6 +295,16 @@ export default function StudentShell() {
             </main>
           </div>
 
+          {!canDock ? (
+            /* Window too narrow to dock without crushing the template: the
+               sidecar overlays as a floating drawer instead. */
+            <StudySidecar
+              open={floatOpen}
+              onClose={() => setFloatOpen(false)}
+              userName={displayName ?? undefined}
+              presentation="floating"
+            />
+          ) : (
           <div
             className="relative hidden min-h-0 shrink-0 pt-8 md:block"
             style={{ width: sidecarOpen ? sidecarWidth : 0 }}
@@ -294,6 +332,7 @@ export default function StudentShell() {
               width={sidecarWidth}
             />
           </div>
+          )}
         </div>
       </div>
     </>
