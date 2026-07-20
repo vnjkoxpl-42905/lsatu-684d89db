@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "../BookingWorkspace";
-import { bookingAdmin, durationLabel, loadDefaults, passDisplayName, passUrl, tokenUrl, type Pass } from "../api";
+import { bookingAdmin, durationLabel, loadDefaults, passDisplayName, passUrl, type Pass } from "../api";
 
 const SESSION_LENGTHS = ["30", "45", "60", "70", "90", "120"];
 
@@ -39,7 +39,7 @@ export default function PassesSection() {
   const [query, setQuery] = useState("");
   const [showCreate, setShowCreate] = useState(false);
   const [editPass, setEditPass] = useState<Pass | null>(null);
-  const [createdLink, setCreatedLink] = useState<{ url: string; durable: boolean } | null>(null);
+  const [createdLink, setCreatedLink] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -74,9 +74,8 @@ export default function PassesSection() {
   async function rotate(p: Pass) {
     if (!confirm("Rotate the link? The old URL stops working and a new one is shown once.")) return;
     try {
-      const res = await bookingAdmin("rotate", { pass_id: p.id }) as { raw_token?: string; booking_url?: string };
-      if (res.booking_url) setCreatedLink({ url: res.booking_url, durable: true });
-      else if (res.raw_token) setCreatedLink({ url: tokenUrl(res.raw_token), durable: false });
+      const res = await bookingAdmin("rotate", { pass_id: p.id }) as { booking_url: string };
+      setCreatedLink(res.booking_url);
       await refresh();
     } catch (e) { toast.error(e instanceof Error ? e.message : "Rotate failed"); }
   }
@@ -92,7 +91,7 @@ export default function PassesSection() {
 
   async function copyLink(p: Pass) {
     const url = passUrl(p);
-    if (!url) { toast.error("This pass has a token link — rotate it to get a fresh URL."); return; }
+    if (!url) { toast.error("This pass needs a booking link. Rotate it to create one."); return; }
     await navigator.clipboard.writeText(url);
     toast.success("Link copied");
   }
@@ -195,19 +194,17 @@ export default function PassesSection() {
       <CreatePassDialog open={showCreate} onOpenChange={setShowCreate} onCreated={(link) => { setCreatedLink(link); void refresh(); }} />
       {editPass && <EditPassDialog pass={editPass} onClose={() => setEditPass(null)} onSaved={() => { setEditPass(null); void refresh(); }} />}
 
-      {/* Link reveal — slug links are saved on the pass; token links are shown once */}
+      {/* Strong public links are saved on the pass and can be copied again. */}
       <Dialog open={!!createdLink} onOpenChange={(o) => { if (!o) setCreatedLink(null); }}>
         <DialogContent className="booking-holo sm:max-w-lg">
-          <DialogHeader><DialogTitle>{createdLink?.durable ? "Booking link" : "Private link"}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Booking link</DialogTitle></DialogHeader>
           <p className="text-sm text-muted-foreground">
-            {createdLink?.durable
-              ? "This link is saved on the pass — copy it anytime from the pass row."
-              : "Copy it now — token links are only shown once. Rotate the pass if you lose it."}
+            This link is saved on the pass. You can copy it again from the pass row.
           </p>
-          <div className="break-all rounded-md bg-muted p-3 font-mono text-xs">{createdLink?.url}</div>
+          <div className="break-all rounded-md bg-muted p-3 font-mono text-xs">{createdLink}</div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCreatedLink(null)}>Close</Button>
-            <Button className="holo-surface border-0" onClick={async () => { if (createdLink) { await navigator.clipboard.writeText(createdLink.url); toast.success("Link copied"); } }}>
+            <Button className="holo-surface border-0" onClick={async () => { if (createdLink) { await navigator.clipboard.writeText(createdLink); toast.success("Link copied"); } }}>
               <Copy className="mr-2 h-4 w-4" /> Copy link
             </Button>
           </DialogFooter>
@@ -220,7 +217,7 @@ export default function PassesSection() {
 type StudentOption = { id: string; name: string | null; email: string | null };
 
 function CreatePassDialog({ open, onOpenChange, onCreated }: {
-  open: boolean; onOpenChange: (o: boolean) => void; onCreated: (link: { url: string; durable: boolean }) => void;
+  open: boolean; onOpenChange: (o: boolean) => void; onCreated: (link: string) => void;
 }) {
   const defaults = loadDefaults();
   const [students, setStudents] = useState<StudentOption[] | null>(null);
@@ -257,10 +254,8 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
         total_credits: total,
         session_length_minutes: Number(sessionLen) || 70,
         expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
-      }) as { raw_token: string; booking_url?: string };
-      onCreated(res.booking_url
-        ? { url: res.booking_url, durable: true }
-        : { url: tokenUrl(res.raw_token), durable: false });
+      }) as { booking_url: string };
+      onCreated(res.booking_url);
       onOpenChange(false);
       setName(""); setEmail(""); setStudentId("manual");
     } catch (e) {

@@ -60,10 +60,6 @@ export function passUrl(p: Pass): string | null {
   return p.booking_slug ? `${APP_ORIGIN}/book/${p.booking_slug}` : null;
 }
 
-export function tokenUrl(rawToken: string): string {
-  return `${APP_ORIGIN}/schedule/pass/${rawToken}`;
-}
-
 export function durationLabel(mins: number) {
   const h = Math.floor(mins / 60), m = mins % 60;
   if (h && m) return `${h}h ${m}m`;

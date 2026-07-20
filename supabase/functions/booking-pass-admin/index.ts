@@ -1,7 +1,8 @@
 // Admin-only booking pass management: create / list / revoke / rotate.
-// Returns the raw token exactly once on create/rotate.
+// Every issued link uses the strong /book/:slug public route.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { generateBookingSlug, validateNewPassInput } from "../_shared/bookingPassLinks.ts";
 
 async function sha256Hex(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
@@ -16,34 +17,6 @@ function genToken(): string {
 }
 
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
-
-// base32 (Crockford-ish, no ambiguous chars) — url-safe, human-ish.
-const CODE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
-function genCode(chars = 8): string {
-  // 8 chars * ~4.95 bits ≈ 40 bits — friendly-length links (name-x7k2m9p4)
-  // that stay unguessable in practice behind the public endpoint's per-IP
-  // rate limit. Slug lookups are exact-match, so shorter codes never collide
-  // with brute-force at any realistic rate.
-  const bytes = new Uint8Array(chars);
-  crypto.getRandomValues(bytes);
-  let out = "";
-  for (let i = 0; i < chars; i++) out += CODE_ALPHABET[bytes[i] % CODE_ALPHABET.length];
-  return out;
-}
-
-function sanitizeFirstName(name: string | null | undefined, email: string | null | undefined): string {
-  const base = (name?.trim().split(/\s+/)[0] || email?.split("@")[0] || "student").toLowerCase();
-  const cleaned = base.replace(/[^a-z0-9]/g, "");
-  return cleaned.slice(0, 20) || "student";
-}
-
-// Friendly, human slugs for a private tutoring service: just the first name
-// (/book/josh). Only on a collision (two students sharing a name, or a retry)
-// does a short suffix get appended (/book/josh-k3m).
-function genSlug(name: string | null | undefined, email: string | null | undefined, attempt = 0): string {
-  const base = sanitizeFirstName(name, email);
-  return attempt === 0 ? base : `${base}-${genCode(3)}`;
-}
 
 function bookingUrl(slug: string): string {
   return `${APP_ORIGIN}/book/${slug}`;
@@ -120,9 +93,13 @@ Deno.serve(async (req) => {
     }
 
     if (action === "create") {
-      const totalCredits = Math.max(1, Math.min(50, Number(body.total_credits) || 0));
-      if (!totalCredits) return json({ error: "invalid_credits" }, 400);
-      const sessionLen = Math.max(15, Math.min(480, Number(body.session_length_minutes) || 70));
+      const validated = validateNewPassInput({
+        totalCredits: body.total_credits,
+        sessionLengthMinutes: body.session_length_minutes,
+        expiresAt: body.expires_at,
+      });
+      if (!validated.ok) return json({ error: validated.error }, 400);
+      const { totalCredits, sessionLengthMinutes: sessionLen, expiresAt } = validated.value;
       const raw = genToken();
       const hash = await sha256Hex(raw);
 
@@ -133,41 +110,49 @@ Deno.serve(async (req) => {
         // Generate slug + retry on the (rare) unique collision.
         let lastErr: unknown = null;
         for (let attempt = 0; attempt < 3; attempt++) {
-          const slug = genSlug(body.student_name, body.student_email, attempt);
+          const slug = generateBookingSlug(body.student_name, body.student_email);
           const { data, error } = await supabase.rpc("grant_booking_access", {
             _student_id: body.student_id,
             _student_name: body.student_name || null,
             _student_email: body.student_email || null,
             _total_credits: totalCredits,
             _session_length_minutes: sessionLen,
-            _expires_at: body.expires_at || null,
+            _expires_at: expiresAt,
             _created_by: user.id,
             _token_hash: hash,
             _booking_slug: slug,
           });
-          if (!error) return json({ pass: data, raw_token: raw, booking_url: bookingUrl(slug) });
+          if (!error) return json({ pass: data, booking_url: bookingUrl(slug) });
           const msg = String(error.message || "");
           if (msg.includes("student_id_required")) return json({ error: "student_id_required" }, 400);
           if ((error as { code?: string }).code === "23505") { lastErr = error; continue; } // slug collision → retry
           throw error;
         }
-        throw lastErr ?? new Error("slug_collision");
+        console.error("booking slug collision", lastErr);
+        return json({ error: "slug_collision" }, 409);
       }
 
-      // Name/email-only pass (no student account): plain insert, unchanged.
-      const { data, error } = await supabase.from("booking_passes").insert({
-        token_hash: hash,
-        student_id: null,
-        student_email: body.student_email || null,
-        student_name: body.student_name || null,
-        total_credits: totalCredits,
-        session_length_minutes: sessionLen,
-        expires_at: body.expires_at || null,
-        notes: body.notes || null,
-        created_by: user.id,
-      }).select().single();
-      if (error) throw error;
-      return json({ pass: data, raw_token: raw });
+      // Manual passes use the same strong public-link path as account-backed passes.
+      let lastErr: unknown = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const slug = generateBookingSlug(body.student_name, body.student_email);
+        const { data, error } = await supabase.rpc("create_manual_booking_pass", {
+          _student_name: body.student_name || null,
+          _student_email: body.student_email || null,
+          _total_credits: totalCredits,
+          _session_length_minutes: sessionLen,
+          _expires_at: expiresAt,
+          _notes: body.notes || null,
+          _created_by: user.id,
+          _token_hash: hash,
+          _booking_slug: slug,
+        });
+        if (!error) return json({ pass: data, booking_url: bookingUrl(slug) });
+        if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
+        throw error;
+      }
+      console.error("booking slug collision", lastErr);
+      return json({ error: "slug_collision" }, 409);
     }
 
     if (action === "get_availability") {
@@ -220,21 +205,24 @@ Deno.serve(async (req) => {
       // Need the current name/email for a nice slug prefix.
       const { data: cur } = await supabase
         .from("booking_passes").select("student_name,student_email")
-        .eq("student_id", studentId).eq("status", "active")
+        .eq("student_id", studentId).in("status", ["active", "paused"])
         .order("created_at", { ascending: false }).limit(1).maybeSingle();
       for (let attempt = 0; attempt < 3; attempt++) {
-        const slug = genSlug(cur?.student_name, cur?.student_email, attempt);
+        const slug = generateBookingSlug(cur?.student_name, cur?.student_email);
         const newHash = await sha256Hex(genToken());
         const { data, error } = await supabase.rpc("regenerate_booking_link", {
           _student_id: studentId, _new_slug: slug, _new_token_hash: newHash,
         });
         if (!error) return json({ booking_url: bookingUrl(String(data)) });
         const msg = String(error.message || "");
-        if (msg.includes("no_active_pass")) return json({ error: "no_active_pass" }, 404);
+        if (msg.includes("no_active_pass") || msg.includes("no_resumable_pass")) {
+          return json({ error: "no_resumable_pass" }, 404);
+        }
         if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
         throw error;
       }
-      throw lastErr ?? new Error("slug_collision");
+      console.error("booking slug collision", lastErr);
+      return json({ error: "slug_collision" }, 409);
     }
 
     if (action === "update") {
@@ -246,15 +234,25 @@ Deno.serve(async (req) => {
 
       const patch: Record<string, unknown> = {};
       if (body.total_credits !== undefined) {
-        const total = Math.max(1, Math.min(50, Number(body.total_credits) || 0));
-        if (!total) return json({ error: "invalid_credits" }, 400);
+        const total = Number(body.total_credits);
+        if (!Number.isInteger(total) || total < 1 || total > 50) return json({ error: "invalid_credits" }, 400);
         patch.total_credits = Math.max(total, cur.used_credits);
       }
       if (body.session_length_minutes !== undefined) {
-        patch.session_length_minutes = Math.max(15, Math.min(480, Number(body.session_length_minutes) || 70));
+        const sessionLen = Number(body.session_length_minutes);
+        if (!Number.isInteger(sessionLen) || sessionLen < 15 || sessionLen > 480) {
+          return json({ error: "invalid_session_length" }, 400);
+        }
+        patch.session_length_minutes = sessionLen;
       }
       if (body.expires_at !== undefined) {
-        patch.expires_at = body.expires_at || null;
+        if (body.expires_at === null || body.expires_at === "") {
+          patch.expires_at = null;
+        } else if (typeof body.expires_at !== "string" || !Number.isFinite(Date.parse(body.expires_at))) {
+          return json({ error: "invalid_expiry" }, 400);
+        } else {
+          patch.expires_at = new Date(Date.parse(body.expires_at)).toISOString();
+        }
       }
       if (body.notes !== undefined) patch.notes = body.notes || null;
       if (Object.keys(patch).length === 0) return json({ error: "nothing_to_update" }, 400);
@@ -388,32 +386,43 @@ Deno.serve(async (req) => {
         .from("booking_passes").select("*").eq("id", passId).single();
       if (curErr) throw curErr;
 
-      // Slug-based passes: the slug IS the link, so rotating must mint a new
-      // slug (the atomic RPC also swaps the token hash). Old URL dies.
-      if (cur.booking_slug && cur.student_id) {
+      // The slug is the bearer link, so every pass rotates through a slug RPC.
+      // This also upgrades legacy manual passes that never received a slug.
+      if (!cur.student_id) {
         let lastErr: unknown = null;
         for (let attempt = 0; attempt < 3; attempt++) {
-          const slug = genSlug(cur.student_name, cur.student_email, attempt);
+          const slug = generateBookingSlug(cur.student_name, cur.student_email);
+          const newHash = await sha256Hex(genToken());
+          const { data, error } = await supabase.rpc("regenerate_manual_booking_link", {
+            _pass_id: passId, _new_slug: slug, _new_token_hash: newHash,
+          });
+          if (!error) return json({ booking_url: bookingUrl(String(data)) });
+          const msg = String(error.message || "");
+          if (msg.includes("no_resumable_pass")) return json({ error: "no_resumable_pass" }, 404);
+          if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
+          throw error;
+        }
+        console.error("booking slug collision", lastErr);
+        return json({ error: "slug_collision" }, 409);
+      }
+      if (cur.student_id) {
+        let lastErr: unknown = null;
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const slug = generateBookingSlug(cur.student_name, cur.student_email);
           const newHash = await sha256Hex(genToken());
           const { data, error } = await supabase.rpc("regenerate_booking_link", {
             _student_id: cur.student_id, _new_slug: slug, _new_token_hash: newHash,
           });
           if (!error) return json({ booking_url: bookingUrl(String(data)) });
+          const msg = String(error.message || "");
+          if (msg.includes("no_resumable_pass")) return json({ error: "no_resumable_pass" }, 404);
           if ((error as { code?: string }).code === "23505") { lastErr = error; continue; }
           throw error;
         }
-        throw lastErr ?? new Error("slug_collision");
+        console.error("booking slug collision", lastErr);
+        return json({ error: "slug_collision" }, 409);
       }
-
-      const raw = genToken();
-      const hash = await sha256Hex(raw);
-      const { data, error } = await supabase
-        .from("booking_passes")
-        .update({ token_hash: hash })
-        .eq("id", passId)
-        .select().single();
-      if (error) throw error;
-      return json({ pass: data, raw_token: raw });
+      return json({ error: "no_resumable_pass" }, 404);
     }
 
     if (action === "revoke") {

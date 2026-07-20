@@ -84,7 +84,7 @@ export default function StudentDetail() {
               </>
             ) : (
               <p className="mt-2 text-sm text-muted-foreground">
-                This pass uses a one-time token link that can't be re-shown. Rotate the link from the Passes list to get a fresh URL.
+                This pass does not have a current public link. Rotate it from the Passes list to create one.
               </p>
             )}
           </section>
@@ -123,7 +123,7 @@ export default function StudentDetail() {
             <iframe title="Student booking page preview" src={url} className="h-[640px] w-full bg-background" />
           ) : (
             <div className="p-10 text-center text-sm text-muted-foreground">
-              No previewable page — token-link passes have no public URL. Rotate the link to preview.
+              No previewable page. Rotate the pass link to create a public URL.
             </div>
           )}
         </section>

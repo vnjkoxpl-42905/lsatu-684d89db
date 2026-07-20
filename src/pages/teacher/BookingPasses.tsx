@@ -11,6 +11,7 @@ import { Copy, Loader2, Pencil, Plus, Ticket, Trash2, RotateCcw } from "lucide-r
 
 type Pass = {
   id: string;
+  booking_slug: string | null;
   student_name: string | null;
   student_email: string | null;
   total_credits: number;
@@ -29,10 +30,6 @@ const call = async (action: string, extra: Record<string, unknown> = {}) => {
   if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
   return data;
 };
-
-function buildUrl(rawToken: string) {
-  return `${window.location.origin}/schedule/pass/${rawToken}`;
-}
 
 export default function BookingPasses() {
   const [passes, setPasses] = useState<Pass[]>([]);
@@ -79,8 +76,8 @@ export default function BookingPasses() {
         total_credits: total,
         session_length_minutes: Number(sessionLen) || 70,
         expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
-      }) as { pass: Pass; raw_token: string };
-      setCreatedLink(buildUrl(res.raw_token));
+      }) as { pass: Pass; booking_url: string };
+      setCreatedLink(res.booking_url);
       setShowCreate(false);
       resetForm();
       await refresh();
@@ -106,8 +103,8 @@ export default function BookingPasses() {
   async function rotate(pass: Pass) {
     if (!confirm("Rotate the link? The old URL will stop working and a new one will be shown once.")) return;
     try {
-      const res = await call("rotate", { pass_id: pass.id }) as { raw_token: string };
-      setCreatedLink(buildUrl(res.raw_token));
+      const res = await call("rotate", { pass_id: pass.id }) as { booking_url: string };
+      setCreatedLink(res.booking_url);
       setRotatedFor(pass.id);
       await refresh();
     } catch (e) { toast.error(e instanceof Error ? e.message : "Rotate failed"); }
