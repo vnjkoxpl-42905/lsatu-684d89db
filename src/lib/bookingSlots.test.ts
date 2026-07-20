@@ -36,6 +36,27 @@ describe("generateSlots", () => {
     }
   });
 
+  it("aligns a 13:15 availability start to the 13:30 grid", () => {
+    const slots = generateSlots({
+      ...base,
+      rangesByDow: { 1: [{ startMin: 13 * 60 + 15, endMin: 18 * 60 }] },
+    });
+    expect(slots.length).toBeGreaterThan(0);
+    for (const slot of slots) {
+      const parts = new Intl.DateTimeFormat("en-US", { timeZone: EASTERN, minute: "2-digit", hour12: false })
+        .formatToParts(new Date(slot.start_at));
+      expect([0, 30]).toContain(Number(parts.find((part) => part.type === "minute")?.value));
+    }
+  });
+
+  it("deduplicates slots from overlapping ranges defensively", () => {
+    const slots = generateSlots({
+      ...base,
+      rangesByDow: { 1: [{ startMin: 13 * 60, endMin: 18 * 60 }, { startMin: 14 * 60, endMin: 19 * 60 }] },
+    });
+    expect(new Set(slots.map((slot) => slot.start_at)).size).toBe(slots.length);
+  });
+
   it("never emits a slot less than 24h from now", () => {
     const slots = generateSlots(base);
     const minStart = Math.min(...slots.map((s) => new Date(s.start_at).getTime()));
@@ -104,6 +125,21 @@ describe("DST correctness", () => {
     for (const s of slots) {
       const parts = new Intl.DateTimeFormat("en-US", { timeZone: EASTERN, minute: "2-digit", hour12: false }).formatToParts(new Date(s.start_at));
       expect([0, 30]).toContain(Number(parts.find((p) => p.type === "minute")?.value));
+    }
+  });
+
+  it("US fall-back still yields one unique wall-clock grid", () => {
+    const now = Date.UTC(2026, 9, 25, 12, 0, 0);
+    const slots = generateSlots({
+      sessionMin: 70, nowMs: now, hostTz: EASTERN,
+      rangesByDow: { 0: [{ startMin: 14 * 60, endMin: 17 * 60 }] },
+      busy: [], daysAhead: 14,
+    });
+    expect(new Set(slots.map((slot) => slot.start_at)).size).toBe(slots.length);
+    for (const slot of slots) {
+      const parts = new Intl.DateTimeFormat("en-US", { timeZone: EASTERN, minute: "2-digit", hour12: false })
+        .formatToParts(new Date(slot.start_at));
+      expect([0, 30]).toContain(Number(parts.find((part) => part.type === "minute")?.value));
     }
   });
 });

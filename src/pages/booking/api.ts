@@ -34,6 +34,10 @@ export type Booking = {
   student_name_snapshot: string | null;
   student_email_snapshot: string | null;
   student_note: string | null;
+  calendar_action?: "create" | "update" | "delete" | "none";
+  calendar_status?: "pending" | "processing" | "synced" | "failed";
+  calendar_error?: string | null;
+  submission_status?: "none" | "staged" | "linked" | "failed";
   upload_count?: number;
   booking_passes?: {
     id: string;

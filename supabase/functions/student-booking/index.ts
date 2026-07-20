@@ -9,7 +9,7 @@ import {
   deleteEvent, freeBusy, getEvent, insertEvent, meetUrlFromEvent, patchEvent,
 } from "../_shared/googleCalendar.ts";
 import {
-  bookSession, BOOKING_CFG, generateSlots, parseAvailability, type BookingPass, type GoogleCal,
+  bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
 
 function json(body: unknown, status = 200) {
@@ -69,14 +69,10 @@ Deno.serve(async (req) => {
       }
       const daysAhead = Math.min(Math.max(Number(body.days_ahead) || BOOKING_CFG.lookaheadDaysDefault, 1), 60);
       const nowMs = Date.now();
-      const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000).toISOString();
-      const rangeEnd = new Date(nowMs + daysAhead * 86_400_000).toISOString();
-
-      const { data: events } = await supabase
-        .from("schedule_events").select("start_at,end_at")
-        .is("deleted_at", null).neq("status", "cancelled")
-        .lt("start_at", rangeEnd).gt("end_at", rangeStart);
-      const busy = (events ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() }));
+      const bufferMs = BOOKING_CFG.bufferMin * 60_000;
+      const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000 - bufferMs).toISOString();
+      const rangeEnd = new Date(nowMs + daysAhead * 86_400_000 + bufferMs).toISOString();
+      const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
 
       const { data: avail } = await supabase.rpc("get_booking_availability");
       const { hostTz, rangesByDow } = parseAvailability(avail);

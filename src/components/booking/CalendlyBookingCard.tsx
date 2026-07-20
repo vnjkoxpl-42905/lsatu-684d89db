@@ -35,8 +35,11 @@ export type BookingApi = {
   // Optional booking-time submission. When present, the confirm step shows an
   // upload card (files + comment). Files upload BEFORE book, keyed by the same
   // idempotency key so the server links them to the redemption.
-  uploadFiles?: (files: File[], idempotencyKey: string) => Promise<{ uploaded: number }>;
+  uploadFiles?: (files: { file: File; clientUploadId: string }[], idempotencyKey: string) => Promise<{ uploaded: number; clientUploadIds: string[] }>;
+  discardUpload?: (clientUploadId: string, idempotencyKey: string) => Promise<void>;
 };
+
+type StagedFile = { file: File; clientUploadId: string };
 
 const MAX_UPLOAD_FILES = 5;
 const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
@@ -55,6 +58,31 @@ function durationLabel(mins: number) {
   return `${m} min`;
 }
 
+function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }) {
+  const upcoming = redemptions.filter((r) => r.status === "booked" && new Date(r.start_at) > new Date());
+  if (upcoming.length === 0) return null;
+  return (
+    <div className="border-t border-border p-6" aria-label="Your upcoming sessions">
+      <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Your upcoming sessions</div>
+      <div className="space-y-2">
+        {upcoming.map((r) => (
+          <div key={r.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 text-sm">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+            <span className="flex-1">{fmtSlot(r.start_at)}</span>
+            {r.meet_url && (
+              <a href={r.meet_url} target="_blank" rel="noreferrer">
+                <Button size="sm" variant="ghost" className="text-emerald-600 hover:text-emerald-500">
+                  <Video className="mr-1 h-4 w-4" /> Join
+                </Button>
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const [info, setInfo] = useState<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] } | null>(null);
   const [infoLoading, setInfoLoading] = useState(true);
@@ -66,7 +94,8 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const [booking, setBooking] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<StagedFile[]>([]);
+  const [stagedUploadIds, setStagedUploadIds] = useState<Set<string>>(() => new Set());
   const [note, setNote] = useState("");
 
   const pass = info?.pass ?? null;
@@ -96,7 +125,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   }, [api]);
 
   useEffect(() => { void refreshInfo(); }, [refreshInfo]);
-  useEffect(() => { if (pass && pass.status !== "paused" && pass.credits_remaining > 0) void loadSlots(); }, [pass, loadSlots]);
+  useEffect(() => { if (pass?.status === "active" && pass.credits_remaining > 0) void loadSlots(); }, [pass, loadSlots]);
 
   const slotsByDay = useMemo(() => {
     const m = new Map<string, BookingSlot[]>();
@@ -137,7 +166,9 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
       const merged = [...prev];
       for (const f of picked) {
         if (merged.length >= MAX_UPLOAD_FILES) { toast.error(`Up to ${MAX_UPLOAD_FILES} files.`); break; }
-        if (!merged.some((m) => m.name === f.name && m.size === f.size)) merged.push(f);
+        if (!merged.some((m) => m.file.name === f.name && m.file.size === f.size)) {
+          merged.push({ file: f, clientUploadId: crypto.randomUUID() });
+        }
       }
       return merged;
     });
@@ -150,7 +181,11 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
       // Upload any attachments FIRST, keyed by the booking idempotency key, so
       // the server links them to the redemption it's about to create.
       if (files.length > 0 && api.uploadFiles) {
-        await api.uploadFiles(files, bookingKey);
+        const pending = files.filter((entry) => !stagedUploadIds.has(entry.clientUploadId));
+        if (pending.length > 0) {
+          const uploaded = await api.uploadFiles(pending, bookingKey);
+          setStagedUploadIds((current) => new Set([...current, ...uploaded.clientUploadIds]));
+        }
       }
       const trimmedNote = note.trim().slice(0, MAX_NOTE_CHARS);
       await api.book(selected, bookingKey, trimmedNote || undefined);
@@ -161,6 +196,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
       setConfirmOpen(false);
       setSelected(null);
       setFiles([]);
+      setStagedUploadIds(new Set());
       setNote("");
       setBookingKey(crypto.randomUUID());
       await refreshInfo();
@@ -177,6 +213,25 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
     } finally { setBooking(false); }
   }
 
+  async function removeFile(index: number) {
+    const entry = files[index];
+    if (!entry) return;
+    if (stagedUploadIds.has(entry.clientUploadId) && api.discardUpload) {
+      try {
+        await api.discardUpload(entry.clientUploadId, bookingKey);
+        setStagedUploadIds((current) => {
+          const next = new Set(current);
+          next.delete(entry.clientUploadId);
+          return next;
+        });
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Could not remove staged file");
+        return;
+      }
+    }
+    setFiles((current) => current.filter((_, currentIndex) => currentIndex !== index));
+  }
+
   if (infoLoading) {
     return (
       <div className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
@@ -188,16 +243,18 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   // No active pass -> "no sessions available, contact Joshua".
   if (!pass) {
     return (
-      <div className="booking-holo rounded-2xl border border-dashed border-border bg-card p-12 text-center">
-        <p className="text-sm font-medium">No sessions available.</p>
-        <p className="mt-1 text-xs text-muted-foreground">Message Joshua to have 1:1 session booking turned on.</p>
+      <div className="booking-holo overflow-hidden rounded-2xl border border-dashed border-border bg-card">
+        <div className="p-12 text-center">
+          <p className="text-sm font-medium">No sessions available.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Message Joshua to have 1:1 session booking turned on.</p>
+        </div>
+        <UpcomingSessions redemptions={info?.redemptions ?? []} />
       </div>
     );
   }
 
   const monthLabel = monthAnchor.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   const today = startOfDay(new Date());
-  const upcoming = (info?.redemptions ?? []).filter((r) => r.status === "booked" && new Date(r.start_at) > new Date());
 
   return (
     <div className="booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
@@ -233,6 +290,14 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
           <div className="p-6 text-sm text-muted-foreground">
             Booking is paused right now. Message Joshua if you need to schedule a session.
           </div>
+        ) : pass.status === "expired" ? (
+          <div className="p-6 text-sm text-muted-foreground">
+            This booking access has expired. Your upcoming sessions are still shown below.
+          </div>
+        ) : pass.status === "revoked" ? (
+          <div className="p-6 text-sm text-muted-foreground">
+            This booking access is no longer active. Your upcoming sessions are still shown below.
+          </div>
         ) : pass.credits_remaining <= 0 ? (
           <div className="p-6 text-sm text-muted-foreground">
             You've used all your sessions. Message Joshua if you need more.
@@ -255,8 +320,8 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                 ><ChevronRight className="h-4 w-4" /></button>
               </div>
               <div className="grid grid-cols-7 gap-1 text-center">
-                {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
-                  <div key={i} className="pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{d}</div>
+                {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
+                  <div key={day} role="columnheader" aria-label={day} className="pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{day.slice(0, 1)}</div>
                 ))}
                 {monthDays.map((d, i) => {
                   if (!d) return <div key={`e${i}`} />;
@@ -266,6 +331,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                   return (
                     <button
                       key={dayKey(d)}
+                      aria-label={d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
                       disabled={!hasSlots}
                       onClick={() => { setPickedDay(d); setSelected(null); }}
                       className={cn(
@@ -363,17 +429,17 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
               {files.length > 0 && (
                 <ul className="space-y-1.5">
-                  {files.map((f, i) => (
-                    <li key={`${f.name}-${i}`} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm">
+                  {files.map((entry, i) => (
+                    <li key={entry.clientUploadId} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm">
                       <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                      <span className="flex-1 truncate">{f.name}</span>
-                      <span className="shrink-0 text-xs text-muted-foreground">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
+                      <span className="flex-1 truncate">{entry.file.name}</span>
+                      <span className="shrink-0 text-xs text-muted-foreground">{(entry.file.size / 1024 / 1024).toFixed(1)} MB</span>
                       <button
                         type="button"
                         disabled={booking}
-                        onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
+                        onClick={() => void removeFile(i)}
                         className="shrink-0 rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                        aria-label={`Remove ${f.name}`}
+                        aria-label={`Remove ${entry.file.name}`}
                       ><X className="h-3.5 w-3.5" /></button>
                     </li>
                   ))}
@@ -404,26 +470,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
         </AlertDialogContent>
       </AlertDialog>
 
-      {upcoming.length > 0 && (
-        <div className="border-t border-border p-6">
-          <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Your upcoming sessions</div>
-          <div className="space-y-2">
-            {upcoming.map((r) => (
-              <div key={r.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 text-sm">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-                <span className="flex-1">{fmtSlot(r.start_at)}</span>
-                {r.meet_url && (
-                  <a href={r.meet_url} target="_blank" rel="noreferrer">
-                    <Button size="sm" variant="ghost" className="text-emerald-600 hover:text-emerald-500">
-                      <Video className="mr-1 h-4 w-4" /> Join
-                    </Button>
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <UpcomingSessions redemptions={info?.redemptions ?? []} />
     </div>
   );
 }

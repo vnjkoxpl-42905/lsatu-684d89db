@@ -13,6 +13,7 @@ import {
   Clock, Copy, ExternalLink, Link2, Loader2, MoreHorizontal, Pencil, Plus, RotateCcw, Search, Ticket, Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { exclusiveIsoToValidThroughDate, validThroughDateToExclusiveIso } from "@/lib/bookingExpiry";
 import { SectionHeader } from "../BookingWorkspace";
 import { bookingAdmin, durationLabel, loadDefaults, passDisplayName, passUrl, type Pass } from "../api";
 
@@ -141,7 +142,7 @@ export default function PassesSection() {
                         <Ticket className="h-3 w-3" /> {left}/{p.total_credits} left
                       </span>
                       <span className="inline-flex items-center rounded-md border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                        {p.expires_at ? `exp ${new Date(p.expires_at).toLocaleDateString()}` : "no expiry"}
+                        {p.expires_at ? `valid through ${exclusiveIsoToValidThroughDate(p.expires_at)}` : "no expiry"}
                       </span>
                     </div>
                   </div>
@@ -253,7 +254,7 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
         student_email: picked ? (picked.email ?? null) : (email.trim() || null),
         total_credits: total,
         session_length_minutes: Number(sessionLen) || 70,
-        expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
+        expires_at: expiresAt ? validThroughDateToExclusiveIso(expiresAt) : null,
       }) as { booking_url: string };
       onCreated(res.booking_url);
       onOpenChange(false);
@@ -315,7 +316,7 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
             </div>
           </div>
           <div>
-            <Label>Expiration (optional)</Label>
+            <Label>Valid through (optional)</Label>
             <Input type="date" value={expiresAt} onChange={e => setExpiresAt(e.target.value)} />
           </div>
         </div>
@@ -333,21 +334,22 @@ function CreatePassDialog({ open, onOpenChange, onCreated }: {
 export function EditPassDialog({ pass, onClose, onSaved }: {
   pass: Pass; onClose: () => void; onSaved: () => void;
 }) {
-  const [credits, setCredits] = useState(String(pass.total_credits));
+  const [credits, setCredits] = useState(String(Math.max(0, pass.total_credits - pass.used_credits)));
   const [sessionLen, setSessionLen] = useState(String(pass.session_length_minutes));
-  const [expiresAt, setExpiresAt] = useState(pass.expires_at ? pass.expires_at.slice(0, 10) : "");
+  const [expiresAt, setExpiresAt] = useState(pass.expires_at ? exclusiveIsoToValidThroughDate(pass.expires_at) : "");
   const [saving, setSaving] = useState(false);
 
   async function save() {
     const total = Number(credits);
-    if (!total || total < 1) { toast.error("Enter a valid credit amount"); return; }
+    if (!Number.isInteger(total) || total < 0) { toast.error("Enter a valid remaining-session amount"); return; }
+    if (!confirm(`Set remaining sessions to ${total}? The booking link and history will stay the same.`)) return;
     setSaving(true);
     try {
       await bookingAdmin("update", {
         pass_id: pass.id,
-        total_credits: total,
+        total_credits: pass.used_credits + total,
         session_length_minutes: Number(sessionLen) || 70,
-        expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
+        expires_at: expiresAt ? validThroughDateToExclusiveIso(expiresAt) : null,
       });
       toast.success("Pass updated");
       onSaved();
@@ -362,12 +364,12 @@ export function EditPassDialog({ pass, onClose, onSaved }: {
         <DialogHeader><DialogTitle>Edit pass — {passDisplayName(pass)}</DialogTitle></DialogHeader>
         <div className="space-y-3">
           <p className="text-xs text-muted-foreground">
-            {pass.used_credits} of {pass.total_credits} credits used. Raising the total refills the pass; an exhausted or expired pass reactivates automatically.
+            {pass.used_credits} sessions have been used. This changes only the number remaining and keeps the booking link and history.
           </p>
           <div>
-            <Label>Total credits</Label>
+            <Label>Remaining sessions</Label>
             <div className="flex items-center gap-2">
-              <Input type="number" min={Math.max(1, pass.used_credits)} max={50} value={credits} onChange={e => setCredits(e.target.value)} />
+              <Input type="number" min={pass.used_credits === 0 ? 1 : 0} max={Math.max(0, 50 - pass.used_credits)} value={credits} onChange={e => setCredits(e.target.value)} />
               <Button type="button" size="sm" variant="outline" onClick={() => setCredits(String((Number(credits) || 0) + 1))}>+1</Button>
               <Button type="button" size="sm" variant="outline" onClick={() => setCredits(String((Number(credits) || 0) + 5))}>+5</Button>
             </div>
@@ -382,7 +384,7 @@ export function EditPassDialog({ pass, onClose, onSaved }: {
             </Select>
           </div>
           <div>
-            <Label>Expiration (optional)</Label>
+            <Label>Valid through (optional)</Label>
             <Input type="date" value={expiresAt} onChange={e => setExpiresAt(e.target.value)} />
           </div>
         </div>

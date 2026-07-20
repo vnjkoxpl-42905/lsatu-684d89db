@@ -85,6 +85,35 @@ function hostLocalParts(timeZone: string, at: Date) {
 
 export type Slot = { start_at: string; end_at: string };
 
+export async function loadBusyIntervals(opts: {
+  supabase: any;
+  gcal: GoogleCal;
+  rangeStartIso: string;
+  rangeEndIso: string;
+}): Promise<{ start: number; end: number }[]> {
+  const { supabase, gcal, rangeStartIso, rangeEndIso } = opts;
+  const { data: state, error: stateErr } = await supabase.from("gcal_sync_state")
+    .select("calendar_id,busy_calendar_ids").eq("id", 1).maybeSingle();
+  if (stateErr) throw stateErr;
+  const writeCalendar = state?.calendar_id || "primary";
+  const calendarIds = [...new Set([writeCalendar, ...((state?.busy_calendar_ids ?? []) as string[])])];
+  const { data: mirrored, error: mirrorErr } = await supabase.from("schedule_events")
+    .select("start_at,end_at")
+    .is("deleted_at", null).neq("status", "cancelled").neq("transparency", "transparent")
+    .lt("start_at", rangeEndIso).gt("end_at", rangeStartIso);
+  if (mirrorErr) throw mirrorErr;
+  const live = await gcal.freeBusy(calendarIds, rangeStartIso, rangeEndIso);
+  const intervals = [
+    ...(mirrored ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
+    ...Object.values(live).flat().map((e) => ({ start: new Date(e.start).getTime(), end: new Date(e.end).getTime() })),
+  ].filter((e) => Number.isFinite(e.start) && Number.isFinite(e.end));
+  return intervals;
+}
+
+export function deterministicGoogleEventId(redemptionId: string): string {
+  return redemptionId.replace(/-/g, "").toLowerCase();
+}
+
 // Generate bookable slots: 30-min grid, inside seeded availability windows for
 // the host tz, >= 24h lead, session must fit fully, 15-min buffer around busy
 // blocks. `busy` = existing events (ms epoch). This mirrors the server-side
@@ -108,20 +137,26 @@ export function generateSlots(opts: {
   }
 
   const slots: Slot[] = [];
+  const seen = new Set<string>();
   for (let d = 0; d <= daysAhead && slots.length < BOOKING_CFG.maxSlots; d++) {
     const dayAnchor = new Date(rangeStart + d * 86_400_000);
     const { y, m, d: dd, dow } = hostLocalParts(hostTz, dayAnchor);
     const dayRanges = rangesByDow[dow] ?? [];
     for (const rng of dayRanges) {
       // Step on the 30-min grid; require the whole session to fit in the range.
-      for (let mins = rng.startMin; mins + pass.session_length_minutes <= rng.endMin; mins += BOOKING_CFG.stepMin) {
+      const firstGridMinute = Math.ceil(rng.startMin / BOOKING_CFG.stepMin) * BOOKING_CFG.stepMin;
+      for (let mins = firstGridMinute; mins + pass.session_length_minutes <= rng.endMin; mins += BOOKING_CFG.stepMin) {
         const startUtc = hostLocalToUtc(hostTz, y, m, dd, mins).getTime();
         if (startUtc < rangeStart) continue;
         if (startUtc + sessionMs > rangeEnd) break;
         // 15-min buffer around each busy block.
         const conflict = busy.some((b) => b.start - bufMs < startUtc + sessionMs && b.end + bufMs > startUtc);
         if (!conflict) {
-          slots.push({ start_at: new Date(startUtc).toISOString(), end_at: new Date(startUtc + sessionMs).toISOString() });
+          const startIso = new Date(startUtc).toISOString();
+          if (!seen.has(startIso)) {
+            seen.add(startIso);
+            slots.push({ start_at: startIso, end_at: new Date(startUtc + sessionMs).toISOString() });
+          }
         }
         if (slots.length >= BOOKING_CFG.maxSlots) break;
       }
@@ -173,6 +208,27 @@ export async function bookSession(opts: {
   const studentName = identity.name;
   const studentEmail = identity.email;
 
+  // Freshness guard immediately before the database reservation. The
+  // exclusion constraint remains the hard guard for LSAT U races.
+  try {
+    const bufferMs = BOOKING_CFG.bufferMin * 60_000;
+    const busy = await loadBusyIntervals({
+      supabase,
+      gcal,
+      rangeStartIso: new Date(startAt.getTime() - bufferMs).toISOString(),
+      rangeEndIso: new Date(endAt.getTime() + bufferMs).toISOString(),
+    });
+    const conflict = busy.some((b) => b.start - bufferMs < endAt.getTime() && b.end + bufferMs > startAt.getTime());
+    if (conflict) return { ok: false, error: "slot_conflict", status: 409 };
+  } catch (busyError) {
+    return {
+      ok: false,
+      error: "availability_check_failed",
+      status: 503,
+      details: busyError instanceof Error ? busyError.message : String(busyError),
+    };
+  }
+
   // ---- STEP 1: RESERVE (in-txn slot policy + credit debit, gcal_state=pending)
   const { data: rpc, error: rpcErr } = await supabase.rpc("redeem_booking_pass_v2", {
     _pass_id: pass.id,
@@ -206,24 +262,46 @@ export async function bookSession(opts: {
   // staged (by booking-upload) under this (pass, idempotency_key). Done before
   // gcal so a Google failure never loses the student's note/attachments.
   let uploadedFileNames: string[] = [];
+  let submissionStatus: "none" | "linked" | "failed" = "none";
   try {
     if (studentNote) {
-      await supabase.from("booking_pass_redemptions")
+      const { error: noteErr } = await supabase.from("booking_pass_redemptions")
         .update({ student_note: studentNote }).eq("id", redemptionId);
+      if (noteErr) throw noteErr;
     }
-    const { data: linked } = await supabase.from("external_work_uploads")
+    const { data: linked, error: linkErr } = await supabase.from("external_work_uploads")
       .update({ redemption_id: redemptionId, student_id: identity.student_id ?? undefined })
       .eq("booking_pass_id", pass.id)
       .eq("booking_idempotency_key", idem)
       .is("redemption_id", null)
       .select("file_name");
+    if (linkErr) throw linkErr;
     uploadedFileNames = (linked ?? []).map((r: any) => r.file_name).filter(Boolean);
+    if (studentNote || uploadedFileNames.length > 0) {
+      submissionStatus = "linked";
+      const { error: statusErr } = await supabase.from("booking_pass_redemptions")
+        .update({ submission_status: "linked", submission_error: null }).eq("id", redemptionId);
+      if (statusErr) throw statusErr;
+    }
   } catch (subErr) {
-    console.error("linking booking submission failed (non-fatal)", subErr);
+    submissionStatus = "failed";
+    const message = subErr instanceof Error ? subErr.message : String(subErr);
+    console.error("linking booking submission failed", { redemptionId, error: message });
+    const { error: repairErr } = await supabase.from("booking_pass_redemptions")
+      .update({ submission_status: "failed", submission_error: message }).eq("id", redemptionId);
+    if (repairErr) console.error("submission repair state failed", repairErr);
+    const { error: alertErr } = await supabase.from("booking_calendar_alerts").insert({
+      redemption_id: redemptionId, alert_type: "persistence_failure",
+      details: { category: "submission_linkage", error: message },
+    });
+    if (alertErr && alertErr.code !== "23505") console.error("submission repair alert failed", alertErr);
   }
 
   // Resolve the target calendar.
-  const { data: stateRow } = await supabase.from("gcal_sync_state").select("calendar_id").eq("id", 1).maybeSingle();
+  const { data: stateRow, error: stateErr } = await supabase.from("gcal_sync_state").select("calendar_id").eq("id", 1).maybeSingle();
+  if (stateErr) {
+    return { ok: false, error: "calendar_config_failed", status: 503, details: stateErr.message };
+  }
   const calendarId = stateRow?.calendar_id || "primary";
 
   const description = [
@@ -234,8 +312,10 @@ export async function bookSession(opts: {
 
   // ---- STEP 2: GOOGLE (event + Meet, stamped for the reconciler)
   let gEvent: any;
+  const deterministicEventId = deterministicGoogleEventId(redemptionId);
   try {
     gEvent = await gcal.insertEvent(calendarId, {
+      id: deterministicEventId,
       summary: `LSAT session — ${studentName}`,
       description,
       start: { dateTime: startAt.toISOString() },
@@ -246,6 +326,16 @@ export async function bookSession(opts: {
       extendedProperties: { private: { lsatu_redemption_id: redemptionId, lsatu_idempotency_key: idem, lsatu_pass_id: pass.id } },
     }, { conferenceDataVersion: 1, sendUpdates: studentEmail ? "all" : "none" });
   } catch (gErr) {
+    if ((gErr as { status?: number }).status === 409) {
+      try {
+        gEvent = await gcal.getEvent(calendarId, deterministicEventId);
+      } catch (adoptErr) {
+        console.error("google event conflict could not be adopted", adoptErr);
+      }
+    }
+    if (gEvent) {
+      // Adopted the deterministic event created by an earlier timed-out call.
+    } else {
     // Booking is RESERVED and honored. Leave the row 'pending' for the
     // reconciler; do NOT roll back a paid slot. Report success with pending sync.
     console.error("google insert failed; left pending for reconciler", gErr);
@@ -255,8 +345,10 @@ export async function bookSession(opts: {
       redemption: {
         id: redemptionId, start_at: startAt.toISOString(), end_at: endAt.toISOString(),
         status: "booked", gcal_state: "pending", meet_url: null, google_event_id: null,
+        submission_status: submissionStatus,
       },
     };
+    }
   }
 
   let meetUrl = gcal.meetUrlFromEvent(gEvent);
@@ -268,7 +360,7 @@ export async function bookSession(opts: {
   }
 
   // Mirror to schedule_events (best-effort; the redemption is the source of truth).
-  const { data: se } = await supabase.from("schedule_events").upsert({
+  const { data: se, error: mirrorErr } = await supabase.from("schedule_events").upsert({
     google_event_id: gEvent.id, calendar_id: calendarId,
     title: `LSAT session — ${studentName}`, description,
     start_at: startAt.toISOString(), end_at: endAt.toISOString(),
@@ -278,22 +370,46 @@ export async function bookSession(opts: {
     last_synced_at: new Date().toISOString(), deleted_at: null,
   }, { onConflict: "google_event_id" }).select().maybeSingle();
 
+  if (mirrorErr) {
+    console.error("booking calendar mirror persistence failed", mirrorErr);
+  }
+
   // ---- STEP 3: PERSIST (guard so a reconciler that already filled it isn't clobbered)
-  await supabase.from("booking_pass_redemptions")
+  const { error: persistErr } = await supabase.from("booking_pass_redemptions")
     .update({
       google_event_id: gEvent.id, meet_url: meetUrl, schedule_event_id: se?.id ?? null,
       gcal_state: "synced", needs_gcal_sync: false, gcal_error: null,
+      calendar_action: "none", calendar_status: "synced", calendar_error: null,
+      calendar_last_synced_at: new Date().toISOString(), calendar_lease_until: null,
     })
     .eq("id", redemptionId)
     .is("google_event_id", null);
+  if (persistErr || mirrorErr) {
+    const message = persistErr?.message || mirrorErr?.message || "calendar_persistence_failed";
+    const { error: pendingErr } = await supabase.from("booking_pass_redemptions").update({
+      calendar_action: "create", calendar_status: "pending", calendar_error: message,
+      gcal_state: "pending", needs_gcal_sync: true, gcal_error: message,
+    }).eq("id", redemptionId);
+    if (pendingErr) console.error("booking pending-state persistence failed", pendingErr);
+    return {
+      ok: true,
+      was_existing: false,
+      redemption: {
+        id: redemptionId, start_at: startAt.toISOString(), end_at: endAt.toISOString(),
+        status: "booked", calendar_action: "create", calendar_status: "pending",
+        meet_url: meetUrl, google_event_id: gEvent.id, submission_status: submissionStatus,
+      },
+    };
+  }
 
   // Confirmation emails to BOTH student + admin (best-effort).
   const whenText = startAt.toLocaleString("en-US", {
-    weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short",
+    weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit",
+    timeZone: "America/Toronto", timeZoneName: "short",
   });
   const sendConfirmation = async (recipientEmail: string, recipientRole: "student" | "admin") => {
     try {
-      await fetch(`${opts.supabaseUrl}/functions/v1/send-transactional-email`, {
+      const response = await fetch(`${opts.supabaseUrl}/functions/v1/send-transactional-email`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${opts.serviceKey}`,
@@ -313,8 +429,15 @@ export async function bookSession(opts: {
           },
         }),
       });
+      if (!response.ok) throw new Error(`confirmation_email_http_${response.status}`);
     } catch (mailErr) {
-      console.error(`confirmation email to ${recipientRole} failed`, mailErr);
+      const message = mailErr instanceof Error ? mailErr.message : String(mailErr);
+      console.error(`confirmation email to ${recipientRole} failed`, { redemptionId, error: message });
+      const { error: alertErr } = await supabase.from("booking_calendar_alerts").insert({
+        redemption_id: redemptionId, alert_type: "persistence_failure",
+        details: { category: "confirmation_email", recipient_role: recipientRole, error: message },
+      });
+      if (alertErr && alertErr.code !== "23505") console.error("confirmation email alert failed", alertErr);
     }
   };
   if (studentEmail) await sendConfirmation(studentEmail, "student");
@@ -325,7 +448,8 @@ export async function bookSession(opts: {
     was_existing: false,
     redemption: {
       id: redemptionId, start_at: startAt.toISOString(), end_at: endAt.toISOString(),
-      google_event_id: gEvent.id, html_link: gEvent.htmlLink ?? null, meet_url: meetUrl, status: "booked",
+      google_event_id: gEvent.id, html_link: gEvent.htmlLink ?? null, meet_url: meetUrl,
+      status: "booked", submission_status: submissionStatus,
     },
   };
 }

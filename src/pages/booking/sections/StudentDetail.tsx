@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ArrowLeft, Copy, ExternalLink, Loader2, Pencil, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { exclusiveIsoToValidThroughDate } from "@/lib/bookingExpiry";
 import { bookingAdmin, durationLabel, passDisplayName, passUrl, type Booking, type Pass } from "../api";
 import { StatusChip, EditPassDialog } from "./PassesSection";
 
@@ -58,7 +59,7 @@ export default function StudentDetail() {
           <h1 className="text-2xl font-semibold tracking-tight">{passDisplayName(pass)}</h1>
           <StatusChip status={pass.status} />
           <span className="text-sm text-muted-foreground">
-            {left}/{pass.total_credits} sessions left · {durationLabel(pass.session_length_minutes)} · {pass.expires_at ? `expires ${new Date(pass.expires_at).toLocaleDateString()}` : "no expiry"}
+            {left}/{pass.total_credits} sessions left · {durationLabel(pass.session_length_minutes)} · {pass.expires_at ? `valid through ${exclusiveIsoToValidThroughDate(pass.expires_at)}` : "no expiry"}
           </span>
           <Button size="sm" variant="outline" onClick={() => setEditing(true)}><Pencil className="mr-1.5 h-4 w-4" /> Edit / refill</Button>
         </div>

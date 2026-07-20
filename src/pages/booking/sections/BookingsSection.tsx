@@ -9,6 +9,7 @@ import { CalendarX2, ChevronDown, Download, Loader2, MoreHorizontal, Paperclip, 
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "../BookingWorkspace";
 import { bookingAdmin, durationLabel, type Booking, type BookingUpload } from "../api";
+import BookingHealthSection from "./BookingHealthSection";
 
 const fmt = (iso: string) =>
   new Date(iso).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
@@ -72,8 +73,12 @@ export default function BookingsSection() {
   async function cancel(b: Booking) {
     if (!confirm(`Cancel this session (${fmt(b.start_at)})? The credit is refunded to the student.`)) return;
     try {
-      await bookingAdmin("cancel_booking", { redemption_id: b.id });
-      toast.success("Session cancelled and credit refunded");
+      const result = await bookingAdmin("cancel_booking", { redemption_id: b.id }) as { redemption?: Booking };
+      if (result.redemption?.calendar_status === "pending") {
+        toast.warning("Session cancelled and credit refunded. Google cancellation is queued.");
+      } else {
+        toast.success("Session cancelled, Google event removed, and credit refunded");
+      }
       await refresh();
     } catch (e) { toast.error(e instanceof Error ? e.message : "Cancel failed"); }
   }
@@ -99,6 +104,7 @@ export default function BookingsSection() {
       </SectionHeader>
 
       <div className="px-8 py-6">
+        <BookingHealthSection />
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
         ) : rows.length === 0 ? (
@@ -136,6 +142,21 @@ export default function BookingsSection() {
                     </button>
                   )}
                   <BookingStatusChip status={b.status} />
+                  {b.calendar_status && b.calendar_status !== "synced" && (
+                    <span className={cn(
+                      "rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                      b.calendar_status === "failed"
+                        ? "border-red-500/30 bg-red-500/10 text-red-700"
+                        : "border-amber-500/30 bg-amber-500/10 text-amber-700",
+                    )} title={b.calendar_error || undefined}>
+                      calendar {b.calendar_status}
+                    </span>
+                  )}
+                  {b.submission_status === "failed" && (
+                    <span className="rounded-md border border-red-500/30 bg-red-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-red-700">
+                      submission repair
+                    </span>
+                  )}
                   {b.meet_url && b.status === "booked" && (
                     <a href={b.meet_url} target="_blank" rel="noreferrer">
                       <Button size="sm" variant="outline"><Video className="mr-1.5 h-4 w-4" /> Meet</Button>

@@ -69,17 +69,25 @@ export function generateSlots(opts: {
   if (expiresAtMs && expiresAtMs < rangeEnd) rangeEnd = expiresAtMs;
 
   const slots: Slot[] = [];
+  const seen = new Set<string>();
   for (let d = 0; d <= daysAhead && slots.length < BOOKING_CFG.maxSlots; d++) {
     const dayAnchor = new Date(rangeStart + d * 86_400_000);
     const { y, m, d: dd, dow } = hostLocalParts(hostTz, dayAnchor);
     const dayRanges = rangesByDow[dow] ?? [];
     for (const rng of dayRanges) {
-      for (let mins = rng.startMin; mins + sessionMin <= rng.endMin; mins += BOOKING_CFG.stepMin) {
+      const firstGridMinute = Math.ceil(rng.startMin / BOOKING_CFG.stepMin) * BOOKING_CFG.stepMin;
+      for (let mins = firstGridMinute; mins + sessionMin <= rng.endMin; mins += BOOKING_CFG.stepMin) {
         const startUtc = hostLocalToUtc(hostTz, y, m, dd, mins).getTime();
         if (startUtc < rangeStart) continue;
         if (startUtc + sessionMs > rangeEnd) break;
         const conflict = busy.some((b) => b.start - bufMs < startUtc + sessionMs && b.end + bufMs > startUtc);
-        if (!conflict) slots.push({ start_at: new Date(startUtc).toISOString(), end_at: new Date(startUtc + sessionMs).toISOString() });
+        if (!conflict) {
+          const startIso = new Date(startUtc).toISOString();
+          if (!seen.has(startIso)) {
+            seen.add(startIso);
+            slots.push({ start_at: startIso, end_at: new Date(startUtc + sessionMs).toISOString() });
+          }
+        }
         if (slots.length >= BOOKING_CFG.maxSlots) break;
       }
       if (slots.length >= BOOKING_CFG.maxSlots) break;

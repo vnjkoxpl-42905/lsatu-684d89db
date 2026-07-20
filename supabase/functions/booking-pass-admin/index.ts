@@ -3,6 +3,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { generateBookingSlug, validateNewPassInput } from "../_shared/bookingPassLinks.ts";
+import { deleteEvent } from "../_shared/googleCalendar.ts";
 
 async function sha256Hex(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
@@ -177,7 +178,7 @@ Deno.serve(async (req) => {
         .from("booking_passes")
         .select("id,total_credits,used_credits,session_length_minutes,status,expires_at,created_at,booking_slug")
         .eq("student_id", studentId)
-        .eq("status", "active")
+        .in("status", ["active", "paused", "exhausted", "expired"])
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -232,70 +233,69 @@ Deno.serve(async (req) => {
         .from("booking_passes").select("*").eq("id", passId).single();
       if (curErr) throw curErr;
 
-      const patch: Record<string, unknown> = {};
+      let requestedRemaining: number | null = null;
       if (body.total_credits !== undefined) {
         const total = Number(body.total_credits);
         if (!Number.isInteger(total) || total < 1 || total > 50) return json({ error: "invalid_credits" }, 400);
-        patch.total_credits = Math.max(total, cur.used_credits);
+        requestedRemaining = Math.max(0, total - cur.used_credits);
       }
+      let requestedSessionLength: number | null = null;
       if (body.session_length_minutes !== undefined) {
         const sessionLen = Number(body.session_length_minutes);
         if (!Number.isInteger(sessionLen) || sessionLen < 15 || sessionLen > 480) {
           return json({ error: "invalid_session_length" }, 400);
         }
-        patch.session_length_minutes = sessionLen;
+        requestedSessionLength = sessionLen;
       }
+      let requestedExpiry: string | null = null;
+      let clearExpiry = false;
       if (body.expires_at !== undefined) {
         if (body.expires_at === null || body.expires_at === "") {
-          patch.expires_at = null;
+          clearExpiry = true;
         } else if (typeof body.expires_at !== "string" || !Number.isFinite(Date.parse(body.expires_at))) {
           return json({ error: "invalid_expiry" }, 400);
         } else {
-          patch.expires_at = new Date(Date.parse(body.expires_at)).toISOString();
+          requestedExpiry = new Date(Date.parse(body.expires_at)).toISOString();
         }
       }
-      if (body.notes !== undefined) patch.notes = body.notes || null;
-      if (Object.keys(patch).length === 0) return json({ error: "nothing_to_update" }, 400);
-
-      // Recompute status for non-revoked, non-paused passes so refilling
-      // credits or extending expiry reactivates an exhausted/expired pass,
-      // and shrinking credits to the used count marks it exhausted. A paused
-      // pass stays paused until explicitly unpaused.
-      if (cur.status !== "revoked" && cur.status !== "paused") {
-        const total = (patch.total_credits ?? cur.total_credits) as number;
-        const expires = (patch.expires_at !== undefined ? patch.expires_at : cur.expires_at) as string | null;
-        const expired = !!expires && new Date(expires).getTime() < Date.now();
-        patch.status = expired ? "expired" : (total > cur.used_credits ? "active" : "exhausted");
+      let pass = cur;
+      if (requestedRemaining !== null) {
+        const { data, error } = await supabase.rpc("manage_booking_pass", {
+          _pass_id: passId,
+          _action: "set_terms_and_remaining",
+          _credits: requestedRemaining,
+          _session_length_minutes: requestedSessionLength,
+          _expires_at: requestedExpiry,
+          _clear_expiry: clearExpiry,
+        });
+        if (error) throw error;
+        pass = data;
+      } else if (requestedSessionLength !== null || body.expires_at !== undefined) {
+        const { data, error } = await supabase.rpc("manage_booking_pass", {
+          _pass_id: passId,
+          _action: "update_terms",
+          _session_length_minutes: requestedSessionLength,
+          _expires_at: requestedExpiry,
+          _clear_expiry: clearExpiry,
+        });
+        if (error) throw error;
+        pass = data;
       }
-
-      const { data, error } = await supabase
-        .from("booking_passes")
-        .update(patch)
-        .eq("id", passId)
-        .select().single();
-      if (error) throw error;
-      return json({ pass: data });
+      if (body.notes !== undefined) {
+        const { data, error } = await supabase.from("booking_passes")
+          .update({ notes: body.notes || null }).eq("id", passId).select().single();
+        if (error) throw error;
+        pass = data;
+      }
+      return json({ pass });
     }
 
     if (action === "set_paused") {
       const passId = String(body.pass_id || "");
       if (!passId) return json({ error: "pass_id_required" }, 400);
-      const { data: cur, error: curErr } = await supabase
-        .from("booking_passes").select("*").eq("id", passId).single();
-      if (curErr) throw curErr;
-      if (cur.status === "revoked") return json({ error: "pass_revoked" }, 400);
-      let next: string;
-      if (body.paused) {
-        next = "paused";
-      } else {
-        const expired = !!cur.expires_at && new Date(cur.expires_at).getTime() < Date.now();
-        next = expired ? "expired" : (cur.total_credits > cur.used_credits ? "active" : "exhausted");
-      }
-      const { data, error } = await supabase
-        .from("booking_passes")
-        .update({ status: next })
-        .eq("id", passId)
-        .select().single();
+      const { data, error } = await supabase.rpc("manage_booking_pass", {
+        _pass_id: passId, _action: body.paused ? "pause" : "resume",
+      });
       if (error) throw error;
       return json({ pass: data });
     }
@@ -315,6 +315,12 @@ Deno.serve(async (req) => {
         external_work_uploads: undefined,
       }));
       return json({ bookings });
+    }
+
+    if (action === "get_booking_health") {
+      const { data, error } = await supabase.rpc("get_booking_health");
+      if (error) throw error;
+      return json(data);
     }
 
     // Files a student attached to a specific booking, with short-lived signed
@@ -345,25 +351,36 @@ Deno.serve(async (req) => {
     if (action === "cancel_booking") {
       const redemptionId = String(body.redemption_id || "");
       if (!redemptionId) return json({ error: "redemption_id_required" }, 400);
-      const { data: red, error: redErr } = await supabase
-        .from("booking_pass_redemptions").select("*").eq("id", redemptionId).single();
-      if (redErr) throw redErr;
-      if (red.status !== "booked") return json({ error: "not_booked" }, 400);
-      const { data, error } = await supabase
-        .from("booking_pass_redemptions")
-        .update({ status: "cancelled" })
-        .eq("id", redemptionId)
-        .select().single();
+      const { data: result, error } = await supabase.rpc("cancel_booking_redemption", {
+        _redemption_id: redemptionId, _refund: true, _actor_id: user.id,
+      });
       if (error) throw error;
-      // Refund the credit so the student can rebook.
-      const { data: pass } = await supabase
-        .from("booking_passes").select("used_credits,status,total_credits").eq("id", red.booking_pass_id).single();
-      if (pass && pass.used_credits > 0) {
-        const patch: Record<string, unknown> = { used_credits: pass.used_credits - 1 };
-        if (pass.status === "exhausted") patch.status = "active";
-        await supabase.from("booking_passes").update(patch).eq("id", red.booking_pass_id);
+      const redemption = result?.redemption;
+      if (redemption?.calendar_action === "delete" && redemption.google_event_id) {
+        const { data: state, error: stateErr } = await supabase.from("gcal_sync_state")
+          .select("calendar_id").eq("id", 1).maybeSingle();
+        if (stateErr) throw stateErr;
+        try {
+          await deleteEvent(state?.calendar_id || "primary", redemption.google_event_id, { sendUpdates: "all" });
+          const { error: persistErr } = await supabase.from("booking_pass_redemptions").update({
+            calendar_action: "none", calendar_status: "synced", calendar_error: null,
+            calendar_last_synced_at: new Date().toISOString(), needs_gcal_sync: false,
+            gcal_state: "synced", gcal_error: null,
+          }).eq("id", redemptionId);
+          if (persistErr) throw persistErr;
+          redemption.calendar_action = "none";
+          redemption.calendar_status = "synced";
+        } catch (calendarError) {
+          const message = calendarError instanceof Error ? calendarError.message : String(calendarError);
+          const { error: persistErr } = await supabase.from("booking_pass_redemptions").update({
+            calendar_action: "delete", calendar_status: "pending", calendar_error: message,
+            needs_gcal_sync: true, gcal_state: "pending", gcal_error: message,
+          }).eq("id", redemptionId);
+          if (persistErr) throw persistErr;
+          redemption.calendar_status = "pending";
+        }
       }
-      return json({ redemption: data });
+      return json({ ...result, redemption });
     }
 
     if (action === "mark_no_show") {
@@ -428,11 +445,9 @@ Deno.serve(async (req) => {
     if (action === "revoke") {
       const passId = String(body.pass_id || "");
       if (!passId) return json({ error: "pass_id_required" }, 400);
-      const { data, error } = await supabase
-        .from("booking_passes")
-        .update({ status: "revoked" })
-        .eq("id", passId)
-        .select().single();
+      const { data, error } = await supabase.rpc("manage_booking_pass", {
+        _pass_id: passId, _action: "revoke",
+      });
       if (error) throw error;
       return json({ pass: data });
     }

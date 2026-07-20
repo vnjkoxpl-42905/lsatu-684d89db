@@ -27,6 +27,9 @@ verify_jwt = false
 [functions.gcal-sync-pull]
 verify_jwt = false
 
+[functions.gcal-reconcile]
+verify_jwt = false
+
 [functions.gcal-event-write]
 verify_jwt = true
 

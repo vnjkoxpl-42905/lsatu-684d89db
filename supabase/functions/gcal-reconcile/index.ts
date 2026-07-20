@@ -17,11 +17,11 @@
 // reads secrets and calls Google directly.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { getEvent, insertEvent, listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
+import { deleteEvent, getEvent, insertEvent, listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
+import { deterministicGoogleEventId } from "../_shared/bookingCore.ts";
 
 const MAX_ATTEMPTS = 5;
 const LEASE_SECONDS = 120;
-const STALE_SECONDS = 120; // only touch rows pending longer than this
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -32,23 +32,23 @@ function json(body: unknown, status = 200) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+    const internalKey = Deno.env.get("EDGE_INTERNAL_KEY") ?? "";
+    if ((!token || token !== serviceRoleKey) && (!internalKey || req.headers.get("X-Internal-Key") !== internalKey)) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    const nowIso = new Date().toISOString();
-    const staleCutoff = new Date(Date.now() - STALE_SECONDS * 1000).toISOString();
-    const leaseUntil = new Date(Date.now() + LEASE_SECONDS * 1000).toISOString();
-
-    // Fetch candidate pending rows whose lease is free/expired.
-    const { data: candidates } = await supabase
-      .from("booking_pass_redemptions")
-      .select("id,booking_pass_id,start_at,end_at,idempotency_key,gcal_attempts,student_name_snapshot,student_email_snapshot")
-      .eq("gcal_state", "pending")
-      .lt("updated_at", staleCutoff)
-      .or(`gcal_lease_until.is.null,gcal_lease_until.lt.${nowIso}`)
-      .limit(25);
+    const { data: candidates, error: claimErr } = await supabase.rpc("claim_booking_calendar_actions", {
+      _limit: 25, _lease_seconds: LEASE_SECONDS,
+    });
+    if (claimErr) throw claimErr;
 
     const { data: stateRow } = await supabase.from("gcal_sync_state").select("calendar_id").eq("id", 1).maybeSingle();
     const calendarId = stateRow?.calendar_id || "primary";
@@ -56,34 +56,53 @@ Deno.serve(async (req) => {
     const results: { id: string; outcome: string }[] = [];
 
     for (const row of candidates ?? []) {
-      // 1) CLAIM the lease (conditional: only if still free/expired). If another
-      //    worker grabbed it between our read and here, this updates 0 rows.
-      const { data: claimed } = await supabase
-        .from("booking_pass_redemptions")
-        .update({ gcal_lease_until: leaseUntil, gcal_attempts: (row.gcal_attempts ?? 0) + 1 })
-        .eq("id", row.id)
-        .eq("gcal_state", "pending")
-        .or(`gcal_lease_until.is.null,gcal_lease_until.lt.${nowIso}`)
-        .select("id")
-        .maybeSingle();
-      if (!claimed) { results.push({ id: row.id, outcome: "not_claimed" }); continue; }
-
       try {
-        // 2) SEARCH Google by the stamp to adopt an already-created event.
+        // SEARCH Google by the redemption stamp. Search failures are fatal for
+        // this attempt and never fall through to create.
         let event: any = null;
-        try {
+        if (row.google_event_id) {
+          try { event = await getEvent(calendarId, row.google_event_id); }
+          catch (err) {
+            if ((err as { status?: number }).status !== 404 && (err as { status?: number }).status !== 410) throw err;
+          }
+        }
+        if (!event) {
           const found = await listEvents(calendarId, {
-            privateExtendedProperty: `lsatu_idempotency_key=${row.idempotency_key}`,
-            maxResults: "1", showDeleted: "false",
+            privateExtendedProperty: `lsatu_redemption_id=${row.id}`,
+            maxResults: "2", showDeleted: "true",
           });
-          event = found?.items?.[0] ?? null;
-        } catch (_) { /* fall through to create */ }
+          if ((found?.items ?? []).filter((item: any) => item.status !== "cancelled").length > 1) {
+            const { error: duplicateAlertErr } = await supabase.from("booking_calendar_alerts").insert({
+              redemption_id: row.id, alert_type: "duplicate_event",
+              details: { google_event_ids: found.items.map((item: any) => item.id).filter(Boolean) },
+            });
+            if (duplicateAlertErr && duplicateAlertErr.code !== "23505") throw duplicateAlertErr;
+          }
+          event = found?.items?.find((item: any) => item.status !== "cancelled") ?? null;
+        }
+
+        if (row.calendar_action === "delete") {
+          if (event?.id) await deleteEvent(calendarId, event.id, { sendUpdates: "all" });
+          const { error: mirrorErr } = await supabase.from("schedule_events").update({
+            status: "cancelled", deleted_at: new Date().toISOString(),
+          }).eq("google_event_id", event?.id || row.google_event_id);
+          if (mirrorErr) throw mirrorErr;
+          const { error: persistErr } = await supabase.from("booking_pass_redemptions").update({
+            calendar_action: "none", calendar_status: "synced", calendar_error: null,
+            calendar_lease_until: null, calendar_last_synced_at: new Date().toISOString(),
+            gcal_state: "synced", gcal_error: null, needs_gcal_sync: false,
+          }).eq("id", row.id);
+          if (persistErr) throw persistErr;
+          results.push({ id: row.id, outcome: event ? "deleted" : "already_absent" });
+          continue;
+        }
 
         // 3) CREATE if not found.
         if (!event) {
           const name = row.student_name_snapshot || "Student";
           const email = row.student_email_snapshot || null;
           event = await insertEvent(calendarId, {
+            id: deterministicGoogleEventId(row.id),
             summary: `LSAT session — ${name}`,
             description: `Booked via LSAT U (reconciled).`,
             start: { dateTime: new Date(row.start_at).toISOString() },
@@ -91,7 +110,12 @@ Deno.serve(async (req) => {
             conferenceData: { createRequest: { requestId: row.idempotency_key, conferenceSolutionKey: { type: "hangoutsMeet" } } },
             attendees: email ? [{ email }] : undefined,
             extendedProperties: { private: { lsatu_redemption_id: row.id, lsatu_idempotency_key: row.idempotency_key, lsatu_pass_id: row.booking_pass_id } },
-          }, { conferenceDataVersion: 1, sendUpdates: email ? "all" : "none" });
+          }, { conferenceDataVersion: 1, sendUpdates: email ? "all" : "none" }).catch(async (err) => {
+            if ((err as { status?: number }).status === 409) {
+              return await getEvent(calendarId, deterministicGoogleEventId(row.id));
+            }
+            throw err;
+          });
         }
 
         let meetUrl = meetUrlFromEvent(event);
@@ -99,8 +123,7 @@ Deno.serve(async (req) => {
           try { meetUrl = meetUrlFromEvent(await getEvent(calendarId, event.id)); } catch (_) { /* non-fatal */ }
         }
 
-        // Mirror schedule_events (best-effort).
-        const { data: se } = await supabase.from("schedule_events").upsert({
+        const { data: se, error: mirrorErr } = await supabase.from("schedule_events").upsert({
           google_event_id: event.id, calendar_id: calendarId,
           title: `LSAT session — ${row.student_name_snapshot || "Student"}`,
           start_at: new Date(row.start_at).toISOString(), end_at: new Date(row.end_at).toISOString(),
@@ -108,22 +131,43 @@ Deno.serve(async (req) => {
           meet_url: meetUrl, source: "booking_pass", etag: event.etag ?? null,
           last_synced_at: new Date().toISOString(), deleted_at: null,
         }, { onConflict: "google_event_id" }).select().maybeSingle();
+        if (mirrorErr) throw mirrorErr;
 
-        // 4) PERSIST + clear pending/lease.
-        await supabase.from("booking_pass_redemptions").update({
+        const meetPending = !meetUrl && (row.calendar_attempts ?? 0) < MAX_ATTEMPTS;
+        const { error: persistErr } = await supabase.from("booking_pass_redemptions").update({
           google_event_id: event.id, meet_url: meetUrl, schedule_event_id: se?.id ?? null,
-          gcal_state: "synced", needs_gcal_sync: false, gcal_error: null, gcal_lease_until: null,
+          calendar_action: meetPending ? "create" : "none",
+          calendar_status: meetPending ? "pending" : "synced",
+          calendar_error: meetPending ? "meet_url_pending" : null,
+          calendar_lease_until: null,
+          calendar_last_synced_at: meetPending ? null : new Date().toISOString(),
+          gcal_state: meetPending ? "pending" : "synced",
+          needs_gcal_sync: meetPending,
+          gcal_error: meetPending ? "meet_url_pending" : null,
         }).eq("id", row.id);
+        if (persistErr) throw persistErr;
 
-        results.push({ id: row.id, outcome: event ? "synced" : "created" });
+        results.push({ id: row.id, outcome: meetPending ? "meet_pending" : "synced" });
       } catch (err) {
-        const attempts = (row.gcal_attempts ?? 0) + 1;
+        const attempts = row.calendar_attempts ?? 1;
         const terminal = attempts >= MAX_ATTEMPTS;
-        await supabase.from("booking_pass_redemptions").update({
+        const message = err instanceof Error ? err.message : String(err);
+        const { error: failureErr } = await supabase.from("booking_pass_redemptions").update({
+          calendar_status: terminal ? "failed" : "pending",
+          calendar_error: message,
+          calendar_lease_until: null,
           gcal_state: terminal ? "failed" : "pending",
-          gcal_error: err instanceof Error ? err.message : String(err),
+          gcal_error: message,
           gcal_lease_until: null,
         }).eq("id", row.id);
+        if (failureErr) throw failureErr;
+        if (terminal) {
+          const { error: alertErr } = await supabase.from("booking_calendar_alerts").insert({
+            redemption_id: row.id, alert_type: "terminal_failure",
+            details: { calendar_action: row.calendar_action, error: message },
+          });
+          if (alertErr && alertErr.code !== "23505") console.error("calendar alert persistence failed", alertErr);
+        }
         results.push({ id: row.id, outcome: terminal ? "failed_terminal" : "retry_later" });
       }
     }

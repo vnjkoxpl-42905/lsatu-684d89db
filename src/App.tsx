@@ -106,6 +106,20 @@ import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 import GuidedTour from "./components/mainhub/GuidedTour";
 
+function GlobalOverlayMount() {
+  const { pathname } = useLocation();
+  if (pathname.startsWith("/book/")) return null;
+  return (
+    <>
+      <FloatingMessenger />
+      <StudentCornerBubble />
+      <AdminChatHub />
+      <FloatingHelpButton />
+      <GuidedTour />
+    </>
+  );
+}
+
 // Param/query-preserving redirects for the teacher IA rebuild (ADR 0001).
 // The old surfaces still resolve; they just forward to their new home so no
 // bookmarked /teacher/* URL 404s.
@@ -587,11 +601,7 @@ const App = () => {
             } />
           </Routes>
           </React.Suspense>
-          <FloatingMessenger />
-          <StudentCornerBubble />
-          <AdminChatHub />
-          <FloatingHelpButton />
-          <GuidedTour />
+          <GlobalOverlayMount />
         </BrowserRouter>
       </TooltipProvider>
     </OrbitalActiveProvider>

@@ -33,7 +33,7 @@ export default function PublicBooking() {
   const api: BookingApi = useMemo(() => ({
     loadInfo: async () => {
       const d = await callPublic(slug, "info");
-      return { pass: d.pass ?? null, redemptions: [] };
+      return { pass: d.pass ?? null, redemptions: d.redemptions ?? [] };
     },
     loadSlots: async () => {
       const d = await callPublic(slug, "slots");
@@ -50,7 +50,10 @@ export default function PublicBooking() {
       const fd = new FormData();
       fd.append("slug", slug);
       fd.append("idempotency_key", idempotencyKey);
-      for (const f of files) fd.append("files", f, f.name);
+      for (const entry of files) {
+        fd.append("files", entry.file, entry.file.name);
+        fd.append("client_upload_ids", entry.clientUploadId);
+      }
       const res = await fetch(`${SUPABASE_URL}/functions/v1/booking-upload`, {
         method: "POST",
         headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` },
@@ -58,7 +61,21 @@ export default function PublicBooking() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data?.error) throw new Error(data?.error || `upload_failed_${res.status}`);
-      return { uploaded: data.uploaded ?? files.length };
+      return {
+        uploaded: data.uploaded ?? files.length,
+        clientUploadIds: (data.files ?? []).map((entry: { client_upload_id: string }) => entry.client_upload_id),
+      };
+    },
+    discardUpload: async (clientUploadId, idempotencyKey) => {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/booking-upload`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` },
+        body: JSON.stringify({
+          action: "discard", slug, idempotency_key: idempotencyKey, client_upload_id: clientUploadId,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data?.error) throw new Error(data?.error || `discard_failed_${res.status}`);
     },
   }), [slug]);
 

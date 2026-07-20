@@ -3,7 +3,24 @@
 // Direct Google OAuth via _shared/googleCalendar.ts (no Lovable connector gateway).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { listEvents } from "../_shared/googleCalendar.ts";
+import { listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
+
+function zonedMidnightIso(dateOnly: string, timeZone: string): string {
+  const [year, month, day] = dateOnly.split("-").map(Number);
+  const naive = Date.UTC(year, month - 1, day);
+  const offsetAt = (at: Date) => {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+    }).formatToParts(at);
+    const values: Record<string, number> = {};
+    for (const part of parts) if (part.type !== "literal") values[part.type] = Number(part.value);
+    return Date.UTC(values.year, values.month - 1, values.day, values.hour, values.minute, values.second) - at.getTime();
+  };
+  let instant = new Date(naive - offsetAt(new Date(naive)));
+  instant = new Date(naive - offsetAt(instant));
+  return instant.toISOString();
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -41,6 +58,11 @@ Deno.serve(async (req) => {
       .from("gcal_sync_state").select("*").eq("id", 1).maybeSingle();
     const calendarId = stateRow?.calendar_id || "primary";
     let syncToken: string | null = stateRow?.sync_token ?? null;
+    const fullTimeMin = new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString();
+    const fullTimeMax = new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString();
+    const { data: availabilityConfig } = await supabase.from("booking_availability_config")
+      .select("timezone").eq("id", 1).maybeSingle();
+    const calendarTimeZone = availabilityConfig?.timezone || "America/Toronto";
 
     let pageToken: string | undefined;
     let nextSyncToken: string | undefined;
@@ -48,15 +70,14 @@ Deno.serve(async (req) => {
     let usedFallback = false;
     const errors: string[] = [];
 
+    const { error: attemptErr } = await supabase.from("gcal_sync_state")
+      .update({ last_attempt_at: new Date().toISOString() }).eq("id", 1);
+    if (attemptErr) throw attemptErr;
+
     do {
-      const params: Record<string, string> = { singleEvents: "true", maxResults: "250" };
-      if (syncToken && !pageToken) {
-        params.syncToken = syncToken;
-      } else if (!syncToken) {
-        params.timeMin = new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString();
-        params.timeMax = new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString();
-        params.orderBy = "startTime";
-      }
+      const params: Record<string, string> = syncToken
+        ? { singleEvents: "true", maxResults: "250", syncToken }
+        : { singleEvents: "true", maxResults: "250", timeMin: fullTimeMin, timeMax: fullTimeMax, orderBy: "startTime" };
       if (pageToken) params.pageToken = pageToken;
 
       let body: any;
@@ -69,7 +90,9 @@ Deno.serve(async (req) => {
           syncToken = null;
           pageToken = undefined;
           usedFallback = true;
-          await supabase.from("gcal_sync_state").update({ sync_token: null }).eq("id", 1);
+          const { error: clearErr } = await supabase.from("gcal_sync_state")
+            .update({ sync_token: null, sync_token_updated_at: new Date().toISOString() }).eq("id", 1);
+          if (clearErr) throw clearErr;
           continue;
         }
         throw err;
@@ -77,6 +100,7 @@ Deno.serve(async (req) => {
 
       const items = body.items ?? [];
       for (const ev of items) {
+        const stamp = ev.extendedProperties?.private?.lsatu_redemption_id as string | undefined;
         if (ev.status === "cancelled") {
           const { error: cancelErr } = await supabase.from("schedule_events")
             .update({ deleted_at: new Date().toISOString(), status: "cancelled" })
@@ -85,12 +109,21 @@ Deno.serve(async (req) => {
             console.error("gcal-sync-pull cancel update failed", { eventId: ev.id, error: cancelErr.message });
             errors.push(`cancel ${ev.id}: ${cancelErr.message}`);
           }
+          if (stamp) {
+            const { error: reconcileErr } = await supabase.rpc("reconcile_booking_calendar_event", {
+              _redemption_id: stamp, _google_event_id: ev.id,
+              _start_at: new Date().toISOString(), _end_at: new Date().toISOString(),
+              _deleted: true, _meet_url: null,
+            });
+            if (reconcileErr) errors.push(`reconcile delete ${ev.id}: ${reconcileErr.message}`);
+          }
           processed++;
           continue;
         }
         const isAllDay = !!ev.start?.date;
-        const startAt = ev.start?.dateTime ?? (ev.start?.date ? `${ev.start.date}T00:00:00Z` : null);
-        const endAt = ev.end?.dateTime ?? (ev.end?.date ? `${ev.end.date}T00:00:00Z` : null);
+        const eventTimeZone = ev.start?.timeZone || ev.end?.timeZone || calendarTimeZone;
+        const startAt = ev.start?.dateTime ?? (ev.start?.date ? zonedMidnightIso(ev.start.date, eventTimeZone) : null);
+        const endAt = ev.end?.dateTime ?? (ev.end?.date ? zonedMidnightIso(ev.end.date, eventTimeZone) : null);
         if (!startAt || !endAt) continue;
 
         const { error: upsertErr } = await supabase.from("schedule_events").upsert({
@@ -102,16 +135,26 @@ Deno.serve(async (req) => {
           start_at: startAt,
           end_at: endAt,
           all_day: isAllDay,
+          transparency: ev.transparency === "transparent" ? "transparent" : "opaque",
           status: ev.status ?? "confirmed",
           html_link: ev.htmlLink ?? null,
           source: "google",
           etag: ev.etag ?? null,
           last_synced_at: new Date().toISOString(),
           deleted_at: null,
+          meet_url: meetUrlFromEvent(ev),
         }, { onConflict: "google_event_id" });
         if (upsertErr) {
           console.error("gcal-sync-pull upsert failed", { eventId: ev.id, error: upsertErr.message });
           errors.push(`upsert ${ev.id}: ${upsertErr.message}`);
+        }
+        if (stamp) {
+          const { error: reconcileErr } = await supabase.rpc("reconcile_booking_calendar_event", {
+            _redemption_id: stamp, _google_event_id: ev.id,
+            _start_at: startAt, _end_at: endAt, _deleted: false,
+            _meet_url: meetUrlFromEvent(ev),
+          });
+          if (reconcileErr) errors.push(`reconcile move ${ev.id}: ${reconcileErr.message}`);
         }
         processed++;
       }
@@ -131,6 +174,7 @@ Deno.serve(async (req) => {
 
     const { error: stateErr } = await supabase.from("gcal_sync_state").update({
       sync_token: nextSyncToken ?? syncToken ?? null,
+      sync_token_updated_at: nextSyncToken ? new Date().toISOString() : stateRow?.sync_token_updated_at,
       last_synced_at: new Date().toISOString(),
       last_full_sync_at: usedFallback || !syncToken ? new Date().toISOString() : stateRow?.last_full_sync_at,
     }).eq("id", 1);

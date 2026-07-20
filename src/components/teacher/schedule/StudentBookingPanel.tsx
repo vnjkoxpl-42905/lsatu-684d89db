@@ -74,6 +74,24 @@ export default function StudentBookingPanel({
     }
   }
 
+  async function setRemaining() {
+    if (!pass) return;
+    if (!confirm(`Set this student to ${DEFAULT_CREDITS} remaining sessions? Their booking link and history will stay the same.`)) return;
+    setBusy(true);
+    try {
+      await call("update", {
+        pass_id: pass.id,
+        total_credits: pass.used_credits + DEFAULT_CREDITS,
+      });
+      toast.success(`Remaining sessions set to ${DEFAULT_CREDITS}`);
+      await refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Update failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function deleteLink() {
     if (!pass) return;
     if (!confirm(`Delete the booking link for ${studentName || "this student"}? It will stop working immediately and cannot be restored.`)) return;
@@ -146,9 +164,9 @@ export default function StudentBookingPanel({
             <Button size="sm" onClick={copyLink} disabled={busy || !pass.booking_url}>
               <Link2 className="mr-1 h-4 w-4" /> Copy link
             </Button>
-            <Button size="sm" variant="outline" onClick={grant} disabled={busy}>
+            <Button size="sm" variant="outline" onClick={setRemaining} disabled={busy}>
               {busy ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
-              Reset to {DEFAULT_CREDITS} sessions
+              Set remaining to {DEFAULT_CREDITS}
             </Button>
             <Button size="sm" variant="ghost" className="text-zinc-400 hover:text-zinc-200" onClick={regenerate} disabled={busy}>
               <RefreshCw className="mr-1 h-4 w-4" /> New link
