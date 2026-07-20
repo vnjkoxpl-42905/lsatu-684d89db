@@ -629,6 +629,7 @@ export type Database = {
           status: string
           student_email_snapshot: string | null
           student_name_snapshot: string | null
+          student_note: string | null
           updated_at: string
         }
         Insert: {
@@ -650,6 +651,7 @@ export type Database = {
           status: string
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
+          student_note?: string | null
           updated_at?: string
         }
         Update: {
@@ -671,6 +673,7 @@ export type Database = {
           status?: string
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
+          student_note?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -1169,47 +1172,71 @@ export type Database = {
       external_work_uploads: {
         Row: {
           applied_to_analytics: boolean
+          booking_idempotency_key: string | null
+          booking_pass_id: string | null
           created_at: string
           file_name: string
           file_type: string | null
           id: string
           processing_status: string
+          redemption_id: string | null
           reviewed_at: string | null
           source_platform: string | null
           storage_path: string
-          student_id: string
+          student_id: string | null
           upload_type: string
-          uploaded_by: string
+          uploaded_by: string | null
         }
         Insert: {
           applied_to_analytics?: boolean
+          booking_idempotency_key?: string | null
+          booking_pass_id?: string | null
           created_at?: string
           file_name: string
           file_type?: string | null
           id?: string
           processing_status?: string
+          redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
           storage_path: string
-          student_id: string
+          student_id?: string | null
           upload_type?: string
-          uploaded_by: string
+          uploaded_by?: string | null
         }
         Update: {
           applied_to_analytics?: boolean
+          booking_idempotency_key?: string | null
+          booking_pass_id?: string | null
           created_at?: string
           file_name?: string
           file_type?: string | null
           id?: string
           processing_status?: string
+          redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
           storage_path?: string
-          student_id?: string
+          student_id?: string | null
           upload_type?: string
-          uploaded_by?: string
+          uploaded_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "external_work_uploads_booking_pass_id_fkey"
+            columns: ["booking_pass_id"]
+            isOneToOne: false
+            referencedRelation: "booking_passes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_work_uploads_redemption_id_fkey"
+            columns: ["redemption_id"]
+            isOneToOne: false
+            referencedRelation: "booking_pass_redemptions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       flagged_questions: {
         Row: {
