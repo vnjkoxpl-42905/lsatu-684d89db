@@ -3749,78 +3749,42 @@ export type Database = {
       get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_student_booking: { Args: { _auth_user_id: string }; Returns: Json }
       get_student_email: { Args: { _student_id: string }; Returns: string }
-      grant_booking_access:
-        | {
-            Args: {
-              _created_by: string
-              _expires_at: string
-              _session_length_minutes: number
-              _student_email: string
-              _student_id: string
-              _student_name: string
-              _token_hash: string
-              _total_credits: number
-            }
-            Returns: {
-              booking_slug: string | null
-              created_at: string
-              created_by: string
-              expires_at: string | null
-              id: string
-              notes: string | null
-              session_length_minutes: number
-              status: string
-              student_email: string | null
-              student_id: string | null
-              student_name: string | null
-              token_hash: string
-              total_credits: number
-              updated_at: string
-              used_credits: number
-            }
-            SetofOptions: {
-              from: "*"
-              to: "booking_passes"
-              isOneToOne: true
-              isSetofReturn: false
-            }
-          }
-        | {
-            Args: {
-              _booking_slug: string
-              _created_by: string
-              _expires_at: string
-              _session_length_minutes: number
-              _student_email: string
-              _student_id: string
-              _student_name: string
-              _token_hash: string
-              _total_credits: number
-            }
-            Returns: {
-              booking_slug: string | null
-              created_at: string
-              created_by: string
-              expires_at: string | null
-              id: string
-              notes: string | null
-              session_length_minutes: number
-              status: string
-              student_email: string | null
-              student_id: string | null
-              student_name: string | null
-              token_hash: string
-              total_credits: number
-              updated_at: string
-              used_credits: number
-            }
-            SetofOptions: {
-              from: "*"
-              to: "booking_passes"
-              isOneToOne: true
-              isSetofReturn: false
-            }
-          }
+      grant_booking_access: {
+        Args: {
+          _booking_slug: string
+          _created_by: string
+          _expires_at: string
+          _session_length_minutes: number
+          _student_email: string
+          _student_id: string
+          _student_name: string
+          _token_hash: string
+          _total_credits: number
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
