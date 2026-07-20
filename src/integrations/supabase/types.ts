@@ -585,6 +585,47 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_calendar_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          details: Json
+          id: string
+          redemption_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          details?: Json
+          id?: string
+          redemption_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          details?: Json
+          id?: string
+          redemption_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_calendar_alerts_redemption_id_fkey"
+            columns: ["redemption_id"]
+            isOneToOne: false
+            referencedRelation: "booking_pass_redemptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       booking_link_hits: {
         Row: {
           action: string
@@ -612,7 +653,16 @@ export type Database = {
       booking_pass_redemptions: {
         Row: {
           booking_pass_id: string
+          calendar_action: string
+          calendar_attempts: number
+          calendar_error: string | null
+          calendar_last_synced_at: string | null
+          calendar_lease_until: string | null
+          calendar_status: string
+          cancelled_at: string | null
+          cancelled_by: string | null
           created_at: string
+          credit_refunded: boolean
           end_at: string
           gcal_attempts: number
           gcal_error: string | null
@@ -630,11 +680,22 @@ export type Database = {
           student_email_snapshot: string | null
           student_name_snapshot: string | null
           student_note: string | null
+          submission_error: string | null
+          submission_status: string
           updated_at: string
         }
         Insert: {
           booking_pass_id: string
+          calendar_action?: string
+          calendar_attempts?: number
+          calendar_error?: string | null
+          calendar_last_synced_at?: string | null
+          calendar_lease_until?: string | null
+          calendar_status?: string
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           created_at?: string
+          credit_refunded?: boolean
           end_at: string
           gcal_attempts?: number
           gcal_error?: string | null
@@ -652,11 +713,22 @@ export type Database = {
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
           student_note?: string | null
+          submission_error?: string | null
+          submission_status?: string
           updated_at?: string
         }
         Update: {
           booking_pass_id?: string
+          calendar_action?: string
+          calendar_attempts?: number
+          calendar_error?: string | null
+          calendar_last_synced_at?: string | null
+          calendar_lease_until?: string | null
+          calendar_status?: string
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           created_at?: string
+          credit_refunded?: boolean
           end_at?: string
           gcal_attempts?: number
           gcal_error?: string | null
@@ -674,6 +746,8 @@ export type Database = {
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
           student_note?: string | null
+          submission_error?: string | null
+          submission_status?: string
           updated_at?: string
         }
         Relationships: [
@@ -1174,6 +1248,8 @@ export type Database = {
           applied_to_analytics: boolean
           booking_idempotency_key: string | null
           booking_pass_id: string | null
+          cleanup_claimed_at: string | null
+          client_upload_id: string | null
           created_at: string
           file_name: string
           file_type: string | null
@@ -1191,6 +1267,8 @@ export type Database = {
           applied_to_analytics?: boolean
           booking_idempotency_key?: string | null
           booking_pass_id?: string | null
+          cleanup_claimed_at?: string | null
+          client_upload_id?: string | null
           created_at?: string
           file_name: string
           file_type?: string | null
@@ -1208,6 +1286,8 @@ export type Database = {
           applied_to_analytics?: boolean
           booking_idempotency_key?: string | null
           booking_pass_id?: string | null
+          cleanup_claimed_at?: string | null
+          client_upload_id?: string | null
           created_at?: string
           file_name?: string
           file_type?: string | null
@@ -1318,25 +1398,34 @@ export type Database = {
       }
       gcal_sync_state: {
         Row: {
+          busy_calendar_ids: string[]
           calendar_id: string
           id: number
+          last_attempt_at: string | null
           last_full_sync_at: string | null
           last_synced_at: string | null
           sync_token: string | null
+          sync_token_updated_at: string | null
         }
         Insert: {
+          busy_calendar_ids?: string[]
           calendar_id?: string
           id?: number
+          last_attempt_at?: string | null
           last_full_sync_at?: string | null
           last_synced_at?: string | null
           sync_token?: string | null
+          sync_token_updated_at?: string | null
         }
         Update: {
+          busy_calendar_ids?: string[]
           calendar_id?: string
           id?: number
+          last_attempt_at?: string | null
           last_full_sync_at?: string | null
           last_synced_at?: string | null
           sync_token?: string | null
+          sync_token_updated_at?: string | null
         }
         Relationships: []
       }
@@ -2328,6 +2417,7 @@ export type Database = {
           start_at: string
           status: string
           title: string
+          transparency: string
           updated_at: string
         }
         Insert: {
@@ -2349,6 +2439,7 @@ export type Database = {
           start_at: string
           status?: string
           title?: string
+          transparency?: string
           updated_at?: string
         }
         Update: {
@@ -2370,6 +2461,7 @@ export type Database = {
           start_at?: string
           status?: string
           title?: string
+          transparency?: string
           updated_at?: string
         }
         Relationships: []
@@ -3632,6 +3724,52 @@ export type Database = {
         Args: { _action: string; _ip_hash: string; _slug: string }
         Returns: number
       }
+      cancel_booking_redemption: {
+        Args: { _actor_id?: string; _redemption_id: string; _refund?: boolean }
+        Returns: Json
+      }
+      claim_booking_calendar_actions: {
+        Args: { _lease_seconds?: number; _limit?: number }
+        Returns: {
+          booking_pass_id: string
+          calendar_action: string
+          calendar_attempts: number
+          calendar_error: string | null
+          calendar_last_synced_at: string | null
+          calendar_lease_until: string | null
+          calendar_status: string
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          credit_refunded: boolean
+          end_at: string
+          gcal_attempts: number
+          gcal_error: string | null
+          gcal_lease_until: string | null
+          gcal_state: string
+          google_event_id: string | null
+          id: string
+          idempotency_key: string
+          meet_url: string | null
+          needs_gcal_sync: boolean
+          reschedule_count: number
+          schedule_event_id: string | null
+          start_at: string
+          status: string
+          student_email_snapshot: string | null
+          student_name_snapshot: string | null
+          student_note: string | null
+          submission_error: string | null
+          submission_status: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "booking_pass_redemptions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       create_manual_booking_pass: {
         Args: {
           _booking_slug: string
@@ -3706,6 +3844,7 @@ export type Database = {
         }[]
       }
       get_booking_availability: { Args: never; Returns: Json }
+      get_booking_health: { Args: never; Returns: Json }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
         Returns: {
@@ -3823,6 +3962,39 @@ export type Database = {
         Returns: boolean
       }
       is_strong_booking_slug: { Args: { _slug: string }; Returns: boolean }
+      manage_booking_pass: {
+        Args: {
+          _action: string
+          _clear_expiry?: boolean
+          _credits?: number
+          _expires_at?: string
+          _pass_id: string
+          _session_length_minutes?: number
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       match_lsatu_content: {
         Args: {
           kind_filter?: string[]
@@ -3861,6 +4033,17 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      reconcile_booking_calendar_event: {
+        Args: {
+          _deleted?: boolean
+          _end_at: string
+          _google_event_id: string
+          _meet_url?: string
+          _redemption_id: string
+          _start_at: string
+        }
+        Returns: Json
       }
       redeem_booking_pass: {
         Args: {
@@ -3994,6 +4177,13 @@ export type Database = {
       set_booking_availability: {
         Args: { _ranges: Json; _timezone: string }
         Returns: Json
+      }
+      take_abandoned_booking_uploads: {
+        Args: { _limit?: number; _older_than?: string }
+        Returns: {
+          id: string
+          storage_path: string
+        }[]
       }
     }
     Enums: {
