@@ -66,7 +66,7 @@ export function useStudentExternalUploads() {
         .eq('student_id', user.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data ?? []) as ExternalWorkUpload[];
+      return (data ?? []) as unknown as ExternalWorkUpload[];
     },
     // While a recent upload is still parsing, poll so the status chip flips
     // from Processing → Imported / Needs review without a manual refresh.
@@ -114,12 +114,12 @@ export function useStudentExternalUploads() {
         // Kick off auto-parse. Do not block the return on it — the file is
         // safely stored either way — but refresh status when it settles.
         supabase.functions
-          .invoke('parse-external-work', { body: { uploadId: (data as ExternalWorkUpload).id } })
+          .invoke('parse-external-work', { body: { uploadId: (data as unknown as ExternalWorkUpload).id } })
           .catch((err) => console.error('parse-external-work invoke failed', err))
           .finally(() => {
             queryClient.invalidateQueries({ queryKey: ['external-uploads-mine'] });
           });
-        return data as ExternalWorkUpload;
+        return data as unknown as ExternalWorkUpload;
       } finally {
         setSubmitting(false);
       }
@@ -147,7 +147,7 @@ export function useAdminUploadsQueue(opts: { all?: boolean } = {}) {
       }
       const { data, error } = await q.order('created_at', { ascending: false });
       if (error) throw error;
-      return (data ?? []) as ExternalWorkUpload[];
+      return (data ?? []) as unknown as ExternalWorkUpload[];
     },
   });
 }
@@ -163,7 +163,7 @@ export function useStudentExternalUploadsForStudent(studentId: string | null) {
         .eq('student_id', studentId)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data ?? []) as ExternalWorkUpload[];
+      return (data ?? []) as unknown as ExternalWorkUpload[];
     },
   });
 }

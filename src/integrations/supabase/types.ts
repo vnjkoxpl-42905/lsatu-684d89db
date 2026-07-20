@@ -629,6 +629,7 @@ export type Database = {
           status: string
           student_email_snapshot: string | null
           student_name_snapshot: string | null
+          student_note: string | null
           updated_at: string
         }
         Insert: {
@@ -650,6 +651,7 @@ export type Database = {
           status: string
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
+          student_note?: string | null
           updated_at?: string
         }
         Update: {
@@ -671,6 +673,7 @@ export type Database = {
           status?: string
           student_email_snapshot?: string | null
           student_name_snapshot?: string | null
+          student_note?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -1169,47 +1172,71 @@ export type Database = {
       external_work_uploads: {
         Row: {
           applied_to_analytics: boolean
+          booking_idempotency_key: string | null
+          booking_pass_id: string | null
           created_at: string
           file_name: string
           file_type: string | null
           id: string
           processing_status: string
+          redemption_id: string | null
           reviewed_at: string | null
           source_platform: string | null
           storage_path: string
-          student_id: string
+          student_id: string | null
           upload_type: string
-          uploaded_by: string
+          uploaded_by: string | null
         }
         Insert: {
           applied_to_analytics?: boolean
+          booking_idempotency_key?: string | null
+          booking_pass_id?: string | null
           created_at?: string
           file_name: string
           file_type?: string | null
           id?: string
           processing_status?: string
+          redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
           storage_path: string
-          student_id: string
+          student_id?: string | null
           upload_type?: string
-          uploaded_by: string
+          uploaded_by?: string | null
         }
         Update: {
           applied_to_analytics?: boolean
+          booking_idempotency_key?: string | null
+          booking_pass_id?: string | null
           created_at?: string
           file_name?: string
           file_type?: string | null
           id?: string
           processing_status?: string
+          redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
           storage_path?: string
-          student_id?: string
+          student_id?: string | null
           upload_type?: string
-          uploaded_by?: string
+          uploaded_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "external_work_uploads_booking_pass_id_fkey"
+            columns: ["booking_pass_id"]
+            isOneToOne: false
+            referencedRelation: "booking_passes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_work_uploads_redemption_id_fkey"
+            columns: ["redemption_id"]
+            isOneToOne: false
+            referencedRelation: "booking_pass_redemptions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       flagged_questions: {
         Row: {
@@ -3605,6 +3632,42 @@ export type Database = {
         Args: { _action: string; _ip_hash: string; _slug: string }
         Returns: number
       }
+      create_manual_booking_pass: {
+        Args: {
+          _booking_slug: string
+          _created_by: string
+          _expires_at: string
+          _notes: string
+          _session_length_minutes: number
+          _student_email: string
+          _student_name: string
+          _token_hash: string
+          _total_credits: number
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -3627,6 +3690,10 @@ export type Database = {
           title: string
           url: string
         }[]
+      }
+      generate_strong_booking_slug: {
+        Args: { _email: string; _name: string }
+        Returns: string
       }
       get_assignment_counts_per_student: {
         Args: never
@@ -3682,78 +3749,42 @@ export type Database = {
       get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_student_booking: { Args: { _auth_user_id: string }; Returns: Json }
       get_student_email: { Args: { _student_id: string }; Returns: string }
-      grant_booking_access:
-        | {
-            Args: {
-              _created_by: string
-              _expires_at: string
-              _session_length_minutes: number
-              _student_email: string
-              _student_id: string
-              _student_name: string
-              _token_hash: string
-              _total_credits: number
-            }
-            Returns: {
-              booking_slug: string | null
-              created_at: string
-              created_by: string
-              expires_at: string | null
-              id: string
-              notes: string | null
-              session_length_minutes: number
-              status: string
-              student_email: string | null
-              student_id: string | null
-              student_name: string | null
-              token_hash: string
-              total_credits: number
-              updated_at: string
-              used_credits: number
-            }
-            SetofOptions: {
-              from: "*"
-              to: "booking_passes"
-              isOneToOne: true
-              isSetofReturn: false
-            }
-          }
-        | {
-            Args: {
-              _booking_slug: string
-              _created_by: string
-              _expires_at: string
-              _session_length_minutes: number
-              _student_email: string
-              _student_id: string
-              _student_name: string
-              _token_hash: string
-              _total_credits: number
-            }
-            Returns: {
-              booking_slug: string | null
-              created_at: string
-              created_by: string
-              expires_at: string | null
-              id: string
-              notes: string | null
-              session_length_minutes: number
-              status: string
-              student_email: string | null
-              student_id: string | null
-              student_name: string | null
-              token_hash: string
-              total_credits: number
-              updated_at: string
-              used_credits: number
-            }
-            SetofOptions: {
-              from: "*"
-              to: "booking_passes"
-              isOneToOne: true
-              isSetofReturn: false
-            }
-          }
+      grant_booking_access: {
+        Args: {
+          _booking_slug: string
+          _created_by: string
+          _expires_at: string
+          _session_length_minutes: number
+          _student_email: string
+          _student_id: string
+          _student_name: string
+          _token_hash: string
+          _total_credits: number
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -3791,6 +3822,7 @@ export type Database = {
         Args: { _len: number; _start_at: string }
         Returns: boolean
       }
+      is_strong_booking_slug: { Args: { _slug: string }; Returns: boolean }
       match_lsatu_content: {
         Args: {
           kind_filter?: string[]
@@ -3876,6 +3908,10 @@ export type Database = {
         }
         Returns: string
       }
+      regenerate_manual_booking_link: {
+        Args: { _new_slug: string; _new_token_hash: string; _pass_id: string }
+        Returns: string
+      }
       resolve_booking_link_full: {
         Args: { _slug: string }
         Returns: {
@@ -3930,6 +3966,18 @@ export type Database = {
           title: string
           url: string
           vector_similarity: number
+        }[]
+      }
+      rotate_weak_booking_slugs: {
+        Args: { _apply?: boolean }
+        Returns: {
+          applied: boolean
+          new_slug: string
+          old_slug: string
+          pass_id: string
+          student_email: string
+          student_id: string
+          student_name: string
         }[]
       }
       search_teaching_assets: {
