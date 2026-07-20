@@ -62,6 +62,7 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 - Run `npm run build` before wrapping up significant code or documentation work.
 - If tests are relevant to the change, run them too.
 - After completing a change, stage the intended files, commit with a concise message, and push to `origin main` unless the user says otherwise.
+- **Push via `.claude/safe-push.sh`, not raw `git push`.** Lovable auto-commits to `main` mid-session, so a raw push can be rejected or race a concurrent commit. The script fetches, merges `origin/main` if it diverged (never rebases, never force-pushes), then pushes. It also gates on `npm run typecheck`.
 - Existing Codex repo hooks live in `.codex/hooks.json`; preserve them unless the task explicitly requires a hook change.
 
 ## Session Protocol (second brain)
