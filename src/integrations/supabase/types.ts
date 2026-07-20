@@ -3632,6 +3632,42 @@ export type Database = {
         Args: { _action: string; _ip_hash: string; _slug: string }
         Returns: number
       }
+      create_manual_booking_pass: {
+        Args: {
+          _booking_slug: string
+          _created_by: string
+          _expires_at: string
+          _notes: string
+          _session_length_minutes: number
+          _student_email: string
+          _student_name: string
+          _token_hash: string
+          _total_credits: number
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -3654,6 +3690,10 @@ export type Database = {
           title: string
           url: string
         }[]
+      }
+      generate_strong_booking_slug: {
+        Args: { _email: string; _name: string }
+        Returns: string
       }
       get_assignment_counts_per_student: {
         Args: never
@@ -3818,6 +3858,7 @@ export type Database = {
         Args: { _len: number; _start_at: string }
         Returns: boolean
       }
+      is_strong_booking_slug: { Args: { _slug: string }; Returns: boolean }
       match_lsatu_content: {
         Args: {
           kind_filter?: string[]
@@ -3903,6 +3944,10 @@ export type Database = {
         }
         Returns: string
       }
+      regenerate_manual_booking_link: {
+        Args: { _new_slug: string; _new_token_hash: string; _pass_id: string }
+        Returns: string
+      }
       resolve_booking_link_full: {
         Args: { _slug: string }
         Returns: {
@@ -3957,6 +4002,18 @@ export type Database = {
           title: string
           url: string
           vector_similarity: number
+        }[]
+      }
+      rotate_weak_booking_slugs: {
+        Args: { _apply?: boolean }
+        Returns: {
+          applied: boolean
+          new_slug: string
+          old_slug: string
+          pass_id: string
+          student_email: string
+          student_id: string
+          student_name: string
         }[]
       }
       search_teaching_assets: {
