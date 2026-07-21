@@ -1258,6 +1258,7 @@ export type Database = {
           redemption_id: string | null
           reviewed_at: string | null
           source_platform: string | null
+          storage_bucket: string
           storage_path: string
           student_id: string | null
           upload_type: string
@@ -1277,6 +1278,7 @@ export type Database = {
           redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
+          storage_bucket?: string
           storage_path: string
           student_id?: string | null
           upload_type?: string
@@ -1296,6 +1298,7 @@ export type Database = {
           redemption_id?: string | null
           reviewed_at?: string | null
           source_platform?: string | null
+          storage_bucket?: string
           storage_path?: string
           student_id?: string | null
           upload_type?: string

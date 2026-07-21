@@ -45,7 +45,14 @@ export function classifyInboxAttachmentMime(mimeType: string | null | undefined)
   return 'file';
 }
 
-export function buildExternalWorkUploadInsert(input: ExternalWorkUploadInsertInput) {
+export interface ExternalWorkUploadInsertOptions {
+  storageBucket?: string;
+}
+
+export function buildExternalWorkUploadInsert(
+  input: ExternalWorkUploadInsertInput,
+  options: ExternalWorkUploadInsertOptions = {},
+) {
   if (input.senderIsAdmin) return null;
   return {
     student_id: input.senderId,
@@ -53,6 +60,7 @@ export function buildExternalWorkUploadInsert(input: ExternalWorkUploadInsertInp
     file_name: input.fileName,
     file_type: input.fileType,
     storage_path: input.storagePath,
+    storage_bucket: options.storageBucket ?? 'external-work-uploads',
     upload_type: 'other' as const,
     source_platform: 'inbox',
     processing_status: 'uploaded' as const,

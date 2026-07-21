@@ -292,13 +292,32 @@ export function MessageComposer({
         });
         if (attErr) throw attErr;
 
+        // For non-admin (student) uploads, mirror the file into a per-student
+        // folder in the private `inbox-uploads` bucket. This gives each student
+        // their own archive folder that also feeds the admin review queue via
+        // `external_work_uploads`.
+        let mirrorBucket = 'message-attachments';
+        let mirrorPath = path;
+        if (!isAdmin && classifyInboxAttachmentMime(mimeType) === 'image') {
+          const inboxPath = `${user.id}/${msg.id}-${safeName}`;
+          const { error: copyErr } = await supabase.storage
+            .from('message-attachments')
+            .copy(path, inboxPath, { destinationBucket: 'inbox-uploads' } as { destinationBucket: string });
+          if (copyErr) {
+            console.warn('[MessageComposer] inbox-uploads mirror copy failed', copyErr);
+          } else {
+            mirrorBucket = 'inbox-uploads';
+            mirrorPath = inboxPath;
+          }
+        }
+
         const externalUploadRow = buildExternalWorkUploadInsert({
           senderId: user.id,
           senderIsAdmin: isAdmin,
           fileName: file.name,
           fileType: mimeType,
-          storagePath: path,
-        });
+          storagePath: mirrorPath,
+        }, { storageBucket: mirrorBucket });
         if (externalUploadRow) {
           const { error: mirrorErr } = await supabase.from('external_work_uploads').insert(externalUploadRow);
           if (mirrorErr) {
