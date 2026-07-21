@@ -167,7 +167,7 @@ export default function TeacherUploads() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => openSigned(u.storage_path)}
+                  onClick={() => openSigned(u.storage_path, u.storage_bucket)}
                   className="h-7 px-2 text-xs"
                 >
                   <ExternalLink className="w-3 h-3 mr-1.5" />
