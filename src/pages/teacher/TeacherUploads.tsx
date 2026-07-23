@@ -82,9 +82,9 @@ export default function TeacherUploads() {
     }
   };
 
-  const openSigned = async (path: string) => {
+  const openSigned = async (path: string, bucket?: string | null) => {
     const { data, error } = await supabase.storage
-      .from('external-work-uploads')
+      .from(bucket || 'external-work-uploads')
       .createSignedUrl(path, 60);
     if (error || !data?.signedUrl) {
       toast.error('Could not open');
@@ -167,7 +167,7 @@ export default function TeacherUploads() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => openSigned(u.storage_path)}
+                  onClick={() => openSigned(u.storage_path, u.storage_bucket)}
                   className="h-7 px-2 text-xs"
                 >
                   <ExternalLink className="w-3 h-3 mr-1.5" />

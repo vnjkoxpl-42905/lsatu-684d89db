@@ -216,8 +216,9 @@ serve(async (req) => {
       .eq("id", uploadId);
 
     // Download the file and build a base64 data URL for the vision model.
+    const uploadBucket = (upload as { storage_bucket?: string | null }).storage_bucket || BUCKET;
     const { data: blob, error: dlErr } = await admin.storage
-      .from(BUCKET)
+      .from(uploadBucket)
       .download(upload.storage_path);
     if (dlErr || !blob) throw new Error(`file_download_failed: ${dlErr?.message ?? "no data"}`);
     const bytes = new Uint8Array(await blob.arrayBuffer());

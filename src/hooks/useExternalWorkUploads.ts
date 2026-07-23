@@ -19,6 +19,7 @@ export interface ExternalWorkUpload {
   file_name: string;
   file_type: string | null;
   storage_path: string;
+  storage_bucket?: string | null;
   source_platform: string | null;
   upload_type: UploadType;
   processing_status:
