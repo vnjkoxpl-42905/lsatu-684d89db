@@ -3,6 +3,7 @@ import { FileText, Download, Cloud, ExternalLink, Eye, Image as ImageIcon } from
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { MessageAttachment } from '@/hooks/useInbox';
+import { HELP_SCREENSHOT_FILE_NAME } from '@/lib/inboxAttachments';
 import { cn } from '@/lib/utils';
 
 function formatSize(bytes: number) {
@@ -112,11 +113,13 @@ function ImageAttachment({
         </div>
       ) : null}
 
-      <div className="flex items-center gap-1.5 border-t border-[#eadfcf] px-3 py-2 text-[11px] font-bold text-[#6f6253]">
-        <ImageIcon className="h-3.5 w-3.5 text-[#8b5b42]" />
-        <span className="truncate">{attachment.file_name}</span>
-        <span className="shrink-0 text-[#a89a88]">· {formatSize(attachment.file_size)}</span>
-      </div>
+      {attachment.file_name !== HELP_SCREENSHOT_FILE_NAME ? (
+        <div className="flex items-center gap-1.5 border-t border-[#eadfcf] px-3 py-2 text-[11px] font-bold text-[#6f6253]">
+          <ImageIcon className="h-3.5 w-3.5 text-[#8b5b42]" />
+          <span className="truncate">{attachment.file_name}</span>
+          <span className="shrink-0 text-[#a89a88]">· {formatSize(attachment.file_size)}</span>
+        </div>
+      ) : null}
     </div>
   );
 }

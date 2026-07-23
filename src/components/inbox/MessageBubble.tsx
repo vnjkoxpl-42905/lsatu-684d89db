@@ -4,7 +4,13 @@ import { Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AttachmentCard } from './AttachmentCard';
-import { isVisibleHelpAttachment } from '@/lib/inboxAttachments';
+import { ScreenshotContextCard } from './ScreenshotContextCard';
+import {
+  isVisibleHelpAttachment,
+  findHelpContextAttachment,
+  findHelpScreenshotAttachment,
+  stripHelpContextFromBody,
+} from '@/lib/inboxAttachments';
 import type { Message, MessageAttachment } from '@/hooks/useInbox';
 import type { MessageCluster } from './messageClusters';
 import {
@@ -174,10 +180,22 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
 
           <div className="flex flex-col gap-2">
             {cluster.messages.map((message) => {
-              const hasBody = !!message.body;
+              // Help-flow screenshot messages carry a matched image + hidden
+              // context.json pair. Render them as a single polished card and
+              // strip the (legacy) leaked context out of the body — the route
+              // comes from the structured snapshot, not scraped body text.
+              const helpContext = findHelpContextAttachment(message.attachments);
+              const helpScreenshot = findHelpScreenshotAttachment(message.attachments);
+              const isHelpScreenshot = !!helpContext && !!helpScreenshot;
+
+              const displayBodyText = isHelpScreenshot
+                ? stripHelpContextFromBody(message.body)
+                : message.body;
+              const hasBody = !!displayBodyText;
               const visibleAttachments = message.attachments.filter(isVisibleHelpAttachment);
               const hasAttachments = visibleAttachments.length > 0;
-              const routeAction = hasBody ? extractRouteAction(message.body) : null;
+              const routeAction =
+                hasBody && !isHelpScreenshot ? extractRouteAction(displayBodyText) : null;
               const canDelete = canDeleteMessage?.(message) ?? false;
 
               return (
@@ -213,7 +231,7 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                             : 'max-w-[620px] border border-[#e4e4e7] bg-white text-[#1F1B16]',
                         )}
                       >
-                        {renderBody(routeAction?.displayBody || message.body, isInstructor)}
+                        {renderBody(routeAction?.displayBody || displayBodyText, isInstructor)}
                         {routeAction?.route ? (
                           <button
                             type="button"
@@ -232,7 +250,19 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                     </div>
                   ) : null}
 
-                  {hasAttachments ? (
+                  {isHelpScreenshot ? (
+                    <div
+                      className={cn(
+                        'flex w-full max-w-full flex-col gap-3',
+                        isInstructor ? 'items-end' : 'items-start',
+                      )}
+                    >
+                      <ScreenshotContextCard
+                        image={helpScreenshot}
+                        context={helpContext}
+                      />
+                    </div>
+                  ) : hasAttachments ? (
                     <div
                       className={cn(
                         'flex w-full max-w-full flex-col gap-3',

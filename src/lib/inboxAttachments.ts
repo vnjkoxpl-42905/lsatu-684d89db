@@ -39,6 +39,40 @@ export function isVisibleHelpAttachment(attachment: { file_name: string }): bool
   return attachment.file_name !== 'context.json';
 }
 
+// The Help flow emits a matched pair on one message: a `help-screenshot.png`
+// image plus a hidden `context.json` snapshot. When both are present we render
+// a single polished screenshot context card instead of a bare file/image card.
+export const HELP_SCREENSHOT_FILE_NAME = 'help-screenshot.png';
+export const HELP_CONTEXT_FILE_NAME = 'context.json';
+
+export function findHelpContextAttachment<T extends { file_name: string }>(
+  attachments: T[],
+): T | undefined {
+  return attachments.find((a) => a.file_name === HELP_CONTEXT_FILE_NAME);
+}
+
+export function findHelpScreenshotAttachment<
+  T extends { file_name: string; mime_type?: string | null },
+>(attachments: T[]): T | undefined {
+  return attachments.find(
+    (a) =>
+      a.file_name === HELP_SCREENSHOT_FILE_NAME &&
+      (a.mime_type ?? '').startsWith('image/'),
+  );
+}
+
+// Strip the legacy "— context —" tail that older help messages concatenated
+// into the body, plus the bare "[Help request]" placeholder. New messages send
+// just the student's text, so this only cleans historical rows.
+export function stripHelpContextFromBody(body: string): string {
+  if (!body) return '';
+  let text = body;
+  const marker = text.indexOf('\n\n— context —');
+  if (marker >= 0) text = text.slice(0, marker);
+  text = text.replace(/^\[Help request\]\s*/, '');
+  return text.trim();
+}
+
 export function classifyInboxAttachmentMime(mimeType: string | null | undefined): InboxAttachmentPreviewKind {
   if (mimeType === 'application/pdf') return 'pdf';
   if ((mimeType ?? '').startsWith('image/')) return 'image';

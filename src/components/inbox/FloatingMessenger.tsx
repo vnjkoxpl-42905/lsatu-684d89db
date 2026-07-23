@@ -28,7 +28,7 @@ import { ConversationView } from './ConversationView';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { isParticipantOnline } from './inboxPresence';
-import { setMessengerOpen } from './messengerOpenBus';
+import { setMessengerOpen, useBottomRightSurfaceOpen } from './messengerOpenBus';
 
 const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub', '/topics/abstract'];
 
@@ -85,6 +85,7 @@ export function FloatingMessenger() {
   );
 
   const reducedMotion = useReducedMotion();
+  const anySurfaceOpen = useBottomRightSurfaceOpen();
 
   // Publish open state so the proactive StudentCornerBubble can stay quiet
   // while the full messenger is on screen.
@@ -134,8 +135,14 @@ export function FloatingMessenger() {
 
   const showStudentEmpty = !active && !loading && conversations.length === 0;
 
+  // Hide the launcher whenever the panel itself is open, or any other
+  // bottom-right surface (the Help sheet) is open — never a launcher on top of
+  // an open surface, and never two launchers overlapping.
+  const showLauncher = !open && !anySurfaceOpen;
+
   return (
     <>
+      {showLauncher && (
       <button
         type="button"
         onClick={() => handleOpenChange(!open)}
@@ -168,6 +175,7 @@ export function FloatingMessenger() {
           />
         )}
       </button>
+      )}
 
       <AnimatePresence>
         {open && (

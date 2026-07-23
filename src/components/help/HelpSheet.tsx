@@ -15,13 +15,19 @@ import { supabase } from '@/integrations/supabase/client';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { useConversationMessages } from '@/hooks/useInbox';
 import { AttachmentCard } from '@/components/inbox/AttachmentCard';
+import { ScreenshotContextCard } from '@/components/inbox/ScreenshotContextCard';
 import {
   getHelpSnapshot,
-  formatHelpSnapshot,
+  helpSnapshotHeading,
   type HelpSnapshot,
 } from '@/lib/helpContextBus';
 import { captureViewportPng } from '@/lib/helpScreenshot';
-import { isVisibleHelpAttachment } from '@/lib/inboxAttachments';
+import {
+  isVisibleHelpAttachment,
+  findHelpContextAttachment,
+  findHelpScreenshotAttachment,
+  stripHelpContextFromBody,
+} from '@/lib/inboxAttachments';
 import { cn } from '@/lib/utils';
 
 // Item A — student-facing Help sheet. Replaces the old single-shot
@@ -31,14 +37,6 @@ interface HelpSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onReplayTour?: () => void;
-}
-
-function helpBubbleBody(body: string, hasImageAttachment: boolean) {
-  if (!hasImageAttachment) return body;
-  if (body.trim().startsWith('[Help request]')) {
-    return body.replace('[Help request]', 'Screenshot attached').trim();
-  }
-  return body;
 }
 
 function LocalScreenshotPreview({ file }: { file: File }) {
@@ -138,10 +136,10 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
     setSending(true);
     try {
       const snap = snapshot ?? getHelpSnapshot();
-      const composed =
-        text.length > 0
-          ? `${text}\n\n— context —\n${formatHelpSnapshot(snap)}`
-          : `[Help request]\n\n— context —\n${formatHelpSnapshot(snap)}`;
+      // Send just the student's words. The page context rides along as the
+      // structured context.json attachment below (rendered as a clean card in
+      // the thread) rather than as raw text baked into the message body.
+      const composed = text.length > 0 ? text : '[Help request]';
 
       const { data: msg, error: msgErr } = await supabase
         .from('messages')
@@ -235,24 +233,33 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
           ) : (
             messages.slice(-30).map((m) => {
               const mine = m.sender_id === user?.id;
+              const helpContext = findHelpContextAttachment(m.attachments);
+              const helpScreenshot = findHelpScreenshotAttachment(m.attachments);
+              const isHelpScreenshot = !!helpContext && !!helpScreenshot;
               const visibleAttachments = m.attachments.filter(isVisibleHelpAttachment);
-              const hasImageAttachment = visibleAttachments.some((a) =>
-                (a.mime_type ?? '').startsWith('image/'),
-              );
+              const bodyText = isHelpScreenshot
+                ? stripHelpContextFromBody(m.body)
+                : m.body;
               return (
                 <div key={m.id} className={cn('flex', mine ? 'justify-end' : 'justify-start')}>
                   <div className={cn('max-w-[88%] space-y-2', mine ? 'items-end' : 'items-start')}>
-                    <div
-                      className={cn(
-                        'rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words',
-                        mine
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted text-foreground',
-                      )}
-                    >
-                      {helpBubbleBody(m.body, hasImageAttachment)}
-                    </div>
-                    {visibleAttachments.length > 0 && (
+                    {bodyText ? (
+                      <div
+                        className={cn(
+                          'rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words',
+                          mine
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted text-foreground',
+                        )}
+                      >
+                        {bodyText}
+                      </div>
+                    ) : null}
+                    {isHelpScreenshot ? (
+                      <div className={cn('flex flex-col gap-2', mine ? 'items-end' : 'items-start')}>
+                        <ScreenshotContextCard image={helpScreenshot} context={helpContext} />
+                      </div>
+                    ) : visibleAttachments.length > 0 ? (
                       <div
                         className={cn(
                           'flex flex-col gap-2',
@@ -263,7 +270,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
                           <AttachmentCard key={a.id} attachment={a} />
                         ))}
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               );
@@ -275,10 +282,10 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
         {snapshot && (
           <div className="px-4 pt-2 pb-1">
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1">
-              Attached context
+              We'll include where you are
             </div>
-            <div className="text-[11px] text-muted-foreground bg-muted/40 border border-border rounded-md px-2.5 py-1.5 whitespace-pre-wrap leading-relaxed">
-              {formatHelpSnapshot(snapshot)}
+            <div className="text-[11px] text-foreground/80 bg-muted/40 border border-border rounded-md px-2.5 py-1.5 leading-relaxed">
+              {helpSnapshotHeading(snapshot)}
             </div>
           </div>
         )}
