@@ -156,7 +156,8 @@ export default function Onboarding() {
       .from('profiles')
       .upsert({ class_id: user!.id, display_name: trimmed }, { onConflict: 'class_id' });
     if (error) {
-      toast.error(error.message || 'Could not save your name. Please try again.');
+      console.error('[onboarding] saveName failed', error);
+      toast.error('Something went wrong saving your progress. Please try again.');
       return false;
     }
     supabase.auth.updateUser({ data: { display_name: trimmed } }).catch(() => {});
@@ -172,7 +173,8 @@ export default function Onboarding() {
         { onConflict: 'class_id' },
       );
     if (error) {
-      toast.error(error.message || 'Could not save. Please try again.');
+      console.error('[onboarding] saveAnswers failed', error);
+      toast.error('Something went wrong saving your progress. Please try again.');
       return false;
     }
     return true;
@@ -193,7 +195,8 @@ export default function Onboarding() {
           { onConflict: 'class_id' },
         );
       if (error) {
-        toast.error(error.message || 'Could not finish. Please try again.');
+        console.error('[onboarding] complete failed', error);
+        toast.error('Something went wrong saving your progress. Please try again.');
         return;
       }
       navigate('/mainhub', { replace: true });
@@ -201,6 +204,7 @@ export default function Onboarding() {
       setSaving(false);
     }
   };
+
 
   const currentStepId: OnboardingStepId | null =
     stepIndex >= 1 && stepIndex <= TOTAL_INTAKE_STEPS ? STEP_ORDER[stepIndex - 1] : null;
