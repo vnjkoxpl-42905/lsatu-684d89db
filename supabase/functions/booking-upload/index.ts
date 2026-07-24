@@ -234,6 +234,7 @@ Deno.serve(async (req) => {
     return json({ ok: true, uploaded: uploaded.length, files: uploaded });
   } catch (e) {
     console.error("booking-upload error", e);
-    return json({ error: "server_error" }, 500);
+    const msg = e instanceof Error ? e.message : String(e);
+    return json({ error: "server_error", detail: msg }, 500);
   }
 });
