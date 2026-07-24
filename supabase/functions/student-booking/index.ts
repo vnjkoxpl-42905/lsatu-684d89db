@@ -41,10 +41,22 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    const { data: userRes } = await supabase.auth.getUser(jwt);
-    const user = userRes?.user;
-    if (!user) return json({ error: "unauthorized" }, 401);
-    const userId = user.id;
+    // Verify JWT via getClaims (compatible with the new signing-keys system,
+    // which breaks the legacy getUser(jwt) path with "missing sub claim").
+    const authClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } },
+    );
+    const { data: claimsData, error: claimsErr } = await authClient.auth.getClaims(jwt);
+    if (claimsErr || !claimsData?.claims?.sub) {
+      console.error("student-booking auth failed", claimsErr);
+      return json({ error: "unauthorized" }, 401);
+    }
+    const userId = claimsData.claims.sub as string;
+    const userEmail = (claimsData.claims.email as string | undefined) ?? null;
+    const userMeta = ((claimsData.claims.user_metadata ?? {}) as Record<string, unknown>);
+    const user = { id: userId, email: userEmail, user_metadata: userMeta };
 
     const body = await req.json().catch(() => ({}));
     const action = String(body.action || "");
