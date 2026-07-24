@@ -205,8 +205,8 @@ Deno.serve(async (req) => {
       }
       createdPaths.push(path);
       const { data: inserted, error: rowErr } = await supabase.from("external_work_uploads").insert({
-        student_id: pass.student_id,           // may be null (name/email-only pass)
-        uploaded_by: pass.student_id,           // no auth identity for anon booking
+        student_id: mode === "jwt" ? userId : pass.student_id, // JWT gives us a real auth id
+        uploaded_by: mode === "jwt" ? userId : pass.student_id, // anon has no auth identity
         file_name: safeName(f.name),
         file_type: f.type || null,
         storage_path: path,
