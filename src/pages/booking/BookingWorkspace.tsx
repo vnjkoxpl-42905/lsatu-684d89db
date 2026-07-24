@@ -53,7 +53,7 @@ export default function BookingWorkspace() {
             onClick={() => navigate("/teacher")}
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to LSAT U
+            <ArrowLeft className="h-4 w-4" /> Exit Booking
           </button>
         </div>
       </aside>

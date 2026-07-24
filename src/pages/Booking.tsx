@@ -72,13 +72,13 @@ export default function Booking() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
-      <div className="mb-6 flex items-center gap-3">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/mainhub")} aria-label="Back">
+      <div className="relative mb-6 flex items-center justify-center">
+        <Button variant="ghost" size="icon" onClick={() => navigate("/mainhub")} aria-label="Back" className="absolute left-0">
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Book a session</h1>
-          <p className="text-sm text-muted-foreground">Schedule 1:1 time with Joshua.</p>
+        <div className="flex items-center gap-2.5">
+          <div className="holo-surface flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold">L</div>
+          <span className="holo-text text-2xl font-bold tracking-tight">Booking</span>
         </div>
       </div>
 
