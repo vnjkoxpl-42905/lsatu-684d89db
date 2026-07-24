@@ -158,15 +158,19 @@ Deno.serve(async (req) => {
       return json({ error: "pass_not_bookable" }, 409);
     }
 
-    // Rate-limit: by IP for slug, by user id for JWT.
-    const rateKey = mode === "jwt" ? await sha256Hex(`user:${userId}`) :
-      await sha256Hex((req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown");
-    const rateSlug = mode === "jwt" ? `authed:${userId}` : slug;
-    const { data: uploadHits, error: hitErr } = await supabase.rpc("bump_booking_hit", {
-      _ip_hash: rateKey, _slug: rateSlug, _action: "upload",
-    });
-    if (hitErr) throw hitErr;
-    if ((uploadHits ?? 0) > 5) return json({ error: "rate_limited" }, 429);
+    // Rate-limit: only the anonymous slug path (guards slug enumeration / abuse
+    // by non-authed callers). Authed callers already require a valid session
+    // and an active pass, so slug-style rate-limiting doesn't apply — and
+    // bump_booking_hit's composite PK assumes a real slug, so passing a
+    // synthetic "authed:<uuid>" was throwing and turning into a 500.
+    if (mode === "slug") {
+      const rateKey = await sha256Hex((req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown");
+      const { data: uploadHits, error: hitErr } = await supabase.rpc("bump_booking_hit", {
+        _ip_hash: rateKey, _slug: slug, _action: "upload",
+      });
+      if (hitErr) throw hitErr;
+      if ((uploadHits ?? 0) > 5) return json({ error: "rate_limited" }, 429);
+    }
 
     // Cap total files ever staged for this (pass, idempotency_key) at MAX_FILES,
     // so repeated calls can't blow past the limit.
