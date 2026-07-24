@@ -131,7 +131,7 @@ Deno.serve(async (req) => {
     const form = await req.formData();
     const slug = String(form.get("slug") || "");
     const idem = String(form.get("idempotency_key") || "");
-    if (!slug || slug.length < 3 || slug.length > 128) return json({ error: "invalid_link" }, 404);
+    if (slug && (slug.length < 3 || slug.length > 128)) return json({ error: "invalid_link" }, 404);
     if (!idem || idem.length < 8 || idem.length > 200) return json({ error: "invalid_request" }, 400);
 
     const files = form.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
@@ -150,17 +150,20 @@ Deno.serve(async (req) => {
     }
     if (total > MAX_TOTAL_BYTES) return json({ error: "payload_too_large" }, 413);
 
-    // Identity from the slug only.
-    const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-    if (!pass) return json({ error: "invalid_link" }, 404);
+    // Identity from slug OR JWT.
+    const resolved = await resolvePass(slug);
+    if (resolved instanceof Response) return resolved;
+    const { pass, mode, userId } = resolved;
     if (pass.status !== "active" || pass.used_credits >= pass.total_credits) {
       return json({ error: "pass_not_bookable" }, 409);
     }
 
-    const xff = req.headers.get("x-forwarded-for") || "";
-    const ipHash = await sha256Hex(xff.split(",")[0].trim() || "unknown");
+    // Rate-limit: by IP for slug, by user id for JWT.
+    const rateKey = mode === "jwt" ? await sha256Hex(`user:${userId}`) :
+      await sha256Hex((req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown");
+    const rateSlug = mode === "jwt" ? `authed:${userId}` : slug;
     const { data: uploadHits, error: hitErr } = await supabase.rpc("bump_booking_hit", {
-      _ip_hash: ipHash, _slug: slug, _action: "upload",
+      _ip_hash: rateKey, _slug: rateSlug, _action: "upload",
     });
     if (hitErr) throw hitErr;
     if ((uploadHits ?? 0) > 5) return json({ error: "rate_limited" }, 429);
