@@ -41,6 +41,29 @@ export default function Booking() {
     book: async (startAtIso, idempotencyKey) => {
       await invoke("book", { start_at: startAtIso, idempotency_key: idempotencyKey });
     },
+    uploadFiles: async (files, idempotencyKey) => {
+      const fd = new FormData();
+      fd.append("idempotency_key", idempotencyKey);
+      for (const entry of files) {
+        fd.append("files", entry.file, entry.file.name);
+        fd.append("client_upload_ids", entry.clientUploadId);
+      }
+      const { data, error } = await supabase.functions.invoke("booking-upload", { body: fd });
+      if (error) throw new Error(error.message);
+      if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+      const d = data as { uploaded?: number; files?: { client_upload_id: string }[] };
+      return {
+        uploaded: d.uploaded ?? files.length,
+        clientUploadIds: (d.files ?? []).map((entry) => entry.client_upload_id),
+      };
+    },
+    discardUpload: async (clientUploadId, idempotencyKey) => {
+      const { data, error } = await supabase.functions.invoke("booking-upload", {
+        body: { action: "discard", idempotency_key: idempotencyKey, client_upload_id: clientUploadId },
+      });
+      if (error) throw new Error(error.message);
+      if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+    },
   }), []);
 
   // Admins manage booking passes; students book with theirs.

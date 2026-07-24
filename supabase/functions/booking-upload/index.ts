@@ -54,6 +54,31 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+    // Resolve pass identity from either a slug (anonymous) or a JWT
+    // (authenticated in-app booking). Returns { pass, mode } or a Response error.
+    async function resolvePass(slug: string): Promise<
+      | { pass: any; mode: "slug" | "jwt"; userId: string | null }
+      | Response
+    > {
+      if (slug) {
+        const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
+        if (!pass) return json({ error: "invalid_link" }, 404);
+        return { pass, mode: "slug", userId: null };
+      }
+      const authHeader = req.headers.get("Authorization") || "";
+      if (!authHeader.toLowerCase().startsWith("bearer ")) return json({ error: "unauthorized" }, 401);
+      const jwt = authHeader.slice(7);
+      const { data: userRes, error: userErr } = await supabase.auth.getUser(jwt);
+      if (userErr || !userRes?.user) return json({ error: "unauthorized" }, 401);
+      const userId = userRes.user.id;
+      const { data: pass } = await supabase
+        .from("booking_passes").select("*")
+        .eq("student_id", userId).eq("status", "active")
+        .order("created_at", { ascending: false }).limit(1).maybeSingle();
+      if (!pass) return json({ error: "no_active_pass" }, 404);
+      return { pass, mode: "jwt", userId };
+    }
+
     const contentType = req.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       const body = await req.json().catch(() => ({}));
@@ -61,8 +86,9 @@ Deno.serve(async (req) => {
         const slug = String(body.slug || "");
         const idem = String(body.idempotency_key || "");
         const clientUploadId = String(body.client_upload_id || "");
-        const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-        if (!pass) return json({ error: "invalid_link" }, 404);
+        const resolved = await resolvePass(slug);
+        if (resolved instanceof Response) return resolved;
+        const { pass } = resolved;
         const { data: row, error: rowErr } = await supabase.from("external_work_uploads")
           .select("id,storage_path,redemption_id").eq("booking_pass_id", pass.id)
           .eq("booking_idempotency_key", idem).eq("client_upload_id", clientUploadId).maybeSingle();
@@ -105,7 +131,7 @@ Deno.serve(async (req) => {
     const form = await req.formData();
     const slug = String(form.get("slug") || "");
     const idem = String(form.get("idempotency_key") || "");
-    if (!slug || slug.length < 3 || slug.length > 128) return json({ error: "invalid_link" }, 404);
+    if (slug && (slug.length < 3 || slug.length > 128)) return json({ error: "invalid_link" }, 404);
     if (!idem || idem.length < 8 || idem.length > 200) return json({ error: "invalid_request" }, 400);
 
     const files = form.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
@@ -124,17 +150,20 @@ Deno.serve(async (req) => {
     }
     if (total > MAX_TOTAL_BYTES) return json({ error: "payload_too_large" }, 413);
 
-    // Identity from the slug only.
-    const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-    if (!pass) return json({ error: "invalid_link" }, 404);
+    // Identity from slug OR JWT.
+    const resolved = await resolvePass(slug);
+    if (resolved instanceof Response) return resolved;
+    const { pass, mode, userId } = resolved;
     if (pass.status !== "active" || pass.used_credits >= pass.total_credits) {
       return json({ error: "pass_not_bookable" }, 409);
     }
 
-    const xff = req.headers.get("x-forwarded-for") || "";
-    const ipHash = await sha256Hex(xff.split(",")[0].trim() || "unknown");
+    // Rate-limit: by IP for slug, by user id for JWT.
+    const rateKey = mode === "jwt" ? await sha256Hex(`user:${userId}`) :
+      await sha256Hex((req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown");
+    const rateSlug = mode === "jwt" ? `authed:${userId}` : slug;
     const { data: uploadHits, error: hitErr } = await supabase.rpc("bump_booking_hit", {
-      _ip_hash: ipHash, _slug: slug, _action: "upload",
+      _ip_hash: rateKey, _slug: rateSlug, _action: "upload",
     });
     if (hitErr) throw hitErr;
     if ((uploadHits ?? 0) > 5) return json({ error: "rate_limited" }, 429);
@@ -176,8 +205,8 @@ Deno.serve(async (req) => {
       }
       createdPaths.push(path);
       const { data: inserted, error: rowErr } = await supabase.from("external_work_uploads").insert({
-        student_id: pass.student_id,           // may be null (name/email-only pass)
-        uploaded_by: pass.student_id,           // no auth identity for anon booking
+        student_id: mode === "jwt" ? userId : pass.student_id, // JWT gives us a real auth id
+        uploaded_by: mode === "jwt" ? userId : pass.student_id, // anon has no auth identity
         file_name: safeName(f.name),
         file_type: f.type || null,
         storage_path: path,
