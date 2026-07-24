@@ -280,8 +280,8 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
             )}
           </div>
           <div className="mt-6 rounded-lg bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
-            <span className="font-semibold text-primary">{pass.credits_remaining}</span>
- session{pass.credits_remaining === 1 ? "" : "s"} remaining
+            <span className="font-semibold text-primary">{pass.credits_remaining}</span>{" "}
+            session{pass.credits_remaining === 1 ? "" : "s"} remaining
           </div>
         </div>
 
