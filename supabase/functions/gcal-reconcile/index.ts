@@ -97,13 +97,16 @@ Deno.serve(async (req) => {
           continue;
         }
 
+        // Calendar event title: "<first name> session" (must match bookingCore.ts).
+        const name = row.student_name_snapshot || "Student";
+        const eventTitle = `${String(name).trim().split(/\s+/)[0] || String(name).trim()} session`;
+
         // 3) CREATE if not found.
         if (!event) {
-          const name = row.student_name_snapshot || "Student";
           const email = row.student_email_snapshot || null;
           event = await insertEvent(calendarId, {
             id: deterministicGoogleEventId(row.id),
-            summary: `LSAT session — ${name}`,
+            summary: eventTitle,
             description: `Booked via LSAT U (reconciled).`,
             start: { dateTime: new Date(row.start_at).toISOString() },
             end: { dateTime: new Date(row.end_at).toISOString() },
@@ -125,7 +128,7 @@ Deno.serve(async (req) => {
 
         const { data: se, error: mirrorErr } = await supabase.from("schedule_events").upsert({
           google_event_id: event.id, calendar_id: calendarId,
-          title: `LSAT session — ${row.student_name_snapshot || "Student"}`,
+          title: eventTitle,
           start_at: new Date(row.start_at).toISOString(), end_at: new Date(row.end_at).toISOString(),
           all_day: false, status: event.status ?? "confirmed", html_link: event.htmlLink ?? null,
           meet_url: meetUrl, source: "booking_pass", etag: event.etag ?? null,

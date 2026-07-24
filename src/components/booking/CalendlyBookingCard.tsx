@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import BookingConfirmDialog from "@/components/booking/BookingConfirmDialog";
 import { toast } from "sonner";
-import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Paperclip, Video, X } from "lucide-react";
+import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "@/pages/booking/booking-theme.css";
 
@@ -38,12 +35,6 @@ export type BookingApi = {
   uploadFiles?: (files: { file: File; clientUploadId: string }[], idempotencyKey: string) => Promise<{ uploaded: number; clientUploadIds: string[] }>;
   discardUpload?: (clientUploadId: string, idempotencyKey: string) => Promise<void>;
 };
-
-type StagedFile = { file: File; clientUploadId: string };
-
-const MAX_UPLOAD_FILES = 5;
-const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
-const MAX_NOTE_CHARS = 2000;
 
 const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -91,12 +82,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const [monthAnchor, setMonthAnchor] = useState<Date>(() => startOfDay(new Date()));
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
-  const [booking, setBooking] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
-  const [files, setFiles] = useState<StagedFile[]>([]);
-  const [stagedUploadIds, setStagedUploadIds] = useState<Set<string>>(() => new Set());
-  const [note, setNote] = useState("");
 
   const pass = info?.pass ?? null;
 
@@ -157,81 +143,6 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
   const daySlots = pickedDay ? (slotsByDay.get(dayKey(pickedDay)) ?? []) : [];
 
-  function addFiles(incoming: FileList | null) {
-    if (!incoming) return;
-    const picked = Array.from(incoming);
-    const tooBig = picked.find((f) => f.size > MAX_UPLOAD_BYTES);
-    if (tooBig) { toast.error(`"${tooBig.name}" is over 20 MB.`); return; }
-    setFiles((prev) => {
-      const merged = [...prev];
-      for (const f of picked) {
-        if (merged.length >= MAX_UPLOAD_FILES) { toast.error(`Up to ${MAX_UPLOAD_FILES} files.`); break; }
-        if (!merged.some((m) => m.file.name === f.name && m.file.size === f.size)) {
-          merged.push({ file: f, clientUploadId: crypto.randomUUID() });
-        }
-      }
-      return merged;
-    });
-  }
-
-  async function doBook() {
-    if (!selected) return;
-    setBooking(true);
-    try {
-      // Upload any attachments FIRST, keyed by the booking idempotency key, so
-      // the server links them to the redemption it's about to create.
-      if (files.length > 0 && api.uploadFiles) {
-        const pending = files.filter((entry) => !stagedUploadIds.has(entry.clientUploadId));
-        if (pending.length > 0) {
-          const uploaded = await api.uploadFiles(pending, bookingKey);
-          setStagedUploadIds((current) => new Set([...current, ...uploaded.clientUploadIds]));
-        }
-      }
-      const trimmedNote = note.trim().slice(0, MAX_NOTE_CHARS);
-      await api.book(selected, bookingKey, trimmedNote || undefined);
-      const extras = files.length > 0
-        ? ` We've got your ${files.length} file${files.length === 1 ? "" : "s"}.`
-        : "";
-      toast.success(`Session booked. Check your email for the calendar invite.${extras}`);
-      setConfirmOpen(false);
-      setSelected(null);
-      setFiles([]);
-      setStagedUploadIds(new Set());
-      setNote("");
-      setBookingKey(crypto.randomUUID());
-      await refreshInfo();
-      await loadSlots();
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Booking failed";
-      if (msg.includes("slot_conflict")) toast.error("That time was just taken. Pick another.");
-      else if (msg.includes("slot_unavailable")) toast.error("That time isn't available. Pick another.");
-      else if (msg.includes("pass_exhausted") || msg.includes("no_sessions")) toast.error("No sessions remaining.");
-      else if (msg.includes("pass_expired")) toast.error("Your booking access has expired.");
-      else toast.error(msg);
-      await refreshInfo();
-      await loadSlots();
-    } finally { setBooking(false); }
-  }
-
-  async function removeFile(index: number) {
-    const entry = files[index];
-    if (!entry) return;
-    if (stagedUploadIds.has(entry.clientUploadId) && api.discardUpload) {
-      try {
-        await api.discardUpload(entry.clientUploadId, bookingKey);
-        setStagedUploadIds((current) => {
-          const next = new Set(current);
-          next.delete(entry.clientUploadId);
-          return next;
-        });
-      } catch (e) {
-        toast.error(e instanceof Error ? e.message : "Could not remove staged file");
-        return;
-      }
-    }
-    setFiles((current) => current.filter((_, currentIndex) => currentIndex !== index));
-  }
-
   if (infoLoading) {
     return (
       <div className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
@@ -281,7 +192,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
           </div>
           <div className="mt-6 rounded-lg bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
             <span className="font-semibold text-primary">{pass.credits_remaining}</span>{" "}
-            session{pass.credits_remaining === 1 ? "" : "s"} remaining
+            session{pass.credits_remaining === 1 ? "" : "s"}
           </div>
         </div>
 
@@ -379,7 +290,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                 })}
               </div>
               {selected && (
-                <Button className="mt-4 w-full" onClick={() => setConfirmOpen(true)} disabled={booking}>
+                <Button className="mt-4 w-full" onClick={() => setConfirmOpen(true)}>
                   Book {fmtTime(selected)}
                 </Button>
               )}
@@ -388,87 +299,23 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
         )}
       </div>
 
-      <AlertDialog open={confirmOpen} onOpenChange={(o) => { if (!booking) setConfirmOpen(o); }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm your session</AlertDialogTitle>
-            <AlertDialogDescription>
-              {selected ? (
-                <>Book a {durationLabel(pass.session_length_minutes)} session with Joshua on{" "}
-                <span className="font-medium text-foreground">{fmtSlot(selected)}</span>? This uses 1 of your{" "}
-                {pass.credits_remaining} remaining sessions.</>
-              ) : "Pick a time first."}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-
-          {api.uploadFiles && selected && (
-            <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
-              <div>
-                <div className="text-sm font-medium text-foreground">Bringing work to review? (optional)</div>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Attach sections, PTs, or anything you want Joshua to look at, and add any updates. Totally skippable.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-primary/40 px-3 py-1.5 text-sm font-medium text-primary transition hover:bg-primary/5">
-                  <Paperclip className="h-4 w-4" />
-                  {files.length > 0 ? "Add more" : "Attach files"}
-                  <input
-                    type="file"
-                    multiple
-                    className="hidden"
-                    disabled={booking || files.length >= MAX_UPLOAD_FILES}
-                    onChange={(e) => { addFiles(e.target.files); e.currentTarget.value = ""; }}
-                  />
-                </label>
-                <span className="text-xs text-muted-foreground">
-                  {files.length}/{MAX_UPLOAD_FILES} · up to 20 MB each
-                </span>
-              </div>
-
-              {files.length > 0 && (
-                <ul className="space-y-1.5">
-                  {files.map((entry, i) => (
-                    <li key={entry.clientUploadId} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm">
-                      <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                      <span className="flex-1 truncate">{entry.file.name}</span>
-                      <span className="shrink-0 text-xs text-muted-foreground">{(entry.file.size / 1024 / 1024).toFixed(1)} MB</span>
-                      <button
-                        type="button"
-                        disabled={booking}
-                        onClick={() => void removeFile(i)}
-                        className="shrink-0 rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                        aria-label={`Remove ${entry.file.name}`}
-                      ><X className="h-3.5 w-3.5" /></button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <div>
-                <textarea
-                  value={note}
-                  onChange={(e) => setNote(e.target.value.slice(0, MAX_NOTE_CHARS))}
-                  disabled={booking}
-                  rows={3}
-                  placeholder="Any updates for Joshua? What you'd like to focus on, where you're stuck…"
-                  className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary/60"
-                />
-                <div className="mt-1 text-right text-[11px] text-muted-foreground">{note.length}/{MAX_NOTE_CHARS}</div>
-              </div>
-            </div>
-          )}
-
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={booking}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={(e) => { e.preventDefault(); void doBook(); }} disabled={booking}>
-              {booking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Yes, book it
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <BookingConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        slotIso={selected}
+        durationMinutes={pass.session_length_minutes}
+        book={(slotIso, key, studentNote) => api.book(slotIso, key, studentNote)}
+        upload={api.uploadFiles ? { uploadFiles: api.uploadFiles, discardUpload: api.discardUpload } : undefined}
+        onBooked={async (slotIso) => {
+          setSelected(null);
+          const fresh = await api.loadInfo();
+          setInfo(fresh);
+          await loadSlots();
+          const match = fresh.redemptions?.find((r) => r.start_at === slotIso && r.status === "booked");
+          return match?.meet_url ?? null;
+        }}
+        onCommitError={async () => { await refreshInfo(); await loadSlots(); }}
+      />
 
       <UpcomingSessions redemptions={info?.redemptions ?? []} />
     </div>

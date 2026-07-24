@@ -304,10 +304,17 @@ export async function bookSession(opts: {
   }
   const calendarId = stateRow?.calendar_id || "primary";
 
+  // Calendar event title: "<first name> session" (e.g. "Ashley session").
+  const firstName = String(studentName).trim().split(/\s+/)[0] || String(studentName).trim();
+  const eventTitle = `${firstName} session`;
+
+  // Sessions the student has left AFTER this booking — stated plainly, no
+  // "X of Y" / "remaining" pressure framing.
+  const creditsLeft = Math.max(0, (pass.total_credits ?? 0) - (pass.used_credits + 1));
   const description = [
     "Booked via LSAT U.",
     studentEmail ? `Student: ${studentName} <${studentEmail}>` : `Student: ${studentName}`,
-    `Session ${pass.used_credits + 1} of ${pass.total_credits}`,
+    `${creditsLeft} session${creditsLeft === 1 ? "" : "s"} in your package`,
   ].join("\n");
 
   // ---- STEP 2: GOOGLE (event + Meet, stamped for the reconciler)
@@ -316,7 +323,7 @@ export async function bookSession(opts: {
   try {
     gEvent = await gcal.insertEvent(calendarId, {
       id: deterministicEventId,
-      summary: `LSAT session — ${studentName}`,
+      summary: eventTitle,
       description,
       start: { dateTime: startAt.toISOString() },
       end: { dateTime: endAt.toISOString() },
@@ -362,7 +369,7 @@ export async function bookSession(opts: {
   // Mirror to schedule_events (best-effort; the redemption is the source of truth).
   const { data: se, error: mirrorErr } = await supabase.from("schedule_events").upsert({
     google_event_id: gEvent.id, calendar_id: calendarId,
-    title: `LSAT session — ${studentName}`, description,
+    title: eventTitle, description,
     start_at: startAt.toISOString(), end_at: endAt.toISOString(),
     all_day: false, status: gEvent.status ?? "confirmed",
     html_link: gEvent.htmlLink ?? null, meet_url: meetUrl,

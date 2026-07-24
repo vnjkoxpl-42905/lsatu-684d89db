@@ -3,10 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import BookingConfirmDialog from "@/components/booking/BookingConfirmDialog";
 import { toast } from "sonner";
 import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -53,9 +50,7 @@ export default function BookSessionPanel() {
   const [monthAnchor, setMonthAnchor] = useState<Date>(() => startOfDay(new Date()));
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
-  const [booking, setBooking] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
 
   const pass = info?.pass ?? null;
   // Friendly local-timezone label, e.g. "Eastern Time · 3:14 PM" instead of the
@@ -120,29 +115,10 @@ export default function BookSessionPanel() {
 
   const daySlots = pickedDay ? (slotsByDay.get(dayKey(pickedDay)) ?? []) : [];
 
-  async function book() {
-    if (!selected) return;
-    setBooking(true);
-    try {
-      await invoke("book", { start_at: selected, idempotency_key: bookingKey });
-      toast.success("Session booked. Check your email for the calendar invite.");
-      setConfirmOpen(false);
-      setSelected(null);
-      setBookingKey(crypto.randomUUID());
-      await qc.invalidateQueries({ queryKey: ["student-booking", "info", user?.id] });
-      await loadSlots();
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Booking failed";
-      if (msg.includes("slot_conflict")) toast.error("That time was just taken. Pick another.");
-      else if (msg.includes("pass_exhausted")) toast.error("No sessions remaining.");
-      else if (msg.includes("pass_expired")) toast.error("Your booking access has expired.");
-      else toast.error(msg);
-      await qc.invalidateQueries({ queryKey: ["student-booking", "info", user?.id] });
-      await loadSlots();
-    } finally {
-      setBooking(false);
-    }
-  }
+  const refreshBooking = useCallback(async () => {
+    await qc.invalidateQueries({ queryKey: ["student-booking", "info", user?.id] });
+    await loadSlots();
+  }, [qc, user?.id, loadSlots]);
 
   // No active pass -> render nothing (calendar looks exactly as before).
   if (infoLoading || !pass) return null;
@@ -168,7 +144,7 @@ export default function BookSessionPanel() {
         </div>
         <div className="text-right">
           <div className="text-2xl font-semibold text-primary">{pass.credits_remaining}</div>
-          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">of {pass.total_credits} left</div>
+          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">session{pass.credits_remaining === 1 ? "" : "s"}</div>
         </div>
       </div>
 
@@ -269,7 +245,7 @@ export default function BookSessionPanel() {
               })}
             </div>
             {selected && (
-              <Button className="mt-4 w-full" onClick={() => setConfirmOpen(true)} disabled={booking}>
+              <Button className="mt-4 w-full" onClick={() => setConfirmOpen(true)}>
                 Book {formatTime(selected)}
               </Button>
             )}
@@ -278,30 +254,15 @@ export default function BookSessionPanel() {
       )}
 
       {/* Confirmation step — only books when the student says yes. */}
-      <AlertDialog open={confirmOpen} onOpenChange={(o) => { if (!booking) setConfirmOpen(o); }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm your session</AlertDialogTitle>
-            <AlertDialogDescription>
-              {selected ? (
-                <>Book a {pass.session_length_minutes}-minute session with Joshua on{" "}
-                <span className="font-medium text-foreground">{formatSlot(selected)}</span>? This uses 1 of your{" "}
-                {pass.credits_remaining} remaining sessions.</>
-              ) : "Pick a time first."}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={booking}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={(e) => { e.preventDefault(); void book(); }}
-              disabled={booking}
-            >
-              {booking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Yes, book it
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <BookingConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        slotIso={selected}
+        durationMinutes={pass.session_length_minutes}
+        book={async (slotIso, key) => { await invoke("book", { start_at: slotIso, idempotency_key: key }); }}
+        onBooked={async () => { setSelected(null); await refreshBooking(); return null; }}
+        onCommitError={refreshBooking}
+      />
 
       {upcoming.length > 0 && (
         <div className="border-t border-border p-6">
