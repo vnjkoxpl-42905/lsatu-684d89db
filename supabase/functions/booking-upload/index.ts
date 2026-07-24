@@ -68,9 +68,18 @@ Deno.serve(async (req) => {
       const authHeader = req.headers.get("Authorization") || "";
       if (!authHeader.toLowerCase().startsWith("bearer ")) return json({ error: "unauthorized" }, 401);
       const jwt = authHeader.slice(7);
-      const { data: userRes, error: userErr } = await supabase.auth.getUser(jwt);
-      if (userErr || !userRes?.user) return json({ error: "unauthorized" }, 401);
-      const userId = userRes.user.id;
+      // Verify via getClaims, NOT the legacy getUser(jwt): the new asymmetric
+      // signing-keys system breaks getUser with "missing sub claim" and returns a
+      // 401 here (surfaced to the client as a generic non-2xx). student-booking
+      // already carries this exact fix; booking-upload had been left behind.
+      const authClient = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader } } },
+      );
+      const { data: claimsData, error: claimsErr } = await authClient.auth.getClaims(jwt);
+      if (claimsErr || !claimsData?.claims?.sub) return json({ error: "unauthorized" }, 401);
+      const userId = claimsData.claims.sub as string;
       const { data: pass } = await supabase
         .from("booking_passes").select("*")
         .eq("student_id", userId).eq("status", "active")
