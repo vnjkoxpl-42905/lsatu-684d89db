@@ -54,6 +54,31 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+    // Resolve pass identity from either a slug (anonymous) or a JWT
+    // (authenticated in-app booking). Returns { pass, mode } or a Response error.
+    async function resolvePass(slug: string): Promise<
+      | { pass: any; mode: "slug" | "jwt"; userId: string | null }
+      | Response
+    > {
+      if (slug) {
+        const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
+        if (!pass) return json({ error: "invalid_link" }, 404);
+        return { pass, mode: "slug", userId: null };
+      }
+      const authHeader = req.headers.get("Authorization") || "";
+      if (!authHeader.toLowerCase().startsWith("bearer ")) return json({ error: "unauthorized" }, 401);
+      const jwt = authHeader.slice(7);
+      const { data: userRes, error: userErr } = await supabase.auth.getUser(jwt);
+      if (userErr || !userRes?.user) return json({ error: "unauthorized" }, 401);
+      const userId = userRes.user.id;
+      const { data: pass } = await supabase
+        .from("booking_passes").select("*")
+        .eq("student_id", userId).eq("status", "active")
+        .order("created_at", { ascending: false }).limit(1).maybeSingle();
+      if (!pass) return json({ error: "no_active_pass" }, 404);
+      return { pass, mode: "jwt", userId };
+    }
+
     const contentType = req.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       const body = await req.json().catch(() => ({}));
@@ -61,8 +86,9 @@ Deno.serve(async (req) => {
         const slug = String(body.slug || "");
         const idem = String(body.idempotency_key || "");
         const clientUploadId = String(body.client_upload_id || "");
-        const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-        if (!pass) return json({ error: "invalid_link" }, 404);
+        const resolved = await resolvePass(slug);
+        if (resolved instanceof Response) return resolved;
+        const { pass } = resolved;
         const { data: row, error: rowErr } = await supabase.from("external_work_uploads")
           .select("id,storage_path,redemption_id").eq("booking_pass_id", pass.id)
           .eq("booking_idempotency_key", idem).eq("client_upload_id", clientUploadId).maybeSingle();
