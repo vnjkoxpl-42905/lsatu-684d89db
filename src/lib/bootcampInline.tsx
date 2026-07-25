@@ -33,6 +33,7 @@ const IntroToLrBootcamp = safeLazy(() => import('@/pages/IntroToLrBootcamp'));
 const CausationStation = safeLazy(() => import('@/pages/CausationStation'));
 const FallacyFlawBootcamp = safeLazy(() => import('@/pages/FallacyFlawBootcamp'));
 const AbstractBootcamp = safeLazy(() => import('@/topics/abstract'));
+const RcEngagingPassageBootcamp = safeLazy(() => import('@/pages/RcEngagingPassageBootcamp'));
 
 export interface BootcampInlineCfg {
   Comp: ComponentType;
@@ -47,4 +48,9 @@ export const BOOTCAMP_INLINE: Record<string, BootcampInlineCfg> = {
   'causation-station': { Comp: CausationStation, routePath: '/bootcamp/causation-station', title: 'Causation Station' },
   'fallacy-flaw': { Comp: FallacyFlawBootcamp, routePath: '/bootcamp/fallacy-flaw', title: 'Flaw and Famous Flaws' },
   abstraction: { Comp: AbstractBootcamp, routePath: '/topics/abstract', title: 'Abstract', bootcampIdOverride: 'abstraction' },
+  'rc-engaging-with-the-passage': {
+    Comp: RcEngagingPassageBootcamp,
+    routePath: '/bootcamp/rc-engaging-with-the-passage',
+    title: 'Engaging With The Passage',
+  },
 };

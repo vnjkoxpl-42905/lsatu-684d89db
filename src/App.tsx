@@ -46,6 +46,7 @@ import Bootcamps from "./pages/Bootcamps";
 const IntroToLrBootcamp = React.lazy(() => import("./pages/IntroToLrBootcamp"));
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp"));
+const RcEngagingPassageBootcamp = React.lazy(() => import("./pages/RcEngagingPassageBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
@@ -592,6 +593,13 @@ const App = () => {
                     <BootcampGate routePath="/bootcamp/fallacy-flaw" title="Flaw and Famous Flaws">
                       <React.Suspense fallback={<div className="min-h-screen bg-[#FAF8F3]" />}>
                         <FallacyFlawBootcamp />
+                      </React.Suspense>
+                    </BootcampGate>
+                  } />
+                  <Route path="/bootcamp/rc-engaging-with-the-passage" element={
+                    <BootcampGate routePath="/bootcamp/rc-engaging-with-the-passage" title="Engaging With The Passage">
+                      <React.Suspense fallback={<div className="min-h-screen bg-[hsl(38_36%_93%)]" />}>
+                        <RcEngagingPassageBootcamp />
                       </React.Suspense>
                     </BootcampGate>
                   } />

@@ -110,6 +110,23 @@ export const BOOTCAMPS: BootcampDef[] = [
     },
   },
   {
+    id: 'rc-engaging-with-the-passage',
+    title: 'Engaging With The Passage',
+    description:
+      'Reading for the author’s purpose: timed reads, writing from memory, and a line-by-line walkthrough.',
+    route: '/bootcamp/rc-engaging-with-the-passage',
+    stats: ['17 chapters', '7 passages', 'Timed reads + writing'],
+    // Warm workbook paper + editorial indigo (src/bootcamps/rc-bootcamp).
+    theme: {
+      style: 'editorial',
+      bg: '#F0E9DC',
+      ink: '#1A1512',
+      inkSoft: '#6B645C',
+      accent: '#39457F',
+      accentInk: '#FAF6EE',
+    },
+  },
+  {
     id: 'abstraction',
     title: 'Abstract',
     description:
