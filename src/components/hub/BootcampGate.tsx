@@ -35,6 +35,11 @@ interface Props {
    * The student-facing display name, used only by the locked state.
    */
   title?: string;
+  /**
+   * Admin-only: a bootcamp still being finished. Non-admins are refused even
+   * with a matching classroom_items row, so a direct URL cannot reach it.
+   */
+  adminOnly?: boolean;
   children: ReactNode;
 }
 
@@ -51,6 +56,7 @@ export default function BootcampGate({
   bootcampIdOverride,
   legacyRoutePaths,
   title,
+  adminOnly,
   children,
 }: Props) {
   const { user, authReady } = useAuth();
@@ -63,7 +69,7 @@ export default function BootcampGate({
 
   const { data: assigned, isLoading } = useQuery<boolean>({
     queryKey: ['bootcamp-gate', user?.id, routePath, bootcampId],
-    enabled: !!user && !is_admin && !permsLoading,
+    enabled: !!user && !is_admin && !permsLoading && !adminOnly,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('classroom_items')
@@ -90,7 +96,16 @@ export default function BootcampGate({
     return <div className="min-h-screen bg-zinc-950" />;
   }
 
-  if (is_admin || assigned) {
+  if (is_admin) {
+    return <>{children}</>;
+  }
+
+  // Still being finished: no assignment opens it, so there is nothing to look up.
+  if (adminOnly) {
+    return <LockedState title={title} onBack={() => navigate('/classroom')} />;
+  }
+
+  if (assigned) {
     return <>{children}</>;
   }
 
@@ -98,6 +113,10 @@ export default function BootcampGate({
     return <div className="min-h-screen bg-zinc-950" />;
   }
 
+  return <LockedState title={title} onBack={() => navigate('/classroom')} />;
+}
+
+function LockedState({ title, onBack }: { title?: string; onBack: () => void }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-background">
       <div className="max-w-md text-center space-y-4">
@@ -111,7 +130,7 @@ export default function BootcampGate({
             isn't part of your current path. Joshua can add it from the Teacher Workspace.
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => navigate('/classroom')}>
+        <Button variant="outline" size="sm" onClick={onBack}>
           Back to Classroom
         </Button>
       </div>

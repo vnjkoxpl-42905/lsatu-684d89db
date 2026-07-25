@@ -47,9 +47,11 @@ export default function BootcampsPage() {
     );
   }, [items]);
 
+  // Admin sees the whole library, including bootcamps still being finished.
+  // A student sees only what they were assigned, and never an admin-only one.
   const visible = is_admin
     ? BOOTCAMPS
-    : BOOTCAMPS.filter((b) => assignedBootcampIds.has(b.id));
+    : BOOTCAMPS.filter((b) => !b.adminOnly && assignedBootcampIds.has(b.id));
 
   const loading = !authReady || permsLoading || (!is_admin && itemsLoading);
 

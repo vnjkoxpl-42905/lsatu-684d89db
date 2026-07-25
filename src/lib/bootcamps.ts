@@ -40,6 +40,13 @@ export interface BootcampDef {
   route: string;
   stats: string[];
   legacyRoutes?: string[];
+  /**
+   * Admin-only while a bootcamp is still being finished. Students never see it
+   * in the library and cannot open it even if a classroom_items row exists;
+   * teacher surfaces still list it so it can be previewed and prepared.
+   * Releasing it to students is this one flag.
+   */
+  adminOnly?: boolean;
   theme: BootcampTheme;
 }
 
@@ -116,6 +123,7 @@ export const BOOTCAMPS: BootcampDef[] = [
       'Reading for the author’s purpose: timed reads, writing from memory, and a line-by-line walkthrough.',
     route: '/bootcamp/rc-engaging-with-the-passage',
     stats: ['17 chapters', '7 passages', 'Timed reads + writing'],
+    adminOnly: true,
     // Warm workbook paper + editorial indigo (src/bootcamps/rc-bootcamp).
     theme: {
       style: 'editorial',
