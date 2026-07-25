@@ -66,14 +66,11 @@ function ScreenHead({
   );
 }
 
-/** Opening quotation marks a drop cap cannot sit on gracefully. */
-const OPENING_QUOTES = ['"', '“', '‘', "'", '«'];
-
 function PassageCard({ passage }: { passage: Passage }) {
-  // A drop cap on a quotation mark reads as a mistake, so a passage that opens
-  // on one simply does not get one.
+  // A drop cap on a quotation mark or a bracket reads as a mistake, so only a
+  // letter or a digit gets one.
   const firstChar = (passage.paras[0] ?? '').trim().charAt(0);
-  const dropCap = firstChar && !OPENING_QUOTES.includes(firstChar);
+  const dropCap = /^[A-Za-z0-9]$/.test(firstChar);
   return (
     <div className={`rc-card rc-passage-card${dropCap ? ' rc-has-dropcap' : ''}`}>
       {passage.source ? <div className="rc-passage-source">{passage.source}</div> : null}
@@ -316,7 +313,6 @@ export function WriteScreen({
             type="button"
             className="rc-btn"
             disabled={!metMinimum || state.revealed}
-            title={metMinimum ? '' : 'Write a little more first'}
             onClick={onReveal}
           >
             {state.revealed ? 'Revealed' : screen.reveal.buttonLabel}
@@ -326,7 +322,13 @@ export function WriteScreen({
               Skip without writing
             </button>
           ) : null}
-          <span className="rc-count">{words ? `${words} words` : ''}</span>
+          <span className="rc-count">
+            {metMinimum
+              ? words
+                ? `${words} words`
+                : ''
+              : `${trimmed.length} of ${WRITE_MIN_CHARS} characters`}
+          </span>
           <span className={`rc-savepill${savedPill ? ' on' : ''}`}>
             <span className="dot" />
             Saved

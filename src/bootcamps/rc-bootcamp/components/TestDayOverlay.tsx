@@ -45,26 +45,33 @@ export function TestDayOverlay({
     };
   }, []);
 
-  // Advisory clock. Re-entering a read always starts it over — there is no
+  // Advisory clock, measured against a fixed deadline so a backgrounded tab
+  // cannot slow it down. Re-entering a read always starts it over — there is no
   // persisted timer, by design.
   useEffect(() => {
     if (!totalSeconds) return;
-    const id = window.setInterval(() => {
-      setLeft((current) => {
-        const next = current - 1;
-        if (next <= 60 && next > 0 && !warned.current) {
-          warned.current = true;
-          announce('One minute left.', true);
-        }
-        if (next <= 0 && !expired.current) {
-          expired.current = true;
-          announce('Time is up. Wrap up your read and press done.', true);
-        }
-        return next < 0 ? 0 : next;
-      });
-    }, 1000);
+    const deadline = Date.now() + totalSeconds * 1000;
+    const tick = () => {
+      setLeft(Math.max(0, Math.ceil((deadline - Date.now()) / 1000)));
+    };
+    tick();
+    const id = window.setInterval(tick, 250);
     return () => window.clearInterval(id);
-  }, [totalSeconds, announce]);
+  }, [totalSeconds]);
+
+  // Announcements live out here on purpose. A state updater must stay pure, or
+  // React may run it twice and fire the same assertive announcement twice.
+  useEffect(() => {
+    if (!totalSeconds) return;
+    if (left <= 60 && left > 0 && !warned.current) {
+      warned.current = true;
+      announce('One minute left.', true);
+    }
+    if (left <= 0 && !expired.current) {
+      expired.current = true;
+      announce('Time is up. Wrap up your read and press done.', true);
+    }
+  }, [left, totalSeconds, announce]);
 
   const isDone = totalSeconds > 0 && left <= 0;
   const isLow = totalSeconds > 0 && left <= 60 && left > 0;
@@ -96,9 +103,11 @@ export function TestDayOverlay({
       aria-label="Timed reading"
       onKeyDown={(event) => {
         if (event.key === 'Tab') {
-          // Only one control exists in here; keep focus on it.
+          // Two stops in here: the scrollable passage and Done. Cycle between
+          // them so focus stays trapped in the dialog either direction.
           event.preventDefault();
-          doneRef.current?.focus();
+          if (document.activeElement === doneRef.current) passageRef.current?.focus();
+          else doneRef.current?.focus();
         }
         if (event.key === 'Escape') {
           event.preventDefault();
@@ -121,7 +130,7 @@ export function TestDayOverlay({
       </div>
       <div className="td-body">
         <div className="td-brief">{brief}</div>
-        <div className="td-passage" tabIndex={-1} ref={passageRef}>
+        <div className="td-passage" tabIndex={0} role="region" aria-label="Passage" ref={passageRef}>
           <div className="td-flow">
             {passage.paras.map((para, i) => (
               <p key={i}>{para}</p>
@@ -142,6 +151,9 @@ export function TestDayOverlay({
         </aside>
       </div>
     </div>,
-    document.body,
+    // Into the scoped root, not document.body. The whole stylesheet is written
+    // as `.rc-bootcamp .td-*`, so a portal to body renders this surface with no
+    // styling at all. Body is only a fallback for the impossible case.
+    document.querySelector('.rc-bootcamp') ?? document.body,
   );
 }
