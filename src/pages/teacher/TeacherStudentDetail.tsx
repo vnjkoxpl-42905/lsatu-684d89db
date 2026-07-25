@@ -28,6 +28,7 @@ import { format } from 'date-fns';
 import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { toast } from 'sonner';
 import RecapComposer from '@/components/teacher/RecapComposer';
+import { BootcampLessonProgress } from '@/components/teacher/bootcamps/BootcampLessonProgress';
 import AssignmentBuilder from '@/components/teacher/AssignmentBuilder';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -200,6 +201,9 @@ export default function TeacherStudentDetail() {
               </ul>
             );
           })()}
+          {/* Bootcamp lessons the student has actually opened. Renders nothing
+              when there is no stored progress, so it never adds an empty block. */}
+          <BootcampLessonProgress studentClassId={studentId} />
         </TabsContent>
 
         {/* Notes */}

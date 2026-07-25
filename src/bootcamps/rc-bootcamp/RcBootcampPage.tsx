@@ -6,7 +6,7 @@
  * content.ts verbatim.
  */
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { CHAPTERS, TOTAL_SCREENS } from './content';
@@ -23,6 +23,7 @@ import {
   WalkScreen,
   WriteScreen,
 } from './components/screens';
+import { StartScreen } from './components/StartScreen';
 import { TestDayOverlay } from './components/TestDayOverlay';
 import { TocSheet } from './components/TocSheet';
 import './styles/scoped.css';
@@ -118,10 +119,6 @@ function Lesson() {
         return null;
     }
   }, [screen, chapterName, chapterIndex, state.finished, setOverlay]);
-
-  if (!state.hydrated) {
-    return <div className="rc-bootcamp" aria-busy="true" />;
-  }
 
   const layoutClass =
     !state.finished && screen.type === 'prose' && screen.layout === 'payoff'
@@ -229,6 +226,34 @@ function Lesson() {
   );
 }
 
+/**
+ * The cover gate.
+ *
+ * `Lesson` mounts only after the student presses Enter, so none of its effects
+ * — the timed-read overlay in particular — can fire while the cover is still
+ * up. Waiting for hydration before showing the cover is what lets the cover
+ * label itself Enter or Resume honestly rather than flashing the wrong one.
+ */
+function LessonHost() {
+  const { state } = useLesson();
+  const navigate = useNavigate();
+  const [entered, setEntered] = useState(false);
+
+  if (!state.hydrated) {
+    return <div className="rc-bootcamp" aria-busy="true" />;
+  }
+
+  if (!entered) {
+    return (
+      <div className="rc-bootcamp">
+        <StartScreen onEnter={() => setEntered(true)} onExit={() => navigate('/bootcamps')} />
+      </div>
+    );
+  }
+
+  return <Lesson />;
+}
+
 export default function RcBootcampPage() {
   const { user } = useAuth();
   const adapter = useMemo(
@@ -238,7 +263,7 @@ export default function RcBootcampPage() {
 
   return (
     <LessonProvider adapter={adapter}>
-      <Lesson />
+      <LessonHost />
     </LessonProvider>
   );
 }

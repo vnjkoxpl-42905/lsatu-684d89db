@@ -743,3 +743,236 @@
 .rc-bootcamp .rc-seg:first-child:focus-visible .rc-seg-tip,
 .rc-bootcamp .rc-seg:last-child:hover .rc-seg-tip,
 .rc-bootcamp .rc-seg:last-child:focus-visible .rc-seg-tip{transform:translate(0,0)}
+
+
+/* ============================================================
+   COVER — the lesson's front door (.rc-cover)
+   Its own dark world, deliberately unlike the warm paper below it:
+   pressing Enter is meant to read as crossing a threshold. Tokenised
+   locally so nothing here leaks into the lesson, and nothing from the
+   lesson's paper palette leaks in.
+   ============================================================ */
+.rc-bootcamp .rc-cover{
+  --cv-field:      hsl(30 8% 6%);
+  --cv-ink:        hsl(40 30% 96%);
+  --cv-ink-soft:   hsl(38 10% 62%);
+  --cv-ink-faint:  hsl(38 8% 46%);
+  --cv-hairline:   hsl(40 20% 96% / 0.14);
+  --cv-glow:       hsl(38 60% 70% / 0.16);
+
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--cv-field);
+  color:var(--cv-ink);
+  overflow:hidden;
+}
+
+/* The paper world showing faintly through, so the cover reads as sitting on
+   top of the lesson rather than beside it. */
+.rc-bootcamp .rc-cover-wash{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(160vh,150vw);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%) scale(0.9);
+  background:radial-gradient(circle at center,var(--cv-glow) 0%,transparent 62%);
+  opacity:0;
+  animation:rc-cover-wash 1400ms var(--rc-ease) 120ms forwards;
+  pointer-events:none;
+}
+
+.rc-bootcamp .rc-cover-center{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:32px 24px calc(32px + env(safe-area-inset-bottom));
+  max-width:640px;
+  width:100%;
+}
+
+/* Every child of the cover enters on its own beat. The whole sequence is
+   under 800ms: this screen gets opened many times and a long reveal would
+   wear out fast. */
+.rc-bootcamp .rc-cover-label,
+.rc-bootcamp .rc-cover-title,
+.rc-bootcamp .rc-cover-rule,
+.rc-bootcamp .rc-cover-enter,
+.rc-bootcamp .rc-cover-progress,
+.rc-bootcamp .rc-cover-exit{
+  opacity:0;
+  animation:rc-cover-rise 620ms var(--rc-ease) forwards;
+}
+.rc-bootcamp .rc-cover-label{animation-delay:60ms}
+.rc-bootcamp .rc-cover-title{animation-delay:150ms}
+.rc-bootcamp .rc-cover-rule{animation:rc-cover-draw 700ms var(--rc-ease) 340ms forwards}
+.rc-bootcamp .rc-cover-enter{animation-delay:460ms}
+.rc-bootcamp .rc-cover-progress{animation-delay:600ms}
+.rc-bootcamp .rc-cover-exit{animation-delay:700ms}
+
+.rc-bootcamp .rc-cover-label{
+  margin:0 0 18px;
+  font-family:var(--rc-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--cv-ink-soft);
+}
+
+.rc-bootcamp .rc-cover-title{
+  margin:0;
+  font-family:var(--rc-serif);
+  font-weight:400;
+  font-size:clamp(2.1rem,7.2vw,4rem);
+  line-height:1.06;
+  letter-spacing:-0.015em;
+  text-wrap:balance;
+  color:var(--cv-ink);
+}
+
+.rc-bootcamp .rc-cover-rule{
+  width:0;
+  max-width:120px;
+  height:1px;
+  margin:30px 0 34px;
+  background:var(--cv-hairline);
+}
+
+.rc-bootcamp .rc-cover-enter{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  /* Cream on near-black: the button is a piece of the paper world the student
+     is about to step into. */
+  background:var(--rc-surface);
+  color:var(--rc-ink);
+  font-family:var(--rc-sans);
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  padding:16px 46px;
+  border-radius:999px;
+  transition:transform 240ms var(--rc-ease),box-shadow 240ms var(--rc-ease);
+  box-shadow:0 1px 2px hsl(0 0% 0% / 0.4),0 18px 44px hsl(0 0% 0% / 0.45);
+}
+.rc-bootcamp .rc-cover-enter:hover{
+  transform:translateY(-2px);
+  box-shadow:0 1px 2px hsl(0 0% 0% / 0.4),0 24px 56px hsl(0 0% 0% / 0.55);
+}
+.rc-bootcamp .rc-cover-enter:active{transform:translateY(0)}
+.rc-bootcamp .rc-cover-enter:focus-visible{
+  outline:2px solid var(--cv-ink);
+  outline-offset:4px;
+}
+.rc-bootcamp .rc-cover-enter:disabled{cursor:default}
+
+/* Progress. Rendered only when the student has actually started, so this
+   never shows anyone a zero. */
+.rc-bootcamp .rc-cover-progress{
+  width:min(260px,72vw);
+  margin-top:40px;
+}
+.rc-bootcamp .rc-cover-track{
+  height:2px;
+  width:100%;
+  border-radius:999px;
+  background:var(--cv-hairline);
+  overflow:hidden;
+}
+.rc-bootcamp .rc-cover-fill{
+  height:100%;
+  border-radius:999px;
+  background:var(--cv-ink);
+  transition:width 600ms var(--rc-ease);
+}
+.rc-bootcamp .rc-cover-percent{
+  margin:12px 0 0;
+  font-family:var(--rc-sans);
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--cv-ink-faint);
+  font-variant-numeric:tabular-nums;
+}
+
+.rc-bootcamp .rc-cover-exit{
+  position:absolute;
+  z-index:2;
+  top:calc(18px + env(safe-area-inset-top));
+  left:calc(18px + env(safe-area-inset-left));
+  appearance:none;
+  background:transparent;
+  border:1px solid var(--cv-hairline);
+  border-radius:var(--rc-r-button);
+  color:var(--cv-ink-soft);
+  cursor:pointer;
+  font-family:var(--rc-sans);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  padding:7px 14px;
+  transition:color 200ms var(--rc-ease),border-color 200ms var(--rc-ease);
+}
+.rc-bootcamp .rc-cover-exit:hover{color:var(--cv-ink);border-color:var(--cv-ink-soft)}
+.rc-bootcamp .rc-cover-exit:focus-visible{outline:2px solid var(--cv-ink);outline-offset:2px}
+
+/* Leaving: the cover lifts away while the wash blooms, so the warm lesson
+   underneath is what the eye lands on. Duration is mirrored by LEAVE_MS in
+   StartScreen.tsx — change both together. */
+.rc-bootcamp .rc-cover.is-leaving{
+  animation:rc-cover-leave 520ms var(--rc-ease) forwards;
+}
+.rc-bootcamp .rc-cover.is-leaving .rc-cover-center{
+  animation:rc-cover-recede 520ms var(--rc-ease) forwards;
+}
+.rc-bootcamp .rc-cover.is-leaving .rc-cover-wash{
+  animation:rc-cover-bloom 520ms var(--rc-ease) forwards;
+}
+
+@keyframes rc-cover-rise{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes rc-cover-draw{
+  from{opacity:0;width:0}
+  to{opacity:1;width:120px}
+}
+@keyframes rc-cover-wash{
+  from{opacity:0;transform:translate(-50%,-50%) scale(0.9)}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes rc-cover-leave{
+  from{opacity:1}
+  to{opacity:0;visibility:hidden}
+}
+@keyframes rc-cover-recede{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(-18px) scale(0.98)}
+}
+@keyframes rc-cover-bloom{
+  from{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  to{opacity:0;transform:translate(-50%,-50%) scale(1.9)}
+}
+
+/* Reduced motion: the cover still exists, it just stops moving. */
+@media (prefers-reduced-motion: reduce){
+  .rc-bootcamp .rc-cover-label,
+  .rc-bootcamp .rc-cover-title,
+  .rc-bootcamp .rc-cover-enter,
+  .rc-bootcamp .rc-cover-progress,
+  .rc-bootcamp .rc-cover-exit{animation:none;opacity:1;transform:none}
+  .rc-bootcamp .rc-cover-rule{animation:none;opacity:1;width:120px}
+  .rc-bootcamp .rc-cover-wash{animation:none;opacity:1}
+  .rc-bootcamp .rc-cover-fill{transition:none}
+  .rc-bootcamp .rc-cover-enter:hover{transform:none}
+}
