@@ -27,6 +27,14 @@ export function ChevronLeft() {
   );
 }
 
+export function ArrowLeftIcon() {
+  return (
+    <svg {...strokeProps} width={14} height={14}>
+      <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
 export function MenuIcon() {
   return (
     <svg {...strokeProps} width={14} height={14}>

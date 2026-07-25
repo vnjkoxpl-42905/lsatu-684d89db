@@ -7,13 +7,14 @@
  */
 
 import { useEffect, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { CHAPTERS, TOTAL_SCREENS } from './content';
 import { createSupabaseAdapter, localAdapter } from './persistence';
 import { LessonProvider, useLesson, usePrimaryAction } from './useLesson';
 import { ChapterProgress } from './components/ChapterProgress';
 import { CompletionScreen } from './components/CompletionScreen';
-import { ChevronLeft, ChevronRight, MenuIcon } from './components/Icons';
+import { ArrowLeftIcon, ChevronLeft, ChevronRight, MenuIcon } from './components/Icons';
 import {
   InstructionsScreen,
   PassageScreen,
@@ -39,6 +40,7 @@ function Lesson() {
     consumeHeadingFocus,
   } = useLesson();
   const primary = usePrimaryAction();
+  const navigate = useNavigate();
   const tocButtonRef = useRef<HTMLButtonElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
@@ -134,6 +136,15 @@ function Lesson() {
     <div className="rc-bootcamp">
       <header className="rc-top">
         <div className="rc-top-inner">
+          <button
+            type="button"
+            className="rc-exit-btn"
+            onClick={() => navigate('/bootcamps')}
+          >
+            <ArrowLeftIcon />
+            <span>Exit</span>
+          </button>
+          <div className="rc-exit-divider" aria-hidden="true" />
           <div className="rc-brand">
             <div className="rc-brand-mark">RC</div>
             <div className="rc-brand-txt">
