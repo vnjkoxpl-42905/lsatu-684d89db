@@ -16,6 +16,13 @@ interface GuidedDrillLaunchFrameProps {
   title: string;
   onStart: () => void;
   onReturn: () => void;
+  /**
+   * Shown as an overlay strip above the launch page when the student has an
+   * unfinished run of this drill, so pressing Start is not a gamble on whether
+   * their earlier answers survived. Rendered outside the iframe on purpose —
+   * curated launch pages are static assets we do not rewrite at runtime.
+   */
+  resumeNotice?: string;
 }
 
 export function GuidedDrillLaunchFrame({
@@ -24,6 +31,7 @@ export function GuidedDrillLaunchFrame({
   title,
   onStart,
   onReturn,
+  resumeNotice,
 }: GuidedDrillLaunchFrameProps) {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const cleanupRef = React.useRef<(() => void) | null>(null);
@@ -79,7 +87,7 @@ export function GuidedDrillLaunchFrame({
 
   React.useEffect(() => () => cleanupRef.current?.(), []);
 
-  return (
+  const frame = (
     <iframe
       ref={iframeRef}
       src={src}
@@ -88,5 +96,21 @@ export function GuidedDrillLaunchFrame({
       className="block h-screen w-full border-0 bg-background"
       onLoad={wireControls}
     />
+  );
+
+  if (!resumeNotice) return frame;
+
+  return (
+    <div className="relative">
+      <div
+        role="status"
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center px-4 pt-4"
+      >
+        <span className="rounded-full bg-foreground/90 px-4 py-2 text-xs font-medium text-background shadow-lg backdrop-blur">
+          {resumeNotice}
+        </span>
+      </div>
+      {frame}
+    </div>
   );
 }

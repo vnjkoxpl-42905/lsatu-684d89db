@@ -84,6 +84,11 @@ import {
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
+import {
+  loadPracticeSession,
+  savePracticeSessionSnapshot,
+  completePracticeSession,
+} from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
 import { appendGuidedResumeParams } from '@/lib/guidedDrillNavigation';
 
@@ -123,9 +128,14 @@ function DrillContent() {
   // Maps the finished MC practice set back to its module-progress completion id
   // so the Intro to LR path cannot report "core path cleared" before the final
   // practice sets are actually done.
-  const mcPracticeCompletionId = isMcPractice
-    ? getPracticePool(searchParams.get('practiceSlug') ?? '')?.completionId
-    : undefined;
+  const mcPracticePool = React.useMemo(
+    () => (isMcPractice ? getPracticePool(searchParams.get('practiceSlug') ?? '') : undefined),
+    [isMcPractice, searchParams],
+  );
+  // Once the set is finished, snapshot writes must stop: a late write would
+  // flip the stored row back to in_progress and re-offer "Resume" on a set the
+  // student already completed.
+  const mcPracticeFinalizedRef = React.useRef(false);
   const bootcampPracticeReturnTo =
     returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
       ? returnTo
@@ -483,9 +493,47 @@ function DrillContent() {
       questionQueue = finalQuestions.map(q => q.qid);
 
       const requestedInitialIndex = initialIndexParam ? Number.parseInt(initialIndexParam, 10) : 0;
-      const initialIndex = Number.isFinite(requestedInitialIndex)
+      let initialIndex = Number.isFinite(requestedInitialIndex)
         ? Math.min(Math.max(requestedInitialIndex, 0), Math.max(questionQueue.length - 1, 0))
         : 0;
+      let restoredAttempts: DrillSession['attempts'] = new Map();
+
+      // Intro to LR practice sets resume from durable storage, not from the URL.
+      // A student who closed the tab, signed out, or moved to another device
+      // comes back to the question they stopped on with every prior answer
+      // still marked answered in the navigator.
+      if (isMcPractice && mcPracticePool && user) {
+        const stored = await loadPracticeSession(user.id, mcPracticePool.slug);
+        const sameSet =
+          !!stored &&
+          stored.status === 'in_progress' &&
+          stored.question_queue.length === questionQueue.length &&
+          stored.question_queue.every((qid) => questionQueue.includes(qid));
+
+        if (stored && sameSet) {
+          questionQueue = stored.question_queue;
+          initialIndex = Math.min(
+            Math.max(stored.current_index, 0),
+            Math.max(questionQueue.length - 1, 0),
+          );
+          for (const attempt of stored.attempts) {
+            restoredAttempts.set(attempt.qid, {
+              selectedAnswer: attempt.selected_answer,
+              correct: attempt.correct,
+              timeMs: attempt.time_ms,
+              timestamp: Date.now(),
+              confidence: undefined,
+              reviewDone: false,
+            });
+          }
+        } else if (stored && !sameSet && stored.status === 'in_progress') {
+          // The frozen pool changed under a saved run. Starting clean is the
+          // only honest option; say so rather than silently dropping answers.
+          console.warn('[drill:mc-practice] stored resume set no longer matches pool, starting fresh', {
+            slug: mcPracticePool.slug,
+          });
+        }
+      }
 
       setSession({
         mode,
@@ -493,12 +541,55 @@ function DrillContent() {
         typeDrillConfig: (mode === 'type-drill' || mode === 'natural-drill') ? (state.config as TypeDrillConfig) : undefined,
         questionQueue,
         currentIndex: initialIndex,
-        attempts: new Map(),
+        attempts: restoredAttempts,
       });
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, user]);
+
+  // Snapshot the student's place in an Intro to LR practice set on every answer
+  // and every question move, so leaving mid-set is never a loss. The persistence
+  // layer writes locally at once and debounces the cloud upsert, so this stays
+  // cheap enough to run on each session change.
+  const mcPracticeSnapshot = React.useCallback(
+    (source: DrillSession | null): {
+      questionQueue: string[];
+      currentIndex: number;
+      attempts: Array<{ qid: string; selected_answer: string; correct: boolean; time_ms: number }>;
+    } | null => {
+      if (!source) return null;
+      return {
+        questionQueue: source.questionQueue,
+        currentIndex: source.currentIndex,
+        attempts: Array.from(source.attempts.entries())
+          .filter(([, attempt]) => !!attempt.selectedAnswer)
+          .map(([qid, attempt]) => ({
+            qid,
+            selected_answer: attempt.selectedAnswer,
+            correct: !!attempt.correct,
+            time_ms: Number.isFinite(attempt.timeMs) ? Math.max(0, Math.round(attempt.timeMs)) : 0,
+          })),
+      };
+    },
+    [],
+  );
+
+  React.useEffect(() => {
+    if (!isMcPractice || !mcPracticePool || !user || !session) return;
+    if (mcPracticeFinalizedRef.current) return;
+    if (session.questionQueue.length === 0) return;
+    const snapshot = mcPracticeSnapshot(session);
+    if (!snapshot) return;
+    void savePracticeSessionSnapshot(user.id, mcPracticePool, snapshot).catch((err) => {
+      // Non-fatal: the drill still works, they just lose the resume point.
+      console.error('[drill:mc-practice:snapshot] resume write failed', {
+        userId: user.id,
+        slug: mcPracticePool.slug,
+        err,
+      });
+    });
+  }, [session, isMcPractice, mcPracticePool, user, mcPracticeSnapshot]);
 
   // Hydrate adaptive engine from DB before Smart Drill selects its first
   // question. If hydration fails, the selector may proceed with current-session
@@ -1685,6 +1776,43 @@ function DrillContent() {
     }
   };
 
+  /**
+   * Close out an Intro to LR practice set: record the module-progress
+   * completion that the path and the practice-drills index read, and flip the
+   * resume row to completed so it stops offering "Resume".
+   *
+   * Both finish paths call this. Previously only the "End Drill" header button
+   * did, so a student who answered the last question and pressed Next finished
+   * the set without it ever being recorded anywhere.
+   */
+  const finalizeMcPracticeSet = async (attempts: DrillSession['attempts']): Promise<void> => {
+    if (!isMcPractice || !mcPracticePool || !user) return;
+    mcPracticeFinalizedRef.current = true;
+
+    try {
+      await recordPracticeDrillCompletion(user.id, mcPracticePool.completionId);
+    } catch (err) {
+      console.error('[drill:mc-practice:complete] progress write failed', {
+        userId: user.id,
+        completionId: mcPracticePool.completionId,
+        err,
+      });
+      toast.error("Couldn't record practice completion on your path. Your attempts saved; let Joshua know.");
+    }
+
+    const snapshot = mcPracticeSnapshot(session ? { ...session, attempts } : null);
+    if (!snapshot) return;
+    try {
+      await completePracticeSession(user.id, mcPracticePool, snapshot);
+    } catch (err) {
+      console.error('[drill:mc-practice:complete] resume row write failed', {
+        userId: user.id,
+        slug: mcPracticePool.slug,
+        err,
+      });
+    }
+  };
+
   const handleFinishPracticeSet = async () => {
     if (!session || !user) return;
 
@@ -1717,6 +1845,10 @@ function DrillContent() {
       toast.error('Failed to save practice-set attempts. Your progress may be incomplete.');
       throw e;
     }
+
+    // Intro to LR practice sets: record completion on the natural finish path
+    // (answer the last question, press Next), not just the End Drill button.
+    await finalizeMcPracticeSet(attemptsWithTiming);
 
     // Homework assignment: write status=completed + score.
     if (assignmentId && user) {
@@ -1875,18 +2007,7 @@ function DrillContent() {
 
     // Intro to LR final practice sets: record path completion so the learner
     // path reflects the work. Failure is surfaced, not swallowed.
-    if (isMcPractice && mcPracticeCompletionId && user) {
-      try {
-        await recordPracticeDrillCompletion(user.id, mcPracticeCompletionId);
-      } catch (err) {
-        console.error('[drill:mc-practice:complete] progress write failed', {
-          userId: user.id,
-          completionId: mcPracticeCompletionId,
-          err,
-        });
-        toast.error("Couldn't record practice completion on your path. Your attempts saved; let Joshua know.");
-      }
-    }
+    await finalizeMcPracticeSet(updatedAttempts);
 
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);

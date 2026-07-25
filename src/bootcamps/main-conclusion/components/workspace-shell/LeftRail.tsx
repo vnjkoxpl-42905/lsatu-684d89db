@@ -8,14 +8,18 @@ import {
   Sparkles,
   ChevronDown,
   Bookmark,
+  Check,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { usePracticeDrillStatus } from '@/bootcamps/main-conclusion/hooks/usePracticeDrillStatus';
 
 interface NavItem {
   label: string;
   to: string;
   Icon: LucideIcon;
+  /** Marks the item whose completion state the rail should surface. */
+  progress?: 'practice-drills';
 }
 
 interface NavSection {
@@ -32,7 +36,12 @@ const navSections: NavSection[] = [
   {
     title: 'Practice',
     items: [
-      { label: 'Practice Drills', to: '/bootcamp/intro-to-lr/practice-drills', Icon: Sparkles },
+      {
+        label: 'Practice Drills',
+        to: '/bootcamp/intro-to-lr/practice-drills',
+        Icon: Sparkles,
+        progress: 'practice-drills',
+      },
       { label: 'Drill Lab', to: '/bootcamp/intro-to-lr/drills', Icon: Dumbbell },
     ],
     collapsed: false,
@@ -60,6 +69,35 @@ export function LeftRail({
   onCollapse,
 }: LeftRailProps): JSX.Element {
   const location = useLocation();
+
+  // The rail is the student's answer to "have I finished this yet?", so it
+  // reads the same persisted completion state the practice pages do.
+  const { statuses, loading: progressLoading } = usePracticeDrillStatus();
+  const practiceStates = Object.values(statuses);
+  const practiceTotal = practiceStates.length;
+  const practiceDone = practiceStates.filter((s) => s.state === 'completed').length;
+  const practiceStarted = practiceStates.some((s) => s.state === 'in-progress');
+
+  const progressFor = (
+    item: NavItem,
+  ): { state: 'complete' | 'partial'; label: string; text: string } | null => {
+    if (item.progress !== 'practice-drills' || progressLoading || practiceTotal === 0) return null;
+    if (practiceDone === practiceTotal) {
+      return {
+        state: 'complete',
+        label: `${item.label}: all ${practiceTotal} sets completed`,
+        text: 'Done',
+      };
+    }
+    if (practiceDone > 0 || practiceStarted) {
+      return {
+        state: 'partial',
+        label: `${item.label}: ${practiceDone} of ${practiceTotal} sets completed`,
+        text: `${practiceDone}/${practiceTotal}`,
+      };
+    }
+    return null;
+  };
 
   return (
     <aside
@@ -170,7 +208,9 @@ export function LeftRail({
               </summary>
             )}
             <ul className="space-y-0.5">
-              {section.items.map((item) => (
+              {section.items.map((item) => {
+                const progress = progressFor(item);
+                return (
                 <li key={item.to}>
                   <NavLink
                     to={item.to}
@@ -185,10 +225,26 @@ export function LeftRail({
                           : 'text-ink-soft hover:text-ink hover:bg-[rgb(var(--surface)/0.4)]',
                       )
                     }
-                    aria-label={item.label}
-                    title={collapsed ? item.label : undefined}
+                    aria-label={progress ? progress.label : item.label}
+                    title={collapsed ? progress?.label ?? item.label : undefined}
                   >
-                    <item.Icon className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
+                    {/* Icon carries the status dot so the state survives the
+                        collapsed rail, where the label is width-zeroed. */}
+                    <span className="relative inline-flex shrink-0">
+                      <item.Icon className="h-4 w-4 opacity-70" strokeWidth={1.8} />
+                      {progress ? (
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            'absolute -right-1 -top-1 h-2 w-2 rounded-full',
+                            'border border-[rgb(var(--surface))]',
+                            progress.state === 'complete'
+                              ? 'bg-[rgb(var(--success))]'
+                              : 'bg-[rgb(var(--accent))]',
+                          )}
+                        />
+                      ) : null}
+                    </span>
                     <span
                       className={cn(
                         'whitespace-nowrap overflow-hidden transition-[opacity,transform,width] duration-180 ease-eased',
@@ -199,9 +255,31 @@ export function LeftRail({
                     >
                       {item.label}
                     </span>
+                    {progress ? (
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'ml-auto inline-flex items-center gap-1 overflow-hidden',
+                          'font-mc-mono text-[9px] uppercase tracking-wider',
+                          'transition-[opacity,width] duration-180 ease-eased',
+                          progress.state === 'complete'
+                            ? 'text-[rgb(var(--success))]'
+                            : 'text-[rgb(var(--accent))]',
+                          collapsed
+                            ? 'w-auto opacity-100 desktop:w-0 desktop:opacity-0'
+                            : 'w-auto opacity-100',
+                        )}
+                      >
+                        {progress.state === 'complete' ? (
+                          <Check className="h-3 w-3" strokeWidth={2.6} />
+                        ) : null}
+                        {progress.text}
+                      </span>
+                    ) : null}
                   </NavLink>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </details>
         ))}

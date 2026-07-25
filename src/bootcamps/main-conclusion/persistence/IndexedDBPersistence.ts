@@ -2,7 +2,12 @@ import { openDB, type IDBPDatabase } from 'idb';
 import type { Persistence, PersistenceTx } from './Persistence';
 
 const DB_NAME = 'mc-bootcamp';
-const DB_VERSION = 1;
+// v2 adds practice_sessions (practice-set resume state). Bumping the version is
+// required for existing users: the upgrade callback only runs on a version
+// change, so a new store added without a bump never gets created and every
+// read/write against it throws NotFoundError. The upgrade is additive and
+// guarded by `contains`, so no existing store or record is touched.
+const DB_VERSION = 2;
 const BLOB_STORE = 'rr_audio';
 const RECORD_STORES = [
   'simulator_attempts',
@@ -15,6 +20,7 @@ const RECORD_STORES = [
   'journal_entries',
   'calibration_attempts',
   'lesson_progress',
+  'practice_sessions',
 ] as const;
 
 export class IndexedDBPersistence implements Persistence {

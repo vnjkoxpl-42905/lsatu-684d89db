@@ -176,6 +176,33 @@ export const CalibrationAttempt = z.object({
 });
 export type CalibrationAttempt = z.infer<typeof CalibrationAttempt>;
 
+// ─── Practice-set session (resume state for Intro to LR practice drills) ────
+// One row per user per practice pool. Holds enough to put the student back
+// exactly where they were: the frozen question queue, where they stopped, and
+// every answer already given. Survives tab close, sign-out, and device change
+// because it rides the same bootcamp_kv sync as module_progress.
+export const PracticeSessionAttempt = z.object({
+  qid: z.string(),
+  selected_answer: z.string(),
+  correct: z.boolean(),
+  time_ms: z.number().int().min(0).default(0),
+});
+export type PracticeSessionAttempt = z.infer<typeof PracticeSessionAttempt>;
+
+export const PracticeSession = z.object({
+  id: UuidV4Schema,
+  user_id: UuidV4Schema,
+  pool_slug: z.string(),
+  completion_id: z.string(),
+  question_queue: z.array(z.string()),
+  current_index: z.number().int().min(0).default(0),
+  attempts: z.array(PracticeSessionAttempt).default([]),
+  status: z.enum(['in_progress', 'completed']).default('in_progress'),
+  started_at: IsoDateSchema,
+  updated_at: IsoDateSchema,
+});
+export type PracticeSession = z.infer<typeof PracticeSession>;
+
 export const TABLES = {
   users: 'users',
   module_progress: 'module_progress',
@@ -190,4 +217,5 @@ export const TABLES = {
   rr_reviews: 'rr_reviews',
   journal_entries: 'journal_entries',
   calibration_attempts: 'calibration_attempts',
+  practice_sessions: 'practice_sessions',
 } as const;

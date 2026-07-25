@@ -25,6 +25,8 @@ import {
   getPracticePool,
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
+import { useAuth } from '@/contexts/AuthContext';
+import { loadPracticeSession } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import {
   buildGuidedLaunchReturnPath,
   parseGuidedResumeIndex,
@@ -77,6 +79,7 @@ export default function GuidedDrillStart({
   const navigate = useNavigate();
   const location = useLocation();
   const { isLoading: qbLoading } = useQuestionBank();
+  const { user } = useAuth();
 
   const stateBootcampOverride = (location.state as any)?.bootcampOverride as PracticePool | undefined;
   const slugBootcampOverride = slug ? getPracticePool(slug) : undefined;
@@ -101,6 +104,32 @@ export default function GuidedDrillStart({
     }),
     [assignmentId, slug, originReturnTo],
   );
+
+  // An unfinished practice run is surfaced before the student presses Start, so
+  // they know their earlier answers are still there rather than guessing.
+  const [resumeNotice, setResumeNotice] = React.useState<string | undefined>(undefined);
+  React.useEffect(() => {
+    let cancelled = false;
+    if (!user || !bootcampOverride || bootcampOverride.source !== 'intro-to-lr-practice-drills') {
+      setResumeNotice(undefined);
+      return;
+    }
+    void loadPracticeSession(user.id, bootcampOverride.slug).then((stored) => {
+      if (cancelled) return;
+      if (!stored || stored.status !== 'in_progress' || stored.attempts.length === 0) {
+        setResumeNotice(undefined);
+        return;
+      }
+      const total = stored.question_queue.length;
+      const at = Math.min(stored.current_index + 1, total);
+      setResumeNotice(
+        `Picking up where you left off — question ${at} of ${total}, ${stored.attempts.length} already answered.`,
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, bootcampOverride]);
 
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
@@ -356,6 +385,7 @@ export default function GuidedDrillStart({
       title={launchPage.title}
       onStart={() => void handleStart()}
       onReturn={handleReturn}
+      resumeNotice={resumeNotice}
     />
   );
 }
