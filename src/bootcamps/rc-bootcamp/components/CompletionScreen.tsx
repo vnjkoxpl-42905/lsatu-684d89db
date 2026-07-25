@@ -7,10 +7,8 @@
  */
 
 import { THESIS } from '../content';
+import { FIRST_ATTEMPT_KEY } from '../lessonMeta';
 import { useLesson } from '../useLesson';
-
-/** The storage key of the first from-memory write. */
-const FIRST_ATTEMPT_KEY = 'recall-medieval';
 
 export function CompletionScreen() {
   const { state } = useLesson();

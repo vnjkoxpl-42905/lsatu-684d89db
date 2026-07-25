@@ -99,23 +99,23 @@ function Lesson() {
     if (state.finished) return <CompletionScreen />;
     switch (screen.type) {
       case 'prose':
-        return <ProseScreen screen={screen} chapterName={chapterName} headingRef={headingRef} />;
+        return <ProseScreen screen={screen} chapterName={chapterName} chapterIndex={chapterIndex} headingRef={headingRef} />;
       case 'instructions':
         return (
-          <InstructionsScreen screen={screen} chapterName={chapterName} headingRef={headingRef} />
+          <InstructionsScreen screen={screen} chapterName={chapterName} chapterIndex={chapterIndex} headingRef={headingRef} />
         );
       case 'read':
         return <ReadScreen onReopen={() => setOverlay(true)} />;
       case 'passage':
-        return <PassageScreen screen={screen} chapterName={chapterName} headingRef={headingRef} />;
+        return <PassageScreen screen={screen} chapterName={chapterName} chapterIndex={chapterIndex} headingRef={headingRef} />;
       case 'write':
-        return <WriteScreen screen={screen} chapterName={chapterName} headingRef={headingRef} />;
+        return <WriteScreen screen={screen} chapterName={chapterName} chapterIndex={chapterIndex} headingRef={headingRef} />;
       case 'walk':
-        return <WalkScreen screen={screen} chapterName={chapterName} headingRef={headingRef} />;
+        return <WalkScreen screen={screen} chapterName={chapterName} chapterIndex={chapterIndex} headingRef={headingRef} />;
       default:
         return null;
     }
-  }, [screen, chapterName, state.finished, setOverlay]);
+  }, [screen, chapterName, chapterIndex, state.finished, setOverlay]);
 
   if (!state.hydrated) {
     return <div className="rc-bootcamp" aria-busy="true" />;

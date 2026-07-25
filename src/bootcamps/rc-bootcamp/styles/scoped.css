@@ -635,3 +635,92 @@
 .rc-bootcamp .rc-recap-close{margin-top:26px}
 .rc-bootcamp .td-task-serif{font-family:var(--rc-serif)}
 .rc-bootcamp .rc-invisible{visibility:hidden}
+
+/* ---------- act line: which of the four parts they are in ----------
+   Sits above the kicker. The kicker keeps the accent; this stays faint so the
+   screen's own descriptor is still the louder of the two. */
+.rc-bootcamp .rc-act{
+  font-size:11.5px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--rc-ink-faint);margin-bottom:6px;
+}
+.rc-bootcamp .rc-act + .rc-eyebrow{margin-bottom:14px}
+
+/* act divider in Contents: a label, not a control */
+.rc-bootcamp .rc-toc-act{
+  font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--rc-ink-faint);
+  padding:18px 4px 8px;
+  border-top:1px solid var(--rc-hairline-soft);
+  margin-top:10px;
+}
+.rc-bootcamp .rc-toc-act:first-child{border-top:0;margin-top:0;padding-top:4px}
+
+/* per-chapter time estimate */
+.rc-bootcamp .rc-toc-time{
+  margin-left:auto;padding-left:12px;
+  font-size:11.5px;font-weight:600;color:var(--rc-ink-faint);
+  white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.rc-bootcamp .rc-seg-tip i{font-style:normal;opacity:.72}
+
+/* ---------- ghost quote: their own words beside the author's point ---------- */
+.rc-bootcamp .rc-ghost-quote{
+  margin:26px 0 18px;
+  max-height:260px;overflow-y:auto;
+}
+
+/* ---------- drop cap ----------
+   Lesson passage cards only. The timed surface stays plain on purpose: the
+   contrast between reading practice and exam conditions is the point. */
+.rc-bootcamp .rc-passage-card.rc-has-dropcap .rc-prose > p:first-child::first-letter{
+  float:left;
+  font-family:var(--rc-serif);
+  font-size:3.1em;
+  line-height:.86;
+  font-weight:600;
+  color:var(--rc-ink);
+  padding:6px 10px 0 0;
+}
+@media(max-width:420px){
+  .rc-bootcamp .rc-passage-card.rc-has-dropcap .rc-prose > p:first-child::first-letter{
+    font-size:2.6em;padding-right:8px;
+  }
+}
+
+/* ---------- margin notes ----------
+   At wide viewports the author's reactions sit beside the quote they answer,
+   like pencil notes in a workbook. The note column extends into the page
+   gutter rather than eating the reading measure, which is why the breakpoint
+   is 1280px: below that there is no gutter to spare and the beats stack
+   exactly as they always have.
+
+   1fr resolves to the stage width, so quotes keep their full measure. */
+@media(min-width:1280px){
+  .rc-bootcamp .rc-chunks{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 240px;
+    column-gap:24px;
+    align-items:start;
+    margin-right:-264px;
+  }
+  .rc-bootcamp .rc-chunks > .rc-chunk{
+    grid-row:var(--rc-row);
+    grid-column:var(--rc-col);
+    align-self:start;
+  }
+  .rc-bootcamp .rc-chunk-margin .rc-react{
+    background:transparent;
+    padding-top:2px;
+  }
+  .rc-bootcamp .rc-chunk-margin .rc-react-body{font-size:15.5px;line-height:1.62}
+}
+
+/* The end segments' tooltips are centred on a segment that sits at the very
+   edge of the strip, so they used to push past the viewport and give the page a
+   horizontal scrollbar. Anchor them inside instead. */
+.rc-bootcamp .rc-seg:first-child .rc-seg-tip{left:0;transform:translate(0,-4px)}
+.rc-bootcamp .rc-seg:last-child .rc-seg-tip{left:auto;right:0;transform:translate(0,-4px)}
+.rc-bootcamp .rc-seg:first-child:hover .rc-seg-tip,
+.rc-bootcamp .rc-seg:first-child:focus-visible .rc-seg-tip,
+.rc-bootcamp .rc-seg:last-child:hover .rc-seg-tip,
+.rc-bootcamp .rc-seg:last-child:focus-visible .rc-seg-tip{transform:translate(0,0)}

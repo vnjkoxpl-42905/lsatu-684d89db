@@ -8,8 +8,10 @@
  * Escape to close (handled at the page level with the overlay).
  */
 
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
+import { CHAPTER_MINUTES } from '../chapterMinutes.generated';
 import { CHAPTERS } from '../content';
+import { startsAct } from '../lessonMeta';
 import { useLesson } from '../useLesson';
 
 export function TocSheet({ triggerRef }: { triggerRef: React.RefObject<HTMLButtonElement> }) {
@@ -72,28 +74,36 @@ export function TocSheet({ triggerRef }: { triggerRef: React.RefObject<HTMLButto
         <div id="tocList">
           {CHAPTERS.map((chapter, ci) => {
             const locked = ci > furthestChapter;
+            const act = startsAct(ci);
             return (
-              <button
-                key={chapter.name}
-                type="button"
-                className={[
-                  'rc-toc-item',
-                  ci === chapterIndex ? 'current' : '',
-                  ci < chapterIndex ? 'done' : '',
-                  locked ? 'locked' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                aria-disabled={locked || undefined}
-                onClick={() => {
-                  if (locked) return;
-                  setToc(false);
-                  jumpToChapter(ci);
-                }}
-              >
-                <span className="rc-toc-num">{ci + 1}</span>
-                <span className="rc-toc-name">{chapter.name}</span>
-              </button>
+              <Fragment key={chapter.name}>
+                {act ? (
+                  <div className="rc-toc-act" role="presentation">
+                    {act.label}
+                  </div>
+                ) : null}
+                <button
+                  type="button"
+                  className={[
+                    'rc-toc-item',
+                    ci === chapterIndex ? 'current' : '',
+                    ci < chapterIndex ? 'done' : '',
+                    locked ? 'locked' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  aria-disabled={locked || undefined}
+                  onClick={() => {
+                    if (locked) return;
+                    setToc(false);
+                    jumpToChapter(ci);
+                  }}
+                >
+                  <span className="rc-toc-num">{ci + 1}</span>
+                  <span className="rc-toc-name">{chapter.name}</span>
+                  <span className="rc-toc-time">about {CHAPTER_MINUTES[ci]} min</span>
+                </button>
+              </Fragment>
             );
           })}
         </div>

@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import { CHAPTER_MINUTES } from '../chapterMinutes.generated';
 import { CHAPTERS } from '../content';
 import { useLesson } from '../useLesson';
 
@@ -103,6 +104,7 @@ export function ChapterProgress() {
               <span>
                 Chapter {ci + 1} of {CHAPTERS.length}
               </span>
+              <i>about {CHAPTER_MINUTES[ci]} min</i>
             </span>
             <span className="rc-seg-track">
               <span className="rc-seg-fill" style={{ width }} />
