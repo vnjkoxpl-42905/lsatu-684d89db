@@ -14,7 +14,7 @@ import { createSupabaseAdapter, localAdapter } from './persistence';
 import { LessonProvider, useLesson, usePrimaryAction } from './useLesson';
 import { ChapterProgress } from './components/ChapterProgress';
 import { CompletionScreen } from './components/CompletionScreen';
-import { ArrowLeftIcon, ChevronLeft, ChevronRight, MenuIcon } from './components/Icons';
+import { ChevronLeft, ChevronRight, MenuIcon } from './components/Icons';
 import {
   InstructionsScreen,
   PassageScreen,
@@ -141,10 +141,8 @@ function Lesson() {
             className="rc-exit-btn"
             onClick={() => navigate('/bootcamps')}
           >
-            <ArrowLeftIcon />
-            <span>Exit</span>
+            Exit
           </button>
-          <div className="rc-exit-divider" aria-hidden="true" />
           <div className="rc-brand">
             <div className="rc-brand-mark">RC</div>
             <div className="rc-brand-txt">

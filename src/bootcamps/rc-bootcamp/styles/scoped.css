@@ -80,24 +80,26 @@
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rc-hairline);
 }
+/* 720px matches .rc-stage and .rc-footnav-inner. The header used to be 1080 —
+   the only container on the page off that grid — which left Exit floating in
+   ~190px of dead margin. On the shared grid Exit sits directly above Back and
+   Contents directly above Continue. */
 .rc-bootcamp .rc-top-inner{
-  max-width:1080px;margin:0 auto;padding:0 24px;
+  max-width:720px;margin:0 auto;padding:0 24px;
   height:60px;display:flex;align-items:center;gap:16px;
 }
 /* Exit sits first in the sticky bar so leaving the lesson is always one click
-   away, at any scroll depth. Quiet by default; it must never compete with the
-   primary Continue action. */
+   away, at any scroll depth. Spec-identical to .rc-toc-btn: the two chrome
+   controls bookend the bar as a matched pair. Outlined, never filled — the
+   footer's Continue is the one filled control per screen. */
 .rc-bootcamp .rc-exit-btn{
-  display:flex;align-items:center;gap:6px;flex:none;
-  height:30px;padding:0 10px 0 8px;margin-left:-8px;border-radius:var(--rc-r-chip);
-  border:0;background:transparent;
-  font-size:12.5px;font-weight:600;color:var(--rc-ink-faint);
+  display:flex;align-items:center;flex:none;
+  height:34px;padding:0 12px;margin-right:12px;border-radius:var(--rc-r-chip);
+  border:1px solid var(--rc-hairline);background:var(--rc-surface);
+  font-size:12.5px;font-weight:600;color:var(--rc-ink-soft);
   transition:background .18s var(--rc-ease), color .18s var(--rc-ease);
 }
 .rc-bootcamp .rc-exit-btn:hover{background:var(--rc-surface-sunk);color:var(--rc-ink)}
-.rc-bootcamp .rc-exit-divider{
-  width:1px;height:20px;flex:none;margin:0 -4px;background:var(--rc-hairline);
-}
 .rc-bootcamp .rc-brand{display:flex;align-items:center;gap:10px;min-width:0}
 .rc-bootcamp .rc-brand-mark{
   width:26px;height:26px;border-radius:7px;flex:none;
