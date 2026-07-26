@@ -34,6 +34,10 @@ supabase/.temp/
 design-extract-output/
 .dev-screens/
 
+# Local auth session for verification (student viewer creds + saved storageState).
+# Never committed; used to log the verification browser past the /auth gate.
+.auth/
+
 # Playwright MCP / verification artifacts
 .playwright-mcp/
 test-results/
