@@ -94,6 +94,14 @@
       "mcp__github__pull_request_read",
       "mcp__github__issue_read"
     ],
+    "ask": [
+      "mcp__d2692868-3949-490b-864d-de2c41e9f9b7__query_database",
+      "mcp__d2692868-3949-490b-864d-de2c41e9f9b7__send_message",
+      "mcp__d2692868-3949-490b-864d-de2c41e9f9b7__deploy_project",
+      "mcp__lovable__query_database",
+      "mcp__lovable__send_message",
+      "mcp__lovable__deploy_project"
+    ],
     "deny": [
       "Bash(rm -rf*)",
       "Bash(rm -fr*)",
