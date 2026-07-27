@@ -2361,6 +2361,33 @@ export type Database = {
         }
         Relationships: []
       }
+      rc_lesson_progress: {
+        Row: {
+          completed_at: string | null
+          data: Json
+          id: string
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          data?: Json
+          id?: string
+          lesson_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          data?: Json
+          id?: string
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       reasoning_type_guidance: {
         Row: {
           common_flaws: string[] | null
