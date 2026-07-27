@@ -43,6 +43,10 @@ import {
   FlaggedIndexView,
   FlaggedQuestionView,
 } from "./components/classroom/FlaggedViews";
+import {
+  JournalEntryView,
+  JournalIndexView,
+} from "@/components/classroom/JournalViews";
 const CausationStation = React.lazy(() => import("./pages/CausationStation"));
 
 // Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
@@ -78,7 +82,6 @@ const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
 const AdminInspector = React.lazy(() => import("./pages/admin/Inspector"));
 const LsatKnowledgeImport = React.lazy(() => import("./pages/LsatKnowledgeImport"));
 const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
-const Journal = React.lazy(() => import("./pages/Journal"));
 const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
 const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
@@ -370,6 +373,16 @@ const App = () => {
                     <Route path="/flagged/:qid" element={
                       <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
                     } />
+                    <Route path="/journal" element={
+                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+                        <JournalIndexView />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/journal/:qid" element={
+                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+                        <JournalEntryView />
+                      </ProtectedRoute>
+                    } />
                   </Route>
 
                   {/* Persistent student shell. Sidebar + study chat stay mounted;
@@ -381,13 +394,6 @@ const App = () => {
                     } />
                     <Route path="/practice/sets" element={
                       <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
-                    } />
-                    <Route path="/journal" element={
-                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <Journal />
-                        </React.Suspense>
-                      </ProtectedRoute>
                     } />
                     <Route path="/activities" element={
                       <ProtectedRoute flag="has_activity_access">

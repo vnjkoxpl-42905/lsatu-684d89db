@@ -18,6 +18,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useFlagged } from "@/hooks/useFlagged";
+import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { flagLabel } from "@/lib/flaggedService";
 import {
   useStudentAssignments,
@@ -30,12 +31,13 @@ import {
 } from "@/components/classroom/classroomData";
 import "@/components/classroom/classroom.css";
 
-type ClassroomSection = "notes" | "work" | "flagged";
+type ClassroomSection = "notes" | "work" | "flagged" | "journal";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
   notes: "Notes and recaps",
   work: "Assigned work",
   flagged: "Flagged",
+  journal: "Wrong answers",
 };
 
 type ClassroomLayoutContextValue = {
@@ -63,6 +65,9 @@ function useRetainedValue<T>(value: T, canReplace: boolean) {
 }
 
 function sectionFromPath(pathname: string): ClassroomSection | null {
+  if (pathname === "/journal" || pathname.startsWith("/journal/")) {
+    return "journal";
+  }
   // Flagged lives outside the /classroom path but inside the same frame.
   if (pathname === "/flagged" || pathname.startsWith("/flagged/")) {
     return "flagged";
@@ -175,10 +180,10 @@ function ClassroomSidebar({
             <b>Review</b>
             <button
               type="button"
-              className={navClass(location.pathname.startsWith("/journal"))}
+              className={navClass(activeSection === "journal")}
               onClick={() => go("/journal")}
             >
-              Wrong answers
+              Wrong answers <em>›</em>
             </button>
             <button
               type="button"
@@ -248,12 +253,12 @@ function StateSkeleton() {
   );
 }
 
-function SectionList({
+function StandardSectionList({
   section,
   activeId,
   onClose,
 }: {
-  section: ClassroomSection;
+  section: Exclude<ClassroomSection, "journal">;
   activeId: string | undefined;
   onClose?: () => void;
 }) {
@@ -414,6 +419,7 @@ function SectionList({
                 </button>
               ))
             : null}
+
         </div>
 
         {section === "flagged" &&
@@ -426,8 +432,129 @@ function SectionList({
               : "Nothing flagged yet. Flag a question while you are drilling when you want to come back to it."}
           </p>
         ) : null}
+
       </div>
     </div>
+  );
+}
+
+function JournalSectionList({
+  activeId,
+  onClose,
+}: {
+  activeId: string | undefined;
+  onClose?: () => void;
+}) {
+  const navigate = useNavigate();
+  const query = useJournalEntries();
+  const [filter, setFilter] = React.useState("");
+  const rows = React.useMemo(() => {
+    const source = query.data ?? [];
+    const needle = filter.trim().toLowerCase();
+    if (!needle) return source;
+    return source.filter(
+      (row) =>
+        row.label.toLowerCase().includes(needle) ||
+        row.qid.toLowerCase().includes(needle),
+    );
+  }, [filter, query.data]);
+
+  const openRow = (qid: string) => {
+    onClose?.();
+    navigate(`/journal/${encodeURIComponent(qid)}`);
+  };
+
+  return (
+    <div className="classroom-section-card">
+      <PanelWash />
+      <div className="classroom-panel-inner">
+        <div className="classroom-section-heading">
+          <h2>{SECTION_TITLES.journal}</h2>
+          {onClose ? (
+            <button type="button" onClick={onClose} aria-label="Close section list">
+              <X size={16} />
+            </button>
+          ) : null}
+        </div>
+
+        {!query.error ? (
+          <input
+            type="search"
+            className="classroom-panel-search"
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            placeholder="Filter by question ID"
+            aria-label="Filter wrong answers"
+          />
+        ) : null}
+
+        {query.isLoading && rows.length === 0 ? <StateSkeleton /> : null}
+
+        {query.error ? (
+          <div className="classroom-list-error">
+            <p>Could not load this list.</p>
+            <button
+              type="button"
+              className="classroom-button"
+              onClick={() => void query.refetch()}
+            >
+              Try again
+            </button>
+          </div>
+        ) : null}
+
+        <div className="classroom-panel-list">
+          {rows.map((row) => (
+            <button
+              type="button"
+              key={row.qid}
+              className={`classroom-panel-item${activeId === row.qid ? " classroom-panel-item-active" : ""}`}
+              onClick={() => openRow(row.qid)}
+            >
+              <h3>{row.note?.title?.trim() || row.label}</h3>
+              <time>
+                {row.first_missed
+                  ? new Date(row.first_missed).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : row.qtype}
+              </time>
+            </button>
+          ))}
+        </div>
+
+        {!query.isLoading && !query.error && rows.length === 0 ? (
+          <p className="classroom-panel-empty">
+            {filter.trim()
+              ? "No wrong answer matches that."
+              : "You have no wrong answers yet."}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function SectionList({
+  section,
+  activeId,
+  onClose,
+}: {
+  section: ClassroomSection;
+  activeId: string | undefined;
+  onClose?: () => void;
+}) {
+  if (section === "journal") {
+    return <JournalSectionList activeId={activeId} onClose={onClose} />;
+  }
+  return (
+    <StandardSectionList
+      section={section}
+      activeId={activeId}
+      onClose={onClose}
+    />
   );
 }
 
@@ -504,7 +631,9 @@ export default function ClassroomLayout() {
 
   const openSection = React.useCallback((section: ClassroomSection) => {
     setSelectedSection(section);
-    if (window.matchMedia("(max-width: 1279px)").matches) {
+    const breakpoint =
+      section === "journal" ? "(max-width: 1399px)" : "(max-width: 1279px)";
+    if (window.matchMedia(breakpoint).matches) {
       setSectionOverlayOpen(true);
     }
   }, []);
@@ -513,10 +642,17 @@ export default function ClassroomLayout() {
 
   const activeId = params.itemId ?? params.assignmentId ?? params.qid;
   const contextValue = { displayName, testDate, openSection };
+  const journalDetail = /^\/journal\/[^/]+$/.test(location.pathname);
+  const rootClass =
+    activeSection === "journal"
+      ? `classroom-root classroom-root-journal${
+          journalDetail ? " classroom-root-journal-detail" : ""
+        }`
+      : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
-      <div className="classroom-root">
+      <div className={rootClass}>
         <button
           type="button"
           className="classroom-mobile-menu-button"
@@ -572,21 +708,25 @@ export default function ClassroomLayout() {
           </aside>
         ) : null}
 
-        <main className="classroom-stage">
-          <div className="classroom-column">
-            {activeSection ? (
-              <button
-                type="button"
-                className="classroom-section-trigger"
-                onClick={() => setSectionOverlayOpen(true)}
-              >
-                {SECTION_TITLES[activeSection]}
-                <PanelLeftClose size={17} />
-              </button>
-            ) : null}
-            <Outlet context={contextValue} />
-          </div>
-        </main>
+        {journalDetail ? (
+          <Outlet context={contextValue} />
+        ) : (
+          <main className="classroom-stage">
+            <div className="classroom-column">
+              {activeSection ? (
+                <button
+                  type="button"
+                  className="classroom-section-trigger"
+                  onClick={() => setSectionOverlayOpen(true)}
+                >
+                  {SECTION_TITLES[activeSection]}
+                  <PanelLeftClose size={17} />
+                </button>
+              ) : null}
+              <Outlet context={contextValue} />
+            </div>
+          </main>
+        )}
 
         {activeSection && sectionOverlayOpen ? (
           <div className="classroom-section-overlay">

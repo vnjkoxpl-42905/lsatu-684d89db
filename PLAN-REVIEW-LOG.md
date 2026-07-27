@@ -234,3 +234,37 @@ This is contradicted by a direct measurement on the identical pattern already in
 No new evidence was offered against the shipped behaviour, so the spec is unchanged on this point.
 
 **Converged after 2 rounds.** Codex's round-2 reply states "No other material problems found"; its sole remaining objection is factually incorrect.
+
+## Act 3 — Build
+
+### Round 1 — Codex build
+
+Codex implemented PLAN.md in one pass with write access. Reported no deviations from the spec and no spec concerns. Files: App.tsx (route move), ClassroomLayout.tsx (journal section + bare-Outlet branch), JournalViews.tsx, JournalQuestionView.tsx, JournalReviewPanel.tsx, journalAutosave.ts, useJournalEntries.ts, classroom.css, CONTEXT.md. Unprompted, it also extracted the autosave into a pure testable module and wrote 6 unit tests.
+
+### Claude's verdict — accepted, no fix rounds needed
+
+Full diff read. Spec fidelity confirmed on the points that mattered:
+
+- Routing: `/journal` and `/journal/:qid` moved under the SAME existing pathless ClassroomLayout route, flags byte-identical, StudentShell entry removed, no second layout route. `/waj` redirect untouched.
+- The fourth column is built the revised way: `journalDetail` renders a bare `<Outlet>` and `JournalEntryView` returns `<main className="classroom-stage">` + `<aside className="classroom-aside">` as siblings. Measured `asideIsSiblingOfStage: true`.
+- The journal query lives in `JournalSectionList`, which only mounts for the journal section, so it cannot fire on `/flagged` or `/classroom`.
+- `journalAutosave.ts` implements exactly what round 1 demanded: payload captures its own qid, `pending` is nulled before the write so a double flush writes once, and a promise chain serialises writes. `patch` reads a latest-draft ref instead of closed-over state.
+- Annotation layer is a child of `.classroom-journal-question-content` (`position: relative`), inside the scrolled content, so ink scrolls with the text.
+
+Proof run by Claude, not taken from the report: `npm run typecheck` clean, `npm run build` clean, 6/6 unit tests pass, `grep -nE ":root|@layer"` returns nothing, no unscoped selectors in the CSS diff.
+
+Browser verification against the running app:
+
+- Rail identity survives `/classroom` → Wrong answers → entry (the check a screenshot cannot make).
+- Grid computes to `336px 320px 524px 320px`. Question order: annotation layer, stimulus, stem, 5 choices, correct one marked.
+- `/journal` does not auto-select. Unknown qid gives an explicit not-found, not the first row and not a blank column.
+- Breakpoints exact: entries hidden at 1399, visible at 1401. Section trigger present but hidden at wide widths. No horizontal scroll at 1500/1401/1399/1101/1099/700.
+- Forced 500 (fulfill, not abort): list error + retry, empty state suppressed, no stuck skeleton.
+- `/classroom` and `/flagged` still render `.classroom-stage > .classroom-column` with no aside. `/mainhub`, `/practice`, `/bootcamps` unchanged.
+- **The four autosave cases all pass**: text typed in A then navigating within 800ms persists; B is not contaminated with A's text; two fields edited in the same tick both persist; zero duplicate writes after a settled save. These are precisely the four failure modes round 1 predicted.
+
+One false alarm on my side: I read an early screenshot as showing an unreadable active row. Computed styles and a clean screenshot both show dark charcoal on white text, identical to Flagged. The first capture caught the 300ms transition mid-flight.
+
+`src/pages/Journal.tsx` is now unreferenced and left in place, as instructed.
+
+**Rounds used: 1. No fix rounds.**

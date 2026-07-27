@@ -4,11 +4,11 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 
 ## Terms
 
-**Classroom frame** — the three-part layout every Classroom route is drawn in: the cream left rail, the optional middle column, and the white reading column. Implemented by `ClassroomLayout`. The frame is persistent: navigating between surfaces it draws swaps the reading column only, and never remounts the rail. A page "sits in the Classroom frame" regardless of its URL; `/flagged` does, `/journal` does not.
+**Classroom frame** — the persistent layout every Classroom route is drawn in: the cream left rail, an optional middle list, and the white reading surface. Implemented by `ClassroomLayout`. Navigating between surfaces it draws swaps the content only and never remounts the rail. A page "sits in the Classroom frame" regardless of its URL; `/flagged` and `/journal` both do.
 
-**StudentShell** — the older, separate frame with its own 240px rail, still drawing `/mainhub`, `/practice`, `/journal` and the rest. A student moving between a Classroom-frame page and a StudentShell page sees the whole page rebuild. Reducing that boundary is ongoing work, one surface at a time.
+**StudentShell** — the older, separate frame with its own 240px rail, still drawing `/mainhub`, `/practice` and the rest. A student moving between a Classroom-frame page and a StudentShell page sees the whole page rebuild. Reducing that boundary is ongoing work, one surface at a time.
 
-**Reading column** — the white column on the right. The only place page content appears. Content is embedded here; the Classroom never takes over the screen.
+**Reading column** — the white content column. Most routes use one reading column on the right. A Wrong answers detail uses a four-column Classroom frame: cream rail, entries list, vertical question, and review panel. Below its journal-only breakpoints the entries list becomes an overlay and the review panel moves under the question.
 
 **Section** — a middle-column list paired with the reading column: Notes and recaps, Assigned work, Flagged. A section is picked in the rail, lists its items in the middle column, and shows the chosen item in the reading column.
 
@@ -16,7 +16,9 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 
 **Flagged question** — a question carrying a flag. The Flagged section is the student's unfinished business: questions they chose to set aside. Clearing a flag is the student's own act (Unflag), not something the system does when they get the question right.
 
-**Wrong answer** — a question the student actually missed, recorded in `wrong_answer_journal` and worked through in the Wrong Answer Journal at `/journal`. Distinct from a flag in both meaning and storage: a flag is chosen, a wrong answer is earned. A question can be both, one, or neither. Do not treat the two lists as views of the same thing.
+**Wrong answer** — a question the student actually missed, recorded in `wrong_answer_journal` and worked through in Wrong answers at `/journal`. Distinct from a flag in both meaning and storage: a flag is chosen, a wrong answer is earned. A question can be both, one, or neither. Do not treat the two lists as views of the same thing.
+
+**Journal entry** — the review of one wrong answer at `/journal/:qid`. The URL is the selection: it resolves only by `qid`, never by the journal row id, and `/journal` does not silently select the first entry. Its review fields autosave without a visible save state.
 
 **Ask** — sending a question to the coach from the surface the student is looking at, with their own comment attached. Always labelled "Ask", never with the coach's name; the name belongs in messaging itself, not in the furniture that leads to it.
 
