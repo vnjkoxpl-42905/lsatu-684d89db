@@ -218,6 +218,21 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   background: var(--classroom-hover);
 }
 
+.classroom-root .classroom-nav-locked,
+.classroom-root .classroom-nav-locked:hover {
+  background: transparent;
+  color: var(--classroom-meta-soft);
+  cursor: default;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-nav-lock {
+  flex: 0 0 auto;
+  height: 13px;
+  margin-left: auto;
+  width: 13px;
+}
+
 .classroom-root .classroom-nav-active {
   background: var(--classroom-active);
   color: var(--classroom-active-ink);
@@ -261,6 +276,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-copy {
+  flex: 1 1 auto;
   font-size: 13px;
   line-height: 1.25;
   min-width: 0;
@@ -291,6 +307,11 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   justify-content: center;
   margin-left: auto;
   width: 28px;
+}
+
+.classroom-root .classroom-profile .classroom-icon-button {
+  flex: 0 0 auto;
+  margin-left: 0;
 }
 
 .classroom-root .classroom-section-list {
@@ -439,6 +460,15 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   max-width: 720px;
   padding: 80px 0 120px;
   width: 100%;
+}
+
+.classroom-root.classroom-root-drill .classroom-stage {
+  padding: 8px 8px 8px 0;
+}
+
+.classroom-root.classroom-root-drill .classroom-column {
+  max-width: none;
+  padding: 0;
 }
 
 .classroom-root .classroom-section-trigger {

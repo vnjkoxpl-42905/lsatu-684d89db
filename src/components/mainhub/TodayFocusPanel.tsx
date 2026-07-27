@@ -196,7 +196,10 @@ function taToFocus(a: StudentTAAssignment): TodayFocusItem | null {
   };
 }
 
-function guidedToFocus(a: GuidedAssignmentWithDrill): TodayFocusItem | null {
+function guidedToFocus(
+  a: GuidedAssignmentWithDrill,
+  drillReturnTo: string,
+): TodayFocusItem | null {
   if (!isActiveStatus(a.status)) return null;
   const count = a.guided_drill?.question_count;
   const minutes = a.guided_drill?.estimated_minutes;
@@ -209,7 +212,7 @@ function guidedToFocus(a: GuidedAssignmentWithDrill): TodayFocusItem | null {
     actionLabel: ACTION_BY_STATUS[a.status] ?? "Open",
     actionCue: minutes ? `${minutes} min` : count != null ? `${count} questions` : undefined,
     estimatedTime: minutes ? `${minutes} min` : undefined,
-    route: `/guided/${encodeURIComponent(a.id)}?returnTo=${encodeURIComponent("/mainhub")}`,
+    route: `/guided/${encodeURIComponent(a.id)}?returnTo=${encodeURIComponent(drillReturnTo)}`,
     priority: 830,
     updatedAt: a.assigned_at,
     Icon: ClipboardList,
@@ -255,7 +258,10 @@ function notificationToFocus(n: Notification, markRead: (id: string) => Promise<
   };
 }
 
-function lastActivityToFocus(row: LastActivityRow | null | undefined): TodayFocusItem | null {
+function lastActivityToFocus(
+  row: LastActivityRow | null | undefined,
+  drillReturnTo: string,
+): TodayFocusItem | null {
   if (!row) return null;
   const snapshot = row.state_snapshot;
   const target = resolveResumeTarget(snapshot);
@@ -288,7 +294,10 @@ function lastActivityToFocus(row: LastActivityRow | null | undefined): TodayFocu
     actionLabel: "Resume",
     actionCue: left > 0 ? `${left} left` : undefined,
     route: target.path,
-    routeState: target.state,
+    routeState:
+      target.path === "/drill"
+        ? { ...(target.state as object), returnTo: drillReturnTo }
+        : target.state,
     priority: snapshot.kind === "section" ? 480 : 460,
     progress,
     updatedAt: row.updated_at,
@@ -300,7 +309,11 @@ function visibleRails(items: TodayFocusItem[], primaryId: string | null) {
   return items.filter((item) => item.id !== primaryId).slice(0, 2);
 }
 
-export default function TodayFocusPanel() {
+export default function TodayFocusPanel({
+  drillReturnTo = "/mainhub",
+}: {
+  drillReturnTo?: string;
+}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [expanded, setExpanded] = React.useState(false);
@@ -353,7 +366,7 @@ export default function TodayFocusPanel() {
       .filter((item): item is TodayFocusItem => item !== null);
     const fromGuided = guided
       .filter((a) => !seenSourceIds.has(a.id))
-      .map(guidedToFocus)
+      .map((assignment) => guidedToFocus(assignment, drillReturnTo))
       .filter((item): item is TodayFocusItem => item !== null);
     const fromNotifications = notifications
       .map((n) => notificationToFocus(n, markRead))
@@ -361,7 +374,7 @@ export default function TodayFocusPanel() {
     const fromMessages = conversations
       .map(instructorMessageToFocus)
       .filter((item): item is TodayFocusItem => item !== null);
-    const fromLastActivity = lastActivityToFocus(lastActivity);
+    const fromLastActivity = lastActivityToFocus(lastActivity, drillReturnTo);
 
     const byId = new Map<string, TodayFocusItem>();
     for (const item of [
@@ -376,7 +389,7 @@ export default function TodayFocusPanel() {
       byId.set(item.id, item);
     }
     return Array.from(byId.values()).sort(itemSort);
-  }, [classroomItems, conversations, guided, homework, lastActivity, markRead, notifications, taAssignments]);
+  }, [classroomItems, conversations, drillReturnTo, guided, homework, lastActivity, markRead, notifications, taAssignments]);
 
   React.useEffect(() => {
     if (selectedId && !focusItems.some((item) => item.id === selectedId)) {

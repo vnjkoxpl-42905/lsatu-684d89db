@@ -358,6 +358,11 @@ const App = () => {
                       <ProtectedRoute flag="has_classroom_access" allowSignedIn><Outlet /></ProtectedRoute>
                     }>
                       <Route index element={<Classroom />} />
+                      <Route path="drill" element={
+                        <ProtectedRoute flag="has_drill_access">
+                          <AcademyMainhub drillReturnTo="/classroom" />
+                        </ProtectedRoute>
+                      } />
                       <Route path="uploads" element={<ClassroomUploadsView />} />
                       <Route path="recaps" element={<ClassroomRecapsView />} />
                       <Route path="item/:itemId" element={<ClassroomItemView />} />

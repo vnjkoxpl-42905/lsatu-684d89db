@@ -1,10 +1,13 @@
 import * as React from "react";
 import {
+  Lock,
   LogOut,
   Menu,
   Moon,
   PanelLeftClose,
+  Settings,
   Sun,
+  UserRound,
   X,
 } from "lucide-react";
 import {
@@ -19,6 +22,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useFlagged } from "@/hooks/useFlagged";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
+import {
+  useUserPermissions,
+  type PermissionFlag,
+} from "@/hooks/useUserPermissions";
 import { flagLabel } from "@/lib/flaggedService";
 import {
   useStudentAssignments,
@@ -81,6 +88,7 @@ function sectionFromPath(pathname: string): ClassroomSection | null {
   if (
     pathname.startsWith("/classroom/ta/") ||
     (/^\/classroom\/[^/]+$/.test(pathname) &&
+      pathname !== "/classroom/drill" &&
       pathname !== "/classroom/uploads" &&
       pathname !== "/classroom/recaps")
   ) {
@@ -115,6 +123,7 @@ function ClassroomSidebar({
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { signOut } = useAuth();
+  const permissions = useUserPermissions();
 
   const go = (path: string) => {
     onNavigate?.();
@@ -123,6 +132,32 @@ function ClassroomSidebar({
 
   const navClass = (active: boolean) =>
     `classroom-nav${active ? " classroom-nav-active" : ""}`;
+
+  const canAccess = (...flags: PermissionFlag[]) =>
+    permissions.is_admin ||
+    flags.length === 0 ||
+    flags.some((flag) => permissions[flag]);
+
+  const navProps = (
+    active: boolean,
+    unlocked: boolean,
+    onClick: () => void,
+  ) => ({
+    className: `${navClass(active && unlocked)}${unlocked ? "" : " classroom-nav-locked"}`,
+    disabled: !unlocked,
+    onClick: unlocked ? onClick : undefined,
+  });
+
+  const classroomUnlocked = canAccess("has_classroom_access");
+  const drillUnlocked = canAccess("has_drill_access");
+  const practiceUnlocked = canAccess("has_practice_access");
+  const bootcampsUnlocked = canAccess("has_bootcamp_access");
+  const activitiesUnlocked = canAccess("has_activity_access");
+  const journalUnlocked = canAccess("has_journal_access", "has_waj_access");
+  const flaggedUnlocked = canAccess("has_flagged_access");
+  const analyticsUnlocked = canAccess("has_analytics_access");
+  const messagesUnlocked = canAccess("has_chat_access");
+  const scheduleUnlocked = canAccess("has_schedule_access");
 
   return (
     <div className="classroom-sidebar-card">
@@ -142,71 +177,193 @@ function ClassroomSidebar({
             <b>Classroom</b>
             <button
               type="button"
-              className={navClass(
+              {...navProps(
                 location.pathname === "/classroom" && !activeSection,
+                classroomUnlocked,
+                () => {
+                  onNavigate?.();
+                  onHome();
+                },
               )}
-              onClick={() => {
-                onNavigate?.();
-                onHome();
-              }}
             >
               Home
+              {!classroomUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
             </button>
             <button
               type="button"
-              className={navClass(activeSection === "notes")}
-              onClick={() => onSection("notes")}
+              {...navProps(
+                activeSection === "notes",
+                classroomUnlocked,
+                () => onSection("notes"),
+              )}
             >
-              Notes and recaps <em>›</em>
+              Notes and recaps
+              {classroomUnlocked ? (
+                <em>›</em>
+              ) : (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              )}
             </button>
             <button
               type="button"
-              className={navClass(activeSection === "work")}
-              onClick={() => onSection("work")}
+              {...navProps(
+                activeSection === "work",
+                classroomUnlocked,
+                () => onSection("work"),
+              )}
             >
-              Assigned work <em>›</em>
+              Assigned work
+              {classroomUnlocked ? (
+                <em>›</em>
+              ) : (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              )}
             </button>
           </div>
 
           <div className="classroom-nav-group">
             <b>Study</b>
-            <button type="button" className="classroom-nav" onClick={() => go("/drill")}>Drill</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/practice")}>Practice</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/bootcamps")}>Bootcamps</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/activities")}>Activities</button>
+            <button
+              type="button"
+              {...navProps(
+                location.pathname === "/classroom/drill",
+                drillUnlocked,
+                () => go("/classroom/drill"),
+              )}
+            >
+              Drill
+              {!drillUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
+            <button
+              type="button"
+              {...navProps(false, practiceUnlocked, () => go("/practice"))}
+            >
+              Practice
+              {!practiceUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
+            <button
+              type="button"
+              {...navProps(false, bootcampsUnlocked, () => go("/bootcamps"))}
+            >
+              Bootcamps
+              {!bootcampsUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
+            <button
+              type="button"
+              {...navProps(false, activitiesUnlocked, () => go("/activities"))}
+            >
+              Activities
+              {!activitiesUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
           </div>
 
           <div className="classroom-nav-group">
             <b>Review</b>
             <button
               type="button"
-              className={navClass(activeSection === "journal")}
-              onClick={() => go("/journal")}
+              {...navProps(
+                activeSection === "journal",
+                journalUnlocked,
+                () => go("/journal"),
+              )}
             >
-              Wrong answers <em>›</em>
+              Wrong answers
+              {journalUnlocked ? (
+                <em>›</em>
+              ) : (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              )}
             </button>
             <button
               type="button"
-              className={navClass(activeSection === "flagged")}
-              onClick={() => go("/flagged")}
+              {...navProps(activeSection === "flagged", flaggedUnlocked, () => go("/flagged"))}
             >
-              Flagged <em>›</em>
+              Flagged
+              {flaggedUnlocked ? (
+                <em>›</em>
+              ) : (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              )}
             </button>
             <button
               type="button"
-              className={navClass(location.pathname.startsWith("/analytics"))}
-              onClick={() => go("/analytics")}
+              {...navProps(
+                location.pathname.startsWith("/analytics"),
+                analyticsUnlocked,
+                () => go("/analytics"),
+              )}
             >
               Analytics
+              {!analyticsUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
             </button>
           </div>
 
           <div className="classroom-nav-group">
-            <b>Admin</b>
-            <button type="button" className="classroom-nav" onClick={() => go("/inbox")}>Messages</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/schedule")}>Schedule</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/booking")}>Booking</button>
+            <b>Support</b>
+            <button
+              type="button"
+              {...navProps(false, messagesUnlocked, () => go("/inbox"))}
+            >
+              Messages
+              {!messagesUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
+            <button
+              type="button"
+              {...navProps(false, scheduleUnlocked, () => go("/schedule"))}
+            >
+              Schedule
+              {!scheduleUnlocked ? (
+                <Lock className="classroom-nav-lock" aria-hidden="true" />
+              ) : null}
+            </button>
+            <button
+              type="button"
+              {...navProps(false, true, () => go("/booking"))}
+            >
+              Booking
+            </button>
           </div>
+
+          {permissions.is_admin ? (
+            <div className="classroom-nav-group">
+              <b>Teaching</b>
+              <button
+                type="button"
+                className="classroom-nav"
+                onClick={() => go("/teacher")}
+              >
+                Teacher Workspace
+              </button>
+              <button
+                type="button"
+                className="classroom-nav"
+                onClick={() => go("/teacher/reference-library")}
+              >
+                Reference Library
+              </button>
+              <button
+                type="button"
+                className="classroom-nav"
+                onClick={() => go("/admin/board")}
+              >
+                Whiteboard
+              </button>
+            </div>
+          ) : null}
         </nav>
 
         <div className="classroom-profile">
@@ -217,6 +374,24 @@ function ClassroomSidebar({
             <span>{displayName}</span>
             <small>Student</small>
           </div>
+          <button
+            type="button"
+            className="classroom-icon-button"
+            onClick={() => go("/profile")}
+            aria-label="Profile"
+            title="Profile"
+          >
+            <UserRound size={15} />
+          </button>
+          <button
+            type="button"
+            className="classroom-icon-button"
+            onClick={() => go("/settings/layout")}
+            aria-label="Settings"
+            title="Settings"
+          >
+            <Settings size={15} />
+          </button>
           <button
             type="button"
             className="classroom-icon-button"
@@ -611,10 +786,15 @@ export default function ClassroomLayout() {
   }, [authReady, navigate, user]);
 
   const pathSection = sectionFromPath(location.pathname);
-  const activeSection = pathSection ?? selectedSection;
+  const drillHub = location.pathname === "/classroom/drill";
+  const activeSection = drillHub ? null : pathSection ?? selectedSection;
 
   React.useEffect(() => {
     if (pathSection) setSelectedSection(pathSection);
+    if (location.pathname === "/classroom/drill") {
+      setSelectedSection(null);
+      setSectionOverlayOpen(false);
+    }
     if (location.pathname === "/classroom") {
       setSectionOverlayOpen(false);
     }
@@ -648,7 +828,9 @@ export default function ClassroomLayout() {
       ? `classroom-root classroom-root-journal${
           journalDetail ? " classroom-root-journal-detail" : ""
         }`
-      : "classroom-root";
+      : drillHub
+        ? "classroom-root classroom-root-drill"
+        : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>

@@ -49,7 +49,7 @@ function SplineBoundary({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MainhubHero() {
+function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
   const navigate = useNavigate();
   const { manifest, isLoading } = useQuestionBank();
   const [pt, setPt] = React.useState(QUESTION_PICKER_PLACEHOLDER);
@@ -185,8 +185,8 @@ function MainhubHero() {
   );
 
   const startSmartDrill = React.useCallback(() => {
-    navigate("/drill", { state: { mode: "adaptive", returnTo: "/mainhub" } });
-  }, [navigate]);
+    navigate("/drill", { state: { mode: "adaptive", returnTo: drillReturnTo } });
+  }, [drillReturnTo, navigate]);
 
   const openQuestion = React.useCallback(
     (qid: string) => {
@@ -194,11 +194,11 @@ function MainhubHero() {
         mode: "type-drill",
         qids: qid,
         present: "smart",
-        returnTo: "/mainhub",
+        returnTo: drillReturnTo,
       });
       navigate(`/drill?${params.toString()}`);
     },
-    [navigate],
+    [drillReturnTo, navigate],
   );
 
   const startSpecificQuestion = React.useCallback(() => {
@@ -557,7 +557,11 @@ function ConsoleSelect({
  * Mainhub home stage. Renders inside StudentShell's center <Outlet/>. The
  * persistent sidebar, study sidecar, and support chat are owned by the shell.
  */
-export default function AcademyMainhub() {
+export default function AcademyMainhub({
+  drillReturnTo = "/mainhub",
+}: {
+  drillReturnTo?: string;
+}) {
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -601,7 +605,7 @@ export default function AcademyMainhub() {
       />
 
       <div className="relative mx-auto flex w-full max-w-[112rem] flex-col gap-5">
-        <MainhubHero />
+        <MainhubHero drillReturnTo={drillReturnTo} />
 
         {stage === "analytics" ? (
           <section aria-label="Analytics workspace" data-tour="mainhub-analytics">
@@ -621,7 +625,7 @@ export default function AcademyMainhub() {
             </section>
 
             <section>
-              <TodayFocusPanel />
+              <TodayFocusPanel drillReturnTo={drillReturnTo} />
             </section>
           </section>
         )}

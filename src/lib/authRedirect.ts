@@ -16,7 +16,7 @@ function getSafeReturnTo(): string | null {
  * Single source of truth for "where does a freshly authenticated user land?"
  *
  * Reads profiles.onboarding_completed_at; routes to /onboarding if null,
- * /mainhub otherwise. The gate is set once (explicit Skip or Finish in the
+ * /classroom otherwise. The gate is set once (explicit Skip or Finish in the
  * onboarding flow) and never re-shown after that; closing the tab mid-flow
  * leaves it null so the user resumes onboarding on next entry. Name capture is
  * step 0 of the same flow, so a null gate covers both "no name" and "not yet
@@ -38,8 +38,8 @@ export async function redirectAfterAuth(
   // completed. The profile row is created lazily (the onboarding flow's first
   // save), so a fresh signup has NO row yet — treat "no row" the same as
   // "row with null onboarding_completed_at": both mean not-yet-onboarded.
-  // Only a row with a set timestamp lands on /mainhub. A failed lookup must
-  // not trap the user; on error we fall through to /mainhub (fail-open).
+  // Only a row with a set timestamp lands on /classroom. A failed lookup must
+  // not trap the user; on error we fall through to /classroom (fail-open).
   try {
     const { data, error } = await supabase
       .from("profiles")
@@ -55,8 +55,8 @@ export async function redirectAfterAuth(
     // fall through to the default landing
   }
 
-  // Default landing is the homepage. Feature access is gated per-flag on
-  // profiles (locked by default), so onboarded users land on /mainhub and see
-  // LockedModule on anything an admin hasn't enabled yet.
-  navigate("/mainhub", { replace: options?.replace ?? false });
+  // Default landing is the Classroom. Its rail and destination routes handle
+  // feature access per flag while the Classroom itself remains available to
+  // any signed-in user.
+  navigate("/classroom", { replace: options?.replace ?? false });
 }

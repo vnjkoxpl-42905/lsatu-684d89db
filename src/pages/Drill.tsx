@@ -329,7 +329,7 @@ function DrillContent() {
   // Initialize session with question pool filtering
   React.useEffect(() => {
     if (!state?.mode) {
-      navigate('/mainhub');
+      navigate('/classroom');
       return;
     }
 
@@ -3405,7 +3405,7 @@ function DrillContent() {
                 }
               }}
               onExpandCriteria={() => {
-                navigate('/mainhub');
+                navigate('/classroom');
               }}
               onSettings={() => {
                 navigate('/profile');
