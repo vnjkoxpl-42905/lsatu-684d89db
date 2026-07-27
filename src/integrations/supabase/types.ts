@@ -2184,6 +2184,7 @@ export type Database = {
           overall_avg_ms: number | null
           overall_correct: number | null
           streak_current: number | null
+          test_date: string | null
           updated_at: string | null
           xp_total: number | null
         }
@@ -2219,6 +2220,7 @@ export type Database = {
           overall_avg_ms?: number | null
           overall_correct?: number | null
           streak_current?: number | null
+          test_date?: string | null
           updated_at?: string | null
           xp_total?: number | null
         }
@@ -2254,6 +2256,7 @@ export type Database = {
           overall_avg_ms?: number | null
           overall_correct?: number | null
           streak_current?: number | null
+          test_date?: string | null
           updated_at?: string | null
           xp_total?: number | null
         }
@@ -2358,6 +2361,33 @@ export type Database = {
           mode?: string | null
           qid?: string
           viewed_at?: string
+        }
+        Relationships: []
+      }
+      rc_lesson_progress: {
+        Row: {
+          completed_at: string | null
+          data: Json
+          id: string
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          data?: Json
+          id?: string
+          lesson_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          data?: Json
+          id?: string
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
