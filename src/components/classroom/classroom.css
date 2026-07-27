@@ -507,6 +507,20 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   white-space: pre-wrap;
 }
 
+.classroom-root .classroom-message-link {
+  color: var(--classroom-link);
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 14px 0 0;
+  text-decoration: none;
+  transition: color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-message-link:hover {
+  color: var(--classroom-ink);
+}
+
 .classroom-root .classroom-message-clamped {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;

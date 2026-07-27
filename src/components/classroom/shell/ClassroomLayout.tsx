@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  LogOut,
   Menu,
   Moon,
   PanelLeftClose,
@@ -84,16 +85,19 @@ function ClassroomSidebar({
   displayName,
   activeSection,
   onSection,
+  onHome,
   onNavigate,
 }: {
   displayName: string;
   activeSection: ClassroomSection | null;
   onSection: (section: ClassroomSection) => void;
+  onHome: () => void;
   onNavigate?: () => void;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { signOut } = useAuth();
 
   const go = (path: string) => {
     onNavigate?.();
@@ -124,9 +128,12 @@ function ClassroomSidebar({
               className={navClass(
                 location.pathname === "/classroom" && !activeSection,
               )}
-              onClick={() => go("/classroom")}
+              onClick={() => {
+                onNavigate?.();
+                onHome();
+              }}
             >
-              Your room
+              Home
             </button>
             <button
               type="button"
@@ -182,6 +189,18 @@ function ClassroomSidebar({
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
           >
             {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+          <button
+            type="button"
+            className="classroom-icon-button"
+            onClick={() => {
+              onNavigate?.();
+              void signOut();
+            }}
+            aria-label="Sign out"
+            title="Sign out"
+          >
+            <LogOut size={15} />
           </button>
         </div>
       </div>
@@ -374,6 +393,15 @@ export default function ClassroomLayout() {
     }
   }, [location.pathname, pathSection]);
 
+  // "Home" has to clear the remembered section as well as navigate — on
+  // /classroom the path carries no section, so without this the third column
+  // stays open and Home can never become the active item.
+  const goHome = React.useCallback(() => {
+    setSelectedSection(null);
+    setSectionOverlayOpen(false);
+    if (location.pathname !== "/classroom") navigate("/classroom");
+  }, [location.pathname, navigate]);
+
   const openSection = React.useCallback((section: ClassroomSection) => {
     setSelectedSection(section);
     if (window.matchMedia("(max-width: 1279px)").matches) {
@@ -403,6 +431,7 @@ export default function ClassroomLayout() {
             displayName={displayName}
             activeSection={activeSection}
             onSection={openSection}
+            onHome={goHome}
           />
         </aside>
 
@@ -430,6 +459,7 @@ export default function ClassroomLayout() {
                   setMobileMenuOpen(false);
                   openSection(section);
                 }}
+                onHome={goHome}
                 onNavigate={() => setMobileMenuOpen(false)}
               />
             </aside>

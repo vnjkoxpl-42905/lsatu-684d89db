@@ -224,7 +224,26 @@ export default function Classroom() {
     welcomeItem?.description ||
     welcomeItem?.content_markdown ||
     SEEDED_WELCOME;
-  const messageText = latestAdminMessage?.body ?? fallbackWelcomeText;
+  const rawMessageText = latestAdminMessage?.body ?? fallbackWelcomeText;
+  // Notes are generated with a trailing "View in your Classroom: /some/route"
+  // line. Showing a bare path reads like plumbing, so lift it out of the body
+  // and render it as a plain-language link instead.
+  const messageLink = React.useMemo(() => {
+    const match = rawMessageText.match(
+      /^\s*View in your Classroom:\s*(\/\S+)\s*$/m,
+    );
+    if (!match) return null;
+    const subject = rawMessageText.match(/^\s*New assignment:\s*(.+?)\s*$/m);
+    return {
+      route: match[1],
+      label: subject ? `Open ${subject[1]}` : "Open it in your Classroom",
+    };
+  }, [rawMessageText]);
+  const messageText = messageLink
+    ? rawMessageText
+        .replace(/^\s*View in your Classroom:\s*\/\S+\s*$/m, "")
+        .trimEnd()
+    : rawMessageText;
   const messageDate =
     latestAdminMessage?.created_at ??
     welcomeItem?.created_at ??
@@ -338,11 +357,25 @@ export default function Classroom() {
             <time>{formatDate(messageDate).toUpperCase()}</time>
           </header>
           {latestAdminMessage || !fallbackWelcomeHtml ? (
-            <p
-              className={`classroom-message-body${messageIsLong && !messageExpanded ? " classroom-message-clamped" : ""}`}
-            >
-              {messageText}
-            </p>
+            <>
+              <p
+                className={`classroom-message-body${messageIsLong && !messageExpanded ? " classroom-message-clamped" : ""}`}
+              >
+                {messageText}
+              </p>
+              {messageLink && !(messageIsLong && !messageExpanded) ? (
+                <a
+                  className="classroom-message-link"
+                  href={messageLink.route}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigate(messageLink.route);
+                  }}
+                >
+                  {messageLink.label}
+                </a>
+              ) : null}
+            </>
           ) : (
             <div
               className="classroom-prose"
