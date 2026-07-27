@@ -1,0 +1,925 @@
+.classroom-root {
+  --classroom-line: #f3e3d6;
+  --classroom-ink: #43403c;
+  --classroom-ink-body: #43403c;
+  --classroom-meta: 166, 162, 158;
+  --classroom-hover: rgba(246, 235, 225, 0.4);
+  --classroom-dash: rgba(0, 0, 0, 0.15);
+  --classroom-link: #ff8906;
+  --classroom-active: #43403c;
+  --classroom-active-ink: #ffffff;
+  --classroom-meta-soft: rgba(67, 64, 60, 0.4);
+  --classroom-panel: #ffffff;
+  --classroom-page: #ffffff;
+  --classroom-trigger: #fefcf7;
+  --classroom-radius: 8px;
+  --classroom-transition: 300ms;
+  align-items: flex-start;
+  background: var(--classroom-page);
+  color: var(--classroom-ink);
+  display: flex;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-height: 100dvh;
+  transition:
+    background-color var(--classroom-transition) ease,
+    color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+html.dark .classroom-root {
+  --classroom-line: #17161c;
+  --classroom-ink: #fffffe;
+  --classroom-ink-body: #e5e5e5;
+  --classroom-meta: 167, 169, 190;
+  --classroom-hover: rgba(68, 64, 60, 0.4);
+  --classroom-dash: rgba(255, 255, 255, 0.15);
+  --classroom-active: #3d3c48;
+  --classroom-active-ink: #e5e5e5;
+  --classroom-meta-soft: #a7a9be;
+  --classroom-panel: #0a0913;
+  --classroom-page: #0f0e17;
+  --classroom-trigger: #0a0913;
+}
+
+.classroom-root *,
+.classroom-root *::before,
+.classroom-root *::after {
+  box-sizing: border-box;
+}
+
+.classroom-root button,
+.classroom-root input,
+.classroom-root textarea {
+  font: inherit;
+}
+
+.classroom-root button {
+  color: inherit;
+}
+
+.classroom-root .classroom-panel-wash {
+  border-radius: inherit;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.classroom-root .classroom-panel-wash i {
+  display: block;
+  inset: 0;
+  position: absolute;
+  transition: opacity var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-panel-wash-light {
+  background-image: linear-gradient(
+    161.15deg,
+    rgba(254, 252, 247, 0.4) 12.73%,
+    rgba(243, 227, 214, 0.4) 72.95%
+  );
+  opacity: 1;
+}
+
+.classroom-root .classroom-panel-wash-dark {
+  background-image: linear-gradient(
+    161.15deg,
+    rgba(41, 37, 36, 0.4) 12.73%,
+    rgba(68, 64, 60, 0.4) 72.95%
+  );
+  opacity: 0;
+}
+
+html.dark .classroom-root .classroom-panel-wash-light {
+  opacity: 0;
+}
+
+html.dark .classroom-root .classroom-panel-wash-dark {
+  opacity: 1;
+}
+
+.classroom-root .classroom-panel-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.classroom-root .classroom-sidebar {
+  flex: 0 0 336px;
+  height: 100dvh;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  width: 336px;
+  z-index: 20;
+}
+
+.classroom-root .classroom-sidebar-card {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  height: 100%;
+  overflow: auto;
+  padding: 24px;
+  position: relative;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-brand {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  gap: 9px;
+  margin: 0 0 24px;
+  padding: 0;
+  text-align: left;
+}
+
+.classroom-root .classroom-brand i {
+  align-items: center;
+  background: var(--classroom-ink);
+  border-radius: 6px;
+  color: var(--classroom-panel);
+  display: flex;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.classroom-root .classroom-brand span,
+.classroom-root .classroom-nav-group > b,
+.classroom-root .classroom-profile-copy small,
+.classroom-root .classroom-row-status,
+.classroom-root .classroom-section-meta,
+.classroom-root .classroom-message time,
+.classroom-root .classroom-note-meta {
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.classroom-root .classroom-brand span {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-nav-group {
+  margin-bottom: 18px;
+}
+
+.classroom-root .classroom-nav-group > b {
+  color: rgb(var(--classroom-meta));
+  display: block;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  opacity: 0.7;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-nav {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  gap: 8px;
+  line-height: 1.45;
+  padding: 7px 8px;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    background-color var(--classroom-transition) ease,
+    color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-nav:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-nav-active {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .classroom-nav em {
+  color: rgb(var(--classroom-meta));
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-style: normal;
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-nav-active em {
+  color: var(--classroom-active-ink);
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-profile {
+  align-items: center;
+  border-top: 1px solid var(--classroom-line);
+  display: flex;
+  gap: 9px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.classroom-root .classroom-avatar {
+  align-items: center;
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.classroom-root .classroom-profile-copy {
+  font-size: 13px;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.classroom-root .classroom-profile-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-profile-copy small {
+  color: rgb(var(--classroom-meta));
+  display: block;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-icon-button,
+.classroom-root .classroom-overlay-close {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  margin-left: auto;
+  width: 28px;
+}
+
+.classroom-root .classroom-section-list {
+  display: block;
+  flex: 0 0 336px;
+  height: 100dvh;
+  margin-left: -16px;
+  padding: 8px 8px 8px 0;
+  position: sticky;
+  top: 0;
+  width: 336px;
+  z-index: 10;
+}
+
+.classroom-root .classroom-section-card {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-left: 0;
+  border-radius: 0 var(--classroom-radius) var(--classroom-radius) 0;
+  height: 100%;
+  overflow: auto;
+  padding: 24px 28px;
+  position: relative;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-section-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.classroom-root .classroom-section-heading h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.classroom-root .classroom-section-heading button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  padding: 4px;
+}
+
+.classroom-root .classroom-panel-list {
+  display: grid;
+  gap: 4px;
+  margin: 0 -8px;
+}
+
+.classroom-root .classroom-panel-item {
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  padding: 8px;
+  text-align: left;
+  transition: background-color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-panel-item:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-panel-item-active {
+  background: var(--classroom-active);
+}
+
+.classroom-root .classroom-panel-item h3 {
+  color: var(--classroom-ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  margin: 0 0 4px;
+}
+
+.classroom-root .classroom-panel-item time {
+  color: var(--classroom-meta-soft);
+  font-size: 0.75rem;
+}
+
+.classroom-root .classroom-panel-item-active h3,
+.classroom-root .classroom-panel-item-active time {
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .classroom-panel-item-active time {
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-list-state {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.classroom-root .classroom-list-state span,
+.classroom-root .classroom-skeleton {
+  background: var(--classroom-line);
+  border-radius: 4px;
+  display: block;
+  height: 13px;
+  opacity: 0.75;
+}
+
+.classroom-root .classroom-list-state span:nth-child(2) {
+  width: 72%;
+}
+
+.classroom-root .classroom-list-state span:nth-child(3) {
+  width: 84%;
+}
+
+.classroom-root .classroom-list-error {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.classroom-root .classroom-list-error p {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.classroom-root .classroom-stage {
+  background: var(--classroom-page);
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  min-height: 100dvh;
+  padding: 0 24px;
+}
+
+.classroom-root .classroom-column {
+  max-width: 720px;
+  padding: 80px 0 120px;
+  width: 100%;
+}
+
+.classroom-root .classroom-section-trigger {
+  align-items: center;
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: none;
+  font-size: 14px;
+  height: 48px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.classroom-root .classroom-dateline {
+  align-items: center;
+  color: var(--classroom-meta-soft);
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.classroom-root .classroom-title {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 24px;
+}
+
+.classroom-root .classroom-message {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  margin-bottom: 48px;
+  padding: 20px;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-message header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.classroom-root .classroom-message header .classroom-avatar {
+  height: 32px;
+  width: 32px;
+}
+
+.classroom-root .classroom-message header strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-message time {
+  color: rgb(var(--classroom-meta));
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-message-body {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-message-clamped {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.classroom-root .classroom-button {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  font-family: "Outfit", ui-sans-serif, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-button:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-button-primary {
+  background: var(--classroom-link);
+  border-color: var(--classroom-link);
+  color: #ffffff;
+}
+
+.classroom-root .classroom-button-primary:hover {
+  background: var(--classroom-link);
+}
+
+.classroom-root .classroom-content-section {
+  margin-bottom: 48px;
+}
+
+.classroom-root .classroom-section-header {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.classroom-root .classroom-section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.classroom-root .classroom-section-meta {
+  color: rgb(var(--classroom-meta));
+  margin-left: auto;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-leader-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 0;
+  position: relative;
+}
+
+.classroom-root .classroom-leader-row + .classroom-leader-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-leader-row p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-dotted-leader {
+  align-self: center;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--classroom-dash) 0 4px,
+    transparent 4px 8px
+  );
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 16px;
+}
+
+.classroom-root .classroom-row-status {
+  color: rgb(var(--classroom-meta));
+  opacity: 0.7;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-row-status-strong {
+  color: var(--classroom-ink);
+  opacity: 1;
+}
+
+.classroom-root .classroom-covering-link {
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.classroom-root .classroom-inline-error {
+  align-items: center;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.classroom-root .classroom-inline-error p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.classroom-root .classroom-inline-error .classroom-button {
+  margin-left: auto;
+}
+
+.classroom-root .classroom-skeleton-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.classroom-root .classroom-skeleton-stack .classroom-skeleton:nth-child(2) {
+  width: 62%;
+}
+
+.classroom-root .classroom-skeleton-stack .classroom-skeleton:nth-child(3) {
+  width: 78%;
+}
+
+.classroom-root .classroom-note-meta {
+  border: 1px dashed var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: rgb(var(--classroom-meta));
+  line-height: 1.7;
+  margin-bottom: 32px;
+  opacity: 0.75;
+  padding: 12px 14px;
+}
+
+.classroom-root .classroom-prose {
+  color: var(--classroom-ink-body);
+}
+
+.classroom-root .classroom-prose p {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+}
+
+.classroom-root .classroom-prose a {
+  color: var(--classroom-link);
+  text-decoration: none;
+  transition: color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-prose a:hover {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-prose h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 36px 0 14px;
+}
+
+.classroom-root .classroom-prose h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 28px 0 12px;
+}
+
+.classroom-root .classroom-prose ol,
+.classroom-root .classroom-prose ul {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+.classroom-root .classroom-prose li {
+  margin-bottom: 10px;
+}
+
+.classroom-root .classroom-prose blockquote {
+  border-left: 4px solid var(--classroom-ink);
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 22px;
+  padding: 2px 0 2px 18px;
+}
+
+.classroom-root .classroom-prose figure {
+  margin: 0 0 24px;
+}
+
+.classroom-root .classroom-prose figure img,
+.classroom-root .classroom-prose > img {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: block;
+  height: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: min(100vw, 720px);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  width: min(100vw, 720px);
+}
+
+.classroom-root .classroom-prose figure figcaption {
+  color: rgb(var(--classroom-meta));
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-prose .callout,
+.classroom-root .classroom-callout {
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: flex;
+  font-size: 15px;
+  gap: 12px;
+  line-height: 1.65;
+  margin: 0 0 24px;
+  padding: 14px 16px;
+}
+
+.classroom-root .classroom-prose iframe,
+.classroom-root .classroom-prose embed {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: block;
+  max-width: 100%;
+  min-height: 360px;
+  width: 100%;
+}
+
+.classroom-root .classroom-detail-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.classroom-root .classroom-mobile-menu-button {
+  align-items: center;
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: none;
+  height: 38px;
+  justify-content: center;
+  left: 16px;
+  position: fixed;
+  top: 16px;
+  width: 38px;
+  z-index: 70;
+}
+
+.classroom-root .classroom-mobile-menu,
+.classroom-root .classroom-section-overlay {
+  inset: 0;
+  position: fixed;
+  z-index: 80;
+}
+
+.classroom-root .classroom-overlay-backdrop {
+  background: rgba(15, 14, 23, 0.42);
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.classroom-root .classroom-mobile-menu > aside {
+  bottom: 0;
+  left: 0;
+  max-width: 336px;
+  position: absolute;
+  top: 0;
+  width: calc(100% - 32px);
+}
+
+.classroom-root .classroom-mobile-menu .classroom-sidebar-card {
+  border-left: 0;
+  border-radius: 0 var(--classroom-radius) var(--classroom-radius) 0;
+}
+
+.classroom-root .classroom-mobile-menu .classroom-overlay-close {
+  margin: 0;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 4;
+}
+
+.classroom-root .classroom-section-overlay > aside {
+  bottom: 0;
+  max-width: 420px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: min(100%, 420px);
+}
+
+.classroom-root .classroom-section-overlay .classroom-section-card {
+  border-left: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius) 0 0 var(--classroom-radius);
+}
+
+.classroom-root .classroom-empty-copy {
+  color: var(--classroom-meta-soft);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+@media (min-width: 1024px) {
+  .classroom-root .classroom-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 1279px) {
+  .classroom-root .classroom-section-list {
+    display: none;
+  }
+
+  .classroom-root .classroom-section-trigger {
+    display: flex;
+  }
+}
+
+@media (max-width: 1023px) {
+  .classroom-root .classroom-sidebar {
+    display: none;
+  }
+
+  .classroom-root .classroom-mobile-menu-button {
+    display: flex;
+  }
+
+  .classroom-root .classroom-column {
+    padding: 72px 0 90px;
+  }
+
+  .classroom-root .classroom-leader-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .classroom-root .classroom-dotted-leader {
+    display: none;
+  }
+
+  .classroom-root .classroom-covering-link {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 639px) {
+  .classroom-root .classroom-stage {
+    padding: 0 18px;
+  }
+
+  .classroom-root .classroom-message {
+    padding: 16px;
+  }
+
+  .classroom-root .classroom-message header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .classroom-root .classroom-message time {
+    flex-basis: 100%;
+    margin-left: 42px;
+  }
+}

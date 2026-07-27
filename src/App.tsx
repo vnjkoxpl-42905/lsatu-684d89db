@@ -32,6 +32,14 @@ import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
+import ClassroomLayout from "./components/classroom/shell/ClassroomLayout";
+import {
+  ClassroomAssignmentView,
+  ClassroomItemView,
+  ClassroomRecapsView,
+  ClassroomTAAssignmentView,
+  ClassroomUploadsView,
+} from "./components/classroom/ClassroomRouteViews";
 const CausationStation = React.lazy(() => import("./pages/CausationStation"));
 
 // Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
@@ -72,11 +80,6 @@ const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
 const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
-const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
-const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
-const ClassroomItem = React.lazy(() => import("./pages/ClassroomItem"));
-const ClassroomUploads = React.lazy(() => import("./pages/ClassroomUploads"));
-const ClassroomRecaps = React.lazy(() => import("./pages/ClassroomRecaps"));
 const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
 const TeacherDeskPreview = React.lazy(() => import("./pages/teacher/TeacherDeskPreview"));
 const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
@@ -109,7 +112,7 @@ import GuidedTour from "./components/mainhub/GuidedTour";
 
 function GlobalOverlayMount() {
   const { pathname } = useLocation();
-  if (pathname.startsWith("/book/")) return null;
+  if (pathname.startsWith("/book/") || pathname.startsWith("/classroom")) return null;
   return (
     <>
       <FloatingMessenger />
@@ -334,6 +337,19 @@ const App = () => {
                     </ProtectedRoute>
                   } />
 
+                  {/* Classroom owns its full frame and keeps the complete route
+                      family mounted under the same guarded layout. */}
+                  <Route path="/classroom" element={
+                    <ProtectedRoute flag="has_classroom_access" allowSignedIn><ClassroomLayout /></ProtectedRoute>
+                  }>
+                    <Route index element={<Classroom />} />
+                    <Route path="uploads" element={<ClassroomUploadsView />} />
+                    <Route path="recaps" element={<ClassroomRecapsView />} />
+                    <Route path="item/:itemId" element={<ClassroomItemView />} />
+                    <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
+                    <Route path=":assignmentId" element={<ClassroomAssignmentView />} />
+                  </Route>
+
                   {/* Persistent student shell. Sidebar + study chat stay mounted;
                       these pages swap the center stage instead of redirecting. */}
                   <Route element={<StudentShell />}>
@@ -371,44 +387,6 @@ const App = () => {
                     } />
                     <Route path="/inbox/:conversationId" element={
                       <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-                    } />
-                    <Route path="/classroom" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn><Classroom /></ProtectedRoute>
-                    } />
-                    <Route path="/classroom/uploads" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <ClassroomUploads />
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/classroom/recaps" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <ClassroomRecaps />
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/classroom/item/:itemId" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <ClassroomItem />
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/classroom/ta/:assignmentId" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <ClassroomTAAssignmentDetail />
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/classroom/:assignmentId" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn>
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <ClassroomAssignmentDetail />
-                        </React.Suspense>
-                      </ProtectedRoute>
                     } />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
