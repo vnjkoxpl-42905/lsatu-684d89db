@@ -2184,6 +2184,7 @@ export type Database = {
           overall_avg_ms: number | null
           overall_correct: number | null
           streak_current: number | null
+          test_date: string | null
           updated_at: string | null
           xp_total: number | null
         }
@@ -2219,6 +2220,7 @@ export type Database = {
           overall_avg_ms?: number | null
           overall_correct?: number | null
           streak_current?: number | null
+          test_date?: string | null
           updated_at?: string | null
           xp_total?: number | null
         }
@@ -2254,6 +2256,7 @@ export type Database = {
           overall_avg_ms?: number | null
           overall_correct?: number | null
           streak_current?: number | null
+          test_date?: string | null
           updated_at?: string | null
           xp_total?: number | null
         }
