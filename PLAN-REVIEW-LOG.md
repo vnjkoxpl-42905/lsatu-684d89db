@@ -88,3 +88,149 @@ Codex's remaining findings have shifted from "this is wrong" to "specify this in
 detail appropriate to the build step, not plan-level defect. Per Joshua's standing instruction,
 surviving findings go to him for per-item green/red light rather than being applied automatically.
 No VERDICT: APPROVED was reached and none is claimed.
+
+
+---
+
+# Plan Review Log: Wrong answers in the Classroom frame
+
+Started 2026-07-27. Spec by Claude, reviewed by Codex (read-only), to be implemented by Codex.
+
+## Round 1 — Codex
+
+## Findings, ranked by severity
+
+1. **HIGH — The spec contradicts its own “unchanged `/flagged` and `/classroom`” scope lock.**
+
+   The spec requires adding a trailing chevron to “Wrong answers.” Today that button has no `<em>›</em>`, while Flagged does ([ClassroomLayout.tsx:174](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:174)). The same `ClassroomSidebar` renders on every Classroom-framed route ([ClassroomLayout.tsx:529](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:529)), so adding the chevron visibly changes `/flagged` and every `/classroom/*` page.
+
+   `PLAN.md:14` says those routes must render exactly as now, while `PLAN.md:118` requires the shared visual change. One of those requirements must be relaxed.
+
+2. **HIGH — The fourth-column design is feasible, but the specified “existing context slot pattern” does not exist.**
+
+   `ClassroomLayoutContext` currently carries only `displayName`, `testDate`, and `openSection` ([ClassroomLayout.tsx:41](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:41)). The child route is rendered inside `.classroom-column` through `<Outlet>` ([ClassroomLayout.tsx:575](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:575)). There is no content projection, registration, portal, or slot precedent.
+
+   A child cannot synchronously return content into a parent sibling. A setter-based context slot can work, but only through a post-render registration effect, with explicit cleanup and stable/memoized content. Otherwise it risks:
+
+   - an initial empty aside or visible stale content;
+   - an effect loop if each render registers a newly created `ReactNode`;
+   - the previous question’s review form surviving briefly after `qid` changes;
+   - parent updates during route/layout unmount.
+
+   The simpler correct layout is either:
+
+   - a journal-only grid modifier on `.classroom-root`, with named positions for stage and aside; or
+   - a journal-only workspace wrapper containing `.classroom-stage` and `.classroom-aside` as siblings.
+
+   Both preserve the locked sibling relationship. The spec needs to choose the slot lifecycle or permit one of these simpler implementations.
+
+3. **HIGH — “Aside beneath the question below ~1100px” fights the current root flex layout unless journal gets route-specific layout rules.**
+
+   `.classroom-root` is one horizontal flex container ([classroom.css:17](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:17)). Its sidebar and section list are sticky fixed-width siblings ([classroom.css:112](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:112), [classroom.css:290](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:290)); `.classroom-stage` is another flex sibling ([classroom.css:422](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:422)).
+
+   At 1024–1099px, the main sidebar is still present because it disappears only at 1023px ([classroom.css:1024](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:1024)). Simply wrapping the root flex would place the aside under the entire row, not specifically under the question. Global changes to this layout would risk `/flagged` and `/classroom`.
+
+   Require a journal-scoped class/grid or conditional wrapper. Otherwise the implementer must invent a fragile combination of wrapping, offsets, and width calculations.
+
+4. **HIGH — The autosave requirement lacks the state machine needed to prevent the exact data loss it is intended to fix.**
+
+   The current timer retains its payload only in a timeout closure ([JournalEntrySurface.tsx:186](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:186)); the ref stores only the timer handle. Cleanup merely clears it ([JournalEntrySurface.tsx:222](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:222)).
+
+   The revised implementation needs a pending-save ref containing at least `{classId, qid, draft, annotations}`, plus a single `flushPendingSave()` operation that clears and consumes it. The spec must require:
+
+   - flush before seeding the next `qid`;
+   - flush on child-route unmount;
+   - latest draft and annotations via refs, not stale cleanup closures;
+   - the old `qid` captured in the pending payload, not read from the new route;
+   - no duplicate flush under StrictMode cleanup;
+   - ordering or serialization when an older save is already in flight.
+
+   Param navigation may reuse `JournalEntryView`; it cannot be treated solely as an unmount. The Flagged view already resets local state in response to `qid` changes ([FlaggedViews.tsx:242](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:242)).
+
+   Moving `scheduleSave` outside the updater also requires a latest-state ref. A naïve `{...draft, ...patch}` outside the updater can itself use stale state. The current forbidden side effect is at [JournalEntrySurface.tsx:226](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:226), and the app really does run under StrictMode ([main.tsx:138](/Users/joshuaf/ai-os/projects/lsatu/src/main.tsx:138)).
+
+5. **MEDIUM — `useJournalEntries` cannot safely be “the same shape as `useFlagged`” without additional class-ID semantics.**
+
+   `useFlagged` can key and enable directly from authenticated `user.id` ([useFlagged.ts:16](/Users/joshuaf/ai-os/projects/lsatu/src/hooks/useFlagged.ts:16)). Journal rows require an asynchronously resolved `classId`; the existing surface explicitly includes `classLoading` in its loading state ([JournalEntrySurface.tsx:84](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:84), [JournalEntrySurface.tsx:383](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:383)).
+
+   The spec must define:
+
+   - the query key, including `classId`;
+   - whether the hook exposes class-ID loading separately or folds it into query state;
+   - how the `useClassId` fallback/error is represented;
+   - the exact invalidation key;
+   - how an empty-state flash is prevented before `classId` resolves.
+
+   Also, `SectionList` currently instantiates all its data hooks unconditionally ([ClassroomLayout.tsx:260](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:260)). Adding `useJournalEntries()` beside them would run the two-query journal fan-out on `/flagged` and `/classroom` whenever the section list mounts. A journal-only subcomponent or an explicit `enabled` option is required to avoid changing those routes’ network behavior.
+
+6. **MEDIUM — The responsive contract is internally ambiguous and lacks column dimensions.**
+
+   The spec says the entries column folds “below ~1400px,” while also saying it matches the existing `max-width: 1279px` behavior. The actual list disappears at 1279px ([classroom.css:1014](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:1014)). Verification then names exact widths 1400 and 1100 without saying which side of each breakpoint they represent.
+
+   “Four fixed columns” also does not specify the aside width, minimum question width, or whether `.classroom-column` retains its current `max-width: 720px` ([classroom.css:432](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:432)). These values determine whether 1500px can actually fit four columns without horizontal overflow.
+
+7. **MEDIUM — The annotation fix does not identify the new scroll owner or required DOM relationship.**
+
+   Today the overlay is absolute over the outer pane ([JournalQuestionPane.tsx:100](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:100)), while the stimulus and answer regions scroll independently ([JournalQuestionPane.tsx:105](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:105), [JournalQuestionPane.tsx:124](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:124)). `AnnotationLayer` normalizes coordinates against its own bounding box ([AnnotationLayer.tsx:76](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/AnnotationLayer.tsx:76), [AnnotationLayer.tsx:95](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/AnnotationLayer.tsx:95)).
+
+   “Anchor it to the question content element” should explicitly require:
+
+   - one scrolling ancestor for the vertical question;
+   - a natural-height, `position: relative` content wrapper;
+   - the absolute annotation layer filling that content wrapper, not the viewport-height scrollbox.
+
+   Without that DOM contract, an implementer can move the layer and still reproduce the same bug.
+
+8. **MEDIUM — Required failure and deep-link states are unspecified.**
+
+   `FlaggedQuestionView`, the named reference, separately handles list loading, list failure, missing row, question-bank loading, and missing question ([FlaggedViews.tsx:306](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:306), [FlaggedViews.tsx:331](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:331), [FlaggedViews.tsx:360](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:360)).
+
+   The plan does not specify what `/journal/:qid` renders when:
+
+   - the `qid` is not in the journal rows;
+   - the row disappears after loading;
+   - the question bank lacks that `qid`;
+   - the class-ID lookup or journal query fails.
+
+   It also needs to define whether clicking entries pushes browser history and whether returning to `/journal` leaves the index prompt or redirects to the first entry.
+
+9. **MEDIUM — The verification section omits repository-mandated gates.**
+
+   This is significant UI work, but the plan does not require `npm run build`, which project guidance requires before wrapping significant work ([AGENTS.md:67](/Users/joshuaf/ai-os/projects/lsatu/AGENTS.md:67)). Its responsive matrix also omits the mandated sidecar-docked regression case ([AGENTS.md:63](/Users/joshuaf/ai-os/projects/lsatu/AGENTS.md:63)).
+
+10. **LOW — One reuse claim is factually stale.**
+
+    The plan says the text helpers were “already lifted out of the two panes.” `JournalQuestionPane` still contains local copies of both helpers ([JournalQuestionPane.tsx:21](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:21)), while shared versions also exist in [questionText.ts:9](/Users/joshuaf/ai-os/projects/lsatu/src/lib/questionText.ts:9). The new component should import the shared helpers, but the plan should not imply both old duplications are already gone or invite an out-of-scope cleanup.
+
+## Scope conclusion
+
+No `StudentShell` edit is technically required. Moving the route in `App.tsx` is sufficient; the current journal route is plainly inside the StudentShell block ([App.tsx:375](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:375), [App.tsx:385](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:385)), and the single Classroom layout route is correctly established at [App.tsx:353](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:353). This agrees with ADR 0004’s one-layout requirement ([ADR 0004:14](/Users/joshuaf/ai-os/projects/lsatu/docs/adr/0004-classroom-frame-is-one-pathless-layout-route.md:14)).
+
+However, the plan necessarily edits a component shared by `/flagged` and `/classroom`. Those routes can remain behaviorally unchanged only if the aside layout and journal query are strictly journal-scoped. The mandated shared-sidebar chevron already violates that promise.
+
+VERDICT:REVISE
+### Claude's response — round 1
+
+All 12 findings plus both scope findings accepted and folded into PLAN.md. The two rated CRITICAL were verified against the code before acceptance:
+
+- The `<Outlet>` is inside `.classroom-column` inside `.classroom-stage` (ClassroomLayout.tsx:575-587), so the "context slot" in the original spec was impossible. Replaced with a journal-only bare-Outlet branch where `JournalEntryView` returns `<main>` + `<aside>` siblings itself.
+- `saveTimer.current` is never nulled after the timer fires (JournalEntrySurface.tsx:192), so a flush guarded on its truthiness would double-write. Spec now requires a captured pending payload, nulling before write, and an idempotent flush.
+
+Also corrected: the original rationale for the flush ("URL selection makes unmounts routine") was wrong — a `:qid` change reuses the same route element and does not unmount. The requirement was right for the wrong reason; the spec now says flush on qid change.
+
+## Round 2 — Codex
+
+1. **P2 — Active entry highlighting is based on a false routing assumption.** `PLAN.md:123` says `activeId` receives `params.qid`, but `ClassroomLayout` is the parent route ([src/App.tsx:353](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:353)) and `:qid` belongs to its descendant ([PLAN.md:102](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:102)). The parent’s `useParams()` ([ClassroomLayout.tsx:439](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:439)) cannot see descendant params, so `activeId` ([ClassroomLayout.tsx:514](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:514)) will lack the journal qid. Require a journal-specific `useMatch("/journal/:qid")` or pathname-derived qid, without changing Flagged.
+
+No other material problems found.
+
+VERDICT:REVISE
+### Claude's response — round 2
+
+**Rejected, with evidence.** The claim is that `ClassroomLayout` cannot see `:qid` because the param belongs to a descendant route, so `activeId` would never highlight the active entry.
+
+This is contradicted by a direct measurement on the identical pattern already in production. `/flagged/:qid` is built exactly this way — pathless `ClassroomLayout` parent, `:qid` on the descendant, `activeId = params.itemId ?? params.assignmentId ?? params.qid` — and loading `/flagged/PT118-S3-Q8` yields `activeRows: 1` with `activeLabel: "PT118-S3-Q8"`. React Router surfaces the deepest match's params to the layout. No `useMatch` is needed.
+
+No new evidence was offered against the shipped behaviour, so the spec is unchanged on this point.
+
+**Converged after 2 rounds.** Codex's round-2 reply states "No other material problems found"; its sole remaining objection is factually incorrect.

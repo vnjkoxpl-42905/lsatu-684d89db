@@ -1,196 +1,250 @@
-# Classroom redesign — FROZEN BUILD SPEC
+# Wrong answers, rebuilt in the Classroom frame
 
-Status: **locked, approved for implementation 2026-07-26.** Do not re-litigate decisions here.
-Visual reference (approved, verified running): **`CLASSROOM-MOCKUP.html`** in this directory — serve it and look at it before writing code. It is the source of truth for layout, colour and type.
-Argument trail: `PLAN-REVIEW-LOG.md` (two rounds of adversarial review, 27 of 28 findings accepted).
+Build spec. Written by Claude, implemented by Codex, reviewed by Claude.
+Supersedes the Classroom redesign spec that previously occupied this file
+(frozen at commit `680fcfd4`, shipped in `0c475437`).
 
----
+## 0. Scope lock
 
-## Goal
+Read this first and treat it as binding.
 
-Rebuild `/classroom`, the first surface a paying 1:1 student lands on. It currently fails **7 of 7 Tier 1 correctness gates**: the loudest element on the page is *Sign out*, the page is ordered most-full to most-empty and ends in three empty grey boxes, and three navigations compete while "Classroom" appears on screen three times.
+**Only the Wrong answers surface changes.**
 
-The design base is jeffsu.org, copied verbatim. All values below were parsed from its live stylesheet and HTML, not inferred.
+- `src/components/StudentShell.tsx` is **not edited**. Not one line.
+- `/flagged`, `/classroom` and every `/classroom/*` route must **behave** exactly as they do now. Flagged shipped in `7e6d5676` and is not up for revision.
+- **One deliberate exception, and only one:** the rail is shared, so adding the active state and `›` chevron to the "Wrong answers" nav item makes that item look slightly different on every Classroom route, `/flagged` and `/classroom` included. That is intended and consistent with how Flagged already renders. Nothing else outside the journal may change, visibly or otherwise.
+- The journal entries query must be **journal-scoped**. `SectionList` runs its hooks on every section, so an ungated `useJournalEntries` would fire a fetch on `/flagged` and the Classroom sections too. Gate it the same way the section branch is gated.
+- `/mainhub`, `/practice`, `/bootcamps`, `/analytics`, `/inbox` and every other StudentShell page must render byte-identically.
+- `src/lib/wajService.ts`, `src/lib/wajNotesService.ts` and `getWrongAnswerSmartRows` are **read, not rewritten**. The data layer is correct; do not refactor it.
+- **No database migration.** Nothing in this build deletes a journal entry.
+- The dead Notion-era code in `journalService.ts` (`journal_pages`, `journal_databases`, `journal_views` and their types/mappers, roughly 78% of the file) is **left alone**. It is unreachable and it is not this release's problem. Do not delete it, do not tidy it.
+- Do not add dependencies.
+- Do not flip TypeScript strictness settings.
 
----
+If the spec appears to require breaking any of the above, stop and say so rather than proceeding.
 
-## 0. SCOPE LOCK — overrides everything below
+## 1. Why
 
-**Exactly one page changes.**
+`/journal` is the last Review surface still mounted inside `StudentShell`. Clicking "Wrong answers" from the Classroom rail tears the whole page down and rebuilds it inside a different shell with a different rail, so the rail visibly changes underneath the student. Flagged already solved this; this is the same problem, one surface later.
 
-**Must not touch:** `src/components/mainhub/StudentShell.tsx`, `MainhubSidebar.tsx`, `StudySidecar.tsx`, `src/contexts/ThemeContext.tsx`, global token blocks in `src/index.css`, shared scales in `tailwind.config.ts`, or any page other than the Classroom.
+Unlike Flagged, this one **cannot be re-parented**. `JournalEntrySurface` is a three-pane `ResizablePanelGroup` whose auto-collapse thresholds are measured against the viewport:
 
-**May touch:** `src/pages/Classroom.tsx`, `src/components/classroom/**`, a new `src/components/classroom/shell/**`, the `/classroom/*` route block in `src/App.tsx`, one new scoped stylesheet, an additive font link in `index.html`, plus the named migrations in §7.
-
-### CSS isolation — enforce mechanically, not by care
-- **Every rule prefixed `.classroom-root`.** No `:root`, no bare element selectors (`body`, `h1`, `a`), no `@layer base`, no utility overrides.
-- **Dark mode keys off `html.dark .classroom-root`**, never `html.dark` alone.
-- **The font link is additive only.** Adding Outfit and Roboto Mono must not change `font-family` anywhere outside `.classroom-root`. Lexend stays the app default.
-- **Proof required:** grep the new stylesheet for `:root`, `@layer`, and any selector lacking `classroom-root` — must return empty. Then screenshot `/mainhub`, `/practice`, `/bootcamps` before and after; must be pixel-identical.
-
----
-
-## 1. Routing
-
-`/classroom` currently renders inside `StudentShell`, which draws its own 240px sidebar and docks `StudySidecar` at 360–640px. The Classroom now owns its whole frame, so it must leave the shell. `StudentShell`'s own docstring establishes the precedent: Drill and bootcamp runners already route outside it at full viewport.
-
-- Define `/classroom` as a **guarded layout route with an `<Outlet>`** and nest **all six** children beneath it: index, `uploads`, `recaps`, `item/:itemId`, `ta/:assignmentId`, `:assignmentId`. Moving only the index causes chrome whiplash the moment a student opens any item.
-- **Preserve `ProtectedRoute flag="has_classroom_access" allowSignedIn` verbatim.** Relocate the existing element; do not re-author it.
-- **Replace the onboarding gate the shell was silently providing.** It redirects to `/onboarding` when `profiles.display_name` is absent. Outside the shell that gate disappears and `allowSignedIn` admits any authenticated user. Match today's predicate exactly (`display_name`), including `authReady` handling and the redirect return path.
-- `StudentShell` is **not edited.** Routes move; the component does not.
-
----
-
-## 2. Layout — three columns
-
-```
-┌ sidebar 320 ┐┌ section list 320 ┐┌──── reading column, max 720 ────┐
-│ card in an  ││ rounded-r,       ││ plain white. no wash.           │
-│ 8px gutter  ││ border-l-0,      ││ date line → title → content     │
-│ sticky      ││ -ml-4 so it      ││                                 │
-│             ││ fuses into one   ││                                 │
-│             ││ joined card      ││                                 │
-└─────────────┘└──────────────────┘└─────────────────────────────────┘
+```ts
+const AUTO_COLLAPSE_AT = 2140;
+const AUTO_EXPAND_AT   = 2280;
 ```
 
-- Sidebar inner padding `24px`; section list `24px 28px`; reading column `80px` top (`my-20`).
-- **Classroom index is two columns.** The section list is absent.
-- Choosing **Notes and recaps / Assigned work / Recaps** slides the section list in with that list; picking an item renders it in the reading column. The student never leaves the Classroom.
-- Choosing a **Study or Review destination** (Drill, Practice, Bootcamps, Activities, Wrong answers, Flagged, Analytics) **navigates away**. It does not open the list.
-- Below `xl` (1280px) the section list is replaced by a full-width trigger bar that opens it as an overlay. Below `lg` the main sidebar goes off-canvas.
+and whose panel minimums total 75% of the container (rail 12 + centre 45 + review 18). Inside any reading column both side panes collapse permanently and the student is left with the question and two chevrons. Lowering the constants does not fix it, because the min-size floor is also wrong. The resizable machinery is removed, not retuned.
 
----
+## 2. Target layout
 
-## 3. Colour — parsed from source, exact
+Four fixed columns. No resizable panes, no collapse thresholds, no `ResizablePanelGroup`.
 
-### Tokens
-| Role | Light | Dark |
-|---|---|---|
-| Reading surface | `#FFFFFF` | `#0F0E17` |
-| Panel base (both sidebars) | `#FFFFFF` | `#0A0913` — **darker than the page** |
-| Border, everywhere | `#F3E3D6` | `#17161C` |
-| Body text | `#43403C` | `#E5E5E5` |
-| Heading text | `#43403C` | `#FFFFFE` |
-| Mono metadata | `rgb(166,162,158)` @ `.7` | `rgb(167,169,190)` @ `.7` |
-| Dates / soft meta | `rgba(67,64,60,.4)` | `#A7A9BE` |
-| Row hover | `#F6EBE1` @ 40% | `#44403C` @ 40% |
-| **Active pill** | **`#43403C` bg, `#FFFFFF` text** | **`#3D3C48` bg, `#E5E5E5` text** |
-| Dotted leader | `rgba(0,0,0,.15)` | `rgba(255,255,255,.15)` |
-| Section-list trigger | `#FEFCF7` | `#0A0913` |
-
-### The gradient is PER-PANEL, not per-page
-```css
-.bg-1 { background-image: linear-gradient(161.15deg,
-          rgba(254,252,247,.4) 12.73%, rgba(243,227,214,.4) 72.95%) }  /* light */
-.bg-2 { background-image: linear-gradient(161.15deg,
-          rgba(41,37,36,.4)   12.73%, rgba(68,64,60,.4)   72.95%) }    /* dark  */
 ```
-1. Both run at **40% alpha over a base colour** — a panel is base + wash, never a flat cream fill.
-2. **Each panel carries its own pair of layers**, `absolute inset-0` *within that panel*, so the 161.15° run travels across that card's own box. A single fixed full-viewport layer is wrong and destroys the effect.
-3. Applied to **the two sidebars only**. The reading column has no wash — the source's `<body>` is `bg-white dark:bg-gray-13`.
-4. Theme change = the two layers cross-fading opacity over 300ms. **Never switch `background-color`.**
+┌────────┬──────────┬─────────────────────┬──────────┐
+│ CREAM  │ ENTRIES  │  PT80-S2-Q14        │ REVIEW   │
+│ RAIL   │          │                     │          │
+│        │ PT80 S2  │  Stimulus           │ How did  │
+│ Home   │ PT91 S1  │  (full width)       │ you do?  │
+│ Notes  │ PT77 S3  │                     │ [W][U][C]│
+│ Work   │          │  Stem               │          │
+│        │ ⌕ search │                     │ Date     │
+│ REVIEW │          │  A ............     │ Summary  │
+│ Wrong ‹│          │  B ............     │ Wrong    │
+│ Flagged│          │  C ............     │ reasoning│
+└────────┴──────────┴─────────────────────┴──────────┘
+```
 
-### Orange is a highlight, not a theme
-`#FF8906` appears in exactly **two** roles, per `.prose a:not(.btn)` and the accent button:
-- inline links inside note content (hover reverts to `#43403C`)
-- the single primary button
+The question is **vertical**: stimulus on top, then the stem, then A–E stacked. This replaces today's `lg:grid-cols-[minmax(0,50fr)_minmax(0,50fr)]` side-by-side split, which is a viewport breakpoint and would not stack in a narrow column anyway.
 
-It is **never** used for statuses, active states, progress, borders, or section chrome. Statuses use `rgba(67,64,60,.4)`. **A build that reads "orange" has misassigned the accent.** The active state is a dark charcoal pill, not orange and not cream.
+Responsive. Concrete breakpoints, because the frame's existing one does not fit four columns:
 
-### Theme plumbing
-**Consume the existing `ThemeContext` as-is.** Do not add an init script or storage key: the app stores under `lsatu-theme` and applies a `light` class, with dark as the absent state. The source's three-way Light/Dark/Auto is deliberately not copied — it would mean touching shared theme code.
+- The frame hides `.classroom-section-list` at `max-width: 1279px` ([classroom.css:1014](src/components/classroom/classroom.css#L1014)). Four columns are already too tight well above that.
+- **Below 1400px (journal only):** the entries column folds into the section overlay. This is a journal-scoped override, so it must move the `classroom-section-trigger` and the overlay to the same 1400px threshold **for the journal route only** — the trigger cannot appear at 1400px while the overlay it opens is still gated at 1279px.
+- **Below 1100px:** the review panel moves beneath the question, one scroll.
+- Every other route keeps 1279px exactly as it is.
+- The existing mobile menu behaviour carries over untouched.
+- No horizontal page scroll at any width.
 
----
+## 3. Decisions (locked, do not relitigate)
 
-## 4. Type
+| Item | Decision |
+|---|---|
+| Frame | Classroom frame. The rail persists and must never remount. |
+| Nav position | Unchanged. Stays under Review in the rail, keeps the URL `/journal`. |
+| Deep links | `/journal/:qid`. Selection moves out of memory and into the URL. |
+| Actions | **Ask only.** No Practice, no Delete. |
+| Correct answer | Stays visible, as today. This is a write-up surface for a question already missed. |
+| Annotation | Kept, with the scroll bug fixed. |
+| Autosave | 800ms debounce kept. Flushed on navigate instead of cancelled. **Silent** — no save indicator. |
+| Suggestion chips | **Dropped.** |
+| Onboarding tour | **Dropped**, along with its `waj_review_tour_done_v1` localStorage key. |
+| New entry picker | **Dropped.** |
+| Review form fields | Unchanged in content. Restyled to Classroom tokens. |
 
-Outfit + Roboto Mono, applied only under `.classroom-root`.
+Dropping the picker and the chips leaves `ensureJournalEntry` with only its automatic callers: the drill's wrong-answer path (`logWrongAnswer` → `append_waj_wrong`) and the flag-to-journal bridge in `Drill.tsx`. Both stay. This is intentional: the journal becomes a record of what the student missed rather than something they curate.
 
-- Page title **30px, `36px` at `lg`, weight 700**.
-- **Body weight 500** — the source sets `font-medium` on `<body>`.
-- **Roboto Mono weight 500 only** — the sole weight the source loads.
-- One mono size, `.75rem`, for every piece of metadata. This rule alone fixes today's hierarchy inversion, where section headers are smaller and dimmer than their own content.
-- Section headers (20px/600) must be larger than the content they head. `tabular-nums` on all stats.
-- Date line above every title: 14px, weight 500, soft meta colour, `<time> | kind`.
+## 4. Routing (`src/App.tsx`)
 
----
+Move `/journal` under the **existing** pathless `<Route element={<ClassroomLayout />}>` that Flagged already uses.
 
-## 5. Content
+**Do not create a second pathless layout route.** Two sibling routes each holding their own `<ClassroomLayout />` cause React to unmount one and mount the other, which reproduces exactly the rail remount this work removes. This was built, measured (`railSurvived: false`) and rewritten during the Flagged job; it is recorded in `docs/adr/0004-classroom-frame-is-one-pathless-layout-route.md`. Read that ADR before touching routing.
 
-### Leader rows
-Title left, dotted leader, mono status right, whole row an invisible covering anchor (`position:absolute; inset:0; opacity:0`). Mobile: column stack, dash hidden.
+```tsx
+<Route element={<ClassroomLayout />}>
+  {/* … existing /classroom subtree … */}
+  {/* … existing /flagged, /flagged/:qid … */}
+  <Route path="/journal" element={
+    <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+      <JournalIndexView />
+    </ProtectedRoute>
+  } />
+  <Route path="/journal/:qid" element={
+    <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+      <JournalEntryView />
+    </ProtectedRoute>
+  } />
+</Route>
+```
 
-### Order — fixed and load-bearing
-Always-populated first, conditional below, so the page **gets shorter, never emptier**:
-1. Date line + "Welcome back, `<name>`"
-2. The coach's most recent message — **no label**, just avatar, name, timestamp, body, and a reply affordance
-3. Next session
-4. Up next
-5. Notes and recaps
-6. What you have practised
-7. Wrong answers waiting
-8. This week / Bootcamp (conditional)
+- Keep the flag array and `allowSignedIn` byte-identical. Access must not change for anyone.
+- Keep the `/waj` → `/journal` redirect.
+- Remove the old `/journal` entry from the `StudentShell` block.
+- `src/pages/Journal.tsx` (10 lines, delegates to `JournalEntrySurface embedded`) becomes unreferenced. **Leave the file in place** and say so in your summary. Deleting files is the human's call.
 
-**A section with no content does not render.** No dashed box, no placeholder.
+## 5. Shell changes (`src/components/classroom/shell/ClassroomLayout.tsx`)
 
-### Notes render rich content — the real target
-Inside the 720px column: images full-bleed with `srcset` and `sizes="(min-width: 720px) 720px"`; callout boxes (emoji + text, tinted bordered); blockquotes; `h2`/`h3`; an optional embed slot. The note scrolls while both sidebars stay put.
+Mirror the `flagged` branch that already exists in this file; do not invent a new pattern.
 
-**No video section exists.** Video is not a focus — if one ever appears it is an embed block inside a note, needing no schema change.
+- `ClassroomSection` gains `"journal"`. Add its title to `SECTION_TITLES` as `"Wrong answers"`.
+- `sectionFromPath` returns `"journal"` for `/journal` and `/journal/:qid`.
+- `SectionList` grows a `journal` branch listing entries. Reuse `classroom-panel-search` for the label filter and the existing three-state discipline verbatim.
+- The "Wrong answers" nav button becomes `navClass(activeSection === "journal")` with a trailing `<em>›</em>`, matching Flagged.
+- `activeId` already falls through to `params.qid`. Entries key off **`qid`**, not the row `id`.
 
----
+### Selection rules
 
-## 6. Correctness rules — these are the ones that bite
+Today selection is a row `id` in local state and an effect auto-selects `rows[0]` when nothing is chosen ([JournalEntrySurface.tsx:93,130,135](src/components/journal/entry/JournalEntrySurface.tsx#L93)). Carrying either behaviour into a URL-addressed view makes deep links unreliable. Specify exactly:
 
-1. **Three states per block: loading / error / empty.** Only a *successfully returned empty* result hides a section. A failed query must never render as absence — combined with the hide-empties rule it would show a calm, normal page telling a student they have no homework, no message and no booking while five things are due. Loading shows a skeleton; errors show an inline retry; prior data is retained while refetching.
-2. **DOMPurify on every inline `content_html`.** Already the house pattern (`ClassroomItem.tsx:61`, `ClassroomTAAssignmentDetail.tsx:98`). Omitting it ships stored XSS.
-3. **The coach's latest word filters by admin `sender_id`.** The messages table holds both sides; unfiltered "most recent" shows students their own words attributed to their coach. Fall back to the seeded welcome only after a *successful* no-admin-message result.
-4. **Exclude the day-0 welcome from the notes list** — it is type `note` and would otherwise appear twice on one page.
-5. **Dedupe "Up next" by `(source_table, source_id)`**, not `source_id` alone. Ids from different tables collide.
-6. **Respect `MIN_SAMPLE` / `hasData`** in `src/lib/mainhubAnalytics.ts`. Omit or label insufficient data rather than drawing a chart from one attempt.
-7. **No fake data, ever.** Every number traces to a named hook and a table with real rows.
+- Selection resolves **only** by `qid` from the URL. No row-`id` lookup anywhere.
+- **No auto-select.** `/journal` shows the index view's prompt or empty state; it must never silently redirect to the first entry.
+- **Unknown or non-journaled `qid`** renders an explicit "this entry is not in your wrong answers" state with a way back to `/journal`. It must not fall through to the first row, and must not render a blank column. Follow `FlaggedQuestionView`'s missing-row branch, which already does exactly this.
+- Distinguish "still loading" from "not found": only a **successfully loaded** entries list with no matching `qid` is a not-found.
 
----
+### The fourth column
 
-## 7. Migrations
+The review panel must be a **sibling of `.classroom-stage`**, not a pane nested inside the reading column. Nesting it inside the reading column recreates the width problem this work exists to remove.
 
-1. **`profiles.test_date`** (nullable date) + capture in onboarding + edit control in Profile. Define null, past-date and timezone behaviour using `src/lib/localDate.ts`. The deck degrades to the name alone when null. Enumerate every file this touches.
-2. **Partial unique index** on `classroom_items (student_id, source_table, source_id)` for the welcome marker. Verified: the table has **no unique constraint beyond its primary key**, so `ON CONFLICT` is otherwise unimplementable.
-3. **Privileged trigger or Edge Function** writing the day-0 welcome, fired on the access-grant/enrolment transition (**never** on signup), authored by a resolved admin id, failing loudly if absent. Students cannot insert `classroom_items` under RLS, so the seed cannot be client-side.
+**Do not try to project into it through context.** An earlier draft of this spec proposed a "context slot"; that is wrong and was caught in review. `ClassroomLayoutContext` carries `displayName`, `testDate` and `openSection` *downward* ([ClassroomLayout.tsx:41](src/components/classroom/shell/ClassroomLayout.tsx#L41)); it cannot lift a child's content upward into a sibling. And `<Outlet>` sits inside `.classroom-column` inside `.classroom-stage` ([ClassroomLayout.tsx:575-587](src/components/classroom/shell/ClassroomLayout.tsx#L575)), so nothing a child returns can become `.classroom-stage`'s sibling by normal rendering. A reverse-registration callback would work mechanically but introduces render-ordering bugs for no benefit.
 
-Regenerating Supabase types is part of the migration step.
+**Do this instead.** Give `ClassroomLayout` one explicit branch: when the route is the journal *detail* view, render `<Outlet context={contextValue} />` **bare, directly under `.classroom-root`**, instead of wrapping it in `.classroom-stage` > `.classroom-column`. `JournalEntryView` then returns two siblings itself:
 
----
+```tsx
+<>
+  <main className="classroom-stage">…question…</main>
+  <aside className="classroom-aside">…review panel…</aside>
+</>
+```
 
-## 8. Voice
+Constraints on that branch:
 
-The room addresses the student directly and **never names the coach in the furniture**. Second person: "Welcome back, Lexi", "your next session". The message block carries **no label** — it reads as a person, not a UI section. The coach's name appears only where he signs something he wrote. **No em-dashes in any student-facing string.**
+- It applies to `/journal/:qid` **only**. `/journal` (the index) has no aside and uses the normal stage/column path unchanged.
+- Every other route keeps today's DOM byte-for-byte. The condition is explicit, not a general mechanism.
+- The `classroom-section-trigger` button (the narrow-width control that opens the entries overlay) currently lives inside `.classroom-column`. The journal branch bypasses that wrapper, so the trigger must be rendered inside `JournalEntryView`'s `<main>` with identical markup and behaviour, or it disappears at narrow widths.
+- Add a journal-only root modifier class (e.g. `classroom-root-journal`) to carry the grid. `.classroom-root` is a **non-wrapping flex row** ([classroom.css:17](src/components/classroom/classroom.css#L17)), so "review beneath question" at narrow widths cannot happen by wrapping — it needs explicit journal-scoped rules.
 
----
+## 6. Files
 
-## 9. Out of scope for this release
+| File | Purpose |
+|---|---|
+| `src/components/classroom/JournalViews.tsx` | `JournalIndexView` (prompt / empty state) and `JournalEntryView` (question + review panel + Ask). Sits alongside `FlaggedViews.tsx`, which is the reference implementation for all of this. |
+| `src/hooks/useJournalEntries.ts` | React-query over `getWrongAnswerSmartRows`. Same shape as `src/hooks/useFlagged.ts`, including the invalidate helper. |
+| `src/components/classroom/JournalQuestionView.tsx` | The vertical question. Stimulus, stem, A–E stacked, correct answer marked, non-correct choices clickable to record the chosen wrong answer. |
+| `src/components/classroom/JournalReviewPanel.tsx` | The form, ported from `ReviewForm.tsx` minus the tour, restyled to Classroom tokens. |
+| `src/components/classroom/classroom.css` | Fourth-column and form rules. |
 
-- **Uploads ship no capability.** Zero rows, and `parse-external-work/index.ts` writes `extracted_text`, `parsed_json`, `confidence_score` to columns that **do not exist in production** — the pipeline is already broken. Surfacing a submit control that feeds a broken parser is worse than omitting it. Separate work.
-- **No `lecture_video` type.** `classroom_items_type_check` allows ten types and this is not one; adding the TS union member alone causes a runtime insert failure.
-- **Notes ship dormant** — the list, renderer and column are all built, but zero rows of `note` / `session_recap` / `announcement` / `smartboard_recap` have ever existed. The redesign cannot create the content it displays.
-- Admission predictor. Live 7Sage sync. Separate calendar. Knowledge graph. Streaks, badges, projected score. Any change to Foyer or `/mainhub`. Unifying the two chromes.
+## 7. Reuse, do not rewrite
 
-## Accepted tradeoffs, on the record
+- `getWrongAnswerSmartRows` / `WrongAnswerSmartRow` (`src/lib/journalService.ts`) — the two-query fan-out and JS merge on `qid` stays exactly as is.
+- `upsertNote` (`src/lib/wajNotesService.ts`) — the write path stays as is. Its RLS is complete (all four verbs, keyed on `user_id`), so no migration is needed.
+- `stripDataArtifacts` / `cleanAnswerChoice` from `src/lib/questionText.ts`. Import these. Note the shared module exists but the old local copies in `JournalQuestionPane.tsx:21` were **not** removed when it was created, so three definitions would exist if you write a fourth. Import the shared ones; **do not** clean up the existing duplicates, which is out of scope.
+- `seedDraft`'s fallback chain from `JournalEntrySurface.tsx`. Port it **verbatim**, including the legacy bridges:
+  ```ts
+  wrong_reasoning: n?.wrong_reasoning ?? n?.root_cause ?? '',
+  other_notes:     n?.other_notes ?? n?.student_note ?? '',
+  self_rating:     n?.self_rating ?? (row.status === 'right' ? 'correct' : 'wrong'),
+  date_taken:      isoDate(n?.date_taken) || isoDate(row.first_missed),
+  wrong_answer:    n?.wrong_answer ?? row.last_chosen ?? '',
+  ```
+  Dropping those bridges silently blanks older notes.
+- `AnnotationLayer.tsx` and the `AnnotationStroke` shape, with the fix in §8.
+- `startJoshuaConversation` (`src/lib/joshuaThread.ts`) and the `AskComposer` pattern in `FlaggedViews.tsx`. Do **not** reuse `src/components/inbox/MessageComposer.tsx` — it drags in an emoji picker, a Drive attachment picker and a slash-command template palette that do not belong in a reading column.
+- Existing Classroom CSS primitives: `classroom-button`, `classroom-textarea`, `classroom-panel-search`, `classroom-panel-item`, `classroom-skeleton`, `classroom-list-error`, `classroom-inline-error`.
 
-`#B3B0AC` on white is ~2.2:1 and **fails WCAG AA** for body text. Source fidelity was reaffirmed twice; this is a known, accepted decision. Benchmark gate C3 is retired; C5 (must match `/mainhub`) is **suspended, not met** — the Classroom will look like a different product from the rest of the app, the accepted cost of the scope lock.
+## 8. Defects to fix as part of this
 
----
+**1. Autosave flush.** The cleanup effect calls `clearTimeout` ([JournalEntrySurface.tsx:222](src/components/journal/entry/JournalEntrySurface.tsx#L222)), so a pending write is dropped. This is subtler than it looks and a naive fix makes it worse:
 
-## 10. Verification — not done until seen running
+- **Flush on `qid` change, not only on unmount.** `/journal/a` → `/journal/b` reuses the same route element, so React does **not** unmount it — only `useParams` changes. An unmount-only flush would miss the most common case. (An earlier draft of this spec claimed URL selection makes unmounts routine. That was wrong.)
+- **Flush the captured `qid`, not the current one.** Cleanup runs after the param has already changed, so reading the route during cleanup writes the previous draft into the *next* entry.
+- **`saveTimer.current` is never nulled after the timer fires** ([JournalEntrySurface.tsx:192](src/components/journal/entry/JournalEntrySurface.tsx#L192)). A flush guarded on `if (saveTimer.current)` therefore re-fires an already-completed save. Hold one pending payload `{ qid, draft, annotations }`; clear **and null** it before writing; make flush idempotent so a double invocation (StrictMode, or unmount straight after a fire) writes once.
 
-1. Signed in as a student, screenshot at narrow / mid / wide. Section list appears only above `xl`; trigger bar below it.
-2. Notes / Assigned work open the section list and keep the student in the Classroom; Drill / Practice navigate away. Both checked by hand.
-3. **Squint test:** the next action dominates. If Sign out is visible at all, it failed.
-4. **Empty-state test:** a student with zero assignments, plan and recaps still sees a page worth being on.
-5. **Failure test:** force a query error; the page must report it, not render as "nothing assigned".
-6. **Colour audit:** walk every rendered element's computed styles — exactly one may carry `#FF8906` on the index (the primary button).
-7. **Isolation proof:** the grep in §0, plus before/after screenshots of `/mainhub`, `/practice`, `/bootcamps`.
-8. Route checks: student / admin / unauthenticated; onboarding redirect still fires for a profile with no `display_name`.
-9. Seed idempotency under retry.
-10. `npm run typecheck` before any push — the repo's hard gate.
-11. Re-score all 7 Tier 1 gates and record the result.
+Keep the debounce at 800ms. Keep it silent.
+
+**2. Side effect inside a state updater.** `patch()` calls `scheduleSave` from inside the `setDraft` updater ([JournalEntrySurface.tsx:226](src/components/journal/entry/JournalEntrySurface.tsx#L226)), which double-fires under StrictMode. Move it out — but **do not** compute the next draft as `{...draft, ...patch}` from the closed-over `draft`, which loses writes when two edits batch in one tick. Keep a latest-draft ref, or compute the next draft synchronously once and feed it to both `setDraft` and `scheduleSave`.
+
+**3. Annotation scroll.** Strokes are pinned to the pane, not the content, so once the student scrolls the ink sits over the wrong text. Re-anchoring is more than changing a parent:
+
+- The layer's **positioned ancestor must be the element that wraps the whole question content** and must cover its full scroll height, not the viewport-height pane. Otherwise document scrolling still offsets the ink.
+- `pointFromEvent` must measure against **that same element's** bounds, or reads and writes disagree.
+- Pointer events must stay `none` when annotation mode is off. A content-sized layer that swallows clicks would block answer-choice selection and touch scrolling — a regression the current pane-sized layer does not have.
+
+Explicitly **not** fixed here: strokes still stretch non-uniformly when the aspect ratio changes (points are normalized per-axis), and `strokeWidth` remains an unscaled pixel value. Leave both.
+
+## 9. Styling
+
+- Every selector prefixed `.classroom-root`. Dark mode keyed off `html.dark .classroom-root`.
+- **No `:root`, no `@layer`, no bare element selectors.** This must keep returning nothing:
+  ```bash
+  grep -nE ':root|@layer' src/components/classroom/classroom.css
+  ```
+- Reuse existing tokens. No hardcoded hex. The status colours currently hardcoded as Tailwind ramps (rose/amber/emerald 500 for wrong/unsure/correct) become Classroom tokens.
+- Orange (`--classroom-link`, `#FF8906`) is a highlight, not a theme.
+
+## 10. Voice
+
+- Second person throughout.
+- **The coach is never named in the furniture.** The action is **Ask**, never "Ask Joshua".
+- No em-dashes in any student-facing copy.
+- The surface is called **Wrong answers**, not "Wrong Answer Journal".
+
+## 11. Verification
+
+Dev server on **8081** (8080 is occupied by something else). Saved student session at `.auth/state.json`; re-mint with `BASE_URL=http://localhost:8081 node .auth/save-session.mjs`. Existing scripts in `.auth/` are the reference for how this is done.
+
+Nothing is "done" on the strength of the diff.
+
+1. `npm run typecheck` clean, and **`npm run build` clean** (`AGENTS.md:67` requires it before wrapping significant work; `vite build` uses esbuild and strips types without checking them). `npx eslint` on changed files introduces no new errors.
+2. The `grep` in §9 returns nothing.
+3. **Rail identity (mandatory).** Tag `.classroom-sidebar` with an attribute, navigate `/classroom` → Wrong answers → an entry, and assert the tag survives every hop. A screenshot cannot catch this regression.
+4. Four columns at 1500px. Question renders stimulus, then stem, then five stacked choices, correct answer marked.
+5. `/journal/:qid` loaded directly selects the right entry with the form populated. Then: `/journal` shows the index and does **not** jump to the first entry, and `/journal/PT999-S9-Q99` shows the explicit not-found state rather than the first row or a blank column.
+6. **Autosave flush, three separate cases.** Each proven, not reasoned about:
+   - type into entry A, click entry B within 800ms, reload A, assert A's text persisted
+   - and assert **B was not contaminated** with A's text (the captured-qid bug)
+   - type, wait for the save to land, then immediately navigate; assert exactly **one** write (no duplicate from the un-nulled timer ref)
+   - type two fields in the same tick and assert both persisted (the batched-edit stale-draft bug)
+7. Autosave round trip: edit, wait, reload, assert persistence. Confirm no save indicator appeared.
+8. Annotation: draw on a scrolled question, scroll, assert the stroke stays on the same content. Reload, assert it persisted. Then with annotation mode **off**, assert answer choices are still clickable and the column still scrolls — a content-sized layer must not swallow pointer events.
+8b. Non-journal DOM is untouched: assert `/classroom` and `/flagged` still render `<main class="classroom-stage"><div class="classroom-column">` with the Outlet inside it, since the journal branch bypasses that wrapper.
+9. Ask posts into the admin thread and the row lands in `messages`. A student without `has_chat_access` sees no Ask control.
+10. Three states for the entries list: populated, loading skeleton, and a **forced 500** showing error plus retry with the empty state suppressed. Force it with `route.fulfill({status:500})`, **not** `route.abort()` — an abort reads as offline and react-query's default `networkMode: 'online'` pauses the query instead of failing it, leaving a permanent skeleton.
+11. The dropped features are gone: no suggestion chips, no New entry picker, no tour, and `waj_review_tour_done_v1` is never written.
+12. Widths 1500 / 1400 / 1100 / 700 plus dark mode, with no horizontal page scroll at any width. Include the **sidecar-docked case**, which `AGENTS.md:63` requires on any responsive work and which this is. Check both sides of each journal breakpoint (1401/1399, 1101/1099), and confirm the section trigger and the overlay it opens appear at the *same* threshold.
+13. Regression: `/flagged`, `/mainhub`, `/practice`, `/bootcamps` unchanged (`classroomRoot` as before, unchanged `fontFamily`).
+
+## 12. Documentation
+
+Extend `src/components/classroom/CONTEXT.md` with **Journal entry** as a term and the four-column layout under Classroom frame. The flag-versus-wrong-answer distinction is already written there; do not duplicate it.
+
+No new ADR unless something surfaces that is hard to reverse, surprising without context, and the result of a real trade-off. The routing decision is already ADR 0004 and this follows it.
