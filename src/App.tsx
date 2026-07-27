@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OrbitalActiveProvider } from "@/contexts/OrbitalActiveContext";
 
@@ -25,7 +25,6 @@ const Practice = React.lazy(() => import("./pages/Practice"));
 import SavedSets from "./pages/SavedSets";
 const AcademyMainhub = React.lazy(() => import("./pages/AcademyMainhub"));
 const Drill = React.lazy(() => import("./pages/Drill"));
-import FlaggedQuestions from "./pages/FlaggedQuestions";
 const Analytics = React.lazy(() => import("./pages/Analytics"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
@@ -40,6 +39,10 @@ import {
   ClassroomTAAssignmentView,
   ClassroomUploadsView,
 } from "./components/classroom/ClassroomRouteViews";
+import {
+  FlaggedIndexView,
+  FlaggedQuestionView,
+} from "./components/classroom/FlaggedViews";
 const CausationStation = React.lazy(() => import("./pages/CausationStation"));
 
 // Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
@@ -337,17 +340,36 @@ const App = () => {
                     </ProtectedRoute>
                   } />
 
-                  {/* Classroom owns its full frame and keeps the complete route
-                      family mounted under the same guarded layout. */}
-                  <Route path="/classroom" element={
-                    <ProtectedRoute flag="has_classroom_access" allowSignedIn><ClassroomLayout /></ProtectedRoute>
-                  }>
-                    <Route index element={<Classroom />} />
-                    <Route path="uploads" element={<ClassroomUploadsView />} />
-                    <Route path="recaps" element={<ClassroomRecapsView />} />
-                    <Route path="item/:itemId" element={<ClassroomItemView />} />
-                    <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
-                    <Route path=":assignmentId" element={<ClassroomAssignmentView />} />
+                  {/* The Classroom frame. Every route drawn by it hangs off
+                      THIS ONE pathless layout route, which is what keeps the
+                      rail mounted across navigations — two sibling routes each
+                      holding their own <ClassroomLayout /> would unmount and
+                      remount it, which is exactly the shell-swap this design
+                      exists to eliminate.
+
+                      Each branch keeps its own guard, so /flagged still needs
+                      has_flagged_access and nothing about who can reach what
+                      has changed. */}
+                  <Route element={<ClassroomLayout />}>
+                    <Route path="/classroom" element={
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn><Outlet /></ProtectedRoute>
+                    }>
+                      <Route index element={<Classroom />} />
+                      <Route path="uploads" element={<ClassroomUploadsView />} />
+                      <Route path="recaps" element={<ClassroomRecapsView />} />
+                      <Route path="item/:itemId" element={<ClassroomItemView />} />
+                      <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
+                      <Route path=":assignmentId" element={<ClassroomAssignmentView />} />
+                    </Route>
+
+                    {/* Flagged keeps its own URL and its own place in the rail;
+                        only the frame that draws it has changed. */}
+                    <Route path="/flagged" element={
+                      <ProtectedRoute flag="has_flagged_access"><FlaggedIndexView /></ProtectedRoute>
+                    } />
+                    <Route path="/flagged/:qid" element={
+                      <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
+                    } />
                   </Route>
 
                   {/* Persistent student shell. Sidebar + study chat stay mounted;
@@ -373,9 +395,6 @@ const App = () => {
                           <ActivityCentre />
                         </React.Suspense>
                       </ProtectedRoute>
-                    } />
-                    <Route path="/flagged" element={
-                      <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
                     } />
                     <Route path="/analytics" element={
                       <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>

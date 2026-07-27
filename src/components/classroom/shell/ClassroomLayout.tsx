@@ -17,6 +17,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { useFlagged } from "@/hooks/useFlagged";
+import { flagLabel } from "@/lib/flaggedService";
 import {
   useStudentAssignments,
   useStudentTAAssignments,
@@ -28,7 +30,13 @@ import {
 } from "@/components/classroom/classroomData";
 import "@/components/classroom/classroom.css";
 
-type ClassroomSection = "notes" | "work";
+type ClassroomSection = "notes" | "work" | "flagged";
+
+const SECTION_TITLES: Record<ClassroomSection, string> = {
+  notes: "Notes and recaps",
+  work: "Assigned work",
+  flagged: "Flagged",
+};
 
 type ClassroomLayoutContextValue = {
   displayName: string;
@@ -55,6 +63,10 @@ function useRetainedValue<T>(value: T, canReplace: boolean) {
 }
 
 function sectionFromPath(pathname: string): ClassroomSection | null {
+  // Flagged lives outside the /classroom path but inside the same frame.
+  if (pathname === "/flagged" || pathname.startsWith("/flagged/")) {
+    return "flagged";
+  }
   if (
     pathname === "/classroom/recaps" ||
     pathname.startsWith("/classroom/item/")
@@ -161,9 +173,27 @@ function ClassroomSidebar({
 
           <div className="classroom-nav-group">
             <b>Review</b>
-            <button type="button" className="classroom-nav" onClick={() => go("/journal")}>Wrong answers</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/flagged")}>Flagged</button>
-            <button type="button" className="classroom-nav" onClick={() => go("/analytics")}>Analytics</button>
+            <button
+              type="button"
+              className={navClass(location.pathname.startsWith("/journal"))}
+              onClick={() => go("/journal")}
+            >
+              Wrong answers
+            </button>
+            <button
+              type="button"
+              className={navClass(activeSection === "flagged")}
+              onClick={() => go("/flagged")}
+            >
+              Flagged <em>›</em>
+            </button>
+            <button
+              type="button"
+              className={navClass(location.pathname.startsWith("/analytics"))}
+              onClick={() => go("/analytics")}
+            >
+              Analytics
+            </button>
           </div>
 
           <div className="classroom-nav-group">
@@ -231,6 +261,8 @@ function SectionList({
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
+  const flaggedQuery = useFlagged();
+  const [flagFilter, setFlagFilter] = React.useState("");
 
   const retainedItems = useRetainedValue(
     itemsQuery.data ?? [],
@@ -253,16 +285,35 @@ function SectionList({
     () => buildWorkRows(retainedItems, retainedHomework, retainedTa),
     [retainedHomework, retainedItems, retainedTa],
   );
+  const flagRows = React.useMemo(() => {
+    const rows = flaggedQuery.data ?? [];
+    const needle = flagFilter.trim().toLowerCase();
+    if (!needle) return rows;
+    return rows.filter(
+      (row) =>
+        flagLabel(row).toLowerCase().includes(needle) ||
+        row.qid.toLowerCase().includes(needle),
+    );
+  }, [flagFilter, flaggedQuery.data]);
+
   const loading =
     section === "notes"
       ? itemsQuery.isLoading
-      : itemsQuery.isLoading || homeworkQuery.loading || taQuery.loading;
+      : section === "flagged"
+        ? flaggedQuery.isLoading
+        : itemsQuery.isLoading || homeworkQuery.loading || taQuery.loading;
   const error =
     section === "notes"
       ? itemsQuery.error
-      : itemsQuery.error || homeworkQuery.error || taQuery.error;
+      : section === "flagged"
+        ? flaggedQuery.error
+        : itemsQuery.error || homeworkQuery.error || taQuery.error;
 
   const retry = () => {
+    if (section === "flagged") {
+      void flaggedQuery.refetch();
+      return;
+    }
     void itemsQuery.refetch();
     if (section === "work") {
       void homeworkQuery.refresh();
@@ -280,7 +331,7 @@ function SectionList({
       <PanelWash />
       <div className="classroom-panel-inner">
         <div className="classroom-section-heading">
-          <h2>{section === "notes" ? "Notes and recaps" : "Assigned work"}</h2>
+          <h2>{SECTION_TITLES[section]}</h2>
           {onClose ? (
             <button type="button" onClick={onClose} aria-label="Close section list">
               <X size={16} />
@@ -288,7 +339,23 @@ function SectionList({
           ) : null}
         </div>
 
-        {loading && (section === "notes" ? noteRows.length === 0 : workRows.length === 0) ? (
+        {section === "flagged" && !error ? (
+          <input
+            type="search"
+            className="classroom-panel-search"
+            value={flagFilter}
+            onChange={(event) => setFlagFilter(event.target.value)}
+            placeholder="Search by question"
+            aria-label="Search flagged questions"
+          />
+        ) : null}
+
+        {loading &&
+        (section === "notes"
+          ? noteRows.length === 0
+          : section === "flagged"
+            ? flagRows.length === 0
+            : workRows.length === 0) ? (
           <StateSkeleton />
         ) : null}
 
@@ -314,7 +381,10 @@ function SectionList({
                   <time>{new Date(item.created_at).toLocaleDateString("en-CA", { day: "2-digit", month: "short", year: "numeric" })}</time>
                 </button>
               ))
-            : workRows.map((row: ClassroomWorkRow) => (
+            : null}
+
+          {section === "work"
+            ? workRows.map((row: ClassroomWorkRow) => (
                 <button
                   type="button"
                   key={row.key}
@@ -324,8 +394,38 @@ function SectionList({
                   <h3>{row.title}</h3>
                   <time>{row.status.replace("_", " ")}</time>
                 </button>
-              ))}
+              ))
+            : null}
+
+          {section === "flagged"
+            ? flagRows.map((row) => (
+                <button
+                  type="button"
+                  key={row.id}
+                  className={`classroom-panel-item${activeId === row.qid ? " classroom-panel-item-active" : ""}`}
+                  onClick={() => openRow(`/flagged/${encodeURIComponent(row.qid)}`)}
+                >
+                  <h3>{flagLabel(row)}</h3>
+                  <time>
+                    {row.flagged_at
+                      ? new Date(row.flagged_at).toLocaleDateString("en-CA", { day: "2-digit", month: "short", year: "numeric" })
+                      : row.qtype}
+                  </time>
+                </button>
+              ))
+            : null}
         </div>
+
+        {section === "flagged" &&
+        !loading &&
+        !error &&
+        flagRows.length === 0 ? (
+          <p className="classroom-panel-empty">
+            {flagFilter.trim()
+              ? "No flagged question matches that."
+              : "Nothing flagged yet. Flag a question while you are drilling when you want to come back to it."}
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -411,7 +511,7 @@ export default function ClassroomLayout() {
 
   if (!authReady || !user || !profileReady) return null;
 
-  const activeId = params.itemId ?? params.assignmentId;
+  const activeId = params.itemId ?? params.assignmentId ?? params.qid;
   const contextValue = { displayName, testDate, openSection };
 
   return (
@@ -480,7 +580,7 @@ export default function ClassroomLayout() {
                 className="classroom-section-trigger"
                 onClick={() => setSectionOverlayOpen(true)}
               >
-                {activeSection === "notes" ? "Notes and recaps" : "Assigned work"}
+                {SECTION_TITLES[activeSection]}
                 <PanelLeftClose size={17} />
               </button>
             ) : null}

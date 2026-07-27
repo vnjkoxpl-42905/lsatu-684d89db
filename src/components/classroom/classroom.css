@@ -874,6 +874,137 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   line-height: 1.65;
 }
 
+/* ---- Flagged ---- */
+
+.classroom-root .classroom-panel-search {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  font-family: inherit;
+  font-size: 13px;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  width: 100%;
+}
+
+.classroom-root .classroom-panel-search::placeholder {
+  color: var(--classroom-meta-soft);
+}
+
+.classroom-root .classroom-panel-search:focus {
+  border-color: var(--classroom-meta-soft);
+  outline: none;
+}
+
+.classroom-root .classroom-panel-empty {
+  color: var(--classroom-meta-soft);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.classroom-root .classroom-question {
+  margin: 28px 0 0;
+}
+
+.classroom-root .classroom-question-stimulus,
+.classroom-root .classroom-question-stem {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 18px;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-question-stem {
+  font-weight: 600;
+}
+
+.classroom-root .classroom-choices {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.classroom-root .classroom-choice {
+  align-items: baseline;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  display: flex;
+  font-size: 15px;
+  gap: 12px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-choice i {
+  color: var(--classroom-meta-soft);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.classroom-root .classroom-choice-correct {
+  border-color: var(--classroom-active);
+}
+
+.classroom-root .classroom-choice-correct i {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-question-answer {
+  color: var(--classroom-ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-flag-note,
+.classroom-root .classroom-ask {
+  display: grid;
+  gap: 8px;
+  margin: 28px 0 0;
+}
+
+.classroom-root .classroom-flag-note label,
+.classroom-root .classroom-ask label {
+  color: var(--classroom-meta-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-textarea {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  resize: vertical;
+  width: 100%;
+}
+
+.classroom-root .classroom-textarea::placeholder {
+  color: var(--classroom-meta-soft);
+}
+
+.classroom-root .classroom-textarea:focus {
+  border-color: var(--classroom-meta-soft);
+  outline: none;
+}
+
 @media (min-width: 1024px) {
   .classroom-root .classroom-title {
     font-size: 36px;
