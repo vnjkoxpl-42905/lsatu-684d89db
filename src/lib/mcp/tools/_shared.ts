@@ -14,8 +14,8 @@ export function supabaseForUser(ctx: ToolContext): SupabaseClient {
 
 export async function requireAdmin(
   ctx: ToolContext,
-): Promise<{ ok: true; supabase: SupabaseClient; userId: string } | { ok: false; error: string }> {
-  if (!ctx.isAuthenticated()) return { ok: false, error: "Not authenticated" };
+): Promise<{ supabase: SupabaseClient; userId: string; error: null } | { supabase: null; userId: null; error: string }> {
+  if (!ctx.isAuthenticated()) return { supabase: null, userId: null, error: "Not authenticated" };
   const supabase = supabaseForUser(ctx);
   const userId = ctx.getUserId();
   const { data, error } = await supabase
@@ -24,9 +24,9 @@ export async function requireAdmin(
     .eq("user_id", userId)
     .eq("role", "admin")
     .maybeSingle();
-  if (error) return { ok: false, error: error.message };
-  if (!data) return { ok: false, error: "Admin role required to use this tool." };
-  return { ok: true, supabase, userId };
+  if (error) return { supabase: null, userId: null, error: error.message };
+  if (!data) return { supabase: null, userId: null, error: "Admin role required to use this tool." };
+  return { supabase, userId, error: null };
 }
 
 export function textResult(text: string, isError = false) {
