@@ -109,7 +109,7 @@ export default function Onboarding() {
 
       // Completed already (defensive: gate should have kept them out) -> leave.
       if (data?.onboarding_completed_at) {
-        navigate('/mainhub', { replace: true });
+        navigate('/classroom', { replace: true });
         return;
       }
 
@@ -199,7 +199,7 @@ export default function Onboarding() {
         toast.error('Something went wrong saving your progress. Please try again.');
         return;
       }
-      navigate('/mainhub', { replace: true });
+      navigate('/classroom', { replace: true });
     } finally {
       setSaving(false);
     }

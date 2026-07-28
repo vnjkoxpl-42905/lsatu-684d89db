@@ -94,7 +94,7 @@ export function WorkspaceShell(): JSX.Element {
       <a className="skip-link" href="#main">Skip to main content</a>
       {/* Mobile back-to-mainhub pill (left rail is hidden on phone). */}
       <Link
-        to="/mainhub"
+        to="/classroom"
         aria-label="Back to Main Hub"
         className={cn(
           'desktop:hidden tablet:hidden',

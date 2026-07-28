@@ -54,7 +54,7 @@ export default function PracticeInsightStage({
 
   const handleSlideAction = React.useCallback(
     (href: string, tab: string) => {
-      if (href.startsWith("/mainhub?stage=analytics")) {
+      if (href.startsWith("/classroom/drill?stage=analytics")) {
         onOpenAnalytics(tab);
         return;
       }

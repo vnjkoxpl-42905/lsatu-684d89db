@@ -19,7 +19,7 @@ const Excalidraw = lazy(() =>
 
 // FAB is hidden on these routes — drill rendering page is off-limits,
 // and student-facing surfaces don't need an admin whiteboard launcher.
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/mainhub', '/drill', '/inbox'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/classroom/drill', '/drill', '/inbox'];
 
 type ExcalidrawApi = {
   getSceneElements: () => unknown[];

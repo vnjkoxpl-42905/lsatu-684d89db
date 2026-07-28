@@ -142,7 +142,7 @@ describe("AcademyMainhub", () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <MemoryRouter initialEntries={["/classroom/drill"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
           <AcademyMainhub />
         </MemoryRouter>
       </QueryClientProvider>,

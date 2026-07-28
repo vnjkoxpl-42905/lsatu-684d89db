@@ -73,7 +73,7 @@ export default function Booking() {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
       <div className="relative mb-6 flex items-center justify-center">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/mainhub")} aria-label="Back" className="absolute left-0">
+        <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back" className="absolute left-0">
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-2.5">

@@ -30,7 +30,7 @@ import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { isParticipantOnline } from './inboxPresence';
 import { setMessengerOpen, useBottomRightSurfaceOpen } from './messengerOpenBus';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub', '/topics/abstract'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/classroom/drill', '/topics/abstract'];
 
 export function FloatingMessenger() {
   const location = useLocation();
@@ -103,7 +103,7 @@ export function FloatingMessenger() {
     (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
   );
   if (pathHidden) return null;
-  const onMainhub = location.pathname.startsWith('/mainhub');
+  const onMainhub = location.pathname.startsWith('/classroom/drill');
   // On /mainhub, defer to the orbital while a node is in the expanded state so
   // the Find overlay and the messenger panel don't compete for attention.
   if (onMainhub && orbitalActive) return null;

@@ -10,6 +10,15 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 
 **Reading column** — the white content column. Most routes use one reading column on the right. A Wrong answers detail uses a four-column Classroom frame: cream rail, entries list, vertical question, and review panel. Below its journal-only breakpoints the entries list becomes an overlay and the review panel moves under the question.
 
+**Drill landing workspace** — the pre-question surface at `/classroom/drill`, drawn inside the Classroom frame. It includes drill selection, launch controls, practice insights, and today's work; it excludes the official question-answering experience.
+_Avoid_: Drill page (when the question experience could be confused with the landing surface), Mainhub
+
+**Drill console** — the control surface inside the Drill landing workspace that contains question-text search, advanced filters, PrepTest / Section / Question selectors, and the specific-question Start action.
+_Avoid_: Control pane, picker card
+
+**Drill canvas** — the route-specific visual composition to the right of the persistent Classroom rail, containing the Drill hero, Drill console, practice/insight workspace, and Today focus. The Classroom rail is not part of the canvas.
+_Avoid_: Drill side pane, dashboard grid
+
 **Section** — a middle-column list paired with the reading column: Notes and recaps, Assigned work, Flagged. A section is picked in the rail, lists its items in the middle column, and shows the chosen item in the reading column.
 
 **Flag** — a come-back-to-this marker the student raises *during* a question, from a drill or a blind review. It records intent to return, and says nothing about whether the question was answered correctly. Stored in `flagged_questions`.

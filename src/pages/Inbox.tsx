@@ -203,7 +203,7 @@ export default function Inbox() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/mainhub')}
+              onClick={() => navigate('/classroom')}
               aria-label="Back to Main Hub"
               className={cn(
                 'rounded-xl',

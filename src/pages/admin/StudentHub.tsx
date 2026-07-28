@@ -199,7 +199,7 @@ export default function StudentHub() {
   }, [setTab]);
 
   useEffect(() => {
-    if (!loading && !is_admin) navigate("/mainhub", { replace: true });
+    if (!loading && !is_admin) navigate("/classroom", { replace: true });
   }, [loading, is_admin, navigate]);
 
   // If the URL has a student param and it differs from state (e.g.

@@ -26,7 +26,7 @@ function fmtPct(v: number | null): string {
   return v === null ? "—" : `${Math.round(v)}%`;
 }
 
-const ANALYTICS = "/mainhub?stage=analytics";
+const ANALYTICS = "/classroom/drill?stage=analytics";
 
 /**
  * Derives the rotating insight slides from real analytics + streak. Slides

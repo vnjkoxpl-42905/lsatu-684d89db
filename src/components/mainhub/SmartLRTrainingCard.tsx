@@ -166,7 +166,7 @@ export default function SmartLRTrainingCard() {
   }, [allQuestions, pt, section, qnum]);
 
   const [pendingNav, setPendingNav] = useState<null | (() => void)>(null);
-  const smartDrillReturnTo = "/mainhub";
+  const smartDrillReturnTo = "/classroom";
 
   // Wait for question bank to be ready before navigating to /drill, so we
   // don't flash the "Preparing your drill…" gate on the next route.

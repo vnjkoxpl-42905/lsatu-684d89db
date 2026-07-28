@@ -21,14 +21,14 @@ describe("drill route state helpers", () => {
 
   it("carries present=smart from the URL for Smart LR Drill hand-picks", () => {
     const state = getResolvedDrillRouteState(
-      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&present=smart&returnTo=%2Fmainhub"),
+      new URLSearchParams("mode=type-drill&qids=PT118-S4-Q1&present=smart&returnTo=%2Fclassroom"),
       null,
     );
 
     expect(state.mode).toBe("type-drill");
     expect((state.config as TypeDrillConfig).selectedQids).toEqual(["PT118-S4-Q1"]);
     expect(state.present).toBe("smart");
-    expect(state.returnTo).toBe("/mainhub");
+    expect(state.returnTo).toBe("/classroom");
   });
 
   it("normalizes legacy practice-set URL launches to type-drill selected qids", () => {

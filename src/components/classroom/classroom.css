@@ -11,6 +11,7 @@
   --classroom-meta-soft: rgba(67, 64, 60, 0.4);
   --classroom-panel: #ffffff;
   --classroom-page: #ffffff;
+  --classroom-drill-page: #fdf8f3;
   --classroom-trigger: #fefcf7;
   --classroom-wrong: #9f1239;
   --classroom-unsure: #b45309;
@@ -43,6 +44,7 @@ html.dark .classroom-root {
   --classroom-meta-soft: #a7a9be;
   --classroom-panel: #0a0913;
   --classroom-page: #0f0e17;
+  --classroom-drill-page: #121019;
   --classroom-trigger: #0a0913;
   --classroom-wrong: #fb7185;
   --classroom-unsure: #fbbf24;
@@ -463,12 +465,13 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root.classroom-root-drill .classroom-stage {
+  background: var(--classroom-drill-page);
   padding: 8px 8px 8px 0;
 }
 
 .classroom-root.classroom-root-drill .classroom-column {
   max-width: none;
-  padding: 0;
+  padding: 8px;
 }
 
 .classroom-root .classroom-section-trigger {

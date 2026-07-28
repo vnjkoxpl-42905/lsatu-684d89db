@@ -13,7 +13,6 @@ import MainhubDock from "@/components/mainhub/MainhubDock";
 
 import StudySidecar from "@/components/mainhub/StudySidecar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 
 const SIDECAR_WIDTH_STORAGE_KEY = "lsatu:sidecarWidth";
 const SIDECAR_MIN_WIDTH = 360;
@@ -38,7 +37,6 @@ function canDockSidecar() {
 }
 
 const ROUTE_TITLES: Record<string, string> = {
-  "/mainhub": "Home",
   "/classroom": "Classroom",
   "/bootcamps": "Bootcamps",
   "/inbox": "Messages",
@@ -153,13 +151,6 @@ export default function StudentShell() {
       setDisplayName(profile.display_name);
     })();
   }, [user, authReady, navigate]);
-
-  React.useEffect(() => {
-    if (displayName && !hasSeenTour()) {
-      const t = setTimeout(() => startTour(), 600);
-      return () => clearTimeout(t);
-    }
-  }, [displayName]);
 
   React.useEffect(() => {
     if (mainRef.current) {

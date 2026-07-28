@@ -45,7 +45,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
 
   useEffect(() => {
     if (!permLoading && !is_admin) {
-      navigate("/mainhub", { replace: true });
+      navigate("/classroom", { replace: true });
     }
   }, [permLoading, is_admin, navigate]);
 
@@ -184,7 +184,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
       <div className="border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
           <button
-            onClick={() => navigate("/mainhub")}
+            onClick={() => navigate("/classroom")}
             className="text-zinc-400 hover:text-white transition-colors shrink-0"
             aria-label="Back to Main Hub"
           >

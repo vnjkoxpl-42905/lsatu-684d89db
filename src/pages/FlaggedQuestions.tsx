@@ -110,7 +110,7 @@ export default function FlaggedQuestions() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/mainhub')}
+                onClick={() => navigate('/classroom')}
                 className="gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -157,7 +157,7 @@ export default function FlaggedQuestions() {
             <p className="text-muted-foreground mb-6">
               Questions you flag during practice will appear here for easy review.
             </p>
-            <Button onClick={() => navigate('/mainhub')}>
+            <Button onClick={() => navigate('/classroom')}>
               Start Practicing
             </Button>
           </Card>

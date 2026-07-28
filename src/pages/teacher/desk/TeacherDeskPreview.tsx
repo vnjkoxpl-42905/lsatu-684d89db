@@ -327,7 +327,7 @@ export default function TeacherDeskPreview() {
               ) : null}
               <button
                 type="button"
-                onClick={() => navigate('/mainhub')}
+                onClick={() => navigate('/classroom')}
                 aria-label="Close Teacher Desk"
                 className="inline-flex h-7 w-7 items-center justify-center border border-black/20 text-black/55 transition hover:bg-black hover:text-white"
               >

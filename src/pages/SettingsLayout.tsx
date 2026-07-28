@@ -216,7 +216,7 @@ export default function SettingsLayout() {
       <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/mainhub")} aria-label="Back">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back">
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>

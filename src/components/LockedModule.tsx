@@ -20,7 +20,7 @@ export default function LockedModule() {
         <Button
           variant="outline"
           className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
-          onClick={() => navigate("/mainhub")}
+          onClick={() => navigate("/classroom")}
         >
           Return to Main Hub
         </Button>

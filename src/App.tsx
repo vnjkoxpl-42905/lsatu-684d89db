@@ -185,10 +185,10 @@ const App = () => {
             {/* Onboarding. Name + placement intake for new signups (one-time gate). */}
             <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Mainhub + all student sections now live inside the persistent
-                StudentShell layout route (in the /* block below). */}
+            {/* Legacy student sections live inside the persistent StudentShell
+                layout route (in the /* block below). */}
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
-            <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
+            <Route path="/foyer" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
             <Route path="/admin" element={<Navigate to="/teacher?ws=people" replace />} />
@@ -326,7 +326,7 @@ const App = () => {
             <Route path="/*" element={
               <QuestionBankProvider>
                 <Routes>
-                  <Route path="/" element={<Navigate to="/mainhub" replace />} />
+                  <Route path="/" element={<Navigate to="/classroom" replace />} />
 
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
@@ -360,7 +360,7 @@ const App = () => {
                       <Route index element={<Classroom />} />
                       <Route path="drill" element={
                         <ProtectedRoute flag="has_drill_access">
-                          <AcademyMainhub drillReturnTo="/classroom" chromeless />
+                          <AcademyMainhub />
                         </ProtectedRoute>
                       } />
                       <Route path="uploads" element={<ClassroomUploadsView />} />
@@ -393,7 +393,7 @@ const App = () => {
                   {/* Persistent student shell. Sidebar + study chat stay mounted;
                       these pages swap the center stage instead of redirecting. */}
                   <Route element={<StudentShell />}>
-                    <Route path="/mainhub" element={<AcademyMainhub />} />
+                    <Route path="/mainhub" element={<Navigate to="/classroom/drill" replace />} />
                     <Route path="/practice" element={
                       <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
                     } />

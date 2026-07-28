@@ -272,7 +272,7 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
               variant="ghost"
               size="sm"
               className="-ml-2 gap-2 text-muted-foreground hover:bg-accent hover:text-foreground"
-              onClick={() => navigate('/mainhub')}
+              onClick={() => navigate('/classroom')}
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Return to Main Hub

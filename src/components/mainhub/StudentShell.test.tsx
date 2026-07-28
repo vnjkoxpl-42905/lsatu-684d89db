@@ -52,10 +52,10 @@ vi.mock("react-router-dom", async () => {
 
 function renderShell() {
   return render(
-    <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+    <MemoryRouter initialEntries={["/practice"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <Routes>
         <Route element={<StudentShell />}>
-          <Route path="/mainhub" element={<div>Mainhub content</div>} />
+          <Route path="/practice" element={<div>Practice content</div>} />
         </Route>
       </Routes>
     </MemoryRouter>,

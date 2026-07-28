@@ -315,7 +315,7 @@ export default function Schedule() {
         <div className="min-h-screen bg-background">
           <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
             <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-              <Button variant="ghost" size="sm" onClick={() => navigate('/mainhub')} className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2">
+              <Button variant="ghost" size="sm" onClick={() => navigate('/classroom')} className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2">
                 <ArrowLeft className="w-4 h-4" />
                 Return to Main Hub
               </Button>

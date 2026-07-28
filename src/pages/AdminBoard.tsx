@@ -11,7 +11,7 @@ export default function AdminBoard() {
       <div className="fixed left-16 top-4 z-50 flex items-center gap-2">
         <button
           type="button"
-          onClick={() => navigate("/mainhub")}
+          onClick={() => navigate("/classroom")}
           className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/10 bg-zinc-950/85 px-3 text-sm font-medium text-zinc-100 shadow-lg backdrop-blur hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
           aria-label="Return to main hub"
         >

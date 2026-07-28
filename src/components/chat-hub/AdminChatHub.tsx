@@ -36,7 +36,7 @@ const HIDDEN_ROUTES = [
   '/onboarding',
   '/reset-password',
   '/drill',
-  '/mainhub',
+  '/classroom/drill',
   '/inbox',
   '/teacher/conversations',
 ];

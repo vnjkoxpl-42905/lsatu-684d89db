@@ -5,6 +5,13 @@ Author: Claude (spec + review). Implementer: Codex.
 Supersedes the `Drill.tsx` two-line freeze in
 `docs/specs/2026-07-27-drill-in-classroom.md` — see Part 2.4.
 
+> **Visual supersession, 2026-07-28:** the route, state, return-path, asset, and
+> official-question boundaries in this document remain authoritative. Its
+> frozen visual treatment of the Drill landing hero, Practice/Insight stage,
+> Today panel, Analytics stage, and Drill-specific Classroom rail is superseded
+> by `docs/specs/2026-07-28-drill-reasoning-observatory.md`, pending Joshua's
+> approval. Do not implement the new visual proposal until it is approved.
+
 
 ## Context
 

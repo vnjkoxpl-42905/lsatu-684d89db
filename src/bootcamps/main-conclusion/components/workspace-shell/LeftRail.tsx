@@ -126,7 +126,7 @@ export function LeftRail({
         )}
       >
         <Link
-          to="/mainhub"
+          to="/classroom"
           className={cn(
             'mb-5 inline-flex items-center rounded-[4px] py-1 transition-[gap,padding,margin] duration-220 ease-eased',
             'font-mc-mono text-label uppercase tracking-wider text-ink-faint',

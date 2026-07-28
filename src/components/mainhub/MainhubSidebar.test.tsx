@@ -44,7 +44,7 @@ describe("MainhubSidebar", () => {
     const onNavigate = vi.fn();
 
     render(
-      <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+      <MemoryRouter initialEntries={["/classroom"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <MainhubSidebar onNavigate={onNavigate} />
       </MemoryRouter>,
     );
@@ -77,7 +77,7 @@ describe("MainhubSidebar", () => {
     };
 
     render(
-      <MemoryRouter initialEntries={["/mainhub"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+      <MemoryRouter initialEntries={["/classroom"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <MainhubSidebar />
       </MemoryRouter>,
     );

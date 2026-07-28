@@ -310,7 +310,7 @@ function visibleRails(items: TodayFocusItem[], primaryId: string | null) {
 }
 
 export default function TodayFocusPanel({
-  drillReturnTo = "/mainhub",
+  drillReturnTo = "/classroom",
 }: {
   drillReturnTo?: string;
 }) {

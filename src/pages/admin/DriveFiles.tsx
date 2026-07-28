@@ -58,7 +58,7 @@ export default function DriveFiles() {
 
   useEffect(() => {
     if (!permLoading && !is_admin) {
-      navigate("/mainhub", { replace: true });
+      navigate("/classroom", { replace: true });
     }
   }, [permLoading, is_admin, navigate]);
 

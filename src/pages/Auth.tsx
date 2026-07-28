@@ -230,7 +230,7 @@ export default function Auth() {
   useReveal(!(oauthReturning && !user) && !(authReady && user));
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
-  // useEffect never fires navigate('/mainhub') while we're in the post-login async block.
+  // useEffect never fires navigate('/classroom') while we're in the post-login async block.
   const skipAutoRedirectRef = React.useRef(false);
 
   // ── Forgot password state ──

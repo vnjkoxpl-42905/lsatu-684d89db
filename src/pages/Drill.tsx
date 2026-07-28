@@ -2286,7 +2286,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/practice' | '/mainhub' | '/dashboard') => {
+  const handleNavigation = (destination: '/practice' | '/classroom' | '/dashboard') => {
     setExitDestination(drillReturnTo || destination);
     setShowExitDialog(true);
   };
@@ -2394,7 +2394,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate(drillReturnTo || '/mainhub')}
+          onBack={() => navigate(drillReturnTo || '/classroom')}
         />
       );
     }
@@ -2406,7 +2406,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate(drillReturnTo || '/mainhub')}
+          onBack={() => navigate(drillReturnTo || '/classroom')}
         />
       );
     }
@@ -2420,7 +2420,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate(drillReturnTo || '/mainhub')}
+        onBack={() => navigate(drillReturnTo || '/classroom')}
       />
     );
   }
@@ -2464,7 +2464,7 @@ function DrillContent() {
         <Card className="p-8 max-w-md text-center">
           <h2 className="text-xl font-semibold mb-3">No questions available</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
-          <Button onClick={() => navigate(drillReturnTo || '/mainhub')}>
+          <Button onClick={() => navigate(drillReturnTo || '/classroom')}>
             Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
           </Button>
         </Card>
@@ -2498,7 +2498,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate(drillReturnTo || '/mainhub');
+            navigate(drillReturnTo || '/classroom');
           }}
         />
       );
@@ -2545,7 +2545,7 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate(drillReturnTo || '/mainhub')}>
+            <Button onClick={() => navigate(drillReturnTo || '/classroom')}>
               Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
             </Button>
           </div>
@@ -3200,7 +3200,7 @@ function DrillContent() {
                 setAdvanceToken(t => t + 1);
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
-              onEnd={() => handleNavigation('/mainhub')}
+              onEnd={() => handleNavigation('/classroom')}
               onAskTutor={() => openTutorForCurrent()}
               askTutorLabel="Explanation"
               askTutorDisabled={false}

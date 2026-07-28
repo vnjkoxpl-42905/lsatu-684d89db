@@ -64,7 +64,7 @@ export default function HomeworkNew() {
 
   React.useEffect(() => {
     if (!permLoading && !is_admin) {
-      navigate("/mainhub", { replace: true });
+      navigate("/classroom", { replace: true });
     }
   }, [permLoading, is_admin, navigate]);
 

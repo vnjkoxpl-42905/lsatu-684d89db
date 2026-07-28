@@ -33,7 +33,7 @@ const HIDDEN_ROUTES = [
   '/admin/ta',
   '/teacher',
   '/drill',
-  '/mainhub',
+  '/classroom/drill',
   '/topics/abstract',
 ];
 
