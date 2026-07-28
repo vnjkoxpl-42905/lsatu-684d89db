@@ -27,9 +27,26 @@ export async function adminRpc(
 }
 
 export function toolError(error: unknown) {
-  const message = error instanceof Error ? error.message : "LSAT U write failed";
+  let text: string;
+  if (error instanceof Error) {
+    text = error.message;
+  } else if (error && typeof error === "object") {
+    // Supabase RPC errors are plain objects: { message, details, hint, code }.
+    // Serialize the whole thing so the real Postgres error surfaces instead of
+    // a generic "LSAT U write failed".
+    const e = error as Record<string, unknown>;
+    const parts = [
+      e.message ? `message: ${e.message}` : null,
+      e.code ? `code: ${e.code}` : null,
+      e.details ? `details: ${e.details}` : null,
+      e.hint ? `hint: ${e.hint}` : null,
+    ].filter(Boolean);
+    text = parts.length > 0 ? parts.join(" | ") : JSON.stringify(error);
+  } else {
+    text = "LSAT U write failed";
+  }
   return {
-    content: [{ type: "text" as const, text: message }],
+    content: [{ type: "text" as const, text }],
     isError: true,
   };
 }

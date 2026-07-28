@@ -4088,6 +4088,15 @@ export type Database = {
           url: string
         }[]
       }
+      mcp_assign_homework_set: {
+        Args: {
+          p_idempotency_key: string
+          p_notify?: boolean
+          p_set_id: string
+          p_student_id: string
+        }
+        Returns: Json
+      }
       mcp_assign_passage_map_homework: {
         Args: {
           p_answer_key_html: string
