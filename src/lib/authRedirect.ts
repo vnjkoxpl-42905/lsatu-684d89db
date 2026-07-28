@@ -55,8 +55,8 @@ export async function redirectAfterAuth(
     // fall through to the default landing
   }
 
-  // Default landing is the Classroom. Its rail and destination routes handle
-  // feature access per flag while the Classroom itself remains available to
-  // any signed-in user.
+  // Default landing is the classroom. Feature access is gated per-flag on
+  // profiles (locked by default), so onboarded users land on /classroom and
+  // hit the ProtectedRoute fallback on anything an admin hasn't enabled yet.
   navigate("/classroom", { replace: options?.replace ?? false });
 }

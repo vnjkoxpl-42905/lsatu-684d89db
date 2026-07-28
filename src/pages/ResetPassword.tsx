@@ -175,7 +175,7 @@ export default function ResetPassword() {
     if (session?.user) {
       await redirectAfterAuth(session.user.id, navigate, { replace: true });
     } else {
-      navigate('/mainhub', { replace: true });
+      navigate('/classroom', { replace: true });
     }
   };
 
