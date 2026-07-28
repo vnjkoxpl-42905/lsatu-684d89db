@@ -112,6 +112,136 @@
           "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
+      },
+      {
+        "name": "list_students",
+        "title": "List students (admin)",
+        "description": "Admin only. List LSAT U students, optionally filtered by a case-insensitive name substring. Returns id (class_id = user_id) and display_name — use the id when calling assign_homework or send_note.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional case-insensitive name substring."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 200,
+              "description": "Max rows (default 50)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_homework_sets",
+        "title": "List homework sets (admin)",
+        "description": "Admin only. List homework sets you have created. Use a set's id when calling assign_homework.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional case-insensitive title substring."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 200,
+              "description": "Max rows (default 50)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "assign_homework",
+        "title": "Assign homework set to a student (admin)",
+        "description": "Admin only. Assign an existing homework set to a student. Creates a homework_assignments row and a classroom_items entry so the student sees it on their Classroom page. Get the set id from list_homework_sets and the student id from list_students.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "set_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "homework_sets.id to assign."
+            },
+            "student_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Target student's id (profiles.class_id / auth user id)."
+            }
+          },
+          "required": [
+            "set_id",
+            "student_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "send_note",
+        "title": "Send a classroom note to a student (admin)",
+        "description": "Admin only. Post a note to a student's Classroom feed. Body may be markdown or plain text.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Target student's id (profiles.class_id / auth user id)."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "Short note title."
+            },
+            "body_markdown": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Note body (markdown supported)."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "body_markdown"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
       }
     ]
   }
