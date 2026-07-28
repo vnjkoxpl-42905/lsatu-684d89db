@@ -49,7 +49,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.mcp]
-verify_jwt = true
+verify_jwt = false
 
 [functions.gcal-smoke]
 verify_jwt = true
