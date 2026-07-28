@@ -60,7 +60,7 @@ export function useStudentAssignments(): UseStudentAssignmentsResult {
       setError(err.message);
       setAssignments([]);
     } else {
-      const rows = (data || []) as unknown as StudentTAAssignment[]]) as StudentAssignment[];
+      const rows = (data || []) as unknown as StudentTAAssignment[]);
       rows.sort((a, b) => {
         const s = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
         if (s !== 0) return s;
@@ -203,7 +203,7 @@ export function useStudentTAAssignments(): {
       setError(err.message);
       setAssignments([]);
     } else {
-      const rows = (data || []) as unknown as StudentTAAssignment[]]) as StudentTAAssignment[];
+      const rows = (data || []) as unknown as StudentTAAssignment[]);
       rows.sort((a, b) => {
         const s = TA_STATUS_ORDER[a.status] - TA_STATUS_ORDER[b.status];
         if (s !== 0) return s;
@@ -253,7 +253,7 @@ export function useAdminTAAssignmentsForStudent(studentId: string | null | undef
       setError(err.message);
       setAssignments([]);
     } else {
-      setAssignments((data || []) as unknown as StudentTAAssignment[]]) as StudentTAAssignment[]);
+      setAssignments((data || []) as unknown as StudentTAAssignment[]));
       setError(null);
     }
     setLoading(false);
