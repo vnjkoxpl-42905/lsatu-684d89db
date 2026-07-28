@@ -1,6 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { adminRpc, authenticatedSupabase, toolError } from "../admin-client";
+import { sendNotifyEmail } from "../notify-email";
 
 export default defineTool({
   name: "post_classroom_note",
@@ -32,9 +33,26 @@ export default defineTool({
         p_notify: input.notify ?? true,
       });
       if (error) throw error;
+
+      // In-app bell + inbox are handled inside the RPC. Email is sent here at
+      // the tool layer. Only when we actually notified and did not reuse a
+      // prior idempotent result (a reused post already emailed on first run).
+      const notify = input.notify ?? true;
+      let out = data as Record<string, unknown>;
+      if (notify && out?.ok === true && out?.reused !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: input.student_id,
+          title: input.title,
+          route: out.route as string,
+          description: input.description,
+          assignmentType: "note",
+        });
+        out = { ...out, email_ok: email.ok, ...(email.error ? { email_error: email.error } : {}) };
+      }
+
       return {
-        content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-        structuredContent: data,
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out,
       };
     } catch (error) {
       return toolError(error);
