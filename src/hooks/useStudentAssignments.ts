@@ -128,6 +128,27 @@ export function useStudentAssignment(assignmentId: string | undefined): {
 
 export type TAAssignmentStatus = "assigned" | "viewed" | "completed";
 
+export interface TAResponseField {
+  id: string;
+  label: string;
+  kind?: "short" | "long";
+  rows?: number;
+  placeholder?: string;
+  required?: boolean;
+}
+
+export interface TAResponseSection {
+  id: string;
+  title: string;
+  instructions?: string;
+  fields: TAResponseField[];
+}
+
+export interface TAResponseSchema {
+  version: 1;
+  sections: TAResponseSection[];
+}
+
 export interface StudentTAAssignment {
   id: string;
   student_id: string;
@@ -142,6 +163,10 @@ export interface StudentTAAssignment {
   viewed_at: string | null;
   completed_at: string | null;
   created_at: string;
+  response_schema?: TAResponseSchema;
+  response_data?: Record<string, string>;
+  response_saved_at?: string | null;
+  answer_key_html?: string | null;
 }
 
 const TA_STATUS_ORDER: Record<TAAssignmentStatus, number> = {
@@ -274,6 +299,51 @@ export async function markTAAssignmentCompleted(
   } catch (e) {
     console.error("[ta:assign:student:mark-completed] failed", { assignmentId, error: e });
     return { ok: false, error: e instanceof Error ? e.message : "mark-completed failed" };
+  }
+}
+
+export async function saveTAAssignmentResponses(
+  assignmentId: string,
+  responseData: Record<string, string>,
+): Promise<{ ok: boolean; savedAt?: string; error?: string }> {
+  try {
+    const savedAt = new Date().toISOString();
+    // These columns are introduced by the structured-homework migration.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const assignmentTable = (supabase as any).from("ta_assignments");
+    const { error } = await assignmentTable
+      .update({ response_data: responseData, response_saved_at: savedAt })
+      .eq("id", assignmentId)
+      .neq("status", "completed");
+    if (error) throw error;
+    return { ok: true, savedAt };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "save failed" };
+  }
+}
+
+export async function submitTAAssignmentResponses(
+  assignmentId: string,
+  responseData: Record<string, string>,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const now = new Date().toISOString();
+    // These columns are introduced by the structured-homework migration.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const assignmentTable = (supabase as any).from("ta_assignments");
+    const { error } = await assignmentTable
+      .update({
+        response_data: responseData,
+        response_saved_at: now,
+        status: "completed",
+        completed_at: now,
+      })
+      .eq("id", assignmentId)
+      .neq("status", "completed");
+    if (error) throw error;
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "submit failed" };
   }
 }
 

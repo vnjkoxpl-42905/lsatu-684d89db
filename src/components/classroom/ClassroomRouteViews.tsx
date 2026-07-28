@@ -8,6 +8,8 @@ import {
   useStudentAssignment,
   useStudentTAAssignment,
 } from "@/hooks/useStudentAssignments";
+import StructuredTAAssignmentWorkspace from "@/components/classroom/StructuredTAAssignmentWorkspace";
+import { hasStructuredWorkspace } from "@/components/classroom/structured-assignment-model";
 import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
 import { resolveItemRoute } from "@/lib/classroomItems";
@@ -303,6 +305,7 @@ export function ClassroomTAAssignmentView() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const query = useStudentTAAssignment(assignmentId);
   const assignment = query.assignment;
+  const structured = assignment ? hasStructuredWorkspace(assignment) : false;
   const [completing, setCompleting] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);
   const viewedRef = React.useRef<string | null>(null);
@@ -385,6 +388,12 @@ export function ClassroomTAAssignmentView() {
           dangerouslySetInnerHTML={{ __html: safeHtml }}
         />
       ) : null}
+      {structured ? (
+        <StructuredTAAssignmentWorkspace
+          assignment={assignment}
+          refresh={query.refresh}
+        />
+      ) : null}
       <div className="classroom-detail-actions">
         <button
           type="button"
@@ -394,7 +403,7 @@ export function ClassroomTAAssignmentView() {
         >
           {downloading ? "Preparing PDF" : "Download PDF"}
         </button>
-        {assignment.status !== "completed" ? (
+        {!structured && assignment.status !== "completed" ? (
           <button
             type="button"
             className="classroom-button classroom-button-primary"
