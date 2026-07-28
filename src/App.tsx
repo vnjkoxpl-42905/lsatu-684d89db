@@ -360,7 +360,7 @@ const App = () => {
                       <Route index element={<Classroom />} />
                       <Route path="drill" element={
                         <ProtectedRoute flag="has_drill_access">
-                          <AcademyMainhub drillReturnTo="/classroom" />
+                          <AcademyMainhub drillReturnTo="/classroom" chromeless />
                         </ProtectedRoute>
                       } />
                       <Route path="uploads" element={<ClassroomUploadsView />} />

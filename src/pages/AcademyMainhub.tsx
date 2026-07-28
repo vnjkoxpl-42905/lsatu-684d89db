@@ -559,8 +559,10 @@ function ConsoleSelect({
  */
 export default function AcademyMainhub({
   drillReturnTo = "/mainhub",
+  chromeless = false,
 }: {
   drillReturnTo?: string;
+  chromeless?: boolean;
 }) {
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
@@ -597,12 +599,25 @@ export default function AcademyMainhub({
     return () => setOrbitalActive(false);
   }, [setOrbitalActive, stage]);
 
+  // Hosted inside the Classroom frame, the hub sits directly on the Classroom
+  // page the way Home and Notes do. The panel chrome below — cold #f7f8fb fill,
+  // slate border, rounded corners, drop shadow and the white gradient wash — is
+  // what made this surface read as a different product. The cards themselves are
+  // untouched in both modes.
   return (
-    <div className="@container relative h-full w-full overflow-y-auto rounded-xl border border-slate-200/70 bg-[#f7f8fb] px-4 py-4 pb-24 shadow-sm shadow-black/5 md:px-6 md:py-6">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.82))]"
-      />
+    <div
+      className={
+        chromeless
+          ? "@container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24"
+          : "@container relative h-full w-full overflow-y-auto rounded-xl border border-slate-200/70 bg-[#f7f8fb] px-4 py-4 pb-24 shadow-sm shadow-black/5 md:px-6 md:py-6"
+      }
+    >
+      {chromeless ? null : (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.82))]"
+        />
+      )}
 
       <div className="relative mx-auto flex w-full max-w-[112rem] flex-col gap-5">
         <MainhubHero drillReturnTo={drillReturnTo} />
