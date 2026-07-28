@@ -426,7 +426,7 @@
       {
         "name": "assign_homework",
         "title": "Assign homework set to a student (admin)",
-        "description": "Admin only. Assign an existing homework set to a student. Creates a homework_assignments row and a classroom_items entry so the student sees it on their Classroom page. Get the set id from list_homework_sets and the student id from list_students.",
+        "description": "Admin only. Assign an existing homework set to a student and notify them (bell + inbox + email). Creates a homework_assignments row and a Classroom feed item. Get the set id from list_homework_sets and the student id from list_students.",
         "annotations": {
           "readOnlyHint": false,
           "destructiveHint": false,
@@ -458,7 +458,7 @@
       {
         "name": "send_note",
         "title": "Send a classroom note to a student (admin)",
-        "description": "Admin only. Post a note to a student's Classroom feed. Body may be markdown or plain text.",
+        "description": "Admin only. Post a plain-text note to a student's Classroom feed and notify them (bell + inbox + email). Line breaks are preserved. For rich HTML notes use post_classroom_note.",
         "annotations": {
           "readOnlyHint": false,
           "destructiveHint": false,
@@ -475,14 +475,14 @@
             "title": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 200,
+              "maxLength": 160,
               "description": "Short note title."
             },
             "body_markdown": {
               "type": "string",
               "minLength": 1,
               "maxLength": 20000,
-              "description": "Note body (markdown supported)."
+              "description": "Note body (plain text; line breaks preserved)."
             }
           },
           "required": [
