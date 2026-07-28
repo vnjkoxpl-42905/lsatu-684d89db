@@ -12,7 +12,7 @@
   "mcp": {
     "server": {
       "name": "lsat-u-mcp",
-      "version": "0.1.0",
+      "version": "0.3.0",
       "title": "LSAT U"
     },
     "tools": [
@@ -108,6 +108,258 @@
               "description": "Max items to return. Defaults to 25."
             }
           },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "find_students",
+        "title": "Find LSAT U students",
+        "description": "Admin-only. Resolve a student name or email to the exact LSAT U student ID before posting anything.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 160,
+              "description": "Student name or email fragment."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 25
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "post_classroom_note",
+        "title": "Post a Classroom note",
+        "description": "Admin-only. Post a student-facing note under Notes and recaps, with optional bell and inbox notification. Resolve the student first.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "content_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 500
+            },
+            "notify": {
+              "type": "boolean",
+              "description": "Defaults to true."
+            },
+            "idempotency_key": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 160,
+              "description": "Stable unique key for this exact post. Reuse it only when retrying."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "content_html",
+            "idempotency_key"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "assign_passage_map_homework",
+        "title": "Assign passage-map homework",
+        "description": "Admin-only. Publish structured passage-map homework under Assigned work. Student responses save in the Classroom; the attached answer key stays hidden until submission.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "content_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "response_schema": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "number",
+                  "const": 1
+                },
+                "sections": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "instructions": {
+                        "type": "string",
+                        "maxLength": 1000
+                      },
+                      "fields": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "short",
+                                "long"
+                              ]
+                            },
+                            "rows": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 16
+                            },
+                            "placeholder": {
+                              "type": "string",
+                              "maxLength": 300
+                            },
+                            "required": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "label"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 80
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "fields"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 30
+                }
+              },
+              "required": [
+                "version",
+                "sections"
+              ],
+              "additionalProperties": false
+            },
+            "answer_key_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "notify": {
+              "type": "boolean",
+              "description": "Defaults to true."
+            },
+            "idempotency_key": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 160,
+              "description": "Stable unique key for this exact assignment. Reuse it only when retrying."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "content_html",
+            "response_schema",
+            "answer_key_html",
+            "idempotency_key"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_assignment_status",
+        "title": "Get assignment status",
+        "description": "Admin-only. Verify that a structured LSAT U assignment exists and report its view, save, submission, and answer-key state.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "assignment_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "assignment_id"
+          ],
           "additionalProperties": false,
           "$schema": "http://json-schema.org/draft-07/schema#"
         },

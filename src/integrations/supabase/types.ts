@@ -1970,6 +1970,36 @@ export type Database = {
         }
         Relationships: []
       }
+      mcp_write_audit: {
+        Row: {
+          actor_id: string
+          created_at: string
+          id: string
+          idempotency_key: string
+          result: Json
+          student_id: string | null
+          tool_name: string
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          id?: string
+          idempotency_key: string
+          result: Json
+          student_id?: string | null
+          tool_name: string
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          id?: string
+          idempotency_key?: string
+          result?: Json
+          student_id?: string | null
+          tool_name?: string
+        }
+        Relationships: []
+      }
       message_attachments: {
         Row: {
           created_at: string
@@ -3082,6 +3112,7 @@ export type Database = {
       }
       ta_assignments: {
         Row: {
+          answer_key_html: string | null
           asset_ids: string[]
           assigned_at: string
           assigned_by: string
@@ -3091,12 +3122,16 @@ export type Database = {
           id: string
           interaction_id: string | null
           pdf_url: string | null
+          response_data: Json
+          response_saved_at: string | null
+          response_schema: Json
           status: string
           student_id: string
           title: string
           viewed_at: string | null
         }
         Insert: {
+          answer_key_html?: string | null
           asset_ids?: string[]
           assigned_at?: string
           assigned_by: string
@@ -3106,12 +3141,16 @@ export type Database = {
           id?: string
           interaction_id?: string | null
           pdf_url?: string | null
+          response_data?: Json
+          response_saved_at?: string | null
+          response_schema?: Json
           status?: string
           student_id: string
           title: string
           viewed_at?: string | null
         }
         Update: {
+          answer_key_html?: string | null
           asset_ids?: string[]
           assigned_at?: string
           assigned_by?: string
@@ -3121,6 +3160,9 @@ export type Database = {
           id?: string
           interaction_id?: string | null
           pdf_url?: string | null
+          response_data?: Json
+          response_saved_at?: string | null
+          response_schema?: Json
           status?: string
           student_id?: string
           title?: string
@@ -4046,6 +4088,46 @@ export type Database = {
           url: string
         }[]
       }
+      mcp_assign_passage_map_homework: {
+        Args: {
+          p_answer_key_html: string
+          p_content_html: string
+          p_idempotency_key: string
+          p_notify?: boolean
+          p_response_schema: Json
+          p_student_id: string
+          p_title: string
+        }
+        Returns: Json
+      }
+      mcp_find_students: {
+        Args: { p_limit?: number; p_query: string }
+        Returns: {
+          display_name: string
+          email: string
+          student_id: string
+        }[]
+      }
+      mcp_get_assignment_status: {
+        Args: { p_assignment_id: string }
+        Returns: Json
+      }
+      mcp_get_or_create_admin_student_conversation: {
+        Args: { p_admin_id: string; p_student_id: string }
+        Returns: string
+      }
+      mcp_post_classroom_note: {
+        Args: {
+          p_content_html: string
+          p_description?: string
+          p_idempotency_key: string
+          p_notify?: boolean
+          p_student_id: string
+          p_title: string
+        }
+        Returns: Json
+      }
+      mcp_require_admin: { Args: never; Returns: string }
       move_to_dlq: {
         Args: {
           dlq_name: string
