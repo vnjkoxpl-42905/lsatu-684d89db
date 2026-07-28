@@ -60,7 +60,7 @@ export function useStudentAssignments(): UseStudentAssignmentsResult {
       setError(err.message);
       setAssignments([]);
     } else {
-      const rows = ((data || []) as unknown) as StudentTAAssignment[];
+      const rows = ((data || []) as unknown) as StudentAssignment[];
       rows.sort((a, b) => {
         const s = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
         if (s !== 0) return s;
