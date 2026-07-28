@@ -195,6 +195,32 @@ var find_students_default = defineTool5({
 // src/lib/mcp/tools/post-classroom-note.ts
 import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.20.0";
 import { z as z5 } from "npm:zod@^3.23.8";
+
+// src/lib/mcp/notify-email.ts
+async function sendNotifyEmail(client, params) {
+  const { studentId, title, route, description, assignmentType } = params;
+  try {
+    const { data, error } = await client.functions.invoke("send-assignment-email", {
+      body: {
+        studentId,
+        title,
+        route,
+        description,
+        assignmentType: assignmentType ?? "assignment"
+      }
+    });
+    if (error) return { ok: false, error: error.message };
+    if (data && typeof data === "object" && "ok" in data && data.ok === true) {
+      return { ok: true };
+    }
+    const errMsg = data && typeof data === "object" && "error" in data ? String(data.error) : "email failed";
+    return { ok: false, error: errMsg };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "email failed" };
+  }
+}
+
+// src/lib/mcp/tools/post-classroom-note.ts
 var post_classroom_note_default = defineTool6({
   name: "post_classroom_note",
   title: "Post a Classroom note",
@@ -220,9 +246,21 @@ var post_classroom_note_default = defineTool6({
         p_notify: input.notify ?? true
       });
       if (error) throw error;
+      const notify = input.notify ?? true;
+      let out = data;
+      if (notify && out?.ok === true && out?.reused !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: input.student_id,
+          title: input.title,
+          route: out.route,
+          description: input.description,
+          assignmentType: "note"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
       return {
-        content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-        structuredContent: data
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
       };
     } catch (error) {
       return toolError(error);
@@ -281,9 +319,20 @@ var assign_passage_map_homework_default = defineTool7({
         }
       );
       if (error) throw error;
+      const notify = input.notify ?? true;
+      let out = data;
+      if (notify && out?.ok === true && out?.reused !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: input.student_id,
+          title: input.title,
+          route: out.route,
+          assignmentType: "homework"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
       return {
-        content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-        structuredContent: data
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
       };
     } catch (error) {
       return toolError(error);
@@ -412,90 +461,91 @@ import { z as z10 } from "npm:zod@^3.23.8";
 var assign_homework_default = defineTool11({
   name: "assign_homework",
   title: "Assign homework set to a student (admin)",
-  description: "Admin only. Assign an existing homework set to a student. Creates a homework_assignments row and a classroom_items entry so the student sees it on their Classroom page. Get the set id from list_homework_sets and the student id from list_students.",
+  description: "Admin only. Assign an existing homework set to a student and notify them (bell + inbox + email). Creates a homework_assignments row and a Classroom feed item. Get the set id from list_homework_sets and the student id from list_students.",
   inputSchema: {
     set_id: z10.string().uuid().describe("homework_sets.id to assign."),
     student_id: z10.string().uuid().describe("Target student's id (profiles.class_id / auth user id).")
   },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ set_id, student_id }, ctx) => {
-    const admin = await requireAdmin(ctx);
-    if (admin.error) return textResult(admin.error, true);
-    const { supabase, userId } = admin;
-    const { data: set, error: setErr } = await supabase.from("homework_sets").select("id, title, description, question_qids, class_id").eq("id", set_id).maybeSingle();
-    if (setErr) return textResult(setErr.message, true);
-    if (!set) return textResult("Homework set not found", true);
-    const { data: assignment, error: asgErr } = await supabase.from("homework_assignments").insert({
-      set_id: set.id,
-      student_id,
-      question_qids: set.question_qids,
-      set_title: set.title,
-      set_description: set.description,
-      status: "assigned",
-      assigned_by: userId,
-      class_id: set.class_id
-    }).select("id").single();
-    if (asgErr) {
-      if (asgErr.code === "23505") {
-        return textResult(`"${set.title}" is already assigned to that student.`);
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const idempotencyKey = `assign_homework_set-${set_id}-${student_id}`;
+      const { data, error } = await adminRpc(supabase, "mcp_assign_homework_set", {
+        p_set_id: set_id,
+        p_student_id: student_id,
+        p_idempotency_key: idempotencyKey,
+        p_notify: true
+      });
+      if (error) throw error;
+      let out = data;
+      if (out?.ok === true && out?.reused !== true && out?.already_assigned !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: student_id,
+          title: typeof out.title === "string" ? out.title : "New homework",
+          route: out.route,
+          assignmentType: "homework"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
       }
-      return textResult(asgErr.message, true);
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
     }
-    const assignmentId = assignment.id;
-    const route = `/classroom/${assignmentId}`;
-    const { error: itemErr } = await supabase.from("classroom_items").insert({
-      student_id,
-      created_by: userId,
-      type: "homework",
-      title: set.title,
-      description: set.description ?? null,
-      source_table: "homework_assignments",
-      source_id: assignmentId,
-      visible_to_student: true,
-      status: "assigned",
-      metadata_json: { assigned_route: route }
-    });
-    if (itemErr) return textResult(`Assigned, but classroom feed insert failed: ${itemErr.message}`, true);
-    return {
-      content: [{ type: "text", text: `Assigned "${set.title}" \u2014 student route: ${route}` }],
-      structuredContent: { assignment_id: assignmentId, route }
-    };
   }
 });
 
 // src/lib/mcp/tools/send-note.ts
 import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.20.0";
 import { z as z11 } from "npm:zod@^3.23.8";
+function textToHtml(text) {
+  const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return escaped.split(/\n{2,}/).map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`).join("");
+}
 var send_note_default = defineTool12({
   name: "send_note",
   title: "Send a classroom note to a student (admin)",
-  description: "Admin only. Post a note to a student's Classroom feed. Body may be markdown or plain text.",
+  description: "Admin only. Post a plain-text note to a student's Classroom feed and notify them (bell + inbox + email). Line breaks are preserved. For rich HTML notes use post_classroom_note.",
   inputSchema: {
     student_id: z11.string().uuid().describe("Target student's id (profiles.class_id / auth user id)."),
-    title: z11.string().trim().min(1).max(200).describe("Short note title."),
-    body_markdown: z11.string().trim().min(1).max(2e4).describe("Note body (markdown supported).")
+    title: z11.string().trim().min(1).max(160).describe("Short note title."),
+    body_markdown: z11.string().trim().min(1).max(2e4).describe("Note body (plain text; line breaks preserved).")
   },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ student_id, title, body_markdown }, ctx) => {
-    const admin = await requireAdmin(ctx);
-    if (admin.error) return textResult(admin.error, true);
-    const { supabase, userId } = admin;
-    const { data, error } = await supabase.from("classroom_items").insert({
-      student_id,
-      created_by: userId,
-      type: "note",
-      title,
-      content_markdown: body_markdown,
-      visible_to_student: true,
-      status: "assigned"
-    }).select("id").single();
-    if (error) return textResult(error.message, true);
-    const itemId = data.id;
-    const route = `/classroom/item/${itemId}`;
-    return {
-      content: [{ type: "text", text: `Note sent \u2014 student route: ${route}` }],
-      structuredContent: { item_id: itemId, route }
-    };
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const idempotencyKey = `send_note-${crypto.randomUUID()}`;
+      const { data, error } = await adminRpc(supabase, "mcp_post_classroom_note", {
+        p_student_id: student_id,
+        p_title: title,
+        p_content_html: textToHtml(body_markdown),
+        p_idempotency_key: idempotencyKey,
+        p_description: body_markdown.slice(0, 240),
+        p_notify: true
+      });
+      if (error) throw error;
+      let out = data;
+      if (out?.ok === true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: student_id,
+          title,
+          route: out.route,
+          description: body_markdown.slice(0, 240),
+          assignmentType: "note"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
+    }
   }
 });
 
