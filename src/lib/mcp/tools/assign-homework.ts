@@ -14,7 +14,7 @@ export default defineTool({
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ set_id, student_id }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     const { supabase, userId } = admin;
 
     const { data: set, error: setErr } = await supabase

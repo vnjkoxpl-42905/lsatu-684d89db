@@ -14,7 +14,7 @@ export default defineTool({
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, limit }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     let q = admin.supabase
       .from("profiles")
       .select("class_id, display_name")

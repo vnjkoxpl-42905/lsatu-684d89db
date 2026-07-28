@@ -174,7 +174,7 @@ var list_students_default = defineTool5({
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, limit }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     let q = admin.supabase.from("profiles").select("class_id, display_name").order("display_name", { ascending: true }).limit(Math.min(limit ?? 50, 200));
     if (query) q = q.ilike("display_name", `%${query}%`);
     const { data, error } = await q;
@@ -201,7 +201,7 @@ var list_homework_sets_default = defineTool6({
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, limit }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     let q = admin.supabase.from("homework_sets").select("id, title, description, created_at, question_qids").eq("created_by", admin.userId).order("created_at", { ascending: false }).limit(Math.min(limit ?? 50, 200));
     if (query) q = q.ilike("title", `%${query}%`);
     const { data, error } = await q;
@@ -234,7 +234,7 @@ var assign_homework_default = defineTool7({
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ set_id, student_id }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     const { supabase, userId } = admin;
     const { data: set, error: setErr } = await supabase.from("homework_sets").select("id, title, description, question_qids, class_id").eq("id", set_id).maybeSingle();
     if (setErr) return textResult(setErr.message, true);
@@ -292,7 +292,7 @@ var send_note_default = defineTool8({
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ student_id, title, body_markdown }, ctx) => {
     const admin = await requireAdmin(ctx);
-    if (!admin.ok) return textResult(admin.error, true);
+    if (admin.error) return textResult(admin.error, true);
     const { supabase, userId } = admin;
     const { data, error } = await supabase.from("classroom_items").insert({
       student_id,
