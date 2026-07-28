@@ -1,31 +1,20 @@
-## Problem
+## Change
 
-The public link `https://lsatprep.study/book/lexi` returns `invalid_link` because the live database still runs the **old** version of `public.resolve_booking_link_full(text)`, which rejects any slug shorter than 8 characters:
+Switch the default post-login landing route from `/mainhub` to `/classroom`. The onboarding gate and `returnTo`/`next` handling stay the same — only the fallback destination changes.
 
-```
-IF _slug IS NULL OR length(_slug) < 8 THEN RETURN NULL; END IF;
-```
+## Files
 
-The pass exists and is healthy:
+1. **`src/lib/authRedirect.ts`**
+   - Replace the final `navigate("/mainhub", ...)` with `navigate("/classroom", ...)`.
+   - Update the surrounding comments so they reference `/classroom` instead of `/mainhub`.
 
-- id `582dab44-…`, student `Lexi A`, slug `lexi`, status `active`, 5/5 credits, no expiry.
+2. **`src/pages/ResetPassword.tsx`** (line 178)
+   - Replace `navigate('/mainhub', { replace: true })` with `navigate('/classroom', { replace: true })` so post–password-reset lands in the same place.
 
-The repo already contains a migration that lowers the guard to 3 characters and allows friendly slugs like `lexi`:
+3. **`src/pages/Auth.tsx`** (line 233)
+   - Comment-only update to reference `/classroom` (no behavior change; it already calls `redirectAfterAuth`).
 
-- `supabase/migrations/20260719140000_friendly_booking_slugs.sql`
+## Notes
 
-That migration was never applied in production, so the live function still enforces the 8-char minimum. The endpoint calls the RPC, gets `NULL`, and the edge function returns `{"error":"invalid_link"}` — which the UI renders as the "No sessions available / invalid_link" toast you screenshotted.
-
-## Fix
-
-Re-apply the committed migration `20260719140000_friendly_booking_slugs.sql` verbatim. It only redefines `resolve_booking_link_full` (STABLE SECURITY DEFINER, search_path=public, minimum length 3, status IN ('active','paused'), expiry auto-mark) and re-grants EXECUTE to `service_role` only. No schema change, no data change, no edge function change.
-
-## Verification
-
-1. `SELECT public.resolve_booking_link_full('lexi');` returns Lexi's pass row instead of NULL.
-2. `curl` POST to `/functions/v1/public-booking` with `{"slug":"lexi","action":"info"}` returns a 200 with `pass.credits_remaining = 5`.
-3. Open `https://lsatprep.study/book/lexi` — booking calendar renders, no `invalid_link` toast.
-
-## Why this happened
-
-The 8-char guard was the original security posture (high-entropy slug as bearer credential). The follow-up migration explicitly relaxed it to 3 for private-tutoring friendly links (rate-limited per IP for guessability). That migration is in git but was never run against prod, so the DB is one revision behind the code.
+- `/classroom` is gated by `has_classroom_access` in `App.tsx`. Students without that flag will hit the ProtectedRoute's own fallback — that's existing behavior and out of scope for this change. Flag me if you want the redirect to be conditional on the flag instead.
+- Users mid-onboarding still route to `/onboarding` first; `returnTo`/`next` query params still win over the default.
