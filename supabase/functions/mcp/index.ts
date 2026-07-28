@@ -156,9 +156,23 @@ async function adminRpc(client, functionName, args) {
   return client.rpc(functionName, args);
 }
 function toolError(error) {
-  const message = error instanceof Error ? error.message : "LSAT U write failed";
+  let text;
+  if (error instanceof Error) {
+    text = error.message;
+  } else if (error && typeof error === "object") {
+    const e = error;
+    const parts = [
+      e.message ? `message: ${e.message}` : null,
+      e.code ? `code: ${e.code}` : null,
+      e.details ? `details: ${e.details}` : null,
+      e.hint ? `hint: ${e.hint}` : null
+    ].filter(Boolean);
+    text = parts.length > 0 ? parts.join(" | ") : JSON.stringify(error);
+  } else {
+    text = "LSAT U write failed";
+  }
   return {
-    content: [{ type: "text", text: message }],
+    content: [{ type: "text", text }],
     isError: true
   };
 }
