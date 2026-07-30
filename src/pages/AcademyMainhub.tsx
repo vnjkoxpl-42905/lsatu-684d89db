@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  ArrowUpRight,
   Loader2,
   Search,
   SlidersHorizontal,
@@ -15,6 +14,7 @@ import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -22,6 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { questionBank } from "@/lib/questionLoader";
@@ -33,82 +35,17 @@ import {
 
 const QUESTION_PICKER_PLACEHOLDER = "";
 
-/**
- * The meridian instrument: a fine-line drafting-room astrolabe drawn in ink.
- * Pure decoration — aria-hidden, no pointer events, gentle rotation that
- * stops under prefers-reduced-motion.
- */
-function MeridianInstrument() {
-  // The graduation ring is ~100 decorative SVG nodes; skip it in jsdom so
-  // every testing-library role query doesn't have to walk it.
-  const ticks = React.useMemo(
-    () =>
-      import.meta.env.MODE === "test"
-        ? []
-        : Array.from({ length: 96 }, (_, i) => ({ deg: i * (360 / 96), major: i % 8 === 0 })),
-    [],
-  );
+function SplineBoundary({ children }: { children: React.ReactNode }) {
   return (
-    <svg
-      className="obs-instrument"
-      viewBox="0 0 600 600"
-      fill="none"
-      aria-hidden
-      focusable="false"
+    <React.Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center">
+          <div className="h-20 w-20 rounded-full border border-white/15 bg-white/[0.03] shadow-[0_0_80px_rgba(255,255,255,0.08)]" />
+        </div>
+      }
     >
-      <g className="obs-inst-rotor">
-        <circle cx="300" cy="300" r="264" className="obs-inst-circle-faint" />
-        {ticks.map(({ deg, major }) => (
-          <line
-            key={deg}
-            x1="300"
-            y1="36"
-            x2="300"
-            y2={major ? 54 : 45}
-            transform={`rotate(${deg} 300 300)`}
-            className={major ? "obs-inst-tick-major" : "obs-inst-tick"}
-          />
-        ))}
-      </g>
-      <g className="obs-inst-rotor-reverse">
-        <circle cx="300" cy="300" r="226" className="obs-inst-circle-dashed" />
-      </g>
-      <circle cx="300" cy="300" r="192" className="obs-inst-circle" />
-      <ellipse cx="300" cy="300" rx="236" ry="78" className="obs-inst-orbit" />
-      <ellipse cx="300" cy="300" rx="148" ry="50" className="obs-inst-orbit obs-inst-orbit-inner" />
-      <path
-        id="obs-merid-a"
-        d="M 64 300 A 236 78 0 1 1 536 300 A 236 78 0 1 1 64 300"
-        fill="none"
-      />
-      <path
-        id="obs-merid-b"
-        d="M 152 300 A 148 50 0 1 1 448 300 A 148 50 0 1 1 152 300"
-        fill="none"
-      />
-      <circle className="obs-inst-sat" r="4">
-        <animateMotion dur="38s" repeatCount="indefinite">
-          <mpath href="#obs-merid-a" />
-        </animateMotion>
-      </circle>
-      <circle className="obs-inst-sat obs-inst-sat-small" r="2.6">
-        <animateMotion dur="23s" begin="-7s" repeatCount="indefinite">
-          <mpath href="#obs-merid-b" />
-        </animateMotion>
-      </circle>
-      <line x1="300" y1="132" x2="300" y2="198" className="obs-inst-hair" />
-      <line x1="300" y1="402" x2="300" y2="468" className="obs-inst-hair" />
-      <line x1="132" y1="300" x2="198" y2="300" className="obs-inst-hair" />
-      <line x1="402" y1="300" x2="468" y2="300" className="obs-inst-hair" />
-      <circle cx="300" cy="300" r="58" className="obs-inst-core" />
-      <text x="300" y="318" textAnchor="middle" className="obs-inst-core-text">
-        lr
-      </text>
-      <circle cx="300" cy="300" r="3" className="obs-inst-dot" />
-      <text x="300" y="394" textAnchor="middle" className="obs-inst-caption">
-        MERIDIAN · 01
-      </text>
-    </svg>
+      {children}
+    </React.Suspense>
   );
 }
 
@@ -277,91 +214,80 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
     setQnum(QUESTION_PICKER_PLACEHOLDER);
   }, []);
 
-  const formatQtype = React.useCallback(
-    (value: string) => value.replace(/[_-]+/g, " "),
-    [],
-  );
-
-  const instrumentRef = React.useRef<HTMLDivElement | null>(null);
-  const handleHeroPointer = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
-    const el = instrumentRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    el.style.setProperty("--obs-par-x", `${(x * 14).toFixed(1)}px`);
-    el.style.setProperty("--obs-par-y", `${(y * 10).toFixed(1)}px`);
-  }, []);
-  const resetHeroPointer = React.useCallback(() => {
-    const el = instrumentRef.current;
-    if (!el) return;
-    el.style.setProperty("--obs-par-x", "0px");
-    el.style.setProperty("--obs-par-y", "0px");
-  }, []);
-
   return (
-    <section className="drill-observatory-hero" aria-label="Drill launch stage">
+    <Card className="drill-observatory-hero relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] @[900px]:min-h-[390px]">
+      <Spotlight className="-top-48 left-[-120px] @[900px]:left-[26%] @[900px]:-top-24" fill="white" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_38%,rgba(255,255,255,0.16),transparent_31%),radial-gradient(circle_at_82%_48%,rgba(14,165,233,0.1),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.07),transparent_34%,rgba(2,6,23,0.24)_76%,transparent)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:56px_56px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
+      />
       <div className="drill-observatory-route-label" aria-hidden>
-        <span className="obs-route-left">
-          <span className="obs-route-tick" />
-          OBS / DRILL / LOGICAL REASONING
-        </span>
-        <span className="obs-route-right">REASONING INSTRUMENT 01</span>
+        <span>DRILL / LOGICAL REASONING</span>
+        <span>REASONING INSTRUMENT 01</span>
       </div>
 
-      <div
-        className="drill-observatory-hero-grid"
-        onMouseMove={handleHeroPointer}
-        onMouseLeave={resetHeroPointer}
-      >
-        <div className="obs-blueprint" aria-hidden />
-        <div className="drill-observatory-greeting">
-          <p className="obs-eyebrow">{todayLabel}</p>
-          <h2 className="obs-headline">
-            {firstName ? (
-              <>
-                <span className="obs-headline-soft">Welcome back,</span>
-                <span className="obs-headline-name">
-                  {firstName}
-                  <span className="obs-headline-period">.</span>
-                </span>
-              </>
-            ) : (
-              <span className="obs-headline-name">
-                Welcome back
-                <span className="obs-headline-period">.</span>
-              </span>
-            )}
-          </h2>
-          <div className="obs-smart-row">
-            <Button onClick={startSmartDrill} className="obs-smart-btn">
+      <div className="drill-observatory-hero-grid relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
+        <div className="drill-observatory-greeting flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
+          <div className="space-y-1">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">
+              {todayLabel}
+            </p>
+            <h2 className="text-xl font-semibold leading-tight text-white sm:text-2xl">
+              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={startSmartDrill}
+              size="sm"
+              className="h-11 rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black shadow-[0_16px_38px_rgba(255,255,255,0.1)] hover:bg-neutral-200"
+            >
               Start Smart Drill
-              <ArrowUpRight className="obs-smart-arrow" aria-hidden />
             </Button>
           </div>
         </div>
 
-        <div className="drill-observatory-instrument" ref={instrumentRef}>
-          <MeridianInstrument />
-          <div className="obs-dais" aria-hidden />
+        <div className="drill-observatory-robot relative flex h-[170px] items-center justify-center @[900px]:h-[360px]">
+          {/* Soft radial spotlight behind robot */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(125,170,210,0.18) 0%, rgba(56,90,130,0.10) 30%, rgba(0,0,0,0) 65%)",
+              filter: "blur(20px)",
+            }}
+          />
+          <div
+            className="relative h-full w-full"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
+              maskImage:
+                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
+            }}
+          >
+            <SplineBoundary>
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="h-full w-full scale-[1.06]"
+              />
+            </SplineBoundary>
+          </div>
         </div>
 
-        <div className="drill-observatory-console">
-          <div className="obs-console-head" aria-hidden>
-            <span className="obs-console-led" />
-            <span className="obs-console-title">Targeting console</span>
-            <span className="obs-console-readout">
-              <span className={cn("obs-readout-cell", pt && "is-set")}>PT&thinsp;{pt || "--"}</span>
-              <span className="obs-readout-sep">/</span>
-              <span className={cn("obs-readout-cell", section && "is-set")}>S&thinsp;{section || "-"}</span>
-              <span className="obs-readout-sep">/</span>
-              <span className={cn("obs-readout-cell", qnum && "is-set")}>Q&thinsp;{qnum || "-"}</span>
-            </span>
-          </div>
 
+        <div className="drill-observatory-console w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
           <div
-            className="obs-console-search"
+            className="mb-3 space-y-2.5"
             onKeyDown={(event) => {
               if (event.key === "Escape" && searchQuery) {
                 event.preventDefault();
@@ -373,8 +299,11 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
               }
             }}
           >
-            <div className="obs-search-field">
-              <Search className="obs-search-icon" aria-hidden />
+            <div className="relative">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
+                aria-hidden
+              />
               <input
                 type="search"
                 value={searchQuery}
@@ -382,26 +311,29 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search question text..."
                 aria-label="Search question text"
-                className="obs-search-input"
+                className={cn(
+                  "h-12 w-full rounded-[22px] border border-white/[0.08] bg-black/15 pl-9 pr-3 text-sm font-semibold text-white outline-none transition",
+                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] placeholder:text-white/35",
+                  "focus:border-white/35 focus:ring-2 focus:ring-white/10 disabled:cursor-default disabled:text-white/30",
+                )}
               />
-              <span className="obs-search-scan" aria-hidden />
             </div>
 
-            <div className="obs-console-subrow">
+            <div className="flex items-center justify-between gap-3 px-1">
               <button
                 type="button"
                 onClick={() => setAdvancedOpen((value) => !value)}
-                className={cn("obs-advanced-toggle", advancedOpen && "is-open")}
+                className="inline-flex items-center gap-2 rounded-full px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 transition hover:text-white"
                 aria-expanded={advancedOpen}
               >
-                <SlidersHorizontal className="obs-advanced-icon" aria-hidden />
+                <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden />
                 Advanced
               </button>
               {advancedFiltersActive && (
                 <button
                   type="button"
                   onClick={clearAdvancedFilters}
-                  className="obs-clear-filters"
+                  className="rounded-full px-1 py-1 text-[11px] font-semibold text-white/45 transition hover:text-white"
                 >
                   Clear filters
                 </button>
@@ -409,7 +341,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             </div>
 
             {advancedOpen && (
-              <div className="drill-observatory-advanced">
+              <div className="drill-observatory-advanced grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 @[1408px]:grid-cols-2">
                 <ConsoleSelect
                   label="Question type"
                   value={advancedQType}
@@ -453,7 +385,10 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             )}
 
             {searchIsActive && (
-              <div className="drill-observatory-search-results" aria-live="polite">
+              <div
+                className="drill-observatory-search-results max-h-48 space-y-1.5 overflow-y-auto pr-1"
+                aria-live="polite"
+              >
                 {searchMatches.map((match) => (
                   <QuestionSearchResult
                     key={match.question.qid}
@@ -463,17 +398,15 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
                 ))}
 
                 {showNoMatches && (
-                  <div className="obs-no-matches">No matching questions</div>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-xs font-semibold text-white/50">
+                    No matching questions
+                  </div>
                 )}
               </div>
             )}
           </div>
 
-          <div className="obs-console-divider" aria-hidden>
-            <span>Coordinates</span>
-          </div>
-
-          <div className="obs-console-selects" aria-label="Specific question launcher">
+          <div className="grid grid-cols-1 gap-2.5" aria-label="Specific question launcher">
             <ConsoleSelect
               label="PrepTest"
               value={pt}
@@ -508,7 +441,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             type="button"
             onClick={startSpecificQuestion}
             disabled={!selectedQuestion}
-            className={cn("obs-start-btn", selectedQuestion && "is-armed")}
+            className="mt-3 h-11 w-full rounded-[22px] border border-white/12 bg-white text-sm font-semibold text-black shadow-[0_14px_28px_rgba(255,255,255,0.08)] hover:bg-neutral-200 disabled:bg-white/10 disabled:text-white/35 disabled:opacity-100"
           >
             {isLoading ? (
               <>
@@ -521,30 +454,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
           </Button>
         </div>
       </div>
-
-      <div className="drill-observatory-ticker">
-        {qtypes.length > 0 && (
-          <div className="obs-tick-marquee" aria-hidden>
-            <div className="obs-tick-track">
-              <span className="obs-tick-copy">
-                {qtypes.map((type) => (
-                  <span key={`a-${type}`} className="obs-tick-type">
-                    {formatQtype(type)}
-                  </span>
-                ))}
-              </span>
-              <span className="obs-tick-copy">
-                {qtypes.map((type) => (
-                  <span key={`b-${type}`} className="obs-tick-type">
-                    {formatQtype(type)}
-                  </span>
-                ))}
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
+    </Card>
   );
 }
 
@@ -558,17 +468,32 @@ function QuestionSearchResult({
   const { question, snippet } = match;
 
   return (
-    <button type="button" onClick={onOpen} className="obs-search-result">
-      <div className="obs-result-meta">
-        <span className="obs-result-coords">
+    <button
+      type="button"
+      onClick={onOpen}
+      className={cn(
+        "block w-full rounded-2xl border border-white/[0.12] bg-slate-950/80 px-3 py-2 text-left transition",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(0,0,0,0.18)] hover:border-white/[0.22] hover:bg-slate-900/90",
+      )}
+    >
+      <div className="mb-0.5 flex items-center gap-2 text-[11px] font-bold text-white/90">
+        <span>
           PT {question.pt} · S{question.section} · Q{question.qnum}
         </span>
-        <span className="obs-result-chip">{question.qtype}</span>
-        <span className="obs-result-chip">D{question.difficulty}</span>
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+          {question.qtype}
+        </span>
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+          D{question.difficulty}
+        </span>
       </div>
-      <p className="obs-result-snippet">
+      <p className="line-clamp-1 text-xs font-medium leading-5 text-slate-200/90">
         {snippet.before}
-        {snippet.match ? <mark>{snippet.match}</mark> : null}
+        {snippet.match ? (
+          <mark className="rounded bg-white px-0.5 font-semibold text-slate-950 shadow-[0_0_14px_rgba(255,255,255,0.16)]">
+            {snippet.match}
+          </mark>
+        ) : null}
         {snippet.after}
       </p>
     </button>
@@ -600,9 +525,11 @@ function ConsoleSelect({
       <SelectTrigger
         aria-label={label}
         className={cn(
-          "obs-select-trigger",
-          compact && "obs-select-trigger-compact",
-          "[&>svg]:h-4 [&>svg]:w-4 [&>svg]:opacity-100",
+          compact ? "h-10 rounded-[18px] text-xs" : "h-12 rounded-[22px] text-sm",
+          "w-full border border-white/[0.08] bg-black/15 px-3 font-semibold text-white outline-none transition",
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10 focus:ring-offset-0",
+          "disabled:cursor-default disabled:text-white/30 disabled:opacity-100",
+          "[&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-white/40 [&>svg]:opacity-100",
           "[&>span]:line-clamp-1 [&>span]:text-left",
         )}
       >
@@ -612,7 +539,7 @@ function ConsoleSelect({
         position="popper"
         sideOffset={8}
         className={cn(
-          "obs-select-content z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-2xl border border-[#ecdcc8] bg-[#fffdf9]/95 text-[#2f2c28] shadow-[0_24px_60px_rgba(84,60,20,0.18)] backdrop-blur-xl",
+          "z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-2xl border border-white/15 bg-zinc-950/95 text-white shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl",
           "[&_[data-radix-select-viewport]]:max-h-[min(304px,calc(100vh-176px))]",
         )}
       >
@@ -621,8 +548,8 @@ function ConsoleSelect({
             key={option.value}
             value={option.value}
             className={cn(
-              "min-h-9 rounded-xl py-2 pl-8 pr-3 font-mono text-[13px] font-medium text-[#5d5850] outline-none",
-              "focus:bg-[#f7ecdf] focus:text-[#2f2c28] data-[state=checked]:text-[#c96f04]",
+              "min-h-9 rounded-xl py-2 pl-8 pr-3 text-sm font-semibold text-white/78 outline-none",
+              "focus:bg-white/10 focus:text-white data-[state=checked]:text-white",
             )}
           >
             {option.label}
@@ -677,8 +604,8 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto">
-      <div className="drill-observatory-canvas relative mx-auto flex w-full flex-col">
+    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24">
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[65rem] flex-col gap-4">
         <MainhubHero drillReturnTo={drillReturnTo} />
 
         {stage === "analytics" ? (
@@ -690,7 +617,7 @@ export default function AcademyMainhub({
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
         ) : (
-          <section className="drill-observatory-deck">
+          <section className="drill-observatory-deck grid grid-cols-1 items-start gap-0 @[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]">
             <section
               className="drill-observatory-practice-bay"
               aria-label="Practice and insight workspace"
