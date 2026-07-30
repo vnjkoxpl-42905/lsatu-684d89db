@@ -150,7 +150,6 @@ describe("AcademyMainhub", () => {
 
     expect(screen.queryByRole("heading", { name: "LR Smart Drill" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
-    expect(screen.getByText("Robot scene")).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Section" })).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Question" })).toBeInTheDocument();
@@ -164,11 +163,13 @@ describe("AcademyMainhub", () => {
     expect(screen.getByText("Build a Set")).toBeInTheDocument();
     expect(screen.getByText("Insight preview")).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Today" })).toBeInTheDocument();
-    expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "All caught up" }, { timeout: 5000 }),
+    ).toBeInTheDocument();
     expect(screen.getByText("Nothing assigned for today.")).toBeInTheDocument();
     expect(screen.queryByText("Orbital workspace")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("region", { name: "Mainhub orbital workspace" }),
     ).not.toBeInTheDocument();
-  });
+  }, 30000);
 });

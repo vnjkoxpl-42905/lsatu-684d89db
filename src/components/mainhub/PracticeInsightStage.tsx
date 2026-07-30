@@ -2,11 +2,11 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   BarChart3,
   BookOpen,
   Grid3x3,
   Layers,
-  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
@@ -24,7 +24,7 @@ interface PracticeInsightStageProps {
 /**
  * Replaces the orbital ring. A stable pair of primary practice actions
  * (Full Section / Build a Set) plus an auto-rotating, real-data insight
- * carousel. Dark/glass to sit as a sibling to the hero and Today panel.
+ * carousel. Styled as the observatory's instrument bay.
  */
 export default function PracticeInsightStage({
   onOpenAnalytics,
@@ -64,36 +64,31 @@ export default function PracticeInsightStage({
   );
 
   return (
-    <div className="drill-observatory-practice relative flex flex-col gap-4 overflow-hidden rounded-[24px] border border-white/[0.08] bg-zinc-950 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.16)] sm:p-6">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.10),transparent_36%),radial-gradient(circle_at_86%_82%,rgba(14,165,233,0.10),transparent_40%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.10] [background-image:linear-gradient(rgba(255,255,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:52px_52px]"
-      />
-
+    <div className="drill-observatory-practice">
       {/* Practice Tools */}
-      <div className="relative z-10">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
-          Practice tools
-        </p>
-        <div className="drill-observatory-practice-tools grid grid-cols-1 gap-0 sm:grid-cols-2">
+      <div className="obs-bay-block">
+        <div className="obs-bay-head">
+          <span className="obs-bay-index">01</span>
+          <p className="obs-bay-title">Practice tools</p>
+          <span className="obs-bay-rule" aria-hidden />
+        </div>
+        <div className="drill-observatory-practice-tools">
           <PracticeTile
+            ordinal="01"
             icon={Layers}
             title="Full Section"
             description="Start a timed official section."
             onClick={() => navigate("/practice?action=full-section")}
           />
           <PracticeTile
+            ordinal="02"
             icon={Grid3x3}
             title="Build a Set"
             description="Assemble a targeted question set."
             onClick={() => navigate("/practice?action=type-drill")}
           />
         </div>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="obs-secondary-row">
           {canOpenAnalytics && (
             <SecondaryLink icon={BarChart3} label="Analytics" onClick={() => onOpenAnalytics("overview")} />
           )}
@@ -105,15 +100,15 @@ export default function PracticeInsightStage({
 
       {/* Rotating insight preview */}
       <div
-        className="relative z-10 mt-1"
+        className="obs-bay-block obs-bay-block-insight"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
-            Insight preview
-          </p>
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Insight slides">
+        <div className="obs-bay-head">
+          <span className="obs-bay-index">02</span>
+          <p className="obs-bay-title">Insight preview</p>
+          <span className="obs-bay-rule" aria-hidden />
+          <div className="obs-insight-dots" role="tablist" aria-label="Insight slides">
             {slides.map((s, i) => (
               <button
                 key={s.id}
@@ -121,44 +116,32 @@ export default function PracticeInsightStage({
                 aria-label={s.kicker}
                 aria-selected={i === index}
                 onClick={() => setIndex(i)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all",
-                  i === index ? "w-5 bg-white/80" : "w-1.5 bg-white/25 hover:bg-white/45",
-                )}
+                className={cn("obs-insight-dot", i === index && "is-active")}
               />
             ))}
           </div>
         </div>
 
-        <div className="drill-observatory-insight relative min-h-[132px] rounded-[18px] border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-xl">
+        <div className="drill-observatory-insight">
           <AnimatePresence mode="wait">
             {slide && (
               <motion.div
                 key={slide.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.28 }}
-                className="flex h-full flex-col"
+                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+                transition={{ duration: 0.32 }}
+                className="obs-insight-body"
               >
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                  {slide.kicker}
-                </span>
-                <span
-                  className={cn(
-                    "mt-1 text-xl font-semibold text-white",
-                    slide.empty && "text-white/55",
-                  )}
-                >
+                <span className="obs-insight-kicker">{slide.kicker}</span>
+                <span className={cn("obs-insight-headline", slide.empty && "is-empty")}>
                   {loading ? "…" : slide.headline}
                 </span>
-                <span className="mt-1 text-xs font-medium leading-5 text-white/55">
-                  {slide.detail}
-                </span>
+                <span className="obs-insight-detail">{slide.detail}</span>
                 <button
                   type="button"
                   onClick={() => handleSlideAction(slide.actionHref, slide.tab)}
-                  className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.06] px-3 py-1.5 text-[12px] font-semibold text-white/90 transition hover:border-white/25 hover:bg-white/[0.12]"
+                  className="obs-insight-action"
                 >
                   {slide.actionLabel}
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden />
@@ -166,6 +149,14 @@ export default function PracticeInsightStage({
               </motion.div>
             )}
           </AnimatePresence>
+          {slides.length > 1 && (
+            <div className="obs-insight-progress" aria-hidden>
+              <div
+                key={`${index}-${paused}`}
+                className={cn("obs-insight-progress-fill", paused && "is-paused")}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -173,11 +164,13 @@ export default function PracticeInsightStage({
 }
 
 function PracticeTile({
+  ordinal,
   icon: Icon,
   title,
   description,
   onClick,
 }: {
+  ordinal: string;
   icon: React.ElementType;
   title: string;
   description: string;
@@ -187,19 +180,19 @@ function PracticeTile({
     <button
       type="button"
       onClick={onClick}
-      className={cn(
-        "drill-observatory-practice-tile",
-        "group flex flex-col items-start gap-2 rounded-[18px] border p-4 text-left transition",
-        "border-white/[0.08] bg-white/[0.04] hover:border-white/25 hover:bg-white/[0.09]",
-      )}
+      className="drill-observatory-practice-tile group"
     >
-      <div className="flex w-full items-center justify-between">
-        <Icon className="h-5 w-5 text-white/80" aria-hidden />
-      </div>
-      <div>
-        <div className="text-sm font-semibold text-white">{title}</div>
-        <div className="mt-0.5 text-[11px] leading-4 text-white/50">{description}</div>
-      </div>
+      <span className="obs-tile-ordinal" aria-hidden>{ordinal}</span>
+      <span className="obs-tile-icon">
+        <Icon aria-hidden />
+      </span>
+      <span className="obs-tile-text">
+        <span className="obs-tile-title">{title}</span>
+        <span className="obs-tile-desc">{description}</span>
+      </span>
+      <span className="obs-tile-arrow" aria-hidden>
+        <ArrowRight />
+      </span>
     </button>
   );
 }
@@ -217,10 +210,11 @@ function SecondaryLink({
     <button
       type="button"
       onClick={onClick}
-      className="drill-observatory-secondary-link inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-semibold text-white/70 transition hover:border-white/25 hover:text-white"
+      className="drill-observatory-secondary-link"
     >
       <Icon className="h-3.5 w-3.5" aria-hidden />
       {label}
+      <span className="obs-secondary-pulse" aria-hidden />
     </button>
   );
 }
