@@ -19,7 +19,6 @@ interface Props {
   eliminatedAnswers: Set<string>;
   isFlagged: boolean;
   answerRevealed?: boolean;
-  contentMuted?: boolean;
   correctAnswer?: string;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
@@ -56,7 +55,6 @@ export default function OfficialQuestionPane({
   eliminatedAnswers,
   isFlagged,
   answerRevealed = false,
-  contentMuted = false,
   correctAnswer,
   highlights,
   highlightMode,
@@ -229,19 +227,6 @@ export default function OfficialQuestionPane({
           </ul>
         </div>
       </div>
-      {contentMuted && (
-        <div
-          aria-live="polite"
-          className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950/92 text-white"
-        >
-          <div className="rounded-md border border-white/20 bg-white/10 px-8 py-6 text-center shadow-2xl backdrop-blur">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-white/70">
-              Session mode
-            </p>
-            <p className="mt-2 text-[22px] font-semibold">Screen muted</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

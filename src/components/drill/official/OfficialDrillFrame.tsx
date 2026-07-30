@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Clock3, Eye, EyeOff, GraduationCap, Pause, Play, RotateCcw } from "lucide-react";
+import { GraduationCap, Play } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
 import DrillNotesPanel, {
@@ -20,16 +20,6 @@ interface Props {
   pauseNoun?: string;
   /** Show the Tutor mode toggle in the top-right strip. */
   tutorToggleVisible?: boolean;
-  /** Tutor-facing live session controls for screen sharing. */
-  sessionModeVisible?: boolean;
-  sessionScreenMuted?: boolean;
-  onSessionScreenMutedChange?: (next: boolean) => void;
-  sessionTimerLabel?: string;
-  sessionTimerRunning?: boolean;
-  sessionTimerPresetSeconds?: number;
-  onSessionTimerPresetChange?: (seconds: number) => void;
-  onSessionTimerToggle?: () => void;
-  onSessionTimerReset?: () => void;
   /** Current Tutor mode state. */
   tutorMode?: boolean;
   /** Toggle handler for Tutor mode. */
@@ -60,15 +50,6 @@ export default function OfficialDrillFrame({
   onResume,
   pauseNoun = "Section",
   tutorToggleVisible,
-  sessionModeVisible,
-  sessionScreenMuted,
-  onSessionScreenMutedChange,
-  sessionTimerLabel = "00:00",
-  sessionTimerRunning,
-  sessionTimerPresetSeconds,
-  onSessionTimerPresetChange,
-  onSessionTimerToggle,
-  onSessionTimerReset,
   tutorMode,
   onTutorModeChange,
   notesPanelEnabled,
@@ -81,12 +62,6 @@ export default function OfficialDrillFrame({
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
   const welcomeName = rawName && rawName.length > 0 ? rawName.split(/\s+/)[0] : "Joshua";
-  const sessionTimerPresets = [
-    { label: "1:00", seconds: 60 },
-    { label: "1:30", seconds: 90 },
-    { label: "2:00", seconds: 120 },
-    { label: "3:00", seconds: 180 },
-  ];
 
   return (
     <div
@@ -95,69 +70,6 @@ export default function OfficialDrillFrame({
     >
       <header className="bg-white border-b border-slate-200">
         <div className="px-4 sm:px-6 pt-2 pb-1.5 flex flex-wrap items-center justify-end gap-2 text-[13px] text-slate-700">
-          {sessionModeVisible && (
-            <div className="mr-auto flex flex-wrap items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2 py-1">
-              <span className="hidden sm:inline-flex items-center gap-1 px-1 text-[12px] font-semibold text-slate-700">
-                <Clock3 className="h-3.5 w-3.5" />
-                Session
-              </span>
-              <button
-                type="button"
-                onClick={() => onSessionScreenMutedChange?.(!sessionScreenMuted)}
-                aria-pressed={!!sessionScreenMuted}
-                aria-label={sessionScreenMuted ? "Show shared screen" : "Mute shared screen"}
-                title={sessionScreenMuted ? "Show shared screen" : "Mute shared screen"}
-                className={cn(
-                  "inline-flex h-7 items-center justify-center gap-1 rounded-full border px-2 text-[12px] font-semibold transition-colors",
-                  sessionScreenMuted
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100",
-                )}
-              >
-                {sessionScreenMuted ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-                <span className="hidden sm:inline">{sessionScreenMuted ? "Show" : "Mute"}</span>
-              </button>
-              <div className="hidden md:flex items-center gap-1">
-                {sessionTimerPresets.map((preset) => (
-                  <button
-                    key={preset.seconds}
-                    type="button"
-                    onClick={() => onSessionTimerPresetChange?.(preset.seconds)}
-                    aria-pressed={sessionTimerPresetSeconds === preset.seconds}
-                    className={cn(
-                      "h-7 rounded-full border px-2 text-[12px] font-semibold tabular-nums transition-colors",
-                      sessionTimerPresetSeconds === preset.seconds
-                        ? "border-blue-700 bg-blue-50 text-blue-800"
-                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100",
-                    )}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-              </div>
-              <span className="min-w-[48px] px-1 text-center text-[13px] font-bold tabular-nums text-slate-900">
-                {sessionTimerLabel}
-              </span>
-              <button
-                type="button"
-                onClick={onSessionTimerToggle}
-                aria-label={sessionTimerRunning ? "Pause session timer" : "Start session timer"}
-                title={sessionTimerRunning ? "Pause session timer" : "Start session timer"}
-                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
-              >
-                {sessionTimerRunning ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-              </button>
-              <button
-                type="button"
-                onClick={onSessionTimerReset}
-                aria-label="Reset session timer"
-                title="Reset session timer"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          )}
           {tutorToggleVisible && onTutorModeChange && (
             <>
               {/* Desktop: switch + label */}
