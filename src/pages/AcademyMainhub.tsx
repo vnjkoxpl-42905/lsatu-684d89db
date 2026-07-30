@@ -34,39 +34,6 @@ import {
 const QUESTION_PICKER_PLACEHOLDER = "";
 
 /**
- * Counts a stat up from zero once the question bank is ready. Resolves
- * instantly under prefers-reduced-motion. Purely presentational — the final
- * value is always the real one.
- */
-function useCountUp(target: number, ready: boolean) {
-  const [value, setValue] = React.useState(0);
-  React.useEffect(() => {
-    if (!ready) return;
-    // jsdom: skip the rAF loop entirely so tests see final values at once.
-    if (import.meta.env.MODE === "test") {
-      setValue(target);
-      return;
-    }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(target);
-      return;
-    }
-    let raf = 0;
-    const start = performance.now();
-    const duration = 1100;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(Math.round(target * eased));
-      if (p < 1) raf = window.requestAnimationFrame(tick);
-    };
-    raf = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(raf);
-  }, [target, ready]);
-  return ready ? value : null;
-}
-
-/**
  * The meridian instrument: a fine-line drafting-room astrolabe drawn in ink.
  * Pure decoration — aria-hidden, no pointer events, gentle rotation that
  * stops under prefers-reduced-motion.
@@ -315,10 +282,6 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
     [],
   );
 
-  const questionCount = useCountUp(allQuestions.length, !isLoading && allQuestions.length > 0);
-  const ptCount = useCountUp(pts.length, !isLoading && pts.length > 0);
-  const typeCount = useCountUp(qtypes.length, !isLoading && qtypes.length > 0);
-
   const instrumentRef = React.useRef<HTMLDivElement | null>(null);
   const handleHeroPointer = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     const el = instrumentRef.current;
@@ -371,9 +334,6 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
               </span>
             )}
           </h2>
-          <p className="obs-subline">
-            The observatory is calibrated. Choose a target, or let the engine choose for you.
-          </p>
           <div className="obs-smart-row">
             <Button onClick={startSmartDrill} className="obs-smart-btn">
               Start Smart Drill
@@ -563,14 +523,6 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
       </div>
 
       <div className="drill-observatory-ticker">
-        <span className="obs-tick-label">Question bank</span>
-        <span className="obs-tick-stat">
-          {questionCount == null ? "…" : questionCount.toLocaleString()} questions
-        </span>
-        <span className="obs-tick-dot" aria-hidden />
-        <span className="obs-tick-stat">{ptCount == null ? "…" : ptCount} preptests</span>
-        <span className="obs-tick-dot" aria-hidden />
-        <span className="obs-tick-stat">{typeCount == null ? "…" : typeCount} types</span>
         {qtypes.length > 0 && (
           <div className="obs-tick-marquee" aria-hidden>
             <div className="obs-tick-track">

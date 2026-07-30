@@ -678,20 +678,11 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   color: var(--obs-accent);
 }
 
-.obs-subline {
-  color: var(--obs-muted);
-  font-size: 13.5px;
-  font-weight: 450;
-  line-height: 1.6;
-  margin: 0;
-  max-width: 30ch;
-}
-
 .obs-smart-row {
   align-items: center;
   display: flex;
   gap: 12px;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .drill-observatory-greeting .obs-smart-btn {
@@ -1381,7 +1372,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
     0 16px 40px rgba(52, 40, 22, 0.34);
 }
 
-/* ── Question-bank ticker ───────────────────────────────────────────────── */
+/* ── Question-type ticker ───────────────────────────────────────────────── */
 
 .drill-observatory-ticker {
   align-items: center;
@@ -1390,51 +1381,18 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   border-bottom: 1px solid var(--obs-line);
   border-top: 1px solid var(--obs-line);
   display: flex;
-  gap: 16px;
-  height: 46px;
+  height: 42px;
   margin-top: 12px;
   padding: 0 4px;
   position: relative;
   z-index: 3;
 }
 
-.obs-tick-label {
-  color: var(--obs-ghost);
-  font-family: var(--obs-mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.obs-tick-stat {
-  color: var(--obs-muted);
-  font-family: var(--obs-mono);
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.obs-tick-dot {
-  background: var(--obs-accent);
-  border-radius: 999px;
-  box-shadow: 0 0 7px rgba(255, 137, 6, 0.45);
-  flex: none;
-  height: 3px;
-  width: 3px;
-}
-
 .obs-tick-marquee {
-  border-left: 1px solid var(--obs-line);
   flex: 1;
-  margin-left: 4px;
-  padding-left: 18px;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  min-width: 120px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -2140,14 +2098,8 @@ html.dark .classroom-root .classroom-panel-wash-dark {
     grid-row: 2;
   }
 
-  .obs-tick-marquee {
-    display: none;
-  }
-
   .drill-observatory-ticker {
-    gap: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    height: 38px;
   }
 
   .drill-observatory-deck {
