@@ -64,7 +64,7 @@ export default function PracticeInsightStage({
   );
 
   return (
-    <div className="relative flex flex-col gap-4 overflow-hidden rounded-[24px] border border-white/[0.08] bg-zinc-950 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.16)] sm:p-6">
+    <div className="drill-observatory-practice relative flex flex-col gap-4 overflow-hidden rounded-[24px] border border-white/[0.08] bg-zinc-950 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.16)] sm:p-6">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.10),transparent_36%),radial-gradient(circle_at_86%_82%,rgba(14,165,233,0.10),transparent_40%)]"
@@ -79,7 +79,7 @@ export default function PracticeInsightStage({
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
           Practice tools
         </p>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="drill-observatory-practice-tools grid grid-cols-1 gap-0 sm:grid-cols-2">
           <PracticeTile
             icon={Layers}
             title="Full Section"
@@ -130,7 +130,7 @@ export default function PracticeInsightStage({
           </div>
         </div>
 
-        <div className="relative min-h-[132px] rounded-[18px] border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-xl">
+        <div className="drill-observatory-insight relative min-h-[132px] rounded-[18px] border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-xl">
           <AnimatePresence mode="wait">
             {slide && (
               <motion.div
@@ -188,6 +188,7 @@ function PracticeTile({
       type="button"
       onClick={onClick}
       className={cn(
+        "drill-observatory-practice-tile",
         "group flex flex-col items-start gap-2 rounded-[18px] border p-4 text-left transition",
         "border-white/[0.08] bg-white/[0.04] hover:border-white/25 hover:bg-white/[0.09]",
       )}
@@ -216,7 +217,7 @@ function SecondaryLink({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-semibold text-white/70 transition hover:border-white/25 hover:text-white"
+      className="drill-observatory-secondary-link inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-semibold text-white/70 transition hover:border-white/25 hover:text-white"
     >
       <Icon className="h-3.5 w-3.5" aria-hidden />
       {label}

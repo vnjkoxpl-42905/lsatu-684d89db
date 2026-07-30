@@ -215,7 +215,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
   }, []);
 
   return (
-    <Card className="relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] @[900px]:min-h-[390px]">
+    <Card className="drill-observatory-hero relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] @[900px]:min-h-[390px]">
       <Spotlight className="-top-48 left-[-120px] @[900px]:left-[26%] @[900px]:-top-24" fill="white" />
       <div
         aria-hidden
@@ -229,9 +229,13 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
       />
+      <div className="drill-observatory-route-label" aria-hidden>
+        <span>DRILL / LOGICAL REASONING</span>
+        <span>REASONING INSTRUMENT 01</span>
+      </div>
 
-      <div className="relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
-        <div className="flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
+      <div className="drill-observatory-hero-grid relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
+        <div className="drill-observatory-greeting flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
           <div className="space-y-1">
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">
               {todayLabel}
@@ -251,7 +255,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
           </div>
         </div>
 
-        <div className="relative flex h-[170px] items-center justify-center @[900px]:h-[360px]">
+        <div className="drill-observatory-robot relative flex h-[170px] items-center justify-center @[900px]:h-[360px]">
           {/* Soft radial spotlight behind robot */}
           <div
             aria-hidden
@@ -281,7 +285,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
         </div>
 
 
-        <div className="w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
+        <div className="drill-observatory-console w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
           <div
             className="mb-3 space-y-2.5"
             onKeyDown={(event) => {
@@ -337,7 +341,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             </div>
 
             {advancedOpen && (
-              <div className="grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 @[1408px]:grid-cols-2">
+              <div className="drill-observatory-advanced grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 @[1408px]:grid-cols-2">
                 <ConsoleSelect
                   label="Question type"
                   value={advancedQType}
@@ -381,7 +385,10 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             )}
 
             {searchIsActive && (
-              <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1" aria-live="polite">
+              <div
+                className="drill-observatory-search-results max-h-48 space-y-1.5 overflow-y-auto pr-1"
+                aria-live="polite"
+              >
                 {searchMatches.map((match) => (
                   <QuestionSearchResult
                     key={match.question.qid}
@@ -597,17 +604,22 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div className="@container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24">
-      <div className="relative mx-auto flex w-full max-w-[112rem] flex-col gap-5">
+    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24">
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[65rem] flex-col gap-4">
         <MainhubHero drillReturnTo={drillReturnTo} />
 
         {stage === "analytics" ? (
-          <section aria-label="Analytics workspace" data-tour="mainhub-analytics">
+          <section
+            className="drill-observatory-analytics"
+            aria-label="Analytics workspace"
+            data-tour="mainhub-analytics"
+          >
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
         ) : (
-          <section className="grid grid-cols-1 items-start gap-5 @[980px]:grid-cols-[minmax(520px,0.95fr)_minmax(360px,0.72fr)]">
+          <section className="drill-observatory-deck grid grid-cols-1 items-start gap-0 @[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]">
             <section
+              className="drill-observatory-practice-bay"
               aria-label="Practice and insight workspace"
               data-tour="mainhub-practice"
             >
@@ -618,7 +630,7 @@ export default function AcademyMainhub({
               />
             </section>
 
-            <section>
+            <section className="drill-observatory-today-bay">
               <TodayFocusPanel drillReturnTo={drillReturnTo} />
             </section>
           </section>

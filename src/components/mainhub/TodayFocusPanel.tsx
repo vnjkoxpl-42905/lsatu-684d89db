@@ -428,9 +428,9 @@ export default function TodayFocusPanel({
   return (
     <section
       aria-label="Today"
-      className="overflow-hidden rounded-[34px] bg-[linear-gradient(145deg,rgba(255,255,255,0.11),rgba(111,150,179,0.055)_36%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_34px_100px_rgba(4,7,12,0.28),0_8px_28px_rgba(48,75,101,0.09)]"
+      className="drill-observatory-today overflow-hidden rounded-[34px] bg-[linear-gradient(145deg,rgba(255,255,255,0.11),rgba(111,150,179,0.055)_36%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_34px_100px_rgba(4,7,12,0.28),0_8px_28px_rgba(48,75,101,0.09)]"
     >
-      <div className="relative overflow-hidden rounded-[33px] bg-[#05070b] p-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(104,149,184,0.08)] sm:p-5">
+      <div className="drill-observatory-today-inner relative overflow-hidden rounded-[33px] bg-[#05070b] p-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(104,149,184,0.08)] sm:p-5">
         <EclipseGlassBackdrop />
         <div className="relative">
           <div className="mb-4 flex items-center justify-between px-1">
@@ -541,7 +541,7 @@ function TodayPrimarySurface({
   return (
     <motion.div
       layout
-      className="group relative min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(126,177,212,0.07)_36%,rgba(255,255,255,0.025)_62%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_22px_62px_rgba(0,0,0,0.24),0_0_30px_rgba(81,123,153,0.08)]"
+      className="drill-observatory-today-primary group relative min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(126,177,212,0.07)_36%,rgba(255,255,255,0.025)_62%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_22px_62px_rgba(0,0,0,0.24),0_0_30px_rgba(81,123,153,0.08)]"
       transition={{ type: "spring", stiffness: 170, damping: 24 }}
     >
       <div
@@ -644,6 +644,7 @@ function TodayRailItem({
       layout
       onClick={onPromote}
       className={cn(
+        "drill-observatory-today-rail",
         "flex w-full items-center gap-3 rounded-[21px] bg-[linear-gradient(145deg,rgba(255,255,255,0.062),rgba(255,255,255,0.026)_52%,rgba(77,109,132,0.04))] px-4 py-2.5 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.075),inset_0_-1px_0_rgba(96,130,157,0.055)] ring-1 ring-white/[0.045] backdrop-blur-md transition duration-500 hover:bg-[linear-gradient(145deg,rgba(255,255,255,0.085),rgba(255,255,255,0.036)_52%,rgba(92,130,160,0.055))] hover:ring-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
         muted && "opacity-60",
       )}
