@@ -49,8 +49,8 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Some video game makers have sold the movie rights for popular games. However, this move is rarely good from a business perspective. After all, StarQuanta sold the movie rights to its popular game Nostroma, but the poorly made film adaptation of the game was hated by critics and the public alike. Subsequent versions of the Nostroma video game, although better than the original, sold poorly. The reasoning in the argument is most vulnerable to criticism in that the argument",
+    "stimulus": "Some video game makers have sold the movie rights for popular games. However, this move is rarely good from a business perspective. After all, StarQuanta sold the movie rights to its popular game Nostroma, but the poorly made film adaptation of the game was hated by critics and the public alike. Subsequent versions of the Nostroma video game, although better than the original, sold poorly.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism in that the argument",
     "answerChoices": {
       "A": "draws a general conclusion on the basis of just one individual case",
       "B": "infers that a product will be disliked by the public merely from the claim that the product was disliked by critics",
@@ -287,8 +287,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Reformer: A survey of police departments keeps track of the national crime rate, which is the annual number of crimes per 100,000 people. The survey shows no significant reduction in the crime rate in the past 20 years, but the percentage of the population in prison has increased substantially, and public expenditure on prisons has grown at an alarming rate. This demonstrates that putting more people in prison cannot help to reduce crime. A flaw in the reformer’s argument is that it",
+    "stimulus": "Reformer: A survey of police departments keeps track of the national crime rate, which is the annual number of crimes per 100,000 people. The survey shows no significant reduction in the crime rate in the past 20 years, but the percentage of the population in prison has increased substantially, and public expenditure on prisons has grown at an alarming rate. This demonstrates that putting more people in prison cannot help to reduce crime.",
+    "questionStem": "A flaw in the reformer’s argument is that it",
     "answerChoices": {
       "A": "infers without justification that because the national crime rate has increased, the number of crimes reported by each police department has increased",
       "B": "ignores the possibility that the crime rate would have significantly increased if it had not been for the greater rate of imprisonment",
@@ -310,8 +310,8 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can’t afford not to invest in space exploration. Winona: It is absurd to try to justify funding for space exploration merely by pointing out that such programs will lead to technological advances. If technology with practical applications is all that is desired, then it should be funded directly. Winona responds to Inez by",
+    "stimulus": "Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can’t afford not to invest in space exploration. Winona: It is absurd to try to justify funding for space exploration merely by pointing out that such programs will lead to technological advances. If technology with practical applications is all that is desired, then it should be funded directly.",
+    "questionStem": "Winona responds to Inez by",
     "answerChoices": {
       "A": "showing that there is no evidence that the outcome Inez anticipates will in fact be realized",
       "B": "suggesting that Inez has overlooked evidence that directly argues against the programs Inez supports",
@@ -335,8 +335,8 @@
       "Causation"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Marketing consultant: Last year I predicted that LRG’s latest advertising campaign would be unpopular with customers and ineffective in promoting new products. But LRG ignored my predictions and took the advice of a competing consultant. This season’s sales figures show that sales are down and LRG’s new products are selling especially poorly. Thus, the advertising campaign was ill conceived. The marketing consultant’s reasoning is most vulnerable to criticism on the grounds that",
+    "stimulus": "Marketing consultant: Last year I predicted that LRG’s latest advertising campaign would be unpopular with customers and ineffective in promoting new products. But LRG ignored my predictions and took the advice of a competing consultant. This season’s sales figures show that sales are down and LRG’s new products are selling especially poorly. Thus, the advertising campaign was ill conceived.",
+    "questionStem": "The marketing consultant’s reasoning is most vulnerable to criticism on the grounds that",
     "answerChoices": {
       "A": "it takes for granted that LRG’s sales would not have been lower still in the absence of the competitor’s advertising campaign",
       "B": "it fails to consider that economic factors unrelated to the advertising campaign may have caused LRG’s low sales figures",
@@ -359,8 +359,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "The top prize in architecture, the Pritzker Prize, is awarded for individual achievement, like Nobel Prizes for science. But architects are judged by their buildings, and buildings are the result of teamwork. As achievements, buildings are not like scientific discoveries, but like movies, which compete for awards for best picture. Thus, it would be better if the top prize in architecture were awarded to the best building rather than the best architect. The argument proceeds by",
+    "stimulus": "The top prize in architecture, the Pritzker Prize, is awarded for individual achievement, like Nobel Prizes for science. But architects are judged by their buildings, and buildings are the result of teamwork. As achievements, buildings are not like scientific discoveries, but like movies, which compete for awards for best picture. Thus, it would be better if the top prize in architecture were awarded to the best building rather than the best architect.",
+    "questionStem": "The argument proceeds by",
     "answerChoices": {
       "A": "reaching a conclusion about the way something should be done in one field on the basis of comparisons with corresponding practices in other fields",
       "B": "making a distinction between two different types of objects in order to conclude that one has more inherent value than the other",
@@ -405,8 +405,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Critic: An art historian argues that because fifteenth- century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth- century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth- century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery. The argument is flawed in that it",
+    "stimulus": "Critic: An art historian argues that because fifteenth- century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth- century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth- century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery.",
+    "questionStem": "The argument is flawed in that it",
     "answerChoices": {
       "A": "rejects a position merely because the proponent of the position has other objectionable views",
       "B": "illicitly relies on two different meanings of the term “mastery”",
@@ -456,8 +456,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "The advent of chemical fertilizers led the farmers in a certain region to abandon the practice of periodically growing a “green-manure” crop, such as alfalfa, in a field to rejuvenate its soil. As a result, the soil structure in a typical farm field in the region is poor. So to significantly improve the soil structure, farmers will need to abandon the use of chemical fertilizers. The argument relies on the assumption that",
+    "stimulus": "The advent of chemical fertilizers led the farmers in a certain region to abandon the practice of periodically growing a “green-manure” crop, such as alfalfa, in a field to rejuvenate its soil. As a result, the soil structure in a typical farm field in the region is poor. So to significantly improve the soil structure, farmers will need to abandon the use of chemical fertilizers.",
+    "questionStem": "The argument relies on the assumption that",
     "answerChoices": {
       "A": "most, if not all, farmers in the region who abandon the use of chemical fertilizers will periodically grow alfalfa",
       "B": "applying chemical fertilizers to green-manure crops, such as alfalfa, has no positive effect on their growth",

@@ -133,8 +133,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Political analyst: Several years ago, McFarlane, the military dictator, had Brooks, the former prime minister, arrested on charges of corruption. After years of negotiation, McFarlane has pardoned Brooks, and she has agreed to join his government. Almost all of McFarlane’s supporters believe that Brooks is guilty of corruption. Moreover, almost all of McFarlane’s opponents will oppose anyone who agrees to join his government. So Brooks will have few supporters in this country. The political analyst’s argument depends on the assumption that",
+    "stimulus": "Political analyst: Several years ago, McFarlane, the military dictator, had Brooks, the former prime minister, arrested on charges of corruption. After years of negotiation, McFarlane has pardoned Brooks, and she has agreed to join his government. Almost all of McFarlane’s supporters believe that Brooks is guilty of corruption. Moreover, almost all of McFarlane’s opponents will oppose anyone who agrees to join his government. So Brooks will have few supporters in this country.",
+    "questionStem": "The political analyst’s argument depends on the assumption that",
     "answerChoices": {
       "A": "Brooks’s joining McFarlane’s government inappropriately gives that government a semblance of legitimacy",
       "B": "there is less corruption in the country’s government now than when Brooks was prime minister",
@@ -330,8 +330,8 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Activist: Medical conditions such as cancer and birth defects have been linked to pollutants in water. Organic pollutants such as dioxins, and inorganic pollutants such as mercury, are ingested by fish and move up the food chain to people, where they accumulate in tissue. Since most cancers and birth defects are incurable, we need to aim at their prevention. Clearly, the only effective way to reduce significantly their overall incidence is to halt industries known to produce these pollutants, given that such industries are unlikely to comply adequately with strict environmental regulations. A flaw in the activist’s reasoning is that it",
+    "stimulus": "Activist: Medical conditions such as cancer and birth defects have been linked to pollutants in water. Organic pollutants such as dioxins, and inorganic pollutants such as mercury, are ingested by fish and move up the food chain to people, where they accumulate in tissue. Since most cancers and birth defects are incurable, we need to aim at their prevention. Clearly, the only effective way to reduce significantly their overall incidence is to halt industries known to produce these pollutants, given that such industries are unlikely to comply adequately with strict environmental regulations.",
+    "questionStem": "A flaw in the activist’s reasoning is that it",
     "answerChoices": {
       "A": "fails to consider the possibility that a significant number of occurrences of cancer and birth defects may be caused by preventable factors other than industrial pollutants",
       "B": "does not consider the possibility that pollutants can cause harm to nonhuman species as well as to human beings",
@@ -405,8 +405,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "The radio station claims that its new format is popular with listeners because more than three-quarters of the listeners who call in requests to the station say they are pleased with the format. This, however, is hardly conclusive. It would be like trying to determine whether a political candidate is popular with voters by interviewing only those people who have already decided to vote for the candidate. The argument proceeds by",
+    "stimulus": "The radio station claims that its new format is popular with listeners because more than three-quarters of the listeners who call in requests to the station say they are pleased with the format. This, however, is hardly conclusive. It would be like trying to determine whether a political candidate is popular with voters by interviewing only those people who have already decided to vote for the candidate.",
+    "questionStem": "The argument proceeds by",
     "answerChoices": {
       "A": "concluding that an inference is flawed on the grounds that it is based on a survey conducted by a biased party",
       "B": "referring to an inference that is clearly flawed in order to undermine an analogous inference",
@@ -428,8 +428,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Historian: Those who claim that Shakespeare did not write the plays commonly attributed to him are motivated purely by snobbery. Shakespeare was the son of a glove maker, whereas every other person proposed as the true author of the plays was an aristocrat, and many of those who argue that one or another of these aristocrats wrote the plays are the aristocrats’ descendants. The reasoning in the historian’s argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Historian: Those who claim that Shakespeare did not write the plays commonly attributed to him are motivated purely by snobbery. Shakespeare was the son of a glove maker, whereas every other person proposed as the true author of the plays was an aristocrat, and many of those who argue that one or another of these aristocrats wrote the plays are the aristocrats’ descendants.",
+    "questionStem": "The reasoning in the historian’s argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "presumes, without providing justification, that a claim cannot be true if those who advance it are motivated by snobbery",
       "B": "takes for granted that anyone who is motivated purely by snobbery cannot also be motivated by legitimate historical evidence",
@@ -596,8 +596,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Among small- to medium-sized marine mammals such as seals and dolphins, the longer an animal can stay submerged during a dive, the greater the depth the animal can reach. Dolphins can dive to greater depths than northern fur seals can, and elephant seals can stay submerged longer than Weddell seals can. If the information above is accurate, then each of the following statements could be true except:",
+    "stimulus": "Among small- to medium-sized marine mammals such as seals and dolphins, the longer an animal can stay submerged during a dive, the greater the depth the animal can reach. Dolphins can dive to greater depths than northern fur seals can, and elephant seals can stay submerged longer than Weddell seals can.",
+    "questionStem": "If the information above is accurate, then each of the following statements could be true except:",
     "answerChoices": {
       "A": "Dolphins can dive to greater depths than Weddell seals can, but not to depths as great as elephant seals can.",
       "B": "Weddell seals can stay submerged longer than northern fur seals can, but dolphins can dive to greater depths than Weddell seals can.",

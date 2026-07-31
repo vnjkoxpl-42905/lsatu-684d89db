@@ -166,7 +166,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 3, questions 7 through 8. Figorian Wildlife Commission: The development of wetlands in industrialized nations for residential and commercial uses has endangered many species. To protect wildlife we must regulate such development in Figoria: future wetland development must be offset by the construction of replacement wetland habitats. Thus, development would cause no net reduction of wetlands and pose no threat to the species that inhabit them. Figorian Development Commission: Other nations have flagrantly developed wetlands at the expense of wildlife. We have conserved. Since Figorian wetland development might not affect wildlife and is necessary for growth, we should allow development. We have as much right to govern our own resources as countries that have already put their natural resources to commercial use. 7.",
     "questionStem": "Which one of the following principles, if accepted, would most strongly support the Figorian Development Commission’s position against the Figorian Wildlife Commission’s position?",
     "answerChoices": {
       "A": "National resources should be regulated by international agreement when wildlife is endangered.",
@@ -537,8 +537,8 @@
       "Causation"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Helena: Extroversion, or sociability, is not biologically determined. Children whose biological parents are introverted, when adopted by extroverts, tend to be more sociable than children of introverted parents who are not adopted. Jay: Your conclusion does not follow. Some of these children adopted by extroverts remain introverted no matter how young they are when adopted. Jay’s response suggests that he interpreted Helena’s remarks to mean that",
+    "stimulus": "Helena: Extroversion, or sociability, is not biologically determined. Children whose biological parents are introverted, when adopted by extroverts, tend to be more sociable than children of introverted parents who are not adopted. Jay: Your conclusion does not follow. Some of these children adopted by extroverts remain introverted no matter how young they are when adopted.",
+    "questionStem": "Jay’s response suggests that he interpreted Helena’s remarks to mean that",
     "answerChoices": {
       "A": "biological factors play only a partial role in a child being extroverted",
       "B": "most but not all children whose biological parents are introverted become extroverted when adopted by extroverts",

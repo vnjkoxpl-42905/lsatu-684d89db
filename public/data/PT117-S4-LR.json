@@ -195,8 +195,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Manager: When Sullivan was passed over for promotion, people said that the deciding factor was his being much older than the competition. But this is clearly not the case. Several recent promotions have been given to people older than Sullivan. The manager’s argument is most vulnerable to criticism because it fails to consider the possibility that",
+    "stimulus": "Manager: When Sullivan was passed over for promotion, people said that the deciding factor was his being much older than the competition. But this is clearly not the case. Several recent promotions have been given to people older than Sullivan.",
+    "questionStem": "The manager’s argument is most vulnerable to criticism because it fails to consider the possibility that",
     "answerChoices": {
       "A": "Sullivan was well qualified for the promotion",
       "B": "age is only one of a number of factors that kept Sullivan from being promoted",
@@ -216,8 +216,8 @@
     "questionType": "Point at Issue (Disagree)",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Council member P: Alarmists are those who see an instance of pollution and exaggerate its significance into a major character fault of society. Such alarmists fail to distinguish the incident and the behavior that caused it from the disposition of people not to pollute. Council member Q: To think that there is a lot of pollution based on the discovery of a serious single instance of pollution is simply an application of the widely accepted principle that actions tend to follow the path of least resistance, and it is surely easier to pollute than not to pollute. Council members P and Q disagree over whether",
+    "stimulus": "Council member P: Alarmists are those who see an instance of pollution and exaggerate its significance into a major character fault of society. Such alarmists fail to distinguish the incident and the behavior that caused it from the disposition of people not to pollute. Council member Q: To think that there is a lot of pollution based on the discovery of a serious single instance of pollution is simply an application of the widely accepted principle that actions tend to follow the path of least resistance, and it is surely easier to pollute than not to pollute.",
+    "questionStem": "Council members P and Q disagree over whether",
     "answerChoices": {
       "A": "pollution should be considered a problem",
       "B": "actions tend to follow the path of least resistance",
@@ -395,8 +395,8 @@
     "questionType": "Must Be False EXCEPT",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Philosopher: The rational pursuit of happiness is quite different from always doing what one most strongly desires to do. This is because the rational pursuit of happiness must include consideration of long-term consequences, whereas our desires are usually focused on the short term. Moreover, desires are sometimes compulsions, and while ordinary desires result in at least momentary happiness when their goals are attained, compulsions strongly drive a person to pursue goals that offer no happiness even when reached. If all of the philosopher’s statements are true, each of the following could be true except:",
+    "stimulus": "Philosopher: The rational pursuit of happiness is quite different from always doing what one most strongly desires to do. This is because the rational pursuit of happiness must include consideration of long-term consequences, whereas our desires are usually focused on the short term. Moreover, desires are sometimes compulsions, and while ordinary desires result in at least momentary happiness when their goals are attained, compulsions strongly drive a person to pursue goals that offer no happiness even when reached.",
+    "questionStem": "If all of the philosopher’s statements are true, each of the following could be true except:",
     "answerChoices": {
       "A": "The majority of people do not have compulsions.",
       "B": "Attaining the goal of any desire results in momentary happiness.",

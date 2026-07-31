@@ -33,8 +33,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Albert: Swenson’s popular book, which argues that sun exposure does not harm skin cells, is a model of poor scholarship. Nonetheless, it is valuable because it has stimulated new research on sun exposure. Yvonne: You’re kidding me! You might as well say that a virus is valuable because it stimulates epidemiologists. The dialogue provides the most support for the claim that Albert and Yvonne disagree over whether",
+    "stimulus": "Albert: Swenson’s popular book, which argues that sun exposure does not harm skin cells, is a model of poor scholarship. Nonetheless, it is valuable because it has stimulated new research on sun exposure. Yvonne: You’re kidding me! You might as well say that a virus is valuable because it stimulates epidemiologists.",
+    "questionStem": "The dialogue provides the most support for the claim that Albert and Yvonne disagree over whether",
     "answerChoices": {
       "A": "sun exposure harms skin cells",
       "B": "Swenson’s book is a model of poor scholarship",
@@ -122,8 +122,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Letter to the editor: Your newspaper’s advertisement claims that you provide coverage of the high school’s most popular sports. Clearly this is false advertising. Of the school’s students, 15 percent compete on the track team, while only 5 percent of the students play basketball. Hence, track is far more popular than basketball, yet track gets no coverage and basketball gets full-page coverage. The reasoning in the letter to the editor is most vulnerable to the criticism that it",
+    "stimulus": "Letter to the editor: Your newspaper’s advertisement claims that you provide coverage of the high school’s most popular sports. Clearly this is false advertising. Of the school’s students, 15 percent compete on the track team, while only 5 percent of the students play basketball. Hence, track is far more popular than basketball, yet track gets no coverage and basketball gets full-page coverage.",
+    "questionStem": "The reasoning in the letter to the editor is most vulnerable to the criticism that it",
     "answerChoices": {
       "A": "infers a cause from a mere correlation",
       "B": "bases its conclusion on a sample that is too small",
@@ -194,8 +194,8 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Joshi is clearly letting campaign contributions influence his vote in city council. His campaign for re-election has received more financial support from property developers than any other city councilor’s has. And more than any other councilor’s, his voting record favors the interests of property developers. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Joshi is clearly letting campaign contributions influence his vote in city council. His campaign for re-election has received more financial support from property developers than any other city councilor’s has. And more than any other councilor’s, his voting record favors the interests of property developers.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "takes for granted that because certain events occurred sequentially, the earlier events caused the later events",
       "B": "confuses one thing’s being necessary for another to occur with its being sufficient to make it occur",
@@ -265,8 +265,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Several movie critics have claimed that this movie will inspire people to act in socially irresponsible ways, yet this claim relies entirely on survey data that have turned out to be deeply flawed. Thus these critics have made a claim that is not only untrue but also potentially harmful to the moviemakers’ reputations. The argument is flawed in that it",
+    "stimulus": "Several movie critics have claimed that this movie will inspire people to act in socially irresponsible ways, yet this claim relies entirely on survey data that have turned out to be deeply flawed. Thus these critics have made a claim that is not only untrue but also potentially harmful to the moviemakers’ reputations.",
+    "questionStem": "The argument is flawed in that it",
     "answerChoices": {
       "A": "infers that a claim is false merely on the grounds that no satisfactory evidence for it has been offered",
       "B": "fails to consider that a pejorative claim that is true can be more harmful to a person’s reputation than a false claim",
@@ -480,8 +480,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "In a recent study, researchers collected current prices for the 300 most common pharmaceutical drugs from the leading wholesalers specializing in bulk sales. It was found that these prices average 60 to 80 percent below the suggested wholesale prices listed for the same drugs in the current annual edition of a widely used, independently published pharmaceutical price guidebook. Each of the following, if true, would help to explain the situation described above except:",
+    "stimulus": "In a recent study, researchers collected current prices for the 300 most common pharmaceutical drugs from the leading wholesalers specializing in bulk sales. It was found that these prices average 60 to 80 percent below the suggested wholesale prices listed for the same drugs in the current annual edition of a widely used, independently published pharmaceutical price guidebook.",
+    "questionStem": "Each of the following, if true, would help to explain the situation described above except:",
     "answerChoices": {
       "A": "A price war wherein pharmaceutical drug wholesalers tried to undercut each others’ prices began shortly before the study was conducted.",
       "B": "Suggested wholesale prices for the most common pharmaceutical drugs tend to be less than those for less common pharmaceutical drugs.",

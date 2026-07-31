@@ -34,8 +34,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Columnist: An information design expert has argued that using the popular presentation-graphics software GIAPS, with its autopresentation wizard and simplistic premade templates, leads people to develop ineffective presentations. But that is absurd. GIAPS is just a tool, so it cannot be responsible for bad presentations. The responsibility must lie with those who use the tool poorly. The columnist’s argument is most vulnerable to criticism on the grounds that it",
+    "stimulus": "Columnist: An information design expert has argued that using the popular presentation-graphics software GIAPS, with its autopresentation wizard and simplistic premade templates, leads people to develop ineffective presentations. But that is absurd. GIAPS is just a tool, so it cannot be responsible for bad presentations. The responsibility must lie with those who use the tool poorly.",
+    "questionStem": "The columnist’s argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
       "A": "bases its conclusion on claims that are inconsistent with each other",
       "B": "takes for granted that any presentation that is not ineffective is a good presentation",
@@ -199,8 +199,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Astronomer: Proponents of the hypothesis that life evolved extraterrestrially and drifted here in spores point out that, 3.8 billion years ago, Earth was bombarded by meteorites that would have destroyed any life already here. Yet 3.5 billion years ago, Earth had life forms complex enough to leave fossil remains. Such life could not have evolved here in the 0.3 billion years following the meteorite bombardments, they claim. There is good reason to regard their hypothesis as false, however, for they merely offer empirical arguments against the view that life evolved on Earth; neither they nor anyone else has provided positive support for the extraterrestrial-spore theory of the origin of terrestrial life. The reasoning in the astronomer’s argument is flawed because the argument",
+    "stimulus": "Astronomer: Proponents of the hypothesis that life evolved extraterrestrially and drifted here in spores point out that, 3.8 billion years ago, Earth was bombarded by meteorites that would have destroyed any life already here. Yet 3.5 billion years ago, Earth had life forms complex enough to leave fossil remains. Such life could not have evolved here in the 0.3 billion years following the meteorite bombardments, they claim. There is good reason to regard their hypothesis as false, however, for they merely offer empirical arguments against the view that life evolved on Earth; neither they nor anyone else has provided positive support for the extraterrestrial-spore theory of the origin of terrestrial life.",
+    "questionStem": "The reasoning in the astronomer’s argument is flawed because the argument",
     "answerChoices": {
       "A": "concludes, simply because there is no evidence in favor of a hypothesis, that there is evidence against that hypothesis",
       "B": "fails to justify its claim that the view being criticized is inherently implausible",

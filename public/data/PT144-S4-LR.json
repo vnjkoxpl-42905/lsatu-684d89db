@@ -82,8 +82,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Annette: To persuade the town council to adopt your development plan, you should take them on a trip to visit other towns that have successfully implemented plans like yours. Sefu: But I have a vested interest in their votes. If council members were to accept a trip from me, it would give the appearance of undue influence. The dialogue provides the most support for the claim that Annette and Sefu disagree over whether",
+    "stimulus": "Annette: To persuade the town council to adopt your development plan, you should take them on a trip to visit other towns that have successfully implemented plans like yours. Sefu: But I have a vested interest in their votes. If council members were to accept a trip from me, it would give the appearance of undue influence.",
+    "questionStem": "The dialogue provides the most support for the claim that Annette and Sefu disagree over whether",
     "answerChoices": {
       "A": "the council should adopt Sefu’s development plan",
       "B": "Sefu should take the council on a trip to visit other towns",
@@ -107,8 +107,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Scholar: Recently, some religions have updated the language of their traditional texts and replaced traditional rituals with more contemporary ones. These changes have been followed by increases in attendance at places of worship affiliated with these religions. This shows that any such modernization will result in increased numbers of worshipers. The scholar’s reasoning is flawed because the scholar presumes without giving sufficient justification that",
+    "stimulus": "Scholar: Recently, some religions have updated the language of their traditional texts and replaced traditional rituals with more contemporary ones. These changes have been followed by increases in attendance at places of worship affiliated with these religions. This shows that any such modernization will result in increased numbers of worshipers.",
+    "questionStem": "The scholar’s reasoning is flawed because the scholar presumes without giving sufficient justification that",
     "answerChoices": {
       "A": "not every religion can update its texts and replace its traditional rituals",
       "B": "modernization of religious texts and rituals will not involve an alteration of their messages",
@@ -228,8 +228,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Richard: Because it fails to meet the fundamental requirement of art—that it represent—abstract art will eventually be seen as an aberration. Jung-Su: Although artists, like musicians, may reject literal representation, makers of abstract art choose to represent the purely formal features of objects, which are discovered only when everyday perspectives are rejected. Thus, whatever others might come to say, abstract art is part of the artistic mainstream. Richard and Jung-Su disagree over whether",
+    "stimulus": "Richard: Because it fails to meet the fundamental requirement of art—that it represent—abstract art will eventually be seen as an aberration. Jung-Su: Although artists, like musicians, may reject literal representation, makers of abstract art choose to represent the purely formal features of objects, which are discovered only when everyday perspectives are rejected. Thus, whatever others might come to say, abstract art is part of the artistic mainstream.",
+    "questionStem": "Richard and Jung-Su disagree over whether",
     "answerChoices": {
       "A": "makers of abstract art reject literal representation",
       "B": "the fundamental requirement of art is that it represent",
@@ -299,8 +299,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Government statistics show that the real (adjusted for inflation) average income for families has risen over the last five years. Therefore, since this year the Andersen family’s income is average for families, the family’s real income must have increased over the last five years. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Government statistics show that the real (adjusted for inflation) average income for families has risen over the last five years. Therefore, since this year the Andersen family’s income is average for families, the family’s real income must have increased over the last five years.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "ambiguously uses the term “average” in two different senses",
       "B": "fails to take into account inflation with respect to the Andersen family’s income",
@@ -348,8 +348,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Armstrong: For the treatment of a particular disease, Dr. Sullivan argues for using nutritional supplements rather than the pharmaceuticals that most doctors prescribe. But this is in his self-interest since he is paid to endorse a line of nutritional supplements. Thus, we should not use nutritional supplements in treating the disease. Armstrong’s argument is flawed in that it",
+    "stimulus": "Armstrong: For the treatment of a particular disease, Dr. Sullivan argues for using nutritional supplements rather than the pharmaceuticals that most doctors prescribe. But this is in his self-interest since he is paid to endorse a line of nutritional supplements. Thus, we should not use nutritional supplements in treating the disease.",
+    "questionStem": "Armstrong’s argument is flawed in that it",
     "answerChoices": {
       "A": "relies on two different meanings of the term “supplement” to draw a conclusion",
       "B": "relies solely on an appeal to an authority whose trustworthiness should not necessarily be taken for granted",

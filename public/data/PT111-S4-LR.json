@@ -133,8 +133,8 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Attorney: I ask you to find Mr. Smith guilty of assaulting Mr. Jackson. Regrettably, there were no eyewitnesses to the crime, but Mr. Smith has a violent character: Ms. Lopez testified earlier that Mr. Smith, shouting loudly, had threatened her. Smith never refuted this testimony. The attorney’s argument is fallacious because it reasons that",
+    "stimulus": "Attorney: I ask you to find Mr. Smith guilty of assaulting Mr. Jackson. Regrettably, there were no eyewitnesses to the crime, but Mr. Smith has a violent character: Ms. Lopez testified earlier that Mr. Smith, shouting loudly, had threatened her. Smith never refuted this testimony.",
+    "questionStem": "The attorney’s argument is fallacious because it reasons that",
     "answerChoices": {
       "A": "aggressive behavior is not a sure indicator of a violent character",
       "B": "Smith’s testimony is unreliable since he is loud and aggressive",
@@ -267,8 +267,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Mayor: The law prohibiting pedestrians from crossing against red lights serves no useful purpose. After all, in order to serve a useful purpose, a law must deter the kind of behavior it prohibits. But pedestrians who invariably violate this law are clearly not dissuaded by it; and those who comply with the law do not need it, since they would never cross against red lights even if there were no law prohibiting pedestrians from crossing against red lights. The mayor’s argument is flawed because it",
+    "stimulus": "Mayor: The law prohibiting pedestrians from crossing against red lights serves no useful purpose. After all, in order to serve a useful purpose, a law must deter the kind of behavior it prohibits. But pedestrians who invariably violate this law are clearly not dissuaded by it; and those who comply with the law do not need it, since they would never cross against red lights even if there were no law prohibiting pedestrians from crossing against red lights.",
+    "questionStem": "The mayor’s argument is flawed because it",
     "answerChoices": {
       "A": "takes for granted that most automobile drivers will obey the law that prohibits them from driving through red lights",
       "B": "uses the word “law” in one sense in the premises and in another sense in the conclusion",
@@ -531,7 +531,7 @@
     "questionType": "Method of Reasoning",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 4, questions 25 through 26. Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away. Stephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried. 25. Stephen’s response to Zachary proceeds by",
     "questionStem": "The following passage is used for Section 4, questions 25 through 26. Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away. Stephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried. 25. Stephen’s response to Zachary proceeds by",
     "answerChoices": {
       "A": "calling into question an assumption on which Zachary’s conclusion depends",

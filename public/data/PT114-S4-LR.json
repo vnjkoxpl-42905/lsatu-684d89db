@@ -169,8 +169,8 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Politician: My opponent says our zoning laws too strongly promote suburban single-family dwellings and should be changed to encourage other forms of housing like apartment buildings. Yet he lives in a house in the country. His lifestyle contradicts his own argument, which should therefore not be taken seriously. The politician’s reasoning is most vulnerable to criticism on the grounds that",
+    "stimulus": "Politician: My opponent says our zoning laws too strongly promote suburban single-family dwellings and should be changed to encourage other forms of housing like apartment buildings. Yet he lives in a house in the country. His lifestyle contradicts his own argument, which should therefore not be taken seriously.",
+    "questionStem": "The politician’s reasoning is most vulnerable to criticism on the grounds that",
     "answerChoices": {
       "A": "its characterization of the opponent’s lifestyle reveals the politician’s own prejudice against constructing apartment buildings",
       "B": "it neglects the fact that apartment buildings can be built in the suburbs just as easily as in the center of the city",
@@ -561,8 +561,8 @@
     "questionType": "Point at Issue (Disagree)",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Tony: A short story is little more than a novelist’s sketch pad. Only novels have narrative structures that allow writers to depict human lives accurately by portraying characters whose personalities gradually develop through life experience. Raoul: Life consists not of a linear process of personality development, but rather of a series of completely disjointed vignettes, from many of which the discerning observer may catch glimpses of character. Thus, the short story depicts human lives more faithfully than does the novel. The dialogue most supports the claim that Tony and Raoul disagree about whether",
+    "stimulus": "Tony: A short story is little more than a novelist’s sketch pad. Only novels have narrative structures that allow writers to depict human lives accurately by portraying characters whose personalities gradually develop through life experience. Raoul: Life consists not of a linear process of personality development, but rather of a series of completely disjointed vignettes, from many of which the discerning observer may catch glimpses of character. Thus, the short story depicts human lives more faithfully than does the novel.",
+    "questionStem": "The dialogue most supports the claim that Tony and Raoul disagree about whether",
     "answerChoices": {
       "A": "human lives are best understood as series of completely disjointed vignettes",
       "B": "novels and short stories employ the same strategies to depict human lives",

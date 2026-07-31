@@ -357,8 +357,8 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Logan: Newspapers have always focused on ephemeral matters while ignoring important societal changes. For this and other reasons, old newspapers are useless to both amateur and professional historians. Mendez: But news stories, along with popular art, provide a wealth of information about what the people of an era thought and felt. On the basis of their statements, Logan and Mendez are committed to disagreeing over whether",
+    "stimulus": "Logan: Newspapers have always focused on ephemeral matters while ignoring important societal changes. For this and other reasons, old newspapers are useless to both amateur and professional historians. Mendez: But news stories, along with popular art, provide a wealth of information about what the people of an era thought and felt.",
+    "questionStem": "On the basis of their statements, Logan and Mendez are committed to disagreeing over whether",
     "answerChoices": {
       "A": "newspapers accurately report the most important changes taking place in a society",
       "B": "the study of previous eras should include investigations of the conventions of newspaper reporting",
@@ -469,8 +469,8 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Administrator: Because revenue fell by 15 percent this year, the university needs to reduce next year’s budget. This could be accomplished by eliminating faculty positions. It could also be accomplished by reducing faculty salaries. Since we will not eliminate any faculty positions, we must reduce faculty salaries. The administrator’s reasoning is flawed because the administrator",
+    "stimulus": "Administrator: Because revenue fell by 15 percent this year, the university needs to reduce next year’s budget. This could be accomplished by eliminating faculty positions. It could also be accomplished by reducing faculty salaries. Since we will not eliminate any faculty positions, we must reduce faculty salaries.",
+    "questionStem": "The administrator’s reasoning is flawed because the administrator",
     "answerChoices": {
       "A": "presumes, without providing justification, that more money would be saved by reducing faculty salaries than would be saved by eliminating faculty positions",
       "B": "presumes, without providing justification, that the budget cannot be reduced unless faculty positions are eliminated or faculty salaries are reduced",

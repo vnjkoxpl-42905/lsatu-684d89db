@@ -58,8 +58,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Moore: Sunscreen lotions, which are designed to block skin-cancer-causing ultraviolet radiation, do not do so effectively. Many scientific studies have shown that people who have consistently used these lotions develop, on average, as many skin cancers as those who have rarely, if ever, used them. The reasoning in Moore’s argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Moore: Sunscreen lotions, which are designed to block skin-cancer-causing ultraviolet radiation, do not do so effectively. Many scientific studies have shown that people who have consistently used these lotions develop, on average, as many skin cancers as those who have rarely, if ever, used them.",
+    "questionStem": "The reasoning in Moore’s argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "takes for granted that there are no other possible health benefits of using sunscreen lotions other than blocking skin-cancer-causing ultraviolet radiation",
       "B": "fails to distinguish between the relative number of cases of skin cancer and the severity of those cases in measuring effectiveness at skin cancer prevention",
@@ -85,8 +85,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Psychologist: Some have argued that Freudian psychotherapy is the most effective kind because it is so difficult and time consuming. But surely this does not follow. Similar reasoning—e.g., concluding that a car-repair chain has the most effective technique for repairing cars because the cars it services receive so much work and spend so much time in the shop—would never be accepted. The reasoning technique employed by the psychologist is that of attempting to undermine an argument by",
+    "stimulus": "Psychologist: Some have argued that Freudian psychotherapy is the most effective kind because it is so difficult and time consuming. But surely this does not follow. Similar reasoning—e.g., concluding that a car-repair chain has the most effective technique for repairing cars because the cars it services receive so much work and spend so much time in the shop—would never be accepted.",
+    "questionStem": "The reasoning technique employed by the psychologist is that of attempting to undermine an argument by",
     "answerChoices": {
       "A": "introducing a principle that contradicts the one on which the argument is based",
       "B": "questioning the truth of its premises",
@@ -227,8 +227,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Vacuum cleaner salesperson: To prove that this Super XL vacuum cleaner is better than your old vacuum cleaner, I ran your old vacuum once over this dirty carpet. Then I ran the Super XL over the same area. All that dirt that the Super XL picked up is dirt your old vacuum left behind, proving the Super XL is the better vacuum. The vacuum cleaner salesperson’s argument is most vulnerable to the criticism that it",
+    "stimulus": "Vacuum cleaner salesperson: To prove that this Super XL vacuum cleaner is better than your old vacuum cleaner, I ran your old vacuum once over this dirty carpet. Then I ran the Super XL over the same area. All that dirt that the Super XL picked up is dirt your old vacuum left behind, proving the Super XL is the better vacuum.",
+    "questionStem": "The vacuum cleaner salesperson’s argument is most vulnerable to the criticism that it",
     "answerChoices": {
       "A": "ignores the possibility that dirt remained in the carpet even after the Super XL had been used in the test",
       "B": "takes for granted that the Super XL will still perform better than the old vacuum cleaner when it is the same age as the old vacuum cleaner",
@@ -300,8 +300,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "In early 2003, scientists detected methane in the atmosphere of Mars. Methane is a fragile compound that falls apart when hit by the ultraviolet radiation in sunlight. So any methane in the Martian atmosphere must have been released into the atmosphere relatively recently. The argument relies on the assumption that",
+    "stimulus": "In early 2003, scientists detected methane in the atmosphere of Mars. Methane is a fragile compound that falls apart when hit by the ultraviolet radiation in sunlight. So any methane in the Martian atmosphere must have been released into the atmosphere relatively recently.",
+    "questionStem": "The argument relies on the assumption that",
     "answerChoices": {
       "A": "Mars had no methane in its atmosphere prior to",
       "B": "all methane in the Martian atmosphere is eventually exposed to sunlight",
@@ -599,8 +599,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Roberta is irritable only when she is tired, and loses things only when she is tired. Since she has been yawning all day, and has just lost her keys, she is almost certainly irritable. The reasoning above is flawed in that it",
+    "stimulus": "Roberta is irritable only when she is tired, and loses things only when she is tired. Since she has been yawning all day, and has just lost her keys, she is almost certainly irritable.",
+    "questionStem": "The reasoning above is flawed in that it",
     "answerChoices": {
       "A": "infers from a correlation between tiredness and yawning that tiredness causes yawning",
       "B": "assumes the conclusion that it sets out to prove",

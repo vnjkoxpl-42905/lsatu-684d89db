@@ -8,8 +8,8 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by- products have entered the swamp’s ecosystem. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by- products have entered the swamp’s ecosystem.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "provides no explanation for developmental abnormalities that do not result from elevated hormonal activity",
       "B": "fails to consider whether elevated hormonal activity can result from factors other than the presence of industrial by-products",
@@ -59,8 +59,8 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Doris: I’ve noticed that everyone involved in student government is outspoken. So if we want students to be more outspoken, we should encourage them to become involved in student government. Zack: Those who are in student government became involved precisely because they are outspoken in the first place. Encouraging others to become involved will do nothing to make them more outspoken. Doris and Zack disagree over whether",
+    "stimulus": "Doris: I’ve noticed that everyone involved in student government is outspoken. So if we want students to be more outspoken, we should encourage them to become involved in student government. Zack: Those who are in student government became involved precisely because they are outspoken in the first place. Encouraging others to become involved will do nothing to make them more outspoken.",
+    "questionStem": "Doris and Zack disagree over whether",
     "answerChoices": {
       "A": "students should be more outspoken",
       "B": "students should be encouraged to become involved in student government",
@@ -82,8 +82,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Biologist: A careful study of the behavior of six individual chameleons concluded that lizards such as chameleons bask in the sun not only for warmth but also to regulate their production of vitamin D. Critics of the study—although correct in observing that its sample size was very small—are wrong to doubt its results. After all, the study’s author is well regarded professionally and has been doing excellent work for years. The reasoning in the biologist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Biologist: A careful study of the behavior of six individual chameleons concluded that lizards such as chameleons bask in the sun not only for warmth but also to regulate their production of vitamin D. Critics of the study—although correct in observing that its sample size was very small—are wrong to doubt its results. After all, the study’s author is well regarded professionally and has been doing excellent work for years.",
+    "questionStem": "The reasoning in the biologist’s argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "takes the behavior of chameleons to be generalizable to lizards as a whole",
       "B": "fails to explain how chameleons regulate their vitamin D production by basking in the sun",
@@ -407,8 +407,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "An article claims that many medical patients have an instinctual ability to predict sudden changes in their medical status. But the evidence given is anecdotal and should not be trusted. The case is analogous to empirically disproven reports that babies are born in disproportionately high numbers during full moons. Once that rumor became popular, maternity room staff were more likely to remember busy nights with full moons than busy nights without them. The argument requires the assumption that",
+    "stimulus": "An article claims that many medical patients have an instinctual ability to predict sudden changes in their medical status. But the evidence given is anecdotal and should not be trusted. The case is analogous to empirically disproven reports that babies are born in disproportionately high numbers during full moons. Once that rumor became popular, maternity room staff were more likely to remember busy nights with full moons than busy nights without them.",
+    "questionStem": "The argument requires the assumption that",
     "answerChoices": {
       "A": "the article claiming that medical patients can instinctually predict sudden changes in their medical status will soon be empirically disproven",
       "B": "patients’ predictions of sudden changes in their medical status are less likely to be remembered by medical staff if no such change actually occurs",

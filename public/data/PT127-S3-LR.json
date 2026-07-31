@@ -8,8 +8,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog- headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches! William’s argument against Anna’s claims about rainbows is most vulnerable to criticism because it",
+    "stimulus": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog- headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches!",
+    "questionStem": "William’s argument against Anna’s claims about rainbows is most vulnerable to criticism because it",
     "answerChoices": {
       "A": "inappropriately distorts Anna’s conclusion, making it appear more extreme than it really is",
       "B": "takes for granted that Pliny the Elder was in bad faith when he reported about unheard-of creatures",
