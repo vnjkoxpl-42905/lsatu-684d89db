@@ -251,7 +251,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             <Button
               onClick={startSmartDrill}
               size="sm"
-              className="h-11 rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black shadow-[0_16px_38px_rgba(255,255,255,0.1)] hover:bg-neutral-200"
+              className="h-11 rounded-full border border-white/10 bg-white px-6 text-sm font-semibold text-black shadow-[0_16px_38px_rgba(255,255,255,0.1)] hover:bg-neutral-200"
             >
               Start Smart Drill
             </Button>
@@ -290,7 +290,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
 
         <div className="drill-observatory-console w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
           <div
-            className="mb-3 space-y-2.5"
+            className="mb-3 space-y-3"
             onKeyDown={(event) => {
               if (event.key === "Escape" && searchQuery) {
                 event.preventDefault();
@@ -409,7 +409,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             )}
           </div>
 
-          <div className="grid grid-cols-1 gap-2.5" aria-label="Specific question launcher">
+          <div className="grid grid-cols-1 gap-3" aria-label="Specific question launcher">
             <ConsoleSelect
               label="PrepTest"
               value={pt}
@@ -700,7 +700,7 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24">
+    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
       {/* gap-6, not gap-4: the panels below carry 22px of internal padding, so a
           16px gap between them made the blocks sit closer to each other than
           their own contents sit to their edges — proximity backwards. The gap

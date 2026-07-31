@@ -546,7 +546,7 @@ function TodayPrimarySurface({
     >
       <div
         className={cn(
-          "relative min-h-[236px] overflow-hidden rounded-[28px] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(107,151,181,0.08)] backdrop-blur-md",
+          "relative min-h-[236px] overflow-hidden rounded-[28px] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(107,151,181,0.08)] backdrop-blur-md",
           TYPE_TONE[item.type],
         )}
       >
@@ -581,7 +581,7 @@ function TodayPrimarySurface({
           )}
         </div>
 
-        <div className="mt-auto max-w-[28rem] pb-4 pt-7">
+        <div className="mt-auto max-w-[28rem] pb-4 pt-6">
           <h2 className="text-xl font-semibold leading-tight tracking-normal text-white sm:text-2xl">
             {item.title}
           </h2>
@@ -613,7 +613,7 @@ function TodayPrimarySurface({
           onActivate();
         }}
         disabled={!item.route && !item.onOpen}
-        className="relative -mx-5 -mb-5 mt-1 flex w-[calc(100%+2.5rem)] items-center justify-between bg-[linear-gradient(90deg,rgba(255,255,255,0.065),rgba(255,255,255,0.035)_46%,rgba(123,165,193,0.045))] px-5 py-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition duration-500 hover:bg-[linear-gradient(90deg,rgba(244,190,121,0.1),rgba(255,255,255,0.045)_46%,rgba(123,165,193,0.065))] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
+        className="relative -mx-6 -mb-6 mt-1 flex w-[calc(100%+3rem)] items-center justify-between bg-[linear-gradient(90deg,rgba(255,255,255,0.065),rgba(255,255,255,0.035)_46%,rgba(123,165,193,0.045))] px-6 py-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition duration-500 hover:bg-[linear-gradient(90deg,rgba(244,190,121,0.1),rgba(255,255,255,0.045)_46%,rgba(123,165,193,0.065))] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
       >
         <span>{actionText(item)}</span>
         <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300/90">
@@ -645,7 +645,7 @@ function TodayRailItem({
       onClick={onPromote}
       className={cn(
         "drill-observatory-today-rail",
-        "flex w-full items-center gap-3 rounded-[21px] bg-[linear-gradient(145deg,rgba(255,255,255,0.062),rgba(255,255,255,0.026)_52%,rgba(77,109,132,0.04))] px-4 py-2.5 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.075),inset_0_-1px_0_rgba(96,130,157,0.055)] ring-1 ring-white/[0.045] backdrop-blur-md transition duration-500 hover:bg-[linear-gradient(145deg,rgba(255,255,255,0.085),rgba(255,255,255,0.036)_52%,rgba(92,130,160,0.055))] hover:ring-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
+        "flex w-full items-center gap-3 rounded-xl bg-[linear-gradient(145deg,rgba(255,255,255,0.062),rgba(255,255,255,0.026)_52%,rgba(77,109,132,0.04))] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.075),inset_0_-1px_0_rgba(96,130,157,0.055)] ring-1 ring-white/[0.045] backdrop-blur-md transition duration-500 hover:bg-[linear-gradient(145deg,rgba(255,255,255,0.085),rgba(255,255,255,0.036)_52%,rgba(92,130,160,0.055))] hover:ring-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b12] active:scale-[0.99]",
         muted && "opacity-60",
       )}
       transition={{ type: "spring", stiffness: 180, damping: 24 }}
@@ -655,7 +655,7 @@ function TodayRailItem({
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-semibold">{railTitle(item)}</span>
-        <span className="mt-0.5 block truncate text-xs text-slate-400/95">{item.sourceLine}</span>
+        <span className="mt-1 block truncate text-xs text-slate-400/95">{item.sourceLine}</span>
       </span>
       <span className="shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/95">
         {item.status ?? item.actionLabel}
@@ -671,7 +671,7 @@ function TodaySkeleton() {
         <div className="h-3 w-20 rounded-full bg-white/15" />
         <div className="mt-7 h-8 w-3/4 rounded-full bg-white/14" />
         <div className="mt-3 h-4 w-1/2 rounded-full bg-white/10" />
-        <div className="-mx-5 -mb-5 mt-20 h-12 bg-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" />
+        <div className="-mx-6 -mb-6 mt-20 h-12 bg-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" />
       </div>
       <div className="mt-3 grid gap-2">
         <div className="h-[58px] rounded-[23px] bg-white/[0.045] ring-1 ring-white/[0.07] backdrop-blur-md" />

@@ -200,7 +200,7 @@ export default function PracticeInsightStage({
                 <button
                   type="button"
                   onClick={() => handleSlideAction(slide.actionHref, slide.tab)}
-                  className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.06] px-3 py-1.5 text-[12px] font-semibold text-white/90 transition hover:border-white/25 hover:bg-white/[0.12]"
+                  className="mt-auto inline-flex w-fit items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-3 py-2 text-[12px] font-semibold text-white/90 transition hover:border-white/25 hover:bg-white/[0.12]"
                 >
                   {slide.actionLabel}
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden />
@@ -240,7 +240,7 @@ function PracticeTile({
       </div>
       <div>
         <div className="text-sm font-semibold text-white">{title}</div>
-        <div className="mt-0.5 text-[11px] leading-4 text-white/50">{description}</div>
+        <div className="mt-1 text-[11px] leading-4 text-white/50">{description}</div>
       </div>
     </button>
   );
@@ -259,7 +259,7 @@ function SecondaryLink({
     <button
       type="button"
       onClick={onClick}
-      className="drill-observatory-secondary-link inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-semibold text-white/70 transition hover:border-white/25 hover:text-white"
+      className="drill-observatory-secondary-link inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[12px] font-semibold text-white/70 transition hover:border-white/25 hover:text-white"
     >
       <Icon className="h-3.5 w-3.5" aria-hidden />
       {label}
