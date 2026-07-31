@@ -434,7 +434,7 @@ export default function TodayFocusPanel({
         <EclipseGlassBackdrop />
         <div className="relative">
           <div className="mb-4 flex items-center justify-between px-1">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.36em] text-slate-200/90">
+            <p className="drill-observatory-label text-slate-200/90">
               TODAY
             </p>
             <time className="font-mono text-[11px] font-medium text-slate-300/80" dateTime={format(new Date(), "yyyy-MM-dd")}>
@@ -562,12 +562,12 @@ function TodayPrimarySurface({
       >
         <div className="flex w-full items-start justify-between gap-4">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-200/85">
+            <p className="drill-observatory-label text-slate-200/85">
               Next up
             </p>
             <div className="mt-2 flex items-center gap-2">
               {item.status && (
-                <span className="rounded-full border border-amber-100/15 bg-amber-100/[0.08] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-50/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <span className="drill-observatory-label rounded-full border border-amber-100/15 bg-amber-100/[0.08] px-2 py-1 text-amber-50/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                   {item.status}
                 </span>
               )}
@@ -582,7 +582,7 @@ function TodayPrimarySurface({
         </div>
 
         <div className="mt-auto max-w-[28rem] pb-4 pt-6">
-          <h2 className="text-xl font-semibold leading-tight tracking-normal text-white sm:text-2xl">
+          <h2 className="text-xl font-semibold leading-tight tracking-normal text-white">
             {item.title}
           </h2>
           <p className="mt-2 text-sm font-medium text-slate-300/90">{item.sourceLine}</p>
@@ -597,7 +597,7 @@ function TodayPrimarySurface({
                 <p>{contextLineFor(item)}</p>
                 {item.preview && <p className="line-clamp-2 text-slate-100/95">{item.type === "message" ? `"${item.preview}"` : item.preview}</p>}
                 {(item.estimatedTime || item.progress) && (
-                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400/90">
+                  <p className="drill-observatory-label text-slate-400/90">
                     {[item.estimatedTime, item.progress].filter(Boolean).join(" / ")}
                   </p>
                 )}
@@ -616,7 +616,7 @@ function TodayPrimarySurface({
         className="relative -mx-6 -mb-6 mt-1 flex w-[calc(100%+3rem)] items-center justify-between bg-[linear-gradient(90deg,rgba(255,255,255,0.065),rgba(255,255,255,0.035)_46%,rgba(123,165,193,0.045))] px-6 py-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition duration-500 hover:bg-[linear-gradient(90deg,rgba(244,190,121,0.1),rgba(255,255,255,0.045)_46%,rgba(123,165,193,0.065))] active:scale-[0.99] disabled:cursor-not-allowed disabled:text-slate-500"
       >
         <span>{actionText(item)}</span>
-        <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-300/90">
+        <span className="drill-observatory-label flex items-center gap-2 text-slate-300/90">
           {item.actionCue}
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.065] text-slate-100/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.09)] transition duration-500 group-hover:translate-x-0.5">
             <ArrowRight className="h-4 w-4" aria-hidden />
@@ -657,7 +657,7 @@ function TodayRailItem({
         <span className="block truncate text-sm font-semibold">{railTitle(item)}</span>
         <span className="mt-1 block truncate text-xs text-slate-400/95">{item.sourceLine}</span>
       </span>
-      <span className="shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/95">
+      <span className="drill-observatory-label shrink-0 text-slate-300/95">
         {item.status ?? item.actionLabel}
       </span>
     </motion.button>
@@ -688,10 +688,10 @@ function TodayEmptyState() {
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_72%_16%,rgba(180,213,235,0.11),transparent_38%),radial-gradient(circle_at_18%_88%,rgba(238,174,91,0.12),transparent_34%)]" />
         <div className="relative flex min-h-[198px] flex-col justify-between">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
+            <p className="drill-observatory-label text-slate-300/90">
               Next up
             </p>
-            <h2 className="mt-8 text-2xl font-semibold tracking-normal text-white">
+            <h2 className="mt-8 text-xl font-semibold tracking-normal text-white">
               All caught up
             </h2>
             <p className="mt-2 text-sm text-slate-300/90">Nothing assigned for today.</p>
@@ -712,11 +712,11 @@ function TodayErrorState() {
   return (
     <div>
       <div className="min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.09),rgba(255,255,255,0.035)_52%,rgba(92,126,151,0.055))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.13),inset_0_-1px_0_rgba(104,149,184,0.08),0_18px_46px_rgba(0,0,0,0.22)] ring-1 ring-white/[0.07] backdrop-blur-md">
-        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-300/90">
+        <p className="drill-observatory-label text-slate-300/90">
           Next up
         </p>
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold tracking-normal text-white">Couldn&apos;t load today.</h2>
+          <h2 className="text-xl font-semibold tracking-normal text-white">Couldn&apos;t load today.</h2>
           <p className="mt-2 text-sm text-slate-400/90">Refresh the page to try again.</p>
         </div>
       </div>

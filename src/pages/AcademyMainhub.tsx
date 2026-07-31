@@ -240,10 +240,13 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
       <div className="drill-observatory-hero-grid relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
         <div className="drill-observatory-greeting flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
           <div className="space-y-1">
-            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">
+            <p className="drill-observatory-label text-white/45">
               {todayLabel}
             </p>
-            <h2 className="text-xl font-semibold leading-tight text-white sm:text-2xl">
+            {/* Size comes from .drill-observatory-greeting h2, which clamps up to
+                --observatory-text-display. The `sm:text-2xl` that used to sit here
+                never applied — the CSS rule outranks it. */}
+            <h2 className="text-xl font-semibold leading-tight text-white">
               {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
             </h2>
           </div>
@@ -326,7 +329,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
               <button
                 type="button"
                 onClick={() => setAdvancedOpen((value) => !value)}
-                className="inline-flex items-center gap-2 rounded-full px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 transition hover:text-white"
+                className="drill-observatory-label inline-flex items-center gap-2 rounded-full px-1 py-1 text-white/55 transition hover:text-white"
                 aria-expanded={advancedOpen}
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden />
@@ -483,10 +486,10 @@ function QuestionSearchResult({
         <span>
           PT {question.pt} · S{question.section} · Q{question.qnum}
         </span>
-        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white/65">
           {question.qtype}
         </span>
-        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/65">
+        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white/65">
           D{question.difficulty}
         </span>
       </div>
@@ -600,7 +603,7 @@ function LauncherStage({
         {isLoading && (
           <div className="flex flex-col items-center justify-center gap-3 py-14">
             <Loader2 className="h-5 w-5 animate-spin text-white/50" aria-hidden />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+            <p className="drill-observatory-label text-white/45">
               Loading questions…
             </p>
           </div>

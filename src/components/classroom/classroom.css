@@ -515,6 +515,29 @@ html.dark .classroom-root .classroom-panel-wash-dark {
      reason other than the order they were written. */
   --observatory-radius-shell: 20px;
   --observatory-radius-inner: 12px;
+
+  /* Type scale. Six steps, one per role. There were nine sizes, with a 9px floor
+     that carried the breadcrumb (below comfortable reading), two sizes doing the
+     one heading job (20 and 24), and `text-xs` and `text-[12px]` both in use for
+     the same 12px. */
+  --observatory-text-label: 11px;
+  --observatory-text-meta: 12px;
+  --observatory-text-body: 14px;
+  --observatory-text-control: 16px;
+  --observatory-text-heading: 20px;
+  --observatory-text-display: 32px;
+
+  /* Two tracking values. There were nine, because em-based tracking (0.14em
+     through 0.36em) applied at five different sizes resolves to a different
+     pixel value every time — 1.4, 1.44, 1.8, 1.98, 2.42, 2.56, 2.8, 3.6. */
+  --observatory-track-label: 0.18em;
+  --observatory-track-display: -0.025em;
+
+  /* The meta face, matching .classroom-row-status and .classroom-section-meta.
+     Five labels were on Tailwind's `font-mono`, whose stack does not include
+     Roboto Mono — they resolved to ui-monospace and rendered as whatever the
+     machine happened to have. */
+  --observatory-label-font: "Roboto Mono", ui-monospace, monospace;
 }
 
 .classroom-root.classroom-root-drill .classroom-stage {
@@ -580,16 +603,39 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   z-index: 12;
 }
 
+/* Tailwind's `font-mono` stack does not include Roboto Mono, so anything using
+   it landed on ui-monospace — a different face from the labels beside it. The
+   Today panel's date sat directly next to "TODAY" in two different monos. */
+.drill-observatory-root .font-mono {
+  font-family: var(--observatory-label-font);
+}
+
+/* One treatment for every uppercase micro-label in the observatory. Ten of them
+   were doing one job in eleven different ways: two typefaces, three sizes and
+   seven tracking values. "Practice tools" and "TODAY" sit side by side at the
+   top of the two deck bays and disagreed on all three.
+
+   Applied via an explicit class rather than a blanket `.uppercase` selector —
+   the observatory hosts launcher stages whose labels are not part of this set,
+   and a blanket rule would reach them. */
+.drill-observatory-label {
+  font-family: var(--observatory-label-font) !important;
+  font-size: var(--observatory-text-label) !important;
+  font-weight: 600 !important;
+  letter-spacing: var(--observatory-track-label) !important;
+  text-transform: uppercase;
+}
+
 .drill-observatory-route-label {
   align-items: center;
   color: rgba(247, 244, 239, 0.45);
   display: flex;
-  font-family: "Roboto Mono", ui-monospace, monospace;
-  font-size: 9px;
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
   font-weight: 600;
   justify-content: space-between;
   left: var(--observatory-space-5);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--observatory-track-label);
   position: absolute;
   right: var(--observatory-space-5);
   top: var(--observatory-space-4);
@@ -624,8 +670,8 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .drill-observatory-greeting h2 {
-  font-size: clamp(1.45rem, 2.1vw, 2rem) !important;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.45rem, 2.1vw, var(--observatory-text-display)) !important;
+  letter-spacing: var(--observatory-track-display);
 }
 
 .drill-observatory-greeting > div:last-child button {
