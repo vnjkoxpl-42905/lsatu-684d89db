@@ -302,6 +302,18 @@ export async function markTAAssignmentCompleted(
   }
 }
 
+function responsesMatch(
+  left: Record<string, string>,
+  right: Record<string, string>,
+) {
+  const leftKeys = Object.keys(left).sort();
+  const rightKeys = Object.keys(right).sort();
+  return leftKeys.length === rightKeys.length
+    && leftKeys.every(
+      (key, index) => key === rightKeys[index] && left[key] === right[key],
+    );
+}
+
 export async function saveTAAssignmentResponses(
   assignmentId: string,
   responseData: Record<string, string>,
@@ -311,11 +323,27 @@ export async function saveTAAssignmentResponses(
     // These columns are introduced by the structured-homework migration.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const assignmentTable = (supabase as any).from("ta_assignments");
-    const { error } = await assignmentTable
+    const { data, error } = await assignmentTable
       .update({ response_data: responseData, response_saved_at: savedAt })
       .eq("id", assignmentId)
-      .neq("status", "completed");
+      .neq("status", "completed")
+      .select("id, response_data, response_saved_at")
+      .maybeSingle();
     if (error) throw error;
+    if (!data) {
+      return {
+        ok: false,
+        error: "Your progress was not saved. Reload the page and try again.",
+      };
+    }
+
+    const persisted = (data.response_data ?? {}) as Record<string, string>;
+    if (!responsesMatch(persisted, responseData)) {
+      return {
+        ok: false,
+        error: "Your saved work could not be verified. Please try saving again before leaving.",
+      };
+    }
     return { ok: true, savedAt };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "save failed" };
@@ -331,7 +359,7 @@ export async function submitTAAssignmentResponses(
     // These columns are introduced by the structured-homework migration.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const assignmentTable = (supabase as any).from("ta_assignments");
-    const { error } = await assignmentTable
+    const { data, error } = await assignmentTable
       .update({
         response_data: responseData,
         response_saved_at: now,
@@ -339,8 +367,21 @@ export async function submitTAAssignmentResponses(
         completed_at: now,
       })
       .eq("id", assignmentId)
-      .neq("status", "completed");
+      .neq("status", "completed")
+      .select("id, status, response_data")
+      .maybeSingle();
     if (error) throw error;
+    const persisted = (data?.response_data ?? {}) as Record<string, string>;
+    if (
+      !data
+      || data.status !== "completed"
+      || !responsesMatch(persisted, responseData)
+    ) {
+      return {
+        ok: false,
+        error: "Your homework was not submitted. Your draft is still on this device.",
+      };
+    }
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "submit failed" };
