@@ -592,14 +592,26 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   return (
-    <div className="flex flex-col h-full">
+    <div className="@container flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Build a Set</h1>
         <Button variant="ghost" onClick={onCancel}>Cancel</Button>
       </div>
 
-      <div className="flex-1 min-h-0 lg:grid lg:grid-cols-[1fr_320px] lg:gap-4">
+      {/* Container query, not `lg:` — this picker no longer owns a full page.
+          It renders inside the drill hub's deck, so the viewport can be wide
+          while the panel is not. Keying the split to the viewport put a
+          `1fr + 320px` grid inside an ~795px box and the table column, whose
+          min-content floor is the table itself, overflowed and got clipped by
+          the deck's `overflow: hidden`. `minmax(0,1fr)` lets that column
+          shrink instead of blowing the grid out.
+
+          1140px is what the split actually needs: the results table's
+          min-content is ~780px and the summary rail is a fixed 320px. Below
+          that the summary stacks under the table instead, so the table keeps
+          its full width rather than both being squeezed. */}
+      <div className="flex-1 min-h-0 @[1140px]:grid @[1140px]:grid-cols-[minmax(0,1fr)_320px] @[1140px]:gap-4">
         <div className="flex flex-col min-h-0">
       {/* Filter Bar */}
       <Card className="p-4 mb-4">

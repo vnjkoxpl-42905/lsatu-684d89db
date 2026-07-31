@@ -730,6 +730,22 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   border-left: 1px solid var(--observatory-line);
 }
 
+/* Launcher open: the deck stacks, so the bay divider runs across, not down. */
+.drill-observatory-deck[data-stacked="true"] .drill-observatory-today-bay {
+  border-left: 0;
+  border-top: 1px solid var(--observatory-line);
+}
+
+/* The launcher fills its bay edge-to-edge — it sits inside the deck shell,
+   so its own card chrome would read as a card within a card. */
+.drill-observatory-launcher {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 22px !important;
+}
+
 .drill-observatory-practice {
   background: transparent !important;
   border: 0 !important;
@@ -2045,4 +2061,14 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   --ring: 40 20% 80%;
 
   color: hsl(var(--foreground));
+}
+
+/* `.classroom-root button { color: inherit }` (0,1,1) outranks the
+   `.text-primary-foreground` utility (0,1,0) that shadcn's default Button
+   ships with, so a filled primary button inside the Classroom frame drew its
+   label in the inherited near-white — white-on-white, an invisible CTA. That
+   bites the launchers' main actions ("Generate N", "Start Section"). Two
+   classes (0,2,0) is enough to win it back; no !important needed. */
+.drill-observatory-launcher-panel .bg-primary {
+  color: hsl(var(--primary-foreground));
 }

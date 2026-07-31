@@ -651,6 +651,13 @@ export default function AcademyMainhub({
       : stageParam === "full-section" || stageParam === "type-drill"
       ? stageParam
       : "default";
+  const isLauncherStage = stage === "full-section" || stage === "type-drill";
+  /* Only Build a Set needs the whole canvas. Its picker is a dense two-column
+     panel that got its Set Summary column clipped inside the ~600px bay.
+     Full Section is a single centred form capped at max-w-2xl — giving it the
+     full width would only add dead space and push Today off-screen, so it
+     stays beside Today where both are in sight. */
+  const isWideLauncherStage = stage === "type-drill";
   const analyticsTab = searchParams.get("tab") ?? "overview";
 
   const can = React.useCallback(
@@ -709,8 +716,20 @@ export default function AcademyMainhub({
           /* A launcher swaps out ONLY the practice bay. Today (assignments,
              notes, notification items) is live status and stays visible while
              the student sets a drill up — replacing the whole deck made it look
-             like the card had been deleted. */
-          <section className="drill-observatory-deck grid grid-cols-1 items-start gap-0 @[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]">
+             like the card had been deleted.
+
+             Build a Set is the exception: its picker is a dense two-column
+             panel that got its Set Summary column clipped outright inside the
+             ~600px bay. For that stage the deck stacks — the picker takes the
+             full canvas width and Today drops beneath it, still in sight. */
+          <section
+            className={cn(
+              "drill-observatory-deck grid grid-cols-1 items-start gap-0",
+              !isWideLauncherStage &&
+                "@[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]",
+            )}
+            data-stacked={isWideLauncherStage ? "true" : undefined}
+          >
             <section
               className="drill-observatory-practice-bay"
               aria-label={
@@ -718,7 +737,7 @@ export default function AcademyMainhub({
               }
               data-tour={stage === "default" ? "mainhub-practice" : "mainhub-launcher"}
             >
-              {stage === "full-section" || stage === "type-drill" ? (
+              {isLauncherStage ? (
                 <LauncherStage kind={stage} drillReturnTo={drillReturnTo} onCancel={closeStage} />
               ) : (
                 <PracticeInsightStage
