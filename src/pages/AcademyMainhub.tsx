@@ -721,12 +721,24 @@ export default function AcademyMainhub({
              Build a Set is the exception: its picker is a dense two-column
              panel that got its Set Summary column clipped outright inside the
              ~600px bay. For that stage the deck stacks — the picker takes the
-             full canvas width and Today drops beneath it, still in sight. */
+             full canvas width and Today drops beneath it, still in sight.
+
+             `items-stretch` (the default), not `items-start`: the bays are two
+             halves of one card, so they must share its height. Left at
+             `items-start` the shorter column stopped 64px above the taller one
+             and the divider ran on past it, leaving the deck's bottom corner
+             visibly ragged.
+
+             1.2:1, not the old 1.72:1. The wide column was holding the sparse
+             content (two tiles, two links, one insight card) while Today —
+             headline, three assignment rows, status badges — was squeezed into
+             382px and wrapping. The split was feeding space to the column that
+             needed it least. */
           <section
             className={cn(
-              "drill-observatory-deck grid grid-cols-1 items-start gap-0",
+              "drill-observatory-deck grid grid-cols-1 items-stretch gap-0",
               !isWideLauncherStage &&
-                "@[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]",
+                "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
           >

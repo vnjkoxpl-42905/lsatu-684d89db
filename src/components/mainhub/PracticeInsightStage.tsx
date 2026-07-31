@@ -7,6 +7,8 @@ import {
   Grid3x3,
   Layers,
   ArrowRight,
+  Pause,
+  Play,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
@@ -43,15 +45,16 @@ export default function PracticeInsightStage({
 
   const [index, setIndex] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
+  const [userPaused, setUserPaused] = React.useState(false);
 
   React.useEffect(() => {
-    if (paused || slides.length <= 1) return;
+    if (paused || userPaused || slides.length <= 1) return;
     const t = window.setInterval(
       () => setIndex((i) => (i + 1) % slides.length),
       ROTATE_MS,
     );
     return () => window.clearInterval(t);
-  }, [paused, slides.length]);
+  }, [paused, userPaused, slides.length]);
 
   const slide = slides[index] ?? slides[0];
 
@@ -124,20 +127,48 @@ export default function PracticeInsightStage({
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
             Insight preview
           </p>
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Insight slides">
-            {slides.map((s, i) => (
+          <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5" role="tablist" aria-label="Insight slides">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="tab"
+                  aria-label={s.kicker}
+                  aria-selected={i === index}
+                  onClick={() => setIndex(i)}
+                  /* The dot stays 6px; the *target* is 24px. A centred
+                     pseudo-element carries the hit area so the control meets
+                     the 24x24 minimum without the dots visually drifting
+                     apart. */
+                  className={cn(
+                    "relative h-1.5 rounded-full transition-all",
+                    "before:absolute before:left-1/2 before:top-1/2 before:h-6 before:w-6",
+                    "before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
+                    i === index ? "w-5 bg-white/80" : "w-1.5 bg-white/25 hover:bg-white/45",
+                  )}
+                />
+              ))}
+            </div>
+            {slides.length > 1 && (
+              /* Auto-rotating content needs a real stop, not just
+                 pause-on-hover: hover reaches neither keyboard nor touch. */
               <button
-                key={s.id}
                 type="button"
-                aria-label={s.kicker}
-                aria-selected={i === index}
-                onClick={() => setIndex(i)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all",
-                  i === index ? "w-5 bg-white/80" : "w-1.5 bg-white/25 hover:bg-white/45",
+                onClick={() => setUserPaused((p) => !p)}
+                aria-label={
+                  userPaused ? "Resume insight rotation" : "Pause insight rotation"
+                }
+                aria-pressed={userPaused}
+                className="grid h-6 w-6 place-items-center rounded-full text-white/40 transition hover:bg-white/10 hover:text-white/80"
+              >
+                {userPaused ? (
+                  <Play className="h-3 w-3" aria-hidden />
+                ) : (
+                  <Pause className="h-3 w-3" aria-hidden />
                 )}
-              />
-            ))}
+              </button>
+            )}
           </div>
         </div>
 

@@ -63,7 +63,15 @@ html.dark .classroom-root {
   font: inherit;
 }
 
-.classroom-root button {
+/* A reset, so it must carry a reset's specificity. Written plainly as
+   `.classroom-root button` it scores (0,1,1) and outranks every Tailwind text
+   utility (0,1,0), which silently swallowed the colour of any button that set
+   its own: `text-white` on the hero's PrepTest trigger rendered near-black on
+   the near-black console (~1:1 contrast), and `text-primary-foreground` on the
+   launchers' filled CTAs rendered white on white. `:where()` contributes zero
+   specificity, dropping this to (0,0,1): bare buttons still inherit, and any
+   button that states a colour now keeps it. */
+:where(.classroom-root) button {
   color: inherit;
 }
 
@@ -2063,12 +2071,3 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   color: hsl(var(--foreground));
 }
 
-/* `.classroom-root button { color: inherit }` (0,1,1) outranks the
-   `.text-primary-foreground` utility (0,1,0) that shadcn's default Button
-   ships with, so a filled primary button inside the Classroom frame drew its
-   label in the inherited near-white — white-on-white, an invisible CTA. That
-   bites the launchers' main actions ("Generate N", "Start Section"). Two
-   classes (0,2,0) is enough to win it back; no !important needed. */
-.drill-observatory-launcher-panel .bg-primary {
-  color: hsl(var(--primary-foreground));
-}
