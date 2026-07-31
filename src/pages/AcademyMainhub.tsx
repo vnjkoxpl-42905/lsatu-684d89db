@@ -705,23 +705,29 @@ export default function AcademyMainhub({
           >
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
-        ) : stage === "full-section" || stage === "type-drill" ? (
-          <section aria-label="Drill launcher" data-tour="mainhub-launcher">
-            <LauncherStage kind={stage} drillReturnTo={drillReturnTo} onCancel={closeStage} />
-          </section>
         ) : (
+          /* A launcher swaps out ONLY the practice bay. Today (assignments,
+             notes, notification items) is live status and stays visible while
+             the student sets a drill up — replacing the whole deck made it look
+             like the card had been deleted. */
           <section className="drill-observatory-deck grid grid-cols-1 items-start gap-0 @[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]">
             <section
               className="drill-observatory-practice-bay"
-              aria-label="Practice and insight workspace"
-              data-tour="mainhub-practice"
+              aria-label={
+                stage === "default" ? "Practice and insight workspace" : "Drill launcher"
+              }
+              data-tour={stage === "default" ? "mainhub-practice" : "mainhub-launcher"}
             >
-              <PracticeInsightStage
-                onOpenAnalytics={openAnalytics}
-                onOpenLauncher={openLauncher}
-                canOpenAnalytics={canOpenAnalytics}
-                canOpenJournal={canOpenJournal}
-              />
+              {stage === "full-section" || stage === "type-drill" ? (
+                <LauncherStage kind={stage} drillReturnTo={drillReturnTo} onCancel={closeStage} />
+              ) : (
+                <PracticeInsightStage
+                  onOpenAnalytics={openAnalytics}
+                  onOpenLauncher={openLauncher}
+                  canOpenAnalytics={canOpenAnalytics}
+                  canOpenJournal={canOpenJournal}
+                />
+              )}
             </section>
 
             <section className="drill-observatory-today-bay">
