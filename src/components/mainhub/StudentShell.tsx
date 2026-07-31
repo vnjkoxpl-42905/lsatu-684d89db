@@ -40,7 +40,6 @@ const ROUTE_TITLES: Record<string, string> = {
   "/classroom": "Classroom",
   "/bootcamps": "Bootcamps",
   "/inbox": "Messages",
-  "/practice": "Practice Hub",
   "/journal": "Wrong Answer Journal",
   "/activities": "Activity Centre",
   "/schedule": "Schedule",

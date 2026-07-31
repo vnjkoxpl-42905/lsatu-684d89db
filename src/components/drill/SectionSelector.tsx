@@ -110,7 +110,7 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
                 >
                   <SelectValue placeholder="Select PrepTest" />
                 </SelectTrigger>
-                <SelectContent className="bg-background/95 backdrop-blur-xl border-border/50">
+                <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
                   {availablePTs.map(pt => (
                     <SelectItem 
                       key={pt} 
@@ -142,7 +142,7 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
                   >
                     <SelectValue placeholder="Select Section" />
                   </SelectTrigger>
-                  <SelectContent className="bg-background/95 backdrop-blur-xl border-border/50">
+                  <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
                     {availableSections.map(section => (
                       <SelectItem 
                         key={section} 

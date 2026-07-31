@@ -80,7 +80,7 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
         </p>
         <button
           type="button"
-          onClick={() => navigate("/practice?action=full-section")}
+          onClick={() => navigate("/classroom/drill?stage=full-section")}
           className="mt-5 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800"
         >
           Start practicing
@@ -110,8 +110,8 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
       </div>
 
       {/* Top priorities */}
-      <TopPriorities priorities={analytics.priorities} onDrill={(qtype) =>
-        navigate(`/practice?action=type-drill&qtype=${encodeURIComponent(qtype)}`)
+      <TopPriorities priorities={analytics.priorities} onDrill={() =>
+        navigate("/classroom/drill?stage=type-drill")
       } />
 
       <Tabs value={activeTab} onValueChange={onTabChange}>

@@ -98,44 +98,36 @@ const ALL_STEPS: Step[] = [
     side: "top",
   },
   {
-    path: "/practice",
+    path: "/classroom/drill",
     icon: Target,
-    eyebrow: "Practice",
+    eyebrow: "Drill",
     title: "Where you actually drill questions",
-    body: "Practice has four ways to train. We'll walk through each one — they all share the same official LSAT layout once you start.",
-    requires: "has_practice_access",
+    body: "Drill has three ways to train. We'll walk through each one — they all share the same official LSAT layout once you start.",
+    requires: "has_drill_access",
   },
   {
-    path: "/practice",
+    path: "/classroom/drill",
     icon: Zap,
     eyebrow: "1. Start Drilling",
     title: "Adaptive Smart Drill",
     body: "The fastest way in. The coach picks one question at a time targeted at your weakest types and recently-missed concepts. Best for daily warm-ups and steady calibration — no setup needed, just hit Start.",
-    requires: "has_practice_access",
+    requires: "has_drill_access",
   },
   {
-    path: "/practice",
+    path: "/classroom/drill",
     icon: Calendar,
     eyebrow: "2. Full Section",
     title: "Timed 25-question section",
     body: "A real LSAT-style LR section under the official 35-minute clock (or a custom timer). Use this for stamina, pacing, and end-of-week checkpoints. You'll get a full review and timing breakdown afterward.",
-    requires: "has_practice_access",
+    requires: "has_drill_access",
   },
   {
-    path: "/practice",
-    icon: Compass,
-    eyebrow: "3. Smart Builder",
-    title: "Describe the drill in plain language",
-    body: "Type something like 'medium flaw questions I got wrong last week' and the AI assembles the set for you. Great when you know the feeling of what you want to practice but don't want to filter manually.",
-    requires: "has_practice_access",
-  },
-  {
-    path: "/practice",
+    path: "/classroom/drill",
     icon: Target,
-    eyebrow: "4. Build a Set",
+    eyebrow: "3. Build a Set",
     title: "Hand-pick your drill",
     body: "Filter by question type, difficulty, PT, or section to build an exact custom set. Best when you're targeting one specific weakness (e.g. 20 hard Strengthen questions) or replicating a tutor's assignment.",
-    requires: "has_practice_access",
+    requires: "has_drill_access",
   },
   {
     path: "/bootcamps",
@@ -328,7 +320,7 @@ export default function GuidedTour() {
   }, [perms, vp.vw]);
 
   const finishPath = React.useMemo(() => {
-    if (perms.is_admin || perms.has_practice_access) return "/practice";
+    if (perms.is_admin || perms.has_drill_access) return "/classroom/drill";
     return "/mainhub";
   }, [perms]);
 

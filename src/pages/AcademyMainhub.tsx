@@ -26,8 +26,11 @@ import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
+import { SectionSelector } from "@/components/drill/SectionSelector";
+import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import { questionBank } from "@/lib/questionLoader";
 import { cn } from "@/lib/utils";
+import type { FullSectionConfig, TypeDrillConfig } from "@/types/drill";
 import {
   filterSmartLRQuestionMatches,
   type SmartLRQuestionMatch,
@@ -561,6 +564,75 @@ function ConsoleSelect({
 }
 
 /**
+ * Launcher stage — hosts the Full Section and Build a Set panels that used to
+ * live on the now-removed /practice hub. Rendered in the drill hub's dark
+ * surface so it reads as a sibling of the hero rather than a light overlay.
+ */
+function LauncherStage({
+  kind,
+  drillReturnTo,
+  onCancel,
+}: {
+  kind: "full-section" | "type-drill";
+  drillReturnTo: string;
+  onCancel: () => void;
+}) {
+  const navigate = useNavigate();
+  const { manifest, isLoading, error } = useQuestionBank();
+
+  const start = React.useCallback(
+    (mode: "full-section" | "type-drill", config: FullSectionConfig | TypeDrillConfig) => {
+      navigate("/drill", { state: { mode, config, returnTo: drillReturnTo } });
+    },
+    [drillReturnTo, navigate],
+  );
+
+  return (
+    <div className="drill-observatory-launcher relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-zinc-950 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.16)] sm:p-6">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.10),transparent_36%),radial-gradient(circle_at_86%_82%,rgba(14,165,233,0.10),transparent_40%)]"
+      />
+      {/* No header here on purpose: SectionSelector and QuestionPicker each
+          render their own title and Cancel control, so adding one would show
+          the student two titles and two Cancel buttons. */}
+      <div className="relative z-10">
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center gap-3 py-14">
+            <Loader2 className="h-5 w-5 animate-spin text-white/50" aria-hidden />
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+              Loading questions…
+            </p>
+          </div>
+        )}
+
+        {!isLoading && error && (
+          <div className="py-14 text-center text-sm font-medium text-white/60">{error}</div>
+        )}
+
+        {!isLoading && !error && manifest && (
+          <div className="drill-observatory-launcher-panel">
+            {kind === "full-section" ? (
+              <SectionSelector
+                manifest={manifest}
+                onStartSection={(config) => start("full-section", config)}
+                onCancel={onCancel}
+              />
+            ) : (
+              <QuestionPicker
+                manifest={manifest}
+                onStartDrill={(config) => start("type-drill", config)}
+                onCancel={onCancel}
+              />
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
  * Drill hub stage. Renders inside the persistent Classroom frame.
  */
 export default function AcademyMainhub({
@@ -572,7 +644,13 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const stage = searchParams.get("stage") === "analytics" ? "analytics" : "default";
+  const stageParam = searchParams.get("stage");
+  const stage =
+    stageParam === "analytics"
+      ? "analytics"
+      : stageParam === "full-section" || stageParam === "type-drill"
+      ? stageParam
+      : "default";
   const analyticsTab = searchParams.get("tab") ?? "overview";
 
   const can = React.useCallback(
@@ -596,10 +674,21 @@ export default function AcademyMainhub({
     [setSearchParams],
   );
 
+  const openLauncher = React.useCallback(
+    (kind: "full-section" | "type-drill") => {
+      setSearchParams({ stage: kind }, { replace: false });
+    },
+    [setSearchParams],
+  );
+
+  const closeStage = React.useCallback(() => {
+    setSearchParams({}, { replace: true });
+  }, [setSearchParams]);
+
   // The analytics stage takes over the below-hero area; suppress mainhub
   // overlays (chat widget) the same way an expanded orbital node used to.
   React.useEffect(() => {
-    setOrbitalActive(stage === "analytics");
+    setOrbitalActive(stage !== "default");
     return () => setOrbitalActive(false);
   }, [setOrbitalActive, stage]);
 
@@ -616,6 +705,10 @@ export default function AcademyMainhub({
           >
             <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
           </section>
+        ) : stage === "full-section" || stage === "type-drill" ? (
+          <section aria-label="Drill launcher" data-tour="mainhub-launcher">
+            <LauncherStage kind={stage} drillReturnTo={drillReturnTo} onCancel={closeStage} />
+          </section>
         ) : (
           <section className="drill-observatory-deck grid grid-cols-1 items-start gap-0 @[760px]:grid-cols-[minmax(0,1.58fr)_minmax(300px,0.92fr)]">
             <section
@@ -625,6 +718,7 @@ export default function AcademyMainhub({
             >
               <PracticeInsightStage
                 onOpenAnalytics={openAnalytics}
+                onOpenLauncher={openLauncher}
                 canOpenAnalytics={canOpenAnalytics}
                 canOpenJournal={canOpenJournal}
               />

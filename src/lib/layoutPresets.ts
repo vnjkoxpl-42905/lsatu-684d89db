@@ -15,7 +15,6 @@ const DEFAULT_SIDEBAR = [
   "/classroom",
   "/bootcamps",
   "/inbox",
-  "/practice",
   "/journal",
   "/schedule",
 ];

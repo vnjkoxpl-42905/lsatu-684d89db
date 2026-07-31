@@ -17,6 +17,8 @@ const ROTATE_MS = 7000;
 interface PracticeInsightStageProps {
   /** Opens the embedded analytics stage at the given tab. */
   onOpenAnalytics: (tab?: string) => void;
+  /** Opens an embedded drill-launcher stage (was the /practice hub). */
+  onOpenLauncher: (kind: "full-section" | "type-drill") => void;
   canOpenAnalytics: boolean;
   canOpenJournal: boolean;
 }
@@ -28,6 +30,7 @@ interface PracticeInsightStageProps {
  */
 export default function PracticeInsightStage({
   onOpenAnalytics,
+  onOpenLauncher,
   canOpenAnalytics,
   canOpenJournal,
 }: PracticeInsightStageProps) {
@@ -58,9 +61,17 @@ export default function PracticeInsightStage({
         onOpenAnalytics(tab);
         return;
       }
+      if (href.startsWith("/classroom/drill?stage=full-section")) {
+        onOpenLauncher("full-section");
+        return;
+      }
+      if (href.startsWith("/classroom/drill?stage=type-drill")) {
+        onOpenLauncher("type-drill");
+        return;
+      }
       navigate(href);
     },
-    [navigate, onOpenAnalytics],
+    [navigate, onOpenAnalytics, onOpenLauncher],
   );
 
   return (
@@ -84,13 +95,13 @@ export default function PracticeInsightStage({
             icon={Layers}
             title="Full Section"
             description="Start a timed official section."
-            onClick={() => navigate("/practice?action=full-section")}
+            onClick={() => onOpenLauncher("full-section")}
           />
           <PracticeTile
             icon={Grid3x3}
             title="Build a Set"
             description="Assemble a targeted question set."
-            onClick={() => navigate("/practice?action=type-drill")}
+            onClick={() => onOpenLauncher("type-drill")}
           />
         </div>
         <div className="mt-3 flex flex-wrap gap-2">

@@ -150,7 +150,6 @@ function ClassroomSidebar({
 
   const classroomUnlocked = canAccess("has_classroom_access");
   const drillUnlocked = canAccess("has_drill_access");
-  const practiceUnlocked = canAccess("has_practice_access");
   const bootcampsUnlocked = canAccess("has_bootcamp_access");
   const activitiesUnlocked = canAccess("has_activity_access");
   const journalUnlocked = canAccess("has_journal_access", "has_waj_access");
@@ -235,15 +234,6 @@ function ClassroomSidebar({
             >
               Drill
               {!drillUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(false, practiceUnlocked, () => go("/practice"))}
-            >
-              Practice
-              {!practiceUnlocked ? (
                 <Lock className="classroom-nav-lock" aria-hidden="true" />
               ) : null}
             </button>

@@ -27,6 +27,8 @@ function fmtPct(v: number | null): string {
 }
 
 const ANALYTICS = "/classroom/drill?stage=analytics";
+const TYPE_DRILL = "/classroom/drill?stage=type-drill";
+const FULL_SECTION = "/classroom/drill?stage=full-section";
 
 /**
  * Derives the rotating insight slides from real analytics + streak. Slides
@@ -67,9 +69,7 @@ export function buildInsightSlides(
         ? `${fmtPct(topPriority.firstAccuracy)} first-attempt · ${topPriority.firstAttempts} attempts`
         : "Practice more to surface your weakest type",
       actionLabel: "Build targeted set",
-      actionHref: topPriority
-        ? `/practice?action=type-drill&qtype=${encodeURIComponent(topPriority.key)}`
-        : "/practice?action=type-drill",
+      actionHref: TYPE_DRILL,
       tab: "priorities",
       recommend: "type-drill",
       empty: !topPriority,
@@ -99,7 +99,7 @@ export function buildInsightSlides(
           ? "Questions answered in the last 7 days"
           : "No questions logged in the last 7 days",
       actionLabel: "Start timed section",
-      actionHref: "/practice?action=full-section",
+      actionHref: FULL_SECTION,
       tab: "drills",
       recommend: "full-section",
       empty: volume7d === 0,

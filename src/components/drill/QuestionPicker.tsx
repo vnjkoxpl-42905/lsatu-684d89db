@@ -621,7 +621,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 max-h-[400px] overflow-y-auto" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[400px] overflow-y-auto" align="start">
                 <div className="space-y-2">
                   <div className="font-medium text-sm mb-2">Select PrepTests</div>
                   {allPTs.map(pt => (
@@ -648,7 +648,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-56" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-56" align="start">
                 <div className="space-y-2">
                   <div className="font-medium text-sm mb-2">Select Sections</div>
                   {allSections.map((s) => (
@@ -706,7 +706,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <div className="font-medium text-sm">Select Question Types</div>
                   
@@ -793,7 +793,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <div className="font-medium text-sm">Select Reasoning Types</div>
                   <div className="relative">
@@ -846,7 +846,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-96 max-h-[520px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-96 max-h-[520px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <div className="font-medium text-sm">Select Question Features</div>
                   <div className="relative">
@@ -927,7 +927,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-64" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel w-64" align="start">
                 <div className="space-y-2">
                   <div className="font-medium text-sm mb-2">Select Levels</div>
                   {allDifficulties.map(diff => (
@@ -1104,7 +1104,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           <SelectTrigger className="w-28 h-8 text-xs">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="drill-observatory-launcher-panel">
             <SelectItem value="10">Show 10</SelectItem>
             <SelectItem value="25">Show 25</SelectItem>
             <SelectItem value="50">Show 50</SelectItem>
@@ -1356,7 +1356,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     <SelectTrigger className="w-24 h-8">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="drill-observatory-launcher-panel">
                       {setSizeOptions.map((n) => (
                         <SelectItem key={n} value={n.toString()}>
                           {n}
@@ -1466,7 +1466,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 <SelectTrigger className="w-20 h-9">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="drill-observatory-launcher-panel">
                   {setSizeOptions.map((n) => (
                     <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
                   ))}
@@ -1647,7 +1647,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           current set's question_ids + filter_state to user_saved_sets via
           the savedSets service. Saved sets surface in /practice/sets. */}
       <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
-        <DialogContent>
+        <DialogContent className="drill-observatory-launcher-panel">
           <DialogHeader>
             <DialogTitle>Save this set</DialogTitle>
             <DialogDescription>

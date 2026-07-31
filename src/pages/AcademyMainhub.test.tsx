@@ -39,7 +39,7 @@ vi.mock("@/hooks/useUserPermissions", () => ({
 vi.mock("@/hooks/useLayoutPrefs", () => ({
   useLayoutPrefs: () => ({
     prefs: {
-      sidebar: ["/classroom", "/bootcamps", "/inbox", "/practice", "/activities", "/schedule"],
+      sidebar: ["/classroom", "/bootcamps", "/inbox", "/activities", "/schedule"],
     },
   }),
 }));

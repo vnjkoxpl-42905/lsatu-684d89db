@@ -21,7 +21,6 @@ function PresenceHeartbeatMount() {
 // Heavy student/bootcamp routes are code-split so they stay out of the initial
 // entry chunk (COMPREHENSIVEAUDIT Phase 3). A single top-level Suspense boundary
 // (below, around <Routes>) provides the fallback for all of these.
-const Practice = React.lazy(() => import("./pages/Practice"));
 import SavedSets from "./pages/SavedSets";
 const AcademyMainhub = React.lazy(() => import("./pages/AcademyMainhub"));
 const Drill = React.lazy(() => import("./pages/Drill"));
@@ -394,10 +393,12 @@ const App = () => {
                       these pages swap the center stage instead of redirecting. */}
                   <Route element={<StudentShell />}>
                     <Route path="/mainhub" element={<Navigate to="/classroom/drill" replace />} />
-                    <Route path="/practice" element={
-                      <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
-                    } />
-                    <Route path="/practice/sets" element={
+                    {/* The /practice hub was removed; its Full Section and
+                        Build a Set launchers now live on the drill hub as
+                        ?stage= panels. Redirects keep old links alive. */}
+                    <Route path="/practice" element={<Navigate to="/classroom/drill" replace />} />
+                    <Route path="/practice/sets" element={<Navigate to="/sets" replace />} />
+                    <Route path="/sets" element={
                       <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
                     } />
                     <Route path="/activities" element={

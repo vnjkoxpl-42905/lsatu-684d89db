@@ -594,7 +594,7 @@ function StudentTasksPanel({
   const commands = [
     { label: "Assigned work", route: "/classroom", icon: ClipboardList, show: permissions.has_classroom_access },
     { label: "Schedule", route: "/schedule", icon: CalendarDays, show: permissions.has_schedule_access },
-    { label: "Practice", route: "/practice", icon: RotateCcw, show: permissions.has_practice_access },
+    { label: "Drill", route: "/classroom/drill", icon: RotateCcw, show: permissions.has_drill_access },
     { label: "Activity Centre", route: "/activities", icon: Activity, show: permissions.has_activity_access },
     { label: "Upload work", route: "/classroom/uploads", icon: FileUp, show: permissions.has_classroom_access },
     { label: "Recaps", route: "/classroom/recaps", icon: CheckCircle2, show: permissions.has_classroom_access },

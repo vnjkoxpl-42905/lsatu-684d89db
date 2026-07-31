@@ -2237,7 +2237,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/practice' | '/classroom' | '/dashboard') => {
+  const handleNavigation = (destination: '/classroom/drill' | '/classroom' | '/dashboard') => {
     setExitDestination(drillReturnTo || destination);
     setShowExitDialog(true);
   };
@@ -3009,11 +3009,11 @@ function DrillContent() {
         label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
       }
     ] : [
-      { label: 'Library', onClick: () => navigate('/practice') },
+      { label: 'Library', onClick: () => navigate('/classroom/drill') },
       ...(currentQuestion.pt
         ? [{
             label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
-            onClick: () => navigate('/practice'),
+            onClick: () => navigate('/classroom/drill'),
           }]
         : []),
       {
@@ -3193,7 +3193,7 @@ function DrillContent() {
                 }
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
-              onEnd={() => handleNavigation('/practice')}
+              onEnd={() => handleNavigation('/classroom/drill')}
               onAskTutor={() => openTutorForCurrent()}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
@@ -3271,7 +3271,7 @@ function DrillContent() {
 
         {/* Unified Top Bar */}
         <DrillTopBar
-          onBack={() => navigate(drillReturnTo || '/practice')}
+          onBack={() => navigate(drillReturnTo || '/classroom/drill')}
           questionLabel={currentQuestion ? (
             window.innerWidth >= 640
               ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`

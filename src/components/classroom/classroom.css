@@ -2013,3 +2013,36 @@ html.dark .classroom-root .classroom-panel-wash-dark {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Drill launcher panels (Full Section / Build a Set)
+
+   These moved onto the drill hub when the /practice hub was removed. The
+   panels themselves (SectionSelector, QuestionPicker) are written entirely
+   against shadcn tokens, and this app's token set is light-only — dropping
+   them onto the hub's dark observatory surface would render near-invisible
+   grey-on-black. Rather than fork the shared components, re-declare the
+   tokens to true-dark values for this subtree only, so the panels inherit a
+   dark palette that matches the hero and practice bay above them.
+   ───────────────────────────────────────────────────────────────────────── */
+.drill-observatory-launcher-panel {
+  --background: 240 6% 7%;
+  --foreground: 40 20% 96%;
+  --card: 240 6% 10%;
+  --card-foreground: 40 20% 96%;
+  --popover: 240 6% 9%;
+  --popover-foreground: 40 20% 96%;
+  --primary: 40 20% 96%;
+  --primary-foreground: 240 6% 7%;
+  --secondary: 240 5% 16%;
+  --secondary-foreground: 40 20% 96%;
+  --muted: 240 5% 15%;
+  --muted-foreground: 40 8% 68%;
+  --accent: 240 5% 18%;
+  --accent-foreground: 40 20% 96%;
+  --border: 0 0% 100% / 0.12;
+  --input: 0 0% 100% / 0.14;
+  --ring: 40 20% 80%;
+
+  color: hsl(var(--foreground));
+}

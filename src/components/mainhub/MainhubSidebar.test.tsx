@@ -22,7 +22,7 @@ vi.mock("@/hooks/useUserPermissions", () => ({
 vi.mock("@/hooks/useLayoutPrefs", () => ({
   useLayoutPrefs: () => ({
     prefs: {
-      sidebar: ["/classroom", "/bootcamps", "/inbox", "/practice", "/activities", "/schedule"],
+      sidebar: ["/classroom", "/bootcamps", "/inbox", "/activities", "/schedule"],
     },
   }),
 }));
@@ -49,20 +49,20 @@ describe("MainhubSidebar", () => {
       </MemoryRouter>,
     );
 
-    const practiceHub = screen.getByRole("link", { name: /Practice Hub/i });
-    fireEvent.click(practiceHub);
+    const navItem = screen.getByRole("link", { name: /Classroom/i });
+    fireEvent.click(navItem);
 
     expect(onNavigate).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps Practice Hub as a normal route link", () => {
+  it("no longer offers a Practice Hub link (the hub was removed)", () => {
     render(
       <MemoryRouter initialEntries={["/classroom"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <MainhubSidebar />
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole("link", { name: /Practice Hub/i })).toHaveAttribute("href", "/practice");
+    expect(screen.queryByRole("link", { name: /Practice Hub/i })).toBeNull();
   });
 
   it("keeps Classroom and Schedule visible as core student rail links", () => {

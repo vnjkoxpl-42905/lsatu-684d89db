@@ -83,10 +83,10 @@ describe("drill route state helpers", () => {
     const state = getResolvedDrillRouteState(new URLSearchParams(), {
       mode: "type-drill",
       config,
-      returnTo: "/practice?action=type-drill",
+      returnTo: "/classroom/drill?stage=type-drill",
     });
 
-    expect(state.returnTo).toBe("/practice?action=type-drill");
+    expect(state.returnTo).toBe("/classroom/drill?stage=type-drill");
   });
 
   it("drops unsafe returnTo values", () => {

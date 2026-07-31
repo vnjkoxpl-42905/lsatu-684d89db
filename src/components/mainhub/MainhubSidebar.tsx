@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   Command,
   GraduationCap,
-  Dumbbell,
   CalendarDays,
   CalendarClock,
   MessagesSquare,
@@ -41,7 +40,6 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access", alwaysVisible: true },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
-  { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
   { to: "/journal", label: "Wrong Answer Journal", Icon: NotebookPen, flag: ["has_journal_access", "has_waj_access"], alwaysVisible: true, activePrefixes: ["/journal", "/waj"] },
   { to: "/activities", label: "Activity Centre", Icon: Sparkles, flag: "has_activity_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access", alwaysVisible: true },

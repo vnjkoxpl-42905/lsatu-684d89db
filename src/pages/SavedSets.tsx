@@ -19,7 +19,7 @@ import { useSavedSets } from "@/hooks/useSavedSets";
 import { recordExposures } from "@/lib/questionExposure";
 import { format } from "date-fns";
 
-// Surface for the "My Sets" card on the Practice Hub. Lists every set the
+// Saved-set surface. Lists every set the
 // user has saved (from Build a Set or Smart Builder preview). Each row has:
 //   - Launch  → navigates to /drill with the stored question_ids
 //   - Rename  → inline edit
@@ -108,7 +108,7 @@ export default function SavedSets() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/practice")}
+            onClick={() => navigate("/classroom/drill")}
             aria-label="Back to Practice Hub"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -136,7 +136,7 @@ export default function SavedSets() {
               Build a set you want to revisit, then save it from the Set Summary panel.
               It'll show up here.
             </p>
-            <Button onClick={() => navigate("/practice")} size="sm" className="mt-2">
+            <Button onClick={() => navigate("/classroom/drill")} size="sm" className="mt-2">
               Go to Build a Set
             </Button>
           </div>
