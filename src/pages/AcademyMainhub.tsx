@@ -270,7 +270,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             }}
           />
           <div
-            className="relative h-full w-full"
+            className="drill-observatory-robot-stage absolute inset-0"
             style={{
               WebkitMaskImage:
                 "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
@@ -701,7 +701,11 @@ export default function AcademyMainhub({
 
   return (
     <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-24">
-      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[65rem] flex-col gap-4">
+      {/* gap-6, not gap-4: the panels below carry 22px of internal padding, so a
+          16px gap between them made the blocks sit closer to each other than
+          their own contents sit to their edges — proximity backwards. The gap
+          between blocks has to be the larger number. */}
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[65rem] flex-col gap-6">
         <MainhubHero drillReturnTo={drillReturnTo} />
 
         {stage === "analytics" ? (

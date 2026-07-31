@@ -567,10 +567,10 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   font-size: 9px;
   font-weight: 600;
   justify-content: space-between;
-  left: 24px;
+  left: 22px;
   letter-spacing: 0.16em;
   position: absolute;
-  right: 24px;
+  right: 22px;
   top: 17px;
   z-index: 15;
 }
@@ -582,7 +582,11 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 360px) !important;
   grid-template-rows: minmax(0, 1fr) !important;
   min-height: 324px !important;
-  padding: 58px 16px 16px 24px !important;
+  /* Left inset matches the deck's 22px bay padding below, so hero copy and deck
+     copy share one left edge. It was 24px here, 22px there, plus 4px more on the
+     greeting — three edges within 6px of each other, which reads as broken
+     rather than as a decision. */
+  padding: 58px 16px 16px 22px !important;
 }
 
 .drill-observatory-greeting {
@@ -593,7 +597,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   justify-content: flex-end !important;
   max-width: 290px;
   min-height: 0 !important;
-  padding: 0 0 14px 4px !important;
+  padding: 0 0 14px !important;
   position: relative;
   z-index: 5;
 }
@@ -633,6 +637,24 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   pointer-events: none;
   transform: translateX(15%);
   z-index: 2;
+}
+
+/* The Spline canvas carries an intrinsic 1244/1610 portrait ratio. Left to size
+   itself it resolved to 853px inside a ~620px column, which set the grid row and
+   dragged the hero to 881px — 98% of a 900px viewport, putting the entire deck
+   below the fold. Nobody chose that height; a source asset's proportions did.
+   Take the robot out of intrinsic sizing so the console's content sets the row,
+   and crop the canvas to whatever height that leaves. */
+.drill-observatory-robot-stage {
+  inset: 0;
+  position: absolute;
+}
+
+.drill-observatory-robot canvas {
+  height: 100% !important;
+  object-fit: cover;
+  object-position: 50% 12%;
+  width: 100% !important;
 }
 
 .drill-observatory-console {
@@ -910,6 +932,14 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 
   .drill-observatory-hero-grid {
     grid-template-columns: minmax(0, 1fr) minmax(320px, 360px) !important;
+  }
+
+  /* The sidebar collapses to a floating hamburger at this width (it sits at
+     16-54px), but the breadcrumb's clearance only started at 759px — so between
+     760 and 1023 the button sat on top of the first character. Clear it here,
+     where the button actually appears. */
+  .drill-observatory-route-label {
+    left: 76px;
   }
 }
 
