@@ -173,7 +173,7 @@
       "B": "A statement of fact is treated as if it were merely a statement of opinion.",
       "C": "The conclusion is no more than a restatement of the evidence provided as support of that conclusion.",
       "D": "The judgment of experts is applied to a matter in which their expertise is irrelevant.",
-      "E": "Some of the evidence presented in support of the conclusion is inconsistent with other evidence provided. The following passage is used for Section 4, questions 9 through 10. The Board of Trustees of the Federici Art Museum has decided to sell some works from its collection in order to raise the funds necessary to refurbish its galleries. Although this may seem like a drastic remedy, the curator has long maintained that among the paintings that the late Ms. Federici collected for the museum were several unsuccessful immature works by Renoir and Cézanne that should be sold because they are of inferior quality and so add nothing to the overall quality of the museum’s collection. Hence, the board’s action will not detract from the quality of the museum’s collection."
+      "E": "Some of the evidence presented in support of the conclusion is inconsistent with other evidence provided."
     },
     "correctAnswer": "A"
   },
@@ -187,7 +187,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 4, questions 9 through 10. The Board of Trustees of the Federici Art Museum has decided to sell some works from its collection in order to raise the funds necessary to refurbish its galleries. Although this may seem like a drastic remedy, the curator has long maintained that among the paintings that the late Ms. Federici collected for the museum were several unsuccessful immature works by Renoir and Cézanne that should be sold because they are of inferior quality and so add nothing to the overall quality of the museum’s collection. Hence, the board’s action will not detract from the quality of the museum’s collection.",
     "questionStem": "The conclusion drawn depends on which one of the following assumptions?",
     "answerChoices": {
       "A": "Art speculators are unable to distinguish an inferior painting by Renoir from a masterpiece by him.",
@@ -212,7 +212,7 @@
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 4, questions 9 through 10. The Board of Trustees of the Federici Art Museum has decided to sell some works from its collection in order to raise the funds necessary to refurbish its galleries. Although this may seem like a drastic remedy, the curator has long maintained that among the paintings that the late Ms. Federici collected for the museum were several unsuccessful immature works by Renoir and Cézanne that should be sold because they are of inferior quality and so add nothing to the overall quality of the museum’s collection. Hence, the board’s action will not detract from the quality of the museum’s collection.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
     "answerChoices": {
       "A": "The directors of an art museum can generally raise funds for refurbishing the building in which the museum’s collection is housed by means other than selling part of its collection.",
@@ -440,7 +440,7 @@
       "B": "Arguing that Earth has been visited by aliens from outer space is rather like claiming that early explorers had visited North America but never founded cities.",
       "C": "Arguing that the human brain has telekinetic powers that no humans have ever exercised is rather like arguing that some insect has legs but never uses them to walk.",
       "D": "Claiming that some people raised tobacco but did not smoke it is rather like claiming that a society that knew how to brew alcohol never drank it.",
-      "E": "Arguing that not all people with cars will drive them is rather like claiming that humans invented gasoline long before they used it as fuel for transportation. The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering."
+      "E": "Arguing that not all people with cars will drive them is rather like claiming that humans invented gasoline long before they used it as fuel for transportation."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -454,7 +454,7 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering.",
     "questionStem": "Paul responds to Sarah’s argument using which one of the following argumentative techniques?",
     "answerChoices": {
       "A": "He argues that Sarah is assuming just what she sets out to prove.",
@@ -472,7 +472,7 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "",
+    "stimulus": "The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering.",
     "questionStem": "The main point at issue between Sarah and Paul is whether",
     "answerChoices": {
       "A": "there are any circumstances under which an individual forced to perform a task can correctly be said to have genuinely volunteered to perform that task",
@@ -578,7 +578,7 @@
       "B": "When there is a shortage of food in the area in which a flock of crows normally hunts and scavenges, some members of the flock will begin to hunt and scavenge outside that area.",
       "C": "Most of the hunting and scavenging that crows do occurs more than eight kilometers (five miles) from their roost.",
       "D": "Once a flock of crows has settled on a new roost site, it is extremely difficult to force it to abandon that site for another.",
-      "E": "When a flock of crows moves to a new roost site, it generally does so because the area in which it has hunted and scavenged has been depleted of food sources. S T O P IF YOU FINISH BEFORE TIME IS CALLED, YOU MAY CHECK YOUR WORK ON THIS SECTION ONLY. DO NOT WORK ON ANY OTHER SECTION IN THE TEST. --- ## Verification Against Current Missing-LR Audit - Audited PT102 missing section: Section IV. - This transcription includes Section IV. - Additional LR sections found in source and included: Section II and Section III. - Section I was omitted because its directions identify it as passage-based Reading Comprehension. --- ## Metadata Source Notes - Question type: classified using the LSAT Lab Breakdown taxonomy provided by the user. - Difficulty: copied from the uploaded LSAT Lab Logical Reasoning Overview for PT102. - Correct answer: copied from the PrepTest 102 answer key. - Section III is marked unscored in the PT102 answer key. --- ## Metadata Audit Table | Question | Type | Feature | Difficulty | Correct Answer | |---|---|---|---:|:---:| | PT102-S2-Q1 | Main Conclusion | None | 2 | A | | PT102-S2-Q2 | Parallel Flaw | None | 2 | C | | PT102-S2-Q3 | Fill in the Blank | Fill in the Blank | 1 | A | | PT102-S2-Q4 | Strengthen | None | 4 | A | | PT102-S2-Q5 | Weaken | None | 2 | B | | PT102-S2-Q6 | Necessary Assumption | None | 3 | C | | PT102-S2-Q7 | Main Conclusion | None | 3 | C | | PT102-S2-Q8 | Principle Conform | None | 4 | A | | PT102-S2-Q9 | Flaw | None | 2 | E | | PT102-S2-Q10 | Strengthen | None | 3 | E | | PT102-S2-Q11 | Principle Conform | None | 2 | D | | PT102-S2-Q12 | Necessary Assumption | None | 3 | A | | PT102-S2-Q13 | Most Supported | None | 5 | B | | PT102-S2-Q14 | Paradox | None | 4 | A | | PT102-S2-Q15 | Weaken | None | 3 | D | | PT102-S2-Q16 | Necessary Assumption | None | 4 | E | | PT102-S2-Q17 | Paradox | None | 3 | D | | PT102-S2-Q18 | Flaw | None | 3 | E | | PT102-S2-Q19 | Most Supported | Except | 3 | B | | PT102-S2-Q20 | Flaw | None | 4 | D | | PT102-S2-Q21 | Must Be True | None | 5 | E | | PT102-S2-Q22 | Parallel | None | 5 | A | | PT102-S2-Q23 | Principle Strengthen | None | 4 | C | | PT102-S2-Q24 | Principle Strengthen | None | 4 | E | | PT102-S2-Q25 | Principle Conform | None | 4 | D | | PT102-S3-Q1 | Flaw | None | 2 | A | | PT102-S3-Q2 | Necessary Assumption | None | 3 | C | | PT102-S3-Q3 | Most Supported | None | 2 | D | | PT102-S3-Q4 | Weaken | None | 5 | D | | PT102-S3-Q5 | Paradox | None | 4 | D | | PT102-S3-Q6 | Method | None | 2 | B | | PT102-S3-Q7 | Flaw | None | 3 | B | | PT102-S3-Q8 | Method | None | 1 | C | | PT102-S3-Q9 | Necessary Assumption | None | 4 | B | | PT102-S3-Q10 | Method | None | 3 | B | | PT102-S3-Q11 | Method | None | 2 | B | | PT102-S3-Q12 | Weaken | None | 3 | D | | PT102-S3-Q13 | Necessary Assumption | None | 3 | A | | PT102-S3-Q14 | Flaw | None | 1 | C | | PT102-S3-Q15 | Necessary Assumption | None | 4 | B | | PT102-S3-Q16 | Agree/Disagree | None | 3 | C | | PT102-S3-Q17 | Main Conclusion | None | 4 | C | | PT102-S3-Q18 | Sufficient Assumption | None | 5 | E | | PT102-S3-Q19 | Fill in the Blank | Fill in the Blank | 2 | E | | PT102-S3-Q20 | Parallel | None | 3 | B | | PT102-S3-Q21 | Strengthen | None | 4 | A | | PT102-S3-Q22 | Parallel Flaw | None | 5 | D | | PT102-S3-Q23 | Flaw | None | 3 | E | | PT102-S3-Q24 | Most Supported | None | 4 | A | | PT102-S4-Q1 | Main Conclusion | None | 3 | A | | PT102-S4-Q2 | Must Be True | None | 2 | B | | PT102-S4-Q3 | Weaken | None | 2 | E | | PT102-S4-Q4 | Flaw | None | 2 | B | | PT102-S4-Q5 | Principle Strengthen | None | 2 | A | | PT102-S4-Q6 | Strengthen | None | 2 | D | | PT102-S4-Q7 | Sufficient Assumption | None | 4 | A | | PT102-S4-Q8 | Flaw | None | 2 | A | | PT102-S4-Q9 | Necessary Assumption | None | 3 | B | | PT102-S4-Q10 | Weaken | None | 2 | B | | PT102-S4-Q11 | Weaken | Except | 4 | D | | PT102-S4-Q12 | Parallel Flaw | None | 3 | D | | PT102-S4-Q13 | Paradox | None | 4 | B | | PT102-S4-Q14 | Principle Conform | None | 3 | D | | PT102-S4-Q15 | Must Be False | None | 4 | E | | PT102-S4-Q16 | Must Be False | None | 5 | D | | PT102-S4-Q17 | Flaw | None | 4 | B | | PT102-S4-Q18 | Sufficient Assumption | None | 3 | D | | PT102-S4-Q19 | Method | None | 2 | A | | PT102-S4-Q20 | Parallel | None | 2 | C | | PT102-S4-Q21 | Method | None | 2 | C | | PT102-S4-Q22 | Agree/Disagree | None | 3 | C | | PT102-S4-Q23 | Flaw | None | 5 | B | | PT102-S4-Q24 | Weaken | None | 4 | D | | PT102-S4-Q25 | Necessary Assumption | None | 4 | E | | PT102-S4-Q26 | Must Be False | None | 5 | E |"
+      "E": "When a flock of crows moves to a new roost site, it generally does so because the area in which it has hunted and scavenged has been depleted of food sources."
     },
     "correctAnswer": "E"
   }
