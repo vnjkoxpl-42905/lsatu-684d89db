@@ -538,15 +538,18 @@ function TodayPrimarySurface({
   onActivate: () => void;
 }) {
   const Icon = item.Icon;
+  // The card's surface — radius, min-height, padding, background, shadow — is owned by
+  // .drill-observatory-today-primary (and its `> div` rule) in classroom.css. Utilities for
+  // those properties are overridden there, so they are not repeated here.
   return (
     <motion.div
       layout
-      className="drill-observatory-today-primary group relative min-h-[238px] rounded-[29px] bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(126,177,212,0.07)_36%,rgba(255,255,255,0.025)_62%,rgba(0,0,0,0.2)_100%)] p-px shadow-[0_22px_62px_rgba(0,0,0,0.24),0_0_30px_rgba(81,123,153,0.08)]"
+      className="drill-observatory-today-primary group relative"
       transition={{ type: "spring", stiffness: 170, damping: 24 }}
     >
       <div
         className={cn(
-          "relative min-h-[236px] overflow-hidden rounded-[28px] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(107,151,181,0.08)] backdrop-blur-md",
+          "relative overflow-hidden p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.11),inset_0_-1px_0_rgba(107,151,181,0.08)] backdrop-blur-md",
           TYPE_TONE[item.type],
         )}
       >

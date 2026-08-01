@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { TimerControls } from '@/components/drill/TimerControls';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import type { DrawerTab, DrillDetailsMeta } from '@/components/drill/official/DrillNotesPanel';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
