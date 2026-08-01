@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useFlagged } from "@/hooks/useFlagged";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
+import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
 import {
   useUserPermissions,
   type PermissionFlag,
@@ -124,6 +125,7 @@ function ClassroomSidebar({
   const { theme, toggleTheme } = useTheme();
   const { signOut } = useAuth();
   const permissions = useUserPermissions();
+  const unreadMessages = useUnreadMessageCount();
 
   const go = (path: string) => {
     onNavigate?.();
@@ -312,6 +314,12 @@ function ClassroomSidebar({
               )}
             >
               Messages
+              {messagesUnlocked && unreadMessages > 0 ? (
+                <span className="classroom-nav-badge">
+                  {unreadMessages > 9 ? "9+" : unreadMessages}
+                  <span className="sr-only"> unread messages</span>
+                </span>
+              ) : null}
               {!messagesUnlocked ? (
                 <Lock className="classroom-nav-lock" aria-hidden="true" />
               ) : null}

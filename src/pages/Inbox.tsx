@@ -146,10 +146,16 @@ export default function Inbox() {
   } = useInbox();
 
   const activeId = conversationId || null;
-  const active = useMemo(
-    () => conversations.find((c) => c.id === activeId) ?? null,
-    [conversations, activeId],
-  );
+
+  // A student has exactly one thread — the 1:1 with Joshua — so Messages IS that
+  // thread. No list, and no redirect to /inbox/:id either: bouncing the URL made
+  // the list render for a beat first and put a thread the student can never
+  // leave behind a back button. Admins still resolve strictly from the route.
+  const active = useMemo(() => {
+    const fromRoute = activeId ? conversations.find((c) => c.id === activeId) ?? null : null;
+    if (fromRoute || is_admin || permsLoading || !user) return fromRoute;
+    return pickStudentPrimary(conversations, user.id);
+  }, [conversations, activeId, is_admin, permsLoading, user]);
 
   const routeState = location.state as { composeTarget?: string | null } | null;
   const composeTarget = routeState?.composeTarget || null;
@@ -174,10 +180,9 @@ export default function Inbox() {
     );
   }, [conversations, user, is_admin, filter, query]);
 
-  // Students have a single thread with Joshua, so a one-row list is noise:
-  // send them straight into it. Admins return to whichever thread they were
-  // last reading, and see the list only when there is nothing live to return
-  // to.
+  // Admins return to whichever thread they were last reading, and see the list
+  // only when there is nothing live to return to. (Students never reach this —
+  // their thread is resolved above without touching the URL.)
   //
   // The restore fires once per visit, not on every empty activeId: the back
   // button clears activeId too, and re-restoring there would make the thread
@@ -185,12 +190,7 @@ export default function Inbox() {
   // it drops the memory rather than fighting the next visit.
   const restoreAttempted = useRef(false);
   useEffect(() => {
-    if (activeId || loading || permsLoading || !user) return;
-    if (!is_admin) {
-      const primary = pickStudentPrimary(conversations, user.id);
-      if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
-      return;
-    }
+    if (activeId || loading || permsLoading || !user || !is_admin) return;
     if (restoreAttempted.current) return;
     restoreAttempted.current = true;
     const remembered = readLastThread();
@@ -234,7 +234,8 @@ export default function Inbox() {
       <div className="flex h-full min-h-0 flex-col bg-background">
         <ConversationView
           conversation={active}
-          onBack={clearThread}
+          /* Students have nowhere to go back TO, so they get no back button. */
+          onBack={is_admin ? clearThread : undefined}
           onMessageSent={refresh}
           layout="stage"
         />

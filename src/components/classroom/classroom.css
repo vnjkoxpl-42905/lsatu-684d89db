@@ -264,6 +264,25 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   color: var(--classroom-active-ink);
 }
 
+/* Unread count on a rail item. Sits where the `em` chevron sits on the section
+   rows, so nav labels stay on one baseline whether an item is counted or not. */
+.classroom-root .classroom-nav-badge {
+  align-items: center;
+  background: var(--classroom-link);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1;
+  margin-left: auto;
+  min-width: 18px;
+  padding: 3px 5px;
+}
+
 .classroom-root .classroom-nav em {
   color: rgb(var(--classroom-meta));
   font-family: "Roboto Mono", ui-monospace, monospace;
@@ -2004,9 +2023,258 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   margin-top: 28px;
 }
 
+/* ── Homepage: greeting, today card, destination cards ─────────────────
+   The classroom index reads top-down as one screen: a serif greeting, the
+   single card holding everything due today, then three ways in. Everything
+   below it keeps the leader-row language. */
+
+.classroom-root .classroom-greeting {
+  font-family: "Fraunces", Georgia, ui-serif, serif;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-bottom: 28px;
+}
+
+.classroom-root .classroom-today {
+  border: 1px solid var(--classroom-line);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.classroom-root .classroom-today-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 2px 4px 14px;
+}
+
+.classroom-root .classroom-today-header h2 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.classroom-root .classroom-today-source {
+  color: rgb(var(--classroom-meta));
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.classroom-root .classroom-today-tally {
+  align-items: center;
+  color: rgb(var(--classroom-meta));
+  display: flex;
+  font-size: 13px;
+  gap: 14px;
+  margin-left: auto;
+  opacity: 0.8;
+}
+
+.classroom-root .classroom-today-tally span {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-today-rows {
+  display: grid;
+  gap: 8px;
+}
+
+.classroom-root .classroom-today-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.classroom-root .classroom-today-check {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: rgb(var(--classroom-meta));
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 4px;
+  transition: color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-today-check:hover {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-today-check-done {
+  color: var(--classroom-correct);
+  opacity: 1;
+}
+
+.classroom-root .classroom-today-panel {
+  align-items: center;
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 12px 12px 14px;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-today-panel-done {
+  opacity: 0.55;
+}
+
+.classroom-root .classroom-today-icon {
+  align-items: center;
+  color: rgb(var(--classroom-meta));
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.classroom-root .classroom-today-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.classroom-root .classroom-today-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-today-panel-done .classroom-today-title {
+  text-decoration: line-through;
+}
+
+.classroom-root .classroom-today-meta {
+  color: rgb(var(--classroom-meta));
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 2px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-today-start {
+  align-items: center;
+  background: var(--classroom-link);
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 6px;
+  padding: 8px 14px;
+  transition: opacity var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-today-start:hover {
+  opacity: 0.85;
+}
+
+.classroom-root .classroom-today-empty {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 2px 4px 4px;
+}
+
+.classroom-root .classroom-today-empty p {
+  color: rgb(var(--classroom-meta));
+  font-size: 14px;
+  margin: 0;
+}
+
+.classroom-root .classroom-quick-cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 48px;
+}
+
+.classroom-root .classroom-quick-card {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  text-align: left;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-quick-card:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-quick-icon {
+  align-items: center;
+  border: 1px solid var(--classroom-line);
+  border-radius: 10px;
+  color: rgb(var(--classroom-meta));
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  margin-bottom: 4px;
+  width: 38px;
+}
+
+.classroom-root .classroom-quick-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.classroom-root .classroom-quick-copy {
+  color: rgb(var(--classroom-meta));
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+@media (max-width: 767px) {
+  .classroom-root .classroom-quick-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root .classroom-greeting {
+    font-size: 28px;
+  }
+
+  .classroom-root .classroom-today-panel {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .classroom-root .classroom-today-start {
+    margin-left: auto;
+  }
+}
+
 @media (min-width: 1024px) {
   .classroom-root .classroom-title {
     font-size: 36px;
+  }
+
+  .classroom-root .classroom-greeting {
+    font-size: 40px;
   }
 }
 

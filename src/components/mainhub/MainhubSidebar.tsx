@@ -15,6 +15,7 @@ import {
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
 import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 
 export interface MainhubSidebarProps {
@@ -50,6 +51,7 @@ export default function MainhubSidebar({ displayName, onNavigate }: MainhubSideb
   const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
+  const unreadMessages = useUnreadMessageCount();
   const today = format(new Date(), "EEEE, MMMM d");
 
   const navByTo = new Map(NAV_ITEMS.map((n) => [n.to, n]));
@@ -115,6 +117,12 @@ export default function MainhubSidebar({ displayName, onNavigate }: MainhubSideb
                 >
                   <Icon className="h-[18px] w-[18px] shrink-0" />
                   <span className="min-w-0 flex-1 truncate">{label}</span>
+                  {to === "/inbox" && unreadMessages > 0 ? (
+                    <span className="shrink-0 rounded-full bg-primary px-1.5 py-0.5 text-[0.6875rem] font-semibold leading-none text-primary-foreground">
+                      {unreadMessages > 9 ? "9+" : unreadMessages}
+                      <span className="sr-only"> unread messages</span>
+                    </span>
+                  ) : null}
                 </NavLink>
               );
             })}
