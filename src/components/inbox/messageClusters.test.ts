@@ -92,6 +92,34 @@ describe('buildDaySections', () => {
     });
   });
 
+  it('splits same-sender messages into separate clusters across a long gap', () => {
+    const messages = [
+      makeMessage('m-1', 'student-1', '2026-06-03T09:00:00.000Z', 'Morning question'),
+      makeMessage('m-2', 'student-1', '2026-06-03T09:10:00.000Z', 'Follow-up'),
+      makeMessage('m-3', 'student-1', '2026-06-03T17:00:00.000Z', 'Evening question'),
+    ];
+
+    const sections = buildDaySections(messages, participants, 'admin-1');
+
+    expect(sections).toHaveLength(1);
+    expect(sections[0].clusters).toHaveLength(2);
+    expect(sections[0].clusters[0].messages.map((m) => m.id)).toEqual(['m-1', 'm-2']);
+    expect(sections[0].clusters[1].messages.map((m) => m.id)).toEqual(['m-3']);
+    expect(sections[0].clusters[1].createdAt).toBe('2026-06-03T17:00:00.000Z');
+  });
+
+  it('keeps same-sender messages within the gap window in one cluster', () => {
+    const messages = [
+      makeMessage('m-1', 'student-1', '2026-06-03T09:00:00.000Z', 'One'),
+      makeMessage('m-2', 'student-1', '2026-06-03T09:14:00.000Z', 'Two'),
+    ];
+
+    const sections = buildDaySections(messages, participants, 'admin-1');
+
+    expect(sections[0].clusters).toHaveLength(1);
+    expect(sections[0].clusters[0].messages).toHaveLength(2);
+  });
+
   it('falls back to Student when a student display name is missing', () => {
     const namelessParticipants: Participant[] = [
       { ...participants[0], display_name: null },

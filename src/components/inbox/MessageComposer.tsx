@@ -28,6 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -45,6 +46,7 @@ import {
   classifyInboxAttachmentMime,
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
+import './inbox-thread.css';
 
 const QUICK_EMOJIS = [
   '😀', '😁', '😂', '🙂', '😊', '😍', '😎', '🤔',
@@ -53,12 +55,62 @@ const QUICK_EMOJIS = [
   '❤️', '💯', '😅', '😬', '😴', '🤝', '👀', '🎯',
 ];
 
+/** Text handed to the composer from outside (e.g. empty-state prompt chips).
+ *  `nonce` forces re-application when the same text is picked twice. */
+export interface ComposerSeed {
+  text: string;
+  nonce: number;
+}
+
+/** Optimistic-send hooks: the thread view renders a local bubble the moment
+ *  send is pressed, and reconciles or marks it failed from these callbacks. */
+export interface PendingHandlers {
+  onPendingStart: (p: { localId: string; body: string }) => void;
+  onPendingResolve: (localId: string, ok: boolean) => void;
+}
+
 interface MessageComposerProps {
   conversationId: string | null;
   onSent?: () => void;
   onResolveConversation?: () => Promise<string>;
   onConversationResolved?: (conversationId: string) => void;
   studentFacing?: boolean;
+  seed?: ComposerSeed | null;
+  pendingHandlers?: PendingHandlers;
+  onTyping?: () => void;
+  onTypingStop?: () => void;
+}
+
+function ToolButton({
+  label,
+  onClick,
+  disabled,
+  children,
+}: {
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClick}
+          disabled={disabled}
+          aria-label={label}
+          className="h-9 w-9 rounded-xl text-[var(--msg-meta)] transition-colors hover:bg-[var(--msg-hover)] hover:text-[var(--msg-ink)]"
+        >
+          {children}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="text-xs font-semibold">
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
 }
 
 export function MessageComposer({
@@ -67,6 +119,10 @@ export function MessageComposer({
   onResolveConversation,
   onConversationResolved,
   studentFacing = false,
+  seed = null,
+  pendingHandlers,
+  onTyping,
+  onTypingStop,
 }: MessageComposerProps) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
@@ -113,6 +169,21 @@ export function MessageComposer({
     () => filterMessageTemplates(templates, templateQuery ?? ''),
     [templates, templateQuery],
   );
+
+  // Apply seeded text (empty-state prompt chips) and put the caret at the end.
+  useEffect(() => {
+    if (!seed) return;
+    setBody(seed.text);
+    setPolished(null);
+    requestAnimationFrame(() => {
+      adjustHeight();
+      const el = textareaRef.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(seed.text.length, seed.text.length);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed?.nonce]);
 
   const addDriveFiles = (picks: DriveFileRow[]) => {
     setDriveAttachments((prev) => {
@@ -189,6 +260,7 @@ export function MessageComposer({
 
   const setBodyAndResize = (next: string) => {
     setBody(next);
+    if (next.trim().length > 0) onTyping?.();
     const query = slashTemplateQuery(next);
     setTemplatePaletteOpen(query !== null && templates.length > 0);
     setTemplatePaletteIndex(0);
@@ -253,11 +325,38 @@ export function MessageComposer({
     setEmojiOpen(false);
   };
 
+  const resetComposer = () => {
+    setBody('');
+    clearAttachment();
+    setDriveAttachments([]);
+    setPolished(null);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '44px';
+      textareaRef.current.style.overflowY = 'hidden';
+    }
+  };
+
   const send = async () => {
     if (!user) return;
     const text = body.trim();
     if (!text && !file && driveAttachments.length === 0) return;
-    setSending(true);
+    onTypingStop?.();
+
+    // Optimistic path: text-only sends into an existing thread clear the
+    // composer immediately and render a local pending bubble. Attachment sends
+    // keep the blocking flow so a failure doesn't lose the picked file.
+    const optimistic =
+      !!pendingHandlers && !!conversationId && !!text && !file && driveAttachments.length === 0;
+    const localId =
+      typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random()}`;
+    if (optimistic) {
+      pendingHandlers.onPendingStart({ localId, body: text });
+      resetComposer();
+    } else {
+      setSending(true);
+    }
 
     try {
       let resolvedConversationId = conversationId;
@@ -342,19 +441,17 @@ export function MessageComposer({
         if (dErr) throw dErr;
       }
 
-      setBody('');
-      clearAttachment();
-      setDriveAttachments([]);
-      setPolished(null);
-      if (textareaRef.current) {
-        textareaRef.current.style.height = '44px';
-        textareaRef.current.style.overflowY = 'hidden';
-      }
+      if (!optimistic) resetComposer();
       onSent?.();
+      if (optimistic) pendingHandlers.onPendingResolve(localId, true);
     } catch (e: unknown) {
-      toast.error(errorMessage(e, 'Failed to send message'));
+      if (optimistic) {
+        pendingHandlers.onPendingResolve(localId, false);
+      } else {
+        toast.error(errorMessage(e, 'Failed to send message'));
+      }
     } finally {
-      setSending(false);
+      if (!optimistic) setSending(false);
     }
   };
 
@@ -383,45 +480,59 @@ export function MessageComposer({
         return;
       }
     }
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    // Enter sends; Shift+Enter inserts a newline. Cmd/Ctrl+Enter still sends
+    // for muscle memory.
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
     }
   };
 
   return (
-    <div className={cn('shrink-0 bg-transparent', isAdmin ? 'px-3 py-3 sm:px-5' : 'px-4 py-5 sm:px-6')}>
+    <div className={cn('msgs-scope shrink-0 bg-transparent', isAdmin ? 'px-3 py-3 sm:px-5' : 'px-4 py-4 sm:px-6')}>
       <div className={cn('mx-auto space-y-3', isAdmin ? 'max-w-5xl' : 'max-w-3xl')}>
       {file && (
-        <div className={cn('flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm shadow-sm', isAdmin ? 'border-zinc-200 bg-zinc-50' : 'border-zinc-200 bg-white')}>
-          {filePreviewUrl ? (
-            <img
-              src={filePreviewUrl}
-              alt={file.name}
-              className="h-12 w-12 rounded-lg object-cover border border-slate-200 shrink-0"
-            />
-          ) : classifyInboxAttachmentMime(file.type) === 'image' ? (
-            <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
-              <ImageIcon className="w-4 h-4 text-slate-400" />
+        <div className="flex flex-col gap-0 overflow-hidden rounded-2xl border border-[var(--msg-line)] bg-[var(--msg-panel)] shadow-[var(--msg-shadow)]">
+          <div className="flex items-center gap-3 px-4 py-2.5 text-sm">
+            {filePreviewUrl ? (
+              <img
+                src={filePreviewUrl}
+                alt={file.name}
+                className="h-12 w-12 rounded-lg object-cover border border-[var(--msg-line)] shrink-0"
+              />
+            ) : classifyInboxAttachmentMime(file.type) === 'image' ? (
+              <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-[var(--msg-line)] bg-[var(--msg-page)] shrink-0">
+                <ImageIcon className="w-4 h-4 text-[var(--msg-meta)]" />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-[var(--msg-line)] bg-[var(--msg-page)] shrink-0">
+                <FileText className="w-4 h-4 text-[var(--msg-meta)]" />
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-xs font-bold text-[var(--msg-ink)]">{file.name}</div>
+              <div className="mt-0.5 text-[11px] text-[var(--msg-meta)]">
+                {sending
+                  ? 'Uploading…'
+                  : classifyInboxAttachmentMime(file.type) === 'image'
+                  ? 'Screenshot preview ready. Paste another to replace it.'
+                  : 'PDF ready to send'}
+              </div>
             </div>
-          ) : (
-            <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
-              <FileText className="w-4 h-4 text-slate-400" />
-            </div>
-          )}
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-xs font-bold text-zinc-900">{file.name}</div>
-            <div className="mt-0.5 text-[11px] text-zinc-500">
-              {classifyInboxAttachmentMime(file.type) === 'image' ? 'Screenshot preview ready. Paste another to replace it.' : 'PDF ready to send'}
-            </div>
+            <button
+              onClick={clearAttachment}
+              disabled={sending}
+              className="text-[var(--msg-meta)] hover:text-[var(--msg-ink)] transition-colors"
+              aria-label="Remove attachment"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <button
-            onClick={clearAttachment}
-            className="text-slate-400 hover:text-slate-900 transition-colors"
-            aria-label="Remove attachment"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {sending ? (
+            <div className="h-0.5 w-full overflow-hidden bg-[var(--msg-line)]">
+              <div className="msgs-progress-bar h-full w-1/3 rounded-full bg-[var(--msg-accent)]" />
+            </div>
+          ) : null}
         </div>
       )}
       {driveAttachments.length > 0 && (
@@ -429,13 +540,13 @@ export function MessageComposer({
           {driveAttachments.map((d) => (
             <div
               key={d.id}
-              className="inline-flex items-center gap-2.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs max-w-full shadow-sm"
+              className="inline-flex items-center gap-2.5 px-3 py-2 rounded-xl border border-[var(--msg-line)] bg-[var(--msg-panel)] text-xs max-w-full shadow-[var(--msg-shadow)]"
             >
-              <Cloud className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              <span className="truncate max-w-[200px] font-semibold text-slate-700">{d.file_name}</span>
+              <Cloud className="w-3.5 h-3.5 text-[var(--msg-meta)] shrink-0" />
+              <span className="truncate max-w-[200px] font-semibold text-[var(--msg-ink)]">{d.file_name}</span>
               <button
                 onClick={() => removeDriveFile(d.id)}
-                className="text-slate-400 hover:text-slate-900 shrink-0 transition-colors"
+                className="text-[var(--msg-meta)] hover:text-[var(--msg-ink)] shrink-0 transition-colors"
                 aria-label={`Remove ${d.file_name}`}
               >
                 <X className="w-3.5 h-3.5" />
@@ -445,12 +556,12 @@ export function MessageComposer({
         </div>
       )}
       {polished !== null && (
-        <div className="space-y-4 rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-4 shadow-lg ring-1 ring-black/5">
-          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
+        <div className="space-y-4 rounded-2xl border border-[var(--msg-line)] bg-[var(--msg-panel)] px-5 py-4 shadow-[var(--msg-shadow-deep)]">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--msg-meta)]">
             <Wand2 className="h-3.5 w-3.5" />
             Composer Polish
           </div>
-          <div className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-zinc-900">{polished}</div>
+          <div className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-[var(--msg-ink)]">{polished}</div>
           <div className="flex flex-wrap gap-2 pt-1">
             <Button
               size="sm"
@@ -459,7 +570,7 @@ export function MessageComposer({
                 setPolished(null);
               }}
               disabled={sending || polishing}
-              className="h-8 px-4 text-xs font-bold bg-slate-900 text-white rounded-lg hover:bg-slate-800"
+              className="h-8 rounded-lg bg-[var(--msg-accent)] px-4 text-xs font-bold text-white hover:brightness-110"
             >
               Apply this
             </Button>
@@ -468,7 +579,7 @@ export function MessageComposer({
               variant="ghost"
               onClick={() => setPolished(null)}
               disabled={sending || polishing}
-              className="h-8 px-4 text-xs font-bold text-slate-500 rounded-lg hover:bg-slate-50"
+              className="h-8 rounded-lg px-4 text-xs font-bold text-[var(--msg-meta)] hover:bg-[var(--msg-hover)]"
             >
               Discard
             </Button>
@@ -478,7 +589,7 @@ export function MessageComposer({
               variant="ghost"
               onClick={polish}
               disabled={sending || polishing || body.trim().length < 3 || !conversationId}
-              className="h-8 px-4 text-xs font-bold text-slate-400 rounded-lg hover:bg-slate-50"
+              className="h-8 rounded-lg px-4 text-xs font-bold text-[var(--msg-meta)] hover:bg-[var(--msg-hover)]"
             >
               Regenerate
             </Button>
@@ -493,12 +604,7 @@ export function MessageComposer({
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
       <div
-        className={cn(
-          'relative overflow-hidden rounded-[22px] border transition-all',
-          isAdmin
-            ? 'border-zinc-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-zinc-300'
-            : 'border-zinc-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-zinc-300',
-        )}
+        className="relative overflow-hidden rounded-[22px] border border-[var(--msg-line)] bg-[var(--msg-panel)] shadow-[var(--msg-shadow)] transition-all focus-within:border-[var(--msg-accent)] focus-within:shadow-[var(--msg-shadow-deep)] focus-within:ring-2 focus-within:ring-[var(--msg-accent-soft)]"
       >
         <TemplateSuggestionPalette
           open={templatePaletteOpen}
@@ -514,64 +620,53 @@ export function MessageComposer({
           onChange={(e) => setBodyAndResize(e.target.value)}
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
+          onBlur={() => onTypingStop?.()}
           placeholder={isAdmin ? 'Message this student...' : 'Ask Joshua a question or send study context'}
-          className={cn(
-            'w-full resize-none border-0 bg-transparent px-5 py-3.5 text-[15px] font-medium shadow-none focus-visible:ring-0',
-            isAdmin ? 'text-zinc-800 placeholder:text-zinc-400' : 'text-zinc-800 placeholder:text-zinc-400',
-          )}
+          className="w-full resize-none border-0 bg-transparent px-5 py-3.5 text-[15px] font-medium text-[var(--msg-ink)] shadow-none placeholder:text-[var(--msg-meta-soft)] focus-visible:ring-0"
           style={{ height: '54px', overflowY: 'hidden', transition: 'height 160ms ease' }}
         />
-        <div className={cn('flex items-center gap-2 border-t px-3 py-2', isAdmin ? 'border-zinc-100' : 'border-zinc-100')}>
-          <Button
-            variant="ghost"
-            size="icon"
+        <div className="flex items-center gap-1.5 border-t border-[var(--msg-line)] px-3 py-2">
+          <ToolButton
+            label="Attach a PDF or screenshot"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
-            aria-label="Attach PDF or screenshot"
-            className={cn('h-9 w-9 rounded-xl', isAdmin ? 'text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600' : 'text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600')}
           >
             <Paperclip className="w-4.5 h-4.5" />
-          </Button>
+          </ToolButton>
           {showDrive && (
             <DriveAttachmentPicker onAttach={addDriveFiles} disabled={sending} />
           )}
           {showPolish && (
-            <Button
-              variant="ghost"
-              size="icon"
+            <ToolButton
+              label="Polish with AI"
               onClick={polish}
               disabled={sending || polishing || body.trim().length < 3 || !conversationId}
-              aria-label="Polish with AI"
-              title="Polish with AI"
-              className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
             >
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
-            </Button>
+            </ToolButton>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={openLinkDialog}
-            disabled={sending}
-            aria-label="Add link"
-            title="Add link"
-            className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
-          >
+          <ToolButton label="Add a link" onClick={openLinkDialog} disabled={sending}>
             <Link2 className="w-4.5 h-4.5" />
-          </Button>
+          </ToolButton>
           <Popover open={emojiOpen} onOpenChange={setEmojiOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={sending}
-                aria-label="Insert emoji"
-                title="Insert emoji"
-                className="h-9 w-9 rounded-xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
-              >
-                <Smile className="w-4.5 h-4.5" />
-              </Button>
-            </PopoverTrigger>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={sending}
+                    aria-label="Insert emoji"
+                    className="h-9 w-9 rounded-xl text-[var(--msg-meta)] transition-colors hover:bg-[var(--msg-hover)] hover:text-[var(--msg-ink)]"
+                  >
+                    <Smile className="w-4.5 h-4.5" />
+                  </Button>
+                </PopoverTrigger>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="text-xs font-semibold">
+                Insert emoji
+              </TooltipContent>
+            </Tooltip>
             <PopoverContent align="start" className="w-auto p-2">
               <div className="grid grid-cols-8 gap-0.5">
                 {QUICK_EMOJIS.map((emoji) => (
@@ -579,7 +674,7 @@ export function MessageComposer({
                     key={emoji}
                     type="button"
                     onClick={() => insertEmoji(emoji)}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-lg leading-none transition-colors hover:bg-zinc-100"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg text-lg leading-none transition-colors hover:bg-[var(--msg-hover)]"
                     aria-label={`Insert ${emoji}`}
                   >
                     {emoji}
@@ -589,20 +684,22 @@ export function MessageComposer({
             </PopoverContent>
           </Popover>
           <div className="flex-1" />
+          <span className="hidden select-none text-[10px] font-semibold text-[var(--msg-meta-soft)] sm:block" aria-hidden="true">
+            ⏎ to send · ⇧⏎ for a new line
+          </span>
           <Button
             onClick={send}
             disabled={sending || !canSend || (!conversationId && !onResolveConversation)}
-            size="icon"
-            variant={canSend ? 'default' : 'ghost'}
-            aria-label="Send"
+            aria-label="Send message"
             className={cn(
-              "h-9 w-9 rounded-xl transition-all",
+              'h-9 rounded-full px-4 text-[13px] font-bold transition-all active:scale-95',
               canSend
-                ? 'bg-[#18181b] text-white shadow-sm hover:bg-[#27272a]'
-                : "text-zinc-300 hover:bg-transparent"
+                ? 'bg-[var(--msg-accent)] text-white shadow-[var(--msg-shadow)] hover:brightness-110'
+                : 'bg-[var(--msg-hover)] text-[var(--msg-meta-soft)] hover:bg-[var(--msg-hover)]',
             )}
           >
-            <Send className="w-4.5 h-4.5" />
+            Send
+            <Send className="ml-1.5 w-4 h-4" />
           </Button>
         </div>
       </div>
@@ -654,7 +751,7 @@ export function MessageComposer({
             <Button
               onClick={applyLink}
               disabled={!linkUrl.trim()}
-              className="bg-[#2F6A8D] px-8 text-white hover:bg-[#295d7c]"
+              className="bg-[var(--msg-accent)] px-8 text-white hover:brightness-110"
             >
               Add Link
             </Button>

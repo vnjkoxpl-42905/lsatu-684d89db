@@ -21,6 +21,10 @@ export interface DaySection {
   clusters: MessageCluster[];
 }
 
+/** Same-sender messages further apart than this start a new cluster, so each
+ *  burst of conversation keeps its own timestamp header. */
+export const CLUSTER_GAP_MS = 15 * 60 * 1000;
+
 function dayLabel(date: Date) {
   if (isToday(date)) return 'Today';
   if (isYesterday(date)) return 'Yesterday';
@@ -81,7 +85,8 @@ export function buildDaySections(
     const sameSenderAsPrevious =
       !!previous &&
       previous.sender_id === message.sender_id &&
-      isSameDay(new Date(previous.created_at), created);
+      isSameDay(new Date(previous.created_at), created) &&
+      created.getTime() - new Date(previous.created_at).getTime() < CLUSTER_GAP_MS;
 
     if (!sameSenderAsPrevious || !currentCluster) {
       const participant = participantById.get(message.sender_id);
