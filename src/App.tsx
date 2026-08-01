@@ -392,10 +392,12 @@ const App = () => {
                         group, so it draws inside this frame. Routing it under
                         StudentShell swapped the whole rail out from under the
                         user mid-navigation. */}
-                    <Route path="/inbox" element={
-                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-                    } />
-                    <Route path="/inbox/:conversationId" element={
+                    {/* One splat route, not /inbox + /inbox/:conversationId as
+                        siblings: two Route elements make React unmount and
+                        remount Inbox on every list↔thread move, which flashes
+                        the skeleton and re-runs the whole inbox load each time
+                        a thread is opened or backed out of. */}
+                    <Route path="/inbox/*" element={
                       <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
                     } />
                   </Route>

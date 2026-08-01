@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox, type Conversation } from '@/hooks/useInbox';
@@ -69,6 +69,42 @@ function applyAdminFilters(
 }
 
 /**
+ * Messages is entered and left from the rail constantly, so landing on the
+ * thread list every time means re-picking the same conversation every time.
+ * The last thread opened is remembered across visits and reloads.
+ *
+ * Storage is best-effort: a browser with storage disabled loses the memory,
+ * not the page. Reading back also has to survive a thread that has since been
+ * deleted or filtered out of view, so the id is only ever used after it is
+ * matched against the conversations actually loaded.
+ */
+const LAST_THREAD_KEY = 'lsatu:inbox:last-thread';
+
+function readLastThread(): string | null {
+  try {
+    return localStorage.getItem(LAST_THREAD_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeLastThread(id: string) {
+  try {
+    localStorage.setItem(LAST_THREAD_KEY, id);
+  } catch {
+    /* no-op: remembering the thread is a convenience, never a requirement */
+  }
+}
+
+function forgetLastThread() {
+  try {
+    localStorage.removeItem(LAST_THREAD_KEY);
+  } catch {
+    /* no-op */
+  }
+}
+
+/**
  * Student auto-select: prioritize the thread where an admin is present (the Joshua thread).
  */
 function pickStudentPrimary(conversations: Conversation[], ownId: string) {
@@ -93,7 +129,10 @@ function pickStudentPrimary(conversations: Conversation[], ownId: string) {
  * the Teacher Workspace as <AdminInboxCommandCenter embedded />.
  */
 export default function Inbox() {
-  const { conversationId } = useParams();
+  // The route is /inbox/* rather than a :conversationId sibling, so the id
+  // comes off the splat. See the routing comment in App.tsx.
+  const params = useParams();
+  const conversationId = (params['*'] ?? '').split('/')[0] || undefined;
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authReady } = useAuth();
@@ -136,12 +175,33 @@ export default function Inbox() {
   }, [conversations, user, is_admin, filter, query]);
 
   // Students have a single thread with Joshua, so a one-row list is noise:
-  // send them straight into it. Admins land on the list and choose.
+  // send them straight into it. Admins return to whichever thread they were
+  // last reading, and see the list only when there is nothing live to return
+  // to.
+  //
+  // The restore fires once per visit, not on every empty activeId: the back
+  // button clears activeId too, and re-restoring there would make the thread
+  // list unreachable. Backing out is also an explicit "give me the list", so
+  // it drops the memory rather than fighting the next visit.
+  const restoreAttempted = useRef(false);
   useEffect(() => {
-    if (activeId || loading || permsLoading || !user || is_admin) return;
-    const primary = pickStudentPrimary(conversations, user.id);
-    if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
+    if (activeId || loading || permsLoading || !user) return;
+    if (!is_admin) {
+      const primary = pickStudentPrimary(conversations, user.id);
+      if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
+      return;
+    }
+    if (restoreAttempted.current) return;
+    restoreAttempted.current = true;
+    const remembered = readLastThread();
+    if (remembered && conversations.some((c) => c.id === remembered)) {
+      navigate(`/inbox/${remembered}`, { replace: true });
+    }
   }, [conversations, activeId, navigate, is_admin, loading, permsLoading, user]);
+
+  useEffect(() => {
+    if (activeId) writeLastThread(activeId);
+  }, [activeId]);
 
   const handleStartJoshua = useCallback(async () => {
     if (starting) return;
@@ -158,7 +218,10 @@ export default function Inbox() {
   }, [starting, refresh, navigate]);
 
   const selectThread = useCallback((id: string) => navigate(`/inbox/${id}`), [navigate]);
-  const clearThread = useCallback(() => navigate('/inbox'), [navigate]);
+  const clearThread = useCallback(() => {
+    forgetLastThread();
+    navigate('/inbox');
+  }, [navigate]);
 
   const adminEmptyLabel =
     query.trim().length > 0 ? 'No threads match your search.' : FILTER_EMPTY_LABEL[filter];

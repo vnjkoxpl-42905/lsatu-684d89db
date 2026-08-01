@@ -304,7 +304,12 @@ function ClassroomSidebar({
             <b>Support</b>
             <button
               type="button"
-              {...navProps(false, messagesUnlocked, () => go("/inbox"))}
+              {...navProps(
+                location.pathname === "/inbox" ||
+                  location.pathname.startsWith("/inbox/"),
+                messagesUnlocked,
+                () => go("/inbox"),
+              )}
             >
               Messages
               {!messagesUnlocked ? (
