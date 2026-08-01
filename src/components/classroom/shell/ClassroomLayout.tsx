@@ -29,6 +29,8 @@ import {
   useUserPermissions,
   type PermissionFlag,
 } from "@/hooks/useUserPermissions";
+import { useRailPrefs } from "@/hooks/useRailPrefs";
+import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { flagLabel } from "@/lib/flaggedService";
 import {
   useStudentAssignments,
@@ -52,6 +54,7 @@ const SECTION_TITLES: Record<ClassroomSection, string> = {
 
 type ClassroomLayoutContextValue = {
   displayName: string;
+  setDisplayName: (name: string) => void;
   testDate: string | null;
   openSection: (section: ClassroomSection) => void;
 };
@@ -129,6 +132,7 @@ function ClassroomSidebar({
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const unreadMessages = useUnreadMessageCount();
+  const { prefs: railPrefs } = useRailPrefs();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const profileRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -177,15 +181,57 @@ function ClassroomSidebar({
     onClick: unlocked ? onClick : undefined,
   });
 
-  const classroomUnlocked = canAccess("has_classroom_access");
-  const drillUnlocked = canAccess("has_drill_access");
-  const bootcampsUnlocked = canAccess("has_bootcamp_access");
-  const activitiesUnlocked = canAccess("has_activity_access");
-  const journalUnlocked = canAccess("has_journal_access", "has_waj_access");
-  const flaggedUnlocked = canAccess("has_flagged_access");
-  const analyticsUnlocked = canAccess("has_analytics_access");
-  const messagesUnlocked = canAccess("has_chat_access");
-  const scheduleUnlocked = canAccess("has_schedule_access");
+  const railGroups = resolveRailGroups(railPrefs);
+
+  // Behavior stays here (it needs closures over routing + section state); the
+  // catalog owns what the rail contains and in what order.
+  const railBehavior = (
+    item: RailItem,
+  ): { active: boolean; onClick: () => void } => {
+    switch (item.id) {
+      case "home":
+        return {
+          active: location.pathname === "/classroom" && !activeSection,
+          onClick: () => {
+            onNavigate?.();
+            onHome();
+          },
+        };
+      case "notes":
+        return { active: activeSection === "notes", onClick: () => onSection("notes") };
+      case "work":
+        return { active: activeSection === "work", onClick: () => onSection("work") };
+      case "drill":
+        return {
+          active: location.pathname === "/classroom/drill",
+          onClick: () => go("/classroom/drill"),
+        };
+      case "bootcamps":
+        return { active: false, onClick: () => go("/bootcamps") };
+      case "activities":
+        return { active: false, onClick: () => go("/activities") };
+      case "journal":
+        return { active: activeSection === "journal", onClick: () => go("/journal") };
+      case "flagged":
+        return { active: activeSection === "flagged", onClick: () => go("/flagged") };
+      case "analytics":
+        return {
+          active: location.pathname.startsWith("/analytics"),
+          onClick: () => go("/analytics"),
+        };
+      case "messages":
+        return {
+          active:
+            location.pathname === "/inbox" ||
+            location.pathname.startsWith("/inbox/"),
+          onClick: () => go("/inbox"),
+        };
+      case "schedule":
+        return { active: false, onClick: () => go("/schedule") };
+      case "booking":
+        return { active: false, onClick: () => go("/booking") };
+    }
+  };
 
   return (
     <div className="classroom-sidebar-card">
@@ -201,172 +247,34 @@ function ClassroomSidebar({
         </button>
 
         <nav aria-label="Classroom navigation">
-          <div className="classroom-nav-group">
-            <b>Classroom</b>
-            <button
-              type="button"
-              {...navProps(
-                location.pathname === "/classroom" && !activeSection,
-                classroomUnlocked,
-                () => {
-                  onNavigate?.();
-                  onHome();
-                },
-              )}
-            >
-              Home
-              {!classroomUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(
-                activeSection === "notes",
-                classroomUnlocked,
-                () => onSection("notes"),
-              )}
-            >
-              Notes and recaps
-              {classroomUnlocked ? (
-                <em>›</em>
-              ) : (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              )}
-            </button>
-            <button
-              type="button"
-              {...navProps(
-                activeSection === "work",
-                classroomUnlocked,
-                () => onSection("work"),
-              )}
-            >
-              Assigned work
-              {classroomUnlocked ? (
-                <em>›</em>
-              ) : (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              )}
-            </button>
-          </div>
-
-          <div className="classroom-nav-group">
-            <b>Study</b>
-            <button
-              type="button"
-              {...navProps(
-                location.pathname === "/classroom/drill",
-                drillUnlocked,
-                () => go("/classroom/drill"),
-              )}
-            >
-              Drill
-              {!drillUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(false, bootcampsUnlocked, () => go("/bootcamps"))}
-            >
-              Bootcamps
-              {!bootcampsUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(false, activitiesUnlocked, () => go("/activities"))}
-            >
-              Activities
-              {!activitiesUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-          </div>
-
-          <div className="classroom-nav-group">
-            <b>Review</b>
-            <button
-              type="button"
-              {...navProps(
-                activeSection === "journal",
-                journalUnlocked,
-                () => go("/journal"),
-              )}
-            >
-              Wrong answers
-              {journalUnlocked ? (
-                <em>›</em>
-              ) : (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              )}
-            </button>
-            <button
-              type="button"
-              {...navProps(activeSection === "flagged", flaggedUnlocked, () => go("/flagged"))}
-            >
-              Flagged
-              {flaggedUnlocked ? (
-                <em>›</em>
-              ) : (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              )}
-            </button>
-            <button
-              type="button"
-              {...navProps(
-                location.pathname.startsWith("/analytics"),
-                analyticsUnlocked,
-                () => go("/analytics"),
-              )}
-            >
-              Analytics
-              {!analyticsUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-          </div>
-
-          <div className="classroom-nav-group">
-            <b>Support</b>
-            <button
-              type="button"
-              {...navProps(
-                location.pathname === "/inbox" ||
-                  location.pathname.startsWith("/inbox/"),
-                messagesUnlocked,
-                () => go("/inbox"),
-              )}
-            >
-              Messages
-              {messagesUnlocked && unreadMessages > 0 ? (
-                <span className="classroom-nav-badge">
-                  {unreadMessages > 9 ? "9+" : unreadMessages}
-                  <span className="sr-only"> unread messages</span>
-                </span>
-              ) : null}
-              {!messagesUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(false, scheduleUnlocked, () => go("/schedule"))}
-            >
-              Schedule
-              {!scheduleUnlocked ? (
-                <Lock className="classroom-nav-lock" aria-hidden="true" />
-              ) : null}
-            </button>
-            <button
-              type="button"
-              {...navProps(false, true, () => go("/booking"))}
-            >
-              Booking
-            </button>
-          </div>
+          {railGroups.map((group) => (
+            <div className="classroom-nav-group" key={group.id}>
+              <b>{group.title}</b>
+              {group.items.map((item) => {
+                const { active, onClick } = railBehavior(item);
+                const unlocked = canAccess(...item.flags);
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    {...navProps(active, unlocked, onClick)}
+                  >
+                    {item.label}
+                    {item.id === "messages" && unlocked && unreadMessages > 0 ? (
+                      <span className="classroom-nav-badge">
+                        {unreadMessages > 9 ? "9+" : unreadMessages}
+                        <span className="sr-only"> unread messages</span>
+                      </span>
+                    ) : null}
+                    {item.section && unlocked ? <em>›</em> : null}
+                    {!unlocked ? (
+                      <Lock className="classroom-nav-lock" aria-hidden="true" />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
 
           {permissions.is_admin ? (
             <div className="classroom-nav-group">
@@ -910,7 +818,7 @@ export default function ClassroomLayout() {
   if (!authReady || !user || !profileReady) return null;
 
   const activeId = params.itemId ?? params.assignmentId ?? params.qid;
-  const contextValue = { displayName, testDate, openSection };
+  const contextValue = { displayName, setDisplayName, testDate, openSection };
   const journalDetail = /^\/journal\/[^/]+$/.test(location.pathname);
   const rootClass =
     activeSection === "journal"

@@ -1,11 +1,12 @@
 import { useSearchParams } from "react-router-dom";
-import Profile from "@/pages/Profile";
-import SettingsLayout from "@/pages/SettingsLayout";
+import ProfileSection from "@/components/classroom/account/ProfileSection";
+import RailLayoutEditor from "@/components/classroom/account/RailLayoutEditor";
 
 type AccountSection = "profile" | "layout";
 
-// The Account stage hosts the profile/settings surfaces inside the classroom
-// frame, so opening them no longer swaps the user into a different shell.
+// The Account stage: native classroom surfaces for identity/preferences and
+// sidebar layout. Both are built on classroom tokens — the old standalone
+// /profile and /settings/layout pages are gone.
 export default function ClassroomAccountView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const section: AccountSection =
@@ -48,11 +49,7 @@ export default function ClassroomAccountView() {
       </div>
 
       <div className="classroom-account-body">
-        {section === "profile" ? (
-          <Profile embedded />
-        ) : (
-          <SettingsLayout embedded />
-        )}
+        {section === "profile" ? <ProfileSection /> : <RailLayoutEditor />}
       </div>
     </div>
   );
