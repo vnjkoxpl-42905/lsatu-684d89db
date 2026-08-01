@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  ChevronsUpDown,
   Lock,
   LogOut,
   Menu,
@@ -10,6 +11,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   Outlet,
   useLocation,
@@ -91,6 +93,7 @@ function sectionFromPath(pathname: string): ClassroomSection | null {
     (/^\/classroom\/[^/]+$/.test(pathname) &&
       pathname !== "/classroom/drill" &&
       pathname !== "/classroom/uploads" &&
+      pathname !== "/classroom/account" &&
       pathname !== "/classroom/recaps")
   ) {
     return "work";
@@ -122,10 +125,34 @@ function ClassroomSidebar({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme, toggleTheme } = useTheme();
-  const { signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const unreadMessages = useUnreadMessageCount();
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const profileRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+
+  React.useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!profileRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   const go = (path: string) => {
     onNavigate?.();
@@ -369,46 +396,99 @@ function ClassroomSidebar({
           ) : null}
         </nav>
 
-        <div className="classroom-profile">
-          <div className="classroom-avatar">
-            {displayName.trim().charAt(0).toUpperCase()}
-          </div>
-          <div className="classroom-profile-copy">
-            <span>{displayName}</span>
-            <small>Student</small>
-          </div>
+        <div className="classroom-profile" ref={profileRef}>
+          {menuOpen ? (
+            <div
+              className="classroom-profile-menu"
+              role="menu"
+              aria-label="Account menu"
+            >
+              <div className="classroom-profile-menu-header">
+                <span>{displayName}</span>
+                {user?.email ? <small>{user.email}</small> : null}
+              </div>
+              <button
+                type="button"
+                role="menuitem"
+                className="classroom-profile-menu-item"
+                onClick={() => {
+                  setMenuOpen(false);
+                  go("/classroom/account");
+                }}
+              >
+                <UserRound size={14} aria-hidden="true" />
+                Account
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                className="classroom-profile-menu-item"
+                onClick={() => {
+                  setMenuOpen(false);
+                  go("/classroom/account?section=layout");
+                }}
+              >
+                <Settings size={14} aria-hidden="true" />
+                Customize layout
+              </button>
+              <div className="classroom-profile-menu-appearance">
+                <span>Appearance</span>
+                <div
+                  className="classroom-profile-menu-segment"
+                  role="group"
+                  aria-label="Appearance"
+                >
+                  <button
+                    type="button"
+                    className={theme === "light" ? "classroom-segment-active" : ""}
+                    aria-pressed={theme === "light"}
+                    onClick={() => setTheme("light")}
+                  >
+                    <Sun size={13} aria-hidden="true" />
+                    Light
+                  </button>
+                  <button
+                    type="button"
+                    className={theme === "dark" ? "classroom-segment-active" : ""}
+                    aria-pressed={theme === "dark"}
+                    onClick={() => setTheme("dark")}
+                  >
+                    <Moon size={13} aria-hidden="true" />
+                    Dark
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : null}
           <button
             type="button"
-            className="classroom-icon-button"
-            onClick={() => go("/profile")}
-            aria-label="Profile"
-            title="Profile"
+            ref={triggerRef}
+            className="classroom-profile-trigger"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
           >
-            <UserRound size={15} />
-          </button>
-          <button
-            type="button"
-            className="classroom-icon-button"
-            onClick={() => go("/settings/layout")}
-            aria-label="Settings"
-            title="Settings"
-          >
-            <Settings size={15} />
-          </button>
-          <button
-            type="button"
-            className="classroom-icon-button"
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+            <div className="classroom-avatar" aria-hidden="true">
+              {displayName.trim().charAt(0).toUpperCase()}
+            </div>
+            <div className="classroom-profile-copy">
+              <span>{displayName}</span>
+              <small>{permissions.is_admin ? "Teacher" : "Student"}</small>
+            </div>
+            <ChevronsUpDown
+              className="classroom-profile-chevron"
+              size={14}
+              aria-hidden="true"
+            />
           </button>
           <button
             type="button"
             className="classroom-icon-button"
             onClick={() => {
               onNavigate?.();
-              void signOut();
+              void signOut({ keepSavedEmail: true }).then(({ error }) => {
+                if (error) toast.error("Sign out failed. Please try again.");
+              });
             }}
             aria-label="Sign out"
             title="Sign out"

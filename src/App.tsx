@@ -27,8 +27,7 @@ const Drill = React.lazy(() => import("./pages/Drill"));
 const Analytics = React.lazy(() => import("./pages/Analytics"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
-import Profile from "./pages/Profile";
-import SettingsLayout from "./pages/SettingsLayout";
+import ClassroomAccountView from "./components/classroom/AccountView";
 import Classroom from "./pages/Classroom";
 import ClassroomLayout from "./components/classroom/shell/ClassroomLayout";
 import {
@@ -363,6 +362,7 @@ const App = () => {
                         </ProtectedRoute>
                       } />
                       <Route path="uploads" element={<ClassroomUploadsView />} />
+                      <Route path="account" element={<ClassroomAccountView />} />
                       <Route path="recaps" element={<ClassroomRecapsView />} />
                       <Route path="item/:itemId" element={<ClassroomItemView />} />
                       <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
@@ -424,8 +424,10 @@ const App = () => {
                     <Route path="/analytics" element={
                       <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
                     } />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/settings/layout" element={<SettingsLayout />} />
+                    {/* Old standalone pages now live inside the classroom
+                        Account stage; redirects keep bookmarks alive. */}
+                    <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />
+                    <Route path="/settings/layout" element={<Navigate to="/classroom/account?section=layout" replace />} />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />

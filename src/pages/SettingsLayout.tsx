@@ -72,7 +72,7 @@ function catalogFor(surface: Surface): CatalogItem[] {
   return surface === "orbital" ? ORBITAL_CATALOG : surface === "dock" ? DOCK_CATALOG : SIDEBAR_CATALOG;
 }
 
-export default function SettingsLayout() {
+export default function SettingsLayout({ embedded }: { embedded?: boolean } = {}) {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const perms = useUserPermissions();
@@ -213,54 +213,67 @@ export default function SettingsLayout() {
 
   if (!authReady || !user) return null;
 
+  const actionButtons = (
+    <div className="grid grid-cols-3 sm:flex sm:items-center gap-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onDiscard}
+        disabled={!dirty || saving || loading}
+        title="Revert unsaved edits to your last saved layout"
+      >
+        <Undo2 className="h-3.5 w-3.5 mr-1.5" /> Discard changes
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setConfirmRestoreOpen(true)}
+        disabled={saving || loading}
+        title="Replace your current layout with the Default preset"
+      >
+        <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Restore default
+      </Button>
+      <Button size="sm" onClick={onSave} disabled={!dirty || saving || loading}>
+        {saving ? (
+          <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+        ) : justSaved ? (
+          <Check className="h-3.5 w-3.5 mr-1.5" />
+        ) : (
+          <Save className="h-3.5 w-3.5 mr-1.5" />
+        )}
+        {justSaved ? "Saved" : "Save"}
+      </Button>
+    </div>
+  );
+
   return (
     <TooltipProvider>
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-base font-semibold">Customize layout</h1>
-              <p className="text-xs text-muted-foreground">Reorder and toggle items across the Main Hub.</p>
+    <div className={embedded ? "text-foreground" : "min-h-screen bg-background text-foreground"}>
+      {!embedded ? (
+        <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div>
+                <h1 className="text-base font-semibold">Customize layout</h1>
+                <p className="text-xs text-muted-foreground">Reorder and toggle items across the Main Hub.</p>
+              </div>
             </div>
+            {actionButtons}
           </div>
-          <div className="grid grid-cols-3 sm:flex sm:items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onDiscard}
-              disabled={!dirty || saving || loading}
-              title="Revert unsaved edits to your last saved layout"
-            >
-              <Undo2 className="h-3.5 w-3.5 mr-1.5" /> Discard changes
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setConfirmRestoreOpen(true)}
-              disabled={saving || loading}
-              title="Replace your current layout with the Default preset"
-            >
-              <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Restore default
-            </Button>
-            <Button size="sm" onClick={onSave} disabled={!dirty || saving || loading}>
-              {saving ? (
-                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-              ) : justSaved ? (
-                <Check className="h-3.5 w-3.5 mr-1.5" />
-              ) : (
-                <Save className="h-3.5 w-3.5 mr-1.5" />
-              )}
-              {justSaved ? "Saved" : "Save"}
-            </Button>
-          </div>
+        </header>
+      ) : (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <p className="text-xs text-muted-foreground">
+            Reorder and toggle items across the Main Hub.
+          </p>
+          {actionButtons}
         </div>
-      </header>
+      )}
 
-      <main className="mx-auto max-w-3xl px-6 py-6 space-y-6">
+      <main className={embedded ? "space-y-6" : "mx-auto max-w-3xl px-6 py-6 space-y-6"}>
         <LayoutPreview prefs={draft} userHasAccess={userHasAccess} />
         <PresetRow active={detectedPreset} onPick={applyPreset} />
 

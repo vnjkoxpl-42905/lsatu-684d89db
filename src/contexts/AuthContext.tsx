@@ -22,7 +22,7 @@ interface AuthContextValue {
   authReady: boolean;
   signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signOut: (opts?: { keepSavedEmail?: boolean }) => Promise<void>;
+  signOut: (opts?: { keepSavedEmail?: boolean }) => Promise<{ error: any }>;
   resetPassword: (email: string) => Promise<{ error: any }>;
   updatePassword: (newPassword: string) => Promise<{ error: any }>;
 }
@@ -182,7 +182,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!opts?.keepSavedEmail) {
       localStorage.removeItem('lsatu_saved_email');
     }
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    return { error };
   };
 
   const resetPassword = async (email: string) => {
@@ -237,7 +238,7 @@ export function useAuth() {
       authReady: false,
       signUp: async () => ({ error: new Error('Auth not ready') }),
       signIn: async () => ({ error: new Error('Auth not ready') }),
-      signOut: async () => {},
+      signOut: async () => ({ error: new Error('Auth not ready') }),
       resetPassword: async () => ({ error: new Error('Auth not ready') }),
       updatePassword: async () => ({ error: new Error('Auth not ready') }),
     } as AuthContextValue;

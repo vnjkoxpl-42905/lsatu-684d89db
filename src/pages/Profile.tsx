@@ -143,7 +143,7 @@ function ToggleRow({
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
-export default function Profile() {
+export default function Profile({ embedded }: { embedded?: boolean } = {}) {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { settings, updateSettings } = useUserSettings();
@@ -231,7 +231,12 @@ export default function Profile() {
   // ── Loading state ─────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div
+        className={cn(
+          'flex items-center justify-center',
+          embedded ? 'py-16' : 'min-h-screen bg-background',
+        )}
+      >
         <div className="flex flex-col items-center gap-4">
           <div className="w-8 h-8 border border-border border-t-foreground/30 rounded-full animate-spin" />
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Loading</p>
@@ -242,28 +247,30 @@ export default function Profile() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-background">
+    <div className={embedded ? undefined : 'min-h-screen bg-background'}>
 
-      {/* ── Sticky header ─────────────────────────────────────────────────── */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-        <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-            onClick={() => navigate('/classroom')}
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Return to Main Hub
-          </Button>
-          <IL>Profile</IL>
-          <LogoutButton />
-          <ThemeToggle />
-        </div>
-      </header>
+      {/* ── Sticky header (standalone page only) ──────────────────────────── */}
+      {!embedded ? (
+        <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
+          <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
+              onClick={() => navigate('/classroom')}
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Return to Main Hub
+            </Button>
+            <IL>Profile</IL>
+            <LogoutButton />
+            <ThemeToggle />
+          </div>
+        </header>
+      ) : null}
 
       {/* ── Two-column layout ───────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-10">
+      <div className={embedded ? undefined : 'max-w-7xl mx-auto px-4 lg:px-8 py-10'}>
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 items-start">
 
           {/* ════════════════════════════════════════════════════════════════
@@ -529,14 +536,16 @@ export default function Profile() {
       </div>
 
       {/* ── Bottom-left hub return — high-contrast, theme-adaptive */}
-      <div className="fixed bottom-7 left-8 z-20">
-        <Button
-          onClick={() => navigate('/classroom')}
-          className="bg-foreground hover:bg-foreground/90 text-background border border-border shadow-md px-10 h-20 text-[18px] font-medium rounded-xl"
-        >
-          Return to Main Hub
-        </Button>
-      </div>
+      {!embedded ? (
+        <div className="fixed bottom-7 left-8 z-20">
+          <Button
+            onClick={() => navigate('/classroom')}
+            className="bg-foreground hover:bg-foreground/90 text-background border border-border shadow-md px-10 h-20 text-[18px] font-medium rounded-xl"
+          >
+            Return to Main Hub
+          </Button>
+        </div>
+      ) : null}
 
     </div>
   );
