@@ -113,13 +113,16 @@ export default function SettingsLayout() {
     return () => window.removeEventListener("beforeunload", handler);
   }, [dirty]);
 
-  // ── Unsaved-changes guard #2: in-app router blocker ──
-  // useBlocker triggers when an in-app navigation is attempted while dirty;
-  // we surface a confirm dialog rather than navigating directly.
-  const blocker = useBlocker(
-    ({ currentLocation, nextLocation }) =>
-      dirty && currentLocation.pathname !== nextLocation.pathname,
-  );
+  // NOTE: `useBlocker` requires a data router (createBrowserRouter). This app
+  // uses <BrowserRouter>, where calling it throws and blanks the page, so the
+  // in-app navigation guard is disabled here; `beforeunload` above still covers
+  // refresh/tab-close.
+  const blocker = { state: "unblocked", reset: undefined, proceed: undefined } as {
+    state: string;
+    reset?: () => void;
+    proceed?: () => void;
+  };
+
 
   const detectedPreset = detectPreset(draft);
 
