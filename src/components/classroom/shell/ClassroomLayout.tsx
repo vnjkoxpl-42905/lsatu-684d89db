@@ -777,7 +777,13 @@ export default function ClassroomLayout() {
 
   const pathSection = sectionFromPath(location.pathname);
   const drillHub = location.pathname === "/classroom/drill";
-  const activeSection = drillHub ? null : pathSection ?? selectedSection;
+  // Messages owns the whole stage beside the rail: no section list, and none of
+  // the reading-column padding. Like the drill hub it also has to suppress a
+  // remembered section, or arriving from Notes would leave that list open.
+  const messagesStage =
+    location.pathname === "/inbox" || location.pathname.startsWith("/inbox/");
+  const activeSection =
+    drillHub || messagesStage ? null : pathSection ?? selectedSection;
 
   React.useEffect(() => {
     if (pathSection) setSelectedSection(pathSection);
@@ -820,7 +826,9 @@ export default function ClassroomLayout() {
         }`
       : drillHub
         ? "classroom-root classroom-root-drill"
-        : "classroom-root";
+        : messagesStage
+          ? "classroom-root classroom-root-messages"
+          : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
@@ -882,6 +890,10 @@ export default function ClassroomLayout() {
 
         {journalDetail ? (
           <Outlet context={contextValue} />
+        ) : messagesStage ? (
+          <main className="classroom-messages-stage">
+            <Outlet context={contextValue} />
+          </main>
         ) : (
           <main className="classroom-stage">
             <div className="classroom-column">

@@ -5,20 +5,15 @@ import { useInbox, type Conversation } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  ArrowLeft,
-  MessageCircle,
-  Inbox as InboxIcon,
-  Search,
-} from 'lucide-react';
+import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
+import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
-import { initialsFromName, needsReply, otherParticipantName } from '@/components/inbox/inboxDisplay';
-import { AdminInboxCommandCenter } from '@/components/inbox/AdminInboxCommandCenter';
+import { needsReply } from '@/components/inbox/inboxDisplay';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -84,13 +79,32 @@ function pickStudentPrimary(conversations: Conversation[], ownId: string) {
   return withAdmin || conversations[0];
 }
 
+/**
+ * Messages, as a workspace-rail stage page.
+ *
+ * StudentShell already supplies the rail, the route title, and a sized scrolling
+ * stage, so this page renders no page chrome of its own — no full-height root,
+ * no sticky header, no back-arrow to /classroom. It is a list/detail pair driven
+ * by the route: /inbox lists the threads, /inbox/:conversationId hands the whole
+ * stage to one conversation. There is deliberately no second thread rail; the
+ * workspace rail is the only rail on screen.
+ *
+ * The multi-source console (Gmail + Drive alongside app threads) still lives in
+ * the Teacher Workspace as <AdminInboxCommandCenter embedded />.
+ */
 export default function Inbox() {
   const { conversationId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
-  const { conversations, loading, error: inboxError, unreadCount, refresh } = useInbox();
+  const {
+    conversations,
+    loading,
+    error: inboxError,
+    refresh,
+    deleteConversation,
+  } = useInbox();
 
   const activeId = conversationId || null;
   const active = useMemo(
@@ -98,21 +112,12 @@ export default function Inbox() {
     [conversations, activeId],
   );
 
-  const headerName = useMemo(() => {
-    if (!is_admin) return 'Joshua';
-    if (!active || !user) return 'Inbox';
-    return otherParticipantName(active, user.id, active.subject || 'Inbox');
-  }, [is_admin, active, user]);
-
-  const headerInitial = useMemo(() => {
-    if (!is_admin) return 'J';
-    if (headerName === 'Inbox') return null;
-    return initialsFromName(headerName);
-  }, [is_admin, headerName]);
-
   const routeState = location.state as { composeTarget?: string | null } | null;
   const composeTarget = routeState?.composeTarget || null;
-  const clearComposeTarget = () => navigate(location.pathname, { replace: true, state: {} });
+  const clearComposeTarget = useCallback(
+    () => navigate(location.pathname, { replace: true, state: {} }),
+    [navigate, location.pathname],
+  );
 
   useEffect(() => {
     if (authReady && !user) navigate('/auth', { replace: true });
@@ -121,6 +126,7 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
+
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
     if (is_admin) return applyAdminFilters(conversations, user.id, filter, query);
@@ -129,21 +135,13 @@ export default function Inbox() {
     );
   }, [conversations, user, is_admin, filter, query]);
 
-  // Auto-select: students always; admins on desktop only.
+  // Students have a single thread with Joshua, so a one-row list is noise:
+  // send them straight into it. Admins land on the list and choose.
   useEffect(() => {
-    if (activeId) return;
-    if (loading || permsLoading) return;
-    if (!user) return;
-    if (!is_admin) {
-      const primary = pickStudentPrimary(conversations, user.id);
-      if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
-      return;
-    }
-    if (visibleConversations.length === 0) return;
-    if (window.innerWidth >= 768) {
-      navigate(`/inbox/${visibleConversations[0].id}`, { replace: true });
-    }
-  }, [conversations, visibleConversations, activeId, navigate, is_admin, loading, permsLoading, user]);
+    if (activeId || loading || permsLoading || !user || is_admin) return;
+    const primary = pickStudentPrimary(conversations, user.id);
+    if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
+  }, [conversations, activeId, navigate, is_admin, loading, permsLoading, user]);
 
   const handleStartJoshua = useCallback(async () => {
     if (starting) return;
@@ -159,200 +157,110 @@ export default function Inbox() {
     }
   }, [starting, refresh, navigate]);
 
-  const selectThread = (id: string) => navigate(`/inbox/${id}`);
-  const clearThread = () => navigate('/inbox');
-
-  const showEmptyStudent = !is_admin && !active && !loading && conversations.length === 0;
+  const selectThread = useCallback((id: string) => navigate(`/inbox/${id}`), [navigate]);
+  const clearThread = useCallback(() => navigate('/inbox'), [navigate]);
 
   const adminEmptyLabel =
-    query.trim().length > 0
-      ? 'No threads match your search.'
-      : FILTER_EMPTY_LABEL[filter];
+    query.trim().length > 0 ? 'No threads match your search.' : FILTER_EMPTY_LABEL[filter];
 
-  if (is_admin) {
+  // Detail: the conversation owns the stage. h-full (never h-screen) — the stage
+  // is already a sized flex child, so this keeps the composer pinned and scrolls
+  // the messages internally instead of growing a second page scrollbar.
+  if (active) {
     return (
-      <AdminInboxCommandCenter
-        activeId={activeId}
-        onSelectThread={(id) => navigate(`/inbox/${id}${location.search}`)}
-        onClearThread={() => navigate(`/inbox${location.search}`)}
-        composeTarget={composeTarget}
-        onComposeTargetHandled={clearComposeTarget}
-      />
+      <div className="flex h-full min-h-0 flex-col bg-background">
+        <ConversationView
+          conversation={active}
+          onBack={clearThread}
+          onMessageSent={refresh}
+          layout="stage"
+        />
+      </div>
     );
   }
 
+  if (!is_admin && !loading && conversations.length === 0) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+        <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
+      </div>
+    );
+  }
+
+  // List: ordinary page content in the stage.
   return (
-    <div
-      className={cn(
-        'h-screen overflow-hidden flex flex-col',
-        is_admin
-          ? 'bg-[#111722] text-[#f8eed8]'
-          : 'bg-[linear-gradient(180deg,#fffaf2_0%,#f8efe1_48%,#fffdf8_100%)] text-[#211b16]',
+    <div className="mx-auto w-full max-w-3xl px-4 py-6">
+      {is_admin && (
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search students or messages"
+              aria-label="Search students or messages"
+              className="h-9 rounded-md border-border bg-background pl-9 text-sm"
+            />
+          </div>
+          <NewConversationDialog
+            autoOpenWith={composeTarget}
+            onAutoOpenHandled={clearComposeTarget}
+            onCreated={selectThread}
+            triggerLabel="New"
+            triggerClassName="h-9 shrink-0 rounded-md"
+          />
+        </div>
       )}
-    >
-      <header
-        className={cn(
-          'sticky top-0 z-20 shrink-0',
-          is_admin
-            ? 'border-b border-white/10 bg-[#111722]/95 shadow-[0_16px_40px_rgba(0,0,0,0.24)] backdrop-blur'
-            : 'border-b border-[#eadfcf] bg-[#fffaf2]/90 backdrop-blur',
-        )}
-      >
-        <div className="mx-auto flex max-w-[1680px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate('/classroom')}
-              aria-label="Back to Main Hub"
+
+      {is_admin && (
+        <div
+          role="tablist"
+          aria-label="Filter conversations"
+          className="mb-3 inline-flex items-center gap-0.5 rounded-md bg-muted p-0.5"
+        >
+          {FILTER_TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={filter === t.id}
+              onClick={() => setFilter(t.id)}
               className={cn(
-                'rounded-xl',
-                is_admin ? 'text-[#c9d0dc] hover:bg-white/10 hover:text-white' : 'text-[#6d6254] hover:bg-[#efe4d3]',
+                'whitespace-nowrap rounded-[5px] px-2.5 py-1 text-[0.8125rem] font-medium transition-colors',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                filter === t.id
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div className="flex items-center gap-2">
-              <div
-                className={cn(
-                  'h-9 w-9 rounded-2xl flex items-center justify-center border text-[10px] font-black tracking-tight transition-all',
-                  is_admin
-                    ? 'bg-[#f0d28e] text-[#161b25] border-[#f0d28e]/40 shadow-[0_12px_30px_rgba(0,0,0,0.22)]'
-                    : 'bg-[#203024] text-[#f8eed8] border-[#203024]/20',
-                )}
-                aria-hidden="true"
-              >
-                {headerInitial || (is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />)}
-              </div>
-              <div className="min-w-0">
-                <h1 className={cn('text-sm font-black leading-tight tracking-tight', is_admin ? 'text-[#fff6e5]' : 'text-[#211b16]')}>
-                  {is_admin ? 'Messages Command Center' : headerName}
-                </h1>
-                <p className={cn('hidden text-[11px] font-semibold sm:block', is_admin ? 'text-[#aab4c3]' : 'text-[#7a6b58]')}>
-                  {is_admin ? headerName : 'A direct line to Joshua'}
-                </p>
-              </div>
-              {is_admin && unreadCount > 0 && (
-                <span className="ml-1 inline-flex h-[22px] min-w-[22px] items-center justify-center rounded-full bg-[#a14f43] px-1.5 text-[10px] font-black text-white">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-2" />
+              {t.label}
+            </button>
+          ))}
         </div>
-      </header>
+      )}
 
-      {/* TODO: migrate to has_admin_inbox_access flag per CLAUDE.md "granular flags not roles."
-          Tracking ticket TBD. Until then, is_admin matches the existing admin-inbox gate. */}
-      {showEmptyStudent ? (
-        <div className="mx-auto min-h-0 w-full max-w-7xl flex-1">
-          <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
+      {loading ? (
+        <ThreadListSkeleton count={6} />
+      ) : inboxError ? (
+        <div className="flex items-center justify-between gap-3 rounded-md border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+          <span>{inboxError}. Your messages may be out of date.</span>
+          <Button size="sm" variant="outline" onClick={() => refresh()}>
+            Retry
+          </Button>
         </div>
       ) : (
-        <div className={cn(
-          'mx-auto md:grid flex-1 min-h-0 w-full',
-          is_admin
-            ? 'max-w-[1680px] md:grid-cols-[370px_minmax(0,1fr)] xl:grid-cols-[380px_minmax(0,1fr)_360px]'
-            : 'max-w-6xl md:grid-cols-[300px_1fr] px-3 py-4 md:px-6',
-        )}>
-          <aside
-            className={cn(
-              'h-full md:flex md:flex-col overflow-hidden',
-              is_admin
-                ? 'border-r border-white/10 bg-[#141a24] text-[#edf2f7]'
-                : 'rounded-3xl border border-[#eadfcf] bg-white/70 shadow-[0_24px_70px_rgba(63,45,24,0.10)] backdrop-blur-sm',
-              active ? 'hidden md:flex' : 'flex flex-col',
-            )}
-          >
-            {!is_admin && (
-              <div className="border-b border-[#eadfcf] bg-[#fffaf2]/80 px-4 py-4 shrink-0">
-                <div className="text-[11px] font-black uppercase text-[#8b5b42] tracking-[0.16em]">
-                  Coaching
-                </div>
-                <div className="mt-1 text-sm font-bold text-[#211b16]">
-                  One thread with Joshua
-                </div>
-              </div>
-            )}
-            {is_admin && (
-              <div className="space-y-3 border-b border-white/10 bg-[#141a24] px-4 py-4 shrink-0">
-                <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#aab4c3] pointer-events-none" />
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search students or messages"
-                    className="h-10 rounded-2xl border-white/10 bg-white/[0.07] pl-9 text-sm font-semibold text-white placeholder:text-[#aab4c3] focus:bg-white/[0.10]"
-                  />
-                </div>
-                <div
-                  role="tablist"
-                  aria-label="Filter conversations"
-                  className="inline-flex w-full items-center gap-1 rounded-2xl bg-white/[0.06] p-1"
-                >
-                  {FILTER_TABS.map((t) => (
-                    <button
-                      key={t.id}
-                      role="tab"
-                      aria-selected={filter === t.id}
-                      onClick={() => setFilter(t.id)}
-                      className={cn(
-                        'flex-1 px-2 py-1.5 text-[11px] font-black rounded-xl transition-all whitespace-nowrap',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                        filter === t.id
-                          ? 'bg-[#f0d28e] text-[#161b25] shadow-sm'
-                          : 'text-[#aab4c3] hover:bg-white/10 hover:text-white',
-                      )}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div className="flex-1 overflow-y-auto">
-              {loading ? (
-                <ThreadListSkeleton count={6} />
-              ) : inboxError ? (
-                <div className="p-4 m-3 rounded-lg border border-destructive/40 bg-destructive/5 text-sm text-destructive flex items-center justify-between gap-3">
-                  <span>{inboxError}. Your messages may be out of date.</span>
-                  <Button size="sm" variant="outline" onClick={() => refresh()}>
-                    Retry
-                  </Button>
-                </div>
-              ) : (
-                <ThreadList
-                  conversations={visibleConversations}
-                  activeId={activeId}
-                  onSelect={selectThread}
-                  variant={is_admin ? 'admin' : 'student'}
-                  emptyLabel={is_admin ? adminEmptyLabel : 'No conversations yet.'}
-                />
-              )}
-            </div>
-          </aside>
-
-          <main
-            className={cn(
-              'h-full min-h-0 flex flex-col',
-              !is_admin && 'overflow-hidden rounded-3xl border border-[#eadfcf] bg-[#fffdf8] shadow-[0_24px_70px_rgba(63,45,24,0.10)]',
-              active ? 'flex' : 'hidden md:flex',
-            )}
-          >
-            {active ? (
-              <ConversationView
-                conversation={active}
-                onBack={clearThread}
-                onMessageSent={refresh}
-              />
-            ) : (
-              <div className={cn('flex-1 flex items-center justify-center text-sm font-semibold', is_admin ? 'bg-[#f7f3ea] text-[#8b7c68]' : 'bg-[#fffdf8] text-[#8b7c68]')}>
-                {is_admin ? 'Pick a thread to open' : 'Loading conversation'}
-              </div>
-            )}
-          </main>
-        </div>
+        <ThreadList
+          conversations={visibleConversations}
+          activeId={activeId}
+          onSelect={selectThread}
+          variant="admin"
+          surface="light"
+          emptyLabel={is_admin ? adminEmptyLabel : 'No conversations yet.'}
+          onDelete={is_admin ? deleteConversation : undefined}
+        />
       )}
     </div>
   );

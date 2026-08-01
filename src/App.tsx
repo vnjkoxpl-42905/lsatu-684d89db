@@ -387,6 +387,17 @@ const App = () => {
                         <JournalEntryView />
                       </ProtectedRoute>
                     } />
+
+                    {/* Messages is reached from the classroom rail's Support
+                        group, so it draws inside this frame. Routing it under
+                        StudentShell swapped the whole rail out from under the
+                        user mid-navigation. */}
+                    <Route path="/inbox" element={
+                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+                    } />
+                    <Route path="/inbox/:conversationId" element={
+                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+                    } />
                   </Route>
 
                   {/* Persistent student shell. Sidebar + study chat stay mounted;
@@ -413,12 +424,6 @@ const App = () => {
                     } />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/settings/layout" element={<SettingsLayout />} />
-                    <Route path="/inbox" element={
-                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-                    } />
-                    <Route path="/inbox/:conversationId" element={
-                      <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
-                    } />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />

@@ -57,10 +57,26 @@ html.dark .classroom-root {
   box-sizing: border-box;
 }
 
+/* Split for the same reason the colour reset below is written with :where().
+   `font: inherit` at (0,1,1) outranks every Tailwind font utility (0,1,0), so
+   a button carrying `text-[13px] font-black` inside this frame rendered at the
+   inherited 16px/500 instead — which is what the Messages stage is full of.
+   Family and style stay at reset strength (that is the part a reset is for:
+   form controls otherwise default to Arial); the metrics a component may
+   legitimately state for itself drop to (0,0,1), so a bare control still
+   inherits and a stated size, weight, or leading now wins. */
 .classroom-root button,
 .classroom-root input,
 .classroom-root textarea {
-  font: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+}
+
+:where(.classroom-root) :is(button, input, textarea) {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
 /* A reset, so it must carry a reset's specificity. Written plainly as
@@ -2173,3 +2189,30 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   color: hsl(var(--foreground));
 }
 
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Messages stage
+
+   Messages is reached from the rail's Support group and must stay inside this
+   frame — routing it out swapped the whole rail mid-navigation. Unlike the
+   reading surfaces it is a chat: it needs the full height beside the rail, not
+   the 720px centred column, so it gets its own stage and no section list.
+   ───────────────────────────────────────────────────────────────────────── */
+.classroom-root.classroom-root-messages {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-messages-stage {
+  flex: 1 1 auto;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  /* Clear the fixed menu button, the same way .classroom-column does. */
+  .classroom-root .classroom-messages-stage {
+    padding-top: 62px;
+  }
+}
