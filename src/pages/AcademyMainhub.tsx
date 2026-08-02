@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
+  ArrowRight,
   Loader2,
   Search,
   SlidersHorizontal,
@@ -22,8 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SplineScene } from "@/components/ui/splite";
-import { Spotlight } from "@/components/ui/spotlight";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { SectionSelector } from "@/components/drill/SectionSelector";
@@ -37,20 +36,6 @@ import {
 } from "@/components/mainhub/smartLRQuestionSearch";
 
 const QUESTION_PICKER_PLACEHOLDER = "";
-
-function SplineBoundary({ children }: { children: React.ReactNode }) {
-  return (
-    <React.Suspense
-      fallback={
-        <div className="flex h-full w-full items-center justify-center">
-          <div className="h-20 w-20 rounded-full border border-white/15 bg-white/[0.03] shadow-[0_0_80px_rgba(255,255,255,0.08)]" />
-        </div>
-      }
-    >
-      {children}
-    </React.Suspense>
-  );
-}
 
 function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
   const navigate = useNavigate();
@@ -218,82 +203,49 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
   }, []);
 
   return (
-    <Card className="drill-observatory-hero relative min-h-[460px] w-full overflow-hidden rounded-[20px] border-0 bg-zinc-950 shadow-[0_22px_70px_rgba(15,23,42,0.16)] @[900px]:min-h-[390px]">
-      <Spotlight className="-top-48 left-[-120px] @[900px]:left-[26%] @[900px]:-top-24" fill="white" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_44%_38%,rgba(255,255,255,0.16),transparent_31%),radial-gradient(circle_at_82%_48%,rgba(14,165,233,0.1),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.07),transparent_34%,rgba(2,6,23,0.24)_76%,transparent)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:56px_56px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent"
-      />
+    /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
+       horizon image needs image-set() and a two-layer scrim pseudo-element,
+       neither of which belongs in a className. */
+    <Card className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none">
       <div className="drill-observatory-route-label" aria-hidden>
         <span>DRILL / LOGICAL REASONING</span>
         <span>REASONING INSTRUMENT 01</span>
       </div>
 
-      <div className="drill-observatory-hero-grid relative z-10 grid min-h-[460px] grid-cols-1 gap-6 p-5 sm:p-7 @[900px]:min-h-[390px] @[900px]:grid-cols-[minmax(150px,0.58fr)_minmax(360px,1.72fr)_minmax(280px,0.85fr)] @[900px]:items-center @[900px]:gap-5 @[1090px]:grid-cols-[minmax(210px,0.7fr)_minmax(480px,1.85fr)_minmax(320px,0.9fr)] @[1090px]:gap-7 @[1090px]:p-8 @[1220px]:grid-cols-[minmax(230px,0.75fr)_minmax(560px,2fr)_minmax(330px,0.92fr)] @[1220px]:gap-9">
-        <div className="drill-observatory-greeting flex min-h-[92px] flex-col justify-center gap-4 @[900px]:min-h-0 @[900px]:pl-2 @[1090px]:pl-6 @[1220px]:pl-8">
-          <div className="space-y-1">
-            <p className="drill-observatory-label text-white/45">
+      <div className="drill-observatory-hero-grid">
+        <div className="drill-observatory-greeting flex flex-col justify-end">
+          <div className="flex flex-col gap-[9px]">
+            <p className="drill-observatory-label drill-observatory-ink-50">
               {todayLabel}
             </p>
-            {/* Size comes from .drill-observatory-greeting h2, which clamps up to
-                --observatory-text-display. The `sm:text-2xl` that used to sit here
-                never applied — the CSS rule outranks it. */}
-            <h2 className="text-xl font-semibold leading-tight text-white">
-              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+            {/* Size, face and the italic on the name come from
+                .drill-observatory-greeting h2 — the CSS rule outranks utilities
+                here, so putting them in className would be dead code. */}
+            <h2>
+              {firstName ? (
+                <>
+                  Welcome back, <em>{firstName}</em>
+                </>
+              ) : (
+                "Welcome back"
+              )}
             </h2>
+            <p className="drill-observatory-ink-62 text-sm leading-[1.55]">
+              Pick up where you left off, or aim the drill at one question.
+            </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button
-              onClick={startSmartDrill}
-              size="sm"
-              className="h-11 rounded-full border border-white/10 bg-white px-6 text-sm font-semibold text-black shadow-[0_16px_38px_rgba(255,255,255,0.1)] hover:bg-neutral-200"
-            >
-              Start Smart Drill
-            </Button>
-          </div>
-        </div>
-
-        <div className="drill-observatory-robot relative flex h-[170px] items-center justify-center @[900px]:h-[360px]">
-          {/* Soft radial spotlight behind robot */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, rgba(125,170,210,0.18) 0%, rgba(56,90,130,0.10) 30%, rgba(0,0,0,0) 65%)",
-              filter: "blur(20px)",
-            }}
-          />
-          <div
-            className="drill-observatory-robot-stage absolute inset-0"
-            style={{
-              WebkitMaskImage:
-                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
-              maskImage:
-                "radial-gradient(ellipse 60% 75% at 50% 50%, #000 35%, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0) 85%)",
-            }}
+          <Button
+            onClick={startSmartDrill}
+            className="drill-observatory-cta mt-5 w-fit"
           >
-            <SplineBoundary>
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="h-full w-full scale-[1.06]"
-              />
-            </SplineBoundary>
-          </div>
+            Start Smart Drill
+            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+          </Button>
         </div>
 
-
-        <div className="drill-observatory-console w-full rounded-[28px] border border-white/[0.075] bg-white/[0.04] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_54px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:p-4 @[900px]:mr-0 @[900px]:max-w-[410px] @[900px]:justify-self-end @[1090px]:mr-4 @[1220px]:mr-6">
+        <div className="drill-observatory-console w-full">
           <div
-            className="mb-3 space-y-3"
+            className="flex flex-col gap-3.5"
             onKeyDown={(event) => {
               if (event.key === "Escape" && searchQuery) {
                 event.preventDefault();
@@ -307,7 +259,8 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
           >
             <div className="relative">
               <Search
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35"
+                className="drill-observatory-ink-45 pointer-events-none absolute left-[14px] top-1/2 h-[15px] w-[15px] -translate-y-1/2"
+                strokeWidth={1.8}
                 aria-hidden
               />
               <input
@@ -315,31 +268,79 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
                 value={searchQuery}
                 disabled={isLoading}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search question text..."
+                placeholder="Search question text…"
                 aria-label="Search question text"
-                className={cn(
-                  "h-12 w-full rounded-[22px] border border-white/[0.08] bg-black/15 pl-9 pr-3 text-sm font-semibold text-white outline-none transition",
-                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] placeholder:text-white/35",
-                  "focus:border-white/35 focus:ring-2 focus:ring-white/10 disabled:cursor-default disabled:text-white/30",
-                )}
+                className="w-full pl-[38px] pr-4 outline-none transition disabled:cursor-default"
               />
             </div>
 
-            <div className="flex items-center justify-between gap-3 px-1">
+            {searchIsActive && (
+              <div
+                className="drill-observatory-search-results space-y-1.5"
+                aria-live="polite"
+              >
+                {searchMatches.map((match) => (
+                  <QuestionSearchResult
+                    key={match.question.qid}
+                    match={match}
+                    onOpen={() => openQuestion(match.question.qid)}
+                  />
+                ))}
+
+                {showNoMatches && (
+                  <p className="drill-observatory-ink-45 px-1 py-1 text-xs font-medium">
+                    No matching questions
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2.5" aria-label="Specific question launcher">
+              <ConsoleSelect
+                label="PrepTest"
+                value={pt}
+                disabled={isLoading || pts.length === 0}
+                onChange={(value) => {
+                  setPt(value);
+                  setSection(QUESTION_PICKER_PLACEHOLDER);
+                  setQnum(QUESTION_PICKER_PLACEHOLDER);
+                }}
+                options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
+              />
+              <ConsoleSelect
+                label="Section"
+                value={section}
+                disabled={!pt}
+                onChange={(value) => {
+                  setSection(value);
+                  setQnum(QUESTION_PICKER_PLACEHOLDER);
+                }}
+                options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
+              />
+              <ConsoleSelect
+                label="Question"
+                value={qnum}
+                disabled={!section}
+                onChange={setQnum}
+                options={qnums.map((n) => ({ value: String(n), label: `Question ${n}` }))}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-3 px-0.5">
               <button
                 type="button"
                 onClick={() => setAdvancedOpen((value) => !value)}
-                className="drill-observatory-label inline-flex items-center gap-2 rounded-full px-1 py-1 text-white/55 transition hover:text-white"
+                className="drill-observatory-disclosure drill-observatory-label"
                 aria-expanded={advancedOpen}
               >
-                <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden />
+                <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />
                 Advanced
               </button>
               {advancedFiltersActive && (
                 <button
                   type="button"
                   onClick={clearAdvancedFilters}
-                  className="rounded-full px-1 py-1 text-[11px] font-semibold text-white/45 transition hover:text-white"
+                  className="drill-observatory-disclosure drill-observatory-label"
                 >
                   Clear filters
                 </button>
@@ -347,7 +348,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
             </div>
 
             {advancedOpen && (
-              <div className="drill-observatory-advanced grid grid-cols-1 gap-2 rounded-[22px] border border-white/[0.075] bg-black/10 p-2.5 @[1408px]:grid-cols-2">
+              <div className="drill-observatory-advanced">
                 <ConsoleSelect
                   label="Question type"
                   value={advancedQType}
@@ -364,100 +365,25 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
                   options={difficulties.map((n) => ({ value: String(n), label: `Difficulty ${n}` }))}
                   compact
                 />
-                <ConsoleSelect
-                  label="PT filter"
-                  value={pt}
-                  disabled={isLoading || pts.length === 0}
-                  onChange={(value) => {
-                    setPt(value);
-                    setSection(QUESTION_PICKER_PLACEHOLDER);
-                    setQnum(QUESTION_PICKER_PLACEHOLDER);
-                  }}
-                  options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
-                  compact
-                />
-                <ConsoleSelect
-                  label="Section filter"
-                  value={section}
-                  disabled={!pt}
-                  onChange={(value) => {
-                    setSection(value);
-                    setQnum(QUESTION_PICKER_PLACEHOLDER);
-                  }}
-                  options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
-                  compact
-                />
               </div>
             )}
 
-            {searchIsActive && (
-              <div
-                className="drill-observatory-search-results max-h-48 space-y-1.5 overflow-y-auto pr-1"
-                aria-live="polite"
-              >
-                {searchMatches.map((match) => (
-                  <QuestionSearchResult
-                    key={match.question.qid}
-                    match={match}
-                    onOpen={() => openQuestion(match.question.qid)}
-                  />
-                ))}
-
-                {showNoMatches && (
-                  <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-xs font-semibold text-white/50">
-                    No matching questions
-                  </div>
-                )}
-              </div>
-            )}
+            <Button
+              type="button"
+              onClick={startSpecificQuestion}
+              disabled={!selectedQuestion}
+              className="drill-observatory-console-start"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  Start
+                </>
+              ) : (
+                "Start"
+              )}
+            </Button>
           </div>
-
-          <div className="grid grid-cols-1 gap-3" aria-label="Specific question launcher">
-            <ConsoleSelect
-              label="PrepTest"
-              value={pt}
-              disabled={isLoading || pts.length === 0}
-              onChange={(value) => {
-                setPt(value);
-                setSection(QUESTION_PICKER_PLACEHOLDER);
-                setQnum(QUESTION_PICKER_PLACEHOLDER);
-              }}
-              options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
-            />
-            <ConsoleSelect
-              label="Section"
-              value={section}
-              disabled={!pt}
-              onChange={(value) => {
-                setSection(value);
-                setQnum(QUESTION_PICKER_PLACEHOLDER);
-              }}
-              options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
-            />
-            <ConsoleSelect
-              label="Question"
-              value={qnum}
-              disabled={!section}
-              onChange={setQnum}
-              options={qnums.map((n) => ({ value: String(n), label: `Question ${n}` }))}
-            />
-          </div>
-
-          <Button
-            type="button"
-            onClick={startSpecificQuestion}
-            disabled={!selectedQuestion}
-            className="mt-3 h-11 w-full rounded-[22px] border border-white/12 bg-white text-sm font-semibold text-black shadow-[0_14px_28px_rgba(255,255,255,0.08)] hover:bg-neutral-200 disabled:bg-white/10 disabled:text-white/35 disabled:opacity-100"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                Start
-              </>
-            ) : (
-              "Start"
-            )}
-          </Button>
         </div>
       </div>
     </Card>
@@ -478,25 +404,22 @@ function QuestionSearchResult({
       type="button"
       onClick={onOpen}
       className={cn(
-        "block w-full rounded-2xl border border-white/[0.12] bg-slate-950/80 px-3 py-2 text-left transition",
-        "shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(0,0,0,0.18)] hover:border-white/[0.22] hover:bg-slate-900/90",
+        "drill-observatory-result block w-full rounded-[12px] px-3 py-2 text-left",
+        "bg-[rgba(0,0,0,0.32)] shadow-[0_0_0_1px_var(--observatory-ring-quiet)]",
       )}
     >
-      <div className="mb-0.5 flex items-center gap-2 text-[11px] font-bold text-white/90">
+      <div className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 mb-1 flex items-center gap-2">
         <span>
           PT {question.pt} · S{question.section} · Q{question.qnum}
         </span>
-        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white/65">
-          {question.qtype}
-        </span>
-        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white/65">
-          D{question.difficulty}
+        <span className="drill-observatory-ink-45 truncate normal-case tracking-normal">
+          {question.qtype} · D{question.difficulty}
         </span>
       </div>
-      <p className="line-clamp-1 text-xs font-medium leading-5 text-slate-200/90">
+      <p className="drill-observatory-ink-70 line-clamp-1 text-xs font-normal leading-5">
         {snippet.before}
         {snippet.match ? (
-          <mark className="rounded bg-white px-0.5 font-semibold text-slate-950 shadow-[0_0_14px_rgba(255,255,255,0.16)]">
+          <mark className="rounded bg-[#f4f1ea] px-0.5 font-semibold text-[#0c0c0e]">
             {snippet.match}
           </mark>
         ) : null}
@@ -530,12 +453,12 @@ function ConsoleSelect({
     >
       <SelectTrigger
         aria-label={label}
+        /* Height, fill, ring and type come from .drill-observatory-console
+           button[role="combobox"]; only layout details live here. */
         className={cn(
-          compact ? "h-10 rounded-[18px] text-xs" : "h-12 rounded-[22px] text-sm",
-          "w-full border border-white/[0.08] bg-black/15 px-3 font-semibold text-white outline-none transition",
-          "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:border-white/35 focus:ring-2 focus:ring-white/10 focus:ring-offset-0",
-          "disabled:cursor-default disabled:text-white/30 disabled:opacity-100",
-          "[&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-white/40 [&>svg]:opacity-100",
+          "w-full outline-none transition disabled:cursor-default",
+          compact && "text-xs",
+          "[&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:opacity-100",
           "[&>span]:line-clamp-1 [&>span]:text-left",
         )}
       >
@@ -545,7 +468,7 @@ function ConsoleSelect({
         position="popper"
         sideOffset={8}
         className={cn(
-          "z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-2xl border border-white/15 bg-zinc-950/95 text-white shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl",
+          "z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-[14px] border-0 bg-[rgba(6,6,9,0.92)] text-[#f4f1ea] shadow-[0_0_0_1px_rgba(244,241,234,0.12),0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl",
           "[&_[data-radix-select-viewport]]:max-h-[min(304px,calc(100vh-176px))]",
         )}
       >
@@ -554,8 +477,8 @@ function ConsoleSelect({
             key={option.value}
             value={option.value}
             className={cn(
-              "min-h-9 rounded-xl py-2 pl-8 pr-3 text-sm font-semibold text-white/78 outline-none",
-              "focus:bg-white/10 focus:text-white data-[state=checked]:text-white",
+              "min-h-9 rounded-[10px] py-2 pl-8 pr-3 text-[13.5px] font-medium text-[rgba(244,241,234,0.75)] outline-none",
+              "focus:bg-[rgba(244,241,234,0.08)] focus:text-[#f4f1ea] data-[state=checked]:text-[#f4f1ea]",
             )}
           >
             {option.label}
@@ -591,11 +514,7 @@ function LauncherStage({
   );
 
   return (
-    <div className="drill-observatory-launcher relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-zinc-950 p-5 shadow-[0_22px_70px_rgba(15,23,42,0.16)] sm:p-6">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.10),transparent_36%),radial-gradient(circle_at_86%_82%,rgba(14,165,233,0.10),transparent_40%)]"
-      />
+    <div className="drill-observatory-launcher relative overflow-hidden">
       {/* No header here on purpose: SectionSelector and QuestionPicker each
           render their own title and Cancel control, so adding one would show
           the student two titles and two Cancel buttons. */}
@@ -603,7 +522,7 @@ function LauncherStage({
         {isLoading && (
           <div className="flex flex-col items-center justify-center gap-3 py-14">
             <Loader2 className="h-5 w-5 animate-spin text-white/50" aria-hidden />
-            <p className="drill-observatory-label text-white/45">
+            <p className="drill-observatory-label drill-observatory-ink-45">
               Loading questions…
             </p>
           </div>
@@ -704,11 +623,11 @@ export default function AcademyMainhub({
 
   return (
     <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
-      {/* gap-6, not gap-4: the panels below carry 22px of internal padding, so a
-          16px gap between them made the blocks sit closer to each other than
-          their own contents sit to their edges — proximity backwards. The gap
-          between blocks has to be the larger number. */}
-      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[65rem] flex-col gap-6">
+      {/* 1140px and a 20px gap: the design's column. The three cards each carry
+          26-30px of internal padding, so the gap between them stays smaller than
+          their padding by design — they read as three objects on one field, not
+          as one split surface. */}
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
         <MainhubHero drillReturnTo={drillReturnTo} />
 
         {stage === "analytics" ? (
@@ -730,20 +649,18 @@ export default function AcademyMainhub({
              ~600px bay. For that stage the deck stacks — the picker takes the
              full canvas width and Today drops beneath it, still in sight.
 
-             `items-stretch` (the default), not `items-start`: the bays are two
-             halves of one card, so they must share its height. Left at
-             `items-start` the shorter column stopped 64px above the taller one
-             and the divider ran on past it, leaving the deck's bottom corner
-             visibly ragged.
+             `items-stretch` (the default), not `items-start`: the two cards are
+             halves of one deck row and must share its height, or the shorter one
+             stops short and the row's bottom edge reads as ragged.
 
              1.2:1, not the old 1.72:1. The wide column was holding the sparse
-             content (two tiles, two links, one insight card) while Today —
+             content (two tools, two links, one insight row) while Today —
              headline, three assignment rows, status badges — was squeezed into
              382px and wrapping. The split was feeding space to the column that
              needed it least. */
           <section
             className={cn(
-              "drill-observatory-deck grid grid-cols-1 items-stretch gap-0",
+              "drill-observatory-deck grid grid-cols-1 items-stretch",
               !isWideLauncherStage &&
                 "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}
