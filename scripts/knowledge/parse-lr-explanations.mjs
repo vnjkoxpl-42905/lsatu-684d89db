@@ -46,15 +46,45 @@ const STYLE_HEADINGS = new Map([
 ]);
 
 
+// Two kinds of structural markup can trail a question block and leak into the
+// last answer choice's prose. Both are punctuation between questions, never
+// content, and dropping them here covers every consumer at once because all of
+// them read the lines this function emits.
+//
+//   1. A bare thematic break ("---"), which separates every question block.
+//   2. A section heading ("# Section 4 (Logical Reasoning)"). Questions are
+//      split on "##" headings, so a single-hash section heading is not a
+//      boundary and stays attached to the question that precedes it. This hit
+//      the last question of every section.
+const THEMATIC_BREAK_RE = /^\s*(-{3,}|\*{3,}|_{3,})\s*$/;
+// Matched narrowly on purpose. A bare /^#\s/ also catches authored content —
+// "# of important issues" and "# that are Wilson" are shorthand for "number
+// of", not headings — and treating those as a section boundary silently drops
+// a question's answer choices. Every real heading in the corpus is one of
+// "# Section N (...)" or "# PrepTest N ...".
+const STRUCTURAL_HEADING_RE = /^#{1,2}\s+(Section|PrepTest)\b/;
+
+// Neither rule may fire inside a fenced code block. Authored explanations draw
+// inference bars there ("-------------------" under two premises), which is
+// content, not punctuation, and stripping it silently mangles the proof.
+const FENCE_RE = /^\s*(```|~~~)/;
+
 function splitSubsections(body) {
   const out = [];
   let current = null;
+  let inFence = false;
   for (const line of body.split('\n')) {
-    const m = /^###\s+(.+?)\s*$/.exec(line);
+    if (FENCE_RE.test(line)) inFence = !inFence;
+    // A section heading ends this question. Anything after it — the heading, a
+    // trailing "> Note:" about the next section, further separators — belongs
+    // to what follows, not to the choice whose prose we are still collecting.
+    if (!inFence && STRUCTURAL_HEADING_RE.test(line)) break;
+    const m = inFence ? null : /^###\s+(.+?)\s*$/.exec(line);
     if (m) {
       current = { heading: m[1], lines: [] };
       out.push(current);
     } else if (current) {
+      if (!inFence && THEMATIC_BREAK_RE.test(line)) continue;
       current.lines.push(line);
     }
   }
