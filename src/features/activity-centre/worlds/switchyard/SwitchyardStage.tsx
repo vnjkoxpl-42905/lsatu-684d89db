@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import type { Clause, Routing } from "./routing";
-import { flip } from "./routing";
+import type { Clause, Fault, Routing } from "./routing";
+import { differs, flip } from "./routing";
 import "./switchyard.css";
 
 /**
@@ -9,6 +10,16 @@ import "./switchyard.css";
  * the flip (the junction rotates and performs the contrapositive).
  */
 export type YardPhase = "arrival" | "routed" | "flipped";
+
+/**
+ * One marker per item in the run. `outcome` is the verdict the student actually
+ * earned, or null for items not yet reached: the yard never renders progress it
+ * cannot trace to a real answer.
+ */
+export interface Milepost {
+  order: number;
+  outcome: "correct" | "partial" | "incorrect" | null;
+}
 
 interface SwitchyardStageProps {
   /** The original sentence, shown on the departures board. */
@@ -23,11 +34,34 @@ interface SwitchyardStageProps {
    */
   indicator?: string;
   phase: YardPhase;
+  /**
+   * The student's own routing, when their answer parsed. Drives the comparison
+   * panel and the fault choreography. Omitted on a clean run.
+   */
+  studentRouting?: Routing | null;
+  /** The named partial, derived by `diagnose`. Null means the yard makes no claim. */
+  fault?: Fault | null;
+  /** The run's mileposts. Omit and the yard renders none rather than inventing a position. */
+  mileposts?: Milepost[];
+  /** Which milepost is the current item. */
+  currentOrder?: number;
 }
 
 /** Heavy, mechanical. The flip should feel like plant, not like a UI toggle. */
 const MECHANICAL = { duration: 0.9, ease: [0.7, 0, 0.18, 1] as const };
 const COUPLE = { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const };
+/** The statement rolling onto the board: lighter than the plant, still weighted. */
+const ROLL_ON = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const };
+
+/**
+ * The reversal sequence, in milliseconds from the verdict. The student watches
+ * their own arrangement stand, get stopped, back out, and re-form the credited
+ * way. Seeing the correction happen to their own routing is the whole point;
+ * jumping straight to the right answer teaches nothing about the error.
+ */
+const REVERSAL_TIMELINE = { gate: 700, backing: 1300, credited: 2000 };
+
+type ReversalStep = "student" | "gate" | "backing" | "credited";
 
 function TrackLabel({ children }: { children: string }) {
   return (
@@ -35,15 +69,29 @@ function TrackLabel({ children }: { children: string }) {
   );
 }
 
-function Capsule({ clause, live }: { clause: Clause; live: boolean }) {
+function Capsule({
+  clause,
+  live,
+  blinking,
+  trimmed,
+}: {
+  clause: Clause;
+  live: boolean;
+  /** The dropped-negation fault: the lamp blinks until the student acknowledges it. */
+  blinking?: boolean;
+  /** The trimmed-condition fault: the capsule arrives missing a coupling. */
+  trimmed?: boolean;
+}) {
   return (
     <div
       className="sy-capsule flex items-center gap-3 rounded-[10px] px-4 py-3"
       data-testid="sy-capsule"
+      data-trimmed={trimmed ? "true" : undefined}
     >
       <span
         className="sy-lamp"
         data-lit={clause.negated}
+        data-blinking={blinking ? "true" : undefined}
         data-testid="sy-lamp"
         aria-hidden="true"
       />
@@ -54,6 +102,7 @@ function Capsule({ clause, live }: { clause: Clause; live: boolean }) {
       >
         {clause.text}
       </span>
+      {trimmed ? <span className="sy-coupling" aria-hidden="true" /> : null}
     </div>
   );
 }
@@ -84,25 +133,82 @@ function Junction({ turned, still }: { turned: boolean; still: boolean }) {
   );
 }
 
+/**
+ * Run the reversal choreography once the verdict lands. Reduced motion skips
+ * straight to the credited arrangement, where the comparison panel carries the
+ * same information as a static before and after.
+ */
+function useReversalSequence(active: boolean, still: boolean): ReversalStep {
+  const [step, setStep] = useState<ReversalStep>("credited");
+
+  useEffect(() => {
+    if (!active) {
+      setStep("credited");
+      return;
+    }
+    if (still) {
+      setStep("credited");
+      return;
+    }
+    setStep("student");
+    const timers = [
+      setTimeout(() => setStep("gate"), REVERSAL_TIMELINE.gate),
+      setTimeout(() => setStep("backing"), REVERSAL_TIMELINE.backing),
+      setTimeout(() => setStep("credited"), REVERSAL_TIMELINE.credited),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [active, still]);
+
+  return step;
+}
+
 export function SwitchyardStage({
   statement,
   routing,
   contrapositive,
   indicator,
   phase,
+  studentRouting = null,
+  fault = null,
+  mileposts,
+  currentOrder,
 }: SwitchyardStageProps) {
   const still = useReducedMotion() ?? false;
   const routed = phase !== "arrival";
   const turned = phase === "flipped";
-  const shown = turned ? flip(routing) : routing;
+
+  // The fault only plays over the routing. Once the junction turns, the yard is
+  // demonstrating the contrapositive and the error display would fight it.
+  const faultLive = phase === "routed" ? fault : null;
+  const reversal = useReversalSequence(faultLive?.kind === "reversal", still);
+  const showingStudent = faultLive?.kind === "reversal" && reversal !== "credited";
+
+  const [acknowledged, setAcknowledged] = useState(false);
+  // A new item is a new fault; the lamp must start blinking again.
+  useEffect(() => setAcknowledged(false), [statement]);
+
+  const blinkSide =
+    faultLive?.kind === "dropped-negation" && !acknowledged ? faultLive.side : null;
+  const trimmedSide = faultLive?.kind === "trimmed-condition" ? faultLive.side : null;
+
+  const credited = turned ? flip(routing) : routing;
+  const shown = showingStudent && studentRouting ? studentRouting : credited;
 
   // The board lights the indicator only after the yard has routed.
   const board = indicator && routed ? highlight(statement, indicator) : [statement];
+  const showComparison = routed && differs(routing, studentRouting);
 
   return (
     <div className="switchyard flex h-full min-h-[560px] w-full flex-col justify-between overflow-hidden px-5 py-8 md:px-12">
-      {/* Departures board */}
-      <div className="sy-board relative rounded-2xl px-6 py-5">
+      {/* Departures board. The statement rolls on rather than appearing. */}
+      <motion.div
+        key={statement}
+        className="sy-board relative rounded-2xl px-6 py-5"
+        initial={still ? false : { opacity: 0, y: -18, rotateX: -32 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        transition={still ? { duration: 0 } : ROLL_ON}
+        data-testid="sy-board"
+      >
         <div className="mb-3 flex items-center justify-between">
           <TrackLabel>Statement</TrackLabel>
           <TrackLabel>{turned ? "Contrapositive" : routed ? "Routed" : "Awaiting"}</TrackLabel>
@@ -118,31 +224,57 @@ export function SwitchyardStage({
             ),
           )}
         </p>
-      </div>
+      </motion.div>
 
       {/* The yard */}
       <div className="relative my-8 flex flex-col items-stretch gap-8 md:flex-row md:items-center md:gap-6">
+        {/* The crossing gate. Drops across the yard when a reversal is stopped. */}
+        <div
+          className="sy-gate"
+          data-dropped={reversal === "gate" || reversal === "backing" ? "true" : "false"}
+          data-testid="sy-gate"
+          aria-hidden="true"
+        />
+
         <div className="min-w-0 flex-1 space-y-10">
           <Track label="IF" live={routed}>
             <motion.div
-              key={`if-${turned}`}
+              key={`if-${turned}-${showingStudent}`}
               initial={still ? false : { opacity: 0, x: -28 }}
-              animate={{ opacity: routed ? 1 : 0.25, x: 0 }}
+              animate={{
+                opacity: routed ? 1 : 0.25,
+                x: reversal === "backing" ? -40 : 0,
+              }}
               transition={still ? { duration: 0 } : COUPLE}
             >
-              <Capsule clause={shown.ifClause} live={routed} />
+              <Capsule
+                clause={shown.ifClause}
+                live={routed}
+                blinking={blinkSide === "if"}
+                trimmed={trimmedSide === "if"}
+              />
             </motion.div>
+            {trimmedSide === "if" ? <FullForm clause={routing.ifClause} /> : null}
           </Track>
 
           <Track label="THEN" live={routed}>
             <motion.div
-              key={`then-${turned}`}
+              key={`then-${turned}-${showingStudent}`}
               initial={still ? false : { opacity: 0, x: -28 }}
-              animate={{ opacity: routed ? 1 : 0.25, x: 0 }}
-              transition={still ? { duration: 0, delay: 0 } : { ...COUPLE, delay: still ? 0 : 0.12 }}
+              animate={{
+                opacity: routed ? 1 : 0.25,
+                x: reversal === "backing" ? -40 : 0,
+              }}
+              transition={still ? { duration: 0 } : { ...COUPLE, delay: 0.12 }}
             >
-              <Capsule clause={shown.thenClause} live={routed} />
+              <Capsule
+                clause={shown.thenClause}
+                live={routed}
+                blinking={blinkSide === "then"}
+                trimmed={trimmedSide === "then"}
+              />
             </motion.div>
+            {trimmedSide === "then" ? <FullForm clause={routing.thenClause} /> : null}
           </Track>
         </div>
 
@@ -150,6 +282,14 @@ export function SwitchyardStage({
           <Junction turned={turned} still={still} />
         </div>
       </div>
+
+      {faultLive ? (
+        <FaultCaption
+          fault={faultLive}
+          acknowledged={acknowledged}
+          onAcknowledge={() => setAcknowledged(true)}
+        />
+      ) : null}
 
       {/* Credited plates */}
       <div className="grid gap-3 md:grid-cols-2">
@@ -160,6 +300,120 @@ export function SwitchyardStage({
           {contrapositive}
         </Plate>
       </div>
+
+      {showComparison && studentRouting ? (
+        <YourRouting student={studentRouting} />
+      ) : null}
+
+      {mileposts?.length ? <Mileposts mileposts={mileposts} current={currentOrder} /> : null}
+    </div>
+  );
+}
+
+/** The docked full form for a trimmed capsule: what the clause should have carried. */
+function FullForm({ clause }: { clause: Clause }) {
+  return (
+    <div className="sy-fullform mt-2 rounded-[10px] px-4 py-2.5" data-testid="sy-fullform">
+      <p className="switchyard-mono mb-1 text-xs text-[hsl(var(--sy-ink-dim))]">Full form</p>
+      <p className="text-sm leading-snug text-[hsl(var(--sy-ink))]">{clause.text}</p>
+    </div>
+  );
+}
+
+const FAULT_COPY: Record<Fault["kind"], { label: string; line: string }> = {
+  reversal: {
+    label: "Signal fault: reversal",
+    line: "Those two were coupled the wrong way round. Watch the yard back them out and route them again.",
+  },
+  "dropped-negation": {
+    label: "Signal fault: polarity",
+    line: "One clause is stated negatively and the routing lost it. The lamp keeps blinking until you take it.",
+  },
+  "trimmed-condition": {
+    label: "Signal fault: short coupling",
+    line: "The clause arrived incomplete. The full form is docked alongside it.",
+  },
+};
+
+function FaultCaption({
+  fault,
+  acknowledged,
+  onAcknowledge,
+}: {
+  fault: Fault;
+  acknowledged: boolean;
+  onAcknowledge: () => void;
+}) {
+  const copy = FAULT_COPY[fault.kind];
+  return (
+    <div
+      className="sy-fault mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl px-4 py-3"
+      data-testid="sy-fault"
+      data-kind={fault.kind}
+      role="status"
+    >
+      <span className="switchyard-mono text-xs text-[hsl(var(--sy-signal))]">{copy.label}</span>
+      <span className="min-w-0 flex-1 text-sm leading-snug text-[hsl(var(--sy-ink))]">
+        {copy.line}
+      </span>
+      {fault.kind === "dropped-negation" && !acknowledged ? (
+        <button
+          type="button"
+          onClick={onAcknowledge}
+          className="sy-ack switchyard-mono rounded-md px-3 py-1.5 text-xs"
+          data-testid="sy-ack"
+        >
+          Got it
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+/** The student's own routing, kept alongside the credited one when they differed. */
+function YourRouting({ student }: { student: Routing }) {
+  return (
+    <div className="sy-yours mt-3 rounded-xl px-4 py-3" data-testid="sy-your-routing">
+      <p className="switchyard-mono mb-2 text-xs text-[hsl(var(--sy-ink-dim))]">
+        How you routed it
+      </p>
+      <dl className="grid gap-x-6 gap-y-1 sm:grid-cols-[auto_1fr]">
+        <dt className="switchyard-mono text-xs text-[hsl(var(--sy-ink-dim))]">If</dt>
+        <dd className="mb-1 text-sm leading-snug text-[hsl(var(--sy-ink-dim))] sm:mb-0">
+          {student.ifClause.text}
+        </dd>
+        <dt className="switchyard-mono text-xs text-[hsl(var(--sy-ink-dim))]">Then</dt>
+        <dd className="text-sm leading-snug text-[hsl(var(--sy-ink-dim))]">
+          {student.thenClause.text}
+        </dd>
+      </dl>
+    </div>
+  );
+}
+
+/**
+ * Mileposts down the yard's bottom edge. Each one is an item the student
+ * actually reached; `outcome` is the verdict they actually earned. Items ahead
+ * render unmarked rather than optimistic.
+ */
+function Mileposts({ mileposts, current }: { mileposts: Milepost[]; current?: number }) {
+  const done = mileposts.filter((m) => m.outcome).length;
+  return (
+    <div className="mt-6" data-testid="sy-mileposts">
+      <div className="flex items-end gap-[3px]">
+        {mileposts.map((m) => (
+          <span
+            key={m.order}
+            className="sy-milepost"
+            data-outcome={m.outcome ?? "ahead"}
+            data-current={m.order === current ? "true" : undefined}
+            title={`Item ${m.order}${m.outcome ? `: ${m.outcome}` : ""}`}
+          />
+        ))}
+      </div>
+      <p className="switchyard-mono mt-2 text-xs text-[hsl(var(--sy-ink-dim))]">
+        {done} of {mileposts.length} down the line
+      </p>
     </div>
   );
 }

@@ -36,6 +36,14 @@
   --ac-emerald: 160 84% 32%;
   --ac-emerald-strong: 161 88% 24%;
 
+  /*
+   * The schematic mono the design floor names. The webfont is already fetched
+   * in index.html at 500/600 only, so anything consuming this token must set a
+   * weight in that pair or the browser will synthesize one. Every world's
+   * schematic type reads from here rather than restating the stack.
+   */
+  --ac-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
   background: hsl(var(--background));
   color: hsl(var(--foreground));
 }

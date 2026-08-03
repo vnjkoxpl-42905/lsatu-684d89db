@@ -103,3 +103,119 @@ export function indicatorOf(explanation: string): string | undefined {
   const m = explanation.match(/"([^"]{2,24})"/);
   return m ? m[1] : undefined;
 }
+
+/* ------------------------------------------------------------------ *
+ * Signal faults
+ *
+ * The locked partial set is three named errors, and the spec gives each one its
+ * own choreography in the yard. Which one a student made is DERIVED here by
+ * comparing their parsed routing against the credited one, rather than asked of
+ * the Coach: the Coach returns a verdict and prose, and reading an error type
+ * out of prose would be guessing. A structural comparison either finds the
+ * error or honestly returns none.
+ * ------------------------------------------------------------------ */
+
+export type FaultKind = "reversal" | "dropped-negation" | "trimmed-condition";
+export type FaultSide = "if" | "then";
+
+export interface Fault {
+  kind: FaultKind;
+  /** Which track carries the affected capsule. Reversal affects both. */
+  side: FaultSide | "both";
+}
+
+// Words that carry polarity rather than content. Stripped before comparing, so
+// "is not refueled" still aligns with "is refueled" and the difference surfaces
+// as a dropped negation rather than as two unrelated clauses.
+const POLARITY_TOKENS = new Set([
+  "not",
+  "no",
+  "never",
+  "cannot",
+  "cant",
+  "dont",
+  "doesnt",
+  "didnt",
+  "wont",
+  "wouldnt",
+  "isnt",
+  "arent",
+  "wasnt",
+  "werent",
+  "neither",
+  "nothing",
+]);
+
+// Function words carry no discriminating content for alignment.
+const STOP_TOKENS = new Set(["a", "an", "the", "is", "are", "was", "were", "be", "been", "to", "of"]);
+
+function contentTokens(clause: string): string[] {
+  return clause
+    .toLowerCase()
+    .replace(/n't\b/g, " not")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((t) => t && !POLARITY_TOKENS.has(t) && !STOP_TOKENS.has(t));
+}
+
+/** Share of the longer clause's content words the two clauses have in common. */
+function alignment(a: string, b: string): number {
+  const A = new Set(contentTokens(a));
+  const B = new Set(contentTokens(b));
+  if (!A.size || !B.size) return 0;
+  let shared = 0;
+  for (const t of A) if (B.has(t)) shared += 1;
+  return shared / Math.max(A.size, B.size);
+}
+
+/** True when `short` says a strict subset of what `full` says, and materially less. */
+function isTrimmed(short: string, full: string): boolean {
+  const S = contentTokens(short);
+  const F = new Set(contentTokens(full));
+  if (S.length < 2 || !S.every((t) => F.has(t))) return false;
+  return F.size - new Set(S).size >= 2;
+}
+
+/**
+ * Name the student's error, or return null when their routing is credited-clean
+ * or too far from it to classify. Null is a real answer: the yard then makes no
+ * claim about which mistake was made and the Coach takes the item.
+ */
+export function diagnose(credited: Routing, student: Routing | null): Fault | null {
+  if (!student) return null;
+
+  const straight =
+    alignment(student.ifClause.text, credited.ifClause.text) +
+    alignment(student.thenClause.text, credited.thenClause.text);
+  const crossed =
+    alignment(student.ifClause.text, credited.thenClause.text) +
+    alignment(student.thenClause.text, credited.ifClause.text);
+
+  // Both clauses sit on the wrong track: the reversal, the error this drill
+  // exists to kill. Requires a real crossed match, not merely a weak straight one.
+  if (crossed > straight && crossed >= 1) return { kind: "reversal", side: "both" };
+  if (straight < 1) return null;
+
+  // Routed correctly. Anything left is a fault inside a capsule.
+  if (student.ifClause.negated !== credited.ifClause.negated) {
+    return { kind: "dropped-negation", side: "if" };
+  }
+  if (student.thenClause.negated !== credited.thenClause.negated) {
+    return { kind: "dropped-negation", side: "then" };
+  }
+  if (isTrimmed(student.ifClause.text, credited.ifClause.text)) {
+    return { kind: "trimmed-condition", side: "if" };
+  }
+  if (isTrimmed(student.thenClause.text, credited.thenClause.text)) {
+    return { kind: "trimmed-condition", side: "then" };
+  }
+  return null;
+}
+
+/** Whether the student's routing differs enough from credited to be worth showing. */
+export function differs(credited: Routing, student: Routing | null): boolean {
+  if (!student) return false;
+  const same = (a: Clause, b: Clause) =>
+    a.negated === b.negated && contentTokens(a.text).join(" ") === contentTokens(b.text).join(" ");
+  return !(same(student.ifClause, credited.ifClause) && same(student.thenClause, credited.thenClause));
+}

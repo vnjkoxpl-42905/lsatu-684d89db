@@ -10,10 +10,11 @@
         "The reasoning is the point. An answer that gives a correct definition with no reason is incomplete, and an answer that gives the wrong definition for a well-identified clue is closer to the skill than a lucky guess.",
         "Hedged, multi-candidate answers are the target form, not a weakness. Probably means A, B or C, because of this clue, is a full-credit answer.",
         "Accept any phrasing that lands the meaning. This drill never tests dictionary wording.",
-        "Right valence with wrong precision is the signature miss. Balance is not the same as peace, a substitute is not the same as bad, and treated-as-such is not the same as fake.",
+        "A correct positive or negative read is a full answer on its own, which is what this drill promises the student in its own rules. Credit it as correct and hand them the sharper meaning as the next rung. Never score an answer down for stopping at valence.",
+        "Right valence with wrong precision is the signature miss to teach past, not to mark down. Balance is not the same as peace, a substitute is not the same as bad, and treated-as-such is not the same as fake: name the exact shade after crediting what they already got.",
         "When the student names the clue correctly, say so explicitly before correcting anything else, because the clue is the transferable part."
       ],
-      "partial_rule": "Mark 'partial' when the student gets the valence or the general area right but not the precision, or gives a workable meaning without citing any evidence from the paragraph. Mark 'incorrect' when the meaning is wrong and no usable clue has been identified."
+      "partial_rule": "Mark 'partial' when the student gives a workable meaning but cites no evidence from the paragraph, or names a clue and then reads its direction backwards. A correct valence call with a reason attached is 'correct', never 'partial', even when the precise meaning is still missing. Mark 'incorrect' when the meaning is wrong and no usable clue has been identified."
     },
     "tagline": "You do not need to know the word. You need to read the sentence.",
     "task": "What do you think the marked word could mean, and why do you think that?",

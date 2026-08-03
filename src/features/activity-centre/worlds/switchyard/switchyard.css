@@ -43,8 +43,25 @@
   pointer-events: none;
 }
 
+/*
+ * Schematic labels. The fallback stack repeats the module token so the yard
+ * still reads correctly if a world is ever mounted outside .activity-centre.
+ * Weight 500 because that is a weight the webfont actually ships; leaving it at
+ * 400 would have the browser synthesize a lighter face and the labels would
+ * drift off the drafting-paper look.
+ */
 .switchyard-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -188,6 +205,185 @@
   border: 1px solid hsl(var(--sy-plate-edge));
 }
 
+/* ---------- Signal faults ----------
+ *
+ * The yard is deliberately red-free: a fault is told through machinery, not
+ * through an alarm colour. The gate drops, the lamp blinks, the short coupling
+ * shows. No hue enters the palette that was not already in it.
+ */
+
+/* The crossing gate. Parked vertical, swings down across the yard when a
+   reversal is stopped. Transform origin at the pivot, like the real thing. */
+.sy-gate {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    hsl(var(--sy-rail-live)) 0 14px,
+    hsl(var(--sy-field-deep)) 14px 28px
+  );
+  transform-origin: left center;
+  transform: rotate(-88deg);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 420ms cubic-bezier(0.7, 0, 0.18, 1),
+    opacity 200ms linear;
+  z-index: 2;
+}
+
+.sy-gate[data-dropped="true"] {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+/* The short coupling on a trimmed capsule: the hook that has nothing on it. */
+.sy-coupling {
+  width: 18px;
+  height: 1px;
+  flex: none;
+  background: hsl(var(--sy-rail-live));
+  position: relative;
+}
+
+.sy-coupling::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid hsl(var(--sy-rail-live));
+  border-left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.sy-capsule[data-trimmed="true"] {
+  border-style: dashed;
+}
+
+/* The docked full form sits under the incomplete capsule, on the same track. */
+.sy-fullform {
+  background: hsl(var(--sy-field) / 0.7);
+  border: 1px solid hsl(var(--sy-plate-edge) / 0.7);
+  border-left: 2px solid hsl(var(--sy-rail-live));
+}
+
+/* The polarity lamp blinking until the student takes the point. */
+@keyframes sy-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.sy-lamp[data-blinking="true"] {
+  border-color: hsl(var(--sy-signal));
+  box-shadow: 0 0 10px hsl(var(--sy-signal) / 0.6);
+  animation: sy-blink 900ms steps(1, end) infinite;
+}
+
+.sy-fault {
+  background: hsl(var(--sy-plate) / 0.85);
+  border: 1px solid hsl(var(--sy-plate-edge));
+  border-left: 2px solid hsl(var(--sy-signal));
+}
+
+.sy-ack {
+  border: 1px solid hsl(var(--sy-rail-live));
+  color: hsl(var(--sy-ink));
+  background: transparent;
+  transition: background-color 160ms linear;
+}
+
+.sy-ack:hover {
+  background: hsl(var(--sy-ink) / 0.08);
+}
+
+/* ---------- The student's own routing ---------- */
+
+.sy-yours {
+  background: hsl(var(--sy-field) / 0.55);
+  border: 1px dashed hsl(var(--sy-plate-edge));
+}
+
+/* ---------- Mileposts ---------- */
+
+.sy-milepost {
+  width: 3px;
+  height: 10px;
+  border-radius: 1px;
+  background: hsl(var(--sy-rail) / 0.55);
+  flex: none;
+}
+
+.sy-milepost[data-outcome="correct"] {
+  background: hsl(var(--sy-signal) / 0.85);
+}
+
+.sy-milepost[data-outcome="partial"] {
+  background: linear-gradient(
+    to top,
+    hsl(var(--sy-signal) / 0.8) 50%,
+    hsl(var(--sy-rail) / 0.55) 50%
+  );
+}
+
+.sy-milepost[data-outcome="incorrect"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px hsl(var(--sy-rail-live));
+}
+
+.sy-milepost[data-current="true"] {
+  height: 16px;
+  background: hsl(var(--sy-ink));
+  box-shadow: 0 0 10px hsl(var(--sy-signal) / 0.5);
+}
+
+/* ---------- Entrance ---------- */
+
+/* The rails light section by section down the line, then the junction turns
+   once, idle, and the board flips to the first item. */
+@keyframes sy-light-up {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.sy-entrance-rail {
+  height: 1px;
+  transform-origin: left center;
+  background: hsl(var(--sy-rail-live));
+  box-shadow: 0 0 12px hsl(var(--sy-signal) / 0.2);
+  animation: sy-light-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sy-idle-turn {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.sy-entrance-junction {
+  animation: sy-idle-turn 900ms cubic-bezier(0.7, 0, 0.18, 1) 900ms both;
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -196,5 +392,19 @@
   .switchyard *::after {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
+  }
+
+  /* A 1ms blink is a flicker, which is worse than the thing it replaces. The
+     lamp instead sits steadily lit, and the fault caption carries the point. */
+  .sy-lamp[data-blinking="true"] {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .sy-entrance-rail,
+  .sy-entrance-junction {
+    animation: none !important;
+    transform: none;
+    opacity: 1;
   }
 }
