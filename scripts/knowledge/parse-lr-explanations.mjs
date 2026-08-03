@@ -21,7 +21,7 @@
 const QUESTION_SPLIT = /^## (?=S\d+ \u00B7 Q)/m;
 const HEADING_RE = /^S(\d+)\s\u00B7\sQ(\d+)\s\u2014\s(.+)$/;
 const CHOICE_RE =
-  /^\*\*([A-E])\.\s+([\s\S]*?)\*\*(?:\s+\u2014\s+(.+?))?\s+\((\d+)% of students\)\s*$/;
+  /^\*\*([A-E])\.\s+([\s\S]*?)\*\*(?:\s+\u2014\s+([\s\S]+?))?\s+\((\d+)% of students\)\s*$/;
 const STEP_RE = /^-\s+\*\*(.+?):\*\*\s*([\s\S]*)$/;
 
 const STYLE_HEADINGS = new Map([
