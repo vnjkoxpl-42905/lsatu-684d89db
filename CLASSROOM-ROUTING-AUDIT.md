@@ -554,3 +554,15 @@ Never both, never neither, and never a duplicated list — the count stays at 2 
 Clicking an entry at 1100px navigates in one click (`/flagged` → `/flagged/PT118-S3-Q8`), which was the finding's falsification test.
 
 Caveat: the test student has 0 journal entries, so `/journal`'s stage list could not be exercised end to end. Its breakpoint was confirmed at the CSS level with a probe node carrying the real classes inside the real `.classroom-root.classroom-root-journal`; `/flagged` and `/classroom/recaps` were confirmed with real rows.
+
+### L12 · one name, once
+
+The finding named the collapsed-list trigger and the `h1`. Both were fixed, and looking for the second one turned up a different culprit than the finding described.
+
+The trigger printed `SECTION_TITLES[activeSection]`, so at narrow widths it repeated whatever the stage's `h1` already said. It now reads "Open the list" and keeps the section name in `aria-label` ("Open the wrong answers list"), where there is no adjacent `h1` to supply the context.
+
+The remaining duplicate on `/journal` was **not** the trigger: `JournalViews`' `DetailHeading` hardcoded the dateline chip to "Wrong answers", and the index passed `title="Wrong answers"`, so the surface printed its own name twice in adjacent lines. `/flagged` and `/classroom/recaps` already avoided this by putting the *rail group* in the chip ("Review", "Classroom"), so the fix was to follow the convention already in the codebase: `kind` is now a prop defaulting to "Wrong answers" (right on an entry, where the `h1` is the question) and the index passes "Review".
+
+Live at 1100px, `/journal` reads `August 3, 2026 | Review` · h1 `Wrong answers` · trigger `Open the list`, with exactly one visible "Wrong answers" node in the stage.
+
+Not exercised: a journal *entry* page, since the test student has 0 entries. Those two call sites take the default `kind`, unchanged from before.

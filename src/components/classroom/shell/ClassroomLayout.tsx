@@ -938,12 +938,17 @@ export default function ClassroomLayout() {
           <main className="classroom-stage">
             <div className="classroom-column">
               {activeSection ? (
+                // The stage already carries the surface's name as its h1, so
+                // printing it here too named the same thing twice. The button
+                // says what it does; the section name stays for screen
+                // readers, which have no h1 next to it for context.
                 <button
                   type="button"
                   className="classroom-section-trigger"
+                  aria-label={`Open the ${SECTION_TITLES[activeSection].toLowerCase()} list`}
                   onClick={() => setSectionOverlayOpen(true)}
                 >
-                  {SECTION_TITLES[activeSection]}
+                  Open the list
                   <PanelLeftClose size={17} />
                 </button>
               ) : null}

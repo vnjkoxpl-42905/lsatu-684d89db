@@ -75,11 +75,19 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
+/**
+ * On an entry the dateline chip names the section the entry belongs to, which
+ * is what "Wrong answers" is for. On the index the h1 already IS the section,
+ * so the chip has to name the rail group instead or the surface prints its own
+ * name twice. `/flagged` and `/classroom/recaps` already follow that rule.
+ */
 function DetailHeading({
   date,
+  kind = "Wrong answers",
   title,
 }: {
   date: string;
+  kind?: string;
   title: string;
 }) {
   return (
@@ -87,7 +95,7 @@ function DetailHeading({
       <div className="classroom-dateline">
         <time>{formatDate(date)}</time>
         <span>|</span>
-        <span>Wrong answers</span>
+        <span>{kind}</span>
       </div>
       <h1 className="classroom-title">{title}</h1>
     </>
@@ -185,6 +193,7 @@ export function JournalIndexView() {
     <>
       <DetailHeading
         date={new Date().toISOString()}
+        kind="Review"
         title="Wrong answers"
       />
       {query.isLoading && !query.data ? <LoadingState /> : null}
