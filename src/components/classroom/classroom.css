@@ -3960,3 +3960,52 @@ html.dark .classroom-root .classroom-panel-wash-dark {
     justify-content: flex-start;
   }
 }
+
+/* ── Account: "Your prep" (the orientation card's answers, editable) ────────
+   One row per answer, reading back what the student told us, expanding into
+   the card's own input when they change it. */
+
+.classroom-root .classroom-account-card-note {
+  color: rgb(var(--classroom-meta));
+  font-size: 12px;
+  line-height: 1.5;
+  margin: -4px 0 10px;
+  max-width: 52ch;
+}
+
+.classroom-root .classroom-account-prep-row {
+  padding: 9px 0;
+}
+
+.classroom-root .classroom-account-prep-row + .classroom-account-prep-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-account-prep-head {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+/* A long free-text answer or a school list must not stretch the row. */
+.classroom-root .classroom-account-prep-head .classroom-account-pref-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-account-prep-empty {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-account-prep-edit {
+  padding: 12px 0 4px;
+}
+
+.classroom-root .classroom-account-prep-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}

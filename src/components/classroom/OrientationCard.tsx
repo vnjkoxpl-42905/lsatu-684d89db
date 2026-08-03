@@ -1,32 +1,21 @@
 import * as React from "react";
-import { ArrowLeft, ArrowRight, Check, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { StepField } from "@/components/classroom/onboarding/stepFields";
 import {
-  DAYS,
   DEFAULT_STUDY_TIME,
-  LAST_SCORE_EXTRAS,
-  LIFE_STAGES,
   NAME_STEP_COPY,
   REQUIRED_STEPS,
-  SCORE_BANDS,
   STEP_COPY,
   STEP_ORDER,
-  STUDY_TIME_OPTIONS,
-  TARGET_SCORE_EXTRAS,
-  UNDECIDED_TEST_DATE,
   isStepAnswered,
   testDateColumnValue,
-  type DayKey,
-  type LastScoreValue,
-  type LifeStage,
   type OnboardingAnswers,
   type OnboardingStepId,
-  type StudyTimeValue,
-  type TargetScoreValue,
 } from "@/lib/onboarding";
 
 /**
@@ -67,29 +56,6 @@ export function firstUnansweredStep(name: string, answers: OnboardingAnswers): n
   return index === -1 ? ORIENTATION_STEPS.length - 1 : index + 1;
 }
 
-function Chip({
-  selected,
-  onClick,
-  children,
-}: {
-  selected: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={selected}
-      className={`classroom-orientation-chip${
-        selected ? " classroom-orientation-chip-on" : ""
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
 /**
  * Presentational half: owns the step cursor and the in-progress answers, and
  * hands each completed step back through `onSave`. Split out so the whole
@@ -112,17 +78,11 @@ export function OrientationCardView({
   );
   const [name, setName] = React.useState(initialName);
   const [answers, setAnswers] = React.useState<OnboardingAnswers>(initialAnswers);
-  const [schoolInput, setSchoolInput] = React.useState("");
 
   const total = ORIENTATION_STEPS.length;
   const step = ORIENTATION_STEPS[stepIndex];
   const isLastStep = stepIndex === total - 1;
   const done = answeredCount(name, answers);
-
-  const setAnswer = <K extends keyof OnboardingAnswers>(
-    key: K,
-    value: OnboardingAnswers[K],
-  ) => setAnswers((current) => ({ ...current, [key]: value }));
 
   const canContinue = (): boolean => {
     if (step === "name") return !!name.trim();
@@ -155,18 +115,6 @@ export function OrientationCardView({
     } finally {
       setSaving(false);
     }
-  };
-
-  const addSchool = () => {
-    const value = schoolInput.trim();
-    if (!value) return;
-    const current = answers.schools ?? [];
-    if (current.length >= 5 || current.includes(value)) {
-      setSchoolInput("");
-      return;
-    }
-    setAnswer("schools", [...current, value]);
-    setSchoolInput("");
   };
 
   if (finished) {
@@ -258,182 +206,20 @@ export function OrientationCardView({
             placeholder="Your name"
             maxLength={50}
             aria-label="Your name"
+            autoFocus
             onKeyDown={(event) => {
               if (event.key === "Enter" && canContinue() && !saving) void goNext();
             }}
           />
-        ) : null}
-
-        {step === "last_score" ? (
-          <div className="classroom-orientation-chips">
-            {[...SCORE_BANDS, ...LAST_SCORE_EXTRAS].map((option) => (
-              <Chip
-                key={option.value}
-                selected={answers.last_score_band === option.value}
-                onClick={() =>
-                  setAnswer("last_score_band", option.value as LastScoreValue)
-                }
-              >
-                {option.label}
-              </Chip>
-            ))}
-          </div>
-        ) : null}
-
-        {step === "experience" ? (
-          <textarea
-            className="classroom-orientation-input classroom-orientation-textarea"
-            value={answers.experience_text ?? ""}
-            onChange={(event) => setAnswer("experience_text", event.target.value)}
-            placeholder="Logic Games felt easier, but Necessary Assumption questions are still hard for me."
-            rows={4}
-            aria-label="How your LSAT experience has been"
+        ) : (
+          <StepField
+            key={step}
+            step={step}
+            answers={answers}
+            onChange={setAnswers}
+            autoFocus
           />
-        ) : null}
-
-        {step === "schools" ? (
-          <>
-            <div className="classroom-orientation-search">
-              <Search size={15} aria-hidden="true" />
-              <input
-                className="classroom-orientation-input"
-                value={schoolInput}
-                onChange={(event) => setSchoolInput(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    addSchool();
-                  }
-                }}
-                placeholder="Type a school, press Enter"
-                aria-label="Add a school"
-                disabled={(answers.schools ?? []).length >= 5}
-              />
-            </div>
-            <p className="classroom-orientation-hint">Add up to 5 schools.</p>
-            <div className="classroom-orientation-list">
-              {(answers.schools ?? []).map((school, index) => (
-                <div key={school} className="classroom-orientation-list-row">
-                  <span className="classroom-orientation-list-index">{index + 1}</span>
-                  <span className="classroom-orientation-list-label">{school}</span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setAnswer(
-                        "schools",
-                        (answers.schools ?? []).filter((entry) => entry !== school),
-                      )
-                    }
-                    aria-label={`Remove ${school}`}
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : null}
-
-        {step === "target_score" ? (
-          <div className="classroom-orientation-chips">
-            {[...SCORE_BANDS, ...TARGET_SCORE_EXTRAS].map((option) => (
-              <Chip
-                key={option.value}
-                selected={answers.target_score_band === option.value}
-                onClick={() =>
-                  setAnswer("target_score_band", option.value as TargetScoreValue)
-                }
-              >
-                {option.label}
-              </Chip>
-            ))}
-          </div>
-        ) : null}
-
-        {step === "test_date" ? (
-          <>
-            <input
-              type="date"
-              className="classroom-orientation-input classroom-orientation-date"
-              value={
-                answers.test_date && answers.test_date !== UNDECIDED_TEST_DATE
-                  ? answers.test_date
-                  : ""
-              }
-              onChange={(event) =>
-                setAnswer("test_date", event.target.value || undefined)
-              }
-              aria-label="Your test date"
-            />
-            <div className="classroom-orientation-chips">
-              <Chip
-                selected={answers.test_date === UNDECIDED_TEST_DATE}
-                onClick={() => setAnswer("test_date", UNDECIDED_TEST_DATE)}
-              >
-                I haven't picked a date yet
-              </Chip>
-            </div>
-          </>
-        ) : null}
-
-        {step === "life_stage" ? (
-          <div className="classroom-orientation-cards">
-            {LIFE_STAGES.map((option) => {
-              const selected = answers.life_stage === option.value;
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setAnswer("life_stage", option.value as LifeStage)}
-                  className={`classroom-orientation-choice${
-                    selected ? " classroom-orientation-choice-on" : ""
-                  }`}
-                >
-                  <span className="classroom-orientation-choice-title">
-                    {option.title}
-                  </span>
-                  <span className="classroom-orientation-choice-desc">{option.desc}</span>
-                </button>
-              );
-            })}
-          </div>
-        ) : null}
-
-        {step === "study_time" ? (
-          <div className="classroom-orientation-week">
-            {DAYS.map((day) => {
-              const current = (answers.study_time ?? DEFAULT_STUDY_TIME)[day.key as DayKey];
-              return (
-                <div key={day.key} className="classroom-orientation-day">
-                  <span className="classroom-orientation-day-label">{day.label}</span>
-                  <div className="classroom-orientation-day-options">
-                    {STUDY_TIME_OPTIONS.map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        aria-pressed={current === option.value}
-                        aria-label={`${day.label}: ${option.label}`}
-                        onClick={() =>
-                          setAnswer("study_time", {
-                            ...DEFAULT_STUDY_TIME,
-                            ...(answers.study_time ?? {}),
-                            [day.key]: option.value as StudyTimeValue,
-                          })
-                        }
-                        className={`classroom-orientation-slot${
-                          current === option.value ? " classroom-orientation-slot-on" : ""
-                        }`}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
+        )}
       </div>
 
       <div className="classroom-orientation-nav">

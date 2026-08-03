@@ -173,6 +173,18 @@ export const STEP_COPY: Record<OnboardingStepId, { title: string; subtitle?: str
   },
 };
 
+// Short row labels for the Account page, where the answers are listed rather
+// than asked. The full questions live in STEP_COPY and stay the card's voice.
+export const STEP_LABELS: Record<OnboardingStepId, string> = {
+  last_score: 'Last LSAT score',
+  experience: 'How it has gone so far',
+  schools: 'Target schools',
+  target_score: 'Target score',
+  test_date: 'Test date',
+  life_stage: 'Where you are at',
+  study_time: 'Weekly study time',
+};
+
 /** Whether a given step's answer is present. Drives resume and the Continue gate. */
 export function isStepAnswered(step: OnboardingStepId, a: OnboardingAnswers): boolean {
   switch (step) {

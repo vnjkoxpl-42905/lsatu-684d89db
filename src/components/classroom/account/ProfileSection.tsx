@@ -6,6 +6,7 @@ import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { supabase } from "@/integrations/supabase/client";
 import { QuestionPoolService } from "@/lib/questionPoolService";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import PrepSection from "@/components/classroom/account/PrepSection";
 
 // The Profile tab: identity (editable name, password) plus study preferences.
 // Everything is styled with classroom tokens — no shadcn primitives, so dark
@@ -332,6 +333,9 @@ export default function ProfileSection() {
             )}
           </div>
         </section>
+
+        {/* ── Your prep (the orientation card's answers, editable) ──────── */}
+        <PrepSection />
 
         {/* ── Practice ──────────────────────────────────────────────────── */}
         <section className="classroom-account-card">

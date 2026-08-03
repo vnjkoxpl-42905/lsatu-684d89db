@@ -17,6 +17,11 @@ _Locked via grill with Joshua, 2026-07-18. Source capture: `~/ai-os/brainstorms/
 >   waits on Home until the student finishes it. Only Finish sets `onboarding_completed_at`.
 > - **Eight steps**: name, last score, experience, schools, target score, test date, life stage,
 >   study time. Per-step save and resume are unchanged.
+> - **The answers are editable later.** "Your prep" on the Account page lists all seven intake
+>   answers and reopens the card's own input to change any one of them
+>   (`src/components/classroom/account/PrepSection.tsx`). The inputs themselves live in
+>   `src/components/classroom/onboarding/stepFields.tsx` so the card and the account page cannot
+>   drift into two versions of the same question.
 >
 > The sections below describe the retired v1 redirect flow. Everything about the questions,
 > the stored shape, and the copy still holds; the delivery surface does not.
