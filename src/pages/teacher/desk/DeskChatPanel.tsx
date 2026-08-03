@@ -12,19 +12,11 @@ import { LinkCard, linksFromToolResults, type LinkResult } from './LinkCard';
 import { AssignmentOfferCard, type AssignmentOfferData } from './AssignmentOfferCard';
 import type { OperatorImage, OperatorToolResult } from '@/hooks/useOperatorChat';
 
-const STARTER_CANVAS = `# Collaborative Workspace
+const STARTER_CANVAS = `# Canvas
 
-Welcome to your clean canvas! We can use this space to collaborate on whatever you are working on today.
+Room to work something out before it goes anywhere: a reply you are drafting, the next piece of work for a student, or notes for a lesson.
 
-## 🌟 What are we working on?
-
-- **Drafting:** Paste your essay, story, email, or article here.
-- **Brainstorming:** Drop your rough notes, outlines, or ideas.
-- **Coding:** Paste your code or describe the application you want to build.
-
-## 👇 Paste your work here
-
-_Replace this line with your work, or reply in the chat with your goals._`;
+Write here, and use the chat to push it further.`;
 
 type DeskSidePanel =
   | { type: 'canvas' }
