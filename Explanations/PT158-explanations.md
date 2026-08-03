@@ -12,6 +12,8 @@ Answer-choice format: **Letter. choice text** — Tag (N% of students), then the
 
 ## S2 · Q1 — Main Conclusion
 
+**Correct answer:** D
+
 ### Stimulus
 Many people who simply enjoy listening to popular music do not realize that it has been used to express religious and political messages. After all, popular music has repeatedly been adopted by social movements to express their viewpoints, since it has the potential to contribute to the "conversion" of nonmembers to the movement's position, as well as to raise the morale and to express the solidarity of the movement's participants.
 
@@ -95,6 +97,8 @@ Sure, popular music probably does have a profound emotional impact — anyone wh
 ---
 
 ## S2 · Q2 — Flaw
+
+**Correct answer:** A
 
 ### Stimulus
 Council president: Councilmember Smith has proposed a new city ordinance prohibiting the use of the "bait-and-switch" sales tactic. Smith must have amnesia. Four years ago he owned an appliance store that was famous for its use of bait-and-switch. Clearly, Smith's proposed ordinance does not even merit consideration.
@@ -181,6 +185,8 @@ Generalizing from limited instances would be something like: "One bait-and-switc
 
 ## S2 · Q3 — Necessary Assumption
 
+**Correct answer:** A
+
 ### Stimulus
 Bovine remains found in a certain region of Africa date back to a time when the climate was arid. While there were people in the region at this time, there were no other large mammals there. Any natural sources of water available to these bovines would have brought other large mammals to the area. Thus, these bovines had been domesticated and the people living in the region were no longer exclusively hunter-gatherers.
 
@@ -266,6 +272,8 @@ This is answering a different question. The argument needs to know: "Can wild bo
 
 ## S2 · Q4 — Most Supported
 
+**Correct answer:** C
+
 ### Stimulus
 Cerrato: Economists argue both that the higher turnover rate of part-time workers shows them to be much more likely to be dissatisfied with their jobs than full-time workers are and that lower-paid, part-time workers threaten to take jobs from full-time employees. But because job efficiency is positively correlated with job satisfaction, companies are unlikely to replace satisfied employees with dissatisfied ones. Therefore, _______.
 
@@ -341,6 +349,8 @@ Where did this labor market theory come from? Cerrato is running a tight argumen
 
 ## S2 · Q5 — Paradox
 
+**Correct answer:** E
+
 ### Stimulus
 On the plains where it lives, an individual zebra stands out because of its black-and-white stripes, which contrast with the green or brown of the surrounding vegetation. Yet zebras are a prey species, and the lions that hunt them can see stripes clearly. It seems surprising that zebras would survive with such vivid markings.
 
@@ -415,6 +425,8 @@ The plot twist: what makes one zebra a walking target makes fifty zebras an opti
 ---
 
 ## S2 · Q6 — Most Supported
+
+**Correct answer:** A
 
 ### Stimulus
 Dark honey tends to have a higher antioxidant content than light-colored honey, and the most healthful strains of honey are all unusually high in antioxidants. However, certain strains of honey produced by bees harvesting primarily sage nectar are among the most healthful strains of honey, even though they are also among the lightest-colored strains of honey.
@@ -508,6 +520,8 @@ This answer fell into the trap. It looked at "sage honey is light" and "dark hon
 
 ## S2 · Q7 — Weaken
 
+**Correct answer:** C
+
 ### Stimulus
 Researcher: In a recent study of elementary school computers, we found that all keyboards and most monitors were positioned higher than recommended for children. Consequently, children were seated in ways that encouraged craned necks, awkwardly placed wrists, and other unhealthy postures. Evidently, most elementary school computers are installed without consideration of their effect on posture, and thus put children at the same risk for repetitive stress injuries as office workers.
 
@@ -588,6 +602,8 @@ Whether kids tell someone their wrist hurts is a completely different question f
 
 ## S2 · Q8 — Most Supported
 
+**Correct answer:** B
+
 ### Stimulus
 Sociologist: Some anthropologists claim that cultures can most effectively respond to the threat of cultural decay by replacing or abandoning many of their traditions so that other traditions may endure. But since each of its traditions is essential to a culture's identity, this strategy _______.
 
@@ -664,6 +680,8 @@ Nice try at finding a loophole: "What if the traditions are new?" But the sociol
 
 ## S2 · Q9 — Role
 
+**Correct answer:** C
+
 ### Stimulus
 Scholar: The purpose of a law is to deter certain actions by threatening to punish those performing the actions. This threat works only if potential violators believe that they are likely to be punished. But the likelihood that someone will be apprehended and punished for committing a prohibited act decreases as the number of types of prohibited actions increases. Therefore, a successful legal system prohibits only those few behaviors that citizens find absolutely intolerable.
 
@@ -738,6 +756,8 @@ If the scholar wanted to discredit this view, the argument would end with "...an
 ---
 
 ## S2 · Q10 — Flaw
+
+**Correct answer:** E
 
 ### Stimulus
 Historian: In the fourteenth and fifteenth centuries, the Swahili civilization of East Africa built tombs with large pillars and paneled facades. Such structures are widespread among the Oromo people of Somalia and Kenya, but are unknown among any other people with whom the Swahili civilization had contact. This indicates that Swahili culture was, to some extent, influenced by Oromo culture.
@@ -818,6 +838,8 @@ The historian proved that the Swahili and Oromo share a unique architectural sty
 
 ## S2 · Q11 — Necessary Assumption
 
+**Correct answer:** D
+
 ### Stimulus
 The chorus in a play, like a narrator in a novel, introduces a point of view not tied to any of the characters, and both chorus and narrator allow the author to comment on the characters' actions and to introduce information about the context in which these actions take place. However, since the information introduced by the chorus in a play is sometimes not consistent with the rest of the information in the play, the chorus in a play is not equivalent to the narrator in a novel.
 
@@ -897,6 +919,8 @@ The argument already told us choruses can be inconsistent. This answer adds "...
 
 ## S2 · Q12 — Principle-Strengthen
 
+**Correct answer:** C
+
 ### Stimulus
 Some of the rare pygmy bears should be moved from their native island to the neighboring island. The bears risk extinction from the loss of habitat on their native island, and since the neighboring island is the only place that has a similar habitat, this move represents the only viable chance of saving these valuable animals.
 
@@ -975,6 +999,8 @@ This is the "do whatever works" principle for endangered species. Bears going ex
 
 ## S2 · Q13 — Main Conclusion
 
+**Correct answer:** B
+
 ### Stimulus
 The widespread use of encryption software, which makes electronic documents accessible by password only, will bring the writing of biographical history virtually to an end. Public figures' private correspondence and diaries are intended to be confidential when written, but they later become biographers' principal sources. In the future, most such documents are likely to be stored as encrypted text, so the most interesting, revealing material will be unavailable to historians unless they have the necessary passwords.
 
@@ -1052,6 +1078,8 @@ This is the "why it matters" premise, not the "what is going to happen" conclusi
 ---
 
 ## S2 · Q14 — Flaw
+
+**Correct answer:** E
 
 ### Stimulus
 Unlike stars, planets do not generate light, but only reflect it. Besides stars, there are many other celestial objects in this galaxy that are not planets. Hence, there are celestial objects in this galaxy that generate light but are not stars.
@@ -1140,6 +1168,8 @@ The argument essentially said: "Planets do not generate light. But there are oth
 
 ## S2 · Q15 — Strengthen
 
+**Correct answer:** C
+
 ### Stimulus
 Psychologist: We measured the "cognitive plasticity," or the willingness to accept new ideas, of a group of people of both genders and of all ages. The first-born children in the study consistently exhibited less cognitive plasticity than did their siblings. It is reasonable to think that those who are open to new ideas will be adventurous in other ways. Hence, our study suggests that siblings of first-born children will tend to be more adventurous than will the first-borns.
 
@@ -1219,6 +1249,8 @@ Asking people if they are more adaptable than their siblings is like asking if t
 
 ## S2 · Q16 — Paradox
 
+**Correct answer:** C
+
 ### Stimulus
 Historians have found that significant intellectual advances generally occur in cities or countries that have a stable political system. But these same historians acknowledge that in ancient Athens, Plato and Aristotle made unparalleled intellectual progress during a period of great political and social unrest.
 
@@ -1292,6 +1324,8 @@ This answer is running the argument in reverse — like saying "eating dinner so
 ---
 
 ## S2 · Q17 — Necessary Assumption
+
+**Correct answer:** E
 
 ### Stimulus
 To establish a human colony on Mars would involve assembling tremendous quantities of basic materials at the site of the colony. But because the costs of transporting such materials through space would be so high, it will not be economically feasible to colonize Mars.
@@ -1372,6 +1406,8 @@ The argument said Mars colonization is too expensive because you would have to s
 
 ## S2 · Q18 — Flaw
 
+**Correct answer:** E
+
 ### Stimulus
 Records reveal that of physical therapy patients who received less than six weeks of treatment, about 31 percent showed major improvement, regardless of whether they were treated by a general practitioner or by a specialist. Of patients who received physical therapy for a longer time, again regardless of whether they were treated by a general practitioner or by a specialist, about 50 percent showed major improvement. Therefore, the choice between seeing a specialist or a general practitioner for necessary physical therapy will not affect one's chances of major improvement.
 
@@ -1450,6 +1486,8 @@ Picture this: a brain surgeon and a dermatologist both have a 95% success rate. 
 ---
 
 ## S2 · Q19 — Necessary Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 The differences in distance from Earth between the stars in any one distant galaxy are negligible compared to the vast distance to the galaxy itself. Thus, if two stars are in the same distant galaxy, any significant difference in the apparent brightness of those stars results from differences in how brightly each is actually burning. Therefore, we should be able to determine how a star's relative actual brightness correlates with other characteristics by studying stars in the same distant galaxy.
@@ -1531,6 +1569,8 @@ This answer is basically saying "if stars are at different distances, they look 
 
 ## S2 · Q20 — Paradox (EXCEPT)
 
+**Correct answer:** D
+
 ### Stimulus
 A research psychologist used a personality test to classify high school students as "repressors"—people who repress upsetting thoughts and feelings from conscious awareness—or as "sensitizers"—those especially attuned to internal states who freely express distress. The researcher found that, compared to sensitizers, the repressors were less shy and anxious, could better tolerate frustration, and had superior social skills, higher grades, and a greater sense of self-esteem.
 
@@ -1604,6 +1644,8 @@ Sensitizers spend their time fixating on every obstacle in their path — no won
 ---
 
 ## S2 · Q21 — Weaken
+
+**Correct answer:** B
 
 ### Stimulus
 A geologist recently claimed to have discovered in clay a previously unknown form of life: "nanobes," one-tenth the size of the smallest known bacteria. However, it is unlikely that nanobes truly are living things. They are probably inanimate artifacts of the clay's microscopic structure, because a nanobe is too small to contain a reproductive mechanism, a prerequisite for life.
@@ -1685,6 +1727,8 @@ Cold-blooded lizards can be simpler than single-celled organisms despite being b
 
 ## S2 · Q22 — Parallel Flaw
 
+**Correct answer:** C
+
 ### Stimulus
 Devan has never bothered to be kind to me. Nor has he offered help or companionship. So, since he does not meet any of these basic criteria for friendship, he is my enemy.
 
@@ -1763,6 +1807,8 @@ Plant needs sun and water. Plant has no sun. Plant will not thrive. This is just
 ---
 
 ## S2 · Q23 — Principle-Conform
+
+**Correct answer:** B
 
 ### Stimulus
 Journalist: Drivers of sport utility vehicles correctly tend to believe that occupants of such vehicles carry lower risk of serious injury as a result of accidents, and such drivers therefore tend to drive less carefully than they would in more traditional vehicles. Thus, the discovery of powerful cures for certain high-incidence forms of cancer would probably trigger an increase in behaviors such as smoking and overexposure to sun that are known to increase the risks of such cancers.
@@ -1857,6 +1903,8 @@ This says people are more careful when they know something is risky. But in the 
 
 ## S2 · Q24 — Sufficient Assumption
 
+**Correct answer:** B
+
 ### Stimulus
 Filmmaker: Many people feel that independent films have more integrity as works of art than films produced by major studios, since independent films are typically less conventional than major studio films. However, like major studios, all independent filmmakers need to make profits on their films, and this affects the artistic decisions made in creating most independent films. Thus, most independent films do not have absolute integrity as works of art.
 
@@ -1935,6 +1983,8 @@ Close, but the wording matters. The argument says films lack "absolute integrity
 ---
 
 ## S2 · Q25 — Parallel
+
+**Correct answer:** A
 
 ### Stimulus
 If you complete 24 graduate credits and a thesis in our department, you are eligible to receive a master's degree. Roger has completed 24 graduate credits in our department, yet he is not eligible to receive a master's degree. So he must not have finished his thesis yet.
@@ -2038,6 +2088,8 @@ The stimulus is a detective story: result did not happen, one condition was met,
 
 ## S3 · Q1 — Flaw
 
+**Correct answer:** B
+
 ### Stimulus
 In the previous two years, significantly more rain has fallen in Browning in September than in July. Therefore, this year in Browning more rain will probably fall in September than in July.
 
@@ -2117,6 +2169,8 @@ This answer describes an entirely different argument than the one on the page. I
 
 ## S3 · Q2 — Strengthen
 
+**Correct answer:** C
+
 ### Stimulus
 Educator: Few problems faced in daily life can be solved most effectively, if at all, by applying knowledge from any single academic discipline in isolation. Thus, schools should not require students to take courses in individual academic disciplines but should instead require them to take interdisciplinary courses.
 
@@ -2195,6 +2249,8 @@ The educator says "switch to interdisciplinary courses because life requires it.
 ---
 
 ## S3 · Q3 — Main Conclusion
+
+**Correct answer:** D
 
 ### Stimulus
 Newspaper columnist: What caused the current recession is a hotly debated question. It is a mistake, however, to assume that answering this question is essential to improving the economy. Corrective lenses, after all, were an effective treatment for myopia long before the cause was known to be genetic.
@@ -2279,6 +2335,8 @@ This is the exhibit in the courtroom, not the verdict. The columnist brought up 
 
 ## S3 · Q4 — Flaw
 
+**Correct answer:** A
+
 ### Stimulus
 Generally, it is important that people practice what they preach, yet there are exceptions. For instance, it is no more necessary for logicians to be logical in their discussions of logic than it is for physicians to have healthy lifestyles in order to treat people.
 
@@ -2357,6 +2415,8 @@ This answer shrugs and says "yeah, logicians do not NEED to be logical, but it w
 ---
 
 ## S3 · Q5 — Weaken
+
+**Correct answer:** C
 
 ### Stimulus
 Domesticated animals, such as dogs, have come into existence by the breeding of only the individuals of a wild species that are sufficiently tame. For example, if when breeding wolves one breeds only those that display tameness when young, then after a number of generations the offspring will be a species of dog. Therefore, all animals can, in principle, be bred for domesticity.
@@ -2437,6 +2497,8 @@ Some pet dogs are friendlier than others. Cool fact, wrong question. The argumen
 
 ## S3 · Q6 — Paradox
 
+**Correct answer:** B
+
 ### Stimulus
 Surprisingly, a new study has revealed that shortly after a heavy rainfall, pollution levels in Crystal Bay reach their highest levels. This occurs despite the fact that rainwater is almost totally pure and one would therefore expect that it would dilute the polluted seawater.
 
@@ -2512,6 +2574,8 @@ People leaving trash on the beach is a pollution problem, sure, but it has nothi
 ---
 
 ## S3 · Q7 — Weaken
+
+**Correct answer:** C
 
 ### Stimulus
 Ethicist: This hospital's ethics code states that hospital staff must not deceive patients about their medical treatment. But we know that Dr. Faris administered medication A to a patient and informed him that it would help him sleep. Medication A has no known sleep-inducing properties. So, Dr. Faris is clearly in violation of the ethics code, despite the fact that the patient's sleep did improve after taking medication A.
@@ -2591,6 +2655,8 @@ The patient was not on any other sleep medications — so whatever helped them s
 ---
 
 ## S3 · Q8 — Flaw
+
+**Correct answer:** C
 
 ### Stimulus
 Student: My paper was not graded in accordance with the professor's stated criteria. The professor said that she would give A's only to papers whose conclusions were supported by reliable statistical evidence. The professor acknowledges that my conclusions were supported by reliable statistical evidence, but she gave my paper a B.
@@ -2677,6 +2743,8 @@ Are the professor's criteria "objective"? That is a philosophical debate for ano
 
 ## S3 · Q9 — Weaken
 
+**Correct answer:** A
+
 ### Stimulus
 Consumer advocate: Even relatively minor drug-related interactions can still be harmful to patients. For example, aspirin taken with fruit juice is ineffective. People unaware of this suffer unnecessary discomfort or take more aspirin than necessary. The government should, therefore, require drug companies to notify consumers of all known drug-related interactions.
 
@@ -2755,6 +2823,8 @@ Pharmacists are actually reading the warnings to patients? That is great news �
 ---
 
 ## S3 · Q10 — Main Conclusion
+
+**Correct answer:** B
 
 ### Stimulus
 Radioactive elements may have been created when the universe began. However, even if this occurred, these elements are clearly still being created in the universe today. Radioactive elements are unstable, so most of them decay within at most a few million years into other, nonradioactive elements. So, if no new radioactive elements had been created after the universe began, almost no radioactive elements would be left in the universe today, but there is an abundance of such elements.
@@ -2840,6 +2910,8 @@ This is a science fact dropped into the argument as a building block: radioactiv
 
 ## S3 · Q11 — Strengthen
 
+**Correct answer:** D
+
 ### Stimulus
 There is evidence that a certain ancient society burned large areas of land. Some suggest that this indicates the beginning of large-scale agriculture in that society—that the land was burned to clear ground for planting. But there is little evidence of cultivation after the fires. Therefore, it is likely that this society was still a hunter-gatherer society.
 
@@ -2918,6 +2990,8 @@ Early societies did not know burning helps soil? Fine, so they were not setting 
 ---
 
 ## S3 · Q12 — Role
+
+**Correct answer:** B
 
 ### Stimulus
 Professor Shanaz: People generally notice and are concerned about only the most obvious public health problems. Although there is indisputable evidence that ozone, an air pollutant, can be dangerous for severe asthmatics even if found in levels much lower than maximum levels permitted by law, most people are currently well aware that contaminated water presents a much more widespread threat to our community. Hence, there is unlikely to be a widespread, grassroots effort for new, more restrictive air pollution controls at this time.
@@ -3003,6 +3077,8 @@ If "people notice only obvious problems" were the main conclusion, then all the 
 
 ## S3 · Q13 — Necessary Assumption
 
+**Correct answer:** D
+
 ### Stimulus
 Psychotherapist: The troubles from which a patient seeks relief through psychotherapy do not have purely internal causes; rather, those troubles result in part from the patient's relationships with other people. Hence, to help the patient heal, the psychotherapist must focus on the need for positive change in those relationships.
 
@@ -3081,6 +3157,8 @@ This answer says "focusing on internal stuff will not fix relationship problems.
 ---
 
 ## S3 · Q14 — Parallel Flaw
+
+**Correct answer:** C
 
 ### Stimulus
 Some freelance journalists sell their work to magazines that have lax editorial standards. No self-respecting writer sells his or her work to magazines that have lax editorial standards. Therefore, some self-respecting writers are not freelance journalists.
@@ -3167,6 +3245,8 @@ Tricky at first glance, but this one actually works. Some teachers let students 
 
 ## S3 · Q15 — Necessary Assumption
 
+**Correct answer:** B
+
 ### Stimulus
 Selling syndicated reruns of a popular network television program while the program is still running on the network can lead to decreased revenues for that network. The show's producers do earn a great deal of money from the sale of the syndication rights because the stations rerunning the program are assured of a successful show. However, a recent study shows that over 80 percent of the programs that are made available as reruns and as first-run episodes during the same season suffer an immediate ratings drop for their first-run episodes.
 
@@ -3245,6 +3325,8 @@ What percentage of programs eventually get sold into syndication? The argument c
 ---
 
 ## S3 · Q16 — Must be True
+
+**Correct answer:** E
 
 ### Stimulus
 If a belief is based on information from a reliable source, then it is reasonable to maintain that belief. Furthermore, some beliefs are based on information from a reliable source and yet are neither self-evident nor grounded in observable evidence.
@@ -3349,6 +3431,8 @@ Follow the breadcrumbs. The passage says some beliefs have a reliable source but
 
 ## S3 · Q17 — Principle-Conform (EXCEPT)
 
+**Correct answer:** D
+
 ### Stimulus
 Situation: A physical therapist wants her patients to derive more enjoyment from the challenge of developing physical skills. She also wants them to spend more time practicing those skills.
 
@@ -3439,6 +3523,8 @@ Play more kinds of music, attract more kinds of listeners. If the concert series
 
 ## S3 · Q18 — Role
 
+**Correct answer:** B
+
 ### Stimulus
 Classicist: Our mastery of Latin and Ancient Greek is at best imperfect. The best students of a modern language may so immerse themselves in a country where it is spoken as to attain nearly perfect knowledge; but you cannot travel back in time to spend a year abroad at Plato's Academy.
 
@@ -3517,6 +3603,8 @@ An ancillary conclusion is something the argument actually argues for — a step
 ---
 
 ## S3 · Q19 — Sufficient Assumption
+
+**Correct answer:** E
 
 ### Stimulus
 For there to be a thriving population of turtles in a pond, conditions at that pond must be beneficial to turtles. The water in Wallakim Pond, unlike that in Sosachi Pond, is acidic. Thus, there must not be a thriving population of turtles at Wallakim Pond.
@@ -3609,6 +3697,8 @@ Here is the magic bridge. "Beneficial to turtles ONLY IF the water is not acidic
 ---
 
 ## S3 · Q20 — Must be True
+
+**Correct answer:** B
 
 ### Stimulus
 The study of primates is interesting for many reasons, including the fact that only primates have opposable thumbs. The lemurs are lower primates and the only primates indigenous to Madagascar, a large island off the coast of southeastern Africa. Some species of lemurs are the only living lower primates that are diurnal—that is, active primarily during the day. All higher primates are thought to have evolved from a single diurnal species of lower primates.
@@ -3710,6 +3800,8 @@ The passage said "SOME species of lemurs" are diurnal. SOME. Not all. Not every 
 
 ## S3 · Q21 — Necessary Assumption
 
+**Correct answer:** E
+
 ### Stimulus
 Professor: Many scientists hypothesize that there is an invisible "light-absorbing medium" in outer space. In support, they argue that the medium's existence would explain the low visibility of other star systems from Earth. But there is actually no reason to believe that the hypothesis is correct, since the low visibility in question is already completely explained by the general theory of relativity.
 
@@ -3795,6 +3887,8 @@ Here is the killer question: what if Einstein's theory NEEDS the invisible space
 
 ## S3 · Q22 — Method
 
+**Correct answer:** C
+
 ### Stimulus
 Some researchers claim that people tend to gesture less when they articulate what would typically be regarded as abstract rather than physical concepts. To point out that such a correlation is far from universal is insufficient reason to reject the researchers' claim, because some people perceive words like "comprehension" as expressing a physical action, like grasping something, rather than a state of understanding, which is abstract.
 
@@ -3873,6 +3967,8 @@ The argument says: "The exceptions are not really exceptions, so the generalizat
 ---
 
 ## S3 · Q23 — Must be True
+
+**Correct answer:** A
 
 ### Stimulus
 According to rational-choice theory, popular support for various political parties can be explained sufficiently in terms of deliberate decisions by individual voters to support the party whose policies they believe will yield them the greatest economic advantage. This theory is opposed by many sociologists on the grounds that a complex phenomenon such as the rise of a political organization cannot be caused by a simple phenomenon.
@@ -3962,6 +4058,8 @@ The sociologists are not saying "voters do not care about money." They are sayin
 
 ## S3 · Q24 — Weaken
 
+**Correct answer:** D
+
 ### Stimulus
 Scientist: Some consumer groups claim that the economic benefits of genetically engineered foodstuffs may be offset by hidden health risks to humans. However, the risk is minimal. In most cases of deliberate alteration of a plant's genetic structure only a single gene in about 750,000 has been changed. Since the change in the organism's genetic structure is so slight, it cannot have effects significant enough to be worrisome.
 
@@ -4041,6 +4139,8 @@ So the people most against genetically modified food know the least about geneti
 ---
 
 ## S3 · Q25 — Principle-Conform
+
+**Correct answer:** E
 
 ### Stimulus
 A government is justified in interfering with a person's action if the action would increase the likelihood of physical harm to others and the action is not motivated by a desire to help others.
@@ -4131,6 +4231,8 @@ Both boxes checked, no ambiguity. Criterion 1: Jill wants to push a DANGEROUS pe
 ---
 
 ## S4 · Q1 — Weaken
+
+**Correct answer:** D
 
 ### Stimulus
 The government's tax collection agency has not followed through on its plan, announced a year ago, to crack down on violations of corporate income tax law. Audits are the primary tool for detecting such violations, and over the past year, not a single audit of corporate income tax returns has been completed.
@@ -4232,6 +4334,8 @@ This is like defending a student's claim that they are "really studying hard thi
 ---
 
 ## S4 · Q2 — Flaw
+
+**Correct answer:** D
 
 ### Stimulus
 Columnist: Making some types of products from recycled materials is probably as damaging to the environment as it would be to make those products from entirely nonrecycled materials. The recycling process for those products requires as much energy as producing them from raw materials, and almost all energy production damages the environment.
@@ -4338,6 +4442,8 @@ Correlation-causation confusion is the classic "roosters crow before sunrise, th
 
 ## S4 · Q3 — Role
 
+**Correct answer:** C
+
 ### Stimulus
 Physician: We are constantly bombarded by warnings, based on initial studies' tentative conclusions, about this or that food having adverse health effects. If the medical establishment wants people to pay attention to health warnings, it should announce only conclusive results, the kind that can come only from definitive studies. After all, people who are constantly subjected to fire drills eventually come to ignore the fire alarm.
 
@@ -4435,6 +4541,8 @@ The fire alarm analogy is playing matchmaker: "Look how similar these two situat
 
 ## S4 · Q4 — Flaw
 
+**Correct answer:** B
+
 ### Stimulus
 A club wanted to determine whether it could increase attendance by changing its weekly meetings from Tuesday to another day. At one Tuesday meeting, the club's president took a survey of all members present. Of those surveyed, 95 percent said that they had no difficulty attending on Tuesdays. On the basis of this survey result, the club's president concluded that the attendance problem was not due primarily to schedule conflicts.
 
@@ -4531,6 +4639,8 @@ Sufficient/necessary confusion is thinking "all dogs are mammals" means "all mam
 ---
 
 ## S4 · Q5 — Parallel Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 The railway authority inspector who recently thoroughly checked the tracks testified that they were in good condition. Thus, since the inspector has no bias in the matter, we should be suspicious of the newspaper reporter's claim that the tracks are in poor condition.
@@ -4630,6 +4740,8 @@ Imagine the railway inspector also owned stock in the railway. Suddenly "the tra
 ---
 
 ## S4 · Q6 — Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 If the proposed air pollution measures were to be implemented, ozone levels in the city's air would be one fifth lower than current levels. Since the ozone in our air is currently responsible for over $5 billion in health costs, we would spend about a billion dollars less on these ozone-related health costs should the proposed measures be adopted.
@@ -4733,6 +4845,8 @@ This argument is about as emotional as a tax return. It is all numbers: $5 billi
 ---
 
 ## S4 · Q7 — Necessary Assumption
+
+**Correct answer:** C
 
 ### Stimulus
 Newspaper article: Recently discovered clay tablets from southern Egypt date to between 3300 and 3200 B.C. Though most of the tablets translated thus far are tax records, one of them appears to contain literary writing. Hence, these tablets challenge the widely held belief among historians that the Sumerian civilization in Mesopotamia was the first to create literature.
@@ -4839,6 +4953,8 @@ A civilization can hang around for a very long time before anyone picks up a pen
 ---
 
 ## S4 · Q8 — Main Conclusion
+
+**Correct answer:** C
 
 ### Stimulus
 Climatologist: The waters off the Pacific coast of North America have warmed about 4 degrees over the past 15 years. Some scientists claim that this trend is a symptom of a more general, global warming caused by human-generated air pollution. However, this conclusion is far from justified—it is known that there are many natural cycles of ocean temperature changes that last 60 years or more.
@@ -4957,6 +5073,8 @@ The thesis is "the global warming conclusion is far from justified." This condit
 
 ## S4 · Q9 — Agree/Disagree
 
+**Correct answer:** B
+
 ### Stimulus
 Robin: Archaeologists can study the artifacts left by ancient cultures to determine whether they were nomadic or sedentary. If the artifacts were made to last rather than to be quickly discarded, the culture was likely sedentary.
 
@@ -5054,6 +5172,8 @@ Asking whether artifacts reveal much about cultures is like asking two chefs whe
 ---
 
 ## S4 · Q10 — Main Conclusion
+
+**Correct answer:** A
 
 ### Stimulus
 Railroads rely increasingly on automation. Since fewer railroad workers are needed, operating costs have been reduced. This means that we can expect the volume of freight shipped by rail to grow. The chief competitor of railway shipping is shipping by truck, and no reduction in operating costs is predicted for the trucking industry.
@@ -5158,6 +5278,8 @@ Cost reduction is the hinge of this argument — everything below it (automation
 
 ## S4 · Q11 — Most Supported
 
+**Correct answer:** A
+
 ### Stimulus
 In the past, infants who were not breast-fed were fed cow's milk. Then doctors began advising that cow's milk fed to infants should be boiled, as the boiling would sterilize the milk and prevent gastrointestinal infections potentially fatal to infants. Once this advice was widely implemented, there was an alarming increase among infants in the incidence of scurvy, caused by vitamin C deficiency. Breast-fed infants, however, did not contract scurvy.
 
@@ -5251,6 +5373,8 @@ The passage tells us some babies got cow's milk and some got breast milk. It doe
 ---
 
 ## S4 · Q12 — Paradox
+
+**Correct answer:** C
 
 ### Stimulus
 The only effective check on grass and brush fires is rain. If the level of rainfall is below normal for an extended period of time, then there are many more such fires. Yet grass and brush fires cause less financial damage overall during long periods of severe drought than during periods of relatively normal rainfall.
@@ -5351,6 +5475,8 @@ Dead grass gets replaced by... other flammable stuff? That's like saying a house
 ---
 
 ## S4 · Q13 — Necessary Assumption
+
+**Correct answer:** B
 
 ### Stimulus
 Medical researcher: A new screening test detects certain polyps at such an early stage that it is generally unclear whether the polyps are malignant. But the risk that a polyp might be malignant leads doctors, in most cases, to have such polyps surgically removed, which is a dangerous process. Yet some of those polyps turn out not to be malignant. Thus, the new screening test can prompt dangerous operations that actually are not medically necessary.
@@ -5466,6 +5592,8 @@ The argument says the test causes some unnecessary surgeries. This answer says t
 ---
 
 ## S4 · Q14 — Strengthen
+
+**Correct answer:** D
 
 ### Stimulus
 Psychologist: Most people's blood pressure rises when they talk. But extroverted people experience milder surges when they speak than do introverted people, for whom speaking is more stressful. This suggests that the increases result from the psychological stress of communicating rather than from the physical exertion of speech production.
@@ -5587,6 +5715,8 @@ The argument says: "Introverts' BP rises more because talking stresses them out.
 
 ## S4 · Q15 — Strengthen
 
+**Correct answer:** A
+
 ### Stimulus
 One should only buy a frying pan that has a manufacturer's warranty, even if it requires paying more, and even if one would never bother seeking reimbursement should the pan not work well or last long. Manufacturers will not offer a warranty on a product if doing so means that they will need to reimburse many customers because the product did not work well or last long.
 
@@ -5697,6 +5827,8 @@ The argument says "buy warranted pans." This answer says "expensive pans are goo
 
 ## S4 · Q16 — Weaken
 
+**Correct answer:** D
+
 ### Stimulus
 Journalist: When judges do not maintain strict control over their courtrooms, lawyers often try to influence jury verdicts by using inflammatory language and by badgering witnesses. These obstructive behaviors hinder the jury's effort to reach a correct verdict. Whenever lawyers engage in such behavior, therefore, it is reasonable to doubt whether the verdict is correct.
 
@@ -5802,6 +5934,8 @@ Jury selection is like stretching before a marathon. Important? Sure. But it doe
 ---
 
 ## S4 · Q17 — Principle-Strengthen
+
+**Correct answer:** D
 
 ### Stimulus
 Mateo: Global warming has caused permafrost to melt under several arctic villages, forcing all their inhabitants to relocate at great expense. Since pollution from automobiles is a major contributor to global warming, the automotive industry should be required to help pay for the villagers' relocation.
@@ -5909,6 +6043,8 @@ This principle is a hostage negotiation: "You only have to pay for THIS village 
 ---
 
 ## S4 · Q18 — Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 Lindsey: Several people claim that our company was unfair when it failed to give bonuses to the staff. Perhaps they recalled that the company had promised that if it increased its profits over last year's, the staff would all get bonuses. However, the company's profit was much smaller this year than it was last year. Clearly, then, the company acted fairly.
@@ -6021,6 +6157,8 @@ Fair versus generous — is Lindsey really playing word games between these two 
 
 ## S4 · Q19 — Paradox
 
+**Correct answer:** E
+
 ### Stimulus
 It is widely known that the rescue squads serving high mountain areas with treacherous weather save the lives of many mountain climbers every year. However, many experienced climbers believe that the rising annual toll of deaths and injuries among climbers in these regions can be significantly reduced only by completely abolishing the rescue squads.
 
@@ -6115,6 +6253,8 @@ Without rescue squads, those people look at the mountain and think "that seems d
 ---
 
 ## S4 · Q20 — Agree/Disagree
+
+**Correct answer:** A
 
 ### Stimulus
 Paula: Earthlike planets seem to be the rule rather than the exception, so there probably are intelligent beings on other planets. Furthermore, we can expect our radio telescopes to detect signs of such beings. Alien scientists would have basically the same understanding of mathematics and physics that humans have. Thus they would inevitably discover gravity, electromagnetism, and other fundamental physical phenomena and then develop technologies such as radio communication.
@@ -6219,6 +6359,8 @@ This answer turns a scientific debate into a budget meeting nobody scheduled. Pa
 ---
 
 ## S4 · Q21 — Strengthen
+
+**Correct answer:** E
 
 ### Stimulus
 Developer: The builders of the Glen Veil apartment complex will not complete the complex unless a road connecting it to the town of Sierra is built. The completed apartment complex would strengthen Sierra's economy, and a stronger economy would benefit every Sierra resident. Therefore, the residents of Sierra should vote in favor of a local tax to fund construction of the proposed road.
@@ -6328,6 +6470,8 @@ This principle builds the bridge: "If you benefit, you should vote yes." Drop th
 
 ## S4 · Q22 — Weaken
 
+**Correct answer:** E
+
 ### Stimulus
 Historian: Because medieval epistemology (theory of knowledge) is a complex subject, intellectual historians have, until recently, failed to produce a definition that would help to determine what should and what should not be included in it. Clearly, the solution is to define medieval epistemology simply as "the epistemological beliefs of the medieval epistemologists." That way, if we want to know whether medieval epistemology includes some epistemological claim, we just ask whether any medieval epistemologists believed it. If any did, it is part of medieval epistemology; if any medieval epistemologists believed the opposite, then that opposite claim is part of medieval epistemology.
 
@@ -6435,6 +6579,8 @@ And THIS answer twists the knife: scholars cannot even agree on who qualifies as
 
 ## S4 · Q23 — Flaw
 
+**Correct answer:** E
+
 ### Stimulus
 Official: Six months ago, the fines for parking violations on the city's streets were raised to help pay for the parking garage that had just opened. Since then, parking violations on our streets have dropped by 50 percent. Hence, if we want there to be even fewer parking violations, the fines should be raised again.
 
@@ -6541,6 +6687,8 @@ That is this argument in a nutshell. Fines go up and a garage opens simultaneous
 ---
 
 ## S4 · Q24 — Weaken
+
+**Correct answer:** D
 
 ### Stimulus
 Consumer advocate: Some agricultural crops are now being genetically engineered to produce important pharmaceuticals. However, this development raises the possibility that the drugs will end up in the general food supply, since if pollen from a drug-producing crop drifts into a nearby field in which an ordinary, non-drug-producing crop of the same species is being grown, the pollen could fertilize that crop and turn it into a drug-producing crop as well.
@@ -6658,6 +6806,8 @@ The good news: we CAN identify contaminated crops. The bad news: they are alread
 ---
 
 ## S4 · Q25 — Sufficient Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 Most of the members of Bargaining Unit Number 17 of the government employees' union are computer programmers. Thus it is certain that some of the government employees who work in the Hanson Building are computer programmers, since _______.
@@ -6805,6 +6955,8 @@ It is like saying "most people at this party like pizza" and "most people at thi
 ---
 
 ## S4 · Q26 — Parallel Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 Every Labrador retriever in my neighborhood is a well-behaved dog. However, no pet would be well behaved if it were not trained. Thus it is training, not the genetic makeup of the breed, that accounts for these Labrador retrievers' good behavior.

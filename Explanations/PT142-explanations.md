@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab; all three authored styles (Standard, Brief, 
 
 ## S1 · Q2 — Strengthen
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -87,6 +89,8 @@ It almost seems to be suggesting an Alternate Explanation for how the masons got
 
 ## S1 · Q4 — Strengthen
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -117,6 +121,8 @@ The hypothesis involves the snakes having an infrared sense, so that they can re
 ---
 
 ## S1 · Q6 — Weaken
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -174,6 +180,8 @@ But now that we understand the chemical, this answer wouldn't really be relevant
 
 ## S1 · Q7 — Principle-Conform
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -219,6 +227,8 @@ If the salesperson is following this principle, he'll recommend the FreezAll, as
 ---
 
 ## S1 · Q8 — Necessary Assumption
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -288,6 +298,8 @@ The author is only claiming that we are pointlessly distracting ourselves from t
 
 ## S1 · Q10 — Principle-Strengthen
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -348,6 +360,8 @@ That's enough to trigger the Principle (since it was X or Y → shouldn't buy).
 ---
 
 ## S1 · Q11 — Most Supported
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -411,6 +425,8 @@ The critic doesn't make it seem like Waverly was lying, and doesn't really belie
 ---
 
 ## S1 · Q12 — Sufficient Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -553,6 +569,8 @@ Thus, according to this rule, the Sals didn't smelt iron. We proved the conclusi
 
 ## S1 · Q13 — Main Conclusion
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -611,6 +629,8 @@ This answer is trying to temp people by saying something that feels like an Infe
 ---
 
 ## S1 · Q14 — Role
+
+**Correct answer:** D
 
 ### Stimulus
 Currently, no satellite orbiting Earth is at significant risk of colliding with other satellites or satellite fragments, but the risk of such a collision is likely to increase dramatically in the future. After all, once such a collision occurs, it will probably produce thousands of satellite fragments, each large enough to shatter other satellites. The resulting collisions will produce many more fragments, and so on, causing the space around Earth to become quite heavily cluttered with dangerous debris.
@@ -689,6 +709,8 @@ This is correct. The claim about risk increasing dramatically is what the rest o
 ---
 
 ## S1 · Q15 — Paradox
+
+**Correct answer:** E
 
 ### Stimulus
 Researcher: *Salmonella* bacteria are a major cause of illness in humans who consume poultry. Young chicks that underwent a new treatment exhibited a lower incidence of *Salmonella* infection than did untreated chicks, although one week after the treatment was administered the treated chicks had higher concentrations of a variety of bacteria than did untreated chicks.
@@ -776,6 +798,8 @@ This is the resolution. The bacteria thriving in treated chicks are harmless typ
 ---
 
 ## S1 · Q16 — Flaw
+
+**Correct answer:** D
 
 ### Stimulus
 Debater: As a pedagogical practice, lecturing embodies hierarchy, since the lecturer is superior to the student in mastery of the subject. But people learn best from peer interaction. Thus, the hierarchy in lecturing is a great weakness.
@@ -901,6 +925,8 @@ This is similar to (B). It says the respondent is assuming math's structure is t
 
 ## S1 · Q17 — Strengthen
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -965,6 +991,8 @@ Just like (B), this is dealing with what society ended up using white glass and 
 ---
 
 ## S1 · Q18 — Flaw
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1103,6 +1131,8 @@ This shows that mild sleep deprivation does not weaken your defenses against ill
 
 ## S1 · Q20 — Sufficient Assumption
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1193,6 +1223,8 @@ if build center, then tax revenue increases.
 
 ## S1 · Q21 — Evaluate
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1275,6 +1307,8 @@ There's not going to be any common sense link between how many repetitions it to
 
 ## S1 · Q22 — Most Supported
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1322,6 +1356,8 @@ Since increasing everyone's incomes would change absolute income, not relative i
 ---
 
 ## S1 · Q23 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1377,6 +1413,8 @@ This sounds more like it's helping the other theory, that petroleum (liquid carb
 ---
 
 ## S1 · Q24 — Must be True
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1451,6 +1489,8 @@ It's possible that neither injury nor > $500 damage happened, because the other 
 ---
 
 ## S1 · Q25 — Parallel Flaw
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1555,6 +1595,8 @@ In order to match the original argument, after the first sentence we would want 
 
 ## S4 · Q1 — Flaw
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1618,6 +1660,8 @@ If Carol were disagreeing with this, then her rebuttal would be sound like, "som
 
 ## S4 · Q2 — Main Conclusion
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1652,6 +1696,8 @@ This answer touches on the economist's theory regarding values and is used as pa
 ---
 
 ## S4 · Q3 — Strengthen
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1726,6 +1772,8 @@ This answer reassures us that they do! The donated trees couldn't possibly illeg
 ---
 
 ## S4 · Q4 — Necessary Assumption
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1802,6 +1850,8 @@ If we say that Diplo was able to browse for underwater vegetation by kneeling be
 
 ## S4 · Q5 — Principle-Strengthen
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1841,6 +1891,8 @@ Similar to (A), this addresses residents rather than specifying government actio
 ---
 
 ## S4 · Q6 — Necessary Assumption
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1907,6 +1959,8 @@ It doesn't matter to the author whether one is harder than the other or whether 
 ---
 
 ## S4 · Q7 — Most Supported
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2007,6 +2061,8 @@ The other group is full of people who do know what treatment they'll be getting.
 
 ## S4 · Q8 — Flaw
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2079,6 +2135,8 @@ It would have to be a conversation where science had no bearing, but the topic o
 
 ## S4 · Q9 — Paradox
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2143,6 +2201,8 @@ Moreover, there's no common sense link between "basing beliefs on your emotional
 ---
 
 ## S4 · Q11 — Most Supported
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2215,6 +2275,8 @@ In the event that she was really struggling and they were too obtuse to notice, 
 
 ## S4 · Q12 — Paradox
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2273,6 +2335,8 @@ This gives us a conditional, but we don't have any information available to trig
 ---
 
 ## S4 · Q13 — Must be True
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2347,6 +2411,8 @@ It's possible that a street in an unqualified neighborhood gets an extra cleanin
 
 ## S4 · Q14 — Method
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2412,6 +2478,8 @@ She isn't clarifying and defending a moral principle.
 ---
 
 ## S4 · Q15 — Flaw
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2484,6 +2552,8 @@ Nope. She concluded "there is no reason to lower interest rates".
 ---
 
 ## S4 · Q16 — Sufficient Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2567,6 +2637,8 @@ Thus, either most commentators are wrong to call his paintings Baroque, or Mathe
 
 ## S4 · Q17 — Method
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2627,6 +2699,8 @@ In the last sentence, our author argues that application of the doctrine of jury
 ---
 
 ## S4 · Q18 — Flaw
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2710,6 +2784,8 @@ At that point, it's time to think very flexibly and just ask yourself questions 
 ---
 
 ## S4 · Q19 — Parallel
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2858,6 +2934,8 @@ C: X was probably A.
 
 ## S4 · Q20 — Flaw
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2943,6 +3021,8 @@ Recessions themselves are not predictable.
 ---
 
 ## S4 · Q21 — Must be False
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3032,6 +3112,8 @@ But because the left side and right side of this principle are not a good match 
 ---
 
 ## S4 · Q22 — Flaw
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3127,6 +3209,8 @@ This argument doesn't try to convince us that algae-scraping evolved more than o
 
 ## S4 · Q23 — Must be True
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3190,6 +3274,8 @@ But since they're required to ensure majority ownership, we know that accomplish
 ---
 
 ## S4 · Q24 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3271,6 +3357,8 @@ But the argument also doesn't care whether Activite does or doesn't have harmful
 ---
 
 ## S4 · Q25 — Parallel Flaw
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3390,6 +3478,8 @@ This is saying that Person A is X, which is not at all what we want.
 
 ## S4 · Q26 — Strengthen
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3452,6 +3542,8 @@ So this adds almost nothing to the facts we already had.
 
 ## S2 · Q1 — Flaw
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3502,6 +3594,8 @@ She doesn't ever attack Jamal's character.
 
 ## S2 · Q2 — Principle-Conform
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3535,6 +3629,8 @@ Since manufacturing such a part offers no increase in the value of the overall q
 ---
 
 ## S2 · Q3 — Must be True
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3607,6 +3703,8 @@ be an overall success.
 
 ## S2 · Q4 — Method
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3671,6 +3769,8 @@ The author is just worried about fishing somewhere that's full of fish that have
 
 ## S2 · Q5 — Principle-Strengthen
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3706,6 +3806,8 @@ This undermines the argument by challenging the museum curators' decisions.
 ---
 
 ## S2 · Q6 — Strengthen
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3744,7 +3846,42 @@ The argument is about projects, while this is about research.
 
 ---
 
+## S2 · Q7 — Agree/Disagree
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Talbert: Chess is beneficial for school-age children. It is enjoyable, encourages foresight and logical thinking, and discourages carelessness, inattention, and impulsiveness. In short, it promotes mental maturity.
+
+Sklar: My objection to teaching chess to children is that it diverts mental activity from something with societal value, such as science, into something that has no societal value.
+
+### Prompt
+Talbert's and Sklar's statements provide the strongest support for holding that they disagree with each other over whether
+
+### Written (single style)
+**Answer choices**
+**A. chess promotes mental maturity** — Unsupported Disagree Position (4% of students)
+Although it's clear that Person 1 believes this, we can't well support that Person 2 believes that "chess does not promote mental maturity".
+
+Our only support would be "chess has no societal value", which isn't nothing, but it's easier with the correct answer to support the Agree and Disagree positions.
+
+**B. many activities promote mental maturity just as well as chess does** — Out of Scope: other activities / Unsupported Comparison: just as well (2% of students)
+We wouldn't be able to extract this idea from either paragraph. No one is comparing how well chess promotes mental maturity to how well other activities do.
+
+**C. chess is socially valuable and science is not** — Unsupported Agree Position (3% of students)
+We know that Person 2 thinks that science is valuable. But we couldn't derive from Person 1 that science is not valuable.
+
+**D. children should be taught to play chess** — Correct (91% of students)
+Person 1 seems to believe this (it's beneficial and has all these positives), while Person 2 seems to think children should not be taught to play chess (it has no societal value and diverts attention from things that do).
+
+**E. children who neither play chess nor study science are mentally immature** — Out of Scope (0% of students)
+We never talk about kids who don't play chess and don't study science.
+
 ## S2 · Q8 — Flaw
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3802,6 +3939,8 @@ The author doesn't indicate whether she believes that the people who lose these 
 
 ## S2 · Q9 — Main Conclusion
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3838,6 +3977,8 @@ This best paraphrases the musicologist's conclusion.
 ---
 
 ## S2 · Q10 — Must be True
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3911,6 +4052,8 @@ While phosphorus contributes to the depletion of oxygen, the relationship does n
 
 ## S2 · Q11 — Weaken
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3961,6 +4104,8 @@ Even if we did think of this as an alternate explanation for the 51 seconds, it 
 
 ## S2 · Q12 — Paradox
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3996,6 +4141,8 @@ This does not necessarily explain why there are more fossilized shark teeth than
 ---
 
 ## S2 · Q13 — Sufficient Assumption
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4047,6 +4194,8 @@ The distinction between nonrealistic and realistic photographs is not relevant t
 
 ## S2 · Q14 — Weaken
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4096,6 +4245,8 @@ Just like with (C), we don't care how early of an animal life form you were. The
 
 ## S2 · Q15 — Most Supported
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4140,6 +4291,8 @@ The author was never saying that animals will all develop eyes or wings. Those w
 
 ## S2 · Q16 — Necessary Assumption
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4176,6 +4329,8 @@ This reverses the relationship. It should be that if companies used some method 
 ---
 
 ## S2 · Q17 — Role
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4236,6 +4391,8 @@ We never discuss what goes into the standard or herbal antibiotic. "Ingredients"
 ---
 
 ## S2 · Q18 — Flaw
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4298,6 +4455,8 @@ The experimental results are absolutely relevant to the conclusion. The conclusi
 
 ## S2 · Q19 — Paradox (EXCEPT)
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4333,6 +4492,8 @@ This provides an incentive for journalists to exclude their personal views from 
 ---
 
 ## S2 · Q20 — Weaken
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4389,6 +4550,8 @@ If I was trying to convince you that I had built an amazingly powerful chess com
 ---
 
 ## S2 · Q21 — Principle-Strengthen
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4447,6 +4610,8 @@ Do we know that the 75mph limit would reduce the accident rate on level, straigh
 
 ## S2 · Q22 — Strengthen (EXCEPT)
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4494,6 +4659,8 @@ Also the correct answer has data points that go directly against the author's cl
 ---
 
 ## S2 · Q23 — Parallel Flaw
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4572,6 +4739,8 @@ Both Premises are "most" claims, so we don't need to read any further on this on
 ---
 
 ## S2 · Q24 — Sufficient Assumption
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4662,6 +4831,8 @@ Our answer has to get us from "as we become less inclined to morally judge human
 ---
 
 ## S2 · Q25 — Paradox
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 

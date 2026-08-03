@@ -12,6 +12,8 @@ Answer-choice format: **Letter. choice text** — Tag (N% of students), then the
 
 ## S2 · Q1 — Most Supported
 
+**Correct answer:** A
+
 ### Stimulus
 When primatologist Akira Suzuki began studying snow monkeys in the 1950s, he found that they often roamed out of the mountains to feed in apple orchards. After a decade of observing this behavior, Suzuki began to feed the monkeys in their mountain habitat by providing them with soybeans to eat. The monkeys no longer raided the orchards. When Suzuki began his work, 23 snow monkeys lived in the region he studied. The population today is 270 snow monkeys and is expected to continue growing.
 
@@ -89,6 +91,8 @@ The stimulus reports the population growth as a fact but does not label it harmf
 ---
 
 ## S2 · Q5 — Evaluate
+
+**Correct answer:** B
 
 ### Stimulus
 Zobel: Peterson's analytic concepts are wrong and should be rejected. As a psychoanalyst myself, however, I can understand why certain psychoanalysts adhere to them. These psychoanalysts acquired their "emotional certainty" that Peterson's views are correct while training under her. This training includes one's own psychoanalysis, in which the teacher interprets the actions, dreams, and fantasies of the student in analytic terms. Strong emotional bonds with the teacher are formed, bonds that predispose the student to accept the teacher's analytic concepts as correct. It is thus impossible for a student to make unbiased judgments about the value of the teacher's analytic concepts.
@@ -196,6 +200,8 @@ This says Zobel succeeded. But she did not show Peterson's concepts are biased; 
 
 ## S2 · Q6 — Weaken
 
+**Correct answer:** D
+
 ### Stimulus
 Some psychologists claim that empathic responses are forms of moral behavior. Having observed that young children who witness another's distress respond by expressing sadness and offering help, these psychologists believe that moral behavior begins early in life. A second group of psychologists claims that empathic response is not, by itself, moral behavior and that in order to count as moral, behavior must be based on a clear understanding of moral principles and a certain degree of moral reasoning skill. On the basis of children's unsophisticated verbal responses to hypothetical moral dilemmas, these psychologists conclude that children lack the degree of moral reasoning skill necessary for their behavior, however compassionate, to be considered moral.
 
@@ -299,6 +305,8 @@ This says some adults score like kids. Possibly interesting trivia, but it doesn
 
 ## S2 · Q8 — Necessary Assumption
 
+**Correct answer:** E
+
 ### Stimulus
 Historian: A democracy's citizens must know some history if the democracy is to meet its challenges. However, popular historical awareness is inevitably distorted, for most people learn history through popular narratives that sustain readers' interest by implying that a few famous heroes and notorious villains have shaped all of history.
 
@@ -381,6 +389,8 @@ That is exactly the mark of a necessary assumption.
 ---
 
 ## S2 · Q10 — Paradox
+
+**Correct answer:** C
 
 ### Stimulus
 Medical researcher: Studies in North America have shown that the incidence of heart disease in a population is closely related to the average fat consumption for individuals in that population. However, although residents of France consume, on average, as much fat as residents of North America, heart disease presently occurs half as frequently among the French as among North Americans.
@@ -474,7 +484,37 @@ This makes the paradox worse. France smokes more, smoking causes heart disease �
 
 ---
 
+## S2 · Q19 — Weaken
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Geologist: As a spinning object's radius decreases, its rate of rotation increases; for example, figure skaters can twirl faster by bringing their arms closer to their sides. This law of physics helps to explain why, over the past decade, Earth's rate of rotation increased. For earthquakes have increased in number and severity during the past decade; and since immediately after an earthquake Earth's tectonic plates move toward the center of the earth, their movement causes Earth's radius to decrease.
+
+### Prompt
+Which one of the following, if true, would most undermine the geologist's explanation of why Earth's rate of rotation increased over the last decade?
+
+### Written (single style)
+**Answer choices**
+**A. In the beginning of the twentieth century, geologists observed an increase in number and severity of earthquakes, accompanied by a decrease of Earth's radius.** — Opposite (if anything): more correlation strenthens, if anything (2% of students)
+
+**B. During the past decade, other geological events have counteracted the movements of the tectonic plates that occur immediately after earthquakes.** — Correct (89% of students)
+Disrupts the assumption that the tectonic plate movement causes a net decrease in the Earth's radius by raising the possiblitiy that any decreases are counteracted by other movements.
+
+**C. Only skillful figure skaters succeed in twirling faster by bringing their arms closer to their sides.** — No Impact (1% of students)
+Limiting the example to a subset of skaters doesn't change the law of physics the example is exemplifying.
+
+**D. Since the time of the ancient Egyptians, Earth's rate of rotation has been known to fluctuate.** — No Impact (5% of students)
+This might seem at first like an alternative explanation for the current rate of rotation increase. It isn't, however, because the reason for the historic fluctuations aren't specified. We can't, therefore, say the current change in rotation rate is any less likely to be due to the contraction of Earth's radius that it was before we knew that similar rotation fluctuations have happened throughout history.
+
+**E. Increased volcanic activity over the last ten years suggests that the overall movement of the tectonic plates has increased.** — No Impact (2% of students)
+The overall amount of tectonic movement increasing in the last decade doesn't attack the idea that the movement ultimately leads to a net decrease in the size of the Earth.
+
 ## S2 · Q20 — Principle-Conform
+
+**Correct answer:** C
 
 ### Stimulus
 Economist: When national governments dispense funds to local governments to spend on local projects, any local government can receive a greater proportion of government funds by creating more local projects than other local governments create on average. Due to this added incentive to create more local projects, overall government spending and taxation are greater everywhere than they would be if local governments funded projects entirely by themselves.
@@ -554,6 +594,8 @@ The communities here are fighting over where the conference center should go —
 
 ## S2 · Q22 — Weaken
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector). Captured verbatim below.
 
 ### Stimulus
@@ -605,6 +647,8 @@ This is saying the opposite of that.
 
 ## S2 · Q24 — Weaken (EXCEPT)
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -645,6 +689,8 @@ This is saying the estrogen-inhibiting part of soybeans doesn't pertain to human
 # Section 4 (Logical Reasoning)
 
 ## S4 · Q1 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -691,6 +737,8 @@ But they are MANY times more expensive than organic solvents, not just slightly 
 ---
 
 ## S4 · Q4 — Strengthen (EXCEPT)
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -742,6 +790,8 @@ By supporting the notion that overcrowding leads to aggression in mammals genera
 
 ## S4 · Q8 — Strengthen (EXCEPT)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -789,6 +839,8 @@ This option demonstrates that understanding the entire play (context) improves m
 ---
 
 ## S4 · Q9 — Role
+
+**Correct answer:** B
 
 ### Stimulus
 Journalists often claim that their investigation of the private lives of political leaders is an effort to improve society by forcing the powerful to conform to the same standards of conduct as the less powerful. In reality, however, the tactic is detrimental to society. It makes public figures more concerned with mere appearances, and makes everyone else cynical about the character of their leaders.
@@ -910,6 +962,8 @@ This says the assumption is held "by everyone." But the stimulus pins the claim 
 
 ## S4 · Q12 — Weaken
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -956,6 +1010,8 @@ While stating that global warming could have other effects on rodent populations
 ---
 
 ## S4 · Q15 — Strengthen
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 

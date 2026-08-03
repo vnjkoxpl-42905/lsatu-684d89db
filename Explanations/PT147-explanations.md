@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab. Video-only questions omitted. Covers the two
 
 ## S1 · Q1 — Paradox (type inferred)
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -42,6 +44,8 @@ Based on the information that we're given in the stimulus, it seems that a signi
 ---
 
 ## S1 · Q2 — Flaw (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -80,6 +84,8 @@ The argument assumes that a lack of trust in one's neighbors is the cause of the
 
 ## S1 · Q3 — Paradox (type inferred)
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -114,6 +120,8 @@ This provides a possible reason for the government's success, but doesn't explai
 ---
 
 ## S1 · Q4 — Necessary Assumption (type inferred)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -179,6 +187,8 @@ If we negated this and said, "Hey, author, aliens would only be able to interpre
 
 ## S1 · Q5 — Paradox (type inferred)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -213,6 +223,8 @@ We could expect this to lead to fewer accidents if we assume that drivers change
 ---
 
 ## S1 · Q6 — Flaw (type inferred)
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -260,6 +272,8 @@ But we could still say that it's a very unrepresentative slice of the mating-beh
 ---
 
 ## S1 · Q7 — Necessary Assumption (type inferred)
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -354,6 +368,8 @@ If we negated this and said, "Politicians who are not bold are popular with the 
 
 ## S1 · Q8 — Most Strongly Supported (type inferred)
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector). No argument breakdown is authored for this question; only per-choice explanations.
 
 ### Stimulus
@@ -385,6 +401,8 @@ While "only" feels strong, this is still the best available answer. It matches t
 ---
 
 ## S1 · Q9 — Main Conclusion (type inferred)
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -424,6 +442,8 @@ This does not match the 2nd sentence, so we know it's not the answer. It doesn't
 ---
 
 ## S1 · Q10 — Strengthen (type inferred)
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -477,6 +497,8 @@ We have already established in the evidence that snow/ice is better at reflectin
 
 ## S1 · Q11 — Point at Issue (type inferred)
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -521,6 +543,8 @@ None of Nick's statements clearly indicate who made the most competitive bid, an
 
 ## S1 · Q12 — Strengthen (fill in the blank) (type inferred)
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -563,6 +587,8 @@ It feels like we already kind of knew this, since we were told that the newer an
 ---
 
 ## S1 · Q13 — Flaw (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -621,6 +647,8 @@ X might be true for other reasons. Or X might be true for the reason this person
 ---
 
 ## S1 · Q14 — Principle (Justify) (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -694,6 +722,8 @@ Since Zagel's resignation would have an upside and a downside, the Activist's ar
 
 ## S1 · Q15 — Flaw (type inferred)
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -756,6 +786,8 @@ The author doesn't attack the source of the argument. It isn't saying, "Don't li
 
 ## S1 · Q16 — Principle (Conform) (type inferred)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -807,6 +839,8 @@ The evidence in this answer also states that corruption played the largest role 
 
 ## S1 · Q17 — Evaluate (type inferred)
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -854,6 +888,8 @@ No. The author would just say, "Great, then you wasted time and money hiring the
 
 ## S1 · Q18 — Necessary Assumption (type inferred)
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -897,6 +933,8 @@ This is purely about arguing, "Given these two separate beliefs these scientists
 ---
 
 ## S1 · Q19 — Principle (Justify) (type inferred)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -957,6 +995,8 @@ Given that "any literary translation" can't be faithful to both meaning and styl
 ---
 
 ## S1 · Q20 — Could Be True Except / Must Be False (type inferred)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1026,6 +1066,8 @@ We don't have any information at all about media freedoms or how they might erod
 
 ## S1 · Q21 — Weaken (type inferred)
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1074,6 +1116,8 @@ Once we realize that high homocysteine is an effect of Alzheimer's, not a cause 
 ---
 
 ## S1 · Q22 — Role (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1141,6 +1185,8 @@ Okay, everything checks out, including our suspicions that they want our brains 
 
 ## S1 · Q23 — Strengthen (type inferred)
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1194,6 +1240,8 @@ But the author's argument doesn't hinge on these present-day bears perfectly rep
 
 ## S1 · Q24 — Necessary Assumption (type inferred)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1246,6 +1294,8 @@ It doesn't matter how hard or easy the process was. The author's only point is t
 ---
 
 ## S1 · Q25 — Most Strongly Supported (type inferred)
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1312,6 +1362,8 @@ No, there's no text in here suggesting that users have any option to opt-out of 
 ---
 
 ## S1 · Q26 — Parallel Flaw (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1436,6 +1488,8 @@ All musicians do not produce significant works of art.
 
 ## S4 · Q3 — Paradox (type inferred)
 
+**Correct answer:** D
+
 > Note: No authored argument breakdown for this question; only per-choice explanations on the wrong answers. The correct answer (D) has no authored tag or explanation.
 
 ### Stimulus
@@ -1466,6 +1520,8 @@ For this to explain the surprise, we'd have to think that being located in the c
 
 ## S4 · Q4 — Sufficient Assumption (type inferred)
 
+**Correct answer:** A
+
 > Note: No authored argument breakdown for this question; only per-choice explanations on the wrong answers. The correct answer (A) has no authored tag or explanation.
 
 ### Stimulus
@@ -1494,6 +1550,8 @@ Since this doesn't tell us whether spending will go up or down, it doesn't do th
 ---
 
 ## S4 · Q5 — Disagreement (misinterpreted word) (type inferred)
+
+**Correct answer:** D
 
 > Note: No authored argument breakdown for this question; only per-choice explanations.
 
@@ -1532,6 +1590,8 @@ The disagreement is more about using two different definitions of value than it 
 
 ## S4 · Q6 — Necessary Assumption (type inferred)
 
+**Correct answer:** B
+
 > Note: No authored argument breakdown for this question, and no authored explanation prose under any choice; only per-choice tags on the wrong answers. The correct answer (B) has no authored tag or explanation.
 
 ### Stimulus
@@ -1555,6 +1615,8 @@ The scientist's argument requires assuming which one of the following?
 ---
 
 ## S4 · Q7 — Principle (Justify) (type inferred)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1622,6 +1684,8 @@ This answer would be totally correct if it ended, "... that might diminish the p
 
 ## S4 · Q8 — Necessary Assumption (type inferred)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1673,6 +1737,8 @@ It could be true that great art is rare because there are only a few artists who
 ---
 
 ## S4 · Q9 — Flaw (type inferred)
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1744,6 +1810,8 @@ The conclusion is not about "some members of a group having a characteristic".
 
 ## S4 · Q11 — Main Conclusion (type inferred)
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1779,6 +1847,8 @@ This rephrases the last claim of the paragraph, which was the main conclusion (p
 ---
 
 ## S4 · Q12 — Method of Argument (type inferred)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1827,6 +1897,8 @@ Young says that Haynes is inspecting way more than 50% of the items, so she is d
 ---
 
 ## S4 · Q14 — Strengthen (type inferred)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1877,6 +1949,8 @@ The opinion we'd be even more interested in hearing would be the psychologists, 
 
 ## S4 · Q15 — Principle (Justify) (type inferred)
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1923,6 +1997,8 @@ The conclusion wasn't about whether Shakespeare should / shouldn't have correcte
 
 ## S4 · Q19 — Weaken (type inferred)
 
+**Correct answer:** B
+
 > Note: No authored argument breakdown for this question; only per-choice explanations.
 
 ### Stimulus
@@ -1958,6 +2034,8 @@ This adds some plausibility to the Author's Explanation. It offers a reason why 
 ---
 
 ## S4 · Q20 — Point at Issue (type inferred)
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2005,6 +2083,8 @@ This answer is saying that "if we shut down the pumps, it's 100% certain the fis
 ---
 
 ## S4 · Q21 — Necessary Assumption (type inferred)
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2062,6 +2142,8 @@ I'm guessing she would say the biological process of cell division, for example,
 
 ## S4 · Q22 — Strengthen (type inferred)
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2114,6 +2196,8 @@ Nothing in this argument would be changed by whether the hep virus helps a speci
 ---
 
 ## S4 · Q23 — Must Be True (type inferred)
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2174,6 +2258,8 @@ Similarly, saying "Joe Biden grew up in Pennsylvania" does not give us license t
 
 ## S4 · Q24 — Role (type inferred)
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2213,6 +2299,8 @@ We know the third sentence is the main conclusion. This answer is also wrong in 
 ---
 
 ## S4 · Q25 — Most Strongly Supported (type inferred)
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 

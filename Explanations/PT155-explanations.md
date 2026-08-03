@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab (set questionsetid=318838). This PT155 conten
 
 ## S4 · Q1 — Paradox
 
+**Correct answer:** E
+
 ### Stimulus
 
 A company produced a small car that costs much less—but is also much less safe—than any car previously available. However, most customers of the new car increased their safety on the roads by buying it.
@@ -48,6 +50,8 @@ The stimulus compares the new small car to "any car previously available," but d
 ---
 
 ## S4 · Q2 — Flaw
+
+**Correct answer:** D
 
 ### Stimulus
 
@@ -109,6 +113,8 @@ But she does not conclude this on the basis of evidence that said, "most people 
 
 ## S4 · Q3 — Must be True
 
+**Correct answer:** D
+
 ### Stimulus
 
 Researcher: Newly formed neurons can help to heal an injured brain but only if they develop into the type of neurons that are most common in the injured area. Studies have shown that when a part of the brain called the striatum is injured, newly formed neurons in the striatum never become midsized spiny neurons, the type most common in the striatum.
@@ -166,6 +172,8 @@ We only know about the case of the striatum. This information doesn't allow us t
 
 ## S4 · Q4 — Method
 
+**Correct answer:** E
+
 ### Stimulus
 
 Leona: Thompson's article on the novel Emily's Trials is intriguing but ultimately puzzling. In discussing one scene, Thompson says that a character's "furrowed brow" and grim expression indicate deep inner turmoil and anxiety. Later, however, Thompson refers to the same scene and describes this character as the "self-identified agent" of an action. This ascription is interesting and challenging in its own right; but Thompson begins the article by claiming that a "self-identified agent" is fundamentally incapable of having misgivings or anxiety.
@@ -222,6 +230,8 @@ But Thompson later claims that this character is someone who is incapable of hav
 
 ## S4 · Q5 — Paradox
 
+**Correct answer:** D
+
 ### Stimulus
 
 An online auction site conducted a study of auction techniques involving 8,000 used cars, divided into two equal groups. Each car's listing in the first group included a brief description of its condition. The description of each car in the other half additionally listed defects of the car. More cars in the second group sold, and of comparable cars in both groups that sold, the cars in the second group fetched higher prices.
@@ -263,6 +273,8 @@ We aren't actually told that any of the descriptions were "detailed." Even if we
 ---
 
 ## S4 · Q6 — Main Conclusion
+
+**Correct answer:** B
 
 ### Stimulus
 
@@ -308,6 +320,8 @@ The critic might believe that Linsey's talent is less than that of modern noveli
 ---
 
 ## S4 · Q7 — Sufficient Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 
@@ -386,6 +400,8 @@ This statement would supports the conclusion that computer passwords will be rep
 ---
 
 ## S4 · Q8 — Weaken
+
+**Correct answer:** B
 
 ### Stimulus
 
@@ -474,6 +490,8 @@ Since this applies to all countries, it really won't inform any judgments we're 
 
 ## S4 · Q9 — Principle-Strengthen
 
+**Correct answer:** B
+
 ### Stimulus
 
 Many airlines offer, for a fee, to "offset" the carbon emissions produced when you fly, but such schemes are almost entirely ineffective. Although the fees are usually invested in projects that directly reduce carbon emissions, in most cases these projects would have proceeded even without that investment, so no carbon emissions are prevented.
@@ -557,6 +575,8 @@ More incriminatingly, the evidence half of this answer is way off. The premise n
 
 ## S4 · Q10 — Strengthen
 
+**Correct answer:** B
+
 ### Stimulus
 
 Many species of plants produce nectars known as extrafloral nectories (EFNs), which are known to attract certain ants that defend the plants against leaf-eating insects. Recently, greenhouse experiments have found that jumping spiders jump onto plants with active EFNs six times more often than they jump onto plants without EFNs, and regularly eat the nectar. So, like the ants, jumping spiders apparently defend EFN-producing plants against leaf-eating insects.
@@ -606,6 +626,8 @@ We don't need to hear anything about ants. We're trying to figure out whether th
 ---
 
 ## S4 · Q11 — Sufficient Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 
@@ -670,6 +692,8 @@ We need to be convinced that there aren't people whose measurements already fit 
 
 ## S4 · Q12 — Most Supported
 
+**Correct answer:** B
+
 ### Stimulus
 
 Typically, a design that turns out well has gone through many drafts, each an improvement over the previous one. What usually allows a designer to see an idea's advantages and flaws is a sketch of the idea. The ways in which the sketch appears muddled or confused tend to reveal to the designer ways in which the design has been inadequately conceptualized.
@@ -732,6 +756,8 @@ My goodness, this is too strong. We know that sketches usually allow a designer 
 ---
 
 ## S4 · Q13 — Principle-Strengthen
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -805,6 +831,8 @@ The conclusion of the argument is about the city having a right to require homeo
 ---
 
 ## S4 · Q14 — Necessary Assumption
+
+**Correct answer:** C
 
 ### Stimulus
 
@@ -882,6 +910,8 @@ Properly explaining an image ≠ understanding the world.
 
 ## S4 · Q15 — Flaw
 
+**Correct answer:** D
+
 ### Stimulus
 
 Candidate: In each election in the last ten years, the candidate who supported property tax reform received a significant majority of the votes in the northeastern part of my district. In no other part of my district has there been any discernible pattern of voting for or against property tax reform. Therefore, in order to attract additional voters in the northeastern part of my district without alienating voters elsewhere, all I need to do is to go on record as favoring property tax reform.
@@ -937,6 +967,8 @@ Secondly, the data concerns "each election" in the last ten years, so presumably
 ---
 
 ## S4 · Q16 — Most Supported
+
+**Correct answer:** D
 
 ### Stimulus
 
@@ -1002,6 +1034,8 @@ Just because high antibiotics is the only threat that was discussed doesn't mean
 
 ## S4 · Q17 — Role
 
+**Correct answer:** C
+
 ### Stimulus
 
 Legislator: University humanities departments bring in less tuition and grant money than science departments. But because teaching and research cost significantly less in the humanities than in the sciences, humanities departments bring in more money than they spend while the reverse is true of science departments. As a result, contrary to the typical characterization that humanities departments freeload on science departments, humanities departments actually subsidize science departments. Thus, it is a mistake for universities to cut humanities departments when facing budget shortfalls.
@@ -1066,6 +1100,8 @@ After all, claims 1, 2, and 3.
 ---
 
 ## S4 · Q18 — Weaken
+
+**Correct answer:** C
 
 ### Stimulus
 
@@ -1136,6 +1172,8 @@ Or it's possible that LSAC thinks of "thermal-insulation" technology as somethin
 ---
 
 ## S4 · Q19 — Agree/Disagree (EXCEPT)
+
+**Correct answer:** C
 
 ### Stimulus
 
@@ -1214,6 +1252,8 @@ This is another answer choice that has pretty weak disagreement support. I would
 ---
 
 ## S4 · Q20 — Flaw
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -1314,6 +1354,8 @@ So if there's a condition under which X occurs, then that would absolute be a co
 
 ## S4 · Q21 — Must be True
 
+**Correct answer:** A
+
 ### Stimulus
 
 All of the students at Harrison University live in one of two residence complexes, either Pulham or Westerville. Although just a small fraction of the classes at Harrison are night classes, 38 percent of Harrison students take at least one night class. That figure is lower for Harrison students living in Westerville: Only 29 percent of those students take at least one night class.
@@ -1392,6 +1434,8 @@ We don't have any information about students per class for night or for day, so 
 
 ## S4 · Q22 — Parallel Flaw
 
+**Correct answer:** A
+
 ### Stimulus
 
 The universe as a whole necessarily tends toward greater disorder, or entropy. From this alone, it follows that the earth's biosphere has always been moving toward increased disorder as well, in spite of appearances to the contrary.
@@ -1467,6 +1511,8 @@ Conclusion: - the whole assembly is unsafe
 ---
 
 ## S4 · Q23 — Strengthen
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -1544,6 +1590,8 @@ This answer makes it seem like "the connection between eating curry and being co
 
 ## S4 · Q24 — Principle-Conform
 
+**Correct answer:** C
+
 ### Stimulus
 
 A theory cannot properly be regarded as empirical unless there is some conceivable observation that, if the theory were false, would refute it.
@@ -1613,6 +1661,8 @@ We can either derive that "not an empirical theory" or we can derive that "there
 
 ## S4 · Q25 — Parallel
 
+**Correct answer:** D
+
 ### Stimulus
 
 Shopkeeper: Our city will soon approve the construction of a new shopping center, but I won't be relocating my store there. My store needs to be in a high-visibility site with good growth potential, but the new shopping center will be at either Maple Street or West Avenue. The Maple Street site lacks visibility, and the West Avenue site has poor growth potential.
@@ -1681,6 +1731,8 @@ Do we get two options? Nope. Just one ... the riverbank. We can bail.
 
 ## S1 · Q1 — Weaken
 
+**Correct answer:** B
+
 ### Stimulus
 
 Advertisement: Omnicide kills more species of insects than any other insecticide. So Omnicide is the best insecticide for home gardeners, especially gardeners who cannot determine which insects are destroying their plants.
@@ -1739,6 +1791,8 @@ This answer, like (C), would apply equally to all insecticides, so it doesn't gi
 ---
 
 ## S1 · Q2 — Necessary Assumption
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -1800,6 +1854,8 @@ The author doesn't need to assume that any of the first night's viewers generall
 
 ## S1 · Q3 — Paradox
 
+**Correct answer:** C
+
 ### Stimulus
 
 When frightened by hunters in a truck, healthy gazelles run away quickly, efficiently using the landscape for concealment. But when a healthy gazelle detects the approach of a predator such as a lion, it leaps high into the air as it runs away—a behavior known as "stotting." As a defensive behavior, stotting appears paradoxical, because it draws predators' attention and consumes energy that could be put into running faster.
@@ -1850,6 +1906,8 @@ Does that explain why the gazelle wastes running energy on stotting? No.
 ---
 
 ## S1 · Q4 — Principle-Conform
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -1936,6 +1994,8 @@ This is a principle that would allow one to argue that an advertisement is misle
 
 ## S1 · Q5 — Strengthen
 
+**Correct answer:** D
+
 ### Stimulus
 
 Of the dinosaurs of the birdlike group called ornithomimids, the later ones had toothless beaks and weak jaw muscles. A fossil of the later ornithomimid species Gallimimus bullatus was found to have remnants of a comblike plate inside the beak. Such plates are found in modern ducks and geese, animals that strain small bits of food from water and mud. Paleontologists therefore hypothesize that G. bullatus fed by filtering food from water and mud.
@@ -1982,6 +2042,8 @@ Finding out that G.b. is the only dino that had the comblike plate doesn't do an
 ---
 
 ## S1 · Q6 — Must be True (EXCEPT)
+
+**Correct answer:** C
 
 ### Stimulus
 
@@ -2053,6 +2115,8 @@ This is just restating what we get from the last sentence. The conditional is te
 
 ## S1 · Q7 — Strengthen
 
+**Correct answer:** C
+
 ### Stimulus
 
 Transportation official: I reject the claim that the ruts in our city's roads are caused by large trucks rather than studded snow tires. There are many places that have as much large truck traffic as we have here and also have a comparable amount of snowfall, and only those few places that allow studded snow tires have ruts in their roads similar to ours. Clearly, studded snow tires are to blame.
@@ -2122,6 +2186,8 @@ But we don't hear about whether these areas do or don't have ruts, so this answe
 ---
 
 ## S1 · Q8 — Parallel Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 
@@ -2234,6 +2300,8 @@ Then it factually establishes the trigger is happening (this veggie soup is deli
 
 ## S1 · Q9 — Sufficient Assumption
 
+**Correct answer:** B
+
 ### Stimulus
 
 Essayist: Practical intelligence is the ability to discover means to ends. This ability is a skill—something that does not develop on its own. Thus, if there were a being that was never deprived of anything but was always and immediately given what it wants, that being could never become intelligent in the practical sense.
@@ -2309,6 +2377,8 @@ This has nothing to with that goal, and it's actually talking about people who a
 
 ## S1 · Q10 — Strengthen
 
+**Correct answer:** E
+
 ### Stimulus
 
 Dentist: Five recently conducted studies all show that the proportion of children with decayed, missing, or filled teeth is lower in Europe, where water is not fluoridated, than in the United States, where it is. This is convincing evidence that fluoridation of water does not have a substantial tendency to prevent tooth decay.
@@ -2361,6 +2431,8 @@ If the diets were very different, in terms of their effect on teeth, then it wou
 ---
 
 ## S1 · Q11 — Main Conclusion
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -2424,6 +2496,8 @@ Our author's However is implicitly saying, "You shouldn't conclude fast-food is 
 ---
 
 ## S1 · Q12 — Necessary Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 
@@ -2500,6 +2574,8 @@ The argument is descriptive, not normative. The author is only making claims abo
 
 ## S1 · Q13 — Flaw
 
+**Correct answer:** B
+
 ### Stimulus
 
 Philosopher: As many prominent physicists have suggested, energy is merely a theoretical construct. Since the theory of relativity tells us that there is no essential distinction between energy and mass, mass must also be a theoretical construct. But all physical objects are composed purely of mass and energy. Thus, physical objects must also be theoretical constructs.
@@ -2566,6 +2642,8 @@ We should also feel unnerved picking this answer because we would just be object
 
 ## S1 · Q14 — Method
 
+**Correct answer:** A
+
 ### Stimulus
 
 Jones: A budget deficit is good for the country's finances; it discourages excessive government spending.
@@ -2625,6 +2703,8 @@ Espinosa is saying, "You're wrong. It's dumb to think that debt is good."
 ---
 
 ## S1 · Q15 — Must be True
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -2776,6 +2856,8 @@ So this serves as a nice reminder that the "best" answer on a must be true might
 
 ## S1 · Q16 — Principle-Strengthen
 
+**Correct answer:** A
+
 ### Stimulus
 
 Park ranger: It is unfair to cite people for fishing in the newly restricted areas. They probably are unaware of the changes in regulations, since even many of us who are supposed to enforce these changes have not yet been informed of them. Until we have made a real effort to publicize the new restrictions, we should do no more than issue a simple warning against fishing in the newly restricted areas.
@@ -2861,6 +2943,8 @@ In this story, violators aren't actually arguing the law doesn't apply to them. 
 
 ## S1 · Q17 — Flaw
 
+**Correct answer:** C
+
 ### Stimulus
 
 For several years the Technology Institute has used a new experimental curriculum in its plumbing program. A survey last year found that only one-third of the Institute's plumbing graduates—well below the national average—were able to pass the plumber's certification test. This shows that the new curriculum has lowered the quality of plumbing instruction.
@@ -2939,6 +3023,8 @@ There was not, here, so this answer has no chance. Nothing in the argument talks
 ---
 
 ## S1 · Q18 — Parallel
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -3021,6 +3107,8 @@ The original Conclusion was saying "none of these Y's are crucial / necessary", 
 
 ## S1 · Q19 — Weaken
 
+**Correct answer:** D
+
 ### Stimulus
 
 Productivity growth in industrialized nations has dropped substantially since computer technology became widespread in the 1960s and 1970s. Furthermore, productivity growth has dropped the most in industries that rely most heavily on computer technology. Thus, a business that has increased its reliance on computer technology probably has not improved its productivity growth by doing so.
@@ -3094,6 +3182,8 @@ We can only dispute the truth of the author's conclusion by talking about the pa
 ---
 
 ## S1 · Q20 — Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 
@@ -3193,6 +3283,8 @@ We don't know and we don't care. That has more to do with Klemke's argument, whe
 
 ## S1 · Q21 — Principle-Conform
 
+**Correct answer:** B
+
 ### Stimulus
 
 Guidelines for constructing new Bonjour hotels: A hotel is to have a radiant floor heating system installed if a radiant floor cooling system is being installed or if it is to be a luxury hotel; however, a radiant floor cooling system should not be installed in any hotel that is located in a region that tends to have high humidity during the summer.
@@ -3246,6 +3338,8 @@ This is concluding "should have cooling and should have heating". Guideline 1 al
 ---
 
 ## S1 · Q22 — Necessary Assumption
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -3330,6 +3424,8 @@ She doesn't need to assume we find it least engaging. The fact that the historic
 
 ## S1 · Q23 — Weaken (EXCEPT)
 
+**Correct answer:** C
+
 ### Stimulus
 
 On Earth, biological activity leads to a change in the ratio of isotope S-34 to isotope S-32. However, a newly discovered meteorite of Martian origin exhibits ratios of these elements found only in terrestrial minerals dating from before the beginning of life on Earth. Therefore, it is unlikely that life occurred on Mars.
@@ -3400,6 +3496,8 @@ A meteorite is a big chunk of rock, and rocks are terrestrial mineral deposits. 
 
 ## S1 · Q24 — Necessary Assumption
 
+**Correct answer:** E
+
 ### Stimulus
 
 Editorial: Last year, many polls found that most people in our country claimed to be tired of television news programs' obsession with celebrity scandals and to be unwilling to watch such programs. But at the same time, ratings of television news shows soared. This indicates that when responding to polls, whether or not they are aware of it, people often portray themselves as they wish to be perceived, rather than as they actually are.
@@ -3457,6 +3555,8 @@ In the parlance of Explain Curious Fact, this answer is providing something that
 ---
 
 ## S1 · Q25 — Weaken
+
+**Correct answer:** C
 
 ### Stimulus
 

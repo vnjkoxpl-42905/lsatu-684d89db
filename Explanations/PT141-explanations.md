@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab. All three authored styles (Standard, Brief, 
 
 ## S2 · Q2 — Paradox
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -67,6 +69,8 @@ When you give the salesperson your money and he gives you an Xbox, you feel like
 ---
 
 ## S2 · Q3 — Flaw
+
+**Correct answer:** A
 
 ### Stimulus
 Some video game makers have sold the movie rights for popular games. However, this move is rarely good from a business perspective. After all, StarQuanta sold the movie rights to its popular game *Nostroma*, but the poorly made film adaptation of the game was hated by critics and the public alike. Subsequent versions of the *Nostroma* video game, although better than the original, sold poorly.
@@ -151,6 +155,8 @@ This describes the "treats a requirement as a guarantee" flaw. But the argument 
 
 ## S2 · Q5 — Flaw
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -203,6 +209,8 @@ This is the same mistake "All Lives Matter" people make when they hear "Black Li
 ---
 
 ## S2 · Q6 — Principle (Justify)
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -274,6 +282,8 @@ It doesn't help us to argue that, "When it comes to realism, this film need not 
 
 ## S2 · Q7 — Parallel Flaw
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -332,6 +342,8 @@ No. It's saying the accuser is attacking motives, just like (D), rather than eng
 ---
 
 ## S2 · Q8 — Necessary Assumption
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -403,6 +415,8 @@ We have no idea how the box jellyfish detects prey; we never talked about such a
 ---
 
 ## S2 · Q9 — Weaken
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -495,6 +509,8 @@ It might be that 95% of people are impacted by tobacco advertising and other typ
 
 ## S2 · Q10 — Sufficient Assumption
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -580,6 +596,8 @@ Since this answer is only addressing whether audiences empathize with BB's chara
 
 ## S2 · Q11 — Main Conclusion
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -652,6 +670,8 @@ But this idea supports the Main Conclusion.
 ---
 
 ## S2 · Q12 — Sufficient Assumption
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -750,6 +770,8 @@ This is Sufficient Assumption, so if we don't have a rule that allows us to deri
 
 ## S2 · Q13 — Flaw
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -827,6 +849,8 @@ Our author wasn't ever assuming the incredibly extreme idea that number of priso
 ---
 
 ## S2 · Q14 — Method of Response
+
+**Correct answer:** E
 
 ### Stimulus
 Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can't afford not to invest in space exploration.
@@ -908,6 +932,8 @@ This is exactly what Winona does. She accepts Inez's goal (technological advance
 
 ## S2 · Q15 — Flaw
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -984,6 +1010,8 @@ When the answer is "Nope", as it is here, then we can quickly eliminate this and
 ---
 
 ## S2 · Q16 — Method of Reasoning
+
+**Correct answer:** A
 
 ### Stimulus
 The top prize in architecture, the Pritzker Prize, is awarded for individual achievement, like Nobel Prizes for science. But architects are judged by their buildings, and buildings are the result of teamwork. As achievements, buildings are not like scientific discoveries, but like movies, which compete for awards for best picture. Thus, it would be better if the top prize in architecture were awarded to the best building rather than the best architect.
@@ -1063,6 +1091,8 @@ This describes an argument that something is inappropriate by analogy. The autho
 
 ## S2 · Q17 — Parallel Reasoning
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1139,6 +1169,8 @@ If neither S nor P get the contract, then it didn't go to the lowest bidder.
 
 ## S2 · Q18 — Flaw
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1208,6 +1240,8 @@ Rejects a position = conclusion is false
 ---
 
 ## S2 · Q19 — Weaken
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1290,6 +1324,8 @@ Christians could say that the cross on their necklace symbolizes the crucifix on
 ---
 
 ## S2 · Q20 — Necessary Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1387,6 +1423,8 @@ Yes. That allows us to argue that we could improve the soil, while still using c
 
 ## S2 · Q21 — Must Be True
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1463,6 +1501,8 @@ Most = more than half
 
 ## S2 · Q22 — Strengthen
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1519,6 +1559,8 @@ The total number of fish in the lake doesn't help us assess the causal mystery b
 ---
 
 ## S2 · Q23 — Most Strongly Supported
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1591,6 +1633,8 @@ We don't know anything from this paragraph about industries that already have at
 
 ## S2 · Q24 — Paradox
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1649,6 +1693,8 @@ This piles on to reasons why we should want this new concert hall, which would j
 
 ## S2 · Q25 — Complete the Argument
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1704,6 +1750,8 @@ Who said the quote was 100% necessary in order to have a completed paper?
 # Section 4 (Logical Reasoning)
 
 ## S4 · Q1 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1762,6 +1810,8 @@ It doesn't provide an alternate explanation for why the chocolate group tasted n
 
 ## S4 · Q2 — Principle (Strengthen)
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1817,6 +1867,8 @@ The concept of preventing there from being "obstructed access to a historic site
 ---
 
 ## S4 · Q3 — Flaw
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1890,6 +1942,8 @@ We can also think of this as offering an Alternate Explanation for the Curious F
 
 ## S4 · Q5 — Main Conclusion
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1934,6 +1988,8 @@ The paragraph never talks about which species are most indispensable.
 ---
 
 ## S4 · Q6 — Evaluate the Argument
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1992,6 +2048,8 @@ If we say that the new drug retains 0% of its efficacy when used in combination 
 
 ## S4 · Q7 — Principle (Conforms)
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2040,6 +2098,8 @@ She argues that the new concert hall doesn't fulfill the purpose of a civic buil
 ---
 
 ## S4 · Q8 — Most Strongly Supported
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2107,6 +2167,8 @@ We only talk about certain groundwater having lots of sodium. We don't have any 
 
 ## S4 · Q9 — Role of a Statement
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2163,6 +2225,8 @@ This answer is incorrectly calling the conclusion, "Bosch's choice of subject ma
 ---
 
 ## S4 · Q10 — Flaw
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2244,6 +2308,8 @@ We're essentially objecting, "What if, in a fair fight, the Super XL just tied t
 
 ## S4 · Q11 — Main Conclusion
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2299,6 +2365,8 @@ It's not even something implied or assumed. It's just an overly strong condition
 ---
 
 ## S4 · Q12 — Most Strongly Supported
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2395,6 +2463,8 @@ We were only told that it was available on every continent.
 
 ## S4 · Q13 — Necessary Assumption
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2460,6 +2530,8 @@ If we negated this and objected, "Not in Earth's atmosphere, it doesn't!", we wo
 ---
 
 ## S4 · Q14 — Most Strongly Supported
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2527,6 +2599,8 @@ This answer is saying the only way it affects their behavior is if they mull ove
 
 ## S4 · Q15 — Paradox
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2580,6 +2654,8 @@ We're looking for an answer that says, "Red devil crayfish (or the habitats they
 ---
 
 ## S4 · Q16 — Most Strongly Supported
+
+**Correct answer:** E
 
 ### Stimulus
 Stress is a common cause of high blood pressure. By calming their minds and thereby reducing stress, some people can lower their blood pressure. And most people can calm their minds, in turn, by engaging in exercise.
@@ -2667,6 +2743,8 @@ Combine those, and you get: for at least some people, exercising reduces stress.
 
 ## S4 · Q17 — Weaken
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2737,6 +2815,8 @@ The fact that this answer is saying "other forms of pollution very likely contri
 ---
 
 ## S4 · Q18 — Parallel Flaw
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2810,6 +2890,8 @@ Instead, the conclusion is saying that Aisha probably messed up.
 ---
 
 ## S4 · Q19 — Necessary Assumption
+
+**Correct answer:** B
 
 ### Stimulus
 Young people believe efforts to reduce pollution, poverty, and war are doomed to failure. This pessimism is probably harmful to humanity's future, because people lose motivation to work for goals they think are unrealizable. We must do what we can to prevent this loss of motivation and therefore must enable our children to believe that better futures are possible.
@@ -2892,6 +2974,8 @@ This blames previous generations' pessimism for current problems. The argument i
 
 ## S4 · Q20 — Strengthen
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2966,6 +3050,8 @@ It's irrelevant to this argument whether the leaky cells are also killed. The au
 ---
 
 ## S4 · Q21 — Parallel Reasoning
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3065,6 +3151,8 @@ LSAC tried to fool us by burying the "if" trigger in the conclusion later in the
 
 ## S4 · Q22 — Paradox
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3122,6 +3210,8 @@ This definitely doesn't have the conclusive punch that (D) has, with its steep, 
 ---
 
 ## S4 · Q23 — Principle (Justify)
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3186,6 +3276,8 @@ And it concludes the outcome of the principle:
 ---
 
 ## S4 · Q24 — Sufficient Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3276,6 +3368,8 @@ So, yes, we've proven that without effective news a democracy can't thrive."
 
 ## S4 · Q25 — Flaw
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3351,6 +3445,8 @@ In order for Roberta to be irritable she has to be tired (it's necessary for her
 ---
 
 ## S4 · Q26 — Necessary Assumption
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 

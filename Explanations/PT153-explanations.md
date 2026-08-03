@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab. This test's authored explanations are single
 
 ## S2 · Q1 — Most Supported
 
+**Correct answer:** E
+
 ### Stimulus
 In situations where it is difficult to make informed decisions about products, consumers should be provided with the relevant information. The difficulty of determining whether a food product contained nutritious ingredients was resolved by requiring food manufacturers to print nutritional information on their products' packaging. Similarly, many consumers are interested in conserving energy, and since there is no easy way for consumers to determine how much energy was required to manufacture a product, ______.
 
@@ -68,6 +70,8 @@ They actually stuck very close to the food-nutrition example, in which the relev
 
 ## S2 · Q2 — Paradox
 
+**Correct answer:** B
+
 ### Stimulus
 Biologist: Some small animals will instinctively go limp, "playing dead" when caught by a predator. But it is hard to see how playing dead can have survival value in this situation. The predator means to eat the animal just the same, whether or not it plays dead.
 
@@ -115,6 +119,8 @@ It's not talking about small animals who play dead.
 ---
 
 ## S2 · Q3 — Evaluate
+
+**Correct answer:** E
 
 ### Stimulus
 Food columnist: Only 2 percent of imported seafood is subjected to health safety inspections. So if you want to increase the likelihood that the seafood you buy will be safe to eat, you should buy only domestic seafood.
@@ -178,6 +184,8 @@ And an analogous answer choice would say:
 
 ## S2 · Q4 — Necessary Assumption
 
+**Correct answer:** B
+
 ### Stimulus
 Dog owner: In general, large dogs need less intensive exercise than smaller dogs to stay fit. A dog that is not exercised at the level of intensity it needs is more apt to be troublesome than one that is. So for any apartment dweller who has limited time to give a dog exercise but who wants to have a dog, a large dog is less likely to be troublesome than a small one.
 
@@ -225,6 +233,8 @@ The paragraph talks about exercising your dog at the right intensity in order to
 
 ## S2 · Q5 — Most Supported
 
+**Correct answer:** A
+
 ### Stimulus
 One theory concerning the importance of vitamin C in the human diet holds that vitamin C plays a crucial role in the production and maintenance of the body's supply of collagen, an important protein occurring almost exclusively in connective tissue and bones. For this reason, some doctors believe that vitamin C can be useful in treating the symptoms of some common illnesses.
 
@@ -271,6 +281,8 @@ Vitamin C might do a lot of cool things besides help us with collagen, so it's p
 ---
 
 ## S2 · Q6 — Principle-Strengthen
+
+**Correct answer:** D
 
 ### Stimulus
 Principle: If someone makes an error, it is unethical for a coworker to use that error to his or her own advantage.
@@ -340,6 +352,8 @@ We were never told that Rashmi made any sort of mistake, and this answer still i
 
 ## S2 · Q7 — Flaw
 
+**Correct answer:** E
+
 ### Stimulus
 Kevin: My barber shop sells an herbal supplement that, according to my barber, helps prevent baldness because it contains an enzyme that blocks the formation of a chemical compound that causes people to lose hair.
 
@@ -393,6 +407,8 @@ This is the famous Ad Hominem flaw.
 
 ## S2 · Q8 — Principle-Strengthen
 
+**Correct answer:** A
+
 ### Stimulus
 Analyst: When Johnson attacked his opponent by quoting her out of context, his campaign defended this attack by claiming that the quote was even more politically damaging to her in context. But those who run his campaign clearly do not believe this. They have since had plenty of chances to refer to the quote in its proper context but continue to quote it out of context.
 
@@ -444,6 +460,8 @@ The argument doesn't mention anything about that, so we have no idea.
 ---
 
 ## S2 · Q9 — Agree/Disagree
+
+**Correct answer:** A
 
 ### Stimulus
 Ellen: A group of economists and ecologists recently estimated the economic value of Earth's biosphere's "essential services," such as climate regulation, food, and water supplies, at $33 trillion annually. We should therefore make protection of the biosphere a high priority.
@@ -504,6 +522,8 @@ She's never talking about the biosphere's "most important value".
 
 ## S2 · Q10 — Most Supported
 
+**Correct answer:** A
+
 ### Stimulus
 Researchers have found that most people's bodies make an enzyme, CYP2A6, that plays a crucial role in eliminating nicotine, the addictive drug in cigarettes, from the body. Smokers whose bodies make the most common form of this enzyme tend to smoke more than those whose bodies make some other form of it. Why? Well, the faster nicotine is eliminated from one's body, the sooner one will crave another cigarette, and ______ .
 
@@ -545,6 +565,8 @@ And since it's talking about things other than eliminating nicotine, this answer
 ---
 
 ## S2 · Q11 — Most Supported
+
+**Correct answer:** D
 
 ### Stimulus
 Unlike other mechanical devices, the clock did not evolve from the simple to the complex. The earliest clocks were also the most complicated. This is because early clocks were used primarily to predict astronomical phenomena, though the mechanisms they used for this purpose incidentally enabled one to keep track of time. Gradually the timekeeping functions became more important and the astronomical ones diminished.
@@ -593,6 +615,8 @@ We're only learning about the evolving functions of clocks. We might be able to 
 
 ## S2 · Q12 — Agree/Disagree
 
+**Correct answer:** D
+
 ### Stimulus
 Regina: The additional revenue obtained from leasing government-owned toll bridges to private investors will be allocated to the transportation budget, so the leases will not be used to reduce shortfalls in other budget areas.
 
@@ -636,6 +660,8 @@ We definitely can't derive from either person's statements that "this program wi
 ---
 
 ## S2 · Q13 — Weaken
+
+**Correct answer:** B
 
 ### Stimulus
 The use of ordinary dictionaries in interpreting the law is justified in the same way that chemists use the periodic table. The periodic table is a convenient source of agreed-upon background information that can be usefully applied to the problem on which a chemist is working. In the same way, ordinary dictionaries can be useful to a legal interpreter in resolving terminological issues.
@@ -702,6 +728,8 @@ Hey, lawyers, you shouldn't use an ordinary dictionary to resolve a terminologic
 
 ## S2 · Q14 — Main Conclusion
 
+**Correct answer:** D
+
 ### Stimulus
 Biologists are mistaken in thinking that the fossil record provides direct evidence of the course of human evolution. Fossils cannot be interpreted objectively: the physical characteristics by which they are classified invariably reflect the models the paleontologists wish to test. For example, classifying a pelvis as human because it supported an upright posture requires taking for granted that bipedalism distinguished early hominids from apes.
 
@@ -744,6 +772,8 @@ This is the second half of the 2nd sentence; it's a premise supporting the Inter
 
 ## S2 · Q15 — Most Supported
 
+**Correct answer:** C
+
 ### Stimulus
 The better we understand the behavior and ecological niche of an endangered species, the better chance we have of saving it. And the more individuals of a species we study, the better we understand it. Therefore, ______ .
 
@@ -783,6 +813,8 @@ There's nothing in this paragraph that would get us to an idea that by studying 
 ---
 
 ## S2 · Q16 — Flaw
+
+**Correct answer:** C
 
 ### Stimulus
 Art may make the world more beautiful, but one should choose a career in some profession other than art. Whether and how much artists get paid is determined by subjective evaluations by viewers or audiences of their work. It is unacceptable for one's pay to be determined by subjective evaluations of one's work.
@@ -849,6 +881,8 @@ If the argument were committing this flaw, then the rest of the argument would s
 
 ## S2 · Q17 — Role
 
+**Correct answer:** B
+
 ### Stimulus
 Critic: Vampires have traditionally been symbols of pure evil. Recently there has been a trend in entertainment of humanizing vampires. This is unfortunate. The overall trend in entertainment toward moral complexity is a good thing. But evil exists in the world, and the vampire myth is one of the most powerful representations of that.
 
@@ -893,6 +927,8 @@ The claim we're asked about is our author's opinion, but it isn't supported (we 
 ---
 
 ## S2 · Q18 — Strengthen
+
+**Correct answer:** C
 
 ### Stimulus
 Some killer whales eat fish exclusively, but others also eat seals. Different groups of killer whales "chatter" in distinct dialects, and the dialects of seal-eating killer whales are recognizably different from those of killer whales that do not eat seals. Harbor seals use their ability to distinguish between different killer-whale dialects to avoid seal-eating killer whales. Marine biologists hypothesize that young harbor seals start with an aversion to all killer whales but then learn to ignore those that do not eat seals.
@@ -947,6 +983,8 @@ But more importantly, this answer says nothing regarding whether seals are being
 
 ## S2 · Q19 — Flaw
 
+**Correct answer:** A
+
 ### Stimulus
 Trainer: An athlete developed lower back pain after a strenuous athletic competition. For several days, she tried to overcome the pain by daily stretching, but the pain continued. Then, on the advice of a friend, she used a heating pad. Within a few days the pain was gone. This shows that the use of heating pads is generally more effective at relieving lower back pain than stretching is.
 
@@ -985,6 +1023,8 @@ This is objecting that "heating pads are not generally more effective than stret
 ---
 
 ## S2 · Q20 — Role
+
+**Correct answer:** D
 
 ### Stimulus
 Some literary theorists argue that since literary works are expressions of ideology, it is naive to view them as embodying a distinct aesthetic value to a greater or lesser degree. But these theorists evaluate particular literary works as being ideological expressions that are more or less interesting and successful. Therefore, these theorists succumb to the view they wish to undermine.
@@ -1034,6 +1074,8 @@ She doesn't comment on whether or not their views are right or wrong.
 ---
 
 ## S2 · Q21 — Must be True
+
+**Correct answer:** A
 
 ### Stimulus
 City official: Landowners must clear the snow from the sidewalks along the edge of their property by 24 hours after the end of a snowstorm. The city has the right to clear any sidewalk that is still covered more than 24 hours after a snowstorm's end, and whenever it does so, it will bill the landowner for the service. All landowners whose sidewalks have not been cleared within 48 hours of the end of a snowstorm will receive citations, which always result in fines unless the landowners can demonstrate extenuating circumstances.
@@ -1092,6 +1134,8 @@ We weren't told any exception like that. In fact, this is contradicted by the fa
 
 ## S2 · Q22 — Necessary Assumption
 
+**Correct answer:** C
+
 ### Stimulus
 Critic: Almost all of the paintings from our city's art movement share two characteristics: bold brushwork and a sharp contrast of light and shadow. The only ones that do not share these characteristics are abstract paintings, which—because they are nonrepresentational—do not depict light or shadow. However, the most famous painting from our city—Blue Irises—cannot be considered part of the city's art movement. For while this painting displays bold brushwork, it does not exhibit a sharp contrast of light and shadow.
 
@@ -1136,6 +1180,8 @@ This is accusing her of thinking that "every painting in the city that has sharp
 ---
 
 ## S2 · Q23 — Parallel
+
+**Correct answer:** B
 
 ### Stimulus
 Critic: Journalists should have reasonable knowledge of statistics. If not, they can make errors that misinform the public. For example, based on a clearly flawed interpretation of polling data, one journalist erroneously reported that a certain candidate would win an election.
@@ -1204,6 +1250,8 @@ Just like (A) and (C) this has the conclusion "X should be Y" and the 1st premis
 
 ## S2 · Q24 — Sufficient Assumption
 
+**Correct answer:** D
+
 ### Stimulus
 Editorialist: Landis, one of this city's top elected officials, recently spent $10,000 to redecorate his office. Many people believe that if Landis used city funds, then he misused public money, thereby violating his official duties. But Landis is guilty of such violation regardless of the money's source. Spending $10,000 so frivolously is clearly immoral when so many people in our city live in poverty.
 
@@ -1250,6 +1298,8 @@ If an answer isn't giving us a rule that says "If you did X, then you violated o
 ---
 
 ## S2 · Q25 — Parallel Flaw
+
+**Correct answer:** B
 
 ### Stimulus
 Katelin says that we will be hit by a major snowstorm tomorrow. So she probably believes that tomorrow's antique car show will be canceled, for it will certainly not be held if we are hit by a major snowstorm.
@@ -1345,6 +1395,8 @@ This answer choice is acting more like, "Katelin thinks Clark Kent will be late.
 
 ## S2 · Q26 — Weaken
 
+**Correct answer:** B
+
 ### Stimulus
 People should patronize businesses that meet high ethical standards, and the news media should help them to patronize those businesses. Therefore, when a business performs a notably ethical action, the news media should publicize that fact, for hearing of a business's ethical conduct is often enough to motivate people to patronize that business.
 
@@ -1396,6 +1448,8 @@ The only sticking point is whether "performing a notably ethical action" is a re
 
 ## S3 · Q1 — Agree/Disagree
 
+**Correct answer:** A
+
 ### Stimulus
 Minh: This film director's newest works are very predictable. He's pillaging his own catalog, but with diminishing returns. Each film is simply a repetition of his earlier ones.
 
@@ -1437,6 +1491,8 @@ Natalie would agree with this, but Minh thinks the director is just ripping hims
 ---
 
 ## S3 · Q2 — Principle-Strengthen
+
+**Correct answer:** A
 
 ### Stimulus
 Campaign manager: In campaign speeches, our candidate has been reluctant to reveal all the unpleasant consequences of the policies he endorses, but this lapse can be justified. There is no way to get elected while being fully candid. And it is vitally important that our candidate get a chance to help implement a political agenda that is very positive.
@@ -1504,6 +1560,8 @@ This campaign manager is trying to justify a strategy in which the candidate wit
 ---
 
 ## S3 · Q3 — Sufficient Assumption
+
+**Correct answer:** D
 
 ### Stimulus
 Columnist: Although it is our civic duty to protect the population against hazards to public health, we should not reroute high-tension power lines away from heavily populated areas. This is because our limited resources should be devoted to protecting the population only against well-substantiated threats to public health.
@@ -1592,6 +1650,8 @@ But that's not a fair implication. Secondhand tobacco smoke is a well-substantia
 
 ## S3 · Q4 — Paradox
 
+**Correct answer:** A
+
 ### Stimulus
 The coat patterns of large cat species correspond to the habitats in which those species live and hunt. Species with spotted coats are at home in trees and dappled forests, while species living in the open plains, such as lions, have plain coats. The only anomaly is the cheetah, a spotted cat that lives in the open savannah.
 
@@ -1636,6 +1696,8 @@ That latter trait doesn't seem to be connected in any common sense way to whethe
 ---
 
 ## S3 · Q5 — Main Conclusion
+
+**Correct answer:** B
 
 ### Stimulus
 As the current information explosion forces the print media, television, and the Internet to compete for public attention and for advertiser and subscriber dollars, journalistic standards are lowered. Consequently, we are increasingly bombarded with inaccurate and trivial information.
@@ -1686,6 +1748,8 @@ This idea was never stated, so it can't be the author's conclusion. This answer 
 ---
 
 ## S3 · Q6 — Weaken
+
+**Correct answer:** E
 
 ### Stimulus
 The best way to increase the blood supply in the city of Pulaski is to encourage more donations by people who are regular blood donors. A study conducted in two other cities—Moorestown and Fredricksburg—indicates that it is difficult and expensive to attract first-time blood donors, and that many sporadic donors are reluctant to give more often. But officials in those cities had considerable success convincing many of their cities' regular donors to increase their donation frequency.
@@ -1738,6 +1802,8 @@ This attacks the feasibility of the plan by saying Pulaski just straight up can'
 
 ## S3 · Q7 — Flaw
 
+**Correct answer:** A
+
 ### Stimulus
 Advertisement: Honey Oat Puffs cereal is made with whole-grain oats. Health experts agree that whole-grain oats are among the most healthful foods, far more healthful than most of the foods in a typical diet. So most people would have more healthful diets if they ate Honey Oat Puffs for breakfast.
 
@@ -1776,6 +1842,8 @@ Neither of the premises state or presuppose that most people would have more hea
 ---
 
 ## S3 · Q8 — Role
+
+**Correct answer:** A
 
 ### Stimulus
 Astronomer: Conditions in our solar system have probably favored the emergence of life more than conditions in most other solar systems of similar age. Any conceivable form of life depends on the presence of adequate amounts of chemical elements heavier than hydrogen and helium, and our sun has an unusually high abundance of these heavier elements for its age.
@@ -1840,6 +1908,8 @@ No. Supporting that claim would be saying stuff like, "Life depends on water as 
 
 ## S3 · Q9 — Main Conclusion
 
+**Correct answer:** C
+
 ### Stimulus
 Political organizer: Our group needs to assemble at least 30 volunteers if Marcia Garson is to have a chance of winning the election, since she will win only if the public is fully informed about her record. To fully inform the public, at least 30 of our people must campaign for her, but we simply cannot afford to pay people for this work.
 
@@ -1890,6 +1960,8 @@ This is tempting students into liking an answer that sounds like an Inference or
 
 ## S3 · Q10 — Strengthen
 
+**Correct answer:** E
+
 ### Stimulus
 Giant ground sloths began disappearing from the Americas about 10,000 years ago, around the time that the last ice age ended, and are now extinct worldwide. Scientists had thought that these sloths failed to adapt to climate changes, but they are now coming to believe that it was the arrival of human beings shortly before that ice age ended that was responsible for the sloths' disappearance.
 
@@ -1928,6 +2000,8 @@ They were doing just fine until HUMANS came!
 ---
 
 ## S3 · Q11 — Parallel Flaw
+
+**Correct answer:** E
 
 ### Stimulus
 Studies have shown that those who take daily doses of vitamin C are less likely to contract colds than are those who do not. Thus, if a person contracts a cold, he or she probably does not take daily doses of vitamin C.
@@ -2021,6 +2095,8 @@ And just like the original argument (and our analogous one about U.S. citizens),
 
 ## S3 · Q12 — Strengthen
 
+**Correct answer:** D
+
 ### Stimulus
 The Discourses, a work attributed to the ancient Stoic philosopher Epictetus, is believed to have been compiled from Epictetus's lectures by his student Arrian. Some claim that Arrian himself authored The Discourses and falsely attributed authorship to Epictetus. That is, however, highly unlikely. Epictetus's views were well known by his contemporaries in Roman society; if Arrian tried to pass off his own views as Epictetus's, this deception would soon be exposed.
 
@@ -2067,6 +2143,8 @@ Learning about all the jobs Arrian went on to have tells us nothing about whethe
 
 ## S3 · Q13 — Paradox
 
+**Correct answer:** D
+
 ### Stimulus
 A study tested the performance of 70 pilots, half of whom chose to go on a reduced-calorie diet. Those who did not diet performed well, while pilots who were dieting performed worse, although they had performed well before they started their diets. The average level of impairment for the dieters was approximately equal to that caused by consuming two alcoholic drinks on an empty stomach.
 
@@ -2108,6 +2186,8 @@ So if the dieting group had "less of a nutrient that's vital to brain function",
 ---
 
 ## S3 · Q14 — Strengthen
+
+**Correct answer:** A
 
 ### Stimulus
 Guam has 40 times more spiders than nearby islands have. Biologists argue that this is a consequence of the accidental 1940s introduction into Guam of the brown tree snake, which by the 1980s had eliminated ten of twelve native bird species. The biologists attribute the spider population's increase to the loss of bird species, because many birds prey on spiders and some use spiderwebs in constructing nests.
@@ -2161,6 +2241,8 @@ All that logically matters is that 10 of 12 bird species are now gone, and we're
 ---
 
 ## S3 · Q15 — Necessary Assumption
+
+**Correct answer:** E
 
 ### Stimulus
 If the glee club pays cash today to rent the equipment it needs for next Saturday's party, its usual rental agency will accept a much lower price than the club would pay for renting the equipment next Saturday. The club's party committee knows the costs involved but nonetheless will wait until next Saturday to pay. The committee clearly cares little about saving money.
@@ -2223,6 +2305,8 @@ In order for the author to conclude that the glee club is carelessly passing up 
 
 ## S3 · Q16 — Must be False
 
+**Correct answer:** C
+
 ### Stimulus
 If a novelist is popular he or she can vividly imagine large numbers of characters, each with a personality and attitudes that are completely different from those of the others and from those of the novelist. Such a writer also will be capable of empathizing with people who have goals completely different from his or her own and so will have some doubts about the genuine value of his or her own desires.
 
@@ -2284,6 +2368,8 @@ Of course not. We don't have any quantifiers relating to that.
 
 ## S3 · Q17 — Weaken
 
+**Correct answer:** A
+
 ### Stimulus
 After monitoring blood levels of lycopene (a nutrient found in some fruits and vegetables) in 1,000 middle-aged study participants over a 12-year period, researchers found that participants with low levels of lycopene were more than twice as likely as those with high levels to have a stroke during that period. Clearly, lycopene reduces the risk of stroke.
 
@@ -2334,6 +2420,8 @@ It tells us nothing we weren't already assuming. The results of the study are av
 
 ## S3 · Q18 — Sufficient Assumption
 
+**Correct answer:** D
+
 ### Stimulus
 In order to cut costs and thereby maximize his profit, Mr. Kapp used inferior materials in constructing the library. Whether legal or not, it was clearly wrong for him to do so. For, as an experienced and knowledgeable builder, he must have realized that his action would put people at serious risk.
 
@@ -2382,6 +2470,8 @@ Since this answer doesn't say "it was wrong" or anything equivalent, it's of no 
 ---
 
 ## S3 · Q19 — Flaw
+
+**Correct answer:** D
 
 ### Stimulus
 Most movie critics believe that sentimentality detracts from aesthetic value. But these critics are wrong, since the reason they hold this belief is that sentimentality pervades so many movies that its absence makes a movie more interesting to frequent movie-goers like themselves. It is like someone whose food is usually prepared with a certain type of flavoring concluding that the flavoring itself detracts from the quality of the food.
@@ -2453,6 +2543,8 @@ There was never any rule presented that said, "Any time X happens, it diminishes
 ---
 
 ## S3 · Q20 — Role
+
+**Correct answer:** A
 
 ### Stimulus
 Business owner: Although allowing coal mining in our region would create new jobs, we can expect the number of jobs in the region to decrease overall if it is permitted. Many local businesses depend on our region's natural beauty, and the heavy industrial activity of coal mining would force most of them to close.
@@ -2549,6 +2641,8 @@ why should we believe that "Many local businesses depend on natural beauty"? The
 
 ## S3 · Q21 — Strengthen
 
+**Correct answer:** B
+
 ### Stimulus
 Columnist: Obviously, money helps one satisfy one's desires. However, people become less happy as they become more wealthy. For, though wealth allows one to satisfy desires one would not otherwise be able to, it invariably creates an even greater number of desires that will not be satisfied.
 
@@ -2604,6 +2698,8 @@ If other things also affect happiness, then maybe as wealth increases, some of t
 
 ## S3 · Q22 — Agree/Disagree
 
+**Correct answer:** C
+
 ### Stimulus
 Laurie: In a democracy, public art should bring people together either by expressing a consensus on a subject or by helping people to reconcile their differences and to recognize that no single opinion is definitive. Since contemporary public art creates only acrimony, it has failed in its task.
 
@@ -2652,6 +2748,8 @@ And Laurie is not even saying that contemporary public art should help the publi
 ---
 
 ## S3 · Q23 — Principle-Conform
+
+**Correct answer:** B
 
 ### Stimulus
 Environmental ethicist: Since whooping cranes, unlike sandhill cranes, are endangered as a species, the survival of any one whooping crane is much more important to the preservation of its species than the survival of any one sandhill crane is to the preservation of its species. Hence, we have a greater duty to protect the life of an individual whooping crane than we do to protect the life of an individual sandhill crane.
@@ -2704,6 +2802,8 @@ This would match the argument perfectly if those sides were reversed, but it's c
 ---
 
 ## S3 · Q24 — Must be True
+
+**Correct answer:** B
 
 ### Stimulus
 All of the one-way streets in the city have dedicated bike lanes. City buses do not travel on any street with a dedicated bike lane. Parking is allowed only on streets that do not have a dedicated bike lane. City bus number nine travels the full length of Batchelder Avenue.
@@ -2786,6 +2886,8 @@ parking allowed     bike lane        street
 
 ## S3 · Q25 — Principle-Conform
 
+**Correct answer:** D
+
 ### Stimulus
 Ecological terms like "invasive species" invoke human cultural standards like belonging, citizenship, fair play, and morality and apply them to the natural world. These terms can influence ecologists' opinions of certain organisms before any data is gathered about their ecological impact. To prevent this, they should avoid using such terms.
 
@@ -2843,6 +2945,8 @@ Instead, the evidence is saying, "making this sort of prediction usually means t
 ---
 
 ## S3 · Q26 — Flaw
+
+**Correct answer:** E
 
 ### Stimulus
 Employee: Vernon's behavior in last month's incident was certainly unprofessional enough that our company was justified in firing him. But several higher-ranking employees whose behavior in the incident was just as unprofessional haven't been fired and are treated as employees in good standing. So for the sake of consistency, the company must give Vernon his job back.

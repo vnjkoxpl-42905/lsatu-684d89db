@@ -10,6 +10,8 @@ Answer-choice format: **Letter. choice text** — Tag (N% of students), followed
 
 ## S1 · Q1 — Flaw
 
+**Correct answer:** E
+
 ### Stimulus
 
 Columnist: The dangers of drinking are greatly exaggerated in the medical press. We are always hearing about the extent to which alcohol can shorten one's life, but my grandfather drank heavily his entire life and lived to be 95.
@@ -46,6 +48,8 @@ This identifies the flaw exactly. The columnist's evidence is one anecdote: my g
 
 ## S1 · Q2 — Method of Reasoning
 
+**Correct answer:** C
+
 > No written explanation available on LSAT Lab (panel shows "Request Written"). Only answer text and student-selection percentages captured.
 
 ### Stimulus
@@ -67,6 +71,8 @@ The argument proceeds by
 ---
 
 ## S1 · Q5 — Weaken
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -111,6 +117,8 @@ The signal it's looking for doesn't at all differentiate between truth-tellers a
 ---
 
 ## S1 · Q7 — Strengthen
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -162,6 +170,8 @@ This storyline makes it seem like good playing, from "the very best pianists", i
 
 ## S1 · Q13 — Method
 
+**Correct answer:** B
+
 ### Stimulus
 
 A cognitive psychologist has claimed that intelligence is the ability to figure out how things work in order to overcome obstacles. If, however, we were to become convinced that a particular being had acquired an understanding of how things work, we would certainly not deny that that being possessed intelligence, even if we were sure that its acquisition of this understanding was not prompted by the desire to overcome some specific obstacle. Clearly, then, the cognitive psychologist's definition is inadequate.
@@ -209,6 +219,8 @@ The evidence is a hypothetical case offered by the author. There's no commentary
 ---
 
 ## S1 · Q15 — Flaw
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -271,6 +283,8 @@ Our author is allowed to be unconvinced about whether "academics should tailor t
 
 ## S1 · Q20 — Principle-Strengthen
 
+**Correct answer:** B
+
 ### Stimulus
 
 It should be illegal to patent an organism's genes, for a person should not be regarded as the inventor of something he or she merely discovered. Moreover, exploitation of genetic information for profit is selfish and irresponsible.
@@ -326,6 +340,8 @@ If you didn't invent something, you aren't entitled to patent it.
 
 ## S3 · Q5 — Sufficient Assumption
 
+**Correct answer:** A
+
 ### Stimulus
 
 Researcher: Some scholars maintain that the first government other than China to issue any form of paper currency was the Massachusetts colony in 1690. But these scholars are incorrect. During a coin shortage in New France in 1685, its government was unable to use coins to pay soldiers stationed in Quebec. Instead, playing cards were assigned an official value and issued as pay. These cards, which could be used to buy goods, were convertible to coins, which later arrived on supply ships from France.
@@ -362,6 +378,8 @@ Whether other 1600s governments left records about their currency is irrelevant.
 
 ## S3 · Q14 — Most Supported
 
+**Correct answer:** D
+
 ### Stimulus
 
 Generally, open discussion of a false and pernicious idea diminishes its appeal. Even in a flourishing democracy, however, certain misconceptions are so alluring that they tend to gain in popularity when they are debated.
@@ -397,6 +415,8 @@ The weak degree of "one of the reasons" and "some ideas" are both appealing in a
 ---
 
 ## S3 · Q16 — Role
+
+**Correct answer:** A
 
 ### Stimulus
 
@@ -435,6 +455,8 @@ It is something that must NOT be true if the argument is going to be successful.
 ---
 
 ## S3 · Q17 — Sufficient Assumption
+
+**Correct answer:** E
 
 ### Stimulus
 
@@ -541,6 +563,8 @@ Or, by contrapositive,
 
 ## S3 · Q18 — Parallel
 
+**Correct answer:** C
+
 ### Stimulus
 
 Jack's dog howls whenever a train goes by. Occasionally a train goes by while Jack is washing his dog. So Jack's dog must sometimes howl while he is washing it.
@@ -576,6 +600,8 @@ The conclusion here is "anyone who can benefit occasionally prefers sneakers" �
 ---
 
 ## S3 · Q19 — Most Supported
+
+**Correct answer:** C
 
 ### Stimulus
 
@@ -615,6 +641,8 @@ This answer is just a reversal of the second-to-last claim in the stimulus.
 ---
 
 ## S3 · Q24 — Principle-Strengthen
+
+**Correct answer:** D
 
 ### Stimulus
 

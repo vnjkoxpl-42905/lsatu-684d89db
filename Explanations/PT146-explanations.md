@@ -8,6 +8,8 @@ Transcribed verbatim from LSAT Lab. Question 1 offers only a single authored wri
 
 ## S1 · Q1 — Principle-Strengthen
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -113,6 +115,8 @@ Since we don't know if the trigger applies, this answer goes nowhere.
 
 ## S1 · Q2 — Necessary Assumption
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -175,11 +179,15 @@ But we don't know the war was 10 years. That's just a detail from an epic poem. 
 
 ## S1 · Q3 — Method
 
+**Correct answer:** A
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S1 · Q4 — Agree/Disagree
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -236,6 +244,8 @@ Wilkerson would disagree with this, because she thinks the fact that the project
 ---
 
 ## S1 · Q5 — Method
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -300,6 +310,8 @@ But the author's objection isn't talking about altruism at all.
 
 ## S1 · Q6 — Agree/Disagree
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -356,11 +368,15 @@ Renate is saying that this store didn't close because of insufficient demand, no
 
 ## S1 · Q7 — Flaw
 
+**Correct answer:** B
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S1 · Q8 — Most Supported
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -446,11 +462,15 @@ This would be like saying, "Our taste for sweet and salty can be adapted in orde
 
 ## S1 · Q9 — Flaw
 
+**Correct answer:** A
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S1 · Q10 — Weaken
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -529,6 +549,8 @@ The only way to make them relevant would be an answer like, "The tools created b
 
 ## S1 · Q11 — Most Supported
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -606,6 +628,8 @@ And the first sentence says that people can obtain dramatic improvements in card
 
 ## S1 · Q12 — Strengthen
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -643,6 +667,8 @@ If Sartore and Kelly reviewed the same movies as each other that would make it e
 ---
 
 ## S1 · Q13 — Most Supported
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -708,6 +734,8 @@ Also, we never really heard that an exotic fish has any inability to reproduce. 
 ---
 
 ## S1 · Q14 — Necessary Assumption
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -810,6 +838,8 @@ keeping promise
 
 ## S1 · Q15 — Most Supported
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -888,6 +918,8 @@ But, yeah, tough correct answer to go along with. We have to remind ourselves th
 
 ## S1 · Q16 — Strengthen
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -951,6 +983,8 @@ Our author isn't saying we should avoid trying to stop the moth in most of the f
 
 ## S1 · Q17 — Paradox
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1000,6 +1034,8 @@ This answer is also intended, I think, to allow for the idea that people coming 
 ---
 
 ## S1 · Q18 — Principle-Strengthen
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1060,6 +1096,8 @@ This is saying, "You might as well try to get at least one of your projects done
 ---
 
 ## S1 · Q19 — Necessary Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1131,6 +1169,8 @@ In this case, X is "evaluating science-based arguments regarding practical issue
 
 ## S1 · Q20 — Agree/Disagree
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1190,6 +1230,8 @@ Carl never discusses anything about whether aesthetic quality is lessened (we kn
 ---
 
 ## S1 · Q21 — Parallel Flaw
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1297,6 +1339,8 @@ Conclusion: Some cosmetics sell shampoo, and some cosmetics and toothpaste.
 
 ## S1 · Q22 — Flaw
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1388,6 +1432,8 @@ So the author definitely accepts that PCBs can stay in your system for years aft
 
 ## S1 · Q23 — Parallel
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1463,6 +1509,8 @@ Finally, there's no conclusion here that compares the volume of info we have on 
 ---
 
 ## S1 · Q24 — Principle-Conform
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1551,6 +1599,8 @@ If we negated this answer, it would be a huge objection: "If some members of a g
 
 ## S1 · Q25 — Weaken
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1606,6 +1656,8 @@ So fewer reporters might lead to more factual errors, which would just strengthe
 
 ## S2 · Q1 — Paradox
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1646,6 +1698,8 @@ Even more significantly, an animal living in a dry climate has an even greater n
 ---
 
 ## S2 · Q2 — Most Supported
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1690,6 +1744,8 @@ The evidence states that comedians make interesting points about serious topics,
 ---
 
 ## S2 · Q3 — Sufficient Assumption
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1744,6 +1800,8 @@ Neither the evidence nor the conclusion involves managers' preferred reading mat
 
 ## S2 · Q4 — Weaken
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1784,6 +1842,8 @@ This doesn't actually tell us anything about the possibility that the consultant
 ---
 
 ## S2 · Q5 — Necessary Assumption
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1846,6 +1906,8 @@ or
 ---
 
 ## S2 · Q6 — Principle-Strengthen
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -1912,6 +1974,8 @@ But we can't trigger this rule, because we don't know if the new space telescope
 
 ## S2 · Q7 — Most Supported
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1963,6 +2027,8 @@ Overall, it's a pretty extreme claim to say that a species "doesn't understand t
 
 ## S2 · Q8 — Flaw
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -1999,6 +2065,8 @@ The argument does not make any assumptions about subsequent years. The argument 
 ---
 
 ## S2 · Q9 — Sufficient Assumption
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2110,6 +2178,8 @@ But this answer does nothing to establish that the judge or editor will in fact 
 
 ## S2 · Q10 — Principle-Conform
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2207,6 +2277,8 @@ Oliver should return the guitar on time (today).
 
 ## S2 · Q11 — Necessary Assumption
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2281,6 +2353,8 @@ The author doesn't have to assume that never-ever-ever does human skin ever give
 
 ## S2 · Q12 — Paradox
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2337,6 +2411,8 @@ This answer hasn't given us any way to make sense of how a painting with cobalt 
 ---
 
 ## S2 · Q13 — Strengthen
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2408,6 +2484,8 @@ And the quantifier many is not impressive. If there were even 10 people on this 
 ---
 
 ## S2 · Q14 — Main Conclusion
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2481,6 +2559,8 @@ This is just the second half of the first sentence. The findings of a study will
 
 ## S2 · Q15 — Most Supported
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2535,6 +2615,8 @@ In other words, it's possible for there to be many common denominator nutrients,
 ---
 
 ## S2 · Q16 — Evaluate
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2598,6 +2680,8 @@ Even if we knew that lighter roasts had important health benefits that darker ro
 ---
 
 ## S2 · Q17 — Most Supported
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2689,6 +2773,8 @@ We don't know if either of those are the reason why. It could be that films were
 
 ## S2 · Q18 — Role
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2737,6 +2823,8 @@ The author is only pushing back on the idea that a pulsar is entirely made of ne
 ---
 
 ## S2 · Q19 — Most Supported
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -2819,6 +2907,8 @@ The fact that the passage only mentioned their opposition to natural gas station
 
 ## S2 · Q20 — Flaw
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2895,6 +2985,8 @@ Our objection was "what if voting habits change as you age", not "what if voting
 
 ## S2 · Q21 — Principle-Conform
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -2952,6 +3044,8 @@ If we check out this conclusion first, we won't need to read this one. It's conc
 ---
 
 ## S2 · Q22 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3012,6 +3106,8 @@ This reinforces the author's causal story, since it offers more data points in w
 ---
 
 ## S2 · Q23 — Necessary Assumption
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3090,6 +3186,8 @@ It starts to make it seem like people who reduce personal fossil fuel (concerned
 
 ## S2 · Q24 — Parallel Flaw
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3153,6 +3251,8 @@ This doesn't contain the same type of flaw where "X has not been proven" is assu
 
 ## S2 · Q25 — Flaw
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3209,6 +3309,8 @@ No. We have "tech innovations" as a condition that must (i.e. always) precede su
 ---
 
 ## S2 · Q26 — Agree/Disagree
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3278,6 +3380,8 @@ But it's pretty obnoxiously sloppy on their part. Again, keep that mantra of "be
 # Section 3 (Logical Reasoning)
 
 ## S3 · Q1 — Flaw
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3358,6 +3462,8 @@ There's no reason the letter needed to change anyone's opinion. If most people a
 
 ## S3 · Q2 — Strengthen
 
+**Correct answer:** D
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3394,11 +3500,15 @@ The argument correlates a decline in food production caused by climatic instabil
 
 ## S3 · Q3 — Most Supported
 
+**Correct answer:** B
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S3 · Q4 — Role
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3488,17 +3598,23 @@ This answer is also going on the wrong track as soon as it says "one of several 
 
 ## S3 · Q5 — Flaw
 
+**Correct answer:** E
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S3 · Q6 — Principle-Strengthen
 
+**Correct answer:** B
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S3 · Q7 — Most Supported
+
+**Correct answer:** E
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3567,6 +3683,8 @@ And so that leads us to this speculation ... "Hmmm, maybe the high-flavonoid coc
 ---
 
 ## S3 · Q8 — Evaluate
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3651,11 +3769,15 @@ The sort of situation described in this answer, in which two experts have confli
 
 ## S3 · Q9 — Paradox
 
+**Correct answer:** E
+
 > Video-only question: LSAT Lab offers no authored written explanation (only "Request Written" + an existing Video). Skipped per transcription protocol.
 
 ---
 
 ## S3 · Q10 — Sufficient Assumption
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3736,6 +3858,8 @@ We need to know the relative size of the group of voters under 50 vs. 50 and up.
 
 ## S3 · Q11 — Must be False
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3800,6 +3924,8 @@ In Britain, there was economic growth (5x the 1880 economy) but comparable level
 ---
 
 ## S3 · Q12 — Necessary Assumption
+
+**Correct answer:** B
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3866,6 +3992,8 @@ This is lost in the analogy, which is not essential to the author's argument abo
 
 ## S3 · Q13 — Parallel
 
+**Correct answer:** A
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3900,6 +4028,8 @@ This doesn't have three conditionals. The first premise is conditional, but the 
 ---
 
 ## S3 · Q14 — Role
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -3937,6 +4067,8 @@ The conclusion would be the final sentence, where the author offers us her prefe
 
 ## S3 · Q15 — Flaw
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -3972,6 +4104,8 @@ When a Flaw answer choice is structured like "takes for granted that because X, 
 
 ## S3 · Q16 — Paradox
 
+**Correct answer:** B
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4005,6 +4139,8 @@ We might keep this around on a first pass, thinking, "oh here is some utility to
 ---
 
 ## S3 · Q17 — Role
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4043,6 +4179,8 @@ This claim is the subsidiary conclusion. The claim in the argument that is suppo
 
 ## S3 · Q18 — Main Conclusion
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4078,6 +4216,8 @@ This is too broad an idea to match "too often retailers use advertised price cut
 
 ## S3 · Q20 — Sufficient Assumption
 
+**Correct answer:** C
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector). No argument-breakdown section was shown for this question, only per-choice explanations.
 
 ### Stimulus
@@ -4106,6 +4246,8 @@ Agreed, choice (E). Good summary of where were at when we came over here to the 
 ---
 
 ## S3 · Q21 — Strengthen
+
+**Correct answer:** A
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4142,6 +4284,8 @@ This is similar to (C) in the sense that we aren't interested in comparing one a
 
 ## S3 · Q22 — Must be False
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4175,6 +4319,8 @@ This contradicts our conditional, as we expected. Every MP member (including the
 ---
 
 ## S3 · Q23 — Evaluate
+
+**Correct answer:** C
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4211,6 +4357,8 @@ Whether or not the meeting was important won't help us in any way to judge how t
 
 ## S3 · Q24 — Most Supported
 
+**Correct answer:** E
+
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
 ### Stimulus
@@ -4244,6 +4392,8 @@ This, unlike most correct answers on Most Supported and Must Be True, can be der
 ---
 
 ## S3 · Q25 — Parallel Flaw
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
@@ -4279,6 +4429,8 @@ This one is very close. There are two Most premises (if we hear the first two cl
 ---
 
 ## S3 · Q26 — Weaken
+
+**Correct answer:** D
 
 > Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
 
