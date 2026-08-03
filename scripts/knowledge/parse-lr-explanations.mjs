@@ -174,8 +174,10 @@ export function parseExplanationFile(text, fileName) {
       continue;
     }
 
-    // Choices come from the first style section; every style repeats them.
-    const choices = parseChoiceBlock(styleSections[0].lines);
+    // Choices are repeated under every style, but some questions print them
+    // only once (after the last style), so take the first block that is whole.
+    const choiceBlocks = styleSections.map((s) => parseChoiceBlock(s.lines));
+    const choices = choiceBlocks.find((b) => b.length >= 5) ?? choiceBlocks[0] ?? [];
     if (choices.length < 5) {
       skipped.push({ id: qid, reason: `only ${choices.length} answer choices parsed (need 5)` });
       continue;
@@ -183,7 +185,9 @@ export function parseExplanationFile(text, fileName) {
     // Questions marked "no explanation given" carry no tags at all, so the
     // source names no correct answer. We import them and leave it unknown
     // rather than inferring one from the percentages.
-    const correct = choices.filter((c) => c.tag === 'Correct');
+    // The correct choice's tag is "Correct", sometimes with an authored
+    // qualifier ("Correct: Whole to Part", "Correct / Evidence / ...").
+    const correct = choices.filter((c) => c.tag && /^Correct\b/i.test(c.tag));
     if (!unexplained && correct.length !== 1) {
       skipped.push({
         id: qid,
