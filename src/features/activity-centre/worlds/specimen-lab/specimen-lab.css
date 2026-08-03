@@ -168,16 +168,24 @@
   height: 22px;
 }
 
+/*
+ * The notch keeps a fixed box and rises by scaling from its base, rather than
+ * animating height. Three notches sit in a flex row, so animating the box would
+ * relayout the row on every call; the scale is composited and looks identical
+ * because the notch is a solid bar.
+ */
 .sl-gauge-notch {
   flex: 1;
-  height: 8px;
+  height: 22px;
   border-radius: 2px;
   background: hsl(var(--sl-edge));
-  transition: height 320ms cubic-bezier(0.22, 1, 0.36, 1), background-color 320ms ease;
+  transform: scaleY(0.364);
+  transform-origin: bottom center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), background-color 320ms ease;
 }
 
 .sl-gauge-notch[data-active="true"] {
-  height: 22px;
+  transform: scaleY(1);
   background: hsl(var(--sl-earned));
 }
 
