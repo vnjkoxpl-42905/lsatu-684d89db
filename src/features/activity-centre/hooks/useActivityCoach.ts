@@ -16,6 +16,12 @@ export interface JudgeArgs {
    * Negation Station default, which is what those Activities expect.
    */
   coach?: ActivityCoach;
+  /**
+   * A numbered checklist to judge coverage against, for drills where WHICH
+   * ideas survived is the feedback (The Press). Omit and no coverage comes
+   * back, which every other drill wants.
+   */
+  ideas?: { n: number; text: string }[];
 }
 
 export interface JudgeResult {
@@ -27,7 +33,7 @@ export interface JudgeResult {
 export function useActivityCoach() {
   const [judging, setJudging] = useState(false);
 
-  const judge = useCallback(async ({ item, studentResponse, attemptNo, coach }: JudgeArgs): Promise<JudgeResult> => {
+  const judge = useCallback(async ({ item, studentResponse, attemptNo, coach, ideas }: JudgeArgs): Promise<JudgeResult> => {
     setJudging(true);
     try {
       const { data, error } = await supabase.functions.invoke("activity-coach", {
@@ -39,6 +45,7 @@ export function useActivityCoach() {
           attemptNo,
           coach,
           category: item.category,
+          ideas,
         },
       });
 
@@ -52,7 +59,14 @@ export function useActivityCoach() {
         return { ok: false, error: (data && data.error) || "Coach returned no verdict" };
       }
 
-      return { ok: true, verdict: { verdict: data.verdict, feedback: data.feedback ?? "" } };
+      // Coverage is only ever passed through, and only as an array of numbers.
+      // Anything else stays undefined so the checklist renders unjudged rather
+      // than claiming ticks nobody assigned.
+      const covered = Array.isArray(data.covered)
+        ? data.covered.filter((n: unknown) => typeof n === "number")
+        : undefined;
+
+      return { ok: true, verdict: { verdict: data.verdict, feedback: data.feedback ?? "", covered } };
     } catch (e) {
       console.error("[activity-coach] threw", e);
       return { ok: false, error: e instanceof Error ? e.message : "Coach error" };

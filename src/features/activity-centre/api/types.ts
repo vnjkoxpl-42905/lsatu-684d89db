@@ -101,6 +101,12 @@ export interface ActivityItemResponse {
 export interface CoachVerdict {
   verdict: Verdict;
   feedback: string;
+  /**
+   * For drills that send a numbered checklist, which of those ideas the
+   * response carried. Undefined means nobody judged coverage, which is not the
+   * same as none surviving, and surfaces as an unticked checklist.
+   */
+  covered?: number[];
 }
 
 /** Max Coach attempts before the credited answer reveals. */

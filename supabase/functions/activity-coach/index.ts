@@ -20,6 +20,42 @@ function clampVerdict(v: unknown): Verdict {
   return v === "correct" || v === "partial" || v === "incorrect" ? v : "incorrect";
 }
 
+/** One numbered thing the caller wants judged for coverage, not just credit. */
+interface Idea {
+  n: number;
+  text: string;
+}
+
+/**
+ * Callers that ask for coverage send a numbered checklist. Anything malformed
+ * drops the whole request for coverage rather than half-asking for it, since a
+ * partial checklist would read to the student as "these are all the ideas".
+ */
+function readIdeas(raw: unknown): Idea[] | null {
+  if (!Array.isArray(raw) || !raw.length) return null;
+  const ideas: Idea[] = [];
+  for (const item of raw) {
+    const n = Number(item?.n);
+    const text = item?.text;
+    if (!Number.isInteger(n) || typeof text !== "string" || !text.trim()) return null;
+    ideas.push({ n, text: text.trim() });
+  }
+  return ideas;
+}
+
+/**
+ * Which checklist numbers the model says survived. Only numbers it was actually
+ * given count: an invented number would tick an idea that does not exist, and a
+ * non-array means the model ignored the instruction, which is not the same as
+ * "nothing survived" and must stay undefined so the caller renders unjudged.
+ */
+function readCovered(raw: unknown, ideas: Idea[]): number[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const known = new Set(ideas.map((i) => i.n));
+  const covered = [...new Set(raw.map(Number).filter((n) => known.has(n)))];
+  return covered.sort((a, b) => a - b);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -34,7 +70,7 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const { statement, studentResponse, creditedAnswers, explanation, attemptNo, coach, category } =
+    const { statement, studentResponse, creditedAnswers, explanation, attemptNo, coach, category, ideas } =
       await req.json();
 
     if (!statement || !studentResponse || !Array.isArray(creditedAnswers) || creditedAnswers.length === 0) {
@@ -67,13 +103,24 @@ serve(async (req) => {
         ? coach
         : NEGATION_DEFAULT;
 
+    // Summary drills need to know WHICH ideas survived, not just whether enough
+    // did. That cannot be computed from the text (the checklist is written in
+    // analytic language a summary never uses), so it is asked for here and
+    // passed back. Drills that send no checklist are unaffected.
+    const checklist = readIdeas(ideas);
+
     const systemPrompt = [
       `You are a supportive LSAT coach running ${brief.drill}.`,
       ...brief.rubric,
       brief.partial_rule ? `Partial rule: ${brief.partial_rule}` : "",
       "Judge the student's response against the credited answer(s) by MEANING, not wording. Equivalent phrasings are 'correct'.",
       "Never mark a response 'incorrect' for style, length, or phrasing alone. Judge the content only.",
-      "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\"}.",
+      checklist
+        ? "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\",\"covered\":[numbers]}."
+        : "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\"}.",
+      checklist
+        ? "covered lists the numbers of the checklist ideas the student's response actually carries, by meaning. Include a number only if the idea is genuinely present; an idea merely gestured at is not carried. Use [] when none are. Never invent a number that is not on the checklist."
+        : "",
       "feedback is 2-3 supportive sentences. Name what they got right, then guide the fix.",
       "Write plainly, in the second person. Do not use em-dashes.",
       attempt <= 1
@@ -89,6 +136,9 @@ serve(async (req) => {
       `\nStudent's response:\n"${studentResponse}"`,
       `\nCredited answer(s):\n${creditedAnswers.map((a: string) => `- ${a}`).join("\n")}`,
       explanation ? `\nAuthor's note on this item (traps, near misses, the teaching point):\n${explanation}` : "",
+      checklist
+        ? `\nThe ideas that must survive, numbered:\n${checklist.map((i) => `${i.n}. ${i.text}`).join("\n")}`
+        : "",
       `\nAttempt number: ${attempt}`,
       "\nReturn the JSON verdict object now.",
     ]
@@ -138,10 +188,12 @@ serve(async (req) => {
 
     let verdict: Verdict = "incorrect";
     let feedback = "";
+    let covered: number[] | undefined;
     try {
       const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
       verdict = clampVerdict(parsed?.verdict);
       feedback = typeof parsed?.feedback === "string" ? parsed.feedback : "";
+      if (checklist) covered = readCovered(parsed?.covered, checklist);
     } catch (parseErr) {
       console.error("activity-coach: could not parse model JSON", parseErr, raw);
       // Surface the failure to the caller rather than guessing a verdict.
@@ -153,7 +205,10 @@ serve(async (req) => {
 
     if (!feedback) feedback = "Thanks, response received.";
 
-    return new Response(JSON.stringify({ verdict, feedback }), {
+    // `covered` is omitted rather than sent empty when nobody asked for it or
+    // the model did not answer, so the caller can tell "none survived" from
+    // "not judged".
+    return new Response(JSON.stringify(covered ? { verdict, feedback, covered } : { verdict, feedback }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {

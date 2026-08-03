@@ -1,0 +1,245 @@
+/*
+ * The Press: Dumb it Down's world.
+ *
+ * A pressroom, which is the warm end of the neutral system: near-black bed with
+ * paper-cream type light, so the monolith reads as ink on the machine rather
+ * than as UI on a dark background. The Switchyard is a cold night field and the
+ * Specimen Lab a bright bench, so this world takes the third position: warm and
+ * dark.
+ *
+ * The mass of the monolith is typographic, not 3D. A letterpress shadow and an
+ * edge highlight do the work, which is why this world needs no WebGL.
+ */
+
+.press {
+  --pr-bed: 28 14% 9%;
+  --pr-bed-deep: 26 16% 6%;
+  --pr-metal: 30 8% 34%;
+  --pr-ink: 38 34% 90%;
+  --pr-ink-dim: 34 12% 58%;
+  --pr-block: 28 12% 14%;
+  --pr-signal: 40 62% 66%;
+
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 50% 10%, hsl(var(--pr-bed) / 0.85), transparent 72%),
+    hsl(var(--pr-bed-deep));
+  color: hsl(var(--pr-ink));
+  overflow: hidden;
+}
+
+.press-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Set type. Justified, because that is what a composed block looks like.
+   The Centre's serif token, not a stack of its own: the Switchyard and the
+   Specimen Lab read from the same one, and a pressroom running a different
+   serif would be a seam, not a world. */
+.press-type {
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  text-align: justify;
+  hyphens: auto;
+  color: hsl(var(--pr-ink));
+}
+
+/* ---------- The platen ---------- */
+
+.press-platen {
+  height: 10px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--pr-metal)),
+    hsl(var(--pr-bed-deep))
+  );
+  border: 1px solid hsl(var(--pr-metal));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--pr-ink) / 0.18),
+    0 10px 24px hsl(var(--pr-bed-deep) / 0.9);
+  will-change: transform;
+}
+
+/* ---------- The monolith ---------- */
+
+.press-monolith {
+  transform-origin: bottom center;
+  background: linear-gradient(180deg, hsl(var(--pr-block)), hsl(var(--pr-bed)));
+  border: 1px solid hsl(var(--pr-metal) / 0.55);
+  /* The mass: a deep letterpress shadow under it, a lit top edge on it. */
+  box-shadow:
+    inset 0 1px 0 hsl(var(--pr-ink) / 0.1),
+    0 22px 44px hsl(var(--pr-bed-deep)),
+    0 3px 0 hsl(var(--pr-bed-deep));
+  will-change: transform, opacity;
+}
+
+/* ---------- Slugs ---------- */
+
+.press-slug {
+  border: 1px solid hsl(var(--pr-metal) / 0.6);
+  background: hsl(var(--pr-block) / 0.85);
+}
+
+/* The credited line: the one that glows on the bed. */
+.press-slug[data-tone="credited"] {
+  border-color: hsl(var(--pr-signal) / 0.5);
+  box-shadow: inset 0 0 0 1px hsl(var(--pr-signal) / 0.12);
+}
+
+/* Too narrow prints short and thin against the credited slug's full measure. */
+.press-slug[data-tone="narrow"] {
+  max-width: 52%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Topic-only prints full width but hollow: outlined letterforms, no fill. */
+.press-slug[data-tone="topic"] .press-type {
+  color: transparent;
+  -webkit-text-stroke: 0.5px hsl(var(--pr-ink) / 0.75);
+}
+
+/* Sprawl: the stroke stopped part way, so the slug sits unfinished. */
+.press-slug[data-tone="sprawl"] {
+  border-style: dashed;
+}
+
+/* ---------- The checklist ---------- */
+
+.press-idea-mark {
+  margin-top: 6px;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border: 1px solid hsl(var(--pr-metal));
+}
+
+/* Judged and kept: filled. Judged and lost: a gap in the metal. Unjudged: a
+   plain marker, because nobody has looked at this answer yet. */
+.press-idea[data-state="kept"] .press-idea-mark {
+  background: hsl(var(--pr-signal));
+  border-color: hsl(var(--pr-signal));
+}
+
+.press-idea[data-state="lost"] .press-idea-mark {
+  background: transparent;
+  border-style: dashed;
+  border-color: hsl(var(--pr-ink) / 0.5);
+}
+
+.press-idea[data-state="lost"] span:last-child {
+  opacity: 0.6;
+}
+
+/* ---------- The compression gauge ---------- */
+
+.press-gauge-track {
+  height: 3px;
+  border-radius: 2px;
+  background: hsl(var(--pr-metal) / 0.4);
+  overflow: hidden;
+}
+
+.press-gauge-fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: hsl(var(--pr-ink-dim));
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 260ms ease;
+}
+
+[data-state="long"] .press-gauge-fill {
+  background: hsl(var(--pr-signal));
+}
+
+/* ---------- Refusal and the spike ---------- */
+
+.press-refusal {
+  color: hsl(var(--pr-ink-dim));
+}
+
+.press-spike-line {
+  color: hsl(var(--pr-ink-dim));
+  border-left: 2px solid hsl(var(--pr-metal));
+  padding-left: 10px;
+}
+
+.press-spike-line[data-current="true"] {
+  color: hsl(var(--pr-ink));
+  border-left-color: hsl(var(--pr-signal));
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes press-bed-light {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes press-platen-rise {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes press-monolith-lower {
+  from {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.press-entrance-bed {
+  animation: press-bed-light 520ms ease both;
+}
+
+.press-entrance-platen {
+  animation: press-platen-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) 280ms both;
+}
+
+.press-entrance-monolith {
+  animation: press-monolith-lower 760ms cubic-bezier(0.7, 0, 0.18, 1) 900ms both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .press *,
+  .press *::before,
+  .press *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  .press-entrance-bed,
+  .press-entrance-platen,
+  .press-entrance-monolith {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

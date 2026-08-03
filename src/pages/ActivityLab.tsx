@@ -31,6 +31,19 @@ import {
   buildChargeRound,
 } from "@/features/activity-centre/worlds/specimen-lab/wings/rounds";
 import { parseSpecimen, readExamination } from "@/features/activity-centre/worlds/specimen-lab/specimen";
+import {
+  PressStage,
+  type PressPhase,
+  type SpikeSlug,
+} from "@/features/activity-centre/worlds/press/PressStage";
+import { PressEntrance } from "@/features/activity-centre/worlds/press/PressEntrance";
+import { IdeaCensus } from "@/features/activity-centre/worlds/press/wings/IdeaCensus";
+import { SlugJudge } from "@/features/activity-centre/worlds/press/wings/SlugJudge";
+import {
+  buildIdeaCensus,
+  buildSlugJudge,
+} from "@/features/activity-centre/worlds/press/wings/rounds";
+import { parsePress, readStroke } from "@/features/activity-centre/worlds/press/press";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -49,6 +62,7 @@ import "@/features/activity-centre/activity-centre.css";
 const WORLDS = [
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
+  { key: "press", label: "The Press" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -105,7 +119,9 @@ export default function ActivityLab() {
         />
       </header>
 
-      {world === "switchyard" ? <SwitchyardPanel /> : <SpecimenLabPanel />}
+      {world === "switchyard" ? <SwitchyardPanel /> : null}
+      {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
+      {world === "press" ? <PressPanel /> : null}
     </div>
   );
 }
@@ -419,6 +435,194 @@ function SpecimenLabPanel() {
       ) : null}
       {view === "charge" ? <ChargeRound round={charge} /> : null}
       {view === "boundary" ? <BoundaryRoom round={boundary} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Press
+ * ------------------------------------------------------------------ */
+
+const PRESS_VIEWS = ["bed", "entrance", "census", "judge"] as const;
+const PRESS_PHASES: PressPhase[] = ["arrival", "struck", "refused"];
+
+/**
+ * Stand-in strokes. Each is authored text or an obvious construction from it,
+ * so the real `readStroke` decides the staging rather than the lab asserting a
+ * trap the production path might never derive.
+ */
+const STROKES = [
+  { key: "credited", label: "the credited slug" },
+  { key: "narrow", label: "the too-narrow trap" },
+  { key: "topic", label: "the topic-only trap" },
+  { key: "sprawl", label: "two sentences" },
+] as const;
+type StrokeKey = (typeof STROKES)[number]["key"];
+
+/** Coverage comes from the Coach, so the lab has to be able to fake both states. */
+const COVERAGE = [
+  { key: "unjudged", label: "not judged (no Coach)" },
+  { key: "all", label: "all ideas kept" },
+  { key: "some", label: "first idea only" },
+  { key: "none", label: "none kept" },
+] as const;
+type CoverageKey = (typeof COVERAGE)[number]["key"];
+
+function PressPanel() {
+  const dumb = SEED_ACTIVITIES.find((a) => a.slug === "dumb-it-down")!;
+  const [view, setView] = useState<(typeof PRESS_VIEWS)[number]>("bed");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<PressPhase>("arrival");
+  const [strokeKey, setStrokeKey] = useState<StrokeKey>("credited");
+  const [coverageKey, setCoverageKey] = useState<CoverageKey>("unjudged");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const item = dumb.items[index];
+  const press = useMemo(() => parsePress(item), [item]);
+
+  const response = useMemo(() => {
+    if (!press) return "";
+    if (strokeKey === "narrow") return press.traps.narrow ?? press.slug;
+    if (strokeKey === "topic") return press.traps.topic ?? press.slug;
+    if (strokeKey === "sprawl") return `${press.slug} It also matters for other reasons.`;
+    return press.slug;
+  }, [press, strokeKey]);
+
+  const covered = useMemo(() => {
+    if (!press || coverageKey === "unjudged") return undefined;
+    if (coverageKey === "all") return press.ideas.map((i) => i.n);
+    if (coverageKey === "some") return press.ideas.slice(0, 1).map((i) => i.n);
+    return [];
+  }, [press, coverageKey]);
+
+  const stroke = useMemo(
+    () => (press ? readStroke(response, press, covered) : null),
+    [response, press, covered],
+  );
+
+  // Lab-only spike file: every item before this one counts as finished, printed
+  // with its own credited slug. The production spike is passed real answers.
+  const spike: SpikeSlug[] = useMemo(
+    () =>
+      dumb.items
+        .slice(0, index)
+        .map((it) => ({ order: it.order, slug: it.credited_answers[0] }))
+        .filter((s) => s.slug),
+    [dumb.items, index],
+  );
+
+  const census = useMemo(() => buildIdeaCensus(dumb.items), [dumb.items]);
+  const judge = useMemo(() => buildSlugJudge(dumb.items), [dumb.items]);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={PRESS_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Press view"
+        />
+
+        {view === "bed" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Paragraph
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("arrival");
+                }}
+              >
+                {dumb.items.map((it, i) => (
+                  <option key={it.order} value={i}>
+                    {it.order}. {it.prompt.slice(0, 44)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Stroke
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={strokeKey}
+                onChange={(e) => setStrokeKey(e.target.value as StrokeKey)}
+              >
+                {STROKES.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Coverage
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={coverageKey}
+                onChange={(e) => setCoverageKey(e.target.value as CoverageKey)}
+              >
+                {COVERAGE.map((c) => (
+                  <option key={c.key} value={c.key}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              readStroke(): <code>{stroke ? `${stroke.trap ?? "no trap"} · ${stroke.wordCount}w` : "null"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs options={PRESS_PHASES} value={phase} onChange={(v) => setPhase(v)} label="Press" />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "bed" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            {press ? (
+              <PressStage
+                press={press}
+                phase={phase}
+                response={response}
+                stroke={stroke}
+                spike={spike}
+              />
+            ) : (
+              <div className="p-10 text-sm text-muted-foreground">
+                This item has no authored checklist, so the press has nothing to compress towards.
+              </div>
+            )}
+          </div>
+          <SignalBox
+            title="Composing desk"
+            level={item.category}
+            rows={[
+              ["Ideas authored", String(press?.ideas.length ?? 0)],
+              ["Target length", press ? `${press.targetWords} words` : "none"],
+              ["Coverage", covered ? `${covered.length} of ${press?.ideas.length ?? 0}` : "not judged"],
+            ]}
+            note={item.explanation}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <PressEntrance key={entranceRun} onDone={() => setView("bed")} />
+      ) : null}
+      {view === "census" ? <IdeaCensus pages={census} /> : null}
+      {view === "judge" ? <SlugJudge calls={judge} /> : null}
     </>
   );
 }
