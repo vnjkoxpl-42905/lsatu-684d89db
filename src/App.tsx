@@ -192,7 +192,7 @@ const App = () => {
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
             <Route path="/admin" element={<Navigate to="/teacher?ws=people" replace />} />
             <Route path="/admin/board" element={
-              <ProtectedRoute flag="has_classroom_access">
+              <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/board">
                   <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                     <AdminBoard />
@@ -201,39 +201,47 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/drive-files" element={
-              <AdminErrorBoundary routeLabel="/admin/drive-files">
-                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                  <DriveFiles />
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/drive-files">
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <DriveFiles />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/homework" element={
-              <AdminErrorBoundary routeLabel="/admin/homework">
-                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                  <Homework />
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/homework">
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <Homework />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/homework/new" element={
-              <AdminErrorBoundary routeLabel="/admin/homework/new">
-                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                  <QuestionBankProvider>
-                    <HomeworkNew />
-                  </QuestionBankProvider>
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/homework/new">
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <QuestionBankProvider>
+                      <HomeworkNew />
+                    </QuestionBankProvider>
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/homework/:setId" element={
-              <AdminErrorBoundary routeLabel="/admin/homework/:setId">
-                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                  <QuestionBankProvider>
-                    <HomeworkDetail />
-                  </QuestionBankProvider>
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/homework/:setId">
+                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                    <QuestionBankProvider>
+                      <HomeworkDetail />
+                    </QuestionBankProvider>
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/library" element={
-              <ProtectedRoute flag="has_ta_access">
+              <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/library">
                   <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                     <TeachingLibrary />
@@ -242,7 +250,7 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/ta" element={
-              <ProtectedRoute flag="has_ta_access">
+              <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/ta">
                   <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                     <TAPage />
@@ -251,7 +259,7 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/inspector" element={
-              <ProtectedRoute flag="has_ta_access">
+              <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/inspector">
                   <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                     <AdminInspector />
@@ -260,13 +268,15 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/guided-drills" element={
-              <AdminErrorBoundary routeLabel="/admin/guided-drills">
-                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                  <QuestionBankProvider>
-                    <AdminGuidedDrills />
-                  </QuestionBankProvider>
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/guided-drills">
+                  <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    <QuestionBankProvider>
+                      <AdminGuidedDrills />
+                    </QuestionBankProvider>
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/lsat-knowledge-import" element={
               <ProtectedRoute requireAdmin>
@@ -278,18 +288,22 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/bootcamp-reference-lab" element={
-              <AdminErrorBoundary routeLabel="/admin/bootcamp-reference-lab">
-                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                  <BootcampReferenceLab />
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/bootcamp-reference-lab">
+                  <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    <BootcampReferenceLab />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/admin/intro-lr" element={
-              <AdminErrorBoundary routeLabel="/admin/intro-lr">
-                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                  <AdminIntroLr />
-                </React.Suspense>
-              </AdminErrorBoundary>
+              <ProtectedRoute requireAdmin>
+                <AdminErrorBoundary routeLabel="/admin/intro-lr">
+                  <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    <AdminIntroLr />
+                  </React.Suspense>
+                </AdminErrorBoundary>
+              </ProtectedRoute>
             } />
             <Route path="/guided/:assignmentId" element={
               <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
