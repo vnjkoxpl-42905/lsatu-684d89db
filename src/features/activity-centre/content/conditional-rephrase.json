@@ -467,9 +467,10 @@
       "order": 44,
       "prompt": "A juror may review the exhibit log or the testimony transcripts overnight, but not both.",
       "credited_answers": [
-        "If a juror reviews the log, then not the transcripts (and the reverse)."
+        "If a juror reviews the exhibit log overnight, then the juror does not review the testimony transcripts.",
+        "If a juror reviews the testimony transcripts, then the juror does not review the exhibit log."
       ],
-      "explanation": "\"But not both,\" sentence-final. The or-with-a-cap construction; \"or\" here still permits either alone.",
+      "explanation": "\"But not both,\" sentence-final. The or-with-a-cap construction. Here the contrapositive and the converse coincide, which is what \"not both\" means: each one rules out the other. \"Or\" still permits either alone, and permits neither.",
       "category": "Not both"
     },
     {
@@ -576,73 +577,80 @@
       "order": 55,
       "prompt": "The observatory grants dark-sky certification if and only if every fixture in the district is fully shielded.",
       "credited_answers": [
-        "Both directions: If certified, then every fixture is shielded; and if every fixture is shielded, then certified.",
-        "either direction negated."
+        "If a district is granted dark-sky certification, then every fixture in it is fully shielded.",
+        "If any fixture in the district is not fully shielded, then the district is not granted certification."
       ],
-      "explanation": "\"If and only if\" (biconditional). The one construction where both sides are both sufficient and necessary; flag it as rare and special.",
+      "explanation": "\"If and only if\" (biconditional). The one construction where both sides are both sufficient and necessary, so the converse is credited too: if every fixture is fully shielded, then the district is granted certification. Flag it as rare and special.",
       "category": "No one … unless / biconditional"
     },
     {
       "order": 56,
       "prompt": "The senate ratifies the water compact only if every border county holds a public hearing.",
       "credited_answers": [
-        "Ratified → hearings held."
+        "If the senate ratifies the water compact, then every border county holds a public hearing.",
+        "If some border county does not hold a public hearing, then the senate does not ratify the compact."
       ],
-      "explanation": "The textbook seat. Seat: final.",
+      "explanation": "\"Only if\" (necessary), final seat. The textbook seat. Seat: final.",
       "category": "\"Only if\" in three seats"
     },
     {
       "order": 57,
       "prompt": "Only if every border county holds a public hearing does the senate ratify the water compact.",
       "credited_answers": [
-        "Same translation exactly."
+        "If the senate ratifies the water compact, then every border county holds a public hearing.",
+        "If some border county does not hold a public hearing, then the senate does not ratify the compact."
       ],
-      "explanation": "Fronting changes emphasis, never structure; the inversion (\"does the senate…\") is the disguise. Seat: initial, inverted.",
+      "explanation": "\"Only if\" (necessary), initial seat, inverted. Identical to the previous item. Fronting changes emphasis, never structure; the inversion (\"does the senate…\") is the disguise. Seat: initial, inverted.",
       "category": "\"Only if\" in three seats"
     },
     {
       "order": 58,
       "prompt": "Ratification of the compact, which the senate grants only if every border county has held a hearing, remains stalled this term.",
       "credited_answers": [
-        "Same rule, buried in a relative clause inside a sentence about something else."
+        "If the senate grants ratification of the compact, then every border county has held a hearing.",
+        "If some border county has not held a hearing, then the senate does not grant ratification."
       ],
-      "explanation": "Extraction under load. Seat: mid, embedded.",
+      "explanation": "\"Only if\" (necessary), mid-sentence, embedded. Same rule as the previous two, buried in a relative clause inside a sentence about something else. Extraction under load. Seat: mid, embedded.",
       "category": "\"Only if\" in three seats"
     },
     {
       "order": 59,
       "prompt": "Unless the dye bath holds at a simmer, the wool takes the color unevenly.",
       "credited_answers": [
-        "If the bath does not hold at a simmer, the wool takes color unevenly."
+        "If the dye bath does not hold at a simmer, then the wool takes the color unevenly.",
+        "If the wool takes the color evenly, then the dye bath held at a simmer."
       ],
-      "explanation": "Seat: initial.",
+      "explanation": "\"Unless\" (= if not), initial seat. The base case for the three seats below it. Seat: initial.",
       "category": "\"Unless\" in three seats"
     },
     {
       "order": 60,
       "prompt": "The wool takes the color unevenly unless the dye bath holds at a simmer.",
       "credited_answers": [
-        "Identical translation; the clause order flipped on the page."
+        "If the dye bath does not hold at a simmer, then the wool takes the color unevenly.",
+        "If the wool takes the color evenly, then the dye bath held at a simmer."
       ],
-      "explanation": "Seat: final.",
+      "explanation": "\"Unless\" (= if not), final seat. Identical translation to the previous item; only the clause order on the page has flipped. Seat: final.",
       "category": "\"Unless\" in three seats"
     },
     {
       "order": 61,
       "prompt": "Every batch this season, unless the dye bath held at a simmer throughout, has come out mottled.",
       "credited_answers": [
-        "Same rule inside an interrupting clause."
+        "If the dye bath did not hold at a simmer throughout, then the batch came out mottled.",
+        "If a batch did not come out mottled, then the dye bath held at a simmer throughout."
       ],
-      "explanation": "The eye must reassemble the split main clause. Seat: mid, embedded.",
+      "explanation": "\"Unless\" (= if not), mid-sentence, embedded. Same rule inside an interrupting clause. The eye must reassemble the split main clause. Seat: mid, embedded.",
       "category": "\"Unless\" in three seats"
     },
     {
       "order": 62,
       "prompt": "Without the harbormaster's stamp, no manifest clears customs.",
       "credited_answers": [
-        "If a manifest clears, then it carries the stamp."
+        "If a manifest clears customs, then it carries the harbormaster's stamp.",
+        "If a manifest does not carry the harbormaster's stamp, then it does not clear customs."
       ],
-      "explanation": "One rule, two seats; drilled as a single item pair. Seat: initial. Same rule in final position: \"No manifest clears customs without the harbormaster's stamp.\"",
+      "explanation": "\"Without\" (necessary). One rule, two seats; drilled as a single item pair, and the translation is identical from either seat. Seat: initial. Same rule in final position: \"No manifest clears customs without the harbormaster's stamp.\"",
       "category": "\"Without\" in two seats"
     }
   ]

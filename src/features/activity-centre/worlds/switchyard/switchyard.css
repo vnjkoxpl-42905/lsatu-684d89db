@@ -1,0 +1,200 @@
+/*
+ * The Switchyard: Conditional Rephrase's world.
+ *
+ * The Activity Centre module is pinned to a warm cream paper surface. This
+ * world is specced as a rail yard at night, so the night palette is scoped to
+ * .switchyard and overrides the module tokens only inside the yard. The signal
+ * box (the Coach) stays on the module surface, which is the point: the Coach is
+ * the constant, the room changes.
+ *
+ * The black is warm-tinted rather than blue-black so the world still belongs to
+ * the same family as the paper surface it sits inside.
+ */
+
+.switchyard {
+  --sy-field: 30 12% 7%;
+  --sy-field-deep: 30 14% 5%;
+  --sy-rail: 38 10% 26%;
+  --sy-rail-live: 38 14% 46%;
+  --sy-ink: 40 18% 88%;
+  --sy-ink-dim: 38 8% 52%;
+  --sy-plate: 32 12% 12%;
+  --sy-plate-edge: 38 10% 30%;
+  --sy-signal: 160 72% 46%;
+
+  position: relative;
+  background:
+    radial-gradient(120% 90% at 50% 0%, hsl(var(--sy-field) / 0.55), transparent 70%),
+    hsl(var(--sy-field-deep));
+  color: hsl(var(--sy-ink));
+  overflow: hidden;
+}
+
+/* Fine schematic grid, barely there. Reads as drafting paper under the yard. */
+.switchyard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, hsl(var(--sy-rail) / 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--sy-rail) / 0.16) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(120% 80% at 50% 45%, black, transparent 78%);
+  pointer-events: none;
+}
+
+.switchyard-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- Rails ---------- */
+
+.sy-rail {
+  position: relative;
+  height: 1px;
+  background: hsl(var(--sy-rail));
+}
+
+/* Sleepers: the repeating ticks that make a line read as track. */
+.sy-rail::after {
+  content: "";
+  position: absolute;
+  inset: -5px 0;
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--sy-rail) / 0.7) 1px,
+    transparent 1px
+  );
+  background-size: 16px 100%;
+  opacity: 0.5;
+}
+
+.sy-rail[data-live="true"] {
+  background: hsl(var(--sy-rail-live));
+  box-shadow: 0 0 12px hsl(var(--sy-signal) / 0.18);
+}
+
+/* ---------- Cargo capsule ---------- */
+
+.sy-capsule {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--sy-plate) / 0.96),
+    hsl(var(--sy-field) / 0.96)
+  );
+  border: 1px solid hsl(var(--sy-plate-edge));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--sy-ink) / 0.06),
+    0 8px 20px hsl(var(--sy-field-deep) / 0.7);
+}
+
+/* The polarity lamp. Lit ring means the clause is stated negatively. */
+.sy-lamp {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--sy-rail-live));
+  background: transparent;
+  flex: none;
+}
+
+.sy-lamp[data-lit="true"] {
+  border-color: hsl(var(--sy-signal));
+  background: hsl(var(--sy-signal) / 0.22);
+  box-shadow: 0 0 8px hsl(var(--sy-signal) / 0.55);
+}
+
+/* ---------- The junction ---------- */
+
+.sy-junction-scene {
+  perspective: 900px;
+  perspective-origin: 50% 45%;
+}
+
+.sy-junction {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* The diamond crossing: a square on its corner, machined edges. */
+.sy-diamond {
+  position: absolute;
+  inset: 0;
+  border: 1px solid hsl(var(--sy-rail-live));
+  background: linear-gradient(
+    135deg,
+    hsl(var(--sy-plate) / 0.9),
+    hsl(var(--sy-field-deep) / 0.9)
+  );
+  transform: rotate(45deg);
+  box-shadow:
+    inset 0 0 24px hsl(var(--sy-field-deep)),
+    0 0 30px hsl(var(--sy-field-deep) / 0.9);
+}
+
+/* The crossing itself: the two tracks that meet inside the diamond.
+   It sits at mid-depth between the two plates so it stays visible from both
+   sides of the turn. Parked on the face, a half turn would bury it behind the
+   back plate and the junction would read as an empty diamond once flipped. */
+.sy-crossing {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(-7px) rotate(45deg);
+}
+
+.sy-crossing span {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 50%;
+  height: 1px;
+  background: hsl(var(--sy-rail-live));
+}
+
+.sy-crossing span:last-child {
+  transform: rotate(90deg);
+}
+
+/* Depth: a second plate sunk behind the face so the rotation shows thickness. */
+.sy-junction-back {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(-14px) rotate(45deg);
+  border: 1px solid hsl(var(--sy-rail) / 0.7);
+  background: hsl(var(--sy-field-deep) / 0.82);
+}
+
+/* ---------- Departures board ---------- */
+
+.sy-board {
+  background: linear-gradient(180deg, hsl(var(--sy-plate)), hsl(var(--sy-field)));
+  border: 1px solid hsl(var(--sy-plate-edge));
+  box-shadow: 0 18px 40px hsl(var(--sy-field-deep) / 0.8);
+}
+
+/* The indicator word, lit only AFTER the verdict. Never a pre-commit hint. */
+.sy-indicator {
+  color: hsl(var(--sy-signal));
+  text-shadow: 0 0 14px hsl(var(--sy-signal) / 0.45);
+}
+
+/* ---------- Credited plates ---------- */
+
+.sy-plate {
+  background: hsl(var(--sy-plate) / 0.75);
+  border: 1px solid hsl(var(--sy-plate-edge));
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .switchyard *,
+  .switchyard *::before,
+  .switchyard *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

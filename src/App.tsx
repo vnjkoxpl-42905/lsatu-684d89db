@@ -106,8 +106,9 @@ const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSes
 const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = React.lazy(() => import("./pages/PublicBooking"));
 const BookingWorkspace = React.lazy(() => import("./pages/booking/BookingWorkspace"));
+/** Dev-only; the route that mounts it is gated on import.meta.env.DEV. */
+const ActivityLab = React.lazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
-import StudentShell from "./components/mainhub/StudentShell";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -388,6 +389,18 @@ const App = () => {
                   } />
                   {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
                   <Route path="/waj" element={<Navigate to="/journal" replace />} />
+                  {/* Dev-only harness for the Activity Centre worlds. The runner
+                      is behind auth + a feature flag, which makes a world
+                      impossible to look at while building it; this renders one
+                      directly against the real seeded content. Never registered
+                      in a production bundle. */}
+                  {import.meta.env.DEV && (
+                    <Route path="/activity-lab" element={
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivityLab />
+                      </React.Suspense>
+                    } />
+                  )}
                   <Route path="/activities/:assignmentId" element={
                     <ProtectedRoute flag="has_activity_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
@@ -455,23 +468,18 @@ const App = () => {
                     <Route path="/inbox/*" element={
                       <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
                     } />
-                  </Route>
 
-                  {/* Persistent student shell. Sidebar + study chat stay mounted;
-                      these pages swap the center stage instead of redirecting. */}
-                  <Route element={<StudentShell />}>
-                    <Route path="/mainhub" element={<Navigate to="/classroom/drill" replace />} />
-                    {/* The /practice hub was removed; its Full Section and
-                        Build a Set launchers now live on the drill hub as
-                        ?stage= panels. Redirects keep old links alive. */}
-                    <Route path="/practice" element={<Navigate to="/classroom/drill" replace />} />
-                    <Route path="/practice/sets" element={<Navigate to="/sets" replace />} />
+                    {/* These five were the last routes under StudentShell, so
+                        reaching any of them from the rail swapped the whole
+                        frame: a different sidebar, a different item set, and
+                        each page's own header on top. They are ordinary stage
+                        content like everything else here now. */}
                     <Route path="/sets" element={
                       <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
                     } />
                     <Route path="/activities" element={
                       <ProtectedRoute flag="has_activity_access">
-                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <React.Suspense fallback={null}>
                           <ActivityCentre />
                         </React.Suspense>
                       </ProtectedRoute>
@@ -479,20 +487,34 @@ const App = () => {
                     <Route path="/analytics" element={
                       <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
                     } />
-                    {/* Old standalone pages now live inside the classroom
-                        Account stage; redirects keep bookmarks alive. */}
-                    <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />
-                    <Route path="/settings/layout" element={<Navigate to="/classroom/account?section=layout" replace />} />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />
                     <Route path="/booking" element={
                       <ProtectedRoute allowSignedIn><Booking /></ProtectedRoute>
                     } />
+                    {/* The rail padlocks Bootcamps on has_bootcamp_access, so
+                        the route has to enforce it too. Unguarded, the padlock
+                        was decorative and the URL opened anyway. */}
                     <Route path="/bootcamps" element={
-                      <Bootcamps />
+                      <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
                     } />
                   </Route>
+
+                  {/* Retired surfaces. Bare redirects, no shell of their own:
+                      whatever frame the destination uses is the frame you get.
+                      /mainhub was the old *home*, so it goes to the classroom,
+                      not to the drill hub. */}
+                  <Route path="/mainhub" element={<Navigate to="/classroom" replace />} />
+                  {/* The /practice hub was removed; its Full Section and
+                      Build a Set launchers now live on the drill hub as
+                      ?stage= panels. Redirects keep old links alive. */}
+                  <Route path="/practice" element={<Navigate to="/classroom/drill" replace />} />
+                  <Route path="/practice/sets" element={<Navigate to="/sets" replace />} />
+                  {/* Old standalone pages now live inside the classroom
+                      Account stage; redirects keep bookmarks alive. */}
+                  <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />
+                  <Route path="/settings/layout" element={<Navigate to="/classroom/account?section=layout" replace />} />
 
                   {/* The teacher workspace: one shell that never unmounts, six
                       rooms as real nested routes (spec D1/D3). Everything below
