@@ -14,6 +14,9 @@ import conditionalRephrase from "./conditional-rephrase.json";
 import dumbItDown from "./dumb-it-down.json";
 import findTheConclusion from "./find-the-conclusion.json";
 import rebuttalRephrase from "./rebuttal-rephrase.json";
+import spotTheCallback from "./spot-the-callback.json";
+import spotTheRelationship from "./spot-the-relationship.json";
+import vocabRehab from "./vocab-rehab.json";
 
 /** An Activity definition as authored, before it exists as a row. */
 export interface SeedActivity {
@@ -26,14 +29,19 @@ export interface SeedActivity {
 }
 
 /**
- * Ordered easiest-first, which is the order they should be worked in and the
- * order the teacher library lists them.
+ * Ordered by the scope of text the skill operates on, word up to passage, which
+ * is both the teaching progression and the order the teacher library lists
+ * them. Negation Station is not here: it predates this pipeline, its items are
+ * authored verbatim, and it is deliberately left alone.
  */
 export const SEED_ACTIVITIES: SeedActivity[] = [
-  findTheConclusion as SeedActivity,
-  conditionalRephrase as SeedActivity,
-  rebuttalRephrase as SeedActivity,
-  dumbItDown as SeedActivity,
+  vocabRehab as SeedActivity, // a word
+  spotTheRelationship as SeedActivity, // a sentence
+  conditionalRephrase as SeedActivity, // a statement, translated
+  findTheConclusion as SeedActivity, // an argument
+  rebuttalRephrase as SeedActivity, // an argument, restated
+  dumbItDown as SeedActivity, // a paragraph
+  spotTheCallback as SeedActivity, // a passage
 ];
 
 export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);

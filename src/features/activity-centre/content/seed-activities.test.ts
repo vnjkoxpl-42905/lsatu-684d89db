@@ -7,8 +7,8 @@ import { SEED_ACTIVITIES } from "./index";
 // rather than trusted.
 
 describe("seed Activities", () => {
-  it("ships the four authored Activities with unique slugs", () => {
-    expect(SEED_ACTIVITIES).toHaveLength(4);
+  it("ships the seven authored Activities with unique slugs", () => {
+    expect(SEED_ACTIVITIES).toHaveLength(7);
     const slugs = SEED_ACTIVITIES.map((a) => a.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
   });
@@ -48,8 +48,14 @@ describe("seed Activities", () => {
         }
         expect(item.explanation.trim().length, `item ${item.order} explanation`).toBeGreaterThan(0);
         expect(item.category?.trim().length, `item ${item.order} category`).toBeGreaterThan(0);
-        // Markdown must not leak into student-facing text.
-        expect(item.prompt, `item ${item.order} prompt`).not.toContain("**");
+        // Emphasis marks are authored on purpose (Spot the Callback marks its
+        // callback phrase, Vocab Rehab its target word) and the panel renders
+        // them. What must never happen is an unbalanced marker, which is what a
+        // bad parse produces and what would surface as a stray asterisk.
+        const strong = item.prompt.match(/\*\*/g)?.length ?? 0;
+        expect(strong % 2, `item ${item.order} unbalanced **`).toBe(0);
+        const all = item.prompt.match(/\*/g)?.length ?? 0;
+        expect(all % 2, `item ${item.order} unbalanced *`).toBe(0);
       }
     },
   );
