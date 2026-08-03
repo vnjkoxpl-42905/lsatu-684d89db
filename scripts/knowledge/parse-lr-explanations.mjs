@@ -55,21 +55,39 @@ function splitSubsections(body) {
 function parseChoiceBlock(lines) {
   const choices = [];
   let current = null;
+  // A choice header may wrap across lines when the tag is a dual label, e.g.
+  //   **A. text** — Bad Conclusion Match
+  //   Bad Validity Match (2% of students)
+  // so we buffer from the "**X. " opener until the percentage terminator.
+  let header = null;
   for (const raw of lines) {
     const line = raw.trimEnd();
     if (/^\*\*Answer choices\*\*\s*$/.test(line)) continue;
-    const m = CHOICE_RE.exec(line);
-    if (m) {
-      current = {
-        letter: m[1],
-        text: m[2].trim(),
-        tag: m[3] ? m[3].trim() : null,
-        percent: Number(m[4]),
-        prose: [],
-      };
-      choices.push(current);
+
+    if (header !== null) {
+      header = `${header}\n${line}`;
+    } else if (/^\*\*[A-E]\.\s/.test(line)) {
+      header = line;
+    }
+
+    if (header !== null) {
+      const m = CHOICE_RE.exec(header);
+      if (m) {
+        current = {
+          letter: m[1],
+          text: m[2].trim(),
+          tag: m[3] ? m[3].trim() : null,
+          percent: Number(m[4]),
+          prose: [],
+        };
+        choices.push(current);
+        header = null;
+      } else if (header.split('\n').length > 6) {
+        header = null; // not a choice header after all; drop the buffer
+      }
       continue;
     }
+
     if (!current) continue;
     if (line.trim() === '') {
       if (current.prose.length) current.prose.push('');
