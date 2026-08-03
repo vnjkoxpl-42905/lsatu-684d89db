@@ -169,12 +169,19 @@ export function parseExplanationFile(text, fileName) {
       skipped.push({ id: qid, reason: `only ${choices.length} answer choices parsed (need 5)` });
       continue;
     }
+    // Questions marked "no explanation given" carry no tags at all, so the
+    // source names no correct answer. We import them and leave it unknown
+    // rather than inferring one from the percentages.
     const correct = choices.filter((c) => c.tag === 'Correct');
-    if (correct.length !== 1) {
+    if (!unexplained && correct.length !== 1) {
       skipped.push({
         id: qid,
         reason: correct.length === 0 ? 'no choice tagged "Correct"' : `${correct.length} choices tagged "Correct"`,
       });
+      continue;
+    }
+    if (unexplained && correct.length > 1) {
+      skipped.push({ id: qid, reason: `${correct.length} choices tagged "Correct"` });
       continue;
     }
     const pctSum = choices.reduce((a, c) => a + c.percent, 0);
