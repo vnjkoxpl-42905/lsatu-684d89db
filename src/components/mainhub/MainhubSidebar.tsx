@@ -35,9 +35,9 @@ type NavItem = {
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
-  { to: "/teacher/reference-library", label: "Reference Library", Icon: Archive, adminOnly: true },
-  { to: "/admin/board", label: "Whiteboard", Icon: PencilRuler, adminOnly: true },
+  // One teacher entry. References and the whiteboard are rooms inside the
+  // workspace now, so they are not separate destinations from out here.
+  { to: "/teacher/today", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access", alwaysVisible: true },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },

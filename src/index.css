@@ -97,6 +97,19 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 0 0% 14.9%;
     --sidebar-ring: 0 0% 83.1%;
+
+    /* ── Teacher workspace accent ─────────────────────────────────────────────
+     * The Desk's warm amber, promoted from the hardcoded #c8841f it was written
+     * as. This is THE accent for every primary action in the teacher workspace;
+     * no second accent colour is allowed there. Hue-locked ramp so the steps
+     * read as one colour at different weights. Theme-independent on purpose:
+     * the workspace is always the light gray format, never the dark shell.
+     */
+    --teacher-accent: 36 73% 45%;           /* #c8841f — fills, icons, rules */
+    --teacher-accent-hover: 36 76% 39%;     /* #b07418 — hover on filled */
+    --teacher-accent-strong: 36 79% 30%;    /* #8a5a10 — text on tinted fills */
+    --teacher-accent-soft: 37 71% 58%;      /* #e0a64a — light step */
+    --teacher-accent-foreground: 0 0% 100%; /* text on a filled accent */
   }
 
   /* ── Light mode ── add class="light" to <html> to activate ───────────────── */

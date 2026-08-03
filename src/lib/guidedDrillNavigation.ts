@@ -1,4 +1,4 @@
-export const TEACHER_GUIDED_DRILLS_RETURN_TO = '/teacher?ws=library&tab=guided-drills';
+export const TEACHER_GUIDED_DRILLS_RETURN_TO = '/teacher/library/guided-drills';
 
 export function safeGuidedReturnPath(value: string | null | undefined, fallback: string): string {
   if (!value || !value.startsWith('/') || value.startsWith('//')) return fallback;

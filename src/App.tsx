@@ -83,15 +83,18 @@ const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
 const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
-const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
-const TeacherDeskPreview = React.lazy(() => import("./pages/teacher/TeacherDeskPreview"));
-const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
+const TeacherWorkspaceShell = React.lazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
+const DeskTodaySurface = React.lazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
+const TeacherDevIndex = React.lazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
+const DeskPeopleSurface = React.lazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
+const DeskLibrarySurface = React.lazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
+const TeacherInbox = React.lazy(() =>
+  import("./components/inbox/AdminInboxCommandCenter").then((m) => ({ default: m.AdminInboxCommandCenter })),
+);
 const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
-const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
 const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
 const TeacherSchedule = React.lazy(() => import("./pages/teacher/TeacherSchedule"));
 const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
-const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherConversations"));
 const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
@@ -160,9 +163,41 @@ function RedirectSmartboardToWhiteboard() {
   const { search } = useLocation();
   return <Navigate to={`/teacher/whiteboard${search}`} replace />;
 }
-function RedirectAiTaToCommand() {
+/**
+ * The Desk used `?ws=` (and `?tab=`) instead of routes. Those URLs are in
+ * bookmarks, in old emails, and in stored to-do `openPath`s, so `/teacher`
+ * translates them to the room they now mean before falling back to Today.
+ * Deleted in Phase 4 with the rest of the redirect stubs.
+ */
+const LEGACY_WORKSPACE_ROOMS: Record<string, string> = {
+  today: "/teacher/today",
+  people: "/teacher/students",
+  students: "/teacher/students",
+  admin: "/teacher/students",
+  messages: "/teacher/inbox",
+  inbox: "/teacher/inbox",
+  gmail: "/teacher/inbox",
+  drive: "/teacher/inbox",
+  library: "/teacher/library",
+};
+
+function TeacherWorkspaceIndex() {
   const { search } = useLocation();
-  return <Navigate to={`/teacher/command${search}`} replace />;
+  const params = new URLSearchParams(search);
+  const ws = params.get("ws");
+  const tab = params.get("tab");
+
+  let target = (ws && LEGACY_WORKSPACE_ROOMS[ws]) || "/teacher/today";
+  if (target === "/teacher/library" && tab) target = `/teacher/library/${tab}`;
+
+  // The room is in the path now; everything else (student, thread, query) is
+  // still context the target surface wants.
+  params.delete("ws");
+  params.delete("tab");
+  params.delete("pane");
+  const rest = params.toString();
+
+  return <Navigate to={rest ? `${target}?${rest}` : target} replace />;
 }
 
 const App = () => {
@@ -208,7 +243,7 @@ const App = () => {
             <Route path="/foyer" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
-            <Route path="/admin" element={<Navigate to="/teacher?ws=people" replace />} />
+            <Route path="/admin" element={<Navigate to="/teacher/students" replace />} />
             <Route path="/admin/board" element={
               <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/board">
@@ -340,19 +375,6 @@ const App = () => {
 
             {/* Inbox now renders inside StudentShell (in the /* block below). */}
 
-            {/* Canonical Teacher Desk (Today). Rendered full-bleed outside
-                TeacherShell so ProtectedRoute's localhost dev bypass makes it
-                reachable for local preview without TeacherShell's admin gate. */}
-            <Route path="/teacher" element={
-              <ProtectedRoute requireAdmin>
-                <QuestionBankProvider>
-                  <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                    <TeacherDeskPreview />
-                  </React.Suspense>
-                </QuestionBankProvider>
-              </ProtectedRoute>
-            } />
-
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={
               <QuestionBankProvider>
@@ -472,39 +494,49 @@ const App = () => {
                     } />
                   </Route>
 
+                  {/* The teacher workspace: one shell that never unmounts, six
+                      rooms as real nested routes (spec D1/D3). Everything below
+                      the layout renders into its <Outlet/>, so the sidebar
+                      survives every navigation and back/forward walks rooms. */}
                   <Route path="/teacher" element={
                     <ProtectedRoute requireAdmin>
-                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
-                        <TeacherShell />
+                      <React.Suspense fallback={<div className="min-h-screen bg-[#c3cace]" />}>
+                        <TeacherWorkspaceShell />
                       </React.Suspense>
                     </ProtectedRoute>
                   }>
-                    {/* The desk is owned by the canonical full-bleed /teacher
-                        route above; this index only redirects there so there is
-                        a single Teacher Desk mount and one canonical Today URL. */}
-                    <Route index element={<Navigate to="/teacher" replace />} />
-                    <Route path="command" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherAITA />
-                      </React.Suspense>
-                    } />
-                    <Route path="ai-ta" element={<RedirectAiTaToCommand />} />
-                    {/* Legacy preview path now folds into the canonical /teacher desk. */}
-                    <Route path="desk-preview" element={<Navigate to="/teacher" replace />} />
+                    <Route index element={<TeacherWorkspaceIndex />} />
+
                     <Route path="today" element={
                       <React.Suspense fallback={<div />}>
-                        <TeacherToday />
+                        <DeskTodaySurface />
                       </React.Suspense>
                     } />
-                    <Route path="students" element={<RedirectWithSearch to="/teacher?ws=people" />} />
+                    <Route path="students" element={
+                      <React.Suspense fallback={<div />}>
+                        <DeskPeopleSurface />
+                      </React.Suspense>
+                    } />
                     <Route path="students/:studentId" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherStudentDetail />
                       </React.Suspense>
                     } />
-                    <Route path="conversations" element={
+                    <Route path="inbox" element={
                       <React.Suspense fallback={<div />}>
-                        <TeacherConversations />
+                        <TeacherInbox embedded />
+                      </React.Suspense>
+                    } />
+                    {/* Library's tab is a path segment, not a query param, so
+                        each tab is its own linkable URL. */}
+                    <Route path="library" element={
+                      <React.Suspense fallback={<div />}>
+                        <DeskLibrarySurface />
+                      </React.Suspense>
+                    } />
+                    <Route path="library/:tab" element={
+                      <React.Suspense fallback={<div />}>
+                        <DeskLibrarySurface />
                       </React.Suspense>
                     } />
                     <Route path="schedule" element={
@@ -512,7 +544,6 @@ const App = () => {
                         <TeacherSchedule />
                       </React.Suspense>
                     } />
-                    <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
                     {/* Insights = bootcamp/topic analytics. Renamed from the old
                         top-level "Bootcamps" which collided with the assign action. */}
                     <Route path="insights" element={
@@ -530,41 +561,44 @@ const App = () => {
                         <TeacherStudentBootcampDetail />
                       </React.Suspense>
                     } />
-                    {/* Whiteboard = top-level teaching canvas (was Library > Smartboard). */}
+                    {/* Reached from the shell header, not the sidebar. */}
                     <Route path="whiteboard" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherSmartboard />
                       </React.Suspense>
                     } />
-                    {/* legacy bootcamp-analytics paths -> Insights */}
-                    <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
-                    <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
-                    <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
-                    <Route path="admin" element={<Navigate to="/teacher?ws=people" replace />} />
+                    <Route path="dev" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherDevIndex />
+                      </React.Suspense>
+                    } />
                     <Route path="templates" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherTemplates />
                       </React.Suspense>
                     } />
-                    <Route path="access" element={<Navigate to="/teacher?ws=people" replace />} />
-                    <Route path="permissions" element={<Navigate to="/teacher?ws=people" replace />} />
-                    {/* Library moved into the Teacher Desk. All /teacher/library/*
-                        routes redirect to the desk-native Library workspace. */}
-                    <Route path="library" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="library/assignments" element={<RedirectWithSearch to="/teacher?ws=library&tab=assignments" />} />
-                    <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher?ws=library&tab=bootcamps" />} />
-                    <Route path="library/bootcamps" element={<Navigate to="/teacher?ws=library&tab=bootcamps" replace />} />
-                    <Route path="library/guided-drills" element={<Navigate to="/teacher?ws=library&tab=guided-drills" replace />} />
-                    <Route path="library/activities" element={<Navigate to="/teacher?ws=library&tab=activities" replace />} />
-                    <Route path="library/recaps" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="library/uploads" element={<RedirectWithSearch to="/teacher?ws=library" />} />
-                    <Route path="library/analytics" element={<Navigate to="/teacher?ws=library" replace />} />
+
+                    {/* ── Legacy paths → their new room. Deleted in Phase 4. ── */}
+                    <Route path="command" element={<RedirectWithSearch to="/teacher/today" />} />
+                    <Route path="ai-ta" element={<RedirectWithSearch to="/teacher/today" />} />
+                    <Route path="desk-preview" element={<RedirectWithSearch to="/teacher/today" />} />
+                    <Route path="conversations" element={<RedirectWithSearch to="/teacher/inbox" />} />
+                    <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
+                    <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
+                    <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
+                    <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
+                    <Route path="admin" element={<RedirectWithSearch to="/teacher/students" />} />
+                    <Route path="access" element={<Navigate to="/teacher/students" replace />} />
+                    <Route path="permissions" element={<Navigate to="/teacher/students" replace />} />
+                    <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher/library/bootcamps" />} />
+                    <Route path="library/recaps" element={<Navigate to="/teacher/library" replace />} />
+                    <Route path="library/uploads" element={<RedirectWithSearch to="/teacher/library" />} />
+                    <Route path="library/analytics" element={<Navigate to="/teacher/library" replace />} />
                     <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
-                    {/* legacy top-level aliases */}
-                    <Route path="assignments" element={<RedirectWithSearch to="/teacher?ws=library&tab=assignments" />} />
-                    <Route path="recaps" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="uploads" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="analytics-bridge" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="assignments" element={<RedirectWithSearch to="/teacher/library/assignments" />} />
+                    <Route path="recaps" element={<Navigate to="/teacher/library" replace />} />
+                    <Route path="uploads" element={<Navigate to="/teacher/library" replace />} />
+                    <Route path="analytics-bridge" element={<Navigate to="/teacher/library" replace />} />
                   </Route>
 
                   {/* Admin-only Bootcamp Reference Library. Never exposed to students. Moved outside nesting to fix 404. */}

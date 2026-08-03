@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ClipboardList, Flame, Sparkles, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDeskLibraryView } from '@/hooks/useDeskLibraryView';
@@ -11,37 +10,32 @@ import { DeskLibraryActivitiesSurface } from './library/DeskLibraryActivitiesSur
 
 type TabKey = 'assignments' | 'bootcamps' | 'guided-drills' | 'activities';
 
+const DEFAULT_TAB: TabKey = 'bootcamps';
+
 const TABS: { key: TabKey; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
-  { key: 'assignments', label: 'Assignments', Icon: ClipboardList },
   { key: 'bootcamps', label: 'Bootcamps', Icon: Flame },
   { key: 'guided-drills', label: 'Guided Drills', Icon: Target },
+  { key: 'assignments', label: 'Assignments', Icon: ClipboardList },
   { key: 'activities', label: 'Activities', Icon: Sparkles },
 ];
 
-function isTab(value: string | null): value is TabKey {
+function isTab(value: string | undefined): value is TabKey {
   return value === 'assignments' || value === 'bootcamps' || value === 'guided-drills' || value === 'activities';
 }
 
 /**
- * Library inside the Teacher Desk. All four tabs are desk-native surfaces
- * (white/glass) — the legacy /teacher/library/* routes redirect here.
+ * Library. The tab is a real route segment (`/teacher/library/guided-drills`),
+ * not a query param, so a tab is linkable, bookmarkable, and walks browser
+ * history like every other room.
  */
 export function DeskLibrarySurface() {
-  const [params, setParams] = useSearchParams();
-  const fromUrl = params.get('tab');
-  const [tab, setTab] = useState<TabKey>(isTab(fromUrl) ? fromUrl : 'assignments');
+  const navigate = useNavigate();
+  const { tab: tabParam } = useParams();
+  const tab: TabKey = isTab(tabParam) ? tabParam : DEFAULT_TAB;
   const [view, setView] = useDeskLibraryView();
 
-  useEffect(() => {
-    if (isTab(fromUrl) && fromUrl !== tab) setTab(fromUrl);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromUrl]);
-
   const selectTab = (key: TabKey) => {
-    setTab(key);
-    const next = new URLSearchParams(params);
-    next.set('tab', key);
-    setParams(next, { replace: true });
+    navigate(`/teacher/library/${key}`);
   };
 
   return (
@@ -55,7 +49,7 @@ export function DeskLibrarySurface() {
             className={cn(
               'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition',
               tab === key
-                ? 'border-b-2 border-amber-500 text-black'
+                ? 'border-b-2 border-teacher-accent text-black'
                 : 'border-b-2 border-transparent text-black/55 hover:text-black',
             )}
           >

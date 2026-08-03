@@ -151,17 +151,13 @@ export function DeskPeopleSurface() {
     );
   }
 
+  // A room, not a floating card: the shell supplies the frame and the title, so
+  // this only carries its own content.
   return (
-    <section className="flex h-full w-full max-w-5xl flex-col border border-black/12 bg-white/25 shadow-[0_20px_80px_rgba(17,24,28,0.10)] backdrop-blur" aria-label="People workspace">
-      <div className="border-b border-black/10 px-5 py-4">
-        <div className="flex items-center gap-3">
-          <Users className="h-5 w-5 text-black/55" strokeWidth={1.5} />
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-black/40">Workspace</div>
-            <h2 className="text-xl font-semibold text-black">People</h2>
-          </div>
-          <span className="ml-auto text-xs font-semibold text-black/45">{users.length} people</span>
-        </div>
+    <section className="flex h-full w-full flex-col" aria-label="Students">
+      <div className="flex items-center gap-2 border-b border-black/10 px-5 py-3 text-xs font-semibold text-black/45">
+        <Users className="h-4 w-4" strokeWidth={1.5} />
+        {users.length} people
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-5">

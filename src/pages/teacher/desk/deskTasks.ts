@@ -77,7 +77,7 @@ export const MODE_META: Record<
     description: 'Drafts, uploads, and student work requiring judgment.',
     empty: 'No reviews waiting',
     emptyActionLabel: 'Open People',
-    emptyActionPath: '/teacher?ws=people',
+    emptyActionPath: '/teacher/students',
     viewAllLabel: 'Open Review',
     viewAllPath: '/teacher/command?tab=drafts',
     Icon: FileText,

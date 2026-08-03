@@ -82,6 +82,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        /* Teacher workspace accent. Carries `<alpha-value>` (unlike the older
+         * tokens above) because the Desk styles it replaces lean on opacity
+         * steps — border-teacher-accent/30, bg-teacher-accent/10. */
+        "teacher-accent": {
+          DEFAULT: "hsl(var(--teacher-accent) / <alpha-value>)",
+          hover: "hsl(var(--teacher-accent-hover) / <alpha-value>)",
+          strong: "hsl(var(--teacher-accent-strong) / <alpha-value>)",
+          soft: "hsl(var(--teacher-accent-soft) / <alpha-value>)",
+          foreground: "hsl(var(--teacher-accent-foreground) / <alpha-value>)",
+        },
+
         "surface-elevated": "hsl(var(--surface-elevated))",
         "text-primary": "hsl(var(--text-primary))",
         "text-secondary": "hsl(var(--text-secondary))",

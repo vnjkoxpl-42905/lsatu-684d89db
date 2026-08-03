@@ -83,7 +83,7 @@ export function DeskLibraryAssignmentsSurface({ view }: { view: LibraryView }) {
           </div>
           <button
             type="button"
-            onClick={() => navigate('/teacher?ws=library&tab=bootcamps')}
+            onClick={() => navigate('/teacher/library/bootcamps')}
             className="inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-900 transition hover:bg-amber-500/30"
           >
             New assignment
