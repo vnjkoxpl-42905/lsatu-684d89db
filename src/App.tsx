@@ -66,7 +66,6 @@ const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
 // recreated the lazy component every render). COMPREHENSIVEAUDIT Phase 3.
 const Trust = React.lazy(() => import("./pages/Trust"));
 const OAuthConsent = React.lazy(() => import("./pages/OAuthConsent"));
-const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
 const Homework = React.lazy(() => import("./pages/admin/Homework"));
 const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
@@ -115,7 +114,6 @@ import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { StudentCornerBubble } from "./components/inbox/StudentCornerBubble";
 import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
-import GuidedTour from "./components/mainhub/GuidedTour";
 
 function GlobalOverlayMount() {
   const { pathname } = useLocation();
@@ -126,7 +124,6 @@ function GlobalOverlayMount() {
       <StudentCornerBubble />
       <AdminChatHub />
       <FloatingHelpButton />
-      <GuidedTour />
     </>
   );
 }
@@ -238,22 +235,15 @@ const App = () => {
                 clicks through. Kept as a redirect for older links. */}
             <Route path="/onboarding" element={<Navigate to="/classroom" replace />} />
 
-            {/* Legacy student sections live inside the persistent StudentShell
-                layout route (in the /* block below). */}
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
             <Route path="/foyer" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
             <Route path="/admin" element={<Navigate to="/teacher/students" replace />} />
-            <Route path="/admin/board" element={
-              <ProtectedRoute requireAdmin>
-                <AdminErrorBoundary routeLabel="/admin/board">
-                  <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                    <AdminBoard />
-                  </React.Suspense>
-                </AdminErrorBoundary>
-              </ProtectedRoute>
-            } />
+            {/* The real whiteboard is the teacher workspace's: autosave, named
+                sessions, per-student scoping. /admin/board was a bare Excalidraw
+                with no save and no way to get a board back, so it forwards. */}
+            <Route path="/admin/board" element={<Navigate to="/teacher/whiteboard" replace />} />
             <Route path="/admin/drive-files" element={
               <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/drive-files">
@@ -374,7 +364,7 @@ const App = () => {
               </React.Suspense>
             } />
 
-            {/* Inbox now renders inside StudentShell (in the /* block below). */}
+            {/* Inbox renders inside the ClassroomLayout block below. */}
 
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={
@@ -499,6 +489,122 @@ const App = () => {
                     <Route path="/bootcamps" element={
                       <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
                     } />
+                    {/* The teacher workspace: six rooms as real nested routes
+                        (spec D1/D3), rendering into the shell's <Outlet/> so
+                        room-to-room navigation is real browser history.
+
+                        It hangs off the ClassroomLayout route deliberately.
+                        Opening it from the classroom rail is entering a room,
+                        not leaving for another app: the classroom rail stays
+                        mounted and the workspace draws into the stage beside
+                        it. As its own top-level route it swapped the entire
+                        frame out — the same shell-swap Messages and Flagged
+                        were moved in here to stop.
+
+                        requireAdmin still guards it; nesting changed the
+                        frame, not who can reach it. */}
+                    <Route path="/teacher" element={
+                      <ProtectedRoute requireAdmin>
+                        <React.Suspense fallback={<div className="min-h-screen bg-[#c3cace]" />}>
+                          <TeacherWorkspaceShell />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    }>
+                      <Route index element={<TeacherWorkspaceIndex />} />
+
+                      <Route path="today" element={
+                        <React.Suspense fallback={<div />}>
+                          <DeskTodaySurface />
+                        </React.Suspense>
+                      } />
+                      <Route path="students" element={
+                        <React.Suspense fallback={<div />}>
+                          <DeskPeopleSurface />
+                        </React.Suspense>
+                      } />
+                      <Route path="students/:studentId" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherStudentDetail />
+                        </React.Suspense>
+                      } />
+                      <Route path="inbox" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherInbox embedded />
+                        </React.Suspense>
+                      } />
+                      {/* Library's tab is a path segment, not a query param, so
+                          each tab is its own linkable URL. */}
+                      <Route path="library" element={
+                        <React.Suspense fallback={<div />}>
+                          <DeskLibrarySurface />
+                        </React.Suspense>
+                      } />
+                      <Route path="library/:tab" element={
+                        <React.Suspense fallback={<div />}>
+                          <DeskLibrarySurface />
+                        </React.Suspense>
+                      } />
+                      <Route path="schedule" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherSchedule />
+                        </React.Suspense>
+                      } />
+                      {/* Insights = bootcamp/topic analytics. Renamed from the old
+                          top-level "Bootcamps" which collided with the assign action. */}
+                      <Route path="insights" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherBootcampsHub />
+                        </React.Suspense>
+                      } />
+                      <Route path="insights/:topicId" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherBootcampDetail />
+                        </React.Suspense>
+                      } />
+                      <Route path="insights/:topicId/students/:studentId" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherStudentBootcampDetail />
+                        </React.Suspense>
+                      } />
+                      {/* Reached from the shell header, not the sidebar. */}
+                      <Route path="whiteboard" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherSmartboard />
+                        </React.Suspense>
+                      } />
+                      <Route path="dev" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherDevIndex />
+                        </React.Suspense>
+                      } />
+                      <Route path="templates" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherTemplates />
+                        </React.Suspense>
+                      } />
+
+                      {/* ── Legacy paths → their new room. Deleted in Phase 4. ── */}
+                      <Route path="command" element={<RedirectWithSearch to="/teacher/today" />} />
+                      <Route path="ai-ta" element={<RedirectWithSearch to="/teacher/today" />} />
+                      <Route path="desk-preview" element={<RedirectWithSearch to="/teacher/today" />} />
+                      <Route path="conversations" element={<RedirectWithSearch to="/teacher/inbox" />} />
+                      <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
+                      <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
+                      <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
+                      <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
+                      <Route path="admin" element={<RedirectWithSearch to="/teacher/students" />} />
+                      <Route path="access" element={<Navigate to="/teacher/students" replace />} />
+                      <Route path="permissions" element={<Navigate to="/teacher/students" replace />} />
+                      <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher/library/bootcamps" />} />
+                      <Route path="library/recaps" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="library/uploads" element={<RedirectWithSearch to="/teacher/library" />} />
+                      <Route path="library/analytics" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
+                      <Route path="assignments" element={<RedirectWithSearch to="/teacher/library/assignments" />} />
+                      <Route path="recaps" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="uploads" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="analytics-bridge" element={<Navigate to="/teacher/library" replace />} />
+                    </Route>
                   </Route>
 
                   {/* Retired surfaces. Bare redirects, no shell of their own:
@@ -516,112 +622,6 @@ const App = () => {
                   <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />
                   <Route path="/settings/layout" element={<Navigate to="/classroom/account?section=layout" replace />} />
 
-                  {/* The teacher workspace: one shell that never unmounts, six
-                      rooms as real nested routes (spec D1/D3). Everything below
-                      the layout renders into its <Outlet/>, so the sidebar
-                      survives every navigation and back/forward walks rooms. */}
-                  <Route path="/teacher" element={
-                    <ProtectedRoute requireAdmin>
-                      <React.Suspense fallback={<div className="min-h-screen bg-[#c3cace]" />}>
-                        <TeacherWorkspaceShell />
-                      </React.Suspense>
-                    </ProtectedRoute>
-                  }>
-                    <Route index element={<TeacherWorkspaceIndex />} />
-
-                    <Route path="today" element={
-                      <React.Suspense fallback={<div />}>
-                        <DeskTodaySurface />
-                      </React.Suspense>
-                    } />
-                    <Route path="students" element={
-                      <React.Suspense fallback={<div />}>
-                        <DeskPeopleSurface />
-                      </React.Suspense>
-                    } />
-                    <Route path="students/:studentId" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherStudentDetail />
-                      </React.Suspense>
-                    } />
-                    <Route path="inbox" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherInbox embedded />
-                      </React.Suspense>
-                    } />
-                    {/* Library's tab is a path segment, not a query param, so
-                        each tab is its own linkable URL. */}
-                    <Route path="library" element={
-                      <React.Suspense fallback={<div />}>
-                        <DeskLibrarySurface />
-                      </React.Suspense>
-                    } />
-                    <Route path="library/:tab" element={
-                      <React.Suspense fallback={<div />}>
-                        <DeskLibrarySurface />
-                      </React.Suspense>
-                    } />
-                    <Route path="schedule" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherSchedule />
-                      </React.Suspense>
-                    } />
-                    {/* Insights = bootcamp/topic analytics. Renamed from the old
-                        top-level "Bootcamps" which collided with the assign action. */}
-                    <Route path="insights" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherBootcampsHub />
-                      </React.Suspense>
-                    } />
-                    <Route path="insights/:topicId" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherBootcampDetail />
-                      </React.Suspense>
-                    } />
-                    <Route path="insights/:topicId/students/:studentId" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherStudentBootcampDetail />
-                      </React.Suspense>
-                    } />
-                    {/* Reached from the shell header, not the sidebar. */}
-                    <Route path="whiteboard" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherSmartboard />
-                      </React.Suspense>
-                    } />
-                    <Route path="dev" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherDevIndex />
-                      </React.Suspense>
-                    } />
-                    <Route path="templates" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherTemplates />
-                      </React.Suspense>
-                    } />
-
-                    {/* ── Legacy paths → their new room. Deleted in Phase 4. ── */}
-                    <Route path="command" element={<RedirectWithSearch to="/teacher/today" />} />
-                    <Route path="ai-ta" element={<RedirectWithSearch to="/teacher/today" />} />
-                    <Route path="desk-preview" element={<RedirectWithSearch to="/teacher/today" />} />
-                    <Route path="conversations" element={<RedirectWithSearch to="/teacher/inbox" />} />
-                    <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
-                    <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
-                    <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
-                    <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
-                    <Route path="admin" element={<RedirectWithSearch to="/teacher/students" />} />
-                    <Route path="access" element={<Navigate to="/teacher/students" replace />} />
-                    <Route path="permissions" element={<Navigate to="/teacher/students" replace />} />
-                    <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher/library/bootcamps" />} />
-                    <Route path="library/recaps" element={<Navigate to="/teacher/library" replace />} />
-                    <Route path="library/uploads" element={<RedirectWithSearch to="/teacher/library" />} />
-                    <Route path="library/analytics" element={<Navigate to="/teacher/library" replace />} />
-                    <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
-                    <Route path="assignments" element={<RedirectWithSearch to="/teacher/library/assignments" />} />
-                    <Route path="recaps" element={<Navigate to="/teacher/library" replace />} />
-                    <Route path="uploads" element={<Navigate to="/teacher/library" replace />} />
-                    <Route path="analytics-bridge" element={<Navigate to="/teacher/library" replace />} />
-                  </Route>
 
                   {/* Admin-only Bootcamp Reference Library. Never exposed to students. Moved outside nesting to fix 404. */}
                   <Route path="/teacher/reference-library" element={

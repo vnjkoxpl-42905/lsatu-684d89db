@@ -83,7 +83,9 @@ function WorkspaceLayout() {
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
   return (
-    <div className="relative flex h-screen min-h-screen flex-col overflow-hidden bg-[#c3cace] text-[#11181c]">
+    // Fills the classroom stage it is mounted into rather than claiming the
+    // viewport: the classroom rail sits beside it and owns the page height.
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#c3cace] text-[#11181c]">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[56%] overflow-hidden">
         <div className="absolute left-1/2 top-0 h-[220%] w-[320%] -translate-x-1/2" style={FLOOR_GRID_STYLE} />
       </div>

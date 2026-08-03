@@ -25,10 +25,7 @@ import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useFlagged } from "@/hooks/useFlagged";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
-import {
-  useUserPermissions,
-  type PermissionFlag,
-} from "@/hooks/useUserPermissions";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { flagLabel } from "@/lib/flaggedService";
@@ -167,10 +164,19 @@ function ClassroomSidebar({
   const navClass = (active: boolean) =>
     `classroom-nav${active ? " classroom-nav-active" : ""}`;
 
-  const canAccess = (...flags: PermissionFlag[]) =>
+  // One predicate, matching what ProtectedRoute actually enforces. Anything
+  // else and the rail draws a padlock the route does not honour (or the
+  // reverse), which the student discovers by typing the URL.
+  //
+  // `loading` is "unknown", never "denied": every flag reads false until the
+  // permission fetch lands, so treating that as denial padlocks the whole rail
+  // for a beat on every cold load.
+  const canAccess = (item: Pick<RailItem, "flags" | "allowSignedIn">) =>
+    permissions.loading ||
     permissions.is_admin ||
-    flags.length === 0 ||
-    flags.some((flag) => permissions[flag]);
+    item.flags.length === 0 ||
+    (item.allowSignedIn && !!user) ||
+    item.flags.some((flag) => permissions[flag]);
 
   const navProps = (
     active: boolean,
@@ -253,7 +259,7 @@ function ClassroomSidebar({
               <b>{group.title}</b>
               {group.items.map((item) => {
                 const { active, onClick } = railBehavior(item);
-                const unlocked = canAccess(...item.flags);
+                const unlocked = canAccess(item);
                 return (
                   <button
                     key={item.id}
@@ -772,8 +778,14 @@ export default function ClassroomLayout() {
   // remembered section, or arriving from Notes would leave that list open.
   const messagesStage =
     location.pathname === "/inbox" || location.pathname.startsWith("/inbox/");
+  // The teacher workspace is a room the rail opens INTO, not a page it leaves
+  // for: it draws its own room rail and surfaces inside this stage while the
+  // classroom rail stays mounted beside it. Same deal as Messages — full height,
+  // no reading column, no section list.
+  const workspaceStage =
+    location.pathname === "/teacher" || location.pathname.startsWith("/teacher/");
   const activeSection =
-    drillHub || messagesStage ? null : pathSection ?? selectedSection;
+    drillHub || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
 
   React.useEffect(() => {
     if (pathSection) setSelectedSection(pathSection);
@@ -830,9 +842,11 @@ export default function ClassroomLayout() {
         ? "classroom-root classroom-root-drill"
         : messagesStage
           ? "classroom-root classroom-root-messages"
-          : homeStage
-            ? "classroom-root classroom-root-home"
-            : "classroom-root";
+          : workspaceStage
+            ? "classroom-root classroom-root-workspace"
+            : homeStage
+              ? "classroom-root classroom-root-home"
+              : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
@@ -896,6 +910,10 @@ export default function ClassroomLayout() {
           <Outlet context={contextValue} />
         ) : messagesStage ? (
           <main className="classroom-messages-stage">
+            <Outlet context={contextValue} />
+          </main>
+        ) : workspaceStage ? (
+          <main className="classroom-workspace-stage">
             <Outlet context={contextValue} />
           </main>
         ) : (

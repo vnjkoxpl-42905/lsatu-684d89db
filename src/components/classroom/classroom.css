@@ -2782,6 +2782,33 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   Teacher workspace stage
+
+   The rail opens the workspace INTO this stage rather than navigating away
+   from the classroom frame. The workspace draws its own room rail and header,
+   so it needs the full height beside the classroom rail with no reading
+   column and no section list — the same shape Messages uses.
+   ───────────────────────────────────────────────────────────────────────── */
+.classroom-root.classroom-root-workspace {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-workspace-stage {
+  flex: 1 1 auto;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  /* Clear the fixed menu button, the same way .classroom-column does. */
+  .classroom-root .classroom-workspace-stage {
+    padding-top: 62px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    Account stage
 
    Native classroom surfaces for the Profile and Customize-layout tabs. All
