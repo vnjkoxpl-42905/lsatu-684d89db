@@ -226,18 +226,31 @@ export function parseExplanationFile(text, fileName) {
     }
 
 
-    const explanations = [];
+    const byStyle = new Map();
+    const hasSingle = styleSections.some((s) => STYLE_HEADINGS.get(s.heading) === 'single');
     for (const sec of styleSections) {
-      const style = STYLE_HEADINGS.get(sec.heading);
-      if (!style) continue; // "### Answer choices" on an unexplained question
+      // "### Answer choices" carries no style of its own; when the file also
+      // has a breakdown section, its per-choice prose belongs to that one.
+      const style = STYLE_HEADINGS.get(sec.heading) ?? (hasSingle ? 'single' : null);
+      if (!style) continue;
       const styleChoices = parseChoiceBlock(sec.lines);
       const steps = parseBreakdown(sec.lines);
       const choiceProse = styleChoices
         .filter((c) => c.prose)
         .map((c) => ({ letter: c.letter, prose: c.prose }));
       if (!steps.length && !choiceProse.length) continue;
-      explanations.push({ style, steps, choiceProse });
+      const existing = byStyle.get(style);
+      if (existing) {
+        existing.steps.push(...steps);
+        for (const n of choiceProse) {
+          if (!existing.choiceProse.some((p) => p.letter === n.letter)) existing.choiceProse.push(n);
+        }
+      } else {
+        byStyle.set(style, { style, steps, choiceProse });
+      }
     }
+    const explanations = [...byStyle.values()];
+
 
     questions.push({
       preptest,
