@@ -185,28 +185,40 @@ export function parseExplanationFile(text, fileName) {
       skipped.push({ id: qid, reason: `only ${choices.length} answer choices parsed (need 5)` });
       continue;
     }
-    // Questions marked "no explanation given" carry no tags at all, so the
-    // source names no correct answer. We import them and leave it unknown
-    // rather than inferring one from the percentages.
-    // The correct choice's tag is "Correct", sometimes with an authored
-    // qualifier ("Correct: Whole to Part", "Correct / Evidence / ...").
-    const correct = choices.filter((c) => c.tag && /^Correct\b/i.test(c.tag));
-    if (!unexplained && correct.length !== 1) {
-      skipped.push({
-        id: qid,
-        reason: correct.length === 0 ? 'no choice tagged "Correct"' : `${correct.length} choices tagged "Correct"`,
-      });
-      continue;
-    }
-    if (unexplained && correct.length > 1) {
-      skipped.push({ id: qid, reason: `${correct.length} choices tagged "Correct"` });
-      continue;
+    // Correctness comes from the authored "**Correct answer:** X" line, which
+    // is LSAT Lab's own `correctanswer` field. Choice tags are NOT reliable:
+    // some correct choices carry no tag, others carry a descriptive one
+    // ("Conclusion", "Weakens"). Only when the line is absent (older corpus
+    // files) do we fall back to a tag reading "Correct".
+    const stated = CORRECT_ANSWER_RE.exec(body);
+    let correctChoice = null;
+    if (stated) {
+      correctChoice = stated[1];
+      if (!choices.some((c) => c.letter === correctChoice)) {
+        skipped.push({ id: qid, reason: `stated correct answer ${correctChoice} is not among the parsed choices` });
+        continue;
+      }
+    } else {
+      const tagged = choices.filter((c) => c.tag && /^Correct\b/i.test(c.tag));
+      if (tagged.length === 1) {
+        correctChoice = tagged[0].letter;
+      } else if (!unexplained) {
+        skipped.push({
+          id: qid,
+          reason:
+            tagged.length === 0
+              ? 'no "**Correct answer:**" line and no choice tagged "Correct"'
+              : `no "**Correct answer:**" line and ${tagged.length} choices tagged "Correct"`,
+        });
+        continue;
+      }
     }
     const pctSum = choices.reduce((a, c) => a + c.percent, 0);
     if (pctSum < 95 || pctSum > 105) {
       skipped.push({ id: qid, reason: `percentages sum to ${pctSum} (outside 95-105)` });
       continue;
     }
+
 
     const explanations = [];
     for (const sec of styleSections) {
