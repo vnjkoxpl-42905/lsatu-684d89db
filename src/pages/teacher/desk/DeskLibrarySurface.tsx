@@ -40,16 +40,18 @@ export function DeskLibrarySurface() {
 
   return (
     <section className="flex h-full w-full flex-col">
-      <nav className="flex shrink-0 flex-wrap items-center gap-1 border-b border-black/10 px-2 pb-2">
+      {/* Recessed onto a tinted band so it reads as a level below the room
+          rail in the shell header, not a second copy of it. */}
+      <nav className="flex shrink-0 flex-wrap items-center gap-1 border-b border-black/10 bg-black/[0.045] px-4 py-1.5">
         {TABS.map(({ key, label, Icon }) => (
           <button
             key={key}
             type="button"
             onClick={() => selectTab(key)}
             className={cn(
-              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition',
+              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition',
               tab === key
-                ? 'border-b-2 border-teacher-accent text-black'
+                ? 'border-b-2 border-teacher-accent font-semibold text-black'
                 : 'border-b-2 border-transparent text-black/55 hover:text-black',
             )}
           >

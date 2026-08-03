@@ -144,10 +144,13 @@ function WorkspaceLayout() {
                 end={end}
                 className={({ isActive }) =>
                   cn(
-                    'inline-flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-[13px] transition',
+                    // Deliberately heavier than a room's own tab row below it,
+                    // so two stacked horizontal strips can't read as the same
+                    // level of navigation.
+                    'inline-flex shrink-0 items-center gap-2 border-b-[3px] px-3.5 py-3 text-sm font-medium transition',
                     isActive
-                      ? 'border-teacher-accent font-medium text-black'
-                      : 'border-transparent text-black/55 hover:text-black',
+                      ? 'border-teacher-accent font-semibold text-black'
+                      : 'border-transparent text-black/50 hover:text-black',
                   )
                 }
               >
