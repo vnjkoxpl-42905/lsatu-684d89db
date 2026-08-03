@@ -5,6 +5,7 @@ import { BOOTCAMP_TOPICS, findTopic } from "./topicRegistry";
 import { useStudentTopicDetail } from "./hooks/useBootcampMetrics";
 import { supabase } from "@/integrations/supabase/client";
 import { formatRelativeShort } from "@/lib/time";
+import { QueryErrorCard } from "./QueryErrorCard";
 
 // Tab 3: Student Detail (per student, per topic). AC #4.
 // One tab per topic the student has any progress on. The user lands on the
@@ -84,9 +85,11 @@ export function StudentBootcampDetail() {
     );
   }
 
+  // Null, not 0, when there is nothing real to compute from: a missing number
+  // renders as "not available", never as a fabricated zero.
   const overallPct = (() => {
     const d = detailQ.data;
-    if (!d || !activeTopic) return 0;
+    if (!d || !activeTopic) return null;
     const chapterPct =
       (d.sectionsViewed.length / Math.max(activeTopic.chapterSectionCount, 1)) *
       100;
@@ -140,29 +143,39 @@ export function StudentBootcampDetail() {
 
       {!activeTopic ? null : (
         <div className="space-y-6">
-          <section className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
-                Overall {activeTopic.name} progress
-              </h3>
-              <span className="text-2xl font-semibold text-zinc-100">
-                {overallPct}%
-              </span>
-            </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-800">
-              <div
-                className="h-full bg-amber-400 transition-all"
-                style={{ width: `${overallPct}%` }}
-                aria-label={`Overall progress ${overallPct} percent`}
-              />
-            </div>
-            <p className="mt-2 text-xs text-zinc-500">
-              Last active:{" "}
-              {detailQ.data?.lastActivityIso
-                ? formatRelativeShort(detailQ.data.lastActivityIso)
-                : "never"}
-            </p>
-          </section>
+          {detailQ.isError ? (
+            <QueryErrorCard onRetry={() => detailQ.refetch()} />
+          ) : (
+            <section className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+                  Overall {activeTopic.name} progress
+                </h3>
+                <span className="text-2xl font-semibold text-zinc-100">
+                  {overallPct === null ? "—" : `${overallPct}%`}
+                </span>
+              </div>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-800">
+                <div
+                  className="h-full bg-amber-400 transition-all"
+                  style={{ width: `${overallPct ?? 0}%` }}
+                  aria-label={
+                    overallPct === null
+                      ? "Overall progress not available"
+                      : `Overall progress ${overallPct} percent`
+                  }
+                />
+              </div>
+              <p className="mt-2 text-xs text-zinc-500">
+                Last active:{" "}
+                {!detailQ.data
+                  ? "—"
+                  : detailQ.data.lastActivityIso
+                    ? formatRelativeShort(detailQ.data.lastActivityIso)
+                    : "never"}
+              </p>
+            </section>
+          )}
 
           <section className="space-y-3">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
@@ -170,6 +183,8 @@ export function StudentBootcampDetail() {
             </h3>
             {detailQ.isLoading ? (
               <p className="text-sm text-zinc-500">Loading.</p>
+            ) : detailQ.isError ? (
+              <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data && detailQ.data.sectionsViewed.length === 0 ? (
               <p className="text-sm text-zinc-500">No sections opened yet.</p>
             ) : (
@@ -202,6 +217,8 @@ export function StudentBootcampDetail() {
             </h3>
             {detailQ.isLoading ? (
               <p className="text-sm text-zinc-500">Loading.</p>
+            ) : detailQ.isError ? (
+              <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data &&
               detailQ.data.drillStats.every((d) => d.attempts === 0) ? (
               <p className="text-sm text-zinc-500">
@@ -248,6 +265,8 @@ export function StudentBootcampDetail() {
             </h3>
             {detailQ.isLoading ? (
               <p className="text-sm text-zinc-500">Loading.</p>
+            ) : detailQ.isError ? (
+              <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data && detailQ.data.flashcardStats.reviewed === 0 ? (
               <p className="text-sm text-zinc-500">No reviews recorded.</p>
             ) : (
@@ -257,8 +276,9 @@ export function StudentBootcampDetail() {
                     Reviewed
                   </dt>
                   <dd className="mt-0.5 font-semibold text-zinc-100">
-                    {detailQ.data?.flashcardStats.reviewed ?? 0} /{" "}
-                    {detailQ.data?.flashcardStats.total ?? 0}
+                    {detailQ.data
+                      ? `${detailQ.data.flashcardStats.reviewed} / ${detailQ.data.flashcardStats.total}`
+                      : "—"}
                   </dd>
                 </div>
                 <div>
@@ -266,7 +286,7 @@ export function StudentBootcampDetail() {
                     Mastery
                   </dt>
                   <dd className="mt-0.5 font-semibold text-zinc-100">
-                    {detailQ.data?.flashcardStats.masteryPct ?? 0}%
+                    {detailQ.data ? `${detailQ.data.flashcardStats.masteryPct}%` : "—"}
                   </dd>
                 </div>
                 <div>
@@ -274,7 +294,7 @@ export function StudentBootcampDetail() {
                     Due now
                   </dt>
                   <dd className="mt-0.5 font-semibold text-zinc-100">
-                    {detailQ.data?.flashcardStats.dueCount ?? 0}
+                    {detailQ.data ? detailQ.data.flashcardStats.dueCount : "—"}
                   </dd>
                 </div>
                 <div>
@@ -282,7 +302,9 @@ export function StudentBootcampDetail() {
                     Avg interval
                   </dt>
                   <dd className="mt-0.5 font-semibold text-zinc-100">
-                    {detailQ.data?.flashcardStats.avgIntervalDays ?? 0}d
+                    {detailQ.data
+                      ? `${detailQ.data.flashcardStats.avgIntervalDays}d`
+                      : "—"}
                   </dd>
                 </div>
               </dl>

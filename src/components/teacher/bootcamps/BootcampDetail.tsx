@@ -8,6 +8,7 @@ import {
   type BootcampStudentRow,
 } from "./hooks/useBootcampMetrics";
 import { formatRelativeShort } from "@/lib/time";
+import { QueryErrorCard } from "./QueryErrorCard";
 
 type SortKey = "completion" | "accuracy" | "last_active";
 
@@ -91,6 +92,8 @@ export function BootcampDetail() {
         </h3>
         {breakdownQ.isLoading ? (
           <p className="text-sm text-zinc-500">Loading drill stats.</p>
+        ) : breakdownQ.isError ? (
+          <QueryErrorCard onRetry={() => breakdownQ.refetch()} />
         ) : (breakdownQ.data ?? []).every((r) => r.attempts === 0) ? (
           <p className="text-sm text-zinc-500">No drill attempts recorded.</p>
         ) : (
@@ -146,6 +149,8 @@ export function BootcampDetail() {
         </div>
         {studentsQ.isLoading ? (
           <p className="text-sm text-zinc-500">Loading students.</p>
+        ) : studentsQ.isError ? (
+          <QueryErrorCard onRetry={() => studentsQ.refetch()} />
         ) : sortedStudents.length === 0 ? (
           <p className="text-sm text-zinc-500">
             No student activity on {topic.name} yet.
