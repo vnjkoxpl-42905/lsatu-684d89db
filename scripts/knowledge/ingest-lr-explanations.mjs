@@ -1,33 +1,82 @@
-// Bulk-loads the parsed PT101-PT140 LR explanation corpus into the lr_* tables.
+// Bulk-loads the authored LR explanation corpus into the lr_* tables.
 //
-//   node scripts/knowledge/ingest-lr-explanations.mjs <dir-of-md-files>
+//   node scripts/knowledge/ingest-lr-explanations.mjs <dir-of-v2-md-files>
 //
-// Inserts are ON CONFLICT DO NOTHING, so re-running is safe but does not
-// overwrite rows already loaded.
-// Strategy: parse every file in memory, write one TSV per target table, COPY
-// each into an UNLOGGED staging table, then upsert into the real tables inside
-// a single transaction. Re-running is idempotent (natural keys: qid, letter,
-// style, position).
+// Sources:
+//   1. <dir>/PT1NN-explanations.md          (PT101-PT140 v2 corpus)
+//   2. Explanations/PT1NN-explanations.md   (PT141-PT159, in-repo)
+//      - PT139/PT140 there are stale duplicates and are skipped
+//      - PT155-S1-explanations.md duplicates PT155-explanations.md and is skipped
+//      - PT155-S2-explanations.md uses the older layout (separate parser)
+//
+// Strategy: parse everything in memory, COPY into temp staging tables, then
+// UPSERT into the real tables in one transaction. Idempotent: re-running
+// updates rows in place on (preptest, section, question_number).
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { parseExplanationFile } from './parse-lr-explanations.mjs';
+import { parseLegacyExplanationFile } from './parse-lr-explanations-legacy.mjs';
 
 const srcDir = process.argv[2];
 if (!srcDir) {
-  console.error('usage: ingest-lr-explanations.mjs <dir-of-md-files>');
+  console.error('usage: ingest-lr-explanations.mjs <dir-of-v2-md-files>');
   process.exit(1);
 }
-
-const files = fs.readdirSync(srcDir).filter((f) => /^PT\d+-explanations\.md$/.test(f)).sort();
+const repoExplanations = path.resolve('Explanations');
 
 const questions = [];
 const skipped = [];
-for (const f of files) {
-  const r = parseExplanationFile(fs.readFileSync(path.join(srcDir, f), 'utf8'), f);
+const sources = [];
+
+const ingestStandard = (file, label) => {
+  const r = parseExplanationFile(fs.readFileSync(file, 'utf8'), path.basename(file));
   questions.push(...r.questions);
-  skipped.push(...r.skipped);
+  skipped.push(...r.skipped.map((s) => ({ ...s, file: label })));
+  sources.push({ file: label, parsed: r.questions.length, skipped: r.skipped.length });
+};
+
+// --- batch 1: the v2 zip (PT101-PT140) ---
+for (const f of fs.readdirSync(srcDir).filter((f) => /^PT\d+-explanations\.md$/.test(f)).sort()) {
+  ingestStandard(path.join(srcDir, f), `v2/${f}`);
+}
+
+// --- batch 2: in-repo PT141-PT159 ---
+if (fs.existsSync(repoExplanations)) {
+  const repoFiles = fs
+    .readdirSync(repoExplanations)
+    .filter((f) => /^PT\d+-explanations\.md$/.test(f))
+    .filter((f) => {
+      const pt = Number(/^PT(\d+)/.exec(f)[1]);
+      return pt >= 141 && pt <= 159; // PT139/PT140 here are stale duplicates
+    })
+    .sort();
+  for (const f of repoFiles) ingestStandard(path.join(repoExplanations, f), `repo/${f}`);
+
+  // PT155 section 2 exists nowhere else and uses the older layout.
+  const s2 = path.join(repoExplanations, 'PT155-S2-explanations.md');
+  if (fs.existsSync(s2)) {
+    const r = parseLegacyExplanationFile(fs.readFileSync(s2, 'utf8'), 'PT155-S2-explanations.md', {
+      preptest: 155,
+      section: 2,
+    });
+    questions.push(...r.questions);
+    skipped.push(...r.skipped.map((s) => ({ ...s, file: 'repo/PT155-S2-explanations.md' })));
+    sources.push({ file: 'repo/PT155-S2-explanations.md', parsed: r.questions.length, skipped: r.skipped.length });
+  }
+}
+
+// Guard against a duplicate (preptest, section, question_number) across files.
+const seen = new Map();
+const deduped = [];
+for (const q of questions) {
+  if (seen.has(q.qid)) {
+    skipped.push({ id: q.qid, reason: `duplicate question id (already parsed from another file)` });
+    continue;
+  }
+  seen.set(q.qid, true);
+  deduped.push(q);
 }
 
 // ---------- build TSV payloads ----------
@@ -47,13 +96,23 @@ const eRows = [];
 const sRows = [];
 const nRows = [];
 
-for (const q of questions) {
-  const correct = q.choices.find((c) => c.tag && /^Correct\b/i.test(c.tag));
+for (const q of deduped) {
   qRows.push(
-    row(q.qid, q.preptest, q.section, q.questionNumber, q.questionType, q.stimulus, q.prompt, q.sourceNote, q.isExplained, correct ? correct.letter : null),
+    row(
+      q.qid,
+      q.preptest,
+      q.section,
+      q.questionNumber,
+      q.questionType,
+      q.stimulus,
+      q.prompt,
+      q.sourceNote,
+      q.isExplained,
+      q.correctChoice,
+    ),
   );
   for (const c of q.choices) {
-    cRows.push(row(q.qid, c.letter, c.text, c.tag, !!(c.tag && /^Correct\b/i.test(c.tag)), c.percent));
+    cRows.push(row(q.qid, c.letter, c.text, c.tag, !!c.isCorrect, c.percent));
   }
   for (const e of q.explanations) {
     eRows.push(row(q.qid, e.style));
@@ -101,28 +160,53 @@ ON CONFLICT (preptest, section) DO NOTHING;
 INSERT INTO public.lr_questions (section_id, qid, preptest, section, question_number, question_type, stimulus, prompt, source_note, is_explained, correct_choice)
 SELECT sec.id, q.qid, q.preptest, q.section, q.question_number, q.question_type, q.stimulus, q.prompt, q.source_note, q.is_explained, q.correct_choice
 FROM stg_q q JOIN public.lr_sections sec ON sec.preptest = q.preptest AND sec.section = q.section
-ON CONFLICT (qid) DO NOTHING;
+ON CONFLICT (preptest, section, question_number) DO UPDATE SET
+  qid = EXCLUDED.qid,
+  question_type = EXCLUDED.question_type,
+  stimulus = EXCLUDED.stimulus,
+  prompt = EXCLUDED.prompt,
+  source_note = EXCLUDED.source_note,
+  is_explained = EXCLUDED.is_explained,
+  correct_choice = EXCLUDED.correct_choice,
+  updated_at = now();
 
 INSERT INTO public.lr_answer_choices (question_id, letter, choice_text, tag, is_correct, student_percent)
 SELECT lq.id, c.letter, c.choice_text, c.tag, c.is_correct, c.student_percent
 FROM stg_c c JOIN public.lr_questions lq ON lq.qid = c.qid
-ON CONFLICT (question_id, letter) DO NOTHING;
+ON CONFLICT (question_id, letter) DO UPDATE SET
+  choice_text = EXCLUDED.choice_text,
+  tag = EXCLUDED.tag,
+  is_correct = EXCLUDED.is_correct,
+  student_percent = EXCLUDED.student_percent,
+  updated_at = now();
 
 INSERT INTO public.lr_explanations (question_id, style)
 SELECT lq.id, e.style FROM stg_e e JOIN public.lr_questions lq ON lq.qid = e.qid
-ON CONFLICT (question_id, style) DO NOTHING;
+ON CONFLICT (question_id, style) DO UPDATE SET updated_at = now();
+
+-- Rebuild the body of every explanation we just staged so re-running can
+-- never leave a stale step or choice note behind.
+DELETE FROM public.lr_explanation_steps st
+USING public.lr_explanations ex, public.lr_questions lq
+WHERE st.explanation_id = ex.id AND ex.question_id = lq.id
+  AND lq.qid IN (SELECT qid FROM stg_q);
+
+DELETE FROM public.lr_explanation_choice_notes cn
+USING public.lr_explanations ex, public.lr_questions lq
+WHERE cn.explanation_id = ex.id AND ex.question_id = lq.id
+  AND lq.qid IN (SELECT qid FROM stg_q);
 
 INSERT INTO public.lr_explanation_steps (explanation_id, position, label, body)
 SELECT ex.id, s.position, s.label, s.body
 FROM stg_s s JOIN public.lr_questions lq ON lq.qid = s.qid
 JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = s.style
-ON CONFLICT (explanation_id, position) DO NOTHING;
+ON CONFLICT (explanation_id, position) DO UPDATE SET label = EXCLUDED.label, body = EXCLUDED.body;
 
 INSERT INTO public.lr_explanation_choice_notes (explanation_id, letter, body)
 SELECT ex.id, n.letter, n.body
 FROM stg_n n JOIN public.lr_questions lq ON lq.qid = n.qid
 JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = n.style
-ON CONFLICT (explanation_id, letter) DO NOTHING;
+ON CONFLICT (explanation_id, letter) DO UPDATE SET body = EXCLUDED.body;
 
 COMMIT;
 `;
@@ -131,14 +215,20 @@ const sqlPath = path.join(tmp, 'load.sql');
 fs.writeFileSync(sqlPath, sql);
 
 console.log(
-  `parsed ${questions.length} questions / ${cRows.length} choices / ${eRows.length} explanations / ${sRows.length} steps / ${nRows.length} choice notes (${skipped.length} skipped)`,
+  `parsed ${deduped.length} questions / ${cRows.length} choices / ${eRows.length} explanations / ${sRows.length} steps / ${nRows.length} choice notes (${skipped.length} skipped)`,
 );
+
+if (process.env.DRY_RUN === '1') {
+  console.log(JSON.stringify({ sources, skipped }, null, 2));
+  process.exit(0);
+}
 
 const out = execFileSync('psql', ['-v', 'ON_ERROR_STOP=1', '-f', sqlPath], { encoding: 'utf8' });
 console.log(out);
 
+fs.mkdirSync(path.resolve('scripts/out'), { recursive: true });
 fs.writeFileSync(
   path.join(process.cwd(), 'scripts/out/lr-explanations-ingest-report.json'),
-  JSON.stringify({ files: files.length, questions: questions.length, skipped }, null, 2),
+  JSON.stringify({ sources, questions: deduped.length, skipped }, null, 2),
 );
 console.log('report written to scripts/out/lr-explanations-ingest-report.json');
