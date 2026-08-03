@@ -60,7 +60,6 @@ const IntroToLrBootcamp = React.lazy(() => import("./pages/IntroToLrBootcamp"));
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp"));
 const RcEngagingPassageBootcamp = React.lazy(() => import("./pages/RcEngagingPassageBootcamp"));
-import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
 // Hoisted out of render (were inline React.lazy(...) in the route element, which
@@ -180,8 +179,10 @@ const App = () => {
             <Route path="/teacher/booking-passes" element={<Navigate to="/booking/admin" replace />} />
 
 
-            {/* Onboarding. Name + placement intake for new signups (one-time gate). */}
-            <Route path="/onboarding" element={<Onboarding />} />
+            {/* Onboarding is no longer a screen of its own: the intake runs in
+                the classroom's orientation card, which the student opens and
+                clicks through. Kept as a redirect for older links. */}
+            <Route path="/onboarding" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy student sections live inside the persistent StudentShell
                 layout route (in the /* block below). */}

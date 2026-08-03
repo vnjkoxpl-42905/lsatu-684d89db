@@ -1,4 +1,5 @@
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import OrientationCard from "@/components/classroom/OrientationCard";
 import TodayTodoCard from "@/components/classroom/TodayTodoCard";
 import ClassroomHomeCards from "@/components/classroom/ClassroomHomeCards";
 import AnnouncementBanner from "@/components/classroom/AnnouncementBanner";
@@ -57,9 +58,10 @@ export default function Classroom() {
         <span>{testDateMeta(testDate)}</span>
       </div>
       <h1 className="classroom-title classroom-greeting">
-        {greeting()}, {displayName}
+        {displayName ? `${greeting()}, ${displayName}` : greeting()}
       </h1>
 
+      <OrientationCard />
       <AnnouncementBanner />
       <TodayTodoCard />
       <ClassroomHomeCards />

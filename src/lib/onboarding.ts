@@ -1,8 +1,13 @@
 // Shared onboarding constants + types. See ONBOARDING-SPEC.md.
 //
 // The onboarding intake is a one-time flow (gate: profiles.onboarding_completed_at)
-// whose answers persist to profiles.onboarding (jsonb). Steps 1 and 4 share one
-// score-band enum; steps 2 and 3 are optional; step 6 is defaulted.
+// whose answers persist to profiles.onboarding (jsonb). Two steps share one
+// score-band enum; experience and schools are optional; study time is defaulted.
+//
+// The intake runs inside the classroom's orientation card (OrientationCard),
+// never as a redirect: a new signup lands in the classroom and has to open the
+// card and click through it. Each Continue writes that step's answer, so a
+// half-finished card resumes where it left off.
 
 // ── Score bands (shared by "last LSAT" and "target" steps) ──────────────────
 export const SCORE_BANDS = [
@@ -66,23 +71,42 @@ export const DEFAULT_STUDY_TIME: Record<DayKey, StudyTimeValue> = {
   sun: '1_2', mon: '1_2', tue: '1_2', wed: '1_2', thu: '1_2', fri: '1_2', sat: '1_2',
 };
 
+// ── Test date (asked right after the target score) ──────────────────────────
+// Stored twice on purpose: the ISO date lands in the real `profiles.test_date`
+// column (the classroom dateline counts down from it), and a copy lives in the
+// answers blob so "have they answered this step?" stays a single read. A
+// student who has not registered yet picks UNDECIDED_TEST_DATE, which answers
+// the step while leaving the column null — no invented date.
+export const UNDECIDED_TEST_DATE = 'undecided';
+
+export type TestDateValue = string; // 'YYYY-MM-DD' | typeof UNDECIDED_TEST_DATE
+
+/** The value written to profiles.test_date: a real date, or null when undecided. */
+export function testDateColumnValue(value: TestDateValue | undefined): string | null {
+  if (!value || value === UNDECIDED_TEST_DATE) return null;
+  return value;
+}
+
 // ── The stored answer shape (profiles.onboarding) ───────────────────────────
 export interface OnboardingAnswers {
   last_score_band?: LastScoreValue;
   experience_text?: string;
   schools?: string[];
   target_score_band?: TargetScoreValue;
+  test_date?: TestDateValue;
   life_stage?: LifeStage;
   study_time?: Record<DayKey, StudyTimeValue>;
 }
 
-// The six intake steps (name is step 0, handled before these). Order is locked
-// to the approved reference. `key` maps to the step index used for resume.
+// The intake steps (name is step 0, handled before these). Order is locked to
+// the approved reference, with the test date slotted in after the target score
+// so the three "where are you headed" questions sit together.
 export type OnboardingStepId =
   | 'last_score'
   | 'experience'
   | 'schools'
   | 'target_score'
+  | 'test_date'
   | 'life_stage'
   | 'study_time';
 
@@ -93,6 +117,7 @@ export const STEP_ORDER: OnboardingStepId[] = [
   'experience',
   'schools',
   'target_score',
+  'test_date',
   'life_stage',
   'study_time',
 ];
@@ -104,6 +129,68 @@ export const REQUIRED_STEPS: Record<OnboardingStepId, boolean> = {
   experience: false,
   schools: false,
   target_score: true,
+  test_date: true, // answerable as "no date yet", so never a dead end
   life_stage: true,
   study_time: true, // defaulted, so effectively always satisfiable
 };
+
+// ── Copy ────────────────────────────────────────────────────────────────────
+// One home for every headline the intake shows, so the card and any future
+// surface cannot drift into two versions of the same question.
+export const NAME_STEP_COPY = {
+  title: 'What should we call you?',
+  subtitle: 'This is the name your classroom and Joshua will use.',
+};
+
+export const STEP_COPY: Record<OnboardingStepId, { title: string; subtitle?: string }> = {
+  last_score: {
+    title: 'What did you get on your last LSAT?',
+    subtitle: 'This sets your starting point.',
+  },
+  experience: {
+    title: 'How has your LSAT experience been so far?',
+    subtitle:
+      'Share what has felt easy and what has felt hard so we can personalize your plan.',
+  },
+  schools: {
+    title: 'What schools are you interested in?',
+    subtitle: "We'll build your experience with LSAT U around getting into these schools.",
+  },
+  target_score: {
+    title: 'What score are you aiming for?',
+    subtitle: 'This helps us set the right pace for your prep.',
+  },
+  test_date: {
+    title: 'When are you taking the LSAT?',
+    subtitle: 'Your classroom counts down from this and paces your week around it.',
+  },
+  life_stage: {
+    title: 'Which best describes you?',
+  },
+  study_time: {
+    title: 'When can you study?',
+    subtitle: 'Set how much time you have each day. You can always change this later.',
+  },
+};
+
+/** Whether a given step's answer is present. Drives resume and the Continue gate. */
+export function isStepAnswered(step: OnboardingStepId, a: OnboardingAnswers): boolean {
+  switch (step) {
+    case 'last_score':
+      return !!a.last_score_band;
+    case 'experience':
+      return !!a.experience_text?.trim();
+    case 'schools':
+      return !!a.schools && a.schools.length > 0;
+    case 'target_score':
+      return !!a.target_score_band;
+    case 'test_date':
+      return !!a.test_date;
+    case 'life_stage':
+      return !!a.life_stage;
+    case 'study_time':
+      return !!a.study_time; // defaulted at finish if untouched
+    default:
+      return false;
+  }
+}

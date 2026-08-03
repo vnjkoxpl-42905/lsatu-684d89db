@@ -56,6 +56,7 @@ type ClassroomLayoutContextValue = {
   displayName: string;
   setDisplayName: (name: string) => void;
   testDate: string | null;
+  setTestDate: (date: string | null) => void;
   openSection: (section: ClassroomSection) => void;
 };
 
@@ -760,15 +761,14 @@ export default function ClassroomLayout() {
         .eq("class_id", user.id)
         .maybeSingle();
       if (cancelled) return;
-      if (!profile?.display_name) {
-        navigate("/onboarding", { replace: true });
-        return;
-      }
+      // A brand-new signup has no profile row and no name yet: they land here
+      // anyway and pick the name up as step one of the orientation card. The
+      // sidebar falls back to their email until the card writes a real name.
       const profileWithTestDate = profile as typeof profile & {
         test_date?: string | null;
       };
-      setDisplayName(profile.display_name);
-      setTestDate(profileWithTestDate.test_date ?? null);
+      setDisplayName(profile?.display_name ?? "");
+      setTestDate(profileWithTestDate?.test_date ?? null);
       setProfileReady(true);
     })();
     return () => {
@@ -818,7 +818,16 @@ export default function ClassroomLayout() {
   if (!authReady || !user || !profileReady) return null;
 
   const activeId = params.itemId ?? params.assignmentId ?? params.qid;
-  const contextValue = { displayName, setDisplayName, testDate, openSection };
+  const contextValue = {
+    displayName,
+    setDisplayName,
+    testDate,
+    setTestDate,
+    openSection,
+  };
+  // Until the orientation card captures a name, the sidebar shows the address
+  // they signed up with rather than an empty row and a blank avatar.
+  const sidebarName = displayName || user.email || "";
   const journalDetail = /^\/journal\/[^/]+$/.test(location.pathname);
   const rootClass =
     activeSection === "journal"
@@ -845,7 +854,7 @@ export default function ClassroomLayout() {
 
         <aside className="classroom-sidebar">
           <ClassroomSidebar
-            displayName={displayName}
+            displayName={sidebarName}
             activeSection={activeSection}
             onSection={openSection}
             onHome={goHome}
@@ -870,7 +879,7 @@ export default function ClassroomLayout() {
                 <X size={18} />
               </button>
               <ClassroomSidebar
-                displayName={displayName}
+                displayName={sidebarName}
                 activeSection={activeSection}
                 onSection={(section) => {
                   setMobileMenuOpen(false);

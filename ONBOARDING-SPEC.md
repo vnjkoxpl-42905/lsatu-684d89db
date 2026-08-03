@@ -2,6 +2,25 @@
 
 _Locked via grill with Joshua, 2026-07-18. Source capture: `~/ai-os/brainstorms/2026-07-18-lsatu-onboarding.md`._
 
+> **v2 (2026-08-02): the intake moved into the classroom and stopped being automatic.**
+> A new signup is no longer redirected anywhere. Everyone lands on `/classroom`, where the
+> orientation card (`src/components/classroom/OrientationCard.tsx`) sits first on Home and has
+> to be opened and clicked through. The steps expand inside that card; they never take over the
+> screen. What changed from the spec below:
+> - **No redirect, no separate screen.** `redirectAfterAuth` always sends users to `/classroom`;
+>   `/onboarding` is now a redirect to `/classroom`, and `ClassroomLayout` no longer bounces a
+>   student who has no name yet (the sidebar shows their email until step 1 writes one).
+> - **A test-date step** was added after the target score, writing the real `profiles.test_date`
+>   column (which the classroom dateline counts down from) plus a copy in the answers blob.
+>   "I haven't picked a date yet" answers the step and leaves the column null.
+> - **No "Skip for now."** The card is not a jail, so it does not need an escape hatch: it simply
+>   waits on Home until the student finishes it. Only Finish sets `onboarding_completed_at`.
+> - **Eight steps**: name, last score, experience, schools, target score, test date, life stage,
+>   study time. Per-step save and resume are unchanged.
+>
+> The sections below describe the retired v1 redirect flow. Everything about the questions,
+> the stored shape, and the copy still holds; the delivery surface does not.
+
 ## Goal
 
 When a new user signs up on lsatprep.study, run a clean, one-time onboarding that collects placement/personalization intake (current score, target, schools, life context, weekly study time, and a short free-text on what's hard). v1 is **data-only**: it stores the answers and lands the student on the Foyer. It does not yet branch the app on the answers — Joshua personalizes by hand from the intake (the premium edge). The flow order mirrors an approved competitor reference (LexPrep), re-skinned to LSAT U's Academy design system.
