@@ -62,11 +62,11 @@ The argument proceeds by
 
 ### Answer choices
 
-**A.** arguing that the bad consequences of a practice are outweighed by the good consequences of that practice — 1% of students
-**B.** countering the charge that a practice has a bad consequence by trying to show that the practice does not actually have that consequence — 3% of students
-**C.** rebutting a charge that a practice is radical by contending that the practice is analogous with an existing one — 90% of students (Correct)
-**D.** rejecting the charge that a practice is immoral by trying to undercut the moral foundation of the charge — 4% of students
-**E.** supporting a moral objection to a practice by trying to show that the practice is actually different from practices that might seem similar — 2% of students
+**A. arguing that the bad consequences of a practice are outweighed by the good consequences of that practice** (1% of students)
+**B. countering the charge that a practice has a bad consequence by trying to show that the practice does not actually have that consequence** (3% of students)
+**C. rebutting a charge that a practice is radical by contending that the practice is analogous with an existing one** — Correct (90% of students)
+**D. rejecting the charge that a practice is immoral by trying to undercut the moral foundation of the charge** (4% of students)
+**E. supporting a moral objection to a practice by trying to show that the practice is actually different from practices that might seem similar** (2% of students)
 
 ---
 
