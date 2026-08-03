@@ -6,8 +6,12 @@
 //   1. <dir>/PT1NN-explanations.md          (PT101-PT140 v2 corpus)
 //   2. Explanations/PT1NN-explanations.md   (PT141-PT159, in-repo)
 //      - PT139/PT140 there are stale duplicates and are skipped
-//      - PT155-S1-explanations.md duplicates PT155-explanations.md and is skipped
-//      - PT155-S2-explanations.md uses the older layout (separate parser)
+//      - PT155-S2-explanations.md holds a section that exists nowhere else and
+//        is loaded explicitly, since the filename filter above only matches
+//        PT<n>-explanations.md
+//
+// Every file now uses the standard layout; the legacy "## Question N" parser
+// is no longer reachable from here.
 //
 // Strategy: parse everything in memory, COPY into temp staging tables, then
 // UPSERT into the real tables in one transaction. Idempotent: re-running
@@ -17,7 +21,6 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { parseExplanationFile } from './parse-lr-explanations.mjs';
-import { parseLegacyExplanationFile } from './parse-lr-explanations-legacy.mjs';
 
 const srcDir = process.argv[2];
 if (!srcDir) {
@@ -54,17 +57,13 @@ if (fs.existsSync(repoExplanations)) {
     .sort();
   for (const f of repoFiles) ingestStandard(path.join(repoExplanations, f), `repo/${f}`);
 
-  // PT155 section 2 exists nowhere else and uses the older layout.
+  // PT155 section 2 exists nowhere else. It was reformatted from the older
+  // "## Question N" layout into the standard one on 2026-08-03, which also
+  // moved its tags and percentages onto the choice line where the standard
+  // parser can see them (they previously loaded as NULL). It now goes through
+  // the standard parser like every other file.
   const s2 = path.join(repoExplanations, 'PT155-S2-explanations.md');
-  if (fs.existsSync(s2)) {
-    const r = parseLegacyExplanationFile(fs.readFileSync(s2, 'utf8'), 'PT155-S2-explanations.md', {
-      preptest: 155,
-      section: 2,
-    });
-    questions.push(...r.questions);
-    skipped.push(...r.skipped.map((s) => ({ ...s, file: 'repo/PT155-S2-explanations.md' })));
-    sources.push({ file: 'repo/PT155-S2-explanations.md', parsed: r.questions.length, skipped: r.skipped.length });
-  }
+  if (fs.existsSync(s2)) ingestStandard(s2, 'repo/PT155-S2-explanations.md');
 }
 
 // Guard against a duplicate (preptest, section, question_number) across files.
