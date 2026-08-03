@@ -3772,3 +3772,40 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   gap: 8px;
   margin-top: 16px;
 }
+
+/* --------------------------------------------------------------------------
+   Stage-side index list (H5)
+
+   The section list column is hidden below 1280px, and below 1400px for Wrong
+   answers, where it collapses behind a trigger. At those widths the index
+   routes were telling the student to choose from a list that was not on
+   screen. Both copies render; these rules show exactly one.
+   -------------------------------------------------------------------------- */
+
+.classroom-root .classroom-stage-index {
+  display: none;
+  gap: 4px;
+  margin: 0 -8px;
+}
+
+@media (max-width: 1279px) {
+  .classroom-root .classroom-stage-index {
+    display: grid;
+  }
+
+  .classroom-root .classroom-stage-index-hint {
+    display: none;
+  }
+}
+
+/* Wrong answers keeps its column 120px longer than the rest, so it swaps over
+   at its own breakpoint rather than the shared one. */
+@media (max-width: 1399px) {
+  .classroom-root.classroom-root-journal .classroom-stage-index {
+    display: grid;
+  }
+
+  .classroom-root.classroom-root-journal .classroom-stage-index-hint {
+    display: none;
+  }
+}

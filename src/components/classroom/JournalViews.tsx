@@ -11,6 +11,11 @@ import {
   useJournalEntries,
 } from "@/hooks/useJournalEntries";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  StageIndexHint,
+  StageIndexList,
+  shortDate,
+} from "@/components/classroom/StageIndexList";
 import { startJoshuaConversation } from "@/lib/joshuaThread";
 import {
   questionBank,
@@ -195,12 +200,25 @@ export function JournalIndexView() {
           </button>
         </div>
       ) : null}
-      {!query.isLoading && !query.error ? (
+      {!query.isLoading && !query.error && rows.length === 0 ? (
         <p className="classroom-empty-copy">
-          {rows.length > 0
-            ? "Choose an entry from the list."
-            : "You have no wrong answers yet. Questions you miss while drilling will wait for you here."}
+          You have no wrong answers yet. Questions you miss while drilling will
+          wait for you here.
         </p>
+      ) : null}
+      {!query.isLoading && !query.error && rows.length > 0 ? (
+        <>
+          <StageIndexHint>Choose an entry from the list.</StageIndexHint>
+          <StageIndexList
+            label="Wrong answers"
+            items={rows.map((row) => ({
+              key: row.qid,
+              title: row.note?.title?.trim() || row.label,
+              meta: shortDate(row.first_missed, row.qtype),
+              route: `/journal/${encodeURIComponent(row.qid)}`,
+            }))}
+          />
+        </>
       ) : null}
     </>
   );

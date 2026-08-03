@@ -23,6 +23,11 @@ import {
   type FlaggedQuestionRow,
 } from "@/lib/flaggedService";
 import { ClassroomQuestionPane } from "@/components/classroom/ClassroomQuestionPane";
+import {
+  StageIndexHint,
+  StageIndexList,
+  shortDate,
+} from "@/components/classroom/StageIndexList";
 
 function formatClassroomDate(value: string | Date) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -219,12 +224,25 @@ export function FlaggedIndexView() {
           </button>
         </div>
       ) : null}
-      {!query.isLoading && !query.error ? (
+      {!query.isLoading && !query.error && rows.length === 0 ? (
         <p className="classroom-empty-copy">
-          {rows.length > 0
-            ? "Choose a flagged question from the list."
-            : "Nothing flagged yet. Flag a question while you are drilling when you want to come back to it, and it will wait for you here."}
+          Nothing flagged yet. Flag a question while you are drilling when you
+          want to come back to it, and it will wait for you here.
         </p>
+      ) : null}
+      {!query.isLoading && !query.error && rows.length > 0 ? (
+        <>
+          <StageIndexHint>Choose a flagged question from the list.</StageIndexHint>
+          <StageIndexList
+            label="Flagged questions"
+            items={rows.map((row) => ({
+              key: row.id,
+              title: flagLabel(row),
+              meta: shortDate(row.flagged_at, row.qtype),
+              route: `/flagged/${encodeURIComponent(row.qid)}`,
+            }))}
+          />
+        </>
       ) : null}
     </>
   );

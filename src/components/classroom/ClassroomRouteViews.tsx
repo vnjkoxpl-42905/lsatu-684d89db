@@ -17,6 +17,11 @@ import {
   classroomNotes,
   sanitizeClassroomHtml,
 } from "@/components/classroom/classroomData";
+import {
+  StageIndexHint,
+  StageIndexList,
+  shortDate,
+} from "@/components/classroom/StageIndexList";
 
 function formatClassroomDate(value: string | Date) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -174,9 +179,18 @@ export function ClassroomRecapsView() {
         />
       ) : null}
       {!query.isLoading && !query.error && notes.length > 0 ? (
-        <p className="classroom-empty-copy">
-          Choose a note or recap from the list.
-        </p>
+        <>
+          <StageIndexHint>Choose a note or recap from the list.</StageIndexHint>
+          <StageIndexList
+            label="Notes and recaps"
+            items={notes.map((note) => ({
+              key: note.id,
+              title: note.title,
+              meta: shortDate(note.created_at),
+              route: `/classroom/item/${encodeURIComponent(note.id)}`,
+            }))}
+          />
+        </>
       ) : null}
     </>
   );

@@ -533,3 +533,24 @@ Confirmed with data before fixing: 2 `guided_drill_assignments` rows, **1 distin
 The feed no longer bakes `returnTo` into the row. `routeWithReturnTo(route, pathname)` stamps it at click time. Verified live on the same assignment the audit traced: from `/classroom` → `?returnTo=%2Fclassroom`; from `/schedule` → `?returnTo=%2Fschedule`.
 
 `useAssignedTodoFeed.test.ts` pins all three findings (11 tests). The H9 cases were falsified first — swapping the dedupe key back to the assignment id fails exactly those two and nothing else.
+
+### H5 · index pages now show the list they tell you to pick from
+
+The section-list column is hidden below 1280px, and below 1400px for Wrong answers, where it collapses behind a trigger that reads as nothing more than a section title. At those widths `/journal`, `/flagged` and `/classroom/recaps` each said "choose from the list" with no list anywhere on screen — which covers a 13" laptop and any window with a panel docked.
+
+Each index view now renders the real list in the stage via a shared `StageIndexList`. Both copies always render and CSS shows exactly one, at the same two breakpoints the column itself uses, so there is no width measured in JS and nothing to re-run on resize. `display: none` also keeps the hidden copy out of the accessibility tree, so nothing is announced twice. Empty states are unchanged — when there is nothing to list, the explanatory copy still shows at every width.
+
+**Falsified across the matrix the finding asked for**, reading the computed `display` of the column, the stage list and the hint at each width:
+
+| width | column | stage list | hint | clickable rows on screen |
+|---|---|---|---|---|
+| 1100 | none | grid | none | 2 |
+| 1279 | none | grid | none | 2 |
+| 1280 | block | none | block | 2 |
+| 1600 | block | none | block | 2 |
+
+Never both, never neither, and never a duplicated list — the count stays at 2 on both sides of the boundary. `/classroom/recaps` matches at 1100 and 1600. `/journal` flips at its own boundary instead: column and stage list swap between 1399 and 1400.
+
+Clicking an entry at 1100px navigates in one click (`/flagged` → `/flagged/PT118-S3-Q8`), which was the finding's falsification test.
+
+Caveat: the test student has 0 journal entries, so `/journal`'s stage list could not be exercised end to end. Its breakpoint was confirmed at the CSS level with a probe node carrying the real classes inside the real `.classroom-root.classroom-root-journal`; `/flagged` and `/classroom/recaps` were confirmed with real rows.
