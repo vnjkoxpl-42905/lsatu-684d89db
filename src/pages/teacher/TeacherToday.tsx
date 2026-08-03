@@ -10,16 +10,18 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useHubStudents } from '@/hooks/useHubStudents';
 
+// Counts are nullable on purpose: a query that failed has no count, and the
+// tiles must say so rather than print a zero the data never supported.
 interface DashboardStats {
-  pendingDrafts: number;
-  uploadsToReview: number;
+  pendingDrafts: number | null;
+  uploadsToReview: number | null;
 }
 
 function useDashboardStats(): DashboardStats {
   const { data } = useQuery<DashboardStats>({
     queryKey: ['teacher-today-stats'],
     queryFn: async () => {
-      const [{ count: pendingDrafts }, { count: uploadsToReview }] = await Promise.all([
+      const [draftsRes, uploadsRes] = await Promise.all([
         supabase
           .from('ai_ta_drafts')
           .select('*', { count: 'exact', head: true })
@@ -29,21 +31,27 @@ function useDashboardStats(): DashboardStats {
           .select('*', { count: 'exact', head: true })
           .in('processing_status', ['uploaded', 'needs_review']),
       ]);
+      if (draftsRes.error) throw draftsRes.error;
+      if (uploadsRes.error) throw uploadsRes.error;
       return {
-        pendingDrafts: pendingDrafts ?? 0,
-        uploadsToReview: uploadsToReview ?? 0,
+        pendingDrafts: draftsRes.count ?? 0,
+        uploadsToReview: uploadsRes.count ?? 0,
       };
     },
   });
-  return data ?? { pendingDrafts: 0, uploadsToReview: 0 };
+  return data ?? { pendingDrafts: null, uploadsToReview: null };
 }
 
 export default function TeacherToday() {
   const navigate = useNavigate();
   const stats = useDashboardStats();
-  const { rows: students = [] } = useHubStudents();
+  const { rows: students = [], error: rosterError } = useHubStudents();
 
-  const needsReplyCount = students.filter((s) => s.has_unread_from_student).length;
+  // The roster failing is not an empty roster.
+  const needsReplyCount = rosterError
+    ? null
+    : students.filter((s) => s.has_unread_from_student).length;
+  const rosterCount = rosterError ? null : students.length;
 
   return (
     <div className="px-6 py-8 max-w-5xl space-y-8">
@@ -78,7 +86,7 @@ export default function TeacherToday() {
         />
         <StatTile
           label="Roster"
-          value={students.length}
+          value={rosterCount}
           Icon={ClipboardList}
           onClick={() => navigate('/teacher?ws=people')}
         />
@@ -114,7 +122,7 @@ function StatTile({
   onClick,
 }: {
   label: string;
-  value: number;
+  value: number | null;
   Icon: React.ComponentType<{ className?: string }>;
   onClick: () => void;
 }) {
@@ -128,7 +136,12 @@ function StatTile({
         <Icon className="w-3.5 h-3.5" />
         <span className="text-[10px] uppercase tracking-wider">{label}</span>
       </div>
-      <div className="mt-1 text-2xl font-semibold text-zinc-100 tabular-nums">{value}</div>
+      <div
+        className="mt-1 text-2xl font-semibold text-zinc-100 tabular-nums"
+        title={value === null ? "Couldn't load" : undefined}
+      >
+        {value === null ? '—' : value}
+      </div>
     </button>
   );
 }

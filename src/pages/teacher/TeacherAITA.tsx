@@ -33,9 +33,11 @@ import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 type TopTab = 'chat' | 'drafts';
 type QueueId = 'replies' | 'approvals' | 'review' | 'assign' | 'analytics';
 
+// Counts are nullable on purpose: a query that failed has no count, and the
+// tiles must say so rather than print a zero the data never supported.
 interface WorkspaceStats {
-  pendingDrafts: number;
-  uploadsToReview: number;
+  pendingDrafts: number | null;
+  uploadsToReview: number | null;
 }
 
 const STATUS_TABS: { id: AITADraftStatus | 'all'; label: string }[] = [
@@ -50,7 +52,7 @@ function useWorkspaceStats(): WorkspaceStats {
   const { data } = useQuery<WorkspaceStats>({
     queryKey: ['teacher-command-stats'],
     queryFn: async () => {
-      const [{ count: pendingDrafts }, { count: uploadsToReview }] = await Promise.all([
+      const [draftsRes, uploadsRes] = await Promise.all([
         supabase
           .from('ai_ta_drafts')
           .select('*', { count: 'exact', head: true })
@@ -61,14 +63,30 @@ function useWorkspaceStats(): WorkspaceStats {
           .in('processing_status', ['uploaded', 'needs_review']),
       ]);
 
+      if (draftsRes.error) throw draftsRes.error;
+      if (uploadsRes.error) throw uploadsRes.error;
+
       return {
-        pendingDrafts: pendingDrafts ?? 0,
-        uploadsToReview: uploadsToReview ?? 0,
+        pendingDrafts: draftsRes.count ?? 0,
+        uploadsToReview: uploadsRes.count ?? 0,
       };
     },
   });
 
-  return data ?? { pendingDrafts: 0, uploadsToReview: 0 };
+  return data ?? { pendingDrafts: null, uploadsToReview: null };
+}
+
+// A count that could not be read renders as an em dash that explains itself on
+// hover, never as 0.
+function StatValue({ value, className }: { value: number | null; className?: string }) {
+  if (value === null) {
+    return (
+      <span className={className} title="Couldn't load">
+        —
+      </span>
+    );
+  }
+  return <span className={className}>{value}</span>;
 }
 
 function getStudentName(student: HubStudentRow) {
@@ -96,7 +114,7 @@ interface QueueDef {
   id: QueueId;
   title: string;
   label: string;
-  count: number;
+  count: number | null;
   description: string;
   empty: string;
   Icon: typeof MessageSquare;
@@ -108,8 +126,13 @@ interface QueueDef {
 function CommandCenter() {
   const navigate = useNavigate();
   const stats = useWorkspaceStats();
-  const { rows: students = [], loading } = useHubStudents();
+  const { rows: students = [], loading, error: rosterError } = useHubStudents();
   const [activeQueue, setActiveQueue] = useState<QueueId>('replies');
+
+  // The roster failing is not an empty roster. Anything counted off `students`
+  // reports as unavailable rather than as zero.
+  const rosterFailed = !!rosterError;
+  const countFromRoster = (n: number) => (rosterFailed ? null : n);
 
   const needsReply = students.filter((student) => student.has_unread_from_student);
   const activeStudents = students.filter((student) => student.assignments_total > 0);
@@ -117,8 +140,9 @@ function CommandCenter() {
     const completion = getCompletionRate(student);
     return student.assignments_total === 0 || completion >= 80;
   });
-  const completionAverage =
-    activeStudents.length === 0
+  const completionAverage = rosterFailed
+    ? null
+    : activeStudents.length === 0
       ? 0
       : Math.round(
           activeStudents.reduce((sum, student) => sum + getCompletionRate(student), 0) /
@@ -141,7 +165,7 @@ function CommandCenter() {
       id: 'replies',
       title: 'Reply Queue',
       label: 'Student conversations waiting on Joshua.',
-      count: needsReply.length,
+      count: countFromRoster(needsReply.length),
       description: 'Start here when students are waiting. These are conversations with unread student messages.',
       empty: 'No student replies are waiting.',
       Icon: MessageSquare,
@@ -205,7 +229,7 @@ function CommandCenter() {
       id: 'assign',
       title: 'Assign Queue',
       label: 'Students who may need the next piece of work.',
-      count: needsPlan.length,
+      count: countFromRoster(needsPlan.length),
       description: 'Use this queue to move from “who needs work?” into the assignment builder or student plan.',
       empty: 'No obvious assignment gaps from the current roster data.',
       Icon: ClipboardList,
@@ -229,7 +253,7 @@ function CommandCenter() {
       id: 'analytics',
       title: 'Analytics Queue',
       label: 'Progress patterns that need a teaching decision.',
-      count: activeStudents.length,
+      count: countFromRoster(activeStudents.length),
       description: 'A compact watchlist for low completion and progress checks, with the full Insights surface one click away.',
       Icon: Target,
       empty: 'No active assignment analytics are available yet.',
@@ -252,7 +276,16 @@ function CommandCenter() {
   ];
 
   const active = queues.find((queue) => queue.id === activeQueue) ?? queues[0];
-  const totalWaiting = needsReply.length + stats.pendingDrafts + stats.uploadsToReview + needsPlan.length;
+  // One unreadable part makes the total unknowable, so the whole tile says so.
+  const waitingParts = [
+    countFromRoster(needsReply.length),
+    stats.pendingDrafts,
+    stats.uploadsToReview,
+    countFromRoster(needsPlan.length),
+  ];
+  const totalWaiting = waitingParts.some((n) => n === null)
+    ? null
+    : waitingParts.reduce((sum, n) => sum + (n as number), 0);
 
   const commandActions = [
     {
@@ -269,7 +302,10 @@ function CommandCenter() {
     },
     {
       title: 'Insights',
-      detail: `Average completion: ${completionAverage}%`,
+      detail:
+        completionAverage === null
+          ? "Average completion: couldn't load"
+          : `Average completion: ${completionAverage}%`,
       Icon: BarChart3,
       action: () => navigate('/teacher/insights'),
     },
@@ -301,15 +337,27 @@ function CommandCenter() {
           <div className="grid grid-cols-3 gap-2 sm:w-[420px]">
             <div className="rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Waiting</div>
-              <div className="mt-1 text-xl font-semibold tabular-nums text-zinc-50">{totalWaiting}</div>
+              <StatValue
+                value={totalWaiting}
+                className="mt-1 block text-xl font-semibold tabular-nums text-zinc-50"
+              />
             </div>
             <div className="rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Students</div>
-              <div className="mt-1 text-xl font-semibold tabular-nums text-zinc-50">{students.length}</div>
+              <StatValue
+                value={countFromRoster(students.length)}
+                className="mt-1 block text-xl font-semibold tabular-nums text-zinc-50"
+              />
             </div>
             <div className="rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Avg done</div>
-              <div className="mt-1 text-xl font-semibold tabular-nums text-zinc-50">{completionAverage}%</div>
+              <div className="mt-1 text-xl font-semibold tabular-nums text-zinc-50">
+                {completionAverage === null ? (
+                  <span title="Couldn't load">—</span>
+                ) : (
+                  `${completionAverage}%`
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -358,7 +406,7 @@ function CommandCenter() {
                       active.id === queue.id ? 'bg-zinc-950 text-zinc-50' : 'bg-zinc-900 text-zinc-300',
                     )}
                   >
-                    {queue.count}
+                    <StatValue value={queue.count} />
                   </div>
                 </button>
               ))}
