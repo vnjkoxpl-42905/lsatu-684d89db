@@ -1832,6 +1832,258 @@ export type Database = {
           },
         ]
       }
+      lr_answer_choices: {
+        Row: {
+          choice_text: string
+          created_at: string
+          id: string
+          is_correct: boolean
+          letter: string
+          question_id: string
+          student_percent: number | null
+          tag: string | null
+          updated_at: string
+        }
+        Insert: {
+          choice_text: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          letter: string
+          question_id: string
+          student_percent?: number | null
+          tag?: string | null
+          updated_at?: string
+        }
+        Update: {
+          choice_text?: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          letter?: string
+          question_id?: string
+          student_percent?: number | null
+          tag?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_answer_choices_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "lr_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lr_explanation_choice_notes: {
+        Row: {
+          body: string
+          created_at: string
+          explanation_id: string
+          id: string
+          letter: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          explanation_id: string
+          id?: string
+          letter: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          explanation_id?: string
+          id?: string
+          letter?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_explanation_choice_notes_explanation_id_fkey"
+            columns: ["explanation_id"]
+            isOneToOne: false
+            referencedRelation: "lr_explanations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lr_explanation_steps: {
+        Row: {
+          body: string
+          created_at: string
+          explanation_id: string
+          id: string
+          label: string
+          position: number
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          explanation_id: string
+          id?: string
+          label: string
+          position: number
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          explanation_id?: string
+          id?: string
+          label?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_explanation_steps_explanation_id_fkey"
+            columns: ["explanation_id"]
+            isOneToOne: false
+            referencedRelation: "lr_explanations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lr_explanations: {
+        Row: {
+          created_at: string
+          id: string
+          question_id: string
+          style: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question_id: string
+          style: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question_id?: string
+          style?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_explanations_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "lr_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lr_preptests: {
+        Row: {
+          created_at: string
+          preptest: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          preptest: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          preptest?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      lr_questions: {
+        Row: {
+          correct_choice: string | null
+          created_at: string
+          id: string
+          is_explained: boolean
+          preptest: number
+          prompt: string
+          qid: string
+          question_number: number
+          question_type: string
+          section: number
+          section_id: string
+          source_note: string | null
+          stimulus: string
+          updated_at: string
+        }
+        Insert: {
+          correct_choice?: string | null
+          created_at?: string
+          id?: string
+          is_explained?: boolean
+          preptest: number
+          prompt: string
+          qid: string
+          question_number: number
+          question_type: string
+          section: number
+          section_id: string
+          source_note?: string | null
+          stimulus: string
+          updated_at?: string
+        }
+        Update: {
+          correct_choice?: string | null
+          created_at?: string
+          id?: string
+          is_explained?: boolean
+          preptest?: number
+          prompt?: string
+          qid?: string
+          question_number?: number
+          question_type?: string
+          section?: number
+          section_id?: string
+          source_note?: string | null
+          stimulus?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_questions_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "lr_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lr_sections: {
+        Row: {
+          created_at: string
+          id: string
+          preptest: number
+          section: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          preptest: number
+          section: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          preptest?: number
+          section?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lr_sections_preptest_fkey"
+            columns: ["preptest"]
+            isOneToOne: false
+            referencedRelation: "lr_preptests"
+            referencedColumns: ["preptest"]
+          },
+        ]
+      }
       lsat_knowledge_sources: {
         Row: {
           authority: string
