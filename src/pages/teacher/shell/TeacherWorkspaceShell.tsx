@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
@@ -41,12 +41,6 @@ const ROOMS: Room[] = [
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
-/** Rooms reachable from the header rather than the sidebar. */
-const TOOL_TITLES: Record<string, string> = {
-  '/teacher/whiteboard': 'Whiteboard',
-  '/teacher/dev': 'Dev tools',
-};
-
 /**
  * The perspective floor from the Desk. Kept so the workspace ground reads as
  * the same room the Desk surfaces were designed for.
@@ -62,26 +56,15 @@ const FLOOR_GRID_STYLE: React.CSSProperties = {
 };
 
 /**
- * Room title for the header. Matched by longest path prefix so a nested route
- * (`/teacher/library/guided-drills`) still titles as its room.
- */
-function useRoomTitle(pathname: string): string {
-  return useMemo(() => {
-    const tool = Object.keys(TOOL_TITLES).find((path) => pathname.startsWith(path));
-    if (tool) return TOOL_TITLES[tool];
-
-    const room = [...ROOMS]
-      .sort((a, b) => b.to.length - a.to.length)
-      .find((item) => pathname === item.to || pathname.startsWith(`${item.to}/`));
-
-    return room?.label ?? 'Teacher workspace';
-  }, [pathname]);
-}
-
-/**
- * The teacher workspace shell: one sidebar that never unmounts, one header,
+ * The teacher workspace shell: one top rail that never unmounts, one header,
  * one accent. Every room renders into the `<Outlet/>`; nothing here remounts
  * when the room changes, so room-to-room navigation is real browser history.
+ *
+ * The rail sits in the header rather than down the side: the shell is entered
+ * from the Classroom's own side rail, and a second vertical rail immediately
+ * inside the first read as two competing navigations. Rooms across the top,
+ * each room's own tabs (Library's bootcamps/drills/assignments/activities) in
+ * the workspace below — one level of nav per axis.
  *
  * The AI panel (spec D6) is a Phase 3 build. Its slot and toggle exist now so
  * the layout is settled before the panel lands in it.
@@ -98,7 +81,6 @@ function WorkspaceLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
-  const title = useRoomTitle(location.pathname);
 
   return (
     <div className="relative flex h-screen min-h-screen flex-col overflow-hidden bg-[#c3cace] text-[#11181c]">
@@ -107,10 +89,13 @@ function WorkspaceLayout() {
       </div>
 
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-black/10 px-5 py-3.5 sm:px-6">
-          <h1 className="truncate font-display text-[22px] leading-none tracking-tight">{title}</h1>
+        <header className="shrink-0 border-b border-black/10 px-5 sm:px-6">
+          <div className="flex items-center justify-between gap-4 py-3.5">
+            <h1 className="truncate font-display text-[22px] leading-none tracking-tight">
+              Teacher Workspace
+            </h1>
 
-          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => navigate('/teacher/whiteboard')}
@@ -144,36 +129,36 @@ function WorkspaceLayout() {
               )}
               Assistant
             </button>
+            </div>
           </div>
+
+          {/* The room rail. Hidden below md, where the bottom bar takes over. */}
+          <nav
+            className="hidden items-stretch gap-1 overflow-x-auto md:flex"
+            aria-label="Teacher workspace"
+          >
+            {ROOMS.map(({ to, label, Icon, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  cn(
+                    'inline-flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-[13px] transition',
+                    isActive
+                      ? 'border-teacher-accent font-medium text-black'
+                      : 'border-transparent text-black/55 hover:text-black',
+                  )
+                }
+              >
+                <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+                <span className="truncate">{label}</span>
+              </NavLink>
+            ))}
+          </nav>
         </header>
 
         <div className="flex min-h-0 flex-1">
-          <aside className="hidden w-[212px] shrink-0 border-r border-black/10 md:flex md:flex-col">
-            <div className="px-5 pb-3 pt-5 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
-              Workspace
-            </div>
-            <nav className="flex flex-col px-3 pb-4" aria-label="Teacher workspace">
-              {ROOMS.map(({ to, label, Icon, end }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  end={end}
-                  className={({ isActive }) =>
-                    cn(
-                      'inline-flex items-center gap-2.5 border border-transparent px-2.5 py-2 text-[13px] transition',
-                      isActive
-                        ? 'border-black bg-black text-white'
-                        : 'text-black/60 hover:border-black/15 hover:text-black',
-                    )
-                  }
-                >
-                  <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-                  <span className="truncate">{label}</span>
-                </NavLink>
-              ))}
-            </nav>
-          </aside>
-
           <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
             <Outlet />
           </main>

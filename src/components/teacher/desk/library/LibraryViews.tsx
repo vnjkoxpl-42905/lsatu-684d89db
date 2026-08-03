@@ -130,8 +130,12 @@ function Detail({ item }: { item: LibraryItem }) {
     <div className="flex h-full flex-col gap-3">
       <CardHeader item={item} />
       <Badges badges={item.badges} />
-      {item.renderPreview && <div className="min-h-0 flex-1">{item.renderPreview({ live: true })}</div>}
-      <div className="flex flex-wrap items-center gap-2 pt-1">{item.actions}</div>
+      {/* The preview is `position: relative` with an aspect-ratio height, so it
+          overflows this slot and — being positioned — paints over the static
+          action row below it, swallowing the clicks. Clip it, and let the row
+          paint last. */}
+      {item.renderPreview && <div className="min-h-0 flex-1 overflow-hidden">{item.renderPreview({ live: true })}</div>}
+      <div className="relative flex shrink-0 flex-wrap items-center gap-2 pt-1">{item.actions}</div>
     </div>
   );
 }
