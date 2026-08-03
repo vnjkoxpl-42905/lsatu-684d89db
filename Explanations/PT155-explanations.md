@@ -1,6 +1,10 @@
 # PrepTest 155 — Explanations
 
-Transcribed verbatim from LSAT Lab (set questionsetid=318838). This PT155 content is single-style: only ONE authored written explanation per question exists (no Standard/Brief/Another Way selector on this test, unlike PT158). This file covers Sections 3 and 4 only; Section 2 (26 Qs) is already captured in the legacy `PT155-S2-explanations.md`, and Section 1 is not in this set. Video-only questions (if any) omitted and logged in the progress file. Note: in this set the item order is S2 (items 1-26, skipped), then Section 4 (items 27+), then Section 3; sections below are ordered as they appear in the set.
+Transcribed verbatim from LSAT Lab (set questionsetid=318838). This PT155 content is single-style: only ONE authored written explanation per question exists (no Standard/Brief/Another Way selector on this test, unlike PT158).
+
+**This file covers Sections 4 and 1** — 25 questions each, in that order, matching the order they appear in the set. Section 2 (26 questions) lives in `PT155-S2-explanations.md`.
+
+Corrected 2026-08-03: the header previously claimed "Sections 3 and 4" and that Section 1 was absent. Both were wrong — the blocks below are labelled S4 and S1, and LSAT Lab's API confirms PT155 has sections 1, 2 and 4 with no section 3. This file is **authoritative for Section 1**; the older `PT155-S1-explanations.md` is a second, earlier capture of the same 25 questions in the legacy `## Question N` layout. The two agree on 21 of 25 questions, differing only by one-point percentage drift and one capitalisation variant, and this file matches the live source on 3 of those 4. Video-only questions are omitted and logged in the progress file.
 
 ---
 

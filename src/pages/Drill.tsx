@@ -33,6 +33,7 @@ import { LRSectionResults } from '@/components/drill/LRSectionResults';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import { ExplanationPanel } from '@/components/drill/ExplanationPanel';
+import { QuestionMenuPanel } from '@/components/drill/QuestionMenuPanel';
 import { TimerProvider, useTimerContextSafe } from '@/contexts/TimerContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useClassId } from '@/hooks/useClassId';
@@ -180,6 +181,8 @@ function DrillContent() {
   // shows transcribed source content, the tutor generates. Authored wins when
   // it exists; the tutor is the fallback for questions that have none.
   const [explanationOpen, setExplanationOpen] = React.useState(false);
+  // Slide-out question menu (details, related questions, notes).
+  const [questionMenuOpen, setQuestionMenuOpen] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
@@ -2846,6 +2849,22 @@ function DrillContent() {
           </Button>
         }
       />
+
+      {/* Slide-out question menu. Rows that have no working destination are
+          omitted rather than shown dead. */}
+      <QuestionMenuPanel
+        open={questionMenuOpen}
+        onOpenChange={setQuestionMenuOpen}
+        question={currentQuestion}
+        onOpenNotes={toggleNotesPanel}
+        onJumpToQuestion={(qid) => {
+          // Start a fresh single-question drill on the chosen question, the
+          // same route the library picker uses.
+          navigate(
+            `/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart&returnTo=${encodeURIComponent('/classroom/drill')}`,
+          );
+        }}
+      />
     </>
   );
 
@@ -3175,6 +3194,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom')}
+              onOpenMenu={() => setQuestionMenuOpen(true)}
               onShowAnswer={() => revealAnswerForCurrent()}
               showAnswerDisabled={!currentAttempted}
               onAskTutor={() => setExplanationOpen(true)}
@@ -3229,6 +3249,7 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom/drill')}
+              onOpenMenu={() => setQuestionMenuOpen(true)}
               onShowAnswer={() => revealAnswerForCurrent()}
               showAnswerDisabled={!currentAttempted}
               onAskTutor={() => setExplanationOpen(true)}

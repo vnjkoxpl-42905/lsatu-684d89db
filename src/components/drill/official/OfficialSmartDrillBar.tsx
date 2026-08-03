@@ -23,6 +23,8 @@ interface Props {
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
   onEnd: () => void;
+  /** Opens the slide-out question menu. Hidden if omitted. */
+  onOpenMenu?: () => void;
   /** Reveals the correct answer in place. Hidden if omitted. */
   onShowAnswer?: () => void;
   /** Disabled until the student has committed an answer. */
@@ -52,6 +54,7 @@ export default function OfficialSmartDrillBar({
   onSkip,
   skipDisabled,
   onEnd,
+  onOpenMenu,
   onShowAnswer,
   showAnswerDisabled,
   onAskTutor,
@@ -73,6 +76,18 @@ export default function OfficialSmartDrillBar({
         >
           End
         </button>
+
+        {/* Menu — question details, related questions, notes */}
+        {onOpenMenu && (
+          <button
+            type="button"
+            onClick={onOpenMenu}
+            disabled={disabled}
+            className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Menu
+          </button>
+        )}
 
         {/* Answer / Explanation pair, mirroring LSAT Lab's review controls.
             Answer reveals the correct letter; Explanation opens the authored
