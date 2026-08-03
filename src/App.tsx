@@ -90,7 +90,16 @@ const DeskLibrarySurface = React.lazy(() => import("./pages/teacher/desk/DeskLib
 const TeacherInbox = React.lazy(() =>
   import("./components/inbox/AdminInboxCommandCenter").then((m) => ({ default: m.AdminInboxCommandCenter })),
 );
-const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
+// TeacherStudentDetail's route is gone — the dossier replaced it and absorbed
+// its session/transcript pipeline into SessionBundleList. The file stays until
+// the Phase 4 purge, but nothing imports it now.
+// The student dossier + its five tab surfaces (T3.2).
+const StudentDossier = React.lazy(() => import("./pages/teacher/students/StudentDossier"));
+const DossierOverview = React.lazy(() => import("./pages/teacher/students/DossierOverview"));
+const DossierWork = React.lazy(() => import("./pages/teacher/students/DossierWork"));
+const DossierNotes = React.lazy(() => import("./pages/teacher/students/DossierNotes"));
+const DossierMessages = React.lazy(() => import("./pages/teacher/students/DossierMessages"));
+const DossierSchedule = React.lazy(() => import("./pages/teacher/students/DossierSchedule"));
 const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
 const TeacherSchedule = React.lazy(() => import("./pages/teacher/TeacherSchedule"));
 const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
@@ -522,11 +531,31 @@ const App = () => {
                           <DeskPeopleSurface />
                         </React.Suspense>
                       } />
+                      {/* The dossier (T3.2): one URL per student, five real
+                          child routes so each surface is linkable and
+                          back/forward work. */}
                       <Route path="students/:studentId" element={
                         <React.Suspense fallback={<div />}>
-                          <TeacherStudentDetail />
+                          <StudentDossier />
                         </React.Suspense>
-                      } />
+                      }>
+                        <Route index element={<Navigate to="overview" replace />} />
+                        <Route path="overview" element={
+                          <React.Suspense fallback={<div />}><DossierOverview /></React.Suspense>
+                        } />
+                        <Route path="work" element={
+                          <React.Suspense fallback={<div />}><DossierWork /></React.Suspense>
+                        } />
+                        <Route path="notes" element={
+                          <React.Suspense fallback={<div />}><DossierNotes /></React.Suspense>
+                        } />
+                        <Route path="messages" element={
+                          <React.Suspense fallback={<div />}><DossierMessages /></React.Suspense>
+                        } />
+                        <Route path="schedule" element={
+                          <React.Suspense fallback={<div />}><DossierSchedule /></React.Suspense>
+                        } />
+                      </Route>
                       <Route path="inbox" element={
                         <React.Suspense fallback={<div />}>
                           <TeacherInbox embedded />

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Activity,
   AlertTriangle,
@@ -343,7 +344,14 @@ function PersonRow({
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="truncate text-sm font-semibold text-black">{person.display_name || 'No name'}</span>
+            {/* The row opens the dossier; the chevron still expands inline for
+                a quick access peek without leaving the roster. */}
+            <Link
+              to={`/teacher/students/${person.class_id}`}
+              className="truncate text-sm font-semibold text-black underline-offset-4 hover:underline"
+            >
+              {person.display_name || 'No name'}
+            </Link>
             <RoleBadge user={person} />
             {isOnline && (
               <span className="inline-flex items-center gap-1 border border-emerald-700/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-800">

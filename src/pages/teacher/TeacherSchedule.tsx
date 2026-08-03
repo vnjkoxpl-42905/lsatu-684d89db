@@ -1,60 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  Plus,
-  X,
-} from 'lucide-react';
-import {
-  addDays,
-  addMonths,
-  endOfDay,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameDay,
-  isSameMonth,
-  isToday,
-  parseISO,
-  startOfDay,
-  startOfMonth,
-  startOfWeek,
-  subMonths,
-} from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import { useQuery } from '@tanstack/react-query';
+import { CalendarDays } from 'lucide-react';
+import { format, parseISO, startOfDay } from 'date-fns';
 import HubStudentList from '@/components/hub/HubStudentList';
-import { useStudentClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { useSelectedHubStudent } from '@/hooks/useHubStudents';
-import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
-import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
-import StudentBookingPanel from '@/components/teacher/schedule/StudentBookingPanel';
+import StudentSchedulePanel from '@/components/teacher/schedule/StudentSchedulePanel';
 import WeeklyHoursEditor from '@/components/teacher/schedule/WeeklyHoursEditor';
 
-const QUICK_TYPES: { value: ClassroomItemType; label: string }[] = [
-  { value: 'note', label: 'Note' },
-  { value: 'announcement', label: 'Announcement' },
-  { value: 'session_recap', label: 'Recap' },
-];
-
 export default function TeacherSchedule() {
-  const { user } = useAuth();
-  const qc = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const studentId = searchParams.get('student');
   const eventId = searchParams.get('event');
   const selected = useSelectedHubStudent(studentId);
-  const { data: items = [], isLoading } = useStudentClassroomItems(studentId);
   const focusedEventQuery = useQuery({
     queryKey: ['schedule_events', 'focus', eventId],
     enabled: !!eventId,
@@ -79,20 +38,11 @@ export default function TeacherSchedule() {
     },
   });
 
-  const [monthAnchor, setMonthAnchor] = useState<Date>(new Date());
-  const [pickedDay, setPickedDay] = useState<Date | null>(null);
-
-  const [type, setType] = useState<ClassroomItemType>('note');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
+  // Everything else the month grid needed now lives in StudentSchedulePanel.
+  // This page keeps only the student picker and the focused-event header.
+  const focusedDate = useMemo(() => {
     const event = focusedEventQuery.data;
-    if (!event) return;
-    const day = startOfDay(parseISO(event.start_at));
-    setMonthAnchor(day);
-    setPickedDay(day);
+    return event ? startOfDay(parseISO(event.start_at)) : null;
   }, [focusedEventQuery.data]);
 
   const setStudentId = (id: string) =>
@@ -101,84 +51,6 @@ export default function TeacherSchedule() {
       c.set('student', id);
       return c;
     });
-
-  const monthDays = useMemo(() => {
-    const start = startOfWeek(startOfMonth(monthAnchor), { weekStartsOn: 0 });
-    const end = endOfWeek(endOfMonth(monthAnchor), { weekStartsOn: 0 });
-    const out: Date[] = [];
-    let d = start;
-    while (d <= end) {
-      out.push(d);
-      d = addDays(d, 1);
-    }
-    return out;
-  }, [monthAnchor]);
-
-  const itemDate = (it: ClassroomItem) => {
-    const raw = it.due_at ?? it.unlock_at ?? it.created_at;
-    return startOfDay(new Date(raw));
-  };
-
-  const itemsByDay = useMemo(() => {
-    const m = new Map<string, ClassroomItem[]>();
-    for (const it of items) {
-      if (it.status === 'archived') continue;
-      const key = format(itemDate(it), 'yyyy-MM-dd');
-      if (!m.has(key)) m.set(key, []);
-      m.get(key)!.push(it);
-    }
-    return m;
-  }, [items]);
-
-  const submitQuick = async () => {
-    if (!user || !studentId || !pickedDay || !title.trim()) {
-      toast.error('Title required');
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const unlockAt = startOfDay(pickedDay).toISOString();
-      const dueAt = endOfDay(pickedDay).toISOString();
-      const item = await createClassroomItem({
-        studentId,
-        createdBy: user.id,
-        type,
-        title: title.trim(),
-        description: description.trim() || undefined,
-        unlockAt,
-        dueAt,
-        visibleToStudent: true,
-        status: 'assigned',
-      });
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId: user.id,
-        studentId,
-        title: title.trim(),
-        description: description.trim() || undefined,
-        route: resolveItemRoute(item) ?? `/classroom/item/${item.id}`,
-      });
-      qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
-      qc.invalidateQueries({ queryKey: ['classroom-items'] });
-
-      const summary = summarizeNotifyResult(notify);
-      if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
-        toast.success(summary);
-      } else {
-        toast.warning(summary, {
-          description: notify.email_error ?? notify.inbox_error ?? notify.bell_error,
-        });
-      }
-      setTitle('');
-      setDescription('');
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Assign failed');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const pickedKey = pickedDay ? format(pickedDay, 'yyyy-MM-dd') : null;
-  const pickedItems = pickedKey ? itemsByDay.get(pickedKey) ?? [] : [];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
@@ -219,228 +91,12 @@ export default function TeacherSchedule() {
             Select a student to view their schedule.
           </div>
         ) : (
-          <>
-            <StudentBookingPanel
-              studentId={studentId}
-              studentName={selected?.display_name ?? null}
-              studentEmail={selected?.email ?? null}
-            />
-
-            <header className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-[11px] uppercase tracking-wider text-black/45 font-semibold">
-                  Schedule for
-                </div>
-                <h2 className="text-xl font-semibold tracking-tight">
-                  {selected?.display_name?.trim() || 'Student'}
-                </h2>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setMonthAnchor((m) => subMonths(m, 1))}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <span className="text-sm font-medium tabular-nums w-32 text-center">
-                  {format(monthAnchor, 'MMMM yyyy')}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setMonthAnchor((m) => addMonths(m, 1))}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => setMonthAnchor(new Date())}>
-                  Today
-                </Button>
-              </div>
-            </header>
-
-            {isLoading ? (
-              <div className="flex items-center text-sm text-black/45">
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Loading schedule…
-              </div>
-            ) : (
-              <div className="rounded-xl border border-black/12 overflow-hidden">
-                <div className="grid grid-cols-7 bg-white/35 border-b border-black/12">
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-                    <div
-                      key={d}
-                      className="text-[10px] uppercase tracking-[0.15em] text-black/45 font-medium text-center py-2"
-                    >
-                      {d}
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-7">
-                  {monthDays.map((d) => {
-                    const key = format(d, 'yyyy-MM-dd');
-                    const dayItems = itemsByDay.get(key) ?? [];
-                    const outside = !isSameMonth(d, monthAnchor);
-                    const today = isToday(d);
-                    const picked = pickedDay && isSameDay(d, pickedDay);
-                    return (
-                      <button
-                        key={d.toISOString()}
-                        type="button"
-                        onClick={() => {
-                          setPickedDay(d);
-                        }}
-                        className={cn(
-                          'border-b border-r border-black/12 p-2 text-left min-h-[88px] hover:bg-white/50 transition-colors',
-                          outside && 'opacity-40',
-                          picked && 'ring-1 ring-teacher-accent bg-white/45',
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span
-                            className={cn(
-                              'text-xs tabular-nums',
-                              today
-                                ? 'inline-flex items-center justify-center h-5 w-5 rounded-full bg-teacher-accent text-white font-semibold'
-                                : 'text-black/60',
-                            )}
-                          >
-                            {format(d, 'd')}
-                          </span>
-                          {dayItems.length > 0 && (
-                            <span className="text-[10px] text-black/45">{dayItems.length}</span>
-                          )}
-                        </div>
-                        <div className="mt-1 space-y-0.5">
-                          {dayItems.slice(0, 2).map((it) => (
-                            <div
-                              key={it.id}
-                              className="text-[11px] truncate text-black/70 bg-white/40 rounded px-1 py-0.5"
-                              title={it.title}
-                            >
-                              {it.title}
-                            </div>
-                          ))}
-                          {dayItems.length > 2 && (
-                            <div className="text-[10px] text-black/45">
-                              +{dayItems.length - 2} more
-                            </div>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {pickedDay && (
-              <div className="rounded-xl border border-black/12 bg-white/25 p-4 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-[11px] uppercase tracking-wider text-black/45">
-                      {format(pickedDay, 'EEEE, MMM d')}
-                    </div>
-                    <div className="text-sm text-black/60">
-                      {pickedItems.length === 0 ? 'No items yet.' : `${pickedItems.length} item${pickedItems.length === 1 ? '' : 's'}`}
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon" onClick={() => setPickedDay(null)} aria-label="Close">
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-
-                {pickedItems.length > 0 && (
-                  <ul className="space-y-1">
-                    {pickedItems.map((it) => (
-                      <li
-                        key={it.id}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-black/12 bg-transparent"
-                      >
-                        <span className="text-[10px] uppercase tracking-wider text-black/45 w-24 shrink-0">
-                          {it.type.replace('_', ' ')}
-                        </span>
-                        <span className="text-sm text-[#11181c] flex-1 truncate">{it.title}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="border-t border-black/12 pt-4 space-y-3">
-                  <div className="text-[11px] uppercase tracking-wider text-black/45 font-semibold">
-                    Quick add for this day
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {QUICK_TYPES.map((t) => (
-                      <button
-                        key={t.value}
-                        type="button"
-                        onClick={() => setType(t.value)}
-                        className={cn(
-                          'inline-flex items-center px-2.5 py-1 rounded-full border text-[11px] transition-colors',
-                          type === t.value
-                            ? 'border-teacher-accent bg-white/45 text-[#11181c]'
-                            : 'border-black/12 bg-white/25 text-black/55 hover:text-black hover:bg-white/50',
-                        )}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div>
-                    <Label className="text-xs">Title</Label>
-                    <Input
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      placeholder="What's the task?"
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="text-xs">Description</Label>
-                    <Textarea
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      rows={2}
-                      placeholder="Optional"
-                      className="mt-1 text-sm"
-                    />
-                  </div>
-
-                  <div className="flex justify-end">
-                    <Button size="sm" onClick={submitQuick} disabled={submitting || !title.trim()}>
-                      {submitting ? (
-                        <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                      ) : (
-                        <Plus className="w-4 h-4 mr-1.5" />
-                      )}
-                      Assign to {format(pickedDay, 'MMM d')}
-                    </Button>
-                  </div>
-
-                  <div className="text-[11px] text-black/45">
-                    For homework or bootcamp assignments, use{' '}
-                    <a
-                      href={`/teacher/assignments?student=${studentId}`}
-                      className="underline hover:text-black/70"
-                    >
-                      Assignments
-                    </a>{' '}
-                    or{' '}
-                    <a
-                      href={`/teacher/weekly-plans?student=${studentId}`}
-                      className="underline hover:text-black/70"
-                    >
-                      Weekly Plans
-                    </a>
-                    .
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
+          <StudentSchedulePanel
+            studentId={studentId}
+            studentName={selected?.display_name ?? null}
+            studentEmail={selected?.email ?? null}
+            focusDate={focusedDate}
+          />
         )}
       </section>
     </div>
