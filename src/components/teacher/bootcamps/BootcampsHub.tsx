@@ -13,8 +13,7 @@ export function BootcampsHub() {
   if (sorted.length === 0) {
     return (
       <div className="px-6 py-6">
-        <h2 className="text-2xl font-semibold tracking-tight">Bootcamps</h2>
-        <p className="mt-1 text-sm text-zinc-400">
+        <p className="text-sm text-black/55">
           No bootcamps shipped yet. Topics show up here as they go live.
         </p>
       </div>
@@ -24,21 +23,23 @@ export function BootcampsHub() {
   return (
     <div className="px-6 py-6 max-w-6xl mx-auto space-y-5">
       <div className="space-y-1.5">
-        <div className="flex items-center gap-2 text-zinc-400">
+        <div className="flex items-center gap-2 text-black/55">
           <Flame className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
             Topic analytics
           </span>
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">Bootcamps</h2>
-        <p className="text-sm text-zinc-400">
+        {/* No page title here: the shell header already reads "Insights", and
+            a second heading saying something else made the room look like two
+            different pages stacked. */}
+        <p className="text-sm text-black/55">
           One row per shipped topic. Click a card to see per-student
           completion, drill accuracy, and flashcard review status.
         </p>
       </div>
 
       {error ? (
-        <div className="rounded-xl border border-rose-500/40 bg-rose-500/5 p-4 text-sm text-rose-200">
+        <div className="rounded-xl border border-rose-500/40 bg-rose-500/5 p-4 text-sm text-rose-700">
           Could not load bootcamp metrics. Try again in a moment.
         </div>
       ) : null}

@@ -66,7 +66,12 @@ function CardHeader({ item }: { item: LibraryItem }) {
         {item.eyebrow && (
           <div className="text-[10px] font-mono uppercase tracking-wider text-black/45">{item.eyebrow}</div>
         )}
-        <h3 className="mt-0.5 truncate text-sm font-semibold text-black">{item.title}</h3>
+        {/* Two lines, then ellipsis, with the whole title on hover. A single
+            truncated line turned "Principle" into "Princip…", which tells you
+            nothing about which card you are looking at. */}
+        <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-black" title={item.title}>
+          {item.title}
+        </h3>
         {item.subtitle && <div className="text-[11px] text-black/55">{item.subtitle}</div>}
       </div>
       {item.meta != null && <span className="shrink-0 text-[11px] tabular-nums text-black/45">{item.meta}</span>}
@@ -108,7 +113,7 @@ function ListView({ items }: { items: LibraryItem[] }) {
                   {item.eyebrow}
                 </span>
               )}
-              <span className="truncate text-sm font-semibold text-black">{item.title}</span>
+              <span className="truncate text-sm font-semibold text-black" title={item.title}>{item.title}</span>
               {item.subtitle && <span className="truncate text-[11px] text-black/50">· {item.subtitle}</span>}
             </div>
           </div>
@@ -153,7 +158,7 @@ function ColumnsView({ items }: { items: LibraryItem[] }) {
                 {item.eyebrow}
               </span>
             )}
-            <span className="truncate text-xs font-semibold">{item.title}</span>
+            <span className="truncate text-xs font-semibold" title={item.title}>{item.title}</span>
           </button>
         ))}
       </div>
@@ -182,14 +187,14 @@ function GalleryView({ items }: { items: LibraryItem[] }) {
             className={cn(
               'w-40 shrink-0 border px-3 py-2 text-left transition',
               item.id === active.id
-                ? 'border-amber-500 bg-white/70'
+                ? 'border-teacher-accent bg-white/70'
                 : 'border-black/12 bg-white/35 hover:border-black/30',
             )}
           >
             {item.eyebrow && (
               <span className="block text-[9px] font-mono uppercase tracking-wider text-black/40">{item.eyebrow}</span>
             )}
-            <span className="block truncate text-xs font-semibold text-black">{item.title}</span>
+            <span className="block truncate text-xs font-semibold text-black" title={item.title}>{item.title}</span>
           </button>
         ))}
       </div>

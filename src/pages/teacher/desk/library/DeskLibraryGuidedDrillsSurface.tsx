@@ -180,7 +180,7 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
                 subtitle: d.category ?? undefined,
                 badges: [...d.reasoning_types, ...d.question_types],
                 meta: (
-                  <span className={cn('tabular-nums', poolBad ? 'text-amber-700' : 'text-black/45')}>
+                  <span className={cn('tabular-nums', poolBad ? 'text-teacher-accent-strong' : 'text-black/45')}>
                     pool {ps ?? '…'}{need ? `/${need}` : ''}
                   </span>
                 ),
@@ -202,7 +202,7 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
                     <button
                       type="button"
                       onClick={() => setAssignDrill(d)}
-                      className="ml-auto inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/20 px-2.5 py-1 text-xs font-semibold text-amber-900 transition hover:bg-amber-500/30"
+                      className="ml-auto inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
                     >
                       <Send className="h-3 w-3" /> Assign
                     </button>

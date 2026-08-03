@@ -98,8 +98,8 @@ export default function TeacherSmartboard() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
-      <aside className="border-b lg:border-b-0 lg:border-r border-zinc-800 overflow-y-auto max-h-[40vh] lg:max-h-none">
-        <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2 text-zinc-400">
+      <aside className="border-b lg:border-b-0 lg:border-r border-black/12 overflow-y-auto max-h-[40vh] lg:max-h-none">
+        <div className="px-4 py-3 border-b border-black/12 flex items-center gap-2 text-black/55">
           <PencilRuler className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
             Pick a student
@@ -117,8 +117,8 @@ export default function TeacherSmartboard() {
           }
         />
         {studentId && sessions.length > 0 && (
-          <div className="px-3 py-3 border-t border-zinc-800 space-y-1">
-            <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold px-1">
+          <div className="px-3 py-3 border-t border-black/12 space-y-1">
+            <div className="text-[10px] uppercase tracking-wider text-black/45 font-semibold px-1">
               Previous boards
             </div>
             {sessions.map((s) => (
@@ -134,12 +134,12 @@ export default function TeacherSmartboard() {
                 className={
                   'w-full text-left px-2 py-1.5 rounded text-xs ' +
                   (s.id === sessionParam
-                    ? 'bg-zinc-800 text-zinc-100'
-                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900')
+                    ? 'bg-white/40 text-[#11181c]'
+                    : 'text-black/55 hover:text-black hover:bg-white/50')
                 }
               >
                 <div className="truncate">{s.title}</div>
-                <div className="text-[10px] text-zinc-500">{s.session_date}</div>
+                <div className="text-[10px] text-black/45">{s.session_date}</div>
               </button>
             ))}
           </div>
@@ -147,8 +147,8 @@ export default function TeacherSmartboard() {
       </aside>
 
       <section className="flex flex-col min-h-0">
-        <div className="px-3 sm:px-4 py-3 border-b border-zinc-800 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
-          <Label className="text-xs text-zinc-400 shrink-0">Title</Label>
+        <div className="px-3 sm:px-4 py-3 border-b border-black/12 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+          <Label className="text-xs text-black/55 shrink-0">Title</Label>
           <Input
             value={title}
             onChange={(e) => {
@@ -172,7 +172,7 @@ export default function TeacherSmartboard() {
           {studentId ? (
             <>
               <div className="flex-1 min-w-0">
-                <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-500">Loading board…</div>}>
+                <Suspense fallback={<div className="h-full flex items-center justify-center text-black/45">Loading board…</div>}>
                   <Excalidraw
                     excalidrawAPI={(a: unknown) => {
                       apiRef.current = a as ExcalidrawApi;
@@ -187,7 +187,7 @@ export default function TeacherSmartboard() {
               />
             </>
           ) : (
-            <div className="h-full flex-1 flex items-center justify-center text-sm text-zinc-500">
+            <div className="h-full flex-1 flex items-center justify-center text-sm text-black/45">
               Pick a student to start a board.
             </div>
           )}
@@ -206,7 +206,7 @@ function AutosaveBadge({
 }) {
   if (status === 'saving' || status === 'pending') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400">
+      <span className="inline-flex items-center gap-1.5 text-[11px] text-black/55">
         <Loader2 className="w-3 h-3 animate-spin" />
         {status === 'saving' ? 'Saving…' : 'Edits pending'}
       </span>

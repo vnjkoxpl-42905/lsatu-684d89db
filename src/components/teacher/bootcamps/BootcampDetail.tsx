@@ -52,11 +52,11 @@ export function BootcampDetail() {
       <div className="px-6 py-6">
         <Link
           to="/teacher/bootcamps"
-          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-100"
+          className="inline-flex items-center gap-1 text-sm text-black/55 hover:text-black"
         >
           <ArrowLeft className="h-4 w-4" /> Back to all bootcamps
         </Link>
-        <p className="mt-3 text-sm text-zinc-400">Unknown topic.</p>
+        <p className="mt-3 text-sm text-black/55">Unknown topic.</p>
       </div>
     );
   }
@@ -66,7 +66,7 @@ export function BootcampDetail() {
       <div className="space-y-2">
         <Link
           to="/teacher/bootcamps"
-          className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-100"
+          className="inline-flex items-center gap-1 text-xs text-black/55 hover:text-black"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> All bootcamps
         </Link>
@@ -75,11 +75,11 @@ export function BootcampDetail() {
             <h2 className="text-2xl font-semibold tracking-tight">
               {topic.name}
             </h2>
-            <p className="mt-1 text-sm text-zinc-400 max-w-2xl">{topic.blurb}</p>
+            <p className="mt-1 text-sm text-black/55 max-w-2xl">{topic.blurb}</p>
           </div>
           <Link
             to={topic.topicPath}
-            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-800 px-3 py-1.5 text-xs text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900"
+            className="inline-flex items-center gap-1.5 rounded-md border border-black/12 px-3 py-1.5 text-xs text-black/60 hover:border-black/30 hover:bg-white/50"
           >
             Open student topic <ExternalLink className="h-3.5 w-3.5" />
           </Link>
@@ -87,19 +87,19 @@ export function BootcampDetail() {
       </div>
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
           Drill breakdown
         </h3>
         {breakdownQ.isLoading ? (
-          <p className="text-sm text-zinc-500">Loading drill stats.</p>
+          <p className="text-sm text-black/45">Loading drill stats.</p>
         ) : breakdownQ.isError ? (
           <QueryErrorCard onRetry={() => breakdownQ.refetch()} />
         ) : (breakdownQ.data ?? []).every((r) => r.attempts === 0) ? (
-          <p className="text-sm text-zinc-500">No drill attempts recorded.</p>
+          <p className="text-sm text-black/45">No drill attempts recorded.</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className="overflow-x-auto rounded-xl border border-black/12">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-900/50 text-left text-[11px] uppercase tracking-wider text-zinc-400">
+              <thead className="bg-white/35 text-left text-[11px] uppercase tracking-wider text-black/55">
                 <tr>
                   <th className="px-3 py-2 font-medium">Drill</th>
                   <th className="px-3 py-2 font-medium">Attempts</th>
@@ -111,14 +111,14 @@ export function BootcampDetail() {
                 {(breakdownQ.data ?? []).map((row) => (
                   <tr
                     key={row.attemptMode}
-                    className="border-t border-zinc-800/70 hover:bg-zinc-900/40"
+                    className="border-t border-black/12 hover:bg-white/45"
                   >
-                    <td className="px-3 py-2 font-medium text-zinc-100">
+                    <td className="px-3 py-2 font-medium text-[#11181c]">
                       {row.label}
                     </td>
-                    <td className="px-3 py-2 text-zinc-300">{row.attempts}</td>
-                    <td className="px-3 py-2 text-zinc-300">{row.correct}</td>
-                    <td className="px-3 py-2 text-zinc-300">
+                    <td className="px-3 py-2 text-black/60">{row.attempts}</td>
+                    <td className="px-3 py-2 text-black/60">{row.correct}</td>
+                    <td className="px-3 py-2 text-black/60">
                       {row.accuracyPct}%
                     </td>
                   </tr>
@@ -131,15 +131,15 @@ export function BootcampDetail() {
 
       <section className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
             Students
           </h3>
-          <label className="flex items-center gap-1.5 text-xs text-zinc-400">
+          <label className="flex items-center gap-1.5 text-xs text-black/55">
             <span>Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortKey)}
-              className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-1 text-zinc-100"
+              className="rounded-md border border-black/12 bg-transparent px-2 py-1 text-[#11181c]"
             >
               <option value="last_active">Last active</option>
               <option value="completion">Completion</option>
@@ -148,17 +148,17 @@ export function BootcampDetail() {
           </label>
         </div>
         {studentsQ.isLoading ? (
-          <p className="text-sm text-zinc-500">Loading students.</p>
+          <p className="text-sm text-black/45">Loading students.</p>
         ) : studentsQ.isError ? (
           <QueryErrorCard onRetry={() => studentsQ.refetch()} />
         ) : sortedStudents.length === 0 ? (
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-black/45">
             No student activity on {topic.name} yet.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className="overflow-x-auto rounded-xl border border-black/12">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-900/50 text-left text-[11px] uppercase tracking-wider text-zinc-400">
+              <thead className="bg-white/35 text-left text-[11px] uppercase tracking-wider text-black/55">
                 <tr>
                   <th className="px-3 py-2 font-medium">Student</th>
                   <th className="px-3 py-2 font-medium">Completion</th>
@@ -177,24 +177,24 @@ export function BootcampDetail() {
                         `/teacher/bootcamps/${topic.id}/students/${s.userId}`,
                       )
                     }
-                    className="cursor-pointer border-t border-zinc-800/70 hover:bg-zinc-900/40"
+                    className="cursor-pointer border-t border-black/12 hover:bg-white/45"
                   >
-                    <td className="px-3 py-2 font-medium text-zinc-100">
+                    <td className="px-3 py-2 font-medium text-[#11181c]">
                       {s.displayName}
                     </td>
-                    <td className="px-3 py-2 text-zinc-300">
+                    <td className="px-3 py-2 text-black/60">
                       {s.completionPct}%
                     </td>
-                    <td className="px-3 py-2 text-zinc-300">
+                    <td className="px-3 py-2 text-black/60">
                       {s.drillAccuracyPct}%
                     </td>
-                    <td className="px-3 py-2 text-zinc-300">
+                    <td className="px-3 py-2 text-black/60">
                       {s.attemptsCount}
                     </td>
-                    <td className="px-3 py-2 text-zinc-300">
+                    <td className="px-3 py-2 text-black/60">
                       {s.flashcardsReviewed}
                     </td>
-                    <td className="px-3 py-2 text-zinc-400">
+                    <td className="px-3 py-2 text-black/55">
                       {s.lastActivityIso
                         ? formatRelativeShort(s.lastActivityIso)
                         : "never"}

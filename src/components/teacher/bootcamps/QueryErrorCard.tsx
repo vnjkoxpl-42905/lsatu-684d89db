@@ -5,13 +5,13 @@ import { RefreshCw } from "lucide-react";
 // read it, and here is how to try again.
 export function QueryErrorCard({ onRetry }: { onRetry?: () => void }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950/40 px-3 py-3">
-      <p className="text-sm text-zinc-300">Couldn't load this data.</p>
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/12 bg-white/30 px-3 py-3">
+      <p className="text-sm text-black/60">Couldn't load this data.</p>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="inline-flex items-center gap-1.5 rounded-md border border-zinc-700 px-2.5 py-1 text-xs text-zinc-300 hover:bg-zinc-900"
+          className="inline-flex items-center gap-1.5 rounded-md border border-black/20 px-2.5 py-1 text-xs text-black/60 hover:bg-white/50"
         >
           <RefreshCw className="h-3.5 w-3.5" /> Retry
         </button>

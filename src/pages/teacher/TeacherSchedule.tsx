@@ -182,8 +182,8 @@ export default function TeacherSchedule() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
-      <aside className="border-r border-zinc-800 overflow-y-auto">
-        <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2 text-zinc-400">
+      <aside className="border-r border-black/12 overflow-y-auto">
+        <div className="px-4 py-3 border-b border-black/12 flex items-center gap-2 text-black/55">
           <CalendarDays className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
             Pick a student
@@ -196,18 +196,18 @@ export default function TeacherSchedule() {
         <WeeklyHoursEditor />
 
         {focusedEventQuery.data ? (
-          <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-zinc-100">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">Google Calendar event</div>
+          <div className="rounded-xl border border-teacher-accent/30 bg-teacher-accent/10 p-4 text-[#11181c]">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-teacher-accent-strong">Google Calendar event</div>
             <h2 className="mt-1 text-xl font-semibold tracking-tight">{focusedEventQuery.data.title}</h2>
-            <div className="mt-2 text-sm text-zinc-300">
+            <div className="mt-2 text-sm text-black/60">
               {format(parseISO(focusedEventQuery.data.start_at), 'EEE, MMM d · h:mm a')} - {format(parseISO(focusedEventQuery.data.end_at), 'h:mm a')}
             </div>
-            {focusedEventQuery.data.location ? <div className="mt-1 text-sm text-zinc-400">{focusedEventQuery.data.location}</div> : null}
+            {focusedEventQuery.data.location ? <div className="mt-1 text-sm text-black/55">{focusedEventQuery.data.location}</div> : null}
             {focusedEventQuery.data.description ? (
-              <div className="mt-3 whitespace-pre-wrap text-sm leading-6 text-zinc-300">{focusedEventQuery.data.description}</div>
+              <div className="mt-3 whitespace-pre-wrap text-sm leading-6 text-black/60">{focusedEventQuery.data.description}</div>
             ) : null}
             {focusedEventQuery.data.html_link ? (
-              <a href={focusedEventQuery.data.html_link} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-sm font-semibold text-amber-200 underline">
+              <a href={focusedEventQuery.data.html_link} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-sm font-semibold text-teacher-accent-strong underline">
                 Open in Google Calendar
               </a>
             ) : null}
@@ -215,7 +215,7 @@ export default function TeacherSchedule() {
         ) : null}
 
         {!studentId ? (
-          <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-12 text-center text-sm text-zinc-500">
+          <div className="rounded-lg border border-dashed border-black/12 px-4 py-12 text-center text-sm text-black/45">
             Select a student to view their schedule.
           </div>
         ) : (
@@ -228,7 +228,7 @@ export default function TeacherSchedule() {
 
             <header className="flex items-center justify-between gap-3">
               <div>
-                <div className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
+                <div className="text-[11px] uppercase tracking-wider text-black/45 font-semibold">
                   Schedule for
                 </div>
                 <h2 className="text-xl font-semibold tracking-tight">
@@ -260,17 +260,17 @@ export default function TeacherSchedule() {
             </header>
 
             {isLoading ? (
-              <div className="flex items-center text-sm text-zinc-500">
+              <div className="flex items-center text-sm text-black/45">
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Loading schedule…
               </div>
             ) : (
-              <div className="rounded-xl border border-zinc-800 overflow-hidden">
-                <div className="grid grid-cols-7 bg-zinc-900/60 border-b border-zinc-800">
+              <div className="rounded-xl border border-black/12 overflow-hidden">
+                <div className="grid grid-cols-7 bg-white/35 border-b border-black/12">
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                     <div
                       key={d}
-                      className="text-[10px] uppercase tracking-[0.15em] text-zinc-500 font-medium text-center py-2"
+                      className="text-[10px] uppercase tracking-[0.15em] text-black/45 font-medium text-center py-2"
                     >
                       {d}
                     </div>
@@ -291,9 +291,9 @@ export default function TeacherSchedule() {
                           setPickedDay(d);
                         }}
                         className={cn(
-                          'border-b border-r border-zinc-800 p-2 text-left min-h-[88px] hover:bg-zinc-900/60 transition-colors',
+                          'border-b border-r border-black/12 p-2 text-left min-h-[88px] hover:bg-white/50 transition-colors',
                           outside && 'opacity-40',
-                          picked && 'ring-1 ring-amber-400 bg-zinc-900/80',
+                          picked && 'ring-1 ring-teacher-accent bg-white/45',
                         )}
                       >
                         <div className="flex items-center justify-between">
@@ -301,28 +301,28 @@ export default function TeacherSchedule() {
                             className={cn(
                               'text-xs tabular-nums',
                               today
-                                ? 'inline-flex items-center justify-center h-5 w-5 rounded-full bg-amber-400 text-zinc-950 font-semibold'
-                                : 'text-zinc-300',
+                                ? 'inline-flex items-center justify-center h-5 w-5 rounded-full bg-teacher-accent text-white font-semibold'
+                                : 'text-black/60',
                             )}
                           >
                             {format(d, 'd')}
                           </span>
                           {dayItems.length > 0 && (
-                            <span className="text-[10px] text-zinc-500">{dayItems.length}</span>
+                            <span className="text-[10px] text-black/45">{dayItems.length}</span>
                           )}
                         </div>
                         <div className="mt-1 space-y-0.5">
                           {dayItems.slice(0, 2).map((it) => (
                             <div
                               key={it.id}
-                              className="text-[11px] truncate text-zinc-200 bg-zinc-800/60 rounded px-1 py-0.5"
+                              className="text-[11px] truncate text-black/70 bg-white/40 rounded px-1 py-0.5"
                               title={it.title}
                             >
                               {it.title}
                             </div>
                           ))}
                           {dayItems.length > 2 && (
-                            <div className="text-[10px] text-zinc-500">
+                            <div className="text-[10px] text-black/45">
                               +{dayItems.length - 2} more
                             </div>
                           )}
@@ -335,13 +335,13 @@ export default function TeacherSchedule() {
             )}
 
             {pickedDay && (
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 space-y-4">
+              <div className="rounded-xl border border-black/12 bg-white/25 p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-[11px] uppercase tracking-wider text-zinc-500">
+                    <div className="text-[11px] uppercase tracking-wider text-black/45">
                       {format(pickedDay, 'EEEE, MMM d')}
                     </div>
-                    <div className="text-sm text-zinc-300">
+                    <div className="text-sm text-black/60">
                       {pickedItems.length === 0 ? 'No items yet.' : `${pickedItems.length} item${pickedItems.length === 1 ? '' : 's'}`}
                     </div>
                   </div>
@@ -355,19 +355,19 @@ export default function TeacherSchedule() {
                     {pickedItems.map((it) => (
                       <li
                         key={it.id}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-zinc-800 bg-zinc-950"
+                        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-black/12 bg-transparent"
                       >
-                        <span className="text-[10px] uppercase tracking-wider text-zinc-500 w-24 shrink-0">
+                        <span className="text-[10px] uppercase tracking-wider text-black/45 w-24 shrink-0">
                           {it.type.replace('_', ' ')}
                         </span>
-                        <span className="text-sm text-zinc-100 flex-1 truncate">{it.title}</span>
+                        <span className="text-sm text-[#11181c] flex-1 truncate">{it.title}</span>
                       </li>
                     ))}
                   </ul>
                 )}
 
-                <div className="border-t border-zinc-800 pt-4 space-y-3">
-                  <div className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
+                <div className="border-t border-black/12 pt-4 space-y-3">
+                  <div className="text-[11px] uppercase tracking-wider text-black/45 font-semibold">
                     Quick add for this day
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -379,8 +379,8 @@ export default function TeacherSchedule() {
                         className={cn(
                           'inline-flex items-center px-2.5 py-1 rounded-full border text-[11px] transition-colors',
                           type === t.value
-                            ? 'border-amber-400 bg-zinc-900/80 text-zinc-100'
-                            : 'border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900',
+                            ? 'border-teacher-accent bg-white/45 text-[#11181c]'
+                            : 'border-black/12 bg-white/25 text-black/55 hover:text-black hover:bg-white/50',
                         )}
                       >
                         {t.label}
@@ -420,18 +420,18 @@ export default function TeacherSchedule() {
                     </Button>
                   </div>
 
-                  <div className="text-[11px] text-zinc-500">
+                  <div className="text-[11px] text-black/45">
                     For homework or bootcamp assignments, use{' '}
                     <a
                       href={`/teacher/assignments?student=${studentId}`}
-                      className="underline hover:text-zinc-300"
+                      className="underline hover:text-black/70"
                     >
                       Assignments
                     </a>{' '}
                     or{' '}
                     <a
                       href={`/teacher/weekly-plans?student=${studentId}`}
-                      className="underline hover:text-zinc-300"
+                      className="underline hover:text-black/70"
                     >
                       Weekly Plans
                     </a>

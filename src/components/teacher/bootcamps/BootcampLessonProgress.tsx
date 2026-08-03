@@ -96,7 +96,7 @@ function percentOf(source: LessonProgressSource, row: ProgressRow): number | nul
 
 function Meta({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-[10px] uppercase tracking-wider text-zinc-500">{children}</span>
+    <span className="text-[10px] uppercase tracking-wider text-black/45">{children}</span>
   );
 }
 
@@ -111,12 +111,12 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
   });
 
   return (
-    <li className="rounded-lg border border-zinc-800 bg-zinc-900/40 overflow-hidden">
+    <li className="rounded-lg border border-black/12 bg-white/30 overflow-hidden">
       <div className="px-4 py-3 space-y-2.5">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <Meta>{source.bootcamp}</Meta>
-            <div className="text-sm text-zinc-100 truncate">
+            <div className="text-sm text-[#11181c] truncate">
               {source.lessonId ? source.title : row.lesson_id}
             </div>
           </div>
@@ -126,9 +126,9 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
                 Complete
               </span>
             ) : percent !== null ? (
-              <span className="text-sm text-zinc-100 tabular-nums">{percent}%</span>
+              <span className="text-sm text-[#11181c] tabular-nums">{percent}%</span>
             ) : (
-              <span className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <span className="text-[10px] uppercase tracking-wider text-black/45">
                 In progress
               </span>
             )}
@@ -136,8 +136,8 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
         </div>
 
         {percent !== null && !completed ? (
-          <div className="h-[3px] w-full rounded-full bg-zinc-800 overflow-hidden">
-            <div className="h-full rounded-full bg-zinc-300" style={{ width: `${percent}%` }} />
+          <div className="h-[3px] w-full rounded-full bg-white/40 overflow-hidden">
+            <div className="h-full rounded-full bg-black/20" style={{ width: `${percent}%` }} />
           </div>
         ) : null}
 
@@ -153,7 +153,7 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-zinc-400 hover:text-zinc-100 transition-colors"
+            className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-black/55 hover:text-black transition-colors"
           >
             {open ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
             {written.length} written {written.length === 1 ? 'response' : 'responses'}
@@ -164,12 +164,12 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
       </div>
 
       {open && written.length > 0 ? (
-        <div className="border-t border-zinc-800 bg-zinc-950/40 px-4 py-3 space-y-4">
+        <div className="border-t border-black/12 bg-white/30 px-4 py-3 space-y-4">
           {written.map((p) => (
             <div key={p.storageKey} className="space-y-1.5">
               <Meta>{p.chapter}</Meta>
-              <p className="text-xs text-zinc-400 leading-relaxed">{p.prompt}</p>
-              <p className="text-sm text-zinc-100 leading-relaxed whitespace-pre-wrap">
+              <p className="text-xs text-black/55 leading-relaxed">{p.prompt}</p>
+              <p className="text-sm text-[#11181c] leading-relaxed whitespace-pre-wrap">
                 {String(row.data?.[p.storageKey] ?? '')}
               </p>
             </div>
@@ -192,7 +192,7 @@ export function BootcampLessonProgress({ studentClassId }: { studentClassId: str
 
   return (
     <section className="space-y-2 pt-2">
-      <div className="text-[10px] uppercase tracking-wider text-zinc-500">Bootcamp lessons</div>
+      <div className="text-[10px] uppercase tracking-wider text-black/45">Bootcamp lessons</div>
       <ul className="space-y-2">
         {cards.map(({ source, row, key }) => (
           <LessonCard key={key} source={source} row={row} />

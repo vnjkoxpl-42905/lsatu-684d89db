@@ -190,7 +190,7 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
                 <button
                   type="button"
                   onClick={() => openAssign(b)}
-                  className="ml-auto inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/20 px-2.5 py-1 text-xs font-semibold text-amber-900 transition hover:bg-amber-500/30"
+                  className="ml-auto inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
                 >
                   <Send className="h-3 w-3" /> Assign
                 </button>

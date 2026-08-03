@@ -53,7 +53,7 @@ export function DeskLibraryActivitiesSurface({ view }: { view: LibraryView }) {
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-amber-600" />
+          <Sparkles className="h-4 w-4 text-teacher-accent" />
           <h2 className="text-base font-semibold text-black">Activities</h2>
         </div>
         <p className="mt-0.5 text-xs text-black/55">
@@ -123,14 +123,14 @@ function ActivityActions({ activity, onAssign }: { activity: Activity; onAssign:
         type="button"
         onClick={handleOpen}
         disabled={opening || assigning}
-        className="inline-flex items-center gap-1.5 border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/25 disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25 disabled:opacity-50"
       >
         <Play className="h-3 w-3" /> {opening ? 'Opening…' : 'Open'}
       </button>
       <button
         type="button"
         onClick={onAssign}
-        className="ml-auto inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/20 px-2.5 py-1 text-xs font-semibold text-amber-900 transition hover:bg-amber-500/30"
+        className="ml-auto inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
       >
         <Send className="h-3 w-3" /> Assign
       </button>

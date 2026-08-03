@@ -109,26 +109,26 @@ export default function WeeklyHoursEditor() {
   }
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+    <div className="rounded-xl border border-black/12 bg-white/30 p-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-500">
+        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-teacher-accent">
           <Clock className="h-4 w-4" /> Weekly hours
         </div>
         <Button size="sm" onClick={save} disabled={saving || loading}>
           {saving ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null} Save
         </Button>
       </div>
-      <p className="mt-1 text-xs text-zinc-500">
+      <p className="mt-1 text-xs text-black/45">
         Set the times you're available to be booked each day. Students only see open slots inside these
         windows, and any event already on your Google Calendar is automatically blocked out.
       </p>
 
       {loading ? (
-        <div className="mt-4 flex items-center text-sm text-zinc-500">
+        <div className="mt-4 flex items-center text-sm text-black/45">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading…
         </div>
       ) : (
-        <div className="mt-4 divide-y divide-zinc-800">
+        <div className="mt-4 divide-y divide-black/10">
           {DAYS.map((dayName, dow) => {
             const rows = byDay[dow] ?? [];
             const on = rows.length > 0;
@@ -136,20 +136,20 @@ export default function WeeklyHoursEditor() {
               <div key={dow} className="flex flex-wrap items-start gap-3 py-3">
                 <div className="flex w-40 shrink-0 items-center gap-3 pt-1">
                   <Switch checked={on} onCheckedChange={(v) => toggleDay(dow, v)} />
-                  <span className="text-sm font-medium text-zinc-100">{dayName}</span>
+                  <span className="text-sm font-medium text-[#11181c]">{dayName}</span>
                 </div>
                 {!on ? (
-                  <span className="pt-1.5 text-sm text-zinc-500">Unavailable</span>
+                  <span className="pt-1.5 text-sm text-black/45">Unavailable</span>
                 ) : (
                   <div className="space-y-2">
                     {rows.map((r, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <TimeSelect value={r.start} onChange={(v) => updateRange(dow, i, "start", v)} />
-                        <span className="text-zinc-500">–</span>
+                        <span className="text-black/45">–</span>
                         <TimeSelect value={r.end} onChange={(v) => updateRange(dow, i, "end", v)} />
                         <button
                           onClick={() => removeRange(dow, i)}
-                          className="rounded p-1 text-zinc-500 hover:text-red-400"
+                          className="rounded p-1 text-black/45 hover:text-red-400"
                           aria-label="Remove range"
                         >
                           <X className="h-4 w-4" />
@@ -157,7 +157,7 @@ export default function WeeklyHoursEditor() {
                         {i === rows.length - 1 && (
                           <button
                             onClick={() => addRange(dow)}
-                            className="rounded p-1 text-zinc-500 hover:text-amber-400"
+                            className="rounded p-1 text-black/45 hover:text-teacher-accent"
                             aria-label="Add range"
                           >
                             <Plus className="h-4 w-4" />
@@ -181,7 +181,7 @@ function TimeSelect({ value, onChange }: { value: string; onChange: (v: string) 
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded-md border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
+      className="rounded-md border border-black/20 bg-transparent px-2 py-1.5 text-sm text-[#11181c] focus:border-teacher-accent focus:outline-none"
     >
       {TIME_OPTIONS.map((o) => (
         <option key={o.value} value={o.value}>{o.label}</option>

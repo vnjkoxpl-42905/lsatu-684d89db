@@ -91,7 +91,7 @@ export default function TeacherStudentDetail() {
           variant="ghost"
           size="sm"
           onClick={() => navigate('/teacher/students')}
-          className="text-zinc-400 hover:text-zinc-100"
+          className="text-black/55 hover:text-black"
         >
           <ArrowLeft className="w-4 h-4 mr-1.5" />
           Roster
@@ -99,7 +99,7 @@ export default function TeacherStudentDetail() {
       </div>
 
       <div className="space-y-1.5">
-        <div className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Student</div>
+        <div className="text-[11px] uppercase tracking-[0.2em] text-black/45">Student</div>
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-2xl font-semibold tracking-tight">
             {profile?.display_name?.trim() || 'Student'}
@@ -111,7 +111,7 @@ export default function TeacherStudentDetail() {
             </span>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-black/45">
           <span className="inline-flex items-center gap-1.5">
             <Activity className="h-3.5 w-3.5" />
             {isOnline ? 'Online on LSAT U' : 'Offline'}
@@ -129,7 +129,7 @@ export default function TeacherStudentDetail() {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="bg-zinc-900/60 border border-zinc-800">
+        <TabsList className="bg-white/35 border border-black/12">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="sessions">Sessions / Transcripts</TabsTrigger>
           <TabsTrigger value="homework">Homework</TabsTrigger>
@@ -192,10 +192,10 @@ export default function TeacherStudentDetail() {
             ) : (
               <ul className="space-y-1.5">
                 {hw.map((it) => (
-                  <li key={it.id} className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
-                    <div className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0 w-24">{it.type}</div>
-                    <div className="min-w-0 flex-1 text-sm truncate text-zinc-100">{it.title}</div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">{it.status.replace('_', ' ')}</span>
+                  <li key={it.id} className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-black/12 bg-white/30">
+                    <div className="text-[10px] uppercase tracking-wider text-black/45 shrink-0 w-24">{it.type}</div>
+                    <div className="min-w-0 flex-1 text-sm truncate text-[#11181c]">{it.title}</div>
+                    <span className="text-[10px] uppercase tracking-wider text-black/45 shrink-0">{it.status.replace('_', ' ')}</span>
                   </li>
                 ))}
               </ul>
@@ -215,12 +215,12 @@ export default function TeacherStudentDetail() {
             ) : (
               <ul className="space-y-1.5">
                 {notes.map((n) => (
-                  <li key={n.id} className="px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
-                    <p className="text-sm font-medium text-zinc-100">{n.title}</p>
+                  <li key={n.id} className="px-4 py-2.5 rounded-lg border border-black/12 bg-white/30">
+                    <p className="text-sm font-medium text-[#11181c]">{n.title}</p>
                     {n.content_text && (
-                      <p className="mt-1 text-xs text-zinc-400 line-clamp-3 whitespace-pre-wrap">{n.content_text}</p>
+                      <p className="mt-1 text-xs text-black/55 line-clamp-3 whitespace-pre-wrap">{n.content_text}</p>
                     )}
-                    <p className="mt-1 text-[10px] uppercase tracking-wider text-zinc-600">
+                    <p className="mt-1 text-[10px] uppercase tracking-wider text-black/35">
                       {format(new Date(n.created_at), 'MMM d, yyyy')}
                     </p>
                   </li>
@@ -276,13 +276,13 @@ function SessionWithBundle({
   }
 
   return (
-    <li className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 space-y-3">
+    <li className="rounded-lg border border-black/12 bg-white/30 p-4 space-y-3">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-zinc-100">
+          <p className="text-sm font-medium text-[#11181c]">
             {format(new Date(session.scheduled_at), 'MMM d, yyyy · h:mm a')}
           </p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-black/45">
             {session.status}
             {session.duration_minutes ? ` · ${session.duration_minutes} min` : ''}
             {session.source ? ` · ${session.source.replace('_', ' ')}` : ''}
@@ -292,7 +292,7 @@ function SessionWithBundle({
           <button
             onClick={build}
             disabled={synth.isPending}
-            className="inline-flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-500 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-md bg-teacher-accent px-3 py-1.5 text-xs font-medium text-white hover:bg-teacher-accent-hover disabled:opacity-50"
           >
             {synth.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
             Build bundle
@@ -304,12 +304,12 @@ function SessionWithBundle({
         <div>
           <button
             onClick={() => setShowTranscript((s) => !s)}
-            className="text-xs text-zinc-400 hover:text-zinc-200 underline underline-offset-2"
+            className="text-xs text-black/55 hover:text-black/80 underline underline-offset-2"
           >
             {showTranscript ? 'Hide transcript' : 'View transcript (admin only)'}
           </button>
           {showTranscript && (
-            <pre className="mt-2 max-h-72 overflow-auto rounded-md border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-300 whitespace-pre-wrap">
+            <pre className="mt-2 max-h-72 overflow-auto rounded-md border border-black/12 bg-transparent p-3 text-xs text-black/60 whitespace-pre-wrap">
               {transcript.content_text
                 ? transcript.content_text
                 : transcript.file_path
@@ -321,7 +321,7 @@ function SessionWithBundle({
       )}
 
       {bundleDraft && (
-        <div className="border-t border-zinc-800 pt-3">
+        <div className="border-t border-black/12 pt-3">
           <SessionBundleReview draft={bundleDraft} />
         </div>
       )}
@@ -331,23 +331,23 @@ function SessionWithBundle({
 
 function SessionRow({ session }: { session: { scheduled_at: string; status: string; source: string | null } }) {
   return (
-    <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40">
-      <FileText className="w-4 h-4 text-zinc-500 shrink-0" />
-      <div className="min-w-0 flex-1 text-sm text-zinc-100">
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-black/12 bg-white/30">
+      <FileText className="w-4 h-4 text-black/45 shrink-0" />
+      <div className="min-w-0 flex-1 text-sm text-[#11181c]">
         {format(new Date(session.scheduled_at), 'MMM d, yyyy · h:mm a')}
       </div>
-      <span className="text-[10px] uppercase tracking-wider text-zinc-500 shrink-0">{session.status}</span>
+      <span className="text-[10px] uppercase tracking-wider text-black/45 shrink-0">{session.status}</span>
     </div>
   );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">{children}</h3>;
+  return <h3 className="text-[11px] uppercase tracking-wider text-black/45 font-semibold">{children}</h3>;
 }
 
 function EmptyState({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-sm text-zinc-500">
+    <div className="rounded-lg border border-dashed border-black/12 px-4 py-6 text-center text-sm text-black/45">
       {children}
     </div>
   );
@@ -355,12 +355,12 @@ function EmptyState({ children }: { children: React.ReactNode }) {
 
 function StatCard({ label, value, Icon }: { label: string; value: number; Icon: React.ComponentType<{ className?: string }> }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 px-4 py-3">
-      <div className="flex items-center gap-2 text-zinc-500">
+    <div className="rounded-xl border border-black/12 bg-white/30 px-4 py-3">
+      <div className="flex items-center gap-2 text-black/45">
         <Icon className="w-3.5 h-3.5" />
         <span className="text-[10px] uppercase tracking-wider">{label}</span>
       </div>
-      <div className="mt-1 text-xl font-semibold text-zinc-100 tabular-nums">{value}</div>
+      <div className="mt-1 text-xl font-semibold text-[#11181c] tabular-nums">{value}</div>
     </div>
   );
 }
@@ -375,12 +375,12 @@ function ActionRow({ Icon, title, description, onClick }: {
     <button
       type="button"
       onClick={onClick}
-      className="text-left flex items-start gap-3 rounded-xl border border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900 hover:border-zinc-700 transition-colors px-4 py-3"
+      className="text-left flex items-start gap-3 rounded-xl border border-black/12 bg-white/30 hover:bg-white/50 hover:border-black/30 transition-colors px-4 py-3"
     >
-      <Icon className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />
+      <Icon className="w-4 h-4 text-black/45 mt-0.5 shrink-0" />
       <div className="min-w-0">
-        <div className="text-sm font-medium text-zinc-100">{title}</div>
-        <div className="text-xs text-zinc-400 mt-0.5">{description}</div>
+        <div className="text-sm font-medium text-[#11181c]">{title}</div>
+        <div className="text-xs text-black/55 mt-0.5">{description}</div>
       </div>
     </button>
   );

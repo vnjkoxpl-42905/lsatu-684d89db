@@ -76,11 +76,11 @@ export function StudentBootcampDetail() {
       <div className="px-6 py-6">
         <Link
           to="/teacher/bootcamps"
-          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-100"
+          className="inline-flex items-center gap-1 text-sm text-black/55 hover:text-black"
         >
           <ArrowLeft className="h-4 w-4" /> Back to all bootcamps
         </Link>
-        <p className="mt-3 text-sm text-zinc-400">Unknown topic.</p>
+        <p className="mt-3 text-sm text-black/55">Unknown topic.</p>
       </div>
     );
   }
@@ -107,7 +107,7 @@ export function StudentBootcampDetail() {
     <div className="px-6 py-6 max-w-5xl mx-auto space-y-6">
       <Link
         to={`/teacher/bootcamps/${initialTopic.id}`}
-        className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-100"
+        className="inline-flex items-center gap-1 text-xs text-black/55 hover:text-black"
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Back to {initialTopic.name}
       </Link>
@@ -116,13 +116,13 @@ export function StudentBootcampDetail() {
         <h2 className="text-2xl font-semibold tracking-tight">
           {meta?.displayName ?? "Student"}
         </h2>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-black/55">
           Topic progress across every bootcamp this student has touched.
         </p>
       </header>
 
       <nav
-        className="flex flex-wrap gap-2 border-b border-zinc-800"
+        className="flex flex-wrap gap-2 border-b border-black/12"
         aria-label="Topic tabs"
       >
         {BOOTCAMP_TOPICS.map((t) => (
@@ -132,8 +132,8 @@ export function StudentBootcampDetail() {
             onClick={() => setActiveTopicId(t.id)}
             className={`-mb-px border-b-2 px-3 py-2 text-sm transition-colors ${
               activeTopicId === t.id
-                ? "border-amber-400 text-amber-300"
-                : "border-transparent text-zinc-400 hover:text-zinc-100"
+                ? "border-teacher-accent text-teacher-accent-strong"
+                : "border-transparent text-black/55 hover:text-black"
             }`}
           >
             {t.name}
@@ -146,18 +146,18 @@ export function StudentBootcampDetail() {
           {detailQ.isError ? (
             <QueryErrorCard onRetry={() => detailQ.refetch()} />
           ) : (
-            <section className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-4">
+            <section className="rounded-xl border border-black/12 bg-white/30 p-4">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
                   Overall {activeTopic.name} progress
                 </h3>
-                <span className="text-2xl font-semibold text-zinc-100">
+                <span className="text-2xl font-semibold text-[#11181c]">
                   {overallPct === null ? "—" : `${overallPct}%`}
                 </span>
               </div>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-800">
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/40">
                 <div
-                  className="h-full bg-amber-400 transition-all"
+                  className="h-full bg-teacher-accent transition-all"
                   style={{ width: `${overallPct ?? 0}%` }}
                   aria-label={
                     overallPct === null
@@ -166,7 +166,7 @@ export function StudentBootcampDetail() {
                   }
                 />
               </div>
-              <p className="mt-2 text-xs text-zinc-500">
+              <p className="mt-2 text-xs text-black/45">
                 Last active:{" "}
                 {!detailQ.data
                   ? "—"
@@ -178,15 +178,15 @@ export function StudentBootcampDetail() {
           )}
 
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
               Chapter
             </h3>
             {detailQ.isLoading ? (
-              <p className="text-sm text-zinc-500">Loading.</p>
+              <p className="text-sm text-black/45">Loading.</p>
             ) : detailQ.isError ? (
               <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data && detailQ.data.sectionsViewed.length === 0 ? (
-              <p className="text-sm text-zinc-500">No sections opened yet.</p>
+              <p className="text-sm text-black/45">No sections opened yet.</p>
             ) : (
               <ul className="space-y-1.5">
                 {activeTopic.chapterSections.map((section) => {
@@ -196,10 +196,10 @@ export function StudentBootcampDetail() {
                   return (
                     <li
                       key={section.id}
-                      className="flex items-center justify-between rounded-md border border-zinc-800/70 bg-zinc-950/40 px-3 py-2 text-sm"
+                      className="flex items-center justify-between rounded-md border border-black/12 bg-white/30 px-3 py-2 text-sm"
                     >
-                      <span className="text-zinc-100">{section.title}</span>
-                      <span className="text-xs text-zinc-400">
+                      <span className="text-[#11181c]">{section.title}</span>
+                      <span className="text-xs text-black/55">
                         {view
                           ? `viewed ${formatRelativeShort(view.last_viewed_at)}`
                           : "not yet"}
@@ -212,22 +212,22 @@ export function StudentBootcampDetail() {
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
               Drills
             </h3>
             {detailQ.isLoading ? (
-              <p className="text-sm text-zinc-500">Loading.</p>
+              <p className="text-sm text-black/45">Loading.</p>
             ) : detailQ.isError ? (
               <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data &&
               detailQ.data.drillStats.every((d) => d.attempts === 0) ? (
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-black/45">
                 No drill attempts recorded.
               </p>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-zinc-800">
+              <div className="overflow-x-auto rounded-xl border border-black/12">
                 <table className="w-full text-sm">
-                  <thead className="bg-zinc-900/50 text-left text-[11px] uppercase tracking-wider text-zinc-400">
+                  <thead className="bg-white/35 text-left text-[11px] uppercase tracking-wider text-black/55">
                     <tr>
                       <th className="px-3 py-2 font-medium">Drill</th>
                       <th className="px-3 py-2 font-medium">Attempts</th>
@@ -239,16 +239,16 @@ export function StudentBootcampDetail() {
                     {detailQ.data?.drillStats.map((row) => (
                       <tr
                         key={row.attemptMode}
-                        className="border-t border-zinc-800/70"
+                        className="border-t border-black/12"
                       >
-                        <td className="px-3 py-2 text-zinc-100">{row.label}</td>
-                        <td className="px-3 py-2 text-zinc-300">
+                        <td className="px-3 py-2 text-[#11181c]">{row.label}</td>
+                        <td className="px-3 py-2 text-black/60">
                           {row.attempts}
                         </td>
-                        <td className="px-3 py-2 text-zinc-300">
+                        <td className="px-3 py-2 text-black/60">
                           {row.correct}
                         </td>
-                        <td className="px-3 py-2 text-zinc-300">
+                        <td className="px-3 py-2 text-black/60">
                           {row.accuracyPct}%
                         </td>
                       </tr>
@@ -260,48 +260,48 @@ export function StudentBootcampDetail() {
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
               Flashcards
             </h3>
             {detailQ.isLoading ? (
-              <p className="text-sm text-zinc-500">Loading.</p>
+              <p className="text-sm text-black/45">Loading.</p>
             ) : detailQ.isError ? (
               <QueryErrorCard onRetry={() => detailQ.refetch()} />
             ) : detailQ.data && detailQ.data.flashcardStats.reviewed === 0 ? (
-              <p className="text-sm text-zinc-500">No reviews recorded.</p>
+              <p className="text-sm text-black/45">No reviews recorded.</p>
             ) : (
               <dl className="grid gap-3 sm:grid-cols-4 text-sm">
                 <div>
-                  <dt className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  <dt className="text-[11px] uppercase tracking-wider text-black/45">
                     Reviewed
                   </dt>
-                  <dd className="mt-0.5 font-semibold text-zinc-100">
+                  <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data
                       ? `${detailQ.data.flashcardStats.reviewed} / ${detailQ.data.flashcardStats.total}`
                       : "—"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  <dt className="text-[11px] uppercase tracking-wider text-black/45">
                     Mastery
                   </dt>
-                  <dd className="mt-0.5 font-semibold text-zinc-100">
+                  <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data ? `${detailQ.data.flashcardStats.masteryPct}%` : "—"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  <dt className="text-[11px] uppercase tracking-wider text-black/45">
                     Due now
                   </dt>
-                  <dd className="mt-0.5 font-semibold text-zinc-100">
+                  <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data ? detailQ.data.flashcardStats.dueCount : "—"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[11px] uppercase tracking-wider text-zinc-500">
+                  <dt className="text-[11px] uppercase tracking-wider text-black/45">
                     Avg interval
                   </dt>
-                  <dd className="mt-0.5 font-semibold text-zinc-100">
+                  <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data
                       ? `${detailQ.data.flashcardStats.avgIntervalDays}d`
                       : "—"}
@@ -312,10 +312,10 @@ export function StudentBootcampDetail() {
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-black/55">
               Playground
             </h3>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-black/45">
               Playground is ungraded. Session-count tracking lands when the
               playground_sessions table is added.
             </p>
