@@ -138,6 +138,24 @@ function RedirectBootcampStudentToInsights() {
   const { topicId, studentId } = useParams();
   return <Navigate to={`/teacher/insights/${topicId}/students/${studentId}`} replace />;
 }
+/**
+ * Redirect that carries the incoming query string to the target, merging it
+ * when the target already has one. Deep links like
+ * `/teacher/assignments?student=abc` keep their student context instead of
+ * dropping it at the redirect.
+ */
+function RedirectWithSearch({ to }: { to: string }) {
+  const { search } = useLocation();
+  const incoming = new URLSearchParams(search);
+  const [path, targetSearch] = to.split("?");
+  const merged = new URLSearchParams(targetSearch ?? "");
+  incoming.forEach((value, key) => {
+    if (!merged.has(key)) merged.append(key, value);
+  });
+  const query = merged.toString();
+  return <Navigate to={query ? `${path}?${query}` : path} replace />;
+}
+
 function RedirectSmartboardToWhiteboard() {
   const { search } = useLocation();
   return <Navigate to={`/teacher/whiteboard${search}`} replace />;
@@ -478,7 +496,7 @@ const App = () => {
                         <TeacherToday />
                       </React.Suspense>
                     } />
-                    <Route path="students" element={<Navigate to="/teacher?ws=people" replace />} />
+                    <Route path="students" element={<RedirectWithSearch to="/teacher?ws=people" />} />
                     <Route path="students/:studentId" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherStudentDetail />
@@ -494,7 +512,7 @@ const App = () => {
                         <TeacherSchedule />
                       </React.Suspense>
                     } />
-                    <Route path="weekly-plans" element={<Navigate to="/teacher/schedule" replace />} />
+                    <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
                     {/* Insights = bootcamp/topic analytics. Renamed from the old
                         top-level "Bootcamps" which collided with the assign action. */}
                     <Route path="insights" element={
@@ -533,17 +551,17 @@ const App = () => {
                     {/* Library moved into the Teacher Desk. All /teacher/library/*
                         routes redirect to the desk-native Library workspace. */}
                     <Route path="library" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="library/assignments" element={<Navigate to="/teacher?ws=library&tab=assignments" replace />} />
-                    <Route path="library/assignments/new" element={<Navigate to="/teacher?ws=library&tab=bootcamps" replace />} />
+                    <Route path="library/assignments" element={<RedirectWithSearch to="/teacher?ws=library&tab=assignments" />} />
+                    <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher?ws=library&tab=bootcamps" />} />
                     <Route path="library/bootcamps" element={<Navigate to="/teacher?ws=library&tab=bootcamps" replace />} />
                     <Route path="library/guided-drills" element={<Navigate to="/teacher?ws=library&tab=guided-drills" replace />} />
                     <Route path="library/activities" element={<Navigate to="/teacher?ws=library&tab=activities" replace />} />
                     <Route path="library/recaps" element={<Navigate to="/teacher?ws=library" replace />} />
-                    <Route path="library/uploads" element={<Navigate to="/teacher?ws=library" replace />} />
+                    <Route path="library/uploads" element={<RedirectWithSearch to="/teacher?ws=library" />} />
                     <Route path="library/analytics" element={<Navigate to="/teacher?ws=library" replace />} />
                     <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
                     {/* legacy top-level aliases */}
-                    <Route path="assignments" element={<Navigate to="/teacher?ws=library&tab=assignments" replace />} />
+                    <Route path="assignments" element={<RedirectWithSearch to="/teacher?ws=library&tab=assignments" />} />
                     <Route path="recaps" element={<Navigate to="/teacher?ws=library" replace />} />
                     <Route path="uploads" element={<Navigate to="/teacher?ws=library" replace />} />
                     <Route path="analytics-bridge" element={<Navigate to="/teacher?ws=library" replace />} />
