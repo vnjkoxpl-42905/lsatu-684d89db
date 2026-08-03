@@ -85,9 +85,15 @@ export default function StudentAssignSection({ set }: StudentAssignSectionProps)
     const { inserted, duplicates, error } = await assignToStudents(set, studentIds);
     setSubmitting(false);
 
-    if (error) {
+    // An error alongside a nonzero `inserted` means some students were assigned
+    // and a later step (classroom item or notification) failed for others, so
+    // both facts get reported rather than only the failure.
+    if (error && inserted === 0) {
       toast.error(`Couldn't assign: ${error}`);
       return;
+    }
+    if (error) {
+      toast.warning(`Some students need another look: ${error}`);
     }
     if (inserted > 0) {
       toast.success(

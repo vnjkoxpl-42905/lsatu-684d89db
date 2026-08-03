@@ -8,7 +8,7 @@ import {
   type GuidedDrill,
 } from '@/lib/guidedDrills';
 import { createClassroomItem } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { notifyStudentOfClassroomItem, summarizeNotifyResult, type NotifyResult } from '@/lib/classroomNotify';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -73,30 +73,57 @@ export default function AdminGuidedDrills() {
       // Use the start of the scheduled date for unlockAt if provided
       const unlockAt = scheduledFor ? new Date(scheduledFor).toISOString() : null;
 
-      const notifyResults = await Promise.all(assignments.map(async (a) => {
-        // Create the linked classroom_items row
-        await createClassroomItem({
-          studentId: a.student_id,
-          createdBy: user.id,
-          type: 'drill',
-          title: assignDrill.title,
-          description: `New guided drill: ${assignDrill.title}`,
-          unlockAt,
-          sourceTable: 'guided_drill_assignments',
-          sourceId: a.id,
-          status: 'assigned',
-          visibleToStudent: true,
-        });
+      // The assignment rows already exist at this point. Each student's
+      // follow-up work is isolated so one student's failure cannot reject the
+      // batch and cannot cause an already-created assignment to be inserted
+      // again on a retry.
+      const notifyResults: NotifyResult[] = [];
+      const failedStudents: string[] = [];
 
-        // Notify the student
-        return notifyStudentOfClassroomItem({
-          adminUserId: user.id,
-          studentId: a.student_id,
-          title: assignDrill.title,
-          route: `/guided/${a.id}?returnTo=/classroom`,
-          description: `New guided drill: ${assignDrill.title}`,
-        });
-      }));
+      const studentLabel = (studentId: string) => {
+        const s = students.find((row) => row.class_id === studentId);
+        return s?.display_name || s?.email || studentId.slice(0, 8);
+      };
+
+      for (const a of assignments) {
+        try {
+          // Create the linked classroom_items row
+          await createClassroomItem({
+            studentId: a.student_id,
+            createdBy: user.id,
+            type: 'drill',
+            title: assignDrill.title,
+            description: `New guided drill: ${assignDrill.title}`,
+            unlockAt,
+            sourceTable: 'guided_drill_assignments',
+            sourceId: a.id,
+            status: 'assigned',
+            visibleToStudent: true,
+          });
+
+          // Notify the student
+          notifyResults.push(
+            await notifyStudentOfClassroomItem({
+              adminUserId: user.id,
+              studentId: a.student_id,
+              title: assignDrill.title,
+              route: `/guided/${a.id}?returnTo=/classroom`,
+              description: `New guided drill: ${assignDrill.title}`,
+            }),
+          );
+        } catch (err) {
+          console.error('[guided-drills:assign] student failed', {
+            studentId: a.student_id,
+            assignmentId: a.id,
+            error: err,
+          });
+          failedStudents.push(studentLabel(a.student_id));
+        }
+      }
+
+      for (const name of failedStudents) {
+        toast.error(`Assigned, but ${name} was not notified`);
+      }
 
       // Invalidate relevant queries to ensure the classroom and hub update immediately
       queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
@@ -104,7 +131,9 @@ export default function AdminGuidedDrills() {
       queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
 
       // Provide detailed feedback about assignment and notification success
-      const allOk = notifyResults.every(r => r.inbox_ok && r.bell_ok && r.email_ok);
+      const allOk =
+        failedStudents.length === 0 &&
+        notifyResults.every(r => r.inbox_ok && r.bell_ok && r.email_ok);
       if (allOk) {
         toast.success(`Assigned "${assignDrill.title}" and notified ${selectedStudents.size} student(s)`);
       } else {
