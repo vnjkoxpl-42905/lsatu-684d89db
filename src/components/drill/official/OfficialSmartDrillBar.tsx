@@ -23,6 +23,10 @@ interface Props {
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
   onEnd: () => void;
+  /** Reveals the correct answer in place. Hidden if omitted. */
+  onShowAnswer?: () => void;
+  /** Disabled until the student has committed an answer. */
+  showAnswerDisabled?: boolean;
   /** Opens the AI tutor card for the current question. Hidden if omitted. */
   onAskTutor?: () => void;
   /** Label for the tutor button (context-aware, e.g. "Strategize" / "Explain"). */
@@ -48,6 +52,8 @@ export default function OfficialSmartDrillBar({
   onSkip,
   skipDisabled,
   onEnd,
+  onShowAnswer,
+  showAnswerDisabled,
   onAskTutor,
   askTutorLabel = "Ask Joshua",
   askTutorDisabled,
@@ -68,7 +74,23 @@ export default function OfficialSmartDrillBar({
           End
         </button>
 
-        {/* Ask Joshua — opens the AI tutor for the current question */}
+        {/* Answer / Explanation pair, mirroring LSAT Lab's review controls.
+            Answer reveals the correct letter; Explanation opens the authored
+            write-up beside it. */}
+        {onShowAnswer && (
+          <button
+            type="button"
+            onClick={onShowAnswer}
+            disabled={disabled || showAnswerDisabled}
+            title={showAnswerDisabled ? "Submit an answer first" : undefined}
+            className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Answer
+          </button>
+        )}
+
+        {/* Explanation — the authored write-up, or the AI tutor when the
+            source published none for this question. */}
         {onAskTutor && (
           <button
             type="button"

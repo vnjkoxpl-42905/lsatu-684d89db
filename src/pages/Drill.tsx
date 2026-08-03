@@ -32,6 +32,7 @@ import { ScoreReport } from '@/components/drill/ScoreReport';
 import { LRSectionResults } from '@/components/drill/LRSectionResults';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
+import { ExplanationPanel } from '@/components/drill/ExplanationPanel';
 import { TimerProvider, useTimerContextSafe } from '@/contexts/TimerContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useClassId } from '@/hooks/useClassId';
@@ -175,6 +176,10 @@ function DrillContent() {
   const [selectedAnswer, setSelectedAnswer] = React.useState<string>('');
   const [showSolution, setShowSolution] = React.useState(false);
   const [tutorChatOpen, setTutorChatOpen] = React.useState(false);
+  // The authored LSAT Lab explanation drawer. Distinct from the AI tutor: this
+  // shows transcribed source content, the tutor generates. Authored wins when
+  // it exists; the tutor is the fallback for questions that have none.
+  const [explanationOpen, setExplanationOpen] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
@@ -2755,6 +2760,13 @@ function DrillContent() {
     setTutorChatOpen(true);
   };
 
+  // Reveal the correct answer in place, without opening any panel. Mirrors the
+  // auto-reveal toggle's effect for a student who left it off.
+  const revealAnswerForCurrent = () => {
+    if (!currentQuestion) return;
+    setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+  };
+
   // The drill toolbar's Notes control opens the docked drawer on the Notes tab.
   const toggleNotesPanel = () => {
     setNotesOpen((prev) => {
@@ -2812,6 +2824,28 @@ function DrillContent() {
           />
         </ErrorBoundary>
       )}
+
+      {/* Authored explanation drawer. When the source published nothing for
+          this question, it offers the AI tutor instead of an empty panel. */}
+      <ExplanationPanel
+        open={explanationOpen}
+        onOpenChange={setExplanationOpen}
+        pt={currentQuestion?.pt}
+        section={currentQuestion?.section}
+        questionNumber={currentQuestion?.qnum}
+        selectedAnswer={selectedAnswer}
+        fallback={
+          <Button
+            variant="outline"
+            onClick={() => {
+              setExplanationOpen(false);
+              openTutorForCurrent();
+            }}
+          >
+            Ask Joshua about this question
+          </Button>
+        }
+      />
     </>
   );
 
@@ -3141,7 +3175,9 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom')}
-              onAskTutor={() => openTutorForCurrent()}
+              onShowAnswer={() => revealAnswerForCurrent()}
+              showAnswerDisabled={!currentAttempted}
+              onAskTutor={() => setExplanationOpen(true)}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
               disabled={!!timer?.isPaused}
@@ -3193,7 +3229,9 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom/drill')}
-              onAskTutor={() => openTutorForCurrent()}
+              onShowAnswer={() => revealAnswerForCurrent()}
+              showAnswerDisabled={!currentAttempted}
+              onAskTutor={() => setExplanationOpen(true)}
               askTutorLabel="Explanation"
               askTutorDisabled={false}
               disabled={!!timer?.isPaused}
