@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Eye, EyeOff, Flag } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
+import InlineChoiceExplanation, {
+  type InlineChoiceNotes,
+} from "@/components/drill/official/InlineChoiceExplanation";
 import type { Highlight } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +23,15 @@ interface Props {
   isFlagged: boolean;
   answerRevealed?: boolean;
   correctAnswer?: string;
+  /**
+   * Per-choice explanation content, rendered inline beneath each choice once
+   * the answer is revealed. Omit it entirely (section mode, or before reveal)
+   * and no inline layer renders at all.
+   */
+  inlineNotes?: InlineChoiceNotes | null;
+  /** Letters whose disclosure is currently open. See `useInlineDisclosures`. */
+  openInlineLetters?: Set<string>;
+  onToggleInlineLetter?: (letter: string) => void;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
   searchTerm?: string;
@@ -56,6 +68,9 @@ export default function OfficialQuestionPane({
   isFlagged,
   answerRevealed = false,
   correctAnswer,
+  inlineNotes,
+  openInlineLetters,
+  onToggleInlineLetter,
   highlights,
   highlightMode,
   searchTerm,
@@ -161,6 +176,9 @@ export default function OfficialQuestionPane({
               const isSelected = selectedAnswer === key;
               const isEliminated = eliminatedAnswers.has(key);
               const isCorrect = answerRevealed && correctAnswer === key;
+              // The inline layer only ever appears once the answer is revealed.
+              const inline =
+                answerRevealed && inlineNotes ? inlineNotes[key] ?? {} : undefined;
 
               return (
                 <li
@@ -221,6 +239,18 @@ export default function OfficialQuestionPane({
                   >
                     {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
+                  {inline && (
+                    <div className="col-start-2 col-end-4">
+                      <InlineChoiceExplanation
+                        letter={key}
+                        isCorrect={isCorrect}
+                        isSelected={isSelected}
+                        content={inline}
+                        open={!!openInlineLetters?.has(key)}
+                        onToggle={(letter) => onToggleInlineLetter?.(letter)}
+                      />
+                    </div>
+                  )}
                 </li>
               );
             })}

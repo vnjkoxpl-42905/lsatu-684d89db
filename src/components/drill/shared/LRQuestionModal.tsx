@@ -13,9 +13,14 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, CheckCircle2, XCircle, BookOpen } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, CheckCircle2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import OfficialQuestionPane from "@/components/drill/official/OfficialQuestionPane";
+import {
+  useInlineDisclosures,
+  type InlineChoiceNotes,
+} from "@/components/drill/official/InlineChoiceExplanation";
+import { useLrExplanation } from "@/hooks/useLrExplanation";
 import { questionBank, type LRQuestion } from "@/lib/questionLoader";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -194,6 +199,45 @@ export default function LRQuestionModal(props: Props) {
   const showQueueNav = !isInline && queue.length > 1;
   const loading = !isInline && (qbLoading || !bankQuestion);
 
+  // Inline per-choice explanations, shared with the drill runner so the format
+  // is identical everywhere. Precedence is per choice: Joshua's authored
+  // bootcamp copy wins, and LSAT Lab fills only the letters that have none.
+  const { data: lrExplanation } = useLrExplanation(
+    {
+      pt: bankQuestion?.pt,
+      section: bankQuestion?.section,
+      questionNumber: bankQuestion?.qnum,
+    },
+    submitted && !isInline,
+  );
+
+  const inlineNotes = React.useMemo<InlineChoiceNotes | null>(() => {
+    if (!submitted || !renderQuestion) return null;
+    const labNotes = lrExplanation?.styles[0]?.notesByLetter ?? {};
+    const labChoices = new Map(lrExplanation?.choices.map((c) => [c.letter, c]) ?? []);
+
+    const map: InlineChoiceNotes = {};
+    for (const letter of Object.keys(renderQuestion.answerChoices)) {
+      const authored = explanations?.[letter];
+      const isCorrect = authored?.verdict === "correct" || letter === correctAnswer;
+      const authoredNote = isCorrect ? authored?.whyCorrect : authored?.whyIncorrect;
+      const lab = labChoices.get(letter);
+      map[letter] = {
+        tag: lab?.tag ?? null,
+        studentPercent: lab?.studentPercent ?? null,
+        note: authoredNote || labNotes[letter] || null,
+      };
+    }
+    return map;
+  }, [submitted, renderQuestion, explanations, correctAnswer, lrExplanation]);
+
+  const { openLetters, toggleLetter } = useInlineDisclosures({
+    questionKey: qid,
+    revealed: submitted,
+    correctLetter: correctAnswer,
+    selectedLetter: selected,
+  });
+
   return (
     <AnimatePresence>
       <motion.div
@@ -270,6 +314,11 @@ export default function LRQuestionModal(props: Props) {
                   selectedAnswer={selected}
                   eliminatedAnswers={eliminated}
                   isFlagged={false}
+                  answerRevealed={submitted}
+                  correctAnswer={correctAnswer}
+                  inlineNotes={inlineNotes}
+                  openInlineLetters={openLetters}
+                  onToggleInlineLetter={toggleLetter}
                   highlights={[]}
                   highlightMode="none"
                   onAnswerSelect={(k) => !submitted && setSelected(k)}
@@ -293,34 +342,8 @@ export default function LRQuestionModal(props: Props) {
                         {correct ? "Correct" : `Incorrect — answer is ${correctAnswer}`}
                       </span>
                     </div>
-
-                    {explanations && (
-                      <div className="mt-4 space-y-2">
-                        <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
-                          <BookOpen className="w-4 h-4" /> Explanations
-                        </div>
-                        {Object.keys(renderQuestion.answerChoices).map((k) => {
-                          const exp = explanations[k];
-                          if (!exp) return null;
-                          const isCorrect = exp.verdict === "correct" || k === correctAnswer;
-                          return (
-                            <div
-                              key={k}
-                              className={`p-3 rounded-lg border text-sm ${
-                                isCorrect
-                                  ? "bg-emerald-50/50 border-emerald-200"
-                                  : "bg-slate-50 border-slate-200"
-                              }`}
-                            >
-                              <span className="font-bold mr-2">{k}.</span>
-                              <span className="text-slate-700">
-                                {isCorrect ? exp.whyCorrect : exp.whyIncorrect}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                    {/* Per-choice explanations render inline under each choice
+                        above, not as a separate block down here. */}
                   </div>
                 )}
               </>

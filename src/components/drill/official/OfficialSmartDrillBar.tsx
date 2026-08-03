@@ -23,17 +23,21 @@ interface Props {
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
   onEnd: () => void;
-  /** Opens the slide-out question menu. Hidden if omitted. */
+  /** Opens the question drawer on Details. Hidden if omitted. */
   onOpenMenu?: () => void;
-  /** Reveals the correct answer in place. Hidden if omitted. */
+  /**
+   * Reveals the answer and the whole inline explanation layer at once. Not
+   * gated on having attempted — pressed early it is the escape hatch, and the
+   * caller confirms that the question will not be scored.
+   */
   onShowAnswer?: () => void;
-  /** Disabled until the student has committed an answer. */
+  /** Rarely used now that Answer is ungated; kept for paused/edge states. */
   showAnswerDisabled?: boolean;
-  /** Opens the AI tutor card for the current question. Hidden if omitted. */
+  /** Opens the drawer on the Explanation tab. Hidden if omitted. */
   onAskTutor?: () => void;
   /** Label for the tutor button (context-aware, e.g. "Strategize" / "Explain"). */
   askTutorLabel?: string;
-  /** Disables the tutor button (e.g. before the answer is submitted). */
+  /** Disabled until something is revealed, so the breakdown cannot leak. */
   askTutorDisabled?: boolean;
   /** Whole bar disabled (e.g. while paused). */
   disabled?: boolean;
@@ -77,7 +81,7 @@ export default function OfficialSmartDrillBar({
           End
         </button>
 
-        {/* Menu — question details, related questions, notes */}
+        {/* Menu — opens the question drawer on Details */}
         {onOpenMenu && (
           <button
             type="button"
@@ -90,14 +94,13 @@ export default function OfficialSmartDrillBar({
         )}
 
         {/* Answer / Explanation pair, mirroring LSAT Lab's review controls.
-            Answer reveals the correct letter; Explanation opens the authored
-            write-up beside it. */}
+            Answer reveals the correct letter plus the inline per-choice layer;
+            Explanation opens the drawer's question-level breakdown. */}
         {onShowAnswer && (
           <button
             type="button"
             onClick={onShowAnswer}
             disabled={disabled || showAnswerDisabled}
-            title={showAnswerDisabled ? "Submit an answer first" : undefined}
             className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Answer
@@ -111,7 +114,7 @@ export default function OfficialSmartDrillBar({
             type="button"
             onClick={onAskTutor}
             disabled={disabled || askTutorDisabled}
-            title={askTutorDisabled ? "Submit an answer first" : undefined}
+            title={askTutorDisabled ? "Answer or reveal the question first" : undefined}
             className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {askTutorLabel}

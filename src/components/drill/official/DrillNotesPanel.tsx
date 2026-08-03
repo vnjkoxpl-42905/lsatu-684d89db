@@ -1,15 +1,19 @@
 import * as React from "react";
-import { X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   getActiveDrillQid,
   subscribeActiveDrillQid,
 } from "@/lib/drillNotepadBus";
 import { readDrillNotes, writeDrillNotes } from "@/lib/drillNotesStorage";
+import { questionBank } from "@/lib/questionLoader";
+import DrillExplanationTab, {
+  type DrillExplanationContext,
+} from "@/components/drill/official/DrillExplanationTab";
 
-/** Tabs available in the docked drill drawer. Explanation is intentionally
- *  absent until the per-choice explanation content + AI flow is built. */
-export type DrawerTab = "notes" | "details";
+/** Tabs available in the docked drill drawer. This is the runner's only panel:
+ *  the dark Explanation and Menu sheets it replaced are gone. */
+export type DrawerTab = "notes" | "explanation" | "details";
 
 /** Question metadata rendered by the Details tab. Mirrors the LRQuestion fields
  *  we already have on the active question — no new content authoring. */
@@ -23,6 +27,14 @@ export interface DrillDetailsMeta {
   difficulty: number;
 }
 
+/** Find Similar, migrated here from the retired slide-out question menu. */
+export interface DrillSimilarContext {
+  qid?: string | null;
+  qtype?: string | null;
+  /** Omit to hide Find Similar entirely rather than show a dead row. */
+  onJumpToQuestion?: (qid: string) => void;
+}
+
 interface Props {
   onClose?: () => void;
   /** Active question metadata for the Details tab. */
@@ -30,27 +42,45 @@ interface Props {
   /** Controlled active tab. Falls back to internal state when omitted. */
   activeTab?: DrawerTab;
   onTabChange?: (tab: DrawerTab) => void;
+  /** Explanation tab content. Omit to hide the tab (non-LR surfaces). */
+  explanation?: DrillExplanationContext | null;
+  /** Find Similar, rendered at the foot of Details. */
+  similar?: DrillSimilarContext | null;
 }
-
-const TABS: { key: DrawerTab; label: string }[] = [
-  { key: "notes", label: "Notes" },
-  { key: "details", label: "Details" },
-];
 
 /**
  * Docked, premium per-question drawer for the Smart Drill runner. Slides in
- * from the right (the frame handles the push/width animation). Hosts tabs:
- * Notes (per-question, auto-saved to localStorage via the drillNotepad bus)
- * and Details (read-only question metadata). The Explanation tab is added in a
- * later stage once per-choice explanation content exists.
+ * from the right (the frame handles the push/width animation). Hosts three
+ * tabs: Notes (per-question, auto-saved to localStorage via the drillNotepad
+ * bus), Explanation (the question-level breakdown and style selector), and
+ * Details (read-only metadata plus Find Similar).
+ *
+ * This is the runner's only panel. Per-choice explanation content deliberately
+ * does NOT live here — it renders inline under each answer choice.
  */
-export default function DrillNotesPanel({ onClose, meta, activeTab, onTabChange }: Props) {
+export default function DrillNotesPanel({
+  onClose,
+  meta,
+  activeTab,
+  onTabChange,
+  explanation,
+  similar,
+}: Props) {
   const [internalTab, setInternalTab] = React.useState<DrawerTab>("notes");
-  const tab = activeTab ?? internalTab;
+  const requestedTab = activeTab ?? internalTab;
+  // The Explanation tab only exists on surfaces that supply its content.
+  const tab: DrawerTab =
+    requestedTab === "explanation" && !explanation ? "notes" : requestedTab;
   const selectTab = (next: DrawerTab) => {
     if (onTabChange) onTabChange(next);
     else setInternalTab(next);
   };
+
+  const tabs: { key: DrawerTab; label: string }[] = [
+    { key: "notes", label: "Notes" },
+    ...(explanation ? [{ key: "explanation" as const, label: "Explanation" }] : []),
+    { key: "details", label: "Details" },
+  ];
 
   return (
     <div
@@ -62,7 +92,7 @@ export default function DrillNotesPanel({ onClose, meta, activeTab, onTabChange 
       {/* Header + close */}
       <div className="px-5 pt-4 pb-3 flex items-start justify-between">
         <div role="tablist" aria-label="Drawer sections" className="flex items-center gap-5">
-          {TABS.map((t) => {
+          {tabs.map((t) => {
             const active = tab === t.key;
             return (
               <button
@@ -94,7 +124,9 @@ export default function DrillNotesPanel({ onClose, meta, activeTab, onTabChange 
         </button>
       </div>
 
-      {tab === "notes" ? <NotesTab /> : <DetailsTab meta={meta} />}
+      {tab === "notes" && <NotesTab />}
+      {tab === "explanation" && explanation && <DrillExplanationTab {...explanation} />}
+      {tab === "details" && <DetailsTab meta={meta} similar={similar} />}
     </div>
   );
 }
@@ -170,7 +202,13 @@ function NotesTab() {
 
 // ─── Details tab ───────────────────────────────────────────────────────────
 
-function DetailsTab({ meta }: { meta?: DrillDetailsMeta | null }) {
+function DetailsTab({
+  meta,
+  similar,
+}: {
+  meta?: DrillDetailsMeta | null;
+  similar?: DrillSimilarContext | null;
+}) {
   if (!meta) {
     return (
       <p className="flex-1 px-5 py-6 text-[13px] text-slate-400 border-t border-slate-100">
@@ -233,7 +271,76 @@ function DetailsTab({ meta }: { meta?: DrillDetailsMeta | null }) {
           </div>
         </Section>
       )}
+
+      {similar?.onJumpToQuestion && <FindSimilar {...similar} />}
     </div>
+  );
+}
+
+// ─── Find Similar ──────────────────────────────────────────────────────────
+
+/**
+ * Other questions of the same type, drawn from the loaded bank so every row
+ * goes somewhere real. Collapsed by default — Details is read first for the
+ * question you are on, not for the next one.
+ */
+function FindSimilar({ qid, qtype, onJumpToQuestion }: DrillSimilarContext) {
+  const [open, setOpen] = React.useState(false);
+
+  const matches = React.useMemo(() => {
+    if (!open || !qtype) return [];
+    try {
+      return questionBank
+        .getAllQuestions()
+        .filter((q) => q.qtype === qtype && q.qid !== qid)
+        .slice(0, 25);
+    } catch {
+      return [];
+    }
+  }, [open, qtype, qid]);
+
+  return (
+    <Section label="Find similar">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between rounded px-1 py-1.5 -mx-1 text-left text-[13px] font-medium text-slate-700 transition-colors hover:bg-slate-50"
+      >
+        Other {qtype || "similar"} questions
+        <ChevronRight
+          aria-hidden
+          className={cn(
+            "h-4 w-4 text-slate-400 transition-transform duration-200",
+            open && "rotate-90",
+          )}
+        />
+      </button>
+
+      {open && (
+        <div className="mt-1">
+          {matches.length === 0 ? (
+            <p className="px-1 py-2 text-[12px] text-slate-400">
+              No other questions of this type are loaded.
+            </p>
+          ) : (
+            matches.map((q) => (
+              <button
+                key={q.qid}
+                type="button"
+                onClick={() => onJumpToQuestion?.(q.qid)}
+                className="flex w-full items-center justify-between border-b border-slate-100 px-1 py-2 text-left text-[13px] text-slate-700 transition-colors last:border-0 hover:bg-slate-50"
+              >
+                <span className="tabular-nums">
+                  PT{q.pt} · S{q.section} · Q{q.qnum}
+                </span>
+                <ChevronRight aria-hidden className="h-3.5 w-3.5 text-slate-400" />
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </Section>
   );
 }
 

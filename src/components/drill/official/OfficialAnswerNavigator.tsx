@@ -1,5 +1,12 @@
 import * as React from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ClipboardCheck } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -21,6 +28,13 @@ interface Props {
   onJumpTo: (index: number) => void;
   onPrev: () => void;
   onNext: () => void;
+  /**
+   * Opt-in reveal for section mode. Off by default and off in a real section:
+   * with it off this strip behaves exactly as it always has — no reveal, no
+   * inline explanation layer. Omit the handler to hide the toggle entirely.
+   */
+  revealEnabled?: boolean;
+  onRevealEnabledChange?: (next: boolean) => void;
 }
 
 /**
@@ -42,6 +56,8 @@ export default function OfficialAnswerNavigator({
   onJumpTo,
   onPrev,
   onNext,
+  revealEnabled,
+  onRevealEnabledChange,
 }: Props) {
   const total = questionQueue.length;
   if (total === 0) return null;
@@ -104,7 +120,33 @@ export default function OfficialAnswerNavigator({
           <div className="flex-1" />
         )}
 
-        <div className="flex items-center gap-2 shrink-0 self-end pb-1">
+        <div className="flex items-center gap-3 shrink-0 self-end pb-1">
+          {onRevealEnabledChange && (
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <label className="flex items-center gap-2 cursor-pointer select-none mr-1">
+                    <ClipboardCheck
+                      className={cn(
+                        "w-4 h-4 transition-colors",
+                        revealEnabled ? "text-[#7f1d1d]" : "text-slate-400",
+                      )}
+                    />
+                    <Switch
+                      checked={!!revealEnabled}
+                      onCheckedChange={onRevealEnabledChange}
+                      aria-label="Reveal answers and explanations while working"
+                      className="data-[state=checked]:bg-[#7f1d1d]"
+                    />
+                  </label>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-[260px] text-center">
+                  Toggle on to reveal the answer and explanation as you work. Off by
+                  default, and how a real section behaves.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
           <button
             type="button"
             onClick={onPrev}

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { HelpCircle } from "lucide-react";
 
 interface BreadcrumbItem {
   label: string;
@@ -17,6 +18,12 @@ interface Props {
   pauseNoun?: string;
   /** Label for the complete/end action. Defaults to the LawHub-style full-section wording. */
   completeLabel?: string;
+  /**
+   * Opens the Help sheet. Lives here rather than as a floating bubble: the FAB
+   * sat over the question card's bottom-right corner, which is the runner's
+   * content, not its chrome. Hidden if omitted.
+   */
+  onOpenHelp?: () => void;
 }
 
 /**
@@ -32,6 +39,7 @@ export default function OfficialSessionStrip({
   onShowAnswer,
   pauseNoun = "Section",
   completeLabel = "Complete Section",
+  onOpenHelp,
 }: Props) {
   return (
     <div className="flex items-center justify-between gap-4 w-full text-[14px]">
@@ -66,6 +74,17 @@ export default function OfficialSessionStrip({
 
       {/* Right: gray pill buttons */}
       <div className="flex items-center gap-2 shrink-0">
+        {onOpenHelp && (
+          <button
+            type="button"
+            onClick={onOpenHelp}
+            aria-label="Get help from Joshua"
+            title="Get help from Joshua"
+            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 h-[30px] w-[30px] inline-flex items-center justify-center transition-colors"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+        )}
         {showAnswerVisible && onShowAnswer && (
           <button
             type="button"

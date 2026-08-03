@@ -10,7 +10,18 @@ import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
-import type { DrawerTab, DrillDetailsMeta } from '@/components/drill/official/DrillNotesPanel';
+import type {
+  DrawerTab,
+  DrillDetailsMeta,
+  DrillSimilarContext,
+} from '@/components/drill/official/DrillNotesPanel';
+import type { DrillExplanationContext } from '@/components/drill/official/DrillExplanationTab';
+import {
+  useInlineDisclosures,
+  type InlineChoiceNotes,
+} from '@/components/drill/official/InlineChoiceExplanation';
+import { useLrExplanation, type LrStyleKey } from '@/hooks/useLrExplanation';
+import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
@@ -32,8 +43,6 @@ import { ScoreReport } from '@/components/drill/ScoreReport';
 import { LRSectionResults } from '@/components/drill/LRSectionResults';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
-import { ExplanationPanel } from '@/components/drill/ExplanationPanel';
-import { QuestionMenuPanel } from '@/components/drill/QuestionMenuPanel';
 import { TimerProvider, useTimerContextSafe } from '@/contexts/TimerContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useClassId } from '@/hooks/useClassId';
@@ -177,12 +186,26 @@ function DrillContent() {
   const [selectedAnswer, setSelectedAnswer] = React.useState<string>('');
   const [showSolution, setShowSolution] = React.useState(false);
   const [tutorChatOpen, setTutorChatOpen] = React.useState(false);
-  // The authored LSAT Lab explanation drawer. Distinct from the AI tutor: this
-  // shows transcribed source content, the tutor generates. Authored wins when
-  // it exists; the tutor is the fallback for questions that have none.
-  const [explanationOpen, setExplanationOpen] = React.useState(false);
-  // Slide-out question menu (details, related questions, notes).
-  const [questionMenuOpen, setQuestionMenuOpen] = React.useState(false);
+  // The authored LSAT Lab explanation. Distinct from the AI tutor: this shows
+  // transcribed source content, the tutor generates. Authored wins when it
+  // exists; the tutor is the fallback for questions that have none. It renders
+  // in two places — the drawer's Explanation tab (question-level) and inline
+  // under each choice — so the chosen style is owned here and shared, because
+  // the drawer itself is mounted twice by the frame.
+  const [activeStyle, setActiveStyle] = React.useState<LrStyleKey | null>(null);
+  // Questions the student revealed before attempting. Not scored: the answer is
+  // already on screen, so committing it would be meaningless.
+  const [unscoredQids, setUnscoredQids] = React.useState<Set<string>>(new Set());
+  // Confirm shown when Answer is pressed before an attempt.
+  const [revealConfirmOpen, setRevealConfirmOpen] = React.useState(false);
+  // Help sheet, opened from the header strip beside Pause. The global
+  // FloatingHelpButton is suppressed on /drill so no bubble floats over the
+  // question card.
+  const [helpOpen, setHelpOpen] = React.useState(false);
+  // Section mode's opt-in reveal. Off by default and deliberately not
+  // persisted: a real section shows nothing, and that stays the default every
+  // time. With it off, section mode behaves exactly as it always has.
+  const [sectionRevealEnabled, setSectionRevealEnabled] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
@@ -2306,6 +2329,62 @@ function DrillContent() {
     };
   }, [currentQuestion]);
 
+  // ── Authored explanation for the active question ─────────────────────────
+  // Declared here, above every conditional early return, so hook order stays
+  // stable. One fetch feeds both surfaces: the drawer tab and the inline layer.
+  const currentRevealed =
+    !!currentQuestion &&
+    (!!showAnswerRevealed.get(currentQuestion.qid) ||
+      // Section mode's opt-in toggle: once on, an answered question reveals.
+      (sectionRevealEnabled && !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
+
+  const {
+    data: lrExplanation,
+    isLoading: lrExplanationLoading,
+    isError: lrExplanationError,
+  } = useLrExplanation(
+    {
+      pt: currentQuestion?.pt,
+      section: currentQuestion?.section,
+      questionNumber: currentQuestion?.qnum,
+    },
+    currentRevealed,
+  );
+
+  // A style chosen on the previous question must not leak onto one that does
+  // not publish it.
+  React.useEffect(() => {
+    setActiveStyle(null);
+  }, [currentQuestion?.qid]);
+
+  const currentStyle = React.useMemo(() => {
+    const styles = lrExplanation?.styles ?? [];
+    return styles.find((s) => s.style === activeStyle) ?? styles[0] ?? null;
+  }, [lrExplanation, activeStyle]);
+
+  // Per-letter inline content. Tags and percentages are real source data and
+  // survive even on questions with no prose; a letter with no note simply has
+  // none, and the inline layer renders that absence rather than a placeholder.
+  const inlineNotes = React.useMemo<InlineChoiceNotes | null>(() => {
+    if (!lrExplanation) return null;
+    const map: InlineChoiceNotes = {};
+    for (const choice of lrExplanation.choices) {
+      map[choice.letter] = {
+        tag: choice.tag,
+        studentPercent: choice.studentPercent,
+        note: currentStyle?.notesByLetter[choice.letter] ?? null,
+      };
+    }
+    return map;
+  }, [lrExplanation, currentStyle]);
+
+  const { openLetters, toggleLetter } = useInlineDisclosures({
+    questionKey: currentQuestion?.qid,
+    revealed: currentRevealed,
+    correctLetter: currentQuestion?.correctAnswer,
+    selectedLetter: selectedAnswer,
+  });
+
 
 
   // Handle session completion and post-section flow
@@ -2770,13 +2849,48 @@ function DrillContent() {
     setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
   };
 
+  // The runner has exactly one panel now. Menu, Explanation, and Notes all
+  // open it, each on its own tab — there are no separate sheets left.
+  //
+  // Each control toggles its own tab: pressing it while the drawer already
+  // shows that tab closes the drawer. Pressing it while another tab is up
+  // switches to this one rather than closing, so no control reads as dead.
+  const toggleDrawerOn = (tab: DrawerTab) => {
+    if (notesOpen && drawerTab === tab) {
+      setNotesOpen(false);
+      return;
+    }
+    setDrawerTab(tab);
+    setNotesOpen(true);
+  };
+
   // The drill toolbar's Notes control opens the docked drawer on the Notes tab.
-  const toggleNotesPanel = () => {
-    setNotesOpen((prev) => {
-      const next = !prev;
-      if (next) setDrawerTab('notes');
-      return next;
-    });
+  const toggleNotesPanel = () => toggleDrawerOn('notes');
+
+  // Jump to another question of the same type. Same route the library uses.
+  const jumpToQuestion = (qid: string) => {
+    navigate(
+      `/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart&returnTo=${encodeURIComponent('/classroom/drill')}`,
+    );
+  };
+
+  // Answer, pressed before an attempt, is the escape hatch: it reveals
+  // everything at once and gives up the score for that question. Pressed after
+  // an attempt there is nothing to give up, so it just reveals.
+  const handleRevealRequest = (attempted: boolean) => {
+    if (attempted) {
+      revealAnswerForCurrent();
+      return;
+    }
+    setRevealConfirmOpen(true);
+  };
+
+  const confirmUnscoredReveal = () => {
+    if (currentQuestion) {
+      setUnscoredQids((prev) => new Set(prev).add(currentQuestion.qid));
+    }
+    revealAnswerForCurrent();
+    setRevealConfirmOpen(false);
   };
 
 
@@ -2828,43 +2942,6 @@ function DrillContent() {
         </ErrorBoundary>
       )}
 
-      {/* Authored explanation drawer. When the source published nothing for
-          this question, it offers the AI tutor instead of an empty panel. */}
-      <ExplanationPanel
-        open={explanationOpen}
-        onOpenChange={setExplanationOpen}
-        pt={currentQuestion?.pt}
-        section={currentQuestion?.section}
-        questionNumber={currentQuestion?.qnum}
-        selectedAnswer={selectedAnswer}
-        fallback={
-          <Button
-            variant="outline"
-            onClick={() => {
-              setExplanationOpen(false);
-              openTutorForCurrent();
-            }}
-          >
-            Ask Joshua about this question
-          </Button>
-        }
-      />
-
-      {/* Slide-out question menu. Rows that have no working destination are
-          omitted rather than shown dead. */}
-      <QuestionMenuPanel
-        open={questionMenuOpen}
-        onOpenChange={setQuestionMenuOpen}
-        question={currentQuestion}
-        onOpenNotes={toggleNotesPanel}
-        onJumpToQuestion={(qid) => {
-          // Start a fresh single-question drill on the chosen question, the
-          // same route the library picker uses.
-          navigate(
-            `/drill?mode=type-drill&qids=${encodeURIComponent(qid)}&present=smart&returnTo=${encodeURIComponent('/classroom/drill')}`,
-          );
-        }}
-      />
     </>
   );
 
@@ -2968,9 +3045,31 @@ function DrillContent() {
         }
       : undefined;
     const currentAttempted = attemptedQids.has(currentQuestion.qid);
+    // Revealed before attempting: the answer is already on screen, so this
+    // question is not scored and the primary action becomes Next.
+    const currentUnscored = unscoredQids.has(currentQuestion.qid);
+    const drawerExplanation: DrillExplanationContext = {
+      data: lrExplanation,
+      isLoading: lrExplanationLoading,
+      isError: lrExplanationError,
+      revealed: currentRevealed,
+      activeStyle,
+      onStyleChange: setActiveStyle,
+      onAskTutor: () => openTutorForCurrent(),
+    };
+    const drawerSimilar: DrillSimilarContext = {
+      qid: currentQuestion.qid,
+      qtype: currentQuestion.qtype,
+      onJumpToQuestion: jumpToQuestion,
+    };
     const requiresAnswerBeforeNext = !isFullSection && !isPracticeSetMode;
     const officialNextDisabled =
-      !!timer?.isPaused || (!isAdaptiveMode && requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted);
+      !!timer?.isPaused ||
+      (!isAdaptiveMode &&
+        requiresAnswerBeforeNext &&
+        !selectedAnswer &&
+        !currentAttempted &&
+        !currentUnscored);
     const officialPrev = isAdaptiveMode
       ? () => {}
       : isPracticeSetMode
@@ -2979,7 +3078,9 @@ function DrillContent() {
     const officialNext = async () => {
       if (timer?.isPaused) return;
       let committedAttempts: DrillSession['attempts'] | null = null;
-      if (requiresAnswerBeforeNext && !currentAttempted) {
+      // A question revealed before it was attempted is deliberately not
+      // scored, so Next walks past it without committing anything.
+      if (requiresAnswerBeforeNext && !currentAttempted && !currentUnscored) {
         if (!selectedAnswer) {
           toast.error('Select an answer before moving to the next question.');
           return;
@@ -3061,7 +3162,11 @@ function DrillContent() {
         label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
       }
     ] : [
-      { label: 'Library', onClick: () => navigate('/classroom/drill') },
+      // Lead with the practice test, not a generic "Library" crumb — the
+      // student already knows where they are; what they want named is the PT.
+      ...(currentQuestion.pt
+        ? []
+        : [{ label: 'Library', onClick: () => navigate('/classroom/drill') }]),
       ...(currentQuestion.pt
         ? [{
             label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
@@ -3101,6 +3206,21 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={revealConfirmOpen} onOpenChange={setRevealConfirmOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Show the answer?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This reveals the answer and the question won't be scored.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmUnscoredReveal}>Show me</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <OfficialDrillFrame
           isPaused={officialIsPaused}
           onResume={timer?.resume}
@@ -3109,6 +3229,8 @@ function DrillContent() {
           notesPanelOpen={notesOpen}
           onNotesPanelClose={() => setNotesOpen(false)}
           notesPanelMeta={drawerMeta}
+          notesPanelExplanation={drawerExplanation}
+          notesPanelSimilar={drawerSimilar}
           notesPanelTab={drawerTab}
           onNotesPanelTabChange={setDrawerTab}
           tutorToggleVisible={false}
@@ -3134,6 +3256,7 @@ function DrillContent() {
                   : () => handleFinishSection()
               }
               showAnswerVisible={false}
+              onOpenHelp={() => setHelpOpen(true)}
             />
           }
         >
@@ -3162,8 +3285,11 @@ function DrillContent() {
             selectedAnswer={selectedAnswer}
             eliminatedAnswers={eliminatedAnswers}
             isFlagged={isFlagged}
-            answerRevealed={!!showAnswerRevealed.get(currentQuestion.qid)}
+            answerRevealed={currentRevealed}
             correctAnswer={currentQuestion.correctAnswer}
+            inlineNotes={inlineNotes}
+            openInlineLetters={openLetters}
+            onToggleInlineLetter={toggleLetter}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}
@@ -3179,7 +3305,7 @@ function DrillContent() {
             <OfficialSmartDrillBar
               autoReveal={autoReveal}
               onAutoRevealChange={handleAutoRevealChange}
-              primaryAction={currentAttempted ? 'next' : 'submit'}
+              primaryAction={currentAttempted || currentUnscored ? 'next' : 'submit'}
               primaryDisabled={!selectedAnswer || !!timer?.isPaused}
               onSubmit={() => {
                 void commitCurrentAdaptiveAnswer({
@@ -3194,12 +3320,11 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom')}
-              onOpenMenu={() => setQuestionMenuOpen(true)}
-              onShowAnswer={() => revealAnswerForCurrent()}
-              showAnswerDisabled={!currentAttempted}
-              onAskTutor={() => setExplanationOpen(true)}
+              onOpenMenu={() => toggleDrawerOn('details')}
+              onShowAnswer={() => handleRevealRequest(currentAttempted)}
+              onAskTutor={() => toggleDrawerOn('explanation')}
               askTutorLabel="Explanation"
-              askTutorDisabled={false}
+              askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
             />
           ) : isSmartFixedQueue ? (
@@ -3211,7 +3336,7 @@ function DrillContent() {
             <OfficialSmartDrillBar
               autoReveal={autoReveal}
               onAutoRevealChange={handleAutoRevealChange}
-              primaryAction={currentAttempted ? 'next' : 'submit'}
+              primaryAction={currentAttempted || currentUnscored ? 'next' : 'submit'}
               primaryDisabled={!selectedAnswer || !!timer?.isPaused}
               onSubmit={() => {
                 void (async () => {
@@ -3249,12 +3374,14 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom/drill')}
-              onOpenMenu={() => setQuestionMenuOpen(true)}
-              onShowAnswer={() => revealAnswerForCurrent()}
-              showAnswerDisabled={!currentAttempted}
-              onAskTutor={() => setExplanationOpen(true)}
+              onOpenMenu={() => toggleDrawerOn('details')}
+              onShowAnswer={() => handleRevealRequest(currentAttempted)}
+              // A timed full section keeps the old gate: revealing mid-section
+              // is not an escape hatch there, it defeats the exercise.
+              showAnswerDisabled={isFullSection && !currentAttempted}
+              onAskTutor={() => toggleDrawerOn('explanation')}
               askTutorLabel="Explanation"
-              askTutorDisabled={false}
+              askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
             />
           ) : (
@@ -3277,9 +3404,12 @@ function DrillContent() {
               onJumpTo={handleJumpTo}
               onPrev={officialPrev}
               onNext={officialNext}
+              revealEnabled={sectionRevealEnabled}
+              onRevealEnabledChange={setSectionRevealEnabled}
             />
           )}
         </OfficialDrillFrame>
+        {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}
         {renderVoiceCoachModal()}
         {renderTutorOverlay()}
       </>

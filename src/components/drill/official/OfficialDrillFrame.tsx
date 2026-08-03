@@ -5,7 +5,9 @@ import DrillNotepad from "@/components/drill/DrillNotepad";
 import DrillNotesPanel, {
   type DrawerTab,
   type DrillDetailsMeta,
+  type DrillSimilarContext,
 } from "@/components/drill/official/DrillNotesPanel";
+import type { DrillExplanationContext } from "@/components/drill/official/DrillExplanationTab";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +38,11 @@ interface Props {
   notesPanelTab?: DrawerTab;
   /** Tab change handler for the drawer. */
   onNotesPanelTabChange?: (tab: DrawerTab) => void;
+  /** Explanation tab content. The panel mounts twice, so this must be owned
+   *  by the page — both mounts have to read the same active style. */
+  notesPanelExplanation?: DrillExplanationContext | null;
+  /** Find Similar context for the drawer's Details tab. */
+  notesPanelSimilar?: DrillSimilarContext | null;
 }
 
 /**
@@ -58,6 +65,8 @@ export default function OfficialDrillFrame({
   notesPanelMeta,
   notesPanelTab,
   onNotesPanelTabChange,
+  notesPanelExplanation,
+  notesPanelSimilar,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -140,6 +149,8 @@ export default function OfficialDrillFrame({
                   meta={notesPanelMeta}
                   activeTab={notesPanelTab}
                   onTabChange={onNotesPanelTabChange}
+                  explanation={notesPanelExplanation}
+                  similar={notesPanelSimilar}
                 />
               )}
             </div>
@@ -164,6 +175,8 @@ export default function OfficialDrillFrame({
                 meta={notesPanelMeta}
                 activeTab={notesPanelTab}
                 onTabChange={onNotesPanelTabChange}
+                explanation={notesPanelExplanation}
+                similar={notesPanelSimilar}
               />
             </div>
           </>

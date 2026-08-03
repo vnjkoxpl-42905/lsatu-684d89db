@@ -12,8 +12,10 @@ const HelpSheet = lazy(() => import('./HelpSheet'));
 
 // Routes where the floating Help button shouldn't appear.
 // /foyer = marketing/landing; /auth/* = sign in flow; admin surfaces
-// don't need student help (Joshua talks to himself there).
-const HIDDEN_PREFIXES = ['/foyer', '/classroom/drill', '/auth', '/onboarding', '/reset-password', '/admin', '/teacher', '/inbox'];
+// don't need student help (Joshua talks to himself there). /drill = the
+// question runner, which carries its own Help control in the header strip
+// beside Pause — floating it here parked a bubble over the question card.
+const HIDDEN_PREFIXES = ['/foyer', '/drill', '/classroom/drill', '/auth', '/onboarding', '/reset-password', '/admin', '/teacher', '/inbox'];
 
 export function FloatingHelpButton() {
   const { user } = useAuth();
