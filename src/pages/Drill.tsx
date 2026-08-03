@@ -25,7 +25,6 @@ import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
-import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
@@ -202,10 +201,6 @@ function DrillContent() {
   // FloatingHelpButton is suppressed on /drill so no bubble floats over the
   // question card.
   const [helpOpen, setHelpOpen] = React.useState(false);
-  // Section mode's opt-in reveal. Off by default and deliberately not
-  // persisted: a real section shows nothing, and that stays the default every
-  // time. With it off, section mode behaves exactly as it always has.
-  const [sectionRevealEnabled, setSectionRevealEnabled] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
@@ -2333,10 +2328,7 @@ function DrillContent() {
   // Declared here, above every conditional early return, so hook order stays
   // stable. One fetch feeds both surfaces: the drawer tab and the inline layer.
   const currentRevealed =
-    !!currentQuestion &&
-    (!!showAnswerRevealed.get(currentQuestion.qid) ||
-      // Section mode's opt-in toggle: once on, an answered question reveals.
-      (sectionRevealEnabled && !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
+    !!currentQuestion && !!showAnswerRevealed.get(currentQuestion.qid);
 
   const {
     data: lrExplanation,
@@ -3010,9 +3002,6 @@ function DrillContent() {
     // End/Explanation/Skip/Submit footer, and no top "Complete Section" pill.
     // Question semantics still follow `mode`; this flag only changes the chrome.
     const usesSmartChrome = true;
-    // Fixed-queue smart presentation: smart chrome but not the adaptive engine.
-    const isSmartFixedQueue = usesSmartChrome && !isAdaptiveMode;
-    const showQuestionList = !isAdaptiveMode;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
     if (sectionTimer) {
@@ -3030,14 +3019,6 @@ function DrillContent() {
     for (const [qid, attempt] of session.attempts) {
       if (attempt.selectedAnswer) attemptedQids.add(qid);
     }
-    // Match the default navigator: all modes can jump within the queue.
-    // Disable while paused to mirror the default's behavior.
-    const jumpEnabled = !timer?.isPaused;
-    const handleJumpTo = (idx: number) => {
-      if (!session) return;
-      if (isPracticeSetMode) questionTimer.current.pause();
-      setSession({ ...session, currentIndex: idx });
-    };
     const handleTogglePauseClick = timer
       ? () => {
           if (timer.isPaused) timer.resume();
@@ -3063,18 +3044,6 @@ function DrillContent() {
       onJumpToQuestion: jumpToQuestion,
     };
     const requiresAnswerBeforeNext = !isFullSection && !isPracticeSetMode;
-    const officialNextDisabled =
-      !!timer?.isPaused ||
-      (!isAdaptiveMode &&
-        requiresAnswerBeforeNext &&
-        !selectedAnswer &&
-        !currentAttempted &&
-        !currentUnscored);
-    const officialPrev = isAdaptiveMode
-      ? () => {}
-      : isPracticeSetMode
-      ? handlePracticeSetPrevious
-      : handlePrevious;
     const officialNext = async () => {
       if (timer?.isPaused) return;
       let committedAttempts: DrillSession['attempts'] | null = null;
@@ -3327,7 +3296,7 @@ function DrillContent() {
               askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
             />
-          ) : isSmartFixedQueue ? (
+          ) : (
             // Same chrome as the adaptive Smart Drill, but driven by the fixed
             // queue the student hand-picked from the Smart LR Drill card. Submit
             // saves and reveals in place (honoring the auto-reveal toggle); Next
@@ -3383,29 +3352,6 @@ function DrillContent() {
               askTutorLabel="Explanation"
               askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
-            />
-          ) : (
-            <OfficialAnswerNavigator
-              questionQueue={session.questionQueue}
-              currentIndex={session.currentIndex}
-              attemptedQids={attemptedQids}
-              jumpEnabled={jumpEnabled}
-              jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
-              showQuestionList={showQuestionList}
-              prevDisabled={isAdaptiveMode || session.currentIndex <= 0 || !!timer?.isPaused}
-              nextDisabled={officialNextDisabled}
-              nextDisabledReason={
-                timer?.isPaused
-                  ? 'Paused — resume to navigate'
-                  : requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted
-                  ? 'Select an answer before moving on'
-                  : undefined
-              }
-              onJumpTo={handleJumpTo}
-              onPrev={officialPrev}
-              onNext={officialNext}
-              revealEnabled={sectionRevealEnabled}
-              onRevealEnabledChange={setSectionRevealEnabled}
             />
           )}
         </OfficialDrillFrame>
