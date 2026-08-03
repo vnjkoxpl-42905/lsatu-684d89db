@@ -243,9 +243,11 @@ export function parseExplanationFile(text, fileName) {
       prompt: prompt.lines.join('\n').trim(),
       sourceNote,
       isExplained: !unexplained && explanations.length > 0,
-      choices: choices.map(({ prose, ...c }) => c),
+      correctChoice,
+      choices: choices.map(({ prose, ...c }) => ({ ...c, isCorrect: c.letter === correctChoice })),
       explanations,
     });
+
   }
 
   return { preptest, questions, skipped };
