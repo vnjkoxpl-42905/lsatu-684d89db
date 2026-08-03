@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { createClassroomItem, resolveItemRoute } from "@/lib/classroomItems";
-import { notifyStudentOfClassroomItem } from "@/lib/classroomNotify";
+import { assignWork } from "@/lib/assignWork";
 import type { HomeworkSet } from "@/hooks/useHomeworkSets";
 
 /**
@@ -86,90 +85,20 @@ export function useAdminAssignments(
         return { inserted: 0, duplicates: 0, error: null };
       }
 
-      // Per student, in sequence: insert the assignment, create the classroom
-      // item that makes it visible, then notify. Bulk insert is not usable here
-      // because each classroom item needs its own assignment row id. `class_id`
-      // is the STUDENT's id (matching AssignmentBuilder); the set's class_id
-      // pointed the row at the wrong owner and hid it from the student.
-      let inserted = 0;
-      let duplicates = 0;
-      let firstOtherError: string | null = null;
+      const { ok, failed } = await assignWork({
+        teacherId: user.id,
+        studentIds,
+        item: { kind: "homework_set", setId: set.id },
+      });
 
-      for (const studentId of studentIds) {
-        const { data: assignment, error: rowErr } = await supabase
-          .from("homework_assignments")
-          .insert({
-            set_id: set.id,
-            student_id: studentId,
-            question_qids: set.question_qids,
-            set_title: set.title,
-            set_description: set.description,
-            status: "assigned" as AssignmentStatus,
-            assigned_by: user.id,
-            class_id: studentId,
-          })
-          .select("id")
-          .single();
-
-        if (rowErr) {
-          if (rowErr.code === "23505") {
-            duplicates++;
-          } else {
-            console.error("[homework:assign:admin:insert] row failed", {
-              userId: user.id,
-              setId: set.id,
-              studentId,
-              error: rowErr,
-            });
-            if (!firstOtherError) firstOtherError = rowErr.message;
-          }
-          continue;
-        }
-
-        inserted++;
-
-        // The assignment row is the source of truth. A classroom-item or
-        // notify failure is reported per student and never aborts the batch or
-        // re-inserts an assignment that already landed.
-        try {
-          const item = await createClassroomItem({
-            studentId,
-            createdBy: user.id,
-            type: "homework",
-            title: set.title,
-            description: set.description ?? undefined,
-            sourceId: assignment.id,
-            sourceTable: "homework_assignments",
-            visibleToStudent: true,
-            status: "assigned",
-            metadata: { set_id: set.id },
-          });
-
-          await notifyStudentOfClassroomItem({
-            adminUserId: user.id,
-            studentId,
-            title: set.title,
-            description: set.description ?? undefined,
-            route: resolveItemRoute(item) ?? `/classroom/item/${item.id}`,
-          });
-        } catch (err) {
-          console.error("[homework:assign:admin:notify] failed", {
-            userId: user.id,
-            setId: set.id,
-            studentId,
-            error: err,
-          });
-          if (!firstOtherError) {
-            firstOtherError =
-              err instanceof Error
-                ? err.message
-                : "Assigned, but the student was not notified";
-          }
-        }
-      }
+      // A unique-violation means this student already has the set, which is a
+      // no-op rather than something to report as an error.
+      const duplicates = failed.filter((f) => /duplicate key|23505/i.test(f.error ?? "")).length;
+      const firstOtherError =
+        failed.find((f) => !/duplicate key|23505/i.test(f.error ?? ""))?.error ?? null;
 
       await refresh();
-      return { inserted, duplicates, error: firstOtherError };
+      return { inserted: ok.length, duplicates, error: firstOtherError };
     },
     [user, refresh],
   );

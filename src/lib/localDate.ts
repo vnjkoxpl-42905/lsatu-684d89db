@@ -13,6 +13,20 @@ export function localDayISO(date: Date = new Date()): string {
   return `${y}-${m}-${d}`;
 }
 
+// Parse a YYYY-MM-DD calendar date into that day's LOCAL midnight.
+//
+// `new Date('2026-08-05')` is parsed as UTC midnight, which in any western
+// timezone is the evening of the 4th. Scheduling work for "the 5th" that way
+// unlocks it a day early. Splitting the parts and using the Date(y, m, d)
+// constructor keeps the day the day the teacher picked.
+export function parseLocalDay(iso: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  if (!match) return null;
+  const [, y, m, d] = match;
+  const date = new Date(Number(y), Number(m) - 1, Number(d));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 // Local date N days offset from `from`, formatted YYYY-MM-DD. Uses setDate so
 // it stays correct across DST transitions (unlike subtracting 86_400_000 ms).
 export function addLocalDays(days: number, from: Date = new Date()): string {

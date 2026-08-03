@@ -166,33 +166,3 @@ export async function listResponsesForAssignment(
   return (data ?? []) as ActivityItemResponse[];
 }
 
-/**
- * Admin: assign an activity to a student by snapshotting its content into
- * activity_assignments. Mirrors the homework snapshot-at-assign pattern.
- */
-export async function assignActivityToStudent(input: {
-  activity: Activity;
-  studentId: string;
-  assignedBy: string;
-  classId: string;
-}): Promise<ActivityAssignment> {
-  const { activity, studentId, assignedBy, classId } = input;
-  const { data, error } = await supabase
-    .from("activity_assignments")
-    .insert({
-      activity_id: activity.id,
-      student_id: studentId,
-      title: activity.title,
-      subtitle: activity.subtitle,
-      instructions: activity.instructions as never,
-      item_format: activity.item_format,
-      items: activity.items as never,
-      status: "assigned" satisfies ActivityStatus,
-      assigned_by: assignedBy,
-      class_id: classId,
-    })
-    .select()
-    .single();
-  if (error) throw error;
-  return hydrateAssignment(data);
-}

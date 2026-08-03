@@ -46,6 +46,13 @@ export async function createClassroomItem(input: CreateClassroomItemInput) {
   return data as ClassroomItem;
 }
 
+/** Read one item back, e.g. to show what an assign just created. */
+export async function getClassroomItem(id: string) {
+  const { data, error } = await supabase.from('classroom_items').select().eq('id', id).maybeSingle();
+  if (error) throw error;
+  return data ? (data as ClassroomItem) : null;
+}
+
 export async function updateClassroomItem(
   id: string,
   patch: Partial<{

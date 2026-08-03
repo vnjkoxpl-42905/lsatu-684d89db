@@ -3,8 +3,8 @@
  *
  * A "lesson progress source" is any table holding one row per (student, lesson)
  * that the teacher dossier can read back. The two that exist today have
- * genuinely different shapes — RC keeps a full record of position and written
- * work, Abstract records completion only — so the registry describes each
+ * genuinely different shapes. RC keeps a full record of position and written
+ * work, Abstract records completion only, so the registry describes each
  * source's real capabilities rather than pretending they match. A source
  * without `data` renders as completion, and nothing invents a percentage or a
  * response count it cannot support.

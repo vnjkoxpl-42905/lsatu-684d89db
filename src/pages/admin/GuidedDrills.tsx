@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   listGuidedDrills,
-  createAssignments,
   resolveGuidedDrillPool,
   type GuidedDrill,
 } from '@/lib/guidedDrills';
-import { createClassroomItem } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult, type NotifyResult } from '@/lib/classroomNotify';
+import { assignWork, describeAssignResult } from '@/lib/assignWork';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -61,95 +59,24 @@ export default function AdminGuidedDrills() {
 
   const handleAssign = async () => {
     if (!assignDrill || !user || selectedStudents.size === 0) return;
-    try {
-      const assignments = await createAssignments({
-        guided_drill_ids: [assignDrill.id],
-        student_ids: [...selectedStudents],
-        scheduled_for: scheduledFor || null,
-        assigned_by: user.id,
-      });
+    const result = await assignWork({
+      teacherId: user.id,
+      studentIds: [...selectedStudents],
+      item: { kind: 'guided_drill', drillId: assignDrill.id },
+      scheduledForLocalDate: scheduledFor || undefined,
+    });
 
-      // Create classroom items and notify for each assignment
-      // Use the start of the scheduled date for unlockAt if provided
-      const unlockAt = scheduledFor ? new Date(scheduledFor).toISOString() : null;
+    queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
+    queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
+    queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
 
-      // The assignment rows already exist at this point. Each student's
-      // follow-up work is isolated so one student's failure cannot reject the
-      // batch and cannot cause an already-created assignment to be inserted
-      // again on a retry.
-      const notifyResults: NotifyResult[] = [];
-      const failedStudents: string[] = [];
+    const { level, message } = describeAssignResult(result, assignDrill.title);
+    toast[level](message);
+    if (result.ok.length === 0) return;
 
-      const studentLabel = (studentId: string) => {
-        const s = students.find((row) => row.class_id === studentId);
-        return s?.display_name || s?.email || studentId.slice(0, 8);
-      };
-
-      for (const a of assignments) {
-        try {
-          // Create the linked classroom_items row
-          await createClassroomItem({
-            studentId: a.student_id,
-            createdBy: user.id,
-            type: 'drill',
-            title: assignDrill.title,
-            description: `New guided drill: ${assignDrill.title}`,
-            unlockAt,
-            sourceTable: 'guided_drill_assignments',
-            sourceId: a.id,
-            status: 'assigned',
-            visibleToStudent: true,
-          });
-
-          // Notify the student
-          notifyResults.push(
-            await notifyStudentOfClassroomItem({
-              adminUserId: user.id,
-              studentId: a.student_id,
-              title: assignDrill.title,
-              route: `/guided/${a.id}?returnTo=/classroom`,
-              description: `New guided drill: ${assignDrill.title}`,
-            }),
-          );
-        } catch (err) {
-          console.error('[guided-drills:assign] student failed', {
-            studentId: a.student_id,
-            assignmentId: a.id,
-            error: err,
-          });
-          failedStudents.push(studentLabel(a.student_id));
-        }
-      }
-
-      for (const name of failedStudents) {
-        toast.error(`Assigned, but ${name} was not notified`);
-      }
-
-      // Invalidate relevant queries to ensure the classroom and hub update immediately
-      queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
-      queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
-      queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
-
-      // Provide detailed feedback about assignment and notification success
-      const allOk =
-        failedStudents.length === 0 &&
-        notifyResults.every(r => r.inbox_ok && r.bell_ok && r.email_ok);
-      if (allOk) {
-        toast.success(`Assigned "${assignDrill.title}" and notified ${selectedStudents.size} student(s)`);
-      } else {
-        const firstFailed = notifyResults.find(r => !r.inbox_ok || !r.bell_ok || !r.email_ok);
-        const summary = firstFailed ? summarizeNotifyResult(firstFailed) : "Assigned and notified";
-        toast.warning(summary, {
-          description: `Assigned to ${selectedStudents.size} student(s), but some notifications had issues.`
-        });
-      }
-
-      setAssignDrill(null);
-      setSelectedStudents(new Set());
-      setScheduledFor('');
-    } catch (e: any) {
-      toast.error('Assign failed: ' + e.message);
-    }
+    setAssignDrill(null);
+    setSelectedStudents(new Set());
+    setScheduledFor('');
   };
 
   return (

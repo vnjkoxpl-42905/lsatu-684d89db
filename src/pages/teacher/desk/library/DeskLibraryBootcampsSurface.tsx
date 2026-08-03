@@ -15,11 +15,9 @@ import BootcampGate from '@/components/hub/BootcampGate';
 import { BootcampCardPreview } from '@/components/drill/BootcampCardPreview';
 import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
 import type { LibraryView } from '@/hooks/useDeskLibraryView';
-import {
-  createClassroomItem,
-  resolveItemRoute,
-} from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { updateClassroomItem } from '@/lib/classroomItems';
+import { assignWork, describeAssignResult } from '@/lib/assignWork';
+import { localDayISO } from '@/lib/localDate';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
 import { BOOTCAMP_INLINE } from '@/lib/bootcampInline';
@@ -83,42 +81,29 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
     const end = assignEnd ?? defaultEnd(b.id, start);
     setAssigning(true);
     try {
-      const notifyResults = await Promise.all(
-        [...selected].map(async (studentId) => {
-          const item = await createClassroomItem({
-            studentId,
-            createdBy: user.id,
-            type: 'bootcamp_module',
-            title: b.title,
-            description: b.description,
-            sourceTable: 'bootcamps',
-            sourceId: b.route,
-            visibleToStudent: true,
-            status: 'assigned',
-            unlockAt: start.toISOString(),
-            dueAt: end.toISOString(),
-            metadata: { bootcamp_id: b.id },
-          });
-          return notifyStudentOfClassroomItem({
-            adminUserId: user.id,
-            studentId,
-            title: b.title,
-            description: `${b.description} · ${format(start, 'MMM d')} – ${format(end, 'MMM d')}`,
-            route: resolveItemRoute(item) ?? b.route,
-          });
-        }),
+      const result = await assignWork({
+        teacherId: user.id,
+        studentIds: [...selected],
+        item: { kind: 'bootcamp', topicId: b.id },
+        scheduledForLocalDate: localDayISO(start),
+      });
+
+      // The end date is a bootcamp-only concept, so it is stamped on the
+      // classroom items after the fact rather than widening assignWork.
+      await Promise.all(
+        result.ok
+          .filter((r) => r.classroomItemId)
+          .map((r) => updateClassroomItem(r.classroomItemId!, { due_at: end.toISOString() })),
       );
+
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
       qc.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
 
-      const allOk = notifyResults.every((r) => r.inbox_ok && r.bell_ok && r.email_ok);
-      if (allOk) {
-        toast.success(`Assigned "${b.title}" to ${selected.size} student${selected.size === 1 ? '' : 's'}`);
-      } else {
-        const failed = notifyResults.find((r) => !r.inbox_ok || !r.bell_ok || !r.email_ok);
-        toast.warning(failed ? summarizeNotifyResult(failed) : 'Assigned with notification issues');
-      }
-      closeAssign();
+      const { level, message } = describeAssignResult(result, b.title);
+      toast[level](message, {
+        description: result.ok.length ? `${format(start, 'MMM d')} – ${format(end, 'MMM d')}` : undefined,
+      });
+      if (result.ok.length > 0) closeAssign();
     } catch (e) {
       toast.error(`Assign failed: ${e instanceof Error ? e.message : 'unknown error'}`);
     } finally {

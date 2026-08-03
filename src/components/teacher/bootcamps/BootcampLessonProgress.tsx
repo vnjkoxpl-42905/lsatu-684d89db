@@ -12,7 +12,7 @@
  * rendered as text, never as markup.
  *
  * The dossier is keyed by `profiles.class_id`; progress tables are keyed by the
- * auth user id. `students` maps between them — same join the bootcamp insights
+ * auth user id. `students` maps between them, the same join the bootcamp insights
  * pages use.
  */
 
@@ -28,7 +28,7 @@ import {
 
 /**
  * `rc_lesson_progress` is newer than the last Supabase types regeneration, so
- * the client is cast once here — the established pattern in this repo.
+ * the client is cast once here, the established pattern in this repo.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const untypedDb = supabase as any;

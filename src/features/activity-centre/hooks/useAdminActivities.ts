@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { createClassroomItem } from "@/lib/classroomItems";
-import { notifyStudentOfClassroomItem } from "@/lib/classroomNotify";
-import {
-  assignActivityToStudent,
-  listActivities,
-  listAssignmentsForStudent,
-} from "../api/activitiesClient";
+import { assignWork } from "@/lib/assignWork";
+import { listActivities, listAssignmentsForStudent } from "../api/activitiesClient";
 import type { Activity, ActivityAssignment } from "../api/types";
 
 /** Admin-side list of activity definitions. */
@@ -96,49 +91,30 @@ export function useAssignActivity() {
       if (!user) return { ok: false, error: "Not signed in" };
       setAssigning(true);
       try {
-        // class_id mirrors the admin's id, matching the homework seed/assign convention.
-        const assignment = await assignActivityToStudent({
-          activity,
-          studentId,
-          assignedBy: user.id,
-          classId: user.id,
+        const { ok, failed } = await assignWork({
+          teacherId: user.id,
+          studentIds: [studentId],
+          item: { kind: "activity", activityId: activity.id },
         });
 
-        if (!opts?.notify) return { ok: true, id: assignment.id };
-
-        // Classroom feed + notification trifecta. Assignment is the source of
-        // truth: any failure here is logged and surfaced but does not roll back.
-        const route = `/activities/${assignment.id}`;
-        try {
-          await createClassroomItem({
-            studentId,
-            createdBy: user.id,
-            type: "activity",
-            title: activity.title,
-            description: activity.subtitle ?? undefined,
-            sourceTable: "activity_assignments",
-            sourceId: assignment.id,
-            visibleToStudent: true,
-            status: "assigned",
-          });
-        } catch (e) {
-          console.error("[activity:assign:classroom] failed", { studentId, error: e });
+        const result = ok[0];
+        if (!result) {
+          return { ok: false, error: failed[0]?.error ?? "Assign failed" };
         }
 
-        const notify = await notifyStudentOfClassroomItem({
-          adminUserId: user.id,
-          studentId,
-          title: activity.title,
-          description: activity.subtitle ?? undefined,
-          route,
-          assignmentType: "activity",
-        });
+        // `notify: false` still writes the classroom item, which is what makes
+        // the activity reachable at all; it only suppresses reporting on the
+        // messages. assignWork always notifies, so the flag now just decides
+        // how much detail comes back.
+        if (!opts?.notify) return { ok: true, id: result.assignmentId };
 
         return {
           ok: true,
-          id: assignment.id,
-          emailOk: notify.email_ok,
-          fullyNotified: notify.inbox_ok && notify.bell_ok && notify.email_ok,
+          id: result.assignmentId,
+          emailOk: result.notify?.email_ok,
+          fullyNotified: Boolean(
+            result.notify && result.notify.inbox_ok && result.notify.bell_ok && result.notify.email_ok,
+          ),
         };
       } catch (e) {
         console.error("[activity:admin:assign] failed", { studentId, activityId: activity.id, error: e });

@@ -133,7 +133,10 @@ describe('DeskPeopleSurface', () => {
   it('combines student context with admin access management in one People workspace', async () => {
     renderPeople();
 
-    expect(await screen.findByRole('heading', { name: 'People' })).toBeInTheDocument();
+    // The room title lives in the workspace shell now, so the surface itself
+    // carries only its landmark and the roster count.
+    expect(await screen.findByRole('region', { name: 'Students' })).toBeInTheDocument();
+    expect(screen.getByText(/2 people/)).toBeInTheDocument();
     expect(screen.getByText('Meghan Mullins')).toBeInTheDocument();
     expect(screen.getByText('3/4')).toBeInTheDocument();
     expect(screen.getByLabelText('Unread message')).toBeInTheDocument();

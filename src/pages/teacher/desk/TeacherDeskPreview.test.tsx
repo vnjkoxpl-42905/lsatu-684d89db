@@ -208,7 +208,9 @@ describe('TeacherDeskPreview workspace rail', () => {
 
     expect(screen.getByTestId('location')).toHaveTextContent('/teacher?ws=library');
     expect(screen.getByRole('button', { name: 'Library' })).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('heading', { name: 'Assignments' })).toBeInTheDocument();
+    // Library opens on Bootcamps now that the tab is a route segment with its
+    // own default, rather than a query param defaulting to Assignments.
+    expect(screen.getByRole('heading', { name: 'Bootcamps' })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Today' }));
 

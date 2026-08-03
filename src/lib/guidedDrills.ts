@@ -156,32 +156,6 @@ export async function getAssignment(id: string) {
   return data;
 }
 
-export async function createAssignments(params: {
-  guided_drill_ids: string[];
-  student_ids: string[];
-  scheduled_for?: string | null;
-  unlock_at?: string | null;
-  assigned_by: string;
-}) {
-  const rows = params.guided_drill_ids.flatMap((gd) =>
-    params.student_ids.map((sid) => ({
-      guided_drill_id: gd,
-      student_id: sid,
-      class_id: sid, // class_id mirrors student auth uid in this project
-      assigned_by: params.assigned_by,
-      scheduled_for: params.scheduled_for ?? null,
-      unlock_at: params.unlock_at ?? null,
-      status: 'assigned',
-    }))
-  );
-  const { data, error } = await supabase
-    .from('guided_drill_assignments')
-    .insert(rows)
-    .select('*');
-  if (error) throw error;
-  return data || [];
-}
-
 export async function markCardRead(assignmentId: string) {
   const { error } = await supabase
     .from('guided_drill_assignments')

@@ -16,8 +16,10 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { createClassroomItem, getClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
+import { notifyStudentOfClassroomItem, summarizeNotifyResult, type NotifyResult } from '@/lib/classroomNotify';
+import { assignWork, type AssignableItem } from '@/lib/assignWork';
+import { localDayISO } from '@/lib/localDate';
 import { useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import { bootcampDays } from '@/lib/bootcampDays';
@@ -177,77 +179,79 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     }
     setSubmitting(true);
     try {
-      let sourceId: string | undefined;
-      let sourceTable: string | undefined;
-      let metadata: Record<string, unknown> = {};
+      // Real work (homework, a bootcamp) goes through the one assign pipeline,
+      // which owns the row, the classroom item, the notification, and the
+      // cleanup if any of those fail. Only the free-form types (notes,
+      // announcements) are still a bare classroom item, because they have no
+      // assignment row behind them.
+      const assignable: AssignableItem | null =
+        type === 'homework' && homeworkSetId
+          ? { kind: 'homework_set', setId: homeworkSetId }
+          : type === 'bootcamp_module' && bootcampId
+            ? { kind: 'bootcamp', topicId: bootcampId }
+            : null;
 
-      if (type === 'homework' && homeworkSetId) {
-        const set = homeworkSets.find((h) => h.id === homeworkSetId);
-        const { data: hw, error: hwErr } = await supabase
-          .from('homework_assignments')
-          .insert({
-            set_id: homeworkSetId,
-            student_id: studentId,
-            assigned_by: adminUserId,
-            set_title: set?.title ?? title,
-            question_qids: set?.question_qids ?? [],
-            status: 'assigned',
-            class_id: studentId,
-          })
-          .select('id')
-          .single();
-        if (hwErr) throw hwErr;
-        sourceId = hw?.id;
-        sourceTable = 'homework_assignments';
-        metadata = { set_id: homeworkSetId };
-      } else if (type === 'bootcamp_module') {
-        const b = BOOTCAMPS.find((x) => x.id === bootcampId);
-        if (!b) throw new Error('Bootcamp not found');
-        sourceTable = 'bootcamps';
-        sourceId = b.route;
-        metadata = {
-          bootcamp_id: b.id,
-          ...(assignedDayIds && assignedDayIds.length > 0
-            ? { assigned_day_ids: [...assignedDayIds].sort((a, b) => a - b) }
-            : {}),
-        };
+      let item: ClassroomItem;
+      let notify: NotifyResult | undefined;
+
+      if (assignable) {
+        const result = await assignWork({
+          teacherId: adminUserId,
+          studentIds: [studentId],
+          item: assignable,
+          scheduledForLocalDate: unlockAt ? localDayISO(unlockAt) : undefined,
+          overrides: {
+            title: title.trim(),
+            description: description.trim() || undefined,
+            dueAt: dueAt ? dueAt.toISOString() : null,
+            metadata:
+              assignedDayIds && assignedDayIds.length > 0
+                ? { assigned_day_ids: [...assignedDayIds].sort((a, b) => a - b) }
+                : undefined,
+          },
+        });
+
+        const first = result.ok[0];
+        if (!first?.classroomItemId) {
+          throw new Error(result.failed[0]?.error ?? 'Failed to assign');
+        }
+        const created = await getClassroomItem(first.classroomItemId);
+        if (!created) throw new Error('Assigned, but the item could not be read back');
+        item = created;
+        notify = first.notify;
+      } else {
+        item = await createClassroomItem({
+          studentId,
+          createdBy: adminUserId,
+          type,
+          title: title.trim(),
+          description: description.trim() || undefined,
+          unlockAt: unlockAt ? unlockAt.toISOString() : null,
+          dueAt: dueAt ? dueAt.toISOString() : null,
+          visibleToStudent: true,
+          status: 'assigned',
+          metadata: {},
+        });
+
+        notify = await notifyStudentOfClassroomItem({
+          adminUserId,
+          studentId,
+          title: title.trim(),
+          description: description.trim() || undefined,
+          route: resolveItemRoute(item) ?? `/classroom/item/${item.id}`,
+        });
       }
-
-      const item = await createClassroomItem({
-        studentId,
-        createdBy: adminUserId,
-        type,
-        title: title.trim(),
-        description: description.trim() || undefined,
-        unlockAt: unlockAt ? unlockAt.toISOString() : null,
-        dueAt: dueAt ? dueAt.toISOString() : null,
-        sourceId,
-        sourceTable,
-        visibleToStudent: true,
-        status: 'assigned',
-        metadata,
-      });
 
       qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
 
-      // Notify after the item is created. Notify failure does NOT roll
-      // back the assignment — assignment is the source of truth.
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId,
-        studentId,
-        title: title.trim(),
-        description: description.trim() || undefined,
-        route: resolveItemRoute(item) ?? `/classroom/item/${item.id}`,
-      });
-
-      const summary = summarizeNotifyResult(notify);
-      if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+      const summary = notify ? summarizeNotifyResult(notify) : 'Assigned';
+      if (notify && notify.inbox_ok && notify.bell_ok && notify.email_ok) {
         toast.success(summary);
       } else {
         toast.warning(summary, {
           description:
-            notify.email_error ?? notify.inbox_error ?? notify.bell_error,
+            notify?.email_error ?? notify?.inbox_error ?? notify?.bell_error,
         });
       }
 

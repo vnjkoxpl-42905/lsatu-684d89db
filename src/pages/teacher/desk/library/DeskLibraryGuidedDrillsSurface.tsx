@@ -4,12 +4,10 @@ import { Loader2, Play, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   listGuidedDrills,
-  createAssignments,
   resolveGuidedDrillPool,
   type GuidedDrill,
 } from '@/lib/guidedDrills';
-import { createClassroomItem } from '@/lib/classroomItems';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { assignWork, describeAssignResult } from '@/lib/assignWork';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -83,48 +81,22 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
     if (!assignDrill || !user || selected.size === 0) return;
     setAssigning(true);
     try {
-      const assignments = await createAssignments({
-        guided_drill_ids: [assignDrill.id],
-        student_ids: [...selected],
-        scheduled_for: scheduledFor || null,
-        assigned_by: user.id,
+      const result = await assignWork({
+        teacherId: user.id,
+        studentIds: [...selected],
+        item: { kind: 'guided_drill', drillId: assignDrill.id },
+        scheduledForLocalDate: scheduledFor || undefined,
       });
-      const unlockAt = scheduledFor ? new Date(scheduledFor).toISOString() : null;
-      const notifyResults = await Promise.all(
-        assignments.map(async (a) => {
-          await createClassroomItem({
-            studentId: a.student_id,
-            createdBy: user.id,
-            type: 'drill',
-            title: assignDrill.title,
-            description: `New guided drill: ${assignDrill.title}`,
-            unlockAt,
-            sourceTable: 'guided_drill_assignments',
-            sourceId: a.id,
-            status: 'assigned',
-            visibleToStudent: true,
-          });
-          return notifyStudentOfClassroomItem({
-            adminUserId: user.id,
-            studentId: a.student_id,
-            title: assignDrill.title,
-            route: `/guided/${a.id}?returnTo=/classroom`,
-            description: `New guided drill: ${assignDrill.title}`,
-          });
-        }),
-      );
+
       queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
       queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
       queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
 
-      const allOk = notifyResults.every((r) => r.inbox_ok && r.bell_ok && r.email_ok);
-      if (allOk) {
-        toast.success(`Assigned "${assignDrill.title}" to ${selected.size} student${selected.size === 1 ? '' : 's'}`);
-      } else {
-        const failed = notifyResults.find((r) => !r.inbox_ok || !r.bell_ok || !r.email_ok);
-        toast.warning(failed ? summarizeNotifyResult(failed) : 'Assigned with notification issues');
-      }
-      closeAssign();
+      const { level, message } = describeAssignResult(result, assignDrill.title);
+      toast[level](message);
+      // Leave the sheet open when nobody got the drill, so the teacher can
+      // read the reason and retry without reselecting everyone.
+      if (result.ok.length > 0) closeAssign();
     } catch (e) {
       toast.error(`Assign failed: ${e instanceof Error ? e.message : 'unknown error'}`);
     } finally {

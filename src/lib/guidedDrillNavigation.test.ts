@@ -24,7 +24,7 @@ describe('guidedDrillNavigation', () => {
         slug: 'first-sentence-conclusions',
         originReturnTo: TEACHER_GUIDED_DRILLS_RETURN_TO,
       }),
-    ).toBe('/guided-drills/first-sentence-conclusions?returnTo=%2Fteacher%3Fws%3Dlibrary%26tab%3Dguided-drills');
+    ).toBe('/guided-drills/first-sentence-conclusions?returnTo=%2Fteacher%2Flibrary%2Fguided-drills');
   });
 
   it('appends resume qids and the current question index to guided launch return paths', () => {

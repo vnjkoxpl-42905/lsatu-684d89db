@@ -8,6 +8,7 @@
 import DOMPurify from 'dompurify';
 import { supabase } from '@/integrations/supabase/client';
 import { assignResourceToStudent } from '@/lib/teacherAssignResource';
+import { assignWork } from '@/lib/assignWork';
 import { createClassroomItem } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem } from '@/lib/classroomNotify';
 
@@ -64,56 +65,32 @@ async function executeHomework(
 
   const { data: set, error: setErr } = await supabase
     .from('homework_sets')
-    .select('id, title, description, question_qids, class_id')
+    .select('id, title')
     .eq('id', setId)
     .maybeSingle();
   if (setErr) throw setErr;
   if (!set) throw new Error('That homework set no longer exists');
 
-  const { data: assignment, error: asgErr } = await supabase
-    .from('homework_assignments')
-    .insert({
-      set_id: set.id,
-      student_id: proposal.student.id,
-      question_qids: set.question_qids,
-      set_title: set.title,
-      set_description: set.description,
-      status: 'assigned',
-      assigned_by: adminUserId,
-      class_id: set.class_id,
-    })
-    .select('id')
-    .single();
-  if (asgErr) {
-    if (asgErr.code === '23505') {
+  const { ok, failed } = await assignWork({
+    teacherId: adminUserId,
+    studentIds: [proposal.student.id],
+    item: { kind: 'homework_set', setId: set.id },
+  });
+
+  const failure = failed[0];
+  if (failure) {
+    // Already assigned is not an error worth surfacing as one.
+    if (/duplicate key|23505/i.test(failure.error ?? '')) {
       return { ok: true, summary: `${set.title} is already assigned to ${proposal.student.name}` };
     }
-    throw asgErr;
+    throw new Error(failure.error ?? 'Assign failed');
   }
 
-  const assignmentId = (assignment as { id: string }).id;
-  const route = `/classroom/${assignmentId}`;
-  await createClassroomItem({
-    studentId: proposal.student.id,
-    createdBy: adminUserId,
-    type: 'homework',
-    title: set.title,
-    description: set.description ?? undefined,
-    sourceTable: 'homework_assignments',
-    sourceId: assignmentId,
-    visibleToStudent: true,
-    status: 'assigned',
-    metadata: { assigned_route: route },
-  });
-  await notifyStudentOfClassroomItem({
-    adminUserId,
-    studentId: proposal.student.id,
-    title: set.title,
-    description: set.description ?? undefined,
-    route,
-    assignmentType: 'homework',
-  });
-  return { ok: true, summary: `Assigned "${set.title}" to ${proposal.student.name}`, route };
+  return {
+    ok: true,
+    summary: `Assigned "${set.title}" to ${proposal.student.name}`,
+    route: ok[0]?.route,
+  };
 }
 
 async function executeNote(

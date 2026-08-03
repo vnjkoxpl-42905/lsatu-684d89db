@@ -152,7 +152,7 @@ export function StudentBootcampDetail() {
                   Overall {activeTopic.name} progress
                 </h3>
                 <span className="text-2xl font-semibold text-[#11181c]">
-                  {overallPct === null ? "—" : `${overallPct}%`}
+                  {overallPct === null ? "·" : `${overallPct}%`}
                 </span>
               </div>
               <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/40">
@@ -169,7 +169,7 @@ export function StudentBootcampDetail() {
               <p className="mt-2 text-xs text-black/45">
                 Last active:{" "}
                 {!detailQ.data
-                  ? "—"
+                  ? "·"
                   : detailQ.data.lastActivityIso
                     ? formatRelativeShort(detailQ.data.lastActivityIso)
                     : "never"}
@@ -278,7 +278,7 @@ export function StudentBootcampDetail() {
                   <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data
                       ? `${detailQ.data.flashcardStats.reviewed} / ${detailQ.data.flashcardStats.total}`
-                      : "—"}
+                      : "·"}
                   </dd>
                 </div>
                 <div>
@@ -286,7 +286,7 @@ export function StudentBootcampDetail() {
                     Mastery
                   </dt>
                   <dd className="mt-0.5 font-semibold text-[#11181c]">
-                    {detailQ.data ? `${detailQ.data.flashcardStats.masteryPct}%` : "—"}
+                    {detailQ.data ? `${detailQ.data.flashcardStats.masteryPct}%` : "·"}
                   </dd>
                 </div>
                 <div>
@@ -294,7 +294,7 @@ export function StudentBootcampDetail() {
                     Due now
                   </dt>
                   <dd className="mt-0.5 font-semibold text-[#11181c]">
-                    {detailQ.data ? detailQ.data.flashcardStats.dueCount : "—"}
+                    {detailQ.data ? detailQ.data.flashcardStats.dueCount : "·"}
                   </dd>
                 </div>
                 <div>
@@ -304,7 +304,7 @@ export function StudentBootcampDetail() {
                   <dd className="mt-0.5 font-semibold text-[#11181c]">
                     {detailQ.data
                       ? `${detailQ.data.flashcardStats.avgIntervalDays}d`
-                      : "—"}
+                      : "·"}
                   </dd>
                 </div>
               </dl>

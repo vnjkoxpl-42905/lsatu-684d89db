@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { assignWork } from '@/lib/assignWork';
 import { createClassroomItem } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroomNotify';
 import type { Activity } from '@/features/activity-centre/api/types';
@@ -136,9 +137,11 @@ export async function assignResourceToStudent(input: {
   if (kind === 'activity' || /activity|station/i.test(`${resource.title} ${resource.url ?? ''}`)) {
     const activity = await findActivity(resource);
     if (activity) {
+      // Reuse an activity the student has not finished rather than stacking a
+      // second copy of the same work on them.
       const { data: existing, error: existingError } = await supabase
         .from('activity_assignments')
-        .select('*')
+        .select('id')
         .eq('student_id', studentId)
         .eq('activity_id', activity.id)
         .neq('status', 'completed')
@@ -146,88 +149,71 @@ export async function assignResourceToStudent(input: {
         .maybeSingle();
       if (existingError) throw existingError;
 
-      let assignment = existing as { id: string } | null;
-      const reusedExisting = Boolean(assignment?.id);
-      if (!assignment) {
-        const { data, error } = await supabase
-          .from('activity_assignments')
-          .insert({
-            activity_id: activity.id,
-            student_id: studentId,
-            title: activity.title,
-            subtitle: activity.subtitle,
-            instructions: activity.instructions as never,
-            item_format: activity.item_format,
-            items: activity.items as never,
-            status: 'assigned',
-            assigned_by: adminUserId,
-            class_id: adminUserId,
-          })
-          .select('*')
-          .single();
-        if (error) throw error;
-        assignment = data as { id: string };
+      if (existing?.id) {
+        const route = `/activities/${existing.id}`;
+        const classroomItemId = await ensureClassroomItem({
+          studentId,
+          adminUserId,
+          type: 'activity',
+          title: activity.title,
+          description: activity.subtitle,
+          sourceTable: 'activity_assignments',
+          sourceId: existing.id as string,
+          route,
+        });
+        const notify = await notifyStudentOfClassroomItem({
+          adminUserId,
+          studentId,
+          title: activity.title,
+          description: activity.subtitle ?? undefined,
+          route,
+          assignmentType: 'activity',
+        });
+        return {
+          ok: true,
+          route,
+          classroomItemId,
+          sourceAssignmentId: existing.id as string,
+          reusedExisting: true,
+          notify,
+        };
       }
 
-      const route = `/activities/${assignment.id}`;
-      const classroomItemId = await ensureClassroomItem({
-        studentId,
-        adminUserId,
-        type: 'activity',
-        title: activity.title,
-        description: activity.subtitle,
-        sourceTable: 'activity_assignments',
-        sourceId: assignment.id,
-        route,
+      const { ok, failed } = await assignWork({
+        teacherId: adminUserId,
+        studentIds: [studentId],
+        item: { kind: 'activity', activityId: activity.id },
       });
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId,
-        studentId,
-        title: activity.title,
-        description: activity.subtitle ?? undefined,
-        route,
-        assignmentType: 'activity',
-      });
-      return { ok: true, route, classroomItemId, sourceAssignmentId: assignment.id, reusedExisting, notify };
+      const result = ok[0];
+      if (!result) throw new Error(failed[0]?.error ?? 'Assign failed');
+      return {
+        ok: true,
+        route: result.route!,
+        classroomItemId: result.classroomItemId,
+        sourceAssignmentId: result.assignmentId,
+        reusedExisting: false,
+        notify: result.notify!,
+      };
     }
   }
 
   if (kind === 'guided_drill' || /guided|drill/i.test(`${resource.kind ?? ''} ${resource.title}`)) {
     const drill = await findGuidedDrill(resource);
     if (drill) {
-      const { data, error } = await supabase
-        .from('guided_drill_assignments')
-        .insert({
-          guided_drill_id: drill.id,
-          student_id: studentId,
-          class_id: studentId,
-          assigned_by: adminUserId,
-          status: 'assigned',
-        })
-        .select('id, student_id')
-        .single();
-      if (error) throw error;
-      const assignmentId = (data as { id: string }).id;
-      const route = `/guided/${assignmentId}?returnTo=${encodeURIComponent('/classroom')}`;
-      const classroomItemId = await ensureClassroomItem({
-        studentId,
-        adminUserId,
-        type: 'drill',
-        title: drill.title,
-        description: `New guided drill: ${drill.title}`,
-        sourceTable: 'guided_drill_assignments',
-        sourceId: assignmentId,
-        route,
+      const { ok, failed } = await assignWork({
+        teacherId: adminUserId,
+        studentIds: [studentId],
+        item: { kind: 'guided_drill', drillId: drill.id },
       });
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId,
-        studentId,
-        title: drill.title,
-        description: `New guided drill: ${drill.title}`,
-        route,
-        assignmentType: 'guided drill',
-      });
-      return { ok: true, route, classroomItemId, sourceAssignmentId: assignmentId, notify };
+      const result = ok[0];
+      if (!result) throw new Error(failed[0]?.error ?? 'Assign failed');
+      return {
+        ok: true,
+        route: result.route!,
+        classroomItemId: result.classroomItemId,
+        sourceAssignmentId: result.assignmentId,
+        notify: result.notify!,
+      };
     }
   }
 
