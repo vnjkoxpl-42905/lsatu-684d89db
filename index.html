@@ -33,7 +33,68 @@
 </head>
 
   <body style="background-color:#000000;margin:0;">
-    <div id="root"></div>
+    <!-- Boot fallback. React's createRoot clears #root on mount, so everything
+         below is replaced the instant the app renders. It only stays on screen
+         when the bundle never boots — a stale cached shell pointing at deleted
+         asset hashes, a blocked/failed module fetch, or JS disabled. Without
+         it the page is a literal black screen with no way to self-diagnose,
+         which is exactly what a student reported on 2026-07-31. -->
+    <div id="root">
+      <div id="boot-fallback" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;color:#EAE5DA;background:#070606;">
+        <div style="max-width:32rem;text-align:center;">
+          <div style="font-size:13px;letter-spacing:0.24em;text-transform:uppercase;color:#8A8475;">LSAT U</div>
+          <p id="boot-msg" style="margin:20px 0 0;font-size:15px;line-height:1.6;color:#A6A093;">Loading&hellip;</p>
+          <div id="boot-actions" style="display:none;margin-top:24px;">
+            <button type="button" id="boot-reset" style="cursor:pointer;font:inherit;font-size:14px;color:#E8CF96;background:transparent;border:1px solid rgba(232,207,150,0.4);border-radius:2px;padding:12px 28px;">Reset and reload</button>
+            <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#8A8475;">If this keeps happening, open the site in a private window or a different browser, and email contact@aspiringattorneys.com.</p>
+          </div>
+          <noscript><p style="margin:20px 0 0;font-size:15px;color:#A6A093;">JavaScript is required to use LSAT U. Please enable it and reload.</p></noscript>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Purge every client-side cache layer, then reload past the HTTP cache.
+      // Mirrors the kill-switch in public/sw.js for the case where the bundle
+      // never boots, so main.tsx's own cleanup never gets the chance to run.
+      window.__lsatuBootReset = function () {
+        var done = function () {
+          var u = new URL(window.location.href);
+          u.searchParams.set('sw-cleanup', Date.now().toString());
+          window.location.replace(u.toString());
+        };
+        var jobs = [];
+        try {
+          if (navigator.serviceWorker) {
+            jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }));
+          }
+        } catch (e) {}
+        try {
+          if (window.caches) {
+            jobs.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }));
+          }
+        } catch (e) {}
+        try { sessionStorage.clear(); } catch (e) {}
+        Promise.all(jobs).then(done, done);
+        // Never strand the user if a purge hangs.
+        setTimeout(done, 4000);
+      };
+      // If React has not replaced #root by now, the bundle is not coming.
+      setTimeout(function () {
+        var el = document.getElementById('boot-fallback');
+        if (!el) return;
+        var msg = document.getElementById('boot-msg');
+        var actions = document.getElementById('boot-actions');
+        if (msg) msg.textContent =
+          'This page failed to load. That is almost always a stale copy cached in this browser, not a problem with your account.';
+        if (actions) actions.style.display = 'block';
+        var btn = document.getElementById('boot-reset');
+        if (btn) btn.addEventListener('click', window.__lsatuBootReset);
+      }, 12000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
