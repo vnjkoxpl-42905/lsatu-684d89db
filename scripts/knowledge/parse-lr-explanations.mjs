@@ -29,6 +29,8 @@ const STEP_RE = /^-\s+\*\*(.+?):\*\*\s*([\s\S]*)$/;
 
 const STYLE_HEADINGS = new Map([
   ['Written (single style)', 'single'],
+  ['Written', 'single'],
+  ['Written (per-choice only)', 'single'],
   ['Written (Standard)', 'standard'],
   ['Written (Brief)', 'brief'],
   ['Written (Another Way)', 'another_way'],
@@ -37,8 +39,12 @@ const STYLE_HEADINGS = new Map([
   ['Another Way', 'another_way'],
   ['Answer-choice notes (no authored breakdown)', 'single'],
   ['Answer-choice tags (no authored prose)', 'single'],
-  ['Answer choices', null], // unexplained question: choices only
+  // Some files split the one explanation across two sections: the breakdown
+  // under its own heading and the per-choice prose under "Answer choices".
+  ['Argument breakdown', 'single'],
+  ['Answer choices', null], // choices only; prose (if any) merges into "single"
 ]);
+
 
 function splitSubsections(body) {
   const out = [];
