@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Save, PencilRuler, Loader2, CheckCircle2 } from 'lucide-react';
+import { Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2 } from 'lucide-react';
 import '@excalidraw/excalidraw/index.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,6 +37,21 @@ export default function TeacherSmartboard() {
   const [title, setTitle] = useState('Smartboard session');
   const [scene, setScene] = useState<ExcalidrawSceneJson | null>(null);
   const apiRef = useRef<ExcalidrawApi>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(document.fullscreenElement === containerRef.current);
+    document.addEventListener('fullscreenchange', onChange);
+    return () => document.removeEventListener('fullscreenchange', onChange);
+  }, []);
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      containerRef.current?.requestFullscreen();
+    }
+  };
 
   // When loading a previous session, prefill scene + title.
   useEffect(() => {
@@ -97,7 +112,10 @@ export default function TeacherSmartboard() {
   }, [scene]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
+    <div
+      ref={containerRef}
+      className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full bg-white"
+    >
       <aside className="border-b lg:border-b-0 lg:border-r border-black/12 overflow-y-auto max-h-[40vh] lg:max-h-none">
         <div className="px-4 py-3 border-b border-black/12 flex items-center gap-2 text-black/55">
           <PencilRuler className="w-4 h-4" />
@@ -160,6 +178,19 @@ export default function TeacherSmartboard() {
           <AutosaveBadge status={autosave.status} lastSavedAt={autosave.lastSavedAt} />
           <Button
             size="sm"
+            variant="outline"
+            className="shrink-0"
+            onClick={toggleFullscreen}
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-4 h-4 mr-2" />
+            ) : (
+              <Maximize2 className="w-4 h-4 mr-2" />
+            )}
+            {isFullscreen ? 'Exit full screen' : 'Full screen'}
+          </Button>
+          <Button
+            size="sm"
             className="shrink-0"
             onClick={handleManualSave}
             disabled={!studentId}
@@ -169,28 +200,20 @@ export default function TeacherSmartboard() {
           </Button>
         </div>
         <div className="flex-1 min-h-0 flex">
-          {studentId ? (
-            <>
-              <div className="flex-1 min-w-0">
-                <Suspense fallback={<div className="h-full flex items-center justify-center text-black/45">Loading board…</div>}>
-                  <Excalidraw
-                    excalidrawAPI={(a: unknown) => {
-                      apiRef.current = a as ExcalidrawApi;
-                    }}
-                    initialData={initialData}
-                    onChange={() => autosave.bumpChange()}
-                  />
-                </Suspense>
-              </div>
-              <TemplatePalette
-                getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
+          <div className="flex-1 min-w-0">
+            <Suspense fallback={<div className="h-full flex items-center justify-center text-black/45">Loading board…</div>}>
+              <Excalidraw
+                excalidrawAPI={(a: unknown) => {
+                  apiRef.current = a as ExcalidrawApi;
+                }}
+                initialData={initialData}
+                onChange={() => autosave.bumpChange()}
               />
-            </>
-          ) : (
-            <div className="h-full flex-1 flex items-center justify-center text-sm text-black/45">
-              Pick a student to start a board.
-            </div>
-          )}
+            </Suspense>
+          </div>
+          <TemplatePalette
+            getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
+          />
         </div>
       </section>
     </div>
