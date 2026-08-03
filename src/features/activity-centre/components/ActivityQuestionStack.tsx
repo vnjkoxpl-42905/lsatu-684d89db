@@ -1,9 +1,11 @@
-import type { ActivityItem, ItemFormat, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, ItemFormat, Verdict } from "../api/types";
 import { ActivityItemView } from "./ActivityItemView";
 
 interface ActivityQuestionStackProps {
   items: ActivityItem[];
   format: ItemFormat;
+  /** This Activity's judging brief, threaded through to the Coach. */
+  coach?: ActivityCoach;
   activeIndex: number;
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   onRecord: (args: {
@@ -19,6 +21,7 @@ interface ActivityQuestionStackProps {
 export function ActivityQuestionStack({
   items,
   format,
+  coach,
   activeIndex,
   onResolved,
   onRecord,
@@ -44,6 +47,7 @@ export function ActivityQuestionStack({
             key={activeItem.order}
             item={activeItem}
             format={format}
+            coach={coach}
             isLast={activeIndex === items.length - 1}
             onResolved={onResolved}
             onRecord={onRecord}

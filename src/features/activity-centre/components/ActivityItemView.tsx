@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
-import type { ActivityItem, CoachVerdict, ItemFormat, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { StatementPanel } from "./StatementPanel";
 import { ItemPrompt } from "./ItemPrompt";
@@ -10,6 +10,8 @@ interface ActivityItemViewProps {
   item: ActivityItem;
   format: ItemFormat;
   isLast: boolean;
+  /** This Activity's judging brief, threaded through to the Coach. */
+  coach?: ActivityCoach;
   /** Fired once, when the item is resolved (correct, revealed, or coach failure). */
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   /** Append-only attempt record; best-effort, errors are toasted not thrown. */
@@ -31,6 +33,7 @@ export function ActivityItemView({
   item,
   format,
   isLast,
+  coach,
   onResolved,
   onRecord,
   onNext,
@@ -50,7 +53,7 @@ export function ActivityItemView({
 
   const handleSubmit = async () => {
     const attemptNo = attempts + 1;
-    const res = await judge({ item, studentResponse: value, attemptNo });
+    const res = await judge({ item, studentResponse: value, attemptNo, coach });
     setAttempts(attemptNo);
 
     if (!res.ok || !res.verdict) {

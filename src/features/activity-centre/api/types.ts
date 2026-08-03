@@ -21,6 +21,22 @@ export interface ActivityItem {
   category?: string;
 }
 
+/**
+ * Per-Activity judging brief for the Coach. Each Activity trains a different
+ * skill and therefore needs a different rubric: what counts as `correct` in
+ * Conditional Rephrase is not what counts in Dumb it Down. Without this the
+ * edge function falls back to the Negation Station rubric it shipped with,
+ * which would misjudge every other Activity.
+ */
+export interface ActivityCoach {
+  /** One line naming the drill and the skill, e.g. "a conditional-translation drill". */
+  drill: string;
+  /** The judging rules, most important first. Sent verbatim to the model. */
+  rubric: string[];
+  /** What separates `partial` from `incorrect` in THIS Activity. */
+  partial_rule: string;
+}
+
 /** The intro / rules block stored in `instructions`. */
 export interface ActivityInstructions {
   tagline?: string;
@@ -31,6 +47,8 @@ export interface ActivityInstructions {
     explanation: string;
   };
   task?: string;
+  /** Absent on legacy Activities; the Coach then uses its negation default. */
+  coach?: ActivityCoach;
 }
 
 /** A row of `activities` (admin-owned definition library). */

@@ -245,6 +245,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           <ActivityQuestionStack
             items={items}
             format={assignment.item_format}
+            coach={assignment.instructions?.coach}
             activeIndex={index}
             onResolved={handleResolved}
             onRecord={handleRecord}

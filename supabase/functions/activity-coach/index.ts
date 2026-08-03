@@ -34,7 +34,8 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const { statement, studentResponse, creditedAnswers, explanation, attemptNo } = await req.json();
+    const { statement, studentResponse, creditedAnswers, explanation, attemptNo, coach, category } =
+      await req.json();
 
     if (!statement || !studentResponse || !Array.isArray(creditedAnswers) || creditedAnswers.length === 0) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
@@ -48,26 +49,51 @@ serve(async (req) => {
 
     const attempt = Number(attemptNo) || 1;
 
+    // Each Activity trains a different skill, so each carries its own judging
+    // brief in `instructions.coach`. Activities authored before that field
+    // existed (Negation Station) send nothing and get the original negation
+    // rubric below, unchanged.
+    const NEGATION_DEFAULT = {
+      drill: "a statement-negation drill (the Negation Test used on Necessary Assumption questions)",
+      rubric: [
+        "A correct negation is the WEAKEST statement that contradicts the original, not its polar opposite.",
+        "A polar opposite (e.g. 'No rivers flow north' to negate 'Every river flows north') is the signature trap this drill teaches.",
+      ],
+      partial_rule: "Judge a polar opposite as 'partial', not 'correct'.",
+    };
+
+    const brief =
+      coach && typeof coach.drill === "string" && Array.isArray(coach.rubric) && coach.rubric.length
+        ? coach
+        : NEGATION_DEFAULT;
+
     const systemPrompt = [
-      "You are a supportive LSAT coach running a statement-negation drill (the Negation Test used on Necessary Assumption questions).",
-      "Negation rubric: a correct negation is the WEAKEST statement that contradicts the original, not its polar opposite.",
-      "A polar opposite (e.g. 'No rivers flow north' to negate 'Every river flows north') is the signature trap this drill teaches: judge it as 'partial', not 'correct'.",
+      `You are a supportive LSAT coach running ${brief.drill}.`,
+      ...brief.rubric,
+      brief.partial_rule ? `Partial rule: ${brief.partial_rule}` : "",
       "Judge the student's response against the credited answer(s) by MEANING, not wording. Equivalent phrasings are 'correct'.",
+      "Never mark a response 'incorrect' for style, length, or phrasing alone. Judge the content only.",
       "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\"}.",
       "feedback is 2-3 supportive sentences. Name what they got right, then guide the fix.",
+      "Write plainly, in the second person. Do not use em-dashes.",
       attempt <= 1
         ? "This is their first attempt: do NOT reveal the credited answer. Nudge them toward it instead."
         : "This is a later attempt: you may be more explicit, but still encourage their own phrasing.",
-    ].join(" ");
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     const userPrompt = [
-      `Original statement:\n"${statement}"`,
-      `\nStudent's negation:\n"${studentResponse}"`,
+      `The item the student is working on:\n"${statement}"`,
+      category ? `\nItem difficulty band: ${category}` : "",
+      `\nStudent's response:\n"${studentResponse}"`,
       `\nCredited answer(s):\n${creditedAnswers.map((a: string) => `- ${a}`).join("\n")}`,
-      explanation ? `\nWhy this is the negation:\n${explanation}` : "",
+      explanation ? `\nAuthor's note on this item (traps, near misses, the teaching point):\n${explanation}` : "",
       `\nAttempt number: ${attempt}`,
       "\nReturn the JSON verdict object now.",
-    ].join("\n");
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
       method: "POST",

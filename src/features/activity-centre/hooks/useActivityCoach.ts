@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { ActivityItem, CoachVerdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, CoachVerdict } from "../api/types";
 
 // Calls the activity-coach edge function to judge one free-text response.
 // On any failure the error is surfaced (returned + flagged), never swallowed,
@@ -10,6 +10,12 @@ export interface JudgeArgs {
   item: ActivityItem;
   studentResponse: string;
   attemptNo: number;
+  /**
+   * This Activity's judging brief. Omitted for legacy Activities authored
+   * before per-Activity rubrics existed; the edge function then applies its
+   * Negation Station default, which is what those Activities expect.
+   */
+  coach?: ActivityCoach;
 }
 
 export interface JudgeResult {
@@ -21,7 +27,7 @@ export interface JudgeResult {
 export function useActivityCoach() {
   const [judging, setJudging] = useState(false);
 
-  const judge = useCallback(async ({ item, studentResponse, attemptNo }: JudgeArgs): Promise<JudgeResult> => {
+  const judge = useCallback(async ({ item, studentResponse, attemptNo, coach }: JudgeArgs): Promise<JudgeResult> => {
     setJudging(true);
     try {
       const { data, error } = await supabase.functions.invoke("activity-coach", {
@@ -31,6 +37,8 @@ export function useActivityCoach() {
           creditedAnswers: item.credited_answers,
           explanation: item.explanation,
           attemptNo,
+          coach,
+          category: item.category,
         },
       });
 
