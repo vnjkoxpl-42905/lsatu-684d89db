@@ -1224,9 +1224,18 @@ html.dark .classroom-root .classroom-home-day-today {
   background: #e9e2da;
 }
 
-html.dark .classroom-root .classroom-home-day-today .classroom-home-day-abbr,
 html.dark .classroom-root .classroom-home-day-today .classroom-home-day-num {
   color: #201e26;
+}
+
+/* The light card mutes this 9px label with opacity 0.6 over a dark background,
+   which lands at 4.83:1. The dark card flips the background to cream and only
+   overrode the colour, so the same 0.6 dropped it to 4.01:1 — under the 4.5:1
+   floor. Dark carries the de-emphasis in the colour instead, which keeps the
+   label quieter than the date without trading away legibility. */
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-abbr {
+  color: #5d564d;
+  opacity: 1;
 }
 
 html.dark .classroom-root .classroom-home-day-today .classroom-home-day-label {

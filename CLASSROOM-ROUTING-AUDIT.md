@@ -566,3 +566,33 @@ The remaining duplicate on `/journal` was **not** the trigger: `JournalViews`' `
 Live at 1100px, `/journal` reads `August 3, 2026 | Review` · h1 `Wrong answers` · trigger `Open the list`, with exactly one visible "Wrong answers" node in the stage.
 
 Not exercised: a journal *entry* page, since the test student has 0 entries. Those two call sites take the default `kind`, unchanged from before.
+
+### N11 · closed, no code needed
+
+Re-verified live rather than assumed. `/journal` at 375px now renders "Wrong answers" **once** (the `h1`), down from three — the L12 fix closed it. `/bootcamps` and `/schedule` each have exactly one `h1`; last session's removal of the pages' self-drawn headers closed those.
+
+### N6 · dark-mode day card — real, but not what the finding described
+
+The finding reported the whole card at **1.75:1** from `color: rgb(179,172,164)`. That colour is the card container's *inherited* `color`, which no rendered text uses: every text child overrides it. Measured against the real backgrounds, with `opacity` composited in (which `getComputedStyle().color` alone does not show):
+
+| element | size | before | after |
+|---|---|---|---|
+| `MON` abbr | 9px | **4.01:1** | 5.63:1 |
+| `3` date | 17px | 12.83:1 | 12.83:1 |
+| `Open` label | 11.5px | 7.48:1 | 7.48:1 |
+
+So one 9px label failed, not the card. Cause: the light rule mutes the abbreviation with `opacity: 0.6` over a dark background (4.83:1, passing); the dark rule flipped the background to cream and overrode only the colour, leaving the same 0.6 to drop it to 4.01:1. Dark now carries the de-emphasis in the colour instead, so the hierarchy still reads (abbr 5.63 < label 7.48 < date 12.83) with nothing under the floor. Light mode is untouched.
+
+### N7 · booking in dark — fixed, and the root cause is architectural
+
+Confirmed: a single 688×647 pure-white block, and it is our own component, not a Cal.com iframe.
+
+The root cause is bigger than `/booking`. `html` carries `dark`, but `--card` at the root still resolves to `0 0% 100%`, because **`.dark` in `index.css` is a deliberate alias that mirrors `.light`** — same values, `color-scheme: light`, commented "reserved alias". The genuinely dark shadcn tokens sit on `:root`, which both classes override. Every shadcn surface in the app is therefore light by design, and the classroom only looks dark because `classroom.css` and `home.css` draw their own `html.dark` rules in raw hex. `.booking-holo` then overrides the tokens again with its own deliberately-light burgundy theme.
+
+Making `.dark` a real dark theme would flip every shadcn surface in the app — admin, teacher, every dialog. That is a product decision, not an audit line item, so it is **left for Joshua**.
+
+What shipped is scoped: a dark re-voicing of the burgundy palette under `html.dark .classroom-root .booking-holo`. `/book/:slug` is unaffected — it renders outside `.classroom-root` and clears the theme class anyway, verified live (`insideClassroom: false`, palette unchanged). Light mode `/booking` is unchanged (`--primary: 347 70% 27%`, white card).
+
+`--primary` is 68% lightness rather than the light theme's 27% because the accent is used as *text* on the card: at 58% it measured 4.13:1. Every text colour on the card now clears the floor, lowest 5.35:1, with translucent backgrounds composited before measuring.
+
+**Falsified as the finding asked:** no element with a near-white background larger than a control — the query returns an empty array.

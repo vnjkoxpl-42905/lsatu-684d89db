@@ -62,3 +62,38 @@
 @media (prefers-reduced-motion: reduce) {
   .holo-text, .holo-surface { animation: none; }
 }
+
+/* The booking theme is deliberately light, which is right on the public
+   booking page a prospect lands on cold. Inside the dark classroom shell it
+   rendered as a 688x647 pure-white slab in a black page — the most jarring
+   thing a student meets on their first click into dark mode.
+
+   This re-voices the same burgundy palette dark, and is scoped to the
+   classroom so /book/* stays light for prospects. It cannot live in the app's
+   `.dark` class: that class is a deliberate alias that mirrors `.light`
+   (see index.css), so every shadcn token in the app stays light by design and
+   the classroom draws its own dark theme separately. */
+html.dark .classroom-root .booking-holo {
+  color-scheme: dark;
+  --background: 345 12% 9%;
+  --foreground: 345 15% 95%;
+  --card: 345 12% 13%;
+  --card-foreground: 345 15% 95%;
+  --popover: 345 12% 13%;
+  --popover-foreground: 345 15% 95%;
+  /* Lightness is set by contrast, not by matching the light theme's 27%: the
+     accent is used as text on the card, and 58% measured 4.13:1 against it. */
+  --primary: 347 68% 68%;
+  --primary-foreground: 345 30% 10%;
+  --secondary: 345 12% 19%;
+  --secondary-foreground: 345 15% 93%;
+  --muted: 345 10% 18%;
+  --muted-foreground: 345 10% 70%;
+  --accent: 345 15% 23%;
+  --accent-foreground: 345 15% 94%;
+  --destructive: 0 65% 58%;
+  --destructive-foreground: 345 30% 10%;
+  --border: 345 10% 25%;
+  --input: 345 10% 27%;
+  --ring: 347 62% 52%;
+}
