@@ -34,7 +34,7 @@ const PRIMARY_NAV: NavItem[] = [
   { to: '/teacher?ws=people', label: 'People', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-  { to: '/teacher/activities', label: 'Activities', Icon: Zap },
+  { to: '/teacher/library/activities', label: 'Activities', Icon: Zap },
   { to: '/teacher/whiteboard', label: 'Whiteboard', Icon: PencilRuler },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/booking/admin', label: 'Booking', Icon: Ticket },
