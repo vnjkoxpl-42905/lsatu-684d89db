@@ -31,8 +31,9 @@ interface Aggregate {
 
 export default function AdminIntroLr() {
   const { user, loading: authLoading } = useAuth();
-  const { is_admin: isAdmin } = useUserPermissions();
-  const permLoading = false;
+  // Permissions are still resolving on a cold load; treating that as "loaded"
+  // flashed "Admins only." at an admin before their flags arrived.
+  const { is_admin: isAdmin, loading: permLoading } = useUserPermissions();
   const { rows: students } = useHubStudents();
   const [attempts, setAttempts] = React.useState<Row[]>([]);
   const [loading, setLoading] = React.useState(true);

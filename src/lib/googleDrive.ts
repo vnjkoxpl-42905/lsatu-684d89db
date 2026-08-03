@@ -76,39 +76,39 @@ export function loadGooglePickerApi(): Promise<void> {
 }
 
 const DRIVE_FILE_SCOPE = "https://www.googleapis.com/auth/drive.file";
-const TOKEN_STORAGE_KEY = "lsatu.gdrive.token.v1";
+const LEGACY_TOKEN_STORAGE_KEY = "lsatu.gdrive.token.v1";
 
 type CachedToken = { access_token: string; expires_at: number };
 
+// The Google OAuth access token lives in memory for the life of the tab and
+// nowhere else. Persisting it in localStorage left a usable Drive credential on
+// disk for any script on the origin to read, and survived sign-out.
+let cachedToken: CachedToken | null = null;
+
+// Clear any token written by the previous localStorage-backed version.
+try {
+  localStorage.removeItem(LEGACY_TOKEN_STORAGE_KEY);
+} catch {
+  /* ignore */
+}
+
 function readCachedToken(): string | null {
-  try {
-    const raw = localStorage.getItem(TOKEN_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as CachedToken;
-    // Keep a 60s safety buffer.
-    if (parsed?.access_token && parsed.expires_at - 60_000 > Date.now()) {
-      return parsed.access_token;
-    }
-  } catch {
-    /* ignore */
+  // Keep a 60s safety buffer.
+  if (cachedToken && cachedToken.expires_at - 60_000 > Date.now()) {
+    return cachedToken.access_token;
   }
   return null;
 }
 
 function writeCachedToken(access_token: string, expires_in: number) {
-  try {
-    const payload: CachedToken = {
-      access_token,
-      expires_at: Date.now() + Math.max(0, expires_in) * 1000,
-    };
-    localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(payload));
-  } catch {
-    /* ignore */
-  }
+  cachedToken = {
+    access_token,
+    expires_at: Date.now() + Math.max(0, expires_in) * 1000,
+  };
 }
 
 function clearCachedToken() {
-  try { localStorage.removeItem(TOKEN_STORAGE_KEY); } catch { /* ignore */ }
+  cachedToken = null;
 }
 
 function requestToken(forceConsent = false): Promise<string> {

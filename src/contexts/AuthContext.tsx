@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useRef, type ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -38,6 +39,7 @@ function isOAuthCallbackUrl(): boolean {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -183,6 +185,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem('lsatu_saved_email');
     }
     const { error } = await supabase.auth.signOut();
+    // Drop every cached query so the next account to sign in on this device
+    // never sees the previous account's data.
+    queryClient.clear();
     return { error };
   };
 
