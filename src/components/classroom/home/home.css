@@ -1,0 +1,1243 @@
+/* ── Classroom Home ────────────────────────────────────────────────────
+   The student dashboard. Warm paper: the rail's gradient no longer stops at
+   its own edge, it becomes the page. Hierarchy is the point — one primary
+   action, then the work, then the coach and the next session, then the week.
+
+   The Classroom's warm palette is a deliberate, scoped exception to the app's
+   monochrome editorial system. Values here are the design handoff's, carried
+   as tokens rather than repeated inline.
+
+   Every hairline is a box-shadow ring, never a border: borders take layout
+   space and shift a card by a pixel when a hover state thickens them.
+   Every animation is transform/opacity/box-shadow only, so nothing on this
+   page can reflow while it moves. */
+
+.classroom-root .classroom-home {
+  --home-ink: #332f2c;
+  --home-ink-strong: #44403d;
+  --home-ink-mid: #5c5751;
+  --home-body: #6b6660;
+  --home-soft: #8a857f;
+  --home-muted: #a7a29f;
+  --home-faint: #c2bebb;
+  --home-disabled: #d6d1cb;
+
+  --home-white: #ffffff;
+  --home-row-hover: #fefbf7;
+  --home-sheet: #f8f1e7;
+  --home-sheet-deep: #efe6d9;
+
+  --home-accent: #ff8906;
+  --home-accent-text: #e5730a;
+  --home-gold: #c5820a;
+  --home-rule-gold: #e5a93a;
+
+  --home-hair-05: rgba(68, 64, 61, 0.05);
+  --home-hair-06: rgba(68, 64, 61, 0.06);
+  --home-hair-07: rgba(68, 64, 61, 0.07);
+  --home-hair-08: rgba(68, 64, 61, 0.08);
+  --home-hair-09: rgba(68, 64, 61, 0.09);
+  --home-hair-12: rgba(68, 64, 61, 0.12);
+
+  --home-card-shadow: 0 0 0 1px var(--home-hair-08),
+    0 14px 30px -22px rgba(68, 64, 61, 0.35);
+  --home-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --home-display: "Fraunces", Georgia, ui-serif, serif;
+  --home-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --home-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  color: var(--home-body);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--home-ui);
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+/* Decorative page glows. Behind everything, inert to the pointer. */
+.classroom-root .classroom-home-glow {
+  border-radius: 50%;
+  filter: blur(24px);
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.classroom-root .classroom-home-glow-a {
+  animation: classroomHomeDrift 16s var(--home-ease) infinite;
+  background: radial-gradient(circle, rgba(255, 137, 6, 0.1), transparent 68%);
+  height: 420px;
+  right: -140px;
+  top: 40px;
+  width: 620px;
+}
+
+.classroom-root .classroom-home-glow-b {
+  animation: classroomHomeDrift 22s var(--home-ease) 3s infinite reverse;
+  background: radial-gradient(circle, rgba(255, 137, 6, 0.055), transparent 68%);
+  bottom: 40px;
+  filter: blur(30px);
+  height: 380px;
+  right: -80px;
+  width: 520px;
+}
+
+.classroom-root .classroom-home > *:not(.classroom-home-glow) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── masthead ───────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-masthead {
+  align-items: flex-end;
+  animation: classroomHomeRise 560ms var(--home-ease) 40ms both;
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-home-masthead-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-eyebrow {
+  align-items: center;
+  color: var(--home-muted);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  gap: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-home-eyebrow-dot {
+  animation: classroomHomeUnread 2.8s var(--home-ease) 1s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  flex: none;
+  height: 5px;
+  width: 5px;
+}
+
+.classroom-root .classroom-home-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-subtitle {
+  animation: classroomHomeRise 560ms var(--home-ease) 140ms both;
+  color: var(--home-body);
+  font-family: var(--home-display);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-duepill {
+  align-items: center;
+  background: var(--home-white);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--home-hair-08), 0 6px 16px -12px rgba(68, 64, 61, 0.4);
+  color: var(--home-body);
+  display: flex;
+  flex: none;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 600;
+  gap: 9px;
+  letter-spacing: 0.14em;
+  padding: 9px 14px;
+}
+
+.classroom-root .classroom-home-duepill i {
+  animation: classroomHomeUnread 2.8s var(--home-ease) 1s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+/* ── hero ───────────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-hero {
+  animation: classroomHomeRise 620ms var(--home-ease) 180ms both;
+  position: relative;
+}
+
+/* Two paper sheets behind the panel: this is a stack of work, not a banner. */
+.classroom-root .classroom-home-sheet {
+  border-radius: 18px;
+  display: block;
+  height: 40px;
+  position: absolute;
+}
+
+.classroom-root .classroom-home-sheet-back {
+  background: var(--home-sheet-deep);
+  bottom: -9px;
+  box-shadow: 0 0 0 1px var(--home-hair-06);
+  left: 16px;
+  right: 16px;
+}
+
+.classroom-root .classroom-home-sheet-front {
+  background: var(--home-sheet);
+  bottom: -4px;
+  box-shadow: 0 0 0 1px var(--home-hair-07);
+  left: 8px;
+  right: 8px;
+}
+
+.classroom-root .classroom-home-hero-panel {
+  background: linear-gradient(160deg, #fffcf6, #fff6e9 55%, #fdefdd);
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 1px rgba(197, 130, 10, 0.14),
+    0 26px 50px -30px rgba(68, 64, 61, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  position: relative;
+}
+
+.classroom-root .classroom-home-hero-glow {
+  animation: classroomHomeDrift 18s var(--home-ease) infinite;
+  background: radial-gradient(circle, rgba(255, 137, 6, 0.18), transparent 68%);
+  border-radius: 50%;
+  display: block;
+  height: 360px;
+  left: 36%;
+  pointer-events: none;
+  position: absolute;
+  top: -150px;
+  width: 520px;
+}
+
+.classroom-root .classroom-home-hero-body {
+  align-items: center;
+  display: flex;
+  gap: 44px;
+  padding: 30px 34px 32px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-hero-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-hero-eyebrow {
+  align-items: center;
+  color: var(--home-gold);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 700;
+  gap: 9px;
+  letter-spacing: 0.2em;
+}
+
+.classroom-root .classroom-home-hero-eyebrow i {
+  background: var(--home-rule-gold);
+  display: block;
+  flex: none;
+  height: 1px;
+  width: 16px;
+}
+
+.classroom-root .classroom-home-hero-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.classroom-root .classroom-home-hero-heading h2 {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-hero-meta {
+  align-items: center;
+  color: var(--home-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 9px;
+}
+
+.classroom-root .classroom-home-tag {
+  background: var(--home-hair-06);
+  border-radius: 4px;
+  color: var(--home-body);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding: 3px 7px;
+}
+
+.classroom-root .classroom-home-hero-prose {
+  color: var(--home-body);
+  font-family: var(--home-display);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 2px 0 0;
+  max-width: 54ch;
+}
+
+.classroom-root .classroom-home-hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.classroom-root .classroom-home-cta {
+  align-items: center;
+  background: linear-gradient(180deg, #ff9720, #f27c02);
+  border: 0;
+  border-radius: 999px;
+  box-shadow:
+    0 10px 24px -8px rgba(242, 124, 2, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 8px;
+  padding: 12px 22px;
+  transition:
+    transform 180ms var(--home-ease),
+    box-shadow 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-cta:hover {
+  box-shadow:
+    0 16px 30px -8px rgba(242, 124, 2, 0.78),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.classroom-root .classroom-home-cta:active {
+  transform: translateY(0.5px);
+}
+
+.classroom-root .classroom-home-ghost {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(68, 64, 61, 0.16);
+  color: var(--home-ink-mid);
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 12px 18px;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    color 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-ghost:hover {
+  box-shadow: inset 0 0 0 1px rgba(68, 64, 61, 0.3);
+  color: var(--home-ink);
+}
+
+/* Progress card. Only ever rendered when both halves of the count are real. */
+.classroom-root .classroom-home-progress {
+  background: var(--home-white);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px var(--home-hair-08),
+    0 10px 24px -18px rgba(68, 64, 61, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 18px 20px;
+  width: 212px;
+}
+
+.classroom-root .classroom-home-progress-label {
+  color: var(--home-muted);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.classroom-root .classroom-home-progress-count {
+  align-items: baseline;
+  color: var(--home-ink);
+  display: flex;
+  gap: 7px;
+}
+
+.classroom-root .classroom-home-progress-count b {
+  font-family: var(--home-display);
+  font-size: 34px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.classroom-root .classroom-home-progress-count span {
+  color: var(--home-muted);
+  font-size: 13px;
+}
+
+.classroom-root .classroom-home-ticks {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.classroom-root .classroom-home-tick {
+  background: var(--home-hair-09);
+  border-radius: 4px;
+  height: 22px;
+}
+
+.classroom-root .classroom-home-tick-done {
+  background: linear-gradient(180deg, #ff9720, #f27c02);
+  box-shadow: 0 4px 10px -4px rgba(242, 124, 2, 0.6);
+}
+
+.classroom-root .classroom-home-progress-note {
+  color: var(--home-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ── bento ──────────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-bento {
+  align-items: start;
+  animation: classroomHomeRise 560ms var(--home-ease) 460ms both;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1.24fr;
+  margin-top: 14px;
+}
+
+.classroom-root .classroom-home-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-card {
+  background: var(--home-white);
+  border-radius: 14px;
+  box-shadow: var(--home-card-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-home-card-head {
+  align-items: center;
+  box-shadow: inset 0 -1px 0 var(--home-hair-07);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 15px 18px 13px;
+}
+
+.classroom-root .classroom-home-card-label {
+  color: var(--home-ink-strong);
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.classroom-root .classroom-home-card-label-muted {
+  color: var(--home-muted);
+}
+
+.classroom-root .classroom-home-badge {
+  animation: classroomHomeUnread 2.6s var(--home-ease) 1.4s infinite;
+  background: rgba(255, 137, 6, 0.12);
+  border-radius: 999px;
+  color: var(--home-accent-text);
+  flex: none;
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+}
+
+.classroom-root .classroom-home-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.classroom-root .classroom-home-row {
+  align-items: center;
+  background: none;
+  border: 0;
+  box-shadow: inset 0 -1px 0 var(--home-hair-06);
+  cursor: pointer;
+  display: flex;
+  gap: 13px;
+  padding: 14px 18px;
+  text-align: left;
+  transition: background 180ms var(--home-ease);
+  width: 100%;
+}
+
+.classroom-root .classroom-home-row:last-child {
+  box-shadow: none;
+}
+
+.classroom-root .classroom-home-row:hover {
+  background: var(--home-row-hover);
+}
+
+.classroom-root .classroom-home-dot {
+  border-radius: 50%;
+  flex: none;
+  height: 6px;
+  width: 6px;
+}
+
+.classroom-root .classroom-home-dot-activity {
+  background: var(--home-accent);
+  box-shadow: 0 0 0 4px rgba(255, 137, 6, 0.12);
+}
+
+.classroom-root .classroom-home-dot-drill {
+  background: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.12);
+}
+
+.classroom-root .classroom-home-dot-recap {
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+}
+
+.classroom-root .classroom-home-row-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-row-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 16px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-home-row-meta {
+  color: var(--home-muted);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* One pill, two weights: the accent variant marks the single next action. */
+.classroom-root .classroom-home-pill {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--home-hair-12);
+  color: var(--home-body);
+  cursor: pointer;
+  display: inline-flex;
+  flex: none;
+  font-family: var(--home-ui);
+  font-size: 12.5px;
+  font-weight: 500;
+  gap: 6px;
+  padding: 7px 12px;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    background 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-pill:hover {
+  box-shadow: inset 0 0 0 1px rgba(68, 64, 61, 0.26);
+}
+
+.classroom-root .classroom-home-pill-accent {
+  box-shadow: inset 0 0 0 1px rgba(229, 115, 10, 0.28);
+  color: var(--home-accent-text);
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-pill-accent:hover {
+  background: rgba(255, 137, 6, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(229, 115, 10, 0.4);
+}
+
+/* A pill nested inside a row button is decoration, not a second control. */
+.classroom-root .classroom-home-row .classroom-home-pill,
+.classroom-root .classroom-home-message .classroom-home-pill {
+  pointer-events: none;
+}
+
+.classroom-root .classroom-home-row:hover .classroom-home-pill-accent {
+  background: rgba(255, 137, 6, 0.08);
+}
+
+.classroom-root .classroom-home-empty {
+  color: var(--home-muted);
+  font-size: 13px;
+  margin: 0;
+  padding: 16px 18px 20px;
+}
+
+.classroom-root .classroom-home-empty-boxed {
+  background: var(--home-white);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--home-hair-08);
+  padding: 16px 14px;
+}
+
+/* ── the coach's last word ──────────────────────────────────────────── */
+
+.classroom-root .classroom-home-thread {
+  animation: classroomHomeRise 560ms var(--home-ease) 620ms both;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-rule {
+  align-items: center;
+  display: flex;
+  gap: 9px;
+}
+
+.classroom-root .classroom-home-rule > i {
+  background: rgba(68, 64, 61, 0.1);
+  display: block;
+  flex: 1;
+  height: 1px;
+}
+
+.classroom-root .classroom-home-stack {
+  animation: classroomHomeFloat 7s var(--home-ease) 1.2s infinite;
+  padding-bottom: 12px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-note {
+  border-radius: 12px;
+  display: block;
+  height: 44px;
+  position: absolute;
+}
+
+.classroom-root .classroom-home-note-back {
+  background: #f3ede6;
+  bottom: 0;
+  box-shadow: 0 0 0 1px var(--home-hair-05);
+  left: 14px;
+  right: 14px;
+}
+
+.classroom-root .classroom-home-note-front {
+  background: #fbf6f0;
+  bottom: 6px;
+  box-shadow: 0 0 0 1px var(--home-hair-06);
+  left: 7px;
+  right: 7px;
+}
+
+.classroom-root .classroom-home-message {
+  align-items: flex-start;
+  background: linear-gradient(180deg, #ffffff, #fffcf8);
+  border: 0;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px var(--home-hair-09),
+    0 1px 1px rgba(68, 64, 61, 0.04),
+    0 14px 26px -18px rgba(68, 64, 61, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  padding: 14px;
+  position: relative;
+  text-align: left;
+  transition:
+    transform 180ms var(--home-ease),
+    box-shadow 180ms var(--home-ease);
+  width: 100%;
+}
+
+.classroom-root .classroom-home-message:hover {
+  box-shadow:
+    0 0 0 1px var(--home-hair-09),
+    0 22px 38px -20px rgba(68, 64, 61, 0.5);
+  transform: translateY(-3px);
+}
+
+.classroom-root .classroom-home-shine {
+  animation: classroomHomeShine 6.5s var(--home-ease) 2s infinite;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 244, 228, 0.9) 50%,
+    rgba(255, 255, 255, 0)
+  );
+  bottom: 0;
+  display: block;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 34%;
+}
+
+.classroom-root .classroom-home-avatar {
+  align-items: center;
+  background: linear-gradient(180deg, #fcefe1, #f1dec8);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 6px -3px rgba(68, 64, 61, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  color: #8a6b4c;
+  display: flex;
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  position: relative;
+  width: 28px;
+}
+
+.classroom-root .classroom-home-avatar-dot {
+  animation: classroomHomeUnread 2.4s var(--home-ease) 1.8s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  bottom: -1px;
+  box-shadow: 0 0 0 2px #ffffff;
+  height: 8px;
+  position: absolute;
+  right: -1px;
+  width: 8px;
+}
+
+.classroom-root .classroom-home-message-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+  position: relative;
+}
+
+.classroom-root .classroom-home-message-head {
+  align-items: baseline;
+  display: flex;
+  gap: 6px;
+}
+
+.classroom-root .classroom-home-message-head b {
+  color: var(--home-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-message-head time {
+  color: var(--home-faint);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+}
+
+/* Three lines of the coach, then it clamps: this is a doorway, not the thread. */
+.classroom-root .classroom-home-message-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--home-body);
+  display: -webkit-box;
+  font-family: var(--home-display);
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-home-message-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-top: 1px;
+}
+
+/* ── next session ───────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-session {
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+  padding: 18px;
+}
+
+.classroom-root .classroom-home-session-icon {
+  align-items: center;
+  background: linear-gradient(180deg, #fff6ea, #fdebd6);
+  border-radius: 11px;
+  box-shadow: inset 0 0 0 1px rgba(229, 115, 10, 0.16);
+  color: var(--home-gold);
+  display: flex;
+  flex: none;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.classroom-root .classroom-home-session-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-session-value {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-session-meta {
+  color: var(--home-muted);
+  font-size: 12px;
+}
+
+.classroom-root .classroom-home-session-actions {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+/* ── this week ──────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-week {
+  animation: classroomHomeRise 560ms var(--home-ease) 700ms both;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 26px;
+  padding-bottom: 8px;
+}
+
+.classroom-root .classroom-home-rule-draw {
+  animation: classroomHomeDrawRule 620ms var(--home-ease) 760ms both;
+  background: rgba(68, 64, 61, 0.1);
+  display: block;
+  flex: 1;
+  height: 1px;
+  transform-origin: left;
+}
+
+.classroom-root .classroom-home-week-range {
+  color: var(--home-muted);
+  font-size: 12.5px;
+}
+
+.classroom-root .classroom-home-days {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* Rendered as a <button> only when /schedule is reachable, otherwise a <div>.
+   The pointer and the hover lift below are scoped to the button so the inert
+   variant does not advertise a click it cannot perform. */
+.classroom-root .classroom-home-day {
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  padding: 13px 13px 15px;
+  text-align: left;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    transform 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-day-head {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-home-day-abbr {
+  color: var(--home-faint);
+  font-family: var(--home-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.classroom-root .classroom-home-day-num {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-day-label {
+  align-items: center;
+  color: var(--home-body);
+  display: flex;
+  font-size: 11.5px;
+  gap: 6px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-day-label i {
+  background: var(--home-rule-gold);
+  border-radius: 50%;
+  display: block;
+  flex: none;
+  height: 4px;
+  width: 4px;
+}
+
+/* The label is one line: a long assignment title truncates rather than
+   making one cell in the row taller than the other six. */
+.classroom-root .classroom-home-day-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-home-day-today {
+  animation: classroomHomeTodayGlow 3.2s var(--home-ease) 1.6s infinite;
+  background: var(--home-ink-strong);
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-abbr {
+  color: #fffdfb;
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-num {
+  color: #fffdfb;
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-label {
+  color: #e9e1d7;
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-label i {
+  background: var(--home-accent);
+}
+
+.classroom-root .classroom-home-day-item,
+.classroom-root .classroom-home-day-open {
+  background: var(--home-white);
+  box-shadow: 0 0 0 1px var(--home-hair-07);
+}
+
+.classroom-root button.classroom-home-day {
+  cursor: pointer;
+}
+
+.classroom-root button.classroom-home-day-item:hover,
+.classroom-root button.classroom-home-day-open:hover {
+  box-shadow:
+    0 0 0 1px rgba(68, 64, 61, 0.14),
+    0 10px 22px -16px rgba(68, 64, 61, 0.4);
+}
+
+.classroom-root .classroom-home-day-open .classroom-home-day-label {
+  color: var(--home-faint);
+}
+
+.classroom-root .classroom-home-day-rest {
+  box-shadow: inset 0 0 0 1px var(--home-hair-05);
+}
+
+.classroom-root .classroom-home-day-rest .classroom-home-day-abbr,
+.classroom-root .classroom-home-day-rest .classroom-home-day-label {
+  color: var(--home-disabled);
+}
+
+.classroom-root .classroom-home-day-rest .classroom-home-day-num {
+  color: var(--home-faint);
+}
+
+/* ── motion ─────────────────────────────────────────────────────────── */
+
+@keyframes classroomHomeRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes classroomHomeDrift {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate3d(26px, 18px, 0) scale(1.08);
+  }
+}
+
+@keyframes classroomHomeUnread {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 137, 6, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 137, 6, 0);
+  }
+}
+
+@keyframes classroomHomeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes classroomHomeShine {
+  0% {
+    transform: translateX(-160%) skewX(-14deg);
+  }
+  55%,
+  100% {
+    transform: translateX(320%) skewX(-14deg);
+  }
+}
+
+@keyframes classroomHomeDrawRule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes classroomHomeTodayGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 16px -10px rgba(68, 64, 61, 0.8),
+      0 0 0 0 rgba(255, 137, 6, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 6px 16px -10px rgba(68, 64, 61, 0.8),
+      0 0 0 6px rgba(255, 137, 6, 0);
+  }
+}
+
+/* The layout must be complete and correct with every animation removed. */
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .classroom-home *,
+  .classroom-root .classroom-home *::before,
+  .classroom-root .classroom-home *::after,
+  .classroom-root .classroom-home {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── responsive ─────────────────────────────────────────────────────── */
+
+/* The bento's 1 : 1.24 split needs both columns to hold a card and a pill row.
+   Below this it stacks rather than compressing the session card's actions. */
+@media (max-width: 1080px) {
+  .classroom-root .classroom-home-bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .classroom-root .classroom-home-hero-body {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .classroom-root .classroom-home-progress {
+    width: 100%;
+  }
+
+  .classroom-root .classroom-home-days {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .classroom-root .classroom-home-masthead {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .classroom-root .classroom-home-title {
+    font-size: 32px;
+  }
+
+  .classroom-root .classroom-home-hero-heading h2 {
+    font-size: 28px;
+  }
+
+  .classroom-root .classroom-home-hero-body {
+    padding: 24px 20px 26px;
+  }
+
+  .classroom-root .classroom-home-session {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .classroom-root .classroom-home-days {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .classroom-root .classroom-home-glow {
+    display: none;
+  }
+}
+
+/* ── dark ───────────────────────────────────────────────────────────── */
+
+/* The Classroom ships a dark theme. The warm paper cannot simply invert, so
+   the ink/surface tokens are restated against a warm-neutral dark ground and
+   the accent stays exactly where it is. */
+html.dark .classroom-root .classroom-home {
+  --home-ink: #f5f1ec;
+  --home-ink-strong: #e9e2da;
+  --home-ink-mid: #cfc8c0;
+  --home-body: #b3aca4;
+  --home-soft: #9b948d;
+  --home-muted: #928b83;
+  /* Not a straight inversion of the light ramp: on a dark ground the two
+     quietest steps have to move up, or the weekend cells fall under 2:1 and
+     the "Rest" label stops being readable at all. */
+  --home-faint: #8b837b;
+  --home-disabled: #746c64;
+
+  --home-white: #17161c;
+  --home-row-hover: #1e1c24;
+  --home-sheet: #221f28;
+  --home-sheet-deep: #1a1820;
+
+  --home-hair-05: rgba(255, 255, 255, 0.05);
+  --home-hair-06: rgba(255, 255, 255, 0.06);
+  --home-hair-07: rgba(255, 255, 255, 0.07);
+  --home-hair-08: rgba(255, 255, 255, 0.08);
+  --home-hair-09: rgba(255, 255, 255, 0.09);
+  --home-hair-12: rgba(255, 255, 255, 0.14);
+
+  --home-card-shadow: 0 0 0 1px var(--home-hair-08),
+    0 14px 30px -22px rgba(0, 0, 0, 0.8);
+}
+
+html.dark .classroom-root .classroom-home-hero-panel {
+  background: linear-gradient(160deg, #241f1b, #2a221a 55%, #241d16);
+  box-shadow:
+    0 0 0 1px rgba(197, 130, 10, 0.22),
+    0 26px 50px -30px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+html.dark .classroom-root .classroom-home-message {
+  background: linear-gradient(180deg, #1b1a21, #17161c);
+}
+
+html.dark .classroom-root .classroom-home-note-back {
+  background: #201e26;
+}
+
+html.dark .classroom-root .classroom-home-note-front {
+  background: #1a1920;
+}
+
+html.dark .classroom-root .classroom-home-session-icon {
+  background: linear-gradient(180deg, #2a221a, #241d16);
+}
+
+html.dark .classroom-root .classroom-home-avatar {
+  background: linear-gradient(180deg, #3a2f24, #2c241b);
+  color: #e0c3a0;
+}
+
+html.dark .classroom-root .classroom-home-avatar-dot {
+  box-shadow: 0 0 0 2px #17161c;
+}
+
+html.dark .classroom-root .classroom-home-day-today {
+  background: #e9e2da;
+}
+
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-abbr,
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-num {
+  color: #201e26;
+}
+
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-label {
+  color: #4a443d;
+}
+
+html.dark .classroom-root .classroom-home-shine {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 244, 228, 0.06) 50%,
+    rgba(255, 255, 255, 0)
+  );
+}

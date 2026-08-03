@@ -676,6 +676,30 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   width: 100%;
 }
 
+/* Home is the student dashboard: a full-width grid rather than a reading
+   column, and the rail's warm paper carried across the whole page instead of
+   stopping at the rail's own edge. */
+.classroom-root.classroom-root-home .classroom-stage {
+  background: linear-gradient(180deg, #fffdfb, #fbf6f0);
+  justify-content: flex-start;
+  padding: 0;
+}
+
+html.dark .classroom-root.classroom-root-home .classroom-stage {
+  background: linear-gradient(180deg, #131219, #0f0e17);
+}
+
+.classroom-root.classroom-root-home .classroom-column {
+  max-width: 1260px;
+  padding: 30px 44px 56px;
+}
+
+@media (max-width: 720px) {
+  .classroom-root.classroom-root-home .classroom-column {
+    padding: 24px 18px 48px;
+  }
+}
+
 .classroom-root.classroom-root-drill .classroom-stage {
   background: var(--classroom-drill-page);
   padding: 8px 8px 8px 0;

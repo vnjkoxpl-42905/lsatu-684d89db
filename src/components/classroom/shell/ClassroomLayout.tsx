@@ -818,6 +818,9 @@ export default function ClassroomLayout() {
   // they signed up with rather than an empty row and a blank avatar.
   const sidebarName = displayName || user.email || "";
   const journalDetail = /^\/journal\/[^/]+$/.test(location.pathname);
+  // Home is a dashboard, not a reading column: it needs the whole stage beside
+  // the rail rather than the 720px measure every other reading surface uses.
+  const homeStage = location.pathname === "/classroom";
   const rootClass =
     activeSection === "journal"
       ? `classroom-root classroom-root-journal${
@@ -827,7 +830,9 @@ export default function ClassroomLayout() {
         ? "classroom-root classroom-root-drill"
         : messagesStage
           ? "classroom-root classroom-root-messages"
-          : "classroom-root";
+          : homeStage
+            ? "classroom-root classroom-root-home"
+            : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>

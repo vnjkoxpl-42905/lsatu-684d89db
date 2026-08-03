@@ -1,0 +1,375 @@
+/**
+ * Classroom Home, presentational half.
+ *
+ * Takes a finished model and renders it. Split from the live hook so the whole
+ * page can be driven with fixtures in a test, and so the only thing that can
+ * put a number on this screen is the model.
+ *
+ * Layout follows the design handoff: masthead, hero, a two-column bento of
+ * assigned work against the coach, then the week band. Class names are all
+ * `classroom-home-*`; the values live in `home.css`.
+ */
+
+import * as React from "react";
+import { ArrowRight, CalendarClock } from "lucide-react";
+import type {
+  ClassroomHomeModel,
+  HomeRow,
+} from "./homeModel";
+
+function Pill({
+  children,
+  emphasis,
+  onClick,
+  ariaLabel,
+}: {
+  children: React.ReactNode;
+  emphasis?: boolean;
+  onClick: () => void;
+  ariaLabel?: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      className={`classroom-home-pill${emphasis ? " classroom-home-pill-accent" : ""}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
+function WorkRow({ row, onOpen }: { row: HomeRow; onOpen: (route: string) => void }) {
+  return (
+    <button
+      type="button"
+      className="classroom-home-row"
+      onClick={() => onOpen(row.route)}
+    >
+      <span
+        className={`classroom-home-dot classroom-home-dot-${row.tone}`}
+        aria-hidden="true"
+      />
+      <span className="classroom-home-row-text">
+        <span className="classroom-home-row-title">{row.title}</span>
+        <span className="classroom-home-row-meta">{row.meta}</span>
+      </span>
+      <span
+        className={`classroom-home-pill${row.emphasis ? " classroom-home-pill-accent" : ""}`}
+      >
+        {row.actionLabel}
+      </span>
+    </button>
+  );
+}
+
+export function ClassroomHomeView({
+  model,
+  loading,
+  onOpen,
+  onSeeAllWork,
+}: {
+  model: ClassroomHomeModel;
+  loading: boolean;
+  onOpen: (route: string) => void;
+  onSeeAllWork: () => void;
+}) {
+  const { hero } = model;
+
+  return (
+    <div className="classroom-home">
+      <div className="classroom-home-glow classroom-home-glow-a" aria-hidden="true" />
+      <div className="classroom-home-glow classroom-home-glow-b" aria-hidden="true" />
+
+      {/* ── masthead ─────────────────────────────────────────────────── */}
+      <header className="classroom-home-masthead">
+        <div className="classroom-home-masthead-text">
+          <span className="classroom-home-eyebrow">
+            <i className="classroom-home-eyebrow-dot" aria-hidden="true" />
+            {model.dateline}
+          </span>
+          <h1 className="classroom-home-title">
+            {model.displayName
+              ? `${model.greeting}, ${model.displayName}`
+              : model.greeting}
+          </h1>
+          <p className="classroom-home-subtitle">{model.subtitle}</p>
+        </div>
+
+        {model.dueTodayCount > 0 ? (
+          <span className="classroom-home-duepill">
+            <i aria-hidden="true" />
+            {model.dueTodayCount === 1
+              ? "1 DUE TODAY"
+              : `${model.dueTodayCount} DUE TODAY`}
+          </span>
+        ) : null}
+      </header>
+
+      {/* ── hero ─────────────────────────────────────────────────────── */}
+      {hero ? (
+        <section className="classroom-home-hero" aria-label="Pick up where you left off">
+          <i className="classroom-home-sheet classroom-home-sheet-back" aria-hidden="true" />
+          <i className="classroom-home-sheet classroom-home-sheet-front" aria-hidden="true" />
+          <div className="classroom-home-hero-panel">
+            <i className="classroom-home-hero-glow" aria-hidden="true" />
+            <div className="classroom-home-hero-body">
+              <div className="classroom-home-hero-main">
+                <span className="classroom-home-hero-eyebrow">
+                  <i aria-hidden="true" />
+                  {hero.eyebrow}
+                </span>
+                <div className="classroom-home-hero-heading">
+                  <h2>{hero.row.title}</h2>
+                  <span className="classroom-home-hero-meta">
+                    <span className="classroom-home-tag">{hero.kindLabel}</span>
+                    {hero.meta}
+                  </span>
+                </div>
+                {hero.prose ? (
+                  <p className="classroom-home-hero-prose">{hero.prose}</p>
+                ) : null}
+                <div className="classroom-home-hero-actions">
+                  <button
+                    type="button"
+                    className="classroom-home-cta"
+                    onClick={() => onOpen(hero.row.route)}
+                  >
+                    {hero.primaryLabel}
+                    <ArrowRight size={15} strokeWidth={2.2} />
+                  </button>
+                  <button
+                    type="button"
+                    className="classroom-home-ghost"
+                    onClick={onSeeAllWork}
+                  >
+                    See all assigned work
+                  </button>
+                </div>
+              </div>
+
+              {hero.progress ? (
+                <aside className="classroom-home-progress" aria-label="Progress">
+                  <span className="classroom-home-progress-label">PROGRESS</span>
+                  <span className="classroom-home-progress-count">
+                    <b>{hero.progress.completed ?? hero.progress.total}</b>
+                    <span>
+                      {hero.progress.completed === null
+                        ? hero.progress.unit
+                        : `of ${hero.progress.total} ${hero.progress.unit}`}
+                    </span>
+                  </span>
+                  {hero.progress.completed !== null ? (
+                    <div
+                      className="classroom-home-ticks"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={hero.progress.total}
+                      aria-valuenow={hero.progress.completed}
+                    >
+                      {Array.from({ length: hero.progress.total }, (_, index) => (
+                        <span
+                          key={index}
+                          className={
+                            index < (hero.progress!.completed ?? 0)
+                              ? "classroom-home-tick classroom-home-tick-done"
+                              : "classroom-home-tick"
+                          }
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                  {hero.progress.estimateMinutes ? (
+                    <span className="classroom-home-progress-note">
+                      About {hero.progress.estimateMinutes} minutes.
+                    </span>
+                  ) : null}
+                </aside>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── bento ────────────────────────────────────────────────────── */}
+      <div className="classroom-home-bento">
+        <section className="classroom-home-card" aria-label="Assigned to you">
+          <header className="classroom-home-card-head">
+            <span className="classroom-home-card-label">ASSIGNED TO YOU</span>
+            {model.newCount > 0 ? (
+              <span className="classroom-home-badge">
+                {model.newCount} NEW
+              </span>
+            ) : null}
+          </header>
+          {model.rows.length ? (
+            <div className="classroom-home-rows">
+              {model.rows.map((row) => (
+                <WorkRow key={row.key} row={row} onOpen={onOpen} />
+              ))}
+            </div>
+          ) : (
+            <p className="classroom-home-empty">
+              {loading ? "Loading your work…" : "Nothing assigned right now."}
+            </p>
+          )}
+        </section>
+
+        <div className="classroom-home-side">
+          {model.access.messages ? (
+          <section className="classroom-home-thread" aria-label="From your coach">
+            <header className="classroom-home-rule">
+              <span className="classroom-home-card-label classroom-home-card-label-muted">
+                {model.message
+                  ? `FROM ${model.message.from.toUpperCase()}`
+                  : // Naming the coach is right for a student; staff reading
+                    // their own classroom would be told a message is from
+                    // themselves, so they get the neutral heading.
+                    model.isAdmin
+                    ? "MESSAGES"
+                    : "FROM JOSHUA"}
+              </span>
+              <i aria-hidden="true" />
+              {model.unreadMessages > 0 ? (
+                <span className="classroom-home-badge">
+                  {model.unreadMessages} NEW
+                </span>
+              ) : null}
+            </header>
+
+            {model.message ? (
+              <div className="classroom-home-stack">
+                <i className="classroom-home-note classroom-home-note-back" aria-hidden="true" />
+                <i className="classroom-home-note classroom-home-note-front" aria-hidden="true" />
+                <button
+                  type="button"
+                  className="classroom-home-message"
+                  onClick={() => onOpen(model.message!.route)}
+                >
+                  <i className="classroom-home-shine" aria-hidden="true" />
+                  <span className="classroom-home-avatar">
+                    {model.message.initial}
+                    {model.message.unread ? (
+                      <i className="classroom-home-avatar-dot" aria-hidden="true" />
+                    ) : null}
+                  </span>
+                  <span className="classroom-home-message-body">
+                    <span className="classroom-home-message-head">
+                      <b>{model.message.from}</b>
+                      <time>{model.message.timeLabel}</time>
+                    </span>
+                    <span className="classroom-home-message-text">
+                      {`“${model.message.body}”`}
+                    </span>
+                    <span className="classroom-home-message-actions">
+                      <span className="classroom-home-pill classroom-home-pill-accent">
+                        Open in Messages
+                        <ArrowRight size={12} strokeWidth={2.2} />
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            ) : (
+              <p className="classroom-home-empty classroom-home-empty-boxed">
+                No messages yet.
+              </p>
+            )}
+          </section>
+          ) : null}
+
+          <section className="classroom-home-card classroom-home-session" aria-label="Next session">
+            <span className="classroom-home-session-icon" aria-hidden="true">
+              <CalendarClock size={17} strokeWidth={1.8} />
+            </span>
+            <span className="classroom-home-session-text">
+              <span className="classroom-home-card-label classroom-home-card-label-muted">
+                NEXT SESSION
+              </span>
+              <span className="classroom-home-session-value">
+                {model.session ? model.session.label : "Nothing booked"}
+              </span>
+              {model.session?.meta ? (
+                <span className="classroom-home-session-meta">{model.session.meta}</span>
+              ) : null}
+            </span>
+            <span className="classroom-home-session-actions">
+              {model.session ? (
+                <>
+                  <Pill onClick={() => onOpen("/booking")}>Reschedule</Pill>
+                  <Pill emphasis onClick={() => onOpen("/booking")}>
+                    Book another
+                  </Pill>
+                </>
+              ) : (
+                <Pill emphasis onClick={() => onOpen("/booking")}>
+                  Book one
+                </Pill>
+              )}
+            </span>
+          </section>
+        </div>
+      </div>
+
+      {/* ── this week ────────────────────────────────────────────────── */}
+      <section className="classroom-home-week" aria-label="This week">
+        <header className="classroom-home-rule">
+          <span className="classroom-home-card-label">THIS WEEK</span>
+          <i className="classroom-home-rule-draw" aria-hidden="true" />
+          <span className="classroom-home-week-range">{model.weekLabel}</span>
+        </header>
+        <div className="classroom-home-days">
+          {model.week.map((day) => {
+            const tone = day.isToday
+              ? " classroom-home-day-today"
+              : day.label
+                ? " classroom-home-day-item"
+                : day.isWeekend
+                  ? " classroom-home-day-rest"
+                  : " classroom-home-day-open";
+            const body = (
+              <>
+                <span className="classroom-home-day-head">
+                  <span className="classroom-home-day-abbr">{day.abbr}</span>
+                  <span className="classroom-home-day-num">{day.dayNum}</span>
+                </span>
+                <span className="classroom-home-day-label">
+                  {day.label ? (
+                    <>
+                      <i aria-hidden="true" />
+                      {day.label}
+                    </>
+                  ) : day.isWeekend ? (
+                    "Rest"
+                  ) : (
+                    "Open"
+                  )}
+                </span>
+              </>
+            );
+
+            // The band still reads without schedule access; it just stops being
+            // a control, rather than becoming a button onto a locked route.
+            return model.access.schedule ? (
+              <button
+                key={day.iso}
+                type="button"
+                className={`classroom-home-day${tone}`}
+                onClick={() => onOpen("/schedule")}
+              >
+                {body}
+              </button>
+            ) : (
+              <div key={day.iso} className={`classroom-home-day${tone}`}>
+                {body}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default ClassroomHomeView;
