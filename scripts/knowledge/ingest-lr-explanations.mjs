@@ -2,6 +2,8 @@
 //
 //   node scripts/knowledge/ingest-lr-explanations.mjs <dir-of-md-files>
 //
+// Inserts are ON CONFLICT DO NOTHING, so re-running is safe but does not
+// overwrite rows already loaded.
 // Strategy: parse every file in memory, write one TSV per target table, COPY
 // each into an UNLOGGED staging table, then upsert into the real tables inside
 // a single transaction. Re-running is idempotent (natural keys: qid, letter,
@@ -99,33 +101,28 @@ ON CONFLICT (preptest, section) DO NOTHING;
 INSERT INTO public.lr_questions (section_id, qid, preptest, section, question_number, question_type, stimulus, prompt, source_note, is_explained, correct_choice)
 SELECT sec.id, q.qid, q.preptest, q.section, q.question_number, q.question_type, q.stimulus, q.prompt, q.source_note, q.is_explained, q.correct_choice
 FROM stg_q q JOIN public.lr_sections sec ON sec.preptest = q.preptest AND sec.section = q.section
-ON CONFLICT (qid) DO UPDATE SET
-  question_type = EXCLUDED.question_type, stimulus = EXCLUDED.stimulus, prompt = EXCLUDED.prompt,
-  source_note = EXCLUDED.source_note, is_explained = EXCLUDED.is_explained, correct_choice = EXCLUDED.correct_choice;
+ON CONFLICT (qid) DO NOTHING;
 
 INSERT INTO public.lr_answer_choices (question_id, letter, choice_text, tag, is_correct, student_percent)
 SELECT lq.id, c.letter, c.choice_text, c.tag, c.is_correct, c.student_percent
 FROM stg_c c JOIN public.lr_questions lq ON lq.qid = c.qid
-ON CONFLICT (question_id, letter) DO UPDATE SET
-  choice_text = EXCLUDED.choice_text, tag = EXCLUDED.tag, is_correct = EXCLUDED.is_correct, student_percent = EXCLUDED.student_percent;
+ON CONFLICT (question_id, letter) DO NOTHING;
 
 INSERT INTO public.lr_explanations (question_id, style)
 SELECT lq.id, e.style FROM stg_e e JOIN public.lr_questions lq ON lq.qid = e.qid
 ON CONFLICT (question_id, style) DO NOTHING;
 
-DELETE FROM public.lr_explanation_steps st USING public.lr_explanations ex, public.lr_questions lq
-WHERE st.explanation_id = ex.id AND ex.question_id = lq.id AND lq.qid IN (SELECT qid FROM stg_q);
 INSERT INTO public.lr_explanation_steps (explanation_id, position, label, body)
 SELECT ex.id, s.position, s.label, s.body
 FROM stg_s s JOIN public.lr_questions lq ON lq.qid = s.qid
-JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = s.style;
+JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = s.style
+ON CONFLICT (explanation_id, position) DO NOTHING;
 
-DELETE FROM public.lr_explanation_choice_notes cn USING public.lr_explanations ex, public.lr_questions lq
-WHERE cn.explanation_id = ex.id AND ex.question_id = lq.id AND lq.qid IN (SELECT qid FROM stg_q);
 INSERT INTO public.lr_explanation_choice_notes (explanation_id, letter, body)
 SELECT ex.id, n.letter, n.body
 FROM stg_n n JOIN public.lr_questions lq ON lq.qid = n.qid
-JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = n.style;
+JOIN public.lr_explanations ex ON ex.question_id = lq.id AND ex.style = n.style
+ON CONFLICT (explanation_id, letter) DO NOTHING;
 
 COMMIT;
 `;
