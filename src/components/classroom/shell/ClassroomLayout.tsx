@@ -34,10 +34,13 @@ import {
   useStudentTAAssignments,
 } from "@/hooks/useStudentAssignments";
 import {
-  buildWorkRows,
   classroomNotes,
   type ClassroomWorkRow,
 } from "@/components/classroom/classroomData";
+import {
+  useAssignedTodoFeed,
+  routeWithReturnTo,
+} from "@/hooks/useAssignedTodoFeed";
 import "@/components/classroom/classroom.css";
 
 type ClassroomSection = "notes" | "work" | "flagged" | "journal";
@@ -425,6 +428,7 @@ function StandardSectionList({
   onClose?: () => void;
 }) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
@@ -448,9 +452,23 @@ function StandardSectionList({
     () => classroomNotes(retainedItems),
     [retainedItems],
   );
-  const workRows = React.useMemo(
-    () => buildWorkRows(retainedItems, retainedHomework, retainedTa),
-    [retainedHomework, retainedItems, retainedTa],
+  // Assigned work reads the same feed Classroom Home does. It used to build its
+  // own rows from classroom_items + homework + TA, which left the two lists
+  // disjoint: Home showed guided drills and activities this panel never had,
+  // and this panel showed bootcamp modules Home never had.
+  const { rows: feedRows } = useAssignedTodoFeed();
+  const workRows = React.useMemo<ClassroomWorkRow[]>(
+    () =>
+      feedRows.map((row) => ({
+        key: row.key,
+        sourceTable: row.sourceTable,
+        sourceId: row.refId,
+        title: row.title,
+        status: row.status,
+        date: row.dueAt ?? row.createdAt,
+        route: routeWithReturnTo(row.route, pathname),
+      })),
+    [feedRows, pathname],
   );
   const flagRows = React.useMemo(() => {
     const rows = flaggedQuery.data ?? [];

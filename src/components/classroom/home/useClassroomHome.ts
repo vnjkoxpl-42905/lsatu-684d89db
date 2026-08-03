@@ -12,7 +12,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
-import { useAssignedTodoFeed, type AssignedTodoRow } from "@/hooks/useAssignedTodoFeed";
+import { useLocation } from "react-router-dom";
+import {
+  useAssignedTodoFeed,
+  routeWithReturnTo,
+  type AssignedTodoRow,
+} from "@/hooks/useAssignedTodoFeed";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
 import { useStudentBooking } from "@/hooks/useStudentBooking";
 import { useInbox } from "@/hooks/useInbox";
@@ -50,6 +55,8 @@ const FEED_KIND: Record<AssignedTodoRow["kind"], HomeKind> = {
   guided: "guided",
   homework: "homework",
   ta: "ta",
+  bootcamp: "bootcamp",
+  plan: "plan",
 };
 
 function timeLabel(iso: string) {
@@ -109,6 +116,7 @@ export function useClassroomHome(): {
     }),
     [canAccess],
   );
+  const { pathname } = useLocation();
   const { rows: assigned, loading: assignedLoading } = useAssignedTodoFeed();
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
@@ -153,7 +161,10 @@ export function useClassroomHome(): {
       .filter((row) => row.kind !== "activity" || access.activities)
       .map((row) => {
         const kind = FEED_KIND[row.kind];
-        const dueAt = dueBySourceId.get(row.refId) ?? null;
+        // The feed now carries the due date off the classroom_items row it
+        // merged; dueBySourceId stays as the fallback for rows that have no
+        // classroom item of their own.
+        const dueAt = row.dueAt ?? dueBySourceId.get(row.refId) ?? null;
         const due = dueLabel(dueAt, now);
         const meta = [KIND_LABEL[kind], row.subtitle, due ?? assignedLabel(row.createdAt, now)]
           .filter(Boolean)
@@ -164,7 +175,8 @@ export function useClassroomHome(): {
           kind,
           tone: KIND_TONE[kind],
           meta,
-          route: row.route,
+          // Finishing a guided drill returns here rather than to /schedule.
+          route: routeWithReturnTo(row.route, pathname),
           actionLabel: "Open",
           emphasis: false,
           isNew: row.status === "assigned",
@@ -172,7 +184,7 @@ export function useClassroomHome(): {
           overdue: !!due?.includes("overdue"),
         };
       });
-  }, [access.activities, assigned, dueBySourceId, now]);
+  }, [access.activities, assigned, dueBySourceId, now, pathname]);
 
   /** Recent recaps and notes: reading matter, not work, so they never carry a due date. */
   const readingRows = React.useMemo<HomeRow[]>(() => {

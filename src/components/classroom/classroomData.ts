@@ -59,6 +59,12 @@ function itemDate(item: ClassroomItem) {
 }
 
 /**
+ * DEAD as of 2026-08-03 — no runtime caller. `useAssignedTodoFeed` is now the
+ * single source for "what is assigned to me"; this builder read only
+ * classroom_items + homework + TA, so it could never see guided drills or
+ * activity assignments, which is what left the two feeds disjoint. Kept for
+ * now rather than deleted; remove once nothing references it.
+ *
  * Classroom items are the preferred representation. Source assignments fill
  * gaps, keyed by the complete source pair so ids from unrelated tables cannot
  * collide.

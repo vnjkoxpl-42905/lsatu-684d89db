@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { format, startOfDay, isBefore, addDays } from 'date-fns';
 import {
   CheckCircle2, Circle, Trash2, Plus, CalendarClock,
@@ -13,7 +13,11 @@ import {
 import { cn } from '@/lib/utils';
 import { useStudentTodo, type TodoItem } from '@/hooks/useStudentTodo';
 import { readTodoAction, resolveTodoRoute } from '@/lib/todoActions';
-import { useAssignedTodoFeed, type AssignedTodoRow } from '@/hooks/useAssignedTodoFeed';
+import {
+  useAssignedTodoFeed,
+  routeWithReturnTo,
+  type AssignedTodoRow,
+} from '@/hooks/useAssignedTodoFeed';
 
 const KIND_LABEL: Record<string, string> = {
   drill: 'Drill',
@@ -182,6 +186,8 @@ const KIND_ICON: Record<AssignedTodoRow['kind'], string> = {
   ta: 'From Joshua',
   activity: 'Activity',
   guided: 'Guided drill',
+  bootcamp: 'Bootcamp',
+  plan: 'Weekly plan',
 };
 
 const STATUS_LABEL: Record<AssignedTodoRow['status'], string> = {
@@ -224,6 +230,7 @@ function AssignedRow({ row, onOpen }: { row: AssignedTodoRow; onOpen: (r: Assign
 
 export default function TodayAgenda() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { items, loading, toggleComplete, moveToDay, addTask, deleteTask } = useStudentTodo();
   const { rows: assigned, loading: assignedLoading } = useAssignedTodoFeed();
   const today = startOfDay(new Date());
@@ -234,7 +241,9 @@ export default function TodayAgenda() {
     if (route) navigate(route);
   };
 
-  const openAssigned = (r: AssignedTodoRow) => navigate(r.route);
+  // Finishing a guided drill returns to whichever surface launched it.
+  const openAssigned = (r: AssignedTodoRow) =>
+    navigate(routeWithReturnTo(r.route, pathname));
 
   const overdue = items.filter((i) => isOverdue(i, today));
   const todays = items.filter(

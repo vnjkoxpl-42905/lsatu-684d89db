@@ -11,7 +11,15 @@
 
 import { localDayISO, parseLocalDay } from "@/lib/localDate";
 
-export type HomeKind = "activity" | "guided" | "homework" | "ta" | "recap" | "note";
+export type HomeKind =
+  | "activity"
+  | "guided"
+  | "homework"
+  | "ta"
+  | "bootcamp"
+  | "plan"
+  | "recap"
+  | "note";
 
 /** Which of the three status dots a row carries. */
 export type HomeTone = "activity" | "drill" | "recap";
@@ -192,6 +200,8 @@ export const KIND_LABEL: Record<HomeKind, string> = {
   guided: "Guided drill",
   homework: "Homework",
   ta: "From Joshua",
+  bootcamp: "Bootcamp",
+  plan: "Weekly plan",
   recap: "Recap",
   note: "Note",
 };
@@ -201,6 +211,8 @@ export const KIND_TONE: Record<HomeKind, HomeTone> = {
   guided: "drill",
   homework: "drill",
   ta: "activity",
+  bootcamp: "drill",
+  plan: "activity",
   recap: "recap",
   note: "recap",
 };
@@ -210,6 +222,8 @@ const PRIMARY_LABEL: Record<HomeKind, { start: string; resume: string }> = {
   guided: { start: "Start the drill", resume: "Pick it back up" },
   homework: { start: "Open the set", resume: "Pick it back up" },
   ta: { start: "Open the assignment", resume: "Pick it back up" },
+  bootcamp: { start: "Open the bootcamp", resume: "Pick it back up" },
+  plan: { start: "Open the plan", resume: "Pick it back up" },
   recap: { start: "Read it", resume: "Read it" },
   note: { start: "Read it", resume: "Read it" },
 };
