@@ -1,0 +1,341 @@
+/*
+ * The Specimen Lab: Vocab Rehab's world.
+ *
+ * Deliberately the opposite of the Switchyard. The yard is a night field with
+ * lit signals; the lab is a bright bench under working light, closer to the
+ * Activity Centre's own paper surface than any other world will be. Two worlds
+ * that both went dark would read as one world with two layouts, and the whole
+ * premise is that the room changes.
+ *
+ * Everything is bone, glass and graphite. No accent hue carries meaning except
+ * the module's emerald, which marks what the student earned.
+ */
+
+.specimen-lab {
+  --sl-bench: 40 24% 94%;
+  --sl-bench-deep: 38 20% 89%;
+  --sl-paper: 42 50% 98%;
+  --sl-ink: 30 12% 16%;
+  --sl-ink-dim: 32 8% 44%;
+  --sl-edge: 36 16% 78%;
+  --sl-glass: 190 22% 88%;
+  --sl-earned: 160 84% 32%;
+
+  position: relative;
+  background:
+    radial-gradient(90% 60% at 50% 0%, hsl(var(--sl-paper)), transparent 70%),
+    hsl(var(--sl-bench));
+  color: hsl(var(--sl-ink));
+  overflow: hidden;
+}
+
+.specimen-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- The vitrine ---------- */
+
+.sl-vitrine-scene {
+  perspective: 1000px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 18px 0 8px;
+}
+
+/*
+ * A glass case rather than a rendered solid. The refraction the spec asks for
+ * is suggested with a backdrop blur and two highlight edges: at this size a
+ * WebGL case would cost a dependency and a fallback and read almost the same.
+ */
+.sl-vitrine {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  max-width: 100%;
+  min-height: 132px;
+  padding: 28px 32px;
+  transform-style: preserve-3d;
+  border: 1px solid hsl(var(--sl-glass));
+  background: linear-gradient(
+    145deg,
+    hsl(var(--sl-paper) / 0.9),
+    hsl(var(--sl-glass) / 0.35)
+  );
+  backdrop-filter: blur(2px);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.9),
+    inset 0 -1px 0 hsl(var(--sl-glass) / 0.8),
+    0 18px 34px hsl(30 12% 40% / 0.16);
+}
+
+/* The specular streak that sells it as glass while it turns. */
+.sl-vitrine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    hsl(0 0% 100% / 0.55) 44%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+
+.sl-specimen {
+  font-style: italic;
+  text-align: center;
+  color: hsl(var(--sl-ink));
+  /* Keeps the word legible through the back half of the turn. */
+  backface-visibility: visible;
+}
+
+/* ---------- The label plate ---------- */
+
+.sl-plate {
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-bench-deep));
+  transition: border-color 400ms ease, background-color 400ms ease;
+}
+
+.sl-plate[data-engraved="true"] {
+  border-color: hsl(var(--sl-earned) / 0.5);
+  background: hsl(var(--sl-paper));
+  box-shadow: inset 0 1px 2px hsl(30 12% 40% / 0.12);
+}
+
+/* ---------- The field note ---------- */
+
+.sl-fieldnote {
+  background: hsl(var(--sl-paper));
+  border: 1px solid hsl(var(--sl-edge));
+  box-shadow: 0 10px 26px hsl(30 12% 40% / 0.1);
+}
+
+/* The collected word, marked as the bank authored it. */
+.sl-target {
+  font-style: italic;
+  font-weight: 600;
+  padding: 0 2px;
+  border-bottom: 1px solid hsl(var(--sl-ink) / 0.35);
+}
+
+/* Wording the student actually cited, picked out only after the reading. */
+.sl-cited {
+  background: hsl(var(--sl-earned) / 0.14);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+  box-shadow: inset 0 -1px 0 hsl(var(--sl-earned) / 0.45);
+}
+
+/* ---------- Instruments ---------- */
+
+.sl-instrument {
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-bench-deep) / 0.7);
+  opacity: 0.55;
+  transition: opacity 420ms ease, border-color 420ms ease, background-color 420ms ease;
+}
+
+.sl-instrument[data-lit="true"] {
+  opacity: 1;
+  border-color: hsl(var(--sl-earned) / 0.45);
+  background: hsl(var(--sl-paper));
+}
+
+/* The charge gauge: three notches, the called one struck. */
+.sl-gauge {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 22px;
+}
+
+.sl-gauge-notch {
+  flex: 1;
+  height: 8px;
+  border-radius: 2px;
+  background: hsl(var(--sl-edge));
+  transition: height 320ms cubic-bezier(0.22, 1, 0.36, 1), background-color 320ms ease;
+}
+
+.sl-gauge-notch[data-active="true"] {
+  height: 22px;
+  background: hsl(var(--sl-earned));
+}
+
+/* The contrast detector: twin brackets that clamp when lit. */
+.sl-brackets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  height: 22px;
+}
+
+.sl-brackets span {
+  width: 9px;
+  height: 18px;
+  border: 1px solid hsl(var(--sl-edge));
+  transition: transform 320ms cubic-bezier(0.7, 0, 0.18, 1), border-color 320ms ease;
+}
+
+.sl-brackets span:first-child {
+  border-right: 0;
+}
+
+.sl-brackets span:last-child {
+  border-left: 0;
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span {
+  border-color: hsl(var(--sl-earned));
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span:first-child {
+  transform: translateX(9px);
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span:last-child {
+  transform: translateX(-9px);
+}
+
+/* The relation lens: a ring that closes on what it circles. */
+.sl-lens {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--sl-edge));
+  transition: border-color 320ms ease, box-shadow 320ms ease, transform 320ms ease;
+}
+
+.sl-instrument[data-lit="true"] .sl-lens {
+  border-color: hsl(var(--sl-earned));
+  transform: scale(0.86);
+  box-shadow: 0 0 0 3px hsl(var(--sl-earned) / 0.14);
+}
+
+/* ---------- The precision boundary ---------- */
+
+.sl-boundary {
+  width: 100%;
+  border: 1px dashed hsl(var(--sl-edge));
+  background: transparent;
+  /* The etched line the near-miss sits outside of. */
+  border-top: 1px solid hsl(var(--sl-ink) / 0.4);
+}
+
+.sl-trap {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  opacity: 0.75;
+}
+
+/* ---------- The specimen drawer ---------- */
+
+.sl-slide {
+  width: 12px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-paper));
+}
+
+.sl-slide[data-outcome="correct"] {
+  background: hsl(var(--sl-earned) / 0.8);
+  border-color: hsl(var(--sl-earned));
+}
+
+.sl-slide[data-outcome="partial"] {
+  background: linear-gradient(
+    to top,
+    hsl(var(--sl-earned) / 0.75) 50%,
+    hsl(var(--sl-paper)) 50%
+  );
+  border-color: hsl(var(--sl-earned) / 0.6);
+}
+
+.sl-slide[data-outcome="incorrect"] {
+  background: hsl(var(--sl-bench-deep));
+}
+
+.sl-slide[data-current="true"] {
+  box-shadow: 0 0 0 2px hsl(var(--sl-ink) / 0.5);
+}
+
+/* ---------- Entrance ---------- */
+
+/* The bench lights coming up, one lamp at a time. */
+@keyframes sl-lamp-on {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sl-lamp {
+  animation: sl-lamp-on 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The first vitrine descending to the bench. */
+@keyframes sl-descend {
+  from {
+    opacity: 0;
+    transform: translateY(-46px) rotateY(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateY(180deg);
+  }
+}
+
+.sl-entrance-vitrine {
+  animation: sl-descend 1200ms cubic-bezier(0.22, 1, 0.36, 1) 620ms both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-lab *,
+  .specimen-lab *::before,
+  .specimen-lab *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The vitrine's turn is ambience, not information. Stop it outright rather
+     than spinning it at 1ms, which would strobe. */
+  .sl-vitrine {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .sl-lamp,
+  .sl-entrance-vitrine {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

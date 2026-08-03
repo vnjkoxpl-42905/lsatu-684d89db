@@ -47,7 +47,18 @@ export const PROMPT_SCALE_CLASS: Record<PromptScale, string> = {
 
 const TOKEN = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
 
-/** Inline **strong** and *emphasis* within one paragraph. */
+/**
+ * Inline **strong** and *emphasis* within one paragraph.
+ *
+ * Exported because prompts are not the only authored text carrying these marks:
+ * Vocab Rehab's clue lines mark morphemes (`prefix *a-* = not`) and its
+ * explanations mark the near-miss word. Anything rendering authored text has to
+ * come through here rather than stripping the marks or printing them.
+ */
+export function renderInlineMarks(text: string, keyPrefix = "inline"): ReactNode[] {
+  return renderInline(text, keyPrefix);
+}
+
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
   return text.split(TOKEN).filter(Boolean).map((part, i) => {
     const key = `${keyPrefix}-${i}`;
