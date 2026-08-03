@@ -40,10 +40,15 @@ design-extract-output/
 
 # Playwright MCP / verification artifacts
 .playwright-mcp/
+.playwright-cli/
+output/
 test-results/
 playwright-report/
 audit-*.png
 audit-*.jpeg
+
+# graphify extraction cache (regenerable, PII-derived)
+graphify-out/
 
 .gemini/
 gha-creds-*.json
