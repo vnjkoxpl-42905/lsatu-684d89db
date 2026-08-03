@@ -9,6 +9,8 @@ import {
 } from "framer-motion";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { subscribeNotifications } from "./notificationsBus";
 import { NotificationsList } from "./NotificationsList";
@@ -24,8 +26,18 @@ interface Props {
 export default function NotificationBell({ mouseX, quiet = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
+  const {
+    notifications,
+    unreadCount,
+    markRead,
+    markAllRead,
+    approveSignup,
+    dismissSignup,
+  } = useNotifications();
+  const { is_admin } = useUserPermissions();
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [busySignupId, setBusySignupId] = useState<string | null>(null);
 
   useEffect(() => subscribeNotifications(() => setOpen(true)), []);
 
@@ -46,6 +58,29 @@ export default function NotificationBell({ mouseX, quiet = false }: Props) {
     if (!n.read) void markRead(n.id);
     setOpen(false);
     if (n.link) navigate(n.link);
+  };
+
+  // The popover deliberately stays open: approving one signup should not cost
+  // the admin the rest of the queue.
+  const handleSignupAction = async (n: Notification, approve: boolean) => {
+    setBusySignupId(n.id);
+    const who = (n.body ?? "").split(" just signed up")[0] || "This signup";
+    try {
+      await (approve ? approveSignup(n.id) : dismissSignup(n.id));
+      toast(
+        approve
+          ? { title: "Access granted", description: `${who} can now use the platform.` }
+          : { title: "Signup dismissed", description: `${who} was left without access.` }
+      );
+    } catch (err) {
+      toast({
+        title: approve ? "Could not grant access" : "Could not dismiss",
+        description: err instanceof Error ? err.message : "Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusySignupId(null);
+    }
   };
 
   return (
@@ -94,6 +129,13 @@ export default function NotificationBell({ mouseX, quiet = false }: Props) {
             unreadCount={unreadCount}
             onNotificationClick={(notification) => void handleClick(notification)}
             onMarkAllRead={() => void markAllRead()}
+            onApproveSignup={
+              is_admin ? (n) => void handleSignupAction(n, true) : undefined
+            }
+            onDismissSignup={
+              is_admin ? (n) => void handleSignupAction(n, false) : undefined
+            }
+            busySignupId={busySignupId}
             listClassName="max-h-[360px]"
           />
         </PopoverContent>
