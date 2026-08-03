@@ -613,128 +613,266 @@ const TYPE_SYNONYMS: Record<string, string> = {
   'Paradox': 'Paradox',
   'Resolve the Paradox': 'Paradox',
   'Explain the Discrepancy': 'Paradox',
+  'Resolve Paradox': 'Paradox',
+  'Resolve reconcile or explain': 'Paradox',
+  'Resolve, reconcile, or explain': 'Paradox',
+  'Resolve/Reconcile/Explain': 'Paradox',
+  'Paradox Resolve / explain': 'Paradox',
+  'Paradox Resolve / explain discrepancy': 'Paradox',
+
+  // Longhand and hedged labels used by the older section files, where the
+  // transcriber wrote the family out as prose instead of picking a tag.
+  'Flaw or descriptive weakening': 'Flaw',
+  'Flaw Fill-in': 'Flaw',
+  'Method of reasoning or descriptive': 'Method of Reasoning',
+  'Main conclusion or main point': 'Main Conclusion',
+  'Parallel flawed method of reasoning': 'Parallel Flaw',
+  'Parallel method of reasoning': 'Parallel Reasoning',
+  'Parallel Reasoning: Questionable': 'Parallel Flaw',
+  'Parallel Reasoning: Complete Argument': 'Parallel Reasoning',
+
+  // Role — the bank calls this "argument part" about as often as "role".
+  'Argument Part': 'Role',
+  'Role of Statement': 'Role',
+
+  // Weaken family. "Counter" and "objection" phrasings all describe the same
+  // task: find the answer that damages the argument.
+  'Weaken/Counter': 'Weaken',
+  'Weaken Counter objection': 'Weaken',
+  'Logical Counter': 'Weaken',
+
+  // Strengthen/Explain leads with Strengthen, so it resolves there rather than
+  // to Paradox.
+  'Strengthen/Explain': 'Strengthen',
+
+  // Fill-in-the-blank stems ask what the argument best supports, which is the
+  // same task as Complete the Argument (already mapped to Most Strongly
+  // Supported above).
+  'Fill in the Blank': 'Most Strongly Supported',
+  'Fill-in-the-blank': 'Most Strongly Supported',
+  'Most Strongly Supported Fill-in': 'Most Strongly Supported',
+  'Most Supported Least supported': 'Most Strongly Supported',
+  'Most Supported Least supported / EXCEPT': 'Most Strongly Supported',
+
+  'Inference': 'Must Be True',
+  'Must Be True Fill in the blank': 'Must Be True',
+  'Dispute': 'Agree/Disagree',
+
+  // PSA is the 7Sage name for the principle-as-sufficient-assumption family,
+  // which this taxonomy calls Principle-Strengthen.
+  'Principle-PSA': 'Principle-Strengthen',
+  'PSA - Find the rule': 'Principle-Strengthen',
+  'PSA - Find or complete the application': 'Principle-Strengthen',
+
+  'Principle-Identify': 'Principle-Conform',
+  'Principle Illustrated': 'Principle-Conform',
+  'Inconsistent with Principle': 'Principle-Conform',
+  'Principle Conform Application': 'Principle-Conform',
+  'Principle Application / analogous argument': 'Principle-Conform',
 };
+
+// Case-insensitive index over the canonical types and every synonym above.
+// `questionType` is hand-entered across 158 section files and drifts constantly
+// in case ("Must be true", "Necessary assumption", "Most strongly supported"),
+// so an exact-string lookup dropped hundreds of perfectly good questions into
+// the Unknown bucket. Folding case at lookup time is what stops that.
+const SYNONYM_INDEX: Record<string, string> = (() => {
+  const index: Record<string, string> = {};
+  for (const type of CANONICAL_QTYPES.allTypes) {
+    index[type.toLowerCase()] = type;
+  }
+  for (const [synonym, canonical] of Object.entries(TYPE_SYNONYMS)) {
+    index[synonym.toLowerCase()] = canonical;
+  }
+  return index;
+})();
+
+// Strip a trailing parenthetical tag ("Flaw (Flaw)", "PSA - Find the rule
+// (Principle)") and any trailing EXCEPT marker ("Weaken EXCEPT", "Strengthen
+// (EXCEPT)", "Must be false EXCEPT") so the family underneath can be looked up.
+//
+// Note this files EXCEPT questions under their family: a "Weaken EXCEPT" lands
+// in Weaken. That is right for drill filtering — it is a Weaken-family question
+// and belongs in a Weaken set — but the credited answer is the one that does
+// NOT weaken, so the answer mechanics are inverted relative to the rest of the
+// bucket.
+function stripQTypeDecorations(value: string): string {
+  return value
+    .replace(/\s*\([^)]*\)\s*$/, '')
+    .replace(/[\s/-]*\bexcept\b\s*$/i, '')
+    .trim();
+}
 
 // Infer question type from question stem using regex patterns
 export function inferTypeFromStem(stem: string): string {
   const lower = stem.toLowerCase();
   
-  // Paradox patterns
-  if (lower.includes('explain') && (lower.includes('discrepancy') || lower.includes('paradox') || 
+  // Paradox patterns. The bare "explain + discrepancy" pairing missed the two
+  // commonest real phrasings — "contributes to an explanation of" and "helps to
+  // resolve the apparent discrepancy" — so each is matched directly. These stay
+  // narrow on purpose: "most helps to support the director's explanation" is a
+  // Strengthen question and must not be caught here.
+  if (lower.includes('explain') && (lower.includes('discrepancy') || lower.includes('paradox') ||
       lower.includes('apparent conflict') || lower.includes('seemingly contradictory'))) {
     return 'Paradox';
   }
-  
-  // Weaken patterns
-  if (lower.includes('weaken') || lower.includes('undermines') || lower.includes('casts doubt') ||
-      lower.includes('calls into question')) {
-    return 'Weaken';
-  }
-  
-  // Must Be True / Most Supported / Main Conclusion — checked BEFORE Strengthen
-  // so a "most strongly supported" or "expresses the main conclusion" stem is
-  // not swallowed by the Strengthen includes('supports') check below.
-  if (lower.includes('must be true') || lower.includes('properly inferred')) {
-    return 'Must Be True';
-  }
-  // Match both real MSS phrasings: "most strongly supported by" and "most
-  // strongly supports/support which one of the following".
-  if (/most (strongly )?support(ed|s)?/.test(lower) || lower.includes('most justifies')) {
-    return 'Most Strongly Supported';
-  }
-  if (/main (point|conclusion)/.test(lower) || /expresses the (main )?conclusion/.test(lower)) {
-    return 'Main Conclusion';
+  if (/to an explanation of|help(s)? to explain|account for the|reconcile/.test(lower) ||
+      /resolve the (apparent|discrepancy|paradox|conflict)/.test(lower)) {
+    return 'Paradox';
   }
 
-  // Strengthen patterns
-  if (lower.includes('strengthen') || lower.includes('supports') || lower.includes('justifies')) {
-    return 'Strengthen';
-  }
-
-  // Flaw patterns
-  if (lower.includes('flaw') || lower.includes('error') || lower.includes('vulnerable to criticism')) {
-    return 'Flaw';
-  }
-
-  // Assumption patterns
-  if (lower.includes('assumption') && (lower.includes('requires') || lower.includes('depends'))) {
-    return 'Necessary Assumption';
-  }
-  if (lower.includes('assumption') && lower.includes('if assumed')) {
-    return 'Sufficient Assumption';
-  }
-
-  // Method of Reasoning
-  if (lower.includes('proceeds by') || lower.includes('method') || lower.includes('technique of argumentation')) {
-    return 'Method of Reasoning';
-  }
-  
-  // Role
-  if (lower.includes('role') || /claim.*figures/.test(lower)) {
-    return 'Role';
-  }
-  
-  // Parallel
+  // Parallel, Principle and Agree/Disagree are tested first because each is a
+  // NARROWER case of a broader type below: a Parallel Flaw stem always says
+  // "flaw", a Principle-Strengthen stem always says "support" or "justify", and
+  // a Point at Issue stem often says "supported". Leaving them below the broad
+  // Flaw/Strengthen/Most Strongly Supported checks let those swallow roughly
+  // 330 questions into the wrong bucket.
   if (lower.includes('parallel') && lower.includes('flaw')) {
     return 'Parallel Flaw';
   }
   if (lower.includes('parallel') || lower.includes('most similar') || lower.includes('same pattern')) {
     return 'Parallel Reasoning';
   }
-  
-  // Principle
+
+  if (lower.includes('principle') && (lower.includes('conform') || lower.includes('illustrate') ||
+      lower.includes('underlying'))) {
+    return 'Principle-Conform';
+  }
   if (lower.includes('principle') && (lower.includes('justify') || lower.includes('support'))) {
     return 'Principle-Strengthen';
   }
-  if (lower.includes('principle') && (lower.includes('conform') || lower.includes('illustrate'))) {
+  // "best illustrates which one of the following propositions/generalizations"
+  // is a Principle-Conform stem that never says the word "principle".
+  if (/illustrat\w* which one of the following|generalizations? is most clearly illustrated/.test(lower)) {
     return 'Principle-Conform';
   }
-  
-  // Agree/Disagree
-  if (lower.includes('disagree') || /point.*issue/.test(lower) || lower.includes('dispute')) {
+
+  if (lower.includes('disagree') || /point.*issue/.test(lower) || lower.includes('dispute') ||
+      /committed to (accepting|disagreeing)|agree that|at odds/.test(lower)) {
     return 'Agree/Disagree';
   }
-  
-  // Evaluate
-  if (lower.includes('evaluate') || lower.includes('useful to know')) {
+
+  // Weaken patterns
+  if (lower.includes('weaken') || lower.includes('undermines') || lower.includes('casts doubt') ||
+      lower.includes('call into question') || lower.includes('calls into question')) {
+    return 'Weaken';
+  }
+
+  // Must Be False is checked before Must Be True because its stem contains the
+  // words "could be true".
+  if (/could be true,? except/.test(lower)) {
+    return 'Must Be False';
+  }
+
+  // Must Be True / Most Supported / Main Conclusion — checked BEFORE Strengthen
+  // so a "most strongly supported" or "expresses the main conclusion" stem is
+  // not swallowed by the Strengthen includes('supports') check below.
+  if (lower.includes('must be true') || lower.includes('must also be true') ||
+      lower.includes('properly inferred') || lower.includes('follows logically from')) {
+    return 'Must Be True';
+  }
+  // Match both real MSS phrasings: "most strongly supported by" and "most
+  // strongly supports/support which one of the following".
+  if (/most (strongly )?support(ed|s)?/.test(lower) || lower.includes('most justifies') ||
+      lower.includes('best supported by')) {
+    return 'Most Strongly Supported';
+  }
+  if (/main (point|conclusion)/.test(lower) || /expresses the (main |overall )?conclusion/.test(lower)) {
+    return 'Main Conclusion';
+  }
+
+  // Assumption patterns, checked before Strengthen. The Necessary Assumption
+  // stem the LSAT actually writes is "an assumption REQUIRED by the argument",
+  // so matching only "requires" left roughly fifteen of them unclassified.
+  if (lower.includes('assumption') && /require|depends/.test(lower)) {
+    return 'Necessary Assumption';
+  }
+  // Sufficient Assumption stems name the conclusion, not the word "assumption":
+  // "the conclusion follows logically if which one of the following is assumed".
+  if (/follows logically if|properly drawn if|can be properly drawn/.test(lower) ||
+      (lower.includes('assumption') && lower.includes('if assumed'))) {
+    return 'Sufficient Assumption';
+  }
+  if (lower.includes('assumption')) {
+    return 'Necessary Assumption';
+  }
+
+  // Strengthen patterns
+  if (lower.includes('strengthen') || lower.includes('supports') || lower.includes('justifies') ||
+      /help(s)? to support|help(s)? to justify|argues most strongly for|would support/.test(lower)) {
+    return 'Strengthen';
+  }
+
+  // Flaw patterns
+  if (lower.includes('flaw') || lower.includes('error') ||
+      /vulnerable to (the )?criticism/.test(lower) || /misleading in that/.test(lower)) {
+    return 'Flaw';
+  }
+
+  // Method of Reasoning
+  if (lower.includes('proceeds by') || lower.includes('method') || lower.includes('technique of argumentation') ||
+      /(argument|reasoning) does which one of the following/.test(lower) ||
+      /responds to .* by$/.test(lower) || /counter .*'?s? conclusion by$/.test(lower) ||
+      /is utilized by the argument/.test(lower)) {
+    return 'Method of Reasoning';
+  }
+
+  // Role
+  if (lower.includes('role') || /claim.*figures/.test(lower) ||
+      /figures in the argument/.test(lower) || /the function of .* is to$/.test(lower)) {
+    return 'Role';
+  }
+
+  // Evaluate — "evaluat" so that "evaluating" matches, which "evaluate" did not.
+  if (lower.includes('evaluat') || lower.includes('useful to know')) {
     return 'Evaluate';
+  }
+
+  // Fill-in-the-blank: the argument's last sentence is cut off and the answer
+  // completes it, which is the Most Strongly Supported task.
+  if (/completes the (passage|argument)/.test(lower)) {
+    return 'Most Strongly Supported';
   }
   
   return 'Unknown';
 }
 
-// Robust normalization with synonym mapping and stem inference
-function normalizeQType(raw: string, questionStem?: string): string {
+// Robust normalization with synonym mapping and stem inference.
+// Exported for questionLoader.qtypes.test.ts, which runs it over every
+// `questionType` string in public/data and fails if the Unknown bucket grows.
+export function normalizeQType(raw: string, questionStem?: string): string {
   if (!raw || raw.trim() === '') {
     if (questionStem) return inferTypeFromStem(questionStem);
     return 'Unknown';
   }
   
   const trimmed = raw.trim();
-  
-  // Check if it's already a canonical type
-  if (CANONICAL_QTYPES.allTypes.includes(trimmed)) {
-    return trimmed;
+
+  // Canonical types and synonyms, matched without regard to case.
+  const direct = SYNONYM_INDEX[trimmed.toLowerCase()];
+  if (direct) {
+    return direct;
   }
-  
-  // Check synonym map
-  if (TYPE_SYNONYMS[trimmed]) {
-    return TYPE_SYNONYMS[trimmed];
+
+  // Retry with EXCEPT markers and trailing parenthetical tags removed.
+  const stripped = stripQTypeDecorations(trimmed);
+  if (stripped && stripped !== trimmed) {
+    const undecorated = SYNONYM_INDEX[stripped.toLowerCase()];
+    if (undecorated) {
+      return undecorated;
+    }
   }
-  
-  // Check if it looks like corrupted data (starts with article, contains speaker tags, or is a sentence fragment)
-  const isCorrupted = /^(A |An |The |Advertisement|[A-Z][a-z]+ (said|argued|claims))/.test(trimmed) ||
-                      trimmed.length > 50 ||
-                      /\s{2,}/.test(trimmed);
-  
-  if (isCorrupted && questionStem) {
+
+  // Nothing in the taxonomy matched. The stem is a better signal than a label
+  // the bank never agreed on — a bare "Except", a "Miscellaneous", or a
+  // sentence fragment that leaked in from the passage.
+  if (questionStem) {
     const inferred = inferTypeFromStem(questionStem);
     if (inferred !== 'Unknown') {
       return inferred;
     }
   }
-  
-  // Last resort: return as-is and log
+
   console.warn(`Unknown question type encountered: "${trimmed}"`);
   return 'Unknown';
 }
