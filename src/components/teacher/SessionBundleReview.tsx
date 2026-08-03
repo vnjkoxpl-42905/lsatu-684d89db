@@ -66,6 +66,13 @@ export default function SessionBundleReview({ draft }: { draft: AITADraft }) {
     setBundle((b) => (b ? patchPart(b, key, patch) : b));
   }
 
+  // Apply a patch and persist it in one step, so a field that only commits on
+  // blur (the homework list) never saves a stale copy of itself.
+  async function patchAndSave(key: PartKey, patch: Partial<BundlePart>) {
+    if (!bundle) return;
+    await persist(patchPart(bundle, key, patch));
+  }
+
   async function toggleApprove(key: PartKey) {
     if (!bundle) return;
     const current = bundle.parts[key];
@@ -166,12 +173,13 @@ export default function SessionBundleReview({ draft }: { draft: AITADraft }) {
         <div className="space-y-2.5">
           {parts.map((key) => (
             <PartCard
-              key={key}
+              key={`${draft.id}:${key}`}
               partKey={key}
               part={bundle.parts[key] as BundlePart}
               locked={isPosted}
               saving={update.isPending}
               onPatchLocal={(patch) => patchLocal(key, patch)}
+              onSavePatch={(patch) => patchAndSave(key, patch)}
               onSaveBody={() => bundle && persist(bundle)}
               onToggleApprove={() => toggleApprove(key)}
               onPublishOne={() => handlePublish([key])}
@@ -190,6 +198,7 @@ function PartCard({
   locked,
   saving,
   onPatchLocal,
+  onSavePatch,
   onSaveBody,
   onToggleApprove,
   onPublishOne,
@@ -200,6 +209,7 @@ function PartCard({
   locked: boolean;
   saving: boolean;
   onPatchLocal: (patch: Partial<BundlePart>) => void;
+  onSavePatch: (patch: Partial<BundlePart>) => void;
   onSaveBody: () => void;
   onToggleApprove: () => void;
   onPublishOne: () => void;
@@ -254,10 +264,46 @@ function PartCard({
 
       {open && (
         <div className="border-t border-zinc-800 px-3 py-3">
-          <PartBody partKey={partKey} part={part} editable={editable} onPatchLocal={onPatchLocal} onSaveBody={onSaveBody} />
+          <PartBody
+            partKey={partKey}
+            part={part}
+            editable={editable}
+            onPatchLocal={onPatchLocal}
+            onSavePatch={onSavePatch}
+            onSaveBody={onSaveBody}
+          />
         </div>
       )}
     </div>
+  );
+}
+
+// The homework list is one task per line. Splitting on every keystroke ate the
+// newline the moment it was typed, so the raw text is held locally and only
+// split into items when the field loses focus. The editor is remounted (via a
+// key that includes the draft id) when a different bundle is reviewed, which is
+// the only time the incoming items should overwrite what is being typed.
+function HomeworkItemsEditor({
+  items,
+  editable,
+  onSaveItems,
+}: {
+  items: string[];
+  editable: boolean;
+  onSaveItems: (items: string[]) => void;
+}) {
+  const [raw, setRaw] = React.useState(() => items.join('\n'));
+
+  return (
+    <textarea
+      value={raw}
+      disabled={!editable}
+      onChange={(e) => setRaw(e.target.value)}
+      onBlur={() => onSaveItems(raw.split('\n').filter((l) => l.trim()))}
+      rows={Math.max(3, raw.split('\n').length)}
+      placeholder="One task per line"
+      className="w-full resize-y rounded-md border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 text-sm text-zinc-100 outline-none focus:border-zinc-500 disabled:opacity-60"
+    />
   );
 }
 
@@ -266,12 +312,14 @@ function PartBody({
   part,
   editable,
   onPatchLocal,
+  onSavePatch,
   onSaveBody,
 }: {
   partKey: PartKey;
   part: BundlePart;
   editable: boolean;
   onPatchLocal: (patch: Partial<BundlePart>) => void;
+  onSavePatch: (patch: Partial<BundlePart>) => void;
   onSaveBody: () => void;
 }) {
   // Body-markdown parts: session_note, next_agenda, private_note.
@@ -313,15 +361,7 @@ function PartBody({
           placeholder="Title"
           className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 text-sm text-zinc-100 outline-none focus:border-zinc-500 disabled:opacity-60"
         />
-        <textarea
-          value={items.join('\n')}
-          disabled={!editable}
-          onChange={(e) => onPatchLocal({ items: e.target.value.split('\n').filter((l) => l.trim()) })}
-          onBlur={onSaveBody}
-          rows={Math.max(3, items.length)}
-          placeholder="One task per line"
-          className="w-full resize-y rounded-md border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 text-sm text-zinc-100 outline-none focus:border-zinc-500 disabled:opacity-60"
-        />
+        <HomeworkItemsEditor items={items} editable={editable} onSaveItems={(next) => onSavePatch({ items: next })} />
       </div>
     );
   }
