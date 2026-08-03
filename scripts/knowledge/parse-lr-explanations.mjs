@@ -202,12 +202,47 @@ export function parseExplanationFile(text, fileName) {
     const subs = splitSubsections(body);
     const stimulus = subs.find((s) => s.heading === 'Stimulus');
     const prompt = subs.find((s) => s.heading === 'Prompt');
+    const styleSections = subs.filter((s) => STYLE_HEADINGS.has(s.heading));
+    const stated = CORRECT_ANSWER_RE.exec(body);
+
+    // Video-only questions. LSAT Lab publishes no written explanation for
+    // these, so the corpus records the correct letter and a note and nothing
+    // else — there is no stimulus, prompt, or choice text in the source to
+    // transcribe. Carry them as real questions with a known answer and
+    // is_explained false rather than dropping them: a question that exists
+    // with no explanation is truer than a question that does not exist.
+    //
+    // Gated on the whole empty signature (no stimulus AND no prompt AND no
+    // style section) plus an explicit correct answer, so a partially
+    // malformed question — a stimulus but no prompt, say — still surfaces as
+    // a skip instead of being silently downgraded to a stub.
+    if (!stimulus && !prompt && !styleSections.length) {
+      if (!stated) {
+        skipped.push({ id: qid, reason: 'no question content and no "**Correct answer:**" line' });
+        continue;
+      }
+      questions.push({
+        preptest,
+        section,
+        questionNumber,
+        qid,
+        questionType,
+        stimulus: null,
+        prompt: null,
+        sourceNote,
+        isExplained: false,
+        correctChoice: stated[1],
+        choices: [],
+        explanations: [],
+      });
+      continue;
+    }
+
     if (!stimulus || !prompt) {
       skipped.push({ id: qid, reason: 'missing Stimulus or Prompt section' });
       continue;
     }
 
-    const styleSections = subs.filter((s) => STYLE_HEADINGS.has(s.heading));
     if (!styleSections.length) {
       skipped.push({ id: qid, reason: 'no recognised answer-choice / explanation section' });
       continue;
@@ -226,7 +261,6 @@ export function parseExplanationFile(text, fileName) {
     // some correct choices carry no tag, others carry a descriptive one
     // ("Conclusion", "Weakens"). Only when the line is absent (older corpus
     // files) do we fall back to a tag reading "Correct".
-    const stated = CORRECT_ANSWER_RE.exec(body);
     let correctChoice = null;
     if (stated) {
       correctChoice = stated[1];
