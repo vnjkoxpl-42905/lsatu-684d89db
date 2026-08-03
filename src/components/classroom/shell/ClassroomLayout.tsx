@@ -289,15 +289,23 @@ function ClassroomSidebar({
           {permissions.is_admin ? (
             <div className="classroom-nav-group">
               <b>Teaching</b>
-              {/* One door into the workspace. References and the whiteboard are
-                  rooms inside it now, so linking them here would be a second
-                  navigation competing with the shell's own. */}
               <button
                 type="button"
                 className="classroom-nav"
                 onClick={() => go("/teacher/today")}
               >
                 Teacher Workspace
+              </button>
+              <button
+                type="button"
+                className={`classroom-nav${
+                  location.pathname.startsWith("/teacher/whiteboard")
+                    ? " classroom-nav-active-white"
+                    : ""
+                }`}
+                onClick={() => go("/teacher/whiteboard")}
+              >
+                Whiteboard
               </button>
             </div>
           ) : null}

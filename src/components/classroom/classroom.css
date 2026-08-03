@@ -264,6 +264,13 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   color: var(--classroom-active-ink);
 }
 
+/* Whiteboard rail button: white pill instead of the rail's usual dark
+   active fill, so it doesn't read as another dark nav item. */
+.classroom-root .classroom-nav-active-white {
+  background: #ffffff;
+  color: var(--classroom-ink);
+}
+
 /* Unread count on a rail item. Sits where the `em` chevron sits on the section
    rows, so nav labels stay on one baseline whether an item is counted or not. */
 .classroom-root .classroom-nav-badge {
