@@ -111,16 +111,27 @@ function parseBreakdown(lines) {
       continue;
     }
     if (/^\*\*Answer choices\*\*\s*$/.test(line)) break;
-    if (!inBreakdown) continue;
     const m = STEP_RE.exec(line);
-    if (m) {
+    if (m && (inBreakdown || true)) {
+      inBreakdown = true;
       steps.push({ label: m[1].trim(), text: m[2].trim() });
-    } else if (line.trim() && steps.length) {
-      // continuation line of the previous step
-      steps[steps.length - 1].text += `\n${line}`;
+      continue;
+    }
+    // Alternate authored shape: the label is its own bold line, with the step
+    // text in the paragraph(s) below it (e.g. "**Given that ...**").
+    const h = /^\*\*(.+?)\*\*\s*$/.exec(line);
+    if (h) {
+      inBreakdown = true;
+      steps.push({ label: h[1].replace(/\s*\.\.\.\s*$/, '').trim(), text: '' });
+      continue;
+    }
+    if (!inBreakdown) continue;
+    if (line.trim() && steps.length) {
+      const prev = steps[steps.length - 1];
+      prev.text = prev.text ? `${prev.text}\n${line}` : line;
     }
   }
-  return steps;
+  return steps.filter((s) => s.text.trim());
 }
 
 /** Parse one PT<NNN>-explanations.md file. */
