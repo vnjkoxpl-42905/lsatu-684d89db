@@ -222,7 +222,12 @@ if (process.env.DRY_RUN === '1') {
   process.exit(0);
 }
 
-const out = execFileSync('psql', ['-v', 'ON_ERROR_STOP=1', '-f', sqlPath], { encoding: 'utf8' });
+// Connect via DATABASE_URL when it is set, so a single env var is enough.
+// Without it psql falls back to the standard PGHOST/PGUSER/... variables,
+// which is how this ran previously.
+const dbUrl = process.env.DATABASE_URL;
+const psqlArgs = ['-v', 'ON_ERROR_STOP=1', '-f', sqlPath];
+const out = execFileSync('psql', dbUrl ? [dbUrl, ...psqlArgs] : psqlArgs, { encoding: 'utf8' });
 console.log(out);
 
 fs.mkdirSync(path.resolve('scripts/out'), { recursive: true });
