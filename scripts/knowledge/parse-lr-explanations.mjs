@@ -20,6 +20,9 @@
 
 const QUESTION_SPLIT = /^## (?=S\d+ \u00B7 Q)/m;
 const HEADING_RE = /^S(\d+)\s\u00B7\sQ(\d+)\s\u2014\s(.+)$/;
+// v2 corpus states the correct letter explicitly, straight from LSAT Lab's
+// `correctanswer` field. It is authoritative; the choice tag is not.
+const CORRECT_ANSWER_RE = /^\*\*Correct answer:\*\*\s*([A-E])\s*$/m;
 const CHOICE_RE =
   /^\*\*([A-E])\.\s+([\s\S]*?)\*\*(?:\s+\u2014\s+([\s\S]+?))?\s+\((\d+)% of students\)\s*$/;
 const STEP_RE = /^-\s+\*\*(.+?):\*\*\s*([\s\S]*)$/;
