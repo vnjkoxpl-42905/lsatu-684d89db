@@ -85,6 +85,19 @@ import {
   parseSignal,
   readAnswer,
 } from "@/features/activity-centre/worlds/observatory/observatory";
+import {
+  LoomStage,
+  type LoomPhase,
+  type WovenThread,
+} from "@/features/activity-centre/worlds/loom/LoomStage";
+import { LoomEntrance } from "@/features/activity-centre/worlds/loom/LoomEntrance";
+import { ReverseLoom } from "@/features/activity-centre/worlds/loom/wings/ReverseLoom";
+import { DecodeBench } from "@/features/activity-centre/worlds/loom/wings/DecodeBench";
+import {
+  buildDecodeBench,
+  buildReverseLoom,
+} from "@/features/activity-centre/worlds/loom/wings/rounds";
+import { parseCallback, readThrow } from "@/features/activity-centre/worlds/loom/loom";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -107,6 +120,7 @@ const WORLDS = [
   { key: "atelier", label: "The Argument Atelier" },
   { key: "chamber", label: "The Debate Chamber" },
   { key: "observatory", label: "The Signal Observatory" },
+  { key: "loom", label: "The Loom" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -169,6 +183,7 @@ export default function ActivityLab() {
       {world === "atelier" ? <AtelierPanel /> : null}
       {world === "chamber" ? <ChamberPanel /> : null}
       {world === "observatory" ? <ObservatoryPanel /> : null}
+      {world === "loom" ? <LoomPanel /> : null}
     </div>
   );
 }
@@ -1150,6 +1165,159 @@ function ObservatoryPanel() {
       ) : null}
       {view === "speed" ? <SpeedRound round={speedRound} /> : null}
       {view === "forge" ? <ForgeStatement tasks={forgeTasks} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Loom
+ * ------------------------------------------------------------------ */
+
+const LOOM_VIEWS = ["archive", "entrance", "reverse", "decode"] as const;
+const LOOM_PHASES: LoomPhase[] = ["call", "thrown"];
+
+/** Stand-in answers, so the real reader decides how the thread behaves. */
+const THROWS = [
+  { key: "credited", label: "the credited translation" },
+  { key: "location", label: "a location, no content" },
+  { key: "near-miss", label: "the planted near-miss" },
+  { key: "lost", label: "an unrelated answer" },
+  { key: "none", label: "nothing yet" },
+] as const;
+type ThrowKey = (typeof THROWS)[number]["key"];
+
+function LoomPanel() {
+  const stc = SEED_ACTIVITIES.find((a) => a.slug === "spot-the-callback")!;
+  const [view, setView] = useState<(typeof LOOM_VIEWS)[number]>("archive");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<LoomPhase>("call");
+  const [throwKey, setThrowKey] = useState<ThrowKey>("credited");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const item = stc.items[index];
+  const callback = useMemo(() => parseCallback(item), [item]);
+
+  const response = useMemo(() => {
+    if (!callback || throwKey === "none") return undefined;
+    if (throwKey === "location") return "the thing in the first paragraph about it";
+    if (throwKey === "near-miss") return callback.nearMiss ?? "no idea at all";
+    if (throwKey === "lost") return "something about the weather";
+    return callback.credited;
+  }, [callback, throwKey]);
+
+  const result = useMemo(
+    () => (callback && response ? readThrow(callback, response) : null),
+    [callback, response],
+  );
+
+  // Lab-only fabric: everything before the current item counts as thrown.
+  const woven: WovenThread[] = useMemo(
+    () =>
+      stc.items.slice(0, index + 1).map((it, i) => ({
+        order: it.order,
+        phrase: parseCallback(it)?.phrase ?? "",
+        kind: i < index ? (i % 4 === 2 ? "taut" : "thread") : (result?.kind ?? "thread"),
+      })),
+    [stc.items, index, result],
+  );
+
+  const reverseRound = useMemo(() => buildReverseLoom(stc.items), [stc.items]);
+  const decodeCards = useMemo(() => buildDecodeBench(stc.items), [stc.items]);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={LOOM_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Loom view"
+        />
+
+        {view === "archive" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Passage
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("call");
+                }}
+              >
+                {stc.items.map((it, i) => (
+                  <option key={it.order} value={i}>
+                    {it.order}. {parseCallback(it)?.phrase ?? it.prompt.slice(0, 30)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Throw
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={throwKey}
+                onChange={(e) => setThrowKey(e.target.value as ThrowKey)}
+              >
+                {THROWS.map((t) => (
+                  <option key={t.key} value={t.key}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              thread: <code>{result?.kind ?? "none"}</code> · lands:{" "}
+              <code>{callback?.landing ? "yes" : "no"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs options={LOOM_PHASES} value={phase} onChange={(v) => setPhase(v)} label="Loom" />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "archive" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            {callback ? (
+              <LoomStage
+                callback={callback}
+                phase={phase}
+                result={result}
+                woven={woven}
+              />
+            ) : (
+              <div className="p-10 text-sm text-muted-foreground">
+                This item has no marked phrase, so there is no callback to weave.
+              </div>
+            )}
+          </div>
+          <SignalBox
+            title="Weaver's log"
+            level={item.category}
+            rows={[
+              ["Topic", callback?.topic ?? "none"],
+              ["Lands on", callback?.landing?.text.slice(0, 60) ?? "nothing"],
+              ["Near-miss", callback?.nearMiss ?? "none planted"],
+            ]}
+            note={item.explanation}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <LoomEntrance key={entranceRun} onDone={() => setView("archive")} />
+      ) : null}
+      {view === "reverse" ? <ReverseLoom round={reverseRound} /> : null}
+      {view === "decode" ? <DecodeBench cards={decodeCards} /> : null}
     </>
   );
 }
