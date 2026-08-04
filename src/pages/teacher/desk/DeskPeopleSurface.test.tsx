@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import { DeskPeopleSurface } from './DeskPeopleSurface';
 
 const { invokeMock, getSessionMock } = vi.hoisted(() => ({
@@ -61,10 +62,14 @@ vi.mock('sonner', () => ({
 
 function renderPeople() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+  // Roster names are links into the student dossier (T3.2), so the surface needs
+  // a router in scope.
   return render(
-    <QueryClientProvider client={queryClient}>
-      <DeskPeopleSurface />
-    </QueryClientProvider>,
+    <MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <DeskPeopleSurface />
+      </QueryClientProvider>
+    </MemoryRouter>,
   );
 }
 

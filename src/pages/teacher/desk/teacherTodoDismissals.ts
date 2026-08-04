@@ -69,8 +69,9 @@ export function useDismissTeacherTodo() {
       if (error) throw error;
     },
     onSuccess: () => {
+      // Dismissals are the queue's only own query; the queue itself is derived,
+      // so this one key is what makes the item disappear.
       qc.invalidateQueries({ queryKey: teacherTodoDismissalsQueryKey(user?.id) });
-      qc.invalidateQueries({ queryKey: ['teacher-todo-queue'] });
     },
   });
 }

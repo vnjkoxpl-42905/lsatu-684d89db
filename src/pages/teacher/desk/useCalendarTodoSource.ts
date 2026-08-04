@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { useGoogleCalendarBackgroundSync, useUpcomingScheduleEvents, type ScheduleEventRow } from './scheduleEvents';
+import { todoScore } from './teacherTodoScore';
 import type { CalendarTodoItem } from './teacherTodoTypes';
 
 function calendarTiming(startAt: string) {
@@ -12,7 +13,6 @@ function calendarTiming(startAt: string) {
 }
 
 export function scheduleEventToTodo(event: ScheduleEventRow): CalendarTodoItem {
-  const start = Date.parse(event.start_at);
   return {
     id: `calendar:${event.id}`,
     sourceKind: 'calendar',
@@ -24,7 +24,9 @@ export function scheduleEventToTodo(event: ScheduleEventRow): CalendarTodoItem {
     title: event.title,
     preview: event.description || event.location || 'Upcoming calendar session.',
     timing: calendarTiming(event.start_at),
-    sortScore: 2_000 + Math.max(0, 2_000_000_000 - start / 1_000_000),
+    // A session inside the imminent window jumps the whole queue; otherwise a
+    // calendar entry sits below work and email, ordered by how soon it starts.
+    sortScore: todoScore({ band: 'calendar', timestamp: event.start_at, imminentAt: event.start_at }),
     startAt: event.start_at,
     endAt: event.end_at,
     location: event.location,

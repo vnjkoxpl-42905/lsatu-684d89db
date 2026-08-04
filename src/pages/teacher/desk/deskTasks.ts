@@ -15,6 +15,7 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import type { ExternalWorkUpload } from '@/hooks/useExternalWorkUploads';
 import type { HubStudentRow } from '@/hooks/useHubStudents';
 import type { Conversation } from '@/hooks/useInbox';
+import { todoScore } from './teacherTodoScore';
 import type { DeskTaskTodoItem } from './teacherTodoTypes';
 
 export type DeskMode = 'reply' | 'review' | 'assign';
@@ -37,6 +38,13 @@ export interface DeskTask {
   studentName?: string;
   suggested?: boolean;
   priority: number;
+  /**
+   * When the thing behind this task happened, or is due to happen. Feeds the
+   * queue's shared recency term (teacherTodoScore); `priority` still orders the
+   * older mode-scoped rails. Absent when the task has no moment of its own —
+   * an assignment-gap suggestion is true until acted on, not "recent".
+   */
+  occurredAt?: string | null;
   primaryActionLabel: string;
   secondaryActionLabel: string;
   openPath: string;
@@ -196,6 +204,7 @@ export function conversationToReplyTask(conversation: Conversation): DeskTask {
     studentId: studentParticipant?.user_id,
     studentName: name,
     priority: 100 + Date.parse(lastMessage?.created_at ?? conversation.last_message_at) / 10_000_000_000,
+    occurredAt: lastMessage?.created_at ?? conversation.last_message_at,
     primaryActionLabel: 'Send reply',
     secondaryActionLabel: 'Open conversation',
     openPath: '/teacher/conversations',
@@ -222,6 +231,7 @@ export function draftToReviewTask(draft: AITADraft, student?: HubStudentRow): De
     studentName: name,
     suggested: true,
     priority: 92 + Date.parse(draft.created_at) / 10_000_000_000,
+    occurredAt: draft.created_at,
     primaryActionLabel: label.includes('recap') ? 'Approve recap' : 'Approve draft',
     secondaryActionLabel: 'Open drafts',
     openPath: '/teacher/command?tab=drafts',
@@ -246,6 +256,7 @@ export function uploadToReviewTask(upload: ExternalWorkUpload, student?: HubStud
     studentId: upload.student_id,
     studentName: name,
     priority: 85 + Date.parse(upload.created_at) / 10_000_000_000,
+    occurredAt: upload.created_at,
     primaryActionLabel: 'Mark reviewed',
     secondaryActionLabel: 'Open uploads',
     openPath: '/teacher/library/uploads',
@@ -280,6 +291,7 @@ export function classroomItemToScheduleTask(item: ClassroomItem, student?: HubSt
     studentId: item.student_id,
     studentName: name,
     priority: 82 + Math.max(0, SCHEDULE_LOOKAHEAD_DAYS - daysUntil),
+    occurredAt: when,
     primaryActionLabel: 'Open schedule',
     secondaryActionLabel: 'Open student',
     openPath: `/teacher/schedule?student=${encodeURIComponent(item.student_id)}`,
@@ -330,7 +342,7 @@ export function deskTaskToTodoItem(task: DeskTask): DeskTaskTodoItem {
     title: task.title,
     preview: task.reason,
     timing: task.timing,
-    sortScore: 1_000 + task.priority,
+    sortScore: todoScore({ band: 'work', timestamp: task.occurredAt }),
     openPath: task.openPath,
     dismissExpiresAt: null,
   };

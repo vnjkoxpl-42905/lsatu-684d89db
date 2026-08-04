@@ -14,8 +14,9 @@ export function useGmailSend() {
       // message landing in Sent / All Mail).
       const tid = vars.threadId ?? result.threadId;
       if (tid) qc.invalidateQueries({ queryKey: gmailThreadQueryKey(tid) });
+      // Refreshing the threads refreshes the Today queue, which is derived from
+      // them rather than being a query in its own right.
       qc.invalidateQueries({ queryKey: ["gmail", "threads"] });
-      qc.invalidateQueries({ queryKey: ["teacher-todo-queue"] });
       toast.success(vars.threadId ? "Reply sent" : "Message sent");
     },
     onError: (err) => {

@@ -65,4 +65,17 @@ describe('gmailThreadToTodo', () => {
       ),
     ).toBeNull();
   });
+
+  // The filter used to match blocked terms as substrings, so any student whose
+  // address merely contained one vanished from the queue without a trace.
+  it.each([
+    ['a surname containing "updates"', '"Sarah Updegraff" <sarah.updegraff@example.com>'],
+    ['a surname containing "daemon"', '"Marc Daemonte" <mdaemonte@example.com>'],
+    ['a name containing "digest"', '"Ana Digestivo" <ana.digestivo@example.com>'],
+    ['a local part containing "noreply"', '"Nora Eplyn" <noreplyn@example.com>'],
+  ])('still queues a real person with %s', (_label, from) => {
+    expect(
+      gmailThreadToTodo(thread({ id: `thread-${_label}`, from }), 'joshua@example.com'),
+    ).not.toBeNull();
+  });
 });

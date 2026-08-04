@@ -228,7 +228,10 @@ function GmailTodoExpansion({
                 onSuccess: () => {
                   setReplyText('');
                   onDone();
-                  qc.invalidateQueries({ queryKey: ['teacher-todo-queue'] });
+                  // The queue is a useMemo over the source queries, not a query
+                  // of its own — there has never been a ['teacher-todo-queue']
+                  // key to invalidate. Refreshing the source is what refreshes
+                  // the queue.
                   qc.invalidateQueries({ queryKey: ['gmail', 'threads'] });
                 },
               },

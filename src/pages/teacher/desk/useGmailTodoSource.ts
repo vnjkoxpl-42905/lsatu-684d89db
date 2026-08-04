@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { parseAddress } from '@/features/admin-inbox/gmail/api';
 import type { GmailThreadSummary } from '@/features/admin-inbox/gmail/api';
 import { useGmailProfile, useGmailThreads } from '@/features/admin-inbox/gmail/hooks';
+import { todoScore } from './teacherTodoScore';
 import type { GmailTodoItem } from './teacherTodoTypes';
 
 function normalizedEmail(value: string) {
@@ -56,6 +57,23 @@ function domainMatches(domain: string, blockedDomain: string) {
   return domain === blockedDomain || domain.endsWith(`.${blockedDomain}`);
 }
 
+/**
+ * Split an address local part or display name into words. Substring matching
+ * silently dropped real people: `updates` is inside `sarah.updegraff`, `daemon`
+ * inside `daemonte`, `github` inside a surname. A word-boundary match keeps
+ * `no-reply@`, `mailer-daemon@` and `Notifications` out while letting people in.
+ */
+function words(value: string): string[] {
+  return value.split(/[^a-z0-9]+/i).filter(Boolean);
+}
+
+function matchesAnyWord(value: string, blocked: string[]): boolean {
+  const tokens = new Set(words(value));
+  // A blocked term can itself be multi-word ("mailer daemon"), so compare the
+  // whole normalized value too.
+  return blocked.some((term) => value === term || words(term).every((t) => tokens.has(t)));
+}
+
 export function isLikelyHumanGmailSender(thread: GmailThreadSummary) {
   const parsed = parseAddress(thread.from || '');
   const email = normalizedEmail(parsed.email);
@@ -65,9 +83,9 @@ export function isLikelyHumanGmailSender(thread: GmailThreadSummary) {
 
   if (!email || !domain) return false;
   if (labelIds.some((label) => automatedCategoryLabels.has(label))) return false;
-  if (automatedLocalParts.some((part) => localPart === part || localPart.includes(part))) return false;
+  if (matchesAnyWord(localPart, automatedLocalParts)) return false;
   if (automatedDomains.some((blockedDomain) => domainMatches(domain, blockedDomain))) return false;
-  if (automatedSenderNames.some((name) => senderName === name || senderName.includes(name))) return false;
+  if (matchesAnyWord(senderName, automatedSenderNames)) return false;
 
   return true;
 }
@@ -99,7 +117,7 @@ export function gmailThreadToTodo(thread: GmailThreadSummary, adminEmail: string
     title: thread.subject || '(no subject)',
     preview: thread.snippet || 'Student email is waiting for a reply.',
     timing: gmailTiming(thread.internalDate),
-    sortScore: 3_000 + Math.max(0, internalDate / 1_000_000_000),
+    sortScore: todoScore({ band: 'email', timestamp: internalDate }),
     from: thread.from,
     fromName: parsed.name || parsed.email,
     fromEmail: parsed.email,
