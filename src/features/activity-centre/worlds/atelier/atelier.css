@@ -1,0 +1,293 @@
+/*
+ * The Argument Atelier: Find the Conclusion's world.
+ *
+ * An architect's studio at night. The Switchyard is a cold rail field, the
+ * Specimen Lab a bright bench, the Press a warm pressroom; the atelier is the
+ * fourth position: deep charcoal with a single warm drafting lamp, so the glass
+ * panes read as sheets on a table rather than as cards on a page.
+ *
+ * The depth is CSS transforms only. No WebGL: the panes are flat glass with a
+ * 12px offset and an edge light, and the struts are SVG.
+ */
+
+.atelier {
+  --at-table: 220 8% 10%;
+  --at-table-deep: 222 10% 6%;
+  --at-grid: 210 12% 26%;
+  --at-ink: 40 12% 92%;
+  --at-ink-dim: 220 8% 58%;
+  --at-glass: 216 10% 16%;
+  --at-edge: 214 10% 34%;
+  --at-lamp: 38 48% 70%;
+
+  position: relative;
+  color: hsl(var(--at-ink));
+  background:
+    /* the drafting lamp, thrown from the upper right */
+    radial-gradient(70% 55% at 78% 6%, hsl(var(--at-lamp) / 0.1), transparent 68%),
+    hsl(var(--at-table-deep));
+  overflow: hidden;
+}
+
+/*
+ * The blueprint grid. 1px lines at 6%, per the spec.
+ *
+ * The lamp gradient is repeated here on purpose. This class sits on the same
+ * element as `.atelier`, so a bare `background-image` would replace the image
+ * layer of that rule's `background` shorthand and switch the drafting lamp off.
+ * The grid is listed last so it sits under the light rather than over it.
+ */
+.atelier-table {
+  position: relative;
+  background-image:
+    radial-gradient(70% 55% at 78% 6%, hsl(var(--at-lamp) / 0.1), transparent 68%),
+    linear-gradient(hsl(var(--at-grid) / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--at-grid) / 0.06) 1px, transparent 1px);
+  background-size: auto, 28px 28px, 28px 28px;
+}
+
+.atelier-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.atelier-type {
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  color: hsl(var(--at-ink));
+}
+
+/* ---------- The panes ---------- */
+
+.at-pane {
+  position: relative;
+  border: 1px solid hsl(var(--at-edge) / 0.7);
+  background: linear-gradient(
+    155deg,
+    hsl(var(--at-glass) / 0.95),
+    hsl(var(--at-table) / 0.85)
+  );
+  /* Glass: a lit top edge and a shadow it casts onto the table. */
+  box-shadow:
+    inset 0 1px 0 hsl(var(--at-ink) / 0.08),
+    0 10px 22px hsl(var(--at-table-deep) / 0.85);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    opacity 220ms ease;
+  will-change: transform;
+}
+
+/* The text is touchable before the build, but nothing about structure shows. */
+.at-pane[data-liftable="true"]:hover {
+  transform: translateY(-6px);
+}
+
+/* The crown: brightest edge-light in the room. */
+.at-pane[data-role="crown"] {
+  border-color: hsl(var(--at-lamp) / 0.75);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--at-lamp) / 0.3),
+    0 0 0 1px hsl(var(--at-lamp) / 0.16),
+    0 14px 30px hsl(var(--at-table-deep));
+}
+
+/* Supports sit under it, plainer. */
+.at-pane[data-role="support"] {
+  opacity: 0.9;
+}
+
+/* The claim the bank names as the wrong turn, once the build has run. */
+.at-pane[data-wrong-turn="true"] {
+  border-style: dashed;
+}
+
+/* Where the student's own answer landed. */
+.at-pane[data-picked="true"]::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  background: hsl(var(--at-ink) / 0.8);
+}
+
+/* ---------- The struts ---------- */
+
+.at-strut {
+  stroke: hsl(var(--at-lamp) / 0.5);
+  stroke-width: 1;
+  fill: none;
+  /* Drawn over 400ms, per the spec. The dash length is set inline from the
+     measured path length so the draw works at any pane spacing. */
+  animation: at-draw 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes at-draw {
+  from {
+    stroke-dashoffset: var(--at-len, 100);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.at-strut-head {
+  fill: hsl(var(--at-lamp) / 0.5);
+}
+
+/* ---------- The unstated crown ---------- */
+
+/*
+ * At Level 5 the conclusion was never on the table. It is staged as a pane the
+ * student had to build rather than find: no fill, drawn edge, so its absence
+ * from the argument is the visible fact.
+ */
+.at-pane[data-role="unstated"] {
+  background: transparent;
+  border-style: dashed;
+  border-color: hsl(var(--at-lamp) / 0.6);
+  box-shadow: none;
+}
+
+/* ---------- The blueprint strip ---------- */
+
+.at-plaque {
+  border: 1px solid hsl(var(--at-edge) / 0.6);
+  color: hsl(var(--at-ink-dim));
+  background: hsl(var(--at-glass) / 0.5);
+}
+
+.at-plaque[data-state="correct"] {
+  border-color: hsl(var(--at-lamp) / 0.7);
+  color: hsl(var(--at-ink));
+}
+
+.at-plaque[data-state="partial"] {
+  border-style: dashed;
+  border-color: hsl(var(--at-lamp) / 0.5);
+  color: hsl(var(--at-ink));
+}
+
+.at-plaque[data-current="true"] {
+  box-shadow: inset 0 -2px 0 hsl(var(--at-lamp) / 0.8);
+}
+
+/* ---------- Indicator small-caps ---------- */
+
+/* Training wheels: on at Levels 1-2, off at 3+, per the locked ladder. */
+.at-indicator {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace
+  );
+  font-size: 0.86em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(var(--at-lamp));
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.at-button {
+  border: 1px solid hsl(var(--at-edge));
+  background: hsl(var(--at-glass));
+  color: hsl(var(--at-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.at-button:hover:not(:disabled) {
+  border-color: hsl(var(--at-ink) / 0.45);
+}
+
+.at-button:disabled {
+  opacity: 0.55;
+}
+
+.at-button[data-picked="true"] {
+  background: hsl(var(--at-table));
+  opacity: 1;
+}
+
+.at-button[data-truth="true"] {
+  border-color: hsl(var(--at-lamp));
+  box-shadow: inset 2px 0 0 hsl(var(--at-lamp));
+  opacity: 1;
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes at-lamp-on {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes at-deal {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.at-entrance-lamp {
+  animation: at-lamp-on 480ms ease both;
+}
+
+.at-entrance-pane {
+  /* Dealt in reading order, staggered 50ms, per the spec. */
+  animation: at-deal 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .atelier *,
+  .atelier *::before,
+  .atelier *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  .at-pane[data-liftable="true"]:hover {
+    transform: none;
+  }
+
+  /* The struts appear already drawn rather than drawing. */
+  .at-strut {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .at-entrance-lamp,
+  .at-entrance-pane {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

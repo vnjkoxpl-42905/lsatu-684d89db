@@ -44,6 +44,19 @@ import {
   buildSlugJudge,
 } from "@/features/activity-centre/worlds/press/wings/rounds";
 import { parsePress, readStroke } from "@/features/activity-centre/worlds/press/press";
+import {
+  AtelierStage,
+  type AtelierPhase,
+  type Plaque,
+} from "@/features/activity-centre/worlds/atelier/AtelierStage";
+import { AtelierEntrance } from "@/features/activity-centre/worlds/atelier/AtelierEntrance";
+import { RoleCall } from "@/features/activity-centre/worlds/atelier/wings/RoleCall";
+import { LightTable } from "@/features/activity-centre/worlds/atelier/wings/LightTable";
+import {
+  buildLightTable,
+  buildRoleCall,
+} from "@/features/activity-centre/worlds/atelier/wings/rounds";
+import { parseArgument, readBuild } from "@/features/activity-centre/worlds/atelier/atelier";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -63,6 +76,7 @@ const WORLDS = [
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
   { key: "press", label: "The Press" },
+  { key: "atelier", label: "The Argument Atelier" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -122,6 +136,7 @@ export default function ActivityLab() {
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
       {world === "press" ? <PressPanel /> : null}
+      {world === "atelier" ? <AtelierPanel /> : null}
     </div>
   );
 }
@@ -623,6 +638,166 @@ function PressPanel() {
       ) : null}
       {view === "census" ? <IdeaCensus pages={census} /> : null}
       {view === "judge" ? <SlugJudge calls={judge} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Argument Atelier
+ * ------------------------------------------------------------------ */
+
+const ATELIER_VIEWS = ["table", "entrance", "role-call", "light-table"] as const;
+const ATELIER_PHASES: AtelierPhase[] = ["table", "built"];
+
+/** Stand-in answers, so the real reader decides where the marker lands. */
+const ANSWERS = [
+  { key: "credited", label: "the credited conclusion" },
+  { key: "premise", label: "a premise" },
+  { key: "vague", label: "a vague answer" },
+  { key: "none", label: "nothing yet" },
+] as const;
+type AnswerKey = (typeof ANSWERS)[number]["key"];
+
+function AtelierPanel() {
+  const ftc = SEED_ACTIVITIES.find((a) => a.slug === "find-the-conclusion")!;
+  const [view, setView] = useState<(typeof ATELIER_VIEWS)[number]>("table");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<AtelierPhase>("table");
+  const [answerKey, setAnswerKey] = useState<AnswerKey>("credited");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const item = ftc.items[index];
+  const argument = useMemo(() => parseArgument(item), [item]);
+
+  const response = useMemo(() => {
+    if (!argument) return undefined;
+    if (answerKey === "none") return undefined;
+    if (answerKey === "vague") return "not sure, something in the middle";
+    if (answerKey === "premise") {
+      const support = argument.claims.find((c) => c.n !== argument.crown);
+      return support?.text ?? argument.conclusion;
+    }
+    return argument.conclusion;
+  }, [argument, answerKey]);
+
+  const build = useMemo(
+    () => (argument ? readBuild(argument, response) : null),
+    [argument, response],
+  );
+
+  // Lab-only sample strip: everything before the current item counts as done.
+  const plaques: Plaque[] = useMemo(
+    () =>
+      ftc.items.map((it, i) => ({
+        order: it.order,
+        outcome: i < index ? (i % 4 === 2 ? "partial" : "correct") : null,
+      })),
+    [ftc.items, index],
+  );
+
+  const roleRound = useMemo(() => buildRoleCall(ftc.items), [ftc.items]);
+  const lightPages = useMemo(() => buildLightTable(ftc.items), [ftc.items]);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={ATELIER_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Atelier view"
+        />
+
+        {view === "table" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Argument
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("table");
+                }}
+              >
+                {ftc.items.map((it, i) => (
+                  <option key={it.order} value={i}>
+                    {it.order}. {it.prompt.slice(0, 44)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Answer
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={answerKey}
+                onChange={(e) => setAnswerKey(e.target.value as AnswerKey)}
+              >
+                {ANSWERS.map((a) => (
+                  <option key={a.key} value={a.key}>
+                    {a.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              crown:{" "}
+              <code>{argument?.crown === null ? "unstated" : String(argument?.crown)}</code> ·
+              placement: <code>{build?.placement ?? "none"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs
+                options={ATELIER_PHASES}
+                value={phase}
+                onChange={(v) => setPhase(v)}
+                label="Atelier"
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "table" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            {argument ? (
+              <AtelierStage
+                argument={argument}
+                phase={phase}
+                build={build}
+                plaques={plaques}
+              />
+            ) : (
+              <div className="p-10 text-sm text-muted-foreground">
+                This item has no credited conclusion, so there is nothing to build.
+              </div>
+            )}
+          </div>
+          <SignalBox
+            title="Drafting notes"
+            level={item.category}
+            rows={[
+              ["Claims", String(argument?.claims.length ?? 0)],
+              ["Conclusion on the table", argument?.crown === null ? "no, unstated" : "yes"],
+              ["Indicator", argument?.indicator ?? "none"],
+            ]}
+            note={item.explanation}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <AtelierEntrance key={entranceRun} onDone={() => setView("table")} />
+      ) : null}
+      {view === "role-call" ? <RoleCall round={roleRound} /> : null}
+      {view === "light-table" ? <LightTable pages={lightPages} /> : null}
     </>
   );
 }
