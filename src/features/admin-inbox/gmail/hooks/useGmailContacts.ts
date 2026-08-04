@@ -26,7 +26,9 @@ export function useGmailContacts(opts?: { enabled?: boolean }) {
     queryFn: () => listRecentContacts(),
     enabled: GMAIL_CONTACTS_ENABLED && (opts?.enabled ?? true),
     staleTime: 60 * 60_000,
-    refetchOnWindowFocus: true,
+    // Pull-driven (spec D5): no Gmail traffic on window focus. Contacts refresh
+    // when the hour-long staleTime lapses and something re-mounts, or on Pull.
+    refetchOnWindowFocus: false,
     // Defensive: even if listRecentContacts ever throws (it shouldn't — it
     // soft-fails to []), don't let it bubble as an unhandled rejection.
     retry: false,

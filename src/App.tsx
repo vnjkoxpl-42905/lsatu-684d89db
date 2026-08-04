@@ -87,9 +87,7 @@ const DeskTodaySurface = React.lazy(() => import("./pages/teacher/shell/DeskToda
 const TeacherDevIndex = React.lazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
 const DeskPeopleSurface = React.lazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
 const DeskLibrarySurface = React.lazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
-const TeacherInbox = React.lazy(() =>
-  import("./components/inbox/AdminInboxCommandCenter").then((m) => ({ default: m.AdminInboxCommandCenter })),
-);
+const TeacherInboxRoom = React.lazy(() => import("./pages/teacher/inbox/TeacherInboxRoom"));
 // TeacherStudentDetail's route is gone — the dossier replaced it and absorbed
 // its session/transcript pipeline into SessionBundleList. The file stays until
 // the Phase 4 purge, but nothing imports it now.
@@ -556,9 +554,13 @@ const App = () => {
                           <React.Suspense fallback={<div />}><DossierSchedule /></React.Suspense>
                         } />
                       </Route>
-                      <Route path="inbox" element={
+                      {/* The unified Inbox (T3.3): platform threads and Gmail in
+                          one pull-driven queue. The splat carries the selected
+                          thread key (`platform:<id>` / `email:<id>`) so opening a
+                          thread is real history without remounting the room. */}
+                      <Route path="inbox/*" element={
                         <React.Suspense fallback={<div />}>
-                          <TeacherInbox embedded />
+                          <TeacherInboxRoom />
                         </React.Suspense>
                       } />
                       {/* Library's tab is a path segment, not a query param, so

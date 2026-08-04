@@ -85,6 +85,11 @@ export function GmailPane() {
   // Folder + category + label navigation ------------------------------------
   const handleFolderChange = useCallback((next: typeof folder) => {
     clearSelection();
+    // A user label overrides the folder in `effectiveLabelIds`, so leaving it set
+    // while picking a system folder listed the label's threads under a highlighted
+    // Sent/Trash — the list and the highlight disagreed. Picking a folder clears
+    // the label; picking a label (below) is what sets it.
+    setUserLabelId(null);
     urlActions.setFolder(next);
   }, [clearSelection, urlActions]);
 

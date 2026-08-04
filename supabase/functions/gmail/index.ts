@@ -544,6 +544,72 @@ Deno.serve(async (req) => {
       return jsonResp({ ok: true, profile: data });
     }
 
+    // ---- HISTORY (the Pull delta, spec D11) ----
+    // Mailbox-wide incremental sync: given the historyId stored at the last pull,
+    // Gmail reports every change since. No labelId constraint, so this covers the
+    // whole mailbox (inbox, sent, archive, user labels) rather than one folder.
+    //
+    // startHistoryId older than the retention window (roughly a week) returns 404.
+    // That is expected, not an error: the caller reseeds from the profile's
+    // current historyId and does a full list instead.
+    if (action === "history") {
+      const startHistoryId: string | undefined = body.startHistoryId;
+      if (!startHistoryId) throw new Error("startHistoryId required");
+
+      const addedThreadIds = new Set<string>();
+      const changedThreadIds = new Set<string>();
+      let latestHistoryId: string | undefined;
+      let pageToken: string | undefined;
+      // Bounded so a long-dormant mailbox can never spin the function forever;
+      // whatever historyId we reach becomes the new cursor, so the remaining
+      // pages are simply picked up by the next pull.
+      const MAX_PAGES = 10;
+
+      for (let page = 0; page < MAX_PAGES; page++) {
+        const params = new URLSearchParams();
+        params.set("startHistoryId", startHistoryId);
+        params.set("maxResults", "500");
+        for (const t of ["messageAdded", "messageDeleted", "labelAdded", "labelRemoved"]) {
+          params.append("historyTypes", t);
+        }
+        if (pageToken) params.set("pageToken", pageToken);
+
+        const { res, data, txt } = await safeFetchJson(
+          `${GATEWAY}/users/me/history?${params.toString()}`,
+          { headers: gHeaders },
+        );
+        if (res.status === 404) {
+          return jsonResp({ ok: true, expired: true, historyId: null, addedThreadIds: [], changedThreadIds: [] });
+        }
+        if (!res.ok) throw new Error(`Gmail history ${res.status}: ${txt.slice(0, 300)}`);
+
+        latestHistoryId = data?.historyId ?? latestHistoryId;
+        for (const h of data?.history ?? []) {
+          for (const added of h.messagesAdded ?? []) {
+            const tid = added?.message?.threadId;
+            if (tid) { addedThreadIds.add(tid); changedThreadIds.add(tid); }
+          }
+          for (const group of ["messagesDeleted", "labelsAdded", "labelsRemoved"] as const) {
+            for (const entry of h[group] ?? []) {
+              const tid = entry?.message?.threadId;
+              if (tid) changedThreadIds.add(tid);
+            }
+          }
+        }
+
+        pageToken = data?.nextPageToken;
+        if (!pageToken) break;
+      }
+
+      return jsonResp({
+        ok: true,
+        expired: false,
+        historyId: latestHistoryId ?? startHistoryId,
+        addedThreadIds: Array.from(addedThreadIds),
+        changedThreadIds: Array.from(changedThreadIds),
+      });
+    }
+
     throw new Error(`Unknown action: ${action}`);
   } catch (e) {
     console.error("gmail error", e);

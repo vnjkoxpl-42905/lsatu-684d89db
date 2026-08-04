@@ -45,9 +45,16 @@ export function useGmailThreads(params: UseGmailThreadsParams) {
         maxResults: params.maxResults ?? 25,
       }),
     enabled: params.enabled ?? true,
-    staleTime: 60_000,
-    refetchOnWindowFocus: true,
-    refetchInterval: () => (document.visibilityState === "visible" ? 60_000 : false),
+    // Pull-driven (spec D5): Gmail is never synced in the background. The list
+    // fetches once when a folder/search/label first needs it, and after that only
+    // the Pull button (useGmailPull) or a modify mutation invalidates it. No
+    // interval, no refetch on focus, no refetch on remount — otherwise merely
+    // leaving the tab open would keep hitting Gmail.
+    staleTime: Infinity,
+    gcTime: 30 * 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
     placeholderData: keepPreviousData,
   });
 }

@@ -8,3 +8,5 @@ export { useGmailSend } from "./useGmailSend";
 export { useGmailProfile, gmailProfileQueryKey } from "./useGmailProfile";
 export type { GmailProfile } from "./useGmailProfile";
 export { useGmailContacts, gmailContactsQueryKey } from "./useGmailContacts";
+export { useGmailPull, gmailPullStorageKey } from "./useGmailPull";
+export type { GmailPullState } from "./useGmailPull";
