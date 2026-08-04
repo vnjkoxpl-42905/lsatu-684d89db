@@ -8,6 +8,14 @@ import {
   type StudentCurriculumOverride,
 } from '@/lib/curriculum';
 import { addLocalDays, parseLocalDay } from '@/lib/localDate';
+import {
+  countDrillSlots,
+  fetchStudentSchedule,
+  STANDARD_WEEK,
+  templateStudyDays,
+  type ScheduleTemplate,
+  type WeekTemplate,
+} from '@/lib/scheduleTemplate';
 import type { StudentLevel } from '@/lib/studentLevel';
 
 /**
@@ -26,67 +34,82 @@ import type { StudentLevel } from '@/lib/studentLevel';
  * classroom and ping them about a plan Joshua has not agreed to yet.
  */
 
-/** Days of the week to place work on. 0 = Sunday, matching Date#getDay. */
-export const DEFAULT_STUDY_DAYS = [1, 2, 3, 4, 5] as const;
+/** One line of a planned day. Only some lines are guided drills. */
+export interface PlannedTask {
+  title: string;
+  estimatedMinutes: number | null;
+  instructions?: string;
+  /** Set only when this task is a drill drawn from the curriculum. */
+  entry?: CurriculumEntry;
+}
 
 export interface PlannedDay {
   /** YYYY-MM-DD, local. */
   dayDate: string;
+  /** The curriculum drills that landed on this day, in order. */
   entries: CurriculumEntry[];
+  tasks: PlannedTask[];
   totalMinutes: number;
 }
 
 /**
- * Spread entries across the study days of a week, in curriculum order.
+ * Lay a weekly schedule over a real week and fill its drill slots in
+ * curriculum order.
  *
- * Fills day by day up to a per-day minute budget rather than round-robining,
- * so a student works consecutive drills on one sitting instead of one drill on
- * each of five days. Order is never reshuffled: the curriculum decided it.
+ * The schedule decides the shape; the curriculum only decides which drill
+ * lands in each priority-drill position. Exactly one drill per skill day —
+ * it is a *priority* drill, singular, and doubling up would turn a skill day
+ * into a session. Surplus curriculum rolls to next week rather than being
+ * crammed in, which is also why order is never disturbed.
  *
  * Pure, so the interesting part is testable without a database or a clock.
  */
 export function planWeekDays(
   entries: CurriculumEntry[],
   input: {
-    /** YYYY-MM-DD for the Monday (or whichever day) the week starts. */
+    /** YYYY-MM-DD for the day the week starts. */
     weekStart: string;
-    /** Local weekday numbers to place work on. Defaults to Mon-Fri. */
+    /** The student's week. Defaults to the built-in standard week. */
+    template?: WeekTemplate;
+    /** Weekday numbers to keep. Defaults to every day the schedule works. */
     studyDays?: readonly number[];
-    /** Soft ceiling per day. The first entry of a day always fits. */
-    minutesPerDay?: number;
   },
 ): PlannedDay[] {
   const start = parseLocalDay(input.weekStart);
   if (!start) throw new Error(`Not a calendar date: ${input.weekStart}`);
 
-  const studyDays = new Set(input.studyDays ?? DEFAULT_STUDY_DAYS);
-  const minutesPerDay = input.minutesPerDay ?? 60;
+  const template = input.template ?? STANDARD_WEEK;
+  const studyDays = new Set(input.studyDays ?? templateStudyDays(template));
 
   const days: PlannedDay[] = [];
   for (let offset = 0; offset < 7; offset++) {
     const dayDate = addLocalDays(offset, start);
     const weekday = parseLocalDay(dayDate)!.getDay();
-    if (studyDays.has(weekday)) days.push({ dayDate, entries: [], totalMinutes: 0 });
+    if (!template[weekday]?.length || !studyDays.has(weekday)) continue;
+    days.push({ dayDate, entries: [], tasks: [], totalMinutes: 0 });
   }
   if (days.length === 0) return [];
 
-  let cursor = 0;
-  for (const entry of entries) {
-    const cost = entry.estimatedMinutes ?? 0;
-    // Move on when this day is full, but never past the end of the week:
-    // the last day absorbs the remainder rather than dropping work silently.
-    while (
-      cursor < days.length - 1 &&
-      days[cursor].entries.length > 0 &&
-      days[cursor].totalMinutes + cost > minutesPerDay
-    ) {
-      cursor++;
+  const queue = [...entries];
+
+  for (const day of days) {
+    const weekday = parseLocalDay(day.dayDate)!.getDay();
+    for (const task of template[weekday]!) {
+      if (!task.drillSlot) {
+        day.tasks.push({ title: task.title, estimatedMinutes: task.minutes });
+        continue;
+      }
+      // An empty queue leaves the slot out entirely. A day of RC and review is
+      // still a real day; a blank "your drill" line is not.
+      const entry = queue.shift();
+      if (!entry) continue;
+      day.tasks.push({ title: task.title, estimatedMinutes: entry.estimatedMinutes, entry });
+      day.entries.push(entry);
+      day.totalMinutes += entry.estimatedMinutes ?? 0;
     }
-    days[cursor].entries.push(entry);
-    days[cursor].totalMinutes += cost;
   }
 
-  return days.filter((day) => day.entries.length > 0);
+  return days;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,11 +141,12 @@ export interface GeneratedWeeklyPlan {
   emptyReason?: 'no-track' | 'curriculum-complete';
 }
 
-/** One drill's worth of a planned week, ready to become a plan item. */
+/** One line of a planned week, ready to become a plan item. */
 export interface CurriculumWeekSlot {
   /** YYYY-MM-DD, local. */
   day: string;
-  guidedDrillId: string;
+  /** Null for the standing work the template supplies (RC, journals, tests). */
+  guidedDrillId: string | null;
   title: string;
   estimatedMinutes: number | null;
   level: StudentLevel | null;
@@ -133,7 +157,9 @@ export interface CurriculumWeek {
   trackId: string;
   slots: CurriculumWeekSlot[];
   days: PlannedDay[];
-  /** Set when there is nothing to schedule. */
+  /** The schedule this week was laid out on, or null for the built-in week. */
+  schedule?: ScheduleTemplate | null;
+  /** Set when there are no drills to schedule. The week is emitted regardless. */
   emptyReason?: 'no-track' | 'curriculum-complete';
 }
 
@@ -187,29 +213,35 @@ export async function loadCurriculumWeek(input: {
     (overrides ?? []) as StudentCurriculumOverride[],
   );
 
-  const studyDayCount = (input.studyDays ?? DEFAULT_STUDY_DAYS).length;
+  // The budget is the number of priority-drill positions the student's own
+  // week actually has, not a minute total spread over every day: most of the
+  // week is RC, review, and testing that the drill catalog does not supply.
+  const { template, schedule } = await fetchStudentSchedule(input.studentId);
+  const drillSlots = countDrillSlots(template, input.studyDays);
   const minutesPerDay = input.minutesPerDay ?? 60;
 
   const upcoming = nextCurriculumEntries(resolved, {
     assignedDrillIds: (assigned ?? []).map((r: { guided_drill_id: string }) => r.guided_drill_id),
-    minutesBudget: minutesPerDay * studyDayCount,
+    minutesBudget: minutesPerDay * drillSlots,
     paceMultiplier: enrollment?.pace_multiplier ?? 1,
-  });
-
-  if (upcoming.length === 0) {
-    return {
-      trackId,
-      slots: [],
-      days: [],
-      emptyReason: resolved.entries.length === 0 ? 'no-track' : 'curriculum-complete',
-    };
-  }
+  }).slice(0, drillSlots);
 
   const days = planWeekDays(upcoming, {
     weekStart: input.weekStart,
+    template,
     studyDays: input.studyDays,
-    minutesPerDay,
   });
+
+  // A finished curriculum does not end the week. The standing work — RC,
+  // the journals, the supersection, the practice test — is the schedule; the
+  // drills are one line of it. Report why there are no drills, still emit the
+  // week.
+  const emptyReason =
+    upcoming.length > 0
+      ? undefined
+      : resolved.entries.length === 0
+        ? ('no-track' as const)
+        : ('curriculum-complete' as const);
 
   // Real drill titles, so the plan reads as a week of work rather than as a
   // list of uuids.
@@ -224,19 +256,35 @@ export async function loadCurriculumWeek(input: {
     ]),
   );
 
-  const slots = days.flatMap((day) =>
-    day.entries.map((entry) => ({
-      day: day.dayDate,
-      guidedDrillId: entry.guidedDrillId,
-      title: drillById.get(entry.guidedDrillId)?.title ?? 'Guided drill',
-      estimatedMinutes:
-        entry.estimatedMinutes ?? drillById.get(entry.guidedDrillId)?.estimated_minutes ?? null,
-      level: entry.level,
-      trackItemId: entry.trackItemId,
-    })),
+  const slots: CurriculumWeekSlot[] = days.flatMap((day) =>
+    day.tasks.map((task) => {
+      if (!task.entry) {
+        // Standing template work. It has no drill, so publish leaves it as a
+        // checklist line rather than assigning it.
+        return {
+          day: day.dayDate,
+          guidedDrillId: null,
+          title: task.title,
+          estimatedMinutes: task.estimatedMinutes,
+          level: null,
+          trackItemId: null,
+        };
+      }
+      const drill = drillById.get(task.entry.guidedDrillId);
+      return {
+        day: day.dayDate,
+        guidedDrillId: task.entry.guidedDrillId,
+        // The drill's real name, so the day reads as work rather than as the
+        // template's generic slot label.
+        title: drill?.title ?? 'Guided drill',
+        estimatedMinutes: task.estimatedMinutes ?? drill?.estimated_minutes ?? null,
+        level: task.entry.level,
+        trackItemId: task.entry.trackItemId,
+      };
+    }),
   );
 
-  return { trackId, slots, days };
+  return { trackId, slots, days, schedule, emptyReason };
 }
 
 /**
@@ -296,13 +344,17 @@ export async function generateWeeklyPlan(
       sort_order: sortOrder++,
       status: 'assigned',
       // The drill and its band ride in metadata until publish turns them into
-      // a real assignment. classroom_item_id stays null until then.
-      metadata_json: {
-        guided_drill_id: slot.guidedDrillId,
-        curriculum_track_id: week.trackId,
-        curriculum_track_item_id: slot.trackItemId,
-        level: slot.level,
-      },
+      // a real assignment. classroom_item_id stays null until then. Standing
+      // template work carries no drill, so publish skips it and it stays a
+      // checklist line the student ticks off.
+      metadata_json: slot.guidedDrillId
+        ? {
+            guided_drill_id: slot.guidedDrillId,
+            curriculum_track_id: week.trackId,
+            curriculum_track_item_id: slot.trackItemId,
+            level: slot.level,
+          }
+        : { source: 'week-template' },
     };
   });
 

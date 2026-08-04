@@ -5,6 +5,8 @@ import StudentOverview from '@/components/hub/StudentOverview';
 import { CONFIGURABLE_FLAG_KEYS, ALL_FLAG_LABELS, isPrimaryAdmin } from '@/lib/adminUsers';
 import { cn } from '@/lib/utils';
 import { useSetStudentLevel, useStudentLevels } from '@/hooks/useStudentLevels';
+import { useSetStudentSchedule, useStudentSchedule } from '@/hooks/useSchedules';
+import { templateStudyDays } from '@/lib/scheduleTemplate';
 import {
   LEVEL_LABELS,
   STUDENT_LEVELS,
@@ -27,6 +29,31 @@ export default function DossierOverview() {
 
   const isAdmin = student?.role === 'admin';
   const level = levels?.[studentId] ?? null;
+
+  const {
+    schedule,
+    templates: schedules,
+    isLoading: schedulesLoading,
+  } = useStudentSchedule(studentId);
+  const setSchedule = useSetStudentSchedule();
+
+  const applySchedule = (scheduleTemplateId: string | null) => {
+    setSchedule.mutate(
+      { studentId, scheduleTemplateId },
+      {
+        onSuccess: () =>
+          toast.success(
+            scheduleTemplateId
+              ? `Schedule set to ${schedules.find((s) => s.id === scheduleTemplateId)?.title}`
+              : 'Schedule cleared; this student is on the default week',
+          ),
+        onError: (error) =>
+          toast.error(
+            error instanceof Error ? error.message : 'Could not update the schedule',
+          ),
+      },
+    );
+  };
 
   const applyLevel = (next: StudentLevel | null) => {
     setLevel.mutate(
@@ -96,6 +123,68 @@ export default function DossierOverview() {
 
         {!level && (
           <p className="mt-2.5 text-xs text-black/40">Not set.</p>
+        )}
+      </section>
+
+      <section className="border border-black/10 bg-white/20 p-4">
+        <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">
+          Schedule
+        </h2>
+        <p className="mt-1 text-xs leading-relaxed text-black/45">
+          The shape of this student's week: which days they work, where the timed day and the
+          rest day fall. The curriculum fills the drill slot on each skill day.
+        </p>
+
+        {schedules.length === 0 ? (
+          <p className="mt-2.5 text-xs text-black/40">
+            {schedulesLoading ? 'Loading…' : 'No schedules yet.'}
+          </p>
+        ) : (
+          <>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {schedules.map((option) => {
+                const on = schedule?.id === option.id;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    disabled={setSchedule.isPending}
+                    onClick={() => applySchedule(on ? null : option.id)}
+                    aria-pressed={on}
+                    className={cn(
+                      'border px-2.5 py-1.5 text-xs font-semibold transition disabled:opacity-50',
+                      on
+                        ? 'border-emerald-700/25 bg-emerald-500/10 text-emerald-800'
+                        : 'border-black/15 text-black/55 hover:bg-white/25 hover:text-black',
+                    )}
+                  >
+                    {option.title}
+                    <span className="ml-1.5 font-normal text-black/40">
+                      {templateStudyDays(option.days).length} days
+                    </span>
+                  </button>
+                );
+              })}
+              {schedule && (
+                <button
+                  type="button"
+                  disabled={setSchedule.isPending}
+                  onClick={() => applySchedule(null)}
+                  className="px-1.5 py-1.5 text-xs font-semibold text-black/40 underline-offset-2 transition hover:text-black hover:underline disabled:opacity-50"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {schedule ? (
+              <p className="mt-2.5 text-xs text-black/45">{schedule.description}</p>
+            ) : (
+              <p className="mt-2.5 text-xs text-black/40">
+                Not set; this student is on the default week.
+              </p>
+            )}
+          </>
         )}
       </section>
 

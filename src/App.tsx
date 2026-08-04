@@ -627,12 +627,21 @@ const App = () => {
                         </React.Suspense>
                       } />
 
+                      {/* Weekly plans is the only place a student's week gets
+                          authored, and /teacher/schedule is availability, not
+                          plans. Redirecting here left no way to build a week
+                          at all, so it is a real route again. */}
+                      <Route path="weekly-plans" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherWeeklyPlans />
+                        </React.Suspense>
+                      } />
+
                       {/* ── Legacy paths → their new room. Deleted in Phase 4. ── */}
                       <Route path="command" element={<RedirectWithSearch to="/teacher/today" />} />
                       <Route path="ai-ta" element={<RedirectWithSearch to="/teacher/today" />} />
                       <Route path="desk-preview" element={<RedirectWithSearch to="/teacher/today" />} />
                       <Route path="conversations" element={<RedirectWithSearch to="/teacher/inbox" />} />
-                      <Route path="weekly-plans" element={<RedirectWithSearch to="/teacher/schedule" />} />
                       <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
                       <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
                       <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
