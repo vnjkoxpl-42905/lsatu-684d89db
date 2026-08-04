@@ -18,10 +18,17 @@ export type AssignableItem =
 
 export interface StudentResult {
   studentId: string;
-  /** The assignment row. Absent for bootcamps, which have no row of their own. */
+  /**
+   * The assignment row. Absent for bootcamps, which have no row of their own.
+   * On a bundle this is the first item's row; see `assignmentIds` for all of them.
+   */
   assignmentId?: string;
   classroomItemId?: string;
   route?: string;
+  /** Every assignment row written for this student, in bundle order. */
+  assignmentIds?: string[];
+  /** Every classroom item created for this student, in bundle order. */
+  classroomItemIds?: string[];
   /**
    * Per-channel notify outcome. A false channel means the work landed and the
    * student can see it, but one message did not go out.
@@ -255,23 +262,75 @@ export async function assignWork(input: {
     metadata?: Record<string, unknown>;
   };
 }): Promise<AssignWorkResult> {
-  const { teacherId, studentIds, item, scheduledForLocalDate, overrides } = input;
+  return runAssign({ ...input, items: [input.item] });
+}
+
+/**
+ * Assign several pieces of work — of mixed kinds — as ONE event (spec D4).
+ *
+ * A drill and a homework set for the same topic ship together: the student gets
+ * a classroom card for each (they are separate work), but a single notification,
+ * because two pings for one handoff reads as two assignments. Per student the
+ * bundle is all-or-nothing: if the third item fails, the first two are rolled
+ * back, so the teacher never has to reason about a half-delivered bundle.
+ *
+ * Per-item overrides are deliberately not offered here — retitling one item
+ * inside a bundle belongs to the single-item path.
+ */
+export async function assignWorkBundle(input: {
+  teacherId: string;
+  studentIds: string[];
+  items: AssignableItem[];
+  scheduledForLocalDate?: string;
+}): Promise<AssignWorkResult> {
+  return runAssign(input);
+}
+
+/** What one student ended up with, so a failure can be undone precisely. */
+interface Written {
+  assignmentId: string | null;
+  classroomItemId: string | null;
+  table: string;
+  kind: AssignableItem['kind'];
+}
+
+async function runAssign(input: {
+  teacherId: string;
+  studentIds: string[];
+  items: AssignableItem[];
+  scheduledForLocalDate?: string;
+  overrides?: {
+    title?: string;
+    description?: string;
+    dueAt?: string | null;
+    metadata?: Record<string, unknown>;
+  };
+}): Promise<AssignWorkResult> {
+  const { teacherId, studentIds, items, scheduledForLocalDate, overrides } = input;
 
   const ok: StudentResult[] = [];
   const failed: StudentResult[] = [];
 
-  if (studentIds.length === 0) return { ok, failed };
+  if (studentIds.length === 0 || items.length === 0) return { ok, failed };
 
-  let plan: AssignPlan;
+  // Every item is resolved before anyone is written to, so an unreadable item
+  // fails the whole assign cleanly instead of half-delivering the bundle.
+  let plans: AssignPlan[];
   try {
-    const base = await planFor(item, teacherId, scheduledForLocalDate);
-    plan = {
-      ...base,
-      title: overrides?.title?.trim() || base.title,
-      description: overrides?.description?.trim() || base.description,
-      dueAt: overrides?.dueAt !== undefined ? overrides.dueAt : base.dueAt,
-      metadata: { ...base.metadata, ...(overrides?.metadata ?? {}) },
-    };
+    plans = await Promise.all(
+      items.map(async (item, index) => {
+        const base = await planFor(item, teacherId, scheduledForLocalDate);
+        // Overrides only ever accompany a single item (see assignWork).
+        if (index > 0 || !overrides) return base;
+        return {
+          ...base,
+          title: overrides.title?.trim() || base.title,
+          description: overrides.description?.trim() || base.description,
+          dueAt: overrides.dueAt !== undefined ? overrides.dueAt : base.dueAt,
+          metadata: { ...base.metadata, ...(overrides.metadata ?? {}) },
+        };
+      }),
+    );
   } catch (error) {
     // Nothing was written, so every student failed for the same reason.
     const reason = message(error, 'Could not load the item to assign');
@@ -279,59 +338,105 @@ export async function assignWork(input: {
   }
 
   for (const studentId of studentIds) {
-    let assignmentId: string | null = null;
-    let classroomItemId: string | null = null;
+    const written: Written[] = [];
 
     try {
-      assignmentId = await plan.insertRow(studentId);
-      const route = plan.route(assignmentId);
+      const routes: string[] = [];
 
-      const classroomItem = await createClassroomItem({
-        studentId,
-        createdBy: teacherId,
-        type: plan.type,
-        title: plan.title,
-        description: plan.description,
-        sourceTable: plan.sourceTable,
-        sourceId: plan.sourceId(assignmentId),
-        unlockAt: plan.unlockAt,
-        dueAt: plan.dueAt,
-        visibleToStudent: true,
-        status: 'assigned',
-        metadata: { ...plan.metadata, assigned_route: route },
-      });
-      classroomItemId = classroomItem.id;
+      for (let i = 0; i < plans.length; i++) {
+        const plan = plans[i];
+        const record: Written = {
+          assignmentId: null,
+          classroomItemId: null,
+          table: plan.sourceTable,
+          kind: items[i].kind,
+        };
+        // Recorded before each write so a throw mid-item still rolls back what
+        // the previous items wrote.
+        written.push(record);
 
+        record.assignmentId = await plan.insertRow(studentId);
+        const route = plan.route(record.assignmentId);
+        routes.push(route);
+
+        const classroomItem = await createClassroomItem({
+          studentId,
+          createdBy: teacherId,
+          type: plan.type,
+          title: plan.title,
+          description: plan.description,
+          sourceTable: plan.sourceTable,
+          sourceId: plan.sourceId(record.assignmentId),
+          unlockAt: plan.unlockAt,
+          dueAt: plan.dueAt,
+          visibleToStudent: true,
+          status: 'assigned',
+          metadata: { ...plan.metadata, assigned_route: route },
+        });
+        record.classroomItemId = classroomItem.id;
+      }
+
+      const summary = notificationFor(plans, routes);
       const notify = await notifyStudentOfClassroomItem({
         adminUserId: teacherId,
         studentId,
-        title: plan.title,
-        description: plan.description,
-        route,
-        assignmentType: plan.assignmentType,
+        title: summary.title,
+        description: summary.description,
+        route: summary.route,
+        assignmentType: summary.assignmentType,
       });
 
       ok.push({
         studentId,
-        assignmentId: assignmentId ?? undefined,
-        classroomItemId,
-        route,
+        assignmentId: written[0]?.assignmentId ?? undefined,
+        classroomItemId: written[0]?.classroomItemId ?? undefined,
+        route: routes[0],
+        assignmentIds: written.map((w) => w.assignmentId).filter((id): id is string => !!id),
+        classroomItemIds: written
+          .map((w) => w.classroomItemId)
+          .filter((id): id is string => !!id),
         notify,
       });
     } catch (error) {
       console.error('[assignWork] student failed', {
         studentId,
-        kind: item.kind,
-        assignmentId,
-        classroomItemId,
+        kinds: items.map((i) => i.kind),
+        written,
         error,
       });
-      await rollback({ assignmentId, classroomItemId, table: plan.sourceTable, kind: item.kind });
+      // Newest first, so the half-written item goes before the ones that landed.
+      for (const record of [...written].reverse()) {
+        await rollback(record);
+      }
       failed.push({ studentId, error: message(error, 'Assign failed') });
     }
   }
 
   return { ok, failed };
+}
+
+/**
+ * One handoff, one message. A single item keeps its own wording; a bundle is
+ * announced as a list pointing at the Classroom, since no one route covers it.
+ */
+function notificationFor(
+  plans: AssignPlan[],
+  routes: string[],
+): { title: string; description?: string; route: string; assignmentType?: string } {
+  if (plans.length === 1) {
+    return {
+      title: plans[0].title,
+      description: plans[0].description,
+      route: routes[0],
+      assignmentType: plans[0].assignmentType,
+    };
+  }
+  return {
+    title: `${plans.length} new pieces of work`,
+    description: plans.map((p) => `• ${p.title}`).join('\n'),
+    route: '/classroom',
+    assignmentType: 'assignment',
+  };
 }
 
 /**

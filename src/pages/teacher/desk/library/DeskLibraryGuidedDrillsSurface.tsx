@@ -1,46 +1,38 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { Loader2, Play, Send } from 'lucide-react';
+import { Play, Plus, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   listGuidedDrills,
   resolveGuidedDrillPool,
   type GuidedDrill,
 } from '@/lib/guidedDrills';
-import { assignWork, describeAssignResult } from '@/lib/assignWork';
-import { useHubStudents } from '@/hooks/useHubStudents';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import { GuidedDrillCardPreview } from '@/components/drill/GuidedDrillCardPreview';
 import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
+import { LibraryFilterSelect } from '@/components/teacher/desk/library/LibraryFilterSelect';
 import type { LibraryView } from '@/hooks/useDeskLibraryView';
+import type { AssignWorkSheetItem } from '@/components/teacher/library/AssignWorkSheet';
 import { TEACHER_GUIDED_DRILLS_RETURN_TO } from '@/lib/guidedDrillNavigation';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
 import { cn, openRoute } from '@/lib/utils';
 
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
-export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) {
-  const queryClient = useQueryClient();
-  const { user } = useAuth();
+export function DeskLibraryGuidedDrillsSurface({
+  view,
+  onAssign,
+  onBundle,
+}: {
+  view: LibraryView;
+  onAssign: (item: AssignWorkSheetItem) => void;
+  onBundle: (item: AssignWorkSheetItem) => void;
+}) {
   const { isLoading: qbLoading } = useQuestionBank();
-  const { rows: students } = useHubStudents();
   const [drills, setDrills] = useState<GuidedDrill[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [weekFilter, setWeekFilter] = useState<number | 'all'>('all');
   const [rtFilter, setRtFilter] = useState<string | 'all'>('all');
-  const [assignDrill, setAssignDrill] = useState<GuidedDrill | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [scheduledFor, setScheduledFor] = useState('');
-  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     listGuidedDrills()
@@ -71,38 +63,11 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
   const poolSize = (d: GuidedDrill) =>
     qbLoading ? null : resolveGuidedDrillPool(d.bank_filter).length;
 
-  const closeAssign = () => {
-    setAssignDrill(null);
-    setSelected(new Set());
-    setScheduledFor('');
-  };
-
-  const handleAssign = async () => {
-    if (!assignDrill || !user || selected.size === 0) return;
-    setAssigning(true);
-    try {
-      const result = await assignWork({
-        teacherId: user.id,
-        studentIds: [...selected],
-        item: { kind: 'guided_drill', drillId: assignDrill.id },
-        scheduledForLocalDate: scheduledFor || undefined,
-      });
-
-      queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
-      queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
-      queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
-
-      const { level, message } = describeAssignResult(result, assignDrill.title);
-      toast[level](message);
-      // Leave the sheet open when nobody got the drill, so the teacher can
-      // read the reason and retry without reselecting everyone.
-      if (result.ok.length > 0) closeAssign();
-    } catch (e) {
-      toast.error(`Assign failed: ${e instanceof Error ? e.message : 'unknown error'}`);
-    } finally {
-      setAssigning(false);
-    }
-  };
+  const sheetItem = (d: GuidedDrill): AssignWorkSheetItem => ({
+    item: { kind: 'guided_drill', drillId: d.id },
+    title: d.title,
+    kindLabel: 'Drill',
+  });
 
   return (
     <section className="flex h-full w-full flex-col">
@@ -118,12 +83,12 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
             onChange={(e) => setSearch(e.target.value)}
             className="h-8 max-w-xs border-black/15 bg-white/40 text-sm text-black placeholder:text-black/35 focus-visible:border-black/35 focus-visible:ring-black/10"
           />
-          <FilterSelect
+          <LibraryFilterSelect
             value={weekFilter === 'all' ? 'all' : String(weekFilter)}
             onChange={(v) => setWeekFilter(v === 'all' ? 'all' : parseInt(v, 10))}
             options={[{ value: 'all', label: 'All weeks' }, ...weeks.map((w) => ({ value: String(w), label: `Week ${w}` }))]}
           />
-          <FilterSelect
+          <LibraryFilterSelect
             value={rtFilter}
             onChange={(v) => setRtFilter(v)}
             options={[{ value: 'all', label: 'All reasoning types' }, ...REASONING_TYPES.map((r) => ({ value: r, label: r }))]}
@@ -173,8 +138,17 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
                     </button>
                     <button
                       type="button"
-                      onClick={() => setAssignDrill(d)}
-                      className="ml-auto inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
+                      onClick={() => onBundle(sheetItem(d))}
+                      title="Add to the assign bundle"
+                      aria-label={`Add ${d.title} to the assign bundle`}
+                      className="ml-auto inline-flex items-center gap-1 border border-black/15 bg-white/40 px-2 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+                    >
+                      <Plus className="h-3 w-3" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onAssign(sheetItem(d))}
+                      className="inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
                     >
                       <Send className="h-3 w-3" /> Assign
                     </button>
@@ -185,82 +159,7 @@ export function DeskLibraryGuidedDrillsSurface({ view }: { view: LibraryView }) 
           />
         )}
       </div>
-
-      {/* Assign sheet */}
-      <Sheet open={!!assignDrill} onOpenChange={(o) => !o && closeAssign()}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-md">
-          <SheetHeader>
-            <SheetTitle>Assign: {assignDrill?.title}</SheetTitle>
-          </SheetHeader>
-          <div className="mt-4 space-y-4">
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Schedule for (optional)
-              </label>
-              <Input type="date" value={scheduledFor} onChange={(e) => setScheduledFor(e.target.value)} className="mt-1" />
-            </div>
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Students ({selected.size} selected)
-              </label>
-              <div className="mt-2 max-h-80 space-y-1 overflow-y-auto rounded border p-2">
-                {students.map((s) => (
-                  <label
-                    key={s.class_id}
-                    className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-muted"
-                  >
-                    <Checkbox
-                      checked={selected.has(s.class_id)}
-                      onCheckedChange={(checked) => {
-                        const next = new Set(selected);
-                        if (checked) next.add(s.class_id);
-                        else next.delete(s.class_id);
-                        setSelected(next);
-                      }}
-                    />
-                    <span className="text-sm">{s.display_name || s.email || s.class_id.slice(0, 8)}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-            <button
-              type="button"
-              disabled={selected.size === 0 || assigning}
-              onClick={handleAssign}
-              className="inline-flex w-full items-center justify-center gap-2 bg-black px-3 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {assigning ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
-              Assign to {selected.size} student{selected.size === 1 ? '' : 's'}
-            </button>
-          </div>
-        </SheetContent>
-      </Sheet>
     </section>
-  );
-}
-
-function FilterSelect({
-  value,
-  onChange,
-  options,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  options: { value: string; label: string }[];
-}) {
-  return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      title={options.find((o) => o.value === value)?.label ?? 'Filter'}
-      className="h-8 border border-black/15 bg-white/40 px-2 text-sm text-black focus-visible:border-black/35 focus-visible:outline-none"
-    >
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
   );
 }
 

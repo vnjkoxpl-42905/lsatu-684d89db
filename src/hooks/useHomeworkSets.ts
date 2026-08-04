@@ -85,7 +85,13 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    if (!user) return;
+    // Returning while `loading` is still true left the list stuck on its
+    // skeleton forever for anyone signed out — a spinner that never resolves
+    // reads as a broken page, not as "nothing to show."
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const { data, error: err } = await supabase
       .from("homework_sets")
@@ -235,7 +241,13 @@ export function useHomeworkSet(setId: string | undefined): {
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    if (!user || !setId) return;
+    // Same stuck-skeleton bug as the list hook above: with no user or no setId
+    // there is nothing to wait for, so stop waiting.
+    if (!user || !setId) {
+      setLoading(false);
+      setSet(null);
+      return;
+    }
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error: err } = await supabase

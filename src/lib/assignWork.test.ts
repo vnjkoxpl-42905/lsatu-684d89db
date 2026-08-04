@@ -18,7 +18,7 @@ vi.mock('@/integrations/supabase/client', () => ({
   supabase: { from: (table: string) => mockFrom(table) },
 }));
 
-import { assignWork } from './assignWork';
+import { assignWork, assignWorkBundle } from './assignWork';
 
 const TEACHER = 'teacher-uuid';
 
@@ -210,5 +210,96 @@ describe('assignWork', () => {
     expect(mockCreateClassroomItem).toHaveBeenCalledWith(
       expect.objectContaining({ sourceTable: 'bootcamps', type: 'bootcamp_module' }),
     );
+  });
+});
+
+describe('assignWorkBundle', () => {
+  const BUNDLE = [
+    { kind: 'guided_drill' as const, drillId: 'drill-1' },
+    { kind: 'homework_set' as const, setId: 'set-1' },
+  ];
+
+  it('writes every kind but pings the student once', async () => {
+    const result = await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      items: BUNDLE,
+    });
+
+    expect(result.failed).toEqual([]);
+    expect(inserted.guided_drill_assignments).toHaveLength(1);
+    expect(inserted.homework_assignments).toHaveLength(1);
+    // A card per piece of work — they are separate work in the Classroom.
+    expect(mockCreateClassroomItem).toHaveBeenCalledTimes(2);
+    // One handoff, one message.
+    expect(mockNotify).toHaveBeenCalledTimes(1);
+    expect(mockNotify).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: '2 new pieces of work',
+        route: '/classroom',
+        description: '• First sentence conclusions\n• Weaken set',
+      }),
+    );
+  });
+
+  it('reports every row it wrote for the student', async () => {
+    const result = await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      items: BUNDLE,
+    });
+
+    expect(result.ok[0].assignmentIds).toEqual([
+      'guided_drill_assignments-row-1',
+      'homework_assignments-row-1',
+    ]);
+    expect(result.ok[0].classroomItemIds).toHaveLength(2);
+  });
+
+  it('rolls the earlier items back when a later one fails', async () => {
+    // The drill lands, then the homework insert blows up.
+    insertShouldFail = 'homework_assignments';
+
+    const result = await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      items: BUNDLE,
+    });
+
+    expect(result.ok).toEqual([]);
+    expect(result.failed).toHaveLength(1);
+    // Half a bundle is worse than none: the drill row and its card go too.
+    expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']);
+    expect(deleted.classroom_items).toEqual(['item-1']);
+    // And nobody is told about work that no longer exists.
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
+
+  it('keeps one student\'s bundle failing from costing the next student theirs', async () => {
+    mockCreateClassroomItem
+      .mockImplementationOnce(async () => {
+        throw new Error('classroom item refused');
+      })
+      .mockImplementation(async () => ({ id: 'item-1' }));
+
+    const result = await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b'],
+      items: BUNDLE,
+    });
+
+    expect(result.failed.map((r) => r.studentId)).toEqual(['student-a']);
+    expect(result.ok.map((r) => r.studentId)).toEqual(['student-b']);
+  });
+
+  it('does nothing at all when given no items', async () => {
+    const result = await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      items: [],
+    });
+
+    expect(result).toEqual({ ok: [], failed: [] });
+    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
   });
 });

@@ -35,7 +35,11 @@ export default function HomeworkDetail() {
   const [description, setDescription] = React.useState("");
   const [qids, setQids] = React.useState<string[]>([]);
   const [saving, setSaving] = React.useState(false);
-  const [initialized, setInitialized] = React.useState(false);
+  // Which set the form currently holds, not merely whether it has been filled
+  // once. A boolean meant navigating from one set to another kept the first
+  // set's title and questions in the form — and saving wrote them onto the
+  // second set.
+  const [initializedFor, setInitializedFor] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!permLoading && !is_admin) {
@@ -44,13 +48,13 @@ export default function HomeworkDetail() {
   }, [permLoading, is_admin, navigate]);
 
   React.useEffect(() => {
-    if (set && !initialized) {
+    if (set && initializedFor !== set.id) {
       setTitle(set.title);
       setDescription(set.description ?? "");
       setQids(set.question_qids);
-      setInitialized(true);
+      setInitializedFor(set.id);
     }
-  }, [set, initialized]);
+  }, [set, initializedFor]);
 
   if (permLoading) return null;
   if (!is_admin) return null;

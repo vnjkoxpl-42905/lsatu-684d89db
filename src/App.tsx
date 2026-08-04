@@ -88,6 +88,7 @@ const TeacherDevIndex = React.lazy(() => import("./pages/teacher/shell/TeacherDe
 const DeskPeopleSurface = React.lazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
 const DeskLibrarySurface = React.lazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
 const TeacherInboxRoom = React.lazy(() => import("./pages/teacher/inbox/TeacherInboxRoom"));
+const TeacherHomeworkDetail = React.lazy(() => import("./pages/teacher/library/TeacherHomeworkDetail"));
 // TeacherStudentDetail's route is gone — the dossier replaced it and absorbed
 // its session/transcript pipeline into SessionBundleList. The file stays until
 // the Phase 4 purge, but nothing imports it now.
@@ -568,6 +569,13 @@ const App = () => {
                       <Route path="library" element={
                         <React.Suspense fallback={<div />}>
                           <DeskLibrarySurface />
+                        </React.Suspense>
+                      } />
+                      {/* Static segment ranks above library/:tab, so this wins
+                          for a set id and Library still owns every other tab. */}
+                      <Route path="library/homework/:setId" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherHomeworkDetail />
                         </React.Suspense>
                       } />
                       <Route path="library/:tab" element={
