@@ -1,0 +1,339 @@
+/*
+ * The Polarity Chamber: Negation Station's world.
+ *
+ * One object in an empty dark room: a plate of black glass with the statement
+ * engraved on it. Light here means logical strength, so the room is built to be
+ * dark enough that an overshoot reads as glare.
+ *
+ * The flip is a CSS 3D transform, which the spec names as the no-WebGL path and
+ * which is promoted to the default here: one plate turning over does not need a
+ * renderer.
+ */
+
+.polarity {
+  --po-room: 240 6% 7%;
+  --po-room-deep: 240 8% 4%;
+  --po-glass: 240 8% 12%;
+  --po-bevel: 240 6% 32%;
+  --po-ink: 240 10% 92%;
+  --po-ink-dim: 240 5% 52%;
+  --po-key: 210 20% 88%;
+
+  position: relative;
+  color: hsl(var(--po-ink));
+  background:
+    radial-gradient(52% 44% at 50% 22%, hsl(var(--po-key) / 0.07), transparent 70%),
+    hsl(var(--po-room-deep));
+  overflow: hidden;
+  transition: background-color 600ms ease;
+}
+
+/* The polarity inversion: the room goes pale and comes back. 1.2s, per spec. */
+@keyframes po-invert {
+  0% {
+    filter: none;
+  }
+  30%,
+  55% {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+.polarity[data-inverting="true"] {
+  animation: po-invert 1200ms ease-in-out 1;
+}
+
+/* An overshoot floods the room. This is the drill's error made physical, and it
+   is brightness rather than a colour so it survives the monochrome system. */
+.polarity[data-glare="true"] {
+  background:
+    radial-gradient(58% 50% at 50% 22%, hsl(var(--po-key) / 0.26), transparent 72%),
+    hsl(var(--po-room));
+}
+
+.polarity-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- The plate ---------- */
+
+.po-stage {
+  perspective: 1400px;
+}
+
+.po-plate {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 900ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.po-plate[data-face="negation"] {
+  transform: rotateY(180deg);
+}
+
+/* The refusal: it trembles once and comes back. The absence of the flip is the
+   world's "no". */
+@keyframes po-refuse {
+  0%,
+  100% {
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(2deg);
+  }
+  75% {
+    transform: rotateY(-2deg);
+  }
+}
+
+.po-plate[data-refusing="true"] {
+  animation: po-refuse 420ms ease-in-out 1;
+}
+
+.po-face {
+  backface-visibility: hidden;
+  background: linear-gradient(160deg, hsl(var(--po-glass)), hsl(var(--po-room)));
+  border: 1px solid hsl(var(--po-bevel) / 0.8);
+  /* Beveled glass: a lit top edge, a deep shadow under it. */
+  box-shadow:
+    inset 0 1px 0 hsl(var(--po-key) / 0.22),
+    inset 0 -1px 0 hsl(var(--po-room-deep)),
+    0 20px 40px hsl(var(--po-room-deep) / 0.9);
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+}
+
+.po-face[data-side="back"] {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+/* The floor reflection under the plate. */
+.po-reflection {
+  height: 26px;
+  background: linear-gradient(180deg, hsl(var(--po-key) / 0.05), transparent);
+  filter: blur(3px);
+}
+
+/* ---------- The strength beam ---------- */
+
+.po-beam {
+  position: relative;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--po-key) / 0.5),
+    hsl(var(--po-key) / 0.08)
+  );
+  border-radius: 2px;
+}
+
+/* The credited level: a fixed ring the student's marker should meet. */
+.po-ring {
+  position: absolute;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 1px solid hsl(var(--po-key) / 0.85);
+  border-radius: 50%;
+}
+
+/* The student's answer, as a marker on the same beam. */
+.po-marker {
+  position: absolute;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  margin-left: -6px;
+  background: hsl(var(--po-ink));
+  transition: top 620ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.po-marker[data-push="minimal"] {
+  box-shadow: 0 0 10px hsl(var(--po-key));
+}
+
+.po-marker[data-push="overshoot"] {
+  background: hsl(var(--po-key));
+  box-shadow: 0 0 16px hsl(var(--po-key));
+}
+
+.po-rung {
+  color: hsl(var(--po-ink-dim));
+  transition: color 300ms ease;
+}
+
+.po-rung[data-lit="true"] {
+  color: hsl(var(--po-ink));
+}
+
+/* ---------- The two stamps ---------- */
+
+/* Where strength is not a quantity, the spec's own fallback: two engraved
+   questions that light independently. */
+.po-stamp {
+  border: 1px solid hsl(var(--po-bevel) / 0.7);
+  color: hsl(var(--po-ink-dim));
+  background: hsl(var(--po-glass) / 0.5);
+}
+
+.po-stamp[data-lit="true"] {
+  border-color: hsl(var(--po-key) / 0.8);
+  color: hsl(var(--po-ink));
+  box-shadow: inset 0 0 0 1px hsl(var(--po-key) / 0.16);
+}
+
+/* ---------- The chips ---------- */
+
+.po-chip {
+  width: 14px;
+  height: 8px;
+  border: 1px solid hsl(var(--po-bevel) / 0.6);
+  background: transparent;
+}
+
+.po-chip[data-level="full"] {
+  background: hsl(var(--po-key) / 0.85);
+  border-color: hsl(var(--po-key));
+}
+
+.po-chip[data-level="half"] {
+  background: linear-gradient(90deg, hsl(var(--po-key) / 0.7) 50%, transparent 50%);
+}
+
+.po-chip[data-current="true"] {
+  box-shadow: 0 2px 0 hsl(var(--po-key) / 0.8);
+}
+
+/* ---------- Controls (shared by the wing) ---------- */
+
+.po-button {
+  border: 1px solid hsl(var(--po-bevel));
+  background: hsl(var(--po-glass));
+  color: hsl(var(--po-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.po-button:hover:not(:disabled) {
+  border-color: hsl(var(--po-ink) / 0.45);
+}
+
+.po-button:disabled {
+  opacity: 0.55;
+}
+
+.po-button[data-picked="true"] {
+  background: hsl(var(--po-room));
+  opacity: 1;
+}
+
+.po-button[data-truth="true"] {
+  border-color: hsl(var(--po-key));
+  box-shadow: inset 2px 0 0 hsl(var(--po-key));
+  opacity: 1;
+}
+
+.po-input {
+  border: 1px solid hsl(var(--po-bevel));
+  background: hsl(var(--po-glass));
+  color: hsl(var(--po-ink));
+  max-width: 34rem;
+}
+
+.po-input::placeholder {
+  color: hsl(var(--po-ink-dim) / 0.7);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes po-descend {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes po-etch-off {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.5em;
+  }
+  40% {
+    opacity: 1;
+    letter-spacing: 0.16em;
+  }
+  100% {
+    opacity: 0;
+    letter-spacing: 0.16em;
+  }
+}
+
+.po-entrance-plate {
+  animation: po-descend 720ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+}
+
+.po-entrance-name {
+  animation: po-etch-off 1600ms ease both 300ms;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .polarity *,
+  .polarity *::before,
+  .polarity *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The inversion is a full-screen filter flip; shortened it would strobe, so
+     it is removed rather than sped up. */
+  .polarity[data-inverting="true"] {
+    animation: none !important;
+  }
+
+  .po-plate[data-refusing="true"] {
+    animation: none !important;
+  }
+
+  /* The flip becomes a crossfade, per the spec. */
+  .po-plate {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .po-face[data-side="back"] {
+    transform: none;
+  }
+
+  .po-entrance-plate,
+  .po-entrance-name {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -98,6 +98,15 @@ import {
   buildReverseLoom,
 } from "@/features/activity-centre/worlds/loom/wings/rounds";
 import { parseCallback, readThrow } from "@/features/activity-centre/worlds/loom/loom";
+import {
+  PolarityStage,
+  type ChamberPhase as PolarityPhase,
+  type Chip,
+} from "@/features/activity-centre/worlds/polarity/PolarityStage";
+import { PolarityEntrance } from "@/features/activity-centre/worlds/polarity/PolarityEntrance";
+import { Assay } from "@/features/activity-centre/worlds/polarity/wings/Assay";
+import { buildAssay } from "@/features/activity-centre/worlds/polarity/wings/rounds";
+import { PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -121,6 +130,7 @@ const WORLDS = [
   { key: "chamber", label: "The Debate Chamber" },
   { key: "observatory", label: "The Signal Observatory" },
   { key: "loom", label: "The Loom" },
+  { key: "polarity", label: "The Polarity Chamber" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -184,6 +194,7 @@ export default function ActivityLab() {
       {world === "chamber" ? <ChamberPanel /> : null}
       {world === "observatory" ? <ObservatoryPanel /> : null}
       {world === "loom" ? <LoomPanel /> : null}
+      {world === "polarity" ? <PolarityPanel /> : null}
     </div>
   );
 }
@@ -1318,6 +1329,151 @@ function LoomPanel() {
       ) : null}
       {view === "reverse" ? <ReverseLoom round={reverseRound} /> : null}
       {view === "decode" ? <DecodeBench cards={decodeCards} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Polarity Chamber
+ * ------------------------------------------------------------------ */
+
+const POLARITY_VIEWS = ["chamber", "entrance", "assay"] as const;
+const POLARITY_PHASES: PolarityPhase[] = ["statement", "inverted", "refused"];
+
+/** Stand-in answers, so the real reader decides how hard the push reads. */
+const PUSHES = [
+  { key: "credited", label: "the credited negation" },
+  { key: "polar", label: "the polar opposite" },
+  { key: "short", label: "not far enough" },
+  { key: "none", label: "nothing yet" },
+] as const;
+type PushKey = (typeof PUSHES)[number]["key"];
+
+/**
+ * Negation Station is not in SEED_ACTIVITIES: it predates the content pipeline
+ * and is deliberately never re-seeded, so its plates come from the world's own
+ * verbatim extract of the seed migration.
+ */
+function PolarityPanel() {
+  const [view, setView] = useState<(typeof POLARITY_VIEWS)[number]>("chamber");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<PolarityPhase>("statement");
+  const [pushKey, setPushKey] = useState<PushKey>("credited");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const plate = PLATES[index];
+
+  const response = useMemo(() => {
+    if (!plate || pushKey === "none") return undefined;
+    if (pushKey === "polar") return "No such case ever holds.";
+    if (pushKey === "short") return "Most such cases still hold.";
+    return plate.negation;
+  }, [plate, pushKey]);
+
+  const reading = useMemo(
+    () => (plate && response ? readPush(plate, response) : null),
+    [plate, response],
+  );
+
+  // Lab-only floor. The production chamber is passed real verdicts.
+  const chips: Chip[] = useMemo(
+    () =>
+      PLATES.map((p, i) => ({
+        order: p.order,
+        level: i < index ? (i % 4 === 1 ? "half" : "full") : null,
+      })),
+    [index],
+  );
+
+  const assayRound = useMemo(() => buildAssay(PLATES), []);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={POLARITY_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Chamber view"
+        />
+
+        {view === "chamber" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Statement
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("statement");
+                }}
+              >
+                {PLATES.map((p, i) => (
+                  <option key={p.order} value={i}>
+                    {p.order}. {p.statement.slice(0, 44)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Push
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={pushKey}
+                onChange={(e) => setPushKey(e.target.value as PushKey)}
+              >
+                {PUSHES.map((p) => (
+                  <option key={p.key} value={p.key}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              beam: <code>{plate?.measurable ? "measures" : "stamps"}</code> · push:{" "}
+              <code>{reading?.push ?? "none"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs
+                options={POLARITY_PHASES}
+                value={phase}
+                onChange={(v) => setPhase(v)}
+                label="Plate"
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "chamber" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            <PolarityStage plate={plate} phase={phase} reading={reading} chips={chips} />
+          </div>
+          <SignalBox
+            title="Coach rail"
+            level={plate.kind}
+            rows={[
+              ["Statement level", plate.statementLevel ?? "not on the scale"],
+              ["Credited level", plate.negationLevel ?? "not on the scale"],
+              ["Beam", plate.measurable ? "measures this item" : "stamps this item"],
+            ]}
+            note={plate.why}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <PolarityEntrance key={entranceRun} onDone={() => setView("chamber")} />
+      ) : null}
+      {view === "assay" ? <Assay round={assayRound} /> : null}
     </>
   );
 }
