@@ -6,7 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import HubStudentList from '@/components/hub/HubStudentList';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useHubStudents } from '@/hooks/useHubStudents';
 import { useSmartboardSessions } from '@/hooks/useSmartboardSessions';
 import {
   useSmartboardAutosave,
@@ -26,6 +33,7 @@ export default function TeacherSmartboard() {
   const sessionParam = searchParams.get('session');
 
   const { data: sessions = [] } = useSmartboardSessions(studentId);
+  const { rows: students = [] } = useHubStudents();
 
   type ExcalidrawApi = {
     getSceneElements: () => unknown[];
@@ -114,67 +122,66 @@ export default function TeacherSmartboard() {
   return (
     <div
       ref={containerRef}
-      className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full bg-white"
+      className="flex flex-col h-full w-full bg-white [&:fullscreen]:h-screen [&:fullscreen]:w-screen"
     >
-      <aside className="border-b lg:border-b-0 lg:border-r border-black/12 overflow-y-auto max-h-[40vh] lg:max-h-none">
-        <div className="px-4 py-3 border-b border-black/12 flex items-center gap-2 text-black/55">
-          <PencilRuler className="w-4 h-4" />
-          <span className="text-[11px] uppercase tracking-wider font-semibold">
-            Pick a student
-          </span>
-        </div>
-        <HubStudentList
-          selectedId={studentId}
-          onSelect={(id) =>
-            setSearchParams((p) => {
-              const c = new URLSearchParams(p);
-              c.set('student', id);
-              c.delete('session');
-              return c;
-            })
-          }
-        />
-        {studentId && sessions.length > 0 && (
-          <div className="px-3 py-3 border-t border-black/12 space-y-1">
-            <div className="text-[10px] uppercase tracking-wider text-black/45 font-semibold px-1">
-              Previous boards
-            </div>
-            {sessions.map((s) => (
-              <button
-                key={s.id}
-                onClick={() =>
-                  setSearchParams((p) => {
-                    const c = new URLSearchParams(p);
-                    c.set('session', s.id);
-                    return c;
-                  })
-                }
-                className={
-                  'w-full text-left px-2 py-1.5 rounded text-xs ' +
-                  (s.id === sessionParam
-                    ? 'bg-white/40 text-[#11181c]'
-                    : 'text-black/55 hover:text-black hover:bg-white/50')
-                }
-              >
-                <div className="truncate">{s.title}</div>
-                <div className="text-[10px] text-black/45">{s.session_date}</div>
-              </button>
-            ))}
-          </div>
-        )}
-      </aside>
-
-      <section className="flex flex-col min-h-0">
+      <section className="flex flex-col flex-1 min-h-0">
         <div className="px-3 sm:px-4 py-3 border-b border-black/12 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
-          <Label className="text-xs text-black/55 shrink-0">Title</Label>
+          <PencilRuler className="w-4 h-4 text-black/45 shrink-0" />
           <Input
             value={title}
+            aria-label="Board title"
             onChange={(e) => {
               setTitle(e.target.value);
               autosave.bumpChange();
             }}
-            className="h-8 text-sm flex-1 sm:max-w-md min-w-0"
+            className="h-8 text-sm flex-1 sm:max-w-xs min-w-0"
           />
+          <Label className="text-xs text-black/55 shrink-0">Save to</Label>
+          <Select
+            value={studentId ?? undefined}
+            onValueChange={(id) =>
+              setSearchParams((p) => {
+                const c = new URLSearchParams(p);
+                c.set('student', id);
+                c.delete('session');
+                return c;
+              })
+            }
+          >
+            <SelectTrigger className="h-8 w-[180px] text-sm shrink-0">
+              <SelectValue placeholder="Pick a student" />
+            </SelectTrigger>
+            <SelectContent>
+              {students.map((s) => (
+                <SelectItem key={s.class_id} value={s.class_id}>
+                  {s.display_name ?? s.email ?? 'Student'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {studentId && sessions.length > 0 && (
+            <Select
+              value={sessionParam ?? undefined}
+              onValueChange={(id) =>
+                setSearchParams((p) => {
+                  const c = new URLSearchParams(p);
+                  c.set('session', id);
+                  return c;
+                })
+              }
+            >
+              <SelectTrigger className="h-8 w-[170px] text-sm shrink-0">
+                <SelectValue placeholder="Previous boards" />
+              </SelectTrigger>
+              <SelectContent>
+                {sessions.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.title} · {s.session_date}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           <AutosaveBadge status={autosave.status} lastSavedAt={autosave.lastSavedAt} />
           <Button
             size="sm"
