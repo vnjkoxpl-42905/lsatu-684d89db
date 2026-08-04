@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useClassId } from '@/hooks/useClassId';
 import { questionBank } from '@/lib/questionLoader';
@@ -10,8 +9,7 @@ import { computeAnalyticsFromRollup, type AnalyticsData, type OpportunityArea } 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LogoutButton } from '@/components/LogoutButton';
+import BreakdownPanel from '@/components/analytics/BreakdownPanel';
 import FlaggedQuestionsList from '@/components/analytics/FlaggedQuestionsList';
 import ImportedMetricsPanel from '@/components/analytics/ImportedMetricsPanel';
 import { Flag } from 'lucide-react';
@@ -97,27 +95,19 @@ const Analytics = () => {
   const sortedTypes = hasData ? Object.keys(data.accuracyByType).sort() : [];
 
   return (
-    <div className="min-h-screen bg-background">
+    // No header of its own: the classroom rail owns the way back, sign out and
+    // the theme toggle. The page keeps its own h1 — the rail is navigation, not
+    // the document's heading, and stripping the header left the page untitled.
+    <div className="bg-background">
+      <div className="max-w-7xl mx-auto pb-16">
+        <h1 className="text-3xl font-semibold tracking-tight mb-10">Analytics</h1>
 
-      {/* Header */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-        <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/classroom')}
-            className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Return to Main Hub
-          </Button>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium">Analytics</p>
-          <LogoutButton />
-          <ThemeToggle />
+        {/* Tag breakdowns. Self-contained: reads the student's own attempts and
+            the question bank, so it renders regardless of the rollup below. */}
+        <div className="mb-10">
+          <BreakdownPanel />
         </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8 pb-16">
         {loadError ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center">
             <p className="text-foreground text-sm font-medium">{loadError}</p>
