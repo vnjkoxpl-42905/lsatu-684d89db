@@ -1,0 +1,308 @@
+/*
+ * The Signal Observatory: Spot the Relationship's world.
+ *
+ * A night field. Near-black neutral with no blue drift, per the spec: the other
+ * worlds are a rail yard, a bench, a pressroom, an atelier and a chamber, and
+ * this one is the only one that is mostly empty space with points of light in
+ * it. The statement's words are stars; the relationship is the figure drawn
+ * between them.
+ *
+ * SVG and CSS transforms only. The balance beam tilts by rotate rather than by
+ * physics, which is the spec's own no-WebGL fallback promoted to the default.
+ */
+
+.observatory {
+  --ob-sky: 240 6% 6%;
+  --ob-sky-deep: 240 8% 3%;
+  --ob-star: 45 18% 88%;
+  --ob-ink: 44 14% 92%;
+  --ob-ink-dim: 240 5% 55%;
+  --ob-line: 45 20% 78%;
+  --ob-panel: 240 6% 13%;
+  --ob-edge: 240 6% 26%;
+
+  position: relative;
+  color: hsl(var(--ob-ink));
+  background:
+    radial-gradient(90% 70% at 50% 0%, hsl(var(--ob-sky) / 0.9), transparent 75%),
+    hsl(var(--ob-sky-deep));
+  overflow: hidden;
+}
+
+.observatory-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.observatory-type {
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  color: hsl(var(--ob-ink));
+}
+
+/* ---------- The field ---------- */
+
+/* Each word sits on the baseline grid with a star-point under it. */
+.ob-word {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.ob-word::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: hsl(var(--ob-star) / 0.4);
+  transform: translateX(-50%);
+}
+
+/* An indicator's star burns brighter once its figure is drawn, and not before:
+   lighting it early would answer the question. */
+.ob-word[data-anchor="true"][data-drawn="true"]::after {
+  width: 4px;
+  height: 4px;
+  background: hsl(var(--ob-star));
+  box-shadow: 0 0 6px hsl(var(--ob-star) / 0.8);
+}
+
+.ob-word[data-anchor="true"][data-drawn="true"] {
+  color: hsl(var(--ob-ink));
+}
+
+@keyframes ob-shimmer {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* The arrival shimmer: once, then still. */
+.ob-field[data-arriving="true"] .ob-word::after {
+  animation: ob-shimmer 200ms ease-in-out 1;
+}
+
+/* ---------- The three geometries ---------- */
+
+.ob-figure {
+  fill: none;
+  stroke: hsl(var(--ob-line));
+  stroke-linecap: round;
+}
+
+/* Conditional: a single hard, precise shaft. A rule. */
+.ob-figure[data-kind="conditional"] {
+  stroke-width: 1;
+}
+
+/* Causal: doubled, and thickening toward the effect. Something pushes. */
+.ob-figure[data-kind="causal"] {
+  stroke-width: 2;
+}
+
+/* Comparative: the beam. Weight, not direction. */
+.ob-figure[data-kind="comparative"] {
+  stroke-width: 1.5;
+}
+
+.ob-arrowhead {
+  fill: hsl(var(--ob-line));
+  stroke: none;
+}
+
+/* Drawn on verdict over 420ms. The dash length is set inline from the measured
+   path so the draw works at any span. */
+.ob-figure[data-draw="true"] {
+  animation: ob-draw 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ob-draw {
+  from {
+    stroke-dashoffset: var(--ob-len, 200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A wrongly named relationship: the shape is visibly tried, then dissolves. */
+.ob-figure[data-ghost="true"] {
+  stroke-dasharray: 3 3;
+  animation: ob-dissolve 900ms ease-out both;
+}
+
+@keyframes ob-dissolve {
+  0% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The balance beam tips toward the greater term. */
+.ob-beam {
+  transform-origin: center;
+  transition: transform 620ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.ob-beam[data-tipped="true"] {
+  transform: rotate(-6deg);
+}
+
+/* ---------- The three seals ---------- */
+
+.ob-seal {
+  position: relative;
+  border: 1px solid hsl(var(--ob-edge));
+  background: hsl(var(--ob-panel));
+  color: hsl(var(--ob-ink-dim));
+  transition:
+    border-color 320ms ease,
+    color 320ms ease;
+}
+
+/* Filled by real completions only. A thin ring of light, never confetti. */
+.ob-seal[data-lit="true"] {
+  border-color: hsl(var(--ob-star) / 0.8);
+  color: hsl(var(--ob-ink));
+  box-shadow: 0 0 0 1px hsl(var(--ob-star) / 0.25);
+}
+
+/* ---------- Captions ---------- */
+
+.ob-caption {
+  color: hsl(var(--ob-ink-dim));
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.ob-button {
+  border: 1px solid hsl(var(--ob-edge));
+  background: hsl(var(--ob-panel));
+  color: hsl(var(--ob-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.ob-button:hover:not(:disabled) {
+  border-color: hsl(var(--ob-ink) / 0.45);
+}
+
+.ob-button:disabled {
+  opacity: 0.55;
+}
+
+.ob-button[data-picked="true"] {
+  background: hsl(var(--ob-sky));
+  opacity: 1;
+}
+
+.ob-button[data-truth="true"] {
+  border-color: hsl(var(--ob-star));
+  box-shadow: inset 2px 0 0 hsl(var(--ob-star));
+  opacity: 1;
+}
+
+.ob-input {
+  border: 1px solid hsl(var(--ob-edge));
+  background: hsl(var(--ob-panel));
+  color: hsl(var(--ob-ink));
+  max-width: 34rem;
+}
+
+.ob-input::placeholder {
+  color: hsl(var(--ob-ink-dim) / 0.7);
+}
+
+/* The bare indicator in the speed round, alone on the sky. */
+.ob-flash {
+  color: hsl(var(--ob-ink));
+  text-shadow: 0 0 18px hsl(var(--ob-star) / 0.35);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes ob-resolve {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes ob-power-on {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ob-entrance-stars {
+  animation: ob-resolve 900ms ease both;
+}
+
+.ob-entrance-seal {
+  animation: ob-power-on 420ms ease both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .observatory *,
+  .observatory *::before,
+  .observatory *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* Figures appear already drawn rather than drawing, per the spec. */
+  .ob-figure[data-draw="true"] {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* A dissolve that is shortened to nothing would flash; it just stays faint. */
+  .ob-figure[data-ghost="true"] {
+    animation: none !important;
+    opacity: 0.35;
+  }
+
+  .ob-field[data-arriving="true"] .ob-word::after {
+    animation: none !important;
+  }
+
+  .ob-entrance-stars,
+  .ob-entrance-seal {
+    animation: none !important;
+    opacity: 1;
+    filter: none;
+  }
+}

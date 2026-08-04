@@ -70,6 +70,21 @@ import {
   buildTrapAutopsy,
 } from "@/features/activity-centre/worlds/chamber/wings/rounds";
 import { parseRebuttal, readResolution } from "@/features/activity-centre/worlds/chamber/chamber";
+import {
+  ObservatoryStage,
+  type SkyPhase,
+} from "@/features/activity-centre/worlds/observatory/ObservatoryStage";
+import { ObservatoryEntrance } from "@/features/activity-centre/worlds/observatory/ObservatoryEntrance";
+import { SpeedRound } from "@/features/activity-centre/worlds/observatory/wings/SpeedRound";
+import { ForgeStatement } from "@/features/activity-centre/worlds/observatory/wings/ForgeStatement";
+import {
+  buildForgeTasks,
+  buildSpeedRound,
+} from "@/features/activity-centre/worlds/observatory/wings/rounds";
+import {
+  parseSignal,
+  readAnswer,
+} from "@/features/activity-centre/worlds/observatory/observatory";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -91,6 +106,7 @@ const WORLDS = [
   { key: "press", label: "The Press" },
   { key: "atelier", label: "The Argument Atelier" },
   { key: "chamber", label: "The Debate Chamber" },
+  { key: "observatory", label: "The Signal Observatory" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -152,6 +168,7 @@ export default function ActivityLab() {
       {world === "press" ? <PressPanel /> : null}
       {world === "atelier" ? <AtelierPanel /> : null}
       {world === "chamber" ? <ChamberPanel /> : null}
+      {world === "observatory" ? <ObservatoryPanel /> : null}
     </div>
   );
 }
@@ -970,6 +987,169 @@ function ChamberPanel() {
       ) : null}
       {view === "match" ? <StrengthMatch round={matchRound} /> : null}
       {view === "autopsy" ? <TrapAutopsy round={autopsyRound} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Signal Observatory
+ * ------------------------------------------------------------------ */
+
+const SKY_VIEWS = ["field", "entrance", "speed", "forge"] as const;
+const SKY_PHASES: SkyPhase[] = ["arrival", "drawn"];
+
+/** Stand-in answers, so the real reader decides which figures draw. */
+const CALLS = [
+  { key: "credited", label: "the credited answer" },
+  { key: "type-only", label: "the type, no indicator" },
+  { key: "partial", label: "one of several" },
+  { key: "invented", label: "a relationship that is not there" },
+  { key: "none", label: "nothing yet" },
+] as const;
+type CallKey = (typeof CALLS)[number]["key"];
+
+function ObservatoryPanel() {
+  const str = SEED_ACTIVITIES.find((a) => a.slug === "spot-the-relationship")!;
+  const [view, setView] = useState<(typeof SKY_VIEWS)[number]>("field");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<SkyPhase>("arrival");
+  const [callKey, setCallKey] = useState<CallKey>("credited");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const item = str.items[index];
+  const signal = useMemo(() => parseSignal(item), [item]);
+
+  const response = useMemo(() => {
+    if (!signal || callKey === "none") return undefined;
+    if (callKey === "type-only") return signal.relations[0].kind;
+    if (callKey === "partial") {
+      const r = signal.relations[0];
+      return `${r.kind}, "${r.indicators[0]}"`;
+    }
+    if (callKey === "invented") {
+      const absent = (["conditional", "causal", "comparative"] as const).find(
+        (k) => !signal.relations.some((r) => r.kind === k),
+      );
+      return absent ?? item.credited_answers[0];
+    }
+    return item.credited_answers[0];
+  }, [signal, callKey, item]);
+
+  const reading = useMemo(
+    () => (signal && response ? readAnswer(signal, response) : null),
+    [signal, response],
+  );
+
+  // Lab-only seals: lit by which types this item's own relations cover.
+  const seals = useMemo(
+    () => ({
+      conditional: !!reading?.drawn.includes("conditional"),
+      causal: !!reading?.drawn.includes("causal"),
+      comparative: !!reading?.drawn.includes("comparative"),
+    }),
+    [reading],
+  );
+
+  const speedRound = useMemo(() => buildSpeedRound(str.items), [str.items]);
+  const forgeTasks = useMemo(() => buildForgeTasks(str.items), [str.items]);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={SKY_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Sky view"
+        />
+
+        {view === "field" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Statement
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("arrival");
+                }}
+              >
+                {str.items.map((it, i) => (
+                  <option key={it.order} value={i}>
+                    {it.order}. {it.prompt.slice(0, 44)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Call
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={callKey}
+                onChange={(e) => setCallKey(e.target.value as CallKey)}
+              >
+                {CALLS.map((c) => (
+                  <option key={c.key} value={c.key}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              drawn: <code>{reading?.drawn.join(", ") || "none"}</code> · missed:{" "}
+              <code>{reading?.missed.join(", ") || "none"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs options={SKY_PHASES} value={phase} onChange={(v) => setPhase(v)} label="Sky" />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "field" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            {signal ? (
+              <ObservatoryStage
+                signal={signal}
+                phase={phase}
+                reading={reading}
+                seals={seals}
+              />
+            ) : (
+              <div className="p-10 text-sm text-muted-foreground">
+                This item names no relationship, so there is no figure to draw.
+              </div>
+            )}
+          </div>
+          <SignalBox
+            title="Observation log"
+            level={item.category}
+            rows={[
+              ["Relationships", String(signal?.relations.length ?? 0)],
+              ["Declared", signal?.declared === null ? "none" : String(signal?.declared)],
+              [
+                "Indicators",
+                signal?.relations.flatMap((r) => r.indicators).join(", ") || "none",
+              ],
+            ]}
+            note={item.explanation}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <ObservatoryEntrance key={entranceRun} onDone={() => setView("field")} />
+      ) : null}
+      {view === "speed" ? <SpeedRound round={speedRound} /> : null}
+      {view === "forge" ? <ForgeStatement tasks={forgeTasks} /> : null}
     </>
   );
 }
