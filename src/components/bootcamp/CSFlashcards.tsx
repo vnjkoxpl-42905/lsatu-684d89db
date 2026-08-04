@@ -193,9 +193,9 @@ const CSFlashcards: React.FC = () => {
                   onClick={() => changeCard('prev')}
                   disabled={activeDeck.cards.length < 2}
                   aria-label="Previous card"
-                  className="p-2 rounded-full text-punk-sub hover:text-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-8 h-8 rounded-full border border-punk-sub/30 flex items-center justify-center text-punk-sub hover:text-punk-text hover:border-punk-cyan transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <ArrowIcon direction="left" className="w-5 h-5" />
+                  <ArrowIcon direction="left" className="w-4 h-4" />
                 </button>
                 <div className="text-[11px] uppercase tracking-[0.2em] text-punk-sub font-mono">
                   {currentCardIndex + 1} / {activeDeck.cards.length}
@@ -204,9 +204,9 @@ const CSFlashcards: React.FC = () => {
                   onClick={() => changeCard('next')}
                   disabled={activeDeck.cards.length < 2}
                   aria-label="Next card"
-                  className="p-2 rounded-full text-punk-sub hover:text-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-8 h-8 rounded-full border border-punk-sub/30 flex items-center justify-center text-punk-sub hover:text-punk-text hover:border-punk-cyan transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <ArrowIcon direction="right" className="w-5 h-5" />
+                  <ArrowIcon direction="right" className="w-4 h-4" />
                 </button>
               </>
             )}
