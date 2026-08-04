@@ -252,6 +252,17 @@ const App = () => {
                 sessions, per-student scoping. /admin/board was a bare Excalidraw
                 with no save and no way to get a board back, so it forwards. */}
             <Route path="/admin/board" element={<Navigate to="/teacher/whiteboard" replace />} />
+            {/* The board is a teaching surface, not a workspace room: Joshua
+                teaches off it, so it takes the whole viewport with no rail and
+                no workspace header. That is why it sits here rather than as a
+                child of /teacher, which would draw it inside the shell. */}
+            <Route path="/teacher/whiteboard" element={
+              <ProtectedRoute requireAdmin>
+                <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+                  <TeacherSmartboard />
+                </React.Suspense>
+              </ProtectedRoute>
+            } />
             <Route path="/admin/drive-files" element={
               <ProtectedRoute requireAdmin>
                 <AdminErrorBoundary routeLabel="/admin/drive-files">
@@ -603,12 +614,6 @@ const App = () => {
                       <Route path="insights/:topicId/students/:studentId" element={
                         <React.Suspense fallback={<div />}>
                           <TeacherStudentBootcampDetail />
-                        </React.Suspense>
-                      } />
-                      {/* Reached from the shell header, not the sidebar. */}
-                      <Route path="whiteboard" element={
-                        <React.Suspense fallback={<div />}>
-                          <TeacherSmartboard />
                         </React.Suspense>
                       } />
                       <Route path="dev" element={

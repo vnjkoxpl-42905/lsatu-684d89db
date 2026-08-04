@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2 } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2 } from 'lucide-react';
 import '@excalidraw/excalidraw/index.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,7 @@ const Excalidraw = lazy(() =>
 
 export default function TeacherSmartboard() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const studentId = searchParams.get('student');
   const sessionParam = searchParams.get('session');
 
@@ -122,10 +123,21 @@ export default function TeacherSmartboard() {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col h-full w-full bg-white [&:fullscreen]:h-screen [&:fullscreen]:w-screen"
+      className="flex flex-col h-screen w-screen bg-white"
     >
       <section className="flex flex-col flex-1 min-h-0">
         <div className="px-3 sm:px-4 py-3 border-b border-black/12 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+          {/* No rail on this route — the board owns the viewport — so this is
+              the only way back to the workspace. */}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="shrink-0 px-2"
+            onClick={() => navigate('/teacher/today')}
+            aria-label="Back to Teacher Workspace"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
           <PencilRuler className="w-4 h-4 text-black/45 shrink-0" />
           <Input
             value={title}
