@@ -1040,7 +1040,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: var(--observatory-well) !important;
   border: 0 !important;
   border-radius: 999px !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring) !important;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
   color: var(--observatory-ink) !important;
   font-size: var(--observatory-text-body) !important;
   font-weight: 400 !important;
@@ -1051,7 +1051,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: var(--observatory-well) !important;
   border: 0 !important;
   border-radius: var(--observatory-radius-control) !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring) !important;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
   color: var(--observatory-ink) !important;
   font-size: var(--observatory-text-body) !important;
   font-weight: 500 !important;
@@ -1063,11 +1063,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    obvious selector (span[data-placeholder]) matches nothing and every select
    renders at full ivory whether or not it holds a value. */
 .drill-observatory-console button[role="combobox"][data-placeholder] {
-  color: var(--observatory-ink-45) !important;
+  color: var(--observatory-ink-70) !important;
 }
 
 .drill-observatory-console input[type="search"]::placeholder {
-  color: var(--observatory-ink-45) !important;
+  color: var(--observatory-ink-70) !important;
 }
 
 .drill-observatory-console input[type="search"]:focus-visible,
@@ -1079,7 +1079,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .drill-observatory-console button[role="combobox"] svg {
-  color: var(--observatory-ink-45) !important;
+  color: var(--observatory-ink-70) !important;
   opacity: 1 !important;
   stroke-width: 1.8;
 }
@@ -1153,7 +1153,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .drill-observatory-disclosure {
   align-items: center;
-  color: var(--observatory-ink-45);
+  color: var(--observatory-ink-70);
   display: inline-flex;
   gap: var(--observatory-space-2);
   transition: color var(--observatory-motion);
