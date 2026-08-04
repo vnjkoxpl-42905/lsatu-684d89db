@@ -90,7 +90,7 @@ export default function OfficialQuestionPane({
     cleanAnswerChoice(key, text),
   ] as const);
 
-  const baseSize = 14 * fontScale;
+  const baseSize = 16 * fontScale;
   const officialContentTextStyle: React.CSSProperties = {
     color: "#111827",
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -101,10 +101,21 @@ export default function OfficialQuestionPane({
   const stimStyle: React.CSSProperties = {
     ...officialContentTextStyle,
     fontFamily: "Fraunces, ui-serif, Georgia, serif",
-    fontSize: `${15 * fontScale}px`,
+    fontSize: `${17 * fontScale}px`,
     lineHeight: 1.7,
+    // Fraunces is a variable font with an optical-size axis. Left on `auto` the
+    // browser picks the cut from the rendered px size, which drifts as the
+    // student changes fontScale. Pin it to the text-optimised end so hairlines
+    // stay the same weight at every scale.
+    fontOpticalSizing: "none",
+    fontVariationSettings: '"opsz" 14',
   };
   const stemStyle: React.CSSProperties = officialContentTextStyle;
+  // The answer-choice text and letter badges used Tailwind's `text-sm`/`text-xs`,
+  // which are hard px values and silently overrode the inherited scaled size —
+  // so fontScale grew the stimulus and stem while the answers stayed at 14px.
+  const choiceTextStyle: React.CSSProperties = { fontSize: `${baseSize}px` };
+  const choiceBadgeStyle: React.CSSProperties = { fontSize: `${baseSize * 0.78}px` };
 
   return (
     <div className="relative flex flex-col h-full bg-white text-slate-950">
@@ -113,7 +124,13 @@ export default function OfficialQuestionPane({
         <div
           className={cn(
             "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 whitespace-pre-wrap overflow-y-auto",
-            "antialiased",
+            // Cap the reading measure. The frame is max-w-[1400px] and this column
+            // takes 53fr of it, which ran ~100 characters per line — well past the
+            // 45-75 readable band. `ch` is the width of "0", which is narrow in
+            // Fraunces, so 52ch measures out to ~68 real characters.
+            "[&>*]:max-w-[52ch]",
+            // Fraunces is high-contrast; grayscale smoothing thins its hairlines.
+            "subpixel-antialiased",
             "selection:bg-blue-100 selection:text-slate-950",
             "[&_p]:mb-4 [&_p:last-child]:mb-0",
             "bg-white",
@@ -200,13 +217,14 @@ export default function OfficialQuestionPane({
                     onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                     disabled={isEliminated || answerRevealed}
                     className={cn(
-                      "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border text-xs font-semibold transition-all",
+                      "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border font-semibold transition-all",
                       isCorrect
                         ? "border-green-600 bg-green-500 text-white"
                         : isSelected
                         ? "border-slate-900 bg-slate-900 text-white"
                         : "border-transparent text-slate-950 group-hover:border-slate-300",
                     )}
+                    style={choiceBadgeStyle}
                   >
                     {key}
                   </button>
@@ -215,13 +233,14 @@ export default function OfficialQuestionPane({
                     onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                     disabled={isEliminated || answerRevealed}
                     className={cn(
-                      "text-left text-sm leading-relaxed transition-colors",
+                      "text-left leading-relaxed transition-colors",
                       isCorrect
                         ? "text-green-900"
                         : isSelected
                         ? "text-slate-950"
                         : "text-slate-950 group-hover:text-slate-950",
                     )}
+                    style={choiceTextStyle}
                   >
                     {text}
                   </button>

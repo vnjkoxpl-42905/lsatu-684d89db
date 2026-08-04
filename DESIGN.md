@@ -48,8 +48,16 @@ typography:
     fontWeight: 650
     lineHeight: 1.12
   drill-stimulus:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
-    fontSize: "20px"
+    fontFamily: "Fraunces, ui-serif, Georgia, serif"
+    fontSize: "17px"
+    fontWeight: 400
+    lineHeight: 1.7
+    fontVariationSettings: "'opsz' 14"
+    fontOpticalSizing: "none"
+    maxWidth: "52ch"
+  drill-question:
+    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif"
+    fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.6
   label:
@@ -147,21 +155,26 @@ The palette is best read as one tokenized chassis plus three hand-painted rooms.
 ## 3. Typography
 
 **Shell Font:** Outfit (with `ui-sans-serif, system-ui, -apple-system` fallback)
-**Drill Font:** native system stack (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI"`)
+**Drill Fonts:** Fraunces for the stimulus; `"Helvetica Neue", Helvetica, Arial` for the question stem and answer choices.
 **Bootcamp Fonts:** scoped per world (Georgia serif for Main Conclusion lessons and Fallacy/Flaw display, Inter for MC sans).
 
-**Character:** The shell runs Outfit, a warm geometric sans, with OpenType features on (`cv11`, `calt`). The drill zone deliberately switches to the native Apple system stack so it reads as a focused, OS-native workspace distinct from the warm-serif lessons. Bootcamps each carry their own pairing.
+**Character:** The shell runs Outfit, a warm geometric sans, with OpenType features on (`cv11`, `calt`). The drill zone runs a deliberate two-family pairing: the stimulus is set in Fraunces so the argument reads as a document, and the stem plus answer choices are set in a neutral grotesque so the task reads as interface. That contrast is the point — it tells a student at a glance which half of the screen is the thing being reasoned about and which half is the thing being answered. Bootcamps each carry their own pairing.
+
+Because Fraunces is a variable font with an optical-size axis, the drill pins `font-optical-sizing: none` with `"opsz" 14`. Left on `auto` the cut drifts as the student changes text size, and the hairlines thin out at the larger settings.
 
 ### Hierarchy
 - **Display / Drill hero title** (650 weight, 24px, line-height 1.12): drill question titles; Apple-tight letter-spacing.
 - **Headline** (600–700, 18–20px): section heads, step titles.
-- **Stimulus / argument text** (400, 20px, line-height 1.6): the close-reading surface in drills; the only place type runs large and airy.
+- **Stimulus / argument text** (Fraunces, 400, 17px, line-height 1.7, capped at 52ch): the close-reading surface in drills; the only place type runs airy, and the only serif in the drill zone.
+- **Question stem / answer choices** (400, 16px, line-height 1.6): the task half of the drill, in the neutral grotesque.
 - **Body** (400, 14px mobile / 16px desktop, line-height 1.6): shell body copy. Cap prose at 65–75ch.
 - **Label / eyebrow** (700, 13px, uppercase, `soft` color): meta labels, eyebrows, section tags.
 - **KPI number** (700, 42px, tabular): drill review scores.
 
 ### Named Rules
-**The No-Serif-In-Drills Rule.** Serif stays in lessons. Drills and the shell are sans-only. A student moving from a warm-serif lesson into a drill should feel they entered a focused workspace, not a different product.
+**The Serif-Is-The-Stimulus Rule.** Inside a drill, serif marks exactly one thing: the argument under examination. The stimulus is Fraunces; the stem, the answer choices, the toolbar, and every control around them are sans. Serif never leaks into the task half or the chrome. The shell stays sans-only. (This supersedes the older No-Serif-In-Drills rule, which predated the two-family drill pairing.)
+
+**The Measure Rule.** The stimulus is capped at `52ch`. Note that `ch` is the width of the "0" glyph, which is narrow in Fraunces — 52ch measures out to roughly 60 real characters, inside the 45–75 readable band. Do not re-tune this by the `ch` number alone; measure the rendered characters per line.
 
 **The Tabular-Numerals Rule.** Counters, scores, and KPIs use tabular figures so digits never jitter as values change.
 
