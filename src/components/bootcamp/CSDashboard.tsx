@@ -1,7 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  PolarAngleAxis,
+  PolarGrid,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { MODULES, Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
 import { QuestionModuleId } from '@/types/causationStation';
+import CSKpiCard from '@/components/bootcamp/CSKpiCard';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +28,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
+const PUNK_TOOLTIP_STYLE = {
+  backgroundColor: '#0B1118',
+  border: '1px solid rgba(155,176,200,0.2)',
+  borderRadius: 8,
+  fontSize: 12,
+  color: '#EAF2FF',
+};
 
 interface CSDashboardProps {
   onStartDrill: (module: Module) => void;
@@ -193,29 +217,134 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
     return MODULES.find(m => m.id === savedDrillModuleId);
   }, [savedDrillModuleId]);
 
+  const chartData = useMemo(
+    () =>
+      MODULES.map((module) => ({
+        name: module.name.replace(/^Module \d+: /, ''),
+        accuracy: stats.moduleProgress[module.id].accuracy,
+        graded: stats.moduleProgress[module.id].graded,
+      })),
+    [stats.moduleProgress],
+  );
+
+  // Accuracy Trend: running accuracy over graded attempts, in the order they
+  // happened. Real data, not the source prototype's mock series — just the
+  // same chart shape/visual treatment.
+  const trendData = useMemo(() => {
+    const graded = attemptHistory
+      .filter((attempt) => !attempt.ungraded)
+      .slice()
+      .sort((a, b) => new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime());
+    let correctSoFar = 0;
+    return graded.map((attempt, index) => {
+      if (attempt.correct) correctSoFar += 1;
+      return {
+        index: index + 1,
+        accuracy: Math.round((correctSoFar / (index + 1)) * 100),
+      };
+    });
+  }, [attemptHistory]);
+
+  // Common Pitfalls: real per-module error rate (100 - accuracy), one axis
+  // per module. Same radar shape as the source prototype's mock "pitfalls"
+  // series, driven by actual attempt data instead of static categories.
+  const pitfallData = useMemo(
+    () =>
+      MODULES.map((module) => ({
+        name: module.name.replace(/^Module \d+: /, ''),
+        errorRate: stats.moduleProgress[module.id].graded > 0 ? 100 - stats.moduleProgress[module.id].accuracy : 0,
+      })),
+    [stats.moduleProgress],
+  );
+
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6">
-        {[
-          ['Accuracy', `${stats.overallAccuracy}%`],
-          ['Attempted', `${stats.total}`],
-          ['Avg. time', `${stats.avgTime}s`],
-          ['Streak', `${stats.currentStreak}`],
-        ].map(([label, value]) => (
-          <div key={label} className="rounded-xl bg-card border border-border shadow-sm p-4">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
-            <p className="text-2xl font-semibold text-foreground mt-1">{value}</p>
-          </div>
-        ))}
+        <CSKpiCard label="Accuracy" value={`${stats.overallAccuracy}%`} />
+        <CSKpiCard label="Attempted" value={`${stats.total}`} />
+        <CSKpiCard label="Avg. time" value={`${stats.avgTime}s`} />
+        <CSKpiCard label="Streak" value={`${stats.currentStreak}`} />
       </div>
 
-      <div className="rounded-xl bg-card border border-border shadow-sm p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {stats.total > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+          <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-5 lg:col-span-2">
+            <h3 className="text-sm font-semibold text-punk-text mb-4">Accuracy by module</h3>
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="csPunkBarGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#FF1AFF" />
+                      <stop offset="100%" stopColor="#00FFF0" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(155,176,200,0.15)" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9BB0C8' }} interval={0} />
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fontSize: 11, fill: '#9BB0C8' }}
+                    tickFormatter={(v) => `${v}%`}
+                    width={36}
+                  />
+                  <Tooltip
+                    formatter={(value: number, _name, entry) => [
+                      `${value}% (${entry.payload.graded} graded)`,
+                      'Accuracy',
+                    ]}
+                    contentStyle={PUNK_TOOLTIP_STYLE}
+                  />
+                  <Bar dataKey="accuracy" fill="url(#csPunkBarGradient)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-5">
+            <h3 className="text-sm font-semibold text-punk-text mb-4">Accuracy trend</h3>
+            <div className="h-40">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={trendData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(155,176,200,0.15)" vertical={false} />
+                  <XAxis dataKey="index" tick={{ fontSize: 11, fill: '#9BB0C8' }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#9BB0C8' }} tickFormatter={(v) => `${v}%`} width={36} />
+                  <Tooltip formatter={(value: number) => [`${value}%`, 'Accuracy']} contentStyle={PUNK_TOOLTIP_STYLE} />
+                  <Line
+                    type="monotone"
+                    dataKey="accuracy"
+                    stroke="#00FFF0"
+                    strokeWidth={2}
+                    dot={false}
+                    activeDot={{ r: 4, style: { filter: 'drop-shadow(0 0 8px #00FFF0)' } }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-5">
+            <h3 className="text-sm font-semibold text-punk-text mb-4">Common pitfalls</h3>
+            <div className="h-40">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={pitfallData}>
+                  <PolarGrid stroke="rgba(155,176,200,0.2)" />
+                  <PolarAngleAxis dataKey="name" tick={{ fontSize: 10, fill: '#9BB0C8' }} />
+                  <Radar dataKey="errorRate" stroke="#FF1AFF" fill="#FF1AFF" fillOpacity={0.3} />
+                  <Tooltip formatter={(value: number) => [`${value}%`, 'Error rate']} contentStyle={PUNK_TOOLTIP_STYLE} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Recommended next</p>
-          <h3 className="text-sm font-semibold text-foreground mt-1">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-punk-sub">Recommended next</p>
+          <h3 className="text-sm font-semibold text-punk-text mt-1">
             {savedDrillModuleId && recommendedModule ? `Resume ${recommendedModule.name}` : recommendedModule?.name}
           </h3>
-          <p className="text-xs text-muted-foreground mt-1 max-w-xl">
+          <p className="text-xs text-punk-sub mt-1 max-w-xl">
             {stats.total === 0
               ? 'Start a module to populate accuracy, journal entries, and next-action guidance.'
               : 'Continue with the least-worked module or resume the active drill.'}
@@ -224,41 +353,50 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
         {recommendedModule ? (
           <button
             onClick={() => handleDrillButtonClick(recommendedModule)}
-            className="rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+            className="rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-6 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150"
           >
             {savedDrillModuleId ? 'Resume Drill' : 'Start Drill'}
           </button>
         ) : null}
       </div>
 
-      <div className="rounded-xl bg-card border border-border shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-foreground mb-4">Skill Drills</h3>
+      <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-5">
+        <h3 className="text-sm font-semibold text-punk-text mb-4">Skill Drills</h3>
         <div className="space-y-6">
           {MODULES.map(mod => {
             const isResume = mod.id === savedDrillModuleId;
             const moduleStats = stats.moduleProgress[mod.id];
+            const masteryPct = moduleStats.graded > 0 ? moduleStats.accuracy : 0;
 
             return (
-              <div key={mod.id} className="rounded-xl bg-card border border-border shadow-sm p-5 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div key={mod.id} className="bg-punk-base/50 border border-punk-sub/20 rounded-lg p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="flex-grow w-full flex flex-col">
-                  <h4 className="text-sm font-semibold text-foreground">{mod.name}</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">{mod.description}</p>
-                  <div className="grid grid-cols-3 gap-3 mt-4 max-w-md">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Accuracy</p>
-                      <p className="text-sm font-semibold text-foreground">
+                  <h4 className="font-semibold text-punk-text">{mod.name}</h4>
+                  <p className="text-sm text-punk-sub mb-2">{mod.description}</p>
+                  <div className="mt-2 space-y-1">
+                    <div className="flex justify-between items-baseline mb-1">
+                      <span className="font-semibold text-punk-sub uppercase tracking-wider text-xs">Mastery</span>
+                      <span className="font-mono text-2xl text-punk-cyan drop-shadow-neon-cyan">
                         {moduleStats.graded > 0 ? `${moduleStats.accuracy}%` : '—'}
-                      </p>
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Seen</p>
-                      <p className="text-sm font-semibold text-foreground">
-                        {moduleStats.seen}/{moduleStats.available}
-                      </p>
+                    <div className="w-full bg-punk-panel rounded-full h-3 border border-punk-sub/20">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-punk-magenta to-punk-cyan shadow-neon-cyan transition-all duration-500"
+                        style={{ width: `${masteryPct}%` }}
+                      />
                     </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Avg.</p>
-                      <p className="text-sm font-semibold text-foreground">{moduleStats.avgTime}s</p>
+                    <div className="grid grid-cols-3 gap-3 mt-3 max-w-md">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-punk-sub">Seen</p>
+                        <p className="text-sm font-semibold text-punk-text">
+                          {moduleStats.seen}/{moduleStats.available}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-punk-sub">Avg.</p>
+                        <p className="text-sm font-semibold text-punk-text">{moduleStats.avgTime}s</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -267,21 +405,21 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
                   {isResume ? (
                     <button
                       onClick={() => handleDrillButtonClick(mod)}
-                      className="rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2 hover:bg-accent transition-colors duration-150"
+                      className="rounded-full border border-punk-sub text-punk-sub text-sm font-medium px-5 py-2 hover:text-punk-text hover:border-punk-text transition-colors duration-150"
                     >
                       Resume Drill
                     </button>
                   ) : (
                     <button
                       onClick={() => handleDrillButtonClick(mod)}
-                      className="rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+                      className="rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150"
                     >
                       Start Drill
                     </button>
                   )}
                   <button
                     onClick={() => handleResetClick(mod)}
-                    className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                    className="text-xs text-punk-sub hover:text-punk-red transition-colors"
                   >
                     Reset Module
                   </button>
@@ -294,50 +432,50 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill }) => {
 
       {/* Resume Modal */}
       <AlertDialog open={isResumeModalOpen} onOpenChange={setIsResumeModalOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-punk-panel border-punk-sub/20 shadow-neon-magenta text-punk-text">
           <AlertDialogHeader>
-            <AlertDialogTitle>Drill in Progress</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-punk-cyan">Drill in Progress</AlertDialogTitle>
+            <AlertDialogDescription className="text-punk-sub">
               You have an unfinished drill for "{selectedModuleForAction?.name}". Would you like to resume where you left off or start a new one? Starting a new drill will erase your previous progress.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleStartNew}>Start New</AlertDialogCancel>
-            <AlertDialogAction onClick={handleResume}>Resume Drill</AlertDialogAction>
+            <AlertDialogCancel onClick={handleStartNew} className="bg-transparent border border-punk-sub text-punk-sub hover:text-punk-text hover:bg-punk-base">Start New</AlertDialogCancel>
+            <AlertDialogAction onClick={handleResume} className="bg-punk-cyan text-punk-base hover:bg-white hover:shadow-neon-cyan">Resume Drill</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       {/* Overwrite Modal */}
       <AlertDialog open={isOverwriteModalOpen} onOpenChange={setIsOverwriteModalOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-punk-panel border-punk-sub/20 shadow-neon-magenta text-punk-text">
           <AlertDialogHeader>
-            <AlertDialogTitle>Discard Existing Progress?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-punk-cyan">Discard Existing Progress?</AlertDialogTitle>
+            <AlertDialogDescription className="text-punk-sub">
               You have an unfinished drill for "{savedModuleInProgress?.name}". Starting a new drill for "{selectedModuleForAction?.name}" will erase your previous progress. Are you sure?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelOverwrite}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmOverwrite}>Discard & Start</AlertDialogAction>
+            <AlertDialogCancel onClick={handleCancelOverwrite} className="bg-transparent border border-punk-sub text-punk-sub hover:text-punk-text hover:bg-punk-base">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmOverwrite} className="bg-punk-magenta text-punk-base hover:shadow-neon-magenta">Discard & Start</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       {/* Reset Modal */}
       <AlertDialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-punk-panel border-punk-sub/20 shadow-neon-magenta text-punk-text">
           <AlertDialogHeader>
-            <AlertDialogTitle>Reset Module Progress?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-punk-cyan">Reset Module Progress?</AlertDialogTitle>
+            <AlertDialogDescription className="text-punk-sub">
               This will reset the question bank for "{selectedModuleForAction?.name}". You will start seeing questions you've already answered again. If you have an active drill for this module, it will also be erased.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCloseResetModal}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={handleCloseResetModal} className="bg-transparent border border-punk-sub text-punk-sub hover:text-punk-text hover:bg-punk-base">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmReset}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-punk-red text-punk-text hover:shadow-neon-red"
             >
               Reset Module
             </AlertDialogAction>

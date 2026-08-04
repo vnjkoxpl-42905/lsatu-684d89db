@@ -4,6 +4,7 @@ import { Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
 import CSQuestionCard from './CSQuestionCard';
 import CSModuleIntro from './CSModuleIntro';
+import CSTutorChat from './CSTutorChat';
 
 interface CSDrillPlayerProps {
   module: Module;
@@ -275,23 +276,23 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
 
   if (isLoadingQuestions) {
     return (
-      <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
+      <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 text-center">
         <div className="flex justify-center mb-4">
-          <div className="w-6 h-6 border border-t-foreground/30 rounded-full animate-spin" />
+          <div className="w-6 h-6 border border-t-punk-cyan/60 rounded-full animate-spin" />
         </div>
-        <p className="text-sm text-muted-foreground">Loading drill...</p>
+        <p className="text-sm text-punk-cyan animate-pulse">Loading drill...</p>
       </div>
     );
   }
 
   if (bankExhausted) {
     return (
-      <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
-        <h2 className="text-lg font-semibold text-foreground mb-2">Module Complete!</h2>
-        <p className="text-sm text-muted-foreground mb-4">You have attempted all available questions in this module's bank. Your progress has been reset for your next attempt.</p>
+      <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 text-center">
+        <h2 className="text-lg font-semibold text-punk-lime mb-2">Module Complete!</h2>
+        <p className="text-sm text-punk-sub mb-4">You have attempted all available questions in this module's bank. Your progress has been reset for your next attempt.</p>
         <button
           onClick={onEndDrill}
-          className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+          className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150"
         >
           Back to Dashboard
         </button>
@@ -301,12 +302,12 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
 
   if (!currentQuestion) {
     return (
-      <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
-        <h2 className="text-lg font-semibold text-foreground mb-2">Error</h2>
-        <p className="text-sm text-muted-foreground mb-4">Could not load questions for this module.</p>
+      <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 text-center">
+        <h2 className="text-lg font-semibold text-punk-magenta mb-2">Error</h2>
+        <p className="text-sm text-punk-sub mb-4">Could not load questions for this module.</p>
         <button
           onClick={onEndDrill}
-          className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+          className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150"
         >
           Back to Dashboard
         </button>
@@ -318,19 +319,20 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
     <div className="space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold text-foreground">{module.name}</h2>
+        <h2 className="text-lg font-semibold text-punk-text">{module.name}</h2>
         <div className="flex items-center gap-4">
           {isModule4 && (
-            <div className="flex items-center gap-1.5 font-mono text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-lg border border-border">
+            <div className="flex items-center gap-1.5 font-mono text-sm text-punk-cyan bg-punk-panel px-4 py-2 rounded-md border border-punk-sub/20">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clipRule="evenodd" />
               </svg>
               {formattedQuestionTime}
             </div>
           )}
+          <CSTutorChat />
           <button
             onClick={onEndDrill}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm text-punk-sub hover:text-punk-text transition-colors"
           >
             End Drill
           </button>
@@ -339,9 +341,9 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
 
       <div className="max-w-3xl mx-auto w-full space-y-6">
         {module.id === 'correlation-causation' && (
-          <div className="bg-card border border-border rounded-lg py-2 px-4 flex justify-between items-center">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Question {currentQuestionIndex + 1}</span>
-            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Score: {score}</span>
+          <div className="bg-punk-panel/50 border border-punk-sub/20 rounded-lg py-2 px-4 flex justify-between items-center">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-punk-sub">Question {currentQuestionIndex + 1}</span>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-punk-sub">Score: {score}</span>
           </div>
         )}
 
@@ -356,9 +358,9 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
         />
 
         {isRevealed && showModelAnswer && (module.id === 'common-causes' || module.id === 'reverse-causality') && (
-          <div className="rounded-xl bg-card border border-border shadow-sm p-6">
-            <h3 className="text-sm font-semibold text-sky-600 dark:text-sky-400 mb-1">Model Answer</h3>
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{currentQuestion.explanation}</p>
+          <div className="animate-fade-in bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6">
+            <h3 className="text-sm font-semibold text-punk-cyan mb-1">Model Answer</h3>
+            <p className="text-sm text-punk-sub whitespace-pre-wrap">{currentQuestion.explanation}</p>
           </div>
         )}
 
@@ -366,14 +368,14 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
           <button
             onClick={() => goToQuestion(currentQuestionIndex - 1)}
             disabled={currentQuestionIndex === 0}
-            className="inline-flex items-center rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2 hover:bg-accent transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center rounded-full border border-punk-sub text-punk-sub text-sm font-medium px-5 py-2 hover:text-punk-text hover:border-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Previous
           </button>
           <button
             onClick={() => goToQuestion(currentQuestionIndex + 1)}
             disabled={!isRevealed}
-            className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100"
           >
             {currentQuestionIndex === questions.length - 1 ? 'Finish Drill' : 'Next Question'}
           </button>

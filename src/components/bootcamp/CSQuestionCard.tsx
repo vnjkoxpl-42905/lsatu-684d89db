@@ -74,7 +74,7 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
       parts.push(
         <mark
           key={`${highlight.start}-${highlight.end}`}
-          style={{ backgroundColor: 'rgba(251,191,36,0.3)', cursor: 'inherit' }}
+          className="stimulus-highlight"
           onClick={() => handleRemoveHighlight(highlight.start, highlight.end)}
         >
           {text.substring(highlight.start, highlight.end)}
@@ -165,17 +165,17 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
   const getChoiceClassName = (index: number): string => {
     if (!isRevealed) {
       if (selectedAnswer === index) {
-        return 'bg-sky-500/10 border-sky-500';
+        return 'bg-punk-cyan/20 border-punk-cyan';
       }
-      return 'border-border hover:bg-accent hover:border-foreground/30';
+      return 'border-punk-sub/20 hover:bg-punk-panel/80 hover:border-punk-cyan';
     }
     if (index === question.correctIndex) {
-      return 'bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-400';
+      return 'bg-punk-lime/20 border-punk-lime text-punk-text';
     }
     if (index === selectedAnswer && index !== question.correctIndex) {
-      return 'bg-red-500/10 border-red-500 text-red-700 dark:text-red-400';
+      return 'bg-punk-magenta/20 border-punk-magenta';
     }
-    return 'border-border opacity-40';
+    return 'border-punk-sub/20 opacity-60';
   };
 
   const stimulusText = question.stimulus || (isModule1 || isModule2 || isModule3 ? question.stem : '');
@@ -190,10 +190,10 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
   };
 
   return (
-    <div className="rounded-xl bg-card border border-border shadow-sm p-6">
+    <div className={`bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 ${isEraserActive ? 'eraser-active' : ''}`}>
       {isModule4 && (
-        <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
-          <span className="text-sm italic text-muted-foreground">
+        <div className="flex justify-between items-center mb-6 pb-4 border-b border-punk-sub/20">
+          <span className="text-sm italic text-punk-sub">
             {formatSourcePt(question.sourcePT)}
           </span>
           <div className="flex items-center gap-2">
@@ -202,8 +202,8 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
               aria-pressed={isHighlighterActive}
               className={`p-2 rounded-md transition-colors ${
                 isHighlighterActive
-                  ? 'bg-amber-400/20 text-amber-500'
-                  : 'bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground'
+                  ? 'bg-yellow-500/30 text-yellow-300'
+                  : 'bg-transparent text-punk-sub hover:bg-punk-panel hover:text-punk-text'
               }`}
               title={isHighlighterActive ? 'Deactivate Highlighter' : 'Activate Highlighter'}
             >
@@ -219,10 +219,10 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
               aria-pressed={isEraserActive}
               className={`p-2 rounded-md transition-colors ${
                 isEraserActive
-                  ? 'bg-red-400/20 text-red-500'
+                  ? 'bg-red-500/30 text-red-400'
                   : highlights.length === 0
-                  ? 'text-muted-foreground/30 cursor-not-allowed'
-                  : 'bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground'
+                  ? 'text-punk-sub/30 cursor-not-allowed'
+                  : 'bg-transparent text-punk-sub hover:bg-punk-panel hover:text-punk-text'
               }`}
               title={isEraserActive ? 'Deactivate Eraser' : 'Activate Eraser'}
             >
@@ -240,13 +240,13 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
         <p
           ref={stimulusRef}
           onMouseUp={handleMouseUp}
-          className={`text-sm leading-relaxed text-foreground mb-4 ${isHighlighterActive ? 'cursor-text' : ''}`}
+          className={`font-punk-serif text-sm leading-relaxed text-punk-text mb-4 ${isHighlighterActive ? 'cursor-text' : ''}`}
         >
           {getHighlightedText(stimulusText, highlights)}
         </p>
       )}
       {questionText && (
-        <p className="text-sm font-semibold text-foreground">
+        <p className="font-punk-serif text-sm font-semibold text-punk-text">
           {questionText}
         </p>
       )}
@@ -259,7 +259,7 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
             disabled={isRevealed}
             className={`w-full text-left p-4 rounded-lg border transition-all duration-200 flex items-start ${getChoiceClassName(index)}`}
           >
-            <span className="font-mono mr-4 text-muted-foreground">
+            <span className="font-mono mr-4 text-punk-sub">
               {String.fromCharCode(65 + index)}.
             </span>
             <span className="flex-1">{choice.text}</span>
@@ -269,23 +269,23 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
         {isModule2 && (
           <div className="space-y-4">
             <div>
-              <label className="block text-sky-600 dark:text-sky-400 mb-2 font-semibold text-sm">Alternate Cause (Third Factor)</label>
+              <label className="block text-punk-cyan mb-2 font-semibold text-sm">Alternate Cause (Third Factor)</label>
               <textarea
                 value={thirdFactor}
                 onChange={(e) => setThirdFactor(e.target.value)}
                 placeholder="What hidden factor could cause BOTH the original cause and effect?"
-                className="w-full rounded-lg bg-secondary border border-border p-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full rounded-lg bg-punk-base border border-punk-sub/30 p-3 text-sm text-punk-text focus:outline-none focus:ring-1 focus:ring-punk-cyan"
                 rows={3}
                 disabled={isRevealed}
               />
             </div>
             <div>
-              <label className="block text-sky-600 dark:text-sky-400 mb-2 font-semibold text-sm">Reverse Causation Scenario</label>
+              <label className="block text-punk-cyan mb-2 font-semibold text-sm">Reverse Causation Scenario</label>
               <textarea
                 value={reverseCausation}
                 onChange={(e) => setReverseCausation(e.target.value)}
                 placeholder="How could the 'effect' actually be the 'cause'?"
-                className="w-full rounded-lg bg-secondary border border-border p-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full rounded-lg bg-punk-base border border-punk-sub/30 p-3 text-sm text-punk-text focus:outline-none focus:ring-1 focus:ring-punk-cyan"
                 rows={3}
                 disabled={isRevealed}
               />
@@ -293,7 +293,7 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
             <button
               onClick={handleSubmitModule2}
               disabled={!thirdFactor || !reverseCausation || isRevealed}
-              className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100"
             >
               View Model Answer
             </button>
@@ -303,23 +303,23 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
         {isModule3 && (
           <div className="space-y-4">
             <div>
-              <label className="block text-sky-600 dark:text-sky-400 mb-2 font-semibold text-sm">'Cause without Effect' Scenario</label>
+              <label className="block text-punk-cyan mb-2 font-semibold text-sm">'Cause without Effect' Scenario</label>
               <textarea
                 value={causeWithoutEffect}
                 onChange={(e) => setCauseWithoutEffect(e.target.value)}
                 placeholder="Describe a plausible scenario where the cause occurs, but the effect does NOT."
-                className="w-full rounded-lg bg-secondary border border-border p-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full rounded-lg bg-punk-base border border-punk-sub/30 p-3 text-sm text-punk-text focus:outline-none focus:ring-1 focus:ring-punk-cyan"
                 rows={3}
                 disabled={isRevealed}
               />
             </div>
             <div>
-              <label className="block text-sky-600 dark:text-sky-400 mb-2 font-semibold text-sm">'Effect without Cause' Scenario</label>
+              <label className="block text-punk-cyan mb-2 font-semibold text-sm">'Effect without Cause' Scenario</label>
               <textarea
                 value={effectWithoutCause}
                 onChange={(e) => setEffectWithoutCause(e.target.value)}
                 placeholder="Describe a plausible scenario where the effect occurs, but the cause is ABSENT."
-                className="w-full rounded-lg bg-secondary border border-border p-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full rounded-lg bg-punk-base border border-punk-sub/30 p-3 text-sm text-punk-text focus:outline-none focus:ring-1 focus:ring-punk-cyan"
                 rows={3}
                 disabled={isRevealed}
               />
@@ -327,7 +327,7 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
             <button
               onClick={handleSubmitModule3}
               disabled={!causeWithoutEffect || !effectWithoutCause || isRevealed}
-              className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100"
             >
               View Model Answer
             </button>
@@ -336,13 +336,13 @@ const CSQuestionCard: React.FC<CSQuestionCardProps> = ({
       </div>
 
       {isRevealed && (isModule1 || isModule4) && (
-        <div className="mt-4 rounded-lg bg-sky-500/5 border border-sky-500/20 p-4">
-          <h3 className="text-sm font-semibold text-sky-600 dark:text-sky-400 mb-1">Explanation</h3>
-          <div className="text-sm text-muted-foreground whitespace-pre-wrap">
+        <div className="mt-4 rounded-lg bg-punk-base/50 border border-punk-sub/20 p-4">
+          <h3 className="text-sm font-semibold text-punk-cyan mb-1">Explanation</h3>
+          <div className="text-sm text-punk-sub whitespace-pre-wrap">
             {question.explanation}
             {question.breakdown && (
-              <div className="mt-4 border-t pt-4 border-border">
-                <h4 className="font-semibold mb-2 text-foreground">Breakdown</h4>
+              <div className="mt-4 border-t pt-4 border-punk-sub/20">
+                <h4 className="font-semibold mb-2 text-punk-text">Breakdown</h4>
                 <p><strong>Conclusion:</strong> {question.breakdown.mainConclusion}</p>
                 {question.breakdown.premises.map((p, i) => (
                   <p key={i}><strong>Premise {i + 1}:</strong> {p}</p>

@@ -33,41 +33,41 @@ const CSJournal: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-foreground mb-2">Mistake Journal</h2>
-      <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
+      <h2 className="text-3xl font-bold text-punk-text mb-2">Mistake Journal</h2>
+      <p className="text-sm text-punk-sub mb-6 max-w-2xl">
         Every great mind keeps a record of their toughest challenges. This is your personalized log of questions you've struggled with. Review them, understand the traps, and never make the same mistake twice.
       </p>
 
       {entries.length === 0 ? (
-        <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
-          <p className="text-sm text-muted-foreground">Your journal is empty for now. Incorrect answers from your drills will appear here automatically.</p>
+        <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 text-center">
+          <p className="text-sm text-punk-sub">Your journal is empty for now. Incorrect answers from your drills will appear here automatically.</p>
         </div>
       ) : (
         <div className="space-y-8">
           {entries.map(({ attempt, question }, index) => (
-            <div key={`${question.id}-${index}`} className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col md:flex-row gap-6">
+            <div key={`${question.id}-${index}`} className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-6 flex flex-col md:flex-row gap-6">
               <div className="md:w-1/2">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                <h3 className="text-xs font-semibold text-punk-sub uppercase tracking-wide mb-2">
                   Question ({question.id})
                 </h3>
-                <div className="rounded-lg bg-muted/50 border border-border p-4 mb-3">
-                  <p className="text-sm text-foreground italic leading-relaxed">{question.stem}</p>
+                <div className="rounded-lg bg-punk-base/50 border border-punk-sub/20 p-4 mb-3">
+                  <p className="text-sm text-punk-text italic leading-relaxed">{question.stem}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="text-xs font-medium bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 px-2.5 py-0.5 rounded-full">
+                  <span className="text-xs font-medium bg-punk-magenta/20 text-punk-magenta px-2.5 py-0.5 rounded-full">
                     #{question.moduleId}
                   </span>
-                  <span className="text-xs font-medium bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 px-2.5 py-0.5 rounded-full">
+                  <span className="text-xs font-medium bg-punk-magenta/20 text-punk-magenta px-2.5 py-0.5 rounded-full">
                     {new Date(attempt.completedAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
               <div className="md:w-1/2">
-                <h3 className="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wide mb-2">Review Prompt</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <h3 className="text-xs font-semibold text-punk-cyan uppercase tracking-wide mb-2">Review Prompt</h3>
+                <p className="text-sm text-punk-sub leading-relaxed">
                   You picked choice {String.fromCharCode(65 + attempt.answerIndex)}. Re-read the causal claim, name the author's causal move, then explain why choice {String.fromCharCode(65 + question.correctIndex)} is better.
                 </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-4">{question.explanation}</p>
+                <p className="text-sm text-punk-sub leading-relaxed mt-4">{question.explanation}</p>
               </div>
             </div>
           ))}

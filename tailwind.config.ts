@@ -173,6 +173,20 @@ export default {
         "brutal-ink-trace": "var(--brutal-ink-trace)",
         "brutal-bg": "var(--brutal-bg)",
         "brutal-paper": "var(--brutal-paper)",
+
+        /* Causation Station neon "punk" tokens (scoped to .cs-punk)
+         * These resolve only inside .cs-punk ancestors, where the matching
+         * hex CSS vars are defined (src/components/bootcamp/styles/cs-punk.css).
+         * Flat hex fallbacks (not RGB-triplets) since the source AI Studio
+         * prototype defines them as plain hex, not alpha-composable triplets. */
+        "punk-base": "var(--punk-base, #06080C)",
+        "punk-panel": "var(--punk-panel, #0B1118)",
+        "punk-cyan": "var(--punk-cyan, #00FFF0)",
+        "punk-magenta": "var(--punk-magenta, #FF1AFF)",
+        "punk-lime": "var(--punk-lime, #A8FF00)",
+        "punk-red": "var(--punk-red, #FF2A6D)",
+        "punk-text": "var(--punk-text, #EAF2FF)",
+        "punk-sub": "var(--punk-sub, #9BB0C8)",
       },
       backdropBlur: {
         glass: "12px",
@@ -192,6 +206,17 @@ export default {
         "brutal-sm": "2px 2px 0px 0px var(--brutal-ink, currentColor)",
         "brutal": "4px 4px 0px 0px var(--brutal-ink, currentColor)",
         "brutal-lg": "8px 8px 0px 0px var(--brutal-ink, currentColor)",
+
+        /* Causation Station neon glow shadows (scoped to .cs-punk usage) */
+        "neon-cyan": "0 0 8px var(--punk-cyan, #00FFF0), 0 0 20px var(--punk-cyan, #00FFF0)",
+        "neon-magenta": "0 0 8px var(--punk-magenta, #FF1AFF), 0 0 20px var(--punk-magenta, #FF1AFF)",
+        "neon-lime": "0 0 8px var(--punk-lime, #A8FF00), 0 0 20px var(--punk-lime, #A8FF00)",
+        "neon-red": "0 0 8px var(--punk-red, #FF2A6D), 0 0 20px var(--punk-red, #FF2A6D)",
+      },
+      dropShadow: {
+        /* Causation Station neon glow drop-shadows, for text/icons */
+        "neon-cyan": "0 0 12px rgba(0, 255, 240, 0.6)",
+        "neon-magenta": "0 0 12px rgba(255, 26, 255, 0.6)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -210,6 +235,8 @@ export default {
         "mc-mono": ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
         /* FF bootcamp font stacks */
         display: ['Georgia', '"Times New Roman"', 'serif'],
+        /* Causation Station stimulus/question serif (scoped to .cs-punk usage) */
+        "punk-serif": ['"Source Serif Pro"', 'Georgia', '"Times New Roman"', 'Times', 'serif'],
       },
       fontSize: {
         /* MC bootcamp type scale (net-new names; no LSAT U conflict) */

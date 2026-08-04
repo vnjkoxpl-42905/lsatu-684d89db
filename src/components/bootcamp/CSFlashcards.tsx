@@ -105,23 +105,23 @@ const CSFlashcards: React.FC = () => {
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div className="flex-grow">
-          <h2 className="text-xl font-bold text-foreground mb-2">Flashcards</h2>
-          <p className="text-sm text-muted-foreground max-w-3xl">
+          <h2 className="text-3xl font-bold text-punk-text mb-2">Flashcards</h2>
+          <p className="text-sm text-punk-sub max-w-3xl">
             Drill the core concepts. The definitions here are tailored for the LSAT, focusing on the specific way these terms are used in logical reasoning.
           </p>
         </div>
         <button
           onClick={toggleReviewMode}
           disabled={reviewCards.length === 0 && !isReviewMode}
-          className="flex-shrink-0 self-start sm:self-center inline-flex items-center rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2 hover:bg-accent transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex-shrink-0 self-start sm:self-center inline-flex items-center rounded-full border border-punk-sub text-punk-sub text-sm font-medium px-5 py-2 hover:text-punk-text hover:border-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isReviewMode ? 'Back to Full Deck' : `Review Cards (${reviewCards.length})`}
         </button>
       </div>
 
       {!activeDeck || activeDeck.cards.length === 0 ? (
-        <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center">
-          <p className="text-sm text-muted-foreground">
+        <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg p-12 text-center">
+          <p className="text-sm text-punk-sub">
             {isReviewMode
               ? 'Your review deck is empty. Mark some cards for review from the full deck.'
               : 'No flashcard deck found.'}
@@ -158,14 +158,14 @@ const CSFlashcards: React.FC = () => {
             <div className={`relative w-full h-full cs-flashcard ${isFlipped ? 'is-flipped' : ''}`}>
               {/* Front */}
               <div className="absolute w-full h-full cs-flashcard-face">
-                <div className="rounded-xl bg-card border border-border shadow-sm w-full h-full flex items-center justify-center p-8">
-                  <h3 className="text-2xl font-bold text-foreground text-center">{currentCard?.term}</h3>
+                <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg w-full h-full flex items-center justify-center p-8">
+                  <h3 className="text-4xl font-bold text-punk-cyan text-center">{currentCard?.term}</h3>
                 </div>
               </div>
               {/* Back */}
               <div className="absolute w-full h-full cs-flashcard-face cs-flashcard-back">
-                <div className="rounded-xl bg-card border border-border shadow-sm w-full h-full flex items-center justify-center p-8">
-                  <p className="text-sm text-muted-foreground text-center leading-relaxed">{currentCard?.definition}</p>
+                <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg shadow-lg w-full h-full flex items-center justify-center p-8">
+                  <p className="text-sm text-punk-sub text-center leading-relaxed">{currentCard?.definition}</p>
                 </div>
               </div>
             </div>
@@ -176,13 +176,13 @@ const CSFlashcards: React.FC = () => {
               <div className="flex w-full justify-center gap-4">
                 <button
                   onClick={() => handleAddToReview(currentCard)}
-                  className="inline-flex items-center rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2 hover:bg-accent transition-colors duration-150"
+                  className="inline-flex items-center rounded-full border border-punk-sub text-punk-sub text-sm font-medium px-5 py-2 hover:text-punk-text hover:border-punk-text transition-colors duration-150"
                 >
                   Needs Review
                 </button>
                 <button
                   onClick={() => handleGotIt(currentCard)}
-                  className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+                  className="inline-flex items-center rounded-full bg-punk-cyan text-punk-base text-sm font-semibold px-5 py-2 hover:bg-white hover:shadow-neon-cyan active:scale-95 transition-all duration-150"
                 >
                   Got It
                 </button>
@@ -193,18 +193,18 @@ const CSFlashcards: React.FC = () => {
                   onClick={() => changeCard('prev')}
                   disabled={activeDeck.cards.length < 2}
                   aria-label="Previous card"
-                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2 rounded-full text-punk-sub hover:text-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <ArrowIcon direction="left" className="w-5 h-5" />
                 </button>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-mono">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-punk-sub font-mono">
                   {currentCardIndex + 1} / {activeDeck.cards.length}
                 </div>
                 <button
                   onClick={() => changeCard('next')}
                   disabled={activeDeck.cards.length < 2}
                   aria-label="Next card"
-                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2 rounded-full text-punk-sub hover:text-punk-text transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <ArrowIcon direction="right" className="w-5 h-5" />
                 </button>
