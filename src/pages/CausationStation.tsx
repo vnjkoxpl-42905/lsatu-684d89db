@@ -130,7 +130,7 @@ const CausationStation: React.FC = () => {
             <span className="text-[11px] uppercase tracking-[0.2em] text-punk-sub font-medium mr-3">Causation Station</span>
             {view !== 'drill' && (
               <nav className="flex items-center gap-1 bg-punk-panel/50 backdrop-blur-sm border border-punk-sub/20 rounded-full px-1 py-1">
-                <NavBtn target="dashboard" icon={<Zap className="w-3.5 h-3.5" />} label="Drills" />
+                <NavBtn target="dashboard" icon={<Zap className="w-3.5 h-3.5" />} label="Dashboard" />
                 <NavBtn target="flashcards" icon={<Layers className="w-3.5 h-3.5" />} label="Flashcards" />
                 <NavBtn target="journal" icon={<StickyNote className="w-3.5 h-3.5" />} label="Journal" />
               </nav>
@@ -156,7 +156,7 @@ const CausationStation: React.FC = () => {
       {/* Content */}
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
         {view === 'dashboard' && (
-          <CSDashboard onStartDrill={handleStartDrill} />
+          <CSDashboard onStartDrill={handleStartDrill} onReplayIntro={() => setShowOnboarding(true)} />
         )}
         {view === 'drill' && selectedModule && (
           <CSDrillPlayer module={selectedModule} onEndDrill={handleEndDrill} />
