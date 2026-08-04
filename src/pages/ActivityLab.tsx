@@ -57,6 +57,19 @@ import {
   buildRoleCall,
 } from "@/features/activity-centre/worlds/atelier/wings/rounds";
 import { parseArgument, readBuild } from "@/features/activity-centre/worlds/atelier/atelier";
+import {
+  ChamberStage,
+  type ChamberPhase,
+  type Nameplate,
+} from "@/features/activity-centre/worlds/chamber/ChamberStage";
+import { ChamberEntrance } from "@/features/activity-centre/worlds/chamber/ChamberEntrance";
+import { StrengthMatch } from "@/features/activity-centre/worlds/chamber/wings/StrengthMatch";
+import { TrapAutopsy } from "@/features/activity-centre/worlds/chamber/wings/TrapAutopsy";
+import {
+  buildStrengthMatch,
+  buildTrapAutopsy,
+} from "@/features/activity-centre/worlds/chamber/wings/rounds";
+import { parseRebuttal, readResolution } from "@/features/activity-centre/worlds/chamber/chamber";
 import "@/features/activity-centre/activity-centre.css";
 
 /**
@@ -77,6 +90,7 @@ const WORLDS = [
   { key: "specimen-lab", label: "The Specimen Lab" },
   { key: "press", label: "The Press" },
   { key: "atelier", label: "The Argument Atelier" },
+  { key: "chamber", label: "The Debate Chamber" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -137,6 +151,7 @@ export default function ActivityLab() {
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
       {world === "press" ? <PressPanel /> : null}
       {world === "atelier" ? <AtelierPanel /> : null}
+      {world === "chamber" ? <ChamberPanel /> : null}
     </div>
   );
 }
@@ -798,6 +813,163 @@ function AtelierPanel() {
       ) : null}
       {view === "role-call" ? <RoleCall round={roleRound} /> : null}
       {view === "light-table" ? <LightTable pages={lightPages} /> : null}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Debate Chamber
+ * ------------------------------------------------------------------ */
+
+const CHAMBER_VIEWS = ["floor", "entrance", "match", "autopsy"] as const;
+const CHAMBER_PHASES: ChamberPhase[] = ["unresolved", "resolved"];
+
+/** Stand-in answers, so the real reader decides which trap the chamber names. */
+const ATTEMPTS = [
+  { key: "credited", label: "the credited claim" },
+  { key: "overshoot", label: "the authored overshoot" },
+  { key: "referential", label: "a referential non-answer" },
+  { key: "none", label: "nothing yet" },
+] as const;
+type AttemptKey = (typeof ATTEMPTS)[number]["key"];
+
+function ChamberPanel() {
+  const rr = SEED_ACTIVITIES.find((a) => a.slug === "rebuttal-rephrase")!;
+  const [view, setView] = useState<(typeof CHAMBER_VIEWS)[number]>("floor");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<ChamberPhase>("unresolved");
+  const [attemptKey, setAttemptKey] = useState<AttemptKey>("credited");
+  const [entranceRun, setEntranceRun] = useState(0);
+
+  const item = rr.items[index];
+  const rebuttal = useMemo(() => parseRebuttal(item), [item]);
+
+  const response = useMemo(() => {
+    if (!rebuttal || attemptKey === "none") return undefined;
+    if (attemptKey === "overshoot") return rebuttal.overshoot ?? rebuttal.credited;
+    if (attemptKey === "referential") return "they are wrong about this, it is not so";
+    return rebuttal.credited;
+  }, [rebuttal, attemptKey]);
+
+  const resolution = useMemo(
+    () => (rebuttal && response ? readResolution(rebuttal, response) : null),
+    [rebuttal, response],
+  );
+
+  // Lab-only sample rail. The production chamber is passed real verdicts.
+  const rail: Nameplate[] = useMemo(
+    () =>
+      rr.items.map((it, i) => ({
+        order: it.order,
+        outcome: i < index ? (i % 3 === 1 ? "partial" : "correct") : null,
+      })),
+    [rr.items, index],
+  );
+
+  const matchRound = useMemo(() => buildStrengthMatch(rr.items), [rr.items]);
+  const autopsyRound = useMemo(() => buildTrapAutopsy(rr.items), [rr.items]);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={CHAMBER_VIEWS}
+          value={view}
+          onChange={(v) => {
+            setView(v);
+            if (v === "entrance") setEntranceRun((r) => r + 1);
+          }}
+          label="Chamber view"
+        />
+
+        {view === "floor" ? (
+          <>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Rebuttal
+              <select
+                className="w-44 max-w-[50vw] truncate rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={index}
+                onChange={(e) => {
+                  setIndex(Number(e.target.value));
+                  setPhase("unresolved");
+                }}
+              >
+                {rr.items.map((it, i) => (
+                  <option key={it.order} value={i}>
+                    {it.order}. {it.prompt.slice(0, 44)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Attempt
+              <select
+                className="rounded-md border border-border bg-card px-2 py-1 text-foreground"
+                value={attemptKey}
+                onChange={(e) => setAttemptKey(e.target.value as AttemptKey)}
+              >
+                {ATTEMPTS.map((a) => (
+                  <option key={a.key} value={a.key}>
+                    {a.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <span className="text-xs text-muted-foreground">
+              arc: <code>{rebuttal?.attributedStrength ?? "dark"}</code> →{" "}
+              <code>{rebuttal?.creditedStrength ?? "dark"}</code> · trap:{" "}
+              <code>{resolution?.trap ?? "none"}</code>
+            </span>
+
+            <div className="ml-auto">
+              <Tabs
+                options={CHAMBER_PHASES}
+                value={phase}
+                onChange={(v) => setPhase(v)}
+                label="Chamber"
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {view === "floor" ? (
+        <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
+          <div>
+            {rebuttal ? (
+              <ChamberStage
+                rebuttal={rebuttal}
+                phase={phase}
+                response={response}
+                resolution={resolution}
+                rail={rail}
+              />
+            ) : (
+              <div className="p-10 text-sm text-muted-foreground">
+                This item has no credited claim, so there is nothing to put on the plinth.
+              </div>
+            )}
+          </div>
+          <SignalBox
+            title="Moderator's bench"
+            level={item.category}
+            rows={[
+              ["Their claim isolated", rebuttal?.attributed ? "yes" : "no"],
+              ["Authored overshoot", rebuttal?.overshoot ?? "none"],
+              ["Qualifiers", rebuttal?.qualifiers.join(", ") || "none"],
+            ]}
+            note={item.explanation}
+          />
+        </div>
+      ) : null}
+
+      {view === "entrance" ? (
+        <ChamberEntrance key={entranceRun} onDone={() => setView("floor")} />
+      ) : null}
+      {view === "match" ? <StrengthMatch round={matchRound} /> : null}
+      {view === "autopsy" ? <TrapAutopsy round={autopsyRound} /> : null}
     </>
   );
 }

@@ -1,0 +1,331 @@
+/*
+ * The Debate Chamber: Rebuttal Rephrase's world.
+ *
+ * Austere and theatrical: two plinths under directional light on dark parquet.
+ * The other worlds are a rail field, a bench, a pressroom and an atelier; this
+ * one is a room with almost nothing in it, because the drill's insight is an
+ * absence. The empty plinth IS the lesson, so the room must be empty enough for
+ * an absence to read.
+ *
+ * CSS depth and SVG only. No WebGL: the plinths are blocks with a reflection,
+ * the light is opacity, and the arc is an SVG path.
+ */
+
+.chamber {
+  --ch-floor: 240 6% 8%;
+  --ch-floor-deep: 240 8% 5%;
+  --ch-stone: 240 5% 17%;
+  --ch-edge: 240 6% 30%;
+  --ch-ink: 240 8% 92%;
+  --ch-ink-dim: 240 5% 56%;
+  --ch-light: 210 22% 82%;
+
+  position: relative;
+  color: hsl(var(--ch-ink));
+  background:
+    /* two directional lights, one over each plinth */
+    radial-gradient(38% 46% at 26% 0%, hsl(var(--ch-light) / 0.09), transparent 70%),
+    radial-gradient(38% 46% at 74% 0%, hsl(var(--ch-light) / 0.07), transparent 70%),
+    hsl(var(--ch-floor-deep));
+  overflow: hidden;
+}
+
+.chamber-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.chamber-type {
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  color: hsl(var(--ch-ink));
+}
+
+/* ---------- The plinths ---------- */
+
+.ch-plinth {
+  position: relative;
+  border: 1px solid hsl(var(--ch-edge) / 0.7);
+  background: linear-gradient(180deg, hsl(var(--ch-stone)), hsl(var(--ch-floor)));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ch-ink) / 0.07),
+    0 16px 30px hsl(var(--ch-floor-deep) / 0.9);
+  transition:
+    border-color 240ms ease,
+    opacity 240ms ease;
+}
+
+/* The parquet reflection under each plinth. */
+.ch-plinth::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 100%;
+  height: 22px;
+  background: linear-gradient(180deg, hsl(var(--ch-ink) / 0.05), transparent);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* The author's plinth before it carries anything. Its emptiness is the point,
+   so it is drawn rather than filled. */
+.ch-plinth[data-state="empty"] {
+  background: transparent;
+  border-style: dashed;
+  border-color: hsl(var(--ch-edge));
+  box-shadow: none;
+}
+
+/* Resolved: equal visual weight to the attributed claim. Two positions facing
+   each other, which is the whole reveal. */
+.ch-plinth[data-state="resolved"] {
+  border-color: hsl(var(--ch-light) / 0.6);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ch-light) / 0.18),
+    0 16px 30px hsl(var(--ch-floor-deep));
+}
+
+/* ---------- The unresolved rejection ---------- */
+
+/*
+ * The referential phrase hovering over the empty plinth: present, but visibly
+ * saying nothing. The shimmer runs along the referential words only.
+ */
+.ch-ghost {
+  color: hsl(var(--ch-ink-dim));
+  font-style: italic;
+}
+
+.ch-ghost-ref {
+  position: relative;
+  color: hsl(var(--ch-ink));
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--ch-light) / 0.28) 45%,
+    transparent 90%
+  );
+  background-size: 220% 100%;
+  animation: ch-shimmer 3.4s linear infinite;
+}
+
+@keyframes ch-shimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+/* ---------- The certainty arc ---------- */
+
+.ch-arc-track {
+  stroke: hsl(var(--ch-edge));
+  stroke-width: 1;
+  fill: none;
+}
+
+.ch-arc-tick {
+  stroke: hsl(var(--ch-edge));
+  stroke-width: 1;
+}
+
+/* The arc's engraved labels are HTML under the SVG, not SVG text: they sit on
+   the document's own type ramp, and they stay selectable and readable. */
+.ch-arc-label {
+  color: hsl(var(--ch-ink-dim));
+  transition: color 240ms ease;
+}
+
+.ch-arc-label[data-lit="true"] {
+  color: hsl(var(--ch-ink));
+}
+
+/* The needles. Theirs is the position being rejected, the author's is the
+   credited claim, and the student's is their own answer. */
+.ch-needle {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ch-needle[data-who="attributed"] {
+  stroke: hsl(var(--ch-ink-dim));
+}
+
+.ch-needle[data-who="credited"] {
+  stroke: hsl(var(--ch-light));
+}
+
+.ch-needle[data-who="student"] {
+  stroke: hsl(var(--ch-ink));
+  stroke-dasharray: 3 2;
+}
+
+/* The span between the credited position and an overshot answer. */
+.ch-overspan {
+  fill: hsl(var(--ch-light) / 0.14);
+  stroke: none;
+}
+
+/* ---------- Trap staging ---------- */
+
+/* A premise answer sits at the base of the plinth as a supporting block: it
+   holds the claim up, it is not the claim. */
+.ch-base-block {
+  border: 1px solid hsl(var(--ch-edge) / 0.6);
+  border-top: none;
+  background: hsl(var(--ch-floor) / 0.8);
+  color: hsl(var(--ch-ink-dim));
+}
+
+/* A dropped scope word, carved oversized on the credited claim. */
+.ch-carved {
+  font-size: 1.28em;
+  letter-spacing: 0.04em;
+  color: hsl(var(--ch-light));
+  text-transform: uppercase;
+}
+
+/* ---------- The rail ---------- */
+
+.ch-nameplate {
+  border: 1px solid hsl(var(--ch-edge) / 0.55);
+  background: hsl(var(--ch-stone) / 0.5);
+  color: hsl(var(--ch-ink-dim));
+}
+
+.ch-nameplate[data-state="correct"] {
+  border-color: hsl(var(--ch-light) / 0.7);
+  color: hsl(var(--ch-ink));
+}
+
+.ch-nameplate[data-state="partial"] {
+  border-style: dashed;
+  color: hsl(var(--ch-ink));
+}
+
+.ch-nameplate[data-current="true"] {
+  box-shadow: inset 0 -2px 0 hsl(var(--ch-light) / 0.8);
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.ch-button {
+  border: 1px solid hsl(var(--ch-edge));
+  background: hsl(var(--ch-stone));
+  color: hsl(var(--ch-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.ch-button:hover:not(:disabled) {
+  border-color: hsl(var(--ch-ink) / 0.45);
+}
+
+.ch-button:disabled {
+  opacity: 0.55;
+}
+
+.ch-button[data-picked="true"] {
+  background: hsl(var(--ch-floor));
+  opacity: 1;
+}
+
+.ch-button[data-truth="true"] {
+  border-color: hsl(var(--ch-light));
+  box-shadow: inset 2px 0 0 hsl(var(--ch-light));
+  opacity: 1;
+}
+
+.ch-choice {
+  width: 100%;
+  border: 1px solid hsl(var(--ch-edge) / 0.6);
+  background: hsl(var(--ch-stone) / 0.7);
+  transition:
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.ch-choice:hover:not(:disabled) {
+  border-color: hsl(var(--ch-ink) / 0.4);
+}
+
+.ch-choice:disabled {
+  opacity: 0.72;
+}
+
+.ch-choice[data-truth="true"] {
+  border-color: hsl(var(--ch-light));
+  box-shadow: inset 2px 0 0 hsl(var(--ch-light));
+  opacity: 1;
+}
+
+.ch-input {
+  border: 1px solid hsl(var(--ch-edge));
+  background: hsl(var(--ch-stone));
+  color: hsl(var(--ch-ink));
+  max-width: 34rem;
+}
+
+.ch-input::placeholder {
+  color: hsl(var(--ch-ink-dim) / 0.7);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes ch-light-up {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ch-entrance-theirs {
+  animation: ch-light-up 620ms ease both;
+}
+
+.ch-entrance-authors {
+  /* Theirs first, then the empty one. The staging asks the question. */
+  animation: ch-light-up 620ms ease 900ms both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .chamber *,
+  .chamber *::before,
+  .chamber *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The shimmer is the one thing that must stop entirely: it is a continuous
+     loop, and shortening it would strobe rather than settle. */
+  .ch-ghost-ref {
+    animation: none !important;
+    background: hsl(var(--ch-light) / 0.16);
+  }
+
+  .ch-entrance-theirs,
+  .ch-entrance-authors {
+    animation: none !important;
+    opacity: 1;
+  }
+}
