@@ -1,8 +1,17 @@
 import { Crown, Shield, UserCheck, UserX } from 'lucide-react';
+import { toast } from 'sonner';
 import HubSnapshot from '@/components/hub/HubSnapshot';
 import StudentOverview from '@/components/hub/StudentOverview';
 import { CONFIGURABLE_FLAG_KEYS, ALL_FLAG_LABELS, isPrimaryAdmin } from '@/lib/adminUsers';
 import { cn } from '@/lib/utils';
+import { useSetStudentLevel, useStudentLevels } from '@/hooks/useStudentLevels';
+import {
+  LEVEL_LABELS,
+  STUDENT_LEVELS,
+  describeBand,
+  levelBand,
+  type StudentLevel,
+} from '@/lib/studentLevel';
 import { useDossier } from './StudentDossier';
 import { useStudentAccess } from './useStudentAccess';
 
@@ -13,13 +22,82 @@ import { useStudentAccess } from './useStudentAccess';
 export default function DossierOverview() {
   const { studentId, student, studentEmail } = useDossier();
   const { toggleAccess, setRole, readFlag, isBusy } = useStudentAccess(studentId);
+  const { data: levels } = useStudentLevels();
+  const setLevel = useSetStudentLevel();
 
   const isAdmin = student?.role === 'admin';
+  const level = levels?.[studentId] ?? null;
+
+  const applyLevel = (next: StudentLevel | null) => {
+    setLevel.mutate(
+      { studentId, level: next },
+      {
+        onSuccess: () =>
+          toast.success(
+            next
+              ? `Level set to ${LEVEL_LABELS[next]}`
+              : 'Level cleared; drills use their own range',
+          ),
+        onError: (error) =>
+          toast.error(
+            error instanceof Error ? error.message : 'Could not update the level',
+          ),
+      },
+    );
+  };
 
   return (
     <div className="space-y-5 p-5">
       <HubSnapshot studentId={studentId} />
       <StudentOverview studentId={studentId} />
+
+      <section className="border border-black/10 bg-white/20 p-4">
+        <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">Level</h2>
+        <p className="mt-1 text-xs leading-relaxed text-black/45">
+          Sets which end of a guided drill's question pool this student gets. Not set means
+          drills use their own difficulty range, the way they always have.
+        </p>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {STUDENT_LEVELS.map((option) => {
+            const on = level === option;
+            return (
+              <button
+                key={option}
+                type="button"
+                disabled={setLevel.isPending}
+                onClick={() => applyLevel(on ? null : option)}
+                aria-pressed={on}
+                className={cn(
+                  'border px-2.5 py-1.5 text-xs font-semibold transition disabled:opacity-50',
+                  on
+                    ? 'border-emerald-700/25 bg-emerald-500/10 text-emerald-800'
+                    : 'border-black/15 text-black/55 hover:bg-white/25 hover:text-black',
+                )}
+              >
+                {LEVEL_LABELS[option]}
+                <span className="ml-1.5 font-normal text-black/40">
+                  {describeBand(levelBand(option)).replace('difficulty ', '')}
+                </span>
+              </button>
+            );
+          })}
+          {level && (
+            <button
+              type="button"
+              disabled={setLevel.isPending}
+              onClick={() => applyLevel(null)}
+              className="px-1.5 py-1.5 text-xs font-semibold text-black/40 underline-offset-2 transition hover:text-black hover:underline disabled:opacity-50"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {!level && (
+          <p className="mt-2.5 text-xs text-black/40">Not set.</p>
+        )}
+      </section>
 
       <section className="border border-black/10 bg-white/20 p-4">
         <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">Access</h2>

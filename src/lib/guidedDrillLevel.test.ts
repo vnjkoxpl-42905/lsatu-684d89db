@@ -1,0 +1,230 @@
+import { describe, it, expect } from 'vitest';
+import { countInBand, resolveLeveledDrillQids } from './guidedDrillLevel';
+import type { LRQuestion } from '@/lib/questionLoader';
+
+/** A pool question. Only qid and difficulty matter to the resolver. */
+function q(qid: string, difficulty: number | null): LRQuestion {
+  return { qid, difficulty } as unknown as LRQuestion;
+}
+
+/** n questions at one difficulty, e.g. band(3, 2) -> d3-0, d3-1. */
+function band(difficulty: number, n: number): LRQuestion[] {
+  return Array.from({ length: n }, (_, i) => q(`d${difficulty}-${i}`, difficulty));
+}
+
+/** A 40-question pool, 8 at each difficulty. */
+const POOL: LRQuestion[] = [1, 2, 3, 4, 5].flatMap((d) => band(d, 8));
+
+/** Deterministic rng so every draw in these specs is reproducible. */
+function seeded(seed = 1) {
+  let s = seed;
+  return () => {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    return s / 0x7fffffff;
+  };
+}
+
+const difficultyOf = (qid: string) => Number(qid.split('-')[0].slice(1));
+
+describe('resolveLeveledDrillQids', () => {
+  it('returns the full requested count at every level (the invariant)', () => {
+    for (const level of ['beginner', 'intermediate', 'advanced'] as const) {
+      const r = resolveLeveledDrillQids({
+        pool: POOL,
+        questionCount: 6,
+        level,
+        rng: seeded(),
+      });
+      expect(r.qids, `${level} must still get 6 questions`).toHaveLength(6);
+    }
+  });
+
+  it('draws a beginner only from difficulty 1-3 when the band has enough', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      questionCount: 6,
+      level: 'beginner',
+      rng: seeded(),
+    });
+    expect(r.qids.map(difficultyOf).every((d) => d >= 1 && d <= 3)).toBe(true);
+    expect(r.outOfBandUsed).toBe(0);
+    expect(r.warning).toBeNull();
+  });
+
+  it('draws an advanced student only from difficulty 3-5', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      questionCount: 6,
+      level: 'advanced',
+      rng: seeded(),
+    });
+    expect(r.qids.map(difficultyOf).every((d) => d >= 3 && d <= 5)).toBe(true);
+    expect(r.warning).toBeNull();
+  });
+
+  it('gives the same drill different questions to a beginner and an advanced student', () => {
+    const beginner = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'beginner', rng: seeded(7),
+    });
+    const advanced = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'advanced', rng: seeded(7),
+    });
+    const overlap = beginner.qids.filter((id) => advanced.qids.includes(id));
+    // They can legitimately share difficulty-3 questions, but must not be equal.
+    expect(beginner.qids).not.toEqual(advanced.qids);
+    expect(overlap.length).toBeLessThan(6);
+  });
+
+  it('still fills the drill when the pool has nothing at the level, and warns', () => {
+    const hardOnly = band(5, 10);
+    const r = resolveLeveledDrillQids({
+      pool: hardOnly,
+      questionCount: 6,
+      level: 'beginner',
+      rng: seeded(),
+    });
+    expect(r.qids).toHaveLength(6);
+    expect(r.inBandCount).toBe(0);
+    expect(r.outOfBandUsed).toBe(6);
+    expect(r.warning).toBe('out_of_level');
+  });
+
+  it('tops up from the nearest difficulty, not the farthest', () => {
+    // Beginner band is 1-3, midpoint 2. Two in band, then it must reach for
+    // the 4s before the 5s.
+    const pool = [...band(3, 2), ...band(4, 4), ...band(5, 4)];
+    const r = resolveLeveledDrillQids({
+      pool,
+      questionCount: 4,
+      level: 'beginner',
+      rng: seeded(),
+    });
+    expect(r.qids).toHaveLength(4);
+    expect(r.inBandCount).toBe(2);
+    expect(r.outOfBandUsed).toBe(2);
+    expect(r.warning).toBe('partially_out_of_level');
+    const toppedUp = r.qids.map(difficultyOf).filter((d) => d > 3);
+    expect(toppedUp).toEqual([4, 4]);
+  });
+
+  it('reproduces the pre-level behaviour exactly when level is null', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      questionCount: 6,
+      level: null,
+      rng: seeded(),
+    });
+    expect(r.qids).toHaveLength(6);
+    expect(r.band).toBeNull();
+    expect(r.level).toBeNull();
+    expect(r.outOfBandUsed).toBe(0);
+    expect(r.warning).toBeNull();
+  });
+
+  it('defaults to min(pool, 10) when no question count is given', () => {
+    expect(
+      resolveLeveledDrillQids({ pool: POOL, level: null, rng: seeded() }).qids,
+    ).toHaveLength(10);
+    expect(
+      resolveLeveledDrillQids({ pool: band(2, 4), level: null, rng: seeded() }).qids,
+    ).toHaveLength(4);
+  });
+
+  it('never returns more questions than the pool holds', () => {
+    const r = resolveLeveledDrillQids({
+      pool: band(1, 3),
+      questionCount: 10,
+      level: 'advanced',
+      rng: seeded(),
+    });
+    expect(r.qids).toHaveLength(3);
+  });
+
+  it('uses a pinned drill list in full and in order, without applying the level', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      questionCount: 6,
+      drillQids: ['d5-0', 'd5-1', 'd5-2'],
+      level: 'beginner',
+      knownQids: new Set(POOL.map((x) => x.qid)),
+      rng: seeded(),
+    });
+    expect(r.qids).toEqual(['d5-0', 'd5-1', 'd5-2']);
+    expect(r.source).toBe('pinned');
+    expect(r.warning).toBe('pinned_level_not_applied');
+  });
+
+  it('lets an assignment pin beat a drill pin', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      drillQids: ['d1-0', 'd1-1'],
+      assignmentQids: ['d2-0', 'd2-1'],
+      level: null,
+      knownQids: new Set(POOL.map((x) => x.qid)),
+      rng: seeded(),
+    });
+    expect(r.qids).toEqual(['d2-0', 'd2-1']);
+  });
+
+  it('drops pinned qids the bank does not know, and duplicates', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL,
+      drillQids: ['d1-0', 'GONE-1', 'd1-0', 'd1-1'],
+      level: null,
+      knownQids: new Set(POOL.map((x) => x.qid)),
+      rng: seeded(),
+    });
+    expect(r.qids).toEqual(['d1-0', 'd1-1']);
+  });
+
+  it('warns on an empty pool rather than returning a broken drill', () => {
+    const r = resolveLeveledDrillQids({
+      pool: [],
+      questionCount: 6,
+      level: 'beginner',
+      rng: seeded(),
+    });
+    expect(r.qids).toEqual([]);
+    expect(r.warning).toBe('empty');
+  });
+
+  it('never counts a null-difficulty question as in band, and sorts it last', () => {
+    const pool = [...band(4, 2), q('dnull-0', null)];
+    const r = resolveLeveledDrillQids({
+      pool,
+      questionCount: 2,
+      level: 'beginner',
+      rng: seeded(),
+    });
+    expect(r.inBandCount).toBe(0);
+    // Both difficulty-4s are nearer the beginner band than the null one.
+    expect(r.qids).not.toContain('dnull-0');
+  });
+
+  it('is deterministic under a seeded rng', () => {
+    const once = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'intermediate', rng: seeded(99),
+    });
+    const twice = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'intermediate', rng: seeded(99),
+    });
+    expect(once.qids).toEqual(twice.qids);
+  });
+
+  it('reports pool and in-band counts for the assign preview', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'beginner', rng: seeded(),
+    });
+    expect(r.poolCount).toBe(40);
+    expect(r.inBandCount).toBe(24); // 8 each at difficulty 1, 2, 3
+  });
+});
+
+describe('countInBand', () => {
+  it('counts without drawing', () => {
+    expect(countInBand(POOL, 'beginner')).toBe(24);
+    expect(countInBand(POOL, 'intermediate')).toBe(24);
+    expect(countInBand(POOL, 'advanced')).toBe(24);
+    expect(countInBand(POOL, null)).toBe(40);
+  });
+});

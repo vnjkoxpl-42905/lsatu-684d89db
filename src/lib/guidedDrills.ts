@@ -1,6 +1,11 @@
 import { supabase } from '@/integrations/supabase/client';
 import { questionBank } from '@/lib/questionLoader';
 import { completeLinkedTodo } from '@/lib/todoActions';
+import {
+  resolveLeveledDrillQids,
+  type LeveledDrillResolution,
+} from '@/lib/guidedDrillLevel';
+import type { StudentLevel } from '@/lib/studentLevel';
 
 export interface GuidedDrillBankFilter {
   qtypes?: string[];
@@ -31,6 +36,12 @@ export interface GuidedDrill {
   source_file?: string | null;
   is_published: boolean;
   question_qids?: string[];
+  /**
+   * Catalog tag: which band this drill is pitched at. NULL means it suits any
+   * level. Drives filtering and the "advanced drill, beginner student" warning
+   * in the assign sheet; it does NOT select questions. The student's level does.
+   */
+  level?: StudentLevel | null;
 }
 
 export interface GuidedDrillAssignment {
@@ -48,6 +59,10 @@ export interface GuidedDrillAssignment {
   completed_at: string | null;
   attempt_session_id: string | null;
   question_qids?: string[];
+  /** The band this assignment draws at. NULL = the drill's own range. */
+  level?: StudentLevel | null;
+  /** Per-assignment size override. NULL = the drill's question_count. */
+  question_count?: number | null;
 }
 
 /**
@@ -132,6 +147,60 @@ export function resolveGuidedDrillPool(filter: GuidedDrillBankFilter | null | un
     if (dmin != null && q.difficulty < dmin) return false;
     if (dmax != null && q.difficulty > dmax) return false;
     return true;
+  });
+}
+
+/**
+ * Thrown rather than returning an empty list, because an unloaded bank and a
+ * filter that matches nothing are otherwise indistinguishable: both look like
+ * "no matching questions found" and the second is a real, actionable defect.
+ */
+export class QuestionBankNotLoadedError extends Error {
+  constructor() {
+    super('Question bank is not loaded yet; cannot resolve drill questions.');
+    this.name = 'QuestionBankNotLoadedError';
+  }
+}
+
+/**
+ * Which questions a specific student should see for a guided drill.
+ *
+ * Combines the drill's own pool (bank_filter) with the student's level, so one
+ * drill serves a beginner and an advanced student differently. Called at open
+ * time rather than assign time, which is what keeps re-attempts fresh.
+ *
+ * Callers must have the bank loaded. In React, gate on
+ * `useQuestionBank().isLoading` first, as the drill runner and admin catalog do.
+ */
+export function resolveGuidedDrillQidsForLevel(args: {
+  drill: GuidedDrill;
+  assignment?: GuidedDrillAssignment | null;
+  /** Overrides the assignment's stored level. Undefined uses the assignment. */
+  level?: StudentLevel | null;
+  /** Overrides the assignment's stored count, then the drill's. */
+  questionCount?: number | null;
+  rng?: () => number;
+}): LeveledDrillResolution {
+  const { drill, assignment, rng } = args;
+  if (!questionBank.isReady()) throw new QuestionBankNotLoadedError();
+
+  const level =
+    args.level !== undefined ? args.level : (assignment?.level ?? null);
+  const questionCount =
+    args.questionCount ??
+    assignment?.question_count ??
+    drill.question_count ??
+    null;
+
+  const all = questionBank.getAllQuestions();
+  return resolveLeveledDrillQids({
+    pool: resolveGuidedDrillPool(drill.bank_filter),
+    questionCount,
+    drillQids: drill.question_qids,
+    assignmentQids: assignment?.question_qids,
+    knownQids: new Set(all.map((q) => q.qid)),
+    level,
+    rng,
   });
 }
 

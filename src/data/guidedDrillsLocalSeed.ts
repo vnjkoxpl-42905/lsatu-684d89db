@@ -1,7 +1,7 @@
 // AUTO-GENERATED from data/guided-drills/_seed.json. Do not edit by hand.
-// Regenerate when the seed changes. Bundled so guided-drill launches resolve
-// their pool client-side even when the live DB row is missing or lacks a
-// bank_filter. See src/lib/guidedDrillsLocal.ts.
+// Regenerate with: node scripts/build-guided-drills-local-seed.mjs
+// Bundled so guided-drill launches resolve their pool client-side even when the
+// live DB row is missing or lacks a bank_filter. See src/lib/guidedDrillsLocal.ts.
 
 export const GUIDED_DRILLS_LOCAL_SEED = [
   {
@@ -12,6 +12,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -52,6 +53,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Parallel Reasoning",
       "Paradox"
@@ -89,6 +91,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Principle-Strengthen"
     ],
@@ -129,6 +132,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Principle-Strengthen",
       "Principle-Conform"
@@ -171,6 +175,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -211,6 +216,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -254,6 +260,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -295,6 +302,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -339,6 +347,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -394,6 +403,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 12,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Flaw"
     ],
@@ -432,6 +442,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Role",
       "Main Conclusion"
@@ -472,6 +483,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Flaw"
     ],
@@ -510,6 +522,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -564,6 +577,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "intermediate",
     "question_types": [
       "Must Be False"
     ],
@@ -598,6 +612,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Parallel Flaw"
     ],
@@ -637,6 +652,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -679,6 +695,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Strengthen",
       "Weaken"
@@ -724,6 +741,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Principle-Conform"
     ],
@@ -762,6 +780,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Principle-Conform"
     ],
@@ -801,6 +820,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -840,6 +860,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -882,6 +903,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "intermediate",
     "question_types": [
       "Must Be False"
     ],
@@ -916,6 +938,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -957,6 +980,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 1,
     "difficulty_max": 2,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1009,6 +1033,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Weaken",
       "Flaw",
@@ -1052,6 +1077,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "intermediate",
     "question_types": [
       "Paradox"
     ],
@@ -1087,6 +1113,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -1142,6 +1169,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1185,6 +1213,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Role",
       "Method of Reasoning",
@@ -1223,6 +1252,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Agree/Disagree"
     ],
@@ -1263,6 +1293,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1315,6 +1346,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Evaluate"
     ],
@@ -1350,6 +1382,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Evaluate"
     ],
@@ -1385,6 +1418,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -1424,6 +1458,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 2,
     "difficulty_max": 5,
+    "level": "intermediate",
     "question_types": [
       "Sufficient Assumption",
       "Principle-Strengthen"
@@ -1464,6 +1499,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Flaw"
     ],
@@ -1505,6 +1541,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Sufficient Assumption"
     ],
@@ -1547,6 +1584,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Strengthen",
       "Weaken",
@@ -1590,6 +1628,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Weaken"
     ],
@@ -1629,6 +1668,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1683,6 +1723,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Must Be False"
     ],
@@ -1717,6 +1758,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Strengthen",
       "Weaken"
@@ -1762,6 +1804,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 3,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Weaken"
     ],
@@ -1801,6 +1844,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1855,6 +1899,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -1897,6 +1942,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Paradox"
     ],
@@ -1932,6 +1978,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Strengthen",
       "Weaken",
@@ -1979,6 +2026,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 5,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -2033,6 +2081,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [],
     "question_features": [
       "Explain Curious Fact"
@@ -2068,6 +2117,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Method of Reasoning"
@@ -2108,6 +2158,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Weaken",
       "Strengthen"
@@ -2148,6 +2199,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 4,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -2202,6 +2254,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [],
     "question_features": [
       "Explain Curious Fact"
@@ -2237,6 +2290,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -2278,6 +2332,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Evaluate"
     ],
@@ -2313,6 +2368,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -2367,6 +2423,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Role",
       "Main Conclusion"
@@ -2407,6 +2464,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Role",
       "Method of Reasoning",
@@ -2445,6 +2503,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [],
     "question_features": [
       "Causal Chains"
@@ -2480,6 +2539,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Principle-Strengthen"
     ],
@@ -2520,6 +2580,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [],
     "question_features": [
       "Explain Curious Fact"
@@ -2555,6 +2616,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -2611,6 +2673,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 15,
     "difficulty_min": 1,
     "difficulty_max": 1,
+    "level": "beginner",
     "question_types": [
       "Paradox",
       "Flaw",
@@ -2664,6 +2727,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "intermediate",
     "question_types": [
       "Paradox"
     ],
@@ -2699,6 +2763,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Weaken",
       "Strengthen"
@@ -2739,6 +2804,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Weaken"
     ],
@@ -2778,6 +2844,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 4,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -2832,6 +2899,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Sufficient Assumption",
       "Principle-Conform",
@@ -2888,6 +2956,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Paradox"
     ],
@@ -2923,6 +2992,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 4,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -2975,6 +3045,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 15,
     "difficulty_min": 1,
     "difficulty_max": 1,
+    "level": "beginner",
     "question_types": [
       "Paradox",
       "Flaw",
@@ -3028,6 +3099,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Main Conclusion",
       "Role"
@@ -3068,6 +3140,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3120,6 +3193,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3173,6 +3247,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": null,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [],
     "question_features": [],
     "reasoning_types": [],
@@ -3201,6 +3276,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Paradox"
     ],
@@ -3236,6 +3312,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [],
     "question_features": [
       "Explain Curious Fact"
@@ -3271,6 +3348,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Flaw"
     ],
@@ -3309,6 +3387,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Flaw"
     ],
@@ -3349,6 +3428,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Flaw"
     ],
@@ -3389,6 +3469,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Must Be True"
     ],
@@ -3423,6 +3504,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -3475,6 +3557,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -3515,6 +3598,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3557,6 +3641,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Necessary Assumption"
     ],
@@ -3596,6 +3681,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3651,6 +3737,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -3686,6 +3773,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 3,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True"
@@ -3727,6 +3815,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3780,6 +3869,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -3824,6 +3914,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Principle-Conform"
     ],
@@ -3863,6 +3954,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Principle-Strengthen"
     ],
@@ -3903,6 +3995,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Strengthen"
     ],
@@ -3944,6 +4037,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Paradox",
       "Strengthen",
@@ -3987,6 +4081,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Weaken",
       "Flaw",
@@ -4030,6 +4125,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Paradox"
     ],
@@ -4065,6 +4161,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Must Be True",
       "Most Strongly Supported"
@@ -4105,6 +4202,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Flaw",
       "Weaken",
@@ -4151,6 +4249,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 8,
     "difficulty_min": 2,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Agree/Disagree"
     ],
@@ -4191,6 +4290,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Main Conclusion"
     ],
@@ -4227,6 +4327,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Role",
       "Method of Reasoning",
@@ -4265,6 +4366,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -4318,6 +4420,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 4,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -4356,6 +4459,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported"
     ],
@@ -4394,6 +4498,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 2,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Most Strongly Supported",
       "Must Be True",
@@ -4446,6 +4551,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 4,
+    "level": null,
     "question_types": [
       "Weaken"
     ],
@@ -4486,6 +4592,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 9,
     "difficulty_min": 1,
     "difficulty_max": 3,
+    "level": "beginner",
     "question_types": [
       "Necessary Assumption",
       "Strengthen",
@@ -4534,6 +4641,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 7,
     "difficulty_min": 1,
     "difficulty_max": 2,
+    "level": "beginner",
     "question_types": [
       "Role",
       "Main Conclusion"
@@ -4570,6 +4678,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 3,
     "difficulty_max": 4,
+    "level": "intermediate",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -4625,6 +4734,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": "beginner",
     "question_types": [
       "Paradox"
     ],
@@ -4660,6 +4770,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 2,
+    "level": "beginner",
     "question_types": [
       "Flaw"
     ],
@@ -4698,6 +4809,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 5,
     "difficulty_min": 1,
     "difficulty_max": 2,
+    "level": "beginner",
     "question_types": [
       "Flaw"
     ],
@@ -4736,6 +4848,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 6,
     "difficulty_min": 3,
     "difficulty_max": 5,
+    "level": "advanced",
     "question_types": [
       "Sufficient Assumption",
       "Necessary Assumption",
@@ -4778,6 +4891,7 @@ export const GUIDED_DRILLS_LOCAL_SEED = [
     "question_count": 10,
     "difficulty_min": 1,
     "difficulty_max": 5,
+    "level": null,
     "question_types": [
       "Role",
       "Method of Reasoning",

@@ -5,8 +5,8 @@ import {
   getGuidedDrillBySlug,
   markCardRead,
   markStarted,
-  resolveExactGuidedDrillQids,
   resolveGuidedDrillPool,
+  resolveGuidedDrillQidsForLevel,
   type GuidedDrill,
   type GuidedDrillAssignment,
 } from '@/lib/guidedDrills';
@@ -268,19 +268,31 @@ export default function GuidedDrillStart({
     } else if ((bootcampOverride as any)?.selectedQids) {
       selectedQids = (bootcampOverride as any).selectedQids;
     } else if (drill) {
-      const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
-      const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
-      if (exactQids.length > 0) {
-        selectedQids = exactQids;
-      } else {
-        const pool = resolveGuidedDrillPool(drill.bank_filter);
-        if (pool.length === 0) {
-          toast.error('No matching questions found for this drill.');
-          return;
-        }
-        const want = drill.question_count ?? Math.min(pool.length, 10);
-        selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
+      // The draw happens here, at open time, not at assign time. That is what
+      // keeps a re-attempt fresh, and it is what lets one drill serve a
+      // beginner and an advanced student different questions.
+      //
+      // `assignment` is null on the /guided-drills/:slug route, which is the
+      // library preview and the bootcamp entry point. Level stays null there on
+      // purpose: levelling a preview by the *viewer's* profile would show
+      // Joshua something different from what the student gets.
+      const resolution = resolveGuidedDrillQidsForLevel({ drill, assignment });
+      if (resolution.warning === 'empty') {
+        toast.error('No matching questions found for this drill.');
+        return;
       }
+      if (resolution.warning === 'out_of_level') {
+        // Not blocking: the student still gets a full drill. Logged so the
+        // mismatch is diagnosable from the console rather than invisible.
+        // eslint-disable-next-line no-console
+        console.warn('[guided-drill] no questions at this level; drew from outside the band', {
+          slug: drill.slug,
+          level: resolution.level,
+          band: resolution.band,
+          poolCount: resolution.poolCount,
+        });
+      }
+      selectedQids = resolution.qids;
     } else {
       // eslint-disable-next-line no-console
       console.error('[guided-drill] start blocked: no qids resolved', { slug });

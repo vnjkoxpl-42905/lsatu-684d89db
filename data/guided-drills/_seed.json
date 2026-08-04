@@ -37,7 +37,8 @@
     },
     "week": 4,
     "order_in_week": 1,
-    "source_file": "00_pre_week_4_blue_lr_guided_drills.md"
+    "source_file": "00_pre_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "BLENDED SET: Parallel + Paradox",
@@ -74,7 +75,8 @@
     },
     "week": 4,
     "order_in_week": 2,
-    "source_file": "00_pre_week_4_blue_lr_guided_drills.md"
+    "source_file": "00_pre_week_4_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Principle-Strengthen (set 2)",
@@ -114,7 +116,8 @@
     },
     "week": 4,
     "order_in_week": 1,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Principle-Strengthen + Application (Set 1)",
@@ -156,7 +159,8 @@
     },
     "week": 4,
     "order_in_week": 2,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Reconcile the Pivot (set 2)",
@@ -196,7 +200,8 @@
     },
     "week": 4,
     "order_in_week": 3,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Causal Chains - Set 2",
@@ -239,7 +244,8 @@
     },
     "week": 4,
     "order_in_week": 4,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Causal Difference-Maker (First Taste)",
@@ -280,7 +286,8 @@
     },
     "week": 4,
     "order_in_week": 5,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Missing Links (color-coded) Set 2",
@@ -324,7 +331,8 @@
     },
     "week": 4,
     "order_in_week": 6,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Assumption Family (Medium) Set 1",
@@ -379,7 +387,8 @@
     },
     "week": 4,
     "order_in_week": 7,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Famous Flaw (Easier) Set 1",
@@ -417,7 +426,8 @@
     },
     "week": 4,
     "order_in_week": 8,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Intermediate Conclusion - (Set 1)",
@@ -457,7 +467,8 @@
     },
     "week": 4,
     "order_in_week": 9,
-    "source_file": "01_week_4_blue_lr_guided_drills.md"
+    "source_file": "01_week_4_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Famous Flaws (Medium) Set 1",
@@ -495,7 +506,8 @@
     },
     "week": 8,
     "order_in_week": 1,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Medium) Set 6",
@@ -549,7 +561,8 @@
     },
     "week": 8,
     "order_in_week": 2,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Must Be False (Medium) Set 1",
@@ -583,7 +596,8 @@
     },
     "week": 8,
     "order_in_week": 3,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Parallel Flaw + Famous Flaws (Set 2)",
@@ -622,7 +636,8 @@
     },
     "week": 8,
     "order_in_week": 4,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Relative vs. Absolute",
@@ -664,7 +679,8 @@
     },
     "week": 8,
     "order_in_week": 5,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Science + Strengthen / Weaken",
@@ -709,7 +725,8 @@
     },
     "week": 8,
     "order_in_week": 6,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Principle-Conform + Principle in Stimulus (set 1)",
@@ -747,7 +764,8 @@
     },
     "week": 8,
     "order_in_week": 7,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Principle-Conform + Principles in Answers (Set 1)",
@@ -786,7 +804,8 @@
     },
     "week": 8,
     "order_in_week": 8,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Most Supported + Causal",
@@ -825,7 +844,8 @@
     },
     "week": 8,
     "order_in_week": 9,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Quantifiers: Trait Overlap inferences",
@@ -867,7 +887,8 @@
     },
     "week": 8,
     "order_in_week": 10,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Must Be False (Medium) Set 2",
@@ -901,7 +922,8 @@
     },
     "week": 8,
     "order_in_week": 11,
-    "source_file": "01_week_8_final_blue_lr_guided_drills.md"
+    "source_file": "01_week_8_final_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Causal Difference-Maker (Set 1)",
@@ -942,7 +964,8 @@
     },
     "week": 5,
     "order_in_week": 1,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Easier) Set 4",
@@ -994,7 +1017,8 @@
     },
     "week": 5,
     "order_in_week": 2,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Anti-Causal - Set 2",
@@ -1037,7 +1061,8 @@
     },
     "week": 5,
     "order_in_week": 3,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 1",
@@ -1072,7 +1097,8 @@
     },
     "week": 5,
     "order_in_week": 4,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Assumption Family (Medium) Set 3",
@@ -1127,7 +1153,8 @@
     },
     "week": 5,
     "order_in_week": 5,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Causal Difference-Maker (set 2)",
@@ -1170,7 +1197,8 @@
     },
     "week": 5,
     "order_in_week": 6,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Describing Arguments (set 2)",
@@ -1208,7 +1236,8 @@
     },
     "week": 5,
     "order_in_week": 7,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Agree/Disagree - Set 2",
@@ -1248,7 +1277,8 @@
     },
     "week": 5,
     "order_in_week": 8,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Medium) Set 1",
@@ -1300,7 +1330,8 @@
     },
     "week": 5,
     "order_in_week": 9,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Evaluate - First Taste",
@@ -1335,7 +1366,8 @@
     },
     "week": 5,
     "order_in_week": 10,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Evaluate (set 1)",
@@ -1370,7 +1402,8 @@
     },
     "week": 5,
     "order_in_week": 11,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Most Supported + Causal Difference-Maker",
@@ -1409,7 +1442,8 @@
     },
     "week": 5,
     "order_in_week": 12,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Medium) Set 2",
@@ -1449,7 +1483,8 @@
     },
     "week": 5,
     "order_in_week": 13,
-    "source_file": "02_week_5_blue_lr_guided_drills.md"
+    "source_file": "02_week_5_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Abstract + Flaw (set 2)",
@@ -1490,7 +1525,8 @@
     },
     "week": 9,
     "order_in_week": 1,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Science + Sufficient Assumption",
@@ -1532,7 +1568,8 @@
     },
     "week": 9,
     "order_in_week": 2,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "EXCEPT (set 1)",
@@ -1575,7 +1612,8 @@
     },
     "week": 9,
     "order_in_week": 3,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Weaken + Explain Curious Fact",
@@ -1614,7 +1652,8 @@
     },
     "week": 9,
     "order_in_week": 4,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Conditional Logic (Harder) Set 1",
@@ -1668,7 +1707,8 @@
     },
     "week": 9,
     "order_in_week": 5,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Must Be False (Harder) Set 2",
@@ -1702,7 +1742,8 @@
     },
     "week": 9,
     "order_in_week": 6,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Strengthen / Weaken + Science",
@@ -1747,7 +1788,8 @@
     },
     "week": 9,
     "order_in_week": 7,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Anti-Causal (Hard Mini-Set)",
@@ -1786,7 +1828,8 @@
     },
     "week": 9,
     "order_in_week": 8,
-    "source_file": "02_week_9_final_blue_lr_guided_drills.md"
+    "source_file": "02_week_9_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Conditional Logic (Harder) Set 2",
@@ -1840,7 +1883,8 @@
     },
     "week": 10,
     "order_in_week": 1,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Quantifiers Set 2",
@@ -1882,7 +1926,8 @@
     },
     "week": 10,
     "order_in_week": 2,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 1",
@@ -1917,7 +1962,8 @@
     },
     "week": 10,
     "order_in_week": 3,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "EXCEPT (set 2)",
@@ -1964,7 +2010,8 @@
     },
     "week": 10,
     "order_in_week": 4,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Conditional Logic (Harder) Set 3",
@@ -2018,7 +2065,8 @@
     },
     "week": 10,
     "order_in_week": 5,
-    "source_file": "03_week_10_final_blue_lr_guided_drills.md"
+    "source_file": "03_week_10_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 2",
@@ -2053,7 +2101,8 @@
     },
     "week": 7,
     "order_in_week": 1,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Complete the Analogy (set 3)",
@@ -2093,7 +2142,8 @@
     },
     "week": 7,
     "order_in_week": 2,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Assumes Similarity (Mini-Set)",
@@ -2133,7 +2183,8 @@
     },
     "week": 7,
     "order_in_week": 3,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Medium) Set 3",
@@ -2187,7 +2238,8 @@
     },
     "week": 7,
     "order_in_week": 4,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 3",
@@ -2222,7 +2274,8 @@
     },
     "week": 7,
     "order_in_week": 5,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Causal Chains (Mini Set)",
@@ -2263,7 +2316,8 @@
     },
     "week": 7,
     "order_in_week": 6,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Evaluate (set 2)",
@@ -2298,7 +2352,8 @@
     },
     "week": 7,
     "order_in_week": 7,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Conditional Logic (Medium) Set 4",
@@ -2352,7 +2407,8 @@
     },
     "week": 7,
     "order_in_week": 8,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Intermediate Conclusions Set 2",
@@ -2392,7 +2448,8 @@
     },
     "week": 7,
     "order_in_week": 9,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Describing Arguments (set 3)",
@@ -2430,7 +2487,8 @@
     },
     "week": 7,
     "order_in_week": 10,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Causal Chains - Set 3",
@@ -2465,7 +2523,8 @@
     },
     "week": 7,
     "order_in_week": 11,
-    "source_file": "03_week_7_blue_lr_guided_drills.md"
+    "source_file": "03_week_7_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Principle-Strengthen (Set 1)",
@@ -2505,7 +2564,8 @@
     },
     "week": 11,
     "order_in_week": 1,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 2",
@@ -2540,7 +2600,8 @@
     },
     "week": 11,
     "order_in_week": 2,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Assumption Family (Harder) Set 1",
@@ -2596,7 +2657,8 @@
     },
     "week": 11,
     "order_in_week": 3,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Speedwalking LR (set 1)",
@@ -2649,7 +2711,8 @@
     },
     "week": 11,
     "order_in_week": 4,
-    "source_file": "04_week_11_final_blue_lr_guided_drills.md"
+    "source_file": "04_week_11_final_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Explain Curious Fact (Medium) Set 4",
@@ -2684,7 +2747,8 @@
     },
     "week": 8,
     "order_in_week": 1,
-    "source_file": "04_week_8_blue_lr_guided_drills.md"
+    "source_file": "04_week_8_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Assumes Similarity (set 1)",
@@ -2724,7 +2788,8 @@
     },
     "week": 8,
     "order_in_week": 2,
-    "source_file": "04_week_8_blue_lr_guided_drills.md"
+    "source_file": "04_week_8_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Anti-Causal - Set 3",
@@ -2763,7 +2828,8 @@
     },
     "week": 8,
     "order_in_week": 3,
-    "source_file": "04_week_8_blue_lr_guided_drills.md"
+    "source_file": "04_week_8_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Conditional Logic (Medium) Set 5",
@@ -2817,7 +2883,8 @@
     },
     "week": 8,
     "order_in_week": 4,
-    "source_file": "04_week_8_blue_lr_guided_drills.md"
+    "source_file": "04_week_8_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Assumption Family (Harder) Set 2",
@@ -2873,7 +2940,8 @@
     },
     "week": 12,
     "order_in_week": 1,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Explain Curious Fact (Harder) Set 3",
@@ -2908,7 +2976,8 @@
     },
     "week": 12,
     "order_in_week": 2,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Conditional Logic (Harder) Set 4",
@@ -2960,7 +3029,8 @@
     },
     "week": 12,
     "order_in_week": 3,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
+    "level": "advanced"
   },
   {
     "title": "Speedwalking LR (set 2)",
@@ -3013,7 +3083,8 @@
     },
     "week": 12,
     "order_in_week": 4,
-    "source_file": "05_week_12_final_blue_lr_guided_drills.md"
+    "source_file": "05_week_12_final_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "First Sentence Conclusions",
@@ -3053,7 +3124,8 @@
     },
     "week": 1,
     "order_in_week": 1,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "The Core Connection",
@@ -3105,7 +3177,8 @@
     },
     "week": 1,
     "order_in_week": 2,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Assumption Family (Easier) Set 1",
@@ -3158,7 +3231,8 @@
     },
     "week": 1,
     "order_in_week": 3,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Framework Sampler",
@@ -3186,7 +3260,8 @@
     },
     "week": 1,
     "order_in_week": 4,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Paradox - (First Taste)",
@@ -3221,7 +3296,8 @@
     },
     "week": 1,
     "order_in_week": 5,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Explain Curious Fact (First Taste)",
@@ -3256,7 +3332,8 @@
     },
     "week": 1,
     "order_in_week": 6,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Flaw - First Taste",
@@ -3294,7 +3371,8 @@
     },
     "week": 1,
     "order_in_week": 7,
-    "source_file": "week_1_blue_lr_guided_drills.md"
+    "source_file": "week_1_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Sampling",
@@ -3334,7 +3412,8 @@
     },
     "week": 2,
     "order_in_week": 1,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Abstract + Flaw (set 1)",
@@ -3374,7 +3453,8 @@
     },
     "week": 2,
     "order_in_week": 2,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Must Be True - First Taste",
@@ -3408,7 +3488,8 @@
     },
     "week": 2,
     "order_in_week": 3,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Conditional Logic (Easier) Set 1",
@@ -3460,7 +3541,8 @@
     },
     "week": 2,
     "order_in_week": 4,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Reconcile the Pivot (First Taste)",
@@ -3500,7 +3582,8 @@
     },
     "week": 2,
     "order_in_week": 5,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Missing Links: First Taste",
@@ -3542,7 +3625,8 @@
     },
     "week": 2,
     "order_in_week": 6,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Necessary Assumption - First Taste",
@@ -3581,7 +3665,8 @@
     },
     "week": 2,
     "order_in_week": 7,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Assumption Family (Easier) Set 2",
@@ -3636,7 +3721,8 @@
     },
     "week": 2,
     "order_in_week": 8,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Most Supported - First Taste",
@@ -3671,7 +3757,8 @@
     },
     "week": 2,
     "order_in_week": 9,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Causal Chains",
@@ -3712,7 +3799,8 @@
     },
     "week": 2,
     "order_in_week": 10,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Assumption Family (Easier) Set 3",
@@ -3765,7 +3853,8 @@
     },
     "week": 2,
     "order_in_week": 11,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Missing Links (color-coded)",
@@ -3809,7 +3898,8 @@
     },
     "week": 2,
     "order_in_week": 12,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Principle-Conform - (First Taste)",
@@ -3848,7 +3938,8 @@
     },
     "week": 2,
     "order_in_week": 13,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Principle-Strengthen - (First Taste)",
@@ -3888,7 +3979,8 @@
     },
     "week": 2,
     "order_in_week": 14,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Strengthen - (First Taste)",
@@ -3929,7 +4021,8 @@
     },
     "week": 2,
     "order_in_week": 15,
-    "source_file": "week_2_blue_lr_guided_drills.md"
+    "source_file": "week_2_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "EXCEPT - First Taste",
@@ -3972,7 +4065,8 @@
     },
     "week": 3,
     "order_in_week": 1,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Anti-Causal - Set 1",
@@ -4015,7 +4109,8 @@
     },
     "week": 3,
     "order_in_week": 2,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Explain Curious Fact (Easier) Set 1",
@@ -4050,7 +4145,8 @@
     },
     "week": 3,
     "order_in_week": 3,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Analogies (set 1)",
@@ -4090,7 +4186,8 @@
     },
     "week": 3,
     "order_in_week": 4,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Break the Comparison!",
@@ -4136,7 +4233,8 @@
     },
     "week": 3,
     "order_in_week": 5,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Agree/Disagree - Set 1",
@@ -4176,7 +4274,8 @@
     },
     "week": 3,
     "order_in_week": 6,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "intermediate"
   },
   {
     "title": "Rebuttal Conclusions",
@@ -4212,7 +4311,8 @@
     },
     "week": 3,
     "order_in_week": 7,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Describing Arguments (set 1)",
@@ -4250,7 +4350,8 @@
     },
     "week": 3,
     "order_in_week": 8,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Assumption Family (Easier) Set 4",
@@ -4303,7 +4404,8 @@
     },
     "week": 3,
     "order_in_week": 9,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Fill in the Blank (Logical Completion) - First Taste",
@@ -4341,7 +4443,8 @@
     },
     "week": 3,
     "order_in_week": 10,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Complete the Analogy (set 1)",
@@ -4379,7 +4482,8 @@
     },
     "week": 3,
     "order_in_week": 11,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Conditional Logic (Easier) Set 2",
@@ -4431,7 +4535,8 @@
     },
     "week": 3,
     "order_in_week": 12,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Weaken + Comparison",
@@ -4471,7 +4576,8 @@
     },
     "week": 3,
     "order_in_week": 13,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": null
   },
   {
     "title": "Complete the Analogy (set 2)",
@@ -4519,7 +4625,8 @@
     },
     "week": 3,
     "order_in_week": 14,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Role + Main Conclusion (set 1)",
@@ -4555,7 +4662,8 @@
     },
     "week": 3,
     "order_in_week": 15,
-    "source_file": "week_3_blue_lr_guided_drills.md"
+    "source_file": "week_3_blue_lr_guided_drills.md",
+    "level": "beginner"
   },
   {
     "title": "Assumption Family (Medium) Set 2",
@@ -4610,7 +4718,8 @@
     },
     "week": 10,
     "order_in_week": 6,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": "intermediate"
   },
   {
     "title": "Explain Curious Fact (Easier) Set 2",
@@ -4645,7 +4754,8 @@
     },
     "week": 11,
     "order_in_week": 5,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": "beginner"
   },
   {
     "title": "Famous Flaws (Easier)",
@@ -4683,7 +4793,8 @@
     },
     "week": 10,
     "order_in_week": 7,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": "beginner"
   },
   {
     "title": "Famous Flaws (Easier) Set 2",
@@ -4721,7 +4832,8 @@
     },
     "week": 10,
     "order_in_week": 8,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": "beginner"
   },
   {
     "title": "Missing Links Set 2",
@@ -4763,7 +4875,8 @@
     },
     "week": 12,
     "order_in_week": 5,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": "advanced"
   },
   {
     "title": "Describing Arguments (Match Family)",
@@ -4801,6 +4914,7 @@
     },
     "week": 13,
     "order_in_week": 1,
-    "source_file": "lsatlab-studyplan"
+    "source_file": "lsatlab-studyplan",
+    "level": null
   }
 ]

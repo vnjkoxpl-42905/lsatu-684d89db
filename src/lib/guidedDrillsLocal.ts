@@ -1,4 +1,5 @@
 import type { GuidedDrill, GuidedDrillBankFilter } from '@/lib/guidedDrills';
+import { coerceStudentLevel } from '@/lib/studentLevel';
 import { GUIDED_DRILLS_LOCAL_SEED } from '@/data/guidedDrillsLocalSeed';
 
 /**
@@ -30,6 +31,9 @@ const BY_SLUG = new Map<string, GuidedDrill>(
       bank_filter: { ...(row.bank_filter ?? {}) } as GuidedDrillBankFilter,
       source_file: row.source_file ?? null,
       is_published: true,
+      // Built field by field, so a new column is silently dropped unless it is
+      // added here too.
+      level: coerceStudentLevel((row as { level?: unknown }).level, null),
     } satisfies GuidedDrill,
   ]),
 );

@@ -15,6 +15,9 @@ import HubStudentList from '@/components/hub/HubStudentList';
 import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import type { TodoAction } from '@/lib/todoActions';
+import { assignWorkBundle } from '@/lib/assignWork';
+import { loadCurriculumWeek } from '@/lib/curriculumSchedule';
+import type { StudentLevel } from '@/lib/studentLevel';
 import {
   parseScheduleTemplateText,
   type ScheduleTemplateItem as TemplateItem,
@@ -28,6 +31,13 @@ interface ItemDraft {
   deadline?: string;
   /** Optional wiring: launches a real drill/homework when the student taps it. */
   action?: TodoAction;
+  /**
+   * Set when this item came from the curriculum and the drill is not yet
+   * assigned. Publish turns it into a real assignment and then an `action`.
+   */
+  curriculumDrillId?: string;
+  /** Band to assign that drill at. Undefined uses the student's profile level. */
+  curriculumLevel?: StudentLevel | null;
 }
 
 /** A launchable assignment the student already has, offered as a task link. */
@@ -137,6 +147,45 @@ export default function TeacherWeeklyPlans() {
   const removeItem = (idx: number) =>
     setItems((prev) => prev.filter((_, i) => i !== idx));
 
+  /**
+   * Populate the builder from where the student actually is in their
+   * curriculum. Writes nothing: it fills the same draft rows Joshua would type
+   * by hand, so he reviews and edits before the existing Publish runs.
+   */
+  const [filling, setFilling] = useState(false);
+  const fillFromCurriculum = async () => {
+    if (!studentId) return;
+    setFilling(true);
+    try {
+      const week = await loadCurriculumWeek({ studentId, weekStart });
+      if (week.slots.length === 0) {
+        toast.info(
+          week.emptyReason === 'curriculum-complete'
+            ? 'This student has already been assigned everything on their track.'
+            : 'No curriculum track for this student yet.',
+        );
+        return;
+      }
+      setItems((prev) => [
+        ...prev,
+        ...week.slots.map((slot) => ({
+          day: slot.day,
+          title: slot.title,
+          estimatedMinutes: slot.estimatedMinutes ?? undefined,
+          curriculumDrillId: slot.guidedDrillId,
+          curriculumLevel: slot.level,
+        })),
+      ]);
+      toast.success(
+        `Added ${week.slots.length} drill${week.slots.length === 1 ? '' : 's'} from the curriculum.`,
+      );
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Could not read the curriculum');
+    } finally {
+      setFilling(false);
+    }
+  };
+
   const publish = async () => {
     if (!studentId || !user) return;
     if (items.length === 0) {
@@ -177,6 +226,58 @@ export default function TeacherWeeklyPlans() {
       if (pErr || !plan) throw pErr ?? new Error('Failed to create plan');
       const planId = plan.id;
 
+      // 1b) Curriculum-sourced items name a drill the student does not have
+      //     yet. Assign those now so each becomes a real guided_drill_assignment
+      //     -- which is what carries the level, and what the task link needs to
+      //     point at. notify:false because this plan sends its own single
+      //     summary below; seven bell entries for one week is the exact UX
+      //     step 4 already avoids.
+      const toAssign = items
+        .map((it, idx) => ({ it, idx }))
+        .filter(({ it }) => it.curriculumDrillId && !it.action);
+
+      const assignedActions = new Map<number, TodoAction>();
+      if (toAssign.length > 0) {
+        // Grouped by band so each group carries its own level override.
+        const byLevel = new Map<string, typeof toAssign>();
+        for (const row of toAssign) {
+          const key = row.it.curriculumLevel ?? '__profile__';
+          byLevel.set(key, [...(byLevel.get(key) ?? []), row]);
+        }
+
+        for (const [key, group] of byLevel) {
+          const result = await assignWorkBundle({
+            teacherId: user.id,
+            studentIds: [studentId],
+            items: group.map(({ it }) => ({
+              kind: 'guided_drill' as const,
+              drillId: it.curriculumDrillId as string,
+            })),
+            levelOverrides:
+              key === '__profile__'
+                ? undefined
+                : { [studentId]: key as StudentLevel },
+            notify: false,
+          });
+
+          if (result.ok.length === 0) {
+            throw new Error(
+              result.failed[0]?.error ?? 'Could not assign the curriculum drills for this plan',
+            );
+          }
+          const assignmentIds = result.ok[0].assignmentIds ?? [];
+          group.forEach(({ idx }, i) => {
+            const assignmentId = assignmentIds[i];
+            if (!assignmentId) return;
+            assignedActions.set(idx, {
+              kind: 'drill',
+              ref_id: assignmentId,
+              route: `/guided/${assignmentId}`,
+            });
+          });
+        }
+      }
+
       // 2) Insert weekly_plan_items first so each row has an id we can
       //    reference from a classroom_items row.
       const itemRows = items.map((it, idx) => {
@@ -193,7 +294,10 @@ export default function TeacherWeeklyPlans() {
           status: 'assigned',
           unlock_at: unlockAt,
           due_at: dueAt,
-          metadata_json: it.action ? { action: it.action } : {},
+          metadata_json: (() => {
+            const action = it.action ?? assignedActions.get(idx);
+            return action ? { action } : {};
+          })(),
         };
       });
 
@@ -467,6 +571,25 @@ export default function TeacherWeeklyPlans() {
                 classroom_items row visible in the student's Classroom and
                 Schedule.
               </p>
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fillFromCurriculum}
+                  disabled={filling || !studentId}
+                >
+                  {filling ? (
+                    <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+                  )}
+                  Fill from curriculum
+                </Button>
+                <span className="text-xs text-zinc-500">
+                  Picks up where this student left off, at their level. Nothing is
+                  assigned until you publish.
+                </span>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

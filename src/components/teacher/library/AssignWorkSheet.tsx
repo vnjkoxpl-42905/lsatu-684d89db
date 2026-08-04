@@ -4,7 +4,19 @@ import { Loader2, Send, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { assignWorkBundle, describeAssignResult, type AssignableItem } from '@/lib/assignWork';
 import { useHubStudents } from '@/hooks/useHubStudents';
+import { useStudentLevels } from '@/hooks/useStudentLevels';
+import { questionBank } from '@/lib/questionLoader';
 import { useAuth } from '@/contexts/AuthContext';
+import { resolveGuidedDrillPool, type GuidedDrill } from '@/lib/guidedDrills';
+import { countInBand } from '@/lib/guidedDrillLevel';
+import {
+  LEVEL_LABELS,
+  STUDENT_LEVELS,
+  describeBand,
+  levelBand,
+  type StudentLevel,
+} from '@/lib/studentLevel';
+import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -23,6 +35,13 @@ export interface AssignWorkSheetItem {
   title: string;
   /** "Guided drill", "Homework set", … — so a mixed bundle is readable. */
   kindLabel: string;
+  /**
+   * The full drill row, for guided drills only. Supplied by surfaces that
+   * already hold it, so the sheet can preview how many questions each student
+   * will get at their level without doing any I/O of its own. Optional: callers
+   * that do not assign drills are unaffected.
+   */
+  drill?: GuidedDrill;
 }
 
 export function AssignWorkSheet({
@@ -42,16 +61,43 @@ export function AssignWorkSheet({
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const { rows: students } = useHubStudents();
+  const { data: profileLevels } = useStudentLevels();
+  /**
+   * Read from the bank singleton rather than QuestionBankContext, so the sheet
+   * renders anywhere it is mounted. The preview is a nicety; a missing provider
+   * must never take down an assign flow that does not otherwise need the bank.
+   */
+  const [bankReady, setBankReady] = useState(() => questionBank.isReady());
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [scheduledFor, setScheduledFor] = useState('');
   const [assigning, setAssigning] = useState(false);
+  /** Per-student band chosen for this assign only. Absent = use the profile. */
+  const [levelOverrides, setLevelOverrides] = useState<Record<string, StudentLevel | null>>({});
+  /** Shorten the drill for everyone in this assign. Empty = the drill's own count. */
+  const [questionCount, setQuestionCount] = useState('');
+
+  // The bank is normally already warm by the time a teacher opens this, but on
+  // a cold tab it may still be in flight. load() is idempotent and de-duped.
+  useEffect(() => {
+    if (!open || bankReady) return;
+    let cancelled = false;
+    questionBank
+      .load()
+      .then(() => !cancelled && setBankReady(questionBank.isReady()))
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [open, bankReady]);
 
   // Reopening the sheet starts clean, except for a caller-supplied scope.
   useEffect(() => {
     if (!open) return;
     setSelected(new Set(defaultStudentIds ?? []));
     setScheduledFor('');
+    setLevelOverrides({});
+    setQuestionCount('');
     // defaultStudentIds is a fresh array each render at most call sites, so key
     // the reset on its contents rather than its identity.
   }, [open, defaultStudentIds?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -62,6 +108,41 @@ export function AssignWorkSheet({
     return `${items.length} pieces of work`;
   }, [items]);
 
+  /** The drills in this bundle that came with their full row attached. */
+  const drills = useMemo(
+    () => items.map((i) => i.drill).filter((d): d is GuidedDrill => !!d),
+    [items],
+  );
+  const hasGuidedDrill = items.some((i) => i.item.kind === 'guided_drill');
+  /** Sizing and per-student counts only make sense for a single drill. */
+  const soleDrill = drills.length === 1 && items.length === 1 ? drills[0] : null;
+
+  /** The drill's pool, resolved once. Empty until the bank finishes loading. */
+  const pool = useMemo(
+    () => (soleDrill && bankReady ? resolveGuidedDrillPool(soleDrill.bank_filter) : []),
+    [soleDrill, bankReady],
+  );
+
+  const effectiveCount = useMemo(() => {
+    const parsed = Number.parseInt(questionCount, 10);
+    if (Number.isFinite(parsed) && parsed > 0) return parsed;
+    return soleDrill?.question_count ?? null;
+  }, [questionCount, soleDrill]);
+
+  /** Minutes scale with the size, so trimming a drill shows the time saved. */
+  const scaledMinutes = useMemo(() => {
+    if (!soleDrill?.estimated_minutes || !soleDrill.question_count || !effectiveCount) return null;
+    return Math.max(
+      1,
+      Math.round((soleDrill.estimated_minutes * effectiveCount) / soleDrill.question_count),
+    );
+  }, [soleDrill, effectiveCount]);
+
+  const levelFor = (studentId: string): StudentLevel | null =>
+    studentId in levelOverrides
+      ? levelOverrides[studentId]
+      : (profileLevels?.[studentId] ?? null);
+
   const handleAssign = async () => {
     if (!user || selected.size === 0 || items.length === 0) return;
     setAssigning(true);
@@ -71,6 +152,8 @@ export function AssignWorkSheet({
         studentIds: [...selected],
         items: items.map((i) => i.item),
         scheduledForLocalDate: scheduledFor || undefined,
+        levelOverrides: hasGuidedDrill ? levelOverrides : undefined,
+        questionCountOverride: hasGuidedDrill ? effectiveOverrideCount(questionCount) : undefined,
       });
 
       queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
@@ -130,6 +213,33 @@ export function AssignWorkSheet({
             />
           </div>
 
+          {soleDrill ? (
+            <div>
+              <label
+                htmlFor="assign-question-count"
+                className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground"
+              >
+                Questions (optional)
+              </label>
+              <div className="mt-1 flex items-center gap-2">
+                <Input
+                  id="assign-question-count"
+                  type="number"
+                  min={1}
+                  max={pool.length || undefined}
+                  inputMode="numeric"
+                  placeholder={String(soleDrill.question_count ?? '')}
+                  value={questionCount}
+                  onChange={(e) => setQuestionCount(e.target.value)}
+                  className="w-24"
+                />
+                <span className="text-xs text-muted-foreground">
+                  {scaledMinutes ? `about ${scaledMinutes} min` : 'Leave blank for the full drill'}
+                </span>
+              </div>
+            </div>
+          ) : null}
+
           <div>
             <span className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground">
               Students ({selected.size} selected)
@@ -140,27 +250,52 @@ export function AssignWorkSheet({
               </p>
             ) : (
               <div className="mt-2 max-h-80 space-y-1 overflow-y-auto border border-border p-2">
-                {students.map((s) => (
-                  <label
-                    key={s.class_id}
-                    className="flex cursor-pointer items-center gap-2 px-2 py-1.5 hover:bg-muted"
-                  >
-                    <Checkbox
-                      checked={selected.has(s.class_id)}
-                      onCheckedChange={(checked) => {
-                        setSelected((prev) => {
-                          const next = new Set(prev);
-                          if (checked) next.add(s.class_id);
-                          else next.delete(s.class_id);
-                          return next;
-                        });
-                      }}
-                    />
-                    <span className="text-sm">
-                      {s.display_name || s.email || s.class_id.slice(0, 8)}
-                    </span>
-                  </label>
-                ))}
+                {students.map((s) => {
+                  const isSelected = selected.has(s.class_id);
+                  const level = levelFor(s.class_id);
+                  const overridden = s.class_id in levelOverrides;
+                  return (
+                    <div key={s.class_id}>
+                      <label className="flex cursor-pointer items-center gap-2 px-2 py-1.5 hover:bg-muted">
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={(checked) => {
+                            setSelected((prev) => {
+                              const next = new Set(prev);
+                              if (checked) next.add(s.class_id);
+                              else next.delete(s.class_id);
+                              return next;
+                            });
+                          }}
+                        />
+                        <span className="text-sm">
+                          {s.display_name || s.email || s.class_id.slice(0, 8)}
+                        </span>
+                      </label>
+
+                      {hasGuidedDrill && isSelected ? (
+                        <StudentLevelRow
+                          level={level}
+                          overridden={overridden}
+                          pool={pool}
+                          bankLoading={!bankReady}
+                          want={effectiveCount}
+                          hasPool={!!soleDrill}
+                          onPick={(next) =>
+                            setLevelOverrides((prev) => ({ ...prev, [s.class_id]: next }))
+                          }
+                          onUseProfile={() =>
+                            setLevelOverrides((prev) => {
+                              const next = { ...prev };
+                              delete next[s.class_id];
+                              return next;
+                            })
+                          }
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -181,6 +316,100 @@ export function AssignWorkSheet({
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+/** The typed question-count override, or undefined when left blank. */
+function effectiveOverrideCount(raw: string): number | undefined {
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+}
+
+/**
+ * What one selected student will actually get, shown before the teacher
+ * commits. The warning is here rather than in the result toast because
+ * "this drill has nothing at their level" is a decision to make beforehand.
+ */
+function StudentLevelRow({
+  level,
+  overridden,
+  pool,
+  bankLoading,
+  want,
+  hasPool,
+  onPick,
+  onUseProfile,
+}: {
+  level: StudentLevel | null;
+  overridden: boolean;
+  pool: Parameters<typeof countInBand>[0];
+  bankLoading: boolean;
+  want: number | null;
+  hasPool: boolean;
+  onPick: (level: StudentLevel | null) => void;
+  onUseProfile: () => void;
+}) {
+  const inBand = hasPool && !bankLoading ? countInBand(pool, level) : null;
+  const target = want ?? inBand;
+  const short = inBand != null && target != null && inBand < target;
+
+  let detail: string;
+  if (!hasPool) detail = level ? describeBand(levelBand(level)) : 'the drill’s own range';
+  else if (bankLoading) detail = 'checking pool…';
+  else if (inBand === 0) {
+    detail = `nothing at this level in a pool of ${pool.length}`;
+  } else if (target != null) {
+    detail = `${Math.min(inBand ?? 0, target)} of ${target} at level`;
+  } else {
+    detail = `${inBand} at level`;
+  }
+
+  return (
+    <div className="mb-1 ml-8 mr-2 flex flex-wrap items-center gap-x-2 gap-y-1 pb-1.5">
+      <span
+        className={cn(
+          'text-xs',
+          short || inBand === 0 ? 'text-amber-700' : 'text-muted-foreground',
+        )}
+      >
+        {level ? LEVEL_LABELS[level] : 'Level not set'}
+        {level && !overridden ? ' (profile)' : ''}
+        {' · '}
+        {detail}
+      </span>
+
+      <div className="ml-auto inline-flex items-center border border-border">
+        <button
+          type="button"
+          onClick={onUseProfile}
+          aria-pressed={!overridden}
+          title="Use this student's own level"
+          className={cn(
+            'px-1.5 py-0.5 text-xs font-semibold transition',
+            !overridden ? 'bg-black text-white' : 'text-muted-foreground hover:bg-muted',
+          )}
+        >
+          Profile
+        </button>
+        {STUDENT_LEVELS.map((option) => (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onPick(option)}
+            aria-pressed={overridden && level === option}
+            title={`${LEVEL_LABELS[option]} — ${describeBand(levelBand(option))}`}
+            className={cn(
+              'border-l border-border px-1.5 py-0.5 text-xs font-semibold transition',
+              overridden && level === option
+                ? 'bg-black text-white'
+                : 'text-muted-foreground hover:bg-muted',
+            )}
+          >
+            {LEVEL_LABELS[option][0]}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 

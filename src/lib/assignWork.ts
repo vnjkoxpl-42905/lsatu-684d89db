@@ -4,6 +4,7 @@ import { createClassroomItem } from '@/lib/classroomItems';
 import type { ClassroomItemType } from '@/hooks/useClassroomItems';
 import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroomNotify';
 import { parseLocalDay } from '@/lib/localDate';
+import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
 
 /**
  * The one thing a teacher can hand a student. Every assign surface in the
@@ -64,11 +65,87 @@ function message(error: unknown, fallback: string) {
   return error instanceof Error ? error.message : fallback;
 }
 
+/** Per-student proficiency, resolved once for the whole assign. */
+export type StudentLevelMap = ReadonlyMap<string, StudentLevel | null>;
+
+/**
+ * Postgres 42703 (undefined_column), which PostgREST also surfaces in the
+ * message. Means the migration has not been applied to this database yet.
+ */
+function isMissingColumnError(error: unknown): boolean {
+  const e = error as { code?: string; message?: string } | null;
+  if (!e) return false;
+  if (e.code === '42703') return true;
+  return /proficiency_level/.test(e.message ?? '') && /does not exist|column/i.test(e.message ?? '');
+}
+
+/**
+ * Every student's band in one query.
+ *
+ * Seeded with null for each requested id, so a student with no profile row is a
+ * defined "no level" rather than an undefined lookup. A student Joshua has not
+ * levelled gets null and therefore the drill's own range -- the behaviour that
+ * predates levels. Inventing a default here would be the system overruling him.
+ */
+async function fetchStudentLevels(studentIds: string[]): Promise<StudentLevelMap> {
+  const levels = new Map<string, StudentLevel | null>(
+    studentIds.map((id) => [id, null]),
+  );
+  if (studentIds.length === 0) return levels;
+
+  // proficiency_level is newer than the auto-generated Supabase types, which
+  // are not hand-editable, so the select is cast at the call site -- the same
+  // pattern savedSets.ts and questionExposure.ts use for new columns.
+  const { data, error } = await (supabase.from('profiles') as never as {
+    select: (cols: string) => {
+      in: (
+        col: string,
+        vals: string[],
+      ) => Promise<{ data: Array<Record<string, unknown>> | null; error: unknown }>;
+    };
+  })
+    .select('class_id, proficiency_level')
+    .in('class_id', studentIds);
+
+  // The code and the migration do not land atomically. If the app is live
+  // before the column exists, treat it as "nobody has a level yet" and assign
+  // exactly as we did before levels existed, rather than breaking every guided
+  // drill assign until the migration catches up. Any other error is real and
+  // fails the assign cleanly, because silently unlevelling work Joshua asked to
+  // be levelled would be worse than not assigning it.
+  if (error) {
+    if (isMissingColumnError(error)) {
+      console.warn('[assignWork] profiles.proficiency_level is not deployed yet; assigning unlevelled');
+      return levels;
+    }
+    throw error;
+  }
+
+  for (const row of data ?? []) {
+    const id = row.class_id as string;
+    if (!levels.has(id)) continue;
+    levels.set(id, coerceStudentLevel(row.proficiency_level, null));
+  }
+  return levels;
+}
+
 async function planFor(
   item: AssignableItem,
   teacherId: string,
-  scheduledForLocalDate?: string,
+  scheduledForLocalDate: string | undefined,
+  levels: StudentLevelMap,
+  levelOverrides: Record<string, StudentLevel | null> | undefined,
+  questionCountOverride: number | null | undefined,
 ): Promise<AssignPlan> {
+  /**
+   * `studentId in overrides` rather than `??`, so an explicit null ("assign
+   * this one unlevelled") is honoured instead of falling through to the profile.
+   */
+  const levelFor = (studentId: string): StudentLevel | null =>
+    levelOverrides && studentId in levelOverrides
+      ? levelOverrides[studentId]
+      : (levels.get(studentId) ?? null);
+
   // A scheduled date is a calendar day the teacher picked, so it has to be read
   // in their timezone. Parsed as UTC it would unlock the evening before.
   const scheduledDay = scheduledForLocalDate ? parseLocalDay(scheduledForLocalDate) : null;
@@ -123,7 +200,7 @@ async function planFor(
     case 'guided_drill': {
       const { data: drill, error } = await supabase
         .from('guided_drills')
-        .select('id, title')
+        .select('id, title, question_count')
         .eq('id', item.drillId)
         .single();
       if (error) throw error;
@@ -135,6 +212,10 @@ async function planFor(
         assignmentType: 'guided drill',
         sourceTable: 'guided_drill_assignments',
         insertRow: async (studentId) => {
+          // The level is recorded, not resolved: the actual question draw
+          // happens when the student opens the drill. Writing question_qids
+          // here would freeze the set and silently kill the re-attempt fresh
+          // draw the drill pool model is built on.
           const { data, error: insertError } = await supabase
             .from('guided_drill_assignments')
             .insert({
@@ -145,7 +226,9 @@ async function planFor(
               scheduled_for: scheduledForLocalDate ?? null,
               unlock_at: unlockAt,
               status: 'assigned',
-            })
+              level: levelFor(studentId),
+              question_count: questionCountOverride ?? null,
+            } as never)
             .select('id')
             .single();
           if (insertError) throw insertError;
@@ -261,6 +344,18 @@ export async function assignWork(input: {
     dueAt?: string | null;
     metadata?: Record<string, unknown>;
   };
+  /**
+   * Per-student band, overriding their profile level. An explicit null assigns
+   * that student unlevelled. Guided drills only.
+   */
+  levelOverrides?: Record<string, StudentLevel | null>;
+  /** Shorten the drill for everyone in this assign. Guided drills only. */
+  questionCountOverride?: number | null;
+  /**
+   * Send the student a notification. Default true. Set false only when the
+   * caller sends its own message covering this work.
+   */
+  notify?: boolean;
 }): Promise<AssignWorkResult> {
   return runAssign({ ...input, items: [input.item] });
 }
@@ -282,6 +377,11 @@ export async function assignWorkBundle(input: {
   studentIds: string[];
   items: AssignableItem[];
   scheduledForLocalDate?: string;
+  /** Per-student band. Applies to every guided drill in the bundle. */
+  levelOverrides?: Record<string, StudentLevel | null>;
+  questionCountOverride?: number | null;
+  /** See assignWork. Default true. */
+  notify?: boolean;
 }): Promise<AssignWorkResult> {
   return runAssign(input);
 }
@@ -305,8 +405,20 @@ async function runAssign(input: {
     dueAt?: string | null;
     metadata?: Record<string, unknown>;
   };
+  levelOverrides?: Record<string, StudentLevel | null>;
+  questionCountOverride?: number | null;
+  notify?: boolean;
 }): Promise<AssignWorkResult> {
-  const { teacherId, studentIds, items, scheduledForLocalDate, overrides } = input;
+  const {
+    teacherId,
+    studentIds,
+    items,
+    scheduledForLocalDate,
+    overrides,
+    levelOverrides,
+    questionCountOverride,
+    notify: shouldNotify = true,
+  } = input;
 
   const ok: StudentResult[] = [];
   const failed: StudentResult[] = [];
@@ -314,12 +426,27 @@ async function runAssign(input: {
   if (studentIds.length === 0 || items.length === 0) return { ok, failed };
 
   // Every item is resolved before anyone is written to, so an unreadable item
-  // fails the whole assign cleanly instead of half-delivering the bundle.
+  // fails the whole assign cleanly instead of half-delivering the bundle. An
+  // unreadable student level belongs in the same block for the same reason: the
+  // catch below reports every student as failed and nothing has been written.
   let plans: AssignPlan[];
   try {
+    // Only guided drills carry a level, so nothing else pays for the lookup.
+    const needsLevels = items.some((item) => item.kind === 'guided_drill');
+    const levels: StudentLevelMap = needsLevels
+      ? await fetchStudentLevels(studentIds)
+      : new Map();
+
     plans = await Promise.all(
       items.map(async (item, index) => {
-        const base = await planFor(item, teacherId, scheduledForLocalDate);
+        const base = await planFor(
+          item,
+          teacherId,
+          scheduledForLocalDate,
+          levels,
+          levelOverrides,
+          questionCountOverride,
+        );
         // Overrides only ever accompany a single item (see assignWork).
         if (index > 0 || !overrides) return base;
         return {
@@ -376,15 +503,20 @@ async function runAssign(input: {
         record.classroomItemId = classroomItem.id;
       }
 
+      // A caller that owns its own messaging opts out. The weekly-plan builder
+      // does: it sends one summary for the whole week, and seven bell entries
+      // for one plan is the exact UX it already avoids.
       const summary = notificationFor(plans, routes);
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId: teacherId,
-        studentId,
-        title: summary.title,
-        description: summary.description,
-        route: summary.route,
-        assignmentType: summary.assignmentType,
-      });
+      const notify = shouldNotify
+        ? await notifyStudentOfClassroomItem({
+            adminUserId: teacherId,
+            studentId,
+            title: summary.title,
+            description: summary.description,
+            route: summary.route,
+            assignmentType: summary.assignmentType,
+          })
+        : undefined;
 
       ok.push({
         studentId,

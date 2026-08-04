@@ -26,6 +26,9 @@ const TEACHER = 'teacher-uuid';
 let inserted: Record<string, Record<string, unknown>[]>;
 let deleted: Record<string, string[]>;
 let insertShouldFail: string | null;
+/** class_id -> proficiency_level, as the profiles table would return it. */
+let studentLevels: Record<string, string | null>;
+let levelLookupShouldFail: boolean | 'missing-column';
 
 function selectableRow(row: Record<string, unknown>) {
   return {
@@ -38,22 +41,42 @@ beforeEach(() => {
   inserted = {};
   deleted = {};
   insertShouldFail = null;
+  studentLevels = {};
+  levelLookupShouldFail = false;
 
   mockNotify.mockResolvedValue({ inbox_ok: true, bell_ok: true, email_ok: true });
   mockCreateClassroomItem.mockImplementation(async () => ({ id: 'item-1' }));
 
   mockFrom.mockImplementation((table: string) => ({
-    // Reads: the item being assigned.
+    // Reads: the item being assigned, or the students' levels.
     select: () => ({
       eq: () => ({
         single: async () => ({
           data:
             table === 'homework_sets'
               ? { id: 'set-1', title: 'Weaken set', description: 'Ten weakeners', question_qids: ['q1'] }
-              : { id: 'drill-1', title: 'First sentence conclusions' },
+              : { id: 'drill-1', title: 'First sentence conclusions', question_count: 6 },
           error: null,
         }),
       }),
+      // profiles: one batched lookup of every student's proficiency level.
+      in: async (_col: string, ids: string[]) =>
+        levelLookupShouldFail === 'missing-column'
+          ? {
+              data: null,
+              error: Object.assign(
+                new Error("column profiles.proficiency_level does not exist"),
+                { code: '42703' },
+              ),
+            }
+          : levelLookupShouldFail
+          ? { data: null, error: new Error('profiles unreachable') }
+          : {
+              data: ids
+                .filter((id) => id in studentLevels)
+                .map((id) => ({ class_id: id, proficiency_level: studentLevels[id] })),
+              error: null,
+            },
     }),
     insert: (row: Record<string, unknown>) => {
       if (insertShouldFail === table) {
@@ -301,5 +324,173 @@ describe('assignWorkBundle', () => {
 
     expect(result).toEqual({ ok: [], failed: [] });
     expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+  });
+});
+
+describe('assignWork — student level on guided drills', () => {
+  const DRILL = { kind: 'guided_drill', drillId: 'drill-1' } as const;
+
+  it('stamps each student with their own profile level', async () => {
+    studentLevels = { 'student-a': 'beginner', 'student-b': 'advanced' };
+
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b'],
+      item: DRILL,
+    });
+
+    const rows = inserted.guided_drill_assignments;
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({ student_id: 'student-a', level: 'beginner' });
+    expect(rows[1]).toMatchObject({ student_id: 'student-b', level: 'advanced' });
+  });
+
+  it('reads every level in one query, not one per student', async () => {
+    studentLevels = { 'student-a': 'beginner', 'student-b': 'beginner', 'student-c': 'advanced' };
+
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b', 'student-c'],
+      item: DRILL,
+    });
+
+    const profileCalls = mockFrom.mock.calls.filter(([table]) => table === 'profiles');
+    expect(profileCalls).toHaveLength(1);
+  });
+
+  it('does not touch profiles when nothing in the bundle is a guided drill', async () => {
+    await assignWorkBundle({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      items: [
+        { kind: 'homework_set', setId: 'set-1' },
+        { kind: 'bootcamp', topicId: 'intro-to-lr' },
+      ],
+    });
+
+    expect(mockFrom.mock.calls.filter(([t]) => t === 'profiles')).toHaveLength(0);
+  });
+
+  it('lets a per-assignment override beat the profile level', async () => {
+    studentLevels = { 'student-a': 'beginner' };
+
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: DRILL,
+      levelOverrides: { 'student-a': 'advanced' },
+    });
+
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ level: 'advanced' });
+  });
+
+  it('honours an explicit null override as "assign this one unlevelled"', async () => {
+    studentLevels = { 'student-a': 'advanced' };
+
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: DRILL,
+      levelOverrides: { 'student-a': null },
+    });
+
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ level: null });
+  });
+
+  it('gives a student with no profile row no level, rather than a default', async () => {
+    studentLevels = {};
+
+    await assignWork({ teacherId: TEACHER, studentIds: ['ghost'], item: DRILL });
+
+    // Guessing "intermediate" here would be the system overruling the teacher.
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ level: null });
+  });
+
+  it('ignores a level string the app does not recognise', async () => {
+    studentLevels = { 'student-a': 'Beginner' };
+
+    await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: DRILL });
+
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ level: null });
+  });
+
+  it('records a question count override so the drill can be shortened', async () => {
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: DRILL,
+      questionCountOverride: 4,
+    });
+
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ question_count: 4 });
+  });
+
+  it('leaves question_count null when the drill is not being shortened', async () => {
+    await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: DRILL });
+
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ question_count: null });
+  });
+
+  it('still assigns, unlevelled, if the column is not deployed to this DB yet', async () => {
+    // The code and the migration do not land atomically. A missing column must
+    // degrade to the pre-level behaviour, not break every guided drill assign.
+    levelLookupShouldFail = 'missing-column';
+
+    const result = await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: DRILL,
+    });
+
+    expect(result.failed).toEqual([]);
+    expect(inserted.guided_drill_assignments[0]).toMatchObject({ level: null });
+  });
+
+  it('fails every student and writes nothing when the level lookup breaks', async () => {
+    levelLookupShouldFail = true;
+
+    const result = await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b'],
+      item: DRILL,
+    });
+
+    expect(result.ok).toEqual([]);
+    expect(result.failed.map((r) => r.studentId)).toEqual(['student-a', 'student-b']);
+    expect(inserted.guided_drill_assignments).toBeUndefined();
+    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+  });
+
+  it('still assigns, but sends nothing, when the caller owns the messaging', async () => {
+    // The weekly-plan builder sends one summary for the whole week. Per-drill
+    // pings would put seven entries in the bell for one plan.
+    const result = await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: DRILL,
+      notify: false,
+    });
+
+    expect(result.failed).toEqual([]);
+    expect(inserted.guided_drill_assignments).toHaveLength(1);
+    expect(mockCreateClassroomItem).toHaveBeenCalledTimes(1);
+    expect(mockNotify).not.toHaveBeenCalled();
+    expect(result.ok[0].notify).toBeUndefined();
+  });
+
+  it('notifies by default, so opting out has to be deliberate', async () => {
+    await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: DRILL });
+    expect(mockNotify).toHaveBeenCalledTimes(1);
+  });
+
+  it('never freezes a question list at assign time', async () => {
+    studentLevels = { 'student-a': 'beginner' };
+
+    await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: DRILL });
+
+    // Writing question_qids here would pin the set forever: it wins at runtime
+    // and there is no UI to clear it, so every re-attempt would show the same
+    // questions. The level is recorded and the draw happens at open time.
+    expect(inserted.guided_drill_assignments[0]).not.toHaveProperty('question_qids');
   });
 });

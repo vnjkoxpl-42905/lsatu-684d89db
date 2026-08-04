@@ -67,6 +67,9 @@ export function DeskLibraryGuidedDrillsSurface({
     item: { kind: 'guided_drill', drillId: d.id },
     title: d.title,
     kindLabel: 'Drill',
+    // Carried so the assign sheet can show per-student level counts without
+    // re-fetching the row.
+    drill: d,
   });
 
   return (
