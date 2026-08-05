@@ -5,9 +5,10 @@ import { AssignWorkSheet, type AssignWorkSheetItem } from './AssignWorkSheet';
 import type { GuidedDrill } from '@/lib/guidedDrills';
 import type { LRQuestion } from '@/lib/questionLoader';
 
-const { mockAssignBundle, bankQuestions } = vi.hoisted(() => ({
+const { mockAssignBundle, bankQuestions, statQuestions } = vi.hoisted(() => ({
   mockAssignBundle: vi.fn(),
   bankQuestions: { current: [] as unknown[] },
+  statQuestions: { current: new Map<string, unknown>() },
 }));
 
 vi.mock('@/contexts/AuthContext', () => ({
@@ -39,6 +40,19 @@ vi.mock('@/lib/questionLoader', () => ({
     isReady: () => true,
     load: async () => undefined,
     getAllQuestions: () => bankQuestions.current,
+  },
+}));
+
+// Same shape for the cohort-percentage sidecar. Empty by default, so every
+// pre-existing spec exercises the no-stats path and proves the row is
+// unchanged when percentages are unavailable.
+vi.mock('@/lib/questionStats', () => ({
+  questionStats: {
+    isReady: () => statQuestions.current.size > 0,
+    load: async () => undefined,
+    asMap: () => statQuestions.current,
+    get: (qid: string) => statQuestions.current.get(qid),
+    coverage: () => null,
   },
 }));
 
@@ -106,6 +120,7 @@ function selectStudent(name: string) {
 beforeEach(() => {
   vi.clearAllMocks();
   bankQuestions.current = makeBank();
+  statQuestions.current = new Map();
   mockAssignBundle.mockResolvedValue({ ok: [{ studentId: 'x' }], failed: [] });
 });
 
@@ -201,5 +216,111 @@ describe('AssignWorkSheet — level and size', () => {
 
     expect(screen.queryByText(/at level/)).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/Questions/)).not.toBeInTheDocument();
+  });
+});
+
+describe('AssignWorkSheet — cohort accuracy', () => {
+  /** Percentages for the 6 easy (d1) and 6 hard (d5) questions in makeBank(). */
+  function makeStats() {
+    const m = new Map<string, unknown>();
+    for (let i = 0; i < 6; i++) {
+      m.set(`d1-${i}`, { correctPct: 92, topTrapTag: 'No Impact' });
+      m.set(`d5-${i}`, { correctPct: 54, topTrapTag: 'Too Strong' });
+    }
+    return m;
+  }
+
+  it('shows what the student will actually face, not just how many', async () => {
+    statQuestions.current = makeStats();
+    renderSheet();
+    selectStudent('Priya Shah'); // beginner, band 1-3, so only the d1s
+    expect(await screen.findByText(/avg 92% correct/)).toBeInTheDocument();
+  });
+
+  it('reports a harder average for a higher band on the same drill', async () => {
+    statQuestions.current = makeStats();
+    renderSheet();
+    selectStudent('Marcus Lee'); // advanced, band 3-5, so only the d5s
+    expect(await screen.findByText(/avg 54% correct/)).toBeInTheDocument();
+  });
+
+  it('states coverage rather than implying every question is measured', async () => {
+    const partial = makeStats();
+    partial.delete('d1-0');
+    partial.delete('d1-1');
+    statQuestions.current = partial;
+    renderSheet();
+    selectStudent('Priya Shah');
+    expect(await screen.findByText(/avg 92% correct \(4 of 6 measured\)/)).toBeInTheDocument();
+  });
+
+  it('says nothing at all when no percentages are available', async () => {
+    statQuestions.current = new Map();
+    renderSheet();
+    selectStudent('Priya Shah');
+    expect(await screen.findByText(/6 of 6 at level/)).toBeInTheDocument();
+    expect(screen.queryByText(/% correct/)).not.toBeInTheDocument();
+  });
+});
+
+describe('AssignWorkSheet — fixing the question set for an email', () => {
+  const checkbox = () => screen.getByRole('checkbox', { name: /Fix the question set/ });
+
+  it('does not freeze anything unless asked', async () => {
+    renderSheet();
+    selectStudent('Priya Shah');
+    fireEvent.click(screen.getByRole('button', { name: /Assign to 1 student/ }));
+
+    await waitFor(() => expect(mockAssignBundle).toHaveBeenCalled());
+    expect(mockAssignBundle.mock.calls[0][0].frozenQidsByStudent).toBeUndefined();
+  });
+
+  it('warns that the drill stops re-drawing before the teacher commits', async () => {
+    renderSheet();
+    expect(await screen.findByText(/stops re-drawing/)).toBeInTheDocument();
+  });
+
+  it('pins a set drawn at each student’s own band', async () => {
+    renderSheet();
+    selectStudent('Priya Shah'); // beginner 1-3 -> only the d1s
+    selectStudent('Marcus Lee'); // advanced 3-5 -> only the d5s
+    fireEvent.click(checkbox());
+    fireEvent.click(screen.getByRole('button', { name: /Assign to 2 students/ }));
+
+    await waitFor(() => expect(mockAssignBundle).toHaveBeenCalled());
+    const frozen = mockAssignBundle.mock.calls[0][0].frozenQidsByStudent;
+    expect(Object.keys(frozen).sort()).toEqual(['stu-advanced', 'stu-beginner']);
+    expect(frozen['stu-beginner'].every((q: string) => q.startsWith('d1-'))).toBe(true);
+    expect(frozen['stu-advanced'].every((q: string) => q.startsWith('d5-'))).toBe(true);
+  });
+
+  it('honours a trimmed question count in the frozen set', async () => {
+    renderSheet();
+    selectStudent('Priya Shah');
+    fireEvent.change(screen.getByLabelText(/Questions/), { target: { value: '3' } });
+    fireEvent.click(checkbox());
+    fireEvent.click(screen.getByRole('button', { name: /Assign to 1 student/ }));
+
+    await waitFor(() => expect(mockAssignBundle).toHaveBeenCalled());
+    expect(mockAssignBundle.mock.calls[0][0].frozenQidsByStudent['stu-beginner']).toHaveLength(3);
+  });
+
+  it('shows the pinned list afterwards so the file can be built from it', async () => {
+    renderSheet();
+    selectStudent('Priya Shah');
+    fireEvent.click(checkbox());
+    fireEvent.click(screen.getByRole('button', { name: /Assign to 1 student/ }));
+
+    expect(await screen.findByText(/Fixed question sets/)).toBeInTheDocument();
+    // The sheet stays open: closing it would drop the only on-screen copy.
+    expect(screen.getByRole('button', { name: /^Copy$/ })).toBeInTheDocument();
+  });
+
+  it('offers no freeze control for a bundle, where one set makes no sense', async () => {
+    renderSheet([
+      ITEM,
+      { item: { kind: 'homework_set', setId: 'set-1' }, title: 'Weaken set', kindLabel: 'Homework' },
+    ]);
+    expect(screen.queryByRole('checkbox', { name: /Fix the question set/ })).not.toBeInTheDocument();
   });
 });

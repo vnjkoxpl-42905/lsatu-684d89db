@@ -1097,9 +1097,297 @@
       .question-box { padding: 72px 22px 24px; }
       .question-box::before { top: 22px; left: 22px; }
     }
+
+    /* ------------------------------------------------------------------
+       Offline artifact: the embedded questions.
+
+       Only rendered when the generator supplies them, so the platform page is
+       byte-identical to what it was. Everything here uses the tokens declared
+       at the top of this file and reaches for nothing off the machine, which
+       is what lets the finished file travel as an email attachment.
+       ------------------------------------------------------------------ */
+
+    .questions {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 64px) 96px;
+    }
+
+    .questions-head {
+      margin: 0 0 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .questions-head .section-kicker { margin-bottom: 10px; }
+
+    .questions-head h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 3.4vw, 44px);
+      letter-spacing: -.045em;
+      line-height: 1.04;
+    }
+
+    .questions-head p {
+      margin: 12px 0 0;
+      max-width: 60ch;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .question {
+      margin: 0 0 26px;
+      padding: 30px clamp(20px, 3vw, 38px) 34px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .q-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--soft);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .24em;
+      font-weight: 850;
+    }
+
+    .q-num { color: var(--ink); }
+    .q-ref { margin-left: auto; letter-spacing: .16em; }
+
+    .stimulus {
+      margin: 0 0 20px;
+      font-size: 17px;
+      line-height: 1.66;
+      white-space: pre-wrap;
+    }
+
+    .stem {
+      margin: 0 0 18px;
+      font-weight: 650;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .choices { margin: 0; padding: 0; list-style: none; }
+
+    .choices li { margin: 0 0 8px; }
+
+    .choice {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      padding: 13px 16px;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: left;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease;
+    }
+
+    .choice:hover { background: var(--cream); border-color: var(--line-strong); }
+
+    .choice-letter {
+      flex: 0 0 auto;
+      font-weight: 850;
+      letter-spacing: .06em;
+    }
+
+    .choice[aria-pressed="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+
+    /* After the commit the choices stop being controls and become a record. */
+    .question[data-locked="true"] .choice { cursor: default; }
+    .question[data-locked="true"] .choice:hover { background: transparent; border-color: var(--line); }
+    .question[data-locked="true"] .choice[aria-pressed="true"]:hover { background: var(--ink); }
+
+    /*
+     * The credited answer reads as itself through weight and fill, not a side
+     * tab: this document separates things with full hairlines and background
+     * changes everywhere else, and one accent bar on one card would look
+     * borrowed from somewhere it does not belong.
+     */
+    .question[data-locked="true"] .choice[data-correct="true"] {
+      border-color: var(--ink);
+      background: var(--cream);
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .question[data-locked="true"] .choice[aria-pressed="true"][data-correct="false"] {
+      background: transparent;
+      border-color: var(--line-strong);
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    .submit {
+      margin-top: 18px;
+      padding: 11px 22px;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      color: var(--bg);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .submit:disabled { opacity: .32; cursor: not-allowed; }
+
+    /*
+     * Deliberately NOT called .reveal: that class already exists above as the
+     * scroll-entrance animation (opacity 0 until an observer adds .is-visible).
+     * Sharing the name made the answer's appearance depend on an animation
+     * system that has no reason to know about it.
+     */
+    /* A full rule above, the way .questions-head and .q-head already separate
+       registers in this file. */
+    .answer-reveal {
+      margin-top: 22px;
+      padding: 20px 2px 0;
+      border-top: 1px solid var(--ink);
+      opacity: 1;
+    }
+
+    .answer-reveal[hidden] { display: none; }
+
+    .answer-reveal .section-kicker { margin-bottom: 10px; }
+
+    .answer-reveal p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; }
+    .answer-reveal p:last-child { margin-bottom: 0; }
+
+    .answer-reveal .trap { color: var(--muted); }
+
+    .verdict {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-style: italic;
+      letter-spacing: -.02em;
+    }
+
+    .scoreboard {
+      margin-top: 40px;
+      padding: 30px clamp(20px, 3vw, 38px);
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .scoreboard h3 {
+      margin: 0 0 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-style: italic;
+      letter-spacing: -.03em;
+    }
+
+    .scoreboard p { margin: 0; color: rgba(245, 242, 237, .72); font-size: 15px; line-height: 1.6; }
+
+    #answer-key { display: none; }
+
+    /* ------------------------------------------------------------------
+       Print. These rules live inside this same inline <style> on purpose: a
+       separate stylesheet cannot travel with a single-file attachment, and the
+       PDF is nothing more than this file rendered with print media emulated.
+
+       A printed sheet cannot gate a reveal, so it becomes a plain attempt
+       sheet with the key at the back.
+       ------------------------------------------------------------------ */
+    @media print {
+      :root { --bg: #ffffff; }
+
+      body { background: #fff; }
+
+      .topbar,
+      .summary-card,
+      .scroll-hint,
+      .toc-island-wrap,
+      .toc-backdrop,
+      .notes-drawer,
+      .submit,
+      .answer-reveal,
+      .scoreboard { display: none !important; }
+
+      .app, .page, .questions { max-width: none; padding: 0; margin: 0; }
+
+      /*
+       * The launch screen is a two-column grid: hero on the left, START card on
+       * the right. Hiding the card does not release its column, so the hero
+       * kept its screen width and overflowed the printed page entirely — the
+       * drill title was missing from the PDF. Collapse to one column and cap
+       * the viewport-relative type, which has no sensible meaning on paper.
+       */
+      .launch-screen {
+        display: block;
+        min-height: 0;
+        padding: 0 0 18px;
+      }
+
+      .hero-copy h1 { font-size: 30px !important; line-height: 1.08; }
+      .hero-copy { animation: none; opacity: 1; }
+
+      /* Entrance animations never run in print, so anything relying on one to
+         become visible would print blank. */
+      .enter-soft, .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+
+      .question {
+        border: none;
+        border-top: 1px solid #000;
+        box-shadow: none;
+        padding: 16px 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Nothing to press on paper: choices become lettered lines with a box. */
+      .choice {
+        border: none;
+        padding: 3px 0;
+        background: none !important;
+        color: #000 !important;
+        text-decoration: none !important;
+      }
+
+      .choice::before {
+        content: "";
+        flex: 0 0 auto;
+        width: 11px;
+        height: 11px;
+        margin-top: 5px;
+        border: 1px solid #000;
+      }
+
+      #answer-key {
+        display: block;
+        break-before: page;
+        page-break-before: always;
+        padding-top: 18px;
+      }
+
+      #answer-key table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      #answer-key th, #answer-key td { padding: 5px 8px; border-bottom: 1px solid #ddd; text-align: left; }
+    }
   </style>
 </head>
-<body>
+<body data-mode="{{ARTIFACT_MODE}}">
   <div class="app">
     <header class="topbar enter-soft">
       <button class="breadcrumb" type="button" data-return="true" aria-label="Return to Logical Reasoning">← Return</button>
@@ -1142,6 +1430,8 @@
 
       {{NOTES}}
     </main>
+
+    {{QUESTIONS_SECTION}}
   </div>
 
   <script>
@@ -1156,9 +1446,18 @@
       });
     }
 
+    // 'artifact' means this file was opened on its own — from an email, from
+    // disk — so there is no parent frame and the questions are embedded below.
+    const artifactMode = document.body.dataset.mode === 'artifact';
+
     const startDrillButtons = Array.from(document.querySelectorAll('[data-start-drill="true"]'));
     startDrillButtons.forEach(button => {
       button.addEventListener('click', () => {
+        if (artifactMode) {
+          const first = document.querySelector('.question');
+          if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
         // Use '*' as target origin so this works for both same-origin curated
         // pages and srcDoc-rendered launch pages (which have opaque "null" origin
         // and would otherwise throw "Invalid target origin 'null'").

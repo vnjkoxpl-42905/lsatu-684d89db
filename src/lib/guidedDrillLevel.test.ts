@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { countInBand, resolveLeveledDrillQids } from './guidedDrillLevel';
+import { BEGINNER_GRADE_PCT, countInBand, resolveLeveledDrillQids, summarizePool } from './guidedDrillLevel';
 import type { LRQuestion } from '@/lib/questionLoader';
+import type { QuestionStat } from '@/lib/questionStats';
 
 /** A pool question. Only qid and difficulty matter to the resolver. */
 function q(qid: string, difficulty: number | null): LRQuestion {
@@ -226,5 +227,79 @@ describe('countInBand', () => {
     expect(countInBand(POOL, 'intermediate')).toBe(24);
     expect(countInBand(POOL, 'advanced')).toBe(24);
     expect(countInBand(POOL, null)).toBe(40);
+  });
+});
+
+describe('summarizePool', () => {
+  /** A stat carrying just the fields the summary reads. */
+  const stat = (correctPct: number, topTrapTag: string | null = null): QuestionStat =>
+    ({ correctPct, topTrapTag } as QuestionStat);
+
+  /** Cohort accuracy roughly as measured: easier label, more people correct. */
+  const STATS = new Map<string, QuestionStat>(
+    POOL.map((question) => {
+      const d = difficultyOf(question.qid);
+      const traps = { 1: 'No Impact', 2: 'Too Weak', 3: 'Out Of Scope', 4: 'Too Strong', 5: 'Too Strong' };
+      return [question.qid, stat([0, 92, 84, 75, 66, 54][d], traps[d as 1 | 2 | 3 | 4 | 5])];
+    }),
+  );
+
+  it('reports the same in-band count as countInBand', () => {
+    for (const level of ['beginner', 'intermediate', 'advanced', null] as const) {
+      expect(summarizePool(POOL, level, STATS).inBand).toBe(countInBand(POOL, level));
+    }
+  });
+
+  it('averages only the in-band questions', () => {
+    // beginner draws 1-3, so (92 + 84 + 75) / 3.
+    expect(summarizePool(POOL, 'beginner', STATS).meanCorrectPct).toBeCloseTo(83.7, 1);
+    // advanced draws 3-5, so (75 + 66 + 54) / 3.
+    expect(summarizePool(POOL, 'advanced', STATS).meanCorrectPct).toBeCloseTo(65, 1);
+  });
+
+  it('gets harder as the level rises', () => {
+    const b = summarizePool(POOL, 'beginner', STATS).meanCorrectPct!;
+    const i = summarizePool(POOL, 'intermediate', STATS).meanCorrectPct!;
+    const a = summarizePool(POOL, 'advanced', STATS).meanCorrectPct!;
+    expect(b).toBeGreaterThan(i);
+    expect(i).toBeGreaterThan(a);
+  });
+
+  it('degrades to a count when there are no stats at all', () => {
+    for (const empty of [null, undefined, new Map<string, QuestionStat>()]) {
+      const s = summarizePool(POOL, 'beginner', empty);
+      expect(s.inBand).toBe(24);
+      expect(s.measured).toBe(0);
+      expect(s.meanCorrectPct).toBeNull();
+      expect(s.topTraps).toEqual([]);
+    }
+  });
+
+  it('counts partial coverage honestly rather than treating missing as zero', () => {
+    const partial = new Map(STATS);
+    for (const question of POOL.slice(0, 20)) partial.delete(question.qid);
+    const s = summarizePool(POOL, 'beginner', partial);
+    expect(s.measured).toBeLessThan(s.inBand);
+    expect(s.measured).toBeGreaterThan(0);
+    // A missing stat must not drag the average toward zero.
+    expect(s.meanCorrectPct).toBeGreaterThan(50);
+  });
+
+  it('surfaces the traps the in-band questions lean on', () => {
+    const s = summarizePool(POOL, 'advanced', STATS);
+    // 3-5 is Out Of Scope x8 and Too Strong x16.
+    expect(s.topTraps[0]).toEqual({ tag: 'Too Strong', count: 16 });
+    expect(s.topTraps.map((t) => t.tag)).toContain('Out Of Scope');
+  });
+
+  it('flags the real failure mode: a 1-3 drill assigned at the advanced band', () => {
+    // A drill clamped to difficulty 1-3, exactly like every "first taste" drill.
+    const clamped = POOL.filter((question) => difficultyOf(question.qid) <= 3);
+    const s = summarizePool(clamped, 'advanced', STATS);
+    // The count looks healthy...
+    expect(s.inBand).toBe(8);
+    // ...but every question is the easiest the advanced band can hold.
+    expect(s.meanCorrectPct).toBe(75);
+    expect(s.meanCorrectPct!).toBeGreaterThanOrEqual(BEGINNER_GRADE_PCT);
   });
 });

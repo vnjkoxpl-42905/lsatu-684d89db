@@ -136,6 +136,7 @@ async function planFor(
   levels: StudentLevelMap,
   levelOverrides: Record<string, StudentLevel | null> | undefined,
   questionCountOverride: number | null | undefined,
+  frozenQidsByStudent: Record<string, string[]> | undefined,
 ): Promise<AssignPlan> {
   /**
    * `studentId in overrides` rather than `??`, so an explicit null ("assign
@@ -212,10 +213,20 @@ async function planFor(
         assignmentType: 'guided drill',
         sourceTable: 'guided_drill_assignments',
         insertRow: async (studentId) => {
-          // The level is recorded, not resolved: the actual question draw
-          // happens when the student opens the drill. Writing question_qids
-          // here would freeze the set and silently kill the re-attempt fresh
-          // draw the drill pool model is built on.
+          // Normally the level is recorded, not resolved: the question draw
+          // happens when the student opens the drill, so a re-attempt gets a
+          // fresh set. That is the whole point of the pool model.
+          //
+          // Freezing is correct in exactly one case — an offline artifact was
+          // generated from a specific list and emailed. Then the set has
+          // already left the building, and a drill that re-draws would serve
+          // different questions from the file in the student's inbox. Pinning
+          // here is what makes the two provably the same.
+          //
+          // The cost is real and deliberate: a pinned assignment stops
+          // re-drawing, and resolveLeveledDrillQids returns a pin in full,
+          // unfiltered by band, so a later level edit on this row is inert.
+          const frozen = frozenQidsByStudent?.[studentId];
           const { data, error: insertError } = await supabase
             .from('guided_drill_assignments')
             .insert({
@@ -228,6 +239,11 @@ async function planFor(
               status: 'assigned',
               level: levelFor(studentId),
               question_count: questionCountOverride ?? null,
+              // Spread rather than `question_qids: frozen ?? null`, so the
+              // default path sends a payload with no such key at all. That is
+              // what makes "unchanged when not freezing" checkable in a spec
+              // rather than merely asserted here.
+              ...(frozen && frozen.length > 0 ? { question_qids: frozen } : {}),
             } as never)
             .select('id')
             .single();
@@ -241,7 +257,12 @@ async function planFor(
             : '/classroom',
         unlockAt,
         dueAt: null,
-        metadata: { guided_drill_id: drill.id },
+        metadata: {
+          guided_drill_id: drill.id,
+          // The only durable record of WHY this one row is pinned. Six weeks
+          // later, "why did this drill not re-draw?" has an answer.
+          ...(frozenQidsByStudent ? { frozen_reason: 'artifact_attached' } : {}),
+        },
       };
     }
 
@@ -351,6 +372,8 @@ export async function assignWork(input: {
   levelOverrides?: Record<string, StudentLevel | null>;
   /** Shorten the drill for everyone in this assign. Guided drills only. */
   questionCountOverride?: number | null;
+  /** See assignWorkBundle. Guided drills only. */
+  frozenQidsByStudent?: Record<string, string[]>;
   /**
    * Send the student a notification. Default true. Set false only when the
    * caller sends its own message covering this work.
@@ -380,6 +403,16 @@ export async function assignWorkBundle(input: {
   /** Per-student band. Applies to every guided drill in the bundle. */
   levelOverrides?: Record<string, StudentLevel | null>;
   questionCountOverride?: number | null;
+  /**
+   * Pin an exact question list on the guided-drill row instead of drawing at
+   * open time. Keyed by studentId, because two students at different bands
+   * freeze different sets from the same drill.
+   *
+   * Set this ONLY when an offline artifact is produced from the same list.
+   * A pinned assignment stops re-drawing on re-attempt, and a later level
+   * change on that row has no effect. Guided drills only.
+   */
+  frozenQidsByStudent?: Record<string, string[]>;
   /** See assignWork. Default true. */
   notify?: boolean;
 }): Promise<AssignWorkResult> {
@@ -407,6 +440,7 @@ async function runAssign(input: {
   };
   levelOverrides?: Record<string, StudentLevel | null>;
   questionCountOverride?: number | null;
+  frozenQidsByStudent?: Record<string, string[]>;
   notify?: boolean;
 }): Promise<AssignWorkResult> {
   const {
@@ -417,6 +451,7 @@ async function runAssign(input: {
     overrides,
     levelOverrides,
     questionCountOverride,
+    frozenQidsByStudent,
     notify: shouldNotify = true,
   } = input;
 
@@ -424,6 +459,26 @@ async function runAssign(input: {
   const failed: StudentResult[] = [];
 
   if (studentIds.length === 0 || items.length === 0) return { ok, failed };
+
+  /*
+   * Freezing is validated before any write, and it throws rather than
+   * degrading. A silent no-op here is the exact failure this feature exists to
+   * prevent: an artifact would be emailed carrying questions the assignment
+   * row does not hold, and nothing downstream could tell.
+   */
+  if (frozenQidsByStudent) {
+    if (!items.some((item) => item.kind === 'guided_drill')) {
+      throw new Error('frozenQidsByStudent was supplied but no guided drill is being assigned');
+    }
+    for (const [studentId, qids] of Object.entries(frozenQidsByStudent)) {
+      if (!studentIds.includes(studentId)) {
+        throw new Error(`frozenQidsByStudent names ${studentId}, who is not in this assign`);
+      }
+      if (!Array.isArray(qids) || qids.length === 0) {
+        throw new Error(`frozenQidsByStudent[${studentId}] is empty; omit the student instead`);
+      }
+    }
+  }
 
   // Every item is resolved before anyone is written to, so an unreadable item
   // fails the whole assign cleanly instead of half-delivering the bundle. An
@@ -446,6 +501,7 @@ async function runAssign(input: {
           levels,
           levelOverrides,
           questionCountOverride,
+          frozenQidsByStudent,
         );
         // Overrides only ever accompany a single item (see assignWork).
         if (index > 0 || !overrides) return base;

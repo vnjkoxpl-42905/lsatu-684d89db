@@ -494,3 +494,98 @@ describe('assignWork — student level on guided drills', () => {
     expect(inserted.guided_drill_assignments[0]).not.toHaveProperty('question_qids');
   });
 });
+
+describe('freeze-on-attach', () => {
+  const QIDS_A = ['PT104-S2-Q14', 'PT112-S3-Q7', 'PT118-S1-Q3'];
+  const QIDS_B = ['PT141-S2-Q2', 'PT150-S3-Q9'];
+
+  it('sends no question_qids key at all when not freezing', async () => {
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: { kind: 'guided_drill', drillId: 'drill-1' },
+    });
+
+    const row = inserted.guided_drill_assignments[0];
+    // Not "is null" — the key must be absent, so the default path is provably
+    // byte-identical to what it sent before freezing existed.
+    expect('question_qids' in row).toBe(false);
+  });
+
+  it('pins exactly the given qids, in the given order, per student', async () => {
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b'],
+      item: { kind: 'guided_drill', drillId: 'drill-1' },
+      frozenQidsByStudent: { 'student-a': QIDS_A, 'student-b': QIDS_B },
+    });
+
+    const rows = inserted.guided_drill_assignments;
+    expect(rows).toHaveLength(2);
+    // Two students at different bands freeze different sets from one drill.
+    expect(rows[0].question_qids).toEqual(QIDS_A);
+    expect(rows[1].question_qids).toEqual(QIDS_B);
+  });
+
+  it('records why the row is pinned', async () => {
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a'],
+      item: { kind: 'guided_drill', drillId: 'drill-1' },
+      frozenQidsByStudent: { 'student-a': QIDS_A },
+    });
+
+    expect(mockCreateClassroomItem.mock.calls[0][0]).toMatchObject({
+      metadata: { frozen_reason: 'artifact_attached' },
+    });
+  });
+
+  it('leaves a student out of the freeze unpinned rather than guessing', async () => {
+    await assignWork({
+      teacherId: TEACHER,
+      studentIds: ['student-a', 'student-b'],
+      item: { kind: 'guided_drill', drillId: 'drill-1' },
+      frozenQidsByStudent: { 'student-a': QIDS_A },
+    });
+
+    const rows = inserted.guided_drill_assignments;
+    expect(rows[0].question_qids).toEqual(QIDS_A);
+    expect('question_qids' in rows[1]).toBe(false);
+  });
+
+  it('throws before writing anything when no guided drill is being assigned', async () => {
+    await expect(
+      assignWork({
+        teacherId: TEACHER,
+        studentIds: ['student-a'],
+        item: { kind: 'homework_set', setId: 'set-1' },
+        frozenQidsByStudent: { 'student-a': QIDS_A },
+      }),
+    ).rejects.toThrow(/no guided drill/);
+    expect(inserted.homework_assignments).toBeUndefined();
+  });
+
+  it('throws before writing anything when the freeze names an unknown student', async () => {
+    await expect(
+      assignWork({
+        teacherId: TEACHER,
+        studentIds: ['student-a'],
+        item: { kind: 'guided_drill', drillId: 'drill-1' },
+        frozenQidsByStudent: { 'student-ghost': QIDS_A },
+      }),
+    ).rejects.toThrow(/not in this assign/);
+    expect(inserted.guided_drill_assignments).toBeUndefined();
+  });
+
+  it('throws on an empty qid list rather than silently not freezing', async () => {
+    await expect(
+      assignWork({
+        teacherId: TEACHER,
+        studentIds: ['student-a'],
+        item: { kind: 'guided_drill', drillId: 'drill-1' },
+        frozenQidsByStudent: { 'student-a': [] },
+      }),
+    ).rejects.toThrow(/is empty/);
+    expect(inserted.guided_drill_assignments).toBeUndefined();
+  });
+});

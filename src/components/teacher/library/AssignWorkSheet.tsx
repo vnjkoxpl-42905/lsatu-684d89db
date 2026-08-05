@@ -7,8 +7,13 @@ import { useHubStudents } from '@/hooks/useHubStudents';
 import { useStudentLevels } from '@/hooks/useStudentLevels';
 import { questionBank } from '@/lib/questionLoader';
 import { useAuth } from '@/contexts/AuthContext';
-import { resolveGuidedDrillPool, type GuidedDrill } from '@/lib/guidedDrills';
-import { countInBand } from '@/lib/guidedDrillLevel';
+import {
+  resolveGuidedDrillPool,
+  resolveGuidedDrillQidsForLevel,
+  type GuidedDrill,
+} from '@/lib/guidedDrills';
+import { BEGINNER_GRADE_PCT, summarizePool } from '@/lib/guidedDrillLevel';
+import { questionStats } from '@/lib/questionStats';
 import {
   LEVEL_LABELS,
   STUDENT_LEVELS,
@@ -68,6 +73,7 @@ export function AssignWorkSheet({
    * must never take down an assign flow that does not otherwise need the bank.
    */
   const [bankReady, setBankReady] = useState(() => questionBank.isReady());
+  const [statsReady, setStatsReady] = useState(() => questionStats.isReady());
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [scheduledFor, setScheduledFor] = useState('');
@@ -76,6 +82,14 @@ export function AssignWorkSheet({
   const [levelOverrides, setLevelOverrides] = useState<Record<string, StudentLevel | null>>({});
   /** Shorten the drill for everyone in this assign. Empty = the drill's own count. */
   const [questionCount, setQuestionCount] = useState('');
+  /**
+   * Freeze the question set so an offline artifact can be built from it. Off by
+   * default and deliberately hard to turn on by accident: it trades away the
+   * re-attempt fresh draw for the whole assignment.
+   */
+  const [attachArtifact, setAttachArtifact] = useState(false);
+  /** The pinned list, kept after a successful assign so it can be handed on. */
+  const [frozenResult, setFrozenResult] = useState<Record<string, string[]> | null>(null);
 
   // The bank is normally already warm by the time a teacher opens this, but on
   // a cold tab it may still be in flight. load() is idempotent and de-duped.
@@ -91,6 +105,21 @@ export function AssignWorkSheet({
     };
   }, [open, bankReady]);
 
+  // Cohort percentages, loaded alongside the bank. Deliberately not awaited by
+  // anything: the level row renders its count the moment the bank is ready and
+  // gains the accuracy clause when this arrives. Stats never gate an assign.
+  useEffect(() => {
+    if (!open || statsReady) return;
+    let cancelled = false;
+    questionStats
+      .load()
+      .then(() => !cancelled && setStatsReady(questionStats.isReady()))
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [open, statsReady]);
+
   // Reopening the sheet starts clean, except for a caller-supplied scope.
   useEffect(() => {
     if (!open) return;
@@ -98,6 +127,8 @@ export function AssignWorkSheet({
     setScheduledFor('');
     setLevelOverrides({});
     setQuestionCount('');
+    setAttachArtifact(false);
+    setFrozenResult(null);
     // defaultStudentIds is a fresh array each render at most call sites, so key
     // the reset on its contents rather than its identity.
   }, [open, defaultStudentIds?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -143,10 +174,36 @@ export function AssignWorkSheet({
       ? levelOverrides[studentId]
       : (profileLevels?.[studentId] ?? null);
 
+  /**
+   * Resolve now what would otherwise be drawn when the student opens the drill.
+   * Only reachable with the attach control on, which is only offered for a
+   * single drill with the bank loaded.
+   *
+   * Per student, not once: two students at different bands get different sets
+   * from the same drill, and that is the point of the level feature.
+   */
+  const freezeQids = (): Record<string, string[]> | undefined => {
+    if (!attachArtifact || !soleDrill || !bankReady) return undefined;
+    const out: Record<string, string[]> = {};
+    for (const studentId of selected) {
+      const { qids } = resolveGuidedDrillQidsForLevel({
+        drill: soleDrill,
+        level: levelFor(studentId),
+        questionCount: effectiveCount,
+      });
+      // A student with nothing to draw is left out rather than pinned empty;
+      // assignWork throws on an empty list precisely so this cannot pass
+      // silently as "not frozen".
+      if (qids.length > 0) out[studentId] = qids;
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+  };
+
   const handleAssign = async () => {
     if (!user || selected.size === 0 || items.length === 0) return;
     setAssigning(true);
     try {
+      const frozenQidsByStudent = freezeQids();
       const result = await assignWorkBundle({
         teacherId: user.id,
         studentIds: [...selected],
@@ -154,6 +211,7 @@ export function AssignWorkSheet({
         scheduledForLocalDate: scheduledFor || undefined,
         levelOverrides: hasGuidedDrill ? levelOverrides : undefined,
         questionCountOverride: hasGuidedDrill ? effectiveOverrideCount(questionCount) : undefined,
+        frozenQidsByStudent,
       });
 
       queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
@@ -164,6 +222,16 @@ export function AssignWorkSheet({
       const { level, message } = describeAssignResult(result, bundleTitle);
       toast[level](message);
       onAssigned?.();
+
+      if (frozenQidsByStudent && result.ok.length > 0) {
+        // Keep the sheet open on a frozen assign. The artifact still has to be
+        // generated from this exact list, and closing the sheet would drop the
+        // only on-screen copy. The authoritative read is still the DB row —
+        // this panel is a convenience, not the source.
+        setFrozenResult(frozenQidsByStudent);
+        console.info('[assignWork] frozen question sets', frozenQidsByStudent);
+        return;
+      }
       // Leave the sheet open when nobody got the work, so the teacher can read
       // the reason and retry without reselecting everyone.
       if (result.ok.length > 0) onClose();
@@ -240,6 +308,61 @@ export function AssignWorkSheet({
             </div>
           ) : null}
 
+          {soleDrill ? (
+            <div>
+              <label className="flex items-start gap-2">
+                <Checkbox
+                  checked={attachArtifact}
+                  disabled={!bankReady}
+                  onCheckedChange={(v) => setAttachArtifact(v === true)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm">
+                  Fix the question set for an emailed drill
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    {bankReady
+                      ? 'Pins each student’s questions now so a file can be built from them. This assignment stops re-drawing: a re-attempt shows the same questions, and changing the level later has no effect.'
+                      : 'Loading the question bank…'}
+                  </span>
+                </span>
+              </label>
+            </div>
+          ) : null}
+
+          {frozenResult ? (
+            <div className="border border-border bg-muted/40 p-3">
+              <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Fixed question sets
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Build the drill file from these. The assignment rows hold the same list.
+              </p>
+              {Object.entries(frozenResult).map(([studentId, qids]) => (
+                <div key={studentId} className="mt-2">
+                  <p className="text-xs font-semibold">
+                    {students.find((s) => s.class_id === studentId)?.display_name ?? studentId}
+                  </p>
+                  <code className="mt-0.5 block whitespace-pre-wrap break-all text-xs text-muted-foreground">
+                    {qids.join('\n')}
+                  </code>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="mt-3 inline-flex items-center border border-border px-2 py-1 text-xs font-semibold transition hover:bg-muted"
+                onClick={() => {
+                  const text = Object.entries(frozenResult)
+                    .map(([id, qids]) => `${id}\n${qids.join('\n')}`)
+                    .join('\n\n');
+                  navigator.clipboard?.writeText(text);
+                  toast.success('Question sets copied');
+                }}
+              >
+                Copy
+              </button>
+            </div>
+          ) : null}
+
           <div>
             <span className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground">
               Students ({selected.size} selected)
@@ -281,6 +404,7 @@ export function AssignWorkSheet({
                           bankLoading={!bankReady}
                           want={effectiveCount}
                           hasPool={!!soleDrill}
+                          statsReady={statsReady}
                           onPick={(next) =>
                             setLevelOverrides((prev) => ({ ...prev, [s.class_id]: next }))
                           }
@@ -337,19 +461,25 @@ function StudentLevelRow({
   bankLoading,
   want,
   hasPool,
+  statsReady,
   onPick,
   onUseProfile,
 }: {
   level: StudentLevel | null;
   overridden: boolean;
-  pool: Parameters<typeof countInBand>[0];
+  pool: Parameters<typeof summarizePool>[0];
   bankLoading: boolean;
   want: number | null;
   hasPool: boolean;
+  statsReady: boolean;
   onPick: (level: StudentLevel | null) => void;
   onUseProfile: () => void;
 }) {
-  const inBand = hasPool && !bankLoading ? countInBand(pool, level) : null;
+  const summary =
+    hasPool && !bankLoading
+      ? summarizePool(pool, level, statsReady ? questionStats.asMap() : null)
+      : null;
+  const inBand = summary?.inBand ?? null;
   const target = want ?? inBand;
   const short = inBand != null && target != null && inBand < target;
 
@@ -364,6 +494,18 @@ function StudentLevelRow({
     detail = `${inBand} at level`;
   }
 
+  /*
+   * The count alone cannot tell a teacher what a student will actually face.
+   * A drill clamped to difficulty 1-3 assigned at the advanced band reports a
+   * healthy in-band count while serving only the easiest questions that band
+   * can hold. This clause is what makes that visible before the assign.
+   *
+   * Coverage is stated, never implied: "5 of 6 measured" is honest where a
+   * bare average would quietly describe a subset.
+   */
+  const accuracy = summary?.meanCorrectPct;
+  const beginnerGrade = accuracy != null && accuracy >= BEGINNER_GRADE_PCT;
+
   return (
     <div className="mb-1 ml-8 mr-2 flex flex-wrap items-center gap-x-2 gap-y-1 pb-1.5">
       <span
@@ -377,6 +519,26 @@ function StudentLevelRow({
         {' · '}
         {detail}
       </span>
+
+      {accuracy != null && summary != null ? (
+        <span
+          className={cn('text-xs', beginnerGrade ? 'text-amber-700' : 'text-muted-foreground')}
+          title={
+            `${summary.measured} of ${summary.inBand} in-band questions have measured cohort data.` +
+            (summary.topTraps.length
+              ? ` Most common trap: ${summary.topTraps.map((t) => t.tag).join(', ')}.`
+              : '') +
+            (beginnerGrade
+              ? ` At or above ${BEGINNER_GRADE_PCT}% this is work most test takers already get right.`
+              : '')
+          }
+        >
+          {'· avg '}
+          {accuracy}
+          {'% correct'}
+          {summary.measured < summary.inBand ? ` (${summary.measured} of ${summary.inBand} measured)` : ''}
+        </span>
+      ) : null}
 
       <div className="ml-auto inline-flex items-center border border-border">
         <button

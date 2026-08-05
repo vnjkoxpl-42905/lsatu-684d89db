@@ -21,8 +21,10 @@
     "test:watch": "vitest",
     "verify:no-canonical": "node scripts/knowledge/verify-no-canonical-in-build.mjs",
     "postbuild": "node scripts/knowledge/verify-no-canonical-in-build.mjs",
-    "knowledge:check": "node scripts/knowledge/generate-lr-jsonl.mjs --check",
-    "knowledge:generate": "node scripts/knowledge/generate-lr-jsonl.mjs"
+    "knowledge:check": "node scripts/knowledge/generate-lr-jsonl.mjs --check && node scripts/knowledge/build-question-stats.mjs --check",
+    "knowledge:generate": "node scripts/knowledge/generate-lr-jsonl.mjs",
+    "stats:build": "node scripts/knowledge/build-question-stats.mjs",
+    "stats:check": "node scripts/knowledge/build-question-stats.mjs --check"
   },
   "dependencies": {
     "@ark-ui/react": "^5.37.2",

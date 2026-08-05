@@ -21,6 +21,22 @@ export interface GuidedDrillLaunchInput {
   questionCount?: number | null;
   leftMd?: string | null;
   rightMd?: string | null;
+  /**
+   * Rendered question sections, appended after the notes drawer.
+   *
+   * Only the offline artifact generator supplies this. The platform page never
+   * embeds questions: they are drawn when the student presses START, which is
+   * what keeps a re-attempt fresh.
+   */
+  questionsHtml?: string | null;
+  /**
+   * `platform` (default) posts to the parent frame on START, which is the
+   * contract GuidedDrillLaunchFrame listens for. `artifact` makes the same
+   * button scroll to the first question instead, because a file opened from an
+   * email has no parent frame to talk to — that is precisely where the 108
+   * curated pages dead-end today.
+   */
+  mode?: 'platform' | 'artifact';
 }
 
 const COLUMN_HEADER = /^###\s+(left|right)\s+column\s*$/im;
@@ -190,5 +206,9 @@ export function buildGuidedDrillLaunchHtml(input: GuidedDrillLaunchInput): strin
     .split('{{SCROLL_HINT}}')
     .join(hasNotes ? '<div class="scroll-hint">Scroll down for notes ↓</div>' : '')
     .split('{{NOTES}}')
-    .join(buildNotesBlock(sections));
+    .join(buildNotesBlock(sections))
+    .split('{{QUESTIONS_SECTION}}')
+    .join(input.questionsHtml ?? '')
+    .split('{{ARTIFACT_MODE}}')
+    .join(input.mode ?? 'platform');
 }

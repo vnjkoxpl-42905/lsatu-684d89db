@@ -7,6 +7,7 @@ import {
   type StudentLevel,
 } from '@/lib/studentLevel';
 import type { LRQuestion } from '@/lib/questionLoader';
+import type { QuestionStat } from '@/lib/questionStats';
 
 /**
  * Pick the questions a specific student sees when they open a guided drill.
@@ -216,4 +217,79 @@ export function countInBand(pool: LRQuestion[], level: StudentLevel | null): num
 /** The effective difficulty range for a level, for display. */
 export function effectiveBand(level: StudentLevel | null): DifficultyBand {
   return level ? levelBand(level) : FULL_DIFFICULTY_RANGE;
+}
+
+/** What a pool actually serves at a level, in cohort terms. */
+export interface PoolSummary {
+  /** How many of the pool sit in the band. Same number countInBand returns. */
+  inBand: number;
+  /** Of those, how many have measured cohort data. */
+  measured: number;
+  /**
+   * Mean share of the cohort that got the in-band questions right, or null
+   * when nothing in band is measured. LOWER IS HARDER.
+   */
+  meanCorrectPct: number | null;
+  /** The traps this drill leans on at this level, most common first. */
+  topTraps: ReadonlyArray<{ tag: string; count: number }>;
+}
+
+/**
+ * Beginner-grade threshold. A set whose measured accuracy is at or above this
+ * is work most test takers already do correctly, whatever level it was
+ * assigned at.
+ *
+ * The number is not arbitrary: difficulty 3 sits at 75.2% cohort accuracy, so
+ * "at or above 75" is precisely "no harder than the easiest question an
+ * advanced band can contain".
+ */
+export const BEGINNER_GRADE_PCT = 75;
+
+/**
+ * Summarise what a student at `level` would actually be served from `pool`.
+ *
+ * Exists because "6 of 6 at level" is silent about the thing that matters. A
+ * drill tagged `beginner` is clamped to difficulty 1-3; give it to an advanced
+ * student (band 3-5) and the intersection is difficulty 3 alone — a full drill
+ * of that band's easiest questions, reported as a healthy in-band count. 26 of
+ * the 108 seeded drills behave that way. This function is what makes it
+ * visible before the assign, in the same numbers the skill logs afterwards.
+ *
+ * Pure and synchronous, like everything else in this module: the caller passes
+ * the stats map in. Missing stats reduce `measured`, never the mean.
+ */
+export function summarizePool(
+  pool: LRQuestion[],
+  level: StudentLevel | null,
+  stats: ReadonlyMap<string, QuestionStat> | null | undefined,
+): PoolSummary {
+  const band = level ? levelBand(level) : null;
+  const inBand = band ? pool.filter((q) => isInBand(q.difficulty, band)) : pool;
+
+  if (!stats || stats.size === 0) {
+    return { inBand: inBand.length, measured: 0, meanCorrectPct: null, topTraps: [] };
+  }
+
+  let total = 0;
+  let measured = 0;
+  const trapCounts = new Map<string, number>();
+  for (const q of inBand) {
+    const stat = stats.get(q.qid);
+    if (!stat) continue;
+    measured += 1;
+    total += stat.correctPct;
+    if (stat.topTrapTag) trapCounts.set(stat.topTrapTag, (trapCounts.get(stat.topTrapTag) ?? 0) + 1);
+  }
+
+  const topTraps = [...trapCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([tag, count]) => ({ tag, count }));
+
+  return {
+    inBand: inBand.length,
+    measured,
+    meanCorrectPct: measured > 0 ? Math.round((total / measured) * 10) / 10 : null,
+    topTraps,
+  };
 }
