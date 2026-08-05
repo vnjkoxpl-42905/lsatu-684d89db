@@ -378,6 +378,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
             <h3 className="text-lg font-bold text-punk-text mb-4">Accuracy Trend</h3>
             <div className="h-60">
+              {recentPerformance.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  Run a drill to start tracking your accuracy over time.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={recentPerformance} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(155, 176, 200, 0.2)" />
@@ -394,6 +399,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                   />
                 </LineChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
 
@@ -401,6 +407,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
             <h3 className="text-lg font-bold text-punk-text mb-4">Performance by Concept</h3>
             <div className="h-60">
+              {performanceByConcept.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  No graded attempts yet — your per-module accuracy will appear here.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={performanceByConcept} layout="vertical" margin={{ top: 5, right: 10, left: 30, bottom: 5 }}>
                   <defs>
@@ -416,22 +427,29 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                   <Bar dataKey="accuracy" fill="url(#barGradient)" barSize={14} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
 
           {/* Common Pitfalls */}
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-punk-text mb-4">Common Pitfalls</h3>
+            <h3 className="text-lg font-bold text-punk-text mb-4">Where Your Misses Come From</h3>
             <div className="h-60">
+              {errorAnalysis.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  No missed questions logged yet.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="75%" data={errorAnalysis}>
                   <PolarGrid stroke="rgba(155, 176, 200, 0.2)" />
                   <PolarAngleAxis dataKey="reason" stroke="#EAF2FF" fontSize={10} />
-                  <PolarRadiusAxis angle={30} domain={[0, 40]} tick={false} axisLine={false} />
-                  <Radar name="Errors" dataKey="percentage" stroke="#FF1AFF" fill="#FF1AFF" fillOpacity={0.6} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                  <Radar name="Misses" dataKey="percentage" stroke="#FF1AFF" fill="#FF1AFF" fillOpacity={0.6} />
                   <Tooltip contentStyle={PUNK_TOOLTIP_STYLE} />
                 </RadarChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
         </div>
