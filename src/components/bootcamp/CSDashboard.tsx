@@ -335,7 +335,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
 
                           <div className="flex justify-around text-center pt-2">
                             <div>
-                              <div className="font-mono text-lg font-bold text-punk-text">{moduleStats.avgTime}s</div>
+                              <div className="font-mono text-lg font-bold text-punk-text">{moduleStats.avgTime === null ? '—' : `${moduleStats.avgTime}s`}</div>
                               <div className="text-[11px] text-punk-sub">Avg. Time</div>
                             </div>
                             <div>
