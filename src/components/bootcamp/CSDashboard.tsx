@@ -278,13 +278,17 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
           <div className="text-xs uppercase tracking-wider text-punk-sub font-medium mb-1">Overall Accuracy</div>
-          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">{stats.overallAccuracy}%</div>
-          <div className="text-xs text-punk-sub">Across all modules</div>
+          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">
+            {stats.overallAccuracy === null ? '—' : `${stats.overallAccuracy}%`}
+          </div>
+          <div className="text-xs text-punk-sub">{stats.overallAccuracy === null ? 'No attempts yet' : 'Across all modules'}</div>
         </div>
 
         <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
           <div className="text-xs uppercase tracking-wider text-punk-sub font-medium mb-1">Avg. Response Time</div>
-          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">{stats.avgTime}s</div>
+          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">
+            {stats.avgTime === null ? '—' : `${stats.avgTime}s`}
+          </div>
           <div className="text-xs text-punk-sub">Per question</div>
         </div>
 
