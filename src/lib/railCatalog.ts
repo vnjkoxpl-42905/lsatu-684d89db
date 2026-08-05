@@ -26,6 +26,15 @@ export interface RailItem {
   group: RailGroupId;
   /** Empty = available to every signed-in student. */
   flags: PermissionFlag[];
+  /**
+   * Mirrors the `allowSignedIn` prop on this item's route. Where the route lets
+   * any signed-in user through regardless of `flags`, the rail must not draw a
+   * padlock from those same flags — a padlock over a route anyone can open is
+   * a lie the student can disprove by typing the URL.
+   *
+   * Keep this in step with `src/App.tsx`. `railCatalog.test.ts` pins the pairs.
+   */
+  allowSignedIn?: boolean;
   /** Section items open the side list and render a › chevron when unlocked. */
   section?: boolean;
   /** Home can never be hidden — it is the guaranteed way back. */
@@ -40,18 +49,18 @@ export const RAIL_GROUPS: { id: RailGroupId; title: string }[] = [
 ];
 
 export const RAIL_CATALOG: RailItem[] = [
-  { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], required: true },
-  { id: "notes", label: "Notes and recaps", group: "classroom", flags: ["has_classroom_access"], section: true },
-  { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], section: true },
+  { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, required: true },
+  { id: "notes", label: "Notes and recaps", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
+  { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
   { id: "drill", label: "Drill", group: "study", flags: ["has_drill_access"] },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
-  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], section: true },
+  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], allowSignedIn: true, section: true },
   { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
   { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
-  { id: "schedule", label: "Schedule", group: "support", flags: ["has_schedule_access"] },
-  { id: "booking", label: "Booking", group: "support", flags: [] },
+  { id: "schedule", label: "Schedule", group: "support", flags: ["has_schedule_access"], allowSignedIn: true },
+  { id: "booking", label: "Booking", group: "support", flags: [], allowSignedIn: true },
 ];
 
 export interface RailPrefs {
