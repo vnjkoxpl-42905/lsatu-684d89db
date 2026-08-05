@@ -1036,6 +1036,90 @@ export type Database = {
         }
         Relationships: []
       }
+      curriculum_track_items: {
+        Row: {
+          created_at: string
+          estimated_minutes: number | null
+          guided_drill_id: string
+          id: string
+          is_optional: boolean
+          notes: string | null
+          position: number
+          suggested_week: number | null
+          track_id: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_minutes?: number | null
+          guided_drill_id: string
+          id?: string
+          is_optional?: boolean
+          notes?: string | null
+          position: number
+          suggested_week?: number | null
+          track_id: string
+        }
+        Update: {
+          created_at?: string
+          estimated_minutes?: number | null
+          guided_drill_id?: string
+          id?: string
+          is_optional?: boolean
+          notes?: string | null
+          position?: number
+          suggested_week?: number | null
+          track_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "curriculum_track_items_guided_drill_id_fkey"
+            columns: ["guided_drill_id"]
+            isOneToOne: false
+            referencedRelation: "guided_drills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curriculum_track_items_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "curriculum_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      curriculum_tracks: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_default: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       daily_stats: {
         Row: {
           class_id: string
@@ -1442,6 +1526,8 @@ export type Database = {
           created_at: string
           guided_drill_id: string
           id: string
+          level: string | null
+          question_count: number | null
           question_qids: string[]
           read_card_at: string | null
           scheduled_for: string | null
@@ -1460,6 +1546,8 @@ export type Database = {
           created_at?: string
           guided_drill_id: string
           id?: string
+          level?: string | null
+          question_count?: number | null
           question_qids?: string[]
           read_card_at?: string | null
           scheduled_for?: string | null
@@ -1478,6 +1566,8 @@ export type Database = {
           created_at?: string
           guided_drill_id?: string
           id?: string
+          level?: string | null
+          question_count?: number | null
           question_qids?: string[]
           read_card_at?: string | null
           scheduled_for?: string | null
@@ -1508,6 +1598,7 @@ export type Database = {
           id: string
           instruction_card: Json
           is_published: boolean
+          level: string | null
           order_in_week: number
           question_count: number | null
           question_features: string[]
@@ -1531,6 +1622,7 @@ export type Database = {
           id?: string
           instruction_card?: Json
           is_published?: boolean
+          level?: string | null
           order_in_week?: number
           question_count?: number | null
           question_features?: string[]
@@ -1554,6 +1646,7 @@ export type Database = {
           id?: string
           instruction_card?: Json
           is_published?: boolean
+          level?: string | null
           order_in_week?: number
           question_count?: number | null
           question_features?: string[]
@@ -2000,14 +2093,14 @@ export type Database = {
           id: string
           is_explained: boolean
           preptest: number
-          prompt: string
+          prompt: string | null
           qid: string
           question_number: number
           question_type: string
           section: number
           section_id: string
           source_note: string | null
-          stimulus: string
+          stimulus: string | null
           updated_at: string
         }
         Insert: {
@@ -2016,14 +2109,14 @@ export type Database = {
           id?: string
           is_explained?: boolean
           preptest: number
-          prompt: string
+          prompt?: string | null
           qid: string
           question_number: number
           question_type: string
           section: number
           section_id: string
           source_note?: string | null
-          stimulus: string
+          stimulus?: string | null
           updated_at?: string
         }
         Update: {
@@ -2032,14 +2125,14 @@ export type Database = {
           id?: string
           is_explained?: boolean
           preptest?: number
-          prompt?: string
+          prompt?: string | null
           qid?: string
           question_number?: number
           question_type?: string
           section?: number
           section_id?: string
           source_note?: string | null
-          stimulus?: string
+          stimulus?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -2465,6 +2558,7 @@ export type Database = {
           overall_answered: number | null
           overall_avg_ms: number | null
           overall_correct: number | null
+          proficiency_level: string | null
           streak_current: number | null
           test_date: string | null
           updated_at: string | null
@@ -2501,6 +2595,7 @@ export type Database = {
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
+          proficiency_level?: string | null
           streak_current?: number | null
           test_date?: string | null
           updated_at?: string | null
@@ -2537,6 +2632,7 @@ export type Database = {
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
+          proficiency_level?: string | null
           streak_current?: number | null
           test_date?: string | null
           updated_at?: string | null
@@ -2777,6 +2873,42 @@ export type Database = {
           status?: string
           title?: string
           transparency?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      schedule_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          days_json: Json
+          description: string | null
+          id: string
+          is_default: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          days_json?: Json
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          days_json?: Json
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          slug?: string
+          title?: string
           updated_at?: string
         }
         Relationships: []
@@ -3193,6 +3325,99 @@ export type Database = {
         }
         Relationships: []
       }
+      student_curriculum_enrollments: {
+        Row: {
+          pace_multiplier: number
+          started_on: string | null
+          student_id: string
+          track_id: string
+          updated_at: string
+        }
+        Insert: {
+          pace_multiplier?: number
+          started_on?: string | null
+          student_id: string
+          track_id: string
+          updated_at?: string
+        }
+        Update: {
+          pace_multiplier?: number
+          started_on?: string | null
+          student_id?: string
+          track_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_curriculum_enrollments_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "curriculum_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_curriculum_overrides: {
+        Row: {
+          action: string
+          created_at: string
+          guided_drill_id: string | null
+          id: string
+          level: string | null
+          notes: string | null
+          position: number | null
+          student_id: string
+          track_id: string
+          track_item_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          guided_drill_id?: string | null
+          id?: string
+          level?: string | null
+          notes?: string | null
+          position?: number | null
+          student_id: string
+          track_id: string
+          track_item_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          guided_drill_id?: string | null
+          id?: string
+          level?: string | null
+          notes?: string | null
+          position?: number | null
+          student_id?: string
+          track_id?: string
+          track_item_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_curriculum_overrides_guided_drill_id_fkey"
+            columns: ["guided_drill_id"]
+            isOneToOne: false
+            referencedRelation: "guided_drills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_curriculum_overrides_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "curriculum_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_curriculum_overrides_track_item_id_fkey"
+            columns: ["track_item_id"]
+            isOneToOne: false
+            referencedRelation: "curriculum_track_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       student_external_metrics: {
         Row: {
           avg_time_ms: number | null
@@ -3248,6 +3473,32 @@ export type Database = {
             columns: ["source_upload_id"]
             isOneToOne: false
             referencedRelation: "external_work_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_schedules: {
+        Row: {
+          schedule_template_id: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          schedule_template_id: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          schedule_template_id?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_schedules_schedule_template_id_fkey"
+            columns: ["schedule_template_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_templates"
             referencedColumns: ["id"]
           },
         ]
