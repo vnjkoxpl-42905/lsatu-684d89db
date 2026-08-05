@@ -33,21 +33,32 @@ const RECIPIENT = 'contact@aspiringattorneys.com';
 const results = [];
 let failed = 0;
 
+/**
+ * A step may pass, fail, or skip. Skipping matters: this suite has to be
+ * runnable from a detached worktree, where the explanation corpus that lives
+ * beside the repo is not reachable. A step that cannot run must say so rather
+ * than pass quietly (which would claim a check happened) or fail (which would
+ * make a green run impossible in the one place it matters most, verifying a
+ * commit in isolation).
+ */
+class Skipped extends Error {}
+
 function step(label, fn) {
   process.stdout.write(`\n▸ ${label}\n`);
   const started = process.hrtime.bigint();
-  let ok = false;
+  let state = 'FAIL';
   let detail = '';
   try {
     detail = fn() ?? '';
-    ok = true;
+    state = 'PASS';
   } catch (err) {
     detail = err.message;
+    if (err instanceof Skipped) state = 'SKIP';
   }
   const ms = Number((process.hrtime.bigint() - started) / 1000000n);
-  if (!ok) failed++;
-  results.push({ label, ok, detail, ms });
-  process.stdout.write(`  ${ok ? 'PASS' : 'FAIL'}  ${label}${detail ? ` — ${detail}` : ''} (${ms}ms)\n`);
+  if (state === 'FAIL') failed++;
+  results.push({ label, state, detail, ms });
+  process.stdout.write(`  ${state}  ${label}${detail ? ` — ${detail}` : ''} (${ms}ms)\n`);
 }
 
 function run(cmd, args, { quiet = false } = {}) {
@@ -95,7 +106,20 @@ step('unit specs', () => {
 });
 
 step('question stats are current', () => {
-  const out = run('node', ['scripts/knowledge/build-question-stats.mjs', '--check'], { quiet: true });
+  // The corpus lives beside the repo in the brain, not inside it. Resolve it
+  // explicitly so this works from a worktree, and skip rather than guess when
+  // it genuinely is not there.
+  const candidates = [
+    path.resolve('../../wiki/explanations'),
+    '/Users/joshuaf/ai-os/wiki/explanations',
+  ];
+  const corpus = candidates.find((dir) => fs.existsSync(dir));
+  if (!corpus) {
+    throw new Skipped('explanation corpus not reachable from here');
+  }
+  const out = run('node', ['scripts/knowledge/build-question-stats.mjs', '--check', corpus], {
+    quiet: true,
+  });
   return out.trim().split('\n').pop();
 });
 
@@ -177,9 +201,12 @@ step('email assembles and survives an independent parser', () => {
 
 process.stdout.write(`\n${'-'.repeat(64)}\n`);
 for (const r of results) {
-  process.stdout.write(`${r.ok ? 'PASS' : 'FAIL'}  ${r.label}\n`);
+  process.stdout.write(`${r.state}  ${r.label}${r.state === 'SKIP' ? ` (${r.detail})` : ''}\n`);
 }
+const skipped = results.filter((r) => r.state === 'SKIP').length;
 process.stdout.write(
-  `\n${failed === 0 ? 'ALL PASS' : `${failed} FAILED`} — ${results.length} steps${FAST ? ' (fast mode: typecheck and browser pass skipped)' : ''}\n`,
+  `\n${failed === 0 ? 'ALL PASS' : `${failed} FAILED`} — ${results.length} steps${
+    skipped ? `, ${skipped} skipped` : ''
+  }${FAST ? ' (fast mode: typecheck and browser pass skipped)' : ''}\n`,
 );
 process.exit(failed === 0 ? 0 : 1);
