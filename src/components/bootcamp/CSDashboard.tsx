@@ -322,13 +322,13 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                             <div className="flex justify-between items-baseline mb-1">
                               <span className="font-semibold text-punk-sub uppercase tracking-wider text-[10px]">Mastery</span>
                               <span className="font-mono text-2xl font-bold text-punk-cyan drop-shadow-neon-cyan">
-                                {moduleStats.accuracy}%
+                                {moduleStats.accuracy === null ? '—' : `${moduleStats.accuracy}%`}
                               </span>
                             </div>
                             <div className="w-full bg-punk-base rounded-full h-3 border border-punk-sub/20 overflow-hidden">
                               <div
                                 className="bg-gradient-to-r from-punk-magenta to-punk-cyan h-full rounded-full transition-all duration-500 shadow-neon-cyan"
-                                style={{ width: `${moduleStats.accuracy}%` }}
+                                style={{ width: `${moduleStats.accuracy ?? 0}%` }}
                               />
                             </div>
                           </div>
