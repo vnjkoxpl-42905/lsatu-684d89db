@@ -20,6 +20,7 @@ Object.defineProperty(window, "localStorage", { value: localStorageMock, writabl
 class IntersectionObserverMock implements IntersectionObserver {
   readonly root = null;
   readonly rootMargin = "";
+  readonly scrollMargin = "";
   readonly thresholds: ReadonlyArray<number> = [];
   observe() {}
   unobserve() {}
