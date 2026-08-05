@@ -207,32 +207,52 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
     return MODULES.find(m => m.id === savedDrillModuleId);
   }, [savedDrillModuleId]);
 
-  // Accuracy Trend data (LineChart)
-  const recentPerformance = useMemo(() => [
-    { name: 'Drill 1', accuracy: 70 },
-    { name: 'Drill 2', accuracy: 80 },
-    { name: 'Drill 3', accuracy: 75 },
-    { name: 'Drill 4', accuracy: 90 },
-    { name: 'Drill 5', accuracy: 85 },
-  ], []);
+  const gradedHistory = useMemo(
+    () => attemptHistory.filter((attempt) => !attempt.ungraded),
+    [attemptHistory],
+  );
 
-  // Performance by Concept data (Horizontal BarChart)
-  const performanceByConcept = useMemo(() => [
-    { concept: 'Correlation', accuracy: 90 },
-    { concept: 'Alt. Cause', accuracy: 75 },
-    { concept: 'Reverse Cause', accuracy: 80 },
-    { concept: 'Strengthen', accuracy: 70 },
-    { concept: 'Weaken', accuracy: 75 },
-  ], []);
+  // Accuracy Trend — rolling accuracy over the student's graded attempts,
+  // bucketed into up to 5 equal chunks.
+  const recentPerformance = useMemo(() => {
+    if (gradedHistory.length === 0) return [];
+    const buckets = Math.min(5, gradedHistory.length);
+    const size = Math.ceil(gradedHistory.length / buckets);
+    const out: { name: string; accuracy: number }[] = [];
+    for (let i = 0; i < gradedHistory.length; i += size) {
+      const chunk = gradedHistory.slice(i, i + size);
+      const correct = chunk.filter((a) => a.correct).length;
+      out.push({
+        name: `Set ${out.length + 1}`,
+        accuracy: Math.round((correct / chunk.length) * 100),
+      });
+    }
+    return out;
+  }, [gradedHistory]);
 
-  // Common Pitfalls data (RadarChart)
-  const errorAnalysis = useMemo(() => [
-    { reason: 'Misread Stem', percentage: 20 },
-    { reason: 'Ignored Premise', percentage: 15 },
-    { reason: 'Chose Opposite', percentage: 25 },
-    { reason: 'Faulty Analogy', percentage: 30 },
-    { reason: 'Out of Scope', percentage: 35 },
-  ], []);
+  // Performance by Concept — real per-module accuracy (modules with attempts).
+  const performanceByConcept = useMemo(
+    () =>
+      MODULES
+        .filter((module) => (stats.moduleProgress[module.id]?.graded ?? 0) > 0)
+        .map((module) => ({
+          concept: module.name,
+          accuracy: stats.moduleProgress[module.id].accuracy ?? 0,
+        })),
+    [stats],
+  );
+
+  // Common Pitfalls — where the student's misses actually come from.
+  const errorAnalysis = useMemo(() => {
+    const misses = gradedHistory.filter((a) => !a.correct);
+    if (misses.length === 0) return [];
+    return MODULES.map((module) => ({
+      reason: module.name,
+      percentage: Math.round(
+        (misses.filter((a) => a.moduleId === module.id).length / misses.length) * 100,
+      ),
+    })).filter((entry) => entry.percentage > 0);
+  }, [gradedHistory]);
 
   return (
     <div className="space-y-8">
