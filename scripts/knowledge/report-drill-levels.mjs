@@ -11,9 +11,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { loadBank, loadSeed, resolvePool } from '../lib/drill-pool.mjs';
 
-const SEED = path.resolve('data/guided-drills/_seed.json');
-const BANK_DIR = path.resolve('public/data');
 const STATS = path.resolve('public/data/question-stats.json');
 const OUT_JSON = path.resolve('scripts/out/drill-level-report.json');
 const OUT_MD = path.resolve('scripts/out/drill-level-report.md');
@@ -29,44 +28,8 @@ const LEVEL_BANDS = {
 /** A set averaging at or above this is beginner-grade work whatever it is labelled. */
 const BEGINNER_GRADE_PCT = 75;
 
-function loadBank() {
-  const byQid = new Map();
-  for (const f of fs.readdirSync(BANK_DIR).filter((f) => /-LR\.json$/.test(f))) {
-    let arr;
-    try { arr = JSON.parse(fs.readFileSync(path.join(BANK_DIR, f), 'utf8')); } catch { continue; }
-    if (!Array.isArray(arr)) continue;
-    for (const q of arr) {
-      byQid.set(`${q.practiceTest}-S${q.sectionNumber}-Q${q.questionNumber}`, q);
-    }
-  }
-  return byQid;
-}
-
-/** Mirrors resolveGuidedDrillPool in src/lib/guidedDrills.ts. */
-function resolvePool(bankFilter, bank) {
-  const f = bankFilter ?? {};
-  const qtypes = new Set((f.qtypes || []).map((s) => s.toLowerCase()));
-  const features = new Set((f.features || []).map((s) => s.toLowerCase()));
-  const reasoning = new Set((f.reasoning_types || []).map((s) => s.toLowerCase()));
-  const dmin = f.difficulty_min ?? null;
-  const dmax = f.difficulty_max ?? null;
-
-  const out = [];
-  for (const [qid, q] of bank) {
-    if (qtypes.size && !qtypes.has((q.questionType || '').toLowerCase())) continue;
-    if (features.size && !(q.questionFeatures || []).some((x) => features.has((x || '').toLowerCase()))) continue;
-    if (reasoning.size && !(q.reasoningType || []).some((x) => reasoning.has((x || '').toLowerCase()))) continue;
-    const d = q.questionDifficulty;
-    if (!Number.isFinite(d)) continue;
-    if (dmin != null && d < dmin) continue;
-    if (dmax != null && d > dmax) continue;
-    out.push({ qid, difficulty: d, type: q.questionType });
-  }
-  return out;
-}
-
 function main() {
-  const drills = JSON.parse(fs.readFileSync(SEED, 'utf8'));
+  const drills = loadSeed();
   const bank = loadBank();
   const stats = JSON.parse(fs.readFileSync(STATS, 'utf8')).q;
 

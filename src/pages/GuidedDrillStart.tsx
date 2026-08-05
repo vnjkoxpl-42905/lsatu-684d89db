@@ -367,7 +367,13 @@ export default function GuidedDrillStart({
       return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
     }
 
+    // The assignment wins over the drill. A pinned set is exactly as long as
+    // the pin, and a trimmed assignment is as long as the teacher set it to;
+    // reading the drill's own count first advertises ten questions to a
+    // student who is about to be given six, which they notice.
     const count =
+      assignment?.question_qids?.length ||
+      assignment?.question_count ||
       drill.question_qids?.length ||
       drill.question_count ||
       fallbackPoolSize ||

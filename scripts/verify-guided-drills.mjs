@@ -92,6 +92,7 @@ step('unit specs', () => {
       'run',
       'src/lib/guidedDrillLevel.test.ts',
       'src/lib/guidedDrillLevel.parity.test.ts',
+      'src/lib/guidedDrillLevel.port.test.ts',
       'src/lib/questionSelectionSignals.test.ts',
       'src/lib/guidedDrillLaunch.test.ts',
       'src/lib/guidedDrillLaunch.parity.test.ts',
@@ -127,6 +128,19 @@ step('drill level report is current', () => {
   run('node', ['scripts/knowledge/report-drill-levels.mjs'], { quiet: true });
   const report = JSON.parse(fs.readFileSync('scripts/out/drill-level-report.json', 'utf8'));
   return `${report.rows.length} drill/level rows`;
+});
+
+step('a drill resolves to a set without a browser or a database', () => {
+  const out = run(
+    'node',
+    ['scripts/resolve-drill-qids.mjs', '--slug', SLUG, '--level', LEVEL, '--count', '6',
+     '--traps', 'Too Strong', '--seed', '42', '--json'],
+    { quiet: true },
+  );
+  const r = JSON.parse(out);
+  if (r.qids.length !== 6) throw new Error(`asked for 6, got ${r.qids.length}`);
+  if (r.trapMatches !== 6) throw new Error(`trap targeting matched ${r.trapMatches} of 6`);
+  return `${r.qids.length} questions, ${r.trapMatches} on target, mean ${r.meanCorrectPct}%`;
 });
 
 step('frozen set is describable', () => {
