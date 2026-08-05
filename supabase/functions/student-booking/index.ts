@@ -112,6 +112,7 @@ Deno.serve(async (req) => {
         identity: { student_id: userId, email: user.email ?? null, name },
         startAtIso: String(body.start_at || ""),
         idempotencyKey: String(body.idempotency_key || ""),
+        studentNote: String(body.student_note || "").slice(0, 2000).trim(),
         adminEmail: Deno.env.get("BOOKING_ADMIN_EMAIL") || "contact@aspiringattorneys.com",
         supabaseUrl: Deno.env.get("SUPABASE_URL")!,
         serviceKey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
