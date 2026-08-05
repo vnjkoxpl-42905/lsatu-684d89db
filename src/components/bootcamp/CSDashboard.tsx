@@ -98,12 +98,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
     const graded = attemptHistory.filter((attempt) => !attempt.ungraded);
     const correct = graded.filter((attempt) => attempt.correct).length;
 
-    // Use actual stats when available, fallback to baseline defaults matching prototype UI
-    const overallAccuracy = graded.length > 0 ? Math.round((correct / graded.length) * 100) : 82;
+    const overallAccuracy = graded.length > 0 ? Math.round((correct / graded.length) * 100) : null;
     const avgTime =
       total > 0
         ? Math.round(attemptHistory.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / total / 1000)
-        : 45;
+        : null;
 
     let currentStreak = 0;
     for (let i = attemptHistory.length - 1; i >= 0; i -= 1) {
@@ -111,7 +110,6 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       if (!attemptHistory[i].correct) break;
       currentStreak += 1;
     }
-    if (total === 0) currentStreak = 4;
 
     const moduleProgress = MODULES.reduce((acc, module) => {
       const attempts = attemptHistory.filter((attempt) => attempt.moduleId === module.id);
@@ -119,38 +117,16 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       const moduleCorrect = gradedAttempts.filter((attempt) => attempt.correct).length;
       const uniqueSeen = new Set(attempts.map((attempt) => attempt.questionId)).size;
 
-      // Default accuracy fallbacks to match prototype screenshot numbers when fresh
-      const defaultAccuracyMap: Record<string, number> = {
-        'correlation-causation': 90,
-        'common-causes': 75,
-        'causal-counterexamples': 80,
-        'training-yard': 70,
-      };
-
-      const defaultTimeMap: Record<string, number> = {
-        'correlation-causation': 35,
-        'common-causes': 55,
-        'causal-counterexamples': 50,
-        'training-yard': 60,
-      };
-
-      const defaultAttemptMap: Record<string, number> = {
-        'correlation-causation': 10,
-        'common-causes': 8,
-        'causal-counterexamples': 5,
-        'training-yard': 20,
-      };
-
       acc[module.id] = {
-        accuracy: gradedAttempts.length > 0 ? Math.round((moduleCorrect / gradedAttempts.length) * 100) : defaultAccuracyMap[module.id] ?? 80,
-        avgTime: attempts.length > 0 ? Math.round(attempts.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / attempts.length / 1000) : defaultTimeMap[module.id] ?? 45,
-        seen: uniqueSeen > 0 ? uniqueSeen : defaultAttemptMap[module.id] ?? 5,
-        attempts: attempts.length > 0 ? attempts.length : defaultAttemptMap[module.id] ?? 5,
+        accuracy: gradedAttempts.length > 0 ? Math.round((moduleCorrect / gradedAttempts.length) * 100) : null,
+        avgTime: attempts.length > 0 ? Math.round(attempts.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / attempts.length / 1000) : null,
+        seen: uniqueSeen,
+        attempts: attempts.length,
         graded: gradedAttempts.length,
         available: ALL_QUESTIONS[module.id]?.length ?? 0,
       };
       return acc;
-    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; seen: number; attempts: number; graded: number; available: number }>);
+    }, {} as Record<QuestionModuleId, { accuracy: number | null; avgTime: number | null; seen: number; attempts: number; graded: number; available: number }>);
 
     return { total, overallAccuracy, avgTime, currentStreak, moduleProgress };
   }, [attemptHistory]);
