@@ -24,7 +24,9 @@
     "knowledge:check": "node scripts/knowledge/generate-lr-jsonl.mjs --check && node scripts/knowledge/build-question-stats.mjs --check",
     "knowledge:generate": "node scripts/knowledge/generate-lr-jsonl.mjs",
     "stats:build": "node scripts/knowledge/build-question-stats.mjs",
-    "stats:check": "node scripts/knowledge/build-question-stats.mjs --check"
+    "stats:check": "node scripts/knowledge/build-question-stats.mjs --check",
+    "verify:drills": "node scripts/verify-guided-drills.mjs",
+    "verify:drills:fast": "node scripts/verify-guided-drills.mjs --fast"
   },
   "dependencies": {
     "@ark-ui/react": "^5.37.2",

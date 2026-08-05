@@ -303,3 +303,155 @@ describe('summarizePool', () => {
     expect(s.meanCorrectPct!).toBeGreaterThanOrEqual(BEGINNER_GRADE_PCT);
   });
 });
+
+describe('percentage-aware selection (opt-in)', () => {
+  const withStat = (
+    correctPct: number,
+    topTrapTag: string | null = null,
+    trapSpread = 0.5,
+  ): QuestionStat => ({ correctPct, topTrapTag, trapSpread } as QuestionStat);
+
+  /** Cohort accuracy that agrees with the label, so nothing moves band. */
+  const AGREEING = new Map<string, QuestionStat>(
+    POOL.map((question) => [
+      question.qid,
+      withStat([0, 91.7, 84.4, 75.2, 66.4, 54][difficultyOf(question.qid)]),
+    ]),
+  );
+
+  it('changes nothing when the weights are zero, stats or no stats', () => {
+    const base = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'advanced', rng: seeded(7),
+    });
+    const withStats = resolveLeveledDrillQids({
+      pool: POOL,
+      questionCount: 6,
+      level: 'advanced',
+      rng: seeded(7),
+      stats: AGREEING,
+      targetTrapTags: ['Too Strong'],
+    });
+    expect(withStats.qids).toEqual(base.qids);
+    expect(withStats.inBandCount).toBe(base.inBandCount);
+  });
+
+  it('reports cohort coverage of the drawn set without being asked to rank', () => {
+    const r = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: 'advanced', rng: seeded(), stats: AGREEING,
+    });
+    expect(r.statsCoverage).toEqual({ measured: 6, total: 6 });
+    expect(r.meanCorrectPct).not.toBeNull();
+  });
+
+  it('counts missing cohort data as unmeasured rather than as zero', () => {
+    const sparse = new Map([[POOL[0].qid, withStat(80)]]);
+    const r = resolveLeveledDrillQids({
+      pool: POOL, questionCount: 6, level: null, rng: seeded(), stats: sparse,
+    });
+    expect(r.statsCoverage!.total).toBe(6);
+    expect(r.statsCoverage!.measured).toBeLessThan(6);
+    if (r.statsCoverage!.measured > 0) expect(r.meanCorrectPct).toBe(80);
+  });
+
+  describe('empiricalWeight moves band membership, not order', () => {
+    // Labeled 2, but the cohort treats it like a 4.
+    const sleeper = q('sleeper', 2);
+    const pool = [sleeper, q('easy', 2), q('hard', 5)];
+    const stats = new Map<string, QuestionStat>([
+      ['sleeper', withStat(66.4)],
+      ['easy', withStat(91.7)],
+      ['hard', withStat(54)],
+    ]);
+
+    it('leaves the label in charge at weight 0', () => {
+      const r = resolveLeveledDrillQids({
+        pool, questionCount: 1, level: 'advanced', rng: seeded(), stats, empiricalWeight: 0,
+      });
+      expect(r.inBandCount).toBe(1);
+      expect(r.qids).toEqual(['hard']);
+    });
+
+    it('lets the measurement pull a mislabelled question into band', () => {
+      // questionCount 2, so the rank-don't-filter top-up never fires and the
+      // returned set is exactly what the band judged eligible.
+      const r = resolveLeveledDrillQids({
+        pool, questionCount: 2, level: 'advanced', rng: seeded(), stats, empiricalWeight: 1,
+      });
+      expect(r.inBandCount).toBe(2);
+      expect(r.qids.sort()).toEqual(['hard', 'sleeper']);
+    });
+  });
+
+  describe('trapWeight orders the in-band group', () => {
+    const pool = [
+      q('t1', 4), q('t2', 4), q('o1', 4), q('o2', 4), q('o3', 4), q('o4', 4),
+    ];
+    const stats = new Map<string, QuestionStat>([
+      ['t1', withStat(66, 'Too Strong', 0.9)],
+      ['t2', withStat(66, 'Too Strong: must / ensure', 0.85)],
+      ['o1', withStat(66, 'Out Of Scope', 0.9)],
+      ['o2', withStat(66, 'Out Of Scope', 0.9)],
+      ['o3', withStat(66, 'Out Of Scope', 0.9)],
+      ['o4', withStat(66, 'Out Of Scope', 0.9)],
+    ]);
+
+    it('puts the questions that punish the target trap first', () => {
+      const r = resolveLeveledDrillQids({
+        pool,
+        questionCount: 2,
+        level: 'advanced',
+        rng: seeded(),
+        stats,
+        targetTrapTags: ['Too Strong'],
+        trapWeight: 1,
+      });
+      expect(r.qids.sort()).toEqual(['t1', 't2']);
+      expect(r.trapMatches).toBe(2);
+    });
+
+    it('keeps the drill full when there are fewer matches than questions wanted', () => {
+      const r = resolveLeveledDrillQids({
+        pool,
+        questionCount: 5,
+        level: 'advanced',
+        rng: seeded(),
+        stats,
+        targetTrapTags: ['Too Strong'],
+        trapWeight: 1,
+      });
+      expect(r.qids).toHaveLength(5);
+      expect(r.trapMatches).toBe(2);
+    });
+
+    it('still varies between attempts at a partial weight', () => {
+      const draws = [1, 2, 3, 4, 5].map(
+        (seed) =>
+          resolveLeveledDrillQids({
+            pool,
+            questionCount: 3,
+            level: 'advanced',
+            rng: seeded(seed),
+            stats,
+            targetTrapTags: ['Too Strong'],
+            trapWeight: 0.5,
+          }).qids.join(','),
+      );
+      expect(new Set(draws).size).toBeGreaterThan(1);
+    });
+
+    it('ignores trap targeting when no stats were supplied', () => {
+      const base = resolveLeveledDrillQids({
+        pool, questionCount: 3, level: 'advanced', rng: seeded(),
+      });
+      const targeted = resolveLeveledDrillQids({
+        pool,
+        questionCount: 3,
+        level: 'advanced',
+        rng: seeded(),
+        targetTrapTags: ['Too Strong'],
+        trapWeight: 1,
+      });
+      expect(targeted.qids).toEqual(base.qids);
+    });
+  });
+});

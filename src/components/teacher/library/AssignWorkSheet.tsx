@@ -88,6 +88,8 @@ export function AssignWorkSheet({
    * re-attempt fresh draw for the whole assignment.
    */
   const [attachArtifact, setAttachArtifact] = useState(false);
+  /** Comma-separated trap taxonomy tags this student keeps falling for. */
+  const [trapTargets, setTrapTargets] = useState('');
   /** The pinned list, kept after a successful assign so it can be handed on. */
   const [frozenResult, setFrozenResult] = useState<Record<string, string[]> | null>(null);
 
@@ -128,6 +130,7 @@ export function AssignWorkSheet({
     setLevelOverrides({});
     setQuestionCount('');
     setAttachArtifact(false);
+    setTrapTargets('');
     setFrozenResult(null);
     // defaultStudentIds is a fresh array each render at most call sites, so key
     // the reset on its contents rather than its identity.
@@ -184,12 +187,26 @@ export function AssignWorkSheet({
    */
   const freezeQids = (): Record<string, string[]> | undefined => {
     if (!attachArtifact || !soleDrill || !bankReady) return undefined;
+
+    // Trap targeting rides on the freeze and nowhere else. An open-time draw
+    // has no teacher present to name a target and no column to remember one,
+    // so an ordinary assignment keeps drawing exactly as it always has.
+    const targets = trapTargets
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
     const out: Record<string, string[]> = {};
     for (const studentId of selected) {
       const { qids } = resolveGuidedDrillQidsForLevel({
         drill: soleDrill,
         level: levelFor(studentId),
         questionCount: effectiveCount,
+        stats: targets.length > 0 && statsReady ? questionStats.asMap() : null,
+        targetTrapTags: targets,
+        // Half aim, half freshness. A full 1 would return the same questions
+        // in the same order on every re-attempt of the same drill.
+        trapWeight: targets.length > 0 ? 0.5 : 0,
       });
       // A student with nothing to draw is left out rather than pinned empty;
       // assignWork throws on an empty list precisely so this cannot pass
@@ -326,6 +343,25 @@ export function AssignWorkSheet({
                   </span>
                 </span>
               </label>
+
+              {attachArtifact ? (
+                <div className="mt-3 pl-6">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Target traps
+                  </label>
+                  <Input
+                    value={trapTargets}
+                    onChange={(e) => setTrapTargets(e.target.value)}
+                    placeholder="Too Strong, Out Of Scope"
+                    className="mt-1"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {trapTargets.trim()
+                      ? 'Weights the set toward questions whose most-chosen wrong answer is one of these. Still mixed, so a re-attempt is not identical.'
+                      : 'Optional. Leave blank to draw by level alone, exactly as before.'}
+                  </p>
+                </div>
+              ) : null}
             </div>
           ) : null}
 

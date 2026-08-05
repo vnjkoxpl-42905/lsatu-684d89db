@@ -18,8 +18,15 @@
 //     --why "You were guessing on necessary assumption once the stimulus got long."
 //
 //   --student "Casey"     override the name in the greeting
+//   --timeframe <t>       today | tomorrow | day | week | none (default none).
+//                         Only shapes the default opening line; --why overrides it.
+//   --minutes <n>         adds the time estimate and the per-question pace
 //   --out <path>          default alongside the manifest as draft.eml
 //   --platform-url <url>  the classroom link (default https://lsatprep.study/classroom)
+//
+// House rule, enforced by scripts/verify-guided-drills.mjs: no em-dashes
+// anywhere in the rendered body. Joshua does not type them and a student
+// reads this.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -85,13 +92,13 @@ function renderHtml({ student, why, drill, qids, types, minutes, level, files, p
     .join('\n');
 
   const perQuestion = minutes && qids.length ? Math.round((minutes / qids.length) * 60) : null;
-  const pace = perQuestion ? ` — about ${Math.floor(perQuestion / 60)}:${String(perQuestion % 60).padStart(2, '0')} each` : '';
+  const pace = perQuestion ? `, about ${Math.floor(perQuestion / 60)}:${String(perQuestion % 60).padStart(2, '0')} each` : '';
 
   return `<!DOCTYPE html>
 <html>
 <body style="${S.wrap}">
   <div style="${S.container}">
-    <p style="${S.greeting}">${esc(student)} —</p>
+    <p style="${S.greeting}">${esc(student)},</p>
 
     <p style="${S.para}">${esc(why)}</p>
 
@@ -111,14 +118,14 @@ ${rows}
 
     <div style="${S.prompt}">
       <strong style="color:${T.ink};">Attempt these cold and timed${pace}.</strong><br><br>
-      Two ways to do it. Open the attached <strong>${esc(files.html)}</strong> and work straight through it — it keeps the answer hidden until you commit to a choice. Or pull the questions up from the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
+      Two ways to do it. Open the attached <strong>${esc(files.html)}</strong> and work straight through it. It keeps the answer hidden until you commit to a choice. Or pull the questions up from the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
         files.pdf ? `<br><br>There is a printable version attached too (<strong>${esc(files.pdf)}</strong>) if you would rather work on paper. The answer key is on the last page.` : ''
       }
     </div>
 
     <p style="${S.para}">The same set is waiting for you in the classroom: <a href="${esc(platformUrl)}" style="${S.link}">open it on LSAT U</a>.</p>
 
-    <p style="${S.footer}">Bring me the ones you missed. The wrong answer you picked usually tells us more than the right one.<br><br>— Joshua</p>
+    <p style="${S.footer}">Bring me the ones you missed. The wrong answer you picked usually tells us more than the right one.<br><br>Joshua</p>
   </div>
 </body>
 </html>`;
@@ -126,7 +133,7 @@ ${rows}
 
 function renderText({ student, why, drill, qids, types, minutes, level, files, platformUrl }) {
   const list = qids.map((qid, i) => `  ${i + 1}. ${pretty(qid)}   ${types.get(qid) ?? ''}`).join('\n');
-  return `${student} —
+  return `${student},
 
 ${why}
 
@@ -138,8 +145,8 @@ ${list}
 
 Attempt these cold and timed.
 
-Two ways to do it. Open the attached ${files.html} and work straight through it — it
-keeps the answer hidden until you commit to a choice. Or pull the questions up from
+Two ways to do it. Open the attached ${files.html} and work straight through it.
+It keeps the answer hidden until you commit to a choice. Or pull the questions up from
 the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
     files.pdf ? `\n\nThere is a printable version attached too (${files.pdf}) if you would rather\nwork on paper. The answer key is on the last page.` : ''
   }
@@ -149,7 +156,7 @@ The same set is waiting for you in the classroom: ${platformUrl}
 Bring me the ones you missed. The wrong answer you picked usually tells us more
 than the right one.
 
-— Joshua
+Joshua
 `;
 }
 
@@ -163,9 +170,26 @@ function main() {
   const dir = path.dirname(manifestPath);
 
   const student = args.student ?? manifest.student ?? 'Hi';
-  const why =
-    args.why ??
-    'Here is your drill for this week — it targets the thing we worked on in our last session.';
+
+  // A drill is not always a week's work. It can be one day's, or a set volume
+  // Joshua named. The default line must not assert a timeframe he did not
+  // choose, so --timeframe supplies the words and the neutral default asserts
+  // nothing at all.
+  const TIMEFRAMES = {
+    today: 'Here is your drill for today',
+    tomorrow: 'Here is your drill for tomorrow',
+    day: 'Here is your drill for the day',
+    week: 'Here is your drill for this week',
+    none: 'Here is your drill',
+  };
+  const timeframe = args.timeframe ?? 'none';
+  const lead = TIMEFRAMES[timeframe];
+  if (!lead) {
+    throw new Error(
+      `--timeframe must be one of ${Object.keys(TIMEFRAMES).join(', ')} (got "${timeframe}")`,
+    );
+  }
+  const why = args.why ?? `${lead}. It targets the thing we worked on in our last session.`;
   const level = manifest.level
     ? `${manifest.level[0].toUpperCase()}${manifest.level.slice(1)} level`
     : 'Standard';

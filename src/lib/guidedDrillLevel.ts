@@ -8,6 +8,11 @@ import {
 } from '@/lib/studentLevel';
 import type { LRQuestion } from '@/lib/questionLoader';
 import type { QuestionStat } from '@/lib/questionStats';
+import {
+  effectiveDifficulty,
+  isInBandFractional,
+  trapScore,
+} from '@/lib/questionSelectionSignals';
 
 /**
  * Pick the questions a specific student sees when they open a guided drill.
@@ -47,6 +52,30 @@ export interface LeveledDrillInput {
   level: StudentLevel | null;
   /** Injectable for deterministic tests. Defaults to Math.random. */
   rng?: () => number;
+
+  /*
+   * Percentage-aware selection. Every field below is optional and every
+   * default is inert: with `stats` absent or both weights at 0, this function
+   * is byte-identical to the version that had none of them.
+   * `guidedDrillLevel.parity.test.ts` is the proof, and it was recorded before
+   * any of this existed.
+   */
+
+  /** Cohort measurements by qid. The caller passes the map; this never fetches. */
+  stats?: ReadonlyMap<string, QuestionStat> | null;
+  /**
+   * How much the cohort percentage moves a question's difficulty for the
+   * purpose of BAND MEMBERSHIP. 0 uses the human label alone.
+   */
+  empiricalWeight?: number;
+  /** Trap taxonomy tags this student keeps falling for. */
+  targetTrapTags?: readonly string[] | null;
+  /**
+   * How much trap targeting orders the in-band group, from 0 (pure shuffle,
+   * today's behaviour) to 1 (pure targeting, no jitter left). It trades
+   * freshness for aim, which is why it is a dial and not a switch.
+   */
+  trapWeight?: number;
 }
 
 export interface LeveledDrillResolution {
@@ -61,6 +90,13 @@ export interface LeveledDrillResolution {
   /** How many of the returned questions had to come from outside the band. */
   outOfBandUsed: number;
   warning: LeveledDrillWarning | null;
+
+  /** How many of the returned questions have cohort data. null with no stats. */
+  statsCoverage: { measured: number; total: number } | null;
+  /** Mean cohort accuracy of the returned set. LOWER IS HARDER. */
+  meanCorrectPct: number | null;
+  /** How many of the returned questions lean on one of the target traps. */
+  trapMatches: number;
 }
 
 /**
@@ -89,6 +125,35 @@ function cleanQids(qids: readonly string[], knownQids?: Set<string>): string[] {
   return out;
 }
 
+/**
+ * What the returned set looks like in cohort terms. Reporting only: it never
+ * changes which questions were chosen, so it is safe to compute on every path.
+ */
+function describeSet(
+  qids: readonly string[],
+  stats: ReadonlyMap<string, QuestionStat> | null | undefined,
+  targets: readonly string[] | null | undefined,
+): Pick<LeveledDrillResolution, 'statsCoverage' | 'meanCorrectPct' | 'trapMatches'> {
+  if (!stats || stats.size === 0) {
+    return { statsCoverage: null, meanCorrectPct: null, trapMatches: 0 };
+  }
+  let measured = 0;
+  let total = 0;
+  let trapMatches = 0;
+  for (const qid of qids) {
+    const stat = stats.get(qid);
+    if (!stat) continue;
+    measured += 1;
+    total += stat.correctPct;
+    if (trapScore(stat, targets) > 0) trapMatches += 1;
+  }
+  return {
+    statsCoverage: { measured, total: qids.length },
+    meanCorrectPct: measured > 0 ? Math.round((total / measured) * 10) / 10 : null,
+    trapMatches,
+  };
+}
+
 export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillResolution {
   const {
     pool,
@@ -98,6 +163,10 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
     knownQids,
     level,
     rng = Math.random,
+    stats = null,
+    empiricalWeight = 0,
+    targetTrapTags = null,
+    trapWeight = 0,
   } = input;
 
   const band = level ? levelBand(level) : null;
@@ -126,6 +195,7 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
       inBandCount: band ? pool.filter((q) => isInBand(q.difficulty, band)).length : pool.length,
       outOfBandUsed: 0,
       warning: band && anyOutOfBand ? 'pinned_level_not_applied' : null,
+      ...describeSet(pinned, stats, targetTrapTags),
     };
   }
 
@@ -142,13 +212,17 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
       inBandCount: 0,
       outOfBandUsed: 0,
       warning: 'empty',
+      statsCoverage: null,
+      meanCorrectPct: null,
+      trapMatches: 0,
     };
   }
 
   // No level: byte-identical to the behaviour before levels existed.
   if (!band) {
+    const qids = shuffle(pool, rng).slice(0, want).map((q) => q.qid);
     return {
-      qids: shuffle(pool, rng).slice(0, want).map((q) => q.qid),
+      qids,
       source: 'pool',
       level: null,
       band: null,
@@ -156,6 +230,7 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
       inBandCount: pool.length,
       outOfBandUsed: 0,
       warning: null,
+      ...describeSet(qids, stats, targetTrapTags),
     };
   }
 
@@ -165,23 +240,60 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
   // An empty or short drill is impossible by construction rather than by
   // fallback, which matters because a two-question drill reads as a bug to the
   // student and there is no way for them to tell it was a levelling decision.
+  //
+  // Two optional signals ride on top, and each is confined to one job:
+  //   empiricalWeight decides MEMBERSHIP  (is this question really at level?)
+  //   trapWeight      decides ORDER       (which of the eligible ones first?)
+  // Keeping them apart is what makes each provable on its own, and what lets
+  // both default to off without a special case threaded through the algorithm.
+  //
+  const useEmpirical = empiricalWeight > 0 && stats != null && stats.size > 0;
+
+  /**
+   * The difficulty this question is treated as having. With no blending this
+   * is the bank's label, so the comparison below stays the same `isInBand`
+   * call the module has always made.
+   */
+  const gradeOf = (q: LRQuestion) =>
+    useEmpirical ? effectiveDifficulty(q.difficulty, stats.get(q.qid), empiricalWeight) : q.difficulty;
+
   const inBand: LRQuestion[] = [];
   const outOfBand: LRQuestion[] = [];
   for (const q of pool) {
-    (isInBand(q.difficulty, band) ? inBand : outOfBand).push(q);
+    const grade = gradeOf(q);
+    const eligible = useEmpirical ? isInBandFractional(grade, band) : isInBand(q.difficulty, band);
+    (eligible ? inBand : outOfBand).push(q);
   }
 
-  const picked = shuffle(inBand, rng).slice(0, want);
+  // Order the eligible group. `trapWeight` literally trades freshness for aim:
+  // at 0 the key is pure rng and this is a shuffle, at 1 it is pure targeting
+  // and a re-attempt returns the same questions in the same order. The jitter
+  // is not decoration — the re-attempt-fresh model depends on it, so the dial
+  // never silently reaches 1.
+  const rankByTrap = trapWeight > 0 && stats != null && (targetTrapTags?.length ?? 0) > 0;
+  const ordered = rankByTrap
+    ? inBand
+        .map((q) => ({
+          q,
+          key: trapWeight * trapScore(stats.get(q.qid), targetTrapTags) + (1 - trapWeight) * rng(),
+        }))
+        .sort((a, b) => b.key - a.key)
+        .map((entry) => entry.q)
+    : shuffle(inBand, rng);
+
+  const picked = ordered.slice(0, want);
 
   let outOfBandUsed = 0;
   if (picked.length < want) {
     // Top up with the nearest-miss questions first, so a beginner short on
     // level-3s gets level-4s before level-5s. Non-finite difficulties sort last.
     const mid = bandMidpoint(band);
-    const distance = (q: LRQuestion) =>
-      typeof q.difficulty === 'number' && Number.isFinite(q.difficulty)
-        ? Math.abs(q.difficulty - mid)
+    const distance = (q: LRQuestion) => {
+      const grade = gradeOf(q);
+      return typeof grade === 'number' && Number.isFinite(grade)
+        ? Math.abs(grade - mid)
         : Number.POSITIVE_INFINITY;
+    };
     const ranked = shuffle(outOfBand, rng).sort((a, b) => distance(a) - distance(b));
     const topUp = ranked.slice(0, want - picked.length);
     outOfBandUsed = topUp.length;
@@ -192,8 +304,9 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
   if (inBand.length === 0) warning = 'out_of_level';
   else if (outOfBandUsed > 0) warning = 'partially_out_of_level';
 
+  const qids = picked.map((q) => q.qid);
   return {
-    qids: picked.map((q) => q.qid),
+    qids,
     source: 'pool',
     level,
     band,
@@ -201,6 +314,7 @@ export function resolveLeveledDrillQids(input: LeveledDrillInput): LeveledDrillR
     inBandCount: inBand.length,
     outOfBandUsed,
     warning,
+    ...describeSet(qids, stats, targetTrapTags),
   };
 }
 

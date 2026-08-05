@@ -6,6 +6,7 @@ import {
   type LeveledDrillResolution,
 } from '@/lib/guidedDrillLevel';
 import type { StudentLevel } from '@/lib/studentLevel';
+import type { QuestionStat } from '@/lib/questionStats';
 
 export interface GuidedDrillBankFilter {
   qtypes?: string[];
@@ -180,6 +181,16 @@ export function resolveGuidedDrillQidsForLevel(args: {
   /** Overrides the assignment's stored count, then the drill's. */
   questionCount?: number | null;
   rng?: () => number;
+  /**
+   * Trap targeting, off unless both are supplied. Only the freeze path passes
+   * these: an open-time draw has no teacher present to name a target, and
+   * there is no column to remember one, so an ordinary assignment keeps
+   * drawing exactly as it always has.
+   */
+  stats?: ReadonlyMap<string, QuestionStat> | null;
+  targetTrapTags?: readonly string[] | null;
+  trapWeight?: number;
+  empiricalWeight?: number;
 }): LeveledDrillResolution {
   const { drill, assignment, rng } = args;
   if (!questionBank.isReady()) throw new QuestionBankNotLoadedError();
@@ -201,6 +212,10 @@ export function resolveGuidedDrillQidsForLevel(args: {
     knownQids: new Set(all.map((q) => q.qid)),
     level,
     rng,
+    stats: args.stats ?? null,
+    targetTrapTags: args.targetTrapTags ?? null,
+    trapWeight: args.trapWeight ?? 0,
+    empiricalWeight: args.empiricalWeight ?? 0,
   });
 }
 

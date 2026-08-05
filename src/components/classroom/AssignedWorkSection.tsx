@@ -74,7 +74,13 @@ export function AssignedWorkSection() {
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium truncate">{a.guided_drill?.title || 'Guided drill'}</div>
                 <div className="text-[11px] text-muted-foreground mt-0.5 truncate">
-                  {a.guided_drill?.question_count ?? '?'} questions
+                  {/*
+                    A pinned or trimmed assignment is not the drill's own
+                    length. Read the assignment first, or a five-question set
+                    advertises itself as ten and the student stops trusting the
+                    number.
+                  */}
+                  {a.question_qids?.length || a.question_count || a.guided_drill?.question_count || '?'} questions
                   {a.guided_drill?.estimated_minutes ? ` · ${a.guided_drill.estimated_minutes} min` : ''}
                 </div>
               </div>
