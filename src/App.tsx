@@ -22,7 +22,10 @@ function PresenceHeartbeatMount() {
 // entry chunk (COMPREHENSIVEAUDIT Phase 3). A single top-level Suspense boundary
 // (below, around <Routes>) provides the fallback for all of these.
 import SavedSets from "./pages/SavedSets";
-const AcademyMainhub = React.lazy(() => import("./pages/AcademyMainhub"));
+// Shared with the rail's hover prefetch (src/lib/routePreload.ts) so both
+// resolve the same module id and pull the same chunk.
+import { loadDrillHub } from "@/lib/routePreload";
+const AcademyMainhub = React.lazy(loadDrillHub);
 const Drill = React.lazy(() => import("./pages/Drill"));
 const Analytics = React.lazy(() => import("./pages/Analytics"));
 const Auth = React.lazy(() => import("./pages/Auth"));

@@ -28,6 +28,7 @@ import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
+import { preloadDrillHub } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
 import {
   useStudentAssignments,
@@ -181,14 +182,20 @@ function ClassroomSidebar({
     (item.allowSignedIn && !!user) ||
     item.flags.some((flag) => permissions[flag]);
 
+  // `onPrefetch` fires on hover and keyboard focus, not on click: the point is
+  // to have the route's chunk parsed before the click lands, so the student
+  // never sees the stage fallback at all.
   const navProps = (
     active: boolean,
     unlocked: boolean,
     onClick: () => void,
+    onPrefetch?: () => void,
   ) => ({
     className: `${navClass(active && unlocked)}${unlocked ? "" : " classroom-nav-locked"}`,
     disabled: !unlocked,
     onClick: unlocked ? onClick : undefined,
+    onMouseEnter: unlocked ? onPrefetch : undefined,
+    onFocus: unlocked ? onPrefetch : undefined,
   });
 
   const railGroups = resolveRailGroups(railPrefs);
@@ -197,7 +204,7 @@ function ClassroomSidebar({
   // catalog owns what the rail contains and in what order.
   const railBehavior = (
     item: RailItem,
-  ): { active: boolean; onClick: () => void } => {
+  ): { active: boolean; onClick: () => void; onPrefetch?: () => void } => {
     switch (item.id) {
       case "home":
         return {
@@ -215,6 +222,7 @@ function ClassroomSidebar({
         return {
           active: location.pathname === "/classroom/drill",
           onClick: () => go("/classroom/drill"),
+          onPrefetch: preloadDrillHub,
         };
       case "bootcamps":
         return { active: false, onClick: () => go("/bootcamps") };
@@ -261,13 +269,13 @@ function ClassroomSidebar({
             <div className="classroom-nav-group" key={group.id}>
               <b>{group.title}</b>
               {group.items.map((item) => {
-                const { active, onClick } = railBehavior(item);
+                const { active, onClick, onPrefetch } = railBehavior(item);
                 const unlocked = canAccess(item);
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    {...navProps(active, unlocked, onClick)}
+                    {...navProps(active, unlocked, onClick, onPrefetch)}
                   >
                     {item.label}
                     {item.id === "messages" && unlocked && unreadMessages > 0 ? (
@@ -746,6 +754,23 @@ function SectionList({
   );
 }
 
+/**
+ * Holds the stage open while a code-split route resolves.
+ *
+ * The boundary this belongs to sits INSIDE the shell, so the rail, brand, nav
+ * and section list all stay mounted while the chunk lands. Before this, the
+ * only Suspense boundary was the one above <Routes> in App.tsx, which meant
+ * clicking a lazy rail item (Drill) blanked the entire page and then remounted
+ * the whole shell — the choppiness that Home, a static import, never had.
+ *
+ * Deliberately empty: it reserves the stage's height so nothing collapses, and
+ * a hovered rail item has usually already prefetched the chunk, so this renders
+ * for a frame or not at all. A skeleton here would flash more than it soothes.
+ */
+function StageFallback() {
+  return <div className="classroom-stage-pending" aria-hidden />;
+}
+
 export default function ClassroomLayout() {
   const { user, authReady } = useAuth();
   const { theme } = useTheme();
@@ -815,14 +840,28 @@ export default function ClassroomLayout() {
 
   React.useEffect(() => {
     if (pathSection) setSelectedSection(pathSection);
-    if (location.pathname === "/classroom/drill") {
-      setSelectedSection(null);
-      setSectionOverlayOpen(false);
-    }
+    // The drill hub used to clear the remembered section here. `activeSection`
+    // above already derives to null whenever `drillHub` is true, so the write
+    // changed nothing on screen and only bought a second render pass at the
+    // worst possible moment — mid-navigation. Clearing it also meant Notes →
+    // Drill → Notes forgot where the student had been.
     if (location.pathname === "/classroom") {
       setSectionOverlayOpen(false);
     }
   }, [location.pathname, pathSection]);
+
+  // Keyboard and touch students never hover, so they would pay the chunk fetch
+  // on click. Warming it once the classroom is idle costs nothing visible and
+  // makes the first Drill click as immediate as a hovered one.
+  React.useEffect(() => {
+    const idle = window.requestIdleCallback?.bind(window);
+    if (!idle) {
+      const timer = window.setTimeout(preloadDrillHub, 1500);
+      return () => window.clearTimeout(timer);
+    }
+    const handle = idle(() => preloadDrillHub());
+    return () => window.cancelIdleCallback?.(handle);
+  }, []);
 
   // "Home" has to clear the remembered section as well as navigate — on
   // /classroom the path carries no section, so without this the third column
@@ -933,14 +972,20 @@ export default function ClassroomLayout() {
         ) : null}
 
         {journalDetail ? (
-          <Outlet context={contextValue} />
+          <React.Suspense fallback={<StageFallback />}>
+            <Outlet context={contextValue} />
+          </React.Suspense>
         ) : messagesStage ? (
           <main className="classroom-messages-stage">
-            <Outlet context={contextValue} />
+            <React.Suspense fallback={<StageFallback />}>
+              <Outlet context={contextValue} />
+            </React.Suspense>
           </main>
         ) : workspaceStage ? (
           <main className="classroom-workspace-stage">
-            <Outlet context={contextValue} />
+            <React.Suspense fallback={<StageFallback />}>
+              <Outlet context={contextValue} />
+            </React.Suspense>
           </main>
         ) : (
           <main className="classroom-stage">
@@ -960,7 +1005,9 @@ export default function ClassroomLayout() {
                   <PanelLeftClose size={17} />
                 </button>
               ) : null}
-              <Outlet context={contextValue} />
+              <React.Suspense fallback={<StageFallback />}>
+                <Outlet context={contextValue} />
+              </React.Suspense>
             </div>
           </main>
         )}

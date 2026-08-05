@@ -683,6 +683,52 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   width: 100%;
 }
 
+/* Reserves the stage while a code-split route resolves, so the rail never sits
+   beside a collapsed column. See StageFallback in ClassroomLayout.tsx. */
+.classroom-root .classroom-stage-pending {
+  min-height: 100dvh;
+  width: 100%;
+}
+
+/* Route changes move the stage's geometry: Home is a 1260px dashboard with no
+   stage padding, Drill is full-bleed at 8px, everything else is a 720px reading
+   column. Untransitioned, that swap lands as a jump the moment the new route
+   paints. --classroom-transition is the same 300ms the rail and panel wash
+   already use, so this reads as one motion rather than a new one. */
+@media (prefers-reduced-motion: no-preference) {
+  .classroom-root .classroom-stage {
+    transition:
+      background var(--classroom-transition) ease,
+      padding var(--classroom-transition) ease;
+  }
+
+  .classroom-root .classroom-column {
+    transition:
+      max-width var(--classroom-transition) ease,
+      padding var(--classroom-transition) ease;
+  }
+
+  /* Content arrives on top of that geometry settling. A short opacity/transform
+     lift (compositor-only, no layout) turns the pop into a crossfade. 160ms
+     matches the observatory's own --observatory-motion. */
+  .classroom-root .classroom-stage > .classroom-column > *,
+  .classroom-root .classroom-messages-stage > *,
+  .classroom-root .classroom-workspace-stage > * {
+    animation: classroom-stage-enter 160ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+}
+
+@keyframes classroom-stage-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Home is the student dashboard: a full-width grid rather than a reading
    column, and the rail's warm paper carried across the whole page instead of
    stopping at the rail's own edge. */
