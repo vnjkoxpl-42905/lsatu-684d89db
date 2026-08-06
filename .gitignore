@@ -78,3 +78,6 @@ gha-creds-*.json
 .agents/skills/wrapup
 .agents/skills/lsat-u-architecture
 .agents/skills/lsatu-cc-handoff
+
+# RC source bundle (build-time only, not shipped)
+scripts/rc-source/
