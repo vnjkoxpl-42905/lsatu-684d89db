@@ -129,20 +129,28 @@ export default function RcHub() {
 
   /* --------------------------------------------------- assignment deep link */
 
-  const deepLinkApplied = React.useRef(false);
+  // Keyed on the query string, not a one-shot flag: arriving at /rc with new
+  // params from an already-mounted /rc does not remount this route, so a plain
+  // "have I run yet" ref would ignore the second link.
+  const appliedFor = React.useRef<string | null>(null);
   React.useEffect(() => {
-    if (deepLinkApplied.current || passages.length === 0) return;
-    deepLinkApplied.current = true;
+    const key = params.toString();
+    if (appliedFor.current === key || passages.length === 0) return;
+    appliedFor.current = key;
+    setNotice(null);
 
     const ids = params.get('passages');
     const revealParam = params.get('reveal');
     const timingParam = params.get('timing');
 
-    if (revealParam && REVEAL_OPTIONS.some((o) => o.id === revealParam)) {
-      setReveal(revealParam as RcRevealMode);
-    }
-    if (timingParam === 'unlimited') setTiming('untimed');
-    else if (timingParam === 'standard') setTiming('standard');
+    // An assignment link fully describes the drill, so anything it leaves out
+    // falls back to the builder default rather than to whatever was on screen.
+    setReveal(
+      revealParam && REVEAL_OPTIONS.some((o) => o.id === revealParam)
+        ? (revealParam as RcRevealMode)
+        : 'per_passage',
+    );
+    setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
 
     if (ids) {
       const wanted = ids
@@ -153,11 +161,9 @@ export default function RcHub() {
       if (known.length !== wanted.length) {
         setNotice('That passage could not be found. Build a drill below instead.');
       }
-      if (known.length > 0) {
-        setHandPicked(known);
-        setHandPickOpen(true);
-        setCount(known.length);
-      }
+      setHandPicked(known);
+      setHandPickOpen(known.length > 0);
+      setCount(known.length > 0 ? known.length : 1);
     }
   }, [params, passages]);
 
