@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 /**
- * Player display settings from the Accessibility panel. They persist in
+ * Player display settings from the text-size popover. They persist in
  * localStorage so a student who needs a scheme or a larger size sets it once.
  */
 
@@ -16,18 +16,43 @@ export const RC_COLOR_SCHEMES: { id: RcColorScheme; label: string }[] = [
   { id: 'black', label: 'White on black' },
 ];
 
+/** Percentages, matching the official interface's own wording. */
 export const RC_FONT_SIZES = [75, 100, 125, 150, 175];
-export const RC_LINE_HEIGHTS = [1.35, 1.65, 1.85];
+
+/**
+ * Extra leading added on top of the pane's own line height, rather than an
+ * absolute value. The passage and the question column run at different line
+ * heights (1.7 and 1.6, matching the LR player), and one absolute number would
+ * flatten that difference the moment a student touched the control.
+ */
+export const RC_LINE_HEIGHTS = [
+  { label: 'Default', value: 0 },
+  { label: 'Roomy', value: 0.25 },
+  { label: 'Roomiest', value: 0.45 },
+];
 
 export interface RcA11ySettings {
   scheme: RcColorScheme;
   fontSize: number;
+  /** Extra leading, not an absolute line height. */
   lineHeight: number;
 }
 
 const STORAGE_KEY = 'rc-player-a11y';
 
-const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight: 1.35 };
+const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight: 0 };
+
+/**
+ * Line height used to be stored as an absolute 1.35 / 1.65 / 1.85. Map those
+ * forward so a student who already picked one keeps roughly what they chose.
+ */
+function migrateLineHeight(stored: number | undefined): number {
+  if (stored == null) return DEFAULTS.lineHeight;
+  if (stored < 1) return stored;
+  if (stored >= 1.8) return 0.45;
+  if (stored >= 1.5) return 0.25;
+  return 0;
+}
 
 function read(): RcA11ySettings {
   try {
@@ -37,7 +62,7 @@ function read(): RcA11ySettings {
     return {
       scheme: parsed.scheme ?? DEFAULTS.scheme,
       fontSize: parsed.fontSize ?? DEFAULTS.fontSize,
-      lineHeight: parsed.lineHeight ?? DEFAULTS.lineHeight,
+      lineHeight: migrateLineHeight(parsed.lineHeight),
     };
   } catch {
     return DEFAULTS;
@@ -59,11 +84,13 @@ export function useRcA11y() {
     setSettings((prev) => ({ ...prev, ...patch }));
   }, []);
 
-  const className = settings.scheme === 'default' ? '' : `rc-scheme-${settings.scheme}`;
-  const style = {
-    '--rc-font-scale': String(settings.fontSize / 100),
-    '--rc-line-height': String(settings.lineHeight),
-  } as React.CSSProperties;
-
-  return { settings, update, className, style };
+  return {
+    settings,
+    update,
+    /** Scheme class for the exam pane. Empty for the default black-on-white. */
+    className: settings.scheme === 'default' ? '' : `rc-scheme-${settings.scheme}`,
+    /** 1.0 = the LR player's base sizes. */
+    fontScale: settings.fontSize / 100,
+    extraLeading: settings.lineHeight,
+  };
 }

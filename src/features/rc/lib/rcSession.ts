@@ -116,43 +116,45 @@ export function isRevealed(s: RcSessionState, mode: RcRevealMode, item: RcSessio
   }
 }
 
-/** The pill row: current passage expands to one pill per question, others collapse. */
+/**
+ * The pager row: every question in the session gets its own pill, with a
+ * divider between passages — the official interface shows all of them at once
+ * (1-7 | 8-15 | 16-21 | 22-27) rather than collapsing the passages you are not
+ * currently in, so a student can see the whole section's shape and jump
+ * anywhere in it.
+ */
 export interface RcPagerEntry {
-  kind: 'question' | 'range';
+  kind: 'question' | 'divider';
   passageId: number;
-  /** Index into items, for a question pill; the passage's first item for a range. */
+  /** Index into items. -1 for a divider, which is not navigable. */
   index: number;
   label: string;
   questionId?: number;
 }
 
 export function pagerEntries(s: RcSessionState): RcPagerEntry[] {
-  const current = currentItem(s);
-  if (!current) return [];
   const entries: RcPagerEntry[] = [];
 
   for (const passage of passageOrder(s)) {
     const items = itemsForPassage(s, passage.passageId);
     if (items.length === 0) continue;
 
-    if (passage.passageId === current.passage.passageId) {
-      for (const item of items) {
-        entries.push({
-          kind: 'question',
-          passageId: passage.passageId,
-          index: s.items.indexOf(item),
-          label: String(item.number),
-          questionId: item.question.questionId,
-        });
-      }
-    } else {
-      const first = items[0];
-      const last = items[items.length - 1];
+    if (entries.length > 0) {
       entries.push({
-        kind: 'range',
+        kind: 'divider',
         passageId: passage.passageId,
-        index: s.items.indexOf(first),
-        label: first.number === last.number ? `${first.number}` : `${first.number}–${last.number}`,
+        index: -1,
+        label: '',
+      });
+    }
+
+    for (const item of items) {
+      entries.push({
+        kind: 'question',
+        passageId: passage.passageId,
+        index: s.items.indexOf(item),
+        label: String(item.number),
+        questionId: item.question.questionId,
       });
     }
   }

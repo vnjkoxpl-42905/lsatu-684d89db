@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { Flag } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { RcMarkdown } from './RcMarkdown';
 import { RcChoiceRow } from './RcChoiceRow';
 import { RcChoiceDisclosure } from './RcChoiceDisclosure';
 import { RcReviewLayer } from './RcReviewLayer';
+import type { RcTypeStyles } from './RcExamPane';
 import type { RcSessionItem } from '../lib/rcSession';
 import type { RcLetter } from '../lib/rcTypes';
 
@@ -15,9 +18,12 @@ interface Props {
   /** State A of review: answer again before anything is shown. */
   reattemptMode: boolean;
   reattemptPick: RcLetter | null;
+  flagged: boolean;
+  onToggleFlag: () => void;
   onSelect: (letter: RcLetter) => void;
   onToggleElimination: (letter: RcLetter) => void;
   onSkipToAnswer: () => void;
+  type: RcTypeStyles;
 }
 
 export function RcQuestionPane({
@@ -28,9 +34,12 @@ export function RcQuestionPane({
   masking,
   reattemptMode,
   reattemptPick,
+  flagged,
+  onToggleFlag,
   onSelect,
   onToggleElimination,
   onSkipToAnswer,
+  type,
 }: Props) {
   const { question } = item;
   const [unmasked, setUnmasked] = React.useState<Set<string>>(() => new Set());
@@ -56,7 +65,10 @@ export function RcQuestionPane({
   const showFeedback = revealed && !reattemptMode;
 
   return (
-    <div className="rc-pane rc-pane-question">
+    <div
+      className="rc-exam-col min-w-0 overflow-y-auto px-6 py-7 sm:pl-10 sm:pr-8"
+      style={type.question}
+    >
       {reattemptMode && (
         <div className="rc-reattempt-banner">
           <span>Answer again, then compare.</span>
@@ -66,14 +78,31 @@ export function RcQuestionPane({
         </div>
       )}
 
-      {/* Unexplained questions carry no authored prompt. The number stands in
-          rather than inventing a stem. */}
-      <div className="rc-prompt">
-        {question.prompt ? (
-          <RcMarkdown>{question.prompt}</RcMarkdown>
-        ) : (
-          <p>Question {item.number}</p>
-        )}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-1 items-start gap-2">
+          <span className="min-w-[20px] shrink-0 font-bold tabular-nums">{item.number}.</span>
+          {/* Unexplained questions carry no authored prompt. The number stands
+              in rather than inventing a stem. */}
+          <div className="flex-1 [&_p]:m-0">
+            {question.prompt ? <RcMarkdown>{question.prompt}</RcMarkdown> : <p>&nbsp;</p>}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onToggleFlag}
+          aria-pressed={flagged}
+          aria-label={flagged ? 'Remove flag' : 'Flag question'}
+          title={flagged ? 'Remove flag' : 'Flag question'}
+          className={cn(
+            'shrink-0 rounded p-1.5 transition-colors',
+            flagged ? 'bg-amber-100' : 'hover:bg-slate-100',
+          )}
+        >
+          <Flag
+            className={cn('h-[24px] w-[24px] transition-colors', flagged && 'fill-amber-400')}
+            strokeWidth={2}
+          />
+        </button>
       </div>
 
       {showFeedback && (
@@ -84,7 +113,7 @@ export function RcQuestionPane({
         />
       )}
 
-      <div className="rc-choices">
+      <ul className="mt-4 space-y-3.5">
         {question.choices.map((choice) => {
           const isPicked = (reattemptPick ?? selected) === choice.letter;
           return (
@@ -98,9 +127,9 @@ export function RcQuestionPane({
               disabled={showFeedback}
               onSelect={onSelect}
               onToggleElimination={onToggleElimination}
-              onUnmask={(letter) =>
-                setUnmasked((prev) => new Set(prev).add(letter))
-              }
+              onUnmask={(letter) => setUnmasked((prev) => new Set(prev).add(letter))}
+              textStyle={type.choiceText}
+              badgeStyle={type.choiceBadge}
             >
               {showFeedback && (
                 <RcChoiceDisclosure
@@ -120,7 +149,7 @@ export function RcQuestionPane({
             </RcChoiceRow>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }

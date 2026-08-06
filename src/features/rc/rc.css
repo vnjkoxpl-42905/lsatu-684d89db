@@ -4,6 +4,49 @@
  * falls back to a literal where a token does not exist.
  */
 
+/* ----------------------------------------------------------------- buttons */
+
+/*
+ * These used to live in player.css, which the hub and results do not import —
+ * so their buttons only picked up styling if the player had already mounted in
+ * the same page session. They belong here, with everything else these three
+ * surfaces share. The shape is the official chrome's pill.
+ */
+
+.rc-button {
+  border-radius: 9999px;
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  color: #334155;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.rc-button:hover { background: #f1f5f9; }
+
+.rc-button-primary {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  padding: 8px 28px;
+  font-weight: 600;
+}
+
+.rc-button-primary:hover { background: #000000; }
+
+.rc-button[disabled] { opacity: 0.4; cursor: not-allowed; }
+.rc-button-primary[disabled]:hover { background: #0f172a; }
+
+.rc-button.rc-active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+}
+
 /* ------------------------------------------------------------ review layer */
 
 .rc-review {

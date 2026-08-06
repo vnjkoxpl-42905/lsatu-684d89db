@@ -1,17 +1,23 @@
 import * as React from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { RcToolbar, RcRightRail, RcBottomBar } from '../components/RcChrome';
+import { Clock, Eye, Maximize, Minimize, SquareStack } from 'lucide-react';
+import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
+import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
+import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
+import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
+import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../components/RcChrome';
+import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
 import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
 import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
-  RcAccessibilityModal,
   RcOverflowMenu,
-  RcPauseOverlay,
   RcQuestionDetails,
   RcReviewModal,
   RcSubmitConfirm,
+  RcTextSettings,
 } from '../components/RcModals';
+import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { loadPassage, loadPassages } from '../lib/rcBank';
@@ -176,17 +182,17 @@ export default function RcPlayer() {
   const [findCount, setFindCount] = React.useState(0);
   const [masking, setMasking] = React.useState(false);
   const [timerVisible, setTimerVisible] = React.useState(true);
-  const [railOpen, setRailOpen] = React.useState(true);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const [modal, setModal] = React.useState<
-    'review' | 'a11y' | 'details' | 'menu' | 'submit' | null
-  >(null);
+  const [modal, setModal] = React.useState<'review' | 'details' | 'menu' | 'submit' | null>(null);
   const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
 
-  const rootRef = React.useRef<HTMLDivElement>(null);
   const item = getCurrentItem(state);
+  const type = React.useMemo(
+    () => rcTypeStyles(a11y.fontScale, a11y.extraLeading),
+    [a11y.fontScale, a11y.extraLeading],
+  );
 
   /* ---------------------------------------------------------- clocks */
 
@@ -278,6 +284,16 @@ export default function RcPlayer() {
     }
   }, [state, writeAttempt, sessionId, navigate]);
 
+  const toggleFlag = React.useCallback(
+    (questionId: number) => {
+      dispatch({ type: 'toggleFlag', questionId });
+      if (sessionId) {
+        void setAttemptFlag(sessionId, questionId, !state.flagged.has(questionId));
+      }
+    },
+    [sessionId, state.flagged],
+  );
+
   /* -------------------------------------------------------- keyboard */
 
   React.useEffect(() => {
@@ -290,14 +306,7 @@ export default function RcPlayer() {
       if (e.key === 'ArrowLeft') dispatch({ type: 'prev' });
       else if (e.key === 'ArrowRight') dispatch({ type: 'next' });
       else if (e.key.toLowerCase() === 'f') {
-        dispatch({ type: 'toggleFlag', questionId: item.question.questionId });
-        if (sessionId) {
-          void setAttemptFlag(
-            sessionId,
-            item.question.questionId,
-            !state.flagged.has(item.question.questionId),
-          );
-        }
+        toggleFlag(item.question.questionId);
       } else if (/^[a-eA-E]$/.test(e.key)) {
         const letter = e.key.toUpperCase() as RcLetter;
         if (item.question.choices.some((c) => c.letter === letter)) {
@@ -307,26 +316,34 @@ export default function RcPlayer() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [item, modal, sessionId, state.flagged]);
+  }, [item, modal, toggleFlag]);
 
   /* ----------------------------------------------------------- render */
 
   if (error) {
     return (
-      <div className="rc-player" style={{ padding: 40 }}>
-        <p style={{ fontSize: 15, marginBottom: 16 }}>{error}</p>
-        <button type="button" className="rc-button rc-button-primary" onClick={() => navigate('/rc')}>
-          Go to Reading Comprehension
-        </button>
-      </div>
+      <OfficialDrillFrame notepadEnabled={false}>
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 p-10 text-center">
+          <p className="text-[15px] text-slate-700">{error}</p>
+          <button
+            type="button"
+            className="rounded-full bg-slate-900 px-7 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-black"
+            onClick={() => navigate('/rc')}
+          >
+            Go to Reading Comprehension
+          </button>
+        </div>
+      </OfficialDrillFrame>
     );
   }
 
   if (!passages || !item) {
     return (
-      <div className="rc-player" style={{ padding: 40 }}>
-        <p style={{ fontSize: 15 }}>Loading the passage…</p>
-      </div>
+      <OfficialDrillFrame notepadEnabled={false}>
+        <div className="flex flex-1 items-center justify-center p-10">
+          <p className="text-[15px] text-slate-600">Loading the passage…</p>
+        </div>
+      </OfficialDrillFrame>
     );
   }
 
@@ -344,209 +361,246 @@ export default function RcPlayer() {
   const passageDone = passageComplete(state, item.passage.passageId);
   const passageReviewed = state.reviewedPassages.has(item.passage.passageId);
 
-  const pillClassFor = (entry: RcPagerEntry): string => {
-    const classes = ['rc-pill'];
-    if (entry.index === state.currentIndex && entry.kind === 'question') classes.push('rc-pill-current');
-    if (entry.kind === 'question' && entry.questionId != null) {
-      const target = state.items.find((i) => i.question.questionId === entry.questionId);
-      const pick = state.answers.get(entry.questionId);
-      const showResult = target ? isRevealed(state, config.reveal, target) : false;
-      if (showResult && pick && target) {
-        classes.push(pick === target.question.correctAnswer ? 'rc-pill-correct' : 'rc-pill-incorrect');
-      } else if (pick) {
-        classes.push('rc-pill-answered');
-      }
+  /** Pill colors for a pager entry that is not the current question. */
+  const pillState = (entry: RcPagerEntry): string => {
+    if (entry.kind !== 'question' || entry.questionId == null) return '';
+    const target = state.items.find((i) => i.question.questionId === entry.questionId);
+    const pick = state.answers.get(entry.questionId);
+    const showResult = target ? isRevealed(state, config.reveal, target) : false;
+    if (showResult && pick && target) {
+      return pick === target.question.correctAnswer
+        ? 'border-green-600 bg-green-50 text-green-700'
+        : 'border-red-500 bg-red-50 text-red-700';
     }
-    return classes.join(' ');
+    if (pick) return 'border-slate-400 bg-slate-100 text-slate-700';
+    return 'border-slate-300 bg-white text-slate-600 hover:bg-slate-100';
   };
 
-  const bottomAction = (() => {
+  /** Label and handler for the footer's primary pill, per reveal mode. */
+  const primary = (() => {
     if (reviewOnly) return null;
     if (config.reveal === 'per_question') {
-      return (
-        <button
-          type="button"
-          className="rc-button rc-button-primary"
-          disabled={!selected || revealed}
-          onClick={async () => {
-            await writeAttempt(item, selected);
-            dispatch({ type: 'reveal', questionId });
-          }}
-        >
-          Confirm
-        </button>
-      );
+      return {
+        label: 'Confirm',
+        disabled: !selected || revealed,
+        onClick: async () => {
+          await writeAttempt(item, selected);
+          dispatch({ type: 'reveal', questionId });
+        },
+      };
     }
     if (config.reveal === 'per_passage') {
-      if (passageReviewed) {
-        const nextPassageItem = state.items.findIndex(
-          (i) => i.passageIndex === item.passageIndex + 1,
-        );
-        return nextPassageItem === -1 ? (
-          <button type="button" className="rc-button rc-button-primary" onClick={handleSubmit}>
-            Finish drill
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="rc-button rc-button-primary"
-            onClick={() => goTo(nextPassageItem)}
-          >
-            Continue to next passage
-          </button>
-        );
+      if (!passageReviewed) {
+        return {
+          label: 'Check passage',
+          disabled: !passageDone,
+          onClick: () => recordPassage(item.passage.passageId),
+        };
       }
-      return (
-        <button
-          type="button"
-          className="rc-button rc-button-primary"
-          disabled={!passageDone}
-          onClick={() => recordPassage(item.passage.passageId)}
-        >
-          Check passage
-        </button>
+      const nextPassageItem = state.items.findIndex(
+        (i) => i.passageIndex === item.passageIndex + 1,
       );
+      return nextPassageItem === -1
+        ? { label: 'Finish drill', disabled: false, onClick: handleSubmit }
+        : {
+            label: 'Continue to next passage',
+            disabled: false,
+            onClick: () => goTo(nextPassageItem),
+          };
     }
-    return (
-      <button type="button" className="rc-button rc-button-primary" onClick={() => setModal('submit')}>
-        Submit
-      </button>
-    );
+    return { label: 'Submit', disabled: false, onClick: () => setModal('submit') };
   })();
 
+  const breadcrumbs = [
+    { label: 'Reading Comprehension', onClick: () => navigate('/rc') },
+    { label: `The Official LSAT PrepTest ${item.passage.preptest}` },
+    {
+      label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.number}`,
+    },
+  ];
+
   return (
-    <div
-      className={`rc-player ${a11y.className}${passageOnly ? ' rc-passage-only' : ''}`}
-      style={a11y.style}
-      ref={rootRef}
-    >
-      {reviewOnly && <span className="rc-review-badge">REVIEW</span>}
-
-      <RcToolbar
-        passageOnly={passageOnly}
-        onTogglePassageOnly={() => setPassageOnly((v) => !v)}
-        findQuery={findQuery}
-        onFindChange={(v) => {
-          setFindQuery(v);
-          setFindIndex(0);
-        }}
-        onFindEnter={() => setFindIndex((i) => (findCount === 0 ? 0 : (i + 1) % findCount))}
-        findCount={findCount}
-        findIndex={findIndex}
-        currentNumber={item.number}
-        totalQuestions={state.items.length}
-        clockSeconds={clockSeconds}
-        clockIsCountdown={budget != null}
-        clockOverBudget={overBudget}
-        timerVisible={timerVisible}
-        onToggleTimer={() => setTimerVisible((v) => !v)}
-        onOpenMenu={() => setModal('menu')}
-      />
-
-      <div className="rc-body">
-        <RcPassagePane
-          passage={item.passage}
-          highlights={highlights.forPassage(item.passage.passageId)}
-          color={highlights.color}
-          onColorChange={highlights.setColor}
-          onAddHighlight={(start, end, chosen) =>
-            highlights.add(item.passage.passageId, 'passage', start, end, chosen)
-          }
-          onRemoveHighlight={(offset) =>
-            highlights.removeAt(item.passage.passageId, 'passage', offset)
-          }
-          findQuery={findQuery}
-          findIndex={findIndex}
-          onFindCount={setFindCount}
-          scrollTop={scrollTops.get(item.passage.passageId) ?? 0}
-          onScroll={(top) =>
-            setScrollTops((prev) => new Map(prev).set(item.passage.passageId, top))
-          }
-        >
-          {/* The summary is review material, so it only appears once feedback is on. */}
-          {revealed && <RcPassageSummary summaries={item.passage.summaries} />}
-        </RcPassagePane>
-
-        {!passageOnly && (
-          <RcQuestionPane
-            item={item}
-            selected={selected}
-            eliminations={state.eliminations.get(questionId) ?? []}
-            revealed={revealed}
-            masking={masking}
-            reattemptMode={reattemptMode}
-            reattemptPick={reattemptPicks.get(questionId) ?? null}
-            onSelect={(letter) => {
-              if (reattemptMode) {
-                setReattemptPicks((prev) => new Map(prev).set(questionId, letter));
-                void recordAttempt({
-                  sessionId: sessionId!,
-                  questionId,
-                  passageId: item.passage.passageId,
-                  selected: letter,
-                  isCorrect: letter === item.question.correctAnswer,
-                  timeMs: Math.max(0, Date.now() - questionStart.current),
-                  flagged: state.flagged.has(questionId),
-                  eliminations: state.eliminations.get(questionId) ?? [],
-                  isFirstAttempt: false,
-                });
-                return;
-              }
-              if (revealed) return;
-              dispatch({ type: 'select', questionId, letter });
-            }}
-            onToggleElimination={(letter) =>
-              dispatch({ type: 'toggleElimination', questionId, letter })
-            }
-            onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
+    <>
+      <OfficialDrillFrame
+        fillViewport
+        notepadEnabled={false}
+        isPaused={state.paused}
+        onResume={() => dispatch({ type: 'setPaused', paused: false })}
+        pauseNoun="Drill"
+        header={
+          <OfficialSessionStrip
+            breadcrumbs={breadcrumbs}
+            isPaused={state.paused}
+            onTogglePause={() => dispatch({ type: 'setPaused', paused: !state.paused })}
+            onComplete={reviewOnly ? undefined : () => setModal('submit')}
+            pauseNoun="Drill"
+            completeLabel="Complete Drill"
           />
-        )}
-
-        {railOpen && (
-          <RcRightRail
-            isFullscreen={isFullscreen}
-            onFullscreen={() => {
-              if (document.fullscreenElement) {
-                void document.exitFullscreen();
-                setIsFullscreen(false);
-              } else {
-                void rootRef.current?.requestFullscreen();
-                setIsFullscreen(true);
-              }
-            }}
-            onOpenReview={() => setModal('review')}
-            onOpenA11y={() => setModal('a11y')}
-            onToggleFlag={() => {
-              dispatch({ type: 'toggleFlag', questionId });
-              if (sessionId) {
-                void setAttemptFlag(sessionId, questionId, !state.flagged.has(questionId));
-              }
-            }}
-            flagged={state.flagged.has(questionId)}
-            onToggleMasking={() => setMasking((v) => !v)}
-            masking={masking}
-            onCollapse={() => setRailOpen(false)}
-          />
-        )}
-      </div>
-
-      <RcBottomBar
-        itemChip={`PrepTest ${item.passage.preptest} · S${item.passage.section} · P${item.passage.setNumber} · Q${item.number}`}
-        entries={pagerEntries(state)}
-        currentIndex={state.currentIndex}
-        pillClass={pillClassFor}
-        isFlagged={(entry) =>
-          entry.kind === 'question' && entry.questionId != null
-            ? state.flagged.has(entry.questionId)
-            : false
         }
-        onNavigate={goTo}
-        onPrev={() => goTo(Math.max(0, state.currentIndex - 1))}
-        onNext={() => goTo(Math.min(state.items.length - 1, state.currentIndex + 1))}
-        canPrev={state.currentIndex > 0}
-        canNext={state.currentIndex < state.items.length - 1}
-        action={bottomAction}
-      />
+      >
+        <OfficialDrillToolbar
+          directions={RC_DIRECTIONS}
+          highlightToolsVisible={false}
+          highlightMode="none"
+          setHighlightMode={() => undefined}
+          searchTerm={findQuery}
+          setSearchTerm={(v) => {
+            setFindQuery(v);
+            setFindIndex(0);
+          }}
+          fontScale={a11y.fontScale}
+          setFontScale={(n) => a11y.update({ fontSize: Math.round(n * 100) })}
+          fontScaleOptions={RC_FONT_SCALE_OPTIONS}
+          a11yExtraSections={<RcTextSettings settings={a11y.settings} onChange={a11y.update} />}
+          timerLabel={`${budget != null && clockSeconds < 0 ? '+' : ''}${formatClock(Math.abs(clockSeconds))}`}
+          timerMode={timerVisible ? (budget != null ? 'countdown' : 'stopwatch') : undefined}
+          timerOverBudget={overBudget}
+          leftTools={
+            <>
+              <RcToolbarButton onClick={() => setPassageOnly((v) => !v)}>
+                {passageOnly ? 'Passage with Question View' : 'Passage Only View'}
+              </RcToolbarButton>
+              {reviewOnly && (
+                <span className="ml-1 rounded-full bg-[#7f1d1d] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+                  Review
+                </span>
+              )}
+            </>
+          }
+          rightTools={
+            <>
+              <RcToolbarIcon
+                label={masking ? 'Show all choices' : 'Response masking'}
+                active={masking}
+                onClick={() => setMasking((v) => !v)}
+              >
+                <Eye size={18} />
+              </RcToolbarIcon>
+              <RcToolbarIcon label="Review all questions" onClick={() => setModal('review')}>
+                <SquareStack size={18} />
+              </RcToolbarIcon>
+              <RcToolbarIcon
+                label={timerVisible ? 'Hide the timer' : 'Show the timer'}
+                active={timerVisible}
+                onClick={() => setTimerVisible((v) => !v)}
+              >
+                <Clock size={18} />
+              </RcToolbarIcon>
+              <RcToolbarIcon
+                label={isFullscreen ? 'Exit full screen' : 'Full screen'}
+                onClick={() => {
+                  if (document.fullscreenElement) {
+                    void document.exitFullscreen();
+                    setIsFullscreen(false);
+                  } else {
+                    void document.documentElement.requestFullscreen();
+                    setIsFullscreen(true);
+                  }
+                }}
+              >
+                {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+              </RcToolbarIcon>
+            </>
+          }
+        />
+
+        <RcExamPane
+          schemeClassName={a11y.className}
+          passageOnly={passageOnly}
+          passage={
+            <RcPassagePane
+              passage={item.passage}
+              highlights={highlights.forPassage(item.passage.passageId)}
+              color={highlights.color}
+              onColorChange={highlights.setColor}
+              onAddHighlight={(start, end, chosen) =>
+                highlights.add(item.passage.passageId, 'passage', start, end, chosen)
+              }
+              onRemoveHighlight={(offset) =>
+                highlights.removeAt(item.passage.passageId, 'passage', offset)
+              }
+              findQuery={findQuery}
+              findIndex={findIndex}
+              onFindCount={setFindCount}
+              scrollTop={scrollTops.get(item.passage.passageId) ?? 0}
+              onScroll={(top) =>
+                setScrollTops((prev) => new Map(prev).set(item.passage.passageId, top))
+              }
+              textStyle={type.passage}
+              passageOnly={passageOnly}
+            >
+              {/* The summary is review material, so it only appears once feedback is on. */}
+              {revealed && <RcPassageSummary summaries={item.passage.summaries} />}
+            </RcPassagePane>
+          }
+          question={
+            <RcQuestionPane
+              item={item}
+              selected={selected}
+              eliminations={state.eliminations.get(questionId) ?? []}
+              revealed={revealed}
+              masking={masking}
+              reattemptMode={reattemptMode}
+              reattemptPick={reattemptPicks.get(questionId) ?? null}
+              flagged={state.flagged.has(questionId)}
+              onToggleFlag={() => toggleFlag(questionId)}
+              type={type}
+              onSelect={(letter) => {
+                if (reattemptMode) {
+                  setReattemptPicks((prev) => new Map(prev).set(questionId, letter));
+                  void recordAttempt({
+                    sessionId: sessionId!,
+                    questionId,
+                    passageId: item.passage.passageId,
+                    selected: letter,
+                    isCorrect: letter === item.question.correctAnswer,
+                    timeMs: Math.max(0, Date.now() - questionStart.current),
+                    flagged: state.flagged.has(questionId),
+                    eliminations: state.eliminations.get(questionId) ?? [],
+                    isFirstAttempt: false,
+                  });
+                  return;
+                }
+                if (revealed) return;
+                dispatch({ type: 'select', questionId, letter });
+              }}
+              onToggleElimination={(letter) =>
+                dispatch({ type: 'toggleElimination', questionId, letter })
+              }
+              onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
+            />
+          }
+        />
+
+        <OfficialSmartDrillBar
+          primaryAction="submit"
+          primaryVisible={!!primary}
+          primaryLabel={primary?.label}
+          primaryDisabled={primary?.disabled}
+          onSubmit={() => primary?.onClick()}
+          onNext={() => undefined}
+          onEnd={() => navigate('/rc')}
+          onOpenMenu={() => setModal('menu')}
+          disabled={state.paused}
+          pager={
+            <RcPager
+              entries={pagerEntries(state)}
+              currentIndex={state.currentIndex}
+              pillState={pillState}
+              isFlagged={(entry) =>
+                entry.kind === 'question' && entry.questionId != null
+                  ? state.flagged.has(entry.questionId)
+                  : false
+              }
+              onNavigate={goTo}
+              onPrev={() => goTo(Math.max(0, state.currentIndex - 1))}
+              onNext={() => goTo(Math.min(state.items.length - 1, state.currentIndex + 1))}
+              canPrev={state.currentIndex > 0}
+              canNext={state.currentIndex < state.items.length - 1}
+            />
+          }
+        />
+      </OfficialDrillFrame>
 
       {modal === 'review' && (
         <RcReviewModal
@@ -555,7 +609,7 @@ export default function RcPlayer() {
           answered={(i) => state.answers.has(i.question.questionId)}
           flagged={(i) => state.flagged.has(i.question.questionId)}
           pillClass={(i, index) =>
-            pillClassFor({
+            pillState({
               kind: 'question',
               passageId: i.passage.passageId,
               index,
@@ -566,18 +620,8 @@ export default function RcPlayer() {
           onNavigate={goTo}
           onClose={() => setModal(null)}
           onSubmit={
-            config.reveal === 'end_of_set' && !reviewOnly
-              ? () => setModal('submit')
-              : undefined
+            config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined
           }
-        />
-      )}
-
-      {modal === 'a11y' && (
-        <RcAccessibilityModal
-          settings={a11y.settings}
-          onChange={a11y.update}
-          onClose={() => setModal(null)}
         />
       )}
 
@@ -615,10 +659,6 @@ export default function RcPlayer() {
           }}
         />
       )}
-
-      {state.paused && (
-        <RcPauseOverlay onResume={() => dispatch({ type: 'setPaused', paused: false })} />
-      )}
-    </div>
+    </>
   );
 }

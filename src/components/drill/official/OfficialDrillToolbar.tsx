@@ -75,6 +75,8 @@ interface Props {
   timerLabel: string;
   /** Actual timer mode — drives label prefix exactly. Undefined hides timer box. */
   timerMode?: "countdown" | "stopwatch";
+  /** Paint the timer as overrun. A countdown that has passed zero keeps going. */
+  timerOverBudget?: boolean;
   /** Controlled Find Text value. */
   searchTerm: string;
   setSearchTerm: (s: string) => void;
@@ -120,6 +122,7 @@ export default function OfficialDrillToolbar({
   setHighlightMode,
   timerLabel,
   timerMode,
+  timerOverBudget,
   searchTerm,
   setSearchTerm,
   fontScale,
@@ -296,7 +299,10 @@ export default function OfficialDrillToolbar({
                 <PipeSeparator />
                 <div
                   role="timer"
-                  className="text-[14px] font-semibold text-slate-900 tabular-nums whitespace-nowrap pl-1"
+                  className={cn(
+                    "text-[14px] font-semibold tabular-nums whitespace-nowrap pl-1",
+                    timerOverBudget ? "text-red-700" : "text-slate-900",
+                  )}
                 >
                   {timerLabelPrefix}: {paddedTimer}
                 </div>

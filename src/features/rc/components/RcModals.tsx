@@ -1,12 +1,45 @@
 import * as React from 'react';
+import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import {
   RC_COLOR_SCHEMES,
-  RC_FONT_SIZES,
   RC_LINE_HEIGHTS,
   type RcA11ySettings,
 } from '../hooks/useRcA11y';
 import type { RcSessionItem } from '../lib/rcSession';
 import type { RcPassage, RcQuestion } from '../lib/rcTypes';
+
+/* ----------------------------------------------------------------- shared */
+
+const PILL =
+  'rounded-full border border-slate-400 bg-white px-5 py-2 text-[14px] font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40';
+const PILL_PRIMARY =
+  'rounded-full bg-slate-900 px-7 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-40';
+const MENU_ROW =
+  'block w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-left text-[14px] text-slate-800 transition-colors hover:bg-slate-50';
+
+function useEscape(onClose: () => void) {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+}
+
+function CloseButton({ onClose }: { onClose: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label="Close"
+      onClick={onClose}
+      className="rounded p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+    >
+      <X size={18} />
+    </button>
+  );
+}
 
 interface ShellProps {
   title: string;
@@ -15,27 +48,24 @@ interface ShellProps {
 }
 
 function Modal({ title, onClose, children }: ShellProps) {
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  useEscape(onClose);
 
   return (
-    <div className="rc-overlay" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
-        className="rc-modal"
+        className="max-h-[86vh] w-[92%] max-w-2xl overflow-y-auto rounded-md border border-slate-200 bg-white px-6 py-5 text-slate-900 shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
       >
-        <button type="button" className="rc-modal-close" aria-label="Close" onClick={onClose}>
-          ✕
-        </button>
-        <h2>{title}</h2>
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <h2 className="text-[20px] font-semibold text-slate-900">{title}</h2>
+          <CloseButton onClose={onClose} />
+        </div>
         {children}
       </div>
     </div>
@@ -49,6 +79,7 @@ interface ReviewModalProps {
   currentIndex: number;
   answered: (item: RcSessionItem) => boolean;
   flagged: (item: RcSessionItem) => boolean;
+  /** State classes for a pill, matching the footer pager. */
   pillClass: (item: RcSessionItem, index: number) => string;
   onNavigate: (index: number) => void;
   onClose: () => void;
@@ -76,8 +107,8 @@ export function RcReviewModal({
 
   return (
     <Modal title="Review" onClose={onClose}>
-      <div style={{ display: 'flex', gap: 16, fontSize: 13 }}>
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+      <div className="flex gap-5 text-[13px] text-slate-700">
+        <label className="inline-flex cursor-pointer items-center gap-2">
           <input
             type="checkbox"
             checked={onlyFlagged}
@@ -85,7 +116,7 @@ export function RcReviewModal({
           />
           Flagged
         </label>
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+        <label className="inline-flex cursor-pointer items-center gap-2">
           <input
             type="checkbox"
             checked={onlyUnattempted}
@@ -95,35 +126,46 @@ export function RcReviewModal({
         </label>
       </div>
 
-      <div className="rc-review-grid">
+      <div className="mt-4 flex flex-wrap gap-2">
         {visible.map((item) => {
           const index = items.indexOf(item);
+          const isCurrent = index === currentIndex;
           return (
             <button
               key={item.question.questionId}
               type="button"
-              className={pillClass(item, index)}
+              className={cn(
+                'relative flex h-8 w-8 items-center justify-center rounded-full border text-[13px] font-medium tabular-nums transition-colors',
+                isCurrent
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : pillClass(item, index),
+              )}
               aria-label={`Go to question ${item.number}`}
-              aria-current={index === currentIndex ? 'true' : undefined}
+              aria-current={isCurrent ? 'true' : undefined}
               onClick={() => {
                 onNavigate(index);
                 onClose();
               }}
             >
               {item.number}
-              {flagged(item) && <span className="rc-pill-flag" aria-hidden />}
+              {flagged(item) && (
+                <span
+                  aria-hidden
+                  className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-amber-500"
+                />
+              )}
             </button>
           );
         })}
       </div>
 
       {visible.length === 0 && (
-        <p style={{ fontSize: 13, marginTop: 12 }}>Nothing matches those filters.</p>
+        <p className="mt-3 text-[13px] text-slate-600">Nothing matches those filters.</p>
       )}
 
       {onSubmit && (
-        <div style={{ marginTop: 20, textAlign: 'right' }}>
-          <button type="button" className="rc-button rc-button-primary" onClick={onSubmit}>
+        <div className="mt-6 text-right">
+          <button type="button" className={PILL_PRIMARY} onClick={onSubmit}>
             Submit
           </button>
         </div>
@@ -132,84 +174,80 @@ export function RcReviewModal({
   );
 }
 
-/* --------------------------------------------------------- accessibility */
+/* --------------------------------------------------- text settings popover */
 
-interface A11yModalProps {
+/**
+ * Line spacing and color scheme, appended inside the toolbar's Aa popover so
+ * every text setting sits behind one control. This replaces the standalone
+ * accessibility modal the right rail used to open.
+ */
+export function RcTextSettings({
+  settings,
+  onChange,
+}: {
   settings: RcA11ySettings;
   onChange: (patch: Partial<RcA11ySettings>) => void;
-  onClose: () => void;
+}) {
+  return (
+    <>
+      <Section label="Line spacing" />
+      {RC_LINE_HEIGHTS.map((option) => (
+        <OptionRow
+          key={option.label}
+          label={option.label}
+          selected={settings.lineHeight === option.value}
+          onClick={() => onChange({ lineHeight: option.value })}
+        />
+      ))}
+
+      <Section label="Color scheme" />
+      {RC_COLOR_SCHEMES.map((scheme) => (
+        <OptionRow
+          key={scheme.id}
+          label={scheme.label}
+          selected={settings.scheme === scheme.id}
+          onClick={() => onChange({ scheme: scheme.id })}
+        />
+      ))}
+    </>
+  );
 }
 
-export function RcAccessibilityModal({ settings, onChange, onClose }: A11yModalProps) {
-  const [tab, setTab] = React.useState<'scheme' | 'size' | 'height' | 'zoom'>('scheme');
-
+function Section({ label }: { label: string }) {
   return (
-    <Modal title="Accessibility" onClose={onClose}>
-      <div className="rc-a11y-tabs">
-        {(
-          [
-            ['scheme', 'Color scheme'],
-            ['size', 'Font size'],
-            ['height', 'Line spacing'],
-            ['zoom', 'Zoom'],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            className={`rc-button${tab === id ? ' rc-button-primary' : ''}`}
-            onClick={() => setTab(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+    <div className="mt-2 border-t border-slate-200 px-3 pb-1 pt-3 text-[11px] uppercase tracking-wide text-slate-400">
+      {label}
+    </div>
+  );
+}
 
-      {tab === 'scheme' &&
-        RC_COLOR_SCHEMES.map((scheme) => (
-          <button
-            key={scheme.id}
-            type="button"
-            className={`rc-a11y-option${settings.scheme === scheme.id ? ' rc-active' : ''}`}
-            onClick={() => onChange({ scheme: scheme.id })}
-          >
-            {scheme.label}
-          </button>
-        ))}
-
-      {tab === 'size' &&
-        RC_FONT_SIZES.map((size) => (
-          <button
-            key={size}
-            type="button"
-            className={`rc-a11y-option${settings.fontSize === size ? ' rc-active' : ''}`}
-            onClick={() => onChange({ fontSize: size })}
-          >
-            {size}%
-          </button>
-        ))}
-
-      {tab === 'height' &&
-        RC_LINE_HEIGHTS.map((height) => (
-          <button
-            key={height}
-            type="button"
-            className={`rc-a11y-option${settings.lineHeight === height ? ' rc-active' : ''}`}
-            onClick={() => onChange({ lineHeight: height })}
-          >
-            {height}
-            {height === 1.35 ? ' (default)' : ''}
-          </button>
-        ))}
-
-      {tab === 'zoom' && (
-        <p style={{ fontSize: 13, lineHeight: 1.6 }}>
-          Use your browser to zoom the whole screen. On a Mac press Command and the plus or minus
-          key. On Windows press Control and the plus or minus key. Press Command 0 or Control 0 to
-          go back to normal.
-        </p>
-      )}
-    </Modal>
+/** Matches the radio rows the font-size list already uses in the same popover. */
+function OptionRow({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-full items-center justify-between rounded-sm px-3 py-2 text-left text-[15px] text-slate-900 hover:bg-slate-50"
+    >
+      <span>{label}</span>
+      <span
+        aria-hidden
+        className={cn(
+          'flex h-4 w-4 items-center justify-center rounded-full border-2',
+          selected ? 'border-blue-600' : 'border-slate-400',
+        )}
+      >
+        {selected && <span className="h-2 w-2 rounded-full bg-blue-600" />}
+      </span>
+    </button>
   );
 }
 
@@ -248,33 +286,19 @@ export function RcQuestionDetails({
 
   return (
     <Modal title="Question details" onClose={onClose}>
-      <table className="rc-details-table">
+      <table className="w-full border-collapse text-[13px]">
         <tbody>
           {rows.map(([label, value]) => (
-            <tr key={label}>
-              <th scope="row">{label}</th>
-              <td>{value}</td>
+            <tr key={label} className="border-b border-slate-100">
+              <th scope="row" className="w-[46%] py-2 pr-3 text-left font-semibold text-slate-500">
+                {label}
+              </th>
+              <td className="py-2 align-top text-slate-800">{value}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </Modal>
-  );
-}
-
-/* ------------------------------------------------------------------ pause */
-
-export function RcPauseOverlay({ onResume }: { onResume: () => void }) {
-  return (
-    <div className="rc-overlay rc-pause-overlay">
-      <div className="rc-modal" role="dialog" aria-modal="true" aria-label="Paused">
-        <h2>Paused</h2>
-        <p style={{ fontSize: 13, marginBottom: 16 }}>The clock is stopped.</p>
-        <button type="button" className="rc-button rc-button-primary" onClick={onResume}>
-          Resume
-        </button>
-      </div>
-    </div>
   );
 }
 
@@ -295,36 +319,37 @@ export function RcOverflowMenu({
   onSaveExit,
   onSubmit,
 }: MenuProps) {
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  useEscape(onClose);
 
   return (
     <>
-      <div className="rc-overlay" onClick={onClose} />
-      <div className="rc-drawer" role="dialog" aria-modal="true" aria-label="Menu">
-        <button type="button" className="rc-modal-close" aria-label="Close" onClick={onClose}>
-          ✕
-        </button>
-        <h2>Menu</h2>
-        <button type="button" className="rc-a11y-option" onClick={onQuestionDetails}>
-          Question details
-        </button>
-        <button type="button" className="rc-a11y-option" onClick={onPause}>
-          Pause
-        </button>
-        <button type="button" className="rc-a11y-option" onClick={onSaveExit}>
-          Save and exit
-        </button>
-        {onSubmit && (
-          <button type="button" className="rc-a11y-option" onClick={onSubmit}>
-            Submit
+      <div className="fixed inset-0 z-[70] bg-black/40" onClick={onClose} />
+      <div
+        className="fixed inset-y-0 right-0 z-[75] w-[min(420px,92vw)] overflow-y-auto border-l border-slate-200 bg-white px-6 py-5 shadow-[-8px_0_28px_rgba(15,23,42,0.2)]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+      >
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <h2 className="text-[20px] font-semibold text-slate-900">Menu</h2>
+          <CloseButton onClose={onClose} />
+        </div>
+        <div className="space-y-2">
+          <button type="button" className={MENU_ROW} onClick={onQuestionDetails}>
+            Question details
           </button>
-        )}
+          <button type="button" className={MENU_ROW} onClick={onPause}>
+            Pause
+          </button>
+          <button type="button" className={MENU_ROW} onClick={onSaveExit}>
+            Save and exit
+          </button>
+          {onSubmit && (
+            <button type="button" className={MENU_ROW} onClick={onSubmit}>
+              Submit
+            </button>
+          )}
+        </div>
       </div>
     </>
   );
@@ -343,16 +368,16 @@ export function RcSubmitConfirm({
 }) {
   return (
     <Modal title="Submit this drill?" onClose={onCancel}>
-      <p style={{ fontSize: 13, marginBottom: 16 }}>
+      <p className="mb-5 text-[14px] leading-relaxed text-slate-600">
         {unanswered > 0
           ? `You have ${unanswered} question${unanswered === 1 ? '' : 's'} without an answer. Submitting now scores ${unanswered === 1 ? 'it' : 'them'} as missed.`
           : 'Every question has an answer. You can review everything after you submit.'}
       </p>
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-        <button type="button" className="rc-button" onClick={onCancel}>
+      <div className="flex justify-end gap-3">
+        <button type="button" className={PILL} onClick={onCancel}>
           Keep working
         </button>
-        <button type="button" className="rc-button rc-button-primary" onClick={onConfirm}>
+        <button type="button" className={PILL_PRIMARY} onClick={onConfirm}>
           Submit
         </button>
       </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { cn } from '@/lib/utils';
 import { RcMarkdown } from './RcMarkdown';
 import { RcSelectionPopover, type RcSelectionAnchor } from './RcSelectionPopover';
 import {
@@ -24,6 +25,10 @@ interface Props {
   /** Scroll position is kept per passage so switching back lands where they left. */
   scrollTop: number;
   onScroll: (top: number) => void;
+  /** Fraunces type stack from rcTypeStyles. */
+  textStyle: React.CSSProperties;
+  /** Drops the divider and the reading-measure cap in Passage Only View. */
+  passageOnly?: boolean;
   children?: React.ReactNode;
 }
 
@@ -39,6 +44,8 @@ export function RcPassagePane({
   onFindCount,
   scrollTop,
   onScroll,
+  textStyle,
+  passageOnly,
   children,
 }: Props) {
   const paneRef = React.useRef<HTMLDivElement>(null);
@@ -126,9 +133,18 @@ export function RcPassagePane({
 
   return (
     <div
-      className="rc-pane rc-pane-passage"
+      className={cn(
+        'rc-exam-col rc-passage-col relative min-w-0 overflow-y-auto px-6 pb-7 pt-6 sm:pl-9 sm:pr-8',
+        // Fraunces is high-contrast; grayscale smoothing thins its hairlines.
+        'subpixel-antialiased selection:bg-blue-100',
+        passageOnly ? 'rc-passage-only' : 'border-slate-200 lg:border-r',
+        // Cap the reading measure. 52ch in Fraunces measures ~68 real
+        // characters, inside the 45-75 readable band. Two-column reflow sets
+        // its own measure, so the cap comes off there.
+        !passageOnly && '[&>*]:max-w-[52ch]',
+      )}
       ref={paneRef}
-      style={{ position: 'relative' }}
+      style={textStyle}
       onScroll={(e) => onScroll((e.target as HTMLDivElement).scrollTop)}
       onMouseUp={handleMouseUp}
     >
