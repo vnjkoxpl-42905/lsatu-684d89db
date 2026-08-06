@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { loadAnnotations, saveAnnotations } from '../api/rcProgress';
-import type { RcHighlight, RcHighlightColor, RcLetter } from '../lib/rcTypes';
+import type {
+  RcAnnotationKind,
+  RcHighlight,
+  RcHighlightColor,
+  RcLetter,
+} from '../lib/rcTypes';
 
 /**
  * Per-passage highlights, loaded once for the session's passages and saved back
@@ -55,13 +60,19 @@ export function useRcHighlights(passageIds: number[]) {
       end: number,
       /** Passed in by the popover so picking a swatch applies that color now. */
       chosen: RcHighlightColor = color,
+      kind: RcAnnotationKind = 'highlight',
     ) => {
       const existing = byPassage.get(passageId) ?? [];
-      // Drop anything the new range covers, so re-highlighting recolors cleanly.
+      // Drop overlapping annotations of the same kind, so re-marking recolors
+      // cleanly — but a highlight and an underline can sit on the same words.
       const kept = existing.filter(
-        (h) => h.target !== target || h.end <= start || h.start >= end,
+        (h) =>
+          h.target !== target ||
+          (h.kind ?? 'highlight') !== kind ||
+          h.end <= start ||
+          h.start >= end,
       );
-      write(passageId, [...kept, { target, start, end, color: chosen }]);
+      write(passageId, [...kept, { target, start, end, color: chosen, kind }]);
     },
     [byPassage, color, write],
   );
@@ -77,5 +88,17 @@ export function useRcHighlights(passageIds: number[]) {
     [byPassage, write],
   );
 
-  return { forPassage, add, removeAt, color, setColor, loaded };
+  /** Eraser drag: clear every annotation the swept range touches. */
+  const removeRange = React.useCallback(
+    (passageId: number, target: 'passage' | RcLetter, start: number, end: number) => {
+      const existing = byPassage.get(passageId) ?? [];
+      write(
+        passageId,
+        existing.filter((h) => h.target !== target || h.end <= start || h.start >= end),
+      );
+    },
+    [byPassage, write],
+  );
+
+  return { forPassage, add, removeAt, removeRange, color, setColor, loaded };
 }

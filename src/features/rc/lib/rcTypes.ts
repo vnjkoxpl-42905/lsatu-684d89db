@@ -154,16 +154,38 @@ export interface RcHighlight {
   start: number;
   end: number;
   color: RcHighlightColor;
+  /**
+   * Underlines draw a rule instead of a fill. Absent means a highlight, so
+   * annotations stored before underlining existed still read correctly.
+   */
+  kind?: RcAnnotationKind;
 }
 
-export type RcHighlightColor = 'yellow' | 'pink' | 'green' | 'cyan';
+export type RcAnnotationKind = 'highlight' | 'underline';
+
+/**
+ * The LR player's three marker colors, at its alpha and blend mode, so a
+ * highlight looks the same in both drills. RC previously carried a fourth and
+ * fifth (green, cyan) that LR has no equivalent for.
+ */
+export type RcHighlightColor = 'yellow' | 'pink' | 'orange';
 
 export const RC_HIGHLIGHT_COLORS: Record<RcHighlightColor, string> = {
-  yellow: '#F6E05E',
-  pink: '#FBB6CE',
-  green: '#9AE6B4',
-  cyan: '#76E4F7',
+  yellow: 'rgba(250, 204, 21, 0.32)',
+  pink: 'rgba(244, 114, 182, 0.32)',
+  orange: 'rgba(251, 146, 60, 0.32)',
 };
+
+/**
+ * The active annotation tool, mirroring the LR toolbar's own mode union.
+ * 'none' leaves the selection popover in charge.
+ */
+export type RcHighlightMode = 'none' | RcHighlightColor | 'underline' | 'erase';
+
+/** Anything stored under a retired color still paints, as yellow. */
+export function rcHighlightColor(color: string | undefined): string {
+  return RC_HIGHLIGHT_COLORS[color as RcHighlightColor] ?? RC_HIGHLIGHT_COLORS.yellow;
+}
 
 export interface RcQuestionHistoryEntry {
   questionId: number;

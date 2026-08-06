@@ -10,15 +10,30 @@ import {
   paintRanges,
   scrollToMatch,
 } from '../lib/rcHighlightPaint';
-import { RC_HIGHLIGHT_COLORS, type RcHighlight, type RcHighlightColor, type RcPassage } from '../lib/rcTypes';
+import {
+  rcHighlightColor,
+  type RcAnnotationKind,
+  type RcHighlight,
+  type RcHighlightColor,
+  type RcHighlightMode,
+  type RcPassage,
+} from '../lib/rcTypes';
 
 interface Props {
   passage: RcPassage;
   highlights: RcHighlight[];
   color: RcHighlightColor;
   onColorChange: (c: RcHighlightColor) => void;
-  onAddHighlight: (start: number, end: number, color: RcHighlightColor) => void;
+  onAddHighlight: (
+    start: number,
+    end: number,
+    color: RcHighlightColor,
+    kind: RcAnnotationKind,
+  ) => void;
   onRemoveHighlight: (offset: number) => void;
+  onRemoveRange: (start: number, end: number) => void;
+  /** Active toolbar tool. 'none' hands the interaction to the popover. */
+  highlightMode: RcHighlightMode;
   findQuery: string;
   findIndex: number;
   onFindCount: (count: number) => void;
@@ -39,6 +54,8 @@ export function RcPassagePane({
   onColorChange,
   onAddHighlight,
   onRemoveHighlight,
+  onRemoveRange,
+  highlightMode,
   findQuery,
   findIndex,
   onFindCount,
@@ -66,9 +83,28 @@ export function RcPassagePane({
     if (!el) return;
     paintRanges(
       el,
-      passageHighlights.map((h) => ({ start: h.start, end: h.end, color: h.color })),
+      passageHighlights.map((h) => ({
+        start: h.start,
+        end: h.end,
+        color: h.color,
+        kind: h.kind ?? 'highlight',
+      })),
       RC_HIGHLIGHT_ATTR,
-      (r) => ({ backgroundColor: RC_HIGHLIGHT_COLORS[(r.color ?? 'yellow') as RcHighlightColor] }),
+      (r) =>
+        r.kind === 'underline'
+          ? {
+              backgroundColor: 'transparent',
+              textDecoration: 'underline',
+              textDecorationColor: 'currentColor',
+              textDecorationThickness: '2px',
+              textUnderlineOffset: '3px',
+            }
+          : {
+              backgroundColor: rcHighlightColor(r.color),
+              // Multiply keeps the text readable through the wash, and matches
+              // how the LR player renders its markers.
+              mixBlendMode: 'multiply',
+            },
     );
   }, [passage.passageId, passage.text, passageHighlights]);
 
@@ -89,6 +125,14 @@ export function RcPassagePane({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passage.passageId]);
 
+  /** Rendered-text offset of the first character inside a painted mark. */
+  const offsetOfMark = (el: HTMLElement, mark: Element): number => {
+    const before = document.createRange();
+    before.selectNodeContents(el);
+    before.setEnd(mark, 0);
+    return before.toString().length;
+  };
+
   const handleMouseUp = (event: React.MouseEvent) => {
     const el = textRef.current;
     if (!el) return;
@@ -97,12 +141,37 @@ export function RcPassagePane({
     const mark = target.closest(`mark[${RC_HIGHLIGHT_ATTR}]`);
     const selection = captureRenderedSelection(el);
 
+    // With the eraser active, a click clears the mark under it and a drag
+    // clears everything the sweep touches. No popover either way.
+    if (highlightMode === 'erase') {
+      if (selection) {
+        onRemoveRange(selection.start, selection.end);
+        window.getSelection()?.removeAllRanges();
+      } else if (mark) {
+        onRemoveHighlight(offsetOfMark(el, mark));
+      }
+      setAnchor(null);
+      return;
+    }
+
+    // A marker or the underline is active: apply on release, like the official
+    // interface, rather than asking again through the popover.
+    if (highlightMode !== 'none' && selection) {
+      const kind: RcAnnotationKind = highlightMode === 'underline' ? 'underline' : 'highlight';
+      onAddHighlight(
+        selection.start,
+        selection.end,
+        kind === 'underline' ? color : (highlightMode as RcHighlightColor),
+        kind,
+      );
+      window.getSelection()?.removeAllRanges();
+      setAnchor(null);
+      return;
+    }
+
     if (!selection && mark) {
       // Clicking an existing highlight offers to remove it.
-      const before = document.createRange();
-      before.selectNodeContents(el);
-      before.setEnd(mark, 0);
-      removeOffset.current = before.toString().length;
+      removeOffset.current = offsetOfMark(el, mark);
       const rect = mark.getBoundingClientRect();
       const paneRect = paneRef.current!.getBoundingClientRect();
       setAnchor({
@@ -160,7 +229,9 @@ export function RcPassagePane({
         color={color}
         onColorChange={onColorChange}
         onApply={(chosen) => {
-          if (pending.current) onAddHighlight(pending.current.start, pending.current.end, chosen);
+          if (pending.current) {
+            onAddHighlight(pending.current.start, pending.current.end, chosen, 'highlight');
+          }
           window.getSelection()?.removeAllRanges();
           setAnchor(null);
         }}

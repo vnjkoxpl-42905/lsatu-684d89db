@@ -42,7 +42,7 @@ import {
   recordAttempt,
   setAttemptFlag,
 } from '../api/rcProgress';
-import type { RcDrillConfig, RcLetter, RcPassage } from '../lib/rcTypes';
+import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
 import '../rc.css';
@@ -181,6 +181,7 @@ export default function RcPlayer() {
   const [findIndex, setFindIndex] = React.useState(0);
   const [findCount, setFindCount] = React.useState(0);
   const [masking, setMasking] = React.useState(false);
+  const [highlightMode, setHighlightMode] = React.useState<RcHighlightMode>('none');
   const [timerVisible, setTimerVisible] = React.useState(true);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
   const [modal, setModal] = React.useState<'review' | 'details' | 'menu' | 'submit' | null>(null);
@@ -440,9 +441,8 @@ export default function RcPlayer() {
       >
         <OfficialDrillToolbar
           directions={RC_DIRECTIONS}
-          highlightToolsVisible={false}
-          highlightMode="none"
-          setHighlightMode={() => undefined}
+          highlightMode={highlightMode}
+          setHighlightMode={(mode) => setHighlightMode(mode as RcHighlightMode)}
           searchTerm={findQuery}
           setSearchTerm={(v) => {
             setFindQuery(v);
@@ -513,12 +513,16 @@ export default function RcPlayer() {
               highlights={highlights.forPassage(item.passage.passageId)}
               color={highlights.color}
               onColorChange={highlights.setColor}
-              onAddHighlight={(start, end, chosen) =>
-                highlights.add(item.passage.passageId, 'passage', start, end, chosen)
+              onAddHighlight={(start, end, chosen, kind) =>
+                highlights.add(item.passage.passageId, 'passage', start, end, chosen, kind)
               }
               onRemoveHighlight={(offset) =>
                 highlights.removeAt(item.passage.passageId, 'passage', offset)
               }
+              onRemoveRange={(start, end) =>
+                highlights.removeRange(item.passage.passageId, 'passage', start, end)
+              }
+              highlightMode={highlightMode}
               findQuery={findQuery}
               findIndex={findIndex}
               onFindCount={setFindCount}

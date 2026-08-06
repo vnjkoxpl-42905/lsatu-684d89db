@@ -21,6 +21,8 @@ export interface RcTextRange {
   start: number;
   end: number;
   color?: string;
+  /** 'highlight' or 'underline'; read by the caller's styleFor. */
+  kind?: string;
 }
 
 /** Every text node under `root`, in document order. */
