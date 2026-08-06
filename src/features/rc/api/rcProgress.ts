@@ -1,0 +1,294 @@
+/**
+ * Supabase reads and writes for RC progress: sessions, attempts, annotations.
+ *
+ * Content is static JSON (see rcBank.ts). Only the student's own work lives in
+ * the database, and RLS scopes every row to them.
+ */
+import {
+  rcDb,
+  RC_ANNOTATIONS_TABLE,
+  RC_ATTEMPTS_TABLE,
+  RC_SESSIONS_TABLE,
+  type RcAttemptRow,
+  type RcDrillSessionRow,
+} from './rcSupabase.types';
+import type {
+  RcAttempt,
+  RcDrillConfig,
+  RcDrillSession,
+  RcHighlight,
+  RcLetter,
+  RcQuestionHistory,
+  RcSessionStatus,
+} from '../lib/rcTypes';
+
+/** Postgres "relation does not exist" — the migration has not been run. */
+const MISSING_TABLE = '42P01';
+
+export class RcTablesMissingError extends Error {
+  constructor() {
+    super(
+      'The RC progress tables are missing. Run supabase/migrations/20260806000000_rc_drilling.sql.',
+    );
+    this.name = 'RcTablesMissingError';
+  }
+}
+
+function raise(error: { code?: string; message?: string } | null): void {
+  if (!error) return;
+  if (error.code === MISSING_TABLE) throw new RcTablesMissingError();
+  throw new Error(error.message ?? 'Unknown Supabase error');
+}
+
+/** Confirms the progress tables exist. Call once on player/hub boot. */
+export async function checkRcTables(): Promise<true> {
+  const { error } = await rcDb.from(RC_SESSIONS_TABLE).select('id').limit(1);
+  raise(error);
+  return true;
+}
+
+async function requireUserId(): Promise<string> {
+  const { data } = await rcDb.auth.getUser();
+  const id = data?.user?.id;
+  if (!id) throw new Error('You need to be signed in to drill.');
+  return id;
+}
+
+function toSession(row: RcDrillSessionRow): RcDrillSession {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    config: row.config as RcDrillConfig,
+    passageIds: row.passage_ids ?? [],
+    status: row.status as RcSessionStatus,
+    excludedFromAnalytics: row.excluded_from_analytics,
+    startedAt: row.started_at,
+    completedAt: row.completed_at,
+  };
+}
+
+function toAttempt(row: RcAttemptRow): RcAttempt {
+  return {
+    id: row.id,
+    sessionId: row.session_id,
+    userId: row.user_id,
+    questionId: row.question_id,
+    passageId: row.passage_id,
+    selected: (row.selected as RcLetter | null) ?? null,
+    isCorrect: row.is_correct,
+    timeMs: row.time_ms,
+    flagged: row.flagged,
+    eliminations: (row.eliminations ?? []) as RcLetter[],
+    isFirstAttempt: row.is_first_attempt,
+    createdAt: row.created_at,
+  };
+}
+
+/* ----------------------------------------------------------------- sessions */
+
+export async function createSession(
+  config: RcDrillConfig,
+  passageIds: number[],
+): Promise<RcDrillSession> {
+  const userId = await requireUserId();
+  const { data, error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .insert({ user_id: userId, config, passage_ids: passageIds })
+    .select()
+    .single();
+  raise(error);
+  return toSession(data as RcDrillSessionRow);
+}
+
+export async function getSession(id: string): Promise<RcDrillSession | null> {
+  const { data, error } = await rcDb.from(RC_SESSIONS_TABLE).select().eq('id', id).maybeSingle();
+  raise(error);
+  return data ? toSession(data as RcDrillSessionRow) : null;
+}
+
+export async function listSessions(): Promise<RcDrillSession[]> {
+  const { data, error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .select()
+    .order('started_at', { ascending: false });
+  raise(error);
+  return ((data ?? []) as RcDrillSessionRow[]).map(toSession);
+}
+
+export async function completeSession(id: string): Promise<void> {
+  const { error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .update({ status: 'completed', completed_at: new Date().toISOString() })
+    .eq('id', id);
+  raise(error);
+}
+
+export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
+  const { error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .update({ excluded_from_analytics: excluded })
+    .eq('id', id);
+  raise(error);
+}
+
+export async function deleteSession(id: string): Promise<void> {
+  const { error } = await rcDb.from(RC_SESSIONS_TABLE).delete().eq('id', id);
+  raise(error);
+}
+
+/* ----------------------------------------------------------------- attempts */
+
+/**
+ * Writes one attempt row. The first write for a question within a session is the
+ * first attempt; every later write for that same question, review re-answers
+ * included, is a new row flagged `is_first_attempt: false`. Existing rows are
+ * never updated, so the original answer stays intact.
+ */
+export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
+  const userId = attempt.userId ?? (await requireUserId());
+
+  const { data: prior, error: priorError } = await rcDb
+    .from(RC_ATTEMPTS_TABLE)
+    .select('id')
+    .eq('session_id', attempt.sessionId)
+    .eq('question_id', attempt.questionId)
+    .limit(1);
+  raise(priorError);
+
+  const isFirstAttempt = (prior ?? []).length === 0;
+
+  const { data, error } = await rcDb
+    .from(RC_ATTEMPTS_TABLE)
+    .insert({
+      session_id: attempt.sessionId,
+      user_id: userId,
+      question_id: attempt.questionId,
+      passage_id: attempt.passageId,
+      selected: attempt.selected,
+      is_correct: attempt.isCorrect,
+      time_ms: attempt.timeMs,
+      flagged: attempt.flagged,
+      eliminations: attempt.eliminations,
+      is_first_attempt: isFirstAttempt,
+    })
+    .select()
+    .single();
+  raise(error);
+  return toAttempt(data as RcAttemptRow);
+}
+
+export async function getSessionAttempts(sessionId: string): Promise<RcAttempt[]> {
+  const { data, error } = await rcDb
+    .from(RC_ATTEMPTS_TABLE)
+    .select()
+    .eq('session_id', sessionId)
+    .order('created_at', { ascending: true });
+  raise(error);
+  return ((data ?? []) as RcAttemptRow[]).map(toAttempt);
+}
+
+/** Sets the flag on every stored attempt for a question in a session. */
+export async function setAttemptFlag(
+  sessionId: string,
+  questionId: number,
+  flagged: boolean,
+): Promise<void> {
+  const { error } = await rcDb
+    .from(RC_ATTEMPTS_TABLE)
+    .update({ flagged })
+    .eq('session_id', sessionId)
+    .eq('question_id', questionId);
+  raise(error);
+}
+
+/**
+ * Per-question aggregate over the student's whole history, used by the hub's
+ * status filters and by adaptive selection.
+ */
+export async function getQuestionHistory(userId?: string): Promise<RcQuestionHistory> {
+  const uid = userId ?? (await requireUserId());
+  const { data, error } = await rcDb
+    .from(RC_ATTEMPTS_TABLE)
+    .select('question_id, is_correct, created_at')
+    .eq('user_id', uid)
+    .order('created_at', { ascending: true });
+  raise(error);
+
+  const history: RcQuestionHistory = new Map();
+  for (const row of (data ?? []) as Pick<
+    RcAttemptRow,
+    'question_id' | 'is_correct' | 'created_at'
+  >[]) {
+    const existing = history.get(row.question_id) ?? {
+      questionId: row.question_id,
+      attempts: 0,
+      everIncorrect: false,
+      incorrectOnLastTake: false,
+      incorrectCount: 0,
+      lastSeenAt: null as string | null,
+    };
+    const wrong = row.is_correct === false;
+    existing.attempts += 1;
+    if (wrong) {
+      existing.everIncorrect = true;
+      existing.incorrectCount += 1;
+    }
+    // rows arrive oldest first, so the last one seen decides the latest take
+    existing.incorrectOnLastTake = wrong;
+    existing.lastSeenAt = row.created_at;
+    history.set(row.question_id, existing);
+  }
+  return history;
+}
+
+/* -------------------------------------------------------------- annotations */
+
+export async function loadAnnotations(
+  passageIds: number[],
+): Promise<Map<number, RcHighlight[]>> {
+  const result = new Map<number, RcHighlight[]>();
+  if (passageIds.length === 0) return result;
+
+  const { data, error } = await rcDb
+    .from(RC_ANNOTATIONS_TABLE)
+    .select('passage_id, highlights')
+    .in('passage_id', passageIds);
+  raise(error);
+
+  for (const row of (data ?? []) as { passage_id: number; highlights: unknown }[]) {
+    result.set(row.passage_id, (row.highlights ?? []) as RcHighlight[]);
+  }
+  return result;
+}
+
+const saveTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+/** Debounced by one second per passage, so dragging out a highlight writes once. */
+export function saveAnnotations(passageId: number, highlights: RcHighlight[]): void {
+  const pending = saveTimers.get(passageId);
+  if (pending) clearTimeout(pending);
+  saveTimers.set(
+    passageId,
+    setTimeout(() => {
+      saveTimers.delete(passageId);
+      void saveAnnotationsNow(passageId, highlights);
+    }, 1000),
+  );
+}
+
+export async function saveAnnotationsNow(
+  passageId: number,
+  highlights: RcHighlight[],
+): Promise<void> {
+  const userId = await requireUserId();
+  const { error } = await rcDb.from(RC_ANNOTATIONS_TABLE).upsert(
+    {
+      user_id: userId,
+      passage_id: passageId,
+      highlights,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'user_id,passage_id' },
+  );
+  raise(error);
+}
