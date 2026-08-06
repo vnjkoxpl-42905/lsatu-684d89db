@@ -772,7 +772,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    blue, no amber, no gold. Every grid texture, radial wash and gradient tone map
    the old observatory carried has been removed; what is left is flat tinted
    black, hairline rings, glass, and the two images. */
-.classroom-root.classroom-root-drill {
+/* .rc-page is the Reading Comprehension hub, which is its own route rather than
+   a classroom stage but belongs to the same visual system. It hosts the ladder
+   here rather than restating the values, so there is still one source. */
+.classroom-root.classroom-root-drill,
+.rc-page {
   /* Ink. One ivory, stepped by opacity. The ladder is closed — if a value is not
      on it, it does not belong on this page. */
   --observatory-ink: #f4f1ea;
@@ -1244,10 +1248,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 /* Tools are a hairline split, not two boxed cards. */
+/* One column per tool. This was 1fr 1fr and stayed that way when Reading
+   Comprehension made it three, which wrapped the third tile onto its own row
+   under a hole. auto-fit keeps it honest as tools are added or removed. */
 .drill-observatory-practice-tools {
   border: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
 }
 
 .drill-observatory-practice-tile {
