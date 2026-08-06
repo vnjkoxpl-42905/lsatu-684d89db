@@ -13,6 +13,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ScoreRing from '@/components/drill/ScoreRing';
 import { questionBank } from '@/lib/questionLoader';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -58,15 +59,6 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const savedRef = React.useRef(false);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
-  // Drives the mount-time donut fill tween. First paint renders the rings
-  // empty (dashoffset = full circumference); the rAF below flips this to
-  // true on the next frame so the existing transition-all duration-500
-  // animates the stroke to its final value.
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    const id = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   // Build question stats
   const stats: QuestionStat[] = React.useMemo(() => {
@@ -288,40 +280,11 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           <div className="flex items-center justify-center gap-12 mb-8">
             {/* Initial Score Ring */}
             <div className="flex flex-col items-center gap-3">
-              <div className="group relative w-32 h-32">
-                <svg className="w-32 h-32 -rotate-90">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-muted"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 56}`}
-                    strokeDashoffset={`${2 * Math.PI * 56 * (mounted ? 1 - initialScore / initialTotal : 1)}`}
-                    className="text-primary transition-all duration-500 ease-out"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="text-3xl font-bold">{initialScore}</div>
-                  <div className="text-sm text-muted-foreground">/{initialTotal}</div>
-                </div>
-                <div
-                  role="tooltip"
-                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
-                >
-                  {initialScore} / {initialTotal}
-                </div>
-              </div>
+              <ScoreRing
+                value={initialScore}
+                total={initialTotal}
+                tooltip={`${initialScore} / ${initialTotal}`}
+              />
               <div className="text-center">
                 <div className="text-xl font-bold">{initialPercent}%</div>
                 <div className="text-xs text-muted-foreground">Initial Score</div>
@@ -333,40 +296,11 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
               <>
                 <div className="w-px h-24 bg-border" />
                 <div className="flex flex-col items-center gap-3">
-                  <div className="group relative w-32 h-32">
-                    <svg className="w-32 h-32 -rotate-90">
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="none"
-                        className="text-muted"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="none"
-                        strokeDasharray={`${2 * Math.PI * 56}`}
-                        strokeDashoffset={`${2 * Math.PI * 56 * (mounted ? 1 - brScore / initialTotal : 1)}`}
-                        className="text-primary transition-all duration-500 ease-out"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="text-3xl font-bold">{brScore}</div>
-                      <div className="text-sm text-muted-foreground">/{initialTotal}</div>
-                    </div>
-                    <div
-                      role="tooltip"
-                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
-                    >
-                      {brScore} / {initialTotal}
-                    </div>
-                  </div>
+                  <ScoreRing
+                    value={brScore}
+                    total={initialTotal}
+                    tooltip={`${brScore} / ${initialTotal}`}
+                  />
                   <div className="text-center">
                     <div className="text-xl font-bold">{brPercent}%</div>
                     <div className="text-xs text-muted-foreground">Blind Review</div>
@@ -430,42 +364,17 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
                       : "hover:bg-accent/30"
                   )}
                 >
-                  <div className="group relative w-16 h-16">
-                    <svg className="w-16 h-16 -rotate-90">
-                      <circle
-                        cx="32"
-                        cy="32"
-                        r="28"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="none"
-                        className="text-muted"
-                      />
-                      <circle
-                        cx="32"
-                        cy="32"
-                        r="28"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="none"
-                        strokeDasharray={`${2 * Math.PI * 28}`}
-                        strokeDashoffset={`${2 * Math.PI * 28 * (mounted ? 1 - area.accuracy / 100 : 1)}`}
-                        className={cn(
-                          "transition-all duration-500 ease-out",
-                          area.accuracy < 50 ? "text-destructive" : "text-primary"
-                        )}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-sm font-bold">{area.accuracy}%</div>
-                    </div>
-                    <div
-                      role="tooltip"
-                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-[11px] font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
-                    >
-                      {area.correct} / {area.total}
-                    </div>
-                  </div>
+                  <ScoreRing
+                    value={area.accuracy}
+                    total={100}
+                    radius={28}
+                    strokeWidth={4}
+                    arcClassName={area.accuracy < 50 ? "text-destructive" : "text-primary"}
+                    tooltip={`${area.correct} / ${area.total}`}
+                    compact
+                  >
+                    <div className="text-sm font-bold">{area.accuracy}%</div>
+                  </ScoreRing>
                   <div className="text-xs font-medium">{area.qtype}</div>
                   <div className="text-xs text-muted-foreground">{area.correct}/{area.total}</div>
                 </button>

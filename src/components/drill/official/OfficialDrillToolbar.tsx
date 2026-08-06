@@ -30,6 +30,44 @@ export const FONT_SCALES = [
   { key: "xl", label: "Extra Large", value: 1.3 },
 ] as const;
 
+export interface ToolbarDirections {
+  title: string;
+  body: React.ReactNode;
+  /** Screen-reader description of the dialog. */
+  srDescription: string;
+}
+
+/**
+ * The official LR section directions. Kept here as the default so the LR
+ * player's call sites stay unchanged; RC passes its own set.
+ */
+export const LR_DIRECTIONS: ToolbarDirections = {
+  title: "Logical Reasoning Directions",
+  srDescription: "Directions for the LSAT Logical Reasoning section.",
+  body: (
+    <>
+      <p>
+        The questions in this section are based on the reasoning contained in brief
+        statements or passages. For some questions, more than one of the choices could
+        conceivably answer the question. However, you are to choose the <em>best</em>{" "}
+        answer; that is, the response that most accurately and completely answers the
+        question. You should not make assumptions that are by commonsense standards
+        implausible, superfluous, or incompatible with the passage.
+      </p>
+      <p>
+        After you have chosen the best answer, blacken the corresponding space on your
+        answer sheet.
+      </p>
+    </>
+  ),
+};
+
+interface FontScaleOption {
+  key: string;
+  label: string;
+  value: number;
+}
+
 interface Props {
   highlightMode: HighlightMode;
   setHighlightMode: (mode: HighlightMode) => void;
@@ -48,6 +86,33 @@ interface Props {
   /** Whether the notes panel is currently open (drives the active state). */
   notesOpen?: boolean;
   onToggleNotes?: () => void;
+  /**
+   * Directions dialog contents. Defaults to the LR section directions; pass a
+   * different set for another section, or `null` to hide the button entirely.
+   */
+  directions?: ToolbarDirections | null;
+  /**
+   * Rendered in the left group between Directions and Find Text — the slot RC
+   * uses for "Passage Only View", which sits there in the official interface.
+   */
+  leftTools?: React.ReactNode;
+  /**
+   * Rendered in the right cluster after the text controls and before the timer.
+   * RC uses it for response masking, the review grid, and full screen.
+   */
+  rightTools?: React.ReactNode;
+  /**
+   * Hide the underline/marker/eraser group. Only pass false for a surface that
+   * has no text to annotate — the tools are part of the official look.
+   */
+  highlightToolsVisible?: boolean;
+  /** Override the font-size options. Defaults to FONT_SCALES. */
+  fontScaleOptions?: readonly FontScaleOption[];
+  /**
+   * Extra controls appended inside the Aa popover beneath a divider. RC puts
+   * line height and color scheme here so text settings stay in one control.
+   */
+  a11yExtraSections?: React.ReactNode;
 }
 
 export default function OfficialDrillToolbar({
@@ -62,6 +127,12 @@ export default function OfficialDrillToolbar({
   notesButtonVisible,
   notesOpen,
   onToggleNotes,
+  directions = LR_DIRECTIONS,
+  leftTools,
+  rightTools,
+  highlightToolsVisible = true,
+  fontScaleOptions = FONT_SCALES,
+  a11yExtraSections,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
@@ -90,13 +161,17 @@ export default function OfficialDrillToolbar({
     <>
       <div className="border-b border-slate-300 bg-slate-50">
         <div className="px-3 sm:px-4 py-2 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-800">
-          <button
-            type="button"
-            onClick={() => setDirectionsOpen(true)}
-            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
-          >
-            Directions
-          </button>
+          {directions && (
+            <button
+              type="button"
+              onClick={() => setDirectionsOpen(true)}
+              className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
+            >
+              Directions
+            </button>
+          )}
+
+          {leftTools}
 
           <input
             type="text"
@@ -119,31 +194,35 @@ export default function OfficialDrillToolbar({
 
           {/* Right cluster: tools | Aa + line-spacing | timer */}
           <div className="ml-auto flex items-center gap-1.5">
-            <div className="flex items-center gap-0.5">
-              {tools.map((t) => {
-                const isActive = highlightMode === t.mode;
-                return (
-                  <button
-                    key={t.mode}
-                    type="button"
-                    onClick={() => toggle(t.mode)}
-                    aria-pressed={isActive}
-                    aria-label={t.label}
-                    title={t.label}
-                    className={cn(
-                      "p-1 rounded-sm transition-colors flex items-center justify-center",
-                      isActive
-                        ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
-                        : "border border-transparent hover:bg-slate-200",
-                    )}
-                  >
-                    {t.icon}
-                  </button>
-                );
-              })}
-            </div>
+            {highlightToolsVisible && (
+              <>
+                <div className="flex items-center gap-0.5">
+                  {tools.map((t) => {
+                    const isActive = highlightMode === t.mode;
+                    return (
+                      <button
+                        key={t.mode}
+                        type="button"
+                        onClick={() => toggle(t.mode)}
+                        aria-pressed={isActive}
+                        aria-label={t.label}
+                        title={t.label}
+                        className={cn(
+                          "p-1 rounded-sm transition-colors flex items-center justify-center",
+                          isActive
+                            ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
+                            : "border border-transparent hover:bg-slate-200",
+                        )}
+                      >
+                        {t.icon}
+                      </button>
+                    );
+                  })}
+                </div>
 
-            <PipeSeparator />
+                <PipeSeparator />
+              </>
+            )}
 
             <Popover open={aaOpen} onOpenChange={setAaOpen}>
               <PopoverTrigger asChild>
@@ -162,8 +241,8 @@ export default function OfficialDrillToolbar({
                   <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" sideOffset={6} className="w-56 p-2 bg-white border border-slate-200 shadow-lg rounded-md">
-                {FONT_SCALES.map((opt) => {
+              <PopoverContent align="start" sideOffset={6} className="w-60 p-2 bg-white border border-slate-200 shadow-lg rounded-md max-h-[70vh] overflow-y-auto">
+                {fontScaleOptions.map((opt) => {
                   const selected = Math.abs(fontScale - opt.value) < 0.001;
                   return (
                     <button
@@ -190,6 +269,7 @@ export default function OfficialDrillToolbar({
                     </button>
                   );
                 })}
+                {a11yExtraSections}
               </PopoverContent>
             </Popover>
 
@@ -203,6 +283,13 @@ export default function OfficialDrillToolbar({
               <LineSpacingIcon />
               <span className="sr-only">Line spacing</span>
             </button>
+
+            {rightTools && (
+              <>
+                <PipeSeparator />
+                <div className="flex items-center gap-0.5">{rightTools}</div>
+              </>
+            )}
 
             {timerLabelPrefix && (
               <>
@@ -248,30 +335,21 @@ export default function OfficialDrillToolbar({
         </div>
       </div>
 
-      <Dialog open={directionsOpen} onOpenChange={setDirectionsOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Logical Reasoning Directions</DialogTitle>
-            <DialogDescription className="sr-only">
-              Directions for the LSAT Logical Reasoning section.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 text-[14px] leading-relaxed text-slate-800">
-            <p>
-              The questions in this section are based on the reasoning contained in brief
-              statements or passages. For some questions, more than one of the choices could
-              conceivably answer the question. However, you are to choose the <em>best</em>{" "}
-              answer; that is, the response that most accurately and completely answers the
-              question. You should not make assumptions that are by commonsense standards
-              implausible, superfluous, or incompatible with the passage.
-            </p>
-            <p>
-              After you have chosen the best answer, blacken the corresponding space on your
-              answer sheet.
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {directions && (
+        <Dialog open={directionsOpen} onOpenChange={setDirectionsOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>{directions.title}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {directions.srDescription}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 text-[14px] leading-relaxed text-slate-800">
+              {directions.body}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

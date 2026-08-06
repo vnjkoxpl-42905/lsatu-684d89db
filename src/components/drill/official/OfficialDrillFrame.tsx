@@ -43,6 +43,15 @@ interface Props {
   notesPanelExplanation?: DrillExplanationContext | null;
   /** Find Similar context for the drawer's Details tab. */
   notesPanelSimilar?: DrillSimilarContext | null;
+  /** Show the floating notepad when the docked panel is off. Default true. */
+  notepadEnabled?: boolean;
+  /**
+   * Pin the shell to the viewport height instead of letting it grow. Required
+   * by any surface whose panes scroll internally — RC's passage runs far longer
+   * than an LR stimulus, so without this the card grows and the page scrolls
+   * instead of the passage.
+   */
+  fillViewport?: boolean;
 }
 
 /**
@@ -67,6 +76,8 @@ export default function OfficialDrillFrame({
   onNotesPanelTabChange,
   notesPanelExplanation,
   notesPanelSimilar,
+  notepadEnabled = true,
+  fillViewport,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -74,7 +85,10 @@ export default function OfficialDrillFrame({
 
   return (
     <div
-      className="min-h-screen bg-[#1A1635] flex flex-col"
+      className={cn(
+        "bg-[#1A1635] flex flex-col",
+        fillViewport ? "h-screen overflow-hidden" : "min-h-screen",
+      )}
       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
       <header className="bg-white border-b border-slate-200">
@@ -123,10 +137,11 @@ export default function OfficialDrillFrame({
       <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex relative overflow-hidden">
         <div className="flex-1 flex min-w-0">
           <div
-            className={
-              "mx-auto w-full max-w-[1400px] min-h-[700px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity] " +
-              (isPaused ? "blur-[3px] opacity-60 pointer-events-none select-none" : "")
-            }
+            className={cn(
+              "mx-auto w-full max-w-[1400px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity]",
+              fillViewport ? "h-full" : "min-h-[700px]",
+              isPaused && "blur-[3px] opacity-60 pointer-events-none select-none",
+            )}
             aria-hidden={isPaused ? "true" : undefined}
           >
             {children}
@@ -206,7 +221,7 @@ export default function OfficialDrillFrame({
           </div>
         )}
       </main>
-      {!isPaused && !notesPanelEnabled && <DrillNotepad />}
+      {!isPaused && !notesPanelEnabled && notepadEnabled && <DrillNotepad />}
     </div>
   );
 }

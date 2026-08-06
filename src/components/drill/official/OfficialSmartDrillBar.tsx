@@ -10,18 +10,32 @@ import {
 import { cn } from "@/lib/utils";
 
 interface Props {
-  /** When true, the correct answer is revealed automatically after submitting. */
-  autoReveal: boolean;
-  onAutoRevealChange: (next: boolean) => void;
+  /**
+   * When true, the correct answer is revealed automatically after submitting.
+   * Omit `onAutoRevealChange` to hide the toggle — RC chooses its reveal mode
+   * when the drill is built, so the switch has nothing to mean there.
+   */
+  autoReveal?: boolean;
+  onAutoRevealChange?: (next: boolean) => void;
   /** "submit" before an answer is committed, "next" after. */
   primaryAction: "submit" | "next";
   /** Submit disabled until an answer is selected (or while paused). */
   primaryDisabled?: boolean;
+  /** Overrides the primary pill's label ("Submit" / "Next"). */
+  primaryLabel?: string;
+  /** Hide the primary pill entirely (read-only review has no action). */
+  primaryVisible?: boolean;
   onSubmit: () => void;
   onNext: () => void;
-  onSkip: () => void;
+  /** Omit to hide Skip. */
+  onSkip?: () => void;
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
+  /**
+   * Rendered as its own row above the pill row. RC puts its per-question pager
+   * here; the official RC interface carries one and LR does not.
+   */
+  pager?: React.ReactNode;
   onEnd: () => void;
   /** Opens the question drawer on Details. Hidden if omitted. */
   onOpenMenu?: () => void;
@@ -53,10 +67,13 @@ export default function OfficialSmartDrillBar({
   onAutoRevealChange,
   primaryAction,
   primaryDisabled,
+  primaryLabel,
+  primaryVisible = true,
   onSubmit,
   onNext,
   onSkip,
   skipDisabled,
+  pager,
   onEnd,
   onOpenMenu,
   onShowAnswer,
@@ -70,6 +87,7 @@ export default function OfficialSmartDrillBar({
 
   return (
     <div className="border-t-2 border-slate-300 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.06)] mt-auto">
+      {pager && <div className="px-6 pt-3 border-b border-slate-200">{pager}</div>}
       <div className="px-6 py-4 flex items-center gap-3">
         {/* Left: End */}
         <button
@@ -123,6 +141,7 @@ export default function OfficialSmartDrillBar({
 
         {/* Right cluster */}
         <div className="ml-auto flex items-center gap-3">
+          {onAutoRevealChange && (
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -152,8 +171,9 @@ export default function OfficialSmartDrillBar({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          )}
 
-          {!isNext && (
+          {onSkip && !isNext && (
             <button
               type="button"
               onClick={onSkip}
@@ -164,14 +184,16 @@ export default function OfficialSmartDrillBar({
             </button>
           )}
 
-          <button
-            type="button"
-            onClick={isNext ? onNext : onSubmit}
-            disabled={disabled || (!isNext && primaryDisabled)}
-            className="rounded-full bg-slate-900 text-white px-7 py-2 text-[14px] font-semibold hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {isNext ? "Next" : "Submit"}
-          </button>
+          {primaryVisible && (
+            <button
+              type="button"
+              onClick={isNext ? onNext : onSubmit}
+              disabled={disabled || (!isNext && primaryDisabled)}
+              className="rounded-full bg-slate-900 text-white px-7 py-2 text-[14px] font-semibold hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              {primaryLabel ?? (isNext ? "Next" : "Submit")}
+            </button>
+          )}
         </div>
       </div>
     </div>
