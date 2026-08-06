@@ -1,0 +1,9 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      "src/features/rc/player.css"
+    ],
+    "ignoreValues": []
+  }
+}
