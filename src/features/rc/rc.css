@@ -166,10 +166,19 @@
 
 /* ------------------------------------------------------------ hub/results */
 
+/* These are route-level pages with no surrounding layout shell, so they paint
+   their own surface rather than inheriting whatever the body happens to carry. */
 .rc-page {
-  max-width: 1120px;
-  margin: 0 auto;
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   padding: 32px 24px 64px;
+}
+
+.rc-page > * {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .rc-page h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
