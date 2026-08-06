@@ -28,6 +28,9 @@ import { loadDrillHub } from "@/lib/routePreload";
 const AcademyMainhub = React.lazy(loadDrillHub);
 const Drill = React.lazy(() => import("./pages/Drill"));
 const Analytics = React.lazy(() => import("./pages/Analytics"));
+const RcHub = React.lazy(() => import("./features/rc/pages/RcHub"));
+const RcPlayer = React.lazy(() => import("./features/rc/pages/RcPlayer"));
+const RcResults = React.lazy(() => import("./features/rc/pages/RcResults"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
@@ -398,6 +401,17 @@ const App = () => {
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
+                  } />
+                  {/* Reading Comprehension drilling. Content is static JSON; only
+                      progress touches the database. See src/features/rc/CONTEXT.md. */}
+                  <Route path="/rc" element={
+                    <ProtectedRoute flag="has_drill_access"><RcHub /></ProtectedRoute>
+                  } />
+                  <Route path="/rc/drill" element={
+                    <ProtectedRoute flag="has_drill_access"><RcPlayer /></ProtectedRoute>
+                  } />
+                  <Route path="/rc/results/:sessionId" element={
+                    <ProtectedRoute flag="has_drill_access"><RcResults /></ProtectedRoute>
                   } />
                   {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
                   <Route path="/waj" element={<Navigate to="/journal" replace />} />
