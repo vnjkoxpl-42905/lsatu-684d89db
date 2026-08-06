@@ -1,11 +1,654 @@
+import * as React from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { loadAllIndexPassages } from '../lib/rcBank';
+import {
+  RC_ADAPTIVE_LABEL,
+  passageStatus,
+  selectPassages,
+  type RcIndexPassageWithPt,
+  type RcSelectionFilters,
+  type RcStatusFilter,
+} from '../lib/rcAdaptive';
+import {
+  createSession,
+  deleteSession,
+  getQuestionHistory,
+  getSessionAttempts,
+  listSessions,
+} from '../api/rcProgress';
+import {
+  RC_FORMATS,
+  RC_FRAMEWORKS,
+  RC_PREPTEST_DEFAULT_MAX,
+  RC_PREPTEST_MAX,
+  RC_PREPTEST_MIN,
+  RC_STANDARD_SECONDS_PER_PASSAGE,
+  RC_TOPICS,
+  type RcDrillConfig,
+  type RcDrillSession,
+  type RcQuestionHistory,
+  type RcRevealMode,
+} from '../lib/rcTypes';
 import '../rc.css';
 
-/** Placeholder until Phase F builds the picker and builder. */
+const mmss = (seconds: number) =>
+  `${Math.floor(seconds / 60)}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
+
+const REVEAL_OPTIONS: { id: RcRevealMode; label: string; caption: string }[] = [
+  {
+    id: 'per_passage',
+    label: 'After each passage',
+    caption: 'Finish a passage, then walk through it',
+  },
+  { id: 'end_of_set', label: 'At the end', caption: 'Test conditions, review at the end' },
+  {
+    id: 'per_question',
+    label: 'After each question',
+    caption: 'Check yourself question by question',
+  },
+];
+
+const STATUS_OPTIONS: { id: RcStatusFilter; label: string }[] = [
+  { id: 'any', label: 'Any' },
+  { id: 'fresh', label: 'Fresh' },
+  { id: 'incorrect_before', label: 'Incorrect before' },
+  { id: 'incorrect_last', label: 'Incorrect on last try' },
+];
+
+const DEFAULT_FILTERS: RcSelectionFilters = {
+  topics: [],
+  formats: [],
+  frameworks: [],
+  families: [],
+  difficulties: [],
+  status: 'fresh',
+  preptestMin: RC_PREPTEST_MIN,
+  preptestMax: RC_PREPTEST_DEFAULT_MAX,
+};
+
 export default function RcHub() {
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+
+  const [passages, setPassages] = React.useState<RcIndexPassageWithPt[]>([]);
+  const [history, setHistory] = React.useState<RcQuestionHistory>(new Map());
+  const [sessions, setSessions] = React.useState<RcDrillSession[]>([]);
+  const [scores, setScores] = React.useState<Map<string, { correct: number; total: number }>>(
+    new Map(),
+  );
+  const [loadError, setLoadError] = React.useState<string | null>(null);
+  const [notice, setNotice] = React.useState<string | null>(null);
+
+  const [count, setCount] = React.useState(1);
+  const [timing, setTiming] = React.useState<'untimed' | 'standard' | 'custom'>('untimed');
+  const [customSeconds, setCustomSeconds] = React.useState(RC_STANDARD_SECONDS_PER_PASSAGE);
+  const [reveal, setReveal] = React.useState<RcRevealMode>('per_passage');
+  const [filters, setFilters] = React.useState<RcSelectionFilters>(DEFAULT_FILTERS);
+  const [customizeOpen, setCustomizeOpen] = React.useState(false);
+  const [handPickOpen, setHandPickOpen] = React.useState(false);
+  const [handPicked, setHandPicked] = React.useState<number[]>([]);
+  const [search, setSearch] = React.useState('');
+  const [starting, setStarting] = React.useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const all = await loadAllIndexPassages();
+        if (!cancelled) setPassages(all as RcIndexPassageWithPt[]);
+      } catch {
+        if (!cancelled) setLoadError('The passage list could not be loaded.');
+      }
+      try {
+        const [h, s] = await Promise.all([getQuestionHistory(), listSessions()]);
+        if (!cancelled) {
+          setHistory(h);
+          setSessions(s);
+        }
+        // Scores for the completed drills, counting first attempts only so the
+        // history row and the results page can never disagree.
+        const done = s.filter((x) => x.status === 'completed');
+        const pairs = await Promise.all(
+          done.map(async (x) => {
+            const rows = (await getSessionAttempts(x.id)).filter((a) => a.isFirstAttempt);
+            return [
+              x.id,
+              { correct: rows.filter((a) => a.isCorrect === true).length, total: rows.length },
+            ] as const;
+          }),
+        );
+        if (!cancelled) setScores(new Map(pairs));
+      } catch {
+        // A student with no history yet is the normal first-run case.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* --------------------------------------------------- assignment deep link */
+
+  const deepLinkApplied = React.useRef(false);
+  React.useEffect(() => {
+    if (deepLinkApplied.current || passages.length === 0) return;
+    deepLinkApplied.current = true;
+
+    const ids = params.get('passages');
+    const revealParam = params.get('reveal');
+    const timingParam = params.get('timing');
+
+    if (revealParam && REVEAL_OPTIONS.some((o) => o.id === revealParam)) {
+      setReveal(revealParam as RcRevealMode);
+    }
+    if (timingParam === 'unlimited') setTiming('untimed');
+    else if (timingParam === 'standard') setTiming('standard');
+
+    if (ids) {
+      const wanted = ids
+        .split(',')
+        .map((n) => Number(n.trim()))
+        .filter((n) => Number.isFinite(n));
+      const known = wanted.filter((id) => passages.some((p) => p.passageId === id));
+      if (known.length !== wanted.length) {
+        setNotice('That passage could not be found. Build a drill below instead.');
+      }
+      if (known.length > 0) {
+        setHandPicked(known);
+        setHandPickOpen(true);
+        setCount(known.length);
+      }
+    }
+  }, [params, passages]);
+
+  /* ------------------------------------------------------------ selection */
+
+  const questionIdsByPassage = React.useMemo(() => {
+    const map = new Map<number, number[]>();
+    for (const p of passages) map.set(p.passageId, p.questionIds ?? []);
+    return map;
+  }, [passages]);
+
+  const statusOf = React.useCallback(
+    (p: RcIndexPassageWithPt) =>
+      passageStatus(p, questionIdsByPassage.get(p.passageId) ?? [], history),
+    [questionIdsByPassage, history],
+  );
+
+  const preview = React.useMemo(
+    () =>
+      selectPassages({
+        pool: passages,
+        questionIdsByPassage,
+        filters,
+        history,
+        count,
+        seed: 1,
+      }),
+    [passages, questionIdsByPassage, filters, history, count],
+  );
+
+  const drillablePassages = passages.filter((p) => p.questionCount > 0);
+
+  const secondsPerPassage =
+    timing === 'standard'
+      ? RC_STANDARD_SECONDS_PER_PASSAGE
+      : timing === 'custom'
+        ? customSeconds
+        : 0;
+
+  const config: RcDrillConfig = {
+    reveal,
+    timing:
+      timing === 'untimed'
+        ? { mode: 'unlimited' }
+        : { mode: 'per_passage_budget', secondsPerPassage },
+    source: handPicked.length > 0 ? 'manual' : 'adaptive',
+  };
+
+  const start = async () => {
+    setStarting(true);
+    try {
+      const chosen =
+        handPicked.length > 0
+          ? handPicked
+          : selectPassages({
+              pool: passages,
+              questionIdsByPassage,
+              filters,
+              history,
+              count,
+              seed: Date.now() % 2147483647,
+            }).selected.map((p) => p.passageId);
+
+      if (chosen.length === 0) {
+        setNotice('No passages match those filters. Loosen one and try again.');
+        setStarting(false);
+        return;
+      }
+      const session = await createSession(config, chosen);
+      navigate('/rc/drill?sessionId=' + session.id);
+    } catch (err) {
+      setNotice(err instanceof Error ? err.message : 'The drill could not be started.');
+      setStarting(false);
+    }
+  };
+
+  const toggle = (key: 'topics' | 'formats' | 'frameworks', value: string) =>
+    setFilters((f) => ({
+      ...f,
+      [key]: f[key].includes(value) ? f[key].filter((v) => v !== value) : [...f[key], value],
+    }));
+
+  const toggleDifficulty = (value: number) =>
+    setFilters((f) => ({
+      ...f,
+      difficulties: f.difficulties.includes(value)
+        ? f.difficulties.filter((v) => v !== value)
+        : [...f.difficulties, value],
+    }));
+
+  const handPickRows = drillablePassages.filter((p) => {
+    if (search.trim() && !(p.title ?? '').toLowerCase().includes(search.trim().toLowerCase()))
+      return false;
+    return matches(p);
+  });
+
+  function matches(p: RcIndexPassageWithPt) {
+    const status = statusOf(p);
+    if (p.preptest < filters.preptestMin || p.preptest > filters.preptestMax) return false;
+    if (filters.topics.length && (!p.topic || !filters.topics.includes(p.topic))) return false;
+    if (filters.formats.length && (!p.format || !filters.formats.includes(p.format))) return false;
+    if (filters.frameworks.length && !p.frameworks.some((f) => filters.frameworks.includes(f)))
+      return false;
+    if (filters.difficulties.length && (p.difficulty == null || !filters.difficulties.includes(p.difficulty)))
+      return false;
+    if (filters.status === 'fresh' && status.attempted) return false;
+    if (filters.status === 'incorrect_before' && !status.everIncorrect) return false;
+    if (filters.status === 'incorrect_last' && !status.incorrectOnLastTake) return false;
+    return true;
+  }
+
+  const pickedQuestionCount = handPicked.reduce(
+    (n, id) => n + (passages.find((p) => p.passageId === id)?.questionCount ?? 0),
+    0,
+  );
+
+  const removeSession = async (id: string) => {
+    const ok = window.confirm(
+      'Delete this drill? Its answers and timings are deleted with it, and that cannot be undone.',
+    );
+    if (!ok) return;
+    await deleteSession(id);
+    setSessions(await listSessions());
+  };
+
   return (
     <div className="rc-page">
       <h1>Reading Comprehension</h1>
-      <p className="rc-page-sub">Drill building lands in the next phase.</p>
+      <p className="rc-page-sub">Drill full passages the way they appear on the test.</p>
+
+      {loadError && <p className="rc-page-sub">{loadError}</p>}
+      {notice && <p className="rc-page-sub">{notice}</p>}
+
+      {/* ------------------------------------------------------- build card */}
+      <div className="rc-card">
+        <h2>Build a drill</h2>
+
+        <div className="rc-field">
+          <div className="rc-field-label">Passages</div>
+          <div className="rc-stepper">
+            <button type="button" aria-label="Fewer passages" onClick={() => setCount((c) => Math.max(1, c - 1))}>
+              −
+            </button>
+            <span className="rc-stepper-value">{count}</span>
+            <button type="button" aria-label="More passages" onClick={() => setCount((c) => Math.min(8, c + 1))}>
+              +
+            </button>
+          </div>
+        </div>
+
+        <div className="rc-field">
+          <div className="rc-field-label">Timing</div>
+          <div className="rc-segmented">
+            <button
+              type="button"
+              className={`rc-segment${timing === 'untimed' ? ' rc-active' : ''}`}
+              onClick={() => setTiming('untimed')}
+            >
+              Untimed
+            </button>
+            <button
+              type="button"
+              className={`rc-segment${timing === 'standard' ? ' rc-active' : ''}`}
+              onClick={() => setTiming('standard')}
+            >
+              Standard pace
+              <span className="rc-segment-caption">8:45 per passage</span>
+            </button>
+            <button
+              type="button"
+              className={`rc-segment${timing === 'custom' ? ' rc-active' : ''}`}
+              onClick={() => setTiming('custom')}
+            >
+              Custom
+            </button>
+            {timing === 'custom' && (
+              <input
+                type="text"
+                aria-label="Minutes and seconds per passage"
+                className="rc-segment"
+                defaultValue={mmss(customSeconds)}
+                onBlur={(e) => {
+                  const [m, s] = e.target.value.split(':').map((n) => Number(n));
+                  if (Number.isFinite(m)) setCustomSeconds(m * 60 + (Number.isFinite(s) ? s : 0));
+                }}
+              />
+            )}
+          </div>
+          {timing !== 'untimed' && (
+            <div className="rc-field-hint">
+              ≈ {mmss(secondsPerPassage * count)} for {count} passage{count === 1 ? '' : 's'}
+            </div>
+          )}
+        </div>
+
+        <div className="rc-field">
+          <div className="rc-field-label">Reveal answers</div>
+          <div className="rc-segmented">
+            {REVEAL_OPTIONS.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                className={`rc-segment${reveal === option.id ? ' rc-active' : ''}`}
+                onClick={() => setReveal(option.id)}
+              >
+                {option.label}
+                <span className="rc-segment-caption">{option.caption}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="rc-field">
+          <div className="rc-field-label">
+            Choosing from {preview.poolSize} of {drillablePassages.length} passages
+          </div>
+          <div className="rc-field-hint">{RC_ADAPTIVE_LABEL}</div>
+          {preview.shortfallMessage && (
+            <div className="rc-field-hint">{preview.shortfallMessage}</div>
+          )}
+          <div className="rc-chip-row" style={{ marginTop: 10 }}>
+            <button type="button" className="rc-chip" onClick={() => setCustomizeOpen((v) => !v)}>
+              {customizeOpen ? 'Hide options' : 'Customize'}
+            </button>
+            <button type="button" className="rc-chip" onClick={() => setHandPickOpen((v) => !v)}>
+              {handPickOpen ? 'Hide passage list' : 'Hand-pick passages'}
+            </button>
+          </div>
+        </div>
+
+        {customizeOpen && (
+          <div className="rc-field">
+            <FilterGroup label="Topic" values={[...RC_TOPICS]} active={filters.topics} onToggle={(v) => toggle('topics', v)} />
+            <FilterGroup label="Format" values={[...RC_FORMATS]} active={filters.formats} onToggle={(v) => toggle('formats', v)} />
+            <FilterGroup label="Framework" values={[...RC_FRAMEWORKS]} active={filters.frameworks} onToggle={(v) => toggle('frameworks', v)} />
+
+            <div className="rc-field-label" style={{ marginTop: 14 }}>Passage difficulty</div>
+            <div className="rc-chip-row">
+              <button
+                type="button"
+                className={`rc-chip${filters.difficulties.length === 0 ? ' rc-active' : ''}`}
+                onClick={() => setFilters((f) => ({ ...f, difficulties: [] }))}
+              >
+                Adaptive
+              </button>
+              {[1, 2, 3, 4, 5].map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  className={`rc-chip${filters.difficulties.includes(d) ? ' rc-active' : ''}`}
+                  onClick={() => toggleDifficulty(d)}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+
+            <div className="rc-field-label" style={{ marginTop: 14 }}>Status</div>
+            <div className="rc-chip-row">
+              {STATUS_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`rc-chip${filters.status === option.id ? ' rc-active' : ''}`}
+                  onClick={() => setFilters((f) => ({ ...f, status: option.id }))}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="rc-field-label" style={{ marginTop: 14 }}>PrepTests</div>
+            <div className="rc-chip-row" style={{ alignItems: 'center', gap: 12 }}>
+              <input
+                type="range"
+                aria-label="Earliest PrepTest"
+                min={RC_PREPTEST_MIN}
+                max={RC_PREPTEST_MAX}
+                value={filters.preptestMin}
+                onChange={(e) =>
+                  setFilters((f) => ({
+                    ...f,
+                    preptestMin: Math.min(Number(e.target.value), f.preptestMax),
+                  }))
+                }
+              />
+              <input
+                type="range"
+                aria-label="Latest PrepTest"
+                min={RC_PREPTEST_MIN}
+                max={RC_PREPTEST_MAX}
+                value={filters.preptestMax}
+                onChange={(e) =>
+                  setFilters((f) => ({
+                    ...f,
+                    preptestMax: Math.max(Number(e.target.value), f.preptestMin),
+                  }))
+                }
+              />
+              <span>
+                {filters.preptestMin}–{filters.preptestMax}
+              </span>
+            </div>
+            <div className="rc-field-hint">
+              Newest tests are held back by default so they stay fresh for timed sections
+            </div>
+          </div>
+        )}
+
+        <button
+          type="button"
+          className="rc-button rc-button-primary"
+          disabled={starting}
+          onClick={start}
+        >
+          {starting ? 'Starting…' : 'Start drill'}
+        </button>
+      </div>
+
+      {/* -------------------------------------------------------- hand-pick */}
+      {handPickOpen && (
+        <div className="rc-card">
+          <h2>Choose your passages</h2>
+          <input
+            type="text"
+            className="rc-segment"
+            style={{ width: '100%', marginBottom: 12 }}
+            placeholder="Search titles"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div style={{ maxHeight: 420, overflowY: 'auto' }}>
+            <table className="rc-table">
+              <thead>
+                <tr>
+                  <th>PT</th>
+                  <th>S</th>
+                  <th>P</th>
+                  <th>Title</th>
+                  <th>Opening</th>
+                  <th>Topic</th>
+                  <th>Format</th>
+                  <th>Qs</th>
+                  <th>Difficulty</th>
+                  <th>Your status</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {handPickRows.slice(0, 200).map((p) => {
+                  const status = statusOf(p);
+                  const picked = handPicked.includes(p.passageId);
+                  return (
+                    <tr key={p.passageId}>
+                      <td>{p.preptest}</td>
+                      <td>{p.section}</td>
+                      <td>{p.setNumber}</td>
+                      <td>{p.title}</td>
+                      <td style={{ opacity: 0.55, maxWidth: 220 }}>{p.firstWords}</td>
+                      <td>{p.topic && <span className="rc-status-chip">{p.topic}</span>}</td>
+                      <td>{p.format && <span className="rc-status-chip">{p.format}</span>}</td>
+                      <td>{p.questionCount}</td>
+                      <td>{'•'.repeat(p.difficulty ?? 0)}</td>
+                      <td>
+                        {!status.attempted
+                          ? '—'
+                          : status.missed > 0
+                            ? `${status.missed} missed`
+                            : 'done'}
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className={`rc-chip${picked ? ' rc-active' : ''}`}
+                          onClick={() =>
+                            setHandPicked((prev) =>
+                              prev.includes(p.passageId)
+                                ? prev.filter((id) => id !== p.passageId)
+                                : [...prev, p.passageId],
+                            )
+                          }
+                        >
+                          {picked ? 'Remove' : 'Add'}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="rc-actions">
+            <span className="rc-hero-meta">
+              {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} ·{' '}
+              {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
+            </span>
+            <button
+              type="button"
+              className="rc-button rc-button-primary"
+              disabled={handPicked.length === 0 || starting}
+              onClick={start}
+            >
+              Start drill
+            </button>
+            {handPicked.length > 0 && (
+              <button type="button" className="rc-button" onClick={() => setHandPicked([])}>
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------------------------------------------- history */}
+      <h2 style={{ marginTop: 32 }}>Your drills</h2>
+      {sessions.length === 0 && <p className="rc-empty">No drills yet.</p>}
+      {sessions.map((s) => (
+        <div
+          key={s.id}
+          className={`rc-session-row${s.excludedFromAnalytics ? ' rc-session-excluded' : ''}`}
+        >
+          <span>
+            {s.passageIds.length} passage{s.passageIds.length === 1 ? '' : 's'} ·{' '}
+            {s.config.timing.mode === 'unlimited' ? 'untimed' : 'timed'} ·{' '}
+            {REVEAL_OPTIONS.find((o) => o.id === s.config.reveal)?.label.toLowerCase()}
+          </span>
+          <span className="rc-status-chip">
+            {s.status === 'in_progress' ? 'in progress' : s.status}
+          </span>
+          {scores.has(s.id) && (
+            <span>
+              {scores.get(s.id)!.correct} / {scores.get(s.id)!.total}
+            </span>
+          )}
+          {s.excludedFromAnalytics && <span className="rc-status-chip">excluded</span>}
+          <span style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+            {s.status === 'in_progress' ? (
+              <button
+                type="button"
+                className="rc-chip"
+                onClick={() => navigate('/rc/drill?sessionId=' + s.id)}
+              >
+                Resume
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="rc-chip"
+                onClick={() => navigate('/rc/results/' + s.id)}
+              >
+                Results
+              </button>
+            )}
+            <button type="button" className="rc-chip" onClick={() => removeSession(s.id)}>
+              Delete
+            </button>
+          </span>
+        </div>
+      ))}
     </div>
+  );
+}
+
+function FilterGroup({
+  label,
+  values,
+  active,
+  onToggle,
+}: {
+  label: string;
+  values: string[];
+  active: string[];
+  onToggle: (value: string) => void;
+}) {
+  return (
+    <>
+      <div className="rc-field-label" style={{ marginTop: 14 }}>
+        {label}
+      </div>
+      <div className="rc-chip-row">
+        {values.map((value) => (
+          <button
+            key={value}
+            type="button"
+            className={`rc-chip${active.includes(value) ? ' rc-active' : ''}`}
+            onClick={() => onToggle(value)}
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+    </>
   );
 }

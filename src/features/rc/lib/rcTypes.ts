@@ -89,6 +89,8 @@ export interface RcIndexPassage {
   difficulty: number | null;
   questionCount: number;
   explainedCount: number;
+  /** Lets the hub roll history up to passage level without a per-PT load. */
+  questionIds: number[];
   firstWords: string;
 }
 

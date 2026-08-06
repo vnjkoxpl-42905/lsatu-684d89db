@@ -226,6 +226,9 @@ for (const preptest of [...byPreptest.keys()].sort((a, b) => a - b)) {
       difficulty: p.difficulty,
       questionCount: p.questions.length,
       explainedCount: p.questions.filter((q) => q.hasWrittenExplanation).length,
+      // The hub rolls a student's per-question history up to passage level for
+      // its status filters, and must do it without loading any per-PT file.
+      questionIds: p.questions.map((q) => q.questionId),
       firstWords: firstWords(p.text),
     })),
   });

@@ -6,6 +6,7 @@ import {
   BookOpen,
   Grid3x3,
   Layers,
+  ScrollText,
   ArrowRight,
   Pause,
   Play,
@@ -98,6 +99,14 @@ export default function PracticeInsightStage({
             title="Build a Set"
             description="Assemble a targeted question set."
             onClick={() => onOpenLauncher("type-drill")}
+          />
+          {/* Reading Comprehension runs on its own route rather than an embedded
+              launcher stage: its player is a full-screen exam interface. */}
+          <PracticeTile
+            icon={ScrollText}
+            title="Reading Comprehension"
+            description="Drill full passages the way they appear on the test."
+            onClick={() => navigate("/rc")}
           />
         </div>
         <div className="mt-[18px] flex flex-wrap gap-2">
