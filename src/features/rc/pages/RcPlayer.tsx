@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { RcToolbar, RcRightRail, RcBottomBar } from '../components/RcChrome';
 import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
+import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
   RcAccessibilityModal,
   RcOverflowMenu,
@@ -36,6 +37,9 @@ import {
   setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcLetter, RcPassage } from '../lib/rcTypes';
+// The player owns player.css; rc.css carries the review layer, which mounts
+// inside the player too, so it must not depend on the hub having been visited.
+import '../rc.css';
 import '../player.css';
 
 const DEFAULT_CONFIG: RcDrillConfig = {
@@ -458,7 +462,10 @@ export default function RcPlayer() {
           onScroll={(top) =>
             setScrollTops((prev) => new Map(prev).set(item.passage.passageId, top))
           }
-        />
+        >
+          {/* The summary is review material, so it only appears once feedback is on. */}
+          {revealed && <RcPassageSummary summaries={item.passage.summaries} />}
+        </RcPassagePane>
 
         {!passageOnly && (
           <RcQuestionPane

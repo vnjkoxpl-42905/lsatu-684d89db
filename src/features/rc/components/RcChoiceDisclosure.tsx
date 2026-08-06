@@ -29,9 +29,15 @@ export function splitTag(tag: string | null): string[] {
     .filter(Boolean);
 }
 
+/**
+ * A choice with no tag and no explanation gets no row at all, even when a
+ * response percentage exists: a row carrying only "1% of students" is the empty
+ * shell the design rules out. The student's own pick always gets a row so they
+ * can find it.
+ */
 export function isDisclosureEmpty(choice: RcChoice, isPicked: boolean): boolean {
   if (isPicked) return false;
-  return !choice.tag && choice.percent == null && !choice.explanation;
+  return !choice.tag && !choice.explanation;
 }
 
 export function RcChoiceDisclosure({ choice, isPicked, open, onToggle }: Props) {
