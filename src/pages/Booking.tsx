@@ -38,8 +38,12 @@ export default function Booking() {
       };
       return { pass: d.pass ?? null, slots: d.slots ?? [] };
     },
-    book: async (startAtIso, idempotencyKey) => {
-      await invoke("book", { start_at: startAtIso, idempotency_key: idempotencyKey });
+    book: async (startAtIso, idempotencyKey, studentNote) => {
+      await invoke("book", {
+        start_at: startAtIso,
+        idempotency_key: idempotencyKey,
+        ...(studentNote ? { student_note: studentNote } : {}),
+      });
     },
     uploadFiles: async (files, idempotencyKey) => {
       const fd = new FormData();

@@ -98,12 +98,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
     const graded = attemptHistory.filter((attempt) => !attempt.ungraded);
     const correct = graded.filter((attempt) => attempt.correct).length;
 
-    // Use actual stats when available, fallback to baseline defaults matching prototype UI
-    const overallAccuracy = graded.length > 0 ? Math.round((correct / graded.length) * 100) : 82;
+    const overallAccuracy = graded.length > 0 ? Math.round((correct / graded.length) * 100) : null;
     const avgTime =
       total > 0
         ? Math.round(attemptHistory.reduce((sum, attempt) => sum + (attempt.responseTimeMs || 0), 0) / total / 1000)
-        : 45;
+        : null;
 
     let currentStreak = 0;
     for (let i = attemptHistory.length - 1; i >= 0; i -= 1) {
@@ -111,7 +110,6 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       if (!attemptHistory[i].correct) break;
       currentStreak += 1;
     }
-    if (total === 0) currentStreak = 4;
 
     const moduleProgress = MODULES.reduce((acc, module) => {
       const attempts = attemptHistory.filter((attempt) => attempt.moduleId === module.id);
@@ -119,38 +117,16 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       const moduleCorrect = gradedAttempts.filter((attempt) => attempt.correct).length;
       const uniqueSeen = new Set(attempts.map((attempt) => attempt.questionId)).size;
 
-      // Default accuracy fallbacks to match prototype screenshot numbers when fresh
-      const defaultAccuracyMap: Record<string, number> = {
-        'correlation-causation': 90,
-        'common-causes': 75,
-        'causal-counterexamples': 80,
-        'training-yard': 70,
-      };
-
-      const defaultTimeMap: Record<string, number> = {
-        'correlation-causation': 35,
-        'common-causes': 55,
-        'causal-counterexamples': 50,
-        'training-yard': 60,
-      };
-
-      const defaultAttemptMap: Record<string, number> = {
-        'correlation-causation': 10,
-        'common-causes': 8,
-        'causal-counterexamples': 5,
-        'training-yard': 20,
-      };
-
       acc[module.id] = {
-        accuracy: gradedAttempts.length > 0 ? Math.round((moduleCorrect / gradedAttempts.length) * 100) : defaultAccuracyMap[module.id] ?? 80,
-        avgTime: attempts.length > 0 ? Math.round(attempts.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / attempts.length / 1000) : defaultTimeMap[module.id] ?? 45,
-        seen: uniqueSeen > 0 ? uniqueSeen : defaultAttemptMap[module.id] ?? 5,
-        attempts: attempts.length > 0 ? attempts.length : defaultAttemptMap[module.id] ?? 5,
+        accuracy: gradedAttempts.length > 0 ? Math.round((moduleCorrect / gradedAttempts.length) * 100) : null,
+        avgTime: attempts.length > 0 ? Math.round(attempts.reduce((sum, a) => sum + (a.responseTimeMs || 0), 0) / attempts.length / 1000) : null,
+        seen: uniqueSeen,
+        attempts: attempts.length,
         graded: gradedAttempts.length,
         available: ALL_QUESTIONS[module.id]?.length ?? 0,
       };
       return acc;
-    }, {} as Record<QuestionModuleId, { accuracy: number; avgTime: number; seen: number; attempts: number; graded: number; available: number }>);
+    }, {} as Record<QuestionModuleId, { accuracy: number | null; avgTime: number | null; seen: number; attempts: number; graded: number; available: number }>);
 
     return { total, overallAccuracy, avgTime, currentStreak, moduleProgress };
   }, [attemptHistory]);
@@ -231,32 +207,52 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
     return MODULES.find(m => m.id === savedDrillModuleId);
   }, [savedDrillModuleId]);
 
-  // Accuracy Trend data (LineChart)
-  const recentPerformance = useMemo(() => [
-    { name: 'Drill 1', accuracy: 70 },
-    { name: 'Drill 2', accuracy: 80 },
-    { name: 'Drill 3', accuracy: 75 },
-    { name: 'Drill 4', accuracy: 90 },
-    { name: 'Drill 5', accuracy: 85 },
-  ], []);
+  const gradedHistory = useMemo(
+    () => attemptHistory.filter((attempt) => !attempt.ungraded),
+    [attemptHistory],
+  );
 
-  // Performance by Concept data (Horizontal BarChart)
-  const performanceByConcept = useMemo(() => [
-    { concept: 'Correlation', accuracy: 90 },
-    { concept: 'Alt. Cause', accuracy: 75 },
-    { concept: 'Reverse Cause', accuracy: 80 },
-    { concept: 'Strengthen', accuracy: 70 },
-    { concept: 'Weaken', accuracy: 75 },
-  ], []);
+  // Accuracy Trend — rolling accuracy over the student's graded attempts,
+  // bucketed into up to 5 equal chunks.
+  const recentPerformance = useMemo(() => {
+    if (gradedHistory.length === 0) return [];
+    const buckets = Math.min(5, gradedHistory.length);
+    const size = Math.ceil(gradedHistory.length / buckets);
+    const out: { name: string; accuracy: number }[] = [];
+    for (let i = 0; i < gradedHistory.length; i += size) {
+      const chunk = gradedHistory.slice(i, i + size);
+      const correct = chunk.filter((a) => a.correct).length;
+      out.push({
+        name: `Set ${out.length + 1}`,
+        accuracy: Math.round((correct / chunk.length) * 100),
+      });
+    }
+    return out;
+  }, [gradedHistory]);
 
-  // Common Pitfalls data (RadarChart)
-  const errorAnalysis = useMemo(() => [
-    { reason: 'Misread Stem', percentage: 20 },
-    { reason: 'Ignored Premise', percentage: 15 },
-    { reason: 'Chose Opposite', percentage: 25 },
-    { reason: 'Faulty Analogy', percentage: 30 },
-    { reason: 'Out of Scope', percentage: 35 },
-  ], []);
+  // Performance by Concept — real per-module accuracy (modules with attempts).
+  const performanceByConcept = useMemo(
+    () =>
+      MODULES
+        .filter((module) => (stats.moduleProgress[module.id]?.graded ?? 0) > 0)
+        .map((module) => ({
+          concept: module.name,
+          accuracy: stats.moduleProgress[module.id].accuracy ?? 0,
+        })),
+    [stats],
+  );
+
+  // Common Pitfalls — where the student's misses actually come from.
+  const errorAnalysis = useMemo(() => {
+    const misses = gradedHistory.filter((a) => !a.correct);
+    if (misses.length === 0) return [];
+    return MODULES.map((module) => ({
+      reason: module.name,
+      percentage: Math.round(
+        (misses.filter((a) => a.moduleId === module.id).length / misses.length) * 100,
+      ),
+    })).filter((entry) => entry.percentage > 0);
+  }, [gradedHistory]);
 
   return (
     <div className="space-y-8">
@@ -282,13 +278,17 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
           <div className="text-xs uppercase tracking-wider text-punk-sub font-medium mb-1">Overall Accuracy</div>
-          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">{stats.overallAccuracy}%</div>
-          <div className="text-xs text-punk-sub">Across all modules</div>
+          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">
+            {stats.overallAccuracy === null ? '—' : `${stats.overallAccuracy}%`}
+          </div>
+          <div className="text-xs text-punk-sub">{stats.overallAccuracy === null ? 'No attempts yet' : 'Across all modules'}</div>
         </div>
 
         <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
           <div className="text-xs uppercase tracking-wider text-punk-sub font-medium mb-1">Avg. Response Time</div>
-          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">{stats.avgTime}s</div>
+          <div className="text-4xl font-extrabold text-punk-cyan drop-shadow-neon-cyan mb-1">
+            {stats.avgTime === null ? '—' : `${stats.avgTime}s`}
+          </div>
           <div className="text-xs text-punk-sub">Per question</div>
         </div>
 
@@ -322,20 +322,20 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                             <div className="flex justify-between items-baseline mb-1">
                               <span className="font-semibold text-punk-sub uppercase tracking-wider text-[10px]">Mastery</span>
                               <span className="font-mono text-2xl font-bold text-punk-cyan drop-shadow-neon-cyan">
-                                {moduleStats.accuracy}%
+                                {moduleStats.accuracy === null ? '—' : `${moduleStats.accuracy}%`}
                               </span>
                             </div>
                             <div className="w-full bg-punk-base rounded-full h-3 border border-punk-sub/20 overflow-hidden">
                               <div
                                 className="bg-gradient-to-r from-punk-magenta to-punk-cyan h-full rounded-full transition-all duration-500 shadow-neon-cyan"
-                                style={{ width: `${moduleStats.accuracy}%` }}
+                                style={{ width: `${moduleStats.accuracy ?? 0}%` }}
                               />
                             </div>
                           </div>
 
                           <div className="flex justify-around text-center pt-2">
                             <div>
-                              <div className="font-mono text-lg font-bold text-punk-text">{moduleStats.avgTime}s</div>
+                              <div className="font-mono text-lg font-bold text-punk-text">{moduleStats.avgTime === null ? '—' : `${moduleStats.avgTime}s`}</div>
                               <div className="text-[11px] text-punk-sub">Avg. Time</div>
                             </div>
                             <div>
@@ -378,6 +378,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
             <h3 className="text-lg font-bold text-punk-text mb-4">Accuracy Trend</h3>
             <div className="h-60">
+              {recentPerformance.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  Run a drill to start tracking your accuracy over time.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={recentPerformance} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(155, 176, 200, 0.2)" />
@@ -394,6 +399,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                   />
                 </LineChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
 
@@ -401,6 +407,11 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
             <h3 className="text-lg font-bold text-punk-text mb-4">Performance by Concept</h3>
             <div className="h-60">
+              {performanceByConcept.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  No graded attempts yet — your per-module accuracy will appear here.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={performanceByConcept} layout="vertical" margin={{ top: 5, right: 10, left: 30, bottom: 5 }}>
                   <defs>
@@ -416,22 +427,29 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
                   <Bar dataKey="accuracy" fill="url(#barGradient)" barSize={14} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
 
           {/* Common Pitfalls */}
           <div className="bg-punk-panel/50 backdrop-blur-lg border border-punk-sub/20 rounded-lg p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-punk-text mb-4">Common Pitfalls</h3>
+            <h3 className="text-lg font-bold text-punk-text mb-4">Where Your Misses Come From</h3>
             <div className="h-60">
+              {errorAnalysis.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-xs text-punk-sub text-center px-4">
+                  No missed questions logged yet.
+                </div>
+              ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="75%" data={errorAnalysis}>
                   <PolarGrid stroke="rgba(155, 176, 200, 0.2)" />
                   <PolarAngleAxis dataKey="reason" stroke="#EAF2FF" fontSize={10} />
-                  <PolarRadiusAxis angle={30} domain={[0, 40]} tick={false} axisLine={false} />
-                  <Radar name="Errors" dataKey="percentage" stroke="#FF1AFF" fill="#FF1AFF" fillOpacity={0.6} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                  <Radar name="Misses" dataKey="percentage" stroke="#FF1AFF" fill="#FF1AFF" fillOpacity={0.6} />
                   <Tooltip contentStyle={PUNK_TOOLTIP_STYLE} />
                 </RadarChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
         </div>

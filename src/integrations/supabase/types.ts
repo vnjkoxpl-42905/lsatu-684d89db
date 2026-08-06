@@ -2742,6 +2742,50 @@ export type Database = {
         }
         Relationships: []
       }
+      rc_answer_choices: {
+        Row: {
+          catalog_answer_types: string | null
+          correct: boolean | null
+          explanation: string | null
+          letter: string
+          percent: number | null
+          question_id: number
+          response_count: number | null
+          tag: string | null
+          text: string | null
+        }
+        Insert: {
+          catalog_answer_types?: string | null
+          correct?: boolean | null
+          explanation?: string | null
+          letter: string
+          percent?: number | null
+          question_id: number
+          response_count?: number | null
+          tag?: string | null
+          text?: string | null
+        }
+        Update: {
+          catalog_answer_types?: string | null
+          correct?: boolean | null
+          explanation?: string | null
+          letter?: string
+          percent?: number | null
+          question_id?: number
+          response_count?: number | null
+          tag?: string | null
+          text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_answer_choices_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "rc_questions"
+            referencedColumns: ["question_id"]
+          },
+        ]
+      }
       rc_lesson_progress: {
         Row: {
           completed_at: string | null
@@ -2766,6 +2810,206 @@ export type Database = {
           lesson_id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      rc_passage_frameworks: {
+        Row: {
+          framework: string
+          passage_id: number
+        }
+        Insert: {
+          framework: string
+          passage_id: number
+        }
+        Update: {
+          framework?: string
+          passage_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_passage_frameworks_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "rc_passages"
+            referencedColumns: ["passage_id"]
+          },
+        ]
+      }
+      rc_passages: {
+        Row: {
+          difficulty: number | null
+          format: string | null
+          passage_id: number
+          preptest: number
+          question_count: number
+          section: number
+          set_number: number
+          summary_another_way: string | null
+          summary_brief: string | null
+          summary_standard: string | null
+          text: string | null
+          title: string | null
+          topic: string | null
+        }
+        Insert: {
+          difficulty?: number | null
+          format?: string | null
+          passage_id: number
+          preptest: number
+          question_count: number
+          section: number
+          set_number: number
+          summary_another_way?: string | null
+          summary_brief?: string | null
+          summary_standard?: string | null
+          text?: string | null
+          title?: string | null
+          topic?: string | null
+        }
+        Update: {
+          difficulty?: number | null
+          format?: string | null
+          passage_id?: number
+          preptest?: number
+          question_count?: number
+          section?: number
+          set_number?: number
+          summary_another_way?: string | null
+          summary_brief?: string | null
+          summary_standard?: string | null
+          text?: string | null
+          title?: string | null
+          topic?: string | null
+        }
+        Relationships: []
+      }
+      rc_question_features: {
+        Row: {
+          feature: string
+          feature_group: string | null
+          question_id: number
+        }
+        Insert: {
+          feature: string
+          feature_group?: string | null
+          question_id: number
+        }
+        Update: {
+          feature?: string
+          feature_group?: string | null
+          question_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_question_features_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "rc_questions"
+            referencedColumns: ["question_id"]
+          },
+        ]
+      }
+      rc_question_legacy_tags: {
+        Row: {
+          legacy_tag: string
+          question_id: number
+        }
+        Insert: {
+          legacy_tag: string
+          question_id: number
+        }
+        Update: {
+          legacy_tag?: string
+          question_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_question_legacy_tags_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "rc_questions"
+            referencedColumns: ["question_id"]
+          },
+        ]
+      }
+      rc_questions: {
+        Row: {
+          correct_answer: string | null
+          difficulty: number | null
+          explanation_blocks: Json | null
+          has_written_explanation: boolean
+          passage_id: number
+          position: number
+          preptest: number
+          prompt: string | null
+          question_id: number
+          question_type: string
+          question_type_family: string | null
+          section: number
+          set_number: number
+          total_responses: number | null
+        }
+        Insert: {
+          correct_answer?: string | null
+          difficulty?: number | null
+          explanation_blocks?: Json | null
+          has_written_explanation: boolean
+          passage_id: number
+          position: number
+          preptest: number
+          prompt?: string | null
+          question_id: number
+          question_type: string
+          question_type_family?: string | null
+          section: number
+          set_number: number
+          total_responses?: number | null
+        }
+        Update: {
+          correct_answer?: string | null
+          difficulty?: number | null
+          explanation_blocks?: Json | null
+          has_written_explanation?: boolean
+          passage_id?: number
+          position?: number
+          preptest?: number
+          prompt?: string | null
+          question_id?: number
+          question_type?: string
+          question_type_family?: string | null
+          section?: number
+          set_number?: number
+          total_responses?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_questions_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "rc_passages"
+            referencedColumns: ["passage_id"]
+          },
+        ]
+      }
+      rc_taxonomy: {
+        Row: {
+          group: string | null
+          kind: string
+          name: string
+          source_id: number
+        }
+        Insert: {
+          group?: string | null
+          kind: string
+          name: string
+          source_id: number
+        }
+        Update: {
+          group?: string | null
+          kind?: string
+          name?: string
+          source_id?: number
         }
         Relationships: []
       }
