@@ -106,9 +106,43 @@ a missing tag, summary, explanation, or choice to make the data look complete.
 
 ## Styling
 
-Two stylesheets, deliberately separate:
+**RC and LR are one interface.** The player renders inside the same components
+the LR drill uses — `OfficialDrillFrame`, `OfficialSessionStrip`,
+`OfficialDrillToolbar`, `OfficialSmartDrillBar` — rather than reproducing them.
+Change the frame and both drills change. This reverses the earlier decision that
+kept the player off the LSAT U design system as a standalone LawHub clone; it
+had produced two lookalikes that were already drifting.
 
-- `player.css` — scoped under `.rc-player`. A faithful LawHub exam interface, so
-  it uses literal exam colors and its own type stack. **The LSAT U design system
-  does not apply inside the player**; this is a locked design decision, not drift.
-- `rc.css` — the hub, results, and review chrome. Uses the product's tokens.
+Where RC differs from LR, it is because the official RC interface differs, and
+each one is deliberate:
+
+- the letter badge is an outlined circle, not a rounded square
+- the eliminate control is always visible, not revealed on row hover
+- there is a pager: every question, with a rule between passages, and chevron
+  buttons at the right
+- the toolbar carries `Passage Only View`, response masking, the review grid and
+  full screen, which have no LR equivalent
+- the frame is pinned to the viewport (`fillViewport`), because a passage scrolls
+  and an LR stimulus does not
+
+Three stylesheets are involved, and the split matters:
+
+- **No RC stylesheet** for the frame, toolbar or footer. Those are the shared
+  official components and carry Tailwind only.
+- `player.css` — scoped to `.rc-exam`, and only the four things that genuinely
+  need CSS: the six accessibility color schemes (which repaint the two reading
+  columns via `--rc-bg` / `--rc-fg` and must never touch the frame), the exam
+  paragraph conventions (`text-indent` plus the `:has()` rules that un-indent
+  comparative headers), Passage Only View's two-column reflow, and the highlight
+  and find `<mark>`s, which are painted into the DOM and so cannot carry React
+  classes.
+- `rc.css` — the review layer, plus the hub, which runs on the classroom's
+  observatory ladder. The ladder is hosted in `classroom.css`, which names
+  `.rc-page` alongside the classroom root. `.rc-button`'s base rule is shared
+  with the review layer *inside* the player, so the hub's treatment is scoped
+  under `.rc-page`.
+
+Annotations carry a `kind` — `'highlight'` or `'underline'`. Absent means
+highlight, so anything stored before underlining existed still reads. Colors are
+LR's three markers at its alpha and blend mode; anything stored under a retired
+color still paints, as yellow.

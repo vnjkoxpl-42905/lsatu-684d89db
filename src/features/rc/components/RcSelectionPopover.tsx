@@ -72,7 +72,9 @@ export function RcSelectionPopover({
                   className="rc-swatch"
                   style={{
                     background: RC_HIGHLIGHT_COLORS[c],
-                    outline: c === color ? '2px solid #2563eb' : 'none',
+                    // slate-900, the official chrome's selected treatment. This
+                    // was the old LawHub blue, which no longer appears anywhere.
+                    outline: c === color ? '2px solid #0f172a' : 'none',
                   }}
                   onClick={() => {
                     onColorChange(c);
