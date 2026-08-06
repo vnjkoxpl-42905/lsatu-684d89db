@@ -2,8 +2,39 @@
   "detector": {
     "ignoreRules": [],
     "ignoreFiles": [
-      "src/features/rc/player.css"
+      "src/features/rc/player.css",
+      "src/components/drill/official/**",
+      "src/features/rc/components/**",
+      "src/features/rc/pages/RcPlayer.tsx"
     ],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "14px",
+        "files": [
+          "src/features/rc/rc.css"
+        ],
+        "createdAt": "2026-08-06T11:40:01.809Z",
+        "reason": "The .rc-button pill mirrors the official drill chrome's 14px"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#f1f5f9",
+        "files": [
+          "src/features/rc/rc.css"
+        ],
+        "createdAt": "2026-08-06T11:40:10.594Z",
+        "reason": "slate-100, the official chrome's pill hover"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#000000",
+        "files": [
+          "src/features/rc/rc.css"
+        ],
+        "createdAt": "2026-08-06T11:40:18.748Z",
+        "reason": "The official chrome's primary pill hover (hover:bg-black)"
+      }
+    ]
   }
 }
