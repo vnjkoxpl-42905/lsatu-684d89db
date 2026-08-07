@@ -16,6 +16,14 @@ export function useRcHighlights(passageIds: number[]) {
   const [byPassage, setByPassage] = React.useState<Map<number, RcHighlight[]>>(new Map());
   const [color, setColor] = React.useState<RcHighlightColor>('yellow');
   const [loaded, setLoaded] = React.useState(false);
+  /**
+   * Mirrors `byPassage`, but updated synchronously on every write. Reading the
+   * state variable inside the mutators would capture whatever the last render
+   * closed over, so two marks made between renders — which is simply someone
+   * highlighting quickly — would compute from the same base and the first
+   * would be lost.
+   */
+  const latest = React.useRef<Map<number, RcHighlight[]>>(new Map());
 
   const key = passageIds.join(',');
   React.useEffect(() => {
@@ -24,6 +32,7 @@ export function useRcHighlights(passageIds: number[]) {
     loadAnnotations(passageIds)
       .then((map) => {
         if (!cancelled) {
+          latest.current = map;
           setByPassage(map);
           setLoaded(true);
         }
@@ -44,11 +53,10 @@ export function useRcHighlights(passageIds: number[]) {
   );
 
   const write = React.useCallback((passageId: number, next: RcHighlight[]) => {
-    setByPassage((prev) => {
-      const map = new Map(prev);
-      map.set(passageId, next);
-      return map;
-    });
+    const map = new Map(latest.current);
+    map.set(passageId, next);
+    latest.current = map;
+    setByPassage(map);
     saveAnnotations(passageId, next);
   }, []);
 
@@ -62,42 +70,75 @@ export function useRcHighlights(passageIds: number[]) {
       chosen: RcHighlightColor = color,
       kind: RcAnnotationKind = 'highlight',
     ) => {
-      const existing = byPassage.get(passageId) ?? [];
-      // Drop overlapping annotations of the same kind, so re-marking recolors
-      // cleanly — but a highlight and an underline can sit on the same words.
-      const kept = existing.filter(
-        (h) =>
-          h.target !== target ||
-          (h.kind ?? 'highlight') !== kind ||
-          h.end <= start ||
-          h.start >= end,
-      );
-      write(passageId, [...kept, { target, start, end, color: chosen, kind }]);
+      if (end <= start) return;
+      const existing = latest.current.get(passageId) ?? [];
+      // Same target + same kind is one layer. A highlight and an underline can
+      // sit on the same words, so they never interact.
+      const sameLayer = (h: RcHighlight) =>
+        h.target === target && (h.kind ?? 'highlight') === kind;
+
+      // Marking over the same color extends one continuous span rather than
+      // leaving a seam. Repeat until nothing new is absorbed: swallowing one
+      // neighbour can bring the next into reach.
+      let lo = start;
+      let hi = end;
+      for (let grew = true; grew; ) {
+        grew = false;
+        for (const h of existing) {
+          if (!sameLayer(h) || h.color !== chosen) continue;
+          if (h.end < lo || h.start > hi) continue;
+          if (h.start < lo || h.end > hi) {
+            lo = Math.min(lo, h.start);
+            hi = Math.max(hi, h.end);
+            grew = true;
+          }
+        }
+      }
+
+      // Marking over a different color trims the old span around the new one
+      // instead of discarding it, so highlighting three words inside a
+      // sentence keeps the rest of that sentence.
+      const next: RcHighlight[] = [];
+      for (const h of existing) {
+        if (!sameLayer(h)) {
+          next.push(h);
+          continue;
+        }
+        if (h.color === chosen && h.end >= lo && h.start <= hi) continue;
+        if (h.end <= lo || h.start >= hi) {
+          next.push(h);
+          continue;
+        }
+        if (h.start < lo) next.push({ ...h, end: lo });
+        if (h.end > hi) next.push({ ...h, start: hi });
+      }
+      next.push({ target, start: lo, end: hi, color: chosen, kind });
+      write(passageId, next);
     },
-    [byPassage, color, write],
+    [color, write],
   );
 
   const removeAt = React.useCallback(
     (passageId: number, target: 'passage' | RcLetter, offset: number) => {
-      const existing = byPassage.get(passageId) ?? [];
+      const existing = latest.current.get(passageId) ?? [];
       write(
         passageId,
         existing.filter((h) => !(h.target === target && offset >= h.start && offset < h.end)),
       );
     },
-    [byPassage, write],
+    [write],
   );
 
   /** Eraser drag: clear every annotation the swept range touches. */
   const removeRange = React.useCallback(
     (passageId: number, target: 'passage' | RcLetter, start: number, end: number) => {
-      const existing = byPassage.get(passageId) ?? [];
+      const existing = latest.current.get(passageId) ?? [];
       write(
         passageId,
         existing.filter((h) => h.target !== target || h.end <= start || h.start >= end),
       );
     },
-    [byPassage, write],
+    [write],
   );
 
   return { forPassage, add, removeAt, removeRange, color, setColor, loaded };
