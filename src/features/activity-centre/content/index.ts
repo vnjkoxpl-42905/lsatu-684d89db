@@ -45,3 +45,39 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
 ];
 
 export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);
+
+/**
+ * The order the Activity library lists every Activity in, teaching progression
+ * first: the scope of text the skill operates on, a word up to a passage.
+ *
+ * This is separate from SEED_ACTIVITIES on purpose. That array is the seed
+ * pipeline's input and must stay exactly the seven Activities the migration
+ * inserts. This one is the display order and includes Negation Station, which
+ * predates the pipeline but still has to sit somewhere sensible in the list.
+ * It goes with the other statement-level work, beside Conditional Rephrase:
+ * one turns a statement around, the other negates it.
+ *
+ * Without this the library sorted by created_at, so it read newest-seeded
+ * first and the Activities inserted by one migration tied arbitrarily among
+ * themselves. An Activity not named here still appears, after these, so adding
+ * one by hand never makes it vanish from the library.
+ */
+export const ACTIVITY_LIBRARY_ORDER = [
+  "vocab-rehab", // a word
+  "spot-the-relationship", // a sentence
+  "conditional-rephrase", // a statement, translated
+  "negation-station", // a statement, negated
+  "find-the-conclusion", // an argument
+  "rebuttal-rephrase", // an argument, restated
+  "dumb-it-down", // a paragraph
+  "spot-the-callback", // a passage
+] as const;
+
+/**
+ * Where an Activity sits in the library. Anything unlisted sorts after
+ * everything listed, rather than jumping to the front on a falsy index.
+ */
+export function librarySortIndex(slug: string | null | undefined): number {
+  const at = ACTIVITY_LIBRARY_ORDER.indexOf(slug as (typeof ACTIVITY_LIBRARY_ORDER)[number]);
+  return at === -1 ? ACTIVITY_LIBRARY_ORDER.length : at;
+}

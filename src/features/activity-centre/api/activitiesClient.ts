@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { librarySortIndex } from "../content";
 import type {
   Activity,
   ActivityAssignment,
@@ -120,14 +121,27 @@ export async function completeAssignment(assignmentId: string, score: number): P
 
 // --- Admin -----------------------------------------------------------------
 
-/** Admin: list activity definitions I own. */
+/**
+ * Admin: list activity definitions I own, in teaching order.
+ *
+ * The sort is done here rather than in the query because the order is a
+ * pedagogical sequence, not a column: a word up to a passage. `created_at` gets
+ * it wrong twice over, listing the newest-seeded Activity first and tying every
+ * Activity that one migration inserted in the same transaction. It stays as the
+ * tiebreak for anything not in the sequence.
+ */
 export async function listActivities(): Promise<Activity[]> {
   const { data, error } = await supabase
     .from("activities")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []).map(hydrateActivity);
+  return sortForLibrary((data ?? []).map(hydrateActivity));
+}
+
+/** Teaching order, with anything unlisted kept in the query's own order. */
+export function sortForLibrary<T extends { slug?: string | null }>(rows: T[]): T[] {
+  return [...rows].sort((a, b) => librarySortIndex(a.slug) - librarySortIndex(b.slug));
 }
 
 /** Admin: list a given student's activity assignments. */
