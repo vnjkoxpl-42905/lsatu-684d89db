@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Clock, Eye, Maximize, Minimize, SquareStack } from 'lucide-react';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
-import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../components/RcChrome';
+import { RcPager, RcToolbarButton, formatClock } from '../components/RcChrome';
 import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
 import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
@@ -13,7 +12,6 @@ import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
   RcOverflowMenu,
   RcQuestionDetails,
-  RcReviewModal,
   RcSubmitConfirm,
   RcTextSettings,
 } from '../components/RcModals';
@@ -180,11 +178,8 @@ export default function RcPlayer() {
   const [findQuery, setFindQuery] = React.useState('');
   const [findIndex, setFindIndex] = React.useState(0);
   const [findCount, setFindCount] = React.useState(0);
-  const [masking, setMasking] = React.useState(false);
   const [highlightMode, setHighlightMode] = React.useState<RcHighlightMode>('none');
-  const [timerVisible, setTimerVisible] = React.useState(true);
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const [modal, setModal] = React.useState<'review' | 'details' | 'menu' | 'submit' | null>(null);
+  const [modal, setModal] = React.useState<'details' | 'menu' | 'submit' | null>(null);
   const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
@@ -453,7 +448,7 @@ export default function RcPlayer() {
           fontScaleOptions={RC_FONT_SCALE_OPTIONS}
           a11yExtraSections={<RcTextSettings settings={a11y.settings} onChange={a11y.update} />}
           timerLabel={`${budget != null && clockSeconds < 0 ? '+' : ''}${formatClock(Math.abs(clockSeconds))}`}
-          timerMode={timerVisible ? (budget != null ? 'countdown' : 'stopwatch') : undefined}
+          timerMode={budget != null ? 'countdown' : 'stopwatch'}
           timerOverBudget={overBudget}
           leftTools={
             <>
@@ -465,41 +460,6 @@ export default function RcPlayer() {
                   Review
                 </span>
               )}
-            </>
-          }
-          rightTools={
-            <>
-              <RcToolbarIcon
-                label={masking ? 'Show all choices' : 'Response masking'}
-                active={masking}
-                onClick={() => setMasking((v) => !v)}
-              >
-                <Eye size={18} />
-              </RcToolbarIcon>
-              <RcToolbarIcon label="Review all questions" onClick={() => setModal('review')}>
-                <SquareStack size={18} />
-              </RcToolbarIcon>
-              <RcToolbarIcon
-                label={timerVisible ? 'Hide the timer' : 'Show the timer'}
-                active={timerVisible}
-                onClick={() => setTimerVisible((v) => !v)}
-              >
-                <Clock size={18} />
-              </RcToolbarIcon>
-              <RcToolbarIcon
-                label={isFullscreen ? 'Exit full screen' : 'Full screen'}
-                onClick={() => {
-                  if (document.fullscreenElement) {
-                    void document.exitFullscreen();
-                    setIsFullscreen(false);
-                  } else {
-                    void document.documentElement.requestFullscreen();
-                    setIsFullscreen(true);
-                  }
-                }}
-              >
-                {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-              </RcToolbarIcon>
             </>
           }
         />
@@ -543,7 +503,6 @@ export default function RcPlayer() {
               selected={selected}
               eliminations={state.eliminations.get(questionId) ?? []}
               revealed={revealed}
-              masking={masking}
               reattemptMode={reattemptMode}
               reattemptPick={reattemptPicks.get(questionId) ?? null}
               flagged={state.flagged.has(questionId)}
@@ -605,29 +564,6 @@ export default function RcPlayer() {
           }
         />
       </OfficialDrillFrame>
-
-      {modal === 'review' && (
-        <RcReviewModal
-          items={state.items}
-          currentIndex={state.currentIndex}
-          answered={(i) => state.answers.has(i.question.questionId)}
-          flagged={(i) => state.flagged.has(i.question.questionId)}
-          pillClass={(i, index) =>
-            pillState({
-              kind: 'question',
-              passageId: i.passage.passageId,
-              index,
-              label: String(i.number),
-              questionId: i.question.questionId,
-            })
-          }
-          onNavigate={goTo}
-          onClose={() => setModal(null)}
-          onSubmit={
-            config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined
-          }
-        />
-      )}
 
       {modal === 'details' && (
         <RcQuestionDetails

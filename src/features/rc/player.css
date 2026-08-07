@@ -90,17 +90,6 @@ mark[data-rc-highlight] {
   cursor: pointer;
 }
 
-/* -------------------------------------------------------------- masking */
-
-/* Response masking hides the text but keeps the letter. */
-.rc-choice-mask {
-  position: absolute;
-  inset: 0;
-  background: #b8b8b8;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 /* ------------------------------------------------------ selection popover */
 
 .rc-selection-popover {

@@ -22,12 +22,10 @@ interface Props {
   choice: RcChoice;
   selected: boolean;
   eliminated: boolean;
-  masked: boolean;
   /** Set once feedback is showing, so the row can carry the verdict colors. */
   revealed: boolean;
   onSelect: (letter: RcLetter) => void;
   onToggleElimination: (letter: RcLetter) => void;
-  onUnmask: (letter: RcLetter) => void;
   disabled?: boolean;
   textStyle?: React.CSSProperties;
   badgeStyle?: React.CSSProperties;
@@ -39,11 +37,9 @@ export function RcChoiceRow({
   choice,
   selected,
   eliminated,
-  masked,
   revealed,
   onSelect,
   onToggleElimination,
-  onUnmask,
   disabled,
   textStyle,
   badgeStyle,
@@ -100,25 +96,6 @@ export function RcChoiceRow({
         style={textStyle}
       >
         <RcMarkdown>{choice.text}</RcMarkdown>
-        {masked && (
-          <span
-            className="rc-choice-mask"
-            role="button"
-            tabIndex={0}
-            aria-label={`Reveal choice ${choice.letter}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onUnmask(choice.letter);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                e.stopPropagation();
-                onUnmask(choice.letter);
-              }
-            }}
-          />
-        )}
       </button>
 
       <button

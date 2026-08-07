@@ -14,7 +14,6 @@ interface Props {
   selected: RcLetter | null;
   eliminations: RcLetter[];
   revealed: boolean;
-  masking: boolean;
   /** State A of review: answer again before anything is shown. */
   reattemptMode: boolean;
   reattemptPick: RcLetter | null;
@@ -31,7 +30,6 @@ export function RcQuestionPane({
   selected,
   eliminations,
   revealed,
-  masking,
   reattemptMode,
   reattemptPick,
   flagged,
@@ -42,13 +40,7 @@ export function RcQuestionPane({
   type,
 }: Props) {
   const { question } = item;
-  const [unmasked, setUnmasked] = React.useState<Set<string>>(() => new Set());
   const [openLetters, setOpenLetters] = React.useState<Set<string>>(() => new Set());
-
-  // Masking resets per question, as does which disclosures are open.
-  React.useEffect(() => {
-    setUnmasked(new Set());
-  }, [question.questionId, masking]);
 
   React.useEffect(() => {
     if (!revealed) {
@@ -122,12 +114,10 @@ export function RcQuestionPane({
               choice={choice}
               selected={isPicked}
               eliminated={eliminations.includes(choice.letter)}
-              masked={masking && !unmasked.has(choice.letter)}
               revealed={showFeedback}
               disabled={showFeedback}
               onSelect={onSelect}
               onToggleElimination={onToggleElimination}
-              onUnmask={(letter) => setUnmasked((prev) => new Set(prev).add(letter))}
               textStyle={type.choiceText}
               badgeStyle={type.choiceBadge}
             >

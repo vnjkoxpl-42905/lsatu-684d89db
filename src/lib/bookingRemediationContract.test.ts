@@ -44,7 +44,12 @@ describe("booking remediation contracts", () => {
     const card = read("src/components/booking/CalendlyBookingCard.tsx");
     expect(sql).toContain("WHEN 'paused' THEN 1 WHEN 'exhausted' THEN 2");
     expect(sql).toContain("overlapping_availability_ranges");
-    expect(app).toContain('pathname.startsWith("/book/")');
+    // The public booking route must stay free of the global floating overlays.
+    // They are suppressed by prefix list rather than a single inline check, so
+    // assert the list exists and still carries "/book/".
+    expect(app).toContain("OVERLAY_FREE_PREFIXES");
+    expect(app).toMatch(/OVERLAY_FREE_PREFIXES[^\n]*=[^\n]*"\/book\/"/);
+    expect(app).toMatch(/OVERLAY_FREE_PREFIXES\.some\(/);
     expect(card).toContain("aria-label={d.toLocaleDateString");
     expect(card).toContain("UpcomingSessions redemptions");
   });

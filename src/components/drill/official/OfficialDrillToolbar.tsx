@@ -276,17 +276,6 @@ export default function OfficialDrillToolbar({
               </PopoverContent>
             </Popover>
 
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              title="Line spacing — coming soon"
-              className="p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
-            >
-              <LineSpacingIcon />
-              <span className="sr-only">Line spacing</span>
-            </button>
-
             {rightTools && (
               <>
                 <PipeSeparator />
@@ -422,19 +411,6 @@ function EraserIcon() {
         {/* Subtle wear shading on bottom edge */}
         <path d="M3 14 L29 14" stroke="#0f172a" strokeWidth="0.8" opacity="0.35" />
       </g>
-    </svg>
-  );
-}
-
-function LineSpacingIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f2937" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 6 L4 18" />
-      <path d="M2 8 L4 6 L6 8" />
-      <path d="M2 16 L4 18 L6 16" />
-      <line x1="10" y1="6" x2="21" y2="6" />
-      <line x1="10" y1="12" x2="21" y2="12" />
-      <line x1="10" y1="18" x2="21" y2="18" />
     </svg>
   );
 }
