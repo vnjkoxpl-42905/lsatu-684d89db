@@ -68,7 +68,7 @@ export const DAYS = [
 export type DayKey = (typeof DAYS)[number]['key'];
 
 export const DEFAULT_STUDY_TIME: Record<DayKey, StudyTimeValue> = {
-  sun: '1_2', mon: '1_2', tue: '1_2', wed: '1_2', thu: '1_2', fri: '1_2', sat: '1_2',
+  sun: 'none', mon: 'none', tue: 'none', wed: 'none', thu: 'none', fri: 'none', sat: 'none',
 };
 
 // ── Test date (asked right after the target score) ──────────────────────────
@@ -168,8 +168,9 @@ export const STEP_COPY: Record<OnboardingStepId, { title: string; subtitle?: str
     title: 'Which best describes you?',
   },
   study_time: {
-    title: 'When can you study?',
-    subtitle: 'Set how much time you have each day. You can always change this later.',
+    title: 'Build your study week',
+    subtitle:
+      'Show Joshua when LSAT prep can realistically fit. Start with the days you have, then choose the time you can protect on each one.',
   },
 };
 
@@ -201,7 +202,7 @@ export function isStepAnswered(step: OnboardingStepId, a: OnboardingAnswers): bo
     case 'life_stage':
       return !!a.life_stage;
     case 'study_time':
-      return !!a.study_time; // defaulted at finish if untouched
+      return !!a.study_time;
     default:
       return false;
   }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Search, X } from "lucide-react";
+import { Check, Clock3, Search, X } from "lucide-react";
 import {
   DAYS,
   DEFAULT_STUDY_TIME,
@@ -272,37 +272,75 @@ export function StepField({
   }
 
   return (
-    <div className="classroom-orientation-week">
-      {DAYS.map((day) => {
-        const current = (answers.study_time ?? DEFAULT_STUDY_TIME)[day.key as DayKey];
-        return (
-          <div key={day.key} className="classroom-orientation-day">
-            <span className="classroom-orientation-day-label">{day.label}</span>
-            <div className="classroom-orientation-day-options">
-              {STUDY_TIME_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  aria-pressed={current === option.value}
-                  aria-label={`${day.label}: ${option.label}`}
-                  onClick={() =>
-                    set("study_time", {
-                      ...DEFAULT_STUDY_TIME,
-                      ...(answers.study_time ?? {}),
-                      [day.key]: option.value as StudyTimeValue,
-                    })
-                  }
-                  className={`classroom-orientation-slot${
-                    current === option.value ? " classroom-orientation-slot-on" : ""
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
-      })}
+    <div className="classroom-availability">
+      <div className="classroom-availability-note">
+        <Clock3 size={17} aria-hidden="true" />
+        <div>
+          <strong>Make this honest, not ambitious.</strong>
+          <span>Days you leave blank will be treated as unavailable. You can change this later.</span>
+        </div>
+      </div>
+
+      <div className="classroom-orientation-week" aria-label="Weekly LSAT availability">
+        {DAYS.map((day) => {
+          const current = answers.study_time?.[day.key as DayKey];
+          const currentLabel = current
+            ? STUDY_TIME_OPTIONS.find((option) => option.value === current)?.label
+            : "Not set";
+          return (
+            <section
+              key={day.key}
+              className={`classroom-orientation-day${
+                current && current !== "none" ? " classroom-orientation-day-on" : ""
+              }`}
+            >
+              <div className="classroom-orientation-day-head">
+                <span className="classroom-orientation-day-label">{day.label}</span>
+                <span className="classroom-orientation-day-value">{currentLabel}</span>
+              </div>
+              <div className="classroom-orientation-day-meter" aria-hidden="true">
+                <span data-level={current ?? "unset"} />
+              </div>
+              <div className="classroom-orientation-day-options">
+                {STUDY_TIME_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={current === option.value}
+                    aria-label={`${day.label}: ${option.label}`}
+                    onClick={() =>
+                      set("study_time", {
+                        ...DEFAULT_STUDY_TIME,
+                        ...(answers.study_time ?? {}),
+                        [day.key]: option.value as StudyTimeValue,
+                      })
+                    }
+                    className={`classroom-orientation-slot${
+                      current === option.value ? " classroom-orientation-slot-on" : ""
+                    }`}
+                  >
+                    {current === option.value ? <Check size={12} aria-hidden="true" /> : null}
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
+      {answers.study_time ? (
+        <p className="classroom-availability-summary" aria-live="polite">
+          <strong>
+            {DAYS.filter((day) => answers.study_time?.[day.key] !== "none").length}
+          </strong>{" "}
+          study days in your week
+        </p>
+      ) : (
+        <p className="classroom-availability-summary classroom-availability-summary-empty">
+          Choose the time you can protect on at least one day, or mark a day as no time.
+        </p>
+      )}
     </div>
   );
 }

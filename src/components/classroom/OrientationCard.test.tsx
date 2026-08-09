@@ -6,7 +6,7 @@ import {
   answeredCount,
   firstUnansweredStep,
 } from "./OrientationCard";
-import { DEFAULT_STUDY_TIME, UNDECIDED_TEST_DATE } from "@/lib/onboarding";
+import { UNDECIDED_TEST_DATE } from "@/lib/onboarding";
 
 const save = () => vi.fn().mockResolvedValue(true);
 
@@ -31,14 +31,13 @@ describe("orientation progress helpers", () => {
 });
 
 describe("OrientationCardView", () => {
-  it("stays shut until the student opens it", () => {
+  it("opens immediately so setup is prominent on Home", () => {
     render(<OrientationCardView initialName="" initialAnswers={{}} onSave={save()} />);
     expect(screen.getByText("Set up your classroom")).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Start setup/ })).toBeTruthy();
-    expect(screen.queryByLabelText("Your name")).toBeNull();
+    expect(screen.getByLabelText("Your name")).toBeTruthy();
   });
 
-  it("shows how much is already answered and offers to resume", () => {
+  it("resumes immediately at the first required unanswered step", () => {
     render(
       <OrientationCardView
         initialName="Ada"
@@ -46,15 +45,13 @@ describe("OrientationCardView", () => {
         onSave={save()}
       />,
     );
-    expect(screen.getByText(`2 of ${ORIENTATION_STEPS.length} answered`)).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Pick up where you left off/ })).toBeTruthy();
+    expect(screen.getByText("What score are you aiming for?")).toBeTruthy();
+    expect(screen.getByText(`Step 5 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
   });
 
   it("saves the name on the first Continue and moves on", async () => {
     const onSave = save();
     render(<OrientationCardView initialName="" initialAnswers={{}} onSave={onSave} />);
-    fireEvent.click(screen.getByRole("button", { name: /Start setup/ }));
-
     expect(screen.getByText(`Step 1 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Your name"), {
       target: { value: "  Ada Lovelace  " },
@@ -69,8 +66,6 @@ describe("OrientationCardView", () => {
     render(
       <OrientationCardView initialName="Ada" initialAnswers={{}} onSave={save()} />,
     );
-    fireEvent.click(screen.getByRole("button", { name: /Pick up where you left off/ }));
-
     const button = screen.getByRole("button", { name: /Continue/ }) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
     fireEvent.click(screen.getByRole("button", { name: "156–160" }));
@@ -86,7 +81,6 @@ describe("OrientationCardView", () => {
         onSave={onSave}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: /Pick up where you left off/ }));
     await screen.findByText("When are you taking the LSAT?");
 
     fireEvent.click(screen.getByRole("button", { name: /I haven't picked a date yet/ }));
@@ -100,7 +94,7 @@ describe("OrientationCardView", () => {
     );
   });
 
-  it("completes on the last step, defaulting an untouched study week", async () => {
+  it("requires an explicit availability choice before finishing", async () => {
     const onSave = save();
     render(
       <OrientationCardView
@@ -114,14 +108,19 @@ describe("OrientationCardView", () => {
         onSave={onSave}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: /Pick up where you left off/ }));
-    await screen.findByText("When can you study?");
+    await screen.findByText("Build your study week");
 
-    fireEvent.click(screen.getByRole("button", { name: /Finish/ }));
+    const finish = screen.getByRole("button", { name: /Finish/ }) as HTMLButtonElement;
+    expect(finish.disabled).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Mon: 1–2 hrs" }));
+    expect(finish.disabled).toBe(false);
+    fireEvent.click(finish);
 
     await waitFor(() =>
       expect(onSave).toHaveBeenCalledWith({
-        answers: expect.objectContaining({ study_time: DEFAULT_STUDY_TIME }),
+        answers: expect.objectContaining({
+          study_time: expect.objectContaining({ mon: "1_2" }),
+        }),
         complete: true,
       }),
     );
@@ -131,7 +130,6 @@ describe("OrientationCardView", () => {
   it("keeps the step open when the save fails", async () => {
     const onSave = vi.fn().mockResolvedValue(false);
     render(<OrientationCardView initialName="" initialAnswers={{}} onSave={onSave} />);
-    fireEvent.click(screen.getByRole("button", { name: /Start setup/ }));
     fireEvent.change(screen.getByLabelText("Your name"), { target: { value: "Ada" } });
     fireEvent.click(screen.getByRole("button", { name: /Continue/ }));
 

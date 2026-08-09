@@ -7,7 +7,6 @@ import type { Json } from "@/integrations/supabase/types";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
 import { StepField } from "@/components/classroom/onboarding/stepFields";
 import {
-  DEFAULT_STUDY_TIME,
   NAME_STEP_COPY,
   REQUIRED_STEPS,
   STEP_COPY,
@@ -70,7 +69,9 @@ export function OrientationCardView({
   initialAnswers: OnboardingAnswers;
   onSave: (patch: OrientationSavePatch) => Promise<boolean>;
 }) {
-  const [open, setOpen] = React.useState(false);
+  // Incomplete setup is the first job on Home. Open it immediately instead of
+  // making a new student discover and expand a collapsed invitation.
+  const [open, setOpen] = React.useState(true);
   const [finished, setFinished] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [stepIndex, setStepIndex] = React.useState(() =>
@@ -87,9 +88,6 @@ export function OrientationCardView({
   const canContinue = (): boolean => {
     if (step === "name") return !!name.trim();
     if (!REQUIRED_STEPS[step]) return true;
-    // Study time ships with a default schedule, so Finish is never blocked on
-    // the last step even if the student never taps a cell.
-    if (step === "study_time") return true;
     return isStepAnswered(step, answers);
   };
 
@@ -101,10 +99,7 @@ export function OrientationCardView({
         setStepIndex(1);
         return;
       }
-      const nextAnswers =
-        step === "study_time" && !answers.study_time
-          ? { ...answers, study_time: DEFAULT_STUDY_TIME }
-          : answers;
+      const nextAnswers = answers;
       if (!(await onSave({ answers: nextAnswers, complete: isLastStep }))) return;
       setAnswers(nextAnswers);
       if (isLastStep) {
