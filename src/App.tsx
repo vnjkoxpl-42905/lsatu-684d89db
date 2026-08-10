@@ -25,6 +25,7 @@ import SavedSets from "./pages/SavedSets";
 // Shared with the rail's hover prefetch (src/lib/routePreload.ts) so both
 // resolve the same module id and pull the same chunk.
 import { loadDrillHub } from "@/lib/routePreload";
+import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const Drill = safeLazy(() => import("./pages/Drill"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));

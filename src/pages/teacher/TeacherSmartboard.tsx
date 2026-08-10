@@ -1,4 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2 } from 'lucide-react';
 import '@excalidraw/excalidraw/index.css';
