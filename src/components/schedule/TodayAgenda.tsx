@@ -104,8 +104,12 @@ function AddTask({ onAdd }: { onAdd: (title: string) => void }) {
 export default function TodayAgenda({ entries, todo, onOpenEntry }: { entries: ScheduleEntry[]; todo: TodoController; onOpenEntry: (entry: ScheduleEntry) => void }) {
   const today = startOfDay(new Date());
   const overdue = todo.items.filter((item) => isOverdue(item, today));
+  const overdueIds = new Set(overdue.map((item) => item.id));
   const dated = entries.filter((entry) => entry.kind !== 'task');
-  const tasks = entries.filter((entry): entry is ScheduleEntry & { source: TodoItem } => entry.kind === 'task');
+  const tasks = entries.filter(
+    (entry): entry is ScheduleEntry & { source: TodoItem } =>
+      entry.kind === 'task' && !overdueIds.has(entry.source.id),
+  );
   const empty = !overdue.length && !dated.length && !tasks.length;
 
   return (
