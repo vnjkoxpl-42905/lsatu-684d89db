@@ -319,7 +319,7 @@ function ClassroomSidebar({
                 }`}
                 onClick={() => go("/teacher/schedule")}
               >
-                Calendar
+                Student schedules
               </button>
               <button
                 type="button"
