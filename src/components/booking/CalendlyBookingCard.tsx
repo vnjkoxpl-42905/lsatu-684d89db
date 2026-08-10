@@ -74,7 +74,8 @@ function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }
   );
 }
 
-export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
+export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2" }: { api: BookingApi; sessionHeadingLevel?: "h2" | "h3" }) {
+  const SessionHeading = sessionHeadingLevel;
   const [info, setInfo] = useState<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] } | null>(null);
   const [infoLoading, setInfoLoading] = useState(true);
   const [slots, setSlots] = useState<BookingSlot[]>([]);
@@ -200,7 +201,7 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
         {/* Left: host card (Calendly-style, no student PII) */}
         <div className="min-w-0 border-b border-border p-5 @[54rem]:border-b-0 @[54rem]:border-r @[54rem]:p-6">
           <div className="text-sm font-medium text-muted-foreground">Joshua</div>
-          <h2 className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</h2>
+          <SessionHeading className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</SessionHeading>
           <div className="mt-4 space-y-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 shrink-0" />

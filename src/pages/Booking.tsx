@@ -95,7 +95,13 @@ export default function Booking() {
       </div>
 
       <BookingOfferHub offers={commerce?.offers ?? []} commerce={commerce?.commerce ?? []} externalBookings={commerce?.external_bookings ?? []} />
-      <CalendlyBookingCard api={api} />
+      <section aria-labelledby="schedule-with-pass-heading">
+        <div className="mb-3">
+          <h2 id="schedule-with-pass-heading" className="text-lg font-semibold tracking-tight">Schedule with your pass</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Already have sessions available? Choose a date and time below.</p>
+        </div>
+        <CalendlyBookingCard api={api} sessionHeadingLevel="h3" />
+      </section>
     </div>
   );
 }

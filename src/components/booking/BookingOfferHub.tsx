@@ -12,6 +12,30 @@ export type BookingOffer = {
   credits: number;
 };
 
+export const DEFAULT_BOOKING_OFFERS: BookingOffer[] = [
+  {
+    id: "single-session",
+    label: "Single session",
+    provider: "calcom",
+    url: "https://cal.com/joshua-jtx5ud/session-link",
+    credits: 0,
+  },
+  {
+    id: "package-5",
+    label: "5-hour package",
+    provider: "stripe",
+    url: "https://buy.stripe.com/4gMaEY05F3dc9x13NqdZ61x",
+    credits: 5,
+  },
+  {
+    id: "package-10",
+    label: "10-hour package",
+    provider: "stripe",
+    url: "https://buy.stripe.com/3cI6oI2dN5lk4cHcjWdZ61O",
+    credits: 10,
+  },
+];
+
 export type BookingCommerceItem = {
   id: string;
   offer_id: string | null;
@@ -40,50 +64,56 @@ export default function BookingOfferHub({
   const [opening, setOpening] = useState<string | null>(null);
   const openOffer = async (offer: BookingOffer) => {
     setOpening(offer.id);
+    let destination = offer.url;
     try {
       const { data, error } = await supabase.functions.invoke("student-booking", { body: { action: "offer_click", offer_id: offer.id } });
       if (error || data?.error) throw new Error(data?.error || error.message);
-      window.location.assign(data.url);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not open the payment link");
-      setOpening(null);
+      if (typeof data?.url === "string" && data.url) destination = data.url;
+    } catch {
+      // The three canonical links remain usable if click logging or live offer
+      // configuration is temporarily unavailable.
+      toast.info("Opening the saved booking link.");
     }
+    window.location.assign(destination);
   };
 
-  const labelFor = (id: string | null) => offers.find((offer) => offer.id === id)?.label ?? "Booking";
-  if (offers.length === 0 && commerce.length === 0 && externalBookings.length === 0) return null;
+  const offersById = new Map(offers.map((offer) => [offer.id, offer]));
+  const resolvedOffers = DEFAULT_BOOKING_OFFERS.map((fallback) => offersById.get(fallback.id) ?? fallback);
+  const labelFor = (id: string | null) => resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
 
   return (
-    <section className="booking-holo mb-6 rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <section className="@container booking-holo mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm" aria-labelledby="booking-options-heading">
       <div className="flex items-start gap-3">
-        <CreditCard className="mt-0.5 h-5 w-5 text-primary" />
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight">Book or add sessions</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Your agreed booking and payment options are saved here.</p>
+        <CreditCard className="ml-5 mt-5 h-5 w-5 shrink-0 text-primary" />
+        <div className="px-0 pb-5 pr-5 pt-5">
+          <h2 id="booking-options-heading" className="text-lg font-semibold tracking-tight">Choose how you want to book</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Use one link for a single session, or choose the 5-hour or 10-hour package.</p>
         </div>
       </div>
-      <div className="mt-4 grid gap-3 md:grid-cols-3">
-        {offers.map((offer) => {
-          const isSingle = offer.credits === 0;
+      <div className="grid border-t border-border @[40rem]:grid-cols-3">
+        {resolvedOffers.map((offer, index) => {
+          const isSingle = offer.id === "single-session";
           return (
-            <div key={offer.id} className="rounded-xl border border-border bg-background p-4">
+            <div key={offer.id} className={index === 0 ? "p-5" : "border-t border-border p-5 @[40rem]:border-l @[40rem]:border-t-0"}>
               <div className="flex items-center gap-2 text-sm font-semibold">
                 {isSingle ? <CalendarDays className="h-4 w-4 text-primary" /> : <PackagePlus className="h-4 w-4 text-primary" />}
                 {offer.label}
               </div>
               <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                {isSingle ? "Schedule and pay for one session through the secure booking link." : `Secure checkout adds ${offer.credits} sessions to your existing booking pass.`}
+                {isSingle
+                  ? "Choose a time and pay for one session."
+                  : `Continue to the secure ${offer.label.toLowerCase()} checkout.`}
               </p>
               <Button className="mt-4 min-h-11 w-full" variant={isSingle ? "outline" : "default"} onClick={() => void openOffer(offer)} disabled={opening !== null}>
                 {opening === offer.id ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <ExternalLink className="mr-1.5 h-4 w-4" />}
-                {isSingle ? "Schedule session" : "Checkout"}
+                {isSingle ? "Book one session" : `Buy ${offer.label}`}
               </Button>
             </div>
           );
         })}
       </div>
       {(commerce.length > 0 || externalBookings.length > 0) && (
-        <div className="mt-5 border-t border-border pt-4">
+        <div className="border-t border-border px-5 py-4">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recent booking activity</h3>
           <ul className="mt-2 space-y-2 text-sm">
             {externalBookings.slice(0, 5).map((booking) => (
