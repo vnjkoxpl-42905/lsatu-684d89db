@@ -33,6 +33,19 @@ export function loadRcIndex(): Promise<RcIndex> {
   return indexPromise;
 }
 
+/** Loads (and caches) the flat question search index used by `/rc/search`. */
+export function loadRcQuestionIndex(): Promise<RcQuestionIndex> {
+  if (!questionIndexPromise) {
+    questionIndexPromise = fetchJson<RcQuestionIndex>('/data/rc/rc-question-index.json').catch(
+      (err) => {
+        questionIndexPromise = null; // let a later call retry rather than caching a failure
+        throw err;
+      },
+    );
+  }
+  return questionIndexPromise;
+}
+
 /** Loads (and caches) one PrepTest's passages and questions. */
 export function loadPreptest(preptest: number): Promise<RcPreptestFile> {
   const cached = preptestCache.get(preptest);
