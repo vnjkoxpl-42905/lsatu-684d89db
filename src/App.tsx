@@ -108,7 +108,6 @@ const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNote
 const DossierMessages = safeLazy(() => import("./pages/teacher/students/DossierMessages"));
 const DossierSchedule = safeLazy(() => import("./pages/teacher/students/DossierSchedule"));
 const TeacherWeeklyPlans = safeLazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
-const TeacherSchedule = safeLazy(() => import("./pages/teacher/TeacherSchedule"));
 const TeacherSmartboard = safeLazy(() => import("./pages/teacher/TeacherSmartboard"));
 const TeacherBootcampsHub = safeLazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = safeLazy(() => import("./pages/teacher/TeacherBootcampDetail"));
@@ -621,11 +620,10 @@ const App = () => {
                           <DeskLibrarySurface />
                         </React.Suspense>
                       } />
-                      <Route path="schedule" element={
-                        <React.Suspense fallback={<div />}>
-                          <TeacherSchedule />
-                        </React.Suspense>
-                      } />
+                      {/* Student schedules are owned by each student's dossier.
+                          Keep the former URL working, but send teachers to the
+                          roster instead of presenting a competing workspace. */}
+                      <Route path="schedule" element={<RedirectWithSearch to="/teacher/students" />} />
                       {/* Insights = bootcamp/topic analytics. Renamed from the old
                           top-level "Bootcamps" which collided with the assign action. */}
                       <Route path="insights" element={

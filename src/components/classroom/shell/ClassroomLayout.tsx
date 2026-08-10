@@ -301,7 +301,6 @@ function ClassroomSidebar({
                 type="button"
                 className={`classroom-nav${
                   location.pathname.startsWith("/teacher/") &&
-                  !location.pathname.startsWith("/teacher/schedule") &&
                   !location.pathname.startsWith("/teacher/whiteboard")
                     ? " classroom-nav-active-white"
                     : ""
@@ -309,17 +308,6 @@ function ClassroomSidebar({
                 onClick={() => go("/teacher/today")}
               >
                 Teacher Workspace
-              </button>
-              <button
-                type="button"
-                className={`classroom-nav${
-                  location.pathname.startsWith("/teacher/schedule")
-                    ? " classroom-nav-active-white"
-                    : ""
-                }`}
-                onClick={() => go("/teacher/schedule")}
-              >
-                Student schedules
               </button>
               <button
                 type="button"
