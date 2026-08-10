@@ -1,14 +1,15 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { HelpCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { safeLazy } from '@/lib/safeLazy';
 import {
   setHelpSheetOpen,
   useBottomRightSurfaceOpen,
 } from '@/components/inbox/messengerOpenBus';
 
-const HelpSheet = lazy(() => import('./HelpSheet'));
+const HelpSheet = safeLazy(() => import('./HelpSheet'));
 
 // Routes where the floating Help button shouldn't appear.
 // /foyer = marketing/landing; /auth/* = sign in flow; admin surfaces

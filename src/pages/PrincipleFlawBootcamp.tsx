@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { formatParticipantName } from '@/lib/displayName';
 
-const PrincipleFlawApp = React.lazy(
+const PrincipleFlawApp = safeLazy(
   () => import('@/bootcamps/principle-flaw/PrincipleFlawApp'),
 );
 

@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
-const FallacyApp = React.lazy(
+const FallacyApp = safeLazy(
   () => import('@/bootcamps/fallacy-flaw-v2/FallacyApp'),
 );
 
