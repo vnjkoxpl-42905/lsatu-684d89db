@@ -25,14 +25,14 @@ import SavedSets from "./pages/SavedSets";
 // Shared with the rail's hover prefetch (src/lib/routePreload.ts) so both
 // resolve the same module id and pull the same chunk.
 import { loadDrillHub } from "@/lib/routePreload";
-const AcademyMainhub = React.lazy(loadDrillHub);
-const Drill = React.lazy(() => import("./pages/Drill"));
-const Analytics = React.lazy(() => import("./pages/Analytics"));
-const RcHub = React.lazy(() => import("./features/rc/pages/RcHub"));
-const RcPlayer = React.lazy(() => import("./features/rc/pages/RcPlayer"));
-const RcResults = React.lazy(() => import("./features/rc/pages/RcResults"));
-const RcSearch = React.lazy(() => import("./features/rc/pages/RcSearch"));
-const Auth = React.lazy(() => import("./pages/Auth"));
+const AcademyMainhub = safeLazy(loadDrillHub);
+const Drill = safeLazy(() => import("./pages/Drill"));
+const Analytics = safeLazy(() => import("./pages/Analytics"));
+const RcHub = safeLazy(() => import("./features/rc/pages/RcHub"));
+const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
+const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
+const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
+const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
 import Classroom from "./pages/Classroom";
@@ -52,76 +52,76 @@ import {
   JournalEntryView,
   JournalIndexView,
 } from "@/components/classroom/JournalViews";
-const CausationStation = React.lazy(() => import("./pages/CausationStation"));
+const CausationStation = safeLazy(() => import("./pages/CausationStation"));
 
 // Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
 // drills, flashcards, gauntlet, final set) are switched internally by the
 // bootcamp's ViewManager keyed off AppContext.currentView, so the route is
 // a single mount with no nested children.
-const AbstractBootcamp = React.lazy(() => import("./topics/abstract"));
+const AbstractBootcamp = safeLazy(() => import("./topics/abstract"));
 
 import Schedule from "./pages/Schedule";
 import Booking from "./pages/Booking";
 import Bootcamps from "./pages/Bootcamps";
-const IntroToLrBootcamp = React.lazy(() => import("./pages/IntroToLrBootcamp"));
-const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
-const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp"));
-const RcEngagingPassageBootcamp = React.lazy(() => import("./pages/RcEngagingPassageBootcamp"));
+const IntroToLrBootcamp = safeLazy(() => import("./pages/IntroToLrBootcamp"));
+const PrincipleFlawBootcamp = safeLazy(() => import("./pages/PrincipleFlawBootcamp"));
+const FallacyFlawBootcamp = safeLazy(() => import("./pages/FallacyFlawBootcamp"));
+const RcEngagingPassageBootcamp = safeLazy(() => import("./pages/RcEngagingPassageBootcamp"));
 import NotFound from "./pages/NotFound";
-const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
+const Unsubscribe = safeLazy(() => import("./pages/Unsubscribe"));
 // Hoisted out of render (were inline React.lazy(...) in the route element, which
 // recreated the lazy component every render). COMPREHENSIVEAUDIT Phase 3.
-const Trust = React.lazy(() => import("./pages/Trust"));
-const OAuthConsent = React.lazy(() => import("./pages/OAuthConsent"));
-const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
-const Homework = React.lazy(() => import("./pages/admin/Homework"));
-const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
-const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
-const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
-const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
-const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"));
-const BootcampReferenceLab = React.lazy(() => import("./pages/admin/BootcampReferenceLab"));
-const AdminIntroLr = React.lazy(() => import("./pages/admin/IntroLr"));
-const AdminInspector = React.lazy(() => import("./pages/admin/Inspector"));
-const LsatKnowledgeImport = React.lazy(() => import("./pages/LsatKnowledgeImport"));
-const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
-const ActivityCentre = React.lazy(() => import("./pages/ActivityCentre"));
-const ActivityRunner = React.lazy(() => import("./features/activity-centre/components/ActivityRunner"));
+const Trust = safeLazy(() => import("./pages/Trust"));
+const OAuthConsent = safeLazy(() => import("./pages/OAuthConsent"));
+const DriveFiles = safeLazy(() => import("./pages/admin/DriveFiles"));
+const Homework = safeLazy(() => import("./pages/admin/Homework"));
+const HomeworkNew = safeLazy(() => import("./pages/admin/HomeworkNew"));
+const HomeworkDetail = safeLazy(() => import("./pages/admin/HomeworkDetail"));
+const TeachingLibrary = safeLazy(() => import("./pages/admin/TeachingLibrary"));
+const TAPage = safeLazy(() => import("./pages/admin/StudentHub"));
+const AdminGuidedDrills = safeLazy(() => import("./pages/admin/GuidedDrills"));
+const BootcampReferenceLab = safeLazy(() => import("./pages/admin/BootcampReferenceLab"));
+const AdminIntroLr = safeLazy(() => import("./pages/admin/IntroLr"));
+const AdminInspector = safeLazy(() => import("./pages/admin/Inspector"));
+const LsatKnowledgeImport = safeLazy(() => import("./pages/LsatKnowledgeImport"));
+const GuidedDrillStart = safeLazy(() => import("./pages/GuidedDrillStart"));
+const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
+const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
-const TeacherWorkspaceShell = React.lazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
-const DeskTodaySurface = React.lazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
-const TeacherDevIndex = React.lazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
-const DeskPeopleSurface = React.lazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
-const DeskLibrarySurface = React.lazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
-const TeacherInboxRoom = React.lazy(() => import("./pages/teacher/inbox/TeacherInboxRoom"));
-const TeacherHomeworkDetail = React.lazy(() => import("./pages/teacher/library/TeacherHomeworkDetail"));
+const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
+const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
+const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
+const DeskPeopleSurface = safeLazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
+const DeskLibrarySurface = safeLazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
+const TeacherInboxRoom = safeLazy(() => import("./pages/teacher/inbox/TeacherInboxRoom"));
+const TeacherHomeworkDetail = safeLazy(() => import("./pages/teacher/library/TeacherHomeworkDetail"));
 // TeacherStudentDetail's route is gone — the dossier replaced it and absorbed
 // its session/transcript pipeline into SessionBundleList. The file stays until
 // the Phase 4 purge, but nothing imports it now.
 // The student dossier + its five tab surfaces (T3.2).
-const StudentDossier = React.lazy(() => import("./pages/teacher/students/StudentDossier"));
-const DossierOverview = React.lazy(() => import("./pages/teacher/students/DossierOverview"));
-const DossierWork = React.lazy(() => import("./pages/teacher/students/DossierWork"));
-const DossierNotes = React.lazy(() => import("./pages/teacher/students/DossierNotes"));
-const DossierMessages = React.lazy(() => import("./pages/teacher/students/DossierMessages"));
-const DossierSchedule = React.lazy(() => import("./pages/teacher/students/DossierSchedule"));
-const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
-const TeacherSchedule = React.lazy(() => import("./pages/teacher/TeacherSchedule"));
-const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
-const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
-const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
-const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
-const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
-const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
-const TutorCorpus = React.lazy(() => import("./pages/teacher/TutorCorpus"));
-const TeacherSessionIngest = React.lazy(() => import("./pages/teacher/TeacherSessionIngest"));
+const StudentDossier = safeLazy(() => import("./pages/teacher/students/StudentDossier"));
+const DossierOverview = safeLazy(() => import("./pages/teacher/students/DossierOverview"));
+const DossierWork = safeLazy(() => import("./pages/teacher/students/DossierWork"));
+const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNotes"));
+const DossierMessages = safeLazy(() => import("./pages/teacher/students/DossierMessages"));
+const DossierSchedule = safeLazy(() => import("./pages/teacher/students/DossierSchedule"));
+const TeacherWeeklyPlans = safeLazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherSchedule = safeLazy(() => import("./pages/teacher/TeacherSchedule"));
+const TeacherSmartboard = safeLazy(() => import("./pages/teacher/TeacherSmartboard"));
+const TeacherBootcampsHub = safeLazy(() => import("./pages/teacher/TeacherBootcampsHub"));
+const TeacherBootcampDetail = safeLazy(() => import("./pages/teacher/TeacherBootcampDetail"));
+const TeacherStudentBootcampDetail = safeLazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
+const TeacherTemplates = safeLazy(() => import("./pages/teacher/TeacherTemplates"));
+const BootcampReferences = safeLazy(() => import("./pages/teacher/BootcampReferences"));
+const TutorCorpus = safeLazy(() => import("./pages/teacher/TutorCorpus"));
+const TeacherSessionIngest = safeLazy(() => import("./pages/teacher/TeacherSessionIngest"));
 
-const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
-const PublicBooking = React.lazy(() => import("./pages/PublicBooking"));
-const BookingWorkspace = React.lazy(() => import("./pages/booking/BookingWorkspace"));
+const BootcampReferenceDetail = safeLazy(() => import("./pages/teacher/BootcampReferenceDetail"));
+const PublicBooking = safeLazy(() => import("./pages/PublicBooking"));
+const BookingWorkspace = safeLazy(() => import("./pages/booking/BookingWorkspace"));
 /** Dev-only; the route that mounts it is gated on import.meta.env.DEV. */
-const ActivityLab = React.lazy(() => import("./pages/ActivityLab"));
+const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
