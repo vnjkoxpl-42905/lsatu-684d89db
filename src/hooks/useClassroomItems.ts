@@ -45,8 +45,11 @@ export interface ClassroomItem {
 }
 
 /**
- * Student-side: returns visible, unlocked classroom_items for the
- * signed-in user. RLS handles filtering; this hook just orders them.
+ * Student-side: returns visible, unlocked classroom_items for the signed-in
+ * user. Keep the explicit student_id filter even though RLS also protects
+ * student accounts: admins can read every row, and may still open student-side
+ * routes while testing. Without this scope, an admin sees every student's work
+ * combined into one calendar.
  */
 export function useClassroomItems() {
   const { user } = useAuth();
@@ -59,6 +62,7 @@ export function useClassroomItems() {
       const { data, error } = await supabase
         .from('classroom_items')
         .select('*')
+        .eq('student_id', user!.id)
         .order('priority', { ascending: false })
         .order('due_at', { ascending: true, nullsFirst: false })
         .order('created_at', { ascending: false });

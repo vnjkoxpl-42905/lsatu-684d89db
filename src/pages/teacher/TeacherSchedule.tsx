@@ -58,14 +58,22 @@ export default function TeacherSchedule() {
         <div className="px-4 py-3 border-b border-black/12 flex items-center gap-2 text-black/55">
           <CalendarDays className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
-            Pick a student
+            Student schedules
           </span>
         </div>
         <HubStudentList selectedId={studentId} onSelect={setStudentId} />
       </aside>
 
       <section className="p-6 space-y-5 overflow-y-auto">
-        <WeeklyHoursEditor />
+        <div className="rounded-xl border border-black/12 bg-white/20 p-4">
+          <div className="mb-3">
+            <h2 className="text-sm font-semibold text-[#11181c]">Your teaching availability</h2>
+            <p className="mt-1 text-xs text-black/50">
+              These hours belong to you. Student assignments appear only after you select a student below.
+            </p>
+          </div>
+          <WeeklyHoursEditor />
+        </div>
 
         {focusedEventQuery.data ? (
           <div className="rounded-xl border border-teacher-accent/30 bg-teacher-accent/10 p-4 text-[#11181c]">
@@ -88,7 +96,7 @@ export default function TeacherSchedule() {
 
         {!studentId ? (
           <div className="rounded-lg border border-dashed border-black/12 px-4 py-12 text-center text-sm text-black/45">
-            Select a student to view their schedule.
+            Select a student to view or organize that student's calendar.
           </div>
         ) : (
           <StudentSchedulePanel

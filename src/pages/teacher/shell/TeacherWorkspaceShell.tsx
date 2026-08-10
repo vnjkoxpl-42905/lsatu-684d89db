@@ -37,7 +37,7 @@ const ROOMS: Room[] = [
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-  { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
+  { to: '/teacher/schedule', label: 'Student schedules', Icon: CalendarDays },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
