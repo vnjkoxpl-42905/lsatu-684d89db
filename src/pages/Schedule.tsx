@@ -49,16 +49,16 @@ function MonthGrid({
   });
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card" role="grid" aria-label={format(anchor, 'MMMM yyyy')}>
-      <div className="grid grid-cols-7 border-b border-border" role="row">
+    <div className="overflow-hidden rounded-xl border border-border bg-card" role="group" aria-label={format(anchor, 'MMMM yyyy')}>
+      <div className="grid grid-cols-7 border-b border-border" aria-hidden="true">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((label) => (
-          <div key={label} role="columnheader" className="border-r border-border bg-muted/35 px-1 py-2.5 text-center text-xs font-semibold text-muted-foreground last:border-r-0">
+          <div key={label} className="border-r border-border bg-muted/35 px-1 py-2.5 text-center text-xs font-semibold text-muted-foreground last:border-r-0">
             <span className="@[520px]/schedule:hidden">{label.slice(0, 1)}</span>
             <span className="hidden @[520px]/schedule:inline">{label}</span>
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7" role="rowgroup">
+      <div className="grid grid-cols-7">
         {days.map((date) => {
           const entries = entriesByDay.get(dayKey(date)) ?? [];
           const focused = isSameDay(date, focusedDate);
@@ -66,8 +66,7 @@ function MonthGrid({
             <button
               key={date.toISOString()}
               type="button"
-              role="gridcell"
-              aria-selected={focused}
+              aria-pressed={focused}
               aria-label={`${format(date, 'EEEE, MMMM d, yyyy')}${entries.length ? `, ${entries.length} scheduled` : ', nothing scheduled'}`}
               onClick={() => onSelect(date)}
               className={cn(
@@ -243,7 +242,11 @@ export default function Schedule() {
 
       {partialError ? <div role="alert" className="mb-5 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:bg-amber-950/25 dark:text-amber-100"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0" /><span>Some schedule information could not be refreshed. The items that loaded successfully are still shown.</span></div> : null}
 
-      {mainView === 'today' ? <TodayAgenda entries={entriesByDay.get(dayKey(new Date())) ?? []} todo={todo} onOpenEntry={openEntry} /> : (
+      {mainView === 'today' ? (
+        loading
+          ? <div role="status" aria-live="polite" className="flex min-h-80 items-center justify-center text-sm text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Loading today…</div>
+          : <TodayAgenda entries={entriesByDay.get(dayKey(new Date())) ?? []} todo={todo} onOpenEntry={openEntry} />
+      ) : (
         <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 @[640px]/schedule:px-6">
             <div className="flex items-center gap-2">
