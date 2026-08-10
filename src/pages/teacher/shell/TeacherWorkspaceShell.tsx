@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
-  CalendarDays,
   LayoutGrid,
   Library,
   MessageSquare,
@@ -24,7 +23,7 @@ type Room = {
 };
 
 /**
- * The six rooms, in the order the spec fixes them (D3). This list is the only
+ * The five rooms in the teacher workspace. This list is the only
  * navigation in the teacher workspace: no `?ws=` switching, no second rail,
  * no per-surface tab bars pretending to be nav.
  *
@@ -37,7 +36,6 @@ const ROOMS: Room[] = [
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-  { to: '/teacher/schedule', label: 'Student schedules', Icon: CalendarDays },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
