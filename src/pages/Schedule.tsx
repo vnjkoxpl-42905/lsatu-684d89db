@@ -23,6 +23,7 @@ import {
   UploadCloud,
   Zap,
   Sparkles,
+  Video,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import TodayAgenda from '@/components/schedule/TodayAgenda';
+import { useBookingScheduleItems } from '@/hooks/useBookingScheduleItems';
 
 type CalView = 'month' | 'week' | 'day';
 type MainTab = 'today' | 'calendar';
@@ -56,6 +58,27 @@ const TYPE_META: Record<ClassroomItemType, TypeMeta> = {
   activity:        { label: 'Activity',     short: 'Activity', dot: 'bg-emerald-500', pill: 'bg-emerald-500/10 text-emerald-600 border-emerald-200', badge: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20', Icon: Sparkles },
   upload_summary:  { label: 'Upload',       short: 'Upload', dot: 'bg-zinc-500',   pill: 'bg-zinc-500/10 text-zinc-600 border-zinc-200',   badge: 'bg-zinc-500/10 text-zinc-600 border-zinc-500/20',   Icon: UploadCloud },
 };
+
+const SESSION_META: TypeMeta = {
+  label: 'Session',
+  short: 'Session',
+  dot: 'bg-primary',
+  pill: 'bg-primary/10 text-primary border-primary/20',
+  badge: 'bg-primary/10 text-primary border-primary/20',
+  Icon: Video,
+};
+
+function isBookingItem(item: ClassroomItem): boolean {
+  return item.source_table === 'booking_pass_redemptions';
+}
+
+function itemMeta(item: ClassroomItem): TypeMeta {
+  return isBookingItem(item) ? SESSION_META : TYPE_META[item.type];
+}
+
+function bookingCalendarPending(item: ClassroomItem): boolean {
+  return isBookingItem(item) && item.metadata_json.calendar_status !== 'synced';
+}
 
 function itemDate(item: ClassroomItem): Date {
   const raw = item.due_at ?? item.unlock_at ?? item.created_at;
@@ -144,7 +167,7 @@ function MonthGrid({
               </span>
               <span className="block space-y-1">
                 {dayItems.slice(0, 3).map((item) => {
-                  const meta = TYPE_META[item.type];
+                  const meta = itemMeta(item);
                   return (
                     <span
                       key={item.id}
@@ -226,7 +249,7 @@ function WeekView({ weekAnchor, items, onDayClick }: { weekAnchor: Date; items: 
               {dayItems.map((it) => (
                 <div
                   key={it.id}
-                  className={cn('px-2 py-1.5 rounded-lg border text-[11px] font-medium leading-tight truncate', TYPE_META[it.type].pill)}
+                  className={cn('px-2 py-1.5 rounded-lg border text-[11px] font-medium leading-tight truncate', itemMeta(it).pill)}
                   onClick={(e) => { e.stopPropagation(); onDayClick(day); }}
                 >
                   {it.title}
@@ -260,7 +283,7 @@ function DayView({ day, items, onItemClick }: { day: Date; items: ClassroomItem[
       {dayItems.length > 0 ? (
         <div className="space-y-2.5">
           {dayItems.map((it) => {
-            const meta = TYPE_META[it.type];
+            const meta = itemMeta(it);
             return (
               <button
                 key={it.id}
@@ -273,7 +296,7 @@ function DayView({ day, items, onItemClick }: { day: Date; items: ClassroomItem[
                   <p className="text-sm font-semibold truncate">{it.title}</p>
                   <p className="text-[11px] opacity-70 mt-0.5">
                     {meta.label}
-                    {it.due_at ? ` · Due ${format(new Date(it.due_at), 'MMM d')}` : ''}
+                    {it.due_at ? ` · ${isBookingItem(it) ? format(new Date(it.due_at), 'h:mm a') : `Due ${format(new Date(it.due_at), 'MMM d')}`}` : ''}
                   </p>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 opacity-60" />
@@ -292,7 +315,9 @@ function DayView({ day, items, onItemClick }: { day: Date; items: ClassroomItem[
 
 export default function Schedule() {
   const navigate = useNavigate();
-  const { data: items = [], isLoading } = useClassroomItems();
+  const { data: classroomItems = [], isLoading } = useClassroomItems();
+  const { data: bookingItems = [], isLoading: bookingsLoading, isError: bookingsError } = useBookingScheduleItems();
+  const items = React.useMemo(() => [...classroomItems, ...bookingItems], [classroomItems, bookingItems]);
 
   const [mainTab, setMainTab] = React.useState<MainTab>('calendar');
   const [view, setView] = React.useState<CalView>('month');
@@ -350,6 +375,10 @@ export default function Schedule() {
   }, [items]);
 
   const openItem = (it: ClassroomItem) => {
+    if (isBookingItem(it)) {
+      navigate('/booking');
+      return;
+    }
     const route = resolveItemRoute(it);
     if (route) {
       setSheetOpen(false);
@@ -368,7 +397,7 @@ export default function Schedule() {
               <div>
                 <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
                 <p className="text-sm text-muted-foreground mt-1.5">
-                  {mainTab === 'today' ? 'Your to-do list for today.' : 'Your assigned work, calendared by due date.'}
+                  {mainTab === 'today' ? 'Your tasks and sessions for today.' : 'Your assigned work and booked sessions in one calendar.'}
                 </p>
               </div>
               <div className="flex items-center p-0.5 bg-muted/50 rounded-lg border border-border/60 gap-0.5">
@@ -388,12 +417,12 @@ export default function Schedule() {
               </div>
             </div>
 
-            {mainTab === 'today' && <TodayAgenda />}
+            {mainTab === 'today' && <TodayAgenda bookingItems={bookingItems} />}
 
             {mainTab === 'calendar' && (
             <>
 
-            {isLoading ? (
+            {isLoading || bookingsLoading ? (
               <div className="flex items-center justify-center py-24 text-sm text-muted-foreground">
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Loading…
@@ -401,8 +430,11 @@ export default function Schedule() {
             ) : items.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border p-12 text-center">
                 <CalendarDays className="w-6 h-6 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm font-medium">No scheduled work yet.</p>
-                <p className="text-xs text-muted-foreground mt-1">When Joshua assigns something it will appear here.</p>
+                <p className="text-sm font-medium">Nothing scheduled yet.</p>
+                <p className="text-xs text-muted-foreground mt-1">Assigned work and booked sessions will appear here automatically.</p>
+                {bookingsError && (
+                  <p role="alert" className="mt-3 text-xs text-muted-foreground">Sessions could not be refreshed. Try opening Schedule again.</p>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-8">
@@ -460,10 +492,15 @@ export default function Schedule() {
                   <div className="flex items-center gap-2">
                     <CalendarDays className="w-4 h-4 text-muted-foreground" />
                     <div>
-                      <h2 className="text-lg font-semibold tracking-tight">Bookings</h2>
+                      <h2 className="text-lg font-semibold tracking-tight">Upcoming</h2>
                       <p className="text-xs text-muted-foreground">Your next 14 days</p>
                     </div>
                   </div>
+                  {bookingsError && (
+                    <div role="alert" className="rounded-xl border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+                      Sessions could not be refreshed. Your assigned work is still shown.
+                    </div>
+                  )}
                   {upcoming.length === 0 ? (
                     <div className="rounded-xl border border-dashed border-border p-6 text-center">
                       <p className="text-sm text-muted-foreground">Nothing in the next two weeks.</p>
@@ -471,7 +508,7 @@ export default function Schedule() {
                   ) : (
                     <div className="space-y-2.5">
                       {upcoming.map((it) => {
-                        const meta = TYPE_META[it.type];
+                        const meta = itemMeta(it);
                         const d = itemDate(it);
                         return (
                           <button
@@ -484,8 +521,13 @@ export default function Schedule() {
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-medium text-foreground leading-snug truncate">{it.title}</p>
                               <p className="text-[11px] text-muted-foreground mt-0.5">
-                                {isToday(d) ? 'Today' : format(d, 'EEE, MMM d')}
+                                {isBookingItem(it)
+                                  ? format(new Date(it.due_at!), "EEE, MMM d '·' h:mm a")
+                                  : isToday(d) ? 'Today' : format(d, 'EEE, MMM d')}
                               </p>
+                              {bookingCalendarPending(it) && (
+                                <p className="mt-0.5 text-xs text-muted-foreground">Calendar invite syncing</p>
+                              )}
                             </div>
                             <span className={cn('shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-md border', meta.badge)}>
                               {meta.short}
@@ -518,8 +560,8 @@ export default function Schedule() {
                   <p className="text-sm text-muted-foreground italic text-center py-6">No work assigned for this day.</p>
                 ) : (
                   itemsForSelected.map((it) => {
-                    const meta = TYPE_META[it.type];
-                    const route = resolveItemRoute(it);
+                    const meta = itemMeta(it);
+                    const route = isBookingItem(it) ? '/booking' : resolveItemRoute(it);
                     return (
                       <Card key={it.id} className="p-4 flex items-start gap-3 bg-card shadow-none border-border">
                         <meta.Icon className={cn('w-4 h-4 mt-0.5 shrink-0')} />
@@ -530,13 +572,16 @@ export default function Schedule() {
                           </p>
                           {it.due_at && (
                             <p className="text-[11px] text-muted-foreground">
-                              Due {format(new Date(it.due_at), 'MMM d, h:mm a')}
+                              {isBookingItem(it) ? 'Starts' : 'Due'} {format(new Date(it.due_at), 'MMM d, h:mm a')}
                             </p>
                           )}
                           {it.unlock_at && (
                             <p className="text-[11px] text-muted-foreground">
                               Unlocks {format(new Date(it.unlock_at), 'MMM d, h:mm a')}
                             </p>
+                          )}
+                          {bookingCalendarPending(it) && (
+                            <p className="text-xs text-muted-foreground">Google Calendar invite syncing</p>
                           )}
                         </div>
                         {route ? (
@@ -549,7 +594,7 @@ export default function Schedule() {
                             }}
                             className="shrink-0 h-8 px-2 text-xs"
                           >
-                            Open
+                            {isBookingItem(it) ? 'View' : 'Open'}
                             <ExternalLink className="w-3 h-3 ml-1" />
                           </Button>
                         ) : (

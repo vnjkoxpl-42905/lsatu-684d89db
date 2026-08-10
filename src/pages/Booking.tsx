@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +19,7 @@ const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
 
 export default function Booking() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { is_admin, loading } = useUserPermissions();
   const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[] } | null>(null);
 
@@ -50,6 +52,7 @@ export default function Booking() {
         idempotency_key: idempotencyKey,
         ...(studentNote ? { student_note: studentNote } : {}),
       });
+      await queryClient.invalidateQueries({ queryKey: ["student-booking", "info"] });
     },
     uploadFiles: async (files, idempotencyKey) => {
       const fd = new FormData();
@@ -74,7 +77,7 @@ export default function Booking() {
       if (error) throw new Error(error.message);
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
     },
-  }), []);
+  }), [queryClient]);
 
   // Teacher booking controls live on each student's in-shell dossier. The
   // former /booking/admin destination mounts a separate app shell, which

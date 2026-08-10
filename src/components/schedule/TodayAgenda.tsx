@@ -4,6 +4,7 @@ import { format, startOfDay, isBefore, addDays } from 'date-fns';
 import {
   CheckCircle2, Circle, Trash2, Plus, CalendarClock,
   ExternalLink, Clock, Loader2, ListChecks,
+  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,7 @@ import {
   routeWithReturnTo,
   type AssignedTodoRow,
 } from '@/hooks/useAssignedTodoFeed';
+import type { ClassroomItem } from '@/hooks/useClassroomItems';
 
 const KIND_LABEL: Record<string, string> = {
   drill: 'Drill',
@@ -228,13 +230,14 @@ function AssignedRow({ row, onOpen }: { row: AssignedTodoRow; onOpen: (r: Assign
   );
 }
 
-export default function TodayAgenda() {
+export default function TodayAgenda({ bookingItems = [] }: { bookingItems?: ClassroomItem[] }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { items, loading, toggleComplete, moveToDay, addTask, deleteTask } = useStudentTodo();
   const { rows: assigned, loading: assignedLoading } = useAssignedTodoFeed();
   const today = startOfDay(new Date());
   const todayKey = ymd(today);
+  const todaysBookings = bookingItems.filter((item) => item.due_at && ymd(startOfDay(new Date(item.due_at))) === todayKey);
 
   const openItem = (item: TodoItem) => {
     const route = resolveTodoRoute(readTodoAction(item.metadata_json));
@@ -263,7 +266,7 @@ export default function TodayAgenda() {
   }
 
   const empty =
-    overdue.length === 0 && todays.length === 0 && assigned.length === 0;
+    overdue.length === 0 && todays.length === 0 && assigned.length === 0 && todaysBookings.length === 0;
 
   return (
     <div className="max-w-2xl space-y-8">
@@ -286,6 +289,31 @@ export default function TodayAgenda() {
         <div className="space-y-2">
           {openAssigned$.map((r) => (
             <AssignedRow key={r.key} row={r} onOpen={openAssigned} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Sessions" count={todaysBookings.length}>
+        <div className="space-y-2">
+          {todaysBookings.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => navigate('/booking')}
+              className="flex min-h-11 w-full items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-left transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Video className="h-5 w-5 shrink-0 text-primary" />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium">{item.title}</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  {format(new Date(item.due_at!), 'h:mm a')} · Google Meet link in Booking
+                </span>
+                {item.metadata_json.calendar_status !== 'synced' && (
+                  <span className="mt-0.5 block text-xs text-muted-foreground">Calendar invite syncing</span>
+                )}
+              </span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+            </button>
           ))}
         </div>
       </Section>

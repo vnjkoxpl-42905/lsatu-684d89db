@@ -19,6 +19,7 @@ export type StudentRedemption = {
   meet_url: string | null;
   reschedule_count: number;
   google_event_id: string | null;
+  calendar_status?: string | null;
   can_reschedule: boolean;
 };
 
@@ -48,5 +49,6 @@ export function useStudentBooking() {
     enabled: !!user,
     queryFn: callInfo,
     staleTime: 30_000,
+    refetchOnMount: "always",
   });
 }
