@@ -105,6 +105,34 @@ export interface RcIndex {
   preptests: RcIndexPreptest[];
 }
 
+/* ------------------------------------------------------------ search index */
+
+/**
+ * One flat record per drillable question, emitted by
+ * `scripts/build-rc-search-index.mjs` as public/data/rc/rc-question-index.json.
+ * Carries everything the search page filters on so it never has to load a
+ * PrepTest file. Change one and you must change the other.
+ */
+export interface RcQuestionIndexEntry {
+  questionId: number;
+  passageId: number;
+  preptest: number;
+  section: number;
+  setNumber: number;
+  position: number;
+  questionType: string;
+  questionTypeFamily: string;
+  difficulty: number | null;
+  /** Feature names only; groups come from RC_FEATURES. */
+  features: string[];
+  prompt: string | null;
+}
+
+export interface RcQuestionIndex {
+  questionCount: number;
+  questions: RcQuestionIndexEntry[];
+}
+
 /* ------------------------------------------------------------------ session */
 
 export type RcRevealMode = 'per_question' | 'per_passage' | 'end_of_set';
