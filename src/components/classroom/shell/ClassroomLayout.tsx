@@ -25,6 +25,7 @@ import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useFlagged } from "@/hooks/useFlagged";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
@@ -134,6 +135,14 @@ function ClassroomSidebar({
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const unreadMessages = useUnreadMessageCount();
+  const { notifications, markSignupNotificationsRead } = useNotifications();
+  const unreadStudentSignups = React.useMemo(
+    () =>
+      notifications.filter(
+        (notification) => notification.type === "signup" && !notification.read
+      ).length,
+    [notifications],
+  );
   const { prefs: railPrefs } = useRailPrefs();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const profileRef = React.useRef<HTMLDivElement>(null);
@@ -164,6 +173,23 @@ function ClassroomSidebar({
     onNavigate?.();
     navigate(path);
   };
+
+  const openStudents = () => {
+    go("/teacher/students");
+  };
+
+  React.useEffect(() => {
+    if (
+      location.pathname.startsWith("/teacher/students") &&
+      unreadStudentSignups > 0
+    ) {
+      void markSignupNotificationsRead();
+    }
+  }, [
+    location.pathname,
+    markSignupNotificationsRead,
+    unreadStudentSignups,
+  ]);
 
   const navClass = (active: boolean) =>
     `classroom-nav${active ? " classroom-nav-active" : ""}`;
@@ -301,6 +327,7 @@ function ClassroomSidebar({
                 type="button"
                 className={`classroom-nav${
                   location.pathname.startsWith("/teacher/") &&
+                  !location.pathname.startsWith("/teacher/students") &&
                   !location.pathname.startsWith("/teacher/whiteboard")
                     ? " classroom-nav-active-white"
                     : ""
@@ -308,6 +335,23 @@ function ClassroomSidebar({
                 onClick={() => go("/teacher/today")}
               >
                 Teacher Workspace
+              </button>
+              <button
+                type="button"
+                className={`classroom-nav${
+                  location.pathname.startsWith("/teacher/students")
+                    ? " classroom-nav-active-white"
+                    : ""
+                }`}
+                onClick={openStudents}
+              >
+                Students
+                {unreadStudentSignups > 0 ? (
+                  <span className="classroom-nav-badge">
+                    {unreadStudentSignups > 9 ? "9+" : unreadStudentSignups}
+                    <span className="sr-only"> new student signups</span>
+                  </span>
+                ) : null}
               </button>
               <button
                 type="button"

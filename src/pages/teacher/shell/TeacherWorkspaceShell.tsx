@@ -8,7 +8,6 @@ import {
   PanelRightClose,
   PanelRightOpen,
   PencilRuler,
-  Users,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -23,8 +22,10 @@ type Room = {
 };
 
 /**
- * The five rooms in the teacher workspace. This list is the only
- * navigation in the teacher workspace: no `?ws=` switching, no second rail,
+ * The four rooms in the teacher workspace. Students live in the classroom
+ * side rail because roster access is a teacher-level destination, not a room
+ * beside the teacher's daily work. This list is the only top navigation in
+ * the teacher workspace: no `?ws=` switching, no second rail,
  * no per-surface tab bars pretending to be nav.
  *
  * `end` is set on Today alone. Every other room owns a path prefix, so its
@@ -33,7 +34,6 @@ type Room = {
  */
 const ROOMS: Room[] = [
   { to: '/teacher/today', label: 'Today', Icon: LayoutGrid, end: true },
-  { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },

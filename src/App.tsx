@@ -534,7 +534,7 @@ const App = () => {
                     <Route path="/bootcamps" element={
                       <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
                     } />
-                    {/* The teacher workspace: six rooms as real nested routes
+                    {/* The teacher workspace rooms use real nested routes
                         (spec D1/D3), rendering into the shell's <Outlet/> so
                         room-to-room navigation is real browser history.
 
