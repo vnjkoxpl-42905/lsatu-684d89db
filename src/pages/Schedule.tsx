@@ -100,19 +100,19 @@ function MonthGrid({
   });
 
   return (
-    <div>
-      <div className="mb-2 grid grid-cols-7 gap-1.5 sm:gap-2">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="grid grid-cols-7 border-b border-border">
         {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
           <div
             key={day}
-            className="rounded-lg bg-secondary px-1 py-1.5 text-center text-[9px] font-semibold tracking-[0.12em] text-secondary-foreground sm:text-[10px]"
+            className="border-r border-border bg-muted/40 px-1 py-2.5 text-center text-[9px] font-semibold tracking-[0.12em] text-muted-foreground last:border-r-0 sm:text-[10px]"
           >
             {day}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-7">
         {days.map((day) => {
           const dayItems = items.filter((item) => itemMatchesDay(item, day));
           const outside = !isSameMonth(day, month);
@@ -127,23 +127,43 @@ function MonthGrid({
               transition={{ duration: 0.16, ease: 'easeOut' }}
               aria-label={`${format(day, 'MMMM d, yyyy')}${dayItems.length ? `, ${dayItems.length} assigned item${dayItems.length === 1 ? '' : 's'}` : ''}`}
               className={cn(
-                'group relative flex min-h-14 items-center justify-center rounded-xl border text-sm tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-2xl',
+                'group relative min-h-[92px] border-b border-r border-border p-1.5 text-left text-sm tabular-nums transition-colors last:border-r-0 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-[118px] sm:p-2',
                 outside
-                  ? 'border-transparent bg-muted/25 text-muted-foreground/35'
-                  : 'border-border bg-card text-foreground hover:bg-accent',
-                selected && 'border-foreground bg-accent ring-1 ring-foreground/30',
-                isToday(day) && !selected && 'border-foreground/40 font-semibold',
+                  ? 'bg-muted/30 text-muted-foreground/45'
+                  : 'bg-card text-foreground hover:bg-accent/50',
+                selected && 'z-10 bg-accent ring-2 ring-inset ring-primary',
               )}
             >
-              <span>{format(day, 'd')}</span>
-              {dayItems.length > 0 ? (
-                <motion.span
-                  layoutId={`schedule-count-${format(day, 'yyyy-MM-dd')}`}
-                  className="absolute bottom-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-bold text-background"
-                >
-                  {dayItems.length}
-                </motion.span>
-              ) : null}
+              <span
+                className={cn(
+                  'mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium sm:h-7 sm:w-7 sm:text-sm',
+                  isToday(day) && 'bg-primary font-semibold text-primary-foreground',
+                )}
+              >
+                {format(day, 'd')}
+              </span>
+              <span className="block space-y-1">
+                {dayItems.slice(0, 3).map((item) => {
+                  const meta = TYPE_META[item.type];
+                  return (
+                    <span
+                      key={item.id}
+                      title={`${meta.label}: ${item.title}`}
+                      className={cn(
+                        'block truncate rounded-md border px-1.5 py-1 text-left text-[10px] font-semibold leading-tight sm:text-[11px]',
+                        meta.pill,
+                      )}
+                    >
+                      {item.title}
+                    </span>
+                  );
+                })}
+                {dayItems.length > 3 ? (
+                  <span className="block px-1 text-[10px] font-medium text-muted-foreground">
+                    +{dayItems.length - 3} more
+                  </span>
+                ) : null}
+              </span>
             </motion.button>
           );
         })}
