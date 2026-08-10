@@ -683,6 +683,13 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   width: 100%;
 }
 
+/* Schedule is an operational workspace, not a reading surface. Its calendar
+   needs enough room for seven honest columns plus a selected-day agenda. */
+.classroom-root.classroom-root-schedule .classroom-column {
+  max-width: 1240px;
+  padding: 48px 0 96px;
+}
+
 /* Reserves the stage while a code-split route resolves, so the rail never sits
    beside a collapsed column. See StageFallback in ClassroomLayout.tsx. */
 .classroom-root .classroom-stage-pending {
@@ -2712,6 +2719,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   .classroom-root .classroom-column {
     padding: 72px 0 90px;
+  }
+
+  .classroom-root.classroom-root-schedule .classroom-column {
+    padding: 72px 0 72px;
   }
 
   .classroom-root .classroom-leader-row {

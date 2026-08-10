@@ -1,193 +1,97 @@
 import * as React from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { format, isSameDay, isSameMonth, isToday, startOfDay, startOfWeek, endOfWeek, eachDayOfInterval, addWeeks, subWeeks, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns';
+import { CalendarDays, ChevronLeft, ChevronRight, CircleAlert, Clock3, ExternalLink, Loader2, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import {
-  format, isSameDay, isSameMonth, isToday, startOfDay,
-  startOfWeek, endOfWeek, eachDayOfInterval, addWeeks,
-  subWeeks, addDays, subDays, addMonths, subMonths,
-  startOfMonth, endOfMonth,
-} from 'date-fns';
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  ExternalLink,
-  BookOpen,
-  Flame,
-  StickyNote,
-  Megaphone,
-  FileText,
-  Loader2,
-  PencilRuler,
-  ListChecks,
-  UploadCloud,
-  Zap,
-  Sparkles,
-  Video,
-} from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
-import { resolveItemRoute } from '@/lib/classroomItems';
 import TodayAgenda from '@/components/schedule/TodayAgenda';
 import { useBookingScheduleItems } from '@/hooks/useBookingScheduleItems';
+import { useClassroomItems } from '@/hooks/useClassroomItems';
+import { useStudentTodo } from '@/hooks/useStudentTodo';
+import { buildScheduleEntries, groupScheduleEntries, type ScheduleEntry } from '@/lib/scheduleEntries';
+import { cn } from '@/lib/utils';
 
-type CalView = 'month' | 'week' | 'day';
-type MainTab = 'today' | 'calendar';
+type CalendarView = 'month' | 'week';
+type MainView = 'today' | 'calendar';
 
-interface TypeMeta {
-  label: string;
-  short: string;
-  dot: string;
-  pill: string;
-  badge: string;
-  Icon: React.ComponentType<{ className?: string }>;
+const dayKey = (date: Date) => format(date, 'yyyy-MM-dd');
+
+function entryTone(entry: ScheduleEntry): string {
+  if (entry.kind === 'session') return 'border-primary/25 bg-primary/8 text-primary';
+  if (entry.kind === 'task') return 'border-border bg-muted/65 text-foreground';
+  return 'border-border bg-background text-foreground';
 }
 
-const TYPE_META: Record<ClassroomItemType, TypeMeta> = {
-  homework:        { label: 'Homework',     short: 'HW',     dot: 'bg-rose-500',   pill: 'bg-rose-500/10 text-rose-600 border-rose-200',   badge: 'bg-rose-500/10 text-rose-600 border-rose-500/20',   Icon: BookOpen },
-  bootcamp_module: { label: 'Bootcamp',     short: 'Bootcamp', dot: 'bg-amber-500',  pill: 'bg-amber-500/10 text-amber-600 border-amber-200', badge: 'bg-amber-500/10 text-amber-600 border-amber-500/20', Icon: Flame },
-  note:            { label: 'Note',         short: 'Note',   dot: 'bg-sky-500',    pill: 'bg-sky-500/10 text-sky-600 border-sky-200',     badge: 'bg-sky-500/10 text-sky-600 border-sky-500/20',     Icon: StickyNote },
-  announcement:    { label: 'Announcement', short: 'Note',   dot: 'bg-violet-500', pill: 'bg-violet-500/10 text-violet-600 border-violet-200', badge: 'bg-violet-500/10 text-violet-600 border-violet-500/20', Icon: Megaphone },
-  session_recap:   { label: 'Recap',        short: 'Recap',  dot: 'bg-emerald-500', pill: 'bg-emerald-500/10 text-emerald-600 border-emerald-200', badge: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20', Icon: FileText },
-  weekly_plan_task:{ label: 'Weekly plan',  short: 'Plan',   dot: 'bg-indigo-500', pill: 'bg-indigo-500/10 text-indigo-600 border-indigo-200', badge: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20', Icon: ListChecks },
-  smartboard_recap:{ label: 'Smartboard',   short: 'Board',  dot: 'bg-fuchsia-500', pill: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-200', badge: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20', Icon: PencilRuler },
-  drill:           { label: 'Drill',        short: 'Drill',  dot: 'bg-cyan-500',   pill: 'bg-cyan-500/10 text-cyan-600 border-cyan-200',   badge: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20',   Icon: Zap },
-  activity:        { label: 'Activity',     short: 'Activity', dot: 'bg-emerald-500', pill: 'bg-emerald-500/10 text-emerald-600 border-emerald-200', badge: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20', Icon: Sparkles },
-  upload_summary:  { label: 'Upload',       short: 'Upload', dot: 'bg-zinc-500',   pill: 'bg-zinc-500/10 text-zinc-600 border-zinc-200',   badge: 'bg-zinc-500/10 text-zinc-600 border-zinc-500/20',   Icon: UploadCloud },
-};
-
-const SESSION_META: TypeMeta = {
-  label: 'Session',
-  short: 'Session',
-  dot: 'bg-primary',
-  pill: 'bg-primary/10 text-primary border-primary/20',
-  badge: 'bg-primary/10 text-primary border-primary/20',
-  Icon: Video,
-};
-
-function isBookingItem(item: ClassroomItem): boolean {
-  return item.source_table === 'booking_pass_redemptions';
-}
-
-function itemMeta(item: ClassroomItem): TypeMeta {
-  return isBookingItem(item) ? SESSION_META : TYPE_META[item.type];
-}
-
-function bookingCalendarPending(item: ClassroomItem): boolean {
-  return isBookingItem(item) && item.metadata_json.calendar_status !== 'synced';
-}
-
-function itemDate(item: ClassroomItem): Date {
-  const raw = item.due_at ?? item.unlock_at ?? item.created_at;
-  return startOfDay(new Date(raw));
-}
-
-/**
- * For multi-day items (currently bootcamp_module with both unlock_at
- * and due_at), return every day in the range. Other items return a
- * single date.
- */
-function itemDates(item: ClassroomItem): Date[] {
-  if (item.type === 'bootcamp_module' && item.unlock_at && item.due_at) {
-    const start = startOfDay(new Date(item.unlock_at));
-    const end = startOfDay(new Date(item.due_at));
-    if (end >= start) {
-      return eachDayOfInterval({ start, end });
-    }
-  }
-  return [itemDate(item)];
-}
-
-function itemMatchesDay(item: ClassroomItem, day: Date): boolean {
-  return itemDates(item).some((d) => isSameDay(d, day));
+function EntrySummary({ entry, compact = false }: { entry: ScheduleEntry; compact?: boolean }) {
+  return (
+    <span className="flex min-w-0 items-center gap-1.5">
+      <span className={cn('h-2 w-2 shrink-0 rounded-full', entry.kind === 'session' ? 'bg-primary' : entry.kind === 'task' ? 'bg-muted-foreground' : 'bg-amber-500')} />
+      <span className="truncate text-[13px] font-medium leading-5">
+        {!entry.allDay && !compact ? `${format(new Date(entry.startsAt), 'h:mm')} ` : ''}{entry.title}
+      </span>
+    </span>
+  );
 }
 
 function MonthGrid({
-  month,
-  items,
-  selectedDate,
-  onDayClick,
+  anchor,
+  entriesByDay,
+  focusedDate,
+  onSelect,
 }: {
-  month: Date;
-  items: ClassroomItem[];
-  selectedDate: Date | null;
-  onDayClick: (date: Date) => void;
+  anchor: Date;
+  entriesByDay: Map<string, ScheduleEntry[]>;
+  focusedDate: Date;
+  onSelect: (date: Date) => void;
 }) {
-  const reduceMotion = useReducedMotion();
   const days = eachDayOfInterval({
-    start: startOfWeek(startOfMonth(month), { weekStartsOn: 0 }),
-    end: endOfWeek(endOfMonth(month), { weekStartsOn: 0 }),
+    start: startOfWeek(startOfMonth(anchor), { weekStartsOn: 0 }),
+    end: endOfWeek(endOfMonth(anchor), { weekStartsOn: 0 }),
   });
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <div className="grid grid-cols-7 border-b border-border">
-        {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
-          <div
-            key={day}
-            className="border-r border-border bg-muted/40 px-1 py-2.5 text-center text-[9px] font-semibold tracking-[0.12em] text-muted-foreground last:border-r-0 sm:text-[10px]"
-          >
-            {day}
+    <div className="overflow-hidden rounded-xl border border-border bg-card" role="grid" aria-label={format(anchor, 'MMMM yyyy')}>
+      <div className="grid grid-cols-7 border-b border-border" role="row">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((label) => (
+          <div key={label} role="columnheader" className="border-r border-border bg-muted/35 px-1 py-2.5 text-center text-xs font-semibold text-muted-foreground last:border-r-0">
+            <span className="@[520px]/schedule:hidden">{label.slice(0, 1)}</span>
+            <span className="hidden @[520px]/schedule:inline">{label}</span>
           </div>
         ))}
       </div>
-
-      <div className="grid grid-cols-7">
-        {days.map((day) => {
-          const dayItems = items.filter((item) => itemMatchesDay(item, day));
-          const outside = !isSameMonth(day, month);
-          const selected = selectedDate ? isSameDay(day, selectedDate) : false;
-
+      <div className="grid grid-cols-7" role="rowgroup">
+        {days.map((date) => {
+          const entries = entriesByDay.get(dayKey(date)) ?? [];
+          const focused = isSameDay(date, focusedDate);
           return (
-            <motion.button
-              key={day.toISOString()}
+            <button
+              key={date.toISOString()}
               type="button"
-              onClick={() => onDayClick(day)}
-              whileHover={reduceMotion ? undefined : { y: -2 }}
-              transition={{ duration: 0.16, ease: 'easeOut' }}
-              aria-label={`${format(day, 'MMMM d, yyyy')}${dayItems.length ? `, ${dayItems.length} assigned item${dayItems.length === 1 ? '' : 's'}` : ''}`}
+              role="gridcell"
+              aria-selected={focused}
+              aria-label={`${format(date, 'EEEE, MMMM d, yyyy')}${entries.length ? `, ${entries.length} scheduled` : ', nothing scheduled'}`}
+              onClick={() => onSelect(date)}
               className={cn(
-                'group relative min-h-[92px] border-b border-r border-border p-1.5 text-left text-sm tabular-nums transition-colors last:border-r-0 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-[118px] sm:p-2',
-                outside
-                  ? 'bg-muted/30 text-muted-foreground/45'
-                  : 'bg-card text-foreground hover:bg-accent/50',
-                selected && 'z-10 bg-accent ring-2 ring-inset ring-primary',
+                'relative min-h-[68px] border-b border-r border-border p-1.5 text-left transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring @[520px]/schedule:min-h-[104px] @[520px]/schedule:p-2 @[860px]/schedule:min-h-[124px]',
+                !isSameMonth(date, anchor) ? 'bg-muted/20 text-muted-foreground/55' : 'bg-card hover:bg-accent/40',
+                focused && 'z-10 bg-accent/70 ring-2 ring-inset ring-primary',
               )}
             >
-              <span
-                className={cn(
-                  'mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium sm:h-7 sm:w-7 sm:text-sm',
-                  isToday(day) && 'bg-primary font-semibold text-primary-foreground',
-                )}
-              >
-                {format(day, 'd')}
+              <span className={cn('flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold tabular-nums', isToday(date) && 'bg-foreground text-background')}>
+                {format(date, 'd')}
               </span>
-              <span className="block space-y-1">
-                {dayItems.slice(0, 3).map((item) => {
-                  const meta = itemMeta(item);
-                  return (
-                    <span
-                      key={item.id}
-                      title={`${meta.label}: ${item.title}`}
-                      className={cn(
-                        'block truncate rounded-md border px-1.5 py-1 text-left text-[10px] font-semibold leading-tight sm:text-[11px]',
-                        meta.pill,
-                      )}
-                    >
-                      {item.title}
-                    </span>
-                  );
-                })}
-                {dayItems.length > 3 ? (
-                  <span className="block px-1 text-[10px] font-medium text-muted-foreground">
-                    +{dayItems.length - 3} more
+              <span className="mt-1 flex gap-1 @[520px]/schedule:hidden" aria-hidden>
+                {entries.slice(0, 3).map((entry) => <span key={entry.key} className={cn('h-1.5 w-1.5 rounded-full', entry.kind === 'session' ? 'bg-primary' : entry.kind === 'task' ? 'bg-muted-foreground' : 'bg-amber-500')} />)}
+                {entries.length > 3 ? <span className="text-xs leading-none text-muted-foreground">+</span> : null}
+              </span>
+              <span className="mt-1 hidden space-y-1 @[520px]/schedule:block">
+                {entries.slice(0, 2).map((entry) => (
+                  <span key={entry.key} className={cn('block rounded-md border px-1.5 py-0.5', entryTone(entry))}>
+                    <EntrySummary entry={entry} />
                   </span>
-                ) : null}
+                ))}
+                {entries.length > 2 ? <span className="block px-1 text-xs font-medium text-muted-foreground">+{entries.length - 2} more</span> : null}
               </span>
-            </motion.button>
+            </button>
           );
         })}
       </div>
@@ -195,419 +99,177 @@ function MonthGrid({
   );
 }
 
-function ViewToggle({ view, onChange }: { view: CalView; onChange: (v: CalView) => void }) {
-  const opts: { value: CalView; label: string }[] = [
-    { value: 'month', label: 'Month' },
-    { value: 'week', label: 'Week' },
-    { value: 'day', label: 'Day' },
-  ];
-  return (
-    <div className="flex items-center p-0.5 bg-muted/50 rounded-lg border border-border/60 gap-0.5">
-      {opts.map((o) => (
-        <button
-          key={o.value}
-          onClick={() => onChange(o.value)}
-          className={cn(
-            'px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-            view === o.value ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground',
-          )}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function WeekView({ weekAnchor, items, onDayClick }: { weekAnchor: Date; items: ClassroomItem[]; onDayClick: (d: Date) => void }) {
+function WeekView({
+  anchor,
+  entriesByDay,
+  focusedDate,
+  onSelect,
+}: {
+  anchor: Date;
+  entriesByDay: Map<string, ScheduleEntry[]>;
+  focusedDate: Date;
+  onSelect: (date: Date) => void;
+}) {
   const days = eachDayOfInterval({
-    start: startOfWeek(weekAnchor, { weekStartsOn: 0 }),
-    end: endOfWeek(weekAnchor, { weekStartsOn: 0 }),
+    start: startOfWeek(anchor, { weekStartsOn: 0 }),
+    end: endOfWeek(anchor, { weekStartsOn: 0 }),
   });
+
   return (
-    <div className="grid grid-cols-7 gap-2 mt-2">
-      {days.map((day) => {
-        const dayItems = items.filter((it) => itemMatchesDay(it, day));
-        const today = isToday(day);
-        return (
-          <div
-            key={day.toISOString()}
-            className="flex flex-col min-h-[160px] cursor-pointer group"
-            onClick={() => onDayClick(day)}
-          >
-            <div className={cn(
-              'flex flex-col items-center py-2 rounded-xl mb-2 transition-colors',
-              today ? 'bg-foreground text-background' : 'bg-muted/30 text-muted-foreground group-hover:bg-accent',
-            )}>
-              <span className="text-[10px] uppercase tracking-widest font-medium">{format(day, 'EEE')}</span>
-              <span className={cn('text-lg font-semibold tabular-nums leading-tight', today && 'text-background')}>
-                {format(day, 'd')}
-              </span>
+    <div>
+      <div className="grid grid-cols-7 gap-1.5" aria-label="Choose a day this week">
+        {days.map((date) => {
+          const selected = isSameDay(date, focusedDate);
+          const count = entriesByDay.get(dayKey(date))?.length ?? 0;
+          return (
+            <button
+              key={date.toISOString()}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onSelect(date)}
+              className={cn('min-h-14 rounded-lg border px-1 py-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring @[520px]/schedule:min-h-16', selected ? 'border-foreground bg-foreground text-background' : 'border-border bg-card hover:bg-accent')}
+            >
+              <span className="block text-xs font-medium opacity-70">{format(date, 'EEE')}</span>
+              <span className="block text-base font-semibold tabular-nums">{format(date, 'd')}</span>
+              {count ? <span className="mx-auto mt-1 block h-1.5 w-1.5 rounded-full bg-current" aria-label={`${count} scheduled`} /> : null}
+            </button>
+          );
+        })}
+      </div>
+      <div className="mt-4 hidden grid-cols-7 gap-2 @[860px]/schedule:grid">
+        {days.map((date) => {
+          const entries = entriesByDay.get(dayKey(date)) ?? [];
+          return (
+            <div key={date.toISOString()} className="min-h-80 border-r border-border pr-2 last:border-r-0 last:pr-0">
+              <p className="mb-3 text-sm font-semibold">{format(date, 'EEEE')}</p>
+              <div className="space-y-2">
+                {entries.map((entry) => <button key={entry.key} type="button" onClick={() => onSelect(date)} className={cn('w-full rounded-lg border px-2 py-2 text-left transition-colors hover:bg-accent', entryTone(entry))}><EntrySummary entry={entry} compact /></button>)}
+                {!entries.length ? <p className="text-xs text-muted-foreground">Open</p> : null}
+              </div>
             </div>
-            <div className="flex-1 space-y-1 px-0.5">
-              {dayItems.map((it) => (
-                <div
-                  key={it.id}
-                  className={cn('px-2 py-1.5 rounded-lg border text-[11px] font-medium leading-tight truncate', itemMeta(it).pill)}
-                  onClick={(e) => { e.stopPropagation(); onDayClick(day); }}
-                >
-                  {it.title}
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
 
-function DayView({ day, items, onItemClick }: { day: Date; items: ClassroomItem[]; onItemClick: (it: ClassroomItem) => void }) {
-  const dayItems = items.filter((it) => itemMatchesDay(it, day));
+function AgendaEntry({ entry, onOpen }: { entry: ScheduleEntry; onOpen: (entry: ScheduleEntry) => void }) {
+  const isSession = entry.kind === 'session';
+  const syncFailed = isSession && entry.calendarStatus === 'failed';
+  const syncPending = isSession && entry.calendarStatus !== 'synced' && !syncFailed;
   return (
-    <div className="mt-4 space-y-4">
-      <div className={cn(
-        'px-5 py-4 rounded-2xl border',
-        isToday(day) ? 'bg-foreground text-background border-transparent' : 'bg-muted/30 border-border',
-      )}>
-        <p className={cn('text-[11px] uppercase tracking-[0.2em] font-medium', isToday(day) ? 'text-background/60' : 'text-muted-foreground')}>
-          {format(day, 'EEEE')}
-        </p>
-        <p className={cn('text-3xl font-bold tabular-nums leading-tight', isToday(day) ? 'text-background' : 'text-foreground')}>
-          {format(day, 'MMMM d, yyyy')}
-        </p>
-        {isToday(day) && <p className="text-[11px] text-background/60 mt-0.5">Today</p>}
-      </div>
-
-      {dayItems.length > 0 ? (
-        <div className="space-y-2.5">
-          {dayItems.map((it) => {
-            const meta = itemMeta(it);
-            return (
-              <button
-                key={it.id}
-                type="button"
-                onClick={() => onItemClick(it)}
-                className={cn('w-full text-left flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-colors hover:bg-accent', meta.pill)}
-              >
-                <meta.Icon className="w-4 h-4 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate">{it.title}</p>
-                  <p className="text-[11px] opacity-70 mt-0.5">
-                    {meta.label}
-                    {it.due_at ? ` · ${isBookingItem(it) ? format(new Date(it.due_at), 'h:mm a') : `Due ${format(new Date(it.due_at), 'MMM d')}`}` : ''}
-                  </p>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-              </button>
-            );
-          })}
+    <article className={cn('rounded-xl border p-4', isSession ? 'border-primary/25 bg-primary/5' : 'border-border bg-card')}>
+      <div className="flex items-start gap-3">
+        <span className={cn('mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', isSession ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground')}>
+          {isSession ? <Video className="h-4 w-4" /> : <Clock3 className="h-4 w-4" />}
+        </span>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-sm font-semibold leading-5">{entry.title}</h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {entry.allDay ? 'Due today' : format(new Date(entry.startsAt), "h:mm a")}{isSession ? ' · With Joshua' : ''}
+          </p>
+          {isSession ? <p className="mt-1 text-xs text-muted-foreground">{Intl.DateTimeFormat().resolvedOptions().timeZone}</p> : null}
+          {syncPending ? <p className="mt-2 text-xs text-muted-foreground">Google Calendar invite syncing</p> : null}
+          {syncFailed ? <p role="alert" className="mt-2 flex items-center gap-1.5 text-xs text-destructive"><CircleAlert className="h-3.5 w-3.5" />Calendar invite needs attention</p> : null}
         </div>
-      ) : (
-        <div className="rounded-xl border border-dashed border-border p-8 text-center">
-          <p className="text-sm text-muted-foreground">No scheduled work yet.</p>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {isSession && entry.meetUrl ? (
+          <Button size="sm" asChild><a href={entry.meetUrl} target="_blank" rel="noreferrer">Join Meet<ExternalLink className="ml-1.5 h-3.5 w-3.5" /></a></Button>
+        ) : null}
+        {(entry.route || isSession) ? <Button size="sm" variant={isSession && entry.meetUrl ? 'outline' : 'default'} onClick={() => onOpen(entry)}>{isSession ? 'Manage booking' : 'Open work'}</Button> : null}
+      </div>
+    </article>
+  );
+}
+
+function SelectedDayAgenda({ date, entries, onOpen }: { date: Date; entries: ScheduleEntry[]; onOpen: (entry: ScheduleEntry) => void }) {
+  return (
+    <aside className="min-w-0 rounded-xl border border-border bg-muted/20 p-4 @[1080px]/schedule:p-5" aria-label={`Schedule for ${format(date, 'MMMM d')}`}>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold tracking-tight">{isToday(date) ? 'Today' : format(date, 'EEEE')}</h2>
+        <p className="text-sm text-muted-foreground">{format(date, 'MMMM d, yyyy')}</p>
+      </div>
+      {entries.length ? <div className="space-y-3">{entries.map((entry) => <AgendaEntry key={entry.key} entry={entry} onOpen={onOpen} />)}</div> : (
+        <div className="rounded-lg border border-dashed border-border bg-background/60 px-4 py-8 text-center">
+          <p className="text-sm font-medium">Nothing scheduled.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Choose another date or add a personal task in Today.</p>
         </div>
       )}
-    </div>
+    </aside>
   );
 }
 
 export default function Schedule() {
   const navigate = useNavigate();
-  const { data: classroomItems = [], isLoading } = useClassroomItems();
-  const { data: bookingItems = [], isLoading: bookingsLoading, isError: bookingsError } = useBookingScheduleItems();
-  const items = React.useMemo(() => [...classroomItems, ...bookingItems], [classroomItems, bookingItems]);
+  const classroom = useClassroomItems();
+  const bookings = useBookingScheduleItems();
+  const todo = useStudentTodo();
+  const [mainView, setMainView] = React.useState<MainView>('calendar');
+  const [calendarView, setCalendarView] = React.useState<CalendarView>('month');
+  const [focusedDate, setFocusedDate] = React.useState(() => startOfDay(new Date()));
 
-  const [mainTab, setMainTab] = React.useState<MainTab>('calendar');
-  const [view, setView] = React.useState<CalView>('month');
-  const [monthAnchor, setMonthAnchor] = React.useState<Date>(new Date());
-  const [weekAnchor, setWeekAnchor] = React.useState<Date>(new Date());
-  const [dayAnchor, setDayAnchor] = React.useState<Date>(startOfDay(new Date()));
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
-  const [sheetOpen, setSheetOpen] = React.useState(false);
+  const entries = React.useMemo(
+    () => buildScheduleEntries(classroom.data ?? [], bookings.data ?? [], todo.items),
+    [classroom.data, bookings.data, todo.items],
+  );
+  const entriesByDay = React.useMemo(() => groupScheduleEntries(entries), [entries]);
+  const focusedEntries = entriesByDay.get(dayKey(focusedDate)) ?? [];
+  const loading = classroom.isLoading || bookings.isLoading || todo.loading;
+  const partialError = classroom.isError || bookings.isError || Boolean(todo.error);
 
-  const handleDayClick = (date: Date) => {
-    setSelectedDate(date);
-    setDayAnchor(startOfDay(date));
-    setWeekAnchor(date);
-    setSheetOpen(true);
-  };
+  const navLabel = calendarView === 'month'
+    ? format(focusedDate, 'MMMM yyyy')
+    : `${format(startOfWeek(focusedDate), 'MMM d')} – ${format(endOfWeek(focusedDate), 'MMM d, yyyy')}`;
 
-  const itemsForSelected = selectedDate ? items.filter((it) => itemMatchesDay(it, selectedDate)) : [];
+  const shift = (direction: -1 | 1) => setFocusedDate((current) => calendarView === 'month'
+    ? (direction < 0 ? subMonths(current, 1) : addMonths(current, 1))
+    : (direction < 0 ? subWeeks(current, 1) : addWeeks(current, 1)));
 
-  const navLabel = React.useMemo(() => {
-    if (view === 'month') return format(monthAnchor, 'MMMM yyyy');
-    if (view === 'week') {
-      const ws = startOfWeek(weekAnchor, { weekStartsOn: 0 });
-      const we = endOfWeek(weekAnchor, { weekStartsOn: 0 });
-      return isSameMonth(ws, we) ? `${format(ws, 'MMM d')} – ${format(we, 'd, yyyy')}` : `${format(ws, 'MMM d')} – ${format(we, 'MMM d, yyyy')}`;
-    }
-    return format(dayAnchor, 'EEEE, MMMM d');
-  }, [view, monthAnchor, weekAnchor, dayAnchor]);
-
-  const handlePrev = () => {
-    if (view === 'month') setMonthAnchor((m) => subMonths(m, 1));
-    if (view === 'week') setWeekAnchor((w) => subWeeks(w, 1));
-    if (view === 'day') setDayAnchor((d) => subDays(d, 1));
-  };
-  const handleNext = () => {
-    if (view === 'month') setMonthAnchor((m) => addMonths(m, 1));
-    if (view === 'week') setWeekAnchor((w) => addWeeks(w, 1));
-    if (view === 'day') setDayAnchor((d) => addDays(d, 1));
-  };
-  const handleToday = () => {
-    const t = new Date();
-    setMonthAnchor(t);
-    setWeekAnchor(t);
-    setDayAnchor(startOfDay(t));
-  };
-
-  const upcoming = React.useMemo(() => {
-    const start = startOfDay(new Date());
-    const end = addDays(start, 14);
-    return items
-      .filter((it) => {
-        const d = itemDate(it);
-        return d >= start && d <= end;
-      })
-      .sort((a, b) => itemDate(a).getTime() - itemDate(b).getTime());
-  }, [items]);
-
-  const openItem = (it: ClassroomItem) => {
-    if (isBookingItem(it)) {
-      navigate('/booking');
-      return;
-    }
-    const route = resolveItemRoute(it);
-    if (route) {
-      setSheetOpen(false);
-      navigate(route);
-    }
-  };
+  const openEntry = (entry: ScheduleEntry) => navigate(entry.kind === 'session' ? '/booking' : entry.route ?? '/schedule');
 
   return (
-    <>
-        {/* No header of its own: the classroom rail owns the way back, sign
-            out and the theme toggle. One name for this surface, and it is the
-            one the rail uses. */}
-        <div className="bg-background">
-          <div className="max-w-7xl mx-auto pb-20">
-            <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
-                <p className="text-sm text-muted-foreground mt-1.5">
-                  {mainTab === 'today' ? 'Your tasks and sessions for today.' : 'Your assigned work and booked sessions in one calendar.'}
-                </p>
-              </div>
-              <div className="flex items-center p-0.5 bg-muted/50 rounded-lg border border-border/60 gap-0.5">
-                {(['today', 'calendar'] as MainTab[]).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setMainTab(t)}
-                    className={cn(
-                      'px-4 py-1.5 rounded-md text-xs font-medium transition-all duration-150 capitalize',
-                      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-                      mainTab === t ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground',
-                    )}
-                  >
-                    {t}
-                  </button>
-                ))}
+    <div className="@container/schedule pb-20">
+      <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
+          <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">Your due work, personal tasks, and booked sessions in one place.</p>
+        </div>
+        <div className="inline-flex rounded-lg border border-border bg-muted/45 p-1" aria-label="Schedule view">
+          {(['today', 'calendar'] as MainView[]).map((view) => <button key={view} type="button" aria-pressed={mainView === view} onClick={() => setMainView(view)} className={cn('min-h-9 rounded-md px-4 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', mainView === view ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>{view}</button>)}
+        </div>
+      </header>
+
+      {partialError ? <div role="alert" className="mb-5 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:bg-amber-950/25 dark:text-amber-100"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0" /><span>Some schedule information could not be refreshed. The items that loaded successfully are still shown.</span></div> : null}
+
+      {mainView === 'today' ? <TodayAgenda entries={entriesByDay.get(dayKey(new Date())) ?? []} todo={todo} onOpenEntry={openEntry} /> : (
+        <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 @[640px]/schedule:px-6">
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="icon" className="h-11 w-11" onClick={() => shift(-1)} aria-label={`Previous ${calendarView}`}><ChevronLeft className="h-4 w-4" /></Button>
+              <Button variant="outline" size="icon" className="h-11 w-11" onClick={() => shift(1)} aria-label={`Next ${calendarView}`}><ChevronRight className="h-4 w-4" /></Button>
+              <h2 className="ml-1 text-base font-semibold tracking-tight @[520px]/schedule:text-lg">{navLabel}</h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="h-10 px-3 text-sm" onClick={() => setFocusedDate(startOfDay(new Date()))}>Go to today</Button>
+              <div className="inline-flex rounded-lg bg-muted p-1" aria-label="Calendar layout">
+                {(['month', 'week'] as CalendarView[]).map((view) => <button key={view} type="button" aria-pressed={calendarView === view} onClick={() => setCalendarView(view)} className={cn('min-h-8 rounded-md px-3 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', calendarView === view ? 'bg-background shadow-sm' : 'text-muted-foreground')}>{view}</button>)}
               </div>
             </div>
-
-            {mainTab === 'today' && <TodayAgenda bookingItems={bookingItems} />}
-
-            {mainTab === 'calendar' && (
-            <>
-
-            {isLoading || bookingsLoading ? (
-              <div className="flex items-center justify-center py-24 text-sm text-muted-foreground">
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Loading…
-              </div>
-            ) : items.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border p-12 text-center">
-                <CalendarDays className="w-6 h-6 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm font-medium">Nothing scheduled yet.</p>
-                <p className="text-xs text-muted-foreground mt-1">Assigned work and booked sessions will appear here automatically.</p>
-                {bookingsError && (
-                  <p role="alert" className="mt-3 text-xs text-muted-foreground">Sessions could not be refreshed. Try opening Schedule again.</p>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-8">
-                <div className="bg-card border border-border rounded-2xl shadow-sm p-6 lg:p-8">
-                  <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <button onClick={handlePrev} className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-border hover:bg-accent text-muted-foreground transition-colors">
-                        <ChevronLeft className="w-4 h-4" />
-                      </button>
-                      <button onClick={handleNext} className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-border hover:bg-accent text-muted-foreground transition-colors">
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                      <span className="text-base font-semibold tracking-tight ml-1">{navLabel}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button onClick={handleToday} className="px-3 py-1.5 rounded-lg border border-border text-xs text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
-                        Today
-                      </button>
-                      <ViewToggle view={view} onChange={setView} />
-                    </div>
-                  </div>
-
-                  <AnimatePresence mode="wait">
-                    {view === 'month' && (
-                      <motion.div
-                        key="month"
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.18 }}
-                      >
-                        <MonthGrid
-                          month={monthAnchor}
-                          items={items}
-                          selectedDate={selectedDate}
-                          onDayClick={handleDayClick}
-                        />
-                      </motion.div>
-                    )}
-
-                    {view === 'week' && (
-                      <motion.div key="week" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <WeekView weekAnchor={weekAnchor} items={items} onDayClick={handleDayClick} />
-                      </motion.div>
-                    )}
-                    {view === 'day' && (
-                      <motion.div key="day" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <DayView day={dayAnchor} items={items} onItemClick={openItem} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                    <div>
-                      <h2 className="text-lg font-semibold tracking-tight">Upcoming</h2>
-                      <p className="text-xs text-muted-foreground">Your next 14 days</p>
-                    </div>
-                  </div>
-                  {bookingsError && (
-                    <div role="alert" className="rounded-xl border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
-                      Sessions could not be refreshed. Your assigned work is still shown.
-                    </div>
-                  )}
-                  {upcoming.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-border p-6 text-center">
-                      <p className="text-sm text-muted-foreground">Nothing in the next two weeks.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2.5">
-                      {upcoming.map((it) => {
-                        const meta = itemMeta(it);
-                        const d = itemDate(it);
-                        return (
-                          <button
-                            type="button"
-                            key={it.id}
-                            className="w-full text-left flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border cursor-pointer hover:bg-accent/40 transition-colors"
-                            onClick={() => openItem(it)}
-                          >
-                            <span className={cn('w-2.5 h-2.5 rounded-full mt-[3px] shrink-0', meta.dot)} />
-                            <div className="min-w-0 flex-1">
-                              <p className="text-xs font-medium text-foreground leading-snug truncate">{it.title}</p>
-                              <p className="text-[11px] text-muted-foreground mt-0.5">
-                                {isBookingItem(it)
-                                  ? format(new Date(it.due_at!), "EEE, MMM d '·' h:mm a")
-                                  : isToday(d) ? 'Today' : format(d, 'EEE, MMM d')}
-                              </p>
-                              {bookingCalendarPending(it) && (
-                                <p className="mt-0.5 text-xs text-muted-foreground">Calendar invite syncing</p>
-                              )}
-                            </div>
-                            <span className={cn('shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-md border', meta.badge)}>
-                              {meta.short}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            </>
-            )}
           </div>
 
-          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-            <SheetContent className="w-full sm:max-w-[420px] flex flex-col gap-0 p-0 overflow-y-auto">
-              <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
-                <SheetTitle className="text-base font-semibold">
-                  {selectedDate ? format(selectedDate, 'EEEE, MMMM d') : 'Day'}
-                </SheetTitle>
-                <p className="text-xs text-muted-foreground">
-                  {selectedDate ? format(selectedDate, 'yyyy') : ''}
-                </p>
-              </SheetHeader>
-
-              <div className="flex-1 px-6 py-5 space-y-3">
-                {itemsForSelected.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic text-center py-6">No work assigned for this day.</p>
-                ) : (
-                  itemsForSelected.map((it) => {
-                    const meta = itemMeta(it);
-                    const route = isBookingItem(it) ? '/booking' : resolveItemRoute(it);
-                    return (
-                      <Card key={it.id} className="p-4 flex items-start gap-3 bg-card shadow-none border-border">
-                        <meta.Icon className={cn('w-4 h-4 mt-0.5 shrink-0')} />
-                        <div className="flex-1 min-w-0 space-y-1">
-                          <p className="text-sm font-medium leading-snug">{it.title}</p>
-                          <p className={cn('inline-block text-[10px] px-1.5 py-0 h-5 leading-5 rounded-md border', meta.badge)}>
-                            {meta.label}
-                          </p>
-                          {it.due_at && (
-                            <p className="text-[11px] text-muted-foreground">
-                              {isBookingItem(it) ? 'Starts' : 'Due'} {format(new Date(it.due_at), 'MMM d, h:mm a')}
-                            </p>
-                          )}
-                          {it.unlock_at && (
-                            <p className="text-[11px] text-muted-foreground">
-                              Unlocks {format(new Date(it.unlock_at), 'MMM d, h:mm a')}
-                            </p>
-                          )}
-                          {bookingCalendarPending(it) && (
-                            <p className="text-xs text-muted-foreground">Google Calendar invite syncing</p>
-                          )}
-                        </div>
-                        {route ? (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setSheetOpen(false);
-                              navigate(route);
-                            }}
-                            className="shrink-0 h-8 px-2 text-xs"
-                          >
-                            {isBookingItem(it) ? 'View' : 'Open'}
-                            <ExternalLink className="w-3 h-3 ml-1" />
-                          </Button>
-                        ) : (
-                          <span className="shrink-0 text-[10px] text-muted-foreground italic">No link</span>
-                        )}
-                      </Card>
-                    );
-                  })
-                )}
+          {loading ? <div role="status" aria-live="polite" className="flex min-h-80 items-center justify-center text-sm text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Loading schedule…</div> : (
+            <div className="grid gap-5 p-3 @[640px]/schedule:p-5 @[1080px]/schedule:grid-cols-[minmax(0,1fr)_320px] @[1080px]/schedule:gap-6">
+              <div className="min-w-0">
+                {calendarView === 'month' ? <MonthGrid anchor={focusedDate} entriesByDay={entriesByDay} focusedDate={focusedDate} onSelect={setFocusedDate} /> : <WeekView anchor={focusedDate} entriesByDay={entriesByDay} focusedDate={focusedDate} onSelect={setFocusedDate} />}
               </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-    </>
+              <SelectedDayAgenda date={focusedDate} entries={focusedEntries} onOpen={openEntry} />
+            </div>
+          )}
+          {!loading && entries.length === 0 ? <div className="border-t border-border px-5 py-4 text-sm text-muted-foreground"><CalendarDays className="mr-2 inline h-4 w-4" />Nothing has been intentionally scheduled yet.</div> : null}
+        </section>
+      )}
+    </div>
   );
 }

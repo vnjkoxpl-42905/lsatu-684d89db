@@ -271,7 +271,7 @@ function ClassroomSidebar({
           onClick: () => go("/inbox"),
         };
       case "schedule":
-        return { active: false, onClick: () => go("/schedule") };
+        return { active: location.pathname === "/schedule", onClick: () => go("/schedule") };
       case "booking":
         // Teachers manage each student's pass from their dossier. Sending them
         // to /booking/admin mounted a second application shell and made the
@@ -953,6 +953,7 @@ export default function ClassroomLayout() {
   // Home is a dashboard, not a reading column: it needs the whole stage beside
   // the rail rather than the 720px measure every other reading surface uses.
   const homeStage = location.pathname === "/classroom";
+  const scheduleStage = location.pathname === "/schedule";
   const rootClass =
     activeSection === "journal"
       ? `classroom-root classroom-root-journal${
@@ -966,7 +967,9 @@ export default function ClassroomLayout() {
             ? "classroom-root classroom-root-workspace"
             : homeStage
               ? "classroom-root classroom-root-home"
-              : "classroom-root";
+              : scheduleStage
+                ? "classroom-root classroom-root-schedule"
+                : "classroom-root";
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
