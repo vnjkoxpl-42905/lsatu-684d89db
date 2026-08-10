@@ -31,6 +31,7 @@ const Analytics = React.lazy(() => import("./pages/Analytics"));
 const RcHub = React.lazy(() => import("./features/rc/pages/RcHub"));
 const RcPlayer = React.lazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = React.lazy(() => import("./features/rc/pages/RcResults"));
+const RcSearch = React.lazy(() => import("./features/rc/pages/RcSearch"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
@@ -417,6 +418,9 @@ const App = () => {
                   } />
                   <Route path="/rc/results/:sessionId" element={
                     <ProtectedRoute flag="has_drill_access"><RcResults /></ProtectedRoute>
+                  } />
+                  <Route path="/rc/search" element={
+                    <ProtectedRoute flag="has_drill_access"><RcSearch /></ProtectedRoute>
                   } />
                   {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
                   <Route path="/waj" element={<Navigate to="/journal" replace />} />

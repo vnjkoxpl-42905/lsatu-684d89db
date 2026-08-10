@@ -4,9 +4,16 @@
  * The index is small and loads once; per-PrepTest files load on demand and stay
  * cached in memory for the life of the page.
  */
-import type { RcIndex, RcIndexPassage, RcPassage, RcPreptestFile } from './rcTypes';
+import type {
+  RcIndex,
+  RcIndexPassage,
+  RcPassage,
+  RcPreptestFile,
+  RcQuestionIndex,
+} from './rcTypes';
 
 let indexPromise: Promise<RcIndex> | null = null;
+let questionIndexPromise: Promise<RcQuestionIndex> | null = null;
 const preptestCache = new Map<number, Promise<RcPreptestFile>>();
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -24,6 +31,19 @@ export function loadRcIndex(): Promise<RcIndex> {
     });
   }
   return indexPromise;
+}
+
+/** Loads (and caches) the flat question search index used by `/rc/search`. */
+export function loadRcQuestionIndex(): Promise<RcQuestionIndex> {
+  if (!questionIndexPromise) {
+    questionIndexPromise = fetchJson<RcQuestionIndex>('/data/rc/rc-question-index.json').catch(
+      (err) => {
+        questionIndexPromise = null; // let a later call retry rather than caching a failure
+        throw err;
+      },
+    );
+  }
+  return questionIndexPromise;
 }
 
 /** Loads (and caches) one PrepTest's passages and questions. */

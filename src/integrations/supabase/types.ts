@@ -2742,6 +2742,27 @@ export type Database = {
         }
         Relationships: []
       }
+      rc_annotations: {
+        Row: {
+          highlights: Json
+          passage_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          highlights?: Json
+          passage_id: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          highlights?: Json
+          passage_id?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       rc_answer_choices: {
         Row: {
           catalog_answer_types: string | null
@@ -2785,6 +2806,92 @@ export type Database = {
             referencedColumns: ["question_id"]
           },
         ]
+      }
+      rc_attempts: {
+        Row: {
+          created_at: string
+          eliminations: string[]
+          flagged: boolean
+          id: string
+          is_correct: boolean | null
+          is_first_attempt: boolean
+          passage_id: number
+          question_id: number
+          selected: string | null
+          session_id: string
+          time_ms: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          eliminations?: string[]
+          flagged?: boolean
+          id?: string
+          is_correct?: boolean | null
+          is_first_attempt?: boolean
+          passage_id: number
+          question_id: number
+          selected?: string | null
+          session_id: string
+          time_ms?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          eliminations?: string[]
+          flagged?: boolean
+          id?: string
+          is_correct?: boolean | null
+          is_first_attempt?: boolean
+          passage_id?: number
+          question_id?: number
+          selected?: string | null
+          session_id?: string
+          time_ms?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_attempts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "rc_drill_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rc_drill_sessions: {
+        Row: {
+          completed_at: string | null
+          config: Json
+          excluded_from_analytics: boolean
+          id: string
+          passage_ids: number[]
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          config: Json
+          excluded_from_analytics?: boolean
+          id?: string
+          passage_ids: number[]
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          config?: Json
+          excluded_from_analytics?: boolean
+          id?: string
+          passage_ids?: number[]
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       rc_lesson_progress: {
         Row: {

@@ -293,6 +293,11 @@ export default function RcHub() {
     <div className="rc-page">
       <h1>Reading Comprehension</h1>
       <p className="rc-page-sub">Drill full passages the way they appear on the test.</p>
+      <div className="rc-chip-row" style={{ marginTop: 12 }}>
+        <button type="button" className="rc-chip" onClick={() => navigate('/rc/search')}>
+          Search passages &amp; questions
+        </button>
+      </div>
 
       {loadError && <p className="rc-page-sub">{loadError}</p>}
       {notice && <p className="rc-page-sub">{notice}</p>}
