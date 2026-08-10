@@ -1,32 +1,11 @@
-import { lazy, type ComponentType } from 'react';
+import { type ComponentType } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 
 // Bootcamp pages are full-screen SPA routes; they render blank inside an iframe
 // (a fresh context loses the session). Mounting the page component inline in the
 // same React tree keeps auth/context, so it renders. Shared by the inline-open
-// view and the scaled card preview.
-
-// Stale-chunk safe lazy: if the dynamic import fails or resolves to a module
-// without a default export (post-deploy hash mismatch), force a one-time hard
-// reload instead of throwing "Cannot read properties of undefined (reading
-// 'default')" and blanking the screen.
-const RELOAD_KEY = '__bootcamp_chunk_reload__';
-function safeLazy<T extends ComponentType<any>>(factory: () => Promise<{ default: T }>) {
-  return lazy(async () => {
-    try {
-      const mod = await factory();
-      if (!mod || !mod.default) throw new Error('missing default export');
-      return mod;
-    } catch (err) {
-      try {
-        if (!sessionStorage.getItem(RELOAD_KEY)) {
-          sessionStorage.setItem(RELOAD_KEY, '1');
-          window.location.reload();
-        }
-      } catch {}
-      throw err;
-    }
-  });
-}
+// view and the scaled card preview. safeLazy guards against stale post-deploy
+// chunks ("Cannot read properties of undefined (reading 'default')").
 
 const PrincipleFlawBootcamp = safeLazy(() => import('@/pages/PrincipleFlawBootcamp'));
 const IntroToLrBootcamp = safeLazy(() => import('@/pages/IntroToLrBootcamp'));

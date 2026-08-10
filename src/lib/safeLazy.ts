@@ -20,6 +20,9 @@ export function safeLazy<T extends ComponentType<any>>(factory: () => Promise<{ 
     try {
       const mod = await factory();
       if (!mod || !mod.default) throw new Error('missing default export');
+      // A successful resolution means the manifest is fresh again — clear the
+      // guard so a genuinely new stale chunk later can still trigger a reload.
+      markSafeLazyReloaded();
       return mod;
     } catch (err) {
       try {
