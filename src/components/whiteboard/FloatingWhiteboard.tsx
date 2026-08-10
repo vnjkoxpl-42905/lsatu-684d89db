@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { PencilRuler, X, Loader2, CheckCircle2, Save } from 'lucide-react';
+import { PencilRuler, X, Loader2, CheckCircle2, Save, PanelRight } from 'lucide-react';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useLocation } from 'react-router-dom';
@@ -21,6 +21,10 @@ const Excalidraw = lazy(() =>
 // and student-facing surfaces don't need an admin whiteboard launcher.
 const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/classroom/drill', '/drill', '/inbox'];
 
+// Shared with TeacherSmartboard so the show/hide preference is consistent
+// across both whiteboard surfaces.
+const TEMPLATES_STORAGE_KEY = 'lsatu.whiteboard.showTemplates';
+
 type ExcalidrawApi = {
   getSceneElements: () => unknown[];
   getAppState: () => unknown;
@@ -34,6 +38,20 @@ export function FloatingWhiteboard() {
   const [open, setOpen] = useState(false);
   const [args, setArgs] = useState<WhiteboardOpenArgs | null>(null);
   const apiRef = useRef<ExcalidrawApi>(null);
+  const [showTemplates, setShowTemplates] = useState(() => {
+    try {
+      return localStorage.getItem(TEMPLATES_STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(TEMPLATES_STORAGE_KEY, String(showTemplates));
+    } catch {
+      // Quota exceeded or storage disabled. Silent fail; in-memory state still works.
+    }
+  }, [showTemplates]);
 
   // Item B — bind to a session payload when the bus opens us with one;
   // start unbound when there's no payload (the current floating shortcut).
@@ -142,6 +160,18 @@ export function FloatingWhiteboard() {
                 </Button>
               )}
               <button
+                onClick={() => setShowTemplates((v) => !v)}
+                className={`p-1.5 rounded-md transition-colors ${
+                  showTemplates
+                    ? 'text-zinc-100 bg-zinc-800'
+                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'
+                }`}
+                aria-label={showTemplates ? 'Hide templates panel' : 'Show templates panel'}
+                title="Templates"
+              >
+                <PanelRight className="w-4 h-4" />
+              </button>
+              <button
                 onClick={close}
                 className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
                 aria-label="Close whiteboard"
@@ -176,9 +206,11 @@ export function FloatingWhiteboard() {
                 />
               </Suspense>
             </div>
-            <TemplatePalette
-              getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
-            />
+            {showTemplates && (
+              <TemplatePalette
+                getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
+              />
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2 } from 'lucide-react';
+import { ArrowLeft, Save, PencilRuler, Loader2, CheckCircle2, Maximize2, Minimize2, PanelRight } from 'lucide-react';
 import '@excalidraw/excalidraw/index.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,6 +27,10 @@ const Excalidraw = lazy(() =>
   import('@excalidraw/excalidraw').then((m) => ({ default: m.Excalidraw })),
 );
 
+// Shared with FloatingWhiteboard so the show/hide preference is consistent
+// across both whiteboard surfaces.
+const TEMPLATES_STORAGE_KEY = 'lsatu.whiteboard.showTemplates';
+
 export default function TeacherSmartboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -47,6 +51,20 @@ export default function TeacherSmartboard() {
   const [scene, setScene] = useState<ExcalidrawSceneJson | null>(null);
   const apiRef = useRef<ExcalidrawApi>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [showTemplates, setShowTemplates] = useState(() => {
+    try {
+      return localStorage.getItem(TEMPLATES_STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(TEMPLATES_STORAGE_KEY, String(showTemplates));
+    } catch {
+      // Quota exceeded or storage disabled. Silent fail; in-memory state still works.
+    }
+  }, [showTemplates]);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   useEffect(() => {
@@ -197,6 +215,15 @@ export default function TeacherSmartboard() {
           <AutosaveBadge status={autosave.status} lastSavedAt={autosave.lastSavedAt} />
           <Button
             size="sm"
+            variant={showTemplates ? 'secondary' : 'outline'}
+            className="shrink-0"
+            onClick={() => setShowTemplates((v) => !v)}
+          >
+            <PanelRight className="w-4 h-4 mr-2" />
+            Templates
+          </Button>
+          <Button
+            size="sm"
             variant="outline"
             className="shrink-0"
             onClick={toggleFullscreen}
@@ -230,9 +257,11 @@ export default function TeacherSmartboard() {
               />
             </Suspense>
           </div>
-          <TemplatePalette
-            getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
-          />
+          {showTemplates && (
+            <TemplatePalette
+              getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
+            />
+          )}
         </div>
       </section>
     </div>
