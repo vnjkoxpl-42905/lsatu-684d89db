@@ -57,7 +57,7 @@ describe("booking remediation contracts", () => {
   it("keeps the booking calendar responsive to its container, not the viewport", () => {
     const card = read("src/components/booking/CalendlyBookingCard.tsx");
     expect(card).toContain("@container");
-    expect(card).toContain("@4xl:grid-cols-[280px_minmax(0,1fr)]");
+    expect(card).toContain("@[54rem]:grid-cols-[280px_minmax(0,1fr)]");
     expect(card).toContain("@2xl:grid-cols-[minmax(0,1fr)_240px]");
     expect(card).toContain("min-w-0");
     expect(card).not.toContain("sm:grid-cols-[1fr_240px]");

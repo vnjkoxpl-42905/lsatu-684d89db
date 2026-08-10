@@ -196,9 +196,9 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
     // viewport breakpoint split it into two columns that then clipped against
     // `overflow-hidden`. Measure the space the card actually has.
     <div className="@container booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="grid grid-cols-1 @4xl:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 @[54rem]:grid-cols-[280px_minmax(0,1fr)]">
         {/* Left: host card (Calendly-style, no student PII) */}
-        <div className="min-w-0 border-b border-border p-5 @4xl:border-b-0 @4xl:border-r @4xl:p-6">
+        <div className="min-w-0 border-b border-border p-5 @[54rem]:border-b-0 @[54rem]:border-r @[54rem]:p-6">
           <div className="text-sm font-medium text-muted-foreground">Joshua</div>
           <h2 className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</h2>
           <div className="mt-4 space-y-3 text-sm text-muted-foreground">
