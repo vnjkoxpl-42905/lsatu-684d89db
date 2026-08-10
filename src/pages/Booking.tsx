@@ -83,14 +83,14 @@ export default function Booking() {
   if (is_admin) return <Navigate to="/teacher/students" replace />;
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8">
+    <div className="mx-auto w-full max-w-4xl px-3 py-6 sm:px-4 sm:py-8">
       <div className="relative mb-6 flex items-center justify-center">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back" className="absolute left-0">
+        <Button variant="ghost" size="icon" onClick={() => navigate("/classroom")} aria-label="Back to classroom" className="absolute left-0 h-11 w-11">
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-2.5">
           <div className="holo-surface flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold">L</div>
-          <span className="holo-text text-2xl font-bold tracking-tight">Booking</span>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Booking</h1>
         </div>
       </div>
 

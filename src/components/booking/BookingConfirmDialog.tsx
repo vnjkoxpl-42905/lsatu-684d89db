@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -87,6 +87,10 @@ function Ticket({ slotIso, durationMinutes }: { slotIso: string; durationMinutes
 type Step = "confirm" | "work" | "success";
 
 export default function BookingConfirmDialog({ open, onOpenChange, slotIso, durationMinutes, book, onBooked, onCommitError, upload }: Props) {
+  const reduceMotion = useReducedMotion();
+  const phaseMotion = reduceMotion
+    ? { initial: false as const, animate: { opacity: 1, y: 0 }, exit: { opacity: 1, y: 0 }, transition: { duration: 0 } }
+    : STEP_MOTION;
   const [step, setStep] = useState<Step>("confirm");
   const [booking, setBooking] = useState(false);
   const [bookingKey, setBookingKey] = useState(() => crypto.randomUUID());
@@ -165,19 +169,26 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
       const trimmedNote = note.trim().slice(0, MAX_NOTE_CHARS);
       await book(slotIso, bookingKey, trimmedNote || undefined);
 
-      let meet: string | null = null;
-      if (onBooked) {
-        const r = await onBooked(slotIso);
-        meet = typeof r === "string" ? r : null;
-      }
       setBookedSlot(slotIso);
-      setBookedMeetUrl(meet);
       setStep("success");
       // Clear staging so a subsequent booking starts fresh; keep bookedSlot for display.
       setFiles([]);
       setStagedUploadIds(new Set());
       setNote("");
       setBookingKey(crypto.randomUUID());
+
+      // The booking is already committed. Refreshing the parent and resolving
+      // the Meet URL are best-effort follow-up work; a refresh failure must
+      // never tell the student that a successful booking failed or invite a
+      // duplicate retry.
+      if (onBooked) {
+        try {
+          const r = await onBooked(slotIso);
+          setBookedMeetUrl(typeof r === "string" ? r : null);
+        } catch {
+          toast.info("You're booked. Calendar details may take a moment to appear.");
+        }
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Booking failed";
       if (msg.includes("slot_conflict")) toast.error("That time was just taken. Pick another.");
@@ -197,7 +208,9 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         aria-describedby={undefined}
-        className="booking-holo booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md"
+        onEscapeKeyDown={(event) => { if (booking) event.preventDefault(); }}
+        onPointerDownOutside={(event) => { if (booking) event.preventDefault(); }}
+        className="booking-dialog booking-holo booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md"
       >
         {/* Accessible label for screen readers; visible headings are styled per phase below. */}
         <DialogTitle className="sr-only">
@@ -205,29 +218,29 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
         </DialogTitle>
         <AnimatePresence mode="wait" initial={false}>
           {step === "success" && bookedSlot ? (
-            <motion.div key="success" {...STEP_MOTION} className="flex flex-col items-center px-6 py-8 text-center">
+            <motion.div key="success" {...phaseMotion} className="flex flex-col items-center px-6 py-8 text-center">
               <motion.div
-                initial={{ scale: 0, opacity: 0 }}
+                initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 30, delay: 0.05 }}
+                transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 30, delay: 0.05 }}
                 className="holo-surface flex h-14 w-14 items-center justify-center rounded-full shadow-sm"
               >
                 <Check className="h-7 w-7" strokeWidth={2.5} />
               </motion.div>
 
               <motion.h2
-                initial={{ opacity: 0, y: 6 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28, ease: EASE, delay: 0.14 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.28, ease: EASE, delay: 0.14 }}
                 className="mt-4 text-xl font-semibold tracking-tight text-foreground"
               >
                 You're booked
               </motion.h2>
 
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, ease: EASE, delay: 0.2 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease: EASE, delay: 0.2 }}
                 className="mt-4 w-full"
               >
                 <Ticket slotIso={bookedSlot} durationMinutes={durationMinutes} />
@@ -237,23 +250,23 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, ease: EASE, delay: 0.26 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease: EASE, delay: 0.26 }}
                 className="mt-5 flex w-full items-center justify-center gap-2"
               >
                 {bookedMeetUrl && (
-                  <a href={bookedMeetUrl} target="_blank" rel="noreferrer">
-                    <Button variant="outline">
+                  <Button asChild variant="outline">
+                    <a href={bookedMeetUrl} target="_blank" rel="noreferrer">
                       <Video className="h-4 w-4" /> Join link
-                    </Button>
-                  </a>
+                    </a>
+                  </Button>
                 )}
                 <Button onClick={() => handleOpenChange(false)}>Done</Button>
               </motion.div>
             </motion.div>
           ) : step === "work" ? (
-            <motion.div key="work" {...STEP_MOTION} className="px-6 pb-6 pt-6">
+            <motion.div key="work" {...phaseMotion} className="px-6 pb-6 pt-6">
               <h2 className="text-xl font-semibold tracking-tight text-foreground">Bringing work to review?</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Attach sections, PTs, or anything you'd like Joshua to look at, and add a note. Totally optional.
@@ -261,14 +274,14 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
 
               {/* Recessed tray — a distinct plane inside the card. */}
               <div className="mt-4 space-y-3 rounded-xl border border-border bg-muted p-4 shadow-inner">
-                <label className="flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-border bg-background/70 px-4 py-5 text-center transition hover:border-primary/50 hover:bg-background">
+                <label className="flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-border bg-background/70 px-4 py-5 text-center transition hover:border-primary/50 hover:bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                   <Paperclip className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-foreground">{files.length > 0 ? "Add more files" : "Attach files"}</span>
-                  <span className="text-[11px] text-muted-foreground">Sections, PTs, anything to review</span>
+                  <span className="text-xs text-muted-foreground">Sections, PTs, anything to review</span>
                   <input
                     type="file"
                     multiple
-                    className="hidden"
+                    className="sr-only"
                     disabled={booking || files.length >= MAX_UPLOAD_FILES}
                     onChange={(e) => { addFiles(e.target.files); e.currentTarget.value = ""; }}
                   />
@@ -285,7 +298,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                           type="button"
                           disabled={booking}
                           onClick={() => void removeFile(i)}
-                          className="shrink-0 rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           aria-label={`Remove ${entry.file.name}`}
                         ><X className="h-3.5 w-3.5" /></button>
                       </li>
@@ -294,7 +307,9 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                 )}
 
                 <div>
+                  <label htmlFor="booking-note" className="mb-1.5 block text-sm font-medium text-foreground">Note for Joshua <span className="font-normal text-muted-foreground">(optional)</span></label>
                   <textarea
+                    id="booking-note"
                     value={note}
                     onChange={(e) => setNote(e.target.value.slice(0, MAX_NOTE_CHARS))}
                     disabled={booking}
@@ -303,7 +318,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                     className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition focus:border-primary/60"
                   />
                   {showCounter && (
-                    <div className="mt-1 text-right text-[11px] text-muted-foreground">{note.length}/{MAX_NOTE_CHARS}</div>
+                    <div className="mt-1 text-right text-xs text-muted-foreground">{note.length}/{MAX_NOTE_CHARS}</div>
                   )}
                 </div>
               </div>
@@ -319,7 +334,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
               </div>
             </motion.div>
           ) : (
-            <motion.div key="confirm" {...STEP_MOTION} className="px-6 pb-6 pt-6">
+            <motion.div key="confirm" {...phaseMotion} className="px-6 pb-6 pt-6">
               <h2 className="text-xl font-semibold tracking-tight text-foreground">Confirm your session</h2>
               <p className="mt-1 text-sm text-muted-foreground">Here's your 1:1 with Joshua.</p>
 

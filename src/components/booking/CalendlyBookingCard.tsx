@@ -54,18 +54,18 @@ function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }
   if (upcoming.length === 0) return null;
   return (
     <div className="border-t border-border p-6" aria-label="Your upcoming sessions">
-      <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">Your upcoming sessions</div>
+      <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Your upcoming sessions</div>
       <div className="space-y-2">
         {upcoming.map((r) => (
           <div key={r.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 text-sm">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
             <span className="flex-1">{fmtSlot(r.start_at)}</span>
             {r.meet_url && (
-              <a href={r.meet_url} target="_blank" rel="noreferrer">
-                <Button size="sm" variant="ghost" className="text-emerald-600 hover:text-emerald-500">
+              <Button asChild size="sm" variant="ghost" className="min-h-11 text-emerald-600 hover:text-emerald-500">
+                <a href={r.meet_url} target="_blank" rel="noreferrer">
                   <Video className="mr-1 h-4 w-4" /> Join
-                </Button>
-              </a>
+                </a>
+              </Button>
             )}
           </div>
         ))}
@@ -83,6 +83,8 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [infoError, setInfoError] = useState<string | null>(null);
+  const [slotsError, setSlotsError] = useState<string | null>(null);
 
   const pass = info?.pass ?? null;
 
@@ -98,15 +100,25 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
   const refreshInfo = useCallback(async () => {
     setInfoLoading(true);
+    setInfoError(null);
     try { setInfo(await api.loadInfo()); }
-    catch (e) { toast.error(e instanceof Error ? e.message : "Failed to load"); }
+    catch (e) {
+      const message = e instanceof Error ? e.message : "Failed to load booking access";
+      setInfoError(message);
+      toast.error(message);
+    }
     finally { setInfoLoading(false); }
   }, [api]);
 
   const loadSlots = useCallback(async () => {
     setSlotsLoading(true);
+    setSlotsError(null);
     try { const res = await api.loadSlots(); setSlots(res.slots ?? []); }
-    catch (e) { toast.error(e instanceof Error ? e.message : "Failed to load times"); }
+    catch (e) {
+      const message = e instanceof Error ? e.message : "Failed to load times";
+      setSlotsError(message);
+      toast.error(message);
+    }
     finally { setSlotsLoading(false); }
   }, [api]);
 
@@ -145,8 +157,18 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
 
   if (infoLoading) {
     return (
-      <div className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
+      <div role="status" aria-live="polite" className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading…
+      </div>
+    );
+  }
+
+  if (infoError) {
+    return (
+      <div role="alert" className="booking-holo rounded-2xl border border-border bg-card p-8 text-center">
+        <p className="text-sm font-medium">We couldn't load booking right now.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Your booking access has not changed.</p>
+        <Button variant="outline" className="mt-4 min-h-11" onClick={() => void refreshInfo()}>Try again</Button>
       </div>
     );
   }
@@ -168,10 +190,15 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
   const today = startOfDay(new Date());
 
   return (
-    <div className="booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="grid grid-cols-1 md:grid-cols-[280px_1fr]">
+    // Container query, not a viewport breakpoint: this card used to sit in a
+    // full-width shell, so `md:` was a fair proxy for "there is room". Inside
+    // the classroom stage the viewport is wide while the column is not, and a
+    // viewport breakpoint split it into two columns that then clipped against
+    // `overflow-hidden`. Measure the space the card actually has.
+    <div className="@container booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="grid grid-cols-1 @4xl:grid-cols-[280px_minmax(0,1fr)]">
         {/* Left: host card (Calendly-style, no student PII) */}
-        <div className="border-b border-border p-6 md:border-b-0 md:border-r">
+        <div className="min-w-0 border-b border-border p-5 @4xl:border-b-0 @4xl:border-r @4xl:p-6">
           <div className="text-sm font-medium text-muted-foreground">Joshua</div>
           <h2 className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</h2>
           <div className="mt-4 space-y-3 text-sm text-muted-foreground">
@@ -214,25 +241,25 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
             You've used all your sessions. Message Joshua if you need more.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_240px]">
-            <div className="border-b border-border p-6 sm:border-b-0 sm:border-r">
+          <div className="grid min-w-0 grid-cols-1 @2xl:grid-cols-[minmax(0,1fr)_240px]">
+            <div className="min-w-0 border-b border-border p-4 @sm:p-5 @2xl:border-b-0 @2xl:border-r">
               <div className="mb-1 text-sm font-semibold">Select a Date &amp; Time</div>
               <div className="mb-4 mt-3 flex items-center justify-between">
                 <button
-                  onClick={() => setMonthAnchor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1))}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent"
+                  onClick={() => { setMonthAnchor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1)); setPickedDay(null); setSelected(null); }}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   aria-label="Previous month"
                 ><ChevronLeft className="h-4 w-4" /></button>
-                <span className="text-sm font-semibold">{monthLabel}</span>
+                <span aria-live="polite" className="text-center text-sm font-semibold">{monthLabel}</span>
                 <button
-                  onClick={() => setMonthAnchor((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1))}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent"
+                  onClick={() => { setMonthAnchor((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1)); setPickedDay(null); setSelected(null); }}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   aria-label="Next month"
                 ><ChevronRight className="h-4 w-4" /></button>
               </div>
-              <div className="grid grid-cols-7 gap-1 text-center">
+              <div role="group" aria-label={`${monthLabel} availability calendar`} className="grid grid-cols-7 gap-0.5 text-center @sm:gap-1">
                 {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
-                  <div key={day} role="columnheader" aria-label={day} className="pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{day.slice(0, 1)}</div>
+                  <div key={day} aria-hidden="true" className="pb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">{day.slice(0, 1)}</div>
                 ))}
                 {monthDays.map((d, i) => {
                   if (!d) return <div key={`e${i}`} />;
@@ -243,10 +270,11 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                     <button
                       key={dayKey(d)}
                       aria-label={d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+                      aria-pressed={Boolean(isPicked)}
                       disabled={!hasSlots}
                       onClick={() => { setPickedDay(d); setSelected(null); }}
                       className={cn(
-                        "mx-auto flex h-9 w-9 items-center justify-center rounded-full text-sm transition",
+                        "mx-auto flex aspect-square w-full max-w-11 items-center justify-center rounded-full text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         !hasSlots && "text-muted-foreground/40 cursor-default",
                         hasSlots && !isPicked && "font-medium text-foreground hover:bg-accent bg-primary/10",
                         isPicked && "bg-primary text-primary-foreground font-semibold",
@@ -261,12 +289,18 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading times…
                 </div>
               )}
-              {!slotsLoading && slots.length === 0 && (
+              {slotsError && (
+                <div role="alert" className="mt-4 text-center text-sm text-muted-foreground">
+                  <p>We couldn't load available times.</p>
+                  <Button variant="ghost" className="mt-2 min-h-11" onClick={() => void loadSlots()}>Try again</Button>
+                </div>
+              )}
+              {!slotsLoading && !slotsError && slots.length === 0 && (
                 <p className="mt-4 text-center text-sm text-muted-foreground">No open times in the next few weeks.</p>
               )}
             </div>
 
-            <div className="flex flex-col p-6">
+            <div className="flex min-w-0 flex-col p-4 @sm:p-5">
               <div className="mb-3 text-sm font-semibold">
                 {pickedDay
                   ? pickedDay.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })
@@ -280,8 +314,9 @@ export default function CalendlyBookingCard({ api }: { api: BookingApi }) {
                     <button
                       key={s.start_at}
                       onClick={() => setSelected(active ? null : s.start_at)}
+                      aria-pressed={active}
                       className={cn(
-                        "w-full rounded-lg border py-2.5 text-center text-sm font-medium transition",
+                        "min-h-11 w-full rounded-lg border px-3 py-2.5 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         active ? "border-primary bg-primary text-primary-foreground"
                           : "border-primary/40 text-primary hover:border-primary hover:bg-primary/5",
                       )}

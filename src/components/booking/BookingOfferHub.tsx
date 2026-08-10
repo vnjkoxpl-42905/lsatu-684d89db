@@ -51,8 +51,10 @@ export default function BookingOfferHub({
   };
 
   const labelFor = (id: string | null) => offers.find((offer) => offer.id === id)?.label ?? "Booking";
+  if (offers.length === 0 && commerce.length === 0 && externalBookings.length === 0) return null;
+
   return (
-    <section className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <section className="booking-holo mb-6 rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-start gap-3">
         <CreditCard className="mt-0.5 h-5 w-5 text-primary" />
         <div>
@@ -72,7 +74,7 @@ export default function BookingOfferHub({
               <p className="mt-2 text-xs leading-5 text-muted-foreground">
                 {isSingle ? "Schedule and pay for one session through the secure booking link." : `Secure checkout adds ${offer.credits} sessions to your existing booking pass.`}
               </p>
-              <Button className="mt-4 w-full" size="sm" variant={isSingle ? "outline" : "default"} onClick={() => void openOffer(offer)} disabled={opening !== null}>
+              <Button className="mt-4 min-h-11 w-full" variant={isSingle ? "outline" : "default"} onClick={() => void openOffer(offer)} disabled={opening !== null}>
                 {opening === offer.id ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <ExternalLink className="mr-1.5 h-4 w-4" />}
                 {isSingle ? "Schedule session" : "Checkout"}
               </Button>

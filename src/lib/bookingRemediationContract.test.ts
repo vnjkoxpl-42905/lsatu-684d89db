@@ -54,6 +54,15 @@ describe("booking remediation contracts", () => {
     expect(card).toContain("UpcomingSessions redemptions");
   });
 
+  it("keeps the booking calendar responsive to its container, not the viewport", () => {
+    const card = read("src/components/booking/CalendlyBookingCard.tsx");
+    expect(card).toContain("@container");
+    expect(card).toContain("@4xl:grid-cols-[280px_minmax(0,1fr)]");
+    expect(card).toContain("@2xl:grid-cols-[minmax(0,1fr)_240px]");
+    expect(card).toContain("min-w-0");
+    expect(card).not.toContain("sm:grid-cols-[1fr_240px]");
+  });
+
   it("Phase 6 exposes an identifier-only health summary", () => {
     const sql = read("supabase/migrations/20260720200000_booking_phase6_health.sql");
     const admin = read("supabase/functions/booking-pass-admin/index.ts");
