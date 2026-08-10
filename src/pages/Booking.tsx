@@ -70,9 +70,11 @@ export default function Booking() {
     },
   }), []);
 
-  // Admins manage booking passes; students book with theirs.
+  // Teacher booking controls live on each student's in-shell dossier. The
+  // former /booking/admin destination mounts a separate app shell, which
+  // breaks the Classroom frame the rail is meant to preserve.
   if (loading) return <div className="min-h-screen bg-background" />;
-  if (is_admin) return <Navigate to="/booking/admin" replace />;
+  if (is_admin) return <Navigate to="/teacher/students" replace />;
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">

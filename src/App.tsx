@@ -119,7 +119,6 @@ const TeacherSessionIngest = safeLazy(() => import("./pages/teacher/TeacherSessi
 
 const BootcampReferenceDetail = safeLazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = safeLazy(() => import("./pages/PublicBooking"));
-const BookingWorkspace = safeLazy(() => import("./pages/booking/BookingWorkspace"));
 /** Dev-only; the route that mounts it is gated on import.meta.env.DEV. */
 const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
@@ -239,9 +238,10 @@ const App = () => {
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
-            {/* Admin "Booking" workspace (Calendly/Cal.com-style, burgundy theme). */}
-            <Route path="/booking/admin/*" element={<ProtectedRoute requireAdmin><React.Suspense fallback={null}><BookingWorkspace /></React.Suspense></ProtectedRoute>} />
-            <Route path="/teacher/booking-passes" element={<Navigate to="/booking/admin" replace />} />
+            {/* Legacy booking-workspace URLs used to mount a second app shell.
+                Passes now live on each student's in-shell dossier. */}
+            <Route path="/booking/admin/*" element={<RedirectWithSearch to="/teacher/students" />} />
+            <Route path="/teacher/booking-passes" element={<RedirectWithSearch to="/teacher/students" />} />
 
 
             {/* Onboarding is no longer a screen of its own: the intake runs in

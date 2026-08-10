@@ -273,7 +273,13 @@ function ClassroomSidebar({
       case "schedule":
         return { active: false, onClick: () => go("/schedule") };
       case "booking":
-        return { active: false, onClick: () => go("/booking") };
+        // Teachers manage each student's pass from their dossier. Sending them
+        // to /booking/admin mounted a second application shell and made the
+        // Classroom navigation disappear.
+        return {
+          active: location.pathname.startsWith("/teacher/students") || location.pathname === "/booking",
+          onClick: () => go(permissions.is_admin ? "/teacher/students" : "/booking"),
+        };
     }
   };
 
