@@ -7,12 +7,13 @@
  */
 
 import * as React from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
-const FallacyApp = React.lazy(
+const FallacyApp = safeLazy(
   () => import('@/bootcamps/fallacy-flaw-v2/FallacyApp'),
 );
 
