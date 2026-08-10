@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
   format, isSameDay, isSameMonth, isToday, startOfDay,
   startOfWeek, endOfWeek, eachDayOfInterval, addWeeks,
   subWeeks, addDays, subDays, addMonths, subMonths,
+  startOfMonth, endOfMonth,
 } from 'date-fns';
 import {
-  ArrowLeft,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -23,14 +24,9 @@ import {
   Zap,
   Sparkles,
 } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
-import type { DayContentProps } from 'react-day-picker';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LogoutButton } from '@/components/LogoutButton';
 import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
@@ -86,41 +82,73 @@ function itemMatchesDay(item: ClassroomItem, day: Date): boolean {
   return itemDates(item).some((d) => isSameDay(d, day));
 }
 
-interface ScheduleCtx { items: ClassroomItem[] }
-const ScheduleContext = React.createContext<ScheduleCtx>({ items: [] });
-
-function CustomDayContent({ date, displayMonth }: DayContentProps) {
-  const { items } = React.useContext(ScheduleContext);
-  const dayItems = items.filter((it) => itemMatchesDay(it, date));
-  const isOutside = !isSameMonth(date, displayMonth);
-
-  const inner = (
-    <span className={cn('flex flex-col items-center leading-none', isOutside && 'opacity-25')}>
-      <span className="tabular-nums text-sm">{date.getDate()}</span>
-      <span className="flex gap-[3px] mt-1 min-h-[6px]">
-        {dayItems.slice(0, 3).map((it) => (
-          <span key={it.id} className={cn('w-[5px] h-[5px] rounded-full', TYPE_META[it.type].dot)} />
-        ))}
-      </span>
-    </span>
-  );
-
-  if (dayItems.length === 0) return inner;
+function MonthGrid({
+  month,
+  items,
+  selectedDate,
+  onDayClick,
+}: {
+  month: Date;
+  items: ClassroomItem[];
+  selectedDate: Date | null;
+  onDayClick: (date: Date) => void;
+}) {
+  const reduceMotion = useReducedMotion();
+  const days = eachDayOfInterval({
+    start: startOfWeek(startOfMonth(month), { weekStartsOn: 0 }),
+    end: endOfWeek(endOfMonth(month), { weekStartsOn: 0 }),
+  });
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span className="block">{inner}</span>
-      </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-[220px] space-y-1 py-2 px-3">
-        {dayItems.map((it) => (
-          <div key={it.id} className="flex items-center gap-2">
-            <span className={cn('w-2 h-2 rounded-full shrink-0', TYPE_META[it.type].dot)} />
-            <span className="text-xs">{it.title}</span>
+    <div>
+      <div className="mb-2 grid grid-cols-7 gap-1.5 sm:gap-2">
+        {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
+          <div
+            key={day}
+            className="rounded-lg bg-secondary px-1 py-1.5 text-center text-[9px] font-semibold tracking-[0.12em] text-secondary-foreground sm:text-[10px]"
+          >
+            {day}
           </div>
         ))}
-      </TooltipContent>
-    </Tooltip>
+      </div>
+
+      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+        {days.map((day) => {
+          const dayItems = items.filter((item) => itemMatchesDay(item, day));
+          const outside = !isSameMonth(day, month);
+          const selected = selectedDate ? isSameDay(day, selectedDate) : false;
+
+          return (
+            <motion.button
+              key={day.toISOString()}
+              type="button"
+              onClick={() => onDayClick(day)}
+              whileHover={reduceMotion ? undefined : { y: -2 }}
+              transition={{ duration: 0.16, ease: 'easeOut' }}
+              aria-label={`${format(day, 'MMMM d, yyyy')}${dayItems.length ? `, ${dayItems.length} assigned item${dayItems.length === 1 ? '' : 's'}` : ''}`}
+              className={cn(
+                'group relative flex min-h-14 items-center justify-center rounded-xl border text-sm tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-2xl',
+                outside
+                  ? 'border-transparent bg-muted/25 text-muted-foreground/35'
+                  : 'border-border bg-card text-foreground hover:bg-accent',
+                selected && 'border-foreground bg-accent ring-1 ring-foreground/30',
+                isToday(day) && !selected && 'border-foreground/40 font-semibold',
+              )}
+            >
+              <span>{format(day, 'd')}</span>
+              {dayItems.length > 0 ? (
+                <motion.span
+                  layoutId={`schedule-count-${format(day, 'yyyy-MM-dd')}`}
+                  className="absolute bottom-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-bold text-background"
+                >
+                  {dayItems.length}
+                </motion.span>
+              ) : null}
+            </motion.button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -246,7 +274,7 @@ export default function Schedule() {
   const navigate = useNavigate();
   const { data: items = [], isLoading } = useClassroomItems();
 
-  const [mainTab, setMainTab] = React.useState<MainTab>('today');
+  const [mainTab, setMainTab] = React.useState<MainTab>('calendar');
   const [view, setView] = React.useState<CalView>('month');
   const [monthAnchor, setMonthAnchor] = React.useState<Date>(new Date());
   const [weekAnchor, setWeekAnchor] = React.useState<Date>(new Date());
@@ -310,27 +338,15 @@ export default function Schedule() {
   };
 
   return (
-    <ScheduleContext.Provider value={{ items }}>
-      <TooltipProvider delayDuration={180}>
-        <div className="min-h-screen bg-background">
-          <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-            <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-              <Button variant="ghost" size="sm" onClick={() => navigate('/classroom')} className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2">
-                <ArrowLeft className="w-4 h-4" />
-                Return to Main Hub
-              </Button>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium">Schedule</p>
-              <div className="flex items-center gap-1">
-                <LogoutButton />
-                <ThemeToggle />
-              </div>
-            </div>
-          </header>
-
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
+    <>
+        {/* No header of its own: the classroom rail owns the way back, sign
+            out and the theme toggle. One name for this surface, and it is the
+            one the rail uses. */}
+        <div className="bg-background">
+          <div className="max-w-7xl mx-auto pb-20">
             <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-semibold tracking-tight">Study Schedule &amp; Agenda</h1>
+                <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
                 <p className="text-sm text-muted-foreground mt-1.5">
                   {mainTab === 'today' ? 'Your to-do list for today.' : 'Your assigned work, calendared by due date.'}
                 </p>
@@ -389,52 +405,44 @@ export default function Schedule() {
                     </div>
                   </div>
 
-                  {view === 'month' && (
-                    <DayPicker
-                      month={monthAnchor}
-                      onMonthChange={setMonthAnchor}
-                      mode="single"
-                      onDayClick={handleDayClick}
-                      showOutsideDays
-                      className="w-full"
-                      classNames={{
-                        months: 'w-full',
-                        month: 'w-full',
-                        caption: 'hidden',
-                        caption_label: '',
-                        nav: 'hidden',
-                        table: 'w-full border-collapse',
-                        head_row: 'grid grid-cols-7 mb-2',
-                        head_cell: 'text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium text-center py-1',
-                        row: 'grid grid-cols-7',
-                        cell: 'text-center p-0.5',
-                        day: cn(
-                          'w-full h-12 flex items-center justify-center rounded-xl',
-                          'cursor-pointer transition-colors duration-100',
-                          'hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-                        ),
-                        day_selected: 'bg-foreground text-background hover:bg-foreground/90',
-                        day_today: 'ring-1 ring-foreground/30 font-bold',
-                        day_outside: 'opacity-25',
-                        day_disabled: 'opacity-20 cursor-not-allowed',
-                        day_hidden: 'invisible',
-                      }}
-                      components={{
-                        DayContent: CustomDayContent,
-                        IconLeft: () => null,
-                        IconRight: () => null,
-                      }}
-                    />
-                  )}
+                  <AnimatePresence mode="wait">
+                    {view === 'month' && (
+                      <motion.div
+                        key="month"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.18 }}
+                      >
+                        <MonthGrid
+                          month={monthAnchor}
+                          items={items}
+                          selectedDate={selectedDate}
+                          onDayClick={handleDayClick}
+                        />
+                      </motion.div>
+                    )}
 
-                  {view === 'week' && <WeekView weekAnchor={weekAnchor} items={items} onDayClick={handleDayClick} />}
-                  {view === 'day' && <DayView day={dayAnchor} items={items} onItemClick={openItem} />}
+                    {view === 'week' && (
+                      <motion.div key="week" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <WeekView weekAnchor={weekAnchor} items={items} onDayClick={handleDayClick} />
+                      </motion.div>
+                    )}
+                    {view === 'day' && (
+                      <motion.div key="day" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <DayView day={dayAnchor} items={items} onItemClick={openItem} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                    <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-muted-foreground">Next 14 Days</h2>
+                    <div>
+                      <h2 className="text-lg font-semibold tracking-tight">Bookings</h2>
+                      <p className="text-xs text-muted-foreground">Your next 14 days</p>
+                    </div>
                   </div>
                   {upcoming.length === 0 ? (
                     <div className="rounded-xl border border-dashed border-border p-6 text-center">
@@ -535,7 +543,6 @@ export default function Schedule() {
             </SheetContent>
           </Sheet>
         </div>
-      </TooltipProvider>
-    </ScheduleContext.Provider>
+    </>
   );
 }

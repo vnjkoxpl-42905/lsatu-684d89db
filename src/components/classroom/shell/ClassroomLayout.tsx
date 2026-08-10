@@ -299,10 +299,27 @@ function ClassroomSidebar({
               <b>Teaching</b>
               <button
                 type="button"
-                className="classroom-nav"
+                className={`classroom-nav${
+                  location.pathname.startsWith("/teacher/") &&
+                  !location.pathname.startsWith("/teacher/schedule") &&
+                  !location.pathname.startsWith("/teacher/whiteboard")
+                    ? " classroom-nav-active-white"
+                    : ""
+                }`}
                 onClick={() => go("/teacher/today")}
               >
                 Teacher Workspace
+              </button>
+              <button
+                type="button"
+                className={`classroom-nav${
+                  location.pathname.startsWith("/teacher/schedule")
+                    ? " classroom-nav-active-white"
+                    : ""
+                }`}
+                onClick={() => go("/teacher/schedule")}
+              >
+                Calendar
               </button>
               <button
                 type="button"
