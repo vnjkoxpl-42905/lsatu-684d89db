@@ -15,7 +15,8 @@
  *     components/*, etc.).
  */
 
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, CheckSquare, FileText, LayoutDashboard, User, Target, Zap, Flame } from 'lucide-react';
 import './principle-flaw.css';
@@ -26,13 +27,13 @@ import { ElegantShape } from './components/ui/shape-landing-hero';
 import { computeStreak, readStreakDates } from './lib/streak';
 import { setBootcampContext } from '@/lib/helpContextBus';
 
-const Overview = lazy(() => import('./components/Overview'));
-const Schedule = lazy(() => import('./components/Schedule'));
-const Learn = lazy(() => import('./components/Learn'));
-const Practice = lazy(() => import('./components/Practice'));
-const ReviewLog = lazy(() => import('./components/ReviewLog'));
-const Profile = lazy(() => import('./components/Profile'));
-const FlashcardsView = lazy(() => import('./components/Flashcards'));
+const Overview = safeLazy(() => import('./components/Overview'));
+const Schedule = safeLazy(() => import('./components/Schedule'));
+const Learn = safeLazy(() => import('./components/Learn'));
+const Practice = safeLazy(() => import('./components/Practice'));
+const ReviewLog = safeLazy(() => import('./components/ReviewLog'));
+const Profile = safeLazy(() => import('./components/Profile'));
+const FlashcardsView = safeLazy(() => import('./components/Flashcards'));
 
 function ViewFallback() {
   return (

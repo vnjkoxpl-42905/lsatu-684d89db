@@ -9,13 +9,14 @@
  */
 
 import React, { Suspense } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { formatParticipantName } from '@/lib/displayName';
 
-const PrincipleFlawApp = React.lazy(
+const PrincipleFlawApp = safeLazy(
   () => import('@/bootcamps/principle-flaw/PrincipleFlawApp'),
 );
 

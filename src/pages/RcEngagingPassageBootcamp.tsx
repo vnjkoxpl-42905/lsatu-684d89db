@@ -10,27 +10,13 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { safeLazy } from '@/lib/safeLazy';
 
 // Stale-chunk safe: after a deploy the cached app shell can resolve this
 // dynamic import to a module without a default export, which React then reads
-// as `undefined.default` and blanks the screen. Force a one-time hard reload
-// instead of letting the TypeError escape.
-const RC_RELOAD_KEY = '__rc_bootcamp_chunk_reload__';
-const RcBootcampPage = React.lazy(async () => {
-  try {
-    const mod = await import('@/bootcamps/rc-bootcamp/RcBootcampPage');
-    if (!mod || !mod.default) throw new Error('missing default export');
-    return mod;
-  } catch (err) {
-    try {
-      if (!sessionStorage.getItem(RC_RELOAD_KEY)) {
-        sessionStorage.setItem(RC_RELOAD_KEY, '1');
-        window.location.reload();
-      }
-    } catch {}
-    throw err;
-  }
-});
+// as `undefined.default` and blanks the screen. safeLazy forces a one-time
+// hard reload instead of letting the TypeError escape.
+const RcBootcampPage = safeLazy(() => import('@/bootcamps/rc-bootcamp/RcBootcampPage'));
 
 const RcEngagingPassageBootcamp: React.FC = () => {
   const navigate = useNavigate();
