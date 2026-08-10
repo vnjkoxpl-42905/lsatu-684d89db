@@ -15,7 +15,8 @@
  *     components/*, etc.).
  */
 
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, CheckSquare, FileText, LayoutDashboard, User, Target, Zap, Flame } from 'lucide-react';
 import './principle-flaw.css';

@@ -9,6 +9,7 @@
  */
 
 import React, { Suspense } from 'react';
+import { safeLazy } from '@/lib/safeLazy';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
