@@ -142,7 +142,9 @@ describe('runRcSearch', () => {
     });
     expect(result.totalQuestions).toBe(1);
     expect(result.questions[0].snippet?.match).toBe('strongly supported');
-    expect(result.questions[0].snippet?.before).toContain('…');
+    // The match sits near the start of this short stem, so the window begins
+    // at the first character with no leading ellipsis.
+    expect(result.questions[0].snippet?.before).toBe('Which one of the following is most ');
   });
 
   it('questions with a null difficulty only match when no difficulty filter is set', () => {
