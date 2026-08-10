@@ -52,6 +52,9 @@ verify_jwt = false
 [functions.booking-pass-admin]
 verify_jwt = true
 
+[functions.booking-commerce-webhook]
+verify_jwt = false
+
 [functions.mcp]
 verify_jwt = false
 

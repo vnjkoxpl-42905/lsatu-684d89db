@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { supabase } from "@/integrations/supabase/client";
 import CalendlyBookingCard, { type BookingApi } from "@/components/booking/CalendlyBookingCard";
+import BookingOfferHub, { type BookingCommerceItem, type BookingOffer, type ExternalBookingItem } from "@/components/booking/BookingOfferHub";
 
 // In-app booking page (authed). Uses the SAME Calendly-clone card as the public
 // /book/:slug page, fed by the authenticated student-booking function.
@@ -70,6 +71,11 @@ export default function Booking() {
     },
   }), []);
 
+  const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[] } | null>(null);
+  useEffect(() => {
+    void invoke("info").then((data) => setCommerce(data)).catch(() => setCommerce({ offers: [], commerce: [], external_bookings: [] }));
+  }, []);
+
   // Teacher booking controls live on each student's in-shell dossier. The
   // former /booking/admin destination mounts a separate app shell, which
   // breaks the Classroom frame the rail is meant to preserve.
@@ -88,6 +94,7 @@ export default function Booking() {
         </div>
       </div>
 
+      <BookingOfferHub offers={commerce?.offers ?? []} commerce={commerce?.commerce ?? []} externalBookings={commerce?.external_bookings ?? []} />
       <CalendlyBookingCard api={api} />
     </div>
   );

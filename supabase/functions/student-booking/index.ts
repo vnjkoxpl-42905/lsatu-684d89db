@@ -29,6 +29,19 @@ async function activePassRow(supabase: any, userId: string): Promise<BookingPass
   return data ?? null;
 }
 
+async function offersForStudent(supabase: any, userId: string) {
+  const [{ data: offers, error: offersErr }, { data: overrides, error: overridesErr }] = await Promise.all([
+    supabase.from("booking_offers").select("id,label,provider,url,credits").eq("active", true).order("credits"),
+    supabase.from("student_booking_offers").select("offer_id,enabled,url_override").eq("student_id", userId),
+  ]);
+  if (offersErr || overridesErr) throw offersErr ?? overridesErr;
+  const byOffer = new Map((overrides ?? []).map((row: any) => [row.offer_id, row]));
+  const hasArrangement = byOffer.size > 0;
+  return (offers ?? [])
+    .filter((offer: any) => !hasArrangement || byOffer.get(offer.id)?.enabled)
+    .map((offer: any) => ({ ...offer, url: byOffer.get(offer.id)?.url_override || offer.url }));
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -63,12 +76,30 @@ Deno.serve(async (req) => {
 
     // ------------------------------------------------------------------- info
     if (action === "info") {
-      const { data, error } = await supabase.rpc("get_student_booking", { _auth_user_id: userId });
+      const [{ data, error }, offers, { data: commerce }, { data: external }] = await Promise.all([
+        supabase.rpc("get_student_booking", { _auth_user_id: userId }),
+        offersForStudent(supabase, userId),
+        supabase.from("booking_commerce_events").select("id,offer_id,provider,event_type,amount_cents,currency,created_at").eq("student_id", userId).order("created_at", { ascending: false }).limit(30),
+        supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
+      ]);
       if (error) {
         console.error("get_student_booking failed", error);
         return json({ error: "info_failed", details: error.message ?? String(error) }, 500);
       }
-      return json(data ?? { pass: null, redemptions: [] });
+      return json({ ...(data ?? { pass: null, redemptions: [] }), offers, commerce: commerce ?? [], external_bookings: external ?? [] });
+    }
+
+    if (action === "offer_click") {
+      const offerId = String(body.offer_id || "");
+      const offers = await offersForStudent(supabase, userId);
+      const offer = offers.find((item: any) => item.id === offerId);
+      if (!offer) return json({ error: "offer_not_available" }, 404);
+      const { error } = await supabase.from("booking_commerce_events").insert({
+        student_id: userId, offer_id: offer.id, provider: "lsatu",
+        provider_event_id: crypto.randomUUID(), event_type: "offer_clicked", payload: { url: offer.url },
+      });
+      if (error) throw error;
+      return json({ url: offer.url });
     }
 
     const pass = await activePassRow(supabase, userId);
