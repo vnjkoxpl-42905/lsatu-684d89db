@@ -24,7 +24,7 @@ import { TemplatePalette, type ExcalidrawTemplateApi } from '@/components/whiteb
 import { formatDistanceToNowStrict } from 'date-fns';
 
 // Excalidraw is heavy; load only when this route mounts.
-const Excalidraw = lazy(() =>
+const Excalidraw = safeLazy(() =>
   import('@excalidraw/excalidraw').then((m) => ({ default: m.Excalidraw })),
 );
 
