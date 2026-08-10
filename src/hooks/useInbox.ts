@@ -208,6 +208,9 @@ export function useInbox() {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'conversation_participants', filter: `user_id=eq.${user.id}` }, () => {
         loadConversations();
       })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'conversation_participants', filter: `user_id=eq.${user.id}` }, () => {
+        loadConversations();
+      })
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
@@ -300,7 +303,11 @@ export function useConversationMessages(conversationId: string | null) {
       .then(({ error: markError }) => {
         // Non-blocking, but don't discard the error: a failed mark-as-read
         // leaves a stale unread badge, so at least log it.
-        if (markError) console.warn('[inbox] mark-as-read failed:', markError.message);
+        if (markError) {
+          console.warn('[inbox] mark-as-read failed:', markError.message);
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('inbox:read'));
       });
   }, [conversationId, user, messages.length]);
 

@@ -73,6 +73,15 @@ export function useUnreadMessageCount() {
     void load();
   }, [load]);
 
+  // Clear immediately in the current tab when a thread is opened. Realtime
+  // remains the cross-tab/server source of truth, but should not be required
+  // for a badge the teacher just acted on to disappear.
+  useEffect(() => {
+    const handleRead = () => void load();
+    window.addEventListener('inbox:read', handleRead);
+    return () => window.removeEventListener('inbox:read', handleRead);
+  }, [load]);
+
   // The badge has to move the moment a message lands, and has to clear the
   // moment the thread is opened (which writes last_read_at), so both tables are
   // watched.

@@ -36,6 +36,7 @@ export function useNotifications(): {
   refresh: () => Promise<void>;
   markRead: (id: string) => Promise<void>;
   markAllRead: () => Promise<void>;
+  markSignupNotificationsRead: () => Promise<void>;
   approveSignup: (id: string) => Promise<void>;
   dismissSignup: (id: string) => Promise<void>;
 } {
@@ -146,6 +147,37 @@ export function useNotifications(): {
     }
   }, [user, notifications, refresh]);
 
+  const markSignupNotificationsRead = useCallback(async () => {
+    if (!user) return;
+    const hasUnreadSignups = notifications.some(
+      (notification) => notification.type === "signup" && !notification.read
+    );
+    if (!hasUnreadSignups) return;
+
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.type === "signup"
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
+
+    const { error: err } = await supabase
+      .from("notifications")
+      .update({ read: true })
+      .eq("user_id", user.id)
+      .eq("type", "signup")
+      .eq("read", false);
+
+    if (err) {
+      console.error("[notifications:mark-signups-read] failed", {
+        userId: user.id,
+        error: err,
+      });
+      void refresh();
+    }
+  }, [user, notifications, refresh]);
+
   // Approve / dismiss both go through SECURITY DEFINER RPCs: granting access is
   // an admin-only privilege escalation, so it must never be a client-side table
   // write the account being approved could reproduce.
@@ -198,6 +230,7 @@ export function useNotifications(): {
     refresh,
     markRead,
     markAllRead,
+    markSignupNotificationsRead,
     approveSignup,
     dismissSignup,
   };
