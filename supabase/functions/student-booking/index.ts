@@ -35,7 +35,9 @@ async function offersForStudent(supabase: any, userId: string) {
     supabase.from("student_booking_offers").select("offer_id,enabled,url_override").eq("student_id", userId),
   ]);
   if (offersErr || overridesErr) throw offersErr ?? overridesErr;
-  const byOffer = new Map((overrides ?? []).map((row: any) => [row.offer_id, row]));
+  const byOffer = new Map<string, { offer_id: string; enabled: boolean; url_override: string | null }>(
+    (overrides ?? []).map((row: any) => [row.offer_id, row]),
+  );
   const hasArrangement = byOffer.size > 0;
   return (offers ?? [])
     .filter((offer: any) => !hasArrangement || byOffer.get(offer.id)?.enabled)
@@ -76,16 +78,27 @@ Deno.serve(async (req) => {
 
     // ------------------------------------------------------------------- info
     if (action === "info") {
-      const [{ data, error }, offers, { data: commerce }, { data: external }] = await Promise.all([
-        supabase.rpc("get_student_booking", { _auth_user_id: userId }),
-        offersForStudent(supabase, userId),
-        supabase.from("booking_commerce_events").select("id,offer_id,provider,event_type,amount_cents,currency,created_at").eq("student_id", userId).order("created_at", { ascending: false }).limit(30),
-        supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
-      ]);
+      const { data, error } = await supabase.rpc("get_student_booking", { _auth_user_id: userId });
       if (error) {
         console.error("get_student_booking failed", error);
         return json({ error: "info_failed", details: error.message ?? String(error) }, 500);
       }
+
+      // Commerce is enrichment, not a prerequisite for using an existing
+      // pass. Keep the scheduler available while migrations, provider events,
+      // or offer configuration are temporarily unavailable.
+      const [offersResult, commerceResult, externalResult] = await Promise.allSettled([
+        offersForStudent(supabase, userId),
+        supabase.from("booking_commerce_events").select("id,offer_id,provider,event_type,amount_cents,currency,created_at").eq("student_id", userId).order("created_at", { ascending: false }).limit(30),
+        supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
+      ]);
+
+      const offers = offersResult.status === "fulfilled" ? offersResult.value : [];
+      if (offersResult.status === "rejected") console.warn("booking offers unavailable", offersResult.reason);
+      const commerce = commerceResult.status === "fulfilled" && !commerceResult.value.error ? commerceResult.value.data ?? [] : [];
+      if (commerceResult.status === "rejected" || commerceResult.value?.error) console.warn("booking commerce unavailable", commerceResult.status === "rejected" ? commerceResult.reason : commerceResult.value.error);
+      const external = externalResult.status === "fulfilled" && !externalResult.value.error ? externalResult.value.data ?? [] : [];
+      if (externalResult.status === "rejected" || externalResult.value?.error) console.warn("external bookings unavailable", externalResult.status === "rejected" ? externalResult.reason : externalResult.value.error);
       return json({ ...(data ?? { pass: null, redemptions: [] }), offers, commerce: commerce ?? [], external_bookings: external ?? [] });
     }
 

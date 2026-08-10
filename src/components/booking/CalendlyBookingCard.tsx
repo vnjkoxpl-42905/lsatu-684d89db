@@ -74,7 +74,7 @@ function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }
   );
 }
 
-export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2" }: { api: BookingApi; sessionHeadingLevel?: "h2" | "h3" }) {
+export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", noPassDescription = "Message Joshua to have 1:1 session booking turned on." }: { api: BookingApi; sessionHeadingLevel?: "h2" | "h3"; noPassDescription?: string }) {
   const SessionHeading = sessionHeadingLevel;
   const [info, setInfo] = useState<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] } | null>(null);
   const [infoLoading, setInfoLoading] = useState(true);
@@ -180,7 +180,7 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2" }:
       <div className="booking-holo overflow-hidden rounded-2xl border border-dashed border-border bg-card">
         <div className="p-12 text-center">
           <p className="text-sm font-medium">No sessions available.</p>
-          <p className="mt-1 text-xs text-muted-foreground">Message Joshua to have 1:1 session booking turned on.</p>
+          <p className="mt-1 text-xs text-muted-foreground">{noPassDescription}</p>
         </div>
         <UpcomingSessions redemptions={info?.redemptions ?? []} />
       </div>

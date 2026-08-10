@@ -216,6 +216,9 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
         <DialogTitle className="sr-only">
           {step === "success" ? "Session booked" : step === "work" ? "Bring work to review" : "Confirm your session"}
         </DialogTitle>
+        <div role="status" aria-live="polite" className="sr-only">
+          {booking ? "Booking your session" : step === "success" ? "Your session is booked" : step === "work" ? "Add optional work for Joshua to review" : "Confirm your session"}
+        </div>
         <AnimatePresence mode="wait" initial={false}>
           {step === "success" && bookedSlot ? (
             <motion.div key="success" {...phaseMotion} className="flex flex-col items-center px-6 py-8 text-center">

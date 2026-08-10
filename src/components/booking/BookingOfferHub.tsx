@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { CreditCard, ExternalLink, Loader2, CalendarDays, PackagePlus } from "lucide-react";
+import { CreditCard, ExternalLink, CalendarDays, PackagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 export type BookingOffer = {
   id: string;
@@ -61,25 +59,37 @@ export default function BookingOfferHub({
   commerce: BookingCommerceItem[];
   externalBookings: ExternalBookingItem[];
 }) {
-  const [opening, setOpening] = useState<string | null>(null);
-  const openOffer = async (offer: BookingOffer) => {
-    setOpening(offer.id);
-    let destination = offer.url;
-    try {
-      const { data, error } = await supabase.functions.invoke("student-booking", { body: { action: "offer_click", offer_id: offer.id } });
-      if (error || data?.error) throw new Error(data?.error || error.message);
-      if (typeof data?.url === "string" && data.url) destination = data.url;
-    } catch {
-      // The three canonical links remain usable if click logging or live offer
-      // configuration is temporarily unavailable.
-      toast.info("Opening the saved booking link.");
-    }
-    window.location.assign(destination);
+  const logOfferClick = (offerId: string) => {
+    // Telemetry is deliberately best-effort. A slow or unavailable function
+    // must never sit between a student and a booking or checkout link.
+    void supabase.functions.invoke("student-booking", {
+      body: { action: "offer_click", offer_id: offerId },
+    });
   };
 
   const offersById = new Map(offers.map((offer) => [offer.id, offer]));
   const resolvedOffers = DEFAULT_BOOKING_OFFERS.map((fallback) => offersById.get(fallback.id) ?? fallback);
   const labelFor = (id: string | null) => resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
+  const recentActivity = [
+    ...externalBookings.map((booking) => ({
+      id: `booking-${booking.id}`,
+      offerId: booking.offer_id,
+      timestamp: booking.start_at,
+      detail: booking.start_at
+        ? `${booking.status} · ${new Date(booking.start_at).toLocaleString()}`
+        : booking.status,
+    })),
+    ...commerce
+      .filter((item) => item.event_type === "paid")
+      .map((item) => ({
+        id: `commerce-${item.id}`,
+        offerId: item.offer_id,
+        timestamp: item.created_at,
+        detail: `Paid · ${new Date(item.created_at).toLocaleDateString()}`,
+      })),
+  ]
+    .sort((a, b) => new Date(b.timestamp ?? 0).getTime() - new Date(a.timestamp ?? 0).getTime())
+    .slice(0, 5);
 
   return (
     <section className="@container booking-holo mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm" aria-labelledby="booking-options-heading">
@@ -104,28 +114,24 @@ export default function BookingOfferHub({
                   ? "Choose a time and pay for one session."
                   : `Continue to the secure ${offer.label.toLowerCase()} checkout.`}
               </p>
-              <Button className="mt-4 min-h-11 w-full" variant={isSingle ? "outline" : "default"} onClick={() => void openOffer(offer)} disabled={opening !== null}>
-                {opening === offer.id ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <ExternalLink className="mr-1.5 h-4 w-4" />}
-                {isSingle ? "Book one session" : `Buy ${offer.label}`}
+              <Button asChild className="mt-4 min-h-11 w-full" variant={isSingle ? "outline" : "default"}>
+                <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
+                  <ExternalLink className="mr-1.5 h-4 w-4" />
+                  {isSingle ? "Book one session" : `Buy ${offer.label}`}
+                </a>
               </Button>
             </div>
           );
         })}
       </div>
-      {(commerce.length > 0 || externalBookings.length > 0) && (
+      {recentActivity.length > 0 && (
         <div className="border-t border-border px-5 py-4">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recent booking activity</h3>
           <ul className="mt-2 space-y-2 text-sm">
-            {externalBookings.slice(0, 5).map((booking) => (
-              <li key={booking.id} className="flex items-center justify-between gap-3 rounded-lg bg-muted/35 px-3 py-2">
-                <span>{labelFor(booking.offer_id)}</span>
-                <span className="text-xs text-muted-foreground">{booking.start_at ? new Date(booking.start_at).toLocaleString() : booking.status}</span>
-              </li>
-            ))}
-            {commerce.filter((item) => item.event_type === "paid").slice(0, 5).map((item) => (
-              <li key={item.id} className="flex items-center justify-between gap-3 rounded-lg bg-muted/35 px-3 py-2">
-                <span>{labelFor(item.offer_id)}</span>
-                <span className="text-xs text-muted-foreground">Paid {new Date(item.created_at).toLocaleDateString()}</span>
+            {recentActivity.map((item) => (
+              <li key={item.id} className="grid gap-1 rounded-lg bg-muted/35 px-3 py-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-3">
+                <span>{labelFor(item.offerId)}</span>
+                <span className="text-xs capitalize text-muted-foreground sm:text-right">{item.detail}</span>
               </li>
             ))}
           </ul>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -19,13 +19,18 @@ const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
 export default function Booking() {
   const navigate = useNavigate();
   const { is_admin, loading } = useUserPermissions();
+  const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[] } | null>(null);
 
   const api: BookingApi = useMemo(() => ({
     loadInfo: async () => {
       const d = (await invoke("info")) as {
         pass: { credits_remaining: number; session_length_minutes: number; total_credits: number; status: string } | null;
         redemptions?: { id: string; start_at: string; status: string; meet_url?: string | null }[];
+        offers?: BookingOffer[];
+        commerce?: BookingCommerceItem[];
+        external_bookings?: ExternalBookingItem[];
       };
+      setCommerce({ offers: d.offers ?? [], commerce: d.commerce ?? [], external_bookings: d.external_bookings ?? [] });
       const p = d.pass;
       return {
         pass: p ? { credits_remaining: p.credits_remaining, session_length_minutes: p.session_length_minutes, total_credits: p.total_credits, status: p.status } : null,
@@ -71,11 +76,6 @@ export default function Booking() {
     },
   }), []);
 
-  const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[] } | null>(null);
-  useEffect(() => {
-    void invoke("info").then((data) => setCommerce(data)).catch(() => setCommerce({ offers: [], commerce: [], external_bookings: [] }));
-  }, []);
-
   // Teacher booking controls live on each student's in-shell dossier. The
   // former /booking/admin destination mounts a separate app shell, which
   // breaks the Classroom frame the rail is meant to preserve.
@@ -100,7 +100,11 @@ export default function Booking() {
           <h2 id="schedule-with-pass-heading" className="text-lg font-semibold tracking-tight">Schedule with your pass</h2>
           <p className="mt-1 text-sm text-muted-foreground">Already have sessions available? Choose a date and time below.</p>
         </div>
-        <CalendlyBookingCard api={api} sessionHeadingLevel="h3" />
+        <CalendlyBookingCard
+          api={api}
+          sessionHeadingLevel="h3"
+          noPassDescription="Choose a single session or package above, or message Joshua if you need help."
+        />
       </section>
     </div>
   );
