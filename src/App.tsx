@@ -125,9 +125,6 @@ const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
-import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
-import { StudentCornerBubble } from "./components/inbox/StudentCornerBubble";
-import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 
 // Surfaces that own the whole screen and must stay free of floating chrome.
@@ -140,9 +137,6 @@ function GlobalOverlayMount() {
   if (OVERLAY_FREE_PREFIXES.some((p) => pathname === p || pathname.startsWith(p))) return null;
   return (
     <>
-      <FloatingMessenger />
-      <StudentCornerBubble />
-      <AdminChatHub />
       <FloatingHelpButton />
     </>
   );
