@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { BUILD_SHA } from "@/lib/buildInfo";
+import { markSafeLazyReloaded } from "@/lib/safeLazy";
 import "./index.css";
 
 // LocatorJS (dev only): Option/Alt+click a rendered element to jump to its source
@@ -133,6 +134,7 @@ window.addEventListener("unhandledrejection", (event) => {
 });
 window.addEventListener("pageshow", () => {
   try { sessionStorage.removeItem(CHUNK_RELOAD_KEY); } catch {}
+  markSafeLazyReloaded();
 });
 
 createRoot(document.getElementById("root")!).render(
