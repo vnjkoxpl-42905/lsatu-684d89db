@@ -79,6 +79,7 @@ _Avoid_: note, markup, comment
 | `/rc` | `pages/RcHub.tsx` | Build a drill, hand-pick passages, resume or review past drills |
 | `/rc/drill` | `pages/RcPlayer.tsx` | The player. `?sessionId=` resumes, `?passage=` starts an ad-hoc single-passage drill, `?review=1` opens read-only review |
 | `/rc/results/:sessionId` | `pages/RcResults.tsx` | Score, per-passage breakdown, question table, and the actions off a finished drill |
+| `/rc/search` | `pages/RcSearch.tsx` | Search passages and questions by keyword and every tag (topic, format, framework, family, type, feature, difficulty, PrepTest range). Results open the passage in the player |
 
 Assignment is a link, not a table: `/rc/drill?passage=<id>` for one passage, or
 `/rc?passages=1188,1201&reveal=per_passage&timing=unlimited` to pre-fill the
@@ -94,6 +95,10 @@ content**; only the student's own progress touches Supabase.
   its own output and fails loudly. The per-file shape is the contract for
   `lib/rcTypes.ts` — change one and you must change the other.
 - `lib/rcBank.ts` loads the index once and per-PrepTest files on demand.
+- `scripts/build-rc-search-index.mjs` derives `public/data/rc/rc-question-index.json`
+  from the built bank: one flat record per drillable question (type, family,
+  features, prompt) so `/rc/search` never loads a PrepTest file. Its shape is the
+  contract for `RcQuestionIndexEntry` in `lib/rcTypes.ts`.
 - The source bundle lives at `scripts/rc-source/` and is git-ignored. Re-extract
   it from the original zip before re-running the build.
 
