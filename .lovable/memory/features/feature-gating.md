@@ -5,7 +5,7 @@ type: feature
 ---
 
 ## Feature Flags (profiles table)
-All boolean, default `true`:
+All boolean, DB column default `true` (fixed 2026-08-10: defaults were `false`, so onboarding upserts — which only write `class_id` + onboarding fields — created all-false profiles and locked new students out). New signups now get full access automatically; revoke per student from the People surface.
 - `has_practice_access` — Practice / Home
 - `has_drill_access` — Drill
 - `has_bootcamp_access` — Bootcamps + individual bootcamp routes
