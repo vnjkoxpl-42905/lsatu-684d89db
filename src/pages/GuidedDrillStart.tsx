@@ -34,6 +34,12 @@ import {
   safeGuidedReturnPath,
   TEACHER_GUIDED_DRILLS_RETURN_TO,
 } from '@/lib/guidedDrillNavigation';
+import {
+  guidedSessionKey,
+  guidedResumeNotice,
+  loadGuidedDrillSession,
+  type GuidedDrillSession,
+} from '@/lib/guidedDrillSession';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
@@ -105,13 +111,38 @@ export default function GuidedDrillStart({
     [assignmentId, slug, originReturnTo],
   );
 
+  // Keys this drill's durable resume row. Assignment id when there is one, so a
+  // re-assignment of the same drill later gets its own clean run.
+  const guidedKey = React.useMemo(
+    () => guidedSessionKey({ assignmentId, slug }),
+    [assignmentId, slug],
+  );
+
+  // An unfinished guided run is loaded before Start so its frozen question queue
+  // can be reused. Without this the level draw runs again on re-entry and
+  // reshuffles the pool, which is what makes a guided drill look like it
+  // "restarted" — the student gets different questions, not just question 1.
+  const [storedGuided, setStoredGuided] = React.useState<GuidedDrillSession | null>(null);
+  React.useEffect(() => {
+    let cancelled = false;
+    setStoredGuided(null);
+    if (!user || !guidedKey || bootcampOverride) return;
+    void loadGuidedDrillSession(user.id, guidedKey).then((stored) => {
+      if (cancelled) return;
+      setStoredGuided(stored && stored.status === 'in_progress' ? stored : null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, guidedKey, bootcampOverride]);
+
   // An unfinished practice run is surfaced before the student presses Start, so
   // they know their earlier answers are still there rather than guessing.
   const [resumeNotice, setResumeNotice] = React.useState<string | undefined>(undefined);
   React.useEffect(() => {
     let cancelled = false;
     if (!user || !bootcampOverride || bootcampOverride.source !== 'intro-to-lr-practice-drills') {
-      setResumeNotice(undefined);
+      setResumeNotice(guidedResumeNotice(storedGuided));
       return;
     }
     void loadPracticeSession(user.id, bootcampOverride.slug).then((stored) => {
@@ -129,7 +160,7 @@ export default function GuidedDrillStart({
     return () => {
       cancelled = true;
     };
-  }, [user, bootcampOverride]);
+  }, [user, bootcampOverride, storedGuided]);
 
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
@@ -263,8 +294,18 @@ export default function GuidedDrillStart({
     }
 
     let selectedQids: string[];
+    // Where the student left off wins over a fresh draw. The stored queue is
+    // frozen at first launch, so coming back gives them the SAME questions —
+    // re-running the level draw here is what used to hand them a new set.
+    let resumeAtIndex: number | null = resumeIndex;
     if (resumeQids.length > 0) {
       selectedQids = resumeQids;
+    } else if (storedGuided && storedGuided.question_queue.length > 0) {
+      selectedQids = storedGuided.question_queue;
+      resumeAtIndex = Math.min(
+        Math.max(storedGuided.current_index, 0),
+        storedGuided.question_queue.length - 1,
+      );
     } else if ((bootcampOverride as any)?.selectedQids) {
       selectedQids = (bootcampOverride as any).selectedQids;
     } else if (drill) {
@@ -323,8 +364,8 @@ export default function GuidedDrillStart({
     drillSearchParams.set('mode', 'type-drill');
     drillSearchParams.set('qids', selectedQids.join(','));
     drillSearchParams.set('returnTo', launchReturnTo);
-    if (resumeIndex != null) {
-      drillSearchParams.set('initialIndex', String(resumeIndex));
+    if (resumeAtIndex != null) {
+      drillSearchParams.set('initialIndex', String(resumeAtIndex));
     }
     if ((bootcampOverride as any)?.title ?? drill?.title) {
       drillSearchParams.set('focus', (bootcampOverride as any)?.title ?? drill!.title);
@@ -349,7 +390,7 @@ export default function GuidedDrillStart({
         guidedDurationMinutes: drill?.estimated_minutes ?? undefined,
       },
     });
-  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, launchReturnTo]);
+  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo]);
 
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
@@ -393,6 +434,7 @@ export default function GuidedDrillStart({
         title={drill.title}
         onStart={() => void handleStart()}
         onReturn={handleReturn}
+        resumeNotice={resumeNotice}
       />
     );
   }

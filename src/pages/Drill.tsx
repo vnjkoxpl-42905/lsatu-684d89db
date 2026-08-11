@@ -52,6 +52,7 @@ import { normalizeText } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
+import { officialLeadCrumbLabel } from '@/lib/officialBreadcrumbs';
 import { upsertLastActivity, type DrillSnapshot, type SectionSnapshot } from '@/lib/lastActivity';
 import { getRecentExposureSet, recordExposures } from '@/lib/questionExposure';
 import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
@@ -100,6 +101,14 @@ import {
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
 import { appendGuidedResumeParams } from '@/lib/guidedDrillNavigation';
+import {
+  guidedSessionKeyForRunner,
+  guidedResumeIndex,
+  loadGuidedDrillSession,
+  saveGuidedDrillSnapshot,
+  completeGuidedDrillSession,
+  isResumableGuidedSession,
+} from '@/lib/guidedDrillSession';
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -145,6 +154,17 @@ function DrillContent() {
   // flip the stored row back to in_progress and re-offer "Resume" on a set the
   // student already completed.
   const mcPracticeFinalizedRef = React.useRef(false);
+  // Guided drills keep the same kind of durable resume row, keyed by assignment.
+  // Null for every other drill surface, which is what leaves library, flagged,
+  // and Smart Drill runs untouched.
+  const guidedSessionKey = React.useMemo(
+    () => guidedSessionKeyForRunner({ guidedAssignmentId, returnTo }),
+    [guidedAssignmentId, returnTo],
+  );
+  // Same reason as mcPracticeFinalizedRef: once the drill is finished, a late
+  // snapshot write would flip the row back to in_progress and offer a resume on
+  // a drill the student already completed.
+  const guidedFinalizedRef = React.useRef(false);
   const bootcampPracticeReturnTo =
     returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
       ? returnTo
@@ -514,6 +534,35 @@ function DrillContent() {
         }
       }
 
+      // Guided drills resume the same way, and for the same reason: leaving a
+      // drill and coming back must return the student to the question they
+      // stopped on with their earlier answers intact, not to a fresh shuffle.
+      if (guidedSessionKey && user) {
+        const stored = await loadGuidedDrillSession(user.id, guidedSessionKey);
+        if (isResumableGuidedSession(stored, questionQueue)) {
+          questionQueue = stored.question_queue;
+          initialIndex = guidedResumeIndex(
+            questionQueue,
+            stored.current_index,
+            stored.attempts.map((a) => a.qid),
+          );
+          for (const attempt of stored.attempts) {
+            restoredAttempts.set(attempt.qid, {
+              selectedAnswer: attempt.selected_answer,
+              correct: attempt.correct,
+              timeMs: attempt.time_ms,
+              timestamp: Date.now(),
+              confidence: undefined,
+              reviewDone: false,
+            });
+          }
+        } else if (stored?.status === 'in_progress') {
+          console.warn('[drill:guided] stored resume set no longer matches this drill, starting fresh', {
+            key: guidedSessionKey,
+          });
+        }
+      }
+
       setSession({
         mode,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
@@ -525,13 +574,14 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, user]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, user]);
 
-  // Snapshot the student's place in an Intro to LR practice set on every answer
-  // and every question move, so leaving mid-set is never a loss. The persistence
-  // layer writes locally at once and debounces the cloud upsert, so this stays
-  // cheap enough to run on each session change.
-  const mcPracticeSnapshot = React.useCallback(
+  // Shapes the student's current place into a resume snapshot. Shared by the two
+  // surfaces that persist one — Intro to LR practice sets and guided drills — and
+  // written on every answer and every question move, so leaving mid-drill is
+  // never a loss. The persistence layer writes locally at once and debounces the
+  // cloud upsert, so this stays cheap enough to run on each session change.
+  const drillResumeSnapshot = React.useCallback(
     (source: DrillSession | null): {
       questionQueue: string[];
       currentIndex: number;
@@ -558,7 +608,7 @@ function DrillContent() {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
     if (mcPracticeFinalizedRef.current) return;
     if (session.questionQueue.length === 0) return;
-    const snapshot = mcPracticeSnapshot(session);
+    const snapshot = drillResumeSnapshot(session);
     if (!snapshot) return;
     void savePracticeSessionSnapshot(user.id, mcPracticePool, snapshot).catch((err) => {
       // Non-fatal: the drill still works, they just lose the resume point.
@@ -568,7 +618,26 @@ function DrillContent() {
         err,
       });
     });
-  }, [session, isMcPractice, mcPracticePool, user, mcPracticeSnapshot]);
+  }, [session, isMcPractice, mcPracticePool, user, drillResumeSnapshot]);
+
+  // Same snapshot on every answer and every question move for guided drills, so
+  // the student's place survives a tab close, a sign-out, or another device —
+  // none of which a URL param can carry.
+  React.useEffect(() => {
+    if (!guidedSessionKey || !user || !session) return;
+    if (guidedFinalizedRef.current) return;
+    if (session.questionQueue.length === 0) return;
+    const snapshot = drillResumeSnapshot(session);
+    if (!snapshot) return;
+    void saveGuidedDrillSnapshot(user.id, guidedSessionKey, snapshot).catch((err) => {
+      // Non-fatal: the drill still works, they just lose the resume point.
+      console.error('[drill:guided:snapshot] resume write failed', {
+        userId: user.id,
+        key: guidedSessionKey,
+        err,
+      });
+    });
+  }, [session, guidedSessionKey, user, drillResumeSnapshot]);
 
   // Hydrate adaptive engine from DB before Smart Drill selects its first
   // question. If hydration fails, the selector may proceed with current-session
@@ -649,7 +718,7 @@ function DrillContent() {
     return () => setActiveDrillQid(null);
   }, [currentQuestion?.qid]);
 
-  // Persist "last activity" so the Main Hub Resume CTA can reopen at exact
+  // Persist "last activity" so the classroom Resume CTA can reopen at exact
   // index. Fires whenever the user lands on a new question OR completes one
   // (attempts.size grows). The service throws on DB failure; we surface as a
   // toast (one-shot per failure) rather than silently swallowing.
@@ -1776,7 +1845,7 @@ function DrillContent() {
       toast.error("Couldn't record practice completion on your path. Your attempts saved; let Joshua know.");
     }
 
-    const snapshot = mcPracticeSnapshot(session ? { ...session, attempts } : null);
+    const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
     if (!snapshot) return;
     try {
       await completePracticeSession(user.id, mcPracticePool, snapshot);
@@ -1784,6 +1853,32 @@ function DrillContent() {
       console.error('[drill:mc-practice:complete] resume row write failed', {
         userId: user.id,
         slug: mcPracticePool.slug,
+        err,
+      });
+    }
+  };
+
+  /**
+   * Close out a guided drill's resume row. Flipping it to completed is what
+   * keeps a re-attempt fresh: a completed row is never resumed, so opening the
+   * drill again draws a new set of questions rather than replaying the old one.
+   *
+   * Called from both finish paths — answering the last question, and the End
+   * Drill button — for the same reason finalizeMcPracticeSet is.
+   */
+  const finalizeGuidedDrillSession = async (attempts: DrillSession['attempts']): Promise<void> => {
+    if (!guidedSessionKey || !user) return;
+    guidedFinalizedRef.current = true;
+
+    const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
+    if (!snapshot) return;
+    try {
+      await completeGuidedDrillSession(user.id, guidedSessionKey, snapshot);
+    } catch (err) {
+      // Non-fatal: the attempts are already saved; this only affects resume.
+      console.error('[drill:guided:complete] resume row write failed', {
+        userId: user.id,
+        key: guidedSessionKey,
         err,
       });
     }
@@ -1825,6 +1920,9 @@ function DrillContent() {
     // Intro to LR practice sets: record completion on the natural finish path
     // (answer the last question, press Next), not just the End Drill button.
     await finalizeMcPracticeSet(attemptsWithTiming);
+
+    // Guided drill: close the resume row so a re-attempt starts fresh.
+    await finalizeGuidedDrillSession(attemptsWithTiming);
 
     // Homework assignment: write status=completed + score.
     if (assignmentId && user) {
@@ -1984,6 +2082,10 @@ function DrillContent() {
     // Intro to LR final practice sets: record path completion so the learner
     // path reflects the work. Failure is surfaced, not swallowed.
     await finalizeMcPracticeSet(updatedAttempts);
+
+    // Guided drill closed out from here (the End Drill button) rather than by
+    // answering the last question — same closeout, so a re-attempt is fresh.
+    await finalizeGuidedDrillSession(updatedAttempts);
 
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);
@@ -2262,8 +2364,17 @@ function DrillContent() {
     }
   };
 
+  // Every way out of a guided drill carries the student's place, not just the
+  // breadcrumb. The exit dialog promises "your progress will be saved"; before
+  // this, that promise was only kept on one of the four exits.
+  const isGuidedDrillReturn = !!returnTo && returnTo.startsWith('/guided');
+  const guidedDrillReturnTo = isGuidedDrillReturn && session
+    ? appendGuidedResumeParams(returnTo, session.questionQueue, session.currentIndex)
+    : returnTo;
+  const guidedAwareReturnTo = isGuidedDrillReturn ? guidedDrillReturnTo : drillReturnTo;
+
   const handleNavigation = (destination: '/classroom/drill' | '/classroom' | '/dashboard') => {
-    setExitDestination(drillReturnTo || destination);
+    setExitDestination(guidedAwareReturnTo || destination);
     setShowExitDialog(true);
   };
 
@@ -2494,7 +2605,7 @@ function DrillContent() {
           <h2 className="text-xl font-semibold mb-3">No questions available</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
           <Button onClick={() => navigate(drillReturnTo || '/classroom')}>
-            Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
+            Return to {returnTo === '/flagged' ? 'Flagged' : 'your classroom'}
           </Button>
         </Card>
       </div>
@@ -2575,7 +2686,7 @@ function DrillContent() {
           </p>
           <div className="flex gap-3">
             <Button onClick={() => navigate(drillReturnTo || '/classroom')}>
-              Return to {returnTo === '/flagged' ? 'Flagged Questions' : 'Main Hub'}
+              Return to {returnTo === '/flagged' ? 'Flagged' : 'your classroom'}
             </Button>
           </div>
         </Card>
@@ -3085,13 +3196,16 @@ function DrillContent() {
       : isFullSection
       ? 'Section'
       : 'Practice Drill';
-    const isGuidedDrillReturn = !!returnTo && returnTo.startsWith('/guided');
-    const guidedDrillReturnTo = isGuidedDrillReturn
-      ? appendGuidedResumeParams(returnTo, session.questionQueue, session.currentIndex)
-      : returnTo;
     const mcPracticeTestLabel = currentQuestion.pt
       ? `Practice Test ${currentQuestion.pt}`
       : contextFocus;
+    // The first crumb names the PrepTest whenever we know it. "Library" is only
+    // a fallback for questions with no PT (custom/generated drills).
+    const officialLeadLabel = officialLeadCrumbLabel({
+      pt: currentQuestion.pt,
+      returnTo,
+      isGuidedDrillReturn,
+    });
     const officialBreadcrumbs = origin === 'fallacy-flaw' ? [
       {
         label: contextLabel || 'Flaw Bootcamp',
@@ -3124,7 +3238,7 @@ function DrillContent() {
       },
     ] : returnTo ? [
       {
-        label: returnTo === '/flagged' ? 'Flagged Questions' : isGuidedDrillReturn ? 'Guided Drill' : 'Library',
+        label: officialLeadLabel,
         onClick: () => navigate(guidedDrillReturnTo)
       },
       {
@@ -3133,15 +3247,10 @@ function DrillContent() {
     ] : [
       // Lead with the practice test, not a generic "Library" crumb — the
       // student already knows where they are; what they want named is the PT.
-      ...(currentQuestion.pt
-        ? []
-        : [{ label: 'Library', onClick: () => navigate('/classroom/drill') }]),
-      ...(currentQuestion.pt
-        ? [{
-            label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
-            onClick: () => navigate('/classroom/drill'),
-          }]
-        : []),
+      {
+        label: officialLeadLabel,
+        onClick: () => navigate('/classroom/drill'),
+      },
       {
         label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
       },
@@ -3405,7 +3514,7 @@ function DrillContent() {
 
         {/* Unified Top Bar */}
         <DrillTopBar
-          onBack={() => navigate(drillReturnTo || '/classroom/drill')}
+          onBack={() => navigate(guidedAwareReturnTo || '/classroom/drill')}
           questionLabel={currentQuestion ? (
             window.innerWidth >= 640
               ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`

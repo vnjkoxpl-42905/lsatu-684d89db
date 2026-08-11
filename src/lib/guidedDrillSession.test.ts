@@ -1,0 +1,146 @@
+import { describe, it, expect } from 'vitest';
+import {
+  guidedSessionKey,
+  guidedSessionKeyForRunner,
+  isResumableGuidedSession,
+  guidedResumeIndex,
+  guidedResumeNotice,
+  GUIDED_SESSION_PREFIX,
+  type GuidedDrillSession,
+} from './guidedDrillSession';
+
+function session(overrides: Partial<GuidedDrillSession> = {}): GuidedDrillSession {
+  return {
+    id: '00000000-0000-4000-8000-000000000000',
+    user_id: '00000000-0000-4000-8000-000000000001',
+    pool_slug: 'guided::abc',
+    completion_id: 'guided::abc',
+    question_queue: ['q1', 'q2', 'q3'],
+    current_index: 1,
+    attempts: [{ qid: 'q1', selected_answer: 'B', correct: true, time_ms: 4000 }],
+    status: 'in_progress',
+    started_at: '2026-08-10T17:00:00.000Z',
+    updated_at: '2026-08-10T17:05:00.000Z',
+    ...overrides,
+  } as GuidedDrillSession;
+}
+
+describe('guidedSessionKey', () => {
+  it('prefers the assignment id so each assignment gets its own run', () => {
+    expect(guidedSessionKey({ assignmentId: 'abc', slug: 'parallel-flaw' })).toBe(
+      `${GUIDED_SESSION_PREFIX}abc`,
+    );
+  });
+
+  it('falls back to the slug for the assignment-less library route', () => {
+    expect(guidedSessionKey({ slug: 'parallel-flaw' })).toBe(
+      `${GUIDED_SESSION_PREFIX}slug:parallel-flaw`,
+    );
+  });
+
+  it('namespaces away from practice-pool slugs', () => {
+    const key = guidedSessionKey({ slug: 'mc-practice-1' })!;
+    expect(key.startsWith(GUIDED_SESSION_PREFIX)).toBe(true);
+    expect(key).not.toBe('mc-practice-1');
+  });
+
+  it('is null with nothing to key on', () => {
+    expect(guidedSessionKey({})).toBeNull();
+    expect(guidedSessionKey({ assignmentId: '  ' })).toBeNull();
+  });
+});
+
+describe('guidedSessionKeyForRunner', () => {
+  it('uses the guidedAssignmentId param when the runner has one', () => {
+    expect(guidedSessionKeyForRunner({ guidedAssignmentId: 'abc', returnTo: '/classroom' })).toBe(
+      `${GUIDED_SESSION_PREFIX}abc`,
+    );
+  });
+
+  it('recovers the assignment from the returnTo path', () => {
+    expect(guidedSessionKeyForRunner({ returnTo: '/guided/abc?returnTo=/classroom' })).toBe(
+      `${GUIDED_SESSION_PREFIX}abc`,
+    );
+  });
+
+  it('recovers the slug from the library route', () => {
+    expect(guidedSessionKeyForRunner({ returnTo: '/guided-drills/parallel-flaw?returnTo=/x' })).toBe(
+      `${GUIDED_SESSION_PREFIX}slug:parallel-flaw`,
+    );
+  });
+
+  it('is null for every non-guided drill surface', () => {
+    expect(guidedSessionKeyForRunner({ returnTo: '/classroom/drill' })).toBeNull();
+    expect(guidedSessionKeyForRunner({ returnTo: '/flagged' })).toBeNull();
+    expect(guidedSessionKeyForRunner({})).toBeNull();
+  });
+});
+
+describe('isResumableGuidedSession', () => {
+  it('resumes the same set regardless of order', () => {
+    expect(isResumableGuidedSession(session(), ['q3', 'q1', 'q2'])).toBe(true);
+  });
+
+  it('refuses a set that changed under the saved run', () => {
+    expect(isResumableGuidedSession(session(), ['q1', 'q2', 'q9'])).toBe(false);
+    expect(isResumableGuidedSession(session(), ['q1', 'q2'])).toBe(false);
+  });
+
+  it('never resumes a completed run, so a re-attempt draws fresh', () => {
+    expect(isResumableGuidedSession(session({ status: 'completed' }), ['q1', 'q2', 'q3'])).toBe(
+      false,
+    );
+  });
+
+  it('handles nothing stored', () => {
+    expect(isResumableGuidedSession(null, ['q1'])).toBe(false);
+  });
+});
+
+describe('guidedResumeIndex', () => {
+  const queue = ['q1', 'q2', 'q3', 'q4'];
+
+  it('honours the stored index when that question is unanswered', () => {
+    expect(guidedResumeIndex(queue, 2, ['q1', 'q2'])).toBe(2);
+  });
+
+  it('skips past an already-answered question, so a stale index cannot strand the student', () => {
+    // The snapshot's cloud copy can lag one write behind the local one.
+    expect(guidedResumeIndex(queue, 1, ['q1', 'q2'])).toBe(2);
+  });
+
+  it('falls back to a question missed earlier in the queue', () => {
+    expect(guidedResumeIndex(queue, 2, ['q1', 'q3', 'q4'])).toBe(1);
+  });
+
+  it('lands on the last question when everything is answered', () => {
+    expect(guidedResumeIndex(queue, 1, queue)).toBe(3);
+  });
+
+  it('clamps an out-of-range stored index', () => {
+    expect(guidedResumeIndex(queue, 99, [])).toBe(3);
+    expect(guidedResumeIndex(queue, -5, [])).toBe(0);
+    expect(guidedResumeIndex([], 3, [])).toBe(0);
+  });
+});
+
+describe('guidedResumeNotice', () => {
+  it('names the question and how much is already answered', () => {
+    expect(guidedResumeNotice(session())).toBe(
+      'Picking up where you left off — question 2 of 3, 1 already answered.',
+    );
+  });
+
+  it('names the question the drill will actually open, not a stale stored index', () => {
+    // Stored index 0, but q1 is already answered — the drill opens q2, so must the card.
+    expect(guidedResumeNotice(session({ current_index: 0 }))).toBe(
+      'Picking up where you left off — question 2 of 3, 1 already answered.',
+    );
+  });
+
+  it('stays quiet when there is nothing worth resuming', () => {
+    expect(guidedResumeNotice(null)).toBeUndefined();
+    expect(guidedResumeNotice(session({ attempts: [] }))).toBeUndefined();
+    expect(guidedResumeNotice(session({ status: 'completed' }))).toBeUndefined();
+  });
+});
