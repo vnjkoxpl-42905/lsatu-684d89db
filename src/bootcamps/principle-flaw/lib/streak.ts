@@ -1,4 +1,5 @@
 import { localDayISO } from '@/lib/localDate';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 
 const STREAK_DATES_KEY = 'pf:streakDates';
 
@@ -32,7 +33,7 @@ export function recordCompletionToday(): string[] {
   const today = todayISO();
   if (dates.includes(today)) return dates;
   const next = [...dates, today].sort();
-  localStorage.setItem(STREAK_DATES_KEY, JSON.stringify(next));
+  mirroredSetItem(STREAK_DATES_KEY, JSON.stringify(next));
   return next;
 }
 

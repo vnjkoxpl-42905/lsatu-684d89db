@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Clock, Target, FileSearch, Sparkles, BookOpen, AlertCircle, ArrowRight, ExternalLink, Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { scheduleData, studyResources, StudyResource, practiceSets, questionBank } from '../data';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
@@ -62,11 +63,11 @@ export default function TodayView({
   });
 
   useEffect(() => {
-    localStorage.setItem('pf:completedDays', JSON.stringify(completedDays));
+    mirroredSetItem('pf:completedDays', JSON.stringify(completedDays));
   }, [completedDays]);
 
   useEffect(() => {
-    localStorage.setItem('pf:dailyChecklists', JSON.stringify(dailyChecklists));
+    mirroredSetItem('pf:dailyChecklists', JSON.stringify(dailyChecklists));
   }, [dailyChecklists]);
 
   // Sync progress to the assigned classroom_items row so Joshua sees it.

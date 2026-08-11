@@ -12,6 +12,8 @@
  * where totalTime is cumulative seconds across attempts.
  */
 
+import { mirroredSetItem } from '@/lib/cloudMirror';
+
 const FLAW_PERFORMANCE_KEY = 'lsat_flaw_performance';
 
 interface FlawPerformanceEntry {
@@ -51,7 +53,7 @@ export function recordFlawPerformance(
     };
 
     raw[flawLabel] = next;
-    localStorage.setItem(FLAW_PERFORMANCE_KEY, JSON.stringify(raw));
+    mirroredSetItem(FLAW_PERFORMANCE_KEY, JSON.stringify(raw));
   } catch (error) {
     console.error('Failed to record flaw bootcamp performance:', error);
   }

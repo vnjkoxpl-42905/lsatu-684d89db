@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { mirroredSetItem, mirroredRemoveItem } from '@/lib/cloudMirror';
 import { Question, Attempt } from '@/types/causationStation';
 import { Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
@@ -31,7 +32,7 @@ export function markCausationModuleComplete(moduleId: string): void {
     const raw = localStorage.getItem(MODULE_COMPLETION_KEY);
     const done: string[] = raw ? JSON.parse(raw) : [];
     if (!done.includes(moduleId)) {
-      localStorage.setItem(MODULE_COMPLETION_KEY, JSON.stringify([...done, moduleId]));
+      mirroredSetItem(MODULE_COMPLETION_KEY, JSON.stringify([...done, moduleId]));
       // Let same-tab listeners (CausationStation) refresh.
       window.dispatchEvent(new Event('causation-module-complete'));
     }
@@ -117,7 +118,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
         let availableQuestions = moduleQuestionBank.filter(q => !usedIds.has(q.id));
 
         if (availableQuestions.length < 10 && moduleQuestionBank.length >= 10) {
-          localStorage.removeItem(usedIdsKey);
+          mirroredRemoveItem(usedIdsKey);
           availableQuestions = moduleQuestionBank;
         }
 
@@ -131,7 +132,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
           const drillQuestionIds = drillQuestions.map((q: Question) => q.id);
 
           const newUsedIds = new Set([...usedIds, ...drillQuestionIds]);
-          localStorage.setItem(usedIdsKey, JSON.stringify(Array.from(newUsedIds)));
+          mirroredSetItem(usedIdsKey, JSON.stringify(Array.from(newUsedIds)));
 
           setQuestions(drillQuestions);
         }
@@ -159,7 +160,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
         attempts,
         lastUpdated: Date.now(),
       };
-      localStorage.setItem('causationCoachDrillProgress', JSON.stringify(progress));
+      mirroredSetItem('causationCoachDrillProgress', JSON.stringify(progress));
     }
   }, [module.id, questions, currentQuestionIndex, attempts, isLoadingQuestions]);
 
@@ -203,7 +204,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
           completedAt: new Date().toISOString(),
           ungraded: true,
         };
-        localStorage.setItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, ungradedAttempt].slice(-200)));
+        mirroredSetItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, ungradedAttempt].slice(-200)));
       } catch (error) {
         console.error('Failed to save causation free-response attempt history:', error);
       }
@@ -236,7 +237,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
 
       try {
         const previous = JSON.parse(localStorage.getItem(ATTEMPT_HISTORY_KEY) ?? '[]');
-        localStorage.setItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, attempt].slice(-200)));
+        mirroredSetItem(ATTEMPT_HISTORY_KEY, JSON.stringify([...previous, attempt].slice(-200)));
       } catch (error) {
         console.error('Failed to save causation attempt history:', error);
       }
@@ -248,7 +249,7 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
     if (index >= questions.length) {
       // Finished a full run through this module's drill.
       markCausationModuleComplete(module.id);
-      localStorage.removeItem('causationCoachDrillProgress');
+      mirroredRemoveItem('causationCoachDrillProgress');
       onEndDrill();
       return;
     }

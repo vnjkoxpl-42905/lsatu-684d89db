@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { FLASHCARD_DECKS } from '@/data/causationStation/constants';
 import { Flashcard } from '@/types/causationStation';
 
@@ -37,7 +38,7 @@ const CSFlashcards: React.FC = () => {
 
   const updateReviewDeck = (newReviewCards: Flashcard[]) => {
     setReviewCards(newReviewCards);
-    localStorage.setItem(REVIEW_DECK_STORAGE_KEY, JSON.stringify(newReviewCards));
+    mirroredSetItem(REVIEW_DECK_STORAGE_KEY, JSON.stringify(newReviewCards));
   };
 
   const fullDeck = useMemo(() => FLASHCARD_DECKS.find(d => d.id === selectedDeckId), [selectedDeckId]);
