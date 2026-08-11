@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { mirroredRemoveItem } from '@/lib/cloudMirror';
 import {
   Bar,
   BarChart,
@@ -154,7 +155,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
 
   const handleStartNew = () => {
     if (selectedModuleForAction) {
-      localStorage.removeItem('causationCoachDrillProgress');
+      mirroredRemoveItem('causationCoachDrillProgress');
       setSavedDrillModuleId(null);
       onStartDrill(selectedModuleForAction);
     }
@@ -164,7 +165,7 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
 
   const handleConfirmOverwrite = () => {
     if (selectedModuleForAction) {
-      localStorage.removeItem('causationCoachDrillProgress');
+      mirroredRemoveItem('causationCoachDrillProgress');
       setSavedDrillModuleId(null);
       onStartDrill(selectedModuleForAction);
     }
@@ -185,10 +186,10 @@ const CSDashboard: React.FC<CSDashboardProps> = ({ onStartDrill, onReplayIntro }
   const handleConfirmReset = () => {
     if (selectedModuleForAction) {
       const usedIdsKey = `causationCoachUsedIds_${selectedModuleForAction.id}`;
-      localStorage.removeItem(usedIdsKey);
+      mirroredRemoveItem(usedIdsKey);
 
       if (savedDrillModuleId === selectedModuleForAction.id) {
-        localStorage.removeItem('causationCoachDrillProgress');
+        mirroredRemoveItem('causationCoachDrillProgress');
         setSavedDrillModuleId(null);
       }
     }

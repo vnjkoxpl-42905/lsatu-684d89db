@@ -3,6 +3,7 @@ import { Plus, Trash2, Filter, BookOpen, AlertCircle, HelpCircle, CheckCircle2, 
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { questionBank } from '../data';
 
 interface LogEntry {
@@ -62,7 +63,7 @@ export default function ReviewLog() {
   const [downloadStatus, setDownloadStatus] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('pf:reviewLogs', JSON.stringify(logs));
+    mirroredSetItem('pf:reviewLogs', JSON.stringify(logs));
   }, [logs]);
 
   // Listen for prefill events fired by Practice's "Log to Review Log" button.
@@ -100,7 +101,7 @@ export default function ReviewLog() {
         if (!id) continue;
         if (entry.redoLater) next.add(id);
       }
-      localStorage.setItem('pf:redoQueue', JSON.stringify(Array.from(next)));
+      mirroredSetItem('pf:redoQueue', JSON.stringify(Array.from(next)));
     } catch { /* ignore */ }
   }, [logs]);
 

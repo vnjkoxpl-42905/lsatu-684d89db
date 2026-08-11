@@ -42,6 +42,7 @@ import {
 import { computeNextReview } from "../lib/srs";
 import type { FlashcardRating } from "@/components/teacher/bootcamps/hooks/useFlashcardReviews";
 import { localDayISO, addLocalDays } from "@/lib/localDate";
+import { mirroredSetItem } from "@/lib/cloudMirror";
 
 interface AppContextType {
   currentView: ViewState;
@@ -125,7 +126,7 @@ function loadModuleCache(): {
 
 function persistModuleCache(state: BootcampState) {
   try {
-    localStorage.setItem(
+    mirroredSetItem(
       MODULE_LOCAL_KEY,
       JSON.stringify({
         moduleProgress: state.moduleProgress,
@@ -161,7 +162,7 @@ function loadCardsCache(): Record<string, CardReview> {
 
 function persistCardsCache(cards: Record<string, CardReview>) {
   try {
-    localStorage.setItem(CARDS_LOCAL_KEY, JSON.stringify(cards));
+    mirroredSetItem(CARDS_LOCAL_KEY, JSON.stringify(cards));
   } catch (e) {
     console.error("Failed to persist Abstract v2 cards cache", e);
   }

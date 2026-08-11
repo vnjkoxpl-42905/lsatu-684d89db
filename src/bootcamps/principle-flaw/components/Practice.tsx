@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import InlineQuestionViewer from './InlineQuestionViewer';
 import { questionBank as lrBank } from '@/lib/questionLoader';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 
 /**
@@ -227,11 +228,11 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
   });
 
   useEffect(() => {
-    localStorage.setItem('pf:questionStatus', JSON.stringify(qStatus));
+    mirroredSetItem('pf:questionStatus', JSON.stringify(qStatus));
   }, [qStatus]);
 
   useEffect(() => {
-    localStorage.setItem('pf:redoQueue', JSON.stringify(redoQueue));
+    mirroredSetItem('pf:redoQueue', JSON.stringify(redoQueue));
   }, [redoQueue]);
 
   const toggleStatus = (id: string, status: 'correct' | 'missed') => {

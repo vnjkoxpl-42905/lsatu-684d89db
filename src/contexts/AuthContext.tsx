@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, useRef, type ReactNode } from 'react';
+import { initCloudMirror, stopCloudMirror } from '@/lib/cloudMirror';
 import { User, Session } from '@supabase/supabase-js';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -92,6 +93,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       if (s?.user) {
         provisionStudentRecord(s.user.id);
+        initCloudMirror(s.user.id);
+      } else {
+        stopCloudMirror();
       }
     };
 

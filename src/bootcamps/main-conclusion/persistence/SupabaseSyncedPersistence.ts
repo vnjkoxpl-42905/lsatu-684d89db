@@ -135,9 +135,10 @@ export class SupabaseSyncedPersistence implements Persistence {
           .eq('table_name', d.table)
           .eq('record_id', d.id);
         if (error) {
-          console.warn('[SupabaseSyncedPersistence] delete failed', error.message);
-          this.pending.set(this.key(d.table, d.id), d);
-          this.scheduleFlush();
+          // Student deletes are denied by RLS (admin-only data retention).
+          // Drop the delete rather than requeueing forever — the cloud row is
+          // intentionally preserved.
+          console.warn('[SupabaseSyncedPersistence] delete denied/failed (cloud row preserved)', error.message);
         }
       }
     } catch (e) {
