@@ -13,7 +13,7 @@ import DrillExplanationTab, {
 
 /** Tabs available in the docked drill drawer. This is the runner's only panel:
  *  the dark Explanation and Menu sheets it replaced are gone. */
-export type DrawerTab = "notes" | "explanation" | "details";
+export type DrawerTab = "details" | "explanation" | "notes";
 
 /** Question metadata rendered by the Details tab. Mirrors the LRQuestion fields
  *  we already have on the active question — no new content authoring. */
@@ -51,9 +51,11 @@ interface Props {
 /**
  * Docked, premium per-question drawer for the Smart Drill runner. Slides in
  * from the right (the frame handles the push/width animation). Hosts three
- * tabs: Notes (per-question, auto-saved to localStorage via the drillNotepad
- * bus), Explanation (the question-level breakdown and style selector), and
- * Details (read-only metadata plus Find Similar).
+ * tabs, in the order a student wants them: Details (read-only metadata plus
+ * Find Similar) leads, because what this question IS is the first thing anyone
+ * opening the drawer wants; then Explanation (the question-level breakdown and
+ * style selector); then Notes (per-question, auto-saved to localStorage via the
+ * drillNotepad bus), which is a writing surface you go to deliberately.
  *
  * This is the runner's only panel. Per-choice explanation content deliberately
  * does NOT live here — it renders inline under each answer choice.
@@ -66,20 +68,21 @@ export default function DrillNotesPanel({
   explanation,
   similar,
 }: Props) {
-  const [internalTab, setInternalTab] = React.useState<DrawerTab>("notes");
+  const [internalTab, setInternalTab] = React.useState<DrawerTab>("details");
   const requestedTab = activeTab ?? internalTab;
-  // The Explanation tab only exists on surfaces that supply its content.
+  // The Explanation tab only exists on surfaces that supply its content. Fall
+  // back to Details, the tab that is always available and always relevant.
   const tab: DrawerTab =
-    requestedTab === "explanation" && !explanation ? "notes" : requestedTab;
+    requestedTab === "explanation" && !explanation ? "details" : requestedTab;
   const selectTab = (next: DrawerTab) => {
     if (onTabChange) onTabChange(next);
     else setInternalTab(next);
   };
 
   const tabs: { key: DrawerTab; label: string }[] = [
-    { key: "notes", label: "Notes" },
-    ...(explanation ? [{ key: "explanation" as const, label: "Explanation" }] : []),
     { key: "details", label: "Details" },
+    ...(explanation ? [{ key: "explanation" as const, label: "Explanation" }] : []),
+    { key: "notes", label: "Notes" },
   ];
 
   return (
@@ -124,9 +127,9 @@ export default function DrillNotesPanel({
         </button>
       </div>
 
-      {tab === "notes" && <NotesTab />}
-      {tab === "explanation" && explanation && <DrillExplanationTab {...explanation} />}
       {tab === "details" && <DetailsTab meta={meta} similar={similar} />}
+      {tab === "explanation" && explanation && <DrillExplanationTab {...explanation} />}
+      {tab === "notes" && <NotesTab />}
     </div>
   );
 }

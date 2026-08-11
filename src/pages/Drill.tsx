@@ -315,7 +315,7 @@ function DrillContent() {
   // Smart Drill docked notes panel open state.
   const [notesOpen, setNotesOpen] = React.useState(false);
   // Active tab inside the docked drill drawer (Notes | Details).
-  const [drawerTab, setDrawerTab] = React.useState<DrawerTab>('notes');
+  const [drawerTab, setDrawerTab] = React.useState<DrawerTab>('details');
   
   const timer = useTimerContextSafe();
 
