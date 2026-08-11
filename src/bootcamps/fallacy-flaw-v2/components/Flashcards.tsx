@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { FLAW_CATALOG, FlawCard } from '../data/flaws';
 import { ANSWER_CHOICE_FLASHCARDS, AnswerChoiceFlashcard } from '../data/flawAnswerChoiceFlashcards';
 import { VIDEO_ASSETS } from '../data/videoAssets';
@@ -275,7 +276,7 @@ export function Flashcards() {
   }, [currentIndex]);
 
   useEffect(() => {
-    localStorage.setItem('fallacyFlaw:v2:flashcards:reviews', JSON.stringify(reviewState));
+    mirroredSetItem('fallacyFlaw:v2:flashcards:reviews', JSON.stringify(reviewState));
   }, [reviewState]);
 
   useEffect(() => {

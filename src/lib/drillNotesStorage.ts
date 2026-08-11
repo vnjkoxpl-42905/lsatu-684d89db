@@ -2,6 +2,8 @@
 // floating DrillNotepad and the docked DrillNotesPanel so a note written in one
 // surface is visible in the other.
 
+import { mirroredSetItem, mirroredRemoveItem } from "@/lib/cloudMirror";
+
 const STORAGE_PREFIX = "drill-notepad:";
 const GLOBAL_KEY = `${STORAGE_PREFIX}global`;
 
@@ -19,12 +21,12 @@ export function readDrillNotes(qid: string | null): string {
   }
 }
 
-/** Persist (or clear, when empty) a question's notes. */
+/** Persist (or clear, when empty) a question's notes. Mirrored to the cloud. */
 export function writeDrillNotes(qid: string | null, value: string): void {
   try {
     const k = notesKeyFor(qid);
-    if (value) localStorage.setItem(k, value);
-    else localStorage.removeItem(k);
+    if (value) mirroredSetItem(k, value);
+    else mirroredRemoveItem(k);
   } catch {
     /* ignore quota/availability errors */
   }

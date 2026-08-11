@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Zap, ChevronLeft, ChevronRight, RotateCcw, Filter, CheckCircle2, Circle, ThumbsUp, RefreshCw } from 'lucide-react';
 import { Button } from './ui/button';
+import { mirroredSetItem } from '@/lib/cloudMirror';
 import { flashcards, Flashcard } from '../data';
 
 interface SrsEntry {
@@ -64,11 +65,11 @@ export default function FlashcardsView() {
   }, [filteredCards, srs]);
 
   useEffect(() => {
-    localStorage.setItem('pf:flashcardMastery', JSON.stringify(mastered));
+    mirroredSetItem('pf:flashcardMastery', JSON.stringify(mastered));
   }, [mastered]);
 
   useEffect(() => {
-    localStorage.setItem(SRS_KEY, JSON.stringify(srs));
+    mirroredSetItem(SRS_KEY, JSON.stringify(srs));
   }, [srs]);
 
   const toggleMastery = (id: string, e: React.MouseEvent) => {

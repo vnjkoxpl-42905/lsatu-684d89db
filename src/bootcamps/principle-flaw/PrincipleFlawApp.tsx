@@ -25,6 +25,7 @@ import CommandPalette from './components/CommandPalette';
 import { StudyResource } from './data';
 import { ElegantShape } from './components/ui/shape-landing-hero';
 import { computeStreak, readStreakDates } from './lib/streak';
+import { mirroredSetItem, mirroredRemoveItem } from '@/lib/cloudMirror';
 import { setBootcampContext } from '@/lib/helpContextBus';
 
 const Overview = safeLazy(() => import('./components/Overview'));
@@ -72,13 +73,13 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
   }, [currentDay]);
 
   const handleSaveName = (name: string) => {
-    localStorage.setItem('pf:studentName', name);
+    mirroredSetItem('pf:studentName', name);
     setUserName(name);
   };
 
   const handleSetDay = (day: number) => {
     setCurrentDay(day);
-    localStorage.setItem('pf:currentDay', day.toString());
+    mirroredSetItem('pf:currentDay', day.toString());
   };
 
   const setTabAndScroll = (tab: Tab) => {
@@ -149,7 +150,7 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
       'pf:studentName','pf:currentDay','pf:reviewLogs','pf:completedDays',
       'pf:dailyChecklists','pf:streakDates','pf:flashcardSRS','pf:flashcardMastery',
       'pf:questionStatus','pf:redoQueue',
-    ].forEach((k) => localStorage.removeItem(k));
+    ].forEach((k) => mirroredRemoveItem(k));
     setCurrentDay(1);
     setStreak(0);
     setTabAndScroll('today');
