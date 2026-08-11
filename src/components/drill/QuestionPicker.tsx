@@ -621,17 +621,17 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       <div className="flex-1 min-h-0 @[1140px]:grid @[1140px]:grid-cols-[minmax(0,1fr)_320px] @[1140px]:gap-4">
         <div className="flex flex-col min-h-0">
       {/* Filter Bar */}
-      <Card className="p-4 mb-4">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 pb-3">
-            <div aria-live="polite">
-              <p className="font-semibold">Filter the question bank</p>
-              <p className="text-sm text-muted-foreground">
+      <Card className="mb-5 overflow-visible border-border/70 bg-card/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)]">
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
+              <p className="text-lg font-semibold tracking-[-0.015em]">Filter the question bank</p>
+              <p className="text-sm tabular-nums text-muted-foreground">
                 {totalCount.toLocaleString()} matching {totalCount === 1 ? 'question' : 'questions'}
               </p>
             </div>
             {hasAnyFilter && (
-              <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+              <Button variant="ghost" size="sm" className="h-9 px-3" onClick={clearAllFilters}>
                 Clear all
               </Button>
             )}
@@ -640,15 +640,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               Item D order: PrepTest → Section → Q# → Type → Reasoning →
               Features → Levels → Search. Reordered from the legacy layout
               (PT → Type → Reasoning → Features → Section → Levels → Search). */}
-          <div className="space-y-3">
-            <div className="flex flex-wrap gap-2 items-center rounded-md border border-border/70 bg-muted/20 px-3 py-2">
-              <div className="w-full text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:w-auto sm:min-w-[112px]">
+          <div className="space-y-5 border-t border-border/60 px-5 py-5">
+            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
                 Source
               </div>
+              <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* PrepTest Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[168px]">
                   PrepTests {filters.prepTests.length > 0 && `(${filters.prepTests.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -679,7 +680,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Section Filter (moved earlier per Item D) */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[148px]">
                   Section {filters.sections.length > 0 && `(${filters.sections.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -710,9 +711,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Question Number Filter (Item D — new direct-jump affordance).
                 Combines with PT + Section to pinpoint a specific question;
                 alone it filters every qnum across the bank. */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-muted-foreground font-medium">Q#</span>
-              <Input
+            <div className="flex h-11 w-full items-center gap-2 rounded-md border border-input bg-background px-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/35 sm:w-auto">
+              <span className="text-xs font-semibold text-muted-foreground">Q#</span>
+              <input
                 type="number"
                 inputMode="numeric"
                 min={1}
@@ -728,34 +729,35 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   setCurrentPage(1);
                 }}
                 placeholder="14"
-                className="h-9 w-20 px-2"
+                className="w-12 bg-transparent text-[15px] tabular-nums text-foreground outline-none placeholder:text-muted-foreground"
                 aria-label="Question number"
               />
               {filters.questionNumber !== null && (
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-9 px-2 text-xs"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => {
                     setFilters((prev) => ({ ...prev, questionNumber: null }));
                     setCurrentPage(1);
                   }}
+                  aria-label="Clear question number"
                 >
-                  Clear
-                </Button>
+                  <X className="h-3.5 w-3.5" aria-hidden />
+                </button>
               )}
             </div>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 items-center rounded-md border border-border/70 bg-muted/20 px-3 py-2">
-              <div className="w-full text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:w-auto sm:min-w-[112px]">
+            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
                 Focus
               </div>
+              <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[188px]">
                   Question Type {filters.questionTypes.length > 0 && `(${filters.questionTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -846,7 +848,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Reasoning Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[194px]">
                   Reasoning Types {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -903,7 +905,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 families simultaneously. */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[220px]">
                   Question Features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -988,7 +990,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Difficulty Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[132px]">
                   Levels {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -1017,8 +1019,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </Popover>
             
             {/* Search */}
-            <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <div className="relative w-full flex-none">
+              <Search className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search questions..."
@@ -1027,7 +1029,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
                   setCurrentPage(1);
                 }}
-                className="pl-8 pr-9"
+                className="h-11 pl-10 pr-10 text-[15px]"
                 aria-label="Search question text"
               />
               {filters.searchQuery.trim() !== '' && (
@@ -1044,6 +1046,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </button>
               )}
             </div>
+              </div>
             </div>
           </div>
           
@@ -1056,7 +1059,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             filters.difficulties.length > 0 ||
             filters.questionNumber !== null ||
             filters.searchQuery.trim() !== '') && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 border-t border-border/60 px-5 py-4">
               {filters.prepTests.map(pt => (
                 <Badge key={`pt-${pt}`} variant="secondary" className="gap-1">
                   PT{pt}
@@ -1125,7 +1128,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       {/* Item L (Wave 4) — empty state until at least one filter is applied
           OR rows are selected. Replaces the "25 of 3964" cold-start noise. */}
       {!hasAnyFilter && selectedQids.size === 0 ? (
-        <Card className="mb-20 p-10 flex flex-col items-center text-center gap-4 border-dashed">
+        <Card className="mb-8 flex flex-col items-center gap-3 border-dashed px-6 py-8 text-center">
           <div className="space-y-1.5">
             <h3 className="text-lg font-semibold">Pick a filter to start building your set.</h3>
             <p className="text-sm text-muted-foreground max-w-md">
