@@ -108,9 +108,50 @@ export const FEATURE_FAMILIES: FeatureFamily[] = [
   {
     id: "quirks",
     label: "Quirks & Topics",
-    features: ["EXCEPT", "Games-y LR", "Medical", "Science"],
+    features: ["Belief / Knowledge / Intent", "EXCEPT", "Games-y LR", "Medical", "Science"],
   },
 ];
+
+export const FALLBACK_FEATURE_FAMILY_ID = "other";
+export const FALLBACK_FEATURE_FAMILY_LABEL = "Other";
+
+/**
+ * Returns the declared taxonomy and appends any feature names that are present
+ * in the loaded bank but absent from it. The first declared occurrence wins if
+ * a feature is accidentally listed more than once, and fallback features use
+ * a locale-independent sort so their order is stable in every environment.
+ */
+export function getFeatureFamiliesWithFallback(
+  featureNames: Iterable<string>,
+): FeatureFamily[] {
+  const seen = new Set<string>();
+  const families = FEATURE_FAMILIES.map((family) => ({
+    ...family,
+    features: family.features.filter((feature) => {
+      if (seen.has(feature)) return false;
+      seen.add(feature);
+      return true;
+    }),
+  }));
+
+  const fallbackFeatures = Array.from(
+    new Set(
+      Array.from(featureNames)
+        .map((feature) => feature.trim())
+        .filter((feature) => feature.length > 0 && !seen.has(feature)),
+    ),
+  ).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+
+  if (fallbackFeatures.length > 0) {
+    families.push({
+      id: FALLBACK_FEATURE_FAMILY_ID,
+      label: FALLBACK_FEATURE_FAMILY_LABEL,
+      features: fallbackFeatures,
+    });
+  }
+
+  return families;
+}
 
 // Reverse lookup: feature tag → family id. Built lazily on first call.
 let _byFeature: Map<string, string> | null = null;

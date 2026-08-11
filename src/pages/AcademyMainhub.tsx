@@ -5,8 +5,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   Loader2,
-  Search,
-  SlidersHorizontal,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,37 +14,21 @@ import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
-import { questionBank } from "@/lib/questionLoader";
 import { cn } from "@/lib/utils";
 import type { FullSectionConfig, TypeDrillConfig } from "@/types/drill";
-import {
-  filterSmartLRQuestionMatches,
-  type SmartLRQuestionMatch,
-} from "@/components/mainhub/smartLRQuestionSearch";
 
-const QUESTION_PICKER_PLACEHOLDER = "";
-
-function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
+function MainhubHero({
+  drillReturnTo,
+  onOpenBuilder,
+}: {
+  drillReturnTo: string;
+  onOpenBuilder: () => void;
+}) {
   const navigate = useNavigate();
-  const { manifest, isLoading } = useQuestionBank();
-  const [pt, setPt] = React.useState(QUESTION_PICKER_PLACEHOLDER);
-  const [section, setSection] = React.useState(QUESTION_PICKER_PLACEHOLDER);
-  const [qnum, setQnum] = React.useState(QUESTION_PICKER_PLACEHOLDER);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [advancedOpen, setAdvancedOpen] = React.useState(false);
-  const [advancedQType, setAdvancedQType] = React.useState("");
-  const [advancedDifficulty, setAdvancedDifficulty] = React.useState("");
   const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
 
   const { user } = useAuth();
@@ -78,90 +60,6 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
     return name ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : "";
   }, [profileDisplayName, user]);
 
-  const allQuestions = React.useMemo(
-    () => (manifest ? questionBank.getAllQuestions() : []),
-    [manifest],
-  );
-
-  const pts = React.useMemo(
-    () =>
-      Array.from(new Set(allQuestions.map((q) => q.pt))).sort((a, b) => b - a),
-    [allQuestions],
-  );
-
-  const qtypes = React.useMemo(
-    () =>
-      Array.from(new Set(allQuestions.map((q) => q.qtype).filter(Boolean))).sort((a, b) =>
-        a.localeCompare(b),
-      ),
-    [allQuestions],
-  );
-
-  const difficulties = React.useMemo(
-    () =>
-      Array.from(new Set(allQuestions.map((q) => q.difficulty)))
-        .filter((n) => Number.isFinite(n))
-        .sort((a, b) => a - b),
-    [allQuestions],
-  );
-
-  const sections = React.useMemo(() => {
-    if (!pt) return [] as number[];
-    return Array.from(
-      new Set(
-        allQuestions
-          .filter((q) => String(q.pt) === pt)
-          .map((q) => q.section),
-      ),
-    ).sort((a, b) => a - b);
-  }, [allQuestions, pt]);
-
-  const qnums = React.useMemo(() => {
-    if (!pt || !section) return [] as number[];
-    return Array.from(
-      new Set(
-        allQuestions
-          .filter((q) => String(q.pt) === pt && String(q.section) === section)
-          .map((q) => q.qnum),
-      ),
-    ).sort((a, b) => a - b);
-  }, [allQuestions, pt, section]);
-
-  const selectedQuestion = React.useMemo(() => {
-    if (!pt || !section || !qnum) return null;
-    return (
-      allQuestions.find(
-        (q) =>
-          String(q.pt) === pt &&
-          String(q.section) === section &&
-          String(q.qnum) === qnum,
-      ) ?? null
-    );
-  }, [allQuestions, pt, section, qnum]);
-
-  const searchMatches = React.useMemo(
-    () =>
-      filterSmartLRQuestionMatches(
-        allQuestions,
-        searchQuery,
-        {
-          pt: pt ? Number(pt) : undefined,
-          section: section ? Number(section) : undefined,
-          qnum: qnum ? Number(qnum) : undefined,
-          qtypes: advancedQType ? [advancedQType] : undefined,
-          difficulties: advancedDifficulty ? [Number(advancedDifficulty)] : undefined,
-        },
-        6,
-      ),
-    [advancedDifficulty, advancedQType, allQuestions, pt, section, qnum, searchQuery],
-  );
-
-  const queryIsActive = searchQuery.trim().length > 0;
-  const advancedFiltersActive = !!advancedQType || !!advancedDifficulty || (advancedOpen && (!!pt || !!section));
-  const searchIsActive = queryIsActive || advancedFiltersActive;
-  const showNoMatches = searchIsActive && !isLoading && searchMatches.length === 0;
-  const searchTargetQuestion = searchMatches[0] ?? null;
-
   const todayLabel = React.useMemo(
     () =>
       new Date().toLocaleDateString(undefined, {
@@ -175,32 +73,6 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive", returnTo: drillReturnTo } });
   }, [drillReturnTo, navigate]);
-
-  const openQuestion = React.useCallback(
-    (qid: string) => {
-      const params = new URLSearchParams({
-        mode: "type-drill",
-        qids: qid,
-        present: "smart",
-        returnTo: drillReturnTo,
-      });
-      navigate(`/drill?${params.toString()}`);
-    },
-    [drillReturnTo, navigate],
-  );
-
-  const startSpecificQuestion = React.useCallback(() => {
-    if (!selectedQuestion) return;
-    openQuestion(selectedQuestion.qid);
-  }, [openQuestion, selectedQuestion]);
-
-  const clearAdvancedFilters = React.useCallback(() => {
-    setAdvancedQType("");
-    setAdvancedDifficulty("");
-    setPt(QUESTION_PICKER_PLACEHOLDER);
-    setSection(QUESTION_PICKER_PLACEHOLDER);
-    setQnum(QUESTION_PICKER_PLACEHOLDER);
-  }, []);
 
   return (
     /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
@@ -231,7 +103,7 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
               )}
             </h2>
             <p className="drill-observatory-ink-62 text-sm leading-[1.55]">
-              Pick up where you left off, or aim the drill at one question.
+              Pick up where you left off, or build a drill around exactly what you want to practice.
             </p>
           </div>
           <Button
@@ -244,248 +116,28 @@ function MainhubHero({ drillReturnTo }: { drillReturnTo: string }) {
         </div>
 
         <div className="drill-observatory-console w-full">
-          <div
-            className="flex flex-col gap-3.5"
-            onKeyDown={(event) => {
-              if (event.key === "Escape" && searchQuery) {
-                event.preventDefault();
-                setSearchQuery("");
-              }
-              if (event.key === "Enter" && searchTargetQuestion) {
-                event.preventDefault();
-                openQuestion(searchTargetQuestion.question.qid);
-              }
-            }}
-          >
-            <div className="relative">
-              <Search
-                className="drill-observatory-ink-45 pointer-events-none absolute left-[14px] top-1/2 h-[15px] w-[15px] -translate-y-1/2"
-                strokeWidth={1.8}
-                aria-hidden
-              />
-              <input
-                type="search"
-                value={searchQuery}
-                disabled={isLoading}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search question text…"
-                aria-label="Search question text"
-                className="w-full pl-[38px] pr-4 outline-none transition disabled:cursor-default"
-              />
+          <div className="flex h-full flex-col justify-between gap-6">
+            <div className="space-y-3">
+              <h3 className="text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em] text-[#f4f1ea]">
+                Build the drill you need.
+              </h3>
+              <p className="drill-observatory-ink-62 max-w-[48ch] text-sm leading-[1.6]">
+                Choose PrepTests, question types, reasoning, features, and levels independently.
+                Preview the exact set before you start.
+              </p>
             </div>
-
-            {searchIsActive && (
-              <div
-                className="drill-observatory-search-results space-y-1.5"
-                aria-live="polite"
-              >
-                {searchMatches.map((match) => (
-                  <QuestionSearchResult
-                    key={match.question.qid}
-                    match={match}
-                    onOpen={() => openQuestion(match.question.qid)}
-                  />
-                ))}
-
-                {showNoMatches && (
-                  <p className="drill-observatory-ink-45 px-1 py-1 text-xs font-medium">
-                    No matching questions
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className="flex flex-col gap-2.5" aria-label="Specific question launcher">
-              <ConsoleSelect
-                label="PrepTest"
-                value={pt}
-                disabled={isLoading || pts.length === 0}
-                onChange={(value) => {
-                  setPt(value);
-                  setSection(QUESTION_PICKER_PLACEHOLDER);
-                  setQnum(QUESTION_PICKER_PLACEHOLDER);
-                }}
-                options={pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` }))}
-              />
-              <ConsoleSelect
-                label="Section"
-                value={section}
-                disabled={!pt}
-                onChange={(value) => {
-                  setSection(value);
-                  setQnum(QUESTION_PICKER_PLACEHOLDER);
-                }}
-                options={sections.map((n) => ({ value: String(n), label: `Section ${n}` }))}
-              />
-              <ConsoleSelect
-                label="Question"
-                value={qnum}
-                disabled={!section}
-                onChange={setQnum}
-                options={qnums.map((n) => ({ value: String(n), label: `Question ${n}` }))}
-              />
-            </div>
-
-            <div className="flex items-center justify-between gap-3 px-0.5">
-              <button
-                type="button"
-                onClick={() => setAdvancedOpen((value) => !value)}
-                className="drill-observatory-disclosure drill-observatory-label"
-                aria-expanded={advancedOpen}
-              >
-                <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />
-                Advanced
-              </button>
-              {advancedFiltersActive && (
-                <button
-                  type="button"
-                  onClick={clearAdvancedFilters}
-                  className="drill-observatory-disclosure drill-observatory-label"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
-
-            {advancedOpen && (
-              <div className="drill-observatory-advanced">
-                <ConsoleSelect
-                  label="Question type"
-                  value={advancedQType}
-                  disabled={isLoading || qtypes.length === 0}
-                  onChange={setAdvancedQType}
-                  options={qtypes.map((type) => ({ value: type, label: type }))}
-                  compact
-                />
-                <ConsoleSelect
-                  label="Difficulty"
-                  value={advancedDifficulty}
-                  disabled={isLoading || difficulties.length === 0}
-                  onChange={setAdvancedDifficulty}
-                  options={difficulties.map((n) => ({ value: String(n), label: `Difficulty ${n}` }))}
-                  compact
-                />
-              </div>
-            )}
-
             <Button
               type="button"
-              onClick={startSpecificQuestion}
-              disabled={!selectedQuestion}
+              onClick={onOpenBuilder}
               className="drill-observatory-console-start"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  Start
-                </>
-              ) : (
-                "Start"
-              )}
+              Set up an LR drill
+              <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
             </Button>
           </div>
         </div>
       </div>
     </Card>
-  );
-}
-
-function QuestionSearchResult({
-  match,
-  onOpen,
-}: {
-  match: SmartLRQuestionMatch;
-  onOpen: () => void;
-}) {
-  const { question, snippet } = match;
-
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className={cn(
-        "drill-observatory-result block w-full rounded-[12px] px-3 py-2 text-left",
-        "bg-[rgba(0,0,0,0.32)] shadow-[0_0_0_1px_var(--observatory-ring-quiet)]",
-      )}
-    >
-      <div className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 mb-1 flex items-center gap-2">
-        <span>
-          PT {question.pt} · S{question.section} · Q{question.qnum}
-        </span>
-        <span className="drill-observatory-ink-45 truncate normal-case tracking-normal">
-          {question.qtype} · D{question.difficulty}
-        </span>
-      </div>
-      <p className="drill-observatory-ink-70 line-clamp-1 text-xs font-normal leading-5">
-        {snippet.before}
-        {snippet.match ? (
-          <mark className="rounded bg-[#f4f1ea] px-0.5 font-semibold text-[#0c0c0e]">
-            {snippet.match}
-          </mark>
-        ) : null}
-        {snippet.after}
-      </p>
-    </button>
-  );
-}
-
-function ConsoleSelect({
-  label,
-  value,
-  options,
-  disabled,
-  onChange,
-  compact = false,
-}: {
-  label: string;
-  value: string;
-  options: Array<{ value: string; label: string }>;
-  disabled?: boolean;
-  onChange: (value: string) => void;
-  compact?: boolean;
-}) {
-  return (
-    <Select
-      key={`${label}-${value || "empty"}`}
-      value={value || undefined}
-      disabled={disabled}
-      onValueChange={onChange}
-    >
-      <SelectTrigger
-        aria-label={label}
-        /* Height, fill, ring and type come from .drill-observatory-console
-           button[role="combobox"]; only layout details live here. */
-        className={cn(
-          "w-full outline-none transition disabled:cursor-default",
-          compact && "text-xs",
-          "[&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:opacity-100",
-          "[&>span]:line-clamp-1 [&>span]:text-left",
-        )}
-      >
-        <SelectValue placeholder={label} />
-      </SelectTrigger>
-      <SelectContent
-        position="popper"
-        sideOffset={8}
-        className={cn(
-          "z-[80] max-h-[min(320px,calc(100vh-160px))] w-[var(--radix-select-trigger-width)] overflow-hidden rounded-[14px] border-0 bg-[rgba(6,6,9,0.92)] text-[#f4f1ea] shadow-[0_0_0_1px_rgba(244,241,234,0.12),0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl",
-          "[&_[data-radix-select-viewport]]:max-h-[min(304px,calc(100vh-176px))]",
-        )}
-      >
-        {options.map((option) => (
-          <SelectItem
-            key={option.value}
-            value={option.value}
-            className={cn(
-              "min-h-9 rounded-[10px] py-2 pl-8 pr-3 text-[13.5px] font-medium text-[rgba(244,241,234,0.75)] outline-none",
-              "focus:bg-[rgba(244,241,234,0.08)] focus:text-[#f4f1ea] data-[state=checked]:text-[#f4f1ea]",
-            )}
-          >
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   );
 }
 
@@ -628,7 +280,10 @@ export default function AcademyMainhub({
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
-        <MainhubHero drillReturnTo={drillReturnTo} />
+        <MainhubHero
+          drillReturnTo={drillReturnTo}
+          onOpenBuilder={() => openLauncher("type-drill")}
+        />
 
         {stage === "analytics" ? (
           <section

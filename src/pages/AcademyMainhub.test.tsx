@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -58,6 +58,10 @@ vi.mock("@/contexts/OrbitalActiveContext", () => ({
 
 vi.mock("@/contexts/QuestionBankContext", () => ({
   useQuestionBank: () => ({ manifest: {}, isLoading: false, error: null }),
+}));
+
+vi.mock("@/components/drill/QuestionPicker", () => ({
+  QuestionPicker: () => <div role="region" aria-label="Unified LR drill builder" />,
 }));
 
 vi.mock("@/lib/questionLoader", () => ({
@@ -153,11 +157,10 @@ describe("AcademyMainhub", () => {
     // The Spline robot was cut in the 2026-08-01 reskin: the hero is two columns
     // (greeting + finder console) over the horizon image, with no third bay.
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "Section" })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "Question" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Advanced/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Build the drill you need." })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Set up an LR drill" })).toBeInTheDocument();
+    expect(screen.queryByRole("combobox", { name: "PrepTest" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Advanced/i })).not.toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: "Practice and insight workspace" }),
     ).toBeInTheDocument();
@@ -172,5 +175,8 @@ describe("AcademyMainhub", () => {
     expect(
       screen.queryByRole("region", { name: "Mainhub orbital workspace" }),
     ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Set up an LR drill" }));
+    expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
   });
 });

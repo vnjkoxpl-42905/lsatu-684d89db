@@ -167,12 +167,14 @@ The route-specific control pane inside the canvas.
 
 It owns:
 
-- question-text search;
-- the Advanced toggle and Clear filters action;
-- Question type, Difficulty, PT filter, and Section filter;
-- PrepTest, Section, and Question dependent selectors;
-- the Start action;
-- search results, no-match, loading, disabled, and focus states.
+- one clear entry point into the unified LR drill builder;
+- a concise explanation of what students can configure there;
+- the visual handoff from the hero into the full-width builder stage.
+
+The August 2026 unified-builder decision supersedes the compact search,
+Advanced-filter, dependent-selector, and single-question launch contracts that
+previously lived in this pane. All exact lookup and filtered-set controls now
+share one builder and one filter model.
 
 ### 4. Official drill surface
 
@@ -457,38 +459,21 @@ Do not add a font dependency.
 
 ## Control language
 
-### Search
+### Unified LR drill builder
 
-- Remains the first control and strongest input affordance.
-- Retains `type="search"`, existing label, placeholder, loading disablement,
-  and all current filtering.
-- Enter still opens the top result.
-- Escape still clears the query.
-- Results remain capped at six.
-- Matching text remains highlighted.
-- Results continue to show PT, section, question, type, difficulty, and snippet.
-- The results layer expands inside the console recess and may overlay the
-  controls below without causing the whole hero to jump.
-- The overlay must remain keyboard reachable and visually attached to search.
-
-### Advanced filters
-
-- Advanced remains an explicit text action with `aria-expanded`.
-- Clear filters only appears when filters are active.
-- Question type, Difficulty, PT filter, and Section filter remain.
-- Opening the area uses opacity and transform choreography, not bouncy height
-  animation.
-- Active filters gain a compact summary trace; no filter chip farm.
-
-### Dependent selector track
-
-- PrepTest, Section, and Question remain three separate accessible selects.
-- Dependency and reset behavior remain exactly as implemented.
-- Each step has a persistent visible label.
-- Disabled states remain focus-safe and understandable without color.
-- The Start button remains disabled until `selectedQuestion` exists.
-- Select menus remain above surrounding content and retain a viewport-bounded
-  maximum height.
+- The console opens the same full-width builder as every “Set up an LR drill”
+  action on the page.
+- PrepTests, sections, question number, question types, reasoning types,
+  question features, levels, and question-text search live in that builder.
+- Array facets are multi-select and independent. Values combine with OR inside
+  a facet and AND across facets. PrepTest, section, and question number never
+  clear one another.
+- Contextual counts honor every other active filter. Unselected zero-match
+  options hide; selected options remain visible and removable.
+- The combined result count, empty state, selected-filter chips, per-category
+  Clear actions, and Clear All make the active query explicit.
+- A student chooses a set size, materializes an exact preview, and launches the
+  frozen QID list. Manual selections take precedence when present.
 
 ### Buttons and hit areas
 
@@ -635,14 +620,11 @@ No row may change during implementation.
 | canonical landing route | `/classroom/drill` | direct load and history |
 | old route behavior | `/mainhub` redirects | route probe |
 | Smart Drill launch | `/drill`, adaptive mode, current `returnTo` | inspect location state |
-| specific question launch | `/drill?mode=type-drill&qids=…&present=smart&returnTo=…` | inspect URL |
-| search algorithm | `filterSmartLRQuestionMatches` | existing unit test plus browser query |
-| result cap | six | browser and unit test |
-| Enter behavior | opens top result | keyboard browser test |
-| Escape behavior | clears query | keyboard browser test |
-| PT dependency | resets Section and Question | interaction test |
-| Section dependency | resets Question | interaction test |
-| advanced filters | exact four controls and clear behavior | interaction test |
+| unified builder entry | every LR set-up action opens `stage=type-drill` | URL/history probe |
+| filter semantics | OR within facets, AND across facets | unit and interaction tests |
+| independent exact filters | PT, Section, and Q# never reset one another | interaction test |
+| contextual options | hide unselected zero matches; retain selected values | unit and interaction tests |
+| launch materialization | preview/manual selection launches exact QIDs | interaction and runner tests |
 | permission gates | `useUserPermissions` flags | permitted and restricted fixtures |
 | Analytics URL state | `stage=analytics&tab=…` | URL/history probe |
 | insight behavior | five slides, seven seconds, hover pause, dots | timer/interaction test |
