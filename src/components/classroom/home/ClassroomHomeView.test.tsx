@@ -89,6 +89,41 @@ const FULL: ClassroomHomeModel = {
 };
 
 describe("ClassroomHomeView", () => {
+  it("offers a Mark done control on assigned work and reports the row key", () => {
+    const onMarkDone = vi.fn();
+    const model = {
+      ...FULL,
+      rows: [{ ...FULL.rows[0], canComplete: true }],
+      hero: { ...FULL.hero!, row: { ...FULL.hero!.row, canComplete: true } },
+    };
+    render(
+      <ClassroomHomeView
+        model={model}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+        onMarkDone={onMarkDone}
+      />,
+    );
+
+    fireEvent.click(screen.getByLabelText("Mark Negation Station as done"));
+    expect(onMarkDone).toHaveBeenCalledWith("a");
+  });
+
+  it("omits Mark done for reading matter", () => {
+    const model = { ...FULL, hero: null, rows: [{ ...FULL.rows[0], canComplete: false }] };
+    render(
+      <ClassroomHomeView
+        model={model}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+        onMarkDone={vi.fn()}
+      />,
+    );
+    expect(screen.queryByText("Mark done")).toBeNull();
+  });
+
   it("leads with the hero and opens the assignment it names", () => {
     const onOpen = vi.fn();
     render(
