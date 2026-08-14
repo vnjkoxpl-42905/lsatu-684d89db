@@ -3333,7 +3333,18 @@ function DrillContent() {
                   ? () => { void handleEndBootcampPracticeDrill(); }
                   : () => handleFinishSection()
               }
-              showAnswerVisible={false}
+              // Answer and Explanation live up here, not in the bottom bar.
+              // The strip sits OUTSIDE the card that OfficialDrillFrame blurs
+              // when paused, so both must fold in the paused check themselves.
+              // A timed full section also keeps its old gate: revealing
+              // mid-section is not an escape hatch there, it defeats the
+              // exercise. (Adaptive mode never hits it — the two session modes
+              // are mutually exclusive.)
+              showAnswerVisible
+              onShowAnswer={() => handleRevealRequest(currentAttempted)}
+              showAnswerDisabled={!!timer?.isPaused || (isFullSection && !currentAttempted)}
+              onExplanation={() => toggleDrawerOn('explanation')}
+              explanationDisabled={!!timer?.isPaused || !currentRevealed}
               onOpenHelp={() => setHelpOpen(true)}
             />
           }
@@ -3398,11 +3409,6 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom')}
-              onOpenMenu={() => toggleDrawerOn('details')}
-              onShowAnswer={() => handleRevealRequest(currentAttempted)}
-              onAskTutor={() => toggleDrawerOn('explanation')}
-              askTutorLabel="Explanation"
-              askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
             />
           ) : (
@@ -3452,14 +3458,6 @@ function DrillContent() {
               }}
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom/drill')}
-              onOpenMenu={() => toggleDrawerOn('details')}
-              onShowAnswer={() => handleRevealRequest(currentAttempted)}
-              // A timed full section keeps the old gate: revealing mid-section
-              // is not an escape hatch there, it defeats the exercise.
-              showAnswerDisabled={isFullSection && !currentAttempted}
-              onAskTutor={() => toggleDrawerOn('explanation')}
-              askTutorLabel="Explanation"
-              askTutorDisabled={!currentRevealed}
               disabled={!!timer?.isPaused}
             />
           )}

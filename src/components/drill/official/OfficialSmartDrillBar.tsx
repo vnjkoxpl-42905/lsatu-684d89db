@@ -39,28 +39,16 @@ interface Props {
   onEnd: () => void;
   /** Opens the question drawer on Details. Hidden if omitted. */
   onOpenMenu?: () => void;
-  /**
-   * Reveals the answer and the whole inline explanation layer at once. Not
-   * gated on having attempted — pressed early it is the escape hatch, and the
-   * caller confirms that the question will not be scored.
-   */
-  onShowAnswer?: () => void;
-  /** Rarely used now that Answer is ungated; kept for paused/edge states. */
-  showAnswerDisabled?: boolean;
-  /** Opens the drawer on the Explanation tab. Hidden if omitted. */
-  onAskTutor?: () => void;
-  /** Label for the tutor button (context-aware, e.g. "Strategize" / "Explain"). */
-  askTutorLabel?: string;
-  /** Disabled until something is revealed, so the breakdown cannot leak. */
-  askTutorDisabled?: boolean;
   /** Whole bar disabled (e.g. while paused). */
   disabled?: boolean;
 }
 
 /**
  * Smart Drill (adaptive) bottom action bar. Replaces the arrow navigator used
- * by fixed-queue modes. Left: End. Right: auto-reveal toggle, Skip, and a
- * primary Submit/Next pill.
+ * by fixed-queue modes. Left: End and Menu. Right: auto-reveal toggle, Skip,
+ * and a primary Submit/Next pill. Answer and Explanation deliberately are not
+ * here — they sit in the header strip (`OfficialSessionStrip`), because four
+ * controls crowded this bar's left corner.
  */
 export default function OfficialSmartDrillBar({
   autoReveal,
@@ -76,11 +64,6 @@ export default function OfficialSmartDrillBar({
   pager,
   onEnd,
   onOpenMenu,
-  onShowAnswer,
-  showAnswerDisabled,
-  onAskTutor,
-  askTutorLabel = "Ask Joshua",
-  askTutorDisabled,
   disabled,
 }: Props) {
   const isNext = primaryAction === "next";
@@ -108,34 +91,6 @@ export default function OfficialSmartDrillBar({
             className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Menu
-          </button>
-        )}
-
-        {/* Answer / Explanation pair, mirroring LSAT Lab's review controls.
-            Answer reveals the correct letter plus the inline per-choice layer;
-            Explanation opens the drawer's question-level breakdown. */}
-        {onShowAnswer && (
-          <button
-            type="button"
-            onClick={onShowAnswer}
-            disabled={disabled || showAnswerDisabled}
-            className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            Answer
-          </button>
-        )}
-
-        {/* Explanation — the authored write-up, or the AI tutor when the
-            source published none for this question. */}
-        {onAskTutor && (
-          <button
-            type="button"
-            onClick={onAskTutor}
-            disabled={disabled || askTutorDisabled}
-            title={askTutorDisabled ? "Answer or reveal the question first" : undefined}
-            className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {askTutorLabel}
           </button>
         )}
 
