@@ -40,6 +40,9 @@ export interface HomeRow {
   isNew: boolean;
   dueToday: boolean;
   overdue: boolean;
+  /** Work the student can close out by hand; reading matter cannot. */
+  canComplete?: boolean;
+
 }
 
 export interface HomeProgress {

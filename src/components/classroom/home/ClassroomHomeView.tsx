@@ -40,39 +40,71 @@ function Pill({
   );
 }
 
-function WorkRow({ row, onOpen }: { row: HomeRow; onOpen: (route: string) => void }) {
+function WorkRow({
+  row,
+  onOpen,
+  onMarkDone,
+  completing,
+}: {
+  row: HomeRow;
+  onOpen: (route: string) => void;
+  onMarkDone?: (key: string) => void;
+  completing?: boolean;
+}) {
+  // The row is one button, so the "Done" control has to sit beside it rather
+  // than inside it. Clearing work is a real write, so it never rides along with
+  // a navigation click.
   return (
-    <button
-      type="button"
-      className="classroom-home-row"
-      onClick={() => onOpen(row.route)}
-    >
-      <span
-        className={`classroom-home-dot classroom-home-dot-${row.tone}`}
-        aria-hidden="true"
-      />
-      <span className="classroom-home-row-text">
-        <span className="classroom-home-row-title">{row.title}</span>
-        <span className="classroom-home-row-meta">{row.meta}</span>
-      </span>
-      <span
-        className={`classroom-home-pill${row.emphasis ? " classroom-home-pill-accent" : ""}`}
+    <div className="classroom-home-row-wrap">
+      <button
+        type="button"
+        className="classroom-home-row"
+        onClick={() => onOpen(row.route)}
       >
-        {row.actionLabel}
-      </span>
-    </button>
+        <span
+          className={`classroom-home-dot classroom-home-dot-${row.tone}`}
+          aria-hidden="true"
+        />
+        <span className="classroom-home-row-text">
+          <span className="classroom-home-row-title">{row.title}</span>
+          <span className="classroom-home-row-meta">{row.meta}</span>
+        </span>
+        <span
+          className={`classroom-home-pill${row.emphasis ? " classroom-home-pill-accent" : ""}`}
+        >
+          {row.actionLabel}
+        </span>
+      </button>
+      {row.canComplete && onMarkDone ? (
+        <button
+          type="button"
+          className="classroom-home-done"
+          disabled={completing}
+          aria-label={`Mark ${row.title} as done`}
+          onClick={() => onMarkDone(row.key)}
+        >
+          {completing ? "Saving…" : "Mark done"}
+        </button>
+      ) : null}
+    </div>
   );
 }
+
 
 export function ClassroomHomeView({
   model,
   loading,
   onOpen,
   onSeeAllWork,
+  onMarkDone,
+  completingKey,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
   onOpen: (route: string) => void;
+  onMarkDone?: (key: string) => void;
+  completingKey?: string | null;
+
   onSeeAllWork: () => void;
 }) {
   const { hero } = model;
@@ -146,6 +178,17 @@ export function ClassroomHomeView({
                   >
                     See all assigned work
                   </button>
+                  {hero.row.canComplete && onMarkDone ? (
+                    <button
+                      type="button"
+                      className="classroom-home-ghost"
+                      disabled={completingKey === hero.row.key}
+                      onClick={() => onMarkDone(hero.row.key)}
+                    >
+                      {completingKey === hero.row.key ? "Saving…" : "Mark done"}
+                    </button>
+                  ) : null}
+
                 </div>
               </div>
 
@@ -206,7 +249,14 @@ export function ClassroomHomeView({
           {model.rows.length ? (
             <div className="classroom-home-rows">
               {model.rows.map((row) => (
-                <WorkRow key={row.key} row={row} onOpen={onOpen} />
+                <WorkRow
+                  key={row.key}
+                  row={row}
+                  onOpen={onOpen}
+                  onMarkDone={onMarkDone}
+                  completing={completingKey === row.key}
+                />
+
               ))}
             </div>
           ) : (

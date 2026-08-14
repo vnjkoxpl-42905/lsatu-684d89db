@@ -12,7 +12,7 @@ import "./home.css";
 export default function ClassroomHome() {
   const navigate = useNavigate();
   const { openSection } = useClassroomLayout();
-  const { model, loading } = useClassroomHome();
+  const { model, loading, markDone, completingKey } = useClassroomHome();
 
   return (
     <ClassroomHomeView
@@ -20,6 +20,9 @@ export default function ClassroomHome() {
       loading={loading}
       onOpen={(route) => navigate(route)}
       onSeeAllWork={() => openSection("work")}
+      onMarkDone={markDone}
+      completingKey={completingKey}
     />
   );
 }
+
