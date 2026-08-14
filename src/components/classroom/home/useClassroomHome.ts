@@ -19,6 +19,8 @@ import {
   type AssignedTodoRow,
 } from "@/hooks/useAssignedTodoFeed";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
+import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
+
 import { useStudentBooking } from "@/hooks/useStudentBooking";
 import { useInbox } from "@/hooks/useInbox";
 import { useCurrentWeeklyPlan } from "@/hooks/useWeeklyPlan";
@@ -94,10 +96,17 @@ function untilLabel(iso: string) {
 export function useClassroomHome(): {
   model: ClassroomHomeModel;
   loading: boolean;
+  /** Close out an assigned row by key; no-op for a row that is not work. */
+  markDone: (key: string) => void;
+  completingKey: string | null;
 } {
+
   const { user } = useAuth();
   const permissions = useUserPermissions();
   const { displayName } = useClassroomLayout();
+  const completion = useCompleteAssignedWork();
+  const [completingKey, setCompletingKey] = React.useState<string | null>(null);
+
 
   // Mirrors the rail's own rule, so a door on Home and the same door in the
   // rail can never disagree: admins pass everything, an item with no flags is
@@ -182,7 +191,9 @@ export function useClassroomHome(): {
           isNew: row.status === "assigned",
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
+          canComplete: true,
         };
+
       });
   }, [access.activities, assigned, dueBySourceId, now, pathname]);
 
@@ -402,8 +413,27 @@ export function useClassroomHome(): {
     weekLabel: weekLabelFor(dates),
   };
 
+  // Marking work done writes back to the assignment it came from, so the row
+  // leaves this page (and every other "what is due" count) while the classroom
+  // panel keeps it, labelled completed. Nothing is deleted.
+  const markDone = React.useCallback(
+    (key: string) => {
+      const row = assigned.find((candidate) => candidate.key === key);
+      if (!row || row.status === "completed") return;
+      setCompletingKey(key);
+      completion.mutate(
+        { sourceTable: row.sourceTable, refId: row.refId },
+        { onSettled: () => setCompletingKey(null) },
+      );
+    },
+    [assigned, completion],
+  );
+
   return {
     model,
     loading: assignedLoading || itemsQuery.isLoading,
+    markDone,
+    completingKey,
   };
 }
+
