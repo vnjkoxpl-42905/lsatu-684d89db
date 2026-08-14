@@ -1250,3 +1250,52 @@ html.dark .classroom-root .classroom-home-shine {
     rgba(255, 255, 255, 0)
   );
 }
+
+/* ── clearing assigned work ───────────────────────────────────────────── */
+/* The row stays the primary target; "Mark done" is a quiet second control
+   that only appears on hover or keyboard focus so the list keeps its calm. */
+.classroom-root .classroom-home-row-wrap {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.classroom-root .classroom-home-row-wrap > .classroom-home-row {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-done {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--home-hair-12);
+  color: var(--home-muted);
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  padding: 5px 10px;
+  transition: opacity 120ms ease-out, color 120ms ease-out;
+}
+
+.classroom-root .classroom-home-row-wrap:hover .classroom-home-done,
+.classroom-root .classroom-home-done:focus-visible {
+  opacity: 1;
+}
+
+.classroom-root .classroom-home-done:hover {
+  color: var(--home-body);
+}
+
+.classroom-root .classroom-home-done:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .classroom-root .classroom-home-done {
+    opacity: 1;
+  }
+}
