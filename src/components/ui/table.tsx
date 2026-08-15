@@ -2,9 +2,21 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-  ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto">
+export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  /**
+   * Ref to the scrolling wrapper. `ref` forwards to `<table>`, which is not the
+   * element that owns horizontal overflow — measuring the table tells you its
+   * content width, not whether it fits. Anything asserting on overflow needs
+   * this one.
+   */
+  wrapperRef?: React.Ref<HTMLDivElement>;
+  /** Classes for the scrolling wrapper, so callers don't add a second one around it. */
+  wrapperClassName?: string;
+}
+
+const Table = React.forwardRef<HTMLTableElement, TableProps>(
+  ({ className, wrapperRef, wrapperClassName, ...props }, ref) => (
+    <div ref={wrapperRef} className={cn("relative w-full overflow-auto", wrapperClassName)}>
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   ),

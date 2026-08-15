@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -90,6 +90,47 @@ const REASONING_TYPE_LABELS: Record<string, string> = {
 };
 const ALL_DIFFICULTIES = [1, 2, 3, 4, 5] as const;
 
+/**
+ * Fixed column widths, border-box, each including the shared cell's 32px
+ * horizontal padding. Sized against real content, not headers:
+ * Type must clear a ~92px badge, so 128 is its floor, not a preference.
+ */
+const COL = {
+  select: 56,
+  pt: 60,
+  sectionQ: 76,
+  type: 128,
+  level: 60,
+  attempts: 60,
+} as const;
+
+const FIXED_COLS_WIDTH = 440; // sum of COL
+const STEM_MIN_WIDTH = 204;
+
+/**
+ * Narrowest the table may get before it scrolls rather than crushing the stem.
+ */
+const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH; // 644
+
+/** Fixed width of the summary rail. */
+const SUMMARY_RAIL_WIDTH = 320;
+
+/**
+ * Container width at which the summary rail moves beside the table.
+ *
+ * Derived from measurement, and the measurement is the whole point. The
+ * container is capped by `.drill-observatory-canvas` (max-width 1140) less the
+ * launcher's 56px of padding, so it can never exceed ~1084px — and on a 1440px
+ * laptop it is only ~1008px, because the canvas is viewport-constrained well
+ * before its max-width. The old 1140px threshold was above even the ceiling,
+ * which is why the rail never once appeared beside the table.
+ *
+ * 644 + 320 + 16 = 980 fits inside 1008, so the split now engages on a 1440px
+ * screen. Keep in sync with the `@[980px]` utilities below; Tailwind needs the
+ * literal at build time and the geometry test asserts the two agree.
+ */
+const SPLIT_AT = TABLE_MIN_WIDTH + SUMMARY_RAIL_WIDTH + 16; // 980
+
 const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[value] ?? value;
 
 interface QuestionRow extends LRQuestion {
@@ -126,6 +167,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
   // Drawer state — single qid open at a time
   const [drawerQid, setDrawerQid] = useState<string | null>(null);
+  /** The one element that owns horizontal overflow. Asserted by the geometry suite. */
+  const tableScrollerRef = useRef<HTMLDivElement>(null);
   const [revealAnswer, setRevealAnswer] = useState(false);
   
   // Available options
@@ -374,16 +417,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     filters.searchQuery.trim() !== '' ||
     filters.questionNumber !== null;
 
-  // Materialize a fresh preview from the current filter pool
+  // Materialize a fresh preview from the current filter pool.
+  // No filter is a valid pool — it means the whole bank — because every facet
+  // already treats an empty array as unrestricted. Refusing to generate from
+  // it was a dead end that made the panel promise a set it would not build.
   const handleGeneratePreview = () => {
-    if (!hasAnyFilter) {
-      toast({
-        title: "Nothing to build a set from",
-        description: "Pick at least one filter or select questions from the table.",
-        variant: "destructive",
-      });
-      return;
-    }
     if (filteredQuestions.length === 0) {
       toast({
         title: "No questions match filters",
@@ -575,16 +613,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
   const hasPreview = !!previewedQids && previewedQids.length > 0;
 
-  // Generate-Preview button enabled when we have a usable filter pool and no selection
-  const canGenerate =
-    selectedQids.size === 0 && hasAnyFilter && filteredQuestions.length > 0;
+  // Enabled whenever there is a pool and no manual selection. An unfiltered
+  // pool is the full bank, which is a legitimate thing to draw a set from.
+  const canGenerate = selectedQids.size === 0 && filteredQuestions.length > 0;
 
   const generateHint =
-    !hasAnyFilter
-      ? 'Pick at least one filter or select questions.'
-      : filteredQuestions.length === 0
-      ? 'No questions match. Adjust your filters.'
-      : null;
+    filteredQuestions.length === 0 ? 'No questions match. Adjust your filters.' : null;
 
   // Get first 6-7 words of stem
   const getStemPreview = (stem: string): string => {
@@ -614,11 +648,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           the deck's `overflow: hidden`. `minmax(0,1fr)` lets that column
           shrink instead of blowing the grid out.
 
-          1140px is what the split actually needs: the results table's
-          min-content is ~780px and the summary rail is a fixed 320px. Below
-          that the summary stacks under the table instead, so the table keeps
-          its full width rather than both being squeezed. */}
-      <div className="flex-1 min-h-0 @[1140px]:grid @[1140px]:grid-cols-[minmax(0,1fr)_320px] @[1140px]:gap-4">
+          THE THRESHOLD MUST BE REACHABLE. The previous value was 1140px, but
+          this container is capped by the classroom shell at ~1084px, so the
+          query never matched at any viewport size. The summary rail — the
+          whole live-feedback loop plus the primary CTA — always rendered
+          full-width *below* a 25-row table, ~2400px down a 3400px document.
+          It was never once seen beside the table in production.
+
+          980px is derived, not guessed — see SPLIT_AT. The table was narrowed
+          to reach it; its min-content used to be ~880px, which no threshold
+          could have fitted inside a container that peaks at ~1084px and is only
+          ~1008px on a 1440px laptop. Above 980 the table keeps its 644px floor;
+          below, the rail stacks and the table scrolls inside its own wrapper. */}
+      <div className="flex-1 min-h-0 @[980px]:grid @[980px]:grid-cols-[minmax(0,1fr)_320px] @[980px]:gap-4">
         <div className="flex flex-col min-h-0">
       {/* Filter Bar */}
       <Card className="mb-5 overflow-visible border-border/70 bg-card/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)]">
@@ -1125,18 +1167,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         </div>
       </Card>
       
-      {/* Item L (Wave 4) — empty state until at least one filter is applied
-          OR rows are selected. Replaces the "25 of 3964" cold-start noise. */}
-      {!hasAnyFilter && selectedQids.size === 0 ? (
-        <Card className="mb-8 flex flex-col items-center gap-3 border-dashed px-6 py-8 text-center">
-          <div className="space-y-1.5">
-            <h3 className="text-lg font-semibold">Pick a filter to start building your set.</h3>
-            <p className="text-sm text-muted-foreground max-w-md">
-              The full bank is {totalCount.toLocaleString()} questions. Narrow it down by PT,
-              type, or difficulty. You can also use one of the shortcuts below.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2 justify-center pt-1">
+      {/* Shortcuts, shown while nothing is narrowed yet. This used to replace
+          the results table entirely, which contradicted the rail: the summary
+          offered a set from the full bank while this told you no set existed
+          yet. The table now always renders and these sit above it. */}
+      {!hasAnyFilter && selectedQids.size === 0 && (
+        <Card className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-dashed px-4 py-3">
+          <span className="text-sm text-muted-foreground">
+            Drawing from all {totalCount.toLocaleString()} questions. Narrow it down:
+          </span>
+          <div className="flex flex-wrap gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -1171,8 +1211,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </Button>
           </div>
         </Card>
-      ) : (
-        <>
+      )}
+
+      <>
       {/* Results header — Item J: groups page-size with the table not the filters. */}
       <div className="mb-3 flex items-center justify-between gap-3 text-sm">
         <div className="text-muted-foreground">
@@ -1202,12 +1243,34 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
       {/* Results Table */}
       <Card className="flex-1 overflow-hidden flex flex-col mb-20">
-        <div className="overflow-x-auto flex-1">
-          <Table>
+        <div className="flex-1 min-h-0 flex flex-col">
+          {/* One scroller, not two. `Table` already wraps itself in an
+              `overflow-auto` div, so the extra `overflow-x-auto` here meant two
+              nested scrollers and no single element that could be asserted on:
+              the outer one reported no overflow while the inner one scrolled. */}
+          <Table
+            wrapperRef={tableScrollerRef}
+            wrapperClassName="flex-1"
+            style={{ tableLayout: 'fixed', minWidth: TABLE_MIN_WIDTH }}
+          >
+            {/* Only the stem flexes; everything else is pinned so the table has
+                a knowable minimum. Widths come from COL, which is sized against
+                real content rather than headers — Type has to clear a ~92px
+                badge plus 32px of cell padding, so 128 is a floor. */}
+            <colgroup>
+              <col style={{ width: COL.select }} />
+              <col style={{ width: COL.pt }} />
+              <col style={{ width: COL.sectionQ }} />
+              <col style={{ minWidth: STEM_MIN_WIDTH }} />
+              <col style={{ width: COL.type }} />
+              <col style={{ width: COL.level }} />
+              <col style={{ width: COL.attempts }} />
+            </colgroup>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-12">
+                <TableHead>
                   <Checkbox
+                    aria-label="Select all questions on this page"
                     checked={paginatedQuestions.length > 0 && paginatedQuestions.every(q => selectedQids.has(q.qid))}
                     onCheckedChange={(checked) => {
                       if (checked) {
@@ -1227,23 +1290,27 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   />
                 </TableHead>
                 <TableHead>PT</TableHead>
-                <TableHead>Sec</TableHead>
-                <TableHead>Q#</TableHead>
-                <TableHead className="w-[320px]">Stem</TableHead>
-                <TableHead className="w-[160px]">Type</TableHead>
+                {/* Sec and Q# merged. Two headers cost ~112px to show four
+                    characters of data; one column shows the same as `2 · 14`. */}
+                <TableHead>S/Q</TableHead>
+                <TableHead>Stem</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead
                   title="1 = easiest · 5 = hardest. Blue / green / yellow / orange / red."
                   className="cursor-help"
                 >
-                  Difficulty
+                  Lvl
                 </TableHead>
-                <TableHead>Attempts</TableHead>
+                <TableHead>Att</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginatedQuestions.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
+                  {/* Seven columns since Sec and Q# merged. Under
+                      `table-layout: fixed` a colSpan of 8 would mint an
+                      anonymous eighth column and skew every width. */}
+                  <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                     No questions match your filters
                   </TableCell>
                 </TableRow>
@@ -1259,15 +1326,21 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   >
                     <TableCell onClick={(e) => e.stopPropagation()} className="py-0">
                       <Checkbox
+                        aria-label={`Select PT${q.pt} section ${q.section} question ${q.qnum}`}
                         checked={selectedQids.has(q.qid)}
                         onCheckedChange={() => toggleQuestion(q.qid)}
                       />
                     </TableCell>
                     <TableCell className="py-0 font-medium tabular-nums">{q.pt}</TableCell>
-                    <TableCell className="py-0 tabular-nums">{q.section}</TableCell>
-                    <TableCell className="py-0 tabular-nums">{q.qnum}</TableCell>
+                    <TableCell className="py-0 tabular-nums text-muted-foreground">
+                      <span className="text-foreground">{q.section}</span>
+                      <span className="px-1 opacity-40">·</span>
+                      <span className="text-foreground">{q.qnum}</span>
+                    </TableCell>
                     <TableCell className="py-0 text-sm">
-                      <span className="block max-w-[300px] truncate" title={q.questionStem}>
+                      {/* The column is the clamp now; a fixed max-width here
+                          would stop the stem growing with the table. */}
+                      <span className="block truncate" title={q.questionStem}>
                         {getStemPreview(q.questionStem)}
                       </span>
                     </TableCell>
@@ -1332,15 +1405,17 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         )}
       </Card>
       </>
-      )}
 
         </div>
 
-        {/* Right rail — sticky summary (lg+).
+        {/* Right rail — sticky summary.
             Item G (Wave 4) — empty until a filter is applied, then renders
             a tiered hierarchy: tier 1 composition headline (largest, gold),
             tier 2 type + difficulty (body), tier 3 PT range + history (muted). */}
-        <aside className="hidden lg:block">
+        {/* Rail and tray are one decision, so they key off the same container
+            condition. They used to disagree — `lg:` on both — which meant a wide
+            viewport around a narrow panel could show both or neither. */}
+        <aside className="hidden @[980px]:block" data-testid="summary-rail">
           <div className="sticky top-4">
             <Card className="p-4 space-y-3">
               <div className="font-semibold text-sm">
@@ -1351,12 +1426,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   : 'Set Summary'}
               </div>
 
-              {!hasAnyFilter && !summary.isFromSelection && !summary.isFromPreview ? (
-                <div className="rounded-md bg-muted/30 px-3 py-4 text-xs text-muted-foreground leading-relaxed">
-                  Pick a filter to start summarizing your set. The composition,
-                  type mix, difficulty spread, and history will surface here.
-                </div>
-              ) : (
+              {/* No empty state here. The rail is the feedback loop, so it
+                  always shows real numbers — unfiltered, those describe the
+                  full bank, which is exactly what Generate would draw from. */}
+              {(
                 <>
                   {/* Tier 1: composition headline */}
                   <div className="rounded-md bg-primary/[0.06] border border-primary/15 px-3 py-3">
@@ -1527,8 +1600,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         </aside>
       </div>
 
-      {/* Sticky Selection Tray */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 lg:hidden">
+      {/* Selection tray — the narrow-container counterpart to the summary rail.
+          Stays viewport-fixed on purpose: a sticky element cannot be pulled
+          above its normal flow position, and this renders after the whole
+          table, so sticky would only appear once you had scrolled past every
+          row. Converting it properly means restructuring the scroll container,
+          which is its own change. */}
+      <div
+        data-testid="selection-tray"
+        className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 @[980px]:hidden"
+      >
         <div className="max-w-7xl mx-auto p-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
