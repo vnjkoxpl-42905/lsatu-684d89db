@@ -37,15 +37,33 @@ async function verifyCal(raw: string, signature: string | null) {
   return !!secret && !!signature && safeEqual(await hmac(secret, raw), signature.replace(/^sha256=/i, ""));
 }
 
+// profiles has no `email` column — profiles.class_id IS the auth user id, and
+// the email lives on auth.users. Match by auth email first, then by name.
 async function matchStudent(supabase: any, email: string | null, name: string | null) {
   if (email) {
-    const { data } = await supabase.from("profiles").select("id,display_name,email").ilike("email", email).limit(2);
-    if ((data ?? []).length === 1) return data[0];
+    const wanted = email.trim().toLowerCase();
+    let page = 1;
+    while (page <= 5) {
+      const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 200 });
+      if (error) break;
+      const users = data?.users ?? [];
+      const hit = users.find((u: any) => (u.email ?? "").trim().toLowerCase() === wanted);
+      if (hit) {
+        const { data: profile } = await supabase
+          .from("profiles").select("class_id,display_name").eq("class_id", hit.id).maybeSingle();
+        if (profile) return { id: profile.class_id, display_name: profile.display_name, email: hit.email };
+      }
+      if (users.length < 200) break;
+      page++;
+    }
   }
   if (name) {
     const normalized = name.trim().replace(/\s+/g, " ");
-    const { data } = await supabase.from("profiles").select("id,display_name,email").ilike("display_name", normalized).limit(2);
-    if ((data ?? []).length === 1) return data[0];
+    const { data } = await supabase
+      .from("profiles").select("class_id,display_name").ilike("display_name", normalized).limit(2);
+    if ((data ?? []).length === 1) {
+      return { id: data[0].class_id, display_name: data[0].display_name, email };
+    }
   }
   return null;
 }
