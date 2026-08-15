@@ -90,15 +90,31 @@ describe('filterLRQuestions', () => {
       'PT101-S1-Q1',
       'PT102-S1-Q2',
     ]);
-    expect(filterLRQuestions(QUESTIONS, filters({ questionNumber: 2 })).map((q) => q.qid)).toEqual([
+    expect(filterLRQuestions(QUESTIONS, filters({ questionNumbers: [2] })).map((q) => q.qid)).toEqual([
       'PT101-S2-Q2',
       'PT102-S1-Q2',
     ]);
     expect(
-      filterLRQuestions(QUESTIONS, filters({ prepTests: [102], sections: [1], questionNumber: 2 })).map(
+      filterLRQuestions(QUESTIONS, filters({ prepTests: [102], sections: [1], questionNumbers: [2] })).map(
         (q) => q.qid,
       ),
     ).toEqual(['PT102-S1-Q2']);
+  });
+
+  it('ORs multiple question numbers rather than taking only one', () => {
+    expect(
+      filterLRQuestions(QUESTIONS, filters({ questionNumbers: [1, 2] })).map((q) => q.qid),
+    ).toEqual(['PT101-S1-Q1', 'PT101-S2-Q2', 'PT102-S1-Q2']);
+  });
+
+  it('treats an empty questionNumbers array as unrestricted, like every other facet', () => {
+    expect(filterLRQuestions(QUESTIONS, filters({ questionNumbers: [] }))).toHaveLength(
+      QUESTIONS.length,
+    );
+  });
+
+  it('excludes everything when no question carries the requested number', () => {
+    expect(filterLRQuestions(QUESTIONS, filters({ questionNumbers: [99] }))).toHaveLength(0);
   });
 
   it('searches normalized question text, answer choices, and qid case-insensitively', () => {

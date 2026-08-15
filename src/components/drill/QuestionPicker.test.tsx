@@ -144,6 +144,13 @@ function togglePopoverOption(triggerName: RegExp, checkboxId: string) {
   fireEvent.click(trigger(triggerName));
 }
 
+/** Type a spec and commit it the way a user does: Enter. */
+function applySpec(text: string) {
+  const input = screen.getByLabelText('Filter specification');
+  fireEvent.change(input, { target: { value: text } });
+  fireEvent.keyDown(input, { key: 'Enter' });
+}
+
 describe('QuestionPicker unified LR drill builder', () => {
   beforeEach(() => {
     mockToast.mockClear();
@@ -153,10 +160,13 @@ describe('QuestionPicker unified LR drill builder', () => {
   it('renders every filter trigger in the required order', () => {
     setup();
 
+    // The scalar "Question number" input is gone; question numbers are now
+    // expressed through the spec line, which sits below the focus row.
     const controls = [
+      screen.getByLabelText('Filter specification'),
+      screen.getByLabelText('Add exact questions'),
       trigger(/^PrepTests/),
       trigger(/^Section/),
-      screen.getByLabelText('Question number'),
       trigger(/^Question Type/),
       trigger(/^Reasoning Types/),
       trigger(/^Question Features/),
@@ -196,7 +206,7 @@ describe('QuestionPicker unified LR drill builder', () => {
     setup();
 
     togglePopoverOption(/^Reasoning Types/, 'rt-Comparative Reasoning');
-    fireEvent.change(screen.getByLabelText('Question number'), { target: { value: '1' } });
+    applySpec('Q1');
 
     expect(screen.getByText('0 matching questions')).toBeInTheDocument();
     fireEvent.click(trigger(/^Reasoning Types/));
@@ -267,6 +277,103 @@ describe('QuestionPicker unified LR drill builder', () => {
     expect(onStartDrill.mock.calls[0][0]).toMatchObject({
       count: 1,
       selectedQids: ['PT101-S1-Q1'],
+    });
+  });
+
+  describe('spec line', () => {
+    it('applies PT, section and multiple question numbers in one commit', () => {
+      setup();
+      applySpec('PT101 S1 Q1,2');
+
+      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
+      expect(trigger(/^Section/)).toHaveTextContent('(1)');
+      expect(screen.getByText('2 matching questions')).toBeInTheDocument();
+    });
+
+    it('expresses a set of question numbers the old scalar input could not', () => {
+      setup();
+      applySpec('Q1,3');
+
+      // Two distinct numbers at once. The previous control held exactly one.
+      expect(screen.getByText('2 matching questions')).toBeInTheDocument();
+    });
+
+    it('canonicalizes the text it commits', () => {
+      setup();
+      applySpec('q2,1 pt101');
+
+      expect(screen.getByLabelText('Filter specification')).toHaveValue('PT101 Q1,2');
+    });
+
+    it('reflects a popover change back into the bar', () => {
+      setup();
+      togglePopoverOption(/^PrepTests/, 'pt-101');
+
+      expect(screen.getByLabelText('Filter specification')).toHaveValue('PT101');
+    });
+
+    it('clears a facet when its tokens are removed, rather than restoring the old value', () => {
+      setup();
+      applySpec('PT101 S1');
+      expect(trigger(/^Section/)).toHaveTextContent('(1)');
+
+      applySpec('PT101');
+      expect(trigger(/^Section/)).not.toHaveTextContent('(1)');
+      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
+    });
+
+    it('rejects an invalid spec without touching the filters', () => {
+      setup();
+      applySpec('PT101');
+      applySpec('PT999');
+
+      expect(screen.getByRole('alert')).toHaveTextContent('not in the bank');
+      // The valid earlier commit survives; the bad one wrote nothing.
+      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
+    });
+
+    it('surfaces an unreadable token instead of silently ignoring it', () => {
+      setup();
+      applySpec('PT101 flaw');
+
+      expect(screen.getByRole('alert')).toHaveTextContent('flaw');
+    });
+  });
+
+  describe('exact references', () => {
+    function addExact(text: string) {
+      const input = screen.getByLabelText('Add exact questions');
+      fireEvent.change(input, { target: { value: text } });
+      fireEvent.keyDown(input, { key: 'Enter' });
+    }
+
+    it('adds named questions to the selection', async () => {
+      const { onStartDrill } = setup();
+      addExact('PT101.S1.Q1, PT101.S2.Q3');
+
+      fireEvent.click(await screen.findByRole('button', { name: 'Launch (2)' }));
+      expect(onStartDrill.mock.calls[0][0]).toMatchObject({
+        selectedQids: ['PT101-S1-Q1', 'PT101-S2-Q3'],
+      });
+    });
+
+    it('leaves the existing selection byte-identical when one reference is invalid', async () => {
+      setup();
+      addExact('PT101.S1.Q1');
+      expect(await screen.findByRole('button', { name: 'Launch (1)' })).toBeInTheDocument();
+
+      // One good, one nonexistent: the whole submission is a no-op.
+      addExact('PT101.S1.Q2, PT101.S9.Q99');
+
+      expect(screen.getByRole('alert')).toHaveTextContent('Nothing was added');
+      expect(screen.getByRole('button', { name: 'Launch (1)' })).toBeInTheDocument();
+    });
+
+    it('rejects a facet-style token, which belongs in the spec bar', () => {
+      setup();
+      addExact('PT101');
+
+      expect(screen.getByRole('alert')).toHaveTextContent('PT101.S2.Q1');
     });
   });
 });

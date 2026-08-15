@@ -4,7 +4,13 @@ import type { LRQuestion } from '@/lib/questionLoader';
 export interface LRDrillFilters {
   prepTests: number[];
   sections: number[];
-  questionNumber: number | null;
+  /**
+   * Question numbers, OR-ed like every other facet. An empty array means
+   * unrestricted, matching `prepTests` and `sections`. This replaced a single
+   * `questionNumber: number | null`, which could not express "Q1, 6, 8, 23" —
+   * the thing you most often want when rebuilding a specific set.
+   */
+  questionNumbers: number[];
   questionTypes: string[];
   reasoningTypes: string[];
   questionFeatures: string[];
@@ -36,7 +42,7 @@ export function createEmptyLRDrillFilters(): LRDrillFilters {
   return {
     prepTests: [],
     sections: [],
-    questionNumber: null,
+    questionNumbers: [],
     questionTypes: [],
     reasoningTypes: [],
     questionFeatures: [],
@@ -131,9 +137,8 @@ export function matchesLRDrillFilters(
     return false;
   }
   if (
-    filters.questionNumber !== null &&
-    Number.isFinite(filters.questionNumber) &&
-    question.qnum !== filters.questionNumber
+    filters.questionNumbers.length > 0 &&
+    !filters.questionNumbers.includes(question.qnum)
   ) {
     return false;
   }

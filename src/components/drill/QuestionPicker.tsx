@@ -1,4 +1,13 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import {
+  parseSpec,
+  formatSpec,
+  parseExactRefs,
+  type DrillSpec,
+  type SpecIssue,
+  type SpecVocabulary,
+} from '@/lib/drillSpecParser';
+import { encodeLRFilterState } from '@/lib/drillFilterCodec';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -245,6 +254,118 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     () => getVisibleLRDrillOptions(allSections, filters.sections, contextualCounts.sections),
     [allSections, contextualCounts.sections, filters.sections],
   );
+  /* ---- Spec line -------------------------------------------------------
+     The bar and the PT/S/Q controls are two notations for one state. The
+     filters are the source of truth; `specText` is a draft buffer that only
+     writes back on an explicit commit. Parsing on a debounce would
+     canonicalize mid-token — `PT1` is a complete, valid spec while you are
+     still typing `PT101` — and eat the caret. */
+
+  const specVocabulary = useMemo<SpecVocabulary>(
+    () => ({
+      prepTests: allPTs,
+      sections: allSections,
+      maxQuestionNumber: allQuestions.reduce((max, q) => Math.max(max, q.qnum), 0) || 26,
+    }),
+    [allPTs, allSections, allQuestions],
+  );
+
+  const specFromFilters = useMemo<DrillSpec>(
+    () => ({
+      prepTests: filters.prepTests,
+      sections: filters.sections,
+      questionNumbers: filters.questionNumbers,
+    }),
+    [filters.prepTests, filters.sections, filters.questionNumbers],
+  );
+
+  const [specText, setSpecText] = useState(() => formatSpec(specFromFilters));
+  const [specIssues, setSpecIssues] = useState<SpecIssue[]>([]);
+
+  // Any PT/S/Q mutation from anywhere — popover, chip grid, badge remove,
+  // "Any PT" — re-runs the one formatter, so the bar can never show stale text.
+  const canonicalSpecText = formatSpec(specFromFilters);
+  useEffect(() => {
+    setSpecText(canonicalSpecText);
+    setSpecIssues([]);
+  }, [canonicalSpecText]);
+
+  const commitSpec = () => {
+    const result = parseSpec(specText, specVocabulary);
+    setSpecIssues(result.issues);
+    if (!result.ok) return; // nothing is written while anything is rejected
+
+    // A commit replaces all three grammar-owned facets. Absence means
+    // unrestricted — otherwise deleting the last `S2` would leave sections
+    // unnamed, the old value would survive, and the formatter would write it
+    // straight back, making deletion impossible.
+    setFilters((prev) => ({
+      ...prev,
+      prepTests: result.spec.prepTests,
+      sections: result.spec.sections,
+      questionNumbers: result.spec.questionNumbers,
+    }));
+    setCurrentPage(1);
+    setSpecText(formatSpec(result.spec));
+  };
+
+  /* ---- Exact references ------------------------------------------------
+     A separate input on purpose. Sharing one field would allow
+     `PT101 PT102.S2.Q1`, which requests a generated set and a manual one at
+     once, with the manual qids silently overriding the visible spec. */
+
+  const [exactText, setExactText] = useState('');
+  const [exactIssues, setExactIssues] = useState<SpecIssue[]>([]);
+
+  const commitExactRefs = () => {
+    const parsed = parseExactRefs(exactText);
+    if (!parsed.ok) {
+      setExactIssues(parsed.issues);
+      return;
+    }
+    if (parsed.refs.length === 0) {
+      setExactIssues([]);
+      return;
+    }
+
+    // Resolve against the bank before touching state. Atomic: if any reference
+    // names a question that does not exist, nothing is added at all — a
+    // partially accepted paste is how a set quietly becomes the wrong set.
+    const resolved: string[] = [];
+    const missing: string[] = [];
+    for (const ref of parsed.refs) {
+      const q = allQuestions.find(
+        (x) => x.pt === ref.pt && x.section === ref.section && x.qnum === ref.qnum,
+      );
+      if (q) resolved.push(q.qid);
+      else missing.push(ref.label);
+    }
+
+    if (missing.length > 0) {
+      setExactIssues([
+        {
+          kind: 'unknown-value',
+          token: missing.join(', '),
+          message: `Not in the bank: ${missing.join(', ')}. Nothing was added.`,
+        },
+      ]);
+      return;
+    }
+
+    setSelectedQids((prev) => {
+      const next = new Set(prev);
+      resolved.forEach((qid) => next.add(qid));
+      return next;
+    });
+    setPreviewedQids(null);
+    setExactIssues([]);
+    setExactText('');
+    toast({
+      title: `Added ${resolved.length} question${resolved.length === 1 ? '' : 's'}`,
+      description: 'Your set is now a manual selection.',
+    });
+  };
+
   const visibleDifficulties = useMemo(
     () =>
       getVisibleLRDrillOptions(
@@ -415,7 +536,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     filters.sections.length > 0 ||
     filters.difficulties.length > 0 ||
     filters.searchQuery.trim() !== '' ||
-    filters.questionNumber !== null;
+    filters.questionNumbers.length > 0;
 
   // Materialize a fresh preview from the current filter pool.
   // No filter is a valid pool — it means the whole bank — because every facet
@@ -519,7 +640,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       reasoningTypes: filters.reasoningTypes.length > 0 ? [...filters.reasoningTypes] : undefined,
       sections: filters.sections.length > 0 ? [...filters.sections] : undefined,
       searchQuery: filters.searchQuery.trim() || undefined,
-      questionNumber: filters.questionNumber ?? undefined,
+      // No question-number metadata. `selectedQids` above already carries the
+      // resolved set, so passing it would duplicate state the runner does not
+      // read — and `TypeDrillConfig`'s field is a scalar that cannot hold the
+      // list this builder can now express.
     };
 
     // Wave 3 / Item A — record exposures for the questions we're about to
@@ -683,6 +807,113 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               Features → Levels → Search. Reordered from the legacy layout
               (PT → Type → Reasoning → Features → Section → Levels → Search). */}
           <div className="space-y-5 border-t border-border/60 px-5 py-5">
+            {/* Spec line. Replaces a single `Q#` number input that could hold
+                exactly one value — so "Q1, 6, 8, 23", the thing you actually
+                want when rebuilding a set, was not expressible at all.
+
+                It owns PT, section and question number only. Type, reasoning,
+                features and levels stay in their popovers, because a bar that
+                round-tripped through a grammar unable to express them would
+                drop them silently on every commit. */}
+            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
+                Spec
+              </div>
+              <div className="min-w-0 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative min-w-0 flex-1">
+                    <Input
+                      value={specText}
+                      onChange={(e) => {
+                        setSpecText(e.target.value);
+                        if (specIssues.length > 0) setSpecIssues([]);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          commitSpec();
+                        }
+                      }}
+                      onBlur={commitSpec}
+                      placeholder="PT 101-110 S2,3 Q1,6,8,23"
+                      aria-label="Filter specification"
+                      aria-invalid={specIssues.length > 0}
+                      aria-describedby={specIssues.length > 0 ? 'spec-errors' : undefined}
+                      className={cn(
+                        'h-11 pr-4 text-[15px] font-mono',
+                        specIssues.length > 0 && 'border-destructive focus-visible:ring-destructive',
+                      )}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="h-11 px-4"
+                    onClick={commitSpec}
+                    disabled={specText === formatSpec(specFromFilters)}
+                  >
+                    Apply
+                  </Button>
+                </div>
+                {specIssues.length > 0 && (
+                  <div id="spec-errors" role="alert" className="space-y-0.5">
+                    {specIssues.map((issue, i) => (
+                      <p key={`${issue.token}-${i}`} className="text-xs text-destructive">
+                        {issue.message}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Naming exact questions is a different job from narrowing a
+                    pool, so it gets its own field. These append to the
+                    selection and never touch the facets above. */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative min-w-0 flex-1">
+                    <Input
+                      value={exactText}
+                      onChange={(e) => {
+                        setExactText(e.target.value);
+                        // Editing is an attempt to fix the problem; keeping the
+                        // old error on screen just makes it look unfixable.
+                        if (exactIssues.length > 0) setExactIssues([]);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          commitExactRefs();
+                        }
+                      }}
+                      placeholder="Add exact questions — PT101.S2.Q1, PT101.S2.Q6"
+                      aria-label="Add exact questions"
+                      aria-invalid={exactIssues.length > 0}
+                      aria-describedby={exactIssues.length > 0 ? 'exact-errors' : undefined}
+                      className={cn(
+                        'h-10 text-sm font-mono',
+                        exactIssues.length > 0 && 'border-destructive focus-visible:ring-destructive',
+                      )}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="h-10 px-4"
+                    onClick={commitExactRefs}
+                    disabled={exactText.trim() === ''}
+                  >
+                    Add
+                  </Button>
+                </div>
+                {exactIssues.length > 0 && (
+                  <div id="exact-errors" role="alert" className="space-y-0.5">
+                    {exactIssues.map((issue, i) => (
+                      <p key={`${issue.token}-${i}`} className="text-xs text-destructive">
+                        {issue.message}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
                 Source
@@ -696,25 +927,58 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[400px] overflow-y-auto" align="start">
+              {/* A chip grid, not a checkbox column. Sixty PTs in a 400px-tall
+                  scrolling list showed about ten at a time, so picking a spread
+                  meant scrolling and hunting. Five across fits the whole bank
+                  in one glance. */}
+              <PopoverContent className="drill-observatory-launcher-panel w-[344px]" align="start">
                 <div className="space-y-2">
-                  <FilterMenuHeader
-                    title="Select PrepTests"
-                    activeCount={filters.prepTests.length}
-                    onClear={() => clearArrayFilter('prepTests')}
-                  />
-                  {visiblePTs.map(pt => (
-                    <div key={pt} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`pt-${pt}`}
-                        checked={filters.prepTests.includes(pt)}
-                        onCheckedChange={() => toggleFilter('prepTests', pt)}
-                      />
-                      <label htmlFor={`pt-${pt}`} className="text-sm cursor-pointer flex-1">
-                        PT{pt} ({contextualCounts.prepTests.get(pt) ?? 0})
-                      </label>
-                    </div>
-                  ))}
+                  <div className="flex items-center justify-between gap-2 pb-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      PrepTests
+                    </span>
+                    {/* One action, not All + Clear. An empty selection already
+                        means every PT, so "All" and "Clear" would do the same
+                        thing under different names. */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs"
+                      disabled={filters.prepTests.length === 0}
+                      onClick={() => clearArrayFilter('prepTests')}
+                    >
+                      Any PT
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-5 gap-1.5 max-h-[320px] overflow-y-auto pr-1">
+                    {visiblePTs.map(pt => {
+                      const active = filters.prepTests.includes(pt);
+                      const count = contextualCounts.prepTests.get(pt) ?? 0;
+                      return (
+                        <button
+                          key={pt}
+                          id={`pt-${pt}`}
+                          type="button"
+                          role="checkbox"
+                          aria-checked={active}
+                          aria-label={`PT${pt}, ${count} questions`}
+                          title={`PT${pt} · ${count} questions`}
+                          onClick={() => toggleFilter('prepTests', pt)}
+                          className={cn(
+                            'h-9 rounded-md border text-xs tabular-nums transition-colors',
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            active
+                              ? 'border-primary bg-primary text-primary-foreground font-semibold'
+                              : count === 0
+                              ? 'border-border/40 text-muted-foreground/40'
+                              : 'border-border text-foreground hover:bg-accent',
+                          )}
+                        >
+                          {pt}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </PopoverContent>
             </Popover>
@@ -750,46 +1014,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
 
-            {/* Question Number Filter (Item D — new direct-jump affordance).
-                Combines with PT + Section to pinpoint a specific question;
-                alone it filters every qnum across the bank. */}
-            <div className="flex h-11 w-full items-center gap-2 rounded-md border border-input bg-background px-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/35 sm:w-auto">
-              <span className="text-xs font-semibold text-muted-foreground">Q#</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                min={1}
-                max={26}
-                value={filters.questionNumber ?? ''}
-                onChange={(e) => {
-                  const raw = e.target.value.trim();
-                  const parsed = raw === '' ? null : Number.parseInt(raw, 10);
-                  setFilters((prev) => ({
-                    ...prev,
-                    questionNumber: parsed !== null && Number.isFinite(parsed) ? parsed : null,
-                  }));
-                  setCurrentPage(1);
-                }}
-                placeholder="14"
-                className="w-12 bg-transparent text-[15px] tabular-nums text-foreground outline-none placeholder:text-muted-foreground"
-                aria-label="Question number"
-              />
-              {filters.questionNumber !== null && (
-                <button
-                  type="button"
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  onClick={() => {
-                    setFilters((prev) => ({ ...prev, questionNumber: null }));
-                    setCurrentPage(1);
-                  }}
-                  aria-label="Clear question number"
-                >
-                  <X className="h-3.5 w-3.5" aria-hidden />
-                </button>
-              )}
-            </div>
               </div>
             </div>
+
 
             <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
@@ -1099,7 +1326,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             filters.questionFeatures.length > 0 ||
             filters.sections.length > 0 ||
             filters.difficulties.length > 0 ||
-            filters.questionNumber !== null ||
+            filters.questionNumbers.length > 0 ||
             filters.searchQuery.trim() !== '') && (
             <div className="flex flex-wrap gap-2 border-t border-border/60 px-5 py-4">
               {filters.prepTests.map(pt => (
@@ -1138,18 +1365,21 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('difficulties', diff)} />
                 </Badge>
               ))}
-              {filters.questionNumber !== null && (
-                <Badge variant="secondary" className="gap-1">
-                  Q{filters.questionNumber}
+              {filters.questionNumbers.map((qnum) => (
+                <Badge key={`qnum-${qnum}`} variant="secondary" className="gap-1">
+                  Q{qnum}
                   <X
                     className="h-3 w-3 cursor-pointer"
                     onClick={() => {
-                      setFilters((prev) => ({ ...prev, questionNumber: null }));
+                      setFilters((prev) => ({
+                        ...prev,
+                        questionNumbers: prev.questionNumbers.filter((n) => n !== qnum),
+                      }));
                       setCurrentPage(1);
                     }}
                   />
                 </Badge>
-              )}
+              ))}
               {filters.searchQuery.trim() !== '' && (
                 <Badge variant="secondary" className="gap-1">
                   Search: {filters.searchQuery.trim()}
@@ -1845,7 +2075,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   try {
                     await saveSetMut.mutateAsync({
                       name,
-                      filter_state: filters as unknown as Record<string, unknown>,
+                      filter_state: encodeLRFilterState(filters),
                       question_ids: ids,
                     });
                     toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
@@ -1881,7 +2111,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 try {
                   await saveSetMut.mutateAsync({
                     name,
-                    filter_state: filters as unknown as Record<string, unknown>,
+                    filter_state: encodeLRFilterState(filters),
                     question_ids: ids,
                   });
                   toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
