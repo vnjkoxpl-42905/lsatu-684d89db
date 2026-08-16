@@ -22,7 +22,16 @@ This is not unique to him. Three active passes are in this state: **Vinay, Asia,
    - Signed-in path (`student-booking`): if no pass is found by account id, fall back to matching an active pass by the signed-in user's email, and permanently attach it on first hit.
    - Public link path (`public-booking`): when a pass has no `student_id` but its email matches an account, attach it before booking so the redemption, uploads, and emails all land on the real account.
 
-4. **Verify.** Re-run the pass/account join and confirm zero active passes are unlinked, then check Vinay's in-app Booking page shows 8 sessions remaining with open slots.
+4. **Full account audit (everyone, not just Vinay).** Sweep every student account and report/repair:
+   - Passes with no linked account (Vinay, Asia, Dakota today) — link them.
+   - Accounts with a pass but no profile row, or a profile whose name/email doesn't match the pass.
+   - Booked sessions (`booking_pass_redemptions`) not attached to an account, so every past session shows in the right student's history.
+   - Credit math sanity: used credits equal to the count of non-cancelled bookings; passes marked `exhausted`/`active` consistent with credits left.
+   - Feature access flags still on for every active student (they were globally enabled earlier — confirm no new signup slipped through).
+   I'll show you a per-student table of what was off and what was corrected.
+
+5. **Verify.** Re-run the pass/account join and confirm zero active passes are unlinked, then check Vinay's in-app Booking page shows 8 sessions remaining with open slots.
+
 
 ## Technical notes
 
