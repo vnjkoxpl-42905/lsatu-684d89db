@@ -21,12 +21,27 @@ function json(body: unknown, status = 200) {
 
 const gcal: GoogleCal = { insertEvent, patchEvent, getEvent, deleteEvent, freeBusy, meetUrlFromEvent };
 
-async function activePassRow(supabase: any, userId: string): Promise<BookingPass | null> {
+async function activePassRow(supabase: any, userId: string, userEmail?: string | null): Promise<BookingPass | null> {
   const { data } = await supabase
     .from("booking_passes").select("*")
     .eq("student_id", userId).eq("status", "active")
     .order("created_at", { ascending: false }).limit(1).maybeSingle();
-  return data ?? null;
+  if (data) return data;
+
+  // Self-heal: passes issued by name/email only carry no student_id, so the
+  // account lookup above misses them even though the student owns the pass.
+  // Match on the verified JWT email and attach the account permanently.
+  const email = (userEmail ?? "").trim().toLowerCase();
+  if (!email) return null;
+  const { data: byEmail } = await supabase
+    .from("booking_passes").select("*")
+    .is("student_id", null).eq("status", "active").ilike("student_email", email)
+    .order("created_at", { ascending: false }).limit(1).maybeSingle();
+  if (!byEmail) return null;
+  const { error: linkErr } = await supabase
+    .from("booking_passes").update({ student_id: userId }).eq("id", byEmail.id).is("student_id", null);
+  if (linkErr) console.error("pass auto-link failed", { passId: byEmail.id, error: linkErr.message ?? linkErr });
+  return { ...byEmail, student_id: userId };
 }
 
 async function offersForStudent(supabase: any, userId: string) {
