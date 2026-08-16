@@ -105,6 +105,13 @@ Deno.serve(async (req) => {
       const raw = genToken();
       const hash = await sha256Hex(raw);
 
+      // Passes created by name/email only are invisible to the signed-in
+      // surfaces (in-app booking page, uploads, schedule history). If the email
+      // matches a real account, attach it now so both doors agree.
+      if (!body.student_id && body.student_email) {
+        body.student_id = await findAuthUserIdByEmail(supabase, body.student_email);
+      }
+
       // When granting to a real student account, go through grant_booking_access
       // so any prior active pass is atomically revoked (one-active-per-student)
       // AND the public booking slug is created in the same transaction.
