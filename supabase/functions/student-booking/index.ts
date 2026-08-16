@@ -91,6 +91,10 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = String(body.action || "");
 
+    // Attach any account-less pass that belongs to this email before anything
+    // reads passes by account id (info RPC, slots, book, uploads).
+    await activePassRow(supabase, userId, userEmail);
+
     // ------------------------------------------------------------------- info
     if (action === "info") {
       const { data, error } = await supabase.rpc("get_student_booking", { _auth_user_id: userId });
