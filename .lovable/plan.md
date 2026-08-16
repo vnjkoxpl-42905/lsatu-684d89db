@@ -1,20 +1,31 @@
-## Change
+# Fix booking links that aren't tied to a student account
 
-Switch the default post-login landing route from `/mainhub` to `/classroom`. The onboarding gate and `returnTo`/`next` handling stay the same — only the fallback destination changes.
+## What's actually wrong
 
-## Files
+Vinay's pass exists and is healthy — 10 sessions, 2 used, 8 left, status active, link `/book/vinay-...`. The problem is that his pass row has **no student account attached** (`student_id` is empty), even though he has an account under the same email.
 
-1. **`src/lib/authRedirect.ts`**
-   - Replace the final `navigate("/mainhub", ...)` with `navigate("/classroom", ...)`.
-   - Update the surrounding comments so they reference `/classroom` instead of `/mainhub`.
+That breaks scheduling everywhere except the raw public link:
 
-2. **`src/pages/ResetPassword.tsx`** (line 178)
-   - Replace `navigate('/mainhub', { replace: true })` with `navigate('/classroom', { replace: true })` so post–password-reset lands in the same place.
+- Signed in, the in-app Booking page looks up a pass by account id, finds nothing, and tells him he has no sessions to book.
+- File uploads attached to a booking fail for him (same account-id lookup).
+- Sessions he books through the public link aren't linked to his account, so they don't show in his app schedule/history.
 
-3. **`src/pages/Auth.tsx`** (line 233)
-   - Comment-only update to reference `/classroom` (no behavior change; it already calls `redirectAfterAuth`).
+This is not unique to him. Three active passes are in this state: **Vinay, Asia, Dakota** — all three have matching accounts by email but no link. Everyone else's pass is already linked correctly.
 
-## Notes
+## The fix
 
-- `/classroom` is gated by `has_classroom_access` in `App.tsx`. Students without that flag will hit the ProtectedRoute's own fallback — that's existing behavior and out of scope for this change. Flag me if you want the redirect to be conditional on the flag instead.
-- Users mid-onboarding still route to `/onboarding` first; `returnTo`/`next` query params still win over the default.
+1. **Backfill (one-time data fix).** For every pass with no `student_id` whose email matches exactly one account, attach that account. Also attach past redemptions from those passes so booked sessions appear in the student's schedule/history.
+
+2. **Stop it recurring at creation.** When a booking pass is created from the Teacher Desk with a student email, resolve that email to an account and store `student_id` on the pass. If no account exists yet, leave it null (public link still works).
+
+3. **Self-heal on use.** In the two booking front doors:
+   - Signed-in path (`student-booking`): if no pass is found by account id, fall back to matching an active pass by the signed-in user's email, and permanently attach it on first hit.
+   - Public link path (`public-booking`): when a pass has no `student_id` but its email matches an account, attach it before booking so the redemption, uploads, and emails all land on the real account.
+
+4. **Verify.** Re-run the pass/account join and confirm zero active passes are unlinked, then check Vinay's in-app Booking page shows 8 sessions remaining with open slots.
+
+## Technical notes
+
+- Data fix: SQL migration updating `booking_passes.student_id` from `auth.users` by lower-cased email (only where exactly one match), plus `booking_pass_redemptions.student_id` for those passes.
+- Code: `supabase/functions/student-booking/index.ts` (`activePassRow` email fallback + write-back), `supabase/functions/public-booking/index.ts` (link-on-book), and the admin create path in `booking-pass-admin` (resolve email → `student_id`).
+- No change to slug format, availability, credits, or existing Google Calendar events.
