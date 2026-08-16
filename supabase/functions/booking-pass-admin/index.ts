@@ -4,6 +4,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { generateBookingSlug, validateNewPassInput } from "../_shared/bookingPassLinks.ts";
 import { deleteEvent } from "../_shared/googleCalendar.ts";
+import { findAuthUserIdByEmail } from "../_shared/linkPassToAccount.ts";
 
 async function sha256Hex(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
