@@ -134,7 +134,7 @@ Deno.serve(async (req) => {
       return json({ url: offer.url });
     }
 
-    const pass = await activePassRow(supabase, userId);
+    const pass = await activePassRow(supabase, userId, userEmail);
 
     // ------------------------------------------------------------------ slots
     if (action === "slots") {
