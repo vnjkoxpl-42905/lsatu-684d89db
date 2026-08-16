@@ -20,6 +20,7 @@ import {
 import {
   bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
+import { linkPassToAccount } from "../_shared/linkPassToAccount.ts";
 
 const LIMITS = {
   read: 20,          // info|slots per (ip,slug) per minute
