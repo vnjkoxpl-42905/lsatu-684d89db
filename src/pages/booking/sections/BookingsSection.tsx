@@ -11,6 +11,18 @@ import { SectionHeader } from "../BookingWorkspace";
 import { bookingAdmin, durationLabel, type Booking, type BookingUpload } from "../api";
 import BookingHealthSection from "./BookingHealthSection";
 
+type SingleSessionAdminBooking = {
+  source: "single_session";
+  id: string;
+  start_at: string;
+  end_at: string;
+  status: string;
+  meet_url: string | null;
+  name?: string | null;
+  email?: string | null;
+  user_id?: string | null;
+};
+
 const fmt = (iso: string) =>
   new Date(iso).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 
@@ -18,18 +30,26 @@ function BookingStatusChip({ status }: { status: string }) {
   const map: Record<string, string> = {
     booked: "bg-emerald-500/10 text-emerald-700 border-emerald-500/30",
     cancelled: "bg-muted text-muted-foreground border-border",
+    draft: "bg-primary/10 text-primary border-primary/30",
+    checkout_open: "bg-primary/10 text-primary border-primary/30",
+    expired: "bg-muted text-muted-foreground border-border",
+    abandoned: "bg-muted text-muted-foreground border-border",
+    refund_pending: "bg-amber-500/10 text-amber-700 border-amber-500/30",
+    refunded: "bg-emerald-500/10 text-emerald-700 border-emerald-500/30",
+    refund_failed: "bg-destructive/10 text-destructive border-destructive/30",
     failed: "bg-red-500/10 text-red-700 border-red-500/30",
     no_show: "bg-amber-500/10 text-amber-700 border-amber-500/30",
   };
   return (
     <span className={cn("rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider", map[status] ?? map.booked)}>
-      {status === "no_show" ? "no-show" : status}
+      {status === "no_show" ? "no-show" : status.replace(/_/g, " ")}
     </span>
   );
 }
 
 export default function BookingsSection() {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [singleSessions, setSingleSessions] = useState<SingleSessionAdminBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -52,8 +72,12 @@ export default function BookingsSection() {
 
   const refresh = useCallback(async () => {
     try {
-      const res = await bookingAdmin("list_bookings") as { bookings: Booking[] };
-      setBookings(res.bookings);
+      const [packageResult, singleResult] = await Promise.all([
+        bookingAdmin("list_bookings") as Promise<{ bookings: Booking[] }>,
+        bookingAdmin("single_sessions_global") as Promise<{ bookings: SingleSessionAdminBooking[] }>,
+      ]);
+      setBookings(packageResult.bookings);
+      setSingleSessions(singleResult.bookings ?? []);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load bookings");
     } finally { setLoading(false); }
@@ -105,6 +129,21 @@ export default function BookingsSection() {
 
       <div className="px-8 py-6">
         <BookingHealthSection />
+        <section className="booking-shadow mb-6 overflow-hidden rounded-2xl border border-border bg-card" aria-labelledby="single-session-admin-heading">
+          <div className="border-b border-border px-5 py-4">
+            <h2 id="single-session-admin-heading" className="font-semibold">Single Sessions</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">Every native Single Session, including guest-owned and unmatched bookings.</p>
+          </div>
+          {loading ? <div className="flex items-center px-5 py-6 text-sm text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Loading Single Sessions…</div>
+            : singleSessions.length === 0 ? <p className="px-5 py-6 text-sm text-muted-foreground">No Single Sessions yet.</p> : <div>
+            {singleSessions.map((booking, index) => <div key={booking.id} className={cn("flex flex-wrap items-center gap-3 px-5 py-3", index > 0 && "border-t border-border")}>
+              <div className="min-w-48 flex-1"><div className="text-sm font-medium">{booking.name || booking.email || "Guest booker"}</div><div className="mt-0.5 text-xs text-muted-foreground">{fmt(booking.start_at)} · {durationLabel(Math.round((new Date(booking.end_at).getTime() - new Date(booking.start_at).getTime()) / 60_000))}</div></div>
+              <span className="rounded-md border border-border bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">{booking.user_id ? "verified account" : "guest-owned"}</span>
+              <BookingStatusChip status={booking.status} />
+              {booking.meet_url && booking.status === "booked" ? <Button asChild size="sm" variant="outline"><a href={booking.meet_url} target="_blank" rel="noreferrer"><Video className="mr-1.5 h-4 w-4" />Meet</a></Button> : null}
+            </div>)}
+          </div>}
+        </section>
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
         ) : rows.length === 0 ? (

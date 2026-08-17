@@ -22,24 +22,24 @@ const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
 
 export default function BookingView() {
   const queryClient = useQueryClient();
-  const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[] } | null>(null);
+  const [commerce, setCommerce] = useState<{ offers: BookingOffer[]; commerce: BookingCommerceItem[]; external_bookings: ExternalBookingItem[]; bookings: { source: "redemption" | "single_session"; id: string; start_at: string; status: string }[] } | null>(null);
   const [hasCredits, setHasCredits] = useState(false);
 
   const api: BookingApi = useMemo(() => ({
     loadInfo: async () => {
       const d = (await invoke("info")) as {
         pass: { credits_remaining: number; session_length_minutes: number; total_credits: number; status: string } | null;
-        redemptions?: { id: string; start_at: string; status: string; meet_url?: string | null }[];
+        bookings?: { source: "redemption" | "single_session"; id: string; start_at: string; status: string; meet_url?: string | null }[];
         offers?: BookingOffer[];
         commerce?: BookingCommerceItem[];
         external_bookings?: ExternalBookingItem[];
       };
-      setCommerce({ offers: d.offers ?? [], commerce: d.commerce ?? [], external_bookings: d.external_bookings ?? [] });
+      setCommerce({ offers: d.offers ?? [], commerce: d.commerce ?? [], external_bookings: d.external_bookings ?? [], bookings: d.bookings ?? [] });
       const p = d.pass;
       setHasCredits((p?.credits_remaining ?? 0) > 0);
       return {
         pass: p ? { credits_remaining: p.credits_remaining, session_length_minutes: p.session_length_minutes, total_credits: p.total_credits, status: p.status } : null,
-        redemptions: d.redemptions ?? [],
+        bookings: d.bookings ?? [],
       };
     },
     loadSlots: async () => {
@@ -82,14 +82,15 @@ export default function BookingView() {
     },
   }), [queryClient]);
 
-  const offerHub = (
+  const offerHub = commerce ? (
     <BookingOfferHub
-      offers={commerce?.offers ?? []}
-      commerce={commerce?.commerce ?? []}
-      externalBookings={commerce?.external_bookings ?? []}
+      offers={commerce.offers}
+      commerce={commerce.commerce}
+      externalBookings={commerce.external_bookings}
+      bookings={commerce.bookings}
       demoted={hasCredits}
     />
-  );
+  ) : null;
 
   return (
     <div className="pb-20">

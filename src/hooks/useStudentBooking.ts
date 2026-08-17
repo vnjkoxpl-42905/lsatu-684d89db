@@ -11,21 +11,33 @@ export type StudentPass = {
   expires_at: string | null;
 } | null;
 
-export type StudentRedemption = {
+export type StudentBookingBase = {
   id: string;
   start_at: string;
   end_at: string;
   status: string;
   meet_url: string | null;
+  calendar_status?: string | null;
+};
+
+export type StudentRedemptionBooking = StudentBookingBase & {
+  source: "redemption";
   reschedule_count: number;
   google_event_id: string | null;
-  calendar_status?: string | null;
   can_reschedule: boolean;
 };
 
+export type StudentSingleSessionBooking = StudentBookingBase & {
+  source: "single_session";
+  google_event_id: string | null;
+  can_reschedule: false;
+};
+
+export type StudentBooking = StudentRedemptionBooking | StudentSingleSessionBooking;
+
 export type StudentBookingInfo = {
   pass: StudentPass;
-  redemptions: StudentRedemption[];
+  bookings: StudentBooking[];
 };
 
 const callInfo = async (): Promise<StudentBookingInfo> => {
@@ -34,7 +46,7 @@ const callInfo = async (): Promise<StudentBookingInfo> => {
   });
   if (error) throw new Error(error.message);
   if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
-  return (data as StudentBookingInfo) ?? { pass: null, redemptions: [] };
+  return (data as StudentBookingInfo) ?? { pass: null, bookings: [] };
 };
 
 /**

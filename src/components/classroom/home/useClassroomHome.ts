@@ -321,8 +321,8 @@ export function useClassroomHome(): {
 
   /* ── next session ──────────────────────────────────────────────────── */
 
-  const nextRedemption = React.useMemo(() => {
-    return (bookingQuery.data?.redemptions ?? [])
+  const nextBooking = React.useMemo(() => {
+    return (bookingQuery.data?.bookings ?? [])
       .filter(
         (redemption) =>
           new Date(redemption.start_at).getTime() > Date.now() &&
@@ -331,19 +331,19 @@ export function useClassroomHome(): {
       .sort(
         (a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime(),
       )[0] ?? null;
-  }, [bookingQuery.data?.redemptions]);
+  }, [bookingQuery.data?.bookings]);
 
   const session = React.useMemo(() => {
-    if (!nextRedemption) return null;
+    if (!nextBooking) return null;
     const minutes = Math.round(
-      (new Date(nextRedemption.end_at).getTime() -
-        new Date(nextRedemption.start_at).getTime()) /
+      (new Date(nextBooking.end_at).getTime() -
+        new Date(nextBooking.start_at).getTime()) /
         60_000,
     );
     return {
-      startsAt: nextRedemption.start_at,
+      startsAt: nextBooking.start_at,
       durationMin: Number.isFinite(minutes) && minutes > 0 ? minutes : null,
-      label: sessionLabel(nextRedemption.start_at),
+      label: sessionLabel(nextBooking.start_at),
       meta: [
         // The instructor is named for a student, whose session it is with him.
         // Staff looking at their own classroom get the plain duration: "with
@@ -353,12 +353,12 @@ export function useClassroomHome(): {
             ? `${minutes} minutes`
             : `${minutes} minutes with Joshua`
           : null,
-        untilLabel(nextRedemption.start_at),
+        untilLabel(nextBooking.start_at),
       ]
         .filter(Boolean)
         .join(" · "),
     };
-  }, [nextRedemption, permissions.is_admin]);
+  }, [nextBooking, permissions.is_admin]);
 
   /* ── the week ──────────────────────────────────────────────────────── */
 
@@ -379,16 +379,16 @@ export function useClassroomHome(): {
       if (span.has(iso)) entries.push({ iso, label: item.title });
     }
 
-    for (const redemption of bookingQuery.data?.redemptions ?? []) {
-      if (["cancelled", "canceled"].includes(redemption.status.toLowerCase())) continue;
-      const iso = localDayISO(new Date(redemption.start_at));
+    for (const booking of bookingQuery.data?.bookings ?? []) {
+      if (["cancelled", "canceled"].includes(booking.status.toLowerCase())) continue;
+      const iso = localDayISO(new Date(booking.start_at));
       if (span.has(iso)) {
-        entries.push({ iso, label: `Session, ${timeLabel(redemption.start_at)}` });
+        entries.push({ iso, label: `Session, ${timeLabel(booking.start_at)}` });
       }
     }
 
     return buildWeek(dates, entries, now);
-  }, [bookingQuery.data?.redemptions, dates, itemsQuery.data, now, planQuery.data?.items]);
+  }, [bookingQuery.data?.bookings, dates, itemsQuery.data, now, planQuery.data?.items]);
 
   const dueTodayCount = workRows.filter((row) => row.dueToday || row.overdue).length;
   // Without chat access there is no inbox to send them to, so the count must
@@ -436,4 +436,3 @@ export function useClassroomHome(): {
     completingKey,
   };
 }
-

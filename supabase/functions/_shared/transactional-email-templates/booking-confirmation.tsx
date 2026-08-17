@@ -17,6 +17,8 @@ interface BookingConfirmationProps {
   meetUrl?: string
   studentNote?: string     // admin copy only: comment the student left at booking
   fileNames?: string[]     // admin copy only: files the student attached
+  cancelUrl?: string       // Single Session capability; student copy only
+  calendarPending?: boolean
 }
 
 const BookingConfirmationEmail = ({
@@ -28,6 +30,8 @@ const BookingConfirmationEmail = ({
   meetUrl,
   studentNote = '',
   fileNames = [],
+  cancelUrl,
+  calendarPending = false,
 }: BookingConfirmationProps) => {
   const isAdmin = recipientRole === 'admin'
   const hasSubmission = isAdmin && (Boolean(studentNote) || fileNames.length > 0)
@@ -77,8 +81,10 @@ const BookingConfirmationEmail = ({
 
           {!isAdmin && (
             <Text style={text}>
-              A Google Calendar invite is on its way to your email. <strong>Please accept it</strong> so
-              the session lands on your calendar and you get reminders.
+              {calendarPending
+                ? 'Your booking is confirmed. The calendar invite and Meet link will follow shortly.'
+                : <>A Google Calendar invite is on its way to your email. <strong>Please accept it</strong> so
+                  the session lands on your calendar and you get reminders.</>}
             </Text>
           )}
 
@@ -87,6 +93,12 @@ const BookingConfirmationEmail = ({
               <Button href={meetUrl} style={button}>Join with Google Meet</Button>
               <Text style={meetHint}>{meetUrl}</Text>
             </Section>
+          )}
+
+          {!isAdmin && cancelUrl && (
+            <Text style={text}>
+              Need to cancel? <a href={cancelUrl}>Cancel this session</a>. Cancellations do not trigger an automatic refund.
+            </Text>
           )}
 
           <Text style={footer}>— The {SITE_NAME} Team</Text>

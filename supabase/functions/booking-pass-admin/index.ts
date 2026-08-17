@@ -45,12 +45,36 @@ Deno.serve(async (req) => {
     const { data: userRes } = await supabase.auth.getUser(token);
     const user = userRes?.user;
     if (!user) return json({ error: "unauthorized" }, 401);
-    const { data: roleRow } = await supabase
+    const { data: roleRow, error: roleError } = await supabase
       .from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+    if (roleError) throw roleError;
     if (!roleRow) return json({ error: "forbidden" }, 403);
 
     const body = await req.json().catch(() => ({}));
     const action = String(body.action || "");
+
+    const singleSessionDto = (row: any, association?: "verified_account" | "possible_match_unverified_email") => ({
+      source: "single_session" as const,
+      id: row.id,
+      start_at: row.start_at,
+      end_at: row.end_at,
+      status: row.status,
+      meet_url: row.status === "booked" ? row.meet_url ?? null : null,
+      name: row.name ?? null,
+      email: row.email ?? null,
+      user_id: row.user_id ?? null,
+      created_at: row.created_at,
+      ...(association ? { association } : {}),
+    });
+
+    if (action === "single_sessions_global") {
+      const { data, error } = await supabase.from("single_session_bookings")
+        .select("id,start_at,end_at,status,meet_url,name,email,user_id,created_at")
+        .order("start_at", { ascending: false })
+        .limit(500);
+      if (error) throw error;
+      return json({ bookings: (data ?? []).map((row: any) => singleSessionDto(row)) });
+    }
 
     if (action === "list") {
       const { data, error } = await supabase
@@ -191,7 +215,27 @@ Deno.serve(async (req) => {
         .limit(1)
         .maybeSingle();
       if (error) throw error;
-      if (!data) return json({ pass: null });
+      const { data: verifiedRows, error: verifiedError } = await supabase.from("single_session_bookings")
+        .select("id,start_at,end_at,status,meet_url,name,email,user_id,created_at")
+        .eq("user_id", studentId)
+        .order("start_at", { ascending: false });
+      if (verifiedError) throw verifiedError;
+      const { data: authUser, error: authUserError } = await supabase.auth.admin.getUserById(studentId);
+      if (authUserError) throw authUserError;
+      let possibleRows: any[] = [];
+      if (authUser?.user?.email) {
+        const { data: emailRows, error: emailError } = await supabase.from("single_session_bookings")
+          .select("id,start_at,end_at,status,meet_url,name,email,user_id,created_at")
+          .ilike("email", authUser.user.email.trim())
+          .order("start_at", { ascending: false });
+        if (emailError) throw emailError;
+        possibleRows = (emailRows ?? []).filter((row: any) => row.user_id !== studentId);
+      }
+      const associations = {
+        single_session_bookings: (verifiedRows ?? []).map((row: any) => singleSessionDto(row, "verified_account")),
+        single_session_possible_matches: possibleRows.map((row: any) => singleSessionDto(row, "possible_match_unverified_email")),
+      };
+      if (!data) return json({ pass: null, ...associations });
       return json({
         pass: {
           id: data.id,
@@ -203,6 +247,7 @@ Deno.serve(async (req) => {
           expires_at: data.expires_at,
           booking_url: data.booking_slug ? bookingUrl(data.booking_slug) : null,
         },
+        ...associations,
       });
     }
 

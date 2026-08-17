@@ -125,7 +125,7 @@ export default function BookSessionPanel() {
 
   const monthLabel = monthAnchor.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   const today = startOfDay(new Date());
-  const upcoming = (info?.redemptions ?? []).filter(
+  const upcoming = (info?.bookings ?? []).filter(
     (r) => r.status === "booked" && new Date(r.start_at) > new Date(),
   );
 

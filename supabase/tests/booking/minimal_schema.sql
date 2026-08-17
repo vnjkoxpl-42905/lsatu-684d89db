@@ -60,6 +60,8 @@ CREATE OR REPLACE FUNCTION public.get_booking_availability() RETURNS jsonb LANGU
     FROM public.booking_availability a
   ), '[]'::jsonb)) FROM public.booking_availability_config c WHERE id = 1
 $$;
+CREATE OR REPLACE FUNCTION public.is_slot_bookable(timestamptz, int)
+RETURNS boolean LANGUAGE sql STABLE AS $$ SELECT true $$;
 
 CREATE TABLE public.external_work_uploads (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), student_id uuid, uploaded_by uuid,

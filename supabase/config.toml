@@ -55,6 +55,15 @@ verify_jwt = true
 [functions.booking-commerce-webhook]
 verify_jwt = false
 
+[functions.single-session]
+verify_jwt = false
+
+[functions.single-session-sweeper]
+verify_jwt = false
+
+[functions.single-session-outbox]
+verify_jwt = false
+
 [functions.mcp]
 verify_jwt = false
 

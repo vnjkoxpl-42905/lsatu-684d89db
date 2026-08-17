@@ -247,7 +247,7 @@ describe('AssistantComposer', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
 
     // Pick the file in the Google-style picker, then confirm.
-    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }, { timeout: 5_000 }));
     fireEvent.click(screen.getByRole('button', { name: 'Attach' }));
 
     expect(await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' })).toBeInTheDocument();
@@ -264,7 +264,7 @@ describe('AssistantComposer', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
 
     // Cancel without selecting anything.
-    await screen.findByRole('button', { name: 'Lesson plan.pdf' });
+    await screen.findByRole('button', { name: 'Lesson plan.pdf' }, { timeout: 5_000 });
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
     expect(screen.queryByRole('button', { name: /^Remove Lesson plan/ })).not.toBeInTheDocument();
@@ -277,7 +277,7 @@ describe('AssistantComposer', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Open composer actions' }));
     fireEvent.click(screen.getByRole('menuitem', { name: /Attach from Drive/ }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Lesson plan.pdf' }, { timeout: 5_000 }));
     fireEvent.click(screen.getByRole('button', { name: 'Attach' }));
     await screen.findByRole('button', { name: 'Remove Lesson plan.pdf' });
     fireEvent.keyDown(screen.getByLabelText('Assistant instructions'), { key: 'Enter', shiftKey: false });

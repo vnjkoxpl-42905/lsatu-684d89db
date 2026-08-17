@@ -15,6 +15,10 @@ vi.mock('@/bootcamps/main-conclusion/hooks/useUser', () => ({
   useUser: () => ({ id: 'student-1' }),
 }));
 
+vi.mock('canvas-confetti', () => ({
+  default: vi.fn(),
+}));
+
 const markDrillComplete = vi.fn();
 
 vi.mock('@/bootcamps/main-conclusion/hooks/useModuleProgress', () => ({
@@ -70,7 +74,7 @@ describe('ConclusionTypeLab', () => {
     reveal();
 
     const teachBlock = screen.getByRole('status');
-    expect(within(teachBlock).getByText(/^It is a Recommendation$/)).toBeInTheDocument();
+    expect(within(teachBlock).getByText(/this one is a recommendation/i)).toBeInTheDocument();
     expect(screen.getByText(/predictable weakness/i)).toBeInTheDocument();
     expect(screen.getByText(/staggering beats the costs and the alternatives/i)).toBeInTheDocument();
 

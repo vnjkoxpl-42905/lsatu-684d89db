@@ -13,15 +13,23 @@
 //   4. On repeated failure past MAX_ATTEMPTS, mark gcal_state='failed' + record
 //      the error for admin follow-up (never silently drop a paid booking).
 //
-// Trigger: cron (see below) or manual POST. Service-role only in practice; it
-// reads secrets and calls Google directly.
+// Trigger: an authenticated worker cron. The dedicated worker secret is
+// required even though the function itself uses service-role access internally.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { deleteEvent, getEvent, insertEvent, listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { deterministicGoogleEventId } from "../_shared/bookingCore.ts";
+import { hasConflictingCalendarEvent } from "../_shared/singleSessionCore.ts";
+import { retrieveRefund } from "../_shared/stripe.ts";
 
 const MAX_ATTEMPTS = 5;
 const LEASE_SECONDS = 120;
+
+function requiredEnv(name: string): string {
+  const value = Deno.env.get(name);
+  if (!value) throw new Error(`${name.toLowerCase()}_not_configured`);
+  return value;
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -32,18 +40,21 @@ function json(body: unknown, status = 200) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const authHeader = req.headers.get("Authorization") ?? "";
-    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-    const internalKey = Deno.env.get("EDGE_INTERNAL_KEY") ?? "";
-    if ((!token || token !== serviceRoleKey) && (!internalKey || req.headers.get("X-Internal-Key") !== internalKey)) {
+    const workerKey = requiredEnv("BOOKING_WORKER_SECRET");
+    if (req.headers.get("X-Worker-Secret") !== workerKey) {
       return json({ error: "unauthorized" }, 401);
     }
 
     const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      requiredEnv("SUPABASE_URL"),
+      requiredEnv("SUPABASE_SERVICE_ROLE_KEY"),
     );
+    const stripeSecret = requiredEnv("STRIPE_SECRET_KEY");
+
+    const { error: heartbeatStartError } = await supabase.rpc("record_booking_worker_heartbeat", {
+      _worker_name: "gcal-reconciler", _phase: "start", _error: null, _metadata: {},
+    });
+    if (heartbeatStartError) throw heartbeatStartError;
 
     const { data: candidates, error: claimErr } = await supabase.rpc("claim_booking_calendar_actions", {
       _limit: 25, _lease_seconds: LEASE_SECONDS,
@@ -175,9 +186,81 @@ Deno.serve(async (req) => {
       }
     }
 
-    return json({ processed: results.length, results });
+    // Refund webhook delivery is normally authoritative. Polling is the
+    // backstop for a provider event delayed or missed after refund creation.
+    const { data: refundRows, error: refundRowsError } = await supabase.from("single_session_bookings")
+      .select("id,stripe_refund_id")
+      .in("status", ["refund_pending", "refund_failed"])
+      .not("stripe_refund_id", "is", null)
+      .limit(25);
+    if (refundRowsError) throw refundRowsError;
+    let refundsChecked = 0;
+    if ((refundRows ?? []).length) {
+      for (const refundRow of refundRows ?? []) {
+        const refund = await retrieveRefund(stripeSecret, refundRow.stripe_refund_id);
+        const { error: refundError } = await supabase.rpc("record_single_session_refund_status", {
+          _booking_id: refundRow.id,
+          _stripe_refund_id: refund.id,
+          _provider_status: refund.status,
+        });
+        if (refundError) throw refundError;
+        refundsChecked++;
+      }
+    }
+
+    // Monitor the accepted Cal.com TOCTOU sliver. The live event list excludes
+    // the booking's own promoted/tentative event and persists an operator alert
+    // when another event overlaps a booked native slot.
+    const { data: nativeBookings, error: nativeError } = await supabase.from("single_session_bookings")
+      .select("id,start_at,end_at,gcal_event_id")
+      .eq("status", "booked")
+      .gte("start_at", new Date().toISOString())
+      .lte("start_at", new Date(Date.now() + 30 * 86_400_000).toISOString())
+      .limit(100);
+    if (nativeError) throw nativeError;
+    let doubleBookings = 0;
+    for (const booking of nativeBookings ?? []) {
+      const page = await listEvents(calendarId, {
+        timeMin: booking.start_at,
+        timeMax: booking.end_at,
+        singleEvents: "true",
+        showDeleted: "false",
+        maxResults: "50",
+      });
+      const conflicts = (page?.items ?? []).filter((event: any) =>
+        hasConflictingCalendarEvent([event], booking.start_at, booking.end_at, booking.gcal_event_id)
+      );
+      if (conflicts.length) {
+        const { error: alertError } = await supabase.from("booking_calendar_alerts").insert({
+          single_session_booking_id: booking.id,
+          redemption_id: null,
+          alert_type: "double_booking",
+          status: "open",
+          details: { google_event_ids: conflicts.map((event: any) => event.id).filter(Boolean) },
+        });
+        if (alertError && alertError.code !== "23505") throw alertError;
+        doubleBookings++;
+      }
+    }
+
+    const { error: heartbeatSuccessError } = await supabase.rpc("record_booking_worker_heartbeat", {
+      _worker_name: "gcal-reconciler", _phase: "success", _error: null,
+      _metadata: { processed: results.length, refunds_checked: refundsChecked, double_bookings: doubleBookings },
+    });
+    if (heartbeatSuccessError) throw heartbeatSuccessError;
+    return json({ processed: results.length, results, refunds_checked: refundsChecked, double_bookings: doubleBookings });
   } catch (e) {
-    console.error("gcal-reconcile error", e);
+    const message = e instanceof Error ? e.message : String(e);
+    try {
+      const url = Deno.env.get("SUPABASE_URL");
+      const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+      if (url && key) {
+        await createClient(url, key).rpc("record_booking_worker_heartbeat", {
+          _worker_name: "gcal-reconciler", _phase: "error", _error: message, _metadata: {},
+        });
+      }
+    } catch (_) { /* the HTTP failure remains scheduler-visible */ }
+    console.error("gcal-reconcile error", { error: message });
     return json({ error: e instanceof Error ? e.message : String(e) }, 500);
   }
 });

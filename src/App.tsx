@@ -119,6 +119,7 @@ const TeacherSessionIngest = safeLazy(() => import("./pages/teacher/TeacherSessi
 
 const BootcampReferenceDetail = safeLazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = safeLazy(() => import("./pages/PublicBooking"));
+const SingleSession = safeLazy(() => import("./pages/SingleSession"));
 /** Dev-only; the route that mounts it is gated on import.meta.env.DEV. */
 const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
@@ -236,6 +237,8 @@ const App = () => {
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
+            {/* Static Single Session route must precede the bearer-slug route. */}
+            <Route path="/book/session" element={<React.Suspense fallback={null}><SingleSession /></React.Suspense>} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
             {/* Legacy booking-workspace URLs used to mount a second app shell.

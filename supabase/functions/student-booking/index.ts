@@ -45,18 +45,12 @@ async function activePassRow(supabase: any, userId: string, userEmail?: string |
 }
 
 async function offersForStudent(supabase: any, userId: string) {
-  const [{ data: offers, error: offersErr }, { data: overrides, error: overridesErr }] = await Promise.all([
-    supabase.from("booking_offers").select("id,label,provider,url,credits").eq("active", true).order("credits"),
-    supabase.from("student_booking_offers").select("offer_id,enabled,url_override").eq("student_id", userId),
-  ]);
-  if (offersErr || overridesErr) throw offersErr ?? overridesErr;
-  const byOffer = new Map<string, { offer_id: string; enabled: boolean; url_override: string | null }>(
-    (overrides ?? []).map((row: any) => [row.offer_id, row]),
-  );
-  const hasArrangement = byOffer.size > 0;
-  return (offers ?? [])
-    .filter((offer: any) => !hasArrangement || byOffer.get(offer.id)?.enabled)
-    .map((offer: any) => ({ ...offer, url: byOffer.get(offer.id)?.url_override || offer.url }));
+  // The SQL resolver owns the cutover semantics. In particular, an authored
+  // external Cal override stays available on the inactive legacy offer and
+  // suppresses native Single Session until an operator reviews it.
+  const { data, error } = await supabase.rpc("get_effective_booking_offers", { _student_id: userId });
+  if (error) throw error;
+  return data ?? [];
 }
 
 Deno.serve(async (req) => {
@@ -106,12 +100,20 @@ Deno.serve(async (req) => {
       // Commerce is enrichment, not a prerequisite for using an existing
       // pass. Keep the scheduler available while migrations, provider events,
       // or offer configuration are temporarily unavailable.
-      const [offersResult, commerceResult, externalResult] = await Promise.allSettled([
+      const [offersResult, commerceResult, externalResult, singleSessionsResult] = await Promise.allSettled([
         offersForStudent(supabase, userId),
         supabase.from("booking_commerce_events").select("id,offer_id,provider,event_type,amount_cents,currency,created_at").eq("student_id", userId).order("created_at", { ascending: false }).limit(30),
         // meet_url comes from the mirrored calendar row: a Cal.com booking is a
         // real session the student has to be able to join, not just a receipt.
         supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at,schedule_events(meet_url)").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
+        // Association is verified-account only. Email similarity is deliberately
+        // confined to operator tooling and never injects a guest purchase into
+        // the authenticated student's DTO.
+        supabase.from("single_session_bookings")
+          .select("id,start_at,end_at,status,meet_url,gcal_event_id")
+          .eq("user_id", userId)
+          .order("start_at", { ascending: false })
+          .limit(30),
       ]);
 
       const offers = offersResult.status === "fulfilled" ? offersResult.value : [];
@@ -126,7 +128,35 @@ Deno.serve(async (req) => {
         const joined = Array.isArray(schedule_events) ? schedule_events[0] : schedule_events;
         return { ...rest, meet_url: joined?.meet_url ?? null };
       });
-      return json({ ...(data ?? { pass: null, redemptions: [] }), offers, commerce: commerce ?? [], external_bookings: external });
+      const singleSessions = singleSessionsResult.status === "fulfilled" && !singleSessionsResult.value.error
+        ? singleSessionsResult.value.data ?? []
+        : [];
+      if (singleSessionsResult.status === "rejected" || singleSessionsResult.value?.error) {
+        console.warn("single sessions unavailable", singleSessionsResult.status === "rejected" ? singleSessionsResult.reason : singleSessionsResult.value.error);
+      }
+      const rpcData = data ?? { pass: null, redemptions: [] };
+      const bookings = [
+        ...((rpcData.redemptions ?? []) as any[]).map((row) => ({
+          source: "redemption" as const,
+          ...row,
+        })),
+        ...(singleSessions as any[]).map((row) => ({
+          source: "single_session" as const,
+          id: row.id,
+          start_at: row.start_at,
+          end_at: row.end_at,
+          status: row.status,
+          meet_url: row.status === "booked" ? row.meet_url ?? null : null,
+          google_event_id: row.gcal_event_id ?? null,
+          calendar_status: null,
+          can_reschedule: false,
+        })),
+      ].sort((a, b) => new Date(b.start_at).getTime() - new Date(a.start_at).getTime());
+      // `bookings` is the sole schedule contract. Do not leak the RPC's legacy
+      // `redemptions` key alongside it or consumers will drift back into two
+      // incompatible code paths.
+      const { redemptions: _legacyRedemptions, ...studentState } = rpcData;
+      return json({ ...studentState, bookings, offers, commerce: commerce ?? [], external_bookings: external });
     }
 
     if (action === "offer_click") {

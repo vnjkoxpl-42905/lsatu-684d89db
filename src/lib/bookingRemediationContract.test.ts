@@ -51,7 +51,7 @@ describe("booking remediation contracts", () => {
     expect(app).toMatch(/OVERLAY_FREE_PREFIXES[^\n]*=[^\n]*"\/book\/"/);
     expect(app).toMatch(/OVERLAY_FREE_PREFIXES\.some\(/);
     expect(card).toContain("aria-label={d.toLocaleDateString");
-    expect(card).toContain("UpcomingSessions redemptions");
+    expect(card).toContain("UpcomingSessions bookings");
   });
 
   it("keeps the booking calendar responsive to its container, not the viewport", () => {
@@ -71,5 +71,12 @@ describe("booking remediation contracts", () => {
     expect(sql).not.toContain("booking_slug");
     expect(sql).not.toContain("student_note");
     expect(admin).toContain('action === "get_booking_health"');
+  });
+
+  it("native Single Session retries bypass only their own occupancy and recover the original token", () => {
+    const endpoint = read("supabase/functions/single-session/index.ts");
+    expect(endpoint).toContain("if (!existingReplay)");
+    expect(endpoint).toContain("bookingTokenFromUrl(replayFingerprint.success_url)");
+    expect(endpoint.indexOf("if (!existingReplay)")).toBeLessThan(endpoint.indexOf('supabase.rpc("claim_single_session_slot"'));
   });
 });

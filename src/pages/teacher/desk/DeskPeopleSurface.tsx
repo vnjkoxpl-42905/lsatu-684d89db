@@ -14,6 +14,8 @@ import {
   UserCheck,
   Users,
   UserX,
+  CalendarDays,
+  Video,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
@@ -36,6 +38,18 @@ type PeopleRow = ManagedUser & {
   student?: HubStudentRow;
 };
 
+type GlobalSingleSession = {
+  source: 'single_session';
+  id: string;
+  start_at: string;
+  end_at: string;
+  status: string;
+  meet_url: string | null;
+  name: string | null;
+  email: string | null;
+  user_id: string | null;
+};
+
 export function DeskPeopleSurface() {
   const { rows: students, loading: studentsLoading } = useHubStudents();
   const [users, setUsers] = useState<ManagedUser[]>([]);
@@ -44,6 +58,7 @@ export function DeskPeopleSurface() {
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
+  const [singleSessions, setSingleSessions] = useState<GlobalSingleSession[]>([]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -55,18 +70,25 @@ export function DeskPeopleSurface() {
         return;
       }
 
-      const [usersRes, analyticsRes] = await Promise.all([
+      const [usersRes, analyticsRes, singleSessionsRes] = await Promise.all([
         supabase.functions.invoke('admin-manage-users', { method: 'GET' }),
         supabase.functions.invoke('admin-manage-users', {
           method: 'GET',
           headers: { 'x-mode': 'analytics' },
           body: undefined,
         }),
+        supabase.functions.invoke('booking-pass-admin', { body: { action: 'single_sessions_global' } }),
       ]);
 
       if (usersRes.error) throw usersRes.error;
       setUsers((usersRes.data || []) as ManagedUser[]);
       setAnalytics(!analyticsRes.error && analyticsRes.data ? (analyticsRes.data as AdminAnalytics) : null);
+      if (singleSessionsRes.error) {
+        console.warn('Single Sessions list unavailable', singleSessionsRes.error);
+        setSingleSessions([]);
+      } else {
+        setSingleSessions(((singleSessionsRes.data as { bookings?: GlobalSingleSession[] } | null)?.bookings) ?? []);
+      }
     } catch (error) {
       toast.error('Failed to load people');
       console.error(error);
@@ -193,6 +215,26 @@ export function DeskPeopleSurface() {
             })}
           </div>
         </div>
+
+        <details className="mt-4 border border-black/10 bg-white/20">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-black/65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30">
+            <span className="flex items-center gap-2"><CalendarDays className="h-4 w-4 text-black/45" strokeWidth={1.5} />Single Sessions</span>
+            <span className="font-mono text-xs text-black/45">{singleSessions.length}</span>
+          </summary>
+          <div className="max-h-80 overflow-y-auto border-t border-black/10">
+            {singleSessions.length === 0 ? <p className="px-4 py-5 text-sm text-black/45">No native Single Sessions yet.</p> : singleSessions.map((booking) => (
+              <div key={booking.id} className="flex flex-wrap items-center gap-3 border-b border-black/10 px-4 py-3 last:border-b-0">
+                <div className="min-w-52 flex-1">
+                  <div className="text-sm font-medium text-black/75">{booking.name || booking.email || 'Guest booker'}</div>
+                  <div className="mt-0.5 text-xs text-black/45">{new Date(booking.start_at).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</div>
+                </div>
+                <span className="border border-black/10 bg-white/25 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-black/45">{booking.user_id ? 'verified account' : 'guest-owned'}</span>
+                <span className={cn('border px-2 py-1 text-[10px] font-semibold uppercase tracking-wider', booking.status === 'booked' ? 'border-emerald-700/25 bg-emerald-700/10 text-emerald-800' : booking.status.includes('failed') ? 'border-red-700/25 bg-red-700/10 text-red-800' : 'border-black/10 bg-black/5 text-black/45')}>{booking.status.replace(/_/g, ' ')}</span>
+                {booking.meet_url && booking.status === 'booked' ? <a href={booking.meet_url} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center px-2 text-xs font-semibold text-black/65 hover:bg-white/30"><Video className="mr-1.5 h-3.5 w-3.5" />Meet</a> : null}
+              </div>
+            ))}
+          </div>
+        </details>
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1 sm:max-w-sm">

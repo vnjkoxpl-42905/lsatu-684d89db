@@ -33,7 +33,10 @@ export default function PublicBooking() {
   const api: BookingApi = useMemo(() => ({
     loadInfo: async () => {
       const d = await callPublic(slug, "info");
-      return { pass: d.pass ?? null, redemptions: d.redemptions ?? [] };
+      return {
+        pass: d.pass ?? null,
+        bookings: (d.redemptions ?? []).map((row: { id: string; start_at: string; status: string; meet_url?: string | null }) => ({ source: "redemption" as const, ...row })),
+      };
     },
     loadSlots: async () => {
       const d = await callPublic(slug, "slots");

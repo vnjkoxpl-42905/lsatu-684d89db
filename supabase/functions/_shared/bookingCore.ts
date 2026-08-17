@@ -102,9 +102,20 @@ export async function loadBusyIntervals(opts: {
     .is("deleted_at", null).neq("status", "cancelled").neq("transparency", "transparent")
     .lt("start_at", rangeEndIso).gt("end_at", rangeStartIso);
   if (mirrorErr) throw mirrorErr;
+  // Native Single Session Holds are first-class occupancy. Google normally
+  // sees the tentative event too, but the database union closes the cache and
+  // propagation window and keeps package slot browsing symmetric.
+  const { data: singleSessions, error: singleSessionErr } = await supabase
+    .from("single_session_bookings")
+    .select("start_at,end_at")
+    .in("status", ["draft", "checkout_open", "booked"])
+    .lt("start_at", rangeEndIso)
+    .gt("end_at", rangeStartIso);
+  if (singleSessionErr && singleSessionErr.code !== "42P01") throw singleSessionErr;
   const live = await gcal.freeBusy(calendarIds, rangeStartIso, rangeEndIso);
   const intervals = [
     ...(mirrored ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
+    ...(singleSessions ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
     ...Object.values(live).flat().map((e) => ({ start: new Date(e.start).getTime(), end: new Date(e.end).getTime() })),
   ].filter((e) => Number.isFinite(e.start) && Number.isFinite(e.end));
   return intervals;

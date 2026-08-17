@@ -85,3 +85,13 @@ Both accepted and folded in: the fingerprint is purged only on durable Stripe at
 ## Resolution
 
 MAX_ROUNDS=5 reached without a formal APPROVED. Honest state: no open disagreement remains between the models — Round 5's two findings were accepted and incorporated; they simply have not been re-verified by Codex. Trajectory: 17 findings → 15 → 18 → 9 → 2, with the plan restructured twice (record model, payment lifecycle) and hardened throughout. Handed to Joshua for sign-off with that caveat stated plainly.
+
+## Act 3 — Build
+
+### Round 1 — Codex build (thread 01a00d42-729f-7861-869d-19e7015909d9, workspace-write sandbox)
+
+Implemented the full spec in one round: 3 migrations (schema + lifecycle RPCs + workers/offers), single-session public function, outbox + sweeper workers, hardened webhook (all branches), tentative-event machinery, unified booking DTO across student/teacher surfaces, /book/session page with extracted calendar primitives, email templates, ops runbook (docs/ops/native-single-session-workers.md), and the SQL + Vitest test suites. Reported proof: typecheck + 1576 tests pass, build passes, deno check passes for new functions. Honest deviations reported: SQL concurrency suite needs a real Postgres (sandbox shmget denied), browser viewport verification blocked in sandbox, deno check of the webhook blocked offline by npm:stripe, no deployment/secrets/live testing performed.
+
+### Claude's verdict (Round 1)
+
+Verified independently: `npm run typecheck && npm run test` re-run by Claude — clean, 169 files / 1576 passed, 1 skipped; `npm run test:booking:edge` 2/2. Diff read across the money paths: schema (lifecycle trigger enforces the exact reviewed transition graph incl. booked→refund_pending prohibition and refund_failed→refunded repair; occupying-state exclusion; service-role-only RLS), lifecycle RPCs (symmetric advisory lock in claim/finalize/redeem; atomic webhook-event claim inside finalize; business-object idempotency; own-event exclusion; caps in-RPC; guest normalization), public function (Turnstile, HMAC platform IP, body cap, redacted DTOs, fail-closed tentative event with adoption, envelope-encrypted fingerprint, Stripe-expire-before-abandon), webhook (official SDK verification, livemode/amount/currency/mode validation on every branch incl. packages against live payment-link line items, refund.* consumption, no raw payloads), sweeper (all recovery branches incl. provider-authoritative absence search; never expires paid sessions), PII purge (all four stores), route order, config.toml. No spec violations found; zero fix rounds needed. Outstanding items are environmental, not code: run the SQL suite on real Postgres, deploy-time secret/cron provisioning, Stripe test-mode E2E, live viewport verification.

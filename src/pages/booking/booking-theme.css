@@ -49,6 +49,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .holo-surface { animation: none; }
+  .single-session-page *,
+  .single-session-page *::before,
+  .single-session-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* The booking theme is deliberately light, which is right on the public

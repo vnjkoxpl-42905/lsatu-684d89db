@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "@/pages/booking/booking-theme.css";
+import { buildMonthCells, dayKey, formatBookingTime, groupSlotsByDay, startOfDay } from "@/components/booking/bookingCalendar";
 
 // Shared Calendly-clone booking card used by BOTH the in-app authed page and the
 // public /book/<slug> page. The data source is injected via `api`, so the same
@@ -20,13 +21,13 @@ export type BookingPassView = {
   status?: string;
 } | null;
 
-export type UpcomingRedemption = {
-  id: string; start_at: string; status: string; meet_url?: string | null;
+export type UpcomingBooking = {
+  source: "redemption" | "single_session"; id: string; start_at: string; status: string; meet_url?: string | null;
 };
 
 export type BookingApi = {
   // Load the pass summary. null = no active booking access.
-  loadInfo: () => Promise<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] }>;
+  loadInfo: () => Promise<{ pass: BookingPassView; bookings?: UpcomingBooking[] }>;
   loadSlots: () => Promise<{ pass: BookingPassView; slots: BookingSlot[] }>;
   book: (startAtIso: string, idempotencyKey: string, studentNote?: string) => Promise<void>;
   // Optional booking-time submission. When present, the confirm step shows an
@@ -36,9 +37,7 @@ export type BookingApi = {
   discardUpload?: (clientUploadId: string, idempotencyKey: string) => Promise<void>;
 };
 
-const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-const fmtTime = (iso: string) => new Date(iso).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+const fmtTime = formatBookingTime;
 const fmtSlot = (iso: string) =>
   new Date(iso).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 
@@ -49,15 +48,15 @@ function durationLabel(mins: number) {
   return `${m} min`;
 }
 
-function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }) {
-  const upcoming = redemptions.filter((r) => r.status === "booked" && new Date(r.start_at) > new Date());
+function UpcomingSessions({ bookings }: { bookings: UpcomingBooking[] }) {
+  const upcoming = bookings.filter((r) => r.status === "booked" && new Date(r.start_at) > new Date());
   if (upcoming.length === 0) return null;
   return (
     <div className="border-t border-border p-6" aria-label="Your upcoming sessions">
       <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Your upcoming sessions</div>
       <div className="space-y-2">
         {upcoming.map((r) => (
-          <div key={r.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 text-sm">
+          <div key={`${r.source}-${r.id}`} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 text-sm">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
             <span className="flex-1">{fmtSlot(r.start_at)}</span>
             {r.meet_url && (
@@ -93,7 +92,7 @@ export default function CalendlyBookingCard({
 }) {
   const SessionHeading = sessionHeadingLevel;
   const holo = theme === "booking" ? "booking-holo " : "";
-  const [info, setInfo] = useState<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] } | null>(null);
+  const [info, setInfo] = useState<{ pass: BookingPassView; bookings?: UpcomingBooking[] } | null>(null);
   const [infoLoading, setInfoLoading] = useState(true);
   const [slots, setSlots] = useState<BookingSlot[]>([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -144,13 +143,7 @@ export default function CalendlyBookingCard({
   useEffect(() => { if (pass?.status === "active" && pass.credits_remaining > 0) void loadSlots(); }, [pass, loadSlots]);
 
   const slotsByDay = useMemo(() => {
-    const m = new Map<string, BookingSlot[]>();
-    for (const s of slots) {
-      const k = dayKey(new Date(s.start_at));
-      if (!m.has(k)) m.set(k, []);
-      m.get(k)!.push(s);
-    }
-    return m;
+    return groupSlotsByDay(slots);
   }, [slots]);
 
   useEffect(() => {
@@ -161,14 +154,7 @@ export default function CalendlyBookingCard({
   }, [slots, pickedDay]);
 
   const monthDays = useMemo(() => {
-    const first = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth(), 1);
-    const startPad = first.getDay();
-    const daysInMonth = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth() + 1, 0).getDate();
-    const cells: (Date | null)[] = [];
-    for (let i = 0; i < startPad; i++) cells.push(null);
-    for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(monthAnchor.getFullYear(), monthAnchor.getMonth(), d));
-    while (cells.length % 7 !== 0) cells.push(null);
-    return cells;
+    return buildMonthCells(monthAnchor);
   }, [monthAnchor]);
 
   const daySlots = pickedDay ? (slotsByDay.get(dayKey(pickedDay)) ?? []) : [];
@@ -199,7 +185,7 @@ export default function CalendlyBookingCard({
           <p className="text-sm font-medium">No sessions available.</p>
           <p className="mt-1 text-xs text-muted-foreground">{noPassDescription}</p>
         </div>
-        <UpcomingSessions redemptions={info?.redemptions ?? []} />
+        <UpcomingSessions bookings={info?.bookings ?? []} />
       </div>
     );
   }
@@ -371,13 +357,13 @@ export default function CalendlyBookingCard({
           const fresh = await api.loadInfo();
           setInfo(fresh);
           await loadSlots();
-          const match = fresh.redemptions?.find((r) => r.start_at === slotIso && r.status === "booked");
+          const match = fresh.bookings?.find((r) => r.start_at === slotIso && r.status === "booked");
           return match?.meet_url ?? null;
         }}
         onCommitError={async () => { await refreshInfo(); await loadSlots(); }}
       />
 
-      <UpcomingSessions redemptions={info?.redemptions ?? []} />
+      <UpcomingSessions bookings={info?.bookings ?? []} />
     </div>
   );
 }

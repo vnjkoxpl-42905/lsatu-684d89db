@@ -1,38 +1,15 @@
 import { CreditCard, ExternalLink, CalendarDays, PackagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 export type BookingOffer = {
   id: string;
   label: string;
-  provider: "stripe" | "calcom";
+  provider: "stripe" | "calcom" | "native";
   url: string;
   credits: number;
 };
-
-export const DEFAULT_BOOKING_OFFERS: BookingOffer[] = [
-  {
-    id: "single-session",
-    label: "Single session",
-    provider: "calcom",
-    url: "https://cal.com/joshua-jtx5ud/session-link",
-    credits: 0,
-  },
-  {
-    id: "package-5",
-    label: "5-hour package",
-    provider: "stripe",
-    url: "https://buy.stripe.com/4gMaEY05F3dc9x13NqdZ61x",
-    credits: 5,
-  },
-  {
-    id: "package-10",
-    label: "10-hour package",
-    provider: "stripe",
-    url: "https://buy.stripe.com/3cI6oI2dN5lk4cHcjWdZ61O",
-    credits: 10,
-  },
-];
 
 export type BookingCommerceItem = {
   id: string;
@@ -50,15 +27,24 @@ export type ExternalBookingItem = {
   status: string;
 };
 
+export type UnifiedBookingActivity = {
+  source: "redemption" | "single_session";
+  id: string;
+  start_at: string;
+  status: string;
+};
+
 export default function BookingOfferHub({
   offers,
   commerce,
   externalBookings,
+  bookings = [],
   demoted = false,
 }: {
   offers: BookingOffer[];
   commerce: BookingCommerceItem[];
   externalBookings: ExternalBookingItem[];
+  bookings?: UnifiedBookingActivity[];
   /**
    * A student who already holds credits came here to pick a time, not to buy.
    * Demoted mode keeps every offer reachable (2026-08-13 decision: demote, do
@@ -75,10 +61,21 @@ export default function BookingOfferHub({
     });
   };
 
-  const offersById = new Map(offers.map((offer) => [offer.id, offer]));
-  const resolvedOffers = DEFAULT_BOOKING_OFFERS.map((fallback) => offersById.get(fallback.id) ?? fallback);
-  const labelFor = (id: string | null) => resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
+  // The registry result is the student's complete effective arrangement,
+  // including an intentionally empty one. Never synthesize defaults here:
+  // doing so would re-enable disabled offers or override a retained Cal URL.
+  const resolvedOffers = offers;
+  const labelFor = (id: string | null) => {
+    if (id === "single-session") return "Single session";
+    return resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
+  };
   const recentActivity = [
+    ...bookings.map((booking) => ({
+      id: `${booking.source}-${booking.id}`,
+      offerId: booking.source === "single_session" ? "single-session-native" : null,
+      timestamp: booking.start_at,
+      detail: `${booking.status.replace(/_/g, " ")} · ${new Date(booking.start_at).toLocaleString()}`,
+    })),
     ...externalBookings.map((booking) => ({
       id: `booking-${booking.id}`,
       offerId: booking.offer_id,
@@ -122,8 +119,14 @@ export default function BookingOfferHub({
         </div>
       </div>
       <div className="grid border-t border-border @[40rem]:grid-cols-3">
+        {resolvedOffers.length === 0 ? (
+          <p className="col-span-full px-5 py-5 text-sm text-muted-foreground">
+            No booking offers are available right now. Message Joshua if you need help.
+          </p>
+        ) : null}
         {resolvedOffers.map((offer, index) => {
-          const isSingle = offer.id === "single-session";
+          const isSingle = offer.id === "single-session-native" || offer.id === "single-session";
+          const isNative = offer.provider === "native" && offer.url.startsWith("/");
           return (
             <div
               key={offer.id}
@@ -153,10 +156,13 @@ export default function BookingOfferHub({
                 className={demoted ? "mt-3 min-h-11 w-full" : "mt-4 min-h-11 w-full"}
                 variant={demoted || isSingle ? "outline" : "default"}
               >
-                <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
+                {isNative ? <Link to={offer.url} onClick={() => logOfferClick(offer.id)}>
+                  <CalendarDays className="mr-1.5 h-4 w-4" />
+                  Book one session
+                </Link> : <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
                   <ExternalLink className="mr-1.5 h-4 w-4" />
                   {isSingle ? "Book one session" : `Buy ${offer.label}`}
-                </a>
+                </a>}
               </Button>
             </div>
           );

@@ -1,9 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ConclusionTypeSwitchboard } from "./ConclusionTypeSwitchboard";
 
 describe("ConclusionTypeSwitchboard", () => {
+  beforeEach(() => {
+    vi.spyOn(Math, "random").mockReturnValue(0.999999);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("reveals the matching type and weak spot after the student classifies the claim", () => {
     render(<ConclusionTypeSwitchboard />);
 

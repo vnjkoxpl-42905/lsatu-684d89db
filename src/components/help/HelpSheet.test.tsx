@@ -47,6 +47,15 @@ vi.mock('@/components/inbox/AttachmentCard', () => ({
     ),
 }));
 
+vi.mock('@/components/inbox/ScreenshotContextCard', () => ({
+  ScreenshotContextCard: ({ image }: { image: { file_name: string } }) => (
+    <div>
+      <img alt={image.file_name} src="https://example.test/screenshot.png" />
+      <span>Screenshot attached</span>
+    </div>
+  ),
+}));
+
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: (table: string) => {

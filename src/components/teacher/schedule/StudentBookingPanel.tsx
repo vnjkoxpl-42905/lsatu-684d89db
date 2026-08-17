@@ -15,6 +15,22 @@ type ActivePass = {
   booking_url?: string | null;
 };
 
+type SingleSessionBooking = {
+  source?: "single_session";
+  id: string;
+  start_at: string;
+  end_at: string;
+  status: string;
+  meet_url?: string | null;
+  name?: string | null;
+  email?: string | null;
+  association?: "verified_user" | "possible_match_unverified_email";
+};
+
+const fmtSession = (iso: string) => new Date(iso).toLocaleString(undefined, {
+  weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+});
+
 const DEFAULT_CREDITS = 5;
 const DEFAULT_LENGTH = 70;
 
@@ -38,13 +54,21 @@ export default function StudentBookingPanel({
 }) {
   const [loading, setLoading] = useState(true);
   const [pass, setPass] = useState<ActivePass | null>(null);
+  const [singleSessions, setSingleSessions] = useState<SingleSessionBooking[]>([]);
+  const [possibleMatches, setPossibleMatches] = useState<SingleSessionBooking[]>([]);
   const [busy, setBusy] = useState(false);
 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const res = (await call("get_for_student", { student_id: studentId })) as { pass: ActivePass | null };
+      const res = (await call("get_for_student", { student_id: studentId })) as {
+        pass: ActivePass | null;
+        single_session_bookings?: SingleSessionBooking[];
+        single_session_possible_matches?: SingleSessionBooking[];
+      };
       setPass(res.pass);
+      setSingleSessions(res.single_session_bookings ?? []);
+      setPossibleMatches(res.single_session_possible_matches ?? []);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load booking access");
     } finally {
@@ -185,6 +209,30 @@ export default function StudentBookingPanel({
             {busy ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
             Grant booking access
           </Button>
+        </div>
+      )}
+
+      {singleSessions.length > 0 && (
+        <div className="mt-4 border-t border-zinc-800 pt-3">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Verified Single Sessions</div>
+          <ul className="mt-2 space-y-2">
+            {singleSessions.map((booking) => (
+              <li key={booking.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-sm">
+                <span className="text-zinc-200">{fmtSession(booking.start_at)}</span>
+                <span className="text-xs capitalize text-zinc-500">{booking.status.replace(/_/g, " ")}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {possibleMatches.length > 0 && (
+        <div className="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-400">Possible match (unverified email)</div>
+          <p className="mt-1 text-xs text-zinc-500">Shown to operators only. These bookings are not attached to this student's account.</p>
+          <ul className="mt-2 space-y-1.5">
+            {possibleMatches.map((booking) => <li key={booking.id} className="flex justify-between gap-3 text-xs text-zinc-400"><span>{fmtSession(booking.start_at)}</span><span className="capitalize">{booking.status.replace(/_/g, " ")}</span></li>)}
+          </ul>
         </div>
       )}
     </div>
