@@ -1,250 +1,101 @@
-# Wrong answers, rebuilt in the Classroom frame
+# Plan: Native Single Session booking page (replaces the Cal.com session-link experience)
 
-Build spec. Written by Claude, implemented by Codex, reviewed by Claude.
-Supersedes the Classroom redesign spec that previously occupied this file
-(frozen at commit `680fcfd4`, shipped in `0c475437`).
+_Locked via grill-with-docs — by Claude + Joshua, 2026-08-16; revised after Codex review Rounds 1–3. Terms per `src/components/booking/CONTEXT.md` and the root brain glossary (amended 2026-08-16: the Single session entry now describes the migration — Cal.com today, native `/book/session` per ADR 0005 — and states the flat $45/70-minute price). Governing ADR: `docs/adr/0005-single-session-native-slot-first.md` (supersedes decision #2 of `plans/booking-unification.md`)._
 
-## 0. Scope lock
+## Goal
 
-Read this first and treat it as binding.
+Give LSAT U its own public Single Session page at `lsatprep.study/book/session`: a shareable, no-login booking link where a Booker picks a Slot, enters their details, pays $45 on Stripe's hosted checkout, and walks away booked — a structural clone of the Cal.com `session-link` booker experience (same layout, same fields, same rules, same order of operations), rendered in LSAT U's design system. Cal.com's link stays live in parallel until Joshua retires it manually; nothing in this build removes or migrates the consultation link or the per-student Cal links. Per the glossary, a Single Session **needs no Booking Pass** — it is its own first-class record.
 
-**Only the Wrong answers surface changes.**
+## The experience being mirrored (captured live from Cal.com, 2026-08-16)
 
-- `src/components/StudentShell.tsx` is **not edited**. Not one line.
-- `/flagged`, `/classroom` and every `/classroom/*` route must **behave** exactly as they do now. Flagged shipped in `7e6d5676` and is not up for revision.
-- **One deliberate exception, and only one:** the rail is shared, so adding the active state and `›` chevron to the "Wrong answers" nav item makes that item look slightly different on every Classroom route, `/flagged` and `/classroom` included. That is intended and consistent with how Flagged already renders. Nothing else outside the journal may change, visibly or otherwise.
-- The journal entries query must be **journal-scoped**. `SectionList` runs its hooks on every section, so an ungated `useJournalEntries` would fire a fetch on `/flagged` and the Classroom sections too. Gate it the same way the section branch is gated.
-- `/mainhub`, `/practice`, `/bootcamps`, `/analytics`, `/inbox` and every other StudentShell page must render byte-identically.
-- `src/lib/wajService.ts`, `src/lib/wajNotesService.ts` and `getWrongAnswerSmartRows` are **read, not rewritten**. The data layer is correct; do not refactor it.
-- **No database migration.** Nothing in this build deletes a journal entry.
-- The dead Notion-era code in `journalService.ts` (`journal_pages`, `journal_databases`, `journal_views` and their types/mappers, roughly 78% of the file) is **left alone**. It is unreachable and it is not this release's problem. Do not delete it, do not tidy it.
-- Do not add dependencies.
-- Do not flip TypeScript strictness settings.
+- **Page (desktop):** left rail — avatar, "Joshua", "LSAT Session", "1h 10m", Google Meet badge, "$45.00", timezone picker auto-detecting the visitor's zone; mini month calendar with bookable days as filled tiles; week-view grid with open Slots as clickable cells, unavailable time as neutral texture, 12h/24h toggle. **Mobile:** stacked month calendar + full-width slot pills for the selected day.
+- **Slots:** 70-minute pitch anchored at each day's window start (Tue 1:00pm window → 1:00, 2:10, 3:20, 4:30). 24-hour Minimum Notice. Booking Window 6 business days, non-rolling. Zero buffers.
+- **Privacy:** an anonymous visitor sees only open Slots — never busy-event titles, times, or any calendar detail.
+- **Form:** date + duration chips; Your name*; Email address*; Additional notes (placeholder: "Please share anything that will help prepare for our meeting."); Add guests (repeatable email inputs, capped at 10, normalized/deduped). Submit button: "Pay to book".
+- **After payment:** Google Calendar event with Meet link, Booker (+ guests) invited; confirmation email to Booker and to Joshua (Joshua's copy carries the notes); cancel link in the Booker's email. Rescheduling disabled. No automatic refunds for cancellations.
+- Weekly hours (already byte-identical between Cal's "Working Hours" and the app's `booking_availability` seed): Mon 14:00–20:00, Tue/Thu 13:00–19:30, Wed 13:00–19:00, Fri 13:00–18:30, Sat 14:00–17:00, America/Toronto. Price is **$45 flat for the 70-minute session**.
 
-If the spec appears to require breaking any of the above, stop and say so rather than proceeding.
+## Data model: one record, one lifecycle
 
-## 1. Why
+New table `single_session_bookings` — the Hold and the booking are **the same row** moving through states. No Booking Pass, no redemption is ever created for a Single Session.
 
-`/journal` is the last Review surface still mounted inside `StudentShell`. Clicking "Wrong answers" from the Classroom rail tears the whole page down and rebuilds it inside a different shell with a different rail, so the rail visibly changes underneath the student. Flagged already solved this; this is the same problem, one surface later.
+Columns (beyond ids/timestamps): slot `start_at`/`end_at`; Booker `name`/`email`, `notes`, `guests jsonb`; `client_idempotency_key` (unique); `draft_expires_at` (set atomically at claim, ~5 min — every occupying state has an expiry clock from birth); `checkout_request_fingerprint` (the complete Checkout-create parameter set, including the computed `expires_at`, persisted **before** the first Stripe call so sweeper replays are byte-equivalent under the same Stripe idempotency key — stored **envelope-encrypted**, because the success/cancel URLs inside it carry the plaintext booking token, and purged only once the Stripe session is durably attached, or the sweeper has durably recorded the session's expiry or its confirmed absence at Stripe — terminal row status alone never purges it, since the sweeper needs it to replay-and-expire terminal rows with no attached session); `stripe_checkout_session_id` (unique, null until attached); `stripe_expires_at` (Stripe's returned value — supersedes `draft_expires_at` as the authoritative Hold expiry once attached); `stripe_payment_intent_id`, `amount_cents`/`currency`, `livemode`; `user_id` (set only from a verified JWT at booking time); `booking_token_hash` (status/abandon capability, minted at claim, valid 24 h from creation — it must outlive the Hold because late completion is supported; abandon authority is additionally bounded by row status, below); `cancel_token_hash`; `stripe_refund_id`; `gcal_event_id`, `meet_url`; `lifecycle_version` (integer, incremented on every status transition — outbox preconditions key on it); `status`, `status_changed_at`; `ip_hash`.
 
-Unlike Flagged, this one **cannot be re-parented**. `JournalEntrySurface` is a three-pane `ResizablePanelGroup` whose auto-collapse thresholds are measured against the viewport:
+**Status lifecycle:** `draft` → `checkout_open` → `booked` → `cancelled`, terminal failures `expired` and `abandoned`, refund branch `refund_pending` → `refunded` | `refund_failed`. All transitions are compare-and-set on current status + `lifecycle_version` and timestamped. **`booked → refund_pending` is prohibited** — a webhook redelivery can never reverse a successful booking (finalization is business-object-idempotent: matching payment facts on `booked` or any refund state return the existing outcome). `refunded` is entered only when Stripe reports the refund `succeeded` (via refund webhooks or reconciliation polling), never on refund creation. `refund_failed` is reserved for **confirmed provider failure**; an unknown outcome (retries exhausted without a definitive Stripe answer) stays `refund_pending` with a manual-attention alert instead of being declared failed; and verified Stripe success moves **any** refund-branch state — including `refund_failed` — to `refunded`, so a late authoritative webhook always repairs the record.
 
-```ts
-const AUTO_COLLAPSE_AT = 2140;
-const AUTO_EXPAND_AT   = 2280;
-```
+**Side effects live in an outbox** (`single_session_outbox`): rows keyed (booking_id, action, recipient) — actions: `gcal_promote`, `gcal_delete`, `email_booking_confirmation`, `email_admin_notification`, `email_cancellation`, `email_refund_apology`, **`stripe_refund`** — each with state, attempts, lease, next_retry_at, provider status, last_error, idempotency key, and a **status/lifecycle_version precondition**: a worker re-reads the booking under lock and skips (marks superseded) any job whose precondition no longer holds, so a delayed `gcal_promote` can never resurrect a cancelled booking and a confirmation email can never follow a cancellation. Transitions that invalidate pending work atomically supersede those outbox rows in the same transaction. Ordering that matters is expressed by chaining with a durable start: finalization itself enqueues the confirmation-email rows in a **blocked** state carrying the envelope-encrypted plaintext cancel token; `gcal_promote` success persists `meet_url` and activates them — the email normally has the Meet link, and the booked UI shows a truthful "calendar invite on its way" state until promotion lands. After bounded promote failure, the blocked confirmation activates anyway with truthful copy (booking confirmed, cancel link included, "Meet link to follow") so the Booker always ends up holding their cancellation capability. Sensitive payloads exist **only** in the outbox payload (service-role-only table) and are purged on successful delivery; the booking row keeps only the hash. **In-flight work is fenced, not just pending work:** a worker takes a per-booking advisory lock for the duration of each side-effect call and re-checks `lifecycle_version` after the external call returns — if the lifecycle moved (e.g. cancellation committed mid-promote), it compensates immediately (delete the just-created event, suppress the chained email).
 
-and whose panel minimums total 75% of the container (rail 12 + centre 45 + review 18). Inside any reading column both side panes collapse permanently and the student is left with the question and two chevrons. Lowering the constants does not fix it, because the min-size floor is also wrong. The resizable machinery is removed, not retuned.
+**RLS:** service-role only on both tables. All public access goes through the edge function's redacted DTOs.
 
-## 2. Target layout
+## Occupancy: one lock, both tables, fail closed
 
-Four fixed columns. No resizable panes, no collapse thresholds, no `ResizablePanelGroup`.
+- **Occupying states:** `draft`, `checkout_open`, `booked`. (`refund_pending` and all terminal states do not occupy.) In-table GiST exclusion constraint forbids overlap between rows in occupying states.
+- **One advisory-lock discipline, symmetric:** a normalized slot-window bucket key (host day, America/Toronto). Taken inside the transaction by **all three claim paths**: `claim_single_session_slot`, `redeem_booking_pass_v2` (migration extends it), and `finalize_single_session_payment`. Each checks BOTH `single_session_bookings` (occupying states) and `booking_pass_redemptions` (±15-min padded ranges) plus active `schedule_events` before committing.
+- **Stale-row hygiene:** the claim RPC first expires (CAS) any overlapping `draft`/`checkout_open` rows whose authoritative expiry (`draft_expires_at` or `stripe_expires_at`) has passed, inside the same transaction.
+- **Live Google check, twice, event-aware — explicitly a pre-RPC observation:** Google I/O cannot run inside a Postgres transaction, so both live checks happen immediately *before* their RPC: (a) a fresh FreeBusy call before claim (the slot cache is display-only); (b) a live Calendar events-list check over the window before finalization, excluding the booking's own tentative event by id — this catches a Cal.com booking created in the sliver between FreeBusy and tentative-event creation, which `schedule_events` cannot yet see. A residual race of milliseconds-to-seconds between observation and commit **remains and is accepted while Cal stays live**: the reconciler detects any double-booking (two events overlapping a booked slot) and alerts Joshua for manual resolution; retiring the Cal link ends the exposure entirely. A forced-sliver race test exercises the check.
+- **The booking's own mirror never blocks it:** the calendar sync can mirror the tentative event into `schedule_events` during the 35-minute Hold, so **every** occupancy check — the SQL mirror check inside the RPCs and the live Calendar check — excludes rows/events matching the booking's own `gcal_event_id` (the tentative event is stamped with the booking id in its extended properties for the same purpose).
+- **Tentative event, fail closed, recoverable:** created after the claim commits — deterministic event id derived from the row id, opaque title, no attendees. Create failure → CAS `expired`, `slot_conflict`, no Checkout. A timeout/409 after Google actually accepted the event is recovered by **adoption**: the deterministic id is re-derived and looked up before retry or cleanup, and every terminal draft's cleanup does derive-or-search deletion, so no orphan tentative events survive.
+- Package-side belt: `bookingCore.ts` busy computation also unions occupying `single_session_bookings` rows.
 
-```
-┌────────┬──────────┬─────────────────────┬──────────┐
-│ CREAM  │ ENTRIES  │  PT80-S2-Q14        │ REVIEW   │
-│ RAIL   │          │                     │          │
-│        │ PT80 S2  │  Stimulus           │ How did  │
-│ Home   │ PT91 S1  │  (full width)       │ you do?  │
-│ Notes  │ PT77 S3  │                     │ [W][U][C]│
-│ Work   │          │  Stem               │          │
-│        │ ⌕ search │                     │ Date     │
-│ REVIEW │          │  A ............     │ Summary  │
-│ Wrong ‹│          │  B ............     │ Wrong    │
-│ Flagged│          │  C ............     │ reasoning│
-└────────┴──────────┴─────────────────────┴──────────┘
-```
+## Approach
 
-The question is **vertical**: stimulus on top, then the stem, then A–E stacked. This replaces today's `lg:grid-cols-[minmax(0,50fr)_minmax(0,50fr)]` side-by-side split, which is a viewport breakpoint and would not stack in a narrow column anyway.
+1. **Per-offer slot configuration.** Single Session: pitch = 70 anchored at window start, `bufferMin 0`, window 6 business days non-rolling, `leadMin 1440`. Packages keep today's values. The authoritative policy check lives in the claim RPC in SQL; TypeScript mirrors it for display only.
 
-Responsive. Concrete breakpoints, because the frame's existing one does not fit four columns:
+2. **Hold saga** (every step idempotent and recoverable):
+   1. Form submit carries a client idempotency key + a Turnstile token. Server verifies Turnstile, resolves the caller IP from the platform-authenticated source (never the first `x-forwarded-for` hop), and enforces caps **atomically inside the claim RPC**: max outstanding occupying rows per ip_hash, per email, and globally.
+   2. Fresh FreeBusy check → `claim_single_session_slot` inserts the `draft` row with `draft_expires_at` (occupying). Resubmits with the same client key return the existing row and, when present, its existing checkout URL.
+   3. Tentative GCal event (fail closed / adoption per above).
+   4. Persist `checkout_request_fingerprint`, then create the Stripe Checkout Session with idempotency key = row id: line item "LSAT Session with Joshua — {weekday}, {date}, {time} ({tz})", $45.00 USD, `mode: payment`, instant payment methods only (no `async_payment_*` in v1), `expires_at` from the fingerprint (now + 35 min at first computation — clears Stripe's 30-min floor under skew), `metadata.booking_id`, `customer_email`, `success_url` = confirmation page URL carrying `{CHECKOUT_SESSION_ID}` **and the plaintext booking token** (we compose this URL, so the token travels with it), `cancel_url` = booking page carrying the same token.
+   5. CAS `draft` → `checkout_open`, storing the session id and Stripe's returned `expires_at`. Redirect to Stripe.
+   6. **Sweeper** (scheduled), covering every recovery branch: stale `draft` **with** a fingerprint → replay Checkout create byte-equivalent under the same idempotency key to recover any session created before a crash — attach by CAS, then expire it via the Stripe API and CAS the row `expired` (derive-or-search delete of the tentative event); stale `draft` **without** a fingerprint → no Stripe call can ever have happened (creation follows fingerprint persistence), so expire + calendar cleanup directly; if attachment CAS fails because expiry won while Stripe creation was in flight → immediately expire the Stripe session via API; terminal rows with a fingerprint but no attached session are swept the same replay-then-expire way. `checkout_open` past `stripe_expires_at` + grace → CAS `expired`, enqueue `gcal_delete`. The `checkout.session.expired` webhook does the same earlier.
 
-- The frame hides `.classroom-section-list` at `max-width: 1279px` ([classroom.css:1014](src/components/classroom/classroom.css#L1014)). Four columns are already too tight well above that.
-- **Below 1400px (journal only):** the entries column folds into the section overlay. This is a journal-scoped override, so it must move the `classroom-section-trigger` and the overlay to the same 1400px threshold **for the journal route only** — the trigger cannot appear at 1400px while the overlay it opens is still gated at 1279px.
-- **Below 1100px:** the review panel moves beneath the question, one scroll.
-- Every other route keeps 1279px exactly as it is.
-- The existing mobile menu behaviour carries over untouched.
-- No horizontal page scroll at any width.
+3. **Public edge function** `single-session` (`verify_jwt = false`; `public-booking`-grade hardening: per-IP rate limits, uniform errors, `Cache-Control: no-store`, 8 KB body cap, redacted DTOs). Routes: `info`; `slots` (open Slots only, short-TTL cache, display-only); `hold` (saga; a valid session JWT sets `user_id` — the only account-attachment path); `status` (checkout session id + booking token, token valid 24 h; returns public state only — `meet_url` appears only on `booked`); `abandon` (booking token **and** row in `checkout_open` — that status bound is what confines abandon authority to the Hold's life; server expires the Stripe session via API first, then CAS `abandoned` + enqueue `gcal_delete`; Stripe-call failure leaves the row to authoritative expiry); `cancel` (cancel token; see 5).
 
-## 3. Decisions (locked, do not relitigate)
+4. **Webhook finalization** (extend `booking-commerce-webhook`; money boundary):
+   - Hardening applies to **every** Stripe branch in the shared webhook, including the existing package path: body cap before read; official signature verification (all `v1` sigs, 5-min tolerance); validate `payment_status=paid`, amount, currency, `mode`, `livemode` per product; fail closed on database errors (no more ignored inserts); 2xx **only after** durable commit.
+   - `checkout.session.completed` (single session): validate facts, then ONE atomic RPC — `finalize_single_session_payment(provider_event_id, …)` — which **claims the webhook event and finalizes in the same transaction**: takes the slot advisory lock, records the event id (idempotent claim — a replay that finds the event already claimed, or matching payment facts on `booked`/refund states, returns the existing outcome), and arbitrates: row `checkout_open`, or `expired` within grace **and** slot still free against both occupancy tables **and** the event-aware live-calendar check passes → CAS `booked`, mint cancel token (plaintext into the email outbox payload only), enqueue `gcal_promote` (which chains the confirmation emails after persisting `meet_url`). Otherwise → CAS `refund_pending` and enqueue the `stripe_refund` outbox job. `booked → refund_pending` cannot occur.
+   - **Refund via outbox:** the `stripe_refund` job runs with a Stripe idempotency key per row, persists `stripe_refund_id` and provider status, retries on a lease/backoff, and survives crash-after-Stripe-success (replay reads the refund by idempotency key). The row stays `refund_pending` until Stripe reports `succeeded` (refund webhooks consumed; reconciliation polling as backstop) → CAS `refunded` → only then the apology/ask-to-rebook email. Exhausted retries or provider failure → `refund_failed` + alert Joshua.
+   - `checkout.session.expired`: if unpaid, CAS `expired`, enqueue `gcal_delete`.
+   - **Outbox worker / reconciler:** leases, idempotency keys, status/version preconditions (above); `gcal-reconcile` extended to `single_session_bookings` so calendar state self-heals.
 
-| Item | Decision |
-|---|---|
-| Frame | Classroom frame. The rail persists and must never remount. |
-| Nav position | Unchanged. Stays under Review in the rail, keeps the URL `/journal`. |
-| Deep links | `/journal/:qid`. Selection moves out of memory and into the URL. |
-| Actions | **Ask only.** No Practice, no Delete. |
-| Correct answer | Stays visible, as today. This is a write-up surface for a question already missed. |
-| Annotation | Kept, with the scroll bug fixed. |
-| Autosave | 800ms debounce kept. Flushed on navigate instead of cancelled. **Silent** — no save indicator. |
-| Suggestion chips | **Dropped.** |
-| Onboarding tour | **Dropped**, along with its `waj_review_tour_done_v1` localStorage key. |
-| New entry picker | **Dropped.** |
-| Review form fields | Unchanged in content. Restyled to Classroom tokens. |
+5. **Cancellation (non-credit path — never touches passes).** Cancel-token link in the Booker's confirmation email, no login: shows the booking, confirms → CAS `booked` → `cancelled` (idempotent; allowed until session start, blocked after), supersede pending promote/email jobs, enqueue `gcal_delete` + cancellation emails, update the mirror, slot reopens. No credit restoration, no automatic refund — Joshua decides refunds in Stripe case-by-case. No reschedule in v1.
 
-Dropping the picker and the chips leaves `ensureJournalEntry` with only its automatic callers: the drill's wrong-answer path (`logWrongAnswer` → `append_waj_wrong`) and the flag-to-journal bridge in `Drill.tsx`. Both stay. This is intentional: the journal becomes a record of what the student missed rather than something they curate.
+6. **Page.** Public route `/book/session` (static, above `/book/:slug`; slug generator never mints `session`). Extract and parameterize the existing scheduler primitives (`CalendlyBookingCard` day/slot machinery, `booking-theme.css` tokens, container queries, `useReducedMotion`); the genuinely new piece is the desktop week-view grid. Structural clone per "The experience being mirrored"; no Cal branding. Confirmation view: bounded polling of `status` → `booked` ("You're booked" + date/time; Meet link once promotion lands, with a truthful "calendar invite on its way" interim) | still `checkout_open` after the bound ("Payment received — finalizing; you'll have email shortly" + support contact showing the checkout session id) | `expired`/`abandoned`/`refund_pending` (truthful copy per state). Double-submit reuses the idempotency key and checkout URL; back-from-Stripe resumes cleanly.
 
-## 4. Routing (`src/App.tsx`)
+7. **Student/teacher surfaces see it.** A source-discriminated unified booking DTO (`redemption` | `single_session`) becomes the **sole** `student-booking info` contract; migrate every live consumer by name: `useStudentBooking`, `useBookingScheduleItems` (Schedule), Classroom home, the recent-activity strip, **`BookingView.tsx` and `CalendlyBookingCard.tsx`** (both currently destructure `redemptions` directly) and their tests, plus teacher dossier/StudentBookingPanel views. **Teacher-side association precedence is explicit:** a global admin list shows every Single Session; a booking appears on a specific student's dossier only via verified `user_id`, with normalized-email matches shown separately as clearly labeled operator-only "possible match (unverified email)" suggestions; unmatched bookings remain on the global list only.
 
-Move `/journal` under the **existing** pathless `<Route element={<ClassroomLayout />}>` that Flagged already uses.
+8. **Offers registry, honestly.** Migration adds `'native'` to the `booking_offers.provider` CHECK (the `active` column **already exists** — the migration uses it, not adds it). New row `single-session-native` (provider `native`, url `/book/session`, internal router `<Link>` in `BookingOfferHub`). The legacy `single-session` Cal row keeps its primary key, historical FKs, and webhook mapping, and is deactivated via `active=false`. **Every `student_booking_offers` override pointing at the legacy id is migrated to `single-session-native` in the same migration with field-level semantics:** enabled/disabled state copies verbatim; a `url_override` that is empty or native-relative carries over; a `url_override` pointing at an external URL (e.g. a Cal link authored for that student) is NOT auto-rewritten — it stays on the legacy row and is emitted in the migration output for Joshua's manual review, so no authored arrangement is silently changed. Tests cover enabled, disabled, and external-override arrangements. Frontend offer union updated.
 
-**Do not create a second pathless layout route.** Two sibling routes each holding their own `<ClassroomLayout />` cause React to unmount one and mount the other, which reproduces exactly the rail remount this work removes. This was built, measured (`railSurvived: false`) and rewritten during the Flagged job; it is recorded in `docs/adr/0004-classroom-frame-is-one-pathless-layout-route.md`. Read that ADR before touching routing.
+9. **Workers have a two-stage deployment contract** (a static migration cannot read function secrets — the repo's existing email cron already documents this shape): stage 1 is the migration (tables, RPCs, heartbeat schema); stage 2 is deploy-time provisioning — the dedicated least-privilege worker secret goes into Vault/function secrets via the Management API and the crons are installed referencing it (never embedded in SQL or cron metadata), with documented rotation and fail-closed behavior on missing/invalid secret. Heartbeat table (last_start/last_success per worker); `get_booking_health` gains: stale-worker alerts, `refund_pending`/`refund_failed` counts, `checkout_open` past expiry, outbox failures/supersessions, orphan tentative events. Correlated ids (row ↔ checkout session ↔ GCal event) in every log line; support lookup by checkout session id. A post-deploy assertion verifies the crons are scheduled and heartbeating — part of the proof.
 
-```tsx
-<Route element={<ClassroomLayout />}>
-  {/* … existing /classroom subtree … */}
-  {/* … existing /flagged, /flagged/:qid … */}
-  <Route path="/journal" element={
-    <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
-      <JournalIndexView />
-    </ProtectedRoute>
-  } />
-  <Route path="/journal/:qid" element={
-    <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
-      <JournalEntryView />
-    </ProtectedRoute>
-  } />
-</Route>
-```
+10. **PII retention — all stores.** Sweeper nulls Booker PII on terminal non-booked rows after 30 days. Same clock for: outbox payloads (purged on delivery, force-purged at 30 days), `booking_commerce_events` single-session payloads (stored as redacted projections — no raw Stripe dumps with PII), token hashes on terminal rows, and `ip_hash` (HMAC with a rotating key). Structured logs carry ids, never Booker PII. `booked`/`cancelled`/refund-branch rows are business records and are kept.
 
-- Keep the flag array and `allowSignedIn` byte-identical. Access must not change for anyone.
-- Keep the `/waj` → `/journal` redirect.
-- Remove the old `/journal` entry from the `StudentShell` block.
-- `src/pages/Journal.tsx` (10 lines, delegates to `JournalEntrySurface embedded`) becomes unreferenced. **Leave the file in place** and say so in your summary. Deleting files is the human's call.
+11. **Proof.** Automated: SQL policy cases (pitch anchoring, business-day boundary, 24h notice, DST transitions), claim-race serialization across BOTH engines, draft occupancy + `draft_expires_at` hygiene, saga recovery (stranded draft, Stripe-create crash → byte-equivalent replay, double submit), webhook idempotency (replay after `booked` returns existing outcome — no refund), atomic event-claim + finalize, arbitration both ways (completion-wins; slot-retaken → `refund_pending` without constraint violation), forced-sliver Cal-race test (event-aware live check), outbox precondition races (delete-before-promote and promote-before-delete), refund lifecycle (pending until provider `succeeded`; crash-after-success recovery), cancellation idempotence + post-start block + job supersession, token scope/lifetime enforcement (status 24 h, abandon dies with `checkout_open`, cancel dies at session start), reserved-slug routing, offer-override migration. UI: double-submit, stale slot on return, back-from-checkout, keyboard/focus/live-region a11y, narrow/mid/wide viewports, reduced motion. Manual end-to-end in Stripe test mode: book → pay → calendar + Meet + both emails; abandon; expire; forced-expiry arbitration; cancel. Last: one live-mode $45 smoke test, manually refunded. Post-deploy: cron assertion + heartbeats verified.
 
-## 5. Shell changes (`src/components/classroom/shell/ClassroomLayout.tsx`)
+## Key decisions & tradeoffs
 
-Mirror the `flagged` branch that already exists in this file; do not invent a new pattern.
+- **Slot-first with a payment Hold** (ADR 0005) — mirrors Cal's order of operations; pay-first rejected for its mid-purchase email detour.
+- **The Hold and the booking are one row**, first-class, honoring "needs no booking pass" and sidestepping every pass invariant.
+- **No intermediate paid state; finalize-or-refund is one RPC that also claims the webhook event** — replay-safe by construction, `booked → refund_pending` prohibited, Stripe redelivery is the crash-recovery loop.
+- **Hold expiry = Stripe's returned `expires_at`** (requested at 35 min from a persisted fingerprint) — one authoritative clock; `draft_expires_at` covers the pre-Stripe window.
+- **Tentative GCal event per Hold, fail closed, with adoption** — the one channel Cal.com and the package engine already read; a Hold Google can't see never gets a payment page; orphans are structurally cleaned.
+- **Symmetric advisory lock** across native claim, package redeem, and finalization — cross-engine races settle in one place, in SQL.
+- **Outbox with status/version preconditions** — side effects can be late, never wrong; ordering that matters is chained (Meet before confirmation email).
+- **Checkout Sessions over static Payment Links** — dynamic description, tamper-proof metadata, expiry alignment, personalized redirect.
+- **Structural clone, LSAT U skin** — flow and options copied exactly; visual identity stays the product's own.
+- **Guest-owned bookings** — account attachment only via authenticated session at booking time.
+- **Turnstile on Hold creation** — an occupying Hold is free to create; a bot check at that boundary is cheaper than the DoS it prevents. Slots browsing stays friction-free.
 
-- `ClassroomSection` gains `"journal"`. Add its title to `SECTION_TITLES` as `"Wrong answers"`.
-- `sectionFromPath` returns `"journal"` for `/journal` and `/journal/:qid`.
-- `SectionList` grows a `journal` branch listing entries. Reuse `classroom-panel-search` for the label filter and the existing three-state discipline verbatim.
-- The "Wrong answers" nav button becomes `navClass(activeSection === "journal")` with a trailing `<em>›</em>`, matching Flagged.
-- `activeId` already falls through to `params.qid`. Entries key off **`qid`**, not the row `id`.
+## Risks / open questions
 
-### Selection rules
+- Google FreeBusy load from anonymous traffic — display cache + per-IP limits; live checks are per-hold-attempt and per-finalization only.
+- The Cal-race TOCTOU sliver is narrowed to seconds by the tentative event and the pre-RPC event-aware live check, but Google observations cannot be transactional with Postgres — a milliseconds-scale residual race is **accepted and monitored** (reconciler double-booking detection + alert) while Cal stays live; the refund branch and manual resolution handle the worst case honestly, and retiring the Cal link ends the exposure.
+- Stripe test vs live secrets — `livemode` validation per branch catches cross-wiring.
+- Guests on the Google event see each other — matches Cal, accepted.
+- Weekly-hours drift between the app and Cal while both run — accepted for the parallel period; retiring Cal ends it.
 
-Today selection is a row `id` in local state and an effect auto-selects `rows[0]` when nothing is chosen ([JournalEntrySurface.tsx:93,130,135](src/components/journal/entry/JournalEntrySurface.tsx#L93)). Carrying either behaviour into a URL-addressed view makes deep links unreliable. Specify exactly:
+## Out of scope
 
-- Selection resolves **only** by `qid` from the URL. No row-`id` lookup anywhere.
-- **No auto-select.** `/journal` shows the index view's prompt or empty state; it must never silently redirect to the first entry.
-- **Unknown or non-journaled `qid`** renders an explicit "this entry is not in your wrong answers" state with a way back to `/journal`. It must not fall through to the first row, and must not render a blank column. Follow `FlaggedQuestionView`'s missing-row branch, which already does exactly this.
-- Distinguish "still loading" from "not found": only a **successfully loaded** entries list with no matching `qid` is a not-found.
-
-### The fourth column
-
-The review panel must be a **sibling of `.classroom-stage`**, not a pane nested inside the reading column. Nesting it inside the reading column recreates the width problem this work exists to remove.
-
-**Do not try to project into it through context.** An earlier draft of this spec proposed a "context slot"; that is wrong and was caught in review. `ClassroomLayoutContext` carries `displayName`, `testDate` and `openSection` *downward* ([ClassroomLayout.tsx:41](src/components/classroom/shell/ClassroomLayout.tsx#L41)); it cannot lift a child's content upward into a sibling. And `<Outlet>` sits inside `.classroom-column` inside `.classroom-stage` ([ClassroomLayout.tsx:575-587](src/components/classroom/shell/ClassroomLayout.tsx#L575)), so nothing a child returns can become `.classroom-stage`'s sibling by normal rendering. A reverse-registration callback would work mechanically but introduces render-ordering bugs for no benefit.
-
-**Do this instead.** Give `ClassroomLayout` one explicit branch: when the route is the journal *detail* view, render `<Outlet context={contextValue} />` **bare, directly under `.classroom-root`**, instead of wrapping it in `.classroom-stage` > `.classroom-column`. `JournalEntryView` then returns two siblings itself:
-
-```tsx
-<>
-  <main className="classroom-stage">…question…</main>
-  <aside className="classroom-aside">…review panel…</aside>
-</>
-```
-
-Constraints on that branch:
-
-- It applies to `/journal/:qid` **only**. `/journal` (the index) has no aside and uses the normal stage/column path unchanged.
-- Every other route keeps today's DOM byte-for-byte. The condition is explicit, not a general mechanism.
-- The `classroom-section-trigger` button (the narrow-width control that opens the entries overlay) currently lives inside `.classroom-column`. The journal branch bypasses that wrapper, so the trigger must be rendered inside `JournalEntryView`'s `<main>` with identical markup and behaviour, or it disappears at narrow widths.
-- Add a journal-only root modifier class (e.g. `classroom-root-journal`) to carry the grid. `.classroom-root` is a **non-wrapping flex row** ([classroom.css:17](src/components/classroom/classroom.css#L17)), so "review beneath question" at narrow widths cannot happen by wrapping — it needs explicit journal-scoped rules.
-
-## 6. Files
-
-| File | Purpose |
-|---|---|
-| `src/components/classroom/JournalViews.tsx` | `JournalIndexView` (prompt / empty state) and `JournalEntryView` (question + review panel + Ask). Sits alongside `FlaggedViews.tsx`, which is the reference implementation for all of this. |
-| `src/hooks/useJournalEntries.ts` | React-query over `getWrongAnswerSmartRows`. Same shape as `src/hooks/useFlagged.ts`, including the invalidate helper. |
-| `src/components/classroom/JournalQuestionView.tsx` | The vertical question. Stimulus, stem, A–E stacked, correct answer marked, non-correct choices clickable to record the chosen wrong answer. |
-| `src/components/classroom/JournalReviewPanel.tsx` | The form, ported from `ReviewForm.tsx` minus the tour, restyled to Classroom tokens. |
-| `src/components/classroom/classroom.css` | Fourth-column and form rules. |
-
-## 7. Reuse, do not rewrite
-
-- `getWrongAnswerSmartRows` / `WrongAnswerSmartRow` (`src/lib/journalService.ts`) — the two-query fan-out and JS merge on `qid` stays exactly as is.
-- `upsertNote` (`src/lib/wajNotesService.ts`) — the write path stays as is. Its RLS is complete (all four verbs, keyed on `user_id`), so no migration is needed.
-- `stripDataArtifacts` / `cleanAnswerChoice` from `src/lib/questionText.ts`. Import these. Note the shared module exists but the old local copies in `JournalQuestionPane.tsx:21` were **not** removed when it was created, so three definitions would exist if you write a fourth. Import the shared ones; **do not** clean up the existing duplicates, which is out of scope.
-- `seedDraft`'s fallback chain from `JournalEntrySurface.tsx`. Port it **verbatim**, including the legacy bridges:
-  ```ts
-  wrong_reasoning: n?.wrong_reasoning ?? n?.root_cause ?? '',
-  other_notes:     n?.other_notes ?? n?.student_note ?? '',
-  self_rating:     n?.self_rating ?? (row.status === 'right' ? 'correct' : 'wrong'),
-  date_taken:      isoDate(n?.date_taken) || isoDate(row.first_missed),
-  wrong_answer:    n?.wrong_answer ?? row.last_chosen ?? '',
-  ```
-  Dropping those bridges silently blanks older notes.
-- `AnnotationLayer.tsx` and the `AnnotationStroke` shape, with the fix in §8.
-- `startJoshuaConversation` (`src/lib/joshuaThread.ts`) and the `AskComposer` pattern in `FlaggedViews.tsx`. Do **not** reuse `src/components/inbox/MessageComposer.tsx` — it drags in an emoji picker, a Drive attachment picker and a slash-command template palette that do not belong in a reading column.
-- Existing Classroom CSS primitives: `classroom-button`, `classroom-textarea`, `classroom-panel-search`, `classroom-panel-item`, `classroom-skeleton`, `classroom-list-error`, `classroom-inline-error`.
-
-## 8. Defects to fix as part of this
-
-**1. Autosave flush.** The cleanup effect calls `clearTimeout` ([JournalEntrySurface.tsx:222](src/components/journal/entry/JournalEntrySurface.tsx#L222)), so a pending write is dropped. This is subtler than it looks and a naive fix makes it worse:
-
-- **Flush on `qid` change, not only on unmount.** `/journal/a` → `/journal/b` reuses the same route element, so React does **not** unmount it — only `useParams` changes. An unmount-only flush would miss the most common case. (An earlier draft of this spec claimed URL selection makes unmounts routine. That was wrong.)
-- **Flush the captured `qid`, not the current one.** Cleanup runs after the param has already changed, so reading the route during cleanup writes the previous draft into the *next* entry.
-- **`saveTimer.current` is never nulled after the timer fires** ([JournalEntrySurface.tsx:192](src/components/journal/entry/JournalEntrySurface.tsx#L192)). A flush guarded on `if (saveTimer.current)` therefore re-fires an already-completed save. Hold one pending payload `{ qid, draft, annotations }`; clear **and null** it before writing; make flush idempotent so a double invocation (StrictMode, or unmount straight after a fire) writes once.
-
-Keep the debounce at 800ms. Keep it silent.
-
-**2. Side effect inside a state updater.** `patch()` calls `scheduleSave` from inside the `setDraft` updater ([JournalEntrySurface.tsx:226](src/components/journal/entry/JournalEntrySurface.tsx#L226)), which double-fires under StrictMode. Move it out — but **do not** compute the next draft as `{...draft, ...patch}` from the closed-over `draft`, which loses writes when two edits batch in one tick. Keep a latest-draft ref, or compute the next draft synchronously once and feed it to both `setDraft` and `scheduleSave`.
-
-**3. Annotation scroll.** Strokes are pinned to the pane, not the content, so once the student scrolls the ink sits over the wrong text. Re-anchoring is more than changing a parent:
-
-- The layer's **positioned ancestor must be the element that wraps the whole question content** and must cover its full scroll height, not the viewport-height pane. Otherwise document scrolling still offsets the ink.
-- `pointFromEvent` must measure against **that same element's** bounds, or reads and writes disagree.
-- Pointer events must stay `none` when annotation mode is off. A content-sized layer that swallows clicks would block answer-choice selection and touch scrolling — a regression the current pane-sized layer does not have.
-
-Explicitly **not** fixed here: strokes still stretch non-uniformly when the aspect ratio changes (points are normalized per-axis), and `strokeWidth` remains an unscaled pixel value. Leave both.
-
-## 9. Styling
-
-- Every selector prefixed `.classroom-root`. Dark mode keyed off `html.dark .classroom-root`.
-- **No `:root`, no `@layer`, no bare element selectors.** This must keep returning nothing:
-  ```bash
-  grep -nE ':root|@layer' src/components/classroom/classroom.css
-  ```
-- Reuse existing tokens. No hardcoded hex. The status colours currently hardcoded as Tailwind ramps (rose/amber/emerald 500 for wrong/unsure/correct) become Classroom tokens.
-- Orange (`--classroom-link`, `#FF8906`) is a highlight, not a theme.
-
-## 10. Voice
-
-- Second person throughout.
-- **The coach is never named in the furniture.** The action is **Ask**, never "Ask Joshua".
-- No em-dashes in any student-facing copy.
-- The surface is called **Wrong answers**, not "Wrong Answer Journal".
-
-## 11. Verification
-
-Dev server on **8081** (8080 is occupied by something else). Saved student session at `.auth/state.json`; re-mint with `BASE_URL=http://localhost:8081 node .auth/save-session.mjs`. Existing scripts in `.auth/` are the reference for how this is done.
-
-Nothing is "done" on the strength of the diff.
-
-1. `npm run typecheck` clean, and **`npm run build` clean** (`AGENTS.md:67` requires it before wrapping significant work; `vite build` uses esbuild and strips types without checking them). `npx eslint` on changed files introduces no new errors.
-2. The `grep` in §9 returns nothing.
-3. **Rail identity (mandatory).** Tag `.classroom-sidebar` with an attribute, navigate `/classroom` → Wrong answers → an entry, and assert the tag survives every hop. A screenshot cannot catch this regression.
-4. Four columns at 1500px. Question renders stimulus, then stem, then five stacked choices, correct answer marked.
-5. `/journal/:qid` loaded directly selects the right entry with the form populated. Then: `/journal` shows the index and does **not** jump to the first entry, and `/journal/PT999-S9-Q99` shows the explicit not-found state rather than the first row or a blank column.
-6. **Autosave flush, three separate cases.** Each proven, not reasoned about:
-   - type into entry A, click entry B within 800ms, reload A, assert A's text persisted
-   - and assert **B was not contaminated** with A's text (the captured-qid bug)
-   - type, wait for the save to land, then immediately navigate; assert exactly **one** write (no duplicate from the un-nulled timer ref)
-   - type two fields in the same tick and assert both persisted (the batched-edit stale-draft bug)
-7. Autosave round trip: edit, wait, reload, assert persistence. Confirm no save indicator appeared.
-8. Annotation: draw on a scrolled question, scroll, assert the stroke stays on the same content. Reload, assert it persisted. Then with annotation mode **off**, assert answer choices are still clickable and the column still scrolls — a content-sized layer must not swallow pointer events.
-8b. Non-journal DOM is untouched: assert `/classroom` and `/flagged` still render `<main class="classroom-stage"><div class="classroom-column">` with the Outlet inside it, since the journal branch bypasses that wrapper.
-9. Ask posts into the admin thread and the row lands in `messages`. A student without `has_chat_access` sees no Ask control.
-10. Three states for the entries list: populated, loading skeleton, and a **forced 500** showing error plus retry with the empty state suppressed. Force it with `route.fulfill({status:500})`, **not** `route.abort()` — an abort reads as offline and react-query's default `networkMode: 'online'` pauses the query instead of failing it, leaving a permanent skeleton.
-11. The dropped features are gone: no suggestion chips, no New entry picker, no tour, and `waj_review_tour_done_v1` is never written.
-12. Widths 1500 / 1400 / 1100 / 700 plus dark mode, with no horizontal page scroll at any width. Include the **sidecar-docked case**, which `AGENTS.md:63` requires on any responsive work and which this is. Check both sides of each journal breakpoint (1401/1399, 1101/1099), and confirm the section trigger and the overlay it opens appear at the *same* threshold.
-13. Regression: `/flagged`, `/mainhub`, `/practice`, `/bootcamps` unchanged (`classroomRoot` as before, unchanged `fontFamily`).
-
-## 12. Documentation
-
-Extend `src/components/classroom/CONTEXT.md` with **Journal entry** as a term and the four-column layout under Classroom frame. The flag-versus-wrong-answer distinction is already written there; do not duplicate it.
-
-No new ADR unless something surfaces that is hard to reverse, surprising without context, and the result of a real trade-off. The routing decision is already ADR 0004 and this follows it.
+- "Overlay my calendar" (visitor Google OAuth), rescheduling, cancellation refund automation (the refund branch exists solely for payment-arbitration losers), SMS/reminder workflows.
+- Migrating or changing the consultation link, per-student Cal links, or anything else on the Cal account; removing Cal.com.
+- Brain-side registry flip (`context/links.json`) — at go-live, outside this repo. (The root glossary amendment is done; it correctly describes Cal.com as today's link and the native page as the migration target.)

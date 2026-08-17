@@ -1,270 +1,87 @@
-# Plan Review Log: Classroom redesign
-
-Act 1 (grill-with-docs) complete — plan locked, spec at `CLASSROOM-DESIGN.md`. MAX_ROUNDS=3.
-Act 2 reviewer: Codex `gpt-5.6-terra`, reasoning effort medium, read-only sandbox.
-
-Live-database verification performed before Act 2 via the Lovable connector
-(project `53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76`), correcting the spec's
-"the data is already there" claim. Findings recorded in `PLAN.md`.
+# Plan Review Log: Native Single Session booking page
 
-Standing instruction from Joshua: Claude does **not** apply Codex's findings
-automatically. Surviving findings are presented for per-item green/red light.
+Act 1 (grill-with-docs) complete — plan locked, CONTEXT.md (Booking) created, ADR 0005 recorded, CONTEXT-MAP updated. MAX_ROUNDS=5.
 
-## Round 1 — Codex
+## Round 1 — Codex (gpt-5.6-sol, read-only)
 
-Material blockers:
+VERDICT: REVISE. 17 findings; full text preserved below.
 
-- Moving only `/classroom` outside `StudentShell` leaves `/classroom/uploads`, `/recaps`, item details, and assignment details inside it; Classroom links will abruptly return to the old chrome. Fix: define and move the entire `/classroom/*` route family, or keep all new links within the new page.
-- `StudentShell` is currently the onboarding gate; the moved route bypasses its profile-name/onboarding redirect, while `ProtectedRoute allowSignedIn` permits any authenticated user. Fix: add an equivalent onboarding/profile gate around the new full-screen Classroom route.
-- The route move does not itself weaken database RLS, but the plan never explicitly preserves the `ProtectedRoute` wrapper. Fix: specify the exact moved route element, retaining `ProtectedRoute flag="has_classroom_access" allowSignedIn` (or deliberately remove `allowSignedIn`).
-- The “day-0 guarantee” cannot be implemented from the identified enrollment path: `AuthContext` provisions `students` client-side, and students cannot insert `classroom_items` under its RLS. Fix: add an idempotent privileged database trigger/Edge Function with a defined Joshua author ID and failure handling.
-- Seeding at every auth signup is not equivalent to paid enrollment and could create welcome notes for unauthorized accounts. Fix: seed on the authoritative access-grant/enrollment transition, not `auth.users` creation.
-- The seed is not idempotency-specified; retries/concurrent enrollment flows can create duplicate “latest word” notes. Fix: add a unique seed marker/source key plus `ON CONFLICT` behavior.
-- “Joshua’s latest word” is underspecified: `useInbox` returns many conversations, and the latest message may be authored by the student. Fix: select a defined Joshua conversation and filter by Joshua/admin `sender_id`, then fall back to the seeded note.
-- Query failures would be rendered as absent sections, falsely telling students there is no work, message, or booking. Fix: define loading/error states and telemetry separately from legitimate empty results.
-- The scope lock is internally inconsistent: `test_date` capture requires edits to `Onboarding`, `Profile`, likely `src/lib/onboarding`, and regenerated Supabase types—none are in the allowed-file list. Fix: explicitly list every approved file and make generated-type regeneration part of the migration step.
-- The test-date feature has no null, invalid, timezone, or past-date behavior, despite the deck depending on “days to test.” Fix: define local-date arithmetic and a truthful no-date/past-date deck state before implementation.
-- The repository migration declares `external_work_uploads.extracted_text`, `parsed_json`, and `confidence_score`, while the plan says production lacks them; this is schema drift, not merely a UI limitation. Fix: add a production schema-drift check/migration and regenerate types before relying on upload status or fields.
-- `lecture_video` is proposed only in the TypeScript union; the database `classroom_items.type` check constraint will reject it. Fix: include an additive migration updating the constraint, or do not add the type until hosting is implemented.
-- “Inline images and GIFs” assumes existing classroom-content storage paths and publicly renderable URLs, neither established by `classroom_items`. Fix: specify the bucket, authorization/signed-URL strategy, and sanitized renderer.
-- Rendering `content_html` inline without a mandated sanitizer introduces stored XSS; existing item detail code sanitizes it, but the plan does not carry that rule forward. Fix: require DOMPurify (or equivalent) before every inline HTML render.
-- “Drills done” and “consistency/accuracy” need explicit sample thresholds and definitions; the analytics helper has low-sample semantics, but the plan could present misleading charts for one attempt. Fix: reuse `MIN_SAMPLE`/`hasData` rules and omit or label insufficient data.
-- “Up next” merges multiple assignment systems but only says to dedupe by source ID; IDs from different tables can collide and the existing sources have distinct unlock/status semantics. Fix: dedupe by `(source_table, source_id)` and define ordering/visibility rules per source.
-- The verification plan checks screenshots and typecheck but not RLS for the moved route, seed idempotency, production schema parity, or hook-error states. Fix: add student/admin/unauthenticated E2E cases plus migration and seed integration tests.
+1. CRITICAL — Cal.com stays live and cannot see a database Hold; Cal can book the held slot; finalization then fails the FreeBusy check. Fix: retire the Cal link at launch or create a tentative Google event per Hold.
+2. CRITICAL — the promised cross-table exclusion constraint cannot exist in Postgres (single-table only; no now() in predicates). Fix: one occupancy table or one slot-claim RPC + expiry sweeper.
+3. CRITICAL — the synthetic 1-credit Booking Pass violates the domain (root glossary: single session "needs no booking pass") and the schema (one_resumable_pass_per_student unique index; token_hash/created_by required). Fix: first-class standalone booking record.
+4. CRITICAL — 2:10/3:20 starts violate the redemption slot policy (:00/:30) and the ±15-min padded exclusion range makes adjacent 70-min slots conflict. Fix: offer-aware SQL policy.
+5. CRITICAL — plan both pre-creates a redemption and calls bookSession (which creates its own); with Holds as busy, bookSession would reject its own Hold. Fix: dedicated atomic finalize RPC.
+6. HIGH — Hold + Stripe Checkout creation is not atomic; needs a saga with idempotency keys, CAS transitions, recovery sweeps.
+7. HIGH — expiry alignment does not remove the late-payment race (paid at T-ε, webhook after expiry). Needs arbitration + auto-refund path for paid-but-unconvertible.
+8. HIGH — cancel_url is browser navigation; the Checkout stays payable. Release only after the backend expires the Stripe session.
+9. HIGH — webhook not hardened for a money boundary (2xx before durable commit, unbounded body, single-sig parse, no payment_status/amount/currency/mode/livemode validation).
+10. HIGH — retries can permanently skip calendar/email side effects; needs per-step state + reconciler coverage.
+11. HIGH — unverified email match must not attach a public purchase to an account (paid data injection). Keep guest-owned unless authenticated.
+12. HIGH — existing cancellation RPC restores credit/reactivates passes; single sessions need a non-credit cancellation path with cutoff semantics.
+13. HIGH — booking_offers.provider CHECK only allows stripe|calcom; add a native provider honestly, keep legacy Cal mapping.
+14. MEDIUM — abuse/PII underspecified: hold caps, guest caps, RLS, retention.
+15. MEDIUM — no real state machine for confirmation/observability; define checkout_open → paid_finalizing → booked | expired | manual_attention with alerts and truthful UI.
+16. MEDIUM — reuse existing scheduler primitives (CalendlyBookingCard) instead of a second calendar implementation; proof list missing double-submit/reload/stale-slot/back-from-checkout/a11y/viewports.
+17. MEDIUM — domain-language conflicts with the root glossary ("one-off" is an avoided term; Booking Pass ≠ wallet; $45/hour vs $45/70min).
 
-VERDICT: REVISE
-### Claude's response
+### Claude's response (Round 1)
 
-Accepted 16 of 17. Independently verified before accepting:
-- `classroom_items_type_check` really does exclude `lecture_video` (live DB) — additive migration required or the type must not ship.
-- DOMPurify is the established pattern (`ClassroomItem.tsx:61`, `ClassroomTAAssignmentDetail.tsx:98`) — the spec failed to carry it forward.
-- `supabase/migrations/20260506000200_external_work_uploads.sql` declares `extracted_text`/`parsed_json`/`confidence_score`; production lacks all three. Confirmed schema drift, not a UI limitation.
-- `StudentShell` is indeed the onboarding gate (profile display_name -> /onboarding redirect); moving the route out bypasses it.
-- The `/classroom/*` sub-routes (uploads, recaps, item, ta, assignment) all remain in the shell — chrome whiplash confirmed.
+Accepted 1 (tentative GCal event per Hold — also closes cross-engine blocking through the channel every engine already reads), 2 (single claim RPC + advisory lock + sweeper; in-table exclusion for holds), 3+4+5+12 (model pivot: `single_session_bookings` is a first-class record that is BOTH Hold and booking via a status lifecycle; no pass, no redemption; its own SQL policy; its own non-credit cancellation), 6 (explicit saga), 7 (completion-wins arbitration + automatic refund for paid-but-unconvertible — the one place refund automation now exists), 8 (backend-expire before release), 9 (full webhook hardening list), 10 (per-side-effect state + reconciler), 13 (provider 'native' migration, legacy row retained), 15 (state machine + health), 16 (extract/parameterize existing primitives; expanded proof list), 17 (glossary reconciled to root; "$45 flat for the 70-minute session" per live Cal config — the root glossary's "per hour" framing flagged to Joshua rather than silently rewritten).
 
-Partially rejected: finding 7 attacked a strawman — the plan already said "on enrolment", not on auth signup. The idempotency half of the finding stands and is accepted.
+Partially accepted 11: bookings are guest-owned; attachment to a student account happens only via an authenticated session at booking time (JWT), never by unverified email match. Teacher surfaces list single sessions by email (service-role only) — that is operator visibility, not account data injection.
 
-Highest-value finding: 10 (loading/error states rendering as legitimate absence). Combined with the
-"empty sections do not render" rule, a failed query would silently tell a student they have no
-homework, no message and no booking. That is a correctness bug that would ship invisibly.
+Partially accepted 14: hold caps (per-IP, per-email, global), guest cap + normalization, service-role RLS, 30-day PII purge on terminal non-booked rows — all in. CAPTCHA/bot-suite declined for v1: the $45 payment wall is the effective rate limiter, and the caps bound the damage of a hold-exhaustion attempt; revisit if abuse is observed.
 
-## Round 2 — Codex
+## Round 2 — Codex (same session)
 
-Several Round 1 issues are acknowledged, but not yet converted into an implementable plan.
+VERDICT: REVISE. Resolved: first-class record, SQL-authoritative policy, authenticated-only attachment, non-credit cancellation, Stripe-expire-before-release, payment validation, RLS, PII cleanup, scheduler reuse, truthful confirmation states. Remaining/new:
 
-- The onboarding replacement is still ambiguous: “equivalent profile/onboarding check” does not say whether the gate requires `display_name`, `onboarding_completed_at`, or both; today `StudentShell` checks only `display_name`, so either interpretation changes behavior for partially onboarded users. Fix: specify one guard component, its exact query and predicate, its `authReady`/loading/error behavior, and the redirect return path.
-- The moved family needs a new parent layout route with the Classroom frame and an `<Outlet>`; moving six individual routes outside the shell otherwise leaves detail/upload pages without the new navigation and frame. Fix: define `/classroom` as a guarded layout route and nest all six child routes beneath it.
-- Seed idempotency is not implementable from a marker plus `ON CONFLICT DO NOTHING`: `classroom_items` has no unique constraint on `source_table`/`source_id`. Fix: add a partial unique index such as `(student_id, source_table, source_id)` for the enrollment-welcome marker, then target it in the insert.
-- “Defined Joshua/admin id” is still not defined or safely resolved; a hard-coded UUID or a mutable profile lookup can make the trigger fail or attribute content incorrectly. Fix: name the authoritative lookup/configuration mechanism and make its absence a transaction failure with an admin-visible alert.
-- The tri-state rule is correct but insufficiently specified to build consistently: it does not define loading UI, retry behavior, stale-data behavior, or whether an error hides the whole page versus only its block. Fix: establish one per-block contract: loading skeleton, prior successful data retained while refetching, inline retryable error, and omission only after a successful empty query.
-- `useInbox` and `useConversationMessages` are separate asynchronous reads; the plan does not define how the selected Joshua conversation is obtained, what happens when the participant-name RPC fails, or how it avoids showing the seed while the real message is still loading. Fix: define a dedicated “latest Joshua word” query state and selection algorithm, with seed fallback only after a successful no-admin-message result.
-- The day-0 `note` will match the Lecture Notes filter (`note`) and can appear both as “Joshua’s latest word” and as a lecture note, mislabeling the welcome message. Fix: exclude the enrollment seed marker from the lecture-notes section.
-- Lecture notes remain zero-row production data with no posting workflow in scope; calling them the central promoted block is aspirational, not a backed feature. Fix: explicitly make the section dormant until authored content exists, or add a separately approved teacher-posting workflow and seed/backfill plan.
-- Uploads remain zero-row data, and production schema drift breaks the parser itself: `parse-external-work` writes `extracted_text`, `parsed_json`, and `confidence_score`, so “status only” does not make the current pipeline safe. Fix: make the production schema-repair migration a prerequisite to exposing submission, or disable submission and show no upload capability in this release.
-- Schema repair for uploads, the seed trigger/index, and regenerated types are now required migrations, but the scope lock authorizes only `profiles.test_date` plus an unspecified seed. Fix: update the allowed-change list to authorize each named migration/function/type-generation artifact, or defer those features.
-- “Production-vs-repo schema parity check” is only a verification phrase; no authoritative command, expected schema, or deployment ordering is stated. Fix: require migrations to deploy before the UI and add a CI/deploy check that validates the required columns and constraints.
-- The plan still preserves `allowSignedIn`, which means the new gate must be the sole enrollment/onboarding boundary; it cannot rely on `has_classroom_access`. Fix: state explicitly whether non-paying signed-in accounts may enter and test that policy.
+1. CRITICAL — advisory lock asymmetric: package redeem RPC never takes it nor checks the new table.
+2. CRITICAL — `draft` doesn't occupy the slot; exclusion predicate omits it.
+3. CRITICAL — `expired → paid_finalizing` arbitration self-detonates on the exclusion constraint when the slot was retaken.
+4. CRITICAL — money strands between the webhook's two DB calls; needs one atomic RPC or a leased resumer.
+5. CRITICAL — refunds have no durable lifecycle (state, refund id, attempts, retry worker).
+6. HIGH — Stripe-create crash leaves an unidentifiable session; sweeper must replay create with the same idempotency key.
+7. HIGH — exact now+30min expires_at can dip under Stripe's floor; request 31+ and store Stripe's returned value.
+8. HIGH — public token model undefined beyond cancel; needs purpose-bound hashed expiring tokens + exact routes/DTOs.
+9. HIGH — hold DoS still free; first-x-forwarded-for is spoofable; needs platform IP source, atomic caps in the RPC, Turnstile.
+10. HIGH — claim RPC checks mirrors, not live FreeBusy; tentative-event insert doesn't detect overlap; fail closed.
+11. HIGH — student/Classroom/Schedule surfaces read only redemptions; needs a source-discriminated unified booking DTO.
+12. HIGH — fixed email/gcal state columns can't represent multiple notifications; needs an outbox.
+13. HIGH — offer id cutover: legacy row owns pk `single-session` + historical FKs; needs stable ids and a safe cutover.
+14. MEDIUM — sweeper/reconciler have no deployment contract (cron install, heartbeats, alerts).
+15. MEDIUM — root brain glossary still says "Stripe-linked Cal.com link" and "$45 per hour".
 
-VERDICT: REVISE
-### Claude's response
+### Claude's response (Round 2)
 
-Verified two claims against production before accepting:
-- `classroom_items` has NO unique constraint beyond the primary key (indexes: pkey, student_idx,
-  status_idx, type_idx). `ON CONFLICT DO NOTHING` on (student_id, source_table, source_id) is
-  unimplementable without first adding a partial unique index. Codex correct.
-- `supabase/functions/parse-external-work/index.ts` writes `extracted_text` (lines 272, 285),
-  `parsed_json` (286) and `confidence_score` (287) to columns that DO NOT EXIST in production.
-  The upload parse pipeline is therefore already broken in production, which explains why
-  `external_work_uploads` has zero rows. This is a live defect discovered incidentally by the
-  review and is out of scope for the Classroom redesign; it needs its own decision.
+Accepted 1 (one shared advisory-lock key — normalized slot-window bucket — taken by the native claim RPC, `redeem_booking_pass_v2`, and the arbitration RPC; each checks both occupancy tables in-transaction), 2 (lifecycle simplified; `draft` occupies: exclusion covers draft/checkout_open/booked, and the claim RPC sweeps stale rows for the window inside its own transaction first), 3+4 (states collapse: the webhook calls ONE atomic `finalize_single_session_payment` RPC that locks the slot key, persists payment facts, and chooses `booked` or non-occupying `refund_pending` — `paid_finalizing` is gone; 2xx only after commit; Stripe redelivery is the resumer), 5 (refund lifecycle `refund_pending → refunded | refund_failed` with stripe_refund_id, attempts, idempotency key, worker retry, alert on failure; apology email only after refund succeeds), 6 (sweeper replays checkout create with the row-id idempotency key to recover, attach, then expire), 7 (request 35 min, store Stripe's returned expires_at as authoritative; Hold expiry = that value), 8 (purpose-bound hashed tokens: booking token for status/abandon minted at claim, cancel token minted at booked, both expiring; routes + redacted DTOs specified; Meet link only on booked status with valid token), 9 (platform-authenticated IP, hashed storage, caps enforced atomically inside the claim RPC, Cloudflare Turnstile before any occupying Hold — accepted as v1 scope, invisible mode), 10 (fresh FreeBusy immediately before claim; tentative-event create failure fails closed — claim released, no checkout), 11 (source-discriminated unified booking DTO; Schedule, Classroom home, recent activity, teacher dossier updated — explicit workstream), 12 (outbox keyed booking/action/recipient with leases, attempts, idempotency keys; calendar promote/delete are outbox actions too), 13 (new `single-session-native` offer id; legacy `single-session` row kept for history + webhook mapping, deactivated in UI via explicit flag; BookingOfferHub updated; no FK rewrite), 14 (cron install + auth in a migration, heartbeat table, stale-worker alert in health, deployment verification in proof), 15 (root glossary amended NOW in the brain — Single session entry no longer names Cal.com, price stated as $45 per session (70 minutes); noted to Joshua).
 
-Best finding of round 2: the day-0 seed note is type `note`, so it would match the Lecture Notes
-filter and appear twice — once as "Joshua's latest word" and again as a lecture note. That would
-have shipped.
+Nothing rejected this round.
 
-LOOP STOPPED AT ROUND 2 of 3, deliberately, not by convergence and not by cap.
-Codex's remaining findings have shifted from "this is wrong" to "specify this in more detail"
-(exact guard predicate, loading skeleton contract, deployment ordering). That is implementation
-detail appropriate to the build step, not plan-level defect. Per Joshua's standing instruction,
-surviving findings go to him for per-item green/red light rather than being applied automatically.
-No VERDICT: APPROVED was reached and none is claimed.
+## Round 3 — Codex (same session)
 
+VERDICT: REVISE. 18 findings: (1) webhook replay after `booked` could route to refund; (2) event dedup not atomic with finalization; (3) refund job absent from schema; (4) occupying `draft` had no expiry clock; (5) Stripe replay not byte-equivalent (recomputed expires_at breaks idempotency); (6) outbox lacks causal order — promote could resurrect a cancelled booking; (7) confirmation email could precede Meet creation; (8) tentative-event timeout/orphan recovery undefined; (9) finalize could conflict with its own tentative event / miss a Cal booking not yet mirrored; (10) status-token transport & lifetime contradictory; (11) plaintext cancel-token delivery unspecified; (12) DTO migration missed BookingView.tsx + CalendlyBookingCard.tsx; (13) offer cutover strands student_booking_offers overrides; (14) package webhook branch not hardened; (15) refund creation ≠ completion; (16) worker secret not deployable as stated; (17) retention missed auxiliary PII stores; (18) two inaccurate claims (glossary; `active` column already exists).
 
----
+### Claude's response (Round 3)
 
-# Plan Review Log: Wrong answers in the Classroom frame
+All 18 accepted; nothing rejected. Structural changes: finalize RPC claims the webhook event and finalizes in one transaction, business-object-idempotent, with `booked → refund_pending` prohibited (1,2); `stripe_refund` becomes an outbox action with lease/attempts/provider-status and `refunded` only on provider `succeeded` via refund webhooks + polling backstop (3,15); `draft_expires_at` at claim, superseded by Stripe's returned value (4); `checkout_request_fingerprint` persisted before the first Stripe call so sweeper replays are byte-equivalent (5); outbox rows carry status/lifecycle_version preconditions, incompatible pending work is superseded atomically, and `gcal_promote` chains the confirmation emails after persisting meet_url (6,7); deterministic-id adoption on timeout/409 + derive-or-search deletion for every terminal draft (8); finalization runs an event-aware live-calendar check excluding the booking's own tentative event, with a forced-sliver race test (9); booking token travels in the success_url/cancel_url we compose, valid 24 h, abandon authority bounded by `checkout_open` status (10); plaintext cancel token exists only in the protected outbox payload, purged on delivery (11); BookingView.tsx + CalendlyBookingCard.tsx + tests named in the DTO workstream, unified DTO becomes the sole info contract (12); legacy overrides migrated/aliased to `single-session-native` in the same migration with arrangement tests (13); immutable-payment validation + fail-closed persistence extended to the package branch (14); dedicated least-privilege worker secret from function secrets, rotation + fail-closed + post-deploy cron assertion (16); retention extended to outbox payloads, redacted commerce-event projections, token hashes, rotating-key ip HMAC, PII-free logs (17); corrected the log's overstated glossary claim (the glossary rightly says Cal is today's link) and the migration now uses the existing `active` column (18).
 
-Started 2026-07-27. Spec by Claude, reviewed by Codex (read-only), to be implemented by Codex.
+## Round 4 — Codex (same session)
 
-## Round 1 — Codex
+VERDICT: REVISE. 9 findings: (1) finalization could conflict with its own mirrored tentative event in the SQL check; (2) the Google check cannot be transactional with Postgres — the "closed race" claim was overstated; (3) the plaintext cancel token had no durable home until gcal_promote succeeded; (4) version preconditions don't fence an already-in-flight side effect; (5) the checkout fingerprint stores the plaintext booking token, contradicting hash-only retention; (6) two saga recovery branches undefined (no-fingerprint drafts; expiry winning mid-Stripe-create); (7) a static migration can't read function secrets — cron deploy is two-stage; (8) guest-to-dossier association ambiguous; (9) legacy override migration lacked field-level semantics (external url_override).
 
-## Findings, ranked by severity
+### Claude's response (Round 4)
 
-1. **HIGH — The spec contradicts its own “unchanged `/flagged` and `/classroom`” scope lock.**
+All 9 accepted; nothing rejected. (1) every occupancy check — SQL mirror and live Calendar — excludes the booking's own gcal_event_id; tentative events stamped with the booking id. (2) live Google checks are now explicitly pre-RPC observations; the milliseconds residual race is accepted and monitored (reconciler double-booking detection + alert to Joshua) while Cal stays live, and retiring Cal ends it. (3) finalization enqueues blocked confirmation rows carrying the encrypted token; promote activates them; bounded promote failure activates them anyway with truthful "Meet link to follow" copy. (4) per-booking advisory lock around each side-effect call + post-call lifecycle_version re-check with immediate compensation. (5) fingerprint stored envelope-encrypted, purged on attachment/terminal. (6) no-fingerprint drafts expire directly (no Stripe call can predate the fingerprint); failed attachment CAS immediately expires the Stripe session; terminal-with-fingerprint-no-session rows swept by replay-then-expire. (7) two-stage deployment contract spelled out (migration, then Vault/Management-API secret provisioning + cron install, then heartbeat assertion), matching the repo's existing email-cron pattern. (8) dossier precedence: verified user_id only; labeled operator-only unverified email suggestions; unmatched stay on the global admin list. (9) field-level override migration: enabled-state verbatim, native-relative URLs carry, external URLs stay on the legacy row and are emitted for manual review.
 
-   The spec requires adding a trailing chevron to “Wrong answers.” Today that button has no `<em>›</em>`, while Flagged does ([ClassroomLayout.tsx:174](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:174)). The same `ClassroomSidebar` renders on every Classroom-framed route ([ClassroomLayout.tsx:529](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:529)), so adding the chevron visibly changes `/flagged` and every `/classroom/*` page.
+## Round 5 — Codex (same session, FINAL — MAX_ROUNDS reached)
 
-   `PLAN.md:14` says those routes must render exactly as now, while `PLAN.md:118` requires the shared visual change. One of those requirements must be relaxed.
+VERDICT: REVISE, reduced to 2 findings: (1) fingerprint purge-on-terminal contradicts the sweeper's terminal replay-and-expire recovery; (2) refund_failed had no transition to refunded when late authoritative Stripe success arrives, and unknown outcomes were conflated with confirmed failures.
 
-2. **HIGH — The fourth-column design is feasible, but the specified “existing context slot pattern” does not exist.**
+### Claude's response (Round 5) — resolution at cap
 
-   `ClassroomLayoutContext` currently carries only `displayName`, `testDate`, and `openSection` ([ClassroomLayout.tsx:41](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:41)). The child route is rendered inside `.classroom-column` through `<Outlet>` ([ClassroomLayout.tsx:575](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:575)). There is no content projection, registration, portal, or slot precedent.
+Both accepted and folded in: the fingerprint is purged only on durable Stripe attachment or durably recorded expiry/confirmed absence (never on terminal status alone); refund_failed is reserved for confirmed provider failure, unknown outcomes stay refund_pending with manual-attention alerts, and verified Stripe success moves any refund-branch state to refunded.
 
-   A child cannot synchronously return content into a parent sibling. A setter-based context slot can work, but only through a post-render registration effect, with explicit cleanup and stable/memoized content. Otherwise it risks:
+## Resolution
 
-   - an initial empty aside or visible stale content;
-   - an effect loop if each render registers a newly created `ReactNode`;
-   - the previous question’s review form surviving briefly after `qid` changes;
-   - parent updates during route/layout unmount.
-
-   The simpler correct layout is either:
-
-   - a journal-only grid modifier on `.classroom-root`, with named positions for stage and aside; or
-   - a journal-only workspace wrapper containing `.classroom-stage` and `.classroom-aside` as siblings.
-
-   Both preserve the locked sibling relationship. The spec needs to choose the slot lifecycle or permit one of these simpler implementations.
-
-3. **HIGH — “Aside beneath the question below ~1100px” fights the current root flex layout unless journal gets route-specific layout rules.**
-
-   `.classroom-root` is one horizontal flex container ([classroom.css:17](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:17)). Its sidebar and section list are sticky fixed-width siblings ([classroom.css:112](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:112), [classroom.css:290](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:290)); `.classroom-stage` is another flex sibling ([classroom.css:422](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:422)).
-
-   At 1024–1099px, the main sidebar is still present because it disappears only at 1023px ([classroom.css:1024](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:1024)). Simply wrapping the root flex would place the aside under the entire row, not specifically under the question. Global changes to this layout would risk `/flagged` and `/classroom`.
-
-   Require a journal-scoped class/grid or conditional wrapper. Otherwise the implementer must invent a fragile combination of wrapping, offsets, and width calculations.
-
-4. **HIGH — The autosave requirement lacks the state machine needed to prevent the exact data loss it is intended to fix.**
-
-   The current timer retains its payload only in a timeout closure ([JournalEntrySurface.tsx:186](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:186)); the ref stores only the timer handle. Cleanup merely clears it ([JournalEntrySurface.tsx:222](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:222)).
-
-   The revised implementation needs a pending-save ref containing at least `{classId, qid, draft, annotations}`, plus a single `flushPendingSave()` operation that clears and consumes it. The spec must require:
-
-   - flush before seeding the next `qid`;
-   - flush on child-route unmount;
-   - latest draft and annotations via refs, not stale cleanup closures;
-   - the old `qid` captured in the pending payload, not read from the new route;
-   - no duplicate flush under StrictMode cleanup;
-   - ordering or serialization when an older save is already in flight.
-
-   Param navigation may reuse `JournalEntryView`; it cannot be treated solely as an unmount. The Flagged view already resets local state in response to `qid` changes ([FlaggedViews.tsx:242](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:242)).
-
-   Moving `scheduleSave` outside the updater also requires a latest-state ref. A naïve `{...draft, ...patch}` outside the updater can itself use stale state. The current forbidden side effect is at [JournalEntrySurface.tsx:226](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:226), and the app really does run under StrictMode ([main.tsx:138](/Users/joshuaf/ai-os/projects/lsatu/src/main.tsx:138)).
-
-5. **MEDIUM — `useJournalEntries` cannot safely be “the same shape as `useFlagged`” without additional class-ID semantics.**
-
-   `useFlagged` can key and enable directly from authenticated `user.id` ([useFlagged.ts:16](/Users/joshuaf/ai-os/projects/lsatu/src/hooks/useFlagged.ts:16)). Journal rows require an asynchronously resolved `classId`; the existing surface explicitly includes `classLoading` in its loading state ([JournalEntrySurface.tsx:84](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:84), [JournalEntrySurface.tsx:383](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalEntrySurface.tsx:383)).
-
-   The spec must define:
-
-   - the query key, including `classId`;
-   - whether the hook exposes class-ID loading separately or folds it into query state;
-   - how the `useClassId` fallback/error is represented;
-   - the exact invalidation key;
-   - how an empty-state flash is prevented before `classId` resolves.
-
-   Also, `SectionList` currently instantiates all its data hooks unconditionally ([ClassroomLayout.tsx:260](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:260)). Adding `useJournalEntries()` beside them would run the two-query journal fan-out on `/flagged` and `/classroom` whenever the section list mounts. A journal-only subcomponent or an explicit `enabled` option is required to avoid changing those routes’ network behavior.
-
-6. **MEDIUM — The responsive contract is internally ambiguous and lacks column dimensions.**
-
-   The spec says the entries column folds “below ~1400px,” while also saying it matches the existing `max-width: 1279px` behavior. The actual list disappears at 1279px ([classroom.css:1014](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:1014)). Verification then names exact widths 1400 and 1100 without saying which side of each breakpoint they represent.
-
-   “Four fixed columns” also does not specify the aside width, minimum question width, or whether `.classroom-column` retains its current `max-width: 720px` ([classroom.css:432](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/classroom.css:432)). These values determine whether 1500px can actually fit four columns without horizontal overflow.
-
-7. **MEDIUM — The annotation fix does not identify the new scroll owner or required DOM relationship.**
-
-   Today the overlay is absolute over the outer pane ([JournalQuestionPane.tsx:100](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:100)), while the stimulus and answer regions scroll independently ([JournalQuestionPane.tsx:105](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:105), [JournalQuestionPane.tsx:124](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:124)). `AnnotationLayer` normalizes coordinates against its own bounding box ([AnnotationLayer.tsx:76](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/AnnotationLayer.tsx:76), [AnnotationLayer.tsx:95](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/AnnotationLayer.tsx:95)).
-
-   “Anchor it to the question content element” should explicitly require:
-
-   - one scrolling ancestor for the vertical question;
-   - a natural-height, `position: relative` content wrapper;
-   - the absolute annotation layer filling that content wrapper, not the viewport-height scrollbox.
-
-   Without that DOM contract, an implementer can move the layer and still reproduce the same bug.
-
-8. **MEDIUM — Required failure and deep-link states are unspecified.**
-
-   `FlaggedQuestionView`, the named reference, separately handles list loading, list failure, missing row, question-bank loading, and missing question ([FlaggedViews.tsx:306](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:306), [FlaggedViews.tsx:331](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:331), [FlaggedViews.tsx:360](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:360)).
-
-   The plan does not specify what `/journal/:qid` renders when:
-
-   - the `qid` is not in the journal rows;
-   - the row disappears after loading;
-   - the question bank lacks that `qid`;
-   - the class-ID lookup or journal query fails.
-
-   It also needs to define whether clicking entries pushes browser history and whether returning to `/journal` leaves the index prompt or redirects to the first entry.
-
-9. **MEDIUM — The verification section omits repository-mandated gates.**
-
-   This is significant UI work, but the plan does not require `npm run build`, which project guidance requires before wrapping significant work ([AGENTS.md:67](/Users/joshuaf/ai-os/projects/lsatu/AGENTS.md:67)). Its responsive matrix also omits the mandated sidecar-docked regression case ([AGENTS.md:63](/Users/joshuaf/ai-os/projects/lsatu/AGENTS.md:63)).
-
-10. **LOW — One reuse claim is factually stale.**
-
-    The plan says the text helpers were “already lifted out of the two panes.” `JournalQuestionPane` still contains local copies of both helpers ([JournalQuestionPane.tsx:21](/Users/joshuaf/ai-os/projects/lsatu/src/components/journal/entry/JournalQuestionPane.tsx:21)), while shared versions also exist in [questionText.ts:9](/Users/joshuaf/ai-os/projects/lsatu/src/lib/questionText.ts:9). The new component should import the shared helpers, but the plan should not imply both old duplications are already gone or invite an out-of-scope cleanup.
-
-## Scope conclusion
-
-No `StudentShell` edit is technically required. Moving the route in `App.tsx` is sufficient; the current journal route is plainly inside the StudentShell block ([App.tsx:375](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:375), [App.tsx:385](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:385)), and the single Classroom layout route is correctly established at [App.tsx:353](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:353). This agrees with ADR 0004’s one-layout requirement ([ADR 0004:14](/Users/joshuaf/ai-os/projects/lsatu/docs/adr/0004-classroom-frame-is-one-pathless-layout-route.md:14)).
-
-However, the plan necessarily edits a component shared by `/flagged` and `/classroom`. Those routes can remain behaviorally unchanged only if the aside layout and journal query are strictly journal-scoped. The mandated shared-sidebar chevron already violates that promise.
-
-VERDICT:REVISE
-### Claude's response — round 1
-
-All 12 findings plus both scope findings accepted and folded into PLAN.md. The two rated CRITICAL were verified against the code before acceptance:
-
-- The `<Outlet>` is inside `.classroom-column` inside `.classroom-stage` (ClassroomLayout.tsx:575-587), so the "context slot" in the original spec was impossible. Replaced with a journal-only bare-Outlet branch where `JournalEntryView` returns `<main>` + `<aside>` siblings itself.
-- `saveTimer.current` is never nulled after the timer fires (JournalEntrySurface.tsx:192), so a flush guarded on its truthiness would double-write. Spec now requires a captured pending payload, nulling before write, and an idempotent flush.
-
-Also corrected: the original rationale for the flush ("URL selection makes unmounts routine") was wrong — a `:qid` change reuses the same route element and does not unmount. The requirement was right for the wrong reason; the spec now says flush on qid change.
-
-## Round 2 — Codex
-
-1. **P2 — Active entry highlighting is based on a false routing assumption.** `PLAN.md:123` says `activeId` receives `params.qid`, but `ClassroomLayout` is the parent route ([src/App.tsx:353](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:353)) and `:qid` belongs to its descendant ([PLAN.md:102](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:102)). The parent’s `useParams()` ([ClassroomLayout.tsx:439](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:439)) cannot see descendant params, so `activeId` ([ClassroomLayout.tsx:514](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/shell/ClassroomLayout.tsx:514)) will lack the journal qid. Require a journal-specific `useMatch("/journal/:qid")` or pathname-derived qid, without changing Flagged.
-
-No other material problems found.
-
-VERDICT:REVISE
-### Claude's response — round 2
-
-**Rejected, with evidence.** The claim is that `ClassroomLayout` cannot see `:qid` because the param belongs to a descendant route, so `activeId` would never highlight the active entry.
-
-This is contradicted by a direct measurement on the identical pattern already in production. `/flagged/:qid` is built exactly this way — pathless `ClassroomLayout` parent, `:qid` on the descendant, `activeId = params.itemId ?? params.assignmentId ?? params.qid` — and loading `/flagged/PT118-S3-Q8` yields `activeRows: 1` with `activeLabel: "PT118-S3-Q8"`. React Router surfaces the deepest match's params to the layout. No `useMatch` is needed.
-
-No new evidence was offered against the shipped behaviour, so the spec is unchanged on this point.
-
-**Converged after 2 rounds.** Codex's round-2 reply states "No other material problems found"; its sole remaining objection is factually incorrect.
-
-## Act 3 — Build
-
-### Round 1 — Codex build
-
-Codex implemented PLAN.md in one pass with write access. Reported no deviations from the spec and no spec concerns. Files: App.tsx (route move), ClassroomLayout.tsx (journal section + bare-Outlet branch), JournalViews.tsx, JournalQuestionView.tsx, JournalReviewPanel.tsx, journalAutosave.ts, useJournalEntries.ts, classroom.css, CONTEXT.md. Unprompted, it also extracted the autosave into a pure testable module and wrote 6 unit tests.
-
-### Claude's verdict — accepted, no fix rounds needed
-
-Full diff read. Spec fidelity confirmed on the points that mattered:
-
-- Routing: `/journal` and `/journal/:qid` moved under the SAME existing pathless ClassroomLayout route, flags byte-identical, StudentShell entry removed, no second layout route. `/waj` redirect untouched.
-- The fourth column is built the revised way: `journalDetail` renders a bare `<Outlet>` and `JournalEntryView` returns `<main className="classroom-stage">` + `<aside className="classroom-aside">` as siblings. Measured `asideIsSiblingOfStage: true`.
-- The journal query lives in `JournalSectionList`, which only mounts for the journal section, so it cannot fire on `/flagged` or `/classroom`.
-- `journalAutosave.ts` implements exactly what round 1 demanded: payload captures its own qid, `pending` is nulled before the write so a double flush writes once, and a promise chain serialises writes. `patch` reads a latest-draft ref instead of closed-over state.
-- Annotation layer is a child of `.classroom-journal-question-content` (`position: relative`), inside the scrolled content, so ink scrolls with the text.
-
-Proof run by Claude, not taken from the report: `npm run typecheck` clean, `npm run build` clean, 6/6 unit tests pass, `grep -nE ":root|@layer"` returns nothing, no unscoped selectors in the CSS diff.
-
-Browser verification against the running app:
-
-- Rail identity survives `/classroom` → Wrong answers → entry (the check a screenshot cannot make).
-- Grid computes to `336px 320px 524px 320px`. Question order: annotation layer, stimulus, stem, 5 choices, correct one marked.
-- `/journal` does not auto-select. Unknown qid gives an explicit not-found, not the first row and not a blank column.
-- Breakpoints exact: entries hidden at 1399, visible at 1401. Section trigger present but hidden at wide widths. No horizontal scroll at 1500/1401/1399/1101/1099/700.
-- Forced 500 (fulfill, not abort): list error + retry, empty state suppressed, no stuck skeleton.
-- `/classroom` and `/flagged` still render `.classroom-stage > .classroom-column` with no aside. `/mainhub`, `/practice`, `/bootcamps` unchanged.
-- **The four autosave cases all pass**: text typed in A then navigating within 800ms persists; B is not contaminated with A's text; two fields edited in the same tick both persist; zero duplicate writes after a settled save. These are precisely the four failure modes round 1 predicted.
-
-One false alarm on my side: I read an early screenshot as showing an unreadable active row. Computed styles and a clean screenshot both show dark charcoal on white text, identical to Flagged. The first capture caught the 300ms transition mid-flight.
-
-`src/pages/Journal.tsx` is now unreferenced and left in place, as instructed.
-
-**Rounds used: 1. No fix rounds.**
+MAX_ROUNDS=5 reached without a formal APPROVED. Honest state: no open disagreement remains between the models — Round 5's two findings were accepted and incorporated; they simply have not been re-verified by Codex. Trajectory: 17 findings → 15 → 18 → 9 → 2, with the plan restructured twice (record model, payment lifecycle) and hardened throughout. Handed to Joshua for sign-off with that caveat stated plainly.
