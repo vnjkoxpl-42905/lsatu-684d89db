@@ -4,6 +4,7 @@ import { CalendarDays, ChevronLeft, ChevronRight, CircleAlert, Clock3, ExternalL
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TodayAgenda from '@/components/schedule/TodayAgenda';
+import BookingView from '@/components/booking/BookingView';
 import { useBookingScheduleItems } from '@/hooks/useBookingScheduleItems';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { useStudentTodo } from '@/hooks/useStudentTodo';
@@ -200,14 +201,35 @@ function SelectedDayAgenda({ date, entries, onOpen }: { date: Date; entries: Sch
   );
 }
 
-export default function Schedule() {
+/**
+ * Seeing your calendar and adding to it are the same errand, so they are one
+ * rail destination with two stage tabs rather than two sibling rail entries
+ * that open unrelated-looking screens (2026-08-13 decision).
+ *
+ * `/schedule` and `/booking` both mount this shell and differ only in which tab
+ * opens, so every existing link, redirect, and Classroom pill keeps working.
+ */
+type StageTab = 'schedule' | 'book';
+
+const TAB_PATH: Record<StageTab, string> = { schedule: '/schedule', book: '/booking' };
+
+export default function Schedule({ initialTab = 'schedule' }: { initialTab?: StageTab }) {
   const navigate = useNavigate();
   const classroom = useClassroomItems();
   const bookings = useBookingScheduleItems();
   const todo = useStudentTodo();
+  const [tab, setTab] = React.useState<StageTab>(initialTab);
   const [mainView, setMainView] = React.useState<MainView>('calendar');
   const [calendarView, setCalendarView] = React.useState<CalendarView>('month');
   const [focusedDate, setFocusedDate] = React.useState(() => startOfDay(new Date()));
+
+  // Keep the tab and the URL in step so the surface stays linkable and the
+  // browser back button moves between tabs the way a student expects.
+  React.useEffect(() => { setTab(initialTab); }, [initialTab]);
+  const selectTab = React.useCallback((next: StageTab) => {
+    setTab(next);
+    navigate(TAB_PATH[next], { replace: true });
+  }, [navigate]);
 
   const entries = React.useMemo(
     () => buildScheduleEntries(classroom.data ?? [], bookings.data ?? [], todo.items),
@@ -226,19 +248,49 @@ export default function Schedule() {
     ? (direction < 0 ? subMonths(current, 1) : addMonths(current, 1))
     : (direction < 0 ? subWeeks(current, 1) : addWeeks(current, 1)));
 
-  const openEntry = (entry: ScheduleEntry) => navigate(entry.kind === 'session' ? '/booking' : entry.route ?? '/schedule');
+  // A session entry belongs to the Book tab, not a separate destination.
+  const openEntry = (entry: ScheduleEntry) => {
+    if (entry.kind === 'session') { selectTab('book'); return; }
+    navigate(entry.route ?? '/schedule');
+  };
 
   return (
     <div className="@container/schedule pb-20">
-      <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
-          <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">Your due work, personal tasks, and booked sessions in one place.</p>
+      <header className="mb-4">
+        <h1 className="text-3xl font-semibold tracking-tight">Schedule</h1>
+        <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">Your due work, personal tasks, and booked sessions in one place.</p>
+      </header>
+
+      {/* Stage tabs. Sticky to the stage header so they stay put while the
+          calendar scrolls under them. */}
+      <div className="sticky top-0 z-20 -mx-1 mb-6 bg-background/90 px-1 pb-2 pt-1 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+        <div role="tablist" aria-label="Schedule sections" className="flex gap-1 border-b border-border">
+          {([['schedule', 'Schedule'], ['book', 'Book a session']] as [StageTab, string][]).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={tab === id}
+              onClick={() => selectTab(id)}
+              className={cn(
+                'relative min-h-11 px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+                tab === id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {label}
+              {tab === id ? <span aria-hidden className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" /> : null}
+            </button>
+          ))}
         </div>
+      </div>
+
+      {tab === 'book' ? <BookingView /> : (
+      <>
+      <div className="mb-5 flex justify-end">
         <div className="inline-flex rounded-lg border border-border bg-muted/45 p-1" aria-label="Schedule view">
           {(['today', 'calendar'] as MainView[]).map((view) => <button key={view} type="button" aria-pressed={mainView === view} onClick={() => setMainView(view)} className={cn('min-h-9 rounded-md px-4 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', mainView === view ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>{view}</button>)}
         </div>
-      </header>
+      </div>
 
       {partialError ? <div role="alert" className="mb-5 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:bg-amber-950/25 dark:text-amber-100"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0" /><span>Some schedule information could not be refreshed. The items that loaded successfully are still shown.</span></div> : null}
 
@@ -270,8 +322,18 @@ export default function Schedule() {
               <SelectedDayAgenda date={focusedDate} entries={focusedEntries} onOpen={openEntry} />
             </div>
           )}
-          {!loading && entries.length === 0 ? <div className="border-t border-border px-5 py-4 text-sm text-muted-foreground"><CalendarDays className="mr-2 inline h-4 w-4" />Nothing has been intentionally scheduled yet.</div> : null}
+          {/* An empty calendar is the moment a student most needs the way to
+              fill it. It used to be a dead end with no booking control on the
+              page at all. */}
+          {!loading && entries.length === 0 ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-5 py-4">
+              <p className="text-sm text-muted-foreground"><CalendarDays className="mr-2 inline h-4 w-4" />Nothing has been intentionally scheduled yet.</p>
+              <Button size="sm" onClick={() => selectTab('book')}>Book a session</Button>
+            </div>
+          ) : null}
         </section>
+      )}
+      </>
       )}
     </div>
   );

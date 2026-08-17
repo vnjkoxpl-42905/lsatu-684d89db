@@ -111,10 +111,6 @@ vi.mock("@/lib/joshuaThread", () => ({
   startJoshuaConversation: vi.fn(),
 }));
 
-vi.mock("@/components/mainhub/GuidedTour", () => ({
-  hasSeenTour: () => true,
-  startTour: vi.fn(),
-}));
 
 vi.mock("@/components/mainhub/MainhubDock", () => ({
   default: () => <div>Mainhub dock</div>,

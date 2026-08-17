@@ -186,7 +186,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
           <button
             onClick={() => navigate("/classroom")}
             className="text-zinc-400 hover:text-white transition-colors shrink-0"
-            aria-label="Back to Main Hub"
+            aria-label="Back to the classroom"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

@@ -271,14 +271,15 @@ function ClassroomSidebar({
           onClick: () => go("/inbox"),
         };
       case "schedule":
-        return { active: location.pathname === "/schedule", onClick: () => go("/schedule") };
-      case "booking":
-        // Teachers manage each student's pass from their dossier. Sending them
-        // to /booking/admin mounted a second application shell and made the
-        // Classroom navigation disappear.
+        // One entry, two stage tabs. /booking is the same shell with the Book
+        // tab open, so it lights the same rail item. Teachers manage each
+        // student's pass from their dossier — /booking redirects them there.
         return {
-          active: location.pathname.startsWith("/teacher/students") || location.pathname === "/booking",
-          onClick: () => go(permissions.is_admin ? "/teacher/students" : "/booking"),
+          active:
+            location.pathname === "/schedule" ||
+            location.pathname === "/booking" ||
+            location.pathname.startsWith("/teacher/students"),
+          onClick: () => go(permissions.is_admin ? "/teacher/students" : "/schedule"),
         };
     }
   };

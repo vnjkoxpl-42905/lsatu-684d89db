@@ -37,6 +37,9 @@ type Props = {
   onCommitError?: () => void | Promise<void>;
   /** When present, Phase 2 (attach work) is offered. Absent = fast-book only. */
   upload?: UploadApi;
+  /** Matches CalendlyBookingCard's `theme`. The dialog portals to the document
+   *  root, so it cannot inherit the page palette and must be told. */
+  theme?: "booking" | "app";
 };
 
 const MAX_UPLOAD_FILES = 5;
@@ -86,7 +89,7 @@ function Ticket({ slotIso, durationMinutes }: { slotIso: string; durationMinutes
 
 type Step = "confirm" | "work" | "success";
 
-export default function BookingConfirmDialog({ open, onOpenChange, slotIso, durationMinutes, book, onBooked, onCommitError, upload }: Props) {
+export default function BookingConfirmDialog({ open, onOpenChange, slotIso, durationMinutes, book, onBooked, onCommitError, upload, theme = "booking" }: Props) {
   const reduceMotion = useReducedMotion();
   const phaseMotion = reduceMotion
     ? { initial: false as const, animate: { opacity: 1, y: 0 }, exit: { opacity: 1, y: 0 }, transition: { duration: 0 } }
@@ -210,7 +213,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
         aria-describedby={undefined}
         onEscapeKeyDown={(event) => { if (booking) event.preventDefault(); }}
         onPointerDownOutside={(event) => { if (booking) event.preventDefault(); }}
-        className="booking-dialog booking-holo booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md"
+        className={`booking-dialog ${theme === "booking" ? "booking-holo " : ""}booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md`}
       >
         {/* Accessible label for screen readers; visible headings are styled per phase below. */}
         <DialogTitle className="sr-only">
@@ -226,7 +229,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                 initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 30, delay: 0.05 }}
-                className="holo-surface flex h-14 w-14 items-center justify-center rounded-full shadow-sm"
+                className={`${theme === "booking" ? "holo-surface" : "bg-primary text-primary-foreground"} flex h-14 w-14 items-center justify-center rounded-full shadow-sm`}
               >
                 <Check className="h-7 w-7" strokeWidth={2.5} />
               </motion.div>

@@ -135,8 +135,8 @@ export function LeftRail({
               ? 'gap-1.5 px-2 -ml-2 desktop:justify-center desktop:gap-0 desktop:px-0 desktop:mx-auto desktop:ml-0 desktop:w-10'
               : 'gap-1.5 px-2 -ml-2',
           )}
-          aria-label="Back to Main Hub"
-          title={collapsed ? 'Main Hub' : undefined}
+          aria-label="Back to the classroom"
+          title={collapsed ? 'Classroom' : undefined}
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
           <span
@@ -147,7 +147,7 @@ export function LeftRail({
                 : 'w-auto translate-x-0 opacity-100',
             )}
           >
-            Main Hub
+            Classroom
           </span>
         </Link>
         <div

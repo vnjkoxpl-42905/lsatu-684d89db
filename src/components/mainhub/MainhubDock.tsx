@@ -14,7 +14,7 @@ export default function MainhubDock() {
       onMouseLeave={() => mouseX.set(Infinity)}
       className="flex items-center rounded-xl border border-border/40 bg-background/70 p-1 shadow-sm shadow-black/5 backdrop-blur-md"
       role="toolbar"
-      aria-label="Main Hub dock"
+      aria-label="Classroom dock"
     >
       <NotificationBell mouseX={mouseX} quiet />
     </motion.div>

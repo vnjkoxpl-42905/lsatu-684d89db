@@ -1293,6 +1293,99 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   outline: none;
 }
 
+/* Reading Comprehension turns the tool row over instead of navigating away.
+   The faces are absolutely stacked and the deck's height is set from JS, so
+   the container has to be positioned and its height transitioned here. */
+.drill-observatory-flip {
+  perspective: 1400px;
+  position: relative;
+  transition: height 420ms cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+
+.drill-observatory-flip-face {
+  backface-visibility: hidden;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: transform 520ms cubic-bezier(0.22, 0.68, 0.24, 1),
+    visibility 0s linear 260ms;
+  width: 100%;
+}
+
+.drill-observatory-flip-front {
+  transform: rotateY(0deg);
+}
+
+.drill-observatory-flip-back {
+  transform: rotateY(-180deg);
+}
+
+/* visibility (not opacity) so the hidden face leaves the tab order — a
+   backface-hidden element is still focusable. */
+.drill-observatory-flip-face[aria-hidden="true"] {
+  visibility: hidden;
+}
+
+.drill-observatory-flip.is-flipped .drill-observatory-flip-front {
+  transform: rotateY(180deg);
+}
+
+.drill-observatory-flip.is-flipped .drill-observatory-flip-back {
+  transform: rotateY(0deg);
+}
+
+.drill-observatory-rc-build {
+  display: grid;
+  gap: 16px;
+  padding: 2px;
+}
+
+.drill-observatory-rc-build-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+/* The Start control is the console's, sized down to sit in a row rather than
+   span a column. */
+.drill-observatory-rc-build-actions .drill-observatory-console-start {
+  height: 40px !important;
+  padding: 0 20px !important;
+  width: auto;
+}
+
+.drill-observatory-rc-chip {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  box-shadow: 0 0 0 1px var(--observatory-ring-glass) !important;
+  color: var(--observatory-ink-70) !important;
+  font-size: var(--observatory-text-meta) !important;
+  font-weight: 500 !important;
+  min-height: 32px;
+  padding: 7px 14px !important;
+  transition: box-shadow var(--observatory-motion), color var(--observatory-motion),
+    background-color var(--observatory-motion);
+}
+
+.drill-observatory-rc-chip:hover {
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
+  color: rgba(244, 241, 234, 0.95) !important;
+}
+
+.drill-observatory-rc-chip.is-active {
+  background: rgba(244, 241, 234, 0.1) !important;
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.45) !important;
+  color: var(--observatory-ink) !important;
+}
+
+.drill-observatory-rc-chip:focus-visible {
+  box-shadow: 0 0 0 2px rgba(244, 241, 234, 0.35) !important;
+  outline: none;
+}
+
 .drill-observatory-secondary-link {
   background: transparent !important;
   border: 1px solid var(--observatory-ring-glass) !important;

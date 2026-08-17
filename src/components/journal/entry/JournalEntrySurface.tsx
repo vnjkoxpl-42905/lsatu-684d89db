@@ -275,7 +275,7 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
               onClick={() => navigate('/classroom')}
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Return to Main Hub
+              Back to your classroom
             </Button>
             <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Wrong Answer Journal

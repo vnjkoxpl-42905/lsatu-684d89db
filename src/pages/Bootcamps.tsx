@@ -3,20 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, BookOpen, Loader2, Lock } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LogoutButton } from '@/components/LogoutButton';
+import { BookOpen, Loader2, Lock } from 'lucide-react';
 import { BUILD_SHA, BUILD_TIME } from '@/lib/buildInfo';
 import { BOOTCAMPS, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
-
-function IL({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">
-      {children}
-    </span>
-  );
-}
 
 export default function BootcampsPage() {
   const navigate = useNavigate();
@@ -54,40 +43,28 @@ export default function BootcampsPage() {
   const loading = !authReady || permsLoading || (!is_admin && itemsLoading);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/classroom')}
-            className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Return to Main Hub
-          </Button>
-          <IL>Bootcamps</IL>
-          <div className="flex items-center gap-2">
-            <LogoutButton />
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-6">
+    // No header of its own: the classroom rail owns the way back, sign out and
+    // the theme toggle. Drawing them again put a second set on top of the frame.
+    <div className="bg-background">
+      <main className="max-w-7xl mx-auto space-y-6">
         <div>
-          <h1 className="text-lg font-semibold text-foreground">Bootcamps</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          {/* Matches Schedule and Analytics: these three are siblings in one
+              stage now, so they carry the same heading weight. */}
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Bootcamps</h1>
+          <p className="text-sm text-muted-foreground mt-1.5">
             {is_admin
               ? 'All bootcamps. Students only see bootcamps you assign from the Teacher Workspace.'
               : 'Focused skill-building programs assigned to you by Joshua.'}
           </p>
-          <p
-            className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mt-2 select-text"
-            title={`Build ${BUILD_SHA} · ${BUILD_TIME}`}
-          >
-            build {BUILD_SHA}
-          </p>
+          {/* Build stamp is a debugging aid, not something a student needs. */}
+          {is_admin ? (
+            <p
+              className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mt-2 select-text"
+              title={`Build ${BUILD_SHA} · ${BUILD_TIME}`}
+            >
+              build {BUILD_SHA}
+            </p>
+          ) : null}
         </div>
 
         {loading ? (

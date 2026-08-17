@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Camera, Send, X, Loader2, Compass } from 'lucide-react';
+import { Camera, Send, X, Loader2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -36,7 +36,6 @@ import { cn } from '@/lib/utils';
 interface HelpSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onReplayTour?: () => void;
 }
 
 function LocalScreenshotPreview({ file }: { file: File }) {
@@ -57,7 +56,7 @@ function LocalScreenshotPreview({ file }: { file: File }) {
   );
 }
 
-export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpSheetProps) {
+export default function HelpSheet({ open, onOpenChange }: HelpSheetProps) {
   const { user } = useAuth();
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [convoErr, setConvoErr] = useState<string | null>(null);
@@ -344,19 +343,6 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
             autoFocus
           />
           <div className="mt-2 flex items-center gap-1.5">
-            {onReplayTour && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  onOpenChange(false);
-                  onReplayTour();
-                }}
-                className="gap-1.5 text-xs"
-              >
-                <Compass className="w-3.5 h-3.5" /> Replay tour
-              </Button>
-            )}
             <Button
               size="sm"
               variant="ghost"

@@ -54,10 +54,18 @@ export default function BookingOfferHub({
   offers,
   commerce,
   externalBookings,
+  demoted = false,
 }: {
   offers: BookingOffer[];
   commerce: BookingCommerceItem[];
   externalBookings: ExternalBookingItem[];
+  /**
+   * A student who already holds credits came here to pick a time, not to buy.
+   * Demoted mode keeps every offer reachable (2026-08-13 decision: demote, do
+   * not hide) but drops it to a quiet strip below the calendar instead of
+   * leading the page with two filled "Buy" buttons.
+   */
+  demoted?: boolean;
 }) {
   const logOfferClick = (offerId: string) => {
     // Telemetry is deliberately best-effort. A slow or unavailable function
@@ -92,29 +100,59 @@ export default function BookingOfferHub({
     .slice(0, 5);
 
   return (
-    <section className="@container booking-holo mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm" aria-labelledby="booking-options-heading">
+    <section
+      className={
+        demoted
+          ? "@container overflow-hidden rounded-2xl border border-border bg-muted/25"
+          : "@container mb-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+      }
+      aria-labelledby="booking-options-heading"
+    >
       <div className="flex items-start gap-3">
-        <CreditCard className="ml-5 mt-5 h-5 w-5 shrink-0 text-primary" />
-        <div className="px-0 pb-5 pr-5 pt-5">
-          <h2 id="booking-options-heading" className="text-lg font-semibold tracking-tight">Choose how you want to book</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Use one link for a single session, or choose the 5-hour or 10-hour package.</p>
+        <CreditCard className={demoted ? "ml-5 mt-4 h-4 w-4 shrink-0 text-muted-foreground" : "ml-5 mt-5 h-5 w-5 shrink-0 text-primary"} />
+        <div className={demoted ? "px-0 pb-4 pr-5 pt-4" : "px-0 pb-5 pr-5 pt-5"}>
+          <h2 id="booking-options-heading" className={demoted ? "text-sm font-semibold tracking-tight" : "text-lg font-semibold tracking-tight"}>
+            {demoted ? "Need more sessions?" : "Choose how you want to book"}
+          </h2>
+          <p className={demoted ? "mt-0.5 text-xs text-muted-foreground" : "mt-1 text-sm text-muted-foreground"}>
+            {demoted
+              ? "Add a single session or another package whenever you need one."
+              : "Use one link for a single session, or choose the 5-hour or 10-hour package."}
+          </p>
         </div>
       </div>
       <div className="grid border-t border-border @[40rem]:grid-cols-3">
         {resolvedOffers.map((offer, index) => {
           const isSingle = offer.id === "single-session";
           return (
-            <div key={offer.id} className={index === 0 ? "p-5" : "border-t border-border p-5 @[40rem]:border-l @[40rem]:border-t-0"}>
+            <div
+              key={offer.id}
+              className={
+                index === 0
+                  ? (demoted ? "p-4" : "p-5")
+                  : (demoted
+                    ? "border-t border-border p-4 @[40rem]:border-l @[40rem]:border-t-0"
+                    : "border-t border-border p-5 @[40rem]:border-l @[40rem]:border-t-0")
+              }
+            >
               <div className="flex items-center gap-2 text-sm font-semibold">
-                {isSingle ? <CalendarDays className="h-4 w-4 text-primary" /> : <PackagePlus className="h-4 w-4 text-primary" />}
+                {isSingle
+                  ? <CalendarDays className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />
+                  : <PackagePlus className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />}
                 {offer.label}
               </div>
-              <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                {isSingle
-                  ? "Choose a time and pay for one session."
-                  : `Continue to the secure ${offer.label.toLowerCase()} checkout.`}
-              </p>
-              <Button asChild className="mt-4 min-h-11 w-full" variant={isSingle ? "outline" : "default"}>
+              {demoted ? null : (
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                  {isSingle
+                    ? "Choose a time and pay for one session."
+                    : `Continue to the secure ${offer.label.toLowerCase()} checkout.`}
+                </p>
+              )}
+              <Button
+                asChild
+                className={demoted ? "mt-3 min-h-11 w-full" : "mt-4 min-h-11 w-full"}
+                variant={demoted || isSingle ? "outline" : "default"}
+              >
                 <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
                   <ExternalLink className="mr-1.5 h-4 w-4" />
                   {isSingle ? "Book one session" : `Buy ${offer.label}`}

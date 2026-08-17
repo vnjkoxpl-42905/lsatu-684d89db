@@ -346,12 +346,13 @@ export function ClassroomHomeView({
             </span>
             <span className="classroom-home-session-actions">
               {model.session ? (
-                <>
-                  <Pill onClick={() => onOpen("/booking")}>Reschedule</Pill>
-                  <Pill emphasis onClick={() => onOpen("/booking")}>
-                    Book another
-                  </Pill>
-                </>
+                // No Reschedule pill: neither student-booking nor
+                // public-booking exposes a reschedule action, so the control
+                // led to a page that could not perform it. Restore it when the
+                // endpoint exists, not before.
+                <Pill emphasis onClick={() => onOpen("/booking")}>
+                  Book another
+                </Pill>
               ) : (
                 <Pill emphasis onClick={() => onOpen("/booking")}>
                   Book one

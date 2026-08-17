@@ -90,16 +90,24 @@ Deno.serve(async (req) => {
       const [offersResult, commerceResult, externalResult] = await Promise.allSettled([
         offersForStudent(supabase, userId),
         supabase.from("booking_commerce_events").select("id,offer_id,provider,event_type,amount_cents,currency,created_at").eq("student_id", userId).order("created_at", { ascending: false }).limit(30),
-        supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
+        // meet_url comes from the mirrored calendar row: a Cal.com booking is a
+        // real session the student has to be able to join, not just a receipt.
+        supabase.from("external_booking_events").select("id,offer_id,source_url,start_at,end_at,status,created_at,schedule_events(meet_url)").eq("student_id", userId).order("start_at", { ascending: false }).limit(30),
       ]);
 
       const offers = offersResult.status === "fulfilled" ? offersResult.value : [];
       if (offersResult.status === "rejected") console.warn("booking offers unavailable", offersResult.reason);
       const commerce = commerceResult.status === "fulfilled" && !commerceResult.value.error ? commerceResult.value.data ?? [] : [];
       if (commerceResult.status === "rejected" || commerceResult.value?.error) console.warn("booking commerce unavailable", commerceResult.status === "rejected" ? commerceResult.reason : commerceResult.value.error);
-      const external = externalResult.status === "fulfilled" && !externalResult.value.error ? externalResult.value.data ?? [] : [];
+      const externalRaw = externalResult.status === "fulfilled" && !externalResult.value.error ? externalResult.value.data ?? [] : [];
       if (externalResult.status === "rejected" || externalResult.value?.error) console.warn("external bookings unavailable", externalResult.status === "rejected" ? externalResult.reason : externalResult.value.error);
-      return json({ ...(data ?? { pass: null, redemptions: [] }), offers, commerce: commerce ?? [], external_bookings: external ?? [] });
+      // Flatten the joined calendar row so the client sees one shape.
+      const external = (externalRaw as any[]).map((row) => {
+        const { schedule_events, ...rest } = row;
+        const joined = Array.isArray(schedule_events) ? schedule_events[0] : schedule_events;
+        return { ...rest, meet_url: joined?.meet_url ?? null };
+      });
+      return json({ ...(data ?? { pass: null, redemptions: [] }), offers, commerce: commerce ?? [], external_bookings: external });
     }
 
     if (action === "offer_click") {

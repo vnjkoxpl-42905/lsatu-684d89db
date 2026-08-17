@@ -77,7 +77,7 @@ export function Lesson(): JSX.Element {
   }, [data, user]);
 
   // Resume support: record this bootcamp lesson + phase as the user's last
-  // activity so the Main Hub Resume CTA returns them here.
+  // activity so the classroom Resume CTA returns them here.
   useEffect(() => {
     if (!data || !authUser?.id) return;
     const stepRaw = searchParams.get('p');

@@ -118,7 +118,7 @@ function pickStudentPrimary(conversations: Conversation[], ownId: string) {
 /**
  * Messages, as a workspace-rail stage page.
  *
- * StudentShell already supplies the rail, the route title, and a sized scrolling
+ * ClassroomLayout already supplies the rail, the route title, and a sized scrolling
  * stage, so this page renders no page chrome of its own — no full-height root,
  * no sticky header, no back-arrow to /classroom. It is a list/detail pair driven
  * by the route: /inbox lists the threads, /inbox/:conversationId hands the whole

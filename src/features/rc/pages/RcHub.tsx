@@ -89,6 +89,7 @@ export default function RcHub() {
   const [handPicked, setHandPicked] = React.useState<number[]>([]);
   const [search, setSearch] = React.useState('');
   const [starting, setStarting] = React.useState(false);
+  const [autoStart, setAutoStart] = React.useState(false);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -142,6 +143,7 @@ export default function RcHub() {
     const ids = params.get('passages');
     const revealParam = params.get('reveal');
     const timingParam = params.get('timing');
+    const countParam = Number(params.get('count'));
 
     // An assignment link fully describes the drill, so anything it leaves out
     // falls back to the builder default rather than to whatever was on screen.
@@ -151,6 +153,14 @@ export default function RcHub() {
         : 'per_passage',
     );
     setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
+
+    // The quick-build tile on the drill home sends a passage count and asks the
+    // hub to go straight in, so a student who has already made their choices
+    // does not land on a builder and press Start a second time.
+    if (Number.isFinite(countParam) && countParam >= 1) {
+      setCount(Math.min(8, Math.round(countParam)));
+    }
+    setAutoStart(params.get('start') === '1');
 
     if (ids) {
       const wanted = ids
@@ -239,6 +249,15 @@ export default function RcHub() {
       setStarting(false);
     }
   };
+
+  // Runs a tick after the link has been applied, so it starts on the count and
+  // timing the link asked for rather than on the builder defaults.
+  React.useEffect(() => {
+    if (!autoStart || passages.length === 0 || starting) return;
+    setAutoStart(false);
+    void start();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoStart, passages, starting]);
 
   const toggle = (key: 'topics' | 'formats' | 'frameworks', value: string) =>
     setFilters((f) => ({

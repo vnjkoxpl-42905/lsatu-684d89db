@@ -95,7 +95,7 @@ export function WorkspaceShell(): JSX.Element {
       {/* Mobile back-to-mainhub pill (left rail is hidden on phone). */}
       <Link
         to="/classroom"
-        aria-label="Back to Main Hub"
+        aria-label="Back to the classroom"
         className={cn(
           'desktop:hidden tablet:hidden',
           'fixed top-3 left-3 z-30 inline-flex items-center gap-1.5',
@@ -106,7 +106,7 @@ export function WorkspaceShell(): JSX.Element {
         )}
       >
         <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-        Main Hub
+        Classroom
       </Link>
       <div
         className={cn(

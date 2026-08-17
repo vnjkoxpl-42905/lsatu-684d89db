@@ -224,7 +224,7 @@ export function AdminInboxCommandCenter({
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/classroom')}
-                aria-label="Back to Main Hub"
+                aria-label="Back to the classroom"
                 className="rounded-xl text-[#c9d0dc] hover:bg-white/10 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" />

@@ -21,6 +21,10 @@
 //   --timeframe <t>       today | tomorrow | day | week | none (default none).
 //                         Only shapes the default opening line; --why overrides it.
 //   --minutes <n>         adds the time estimate and the per-question pace
+//   --list-only           send the identifiers and nothing else: no HTML, no PDF,
+//                         no attachments at all. For a student who builds the set
+//                         herself on 7Sage or LSAT Lab and does not want the
+//                         questions written out for her.
 //   --out <path>          default alongside the manifest as draft.eml
 //   --platform-url <url>  the classroom link (default https://lsatprep.study/classroom)
 //
@@ -38,7 +42,11 @@ const BANK_DIR = path.resolve('public/data');
 function parseArgs(argv) {
   const out = {};
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i].startsWith('--')) out[argv[i].slice(2)] = argv[++i];
+    if (!argv[i].startsWith('--')) continue;
+    // A valueless flag (--list-only) must not swallow the flag that follows it,
+    // or `--list-only --to x@y` silently loses the recipient.
+    const next = argv[i + 1];
+    out[argv[i].slice(2)] = next === undefined || next.startsWith('--') ? true : argv[++i];
   }
   return out;
 }
@@ -78,7 +86,7 @@ const pretty = (qid) => {
   return `${m[1]} · S${m[2]} · Q${m[3]}`;
 };
 
-function renderHtml({ student, why, drill, qids, types, minutes, level, files, platformUrl }) {
+function renderHtml({ student, why, drill, qids, types, minutes, level, files, platformUrl, listOnly }) {
   const rows = qids
     .map(
       (qid, i) => `            <tr>
@@ -118,8 +126,12 @@ ${rows}
 
     <div style="${S.prompt}">
       <strong style="color:${T.ink};">Attempt these cold and timed${pace}.</strong><br><br>
-      Two ways to do it. Open the attached <strong>${esc(files.html)}</strong> and work straight through it. It keeps the answer hidden until you commit to a choice. Or pull the questions up from the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
-        files.pdf ? `<br><br>There is a printable version attached too (<strong>${esc(files.pdf)}</strong>) if you would rather work on paper. The answer key is on the last page.` : ''
+      ${
+        listOnly
+          ? 'Build the set yourself from the list above, on 7Sage, LSAT Lab, or paper, whichever you actually use. Do not read ahead or check anything until the whole set is done.'
+          : `Two ways to do it. Open the attached <strong>${esc(files.html)}</strong> and work straight through it. It keeps the answer hidden until you commit to a choice. Or pull the questions up from the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
+              files.pdf ? `<br><br>There is a printable version attached too (<strong>${esc(files.pdf)}</strong>) if you would rather work on paper. The answer key is on the last page.` : ''
+            }`
       }
     </div>
 
@@ -131,8 +143,16 @@ ${rows}
 </html>`;
 }
 
-function renderText({ student, why, drill, qids, types, minutes, level, files, platformUrl }) {
+function renderText({ student, why, drill, qids, types, minutes, level, files, platformUrl, listOnly }) {
   const list = qids.map((qid, i) => `  ${i + 1}. ${pretty(qid)}   ${types.get(qid) ?? ''}`).join('\n');
+  const how = listOnly
+    ? `Build the set yourself from the list above, on 7Sage, LSAT Lab, or paper, whichever
+you actually use. Do not read ahead or check anything until the whole set is done.`
+    : `Two ways to do it. Open the attached ${files.html} and work straight through it.
+It keeps the answer hidden until you commit to a choice. Or pull the questions up from
+the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
+        files.pdf ? `\n\nThere is a printable version attached too (${files.pdf}) if you would rather\nwork on paper. The answer key is on the last page.` : ''
+      }`;
   return `${student},
 
 ${why}
@@ -145,11 +165,7 @@ ${list}
 
 Attempt these cold and timed.
 
-Two ways to do it. Open the attached ${files.html} and work straight through it.
-It keeps the answer hidden until you commit to a choice. Or pull the questions up from
-the list above on 7Sage, LSAT Lab, or paper, whichever you actually use.${
-    files.pdf ? `\n\nThere is a printable version attached too (${files.pdf}) if you would rather\nwork on paper. The answer key is on the last page.` : ''
-  }
+${how}
 
 The same set is waiting for you in the classroom: ${platformUrl}
 
@@ -170,6 +186,7 @@ function main() {
   const dir = path.dirname(manifestPath);
 
   const student = args.student ?? manifest.student ?? 'Hi';
+  const listOnly = Boolean(args['list-only']);
 
   // A drill is not always a week's work. It can be one day's, or a set volume
   // Joshua named. The default line must not assert a timeframe he did not
@@ -211,12 +228,16 @@ function main() {
     level,
     files,
     platformUrl: args['platform-url'] ?? 'https://lsatprep.study/classroom',
+    listOnly,
   };
 
-  const attachments = [
-    { filename: files.html, contentType: 'text/html; charset=utf-8', content: fs.readFileSync(htmlFile) },
-  ];
-  if (pdfFile) {
+  // --list-only means the identifiers ARE the deliverable. A student who builds
+  // her own set on 7Sage does not want the questions written out for her, and an
+  // attachment she will not open is 400 KB of noise in her inbox.
+  const attachments = listOnly
+    ? []
+    : [{ filename: files.html, contentType: 'text/html; charset=utf-8', content: fs.readFileSync(htmlFile) }];
+  if (!listOnly && pdfFile) {
     attachments.push({ filename: files.pdf, contentType: 'application/pdf', content: fs.readFileSync(pdfFile) });
   }
 
@@ -240,7 +261,7 @@ function main() {
   console.log(`  to          : ${args.to}`);
   console.log(`  subject     : Your drill: ${manifest.title}`);
   console.log(`  questions   : ${qids.length}`);
-  console.log(`  attachments : ${attachments.map((a) => `${a.filename} (${(a.content.length / 1024).toFixed(0)} KB)`).join(', ')}`);
+  console.log(`  attachments : ${attachments.length ? attachments.map((a) => `${a.filename} (${(a.content.length / 1024).toFixed(0)} KB)`).join(', ') : 'none (list-only)'}`);
   console.log(`  message     : ${(fs.statSync(outPath).size / 1024).toFixed(0)} KB`);
   console.log(`  preview     : ${path.relative(process.cwd(), path.join(dir, 'draft-preview.html'))}`);
 }

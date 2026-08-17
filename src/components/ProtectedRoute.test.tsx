@@ -125,7 +125,42 @@ describe("ProtectedRoute", () => {
 
     renderProtected();
 
-    expect(screen.getByText("Premium Content Locked")).toBeInTheDocument();
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
+    // The locked state is stage content, not a viewport takeover: both shells
+    // mount it inside their <Outlet/>, so it must not paint over the frame.
+    expect(document.querySelector(".min-h-screen")).toBeNull();
+  });
+
+  it("offers Messages as the next step only when the student can reach it", () => {
+    const flags = {
+      loading: false,
+      is_admin: false,
+      has_bootcamp_access: false,
+      has_classroom_access: false,
+      has_analytics_access: false,
+      has_schedule_access: false,
+      has_practice_access: false,
+      has_drill_access: false,
+      has_waj_access: false,
+      has_journal_access: false,
+      has_flagged_access: false,
+      has_chat_access: false,
+      has_export_access: false,
+      has_ta_access: false,
+      has_activity_access: false,
+    };
+    mockUseAuth.mockReturnValue({ user: { id: "user-1" } });
+
+    mockUseUserPermissions.mockReturnValue(flags);
+    const { unmount } = renderProtected();
+    // Without chat access the only next step we could offer is another locked
+    // door, so it is not offered at all.
+    expect(screen.queryByText("Message Joshua")).not.toBeInTheDocument();
+    unmount();
+
+    mockUseUserPermissions.mockReturnValue({ ...flags, has_chat_access: true });
+    renderProtected();
+    expect(screen.getByText("Message Joshua")).toBeInTheDocument();
   });
 
   it("renders core student routes for signed-in users even when the legacy flag is false", () => {

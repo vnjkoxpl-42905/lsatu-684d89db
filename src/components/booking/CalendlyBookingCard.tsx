@@ -74,8 +74,25 @@ function UpcomingSessions({ redemptions }: { redemptions: UpcomingRedemption[] }
   );
 }
 
-export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", noPassDescription = "Message Joshua to have 1:1 session booking turned on." }: { api: BookingApi; sessionHeadingLevel?: "h2" | "h3"; noPassDescription?: string }) {
+export default function CalendlyBookingCard({
+  api,
+  sessionHeadingLevel = "h2",
+  noPassDescription = "Message Joshua to have 1:1 session booking turned on.",
+  theme = "booking",
+}: {
+  api: BookingApi;
+  sessionHeadingLevel?: "h2" | "h3";
+  noPassDescription?: string;
+  /**
+   * "booking" keeps the standalone burgundy palette, which the public
+   * /book/:slug microsite owns end to end. "app" drops it so the card inherits
+   * the Classroom tokens — inside the product, three palettes across three
+   * adjacent screens read as three different products.
+   */
+  theme?: "booking" | "app";
+}) {
   const SessionHeading = sessionHeadingLevel;
+  const holo = theme === "booking" ? "booking-holo " : "";
   const [info, setInfo] = useState<{ pass: BookingPassView; redemptions?: UpcomingRedemption[] } | null>(null);
   const [infoLoading, setInfoLoading] = useState(true);
   const [slots, setSlots] = useState<BookingSlot[]>([]);
@@ -158,7 +175,7 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
 
   if (infoLoading) {
     return (
-      <div role="status" aria-live="polite" className="booking-holo flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground">
+      <div role="status" aria-live="polite" className={`${holo}flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-sm text-muted-foreground`}>
         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading…
       </div>
     );
@@ -166,7 +183,7 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
 
   if (infoError) {
     return (
-      <div role="alert" className="booking-holo rounded-2xl border border-border bg-card p-8 text-center">
+      <div role="alert" className={`${holo}rounded-2xl border border-border bg-card p-8 text-center`}>
         <p className="text-sm font-medium">We couldn't load booking right now.</p>
         <p className="mt-1 text-sm text-muted-foreground">Your booking access has not changed.</p>
         <Button variant="outline" className="mt-4 min-h-11" onClick={() => void refreshInfo()}>Try again</Button>
@@ -177,7 +194,7 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
   // No active pass -> "no sessions available, contact Joshua".
   if (!pass) {
     return (
-      <div className="booking-holo overflow-hidden rounded-2xl border border-dashed border-border bg-card">
+      <div className={`${holo}overflow-hidden rounded-2xl border border-dashed border-border bg-card`}>
         <div className="p-12 text-center">
           <p className="text-sm font-medium">No sessions available.</p>
           <p className="mt-1 text-xs text-muted-foreground">{noPassDescription}</p>
@@ -196,12 +213,22 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
     // the classroom stage the viewport is wide while the column is not, and a
     // viewport breakpoint split it into two columns that then clipped against
     // `overflow-hidden`. Measure the space the card actually has.
-    <div className="@container booking-holo booking-shadow overflow-hidden rounded-2xl border border-border bg-card">
+    <div className={`@container ${holo}booking-shadow overflow-hidden rounded-2xl border border-border bg-card`}>
       <div className="grid grid-cols-1 @[54rem]:grid-cols-[280px_minmax(0,1fr)]">
         {/* Left: host card (Calendly-style, no student PII) */}
         <div className="min-w-0 border-b border-border p-5 @[54rem]:border-b-0 @[54rem]:border-r @[54rem]:p-6">
           <div className="text-sm font-medium text-muted-foreground">Joshua</div>
           <SessionHeading className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</SessionHeading>
+          {/* The balance decides which path is even relevant to this student,
+              so it leads the card rather than trailing the metadata. */}
+          <div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
+            <div className="text-3xl font-semibold leading-none tracking-tight text-primary">
+              {pass.credits_remaining}
+            </div>
+            <div className="mt-1 text-xs font-medium text-muted-foreground">
+              session{pass.credits_remaining === 1 ? "" : "s"} available to book
+            </div>
+          </div>
           <div className="mt-4 space-y-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 shrink-0" />
@@ -217,10 +244,6 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
                 <span>{viewerTz}</span>
               </div>
             )}
-          </div>
-          <div className="mt-6 rounded-lg bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
-            <span className="font-semibold text-primary">{pass.credits_remaining}</span>{" "}
-            session{pass.credits_remaining === 1 ? "" : "s"}
           </div>
         </div>
 
@@ -341,6 +364,7 @@ export default function CalendlyBookingCard({ api, sessionHeadingLevel = "h2", n
         slotIso={selected}
         durationMinutes={pass.session_length_minutes}
         book={(slotIso, key, studentNote) => api.book(slotIso, key, studentNote)}
+        theme={theme}
         upload={api.uploadFiles ? { uploadFiles: api.uploadFiles, discardUpload: api.discardUpload } : undefined}
         onBooked={async (slotIso) => {
           setSelected(null);

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useStudentActivities } from "@/features/activity-centre";
 import type { ActivityAssignment } from "@/features/activity-centre";
 import "@/features/activity-centre/activity-centre.css";
@@ -16,19 +16,12 @@ export default function ActivityCentre() {
   const { assignments, loading, error } = useStudentActivities();
 
   return (
-    <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
+    // No back link of its own: the classroom rail is the way back, and it was
+    // pointing at /foyer, which only redirects to /classroom anyway. One name
+    // for this surface too, not "Activity Centre" over "Your activities".
+    <div className="activity-centre">
       <div className="mx-auto max-w-3xl">
-        <button
-          onClick={() => navigate("/foyer")}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Home
-        </button>
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          Activity Centre
-        </p>
-        <h1 className="ac-display mt-2 text-4xl text-foreground">Your activities</h1>
+        <h1 className="ac-display text-4xl text-foreground">Activities</h1>
         <p className="mt-2 text-[15px] text-muted-foreground">
           Coach-led skill exercises your instructor has assigned.
         </p>

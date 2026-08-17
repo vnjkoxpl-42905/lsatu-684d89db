@@ -7,7 +7,6 @@ import HelpSheet from '@/components/help/HelpSheet';
 interface HelpDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onReplayTour?: () => void;
 }
 
 export default function HelpDialog(props: HelpDialogProps) {

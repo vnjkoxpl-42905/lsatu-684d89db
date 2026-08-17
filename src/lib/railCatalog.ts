@@ -17,8 +17,7 @@ export type RailItemId =
   | "flagged"
   | "analytics"
   | "messages"
-  | "schedule"
-  | "booking";
+  | "schedule";
 
 export interface RailItem {
   id: RailItemId;
@@ -59,8 +58,10 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
   { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
+  // Schedule owns booking too: one rail entry, two stage tabs (Schedule | Book
+  // a session). Two adjacent Support entries for the same errand opened
+  // unrelated-looking screens, and the empty Schedule had no way to book at all.
   { id: "schedule", label: "Schedule", group: "support", flags: ["has_schedule_access"], allowSignedIn: true },
-  { id: "booking", label: "Booking", group: "support", flags: [], allowSignedIn: true },
 ];
 
 export interface RailPrefs {

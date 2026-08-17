@@ -26,8 +26,18 @@ interface ProtectedRouteProps {
 
 const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 
+/**
+ * Opt-in only. A plain `npm run dev` now exercises the real permission path, so
+ * a gating regression is visible locally instead of surfacing after deploy.
+ * Set VITE_DEV_BYPASS_GATES=1 in .env.local to walk gated routes without the
+ * matching flags.
+ */
 function isLocalDevAccessAllowed() {
-  return import.meta.env.DEV && LOCAL_DEV_HOSTS.has(window.location.hostname);
+  return (
+    import.meta.env.DEV &&
+    import.meta.env.VITE_DEV_BYPASS_GATES === "1" &&
+    LOCAL_DEV_HOSTS.has(window.location.hostname)
+  );
 }
 
 export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, children }: ProtectedRouteProps) {

@@ -82,7 +82,11 @@ const result = resolveLeveledDrillQids({
   knownQids: new Set(bank.keys()),
   level,
   rng,
-  stats: traps.length > 0 ? stats : null,
+  // Stats are always passed, targeting is not. With trapWeight at 0 the stats
+  // are inert for selection and used only to report what was drawn, which is
+  // the number Gate 1 is actually looking at. Anything else means a run
+  // without trap targets silently has no accuracy line.
+  stats,
   targetTrapTags: traps,
   trapWeight,
 });

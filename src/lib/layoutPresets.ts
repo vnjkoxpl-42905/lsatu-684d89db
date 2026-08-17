@@ -8,9 +8,13 @@ export interface LayoutPrefs {
 }
 
 // Student-facing default. Admin-only sidebar entries (/teacher,
-// /teacher/reference-library, /admin/board) are intentionally excluded:
-// MainhubSidebar appends admin NAV_ITEMS for admins via its append-fallback,
-// so admins keep them without seeding admin ids into every student layout.
+// /teacher/reference-library) are intentionally excluded so admin ids are not
+// seeded into every student layout.
+//
+// NOTE: the only consumer of this module was MainhubSidebar, deleted with the
+// rest of the StudentShell chrome on 2026-08-03. The classroom rail has its own
+// prefs (`railCatalog` + `useRailPrefs`), so this and `useLayoutPrefs` are now
+// dead. Left in place pending a decision on removing them.
 const DEFAULT_SIDEBAR = [
   "/classroom",
   "/bootcamps",
