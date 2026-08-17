@@ -20,6 +20,7 @@ import {
 import {
   bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
+import { linkPassToAccount } from "../_shared/linkPassToAccount.ts";
 
 const LIMITS = {
   read: 20,          // info|slots per (ip,slug) per minute
@@ -140,6 +141,12 @@ Deno.serve(async (req) => {
       if (creditsRemaining <= 0) return json({ error: "no_sessions_remaining" }, 409);
       // Identity comes ONLY from the resolved pass row. If the pass carries a
       // student_id, prefer that profile's current email; else the pass email.
+      // An account-less pass whose email matches a real account gets attached
+      // here, so the booking, uploads, and history land on that account.
+      if (!pass.student_id) {
+        const linked = await linkPassToAccount(supabase, pass);
+        if (linked) pass.student_id = linked;
+      }
       let email = pass.student_email;
       if (pass.student_id) {
         const { data: authUser, error: authUserErr } = await supabase.auth.admin.getUserById(pass.student_id);
