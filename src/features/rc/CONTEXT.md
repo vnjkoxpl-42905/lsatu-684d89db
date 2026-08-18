@@ -2,23 +2,36 @@
 
 Full-passage RC drilling: a picker, a LawHub-style two-pane player, an
 attempt-first review layer, and a results page. Distinct from the LR **Drill**
-engine — RC is passage-first, so the unit a student chooses is a passage, never
-a single question, and its player is a full-screen exam interface rather than a
-card inside the product's chrome.
+engine — RC is passage-first *for reading*: a passage always renders whole, and
+its player is a full-screen exam interface rather than a card inside the
+product's chrome. Selection is a separate matter and may happen at either grain,
+a passage or named questions within one (see **Question subset**).
 
 ## Language
 
 **Passage**:
-One RC passage with its full text and the questions attached to it. The unit a
-student picks, a teacher assigns, and the selection engine reasons about. Every
-passage belongs to one section of one PrepTest.
+One RC passage with its full text and the questions attached to it. Always the
+unit a student *reads* — a passage is never partially rendered. Every passage
+belongs to one section of one PrepTest.
 _Avoid_: article, reading, text block, item
 
 **Set**:
-The source's word for a passage's position within its section, carried in
-`setNumber` (1-4) and in a passage's "Set Difficulty". It never means a
-collection of questions here — that is a **session**.
-_Avoid_: using "set" for a group of questions (reserved for the LR Build a Set)
+The group of things a student assembles and drills, in RC exactly as in LR. A
+set holds passages, questions, or both; drilling one produces a **session**.
+One word, one meaning, on both sides of the picker's mode toggle.
+_Avoid_: collection, batch, queue, using "set" for a passage's position
+
+**Position**:
+A passage's place within its section (1-4), carried in the data as `setNumber`
+and shown by the source as "Set Difficulty". The field name stays; the
+student-facing word is Position, because Set now means the thing you build.
+_Avoid_: set, slot, index
+
+**Question subset**:
+The selected questions of a passage when a set names fewer than all of them.
+The passage still renders in full — a subset narrows what is *asked*, never what
+is read. A set that names no subset for a passage asks every question in it.
+_Avoid_: partial passage, question slice, trimmed passage
 
 **Comparative passage**:
 A passage whose `format` is `Comparative`: an italic intro line followed by
@@ -27,10 +40,18 @@ passages.
 _Avoid_: dual passage, paired passages, A/B passage
 
 **Session**:
-One run of a drill: an ordered list of passages, a config, and the attempts
-written against it. Rows live in `rc_drill_sessions`. A session is
-`in_progress`, `completed`, or `abandoned`.
+One run of a drill: an ordered list of passages, an optional **question subset**
+per passage, a config, and the attempts written against it. Rows live in
+`rc_drill_sessions`. A session is `in_progress`, `completed`, or `abandoned`.
 _Avoid_: drill run, attempt (an attempt is per question), test
+
+**Pace**:
+The clock a timed session is priced against: one reading allowance per passage
+plus a per-question allowance for each question actually asked. A subset
+session is therefore shorter than a full one. Replaces the flat
+seconds-per-passage budget, which handed a three-question subset the same 8:45
+as a seven-question passage.
+_Avoid_: timer, budget, time limit
 
 **Attempt**:
 One recorded answer to one question inside a session, in `rc_attempts`. Attempts

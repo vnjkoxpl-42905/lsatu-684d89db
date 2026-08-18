@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { authUrlWithReturnTo } from "@/lib/authRedirect";
 
 export interface UserPermissions {
   has_bootcamp_access: boolean;
@@ -85,6 +86,7 @@ class SessionExpiredError extends Error {}
 export function useUserPermissions(): UserPermissions {
   const { user, authReady, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const query = useQuery<PermissionFlags>({
     // Cached per user, shared across all ProtectedRoute / consumer mounts, so
@@ -148,16 +150,25 @@ export function useUserPermissions(): UserPermissions {
   });
 
   // A dead session bounces to /auth once. Preserve lsatu_saved_email so
-  // re-login is smooth after an expiry bounce.
+  // re-login is smooth after an expiry bounce, and carry where they were: a
+  // bare "/auth" discarded the pathname, query, and hash, so a student whose
+  // token expired on an assignment link lost the link as well as the session.
   useEffect(() => {
     if (query.error instanceof SessionExpiredError) {
+      const returnTo = `${location.pathname}${location.search}${location.hash}`;
       (async () => {
         await signOut({ keepSavedEmail: true });
-        navigate("/auth", { replace: true, state: { reason: "session_expired" } });
+        navigate(authUrlWithReturnTo(returnTo), {
+          replace: true,
+          state: { reason: "session_expired" },
+        });
       })();
     } else if (query.error) {
       console.error("Failed to fetch permissions", query.error);
     }
+    // `location` is intentionally not a dependency: this must capture where the
+    // user was when the session died, not follow them as they navigate.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.error, signOut, navigate]);
 
   return {

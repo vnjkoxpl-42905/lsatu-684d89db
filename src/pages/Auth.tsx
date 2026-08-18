@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
-import { redirectAfterAuth } from '@/lib/authRedirect';
+import { clearStashedReturnTo, readReturnToFromUrl, redirectAfterAuth, stashReturnTo } from '@/lib/authRedirect';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AnimatedButton } from '@/components/ui/animated-button';
@@ -229,9 +229,34 @@ export default function Auth() {
   // start only once the .vr sections exist.
   useReveal(!(oauthReturning && !user) && !(authReady && user));
 
-  // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
-  // useEffect never fires navigate('/classroom') while we're in the post-login async block.
-  const skipAutoRedirectRef = React.useRef(false);
+  // ── One owner for post-auth navigation ──────────────────────────────────────
+  // Two callers can reach it — handleSubmit's manual path and the user-watcher
+  // effect below — and previously each redirected on its own, coordinated by a
+  // boolean. That boolean could not express "we tried and failed", so a
+  // getUser() that came back empty left the page sitting on a spinner forever;
+  // and a second run of the effect (a new `user` identity, a StrictMode
+  // remount) read a window.location that no longer carried ?returnTo and
+  // pushed /classroom over the correct destination. A four-state machine makes
+  // the first caller the only caller and gives failure somewhere to land.
+  type PostAuthState = 'idle' | 'running' | 'done' | 'failed';
+  const postAuthStateRef = React.useRef<PostAuthState>('idle');
+
+  const runPostAuthRedirect = React.useCallback(async (userId: string) => {
+    if (postAuthStateRef.current === 'running' || postAuthStateRef.current === 'done') return;
+    postAuthStateRef.current = 'running';
+    try {
+      await redirectAfterAuth(userId, navigate);
+      postAuthStateRef.current = 'done';
+    } catch (err) {
+      // Terminal branch: say so rather than leaving a spinner up.
+      postAuthStateRef.current = 'failed';
+      console.error('[auth] post-auth redirect failed:', err);
+      setFormError({
+        title: 'Signed in, but we could not open your classroom',
+        description: 'Refresh the page to continue.',
+      });
+    }
+  }, [navigate]);
 
   // ── Forgot password state ──
   const [resetEmail, setResetEmail] = React.useState('');
@@ -242,9 +267,9 @@ export default function Auth() {
   // Redirect authenticated users — single helper handles the profile lookup
   // so this effect, handleSubmit, and ResetPassword all agree on the rules.
   React.useEffect(() => {
-    if (!user || skipAutoRedirectRef.current) return;
-    void redirectAfterAuth(user.id, navigate);
-  }, [user, navigate]);
+    if (!user) return;
+    void runPostAuthRedirect(user.id);
+  }, [user, runPostAuthRedirect]);
 
   // Sanity-check oauth_pending on mount. If the flag is set but there is
   // no actual return-leg signal (no ?code, no #access_token, and no
@@ -268,6 +293,9 @@ export default function Auth() {
     if (!ts || Date.now() - ts > OAUTH_PENDING_MAX_AGE_MS) {
       sessionStorage.removeItem('oauth_pending');
       sessionStorage.removeItem('oauth_pending_ts');
+      // The departure never happened (or happened an age ago); a parked target
+      // from it would teleport the next sign-in somewhere unexpected.
+      clearStashedReturnTo();
     }
   }, []);
 
@@ -282,7 +310,12 @@ export default function Auth() {
         title: 'Session expired',
         description: 'Please sign in again to continue.',
       });
-      navigate(location.pathname, { replace: true, state: null });
+      // Keep the query: this runs on /auth?returnTo=..., and dropping the search
+      // here would discard the destination the expiry bounce just preserved.
+      navigate(`${location.pathname}${location.search}${location.hash}`, {
+        replace: true,
+        state: null,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -315,12 +348,10 @@ export default function Auth() {
           setShowConfirmation(true);
         }
       } else {
-        // Set the skip-redirect ref BEFORE the signIn await. Supabase fires
-        // onAuthStateChange synchronously when the credentials succeed, which
-        // populates `user` and triggers the user-watcher effect on the very
-        // next render. Setting the ref first guarantees the user-watcher
-        // never races our manual redirectAfterAuth call below.
-        skipAutoRedirectRef.current = true;
+        // No pre-emptive guard is needed: Supabase fires onAuthStateChange
+        // synchronously on success, so the user-watcher effect may redirect
+        // before this function resumes. Both routes call runPostAuthRedirect,
+        // which admits exactly one of them.
         let error: { message?: string; status?: number } | null = null;
         try {
           const result = await signIn(trimmedEmail, password);
@@ -329,7 +360,6 @@ export default function Auth() {
           // Thrown errors typically mean the request never reached
           // Supabase (network down, DNS failure, blocked by extension).
           // The non-throw path returns { error } already.
-          skipAutoRedirectRef.current = false;
           setFormError({ title: "Couldn't reach the server", description: 'Check your connection and try again.' });
           toast({
             title: "Couldn't reach the server",
@@ -339,9 +369,6 @@ export default function Auth() {
           return;
         }
         if (error) {
-          // Sign-in failed — release the skip-redirect ref so a subsequent
-          // successful attempt can trigger the user-watcher normally.
-          skipAutoRedirectRef.current = false;
           const msg = (error.message || '').toLowerCase();
           const status = error.status;
           let title = 'Sign-in failed';
@@ -368,7 +395,17 @@ export default function Auth() {
           }
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
-          if (freshUser) await redirectAfterAuth(freshUser.id, navigate);
+          if (freshUser) {
+            await runPostAuthRedirect(freshUser.id);
+          } else if (postAuthStateRef.current === 'idle') {
+            // Credentials were accepted but the session did not materialise.
+            // Without this branch the page just sits there.
+            postAuthStateRef.current = 'failed';
+            setFormError({
+              title: 'Sign-in did not complete',
+              description: 'Your details were accepted but the session did not start. Try again.',
+            });
+          }
           return;
         }
       }
@@ -396,6 +433,12 @@ export default function Auth() {
     }
     setLoading(true);
     try {
+      // A ref cannot survive a full-page redirect to Google, and the return leg
+      // comes back to a bare /auth with no query of its own — so the validated
+      // target is parked in session storage here or it is lost. This is what
+      // makes an assignment link still work when the student signs in with
+      // Google rather than a password.
+      stashReturnTo(readReturnToFromUrl());
       sessionStorage.setItem('oauth_pending', '1');
       sessionStorage.setItem('oauth_pending_ts', String(Date.now()));
       const result = await lovable.auth.signInWithOAuth("google", {
@@ -404,6 +447,7 @@ export default function Auth() {
       if (result.error) {
         sessionStorage.removeItem('oauth_pending');
         sessionStorage.removeItem('oauth_pending_ts');
+        clearStashedReturnTo();
         setFormError({ title: 'Google sign-in failed', description: String(result.error) });
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
@@ -411,6 +455,7 @@ export default function Auth() {
     } catch (err) {
       sessionStorage.removeItem('oauth_pending');
       sessionStorage.removeItem('oauth_pending_ts');
+      clearStashedReturnTo();
       const description = err instanceof Error ? err.message : 'Unknown error';
       setFormError({ title: 'Google sign-in failed', description });
       toast({ title: 'Google sign-in failed', description, variant: 'destructive' });

@@ -51,6 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Safety timeout so we never stay loading forever
   const oauthTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  /** Every route guard now blocks on `authReady`, so it must always be reached. */
+  const AUTH_RESOLVE_CEILING_MS = 15000;
+
   useEffect(() => {
     // Ensure a students row exists for this auth user so class_id is always resolvable
     const provisionStudentRecord = async (userId: string) => {
@@ -81,7 +84,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
 
+    // Guards against a resolution arriving after teardown (a StrictMode
+    // remount, or a slow getSession landing on an unmounted provider). Without
+    // it a late resolve writes state into a dead tree and, worse, can flip
+    // authReady back and forth while route guards are reading it.
+    let cancelled = false;
+
     const markReady = (s: Session | null) => {
+      if (cancelled) return;
       setSession(s);
       setUser(s?.user ?? null);
       setLoading(false);
@@ -115,27 +125,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
-      if (existingSession) {
-        markReady(existingSession);
-      } else if (!isOAuthRef.current) {
-        markReady(null);
-      }
-    });
+    supabase.auth.getSession().then(
+      ({ data: { session: existingSession } }) => {
+        if (existingSession) {
+          markReady(existingSession);
+        } else if (!isOAuthRef.current) {
+          markReady(null);
+        }
+      },
+      (err) => {
+        // A rejected getSession used to leave authReady false forever. Now that
+        // every ProtectedRoute blocks on authReady, that would be a permanently
+        // spinning app rather than a degraded one — so resolve to signed-out and
+        // let the guards do their job.
+        console.error('[auth] getSession failed:', err);
+        if (!isOAuthRef.current) markReady(null);
+      },
+    );
 
     // Silent safety net: Auth.tsx owns the user-visible 10s return-leg timeout.
     // This timer is longer (15s) so it only fires if the page is in an unusual
     // state where Auth.tsx's timeout never ran. No toast, no user-visible signal —
     // just unfreeze the UI so route guards can act on `user = null`.
-    if (isOAuthRef.current) {
-      oauthTimeoutRef.current = setTimeout(() => {
-        sessionStorage.removeItem('oauth_pending');
-        setLoading(false);
-        setAuthReady(true);
-      }, 15000);
-    }
+    // Armed on every load, not only the OAuth leg. Route guards block on
+    // authReady, so any path that never resolves — a hung network, an SDK that
+    // neither resolves nor rejects — would otherwise spin forever.
+    oauthTimeoutRef.current = setTimeout(() => {
+      if (cancelled) return;
+      sessionStorage.removeItem('oauth_pending');
+      setLoading(false);
+      setAuthReady(true);
+    }, AUTH_RESOLVE_CEILING_MS);
 
     return () => {
+      cancelled = true;
       subscription.unsubscribe();
       if (oauthTimeoutRef.current) clearTimeout(oauthTimeoutRef.current);
     };
