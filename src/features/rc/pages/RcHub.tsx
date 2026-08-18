@@ -152,7 +152,18 @@ export default function RcHub() {
         ? (revealParam as RcRevealMode)
         : 'per_passage',
     );
-    setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
+    // A link may name its own per-passage budget — that is how a Full Section
+    // asks for the accommodations paces, which are multiples of the standard
+    // 8:45 and so cannot be spelled by `timing=standard` alone. Bounded because
+    // this arrives from a URL: below a minute is unusable, above an hour a
+    // passage is not a clock anyone set on purpose.
+    const secondsParam = Number(params.get('secondsPerPassage'));
+    if (Number.isFinite(secondsParam) && secondsParam >= 60 && secondsParam <= 3600) {
+      setTiming('custom');
+      setCustomSeconds(Math.round(secondsParam));
+    } else {
+      setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
+    }
 
     // The quick-build tile on the drill home sends a passage count and asks the
     // hub to go straight in, so a student who has already made their choices

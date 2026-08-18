@@ -190,6 +190,11 @@ function LauncherStage({
               <SectionSelector
                 manifest={manifest}
                 onStartSection={(config) => start("full-section", config)}
+                // An RC section is the four published passages of one real
+                // section, run by the RC player rather than the LR runner, so
+                // it starts through the hub's own link contract instead of
+                // /drill's router state.
+                onStartRcSection={(href) => navigate(href)}
                 onCancel={onCancel}
               />
             ) : (

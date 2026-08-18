@@ -1,39 +1,115 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import type { FullSectionConfig, TimerMode } from '@/types/drill';
 // TimerMode used in handleStart to type the local `mode` variable
 import type { QuestionManifest } from '@/lib/questionLoader';
+import { loadAllIndexPassages } from '@/features/rc/lib/rcBank';
+import {
+  buildRcSections,
+  formatRcSectionClock,
+  rcSectionHref,
+  rcSectionPreptests,
+  rcSectionsForPreptest,
+  type RcSection,
+  type RcSectionPaceId,
+} from '@/features/rc/lib/rcSections';
+
+/**
+ * Which kind of section a student is sitting. Logical Reasoning sections come
+ * out of the LR question bank; Reading Comprehension sections are the four
+ * published passages of one real section, started through the RC hub.
+ */
+export type SectionKind = 'lr' | 'rc';
 
 interface SectionSelectorProps {
   manifest: QuestionManifest;
   onStartSection: (config: FullSectionConfig) => void;
+  /** Starts an RC section by navigating to the link `rcSectionHref` builds. */
+  onStartRcSection?: (href: string) => void;
   onCancel: () => void;
 }
 
-export function SectionSelector({ manifest, onStartSection, onCancel }: SectionSelectorProps) {
+export function SectionSelector({
+  manifest,
+  onStartSection,
+  onStartRcSection,
+  onCancel,
+}: SectionSelectorProps) {
   const { settings } = useUserSettings();
+  const [kind, setKind] = useState<SectionKind>('lr');
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const [timingOption, setTimingOption] = useState<'standard' | '1.5x' | '2x' | 'custom'>('standard');
   const [customMinutes, setCustomMinutes] = useState<number | ''>(35);
 
-  const availablePTs = Array.from(
-    new Set(manifest.sections.map(s => s.pt))
-  ).sort((a, b) => a - b);
+  // RC sections come from the passage index, which is small and separate from
+  // the LR bank. Loaded once when the student switches to RC rather than on
+  // mount, so an LR-only visit pays nothing for it.
+  const [rcSections, setRcSections] = useState<RcSection[] | null>(null);
+  const [rcError, setRcError] = useState<string | null>(null);
 
-  const availableSections = selectedPT
-    ? Array.from(
-        new Set(
-          manifest.sections
-            .filter(s => s.pt === selectedPT)
-            .map(s => s.section)
-        )
-      ).sort((a, b) => a - b)
-    : [];
+  useEffect(() => {
+    if (kind !== 'rc' || rcSections !== null) return;
+    let cancelled = false;
+    loadAllIndexPassages()
+      .then((passages) => {
+        if (!cancelled) setRcSections(buildRcSections(passages));
+      })
+      .catch(() => {
+        if (!cancelled) setRcError('Reading Comprehension sections could not be loaded.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [kind, rcSections]);
+
+  const rcPTs = useMemo(() => (rcSections ? rcSectionPreptests(rcSections) : []), [rcSections]);
+  const rcSectionsForPT = useMemo(
+    () => (rcSections && selectedPT ? rcSectionsForPreptest(rcSections, selectedPT) : []),
+    [rcSections, selectedPT],
+  );
+  const chosenRcSection = rcSectionsForPT.find((s) => s.section === selectedSection) ?? null;
+
+  /** The LR timing control maps onto RC's paces one for one. */
+  const rcPaceId: RcSectionPaceId =
+    timingOption === '1.5x' ? 'time-and-a-half' : timingOption === '2x' ? 'double-time' : 'standard';
+
+  const switchKind = (next: SectionKind) => {
+    if (next === kind) return;
+    // A PrepTest number means something different in each bank, and section 2 of
+    // PT 110 is an LR section in one and does not exist in the other. Carrying
+    // the choice across would start the wrong thing.
+    setKind(next);
+    setSelectedPT(null);
+    setSelectedSection(null);
+  };
+
+  const lrPTs = Array.from(new Set(manifest.sections.map(s => s.pt))).sort((a, b) => a - b);
+  const availablePTs = kind === 'rc' ? rcPTs : lrPTs;
+
+  const availableSections = !selectedPT
+    ? []
+    : kind === 'rc'
+      ? rcSectionsForPT.map((s) => s.section)
+      : Array.from(
+          new Set(
+            manifest.sections
+              .filter(s => s.pt === selectedPT)
+              .map(s => s.section)
+          )
+        ).sort((a, b) => a - b);
 
   const handleStart = () => {
+    if (kind === 'rc') {
+      if (chosenRcSection && onStartRcSection) {
+        onStartRcSection(
+          rcSectionHref(chosenRcSection, timingOption === 'custom' ? 'standard' : rcPaceId),
+        );
+      }
+      return;
+    }
     if (selectedPT && selectedSection) {
       let mode: TimerMode;
       let customMins: number | undefined;
@@ -69,7 +145,14 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
     return 'Stopwatch';
   };
 
-  const isReadyToStart = selectedPT && selectedSection && (timingOption !== 'custom' || (customMinutes !== '' && customMinutes > 0));
+  const isReadyToStart =
+    kind === 'rc'
+      ? Boolean(chosenRcSection)
+      : Boolean(
+          selectedPT &&
+            selectedSection &&
+            (timingOption !== 'custom' || (customMinutes !== '' && customMinutes > 0)),
+        );
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -79,15 +162,54 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/[0.02] to-transparent rounded-3xl blur-3xl" />
         
         {/* Main Panel */}
-        <div className="relative bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-12">
+        <div className="relative bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sm:p-12">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-3xl font-semibold tracking-tight mb-3">
               Full Section
             </h1>
             <p className="text-muted-foreground/70 text-base leading-relaxed">
-              Choose a PrepTest and timing
+              Sit a real section, start to finish
             </p>
+          </div>
+
+          {/* Which section. Named for what the student sits, not for a data
+              source: "Reading Comprehension" is four published passages in
+              their published order, and "Logical Reasoning" is a whole LR
+              section. */}
+          <div className="space-y-3 mb-8">
+            <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
+              Section type
+            </label>
+            <div className="grid grid-cols-1 gap-2 p-1.5 bg-muted/30 rounded-xl sm:grid-cols-2 sm:gap-3" role="tablist">
+              {([
+                { key: 'lr', label: 'Logical Reasoning' },
+                { key: 'rc', label: 'Reading Comprehension' },
+              ] as const).map(({ key, label }) => (
+                <button
+                  key={key}
+                  type="button"
+                  role="tab"
+                  aria-selected={kind === key}
+                  onClick={() => switchKind(key)}
+                  className={cn(
+                    "px-4 py-3.5 rounded-lg text-sm font-semibold transition-all duration-150 sm:px-6",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
+                    kind === key
+                      ? "bg-background shadow-sm text-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background/50",
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {kind === 'rc' && rcError && (
+              <p className="text-sm text-muted-foreground/70">{rcError}</p>
+            )}
+            {kind === 'rc' && !rcError && rcSections === null && (
+              <p className="text-sm text-muted-foreground/70">Loading sections…</p>
+            )}
           </div>
 
           {/* PrepTest & Section Selectors */}
@@ -143,15 +265,20 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
                     <SelectValue placeholder="Select Section" />
                   </SelectTrigger>
                   <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                    {availableSections.map(section => (
-                      <SelectItem 
-                        key={section} 
-                        value={section.toString()}
-                        className="text-base py-3 focus:bg-foreground/5"
-                      >
-                        Section {section}
-                      </SelectItem>
-                    ))}
+                    {availableSections.map(section => {
+                      const rc = rcSectionsForPT.find((s) => s.section === section);
+                      return (
+                        <SelectItem
+                          key={section}
+                          value={section.toString()}
+                          className="text-base py-3 focus:bg-foreground/5"
+                        >
+                          {rc
+                            ? `Section ${section} · ${rc.passageCount} passages · ${rc.questionCount} question${rc.questionCount === 1 ? '' : 's'}${rc.fullLength ? '' : ' (short)'}`
+                            : `Section ${section}`}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
@@ -163,13 +290,16 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
             <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
               Timing
             </label>
-            <div className="grid grid-cols-2 gap-3 p-1.5 bg-muted/30 rounded-xl">
+            <div className="grid grid-cols-2 gap-2 p-1.5 bg-muted/30 rounded-xl sm:gap-3">
               {(
                 [
-                  { key: 'standard', label: 'Standard', sub: getStandardTimingLabel() },
+                  { key: 'standard', label: 'Standard', sub: kind === 'rc' ? '35:00' : getStandardTimingLabel() },
                   { key: '1.5x',     label: 'Time & a Half', sub: '52 min' },
                   { key: '2x',       label: 'Double Time',   sub: '70 min' },
-                  { key: 'custom',   label: 'Custom',        sub: 'Set your time' },
+                  // An RC section's clock is a per-passage budget, so an
+                  // arbitrary total has nowhere to live. Offering it here and
+                  // silently rounding it to Standard would be a lie.
+                  ...(kind === 'rc' ? [] : [{ key: 'custom', label: 'Custom', sub: 'Set your time' } as const]),
                 ] as const
               ).map(({ key, label, sub }) => (
                 <button
@@ -177,7 +307,7 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
                   type="button"
                   onClick={() => setTimingOption(key)}
                   className={cn(
-                    "relative px-6 py-4 rounded-lg text-sm font-medium transition-all duration-150",
+                    "relative px-2 py-4 rounded-lg text-sm font-medium transition-all duration-150 sm:px-6",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
                     timingOption === key
                       ? "bg-background shadow-sm text-foreground"
@@ -185,15 +315,27 @@ export function SectionSelector({ manifest, onStartSection, onCancel }: SectionS
                   )}
                 >
                   <div className="flex flex-col items-center gap-1">
-                    <span className="font-semibold">{label}</span>
-                    <span className="text-xs opacity-60">{sub}</span>
+                    <span className="whitespace-nowrap text-[13px] font-semibold sm:text-sm">{label}</span>
+                    <span className="whitespace-nowrap text-xs opacity-60">{sub}</span>
                   </div>
                 </button>
               ))}
             </div>
 
+            {/* What the chosen section will actually run for. */}
+            {kind === 'rc' && chosenRcSection && (
+              <p className="text-sm text-muted-foreground/70">
+                {chosenRcSection.passageCount} passages ·{' '}
+                {chosenRcSection.questionCount} questions ·{' '}
+                {formatRcSectionClock(chosenRcSection, rcPaceId)}
+                {chosenRcSection.fullLength
+                  ? ''
+                  : ' — shorter than a real section, because questions without a published explanation cannot be drilled'}
+              </p>
+            )}
+
             {/* Custom Time Input */}
-            {timingOption === 'custom' && (
+            {kind !== 'rc' && timingOption === 'custom' && (
               <div className="animate-in fade-in slide-in-from-top-1 duration-150">
                 <input
                   type="number"

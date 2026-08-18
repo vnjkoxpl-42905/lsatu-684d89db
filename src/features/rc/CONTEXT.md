@@ -21,6 +21,23 @@ set holds passages, questions, or both; drilling one produces a **session**.
 One word, one meaning, on both sides of the picker's mode toggle.
 _Avoid_: collection, batch, queue, using "set" for a passage's position
 
+**Section**:
+The four passages that appeared together in one section of one PrepTest, in
+published order — what a student sits when they want the real thing rather than
+a drill they assembled. Composition is fixed; only the pace is chosen. A section
+whose passage has no drillable questions is not offered at all, because reading
+four passages and being asked about three is not a section. Derived from the
+index by `lib/rcSections.ts`; nothing about it is stored.
+_Avoid_: full test, practice test, timed set, section drill
+
+**Short section**:
+A **Section** carrying fewer than 26 questions, which is below what a real one
+runs. Sections fall short because the source publishes answer choices only for
+questions with a written explanation. Always labelled as short where it is
+offered — a student pacing themselves against a 16-question "section" would
+learn the wrong pace. Never padded to hide it.
+_Avoid_: partial section, incomplete section, trimmed section
+
 **Position**:
 A passage's place within its section (1-4), carried in the data as `setNumber`
 and shown by the source as "Set Difficulty". The field name stays; the
@@ -46,11 +63,14 @@ per passage, a config, and the attempts written against it. Rows live in
 _Avoid_: drill run, attempt (an attempt is per question), test
 
 **Pace**:
-The clock a timed session is priced against: one reading allowance per passage
-plus a per-question allowance for each question actually asked. A subset
-session is therefore shorter than a full one. Replaces the flat
-seconds-per-passage budget, which handed a three-question subset the same 8:45
-as a seven-question passage.
+The clock a timed session is priced against. **Today** that is a flat
+per-passage budget — `secondsPerPassage × passageCount` — which is why a
+**Section** needs no timing mode of its own: 525s across four passages is
+exactly the 35:00 a real one runs.
+**Planned** (`docs/adr/0006`, not built): one reading allowance per passage plus
+a per-question allowance for each question actually asked, so a **question
+subset** stops receiving a whole passage's clock. Until that lands, a subset is
+overpriced.
 _Avoid_: timer, budget, time limit
 
 **Attempt**:
@@ -104,7 +124,12 @@ _Avoid_: note, markup, comment
 
 Assignment is a link, not a table: `/rc/drill?passage=<id>` for one passage, or
 `/rc?passages=1188,1201&reveal=per_passage&timing=unlimited` to pre-fill the
-builder.
+builder. A **Section** is the same contract with its four passage ids in
+published order, `reveal=end_of_set`, and `timing=standard`
+(`RC_STANDARD_SECONDS_PER_PASSAGE` × 4 = 2100s, exactly 35:00 — the section
+clock needs no separate timing mode). `secondsPerPassage=<n>` overrides the
+per-passage budget, which is how the accommodations paces are expressed; it is
+bounded to 60-3600 because it arrives from a URL.
 
 ## Where the content comes from
 
