@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { assignResourceToStudent, type AssignableResource } from '@/lib/teacherAssignResource';
 import { summarizeNotifyResult } from '@/lib/classroomNotify';
 import type { DeskResourcePreview } from './DeskResourcePreviewPanel';
+import { useDismissTeacherTodo } from './teacherTodoDismissals';
 
 export interface AssignmentOfferData {
   id?: string;
