@@ -360,6 +360,19 @@ export function useClassroomHome(): {
     };
   }, [nextBooking, permissions.is_admin]);
 
+  // The booking link follows the plan the student is actually on: credits in
+  // hand go straight to the picker, a pay-per-session student gets the single
+  // link, a spent package gets offered back as a renewal.
+  const booking = React.useMemo(
+    () =>
+      resolveStudentBookingCta({
+        pass: bookingQuery.data?.pass ?? null,
+        offers: bookingQuery.data?.offers ?? [],
+        hasUpcomingSession: !!nextBooking,
+      }),
+    [bookingQuery.data?.offers, bookingQuery.data?.pass, nextBooking],
+  );
+
   /* ── the week ──────────────────────────────────────────────────────── */
 
   const dates = React.useMemo(() => weekDates(now), [now]);
