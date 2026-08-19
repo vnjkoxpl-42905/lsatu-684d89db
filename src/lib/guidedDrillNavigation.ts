@@ -1,5 +1,13 @@
 export const TEACHER_GUIDED_DRILLS_RETURN_TO = '/teacher/library/guided-drills';
 
+/**
+ * Where Return goes when the launch URL carries no `returnTo`. Home, not the
+ * teacher library: both teacher entry points pass `returnTo` explicitly, so a
+ * bare launch URL is a student following a link, and a teacher route would
+ * bounce them to auth.
+ */
+export const GUIDED_DRILLS_HOME_RETURN_TO = '/classroom';
+
 export function safeGuidedReturnPath(value: string | null | undefined, fallback: string): string {
   if (!value || !value.startsWith('/') || value.startsWith('//')) return fallback;
   return value;

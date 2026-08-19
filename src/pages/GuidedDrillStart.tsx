@@ -32,7 +32,7 @@ import {
   parseGuidedResumeIndex,
   parseGuidedResumeQids,
   safeGuidedReturnPath,
-  TEACHER_GUIDED_DRILLS_RETURN_TO,
+  GUIDED_DRILLS_HOME_RETURN_TO,
 } from '@/lib/guidedDrillNavigation';
 import {
   guidedSessionKey,
@@ -92,7 +92,7 @@ export default function GuidedDrillStart({
   const bootcampOverride: PracticePool | undefined = stateBootcampOverride ?? slugBootcampOverride;
   const originReturnTo = safeGuidedReturnPath(
     searchParams.get('returnTo'),
-    assignmentId ? '/classroom' : TEACHER_GUIDED_DRILLS_RETURN_TO,
+    GUIDED_DRILLS_HOME_RETURN_TO,
   );
   const resumeQids = React.useMemo(
     () => parseGuidedResumeQids(searchParams.get('resumeQids')),
