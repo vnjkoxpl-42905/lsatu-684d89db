@@ -50,6 +50,30 @@ export function useTeacherTodoDismissals() {
   });
 }
 
+/**
+ * Dismiss a to-do outside React Query, for callers (like the assignment offer
+ * card in chat) that act on an item without owning the queue.
+ */
+export async function dismissTeacherTodo(input: {
+  adminUserId: string;
+  sourceKind: string;
+  sourceId: string;
+  expiresAt?: string | null;
+}) {
+  const { error } = await todoDismissalsTable().upsert(
+    {
+      admin_user_id: input.adminUserId,
+      source_kind: input.sourceKind,
+      source_id: input.sourceId,
+      expires_at: input.expiresAt ?? null,
+      dismissed_at: new Date().toISOString(),
+    },
+    { onConflict: 'admin_user_id,source_kind,source_id' },
+  );
+  if (error) throw error;
+}
+
+
 export function useDismissTeacherTodo() {
   const { user } = useAuth();
   const qc = useQueryClient();
