@@ -22,6 +22,7 @@ import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems
 import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
+import { resolveStudentBookingCta } from "@/lib/studentBookingCta";
 import { useInbox } from "@/hooks/useInbox";
 import { useCurrentWeeklyPlan } from "@/hooks/useWeeklyPlan";
 import {
