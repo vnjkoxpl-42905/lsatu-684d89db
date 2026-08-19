@@ -50,6 +50,12 @@
     "difficulty_max": 5,
     "question_types": [
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Paradox"
     ],
     "question_features": [],
@@ -65,6 +71,12 @@
     "bank_filter": {
       "qtypes": [
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Paradox"
       ],
       "features": [],
@@ -99,7 +111,7 @@
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "## This set has 7 **Principle-Strengthen**\n## questions from tests 55-59\n\nAll of these examples are the much-more common style of Principle-Strengthen in which the _answers_ are principles. They often feel more like **Sufficient Assumption** than Strengthen, because the correct answer is usually a conditional rule that is triggered by the Evidence and results in the Conclusion.\n\nBut the question stem is technically a Strengthen task (which answer _most_ justifies), so we're not supposed to ask ourselves, \"Does this answer prove the conclusion\", even though in many cases it will. In some rare cases, though, the correct answer could be as weakly worded as a Necessary Assumption.\n\nNevertheless, our primary approach to these is to expect a conditional logic answer, so we pre-phrase by articulating an \"IF premise, THEN conclusion\" reasoning move.\n\nMost of the answers will be conditionals. If so, we want to be very **stubborn with the outcome** . The right side of the rule should match the conclusion (or at least sound like wording that would strongly support the conclusion). We want to be **flexible with the trigger** .\n\nOther answers feel more like comparative ideas that help _Weigh Tradeoffs_ or establish priorities. When arguments seem to be balancing competing ideas (a pro and a con / this obligation with that obligation), then when the author issues her judgment in the conclusion, she's revealing whether she cares more about the good thing or the bad thing, whether she cares more about this obligation or that obligation.\n\nGiven this argument, we'd anticipate a conditional answer\n_Billy lied to our customers. Thus he shouldn't be on our staff anymore._\n\n(A) A person can be on the staff only if they are consistently truthful with customers\n\nGiven this argument, we might see a weighing-tradeoffs answer\n_Billy is extremely dependable, although she lied to our customers. Clearly, she shouldn't be on our staff._\n\n(A) Dependability is a less important trait in a staff member than is honesty.",
-      "right_md": "## Try these 7 problems, **untimed**\n\n- Once you find the Conclusion and identify the main Supporting Idea(s), you will generally want to articulate an, \"If [premise], then [conclusion]\" linking idea.\n\n- If, otherwise, you felt like the argument was grappling with competing interests, then articulate how the author is weighing tradeoffs:  \"she cares more about X than about Y\".\n\n- Try to get rid of a lot answers quickly because they don't have any good matching language for the conclusion, or because the matching language for the conclusion is being put on the **left** of the conditional arrow.\n\n- Correct answers will often, if not usually, be written in contrapositive form, so be willing to try that move. If you read \"should be on staff only if consistently truthful\", then you have to make your brain say, \"Okay, this is saying _if you're_ **_not_** _consistently truthful, should_ **_not_** _on staff_ \"."
+      "right_md": "## Try these 7 problems, **untimed**\n\n- Once you find the Conclusion and identify the main Supporting Idea(s), you will generally want to articulate an, \"If [premise], then [conclusion]\" linking idea.\n\n- If, otherwise, you felt like the argument was grappling with competing interests, then articulate how the author is weighing tradeoffs:\u00a0\u00a0\"she cares more about X than about Y\".\n\n- Try to get rid of a lot answers quickly because they don't have any good matching language for the conclusion, or because the matching language for the conclusion is being put on the **left** of the conditional arrow.\n\n- Correct answers will often, if not usually, be written in contrapositive form, so be willing to try that move. If you read \"should be on staff only if consistently truthful\", then you have to make your brain say, \"Okay, this is saying _if you're_ **_not_** _consistently truthful, should_ **_not_** _on staff_ \"."
     },
     "bank_filter": {
       "qtypes": [
@@ -140,7 +152,7 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "Find the gap between a Rule and its Application\non these five **Principle-Strengthen** questions\n\n_example_\nPRINCIPLE: Lies are justified if they do more good than harm.\nAPPLICATION: Jason falsely claimed that Sharon has a driver's license to spare her getting mocked by her friends. Since he did manage to spare her the mockery, he was justified in lying.\n\nIn order to use this Rule to prove that a lie was justified, we have to establish the trigger:\n_the lie did more good than harm_\n\nSo the correct answer would need to convince us that \"keeping Sharon from getting mocked = did more good than harm\".\n\n(Note: there are two styles of Principle-Strengthen question:  _Principles in Stimulus vs. Principle in Answers_ . The latter kind is more than 10x more common, but the former kind shows up more on modern tests than it used to)",
+      "left_md": "Find the gap between a Rule and its Application\non these five **Principle-Strengthen** questions\n\n_example_\nPRINCIPLE: Lies are justified if they do more good than harm.\nAPPLICATION: Jason falsely claimed that Sharon has a driver's license to spare her getting mocked by her friends. Since he did manage to spare her the mockery, he was justified in lying.\n\nIn order to use this Rule to prove that a lie was justified, we have to establish the trigger:\n_the lie did more good than harm_\n\nSo the correct answer would need to convince us that \"keeping Sharon from getting mocked = did more good than harm\".\n\n(Note: there are two styles of Principle-Strengthen question:\u00a0\u00a0_Principles in Stimulus vs. Principle in Answers_ . The latter kind is more than 10x more common, but the former kind shows up more on modern tests than it used to)",
       "right_md": "- Think about each Principle as having some criteria that must be met to trigger the rule, and having an outcome that matches up with the Application's conclusion.\n\n- The Application will (almost?) always conclude the right side of the Principle.\n\n- What we're being tested on is how the Evidence in the Application paragraph failed to clearly trigger the legal definition of the Principle.\n\n- Think about which part(s) of the Principle's trigger wasn't clearly established, and keep that mantra in your head as you consider answer choices."
     },
     "bank_filter": {
@@ -225,8 +237,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "# Causal Chains\n\npopular on **Most Supported, Must Be True,** and **Necessary Assumption**\n\nA causal chain is three or more things causally linked:  \n_Reading gives Jorge a headache, which makes him take a nap._\n\nThe test wants to make sure we see the implicit connection that  \n\"Reading leads to taking a nap\".\n\nWe might note causal chains on our paper like  \n**Reading → Headache → Take Nap**\n\nThis isn't the same as conditional logic, so we need to understand that these are \"causal\" arrows we're showing ourselves. With both causal chains and conditional chains, it's illegal to go backwards.\n\nYou wouldn't say that \"if **Nap**, then **Headache**, then **Reading**\"\n\nBut here's the big difference: with causal chains it's plausible to say \"if the first thing doesn't happen, the last thing won't happen\".\n\nOn a Most Supported task, we can feel pretty safe about ideas like  \n(A) If Jorge did less reading during the day, he would take fewer naps.\n\n# VOCAB\n\ngiven a causal chain, like **X → Y → Z**  \nwe can say that  \nX **directly** causes Y.  \nX **indirectly** causes Z.",
-      "right_md": "# Try these 9 questions untimed.\n\nWork on building these causal chains,  \nbefore you look at answers.\n\nCausal chains within **Necessary Assumption** can be hard to understand because you're missing parts of the chain (the author is assuming them).\n\nEXAMPLE  \n_B causes C. So, I guess A causes D._\n\nThat's very confusing, because there are no repeating ideas!\n\nEXAMPLE  \n_Waking up earlier makes people be more productive at work in the morning. So, I guess getting a new dog might lead to a promotion._\n\nBe patient trying to find the right causal sequence. Put **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea.\n\n_earlier wake → more prod morn_\n\nNow, go seek out something that has to do with causing someone to \"wake up earlier\", or find something that could be caused by \"having a more productive morning\".\n\nIn the author's mind, we have this causal sequence\n\n_get dog → wake up earlier → more productive morn → promotion_\n\n**ASSUMED** / **PREMISE** / **ASSUMED**\n\nThe middle idea was stated. The other two are assumed. If you go from beginning of the chain to the end, you get the author's conclusion, \"get dog → promotion\".\n\nRemember, on **Most Supported**, if you know that A leads to B leads to C, it's pretty fair to say \"if you cut back on A, you'll get less C\".\n\nBut watch out for switches between _factual claims_ and _opinionated claims!_\n\n---"
+      "left_md": "# Causal Chains\n\npopular on **Most Supported, Must Be True,** and **Necessary Assumption**\n\nA causal chain is three or more things causally linked:  \n_Reading gives Jorge a headache, which makes him take a nap._\n\nThe test wants to make sure we see the implicit connection that  \n\"Reading leads to taking a nap\".\n\nWe might note causal chains on our paper like  \n**Reading \u2192 Headache \u2192 Take Nap**\n\nThis isn't the same as conditional logic, so we need to understand that these are \"causal\" arrows we're showing ourselves. With both causal chains and conditional chains, it's illegal to go backwards.\n\nYou wouldn't say that \"if **Nap**, then **Headache**, then **Reading**\"\n\nBut here's the big difference: with causal chains it's plausible to say \"if the first thing doesn't happen, the last thing won't happen\".\n\nOn a Most Supported task, we can feel pretty safe about ideas like  \n(A) If Jorge did less reading during the day, he would take fewer naps.\n\n# VOCAB\n\ngiven a causal chain, like **X \u2192 Y \u2192 Z**  \nwe can say that  \nX **directly** causes Y.  \nX **indirectly** causes Z.",
+      "right_md": "# Try these 9 questions untimed.\n\nWork on building these causal chains,  \nbefore you look at answers.\n\nCausal chains within **Necessary Assumption** can be hard to understand because you're missing parts of the chain (the author is assuming them).\n\nEXAMPLE  \n_B causes C. So, I guess A causes D._\n\nThat's very confusing, because there are no repeating ideas!\n\nEXAMPLE  \n_Waking up earlier makes people be more productive at work in the morning. So, I guess getting a new dog might lead to a promotion._\n\nBe patient trying to find the right causal sequence. Put **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea.\n\n_earlier wake \u2192 more prod morn_\n\nNow, go seek out something that has to do with causing someone to \"wake up earlier\", or find something that could be caused by \"having a more productive morning\".\n\nIn the author's mind, we have this causal sequence\n\n_get dog \u2192 wake up earlier \u2192 more productive morn \u2192 promotion_\n\n**ASSUMED** / **PREMISE** / **ASSUMED**\n\nThe middle idea was stated. The other two are assumed. If you go from beginning of the chain to the end, you get the author's conclusion, \"get dog \u2192 promotion\".\n\nRemember, on **Most Supported**, if you know that A leads to B leads to C, it's pretty fair to say \"if you cut back on A, you'll get less C\".\n\nBut watch out for switches between _factual claims_ and _opinionated claims!_\n\n---"
     },
     "bank_filter": {
       "qtypes": [
@@ -449,7 +461,7 @@
     ],
     "start_button_label": "Continue",
     "instruction_card": {
-      "left_md": "Try these five questions that test us on the presence (or absence) of _Intermediate Conclusions_.\n\n**Role** and **Main Conclusion** questions usually \"hide\" the conclusion by making it the **very first claim**, or by making it some **rebuttal claim**.\n\nThey will also sometimes complicate our assessment of the argument's structure by throwing in multiples conclusions.\n\nArguments need a claim we call the Conclusion, and some Support for that claim, which we call the evidence or the premise(s).\n\nSome of those supporting premises can _themselves_ also be considered conclusions, if _they_ are supported by at least one claim. The more common name for a _supported premise_ is an Intermediate Conclusion, or a Subsidiary Conclusion.\n\nAny time you're asking yourself, \"Is this claim a Conclusion?\", you should ask yourself \"_why should I believe this claim? did the author provide a supporting reason?_\" If it's really a Conclusion, then you'll be able to point to at least one claim that sounds like a reason offered for why we should believe that claim.\n\nIf a claim **has** support, we can call it a Conclusion.  \nIf it **provides** support, we can call it a Premise.  \nIf it **has** support and also **provides** support, an Intermediate Conclusion.\n\nIn the Assumption / Objection family, when an argument has this three part structure,  \n_Premise → Intermediate Conclusion → Main Conclusion_  \nthen the correct answer might deal with the connection between Premise and Intermediate Conclusion, or it might deal with the connection between the Intermediate and the Main Conclusion. Hence, we sort of have twice as much to worry about. We need to think about what assumptions are being made with each move, or what objections we might make.",
+      "left_md": "Try these five questions that test us on the presence (or absence) of _Intermediate Conclusions_.\n\n**Role** and **Main Conclusion** questions usually \"hide\" the conclusion by making it the **very first claim**, or by making it some **rebuttal claim**.\n\nThey will also sometimes complicate our assessment of the argument's structure by throwing in multiples conclusions.\n\nArguments need a claim we call the Conclusion, and some Support for that claim, which we call the evidence or the premise(s).\n\nSome of those supporting premises can _themselves_ also be considered conclusions, if _they_ are supported by at least one claim. The more common name for a _supported premise_ is an Intermediate Conclusion, or a Subsidiary Conclusion.\n\nAny time you're asking yourself, \"Is this claim a Conclusion?\", you should ask yourself \"_why should I believe this claim? did the author provide a supporting reason?_\" If it's really a Conclusion, then you'll be able to point to at least one claim that sounds like a reason offered for why we should believe that claim.\n\nIf a claim **has** support, we can call it a Conclusion.  \nIf it **provides** support, we can call it a Premise.  \nIf it **has** support and also **provides** support, an Intermediate Conclusion.\n\nIn the Assumption / Objection family, when an argument has this three part structure,  \n_Premise \u2192 Intermediate Conclusion \u2192 Main Conclusion_  \nthen the correct answer might deal with the connection between Premise and Intermediate Conclusion, or it might deal with the connection between the Intermediate and the Main Conclusion. Hence, we sort of have twice as much to worry about. We need to think about what assumptions are being made with each move, or what objections we might make.",
       "right_md": "# Try these problems, untimed\n\nthink through the following:\n\nHow can we tell whether there's an Intermediate Conclusion?\n\nAre there Support / Conclusion / Opinion indicators that help us show us when there is or isn't an Intermediate Conclusion?\n\nPractice testing whether a given claim X is or isn't a conclusion by asking yourself, \"**Why should I believe X?**\" If the author offers a reason, then we can call it a conclusion. If she doesn't, then it's just an unsupported claim."
     },
     "bank_filter": {
@@ -522,7 +534,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -545,7 +566,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -608,7 +638,10 @@
     "difficulty_min": 2,
     "difficulty_max": 4,
     "question_types": [
-      "Parallel Flaw"
+      "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)"
     ],
     "question_features": [
       "Famous Flaws"
@@ -624,7 +657,10 @@
     },
     "bank_filter": {
       "qtypes": [
-        "Parallel Flaw"
+        "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)"
       ],
       "features": [
         "Famous Flaws"
@@ -747,8 +783,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "When a **Principle-Conform** stimulus is providing an explicit principle (or two), we're usually being tested on our ability to apply a conditional rule.\n\nIf the rule(s) is conditional, then we need to be attentive to conditional logic words, conjunctions such as \"and / or\", and sometimes even little qualifying adjectives, as we diagram how the rule works.\n\n_a brutally hard example_  \nA resignation offered under duress should be accepted only if the person resigning still endorses it one week later or they spoke to HR about it before submitting the resignation.\n\n**only if** = put it on the right\n\noffered under duress  \nand  \nshould be accepted  \n→  \nstill endorsed 1 week later  \nor  \nspoke to HR before\n\nThe way these principles get used, you want the normative, \"Judgey\" term to be on the right of the arrow (in this case, whether it _should / shouldn't_ be accepted sounds like the judgment this rule would render). So an effective rephrase would be something like this:\n\nresignation offered under duress  \nand  \ndidn't speak to HR before  \nand  \nnot endorsed 1 week later  \n→  \nshould not be accepted\n\nThis is not the only form a correct version could take. We could consider leaving off the context-setting idea that we're talking about resignations offered under duress and just focus on whether we should accept it based on whether the person spoke to HR and whether they endorsed it 1 week later.\n\nOften, simplifying down to the core ideas is beneficial. But if we end up with two answers that both seem to work (they're both seeming to let us conclude that we shouldn't accept a resignation), then we need to re-read the principle because we might be missing some of the context-setting qualifiers like \"under duress\" that we selectively ignored while diagramming.\n\nPerhaps only one of those two remaining answers actually establishes that this resignation was under duress.",
-      "right_md": "# Try these 8 problems, untimed.\n\n- 5 of them want us to apply 1 or 2 conditional rules.\n- 2 of them want us to conform to a fuzzier, non-conditional rule or pattern.\n- 1 of them wants us to actually find a situation that **violates** the rule.\n\nGiven a principle: _has cinnamon in it → delicious_  \nWe can only use that rule to conclude that something is delicious. Rules can only prove what's on their **right** side. So if we saw any answer choices that were concluding, \"Therefore, the soup was _not_ delicious\", we immediately know that answer is wrong.\n\nWhen we're given two rules, we're only going to be using one or the other to justify our correct answer. Start each answer choice by scanning for the conclusion, so that you can see which rule it's trying to use. That way you can remind yourself of what _that_ rule is all about (ignoring the other one temporarily), and just focus on whether the answer choice clearly establishes the trigger of the rule it's trying to use.\n\nViolating a rule means that you trigger the left side but go against the right side. If we said that \"Jonathan had an apple pie that had cinnamon and whip cream in it, but it wasn't that tasty\", that would violate the principle above.\n\n---"
+      "left_md": "When a **Principle-Conform** stimulus is providing an explicit principle (or two), we're usually being tested on our ability to apply a conditional rule.\n\nIf the rule(s) is conditional, then we need to be attentive to conditional logic words, conjunctions such as \"and / or\", and sometimes even little qualifying adjectives, as we diagram how the rule works.\n\n_a brutally hard example_  \nA resignation offered under duress should be accepted only if the person resigning still endorses it one week later or they spoke to HR about it before submitting the resignation.\n\n**only if** = put it on the right\n\noffered under duress  \nand  \nshould be accepted  \n\u2192  \nstill endorsed 1 week later  \nor  \nspoke to HR before\n\nThe way these principles get used, you want the normative, \"Judgey\" term to be on the right of the arrow (in this case, whether it _should / shouldn't_ be accepted sounds like the judgment this rule would render). So an effective rephrase would be something like this:\n\nresignation offered under duress  \nand  \ndidn't speak to HR before  \nand  \nnot endorsed 1 week later  \n\u2192  \nshould not be accepted\n\nThis is not the only form a correct version could take. We could consider leaving off the context-setting idea that we're talking about resignations offered under duress and just focus on whether we should accept it based on whether the person spoke to HR and whether they endorsed it 1 week later.\n\nOften, simplifying down to the core ideas is beneficial. But if we end up with two answers that both seem to work (they're both seeming to let us conclude that we shouldn't accept a resignation), then we need to re-read the principle because we might be missing some of the context-setting qualifiers like \"under duress\" that we selectively ignored while diagramming.\n\nPerhaps only one of those two remaining answers actually establishes that this resignation was under duress.",
+      "right_md": "# Try these 8 problems, untimed.\n\n- 5 of them want us to apply 1 or 2 conditional rules.\n- 2 of them want us to conform to a fuzzier, non-conditional rule or pattern.\n- 1 of them wants us to actually find a situation that **violates** the rule.\n\nGiven a principle: _has cinnamon in it \u2192 delicious_  \nWe can only use that rule to conclude that something is delicious. Rules can only prove what's on their **right** side. So if we saw any answer choices that were concluding, \"Therefore, the soup was _not_ delicious\", we immediately know that answer is wrong.\n\nWhen we're given two rules, we're only going to be using one or the other to justify our correct answer. Start each answer choice by scanning for the conclusion, so that you can see which rule it's trying to use. That way you can remind yourself of what _that_ rule is all about (ignoring the other one temporarily), and just focus on whether the answer choice clearly establishes the trigger of the rule it's trying to use.\n\nViolating a rule means that you trigger the left side but go against the right side. If we said that \"Jonathan had an apple pie that had cinnamon and whip cream in it, but it wasn't that tasty\", that would violate the principle above.\n\n---"
     },
     "bank_filter": {
       "qtypes": [
@@ -868,8 +904,8 @@
     ],
     "start_button_label": "Continue",
     "instruction_card": {
-      "left_md": "Questions involving multiple quantified words are usually testing our ability to see when two traits do / don't have to overlap, and to what degree.\n\n# COMMON QUANTIFIERS\n\n**100%** - _all, any, each, every_, (or universal nouns)  \n**more than 50%** - _most, usually, typically, generally, majority_  \n**less than 50%** - _few, rarely, infrequently_  \n**at least a handful** - _many, commonly, often_  \n**at least one** - _some, sometimes, can, not all, not always, need not_\n\nIf we see a conditional-strength quantifier like \"No A's are B\", we think\n\nA → ~B  \nB → ~A\n\nIf there are any additional facts about A or B, then we can derive a Trait Overlap inference.\n\n| ADDITIONAL FACT | WE CAN INFER |\n|---|---|\n| Some X's are B | Some X's are ~A |\n| Some B's are X | Some X's are ~A |\n| Most B's are X | Some X's are ~A |\n| Most X's are B | Most X's are ~A |\n| All X's are B | All X's are ~A |\n| All B's are X | Some X's are ~A |\n\n_If we know_ Some X's are B  \n_and we know_ All B's are ~A  \n_we can derive_ Some X's are ~A\n\n_If we know_ Most X's are B  \n_and we know_ All B's are ~A  \n_we can derive_ Most X's are ~A\n\n_but if we know_ Most B's are X  \n_and we know_ All B's are ~A  \n_we can only derive_ Some X's are ~A\n\nIn the first two examples, we can hook the conditional onto the end of the first statement, and that allows us to \"chain\" the trigger of the first claim to the outcome of the conditional.\n\nIn the third example, the overlapping term is the trigger in both claims, so we can't \"chain\" the ideas together. But we still know for sure that there are some X's who have the property of being B, and thus they also must have the property of being ~A.\n\nSome quantified claims mean the same thing even when you reverse the terms. \"Some dogs are brown = some brown things are dogs\". Other quantified terms definitely don't mean the same thing if you reverse the terms. \"Most Senators are men ≠ Most men are Senators\".\n\n# REVERSIBLE\n\nSome X's are Y = Some Y's are X  \nMany X's are Y = Many Y's are X  \nNo X's are Y = No Y's are X\n\n# NOT REVERSIBLE\n\nMost X's are Y ≠ Most Y's are X  \nAll X's are Y ≠ All Y's are X\n\n# WE CAN ONLY SAY\n\nSome Y's are X  \nSome Y's are X\n\nSometimes, we can infer something from two **Most** claims.\n\nGIVEN:  \nMost A's are B  \n+ Most A's are C\n\nMost A's are B  \n+ Most B's are ~A\n\nINFER:  \nSome B's are C  \nThere are more B's than A's\n\nThen there's a famous **incorrect** inference from two Most claims:\n\nGIVEN:  \nMost A's are B  \n+ Most B's are C\n\nINFER:  \nnothing (but LSAT authors think, \"Most A's are C\")",
-      "right_md": "# Try these 8 questions, untimed.\n\nIf the question is testing us on what can be inferred, scan primarily for **conditional** strength quantifiers (_all / each / every / any / no / none_, or anything else that's conditional).\n\nIf we find a conditional, then we look to see whether the trigger of that conditional (or the trigger of the contrapositive) shows up in any other claim.\n\nIf so, then we can combine those claims to derive **Some** overlap between the two other traits.\n\nFor example, if we're told \"All cats are sneaky\" we have two triggers:\n\ncat → sneaky  \nnot sneaky → not cat\n\nIf we see \"cat\" or \"not sneaky\" in any other claim, then we can make a trait overlap inference.\n\nIf they tell us \"Some cats are smelly\", then we know that \"smelly and sneaky overlap, at least sometimes\".\n\nIf they tell us that \"Some of Alan's pets are not sneaky\", then we know that \"Some of Alan's pets are not cats\".\n\nIf we're being tested on what's Flawed about an argument, then the author is probably going to be assuming that two traits overlap, even though it's possible they never show up together.\n\n---"
+      "left_md": "Questions involving multiple quantified words are usually testing our ability to see when two traits do / don't have to overlap, and to what degree.\n\n# COMMON QUANTIFIERS\n\n**100%** - _all, any, each, every_, (or universal nouns)  \n**more than 50%** - _most, usually, typically, generally, majority_  \n**less than 50%** - _few, rarely, infrequently_  \n**at least a handful** - _many, commonly, often_  \n**at least one** - _some, sometimes, can, not all, not always, need not_\n\nIf we see a conditional-strength quantifier like \"No A's are B\", we think\n\nA \u2192 ~B  \nB \u2192 ~A\n\nIf there are any additional facts about A or B, then we can derive a Trait Overlap inference.\n\n| ADDITIONAL FACT | WE CAN INFER |\n|---|---|\n| Some X's are B | Some X's are ~A |\n| Some B's are X | Some X's are ~A |\n| Most B's are X | Some X's are ~A |\n| Most X's are B | Most X's are ~A |\n| All X's are B | All X's are ~A |\n| All B's are X | Some X's are ~A |\n\n_If we know_ Some X's are B  \n_and we know_ All B's are ~A  \n_we can derive_ Some X's are ~A\n\n_If we know_ Most X's are B  \n_and we know_ All B's are ~A  \n_we can derive_ Most X's are ~A\n\n_but if we know_ Most B's are X  \n_and we know_ All B's are ~A  \n_we can only derive_ Some X's are ~A\n\nIn the first two examples, we can hook the conditional onto the end of the first statement, and that allows us to \"chain\" the trigger of the first claim to the outcome of the conditional.\n\nIn the third example, the overlapping term is the trigger in both claims, so we can't \"chain\" the ideas together. But we still know for sure that there are some X's who have the property of being B, and thus they also must have the property of being ~A.\n\nSome quantified claims mean the same thing even when you reverse the terms. \"Some dogs are brown = some brown things are dogs\". Other quantified terms definitely don't mean the same thing if you reverse the terms. \"Most Senators are men \u2260 Most men are Senators\".\n\n# REVERSIBLE\n\nSome X's are Y = Some Y's are X  \nMany X's are Y = Many Y's are X  \nNo X's are Y = No Y's are X\n\n# NOT REVERSIBLE\n\nMost X's are Y \u2260 Most Y's are X  \nAll X's are Y \u2260 All Y's are X\n\n# WE CAN ONLY SAY\n\nSome Y's are X  \nSome Y's are X\n\nSometimes, we can infer something from two **Most** claims.\n\nGIVEN:  \nMost A's are B  \n+ Most A's are C\n\nMost A's are B  \n+ Most B's are ~A\n\nINFER:  \nSome B's are C  \nThere are more B's than A's\n\nThen there's a famous **incorrect** inference from two Most claims:\n\nGIVEN:  \nMost A's are B  \n+ Most B's are C\n\nINFER:  \nnothing (but LSAT authors think, \"Most A's are C\")",
+      "right_md": "# Try these 8 questions, untimed.\n\nIf the question is testing us on what can be inferred, scan primarily for **conditional** strength quantifiers (_all / each / every / any / no / none_, or anything else that's conditional).\n\nIf we find a conditional, then we look to see whether the trigger of that conditional (or the trigger of the contrapositive) shows up in any other claim.\n\nIf so, then we can combine those claims to derive **Some** overlap between the two other traits.\n\nFor example, if we're told \"All cats are sneaky\" we have two triggers:\n\ncat \u2192 sneaky  \nnot sneaky \u2192 not cat\n\nIf we see \"cat\" or \"not sneaky\" in any other claim, then we can make a trait overlap inference.\n\nIf they tell us \"Some cats are smelly\", then we know that \"smelly and sneaky overlap, at least sometimes\".\n\nIf they tell us that \"Some of Alan's pets are not sneaky\", then we know that \"Some of Alan's pets are not cats\".\n\nIf we're being tested on what's Flawed about an argument, then the author is probably going to be assuming that two traits overlap, even though it's possible they never show up together.\n\n---"
     },
     "bank_filter": {
       "qtypes": [
@@ -980,7 +1016,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -1002,7 +1047,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -1293,7 +1347,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -1315,7 +1378,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -1668,7 +1740,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -1691,7 +1772,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -1844,7 +1934,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -1867,7 +1966,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -2026,7 +2134,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -2049,7 +2166,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -2199,7 +2325,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -2222,7 +2357,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -2298,8 +2442,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "# Causal Chains\n\nappear most in **Most Supported** and **Must Be True**.\n\nA causal chain is three or more things causally linked: _Reading gives Jorge a headache. Headaches make Jorge lie down._\n\nThe test wants to make sure we see the implicit connection that \"Reading leads to laying down\".\n\n_Reading → Headache → Lay Down_\n\nIn many cases, causal chains overlap with conditional logic. If we see conditional logic wording, like **\"if, when, only, only if, unless, requires, always, will\"**, then we can choose to think of it conditionally or causally, same difference.\n\nBut on **Most Supported** questions, there will be looser language that still indicates a causal flow: _Doing X **promotes** Y, which **increases** the likelihood of Z being true. And Z is a **factor** in the formation of A._\n\nThe test wants to make sure we see the implicit connection that \"Doing X can increase your chance of A's forming\".",
-      "right_md": "# Try these 4 questions untimed\n\nWork on building these causal chains,  \nbefore you look at answers\n\nBe patient trying to find the right causal sequence. Write **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea, e.g.\n\n_reads too much → gets a headache_\n\nNow, go seek out something that has to do with causing someone to \"read a lot\", or find something that could be caused by \"having a headache\".\n\nOn **Most Supported** questions, if you have a causal chain, A → B → C, is it okay to say \"if no A, then no C\"?\n\nYes, basically! It feels _naughty_ because that would be an illegal negation in the world of conditional logic, but in the world of Causality, you'll find LSAT being cool with the common sense plausibility of \"if cause didn't happen, effect wouldn't have happened\".\n\nIf I say, \"**Because** I took Franklin St to the party and there ended up being an accident there, I was late to the party, which **led** to my missing the opening of gifts.\" Then it's plausible to say, \"if had **not taken** Franklin St., I probably would **not have** missed the opening of gifts\".\n\n---"
+      "left_md": "# Causal Chains\n\nappear most in **Most Supported** and **Must Be True**.\n\nA causal chain is three or more things causally linked: _Reading gives Jorge a headache. Headaches make Jorge lie down._\n\nThe test wants to make sure we see the implicit connection that \"Reading leads to laying down\".\n\n_Reading \u2192 Headache \u2192 Lay Down_\n\nIn many cases, causal chains overlap with conditional logic. If we see conditional logic wording, like **\"if, when, only, only if, unless, requires, always, will\"**, then we can choose to think of it conditionally or causally, same difference.\n\nBut on **Most Supported** questions, there will be looser language that still indicates a causal flow: _Doing X **promotes** Y, which **increases** the likelihood of Z being true. And Z is a **factor** in the formation of A._\n\nThe test wants to make sure we see the implicit connection that \"Doing X can increase your chance of A's forming\".",
+      "right_md": "# Try these 4 questions untimed\n\nWork on building these causal chains,  \nbefore you look at answers\n\nBe patient trying to find the right causal sequence. Write **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea, e.g.\n\n_reads too much \u2192 gets a headache_\n\nNow, go seek out something that has to do with causing someone to \"read a lot\", or find something that could be caused by \"having a headache\".\n\nOn **Most Supported** questions, if you have a causal chain, A \u2192 B \u2192 C, is it okay to say \"if no A, then no C\"?\n\nYes, basically! It feels _naughty_ because that would be an illegal negation in the world of conditional logic, but in the world of Causality, you'll find LSAT being cool with the common sense plausibility of \"if cause didn't happen, effect wouldn't have happened\".\n\nIf I say, \"**Because** I took Franklin St to the party and there ended up being an accident there, I was late to the party, which **led** to my missing the opening of gifts.\" Then it's plausible to say, \"if had **not taken** Franklin St., I probably would **not have** missed the opening of gifts\".\n\n---"
     },
     "bank_filter": {
       "qtypes": [
@@ -2368,7 +2512,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -2391,7 +2544,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -2508,8 +2670,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "# Causal Chains\n\nshow up mostly in **Assumption** and **Inference** questions\n\ngiven this:  \n_Reading for a long time gives Jorge a headache.  \nHeadaches make Jorge lie down._\n\nwe might note it like this:  \n**Read long time → Headache → Lie Down**\n\nAs with conditional logic, we're not allowed to say, \"I just saw Jorge laying down. He must have been reading a bunch earlier today\". That's inferring that one possible cause of Jorge's laying down is the only one we need to consider.\n\nBut we can say stuff like, \"This afternoon, Jorge needs to be alert and active. So he shouldn't read a long time after lunch.\" This is sort of like a contrapositive: _If you don't want the Effect, don't do that Cause_\n\nAn argument can use that structure to create flaws or gaps:  \n_Reading for a long time gives Jorge a headache. Headaches make Jorge lie down. Thus if Jorge needs to stay alert and active all day, he should not read anything._\n\nWhoa, whoa, there author! I understand you're saying, \"if he wants to avoid the Effect of laying down, he better not do the Cause (i.e. reading for a long time)\". But you said, \"he better not read _anything_\".\n\n_Reading for a long time gives Jorge a headache. Headaches make Jorge lie down. Thus if Jorge needs to stay alert and active all day, he should not Pam's essay._\n\nWhoa, whoa, there author! I understand you're saying, \"if he wants to avoid the Effect of laying down, he better not do the Cause (i.e. reading for a long time)\". But who said that reading Pam's essay means that he'd be reading for a long time? You must be assuming that, \"It would take a long time to read Pam's essay\".",
-      "right_md": "# Try these 8 questions untimed.\n\nWork on understanding the causal chain,  \nbefore you look at answers\n\nOn Assumption questions, causal chain arguments might create a **missing link**.\n\nEXAMPLE: _Stress causes Anton to sweat. So, Anton probably gets sweaty when he plays chess._\n\nThis argument is assuming a missing link between playing chess and being stressed.\n\n**CONCLUSION**  \nplay chess ---------------> sweat\n\n**SUPPORT**  \nplay chess → stress → sweat  \n**ASSUMED** / **PREMISE**\n\nCausal chain arguments might create a **missing fact**.\n\nEXAMPLE: _Playing chess gives Anton stress, and he tends to get sweaty when he's stressed. Thus, he will probably be sweating tonight._\n\nThis argument is assuming that Anton will be playing chess tonight. It set up a causal chain and seems to be expecting the effect we get at the end of the chain, but it never triggered the causal chain.\n\nWhen you're trying to organize a causal chain on your paper, be patient trying to find the right causal sequence. Put **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea. Then, go seek out something that has to do with causing the left side, or something that could be caused by the right side.\n\nRemember, on **Most Supported**, if you know that A leads to B, which leads to C, it's pretty fair to say \"if you cut back on A, you'll get less C\"."
+      "left_md": "# Causal Chains\n\nshow up mostly in **Assumption** and **Inference** questions\n\ngiven this:  \n_Reading for a long time gives Jorge a headache.  \nHeadaches make Jorge lie down._\n\nwe might note it like this:  \n**Read long time \u2192 Headache \u2192 Lie Down**\n\nAs with conditional logic, we're not allowed to say, \"I just saw Jorge laying down. He must have been reading a bunch earlier today\". That's inferring that one possible cause of Jorge's laying down is the only one we need to consider.\n\nBut we can say stuff like, \"This afternoon, Jorge needs to be alert and active. So he shouldn't read a long time after lunch.\" This is sort of like a contrapositive: _If you don't want the Effect, don't do that Cause_\n\nAn argument can use that structure to create flaws or gaps:  \n_Reading for a long time gives Jorge a headache. Headaches make Jorge lie down. Thus if Jorge needs to stay alert and active all day, he should not read anything._\n\nWhoa, whoa, there author! I understand you're saying, \"if he wants to avoid the Effect of laying down, he better not do the Cause (i.e. reading for a long time)\". But you said, \"he better not read _anything_\".\n\n_Reading for a long time gives Jorge a headache. Headaches make Jorge lie down. Thus if Jorge needs to stay alert and active all day, he should not Pam's essay._\n\nWhoa, whoa, there author! I understand you're saying, \"if he wants to avoid the Effect of laying down, he better not do the Cause (i.e. reading for a long time)\". But who said that reading Pam's essay means that he'd be reading for a long time? You must be assuming that, \"It would take a long time to read Pam's essay\".",
+      "right_md": "# Try these 8 questions untimed.\n\nWork on understanding the causal chain,  \nbefore you look at answers\n\nOn Assumption questions, causal chain arguments might create a **missing link**.\n\nEXAMPLE: _Stress causes Anton to sweat. So, Anton probably gets sweaty when he plays chess._\n\nThis argument is assuming a missing link between playing chess and being stressed.\n\n**CONCLUSION**  \nplay chess ---------------> sweat\n\n**SUPPORT**  \nplay chess \u2192 stress \u2192 sweat  \n**ASSUMED** / **PREMISE**\n\nCausal chain arguments might create a **missing fact**.\n\nEXAMPLE: _Playing chess gives Anton stress, and he tends to get sweaty when he's stressed. Thus, he will probably be sweating tonight._\n\nThis argument is assuming that Anton will be playing chess tonight. It set up a causal chain and seems to be expecting the effect we get at the end of the chain, but it never triggered the causal chain.\n\nWhen you're trying to organize a causal chain on your paper, be patient trying to find the right causal sequence. Put **any** cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea. Then, go seek out something that has to do with causing the left side, or something that could be caused by the right side.\n\nRemember, on **Most Supported**, if you know that A leads to B, which leads to C, it's pretty fair to say \"if you cut back on A, you'll get less C\"."
     },
     "bank_filter": {
       "qtypes": [],
@@ -2844,7 +3006,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -2867,7 +3038,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -2899,6 +3079,9 @@
       "Principle-Conform",
       "Necessary Assumption",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Strengthen",
       "Weaken",
       "Evaluate"
@@ -2924,6 +3107,9 @@
         "Principle-Conform",
         "Necessary Assumption",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Strengthen",
         "Weaken",
         "Evaluate"
@@ -2992,7 +3178,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -3014,7 +3209,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -3504,7 +3708,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -3526,7 +3739,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -3781,8 +4003,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "# Causal Chains\n\nappear most in **Most Supported** and **Must Be True**.\n\nA causal chain is three or more things causally linked: _Reading gives Jorge a headache. Headaches make Jorge lie down._\n\nThe test wants to make sure we see the implicit connection that \"Reading leads to laying down\".\n\n_Reading → Headache → Lay Down_\n\nIn many cases, causal chains overlap with conditional logic. If we see conditional logic wording, like **\"if, when, only, only if, unless, requires, always, will\"**, then we can choose to think of it conditionally or causally, same difference.\n\nBut on **Most Supported** questions, there will be looser language that still indicates a causal flow: _Doing X **promotes** Y, which **increases** the likelihood of Z being true. And Z is a **factor** in the formation of A._\n\nThe test wants to make sure we see the implicit connection that \"Doing X can increase your chance of A's forming\".",
-      "right_md": "# Try these 3 questions untimed\n\nWork on building these causal chains,  \nbefore you look at answers\n\nBe patient trying to find the right causal sequence. Write any cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea, e.g\n\n_reads too much → gets a headache_\n\nNow, go seek out something that has to do with causing someone to \"read a lot\", or find something that could be caused by \"having a headache\".\n\nOn **Most Supported** questions, if you have a causal chain, A → B → C, is it okay to say \"if no A, then no C\"?\n\nYes, basically! It feels _naughty_ because that would be an illegal negation in the world of conditional logic, but in the world of Causality, you'll find LSAT being cool with the common sense plausibility of \"if cause didn't happen, effect wouldn't have happened\".\n\nIf I say, \"**Because** I took Franklin St to the party and there ended up being an accident there, I was late to the party, which led to my missing the opening of gifts.\" Then it's plausible to say, \"if had **not taken** Franklin St., I probably would **not have** missed the opening of gifts\".\n\n---"
+      "left_md": "# Causal Chains\n\nappear most in **Most Supported** and **Must Be True**.\n\nA causal chain is three or more things causally linked: _Reading gives Jorge a headache. Headaches make Jorge lie down._\n\nThe test wants to make sure we see the implicit connection that \"Reading leads to laying down\".\n\n_Reading \u2192 Headache \u2192 Lay Down_\n\nIn many cases, causal chains overlap with conditional logic. If we see conditional logic wording, like **\"if, when, only, only if, unless, requires, always, will\"**, then we can choose to think of it conditionally or causally, same difference.\n\nBut on **Most Supported** questions, there will be looser language that still indicates a causal flow: _Doing X **promotes** Y, which **increases** the likelihood of Z being true. And Z is a **factor** in the formation of A._\n\nThe test wants to make sure we see the implicit connection that \"Doing X can increase your chance of A's forming\".",
+      "right_md": "# Try these 3 questions untimed\n\nWork on building these causal chains,  \nbefore you look at answers\n\nBe patient trying to find the right causal sequence. Write any cause / effect relationship you can find on the page, with space on your page to both the left and the right of that idea, e.g\n\n_reads too much \u2192 gets a headache_\n\nNow, go seek out something that has to do with causing someone to \"read a lot\", or find something that could be caused by \"having a headache\".\n\nOn **Most Supported** questions, if you have a causal chain, A \u2192 B \u2192 C, is it okay to say \"if no A, then no C\"?\n\nYes, basically! It feels _naughty_ because that would be an illegal negation in the world of conditional logic, but in the world of Causality, you'll find LSAT being cool with the common sense plausibility of \"if cause didn't happen, effect wouldn't have happened\".\n\nIf I say, \"**Because** I took Franklin St to the party and there ended up being an accident there, I was late to the party, which led to my missing the opening of gifts.\" Then it's plausible to say, \"if had **not taken** Franklin St., I probably would **not have** missed the opening of gifts\".\n\n---"
     },
     "bank_filter": {
       "qtypes": [
@@ -4498,7 +4720,16 @@
       "Must Be True",
       "Sufficient Assumption",
       "Parallel Reasoning",
+      "Parallel",
+      "Parallel method of reasoning",
+      "Parallel Method of Reasoning",
+      "Parallel method of reasoning (Parallel)",
+      "Parallel Reasoning: Complete Argument",
+      "Parallel Reasoning: Questionable",
       "Parallel Flaw",
+      "Parallel flawed method of reasoning",
+      "Flawed Parallel Reasoning",
+      "Parallel flawed method of reasoning (Parallel, Flaw)",
       "Principle-Strengthen",
       "Principle-Conform",
       "Flaw"
@@ -4520,7 +4751,16 @@
         "Must Be True",
         "Sufficient Assumption",
         "Parallel Reasoning",
+        "Parallel",
+        "Parallel method of reasoning",
+        "Parallel Method of Reasoning",
+        "Parallel method of reasoning (Parallel)",
+        "Parallel Reasoning: Complete Argument",
+        "Parallel Reasoning: Questionable",
         "Parallel Flaw",
+        "Parallel flawed method of reasoning",
+        "Flawed Parallel Reasoning",
+        "Parallel flawed method of reasoning (Parallel, Flaw)",
         "Principle-Strengthen",
         "Principle-Conform",
         "Flaw"
@@ -4693,8 +4933,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "All question types in the Assumption Family will sometimes test a mathematical **conditional** **logic** understanding and other times test more \"shades of gray\" thinking like **comparisons** and **causal** explanations. But different question types do have strong tendencies. The graphic below shows an approximate continuum. We expect more formal logical thinking towards the top and more fuzzy real-world conversation towards the bottom.\n**Internal Logic**\nmissing links                 **Sufficient Assumption**\nmissing facts\nrules, definitions             **Principle**\nand vs. or                   (strengthen / conform)\nconditional logic\ntrigger = evidence\noutcome = conclusion          **Necessary Assumption**\nruling out all alternatives\n**Famous Flaws** **Flaw / Parallel Flaw**\n**Courtroom Debate**\nadvantages, disadvantages\nrebuttals\nrecommendations             **Strengthen**\npredictions                 **Weaken**\nhypotheses                **Evaluate**\nsurveys\nexperiments\nstatistics",
-      "right_md": "## **Try these 10 problems, untimed.**\n\nThink about shifting your thinking back and forth between different reasoning structures\n\n**conditional** thinking\n- rules, definitions, trigger, outcome, contrapositive\n\n**causal** thinking\n- curious fact / author's explanation\n- alternate explanations (reverse cause / 3rd factor)\n- plausibility of author's explanation (no cause, no effect / effect without cause / cause without effect)\n\n**comparison** thinking\n- pros vs. cons  /  weighing tradeoffs\n- current world vs.  Plan/Prediction world\n- then vs. now  /  now vs. the future\n- this group vs. that group\n- sample vs. general population\n- part vs. whole\n- that situation vs. this situation\n\nAnd when you're doing **Flaw** , also consider the 10 **Famous Flaws.**"
+      "left_md": "All question types in the Assumption Family will sometimes test a mathematical **conditional** **logic** understanding and other times test more \"shades of gray\" thinking like **comparisons** and **causal** explanations. But different question types do have strong tendencies. The graphic below shows an approximate continuum. We expect more formal logical thinking towards the top and more fuzzy real-world conversation towards the bottom.\n**Internal Logic**\nmissing links\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Sufficient Assumption**\nmissing facts\nrules, definitions\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Principle**\nand vs. or\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0(strengthen / conform)\nconditional logic\ntrigger = evidence\noutcome = conclusion\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Necessary Assumption**\nruling out all alternatives\n**Famous Flaws** **Flaw / Parallel Flaw**\n**Courtroom Debate**\nadvantages, disadvantages\nrebuttals\nrecommendations\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Strengthen**\npredictions\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Weaken**\nhypotheses\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0**Evaluate**\nsurveys\nexperiments\nstatistics",
+      "right_md": "## **Try these 10 problems, untimed.**\n\nThink about shifting your thinking back and forth between different reasoning structures\n\n**conditional** thinking\n- rules, definitions, trigger, outcome, contrapositive\n\n**causal** thinking\n- curious fact / author's explanation\n- alternate explanations (reverse cause / 3rd factor)\n- plausibility of author's explanation (no cause, no effect / effect without cause / cause without effect)\n\n**comparison** thinking\n- pros vs. cons\u00a0\u00a0/\u00a0\u00a0weighing tradeoffs\n- current world vs.\u00a0\u00a0Plan/Prediction world\n- then vs. now\u00a0\u00a0/\u00a0\u00a0now vs. the future\n- this group vs. that group\n- sample vs. general population\n- part vs. whole\n- that situation vs. this situation\n\nAnd when you're doing **Flaw** , also consider the 10 **Famous Flaws.**"
     },
     "bank_filter": {
       "qtypes": [
@@ -4740,7 +4980,7 @@
     "start_button_label": "Start",
     "instruction_card": {
       "left_md": "These six questions each involve a \"curious\" background fact, and at least one potential explanation offered for that fact. We call this pattern **Explain Curious Fact**\n\nThere are a handful of different question types here, but they all have a common theme:\n- The **evidence** presents some **Curious Fact** (an asymmetric comparison like a correlation, a statistical change, or a difference between two groups or situations)\n\n- The author's **conclusion** will state or assume one possible **Causal Explanation** for this curious fact.\n\n- The correct answer will either deal with **Alternate Explanations** for the curious fact or with the **plausibility** **of the Author's Explanation** .",
-      "right_md": "## **Try these 6 questions in 10 minutes**\n(1.5x = 15 mins, 2x = 20 mins)\n\nWhat is the **Curious Fact** ?****\n- what language tips us off?  is there an _Asymmetric Comparison_ ?\n- _ask_ yourself the Curious Fact:  \"Why is it that ... [curious fact]?\"\n\nWhat is the **Author's Explanation / Hypothesis** _?_\n- Is there a verb or expression in the conclusion indicating that the author is making a causal claim?\n- Make sure that you spell out every step in the author's causal story. It's very common for an author to fail to mention each step in the causal chain that gets them from their causal explanation to the actual curious fact.\n\nDoes the correct answer deal with an **Alternate Explanation** ?\n- Is it dealing with the idea of _Reverse Causality_ ?\n- Is it dealing with the idea of a _Third Factor_ ?\n\nOr does it address the **plausibility** of the Author's Explanation?\n- Is it addressing plausibility via covariation? (strengthening by _No Cause / No Effect_ , or _More Cause / More Effect_ data points or weakening by _Cause without Effect_ , or _Effect without Cause_ data points)\n- Or is it addressing plausibility some other way?  (placing the suspect at the scene of the crime, or explaining the motive/mechanism by which the crime would have taken place)"
+      "right_md": "## **Try these 6 questions in 10 minutes**\n(1.5x = 15 mins, 2x = 20 mins)\n\nWhat is the **Curious Fact** ?****\n- what language tips us off?\u00a0\u00a0is there an _Asymmetric Comparison_ ?\n- _ask_ yourself the Curious Fact:\u00a0\u00a0\"Why is it that ... [curious fact]?\"\n\nWhat is the **Author's Explanation / Hypothesis** _?_\n- Is there a verb or expression in the conclusion indicating that the author is making a causal claim?\n- Make sure that you spell out every step in the author's causal story. It's very common for an author to fail to mention each step in the causal chain that gets them from their causal explanation to the actual curious fact.\n\nDoes the correct answer deal with an **Alternate Explanation** ?\n- Is it dealing with the idea of _Reverse Causality_ ?\n- Is it dealing with the idea of a _Third Factor_ ?\n\nOr does it address the **plausibility** of the Author's Explanation?\n- Is it addressing plausibility via covariation? (strengthening by _No Cause / No Effect_ , or _More Cause / More Effect_ data points or weakening by _Cause without Effect_ , or _Effect without Cause_ data points)\n- Or is it addressing plausibility some other way?\u00a0\u00a0(placing the suspect at the scene of the crime, or explaining the motive/mechanism by which the crime would have taken place)"
     },
     "bank_filter": {
       "qtypes": [
@@ -4897,8 +5137,8 @@
     ],
     "start_button_label": "Start",
     "instruction_card": {
-      "left_md": "This 10 question set is comprised of three questions from the Match Family, which test our ability to understand what role certain claims are playing:  Role, Method, and Main Conclusion.\n\n## **Role** and **Main Conclusion**\n\nMost questions \"hide\" the conclusion in one of two ways:\n- it's the **very first claim** , or\n- it's attached to some **pivot / rebuttal**\n\n**Opinion** indicators and **Pivot** indicators are very helpful for finding the parts of the argument.\n\nWhen we're assessing whether something is a conclusion (be it main conclusion or intermediate conclusion), we should ask ourselves,\n\n\"**Is this Supported** ? Why should we believe this?\"\nIf no support it provided, then it isn't a conclusion.\n\n## **Method**\n\nThese use a lot of abstract verbiage to describe parts of arguments. We want to not only learn how to read this type of language but also to start to think more in terms of this language. When you're using abstract language, you're speaking about general forms / archetypes, and the magic of getting better at standardized tests is getting better at recognizing the general forms / archetypes that show up a lot on that test.\n\nWe should get used to the most typical types of reasoning moves:\n- **Analogies** / Distinctions\n- Suggesting / Ruling out **Alternatives**\n- **Faulty Implications** of a Claim or Plan",
-      "right_md": "Length --  **10 questions, 15 mins** (1.5x = 23, 2x = 30)****\nTypes -- **Role** , **Method** , and **Main Conclusion**\nTests -- **135, 140, and 123**\nLevels -- **1 - 4**\n\n- Whenever you feel pretty low confidence or ambivalent about your guess, hit the FLAG / BOOKMARK icon to the left of the question stem. We want to remember later that we weren't fully convinced of our answer, so that we can think about why not.\n\n- As you review the questions, after you've seen the explanation, type up any takeaways you want remember in the NOTEPAD window (a movable, resizable popup you get by clicking on the icon in the lower left of the page)."
+      "left_md": "This 10 question set is comprised of three questions from the Match Family, which test our ability to understand what role certain claims are playing:\u00a0\u00a0Role, Method, and Main Conclusion.\n\n## **Role** and **Main Conclusion**\n\nMost questions \"hide\" the conclusion in one of two ways:\n- it's the **very first claim** , or\n- it's attached to some **pivot / rebuttal**\n\n**Opinion** indicators and **Pivot** indicators are very helpful for finding the parts of the argument.\n\nWhen we're assessing whether something is a conclusion (be it main conclusion or intermediate conclusion), we should ask ourselves,\n\n\"**Is this Supported** ? Why should we believe this?\"\nIf no support it provided, then it isn't a conclusion.\n\n## **Method**\n\nThese use a lot of abstract verbiage to describe parts of arguments. We want to not only learn how to read this type of language but also to start to think more in terms of this language. When you're using abstract language, you're speaking about general forms / archetypes, and the magic of getting better at standardized tests is getting better at recognizing the general forms / archetypes that show up a lot on that test.\n\nWe should get used to the most typical types of reasoning moves:\n- **Analogies** / Distinctions\n- Suggesting / Ruling out **Alternatives**\n- **Faulty Implications** of a Claim or Plan",
+      "right_md": "Length --\u00a0\u00a0**10 questions, 15 mins** (1.5x = 23, 2x = 30)****\nTypes -- **Role** , **Method** , and **Main Conclusion**\nTests -- **135, 140, and 123**\nLevels -- **1 - 4**\n\n- Whenever you feel pretty low confidence or ambivalent about your guess, hit the FLAG / BOOKMARK icon to the left of the question stem. We want to remember later that we weren't fully convinced of our answer, so that we can think about why not.\n\n- As you review the questions, after you've seen the explanation, type up any takeaways you want remember in the NOTEPAD window (a movable, resizable popup you get by clicking on the icon in the lower left of the page)."
     },
     "bank_filter": {
       "qtypes": [
