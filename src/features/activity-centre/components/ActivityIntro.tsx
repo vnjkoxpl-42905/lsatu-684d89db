@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
+import { ActivityExitButton } from "./ActivityExitButton";
 import "../activities-home.css";
 
 interface ActivityIntroProps {
@@ -8,6 +9,8 @@ interface ActivityIntroProps {
   subtitle: string | null;
   instructions: ActivityInstructions;
   onStart: () => void;
+  /** Omitted when the runner is embedded (teacher preview), which has its own chrome. */
+  onExit?: () => void;
 }
 
 /**
@@ -17,7 +20,7 @@ interface ActivityIntroProps {
  * large upper label and a single prose line), then a compact detail section
  * below (credited negations + lean rules + the Start action).
  */
-export function ActivityIntro({ title, subtitle, instructions, onStart }: ActivityIntroProps) {
+export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }: ActivityIntroProps) {
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
 
@@ -104,11 +107,12 @@ export function ActivityIntro({ title, subtitle, instructions, onStart }: Activi
           )}
         </motion.div>
 
-        <motion.div variants={item}>
+        <motion.div variants={item} className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <button type="button" onClick={onStart} className="act-start">
             Start drilling
             <ArrowRight size={18} strokeWidth={2.25} />
           </button>
+          {onExit && <ActivityExitButton onExit={onExit} tone="light" />}
         </motion.div>
       </section>
     </motion.div>

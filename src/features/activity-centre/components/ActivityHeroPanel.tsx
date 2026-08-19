@@ -1,9 +1,12 @@
 import type { ActivityAssignment } from "../api/types";
+import { ActivityExitButton } from "./ActivityExitButton";
 
 interface ActivityHeroPanelProps {
   assignment: ActivityAssignment;
   current: number; // 1-based
   total: number;
+  /** Omitted when the runner is embedded (teacher preview), which has its own chrome. */
+  onExit?: () => void;
 }
 
 /**
@@ -14,6 +17,7 @@ export function ActivityHeroPanel({
   assignment,
   current,
   total,
+  onExit,
 }: ActivityHeroPanelProps) {
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
   const tagline = assignment.instructions?.tagline;
@@ -26,9 +30,13 @@ export function ActivityHeroPanel({
       {/* Top progress bar */}
       <div className="relative z-10 px-6 pt-6 md:px-10 md:pt-8">
         <div className="flex items-center justify-between text-white/85">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-            Activity
-          </span>
+          {onExit ? (
+            <ActivityExitButton onExit={onExit} tone="dark" />
+          ) : (
+            <span className="text-xs font-semibold uppercase tracking-[0.18em]">
+              Activity
+            </span>
+          )}
           <span className="text-[11px] font-medium tabular-nums tracking-wide">
             {current} / {total}
           </span>

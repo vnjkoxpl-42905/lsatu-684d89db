@@ -1,4 +1,5 @@
 export { ActivityIntro } from "./ActivityIntro";
+export { ActivityExitButton } from "./ActivityExitButton";
 export { ActivityRunner, default as ActivityRunnerDefault } from "./ActivityRunner";
 export { ActivityItemView } from "./ActivityItemView";
 export { StatementPanel } from "./StatementPanel";

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useStudentActivity } from "../hooks/useStudentActivities";
 import {
@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import type { Verdict } from "../api/types";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
+import { ActivityExitButton } from "./ActivityExitButton";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import "../activity-centre.css";
@@ -50,6 +51,11 @@ export interface ActivityRunnerProps {
 export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string }>();
   const assignmentId = assignmentIdProp ?? params.assignmentId;
+  const navigate = useNavigate();
+  // Only the routed runner owns the whole viewport and therefore needs its own
+  // way out. Embedded (teacher preview) sits inside chrome that already closes.
+  const routed = assignmentIdProp === undefined;
+  const handleExit = routed ? () => navigate("/activities") : undefined;
   const { user } = useAuth();
   const { assignment, loading, error } = useStudentActivity(assignmentId);
 
@@ -188,10 +194,11 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
   if (error || !assignment) {
     return (
-      <div className="activity-centre min-h-screen flex items-center justify-center p-6">
+      <div className="activity-centre min-h-screen flex flex-col items-center justify-center gap-4 p-6">
         <p className="text-sm text-muted-foreground">
           {error ? `Could not load this activity: ${error}` : "Activity not found."}
         </p>
+        {handleExit && <ActivityExitButton onExit={handleExit} tone="light" />}
       </div>
     );
   }
@@ -210,6 +217,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
           onStart={handleStart}
+          onExit={handleExit}
         />
       </div>
     );
@@ -219,6 +227,11 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     return (
       <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
         <div className="mx-auto max-w-5xl">
+          {handleExit && (
+            <div className="mb-6">
+              <ActivityExitButton onExit={handleExit} tone="light" />
+            </div>
+          )}
           <CompletionSummary
             title={assignment.title}
             items={items}
@@ -240,6 +253,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           assignment={assignment}
           current={index + 1}
           total={items.length}
+          onExit={handleExit}
         />
         <main className="min-h-screen bg-[hsl(var(--background))]">
           <ActivityQuestionStack
