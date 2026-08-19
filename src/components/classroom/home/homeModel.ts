@@ -124,6 +124,8 @@ export interface ClassroomHomeModel {
   message: HomeMessage | null;
   unreadMessages: number;
   session: HomeSession | null;
+  /** The one booking link that matches this student's plan. */
+  booking: HomeBookingCta | null;
   week: HomeWeekDay[];
   weekLabel: string;
 }
