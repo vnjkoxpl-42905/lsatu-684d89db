@@ -626,6 +626,56 @@ export type Database = {
           },
         ]
       }
+      booking_commerce_events: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          currency: string | null
+          email: string | null
+          event_type: string
+          id: string
+          offer_id: string | null
+          payload: Json
+          provider: string
+          provider_event_id: string
+          student_id: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          email?: string | null
+          event_type: string
+          id?: string
+          offer_id?: string | null
+          payload?: Json
+          provider: string
+          provider_event_id: string
+          student_id?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          email?: string | null
+          event_type?: string
+          id?: string
+          offer_id?: string | null
+          payload?: Json
+          provider?: string
+          provider_event_id?: string
+          student_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_commerce_events_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "booking_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       booking_link_hits: {
         Row: {
           action: string
@@ -647,6 +697,39 @@ export type Database = {
           ip_hash?: string
           slug?: string
           window_start?: string
+        }
+        Relationships: []
+      }
+      booking_offers: {
+        Row: {
+          active: boolean
+          created_at: string
+          credits: number
+          id: string
+          label: string
+          provider: string
+          provider_ref: string
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          credits?: number
+          id: string
+          label: string
+          provider: string
+          provider_ref: string
+          url: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          credits?: number
+          id?: string
+          label?: string
+          provider?: string
+          provider_ref?: string
+          url?: string
         }
         Relationships: []
       }
@@ -1326,6 +1409,78 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      external_booking_events: {
+        Row: {
+          attendee_name: string | null
+          created_at: string
+          email: string | null
+          end_at: string | null
+          google_event_id: string | null
+          id: string
+          offer_id: string | null
+          payload: Json
+          provider: string
+          provider_booking_id: string
+          schedule_event_id: string | null
+          source_url: string | null
+          start_at: string | null
+          status: string
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attendee_name?: string | null
+          created_at?: string
+          email?: string | null
+          end_at?: string | null
+          google_event_id?: string | null
+          id?: string
+          offer_id?: string | null
+          payload?: Json
+          provider?: string
+          provider_booking_id: string
+          schedule_event_id?: string | null
+          source_url?: string | null
+          start_at?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attendee_name?: string | null
+          created_at?: string
+          email?: string | null
+          end_at?: string | null
+          google_event_id?: string | null
+          id?: string
+          offer_id?: string | null
+          payload?: Json
+          provider?: string
+          provider_booking_id?: string
+          schedule_event_id?: string | null
+          source_url?: string | null
+          start_at?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_booking_events_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "booking_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_booking_events_schedule_event_id_fkey"
+            columns: ["schedule_event_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       external_work_uploads: {
         Row: {
@@ -3637,6 +3792,41 @@ export type Database = {
         }
         Relationships: []
       }
+      student_booking_offers: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          offer_id: string
+          student_id: string
+          updated_at: string
+          url_override: string | null
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          offer_id: string
+          student_id: string
+          updated_at?: string
+          url_override?: string | null
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          offer_id?: string
+          student_id?: string
+          updated_at?: string
+          url_override?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_booking_offers_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "booking_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       student_context: {
         Row: {
           content_text: string | null
@@ -4627,6 +4817,37 @@ export type Database = {
           p_section?: number
         }
         Returns: undefined
+      }
+      apply_booking_package_payment: {
+        Args: {
+          _email?: string
+          _offer_id: string
+          _provider_event_id: string
+          _student_id: string
+        }
+        Returns: {
+          booking_slug: string | null
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          session_length_minutes: number
+          status: string
+          student_email: string | null
+          student_id: string | null
+          student_name: string | null
+          token_hash: string
+          total_credits: number
+          updated_at: string
+          used_credits: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       attempt_accuracy_rollup: {
         Args: { p_class_id: string }
