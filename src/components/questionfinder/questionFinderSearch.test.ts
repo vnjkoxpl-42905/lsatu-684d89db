@@ -9,6 +9,7 @@ import {
   type FinderRcPassageSource,
   type FinderRcQuestionSource,
 } from "@/components/questionfinder/questionFinderSearch";
+import { getResolvedDrillRouteState } from "@/lib/drillRouteState";
 
 const lr: FinderLrSource[] = [
   {
@@ -201,5 +202,50 @@ describe("landings", () => {
   it("sends an RC hit to the whole passage, not to one question", () => {
     const hit = search("stretcher frame").rc[0];
     expect(rcHitHref(hit)).toBe("/rc/drill?passage=4021");
+  });
+});
+
+/* -------------------------------------------------------------------------
+   Contract tests.
+
+   The finder writes a URL; the drill runner reads it. Those are two modules
+   that never import each other, so nothing but this file stops one from
+   drifting away from the other. The LR href in particular was modelled on an
+   implementation deleted in 1d656cf4 — it happens to still be correct, and
+   this is what keeps it that way.
+   ------------------------------------------------------------------------- */
+
+describe("landing contracts against the runners that consume them", () => {
+  it("hands the drill runner exactly the one-question attempt it was told to run", () => {
+    const hit = search("PT90 S1 Q12").exact!;
+    const url = new URL(lrHitHref(hit, "/classroom"), "http://x");
+
+    const state = getResolvedDrillRouteState(url.searchParams, null);
+
+    expect(url.pathname).toBe("/drill");
+    expect(state.mode).toBe("type-drill");
+    expect((state.config as { selectedQids: string[] }).selectedQids).toEqual(["PT90-S1-Q12"]);
+    expect((state.config as { count: number }).count).toBe(1);
+    // 'smart' is what makes a hand-picked question look identical to an Auto
+    // run — without it the student gets Complete Section chrome on one question.
+    expect(state.present).toBe("smart");
+    // safeReturnTo rejects anything not starting with a single "/", so a
+    // returnTo that silently vanished would strand the student in the runner.
+    expect(state.returnTo).toBe("/classroom");
+    expect(state.isGuidedDrill).toBe(false);
+  });
+
+  it("names the parameter RcPlayer actually boots from", () => {
+    const hit = search("stretcher frame").rc[0];
+    const url = new URL(rcHitHref(hit), "http://x");
+
+    expect(url.pathname).toBe("/rc/drill");
+    expect(url.searchParams.get("passage")).toBe("4021");
+    // No subset parameter, deliberately: RcPlayer builds the session from its
+    // DEFAULT_CONFIG, which names no question subset, so every question on the
+    // passage is asked. That IS the ADR 0008 behaviour, and adding a subset
+    // here would quietly revert it.
+    expect(url.searchParams.get("qids")).toBeNull();
+    expect(url.searchParams.get("questions")).toBeNull();
   });
 });
