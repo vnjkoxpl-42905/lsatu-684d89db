@@ -1008,6 +1008,15 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   z-index: 2;
 }
 
+/* The Question finder's row on the Drill landing workspace. Right-aligned so it
+   lands where it lands on Classroom Home; the canvas gap supplies the spacing
+   below it, so this row contributes nothing but its own control's height. */
+.drill-observatory-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -4px;
+}
+
 .drill-observatory-hero-grid {
   align-items: stretch !important;
   display: grid !important;

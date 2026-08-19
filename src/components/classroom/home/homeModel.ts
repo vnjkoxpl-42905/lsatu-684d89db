@@ -107,6 +107,8 @@ export interface HomeAccess {
   messages: boolean;
   schedule: boolean;
   activities: boolean;
+  /** Gates the Question finder. Without it there is nothing to find. */
+  drill: boolean;
 }
 
 export interface ClassroomHomeModel {

@@ -13,7 +13,10 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 **Drill landing workspace** — the pre-question surface at `/classroom/drill`, drawn inside the Classroom frame. It includes drill selection, launch controls, practice insights, and today's work; it excludes the official question-answering experience.
 _Avoid_: Drill page (when the question experience could be confused with the landing surface), Mainhub
 
-**Drill console** — the control surface inside the Drill landing workspace that contains question-text search, advanced filters, PrepTest / Section / Question selectors, and the specific-question Start action.
+**Question finder** — the one control that turns something a student can say about a question into that question opened. It takes free text, matched against question text, and it takes a question address (PT 90, Section 1, Question 12) typed or picked from PrepTest / Section / Question selectors. It searches both banks and groups its results by bank, Logical Reasoning first, because a hit lands differently in each: an LR hit opens that one question, an RC hit opens its whole passage with every question on it. The finder is a finding aid, not the scope of the work it opens. It appears on Classroom Home and in the Drill landing workspace; it never builds a set, it hands that to the Drill console.
+_Avoid_: search bar, command palette, spotlight, quick access, find bar
+
+**Drill console** — the control surface inside the Drill landing workspace where a student assembles a set: the filters, the preview of the exact set, and the start action. Finding one named question is not its job; that is the Question finder.
 _Avoid_: Control pane, picker card
 
 **Drill canvas** — the route-specific visual composition to the right of the persistent Classroom rail, containing the Drill hero, Drill console, practice/insight workspace, and Today focus. The Classroom rail is not part of the canvas.

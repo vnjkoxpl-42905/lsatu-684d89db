@@ -164,6 +164,9 @@ describe("AcademyMainhub", () => {
     expect(screen.getByText("Full Section")).toBeInTheDocument();
     expect(screen.getByText("Build a Set")).toBeInTheDocument();
     expect(screen.getByText("Insight preview")).toBeInTheDocument();
+    // The Question finder's second mount. Without it, a student standing on the
+    // page that exists for picking questions has to go back to Home to search.
+    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Today" })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
     expect(screen.getByText("Nothing assigned for today.")).toBeInTheDocument();

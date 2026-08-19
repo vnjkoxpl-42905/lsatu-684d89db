@@ -15,7 +15,7 @@ const EMPTY: ClassroomHomeModel = {
   greeting: "Good morning",
   displayName: "Ada",
   isAdmin: false,
-  access: { messages: true, schedule: true, activities: true },
+  access: { messages: true, schedule: true, activities: true, drill: true },
   dateline: "Monday · August 3 · 2026",
   subtitle: "Nothing is due today. Drill whatever you feel like.",
   dueTodayCount: 0,
@@ -212,6 +212,34 @@ describe("ClassroomHomeView", () => {
     expect(screen.getByText("MESSAGES")).toBeInTheDocument();
     expect(screen.queryByText("FROM JOSHUA")).not.toBeInTheDocument();
   });
+
+  it("puts the Question finder in the masthead", () => {
+    render(
+      <ClassroomHomeView
+        model={FULL}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+  });
+
+  it("shows no finder to a student without drill access", () => {
+    // Home is a shortcut into surfaces the rail already gates, so it gates
+    // itself the same way: no drill access means nothing to find, and a field
+    // that dead-ends on a locked route is worse than no field.
+    render(
+      <ClassroomHomeView
+        model={{ ...FULL, access: { ...FULL.access, drill: false } }}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: "Find a question" })).toBeNull();
+  });
+
 });
 
 describe("homeModel", () => {

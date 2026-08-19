@@ -122,6 +122,7 @@ export function useClassroomHome(): {
       messages: canAccess("has_chat_access"),
       schedule: canAccess("has_schedule_access"),
       activities: canAccess("has_activity_access"),
+      drill: canAccess("has_drill_access"),
     }),
     [canAccess],
   );

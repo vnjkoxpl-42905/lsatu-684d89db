@@ -147,6 +147,17 @@
   margin: 0;
 }
 
+/* The masthead's utility cluster: the Question finder and the due pill share
+   the right edge. A row of its own, so adding the finder cannot change where
+   the pill sits relative to the greeting. */
+.classroom-root .classroom-home-masthead-tools {
+  align-items: center;
+  animation: classroomHomeRise 560ms var(--home-ease) 100ms both;
+  display: flex;
+  flex: none;
+  gap: 12px;
+}
+
 .classroom-root .classroom-home-duepill {
   align-items: center;
   background: var(--home-white);
@@ -1125,6 +1136,13 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 16px;
+  }
+
+  /* Stacked, the cluster stays a left-aligned row directly under the greeting.
+     Deliberately NOT reordered or spread: the due pill has always sat at the
+     masthead's start on a phone, and the finder joining it must not move it. */
+  .classroom-root .classroom-home-masthead-tools {
+    gap: 10px;
   }
 
   .classroom-root .classroom-home-title {

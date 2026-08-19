@@ -12,6 +12,7 @@
 
 import * as React from "react";
 import { ArrowRight, CalendarClock } from "lucide-react";
+import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 import type {
   ClassroomHomeModel,
   HomeRow,
@@ -129,14 +130,23 @@ export function ClassroomHomeView({
           <p className="classroom-home-subtitle">{model.subtitle}</p>
         </div>
 
-        {model.dueTodayCount > 0 ? (
-          <span className="classroom-home-duepill">
-            <i aria-hidden="true" />
-            {model.dueTodayCount === 1
-              ? "1 DUE TODAY"
-              : `${model.dueTodayCount} DUE TODAY`}
-          </span>
-        ) : null}
+        {/* The masthead's right edge is where Home's utilities live. The finder
+            takes one control's width and nothing below it moves, so the hero
+            keeps its rank as the loudest thing on the page. It is gated the way
+            the rail gates /classroom/drill: without the flag there is nothing
+            to find, so there is no field either. */}
+        <div className="classroom-home-masthead-tools">
+          {model.access.drill ? <QuestionFinder returnTo="/classroom" /> : null}
+
+          {model.dueTodayCount > 0 ? (
+            <span className="classroom-home-duepill">
+              <i aria-hidden="true" />
+              {model.dueTodayCount === 1
+                ? "1 DUE TODAY"
+                : `${model.dueTodayCount} DUE TODAY`}
+            </span>
+          ) : null}
+        </div>
       </header>
 
       {/* ── hero ─────────────────────────────────────────────────────── */}
