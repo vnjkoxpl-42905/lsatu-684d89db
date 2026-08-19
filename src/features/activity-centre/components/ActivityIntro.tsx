@@ -52,11 +52,14 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
       {/* ---- HERO (pixel-match): crumb top-left, title top-right, orbs lower-left ---- */}
       <section className="act-hero">
         <motion.div variants={item} className="act-hero-top">
-          <span className="act-edit-crumb" aria-hidden="true">
-            <span className="act-edit-crumb-arrow">◀</span>
-            <span>{title}</span>
-            <span className="act-edit-crumb-arrow">▶</span>
-          </span>
+          <div className="flex flex-col items-start gap-2">
+            {onExit && <ActivityExitButton onExit={onExit} tone="light" />}
+            <span className="act-edit-crumb" aria-hidden="true">
+              <span className="act-edit-crumb-arrow">◀</span>
+              <span>{title}</span>
+              <span className="act-edit-crumb-arrow">▶</span>
+            </span>
+          </div>
           <h1 className="act-edit-title">
             <span className="act-edit-title-bold">{title}.</span>{" "}
             {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
@@ -107,12 +110,11 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
           )}
         </motion.div>
 
-        <motion.div variants={item} className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <motion.div variants={item}>
           <button type="button" onClick={onStart} className="act-start">
             Start drilling
             <ArrowRight size={18} strokeWidth={2.25} />
           </button>
-          {onExit && <ActivityExitButton onExit={onExit} tone="light" />}
         </motion.div>
       </section>
     </motion.div>

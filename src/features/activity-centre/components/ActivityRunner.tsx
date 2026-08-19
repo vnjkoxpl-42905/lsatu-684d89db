@@ -55,7 +55,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // Only the routed runner owns the whole viewport and therefore needs its own
   // way out. Embedded (teacher preview) sits inside chrome that already closes.
   const routed = assignmentIdProp === undefined;
-  const handleExit = routed ? () => navigate("/activities") : undefined;
+
+  // Exit means two different places depending on where you are standing, and
+  // conflating them is what made the first version wrong. From a question, the
+  // thing you want to back out to is the Activity's own intro: its title, the
+  // worked example, the rules. Dropping straight to the Activity Centre there
+  // skips past the page you were actually trying to reach. From the intro
+  // itself there is nowhere further in to go, so that one leaves for the
+  // Centre. Returning to the intro keeps `index`, so Start drilling resumes on
+  // the same question rather than restarting the Activity.
+  const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
+  const handleLeave = routed ? () => navigate("/activities") : undefined;
   const { user } = useAuth();
   const { assignment, loading, error } = useStudentActivity(assignmentId);
 
@@ -198,7 +208,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         <p className="text-sm text-muted-foreground">
           {error ? `Could not load this activity: ${error}` : "Activity not found."}
         </p>
-        {handleExit && <ActivityExitButton onExit={handleExit} tone="light" />}
+        {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
       </div>
     );
   }
@@ -217,7 +227,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
           onStart={handleStart}
-          onExit={handleExit}
+          onExit={handleLeave}
         />
       </div>
     );
@@ -227,9 +237,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     return (
       <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
         <div className="mx-auto max-w-5xl">
-          {handleExit && (
+          {handleLeave && (
             <div className="mb-6">
-              <ActivityExitButton onExit={handleExit} tone="light" />
+              <ActivityExitButton onExit={handleLeave} tone="light" />
             </div>
           )}
           <CompletionSummary
@@ -253,7 +263,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           assignment={assignment}
           current={index + 1}
           total={items.length}
-          onExit={handleExit}
+          onExit={handleBackToIntro}
         />
         <main className="min-h-screen bg-[hsl(var(--background))]">
           <ActivityQuestionStack

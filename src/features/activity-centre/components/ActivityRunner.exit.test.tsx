@@ -86,14 +86,28 @@ describe("ActivityRunner exit", () => {
     expect(navigate).toHaveBeenCalledWith("/activities");
   });
 
-  it("keeps the exit on screen once the activity is running", async () => {
+  it("backs out of a question to the Activity's own intro, not the Activity Centre", async () => {
     renderRouted();
     fireEvent.click(await screen.findByRole("button", { name: /start drilling/i }));
     await waitFor(() =>
       expect(screen.getByRole("button", { name: /exit/i })).toBeInTheDocument(),
     );
     fireEvent.click(screen.getByRole("button", { name: /exit/i }));
-    expect(navigate).toHaveBeenCalledWith("/activities");
+
+    // Back on the intro, which is the page the student was reaching for.
+    await screen.findByRole("button", { name: /start drilling/i });
+    // And emphatically NOT routed away to the list.
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("resumes on the same question after backing out to the intro", async () => {
+    renderRouted();
+    fireEvent.click(await screen.findByRole("button", { name: /start drilling/i }));
+    await screen.findByRole("button", { name: /exit/i });
+    fireEvent.click(screen.getByRole("button", { name: /exit/i }));
+    fireEvent.click(await screen.findByRole("button", { name: /start drilling/i }));
+    // Item 1 of the run, unchanged: leaving the questions is not a restart.
+    await waitFor(() => expect(screen.getByText(/1 \/ 30|1 \//)).toBeInTheDocument());
   });
 
   it("does not strand the student when the activity cannot be found", async () => {
