@@ -40,6 +40,7 @@ export function AssignmentOfferCard({
   onOpenBesideChat?: (resource: DeskResourcePreview) => void;
 }) {
   const { user } = useAuth();
+  const dismissTodo = useDismissTeacherTodo();
   const [dismissed, setDismissed] = useState(false);
   const [sending, setSending] = useState(false);
   const [receipt, setReceipt] = useState<string | null>(null);
