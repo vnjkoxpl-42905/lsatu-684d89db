@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { assignResourceToStudent, type AssignableResource } from '@/lib/teacherAssignResource';
 import { summarizeNotifyResult } from '@/lib/classroomNotify';
 import type { DeskResourcePreview } from './DeskResourcePreviewPanel';
-import { useDismissTeacherTodo } from './teacherTodoDismissals';
+import { dismissTeacherTodo } from './teacherTodoDismissals';
 
 export interface AssignmentOfferData {
   id?: string;
@@ -41,7 +41,6 @@ export function AssignmentOfferCard({
   onOpenBesideChat?: (resource: DeskResourcePreview) => void;
 }) {
   const { user } = useAuth();
-  const dismissTodo = useDismissTeacherTodo();
   const [dismissed, setDismissed] = useState(false);
   const [sending, setSending] = useState(false);
   const [receipt, setReceipt] = useState<string | null>(null);
@@ -69,11 +68,11 @@ export function AssignmentOfferCard({
       setReceipt(`${result.reusedExisting ? 'Already assigned' : 'Assigned'} · ${summary}`);
       // The "assign next work" suggestion for this student is answered now, so
       // it must not resurface on the next queue refresh.
-      dismissTodo.mutate({
+      void dismissTeacherTodo({
+        adminUserId: user.id,
         sourceKind: 'desk-task',
         sourceId: `assign-${offer.student_id}`,
-        expiresAt: null,
-      });
+      }).catch(() => {/* dismissal is best-effort; the assignment already landed */});
       toast.success(`${result.reusedExisting ? 'Already assigned' : 'Assigned'} to ${studentName}`, {
         description: result.route,
       });
