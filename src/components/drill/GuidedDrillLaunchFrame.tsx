@@ -80,6 +80,7 @@ export function GuidedDrillLaunchFrame({
       // pages have an opaque origin). Payload is harmless metadata.
       if (event.origin !== window.location.origin && event.origin !== 'null') return;
       if (event.data?.type === 'lsatu:start-guided-drill') onStartRef.current();
+      if (event.data?.type === 'lsatu:return-guided-drill') onReturnRef.current();
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);

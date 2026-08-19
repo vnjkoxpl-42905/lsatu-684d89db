@@ -1243,6 +1243,14 @@
     const returnButton = document.querySelector('[data-return="true"]');
     if (returnButton) {
       returnButton.addEventListener('click', () => {
+        // Mirror the start button: tell the host app to navigate. Falls back to
+        // history only when this page is opened standalone (no parent frame).
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'lsatu:return-guided-drill' }, '*');
+            return;
+          }
+        } catch (e) {}
         if (window.history.length > 1) {
           window.history.back();
         } else {
