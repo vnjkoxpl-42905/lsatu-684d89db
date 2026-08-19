@@ -65,6 +65,13 @@ export function AssignmentOfferCard({
       });
       const summary = summarizeNotifyResult(result.notify);
       setReceipt(`${result.reusedExisting ? 'Already assigned' : 'Assigned'} · ${summary}`);
+      // The "assign next work" suggestion for this student is answered now, so
+      // it must not resurface on the next queue refresh.
+      dismissTodo.mutate({
+        sourceKind: 'desk-task',
+        sourceId: `assign-${offer.student_id}`,
+        expiresAt: null,
+      });
       toast.success(`${result.reusedExisting ? 'Already assigned' : 'Assigned'} to ${studentName}`, {
         description: result.route,
       });
