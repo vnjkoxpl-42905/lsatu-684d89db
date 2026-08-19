@@ -15,6 +15,21 @@ export function filterDismissed(items: TeacherTodoItem[], dismissals: Array<{ so
   return items.filter((item) => !hidden.has(dismissalKey(item.sourceKind, item.sourceId)));
 }
 
+/**
+ * Start Here is a list of things waiting on Joshua right now. Two desk sources
+ * are neither: an `assignment-gap` suggestion is a standing idea, and a
+ * `schedule` row is simply a student's assignment with a due date — assigning
+ * work should never post anything into the teacher's own calendar rail. Both
+ * still exist in the Assign mode rails; they just stay out of this queue.
+ */
+const RAIL_EXCLUDED_DESK_SOURCES = new Set(['assignment-gap', 'schedule']);
+
+export function filterRailSources(items: TeacherTodoItem[]) {
+  return items.filter(
+    (item) => item.sourceKind !== 'desk-task' || !RAIL_EXCLUDED_DESK_SOURCES.has(item.deskSourceKind),
+  );
+}
+
 export function sortTeacherTodos(items: TeacherTodoItem[]) {
   return [...items].sort((a, b) => b.sortScore - a.sortScore);
 }
@@ -27,7 +42,9 @@ export function useTeacherTodoQueue(legacyTasks: DeskTask[], options?: { externa
 
   const items = useMemo(() => {
     const legacy = legacyTasks.map(deskTaskToTodoItem);
-    return sortTeacherTodos(filterDismissed([...gmail.items, ...calendar.items, ...legacy], dismissals.data ?? []));
+    return sortTeacherTodos(
+      filterRailSources(filterDismissed([...gmail.items, ...calendar.items, ...legacy], dismissals.data ?? [])),
+    );
   }, [calendar.items, dismissals.data, gmail.items, legacyTasks]);
 
   return {

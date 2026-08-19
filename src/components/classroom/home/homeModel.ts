@@ -84,6 +84,14 @@ export interface HomeSession {
   meta: string | null;
 }
 
+/** The plan-aware booking link shown next to the session card. */
+export interface HomeBookingCta {
+  label: string;
+  href: string;
+  external: boolean;
+  detail: string | null;
+}
+
 export interface HomeWeekDay {
   iso: string;
   abbr: string;
@@ -126,6 +134,8 @@ export interface ClassroomHomeModel {
   message: HomeMessage | null;
   unreadMessages: number;
   session: HomeSession | null;
+  /** The one booking link that matches this student's plan. */
+  booking: HomeBookingCta | null;
   week: HomeWeekDay[];
   weekLabel: string;
 }

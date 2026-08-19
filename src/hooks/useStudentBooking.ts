@@ -35,9 +35,19 @@ export type StudentSingleSessionBooking = StudentBookingBase & {
 
 export type StudentBooking = StudentRedemptionBooking | StudentSingleSessionBooking;
 
+export type StudentBookingOffer = {
+  id: string;
+  label: string;
+  provider: string;
+  url: string;
+  credits: number;
+};
+
 export type StudentBookingInfo = {
   pass: StudentPass;
   bookings: StudentBooking[];
+  /** The student's effective offer registry, used to pick the right booking link. */
+  offers?: StudentBookingOffer[];
 };
 
 const callInfo = async (): Promise<StudentBookingInfo> => {

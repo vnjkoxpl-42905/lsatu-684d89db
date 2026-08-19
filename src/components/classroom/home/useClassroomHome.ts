@@ -22,6 +22,7 @@ import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems
 import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
+import { resolveStudentBookingCta } from "@/lib/studentBookingCta";
 import { useInbox } from "@/hooks/useInbox";
 import { useCurrentWeeklyPlan } from "@/hooks/useWeeklyPlan";
 import {
@@ -361,6 +362,19 @@ export function useClassroomHome(): {
     };
   }, [nextBooking, permissions.is_admin]);
 
+  // The booking link follows the plan the student is actually on: credits in
+  // hand go straight to the picker, a pay-per-session student gets the single
+  // link, a spent package gets offered back as a renewal.
+  const booking = React.useMemo(
+    () =>
+      resolveStudentBookingCta({
+        pass: bookingQuery.data?.pass ?? null,
+        offers: bookingQuery.data?.offers ?? [],
+        hasUpcomingSession: !!nextBooking,
+      }),
+    [bookingQuery.data?.offers, bookingQuery.data?.pass, nextBooking],
+  );
+
   /* ── the week ──────────────────────────────────────────────────────── */
 
   const dates = React.useMemo(() => weekDates(now), [now]);
@@ -410,6 +424,7 @@ export function useClassroomHome(): {
     message,
     unreadMessages: unread,
     session,
+    booking,
     week,
     weekLabel: weekLabelFor(dates),
   };
