@@ -409,6 +409,7 @@ export function useClassroomHome(): {
     message,
     unreadMessages: unread,
     session,
+    booking,
     week,
     weekLabel: weekLabelFor(dates),
   };
