@@ -186,6 +186,13 @@ export function buildAssignedRows({
       const sourceTable = item.source_table ?? 'classroom_items';
       const refId = item.source_id ?? item.id;
       const existing = byIdentity.get(`${sourceTable}:${refId}`);
+      // Completion wins over the mirror. A student who finished the underlying
+      // assignment must not see it come back because the classroom_items row it
+      // was mirrored into still says "assigned" — that is why finished work kept
+      // reappearing on Home.
+      const itemStatus = normalizeStatus(item.status);
+      const status =
+        itemStatus === 'completed' || existing?.status === 'completed' ? 'completed' : itemStatus;
       byIdentity.set(`${sourceTable}:${refId}`, {
         key: `ci-${item.id}`,
         kind,
@@ -195,7 +202,7 @@ export function buildAssignedRows({
         // The item carries no question count, so keep the source row's subtitle
         // when there is one.
         subtitle: existing?.subtitle ?? item.description ?? '',
-        status: normalizeStatus(item.status),
+        status,
         createdAt: item.created_at,
         dueAt: item.due_at,
         route,

@@ -25,6 +25,7 @@ const EMPTY: ClassroomHomeModel = {
   message: null,
   unreadMessages: 0,
   session: null,
+  booking: { label: "Book one", href: "/booking", external: false, detail: null },
   week: buildWeek(weekDates(new Date(2026, 7, 3)), [], new Date(2026, 7, 3)),
   weekLabel: "August 3 to 9",
 };

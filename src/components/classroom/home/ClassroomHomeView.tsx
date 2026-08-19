@@ -343,21 +343,25 @@ export function ClassroomHomeView({
               {model.session?.meta ? (
                 <span className="classroom-home-session-meta">{model.session.meta}</span>
               ) : null}
+              {model.booking?.detail ? (
+                <span className="classroom-home-session-meta">{model.booking.detail}</span>
+              ) : null}
             </span>
             <span className="classroom-home-session-actions">
-              {model.session ? (
-                // No Reschedule pill: neither student-booking nor
-                // public-booking exposes a reschedule action, so the control
-                // led to a page that could not perform it. Restore it when the
-                // endpoint exists, not before.
-                <Pill emphasis onClick={() => onOpen("/booking")}>
-                  Book another
-                </Pill>
-              ) : (
-                <Pill emphasis onClick={() => onOpen("/booking")}>
-                  Book one
-                </Pill>
-              )}
+              {/* No Reschedule pill: neither student-booking nor public-booking
+                  exposes a reschedule action. The booking pill itself follows
+                  the student's plan — credits go to the in-app picker, a
+                  pay-per-session student gets their own link. */}
+              <Pill
+                emphasis
+                onClick={() => {
+                  const target = model.booking?.href ?? "/booking";
+                  if (model.booking?.external) window.open(target, "_blank", "noopener,noreferrer");
+                  else onOpen(target);
+                }}
+              >
+                {model.booking?.label ?? (model.session ? "Book another" : "Book one")}
+              </Pill>
             </span>
           </section>
         </div>

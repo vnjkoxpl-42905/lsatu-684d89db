@@ -187,7 +187,9 @@ describe('TeacherDeskPreview workspace rail', () => {
     expect(screen.getByLabelText('People workspace')).toBeInTheDocument();
     expect(screen.getByLabelText('Saved chats')).toBeInTheDocument();
     expect(screen.getByLabelText('To-do rail')).toBeInTheDocument();
-    expect(screen.getByText('Schedule: Timed LR review')).toBeInTheDocument();
+    // Student assignments with a due date are their calendar, not Joshua's, so
+    // they stay out of the to-do rail.
+    expect(screen.queryByText('Schedule: Timed LR review')).not.toBeInTheDocument();
     expect(screen.queryByText(/No active assignment/i)).not.toBeInTheDocument();
   });
 
