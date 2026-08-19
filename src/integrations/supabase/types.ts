@@ -591,9 +591,10 @@ export type Database = {
           created_at: string
           details: Json
           id: string
-          redemption_id: string
+          redemption_id: string | null
           resolved_at: string | null
           resolved_by: string | null
+          single_session_booking_id: string | null
           status: string
         }
         Insert: {
@@ -601,9 +602,10 @@ export type Database = {
           created_at?: string
           details?: Json
           id?: string
-          redemption_id: string
+          redemption_id?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
+          single_session_booking_id?: string | null
           status?: string
         }
         Update: {
@@ -611,9 +613,10 @@ export type Database = {
           created_at?: string
           details?: Json
           id?: string
-          redemption_id?: string
+          redemption_id?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
+          single_session_booking_id?: string | null
           status?: string
         }
         Relationships: [
@@ -622,6 +625,13 @@ export type Database = {
             columns: ["redemption_id"]
             isOneToOne: false
             referencedRelation: "booking_pass_redemptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_calendar_alerts_single_session_booking_id_fkey"
+            columns: ["single_session_booking_id"]
+            isOneToOne: false
+            referencedRelation: "single_session_bookings"
             referencedColumns: ["id"]
           },
         ]
@@ -638,6 +648,7 @@ export type Database = {
           payload: Json
           provider: string
           provider_event_id: string
+          single_session_booking_id: string | null
           student_id: string | null
         }
         Insert: {
@@ -651,6 +662,7 @@ export type Database = {
           payload?: Json
           provider: string
           provider_event_id: string
+          single_session_booking_id?: string | null
           student_id?: string | null
         }
         Update: {
@@ -664,6 +676,7 @@ export type Database = {
           payload?: Json
           provider?: string
           provider_event_id?: string
+          single_session_booking_id?: string | null
           student_id?: string | null
         }
         Relationships: [
@@ -672,6 +685,13 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "booking_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_commerce_events_single_session_booking_id_fkey"
+            columns: ["single_session_booking_id"]
+            isOneToOne: false
+            referencedRelation: "single_session_bookings"
             referencedColumns: ["id"]
           },
         ]
@@ -901,6 +921,36 @@ export type Database = {
           total_credits?: number
           updated_at?: string
           used_credits?: number
+        }
+        Relationships: []
+      }
+      booking_worker_heartbeats: {
+        Row: {
+          last_error: string | null
+          last_error_at: string | null
+          last_start_at: string | null
+          last_success_at: string | null
+          metadata: Json
+          updated_at: string
+          worker_name: string
+        }
+        Insert: {
+          last_error?: string | null
+          last_error_at?: string | null
+          last_start_at?: string | null
+          last_success_at?: string | null
+          metadata?: Json
+          updated_at?: string
+          worker_name: string
+        }
+        Update: {
+          last_error?: string | null
+          last_error_at?: string | null
+          last_start_at?: string | null
+          last_success_at?: string | null
+          metadata?: Json
+          updated_at?: string
+          worker_name?: string
         }
         Relationships: []
       }
@@ -3710,6 +3760,212 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      single_session_bookings: {
+        Row: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at?: string | null
+          cancel_token_hash?: string | null
+          checkout_fingerprint_disposition?: string
+          checkout_request_fingerprint?: string | null
+          client_idempotency_key: string
+          created_at?: string
+          currency?: string | null
+          draft_expires_at: string
+          email?: string | null
+          end_at: string
+          gcal_event_id?: string | null
+          guests?: Json
+          id?: string
+          ip_hash?: string | null
+          lifecycle_version?: number
+          livemode?: boolean | null
+          meet_url?: string | null
+          name?: string | null
+          notes?: string | null
+          start_at: string
+          status?: string
+          status_changed_at?: string
+          stripe_checkout_session_id?: string | null
+          stripe_checkout_url?: string | null
+          stripe_expires_at?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_refund_status?: string | null
+          sweep_attempts?: number
+          sweep_lease_token?: string | null
+          sweep_lease_until?: string | null
+          sweep_worker_id?: string | null
+          terminal_reason?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          booking_token_expires_at?: string
+          booking_token_hash?: string
+          cancel_token_expires_at?: string | null
+          cancel_token_hash?: string | null
+          checkout_fingerprint_disposition?: string
+          checkout_request_fingerprint?: string | null
+          client_idempotency_key?: string
+          created_at?: string
+          currency?: string | null
+          draft_expires_at?: string
+          email?: string | null
+          end_at?: string
+          gcal_event_id?: string | null
+          guests?: Json
+          id?: string
+          ip_hash?: string | null
+          lifecycle_version?: number
+          livemode?: boolean | null
+          meet_url?: string | null
+          name?: string | null
+          notes?: string | null
+          start_at?: string
+          status?: string
+          status_changed_at?: string
+          stripe_checkout_session_id?: string | null
+          stripe_checkout_url?: string | null
+          stripe_expires_at?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_refund_status?: string | null
+          sweep_attempts?: number
+          sweep_lease_token?: string | null
+          sweep_lease_until?: string | null
+          sweep_worker_id?: string | null
+          terminal_reason?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      single_session_outbox: {
+        Row: {
+          action: string
+          attempts: number
+          booking_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          lease_token: string | null
+          lease_until: string | null
+          lease_worker_id: string | null
+          max_attempts: number
+          next_retry_at: string
+          payload_ciphertext: string | null
+          precondition_lifecycle_version: number
+          precondition_status: string
+          provider_status: string | null
+          recipient: string
+          result: Json
+          sensitive_payload_purged_at: string | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          action: string
+          attempts?: number
+          booking_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          lease_token?: string | null
+          lease_until?: string | null
+          lease_worker_id?: string | null
+          max_attempts?: number
+          next_retry_at?: string
+          payload_ciphertext?: string | null
+          precondition_lifecycle_version: number
+          precondition_status: string
+          provider_status?: string | null
+          recipient?: string
+          result?: Json
+          sensitive_payload_purged_at?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          attempts?: number
+          booking_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          lease_token?: string | null
+          lease_until?: string | null
+          lease_worker_id?: string | null
+          max_attempts?: number
+          next_retry_at?: string
+          payload_ciphertext?: string | null
+          precondition_lifecycle_version?: number
+          precondition_status?: string
+          provider_status?: string | null
+          recipient?: string
+          result?: Json
+          sensitive_payload_purged_at?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "single_session_outbox_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "single_session_bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       smartboard_sessions: {
         Row: {
