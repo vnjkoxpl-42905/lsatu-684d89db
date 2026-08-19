@@ -84,6 +84,14 @@ export interface HomeSession {
   meta: string | null;
 }
 
+/** The plan-aware booking link shown next to the session card. */
+export interface HomeBookingCta {
+  label: string;
+  href: string;
+  external: boolean;
+  detail: string | null;
+}
+
 export interface HomeWeekDay {
   iso: string;
   abbr: string;
