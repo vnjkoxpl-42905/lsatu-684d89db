@@ -109,6 +109,8 @@ import { buildAssay } from "@/features/activity-centre/worlds/polarity/wings/rou
 import { PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
 import "@/features/activity-centre/activity-centre.css";
 import { ActivityIntro } from "@/features/activity-centre/components/ActivityIntro";
+import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
+import { librarySortIndex } from "@/features/activity-centre/content";
 import "@/features/activity-centre/activities-home.css";
 
 /**
@@ -125,6 +127,7 @@ import "@/features/activity-centre/activities-home.css";
  */
 
 const WORLDS = [
+  { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
@@ -190,6 +193,7 @@ export default function ActivityLab() {
         />
       </header>
 
+      {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
@@ -199,6 +203,46 @@ export default function ActivityLab() {
       {world === "observatory" ? <ObservatoryPanel /> : null}
       {world === "loom" ? <LoomPanel /> : null}
       {world === "polarity" ? <PolarityPanel /> : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Activity Centre list
+ * ------------------------------------------------------------------ */
+
+/**
+ * The list is behind auth and a feature flag like everything else here, so its
+ * layout could not be looked at while building. Rendered from the seed content
+ * in the same teaching order the page sorts by.
+ */
+function ListPanel() {
+  const rows = [...SEED_ACTIVITIES]
+    .sort((a, b) => librarySortIndex(a.slug) - librarySortIndex(b.slug))
+    .map((a, i) => ({
+      id: a.slug,
+      title: a.title,
+      subtitle: a.subtitle,
+      items: a.items,
+      status: i === 0 ? "in_progress" : i === 1 ? "completed" : "assigned",
+      score: i === 1 ? 80 : null,
+    }));
+  return (
+    <div className="activity-centre">
+      <div className="mx-auto max-w-5xl">
+        <header className="max-w-2xl">
+          <h1 className="ac-display text-4xl text-foreground">Activities</h1>
+          <p className="mt-2 text-[15px] text-muted-foreground">
+            Coach-led skill exercises, ordered by how much text each one works on: a single word
+            first, a whole passage last.
+          </p>
+        </header>
+        <div className="mt-8 grid gap-3 md:grid-cols-2">
+          {rows.map((a, i) => (
+            <ActivityCard key={a.id} assignment={a as never} position={i + 1} onOpen={() => {}} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

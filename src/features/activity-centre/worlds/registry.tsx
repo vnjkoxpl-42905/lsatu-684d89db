@@ -70,6 +70,17 @@ export interface WorldBinding {
   /** Matches the Activity's slug, which is also its normalized title. */
   slug: string;
   label: string;
+  /**
+   * The scope of text the skill works on, which is also why the library is
+   * ordered the way it is: a word, then a sentence, up to a passage.
+   */
+  scope: string;
+  /**
+   * One muted hue per world, as an HSL triple. Used sparingly, a dot and an
+   * eyebrow, never a fill: the surface stays monochrome editorial and the
+   * accent only says which world a card leads into.
+   */
+  accent: string;
   Entrance: ComponentType<{ onDone: () => void; title?: string }>;
   render: (args: WorldRenderArgs) => ReactElement | null;
 }
@@ -78,6 +89,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "negation-station",
     label: "The Polarity Chamber",
+    scope: "a statement, negated",
+    accent: "280 32% 50%",
     Entrance: PolarityEntrance,
     render: ({ item, response, answered }) => {
       const plate = parsePlate(item);
@@ -89,6 +102,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "vocab-rehab",
     label: "The Specimen Lab",
+    scope: "a word",
+    accent: "185 42% 36%",
     Entrance: SpecimenLabEntrance,
     render: ({ item, response, answered }) => {
       const specimen = parseSpecimen(item);
@@ -102,6 +117,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "spot-the-relationship",
     label: "The Signal Observatory",
+    scope: "a sentence",
+    accent: "232 38% 52%",
     Entrance: ObservatoryEntrance,
     render: ({ item, response, answered }) => {
       const signal = parseSignal(item);
@@ -113,6 +130,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "conditional-rephrase",
     label: "The Switchyard",
+    scope: "a statement, translated",
+    accent: "160 52% 32%",
     Entrance: SwitchyardEntrance,
     render: ({ item, response, answered }) => {
       const credited = item.credited_answers?.[0];
@@ -136,6 +155,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "find-the-conclusion",
     label: "The Argument Atelier",
+    scope: "an argument",
+    accent: "18 62% 47%",
     Entrance: AtelierEntrance,
     render: ({ item, response, answered }) => {
       const argument = parseArgument(item);
@@ -147,6 +168,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "rebuttal-rephrase",
     label: "The Debate Chamber",
+    scope: "an argument, restated",
+    accent: "355 46% 48%",
     Entrance: ChamberEntrance,
     render: ({ item, response, answered }) => {
       const rebuttal = parseRebuttal(item);
@@ -165,6 +188,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "dumb-it-down",
     label: "The Press",
+    scope: "a paragraph",
+    accent: "38 58% 40%",
     Entrance: PressEntrance,
     render: ({ item, response, answered }) => {
       const press = parsePress(item);
@@ -183,6 +208,8 @@ const WORLDS: WorldBinding[] = [
   {
     slug: "spot-the-callback",
     label: "The Loom",
+    scope: "a passage",
+    accent: "205 38% 42%",
     Entrance: LoomEntrance,
     render: ({ item, response, answered }) => {
       const callback = parseCallback(item);
