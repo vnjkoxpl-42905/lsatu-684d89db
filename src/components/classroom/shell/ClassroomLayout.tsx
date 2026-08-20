@@ -36,7 +36,8 @@ import {
   useStudentTAAssignments,
 } from "@/hooks/useStudentAssignments";
 import {
-  classroomNotes,
+  groupNotes,
+  isNoteUnread,
   type ClassroomWorkRow,
 } from "@/components/classroom/classroomData";
 import {
@@ -172,6 +173,13 @@ function ClassroomSidebar({
   const go = (path: string) => {
     onNavigate?.();
     navigate(path);
+  };
+
+  const handleSignOut = () => {
+    onNavigate?.();
+    void signOut({ keepSavedEmail: true }).then(({ error }) => {
+      if (error) toast.error("Sign out failed. Please try again.");
+    });
   };
 
   const openStudents = () => {
@@ -437,6 +445,18 @@ function ClassroomSidebar({
                   </button>
                 </div>
               </div>
+              <button
+                type="button"
+                role="menuitem"
+                className="classroom-profile-menu-item classroom-profile-menu-signout"
+                onClick={() => {
+                  setMenuOpen(false);
+                  handleSignOut();
+                }}
+              >
+                <LogOut size={14} aria-hidden="true" />
+                Sign out
+              </button>
             </div>
           ) : null}
           <button
@@ -463,16 +483,11 @@ function ClassroomSidebar({
           <button
             type="button"
             className="classroom-icon-button"
-            onClick={() => {
-              onNavigate?.();
-              void signOut({ keepSavedEmail: true }).then(({ error }) => {
-                if (error) toast.error("Sign out failed. Please try again.");
-              });
-            }}
+            onClick={handleSignOut}
             aria-label="Sign out"
             title="Sign out"
           >
-            <LogOut size={15} />
+            <LogOut size={16} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -520,9 +535,15 @@ function StandardSectionList({
     !taQuery.error,
   );
 
-  const noteRows = React.useMemo(
-    () => classroomNotes(retainedItems),
-    [retainedItems],
+  // Unread first, then read, each newest first. Same ordering as the Notes and
+  // recaps page, so the panel and the page never disagree about what is next.
+  const noteRows = React.useMemo(() => {
+    const { unread, read } = groupNotes(retainedItems);
+    return [...unread, ...read];
+  }, [retainedItems]);
+  const unreadNotes = React.useMemo(
+    () => noteRows.filter(isNoteUnread).length,
+    [noteRows],
   );
   // Assigned work reads the same feed Classroom Home does. It used to build its
   // own rows from classroom_items + homework + TA, which left the two lists
@@ -588,7 +609,12 @@ function StandardSectionList({
       <PanelWash />
       <div className="classroom-panel-inner">
         <div className="classroom-section-heading">
-          <h2>{SECTION_TITLES[section]}</h2>
+          <h2>
+            {SECTION_TITLES[section]}
+            {section === "notes" && unreadNotes > 0 ? (
+              <span className="classroom-unread-count">{unreadNotes}</span>
+            ) : null}
+          </h2>
           {onClose ? (
             <button type="button" onClick={onClose} aria-label="Close section list">
               <X size={16} />
@@ -634,7 +660,13 @@ function StandardSectionList({
                   className={`classroom-panel-item${activeId === item.id ? " classroom-panel-item-active" : ""}`}
                   onClick={() => openRow(`/classroom/item/${encodeURIComponent(item.id)}`)}
                 >
-                  <h3>{item.title}</h3>
+                  <h3>
+                    {isNoteUnread(item) ? (
+                      <span className="classroom-unread-dot" aria-hidden="true" />
+                    ) : null}
+                    {item.title}
+                    {isNoteUnread(item) ? <span className="sr-only"> (unread)</span> : null}
+                  </h3>
                   <time>{new Date(item.created_at).toLocaleDateString("en-CA", { day: "2-digit", month: "short", year: "numeric" })}</time>
                 </button>
               ))

@@ -353,17 +353,47 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   background: transparent;
   border: 1px solid var(--classroom-line);
   border-radius: 7px;
+  color: rgb(var(--classroom-meta));
   cursor: pointer;
   display: flex;
   height: 28px;
   justify-content: center;
   margin-left: auto;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
   width: 28px;
 }
 
+.classroom-root .classroom-icon-button:hover,
+.classroom-root .classroom-overlay-close:hover {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-meta-soft);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-icon-button:focus-visible,
+.classroom-root .classroom-overlay-close:focus-visible {
+  outline: 2px solid var(--classroom-link);
+  outline-offset: 2px;
+}
+
 .classroom-root .classroom-profile .classroom-icon-button {
+  background: var(--classroom-trigger);
+  border-radius: 9px;
   flex: 0 0 auto;
+  height: 32px;
   margin-left: 0;
+  width: 32px;
+}
+
+/* Sign out is the one destructive control in the frame, and as a bare glyph it
+   read as decoration. Tint it on hover so the intent lands before the click. */
+.classroom-root .classroom-profile .classroom-icon-button:hover {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-wrong);
+  color: var(--classroom-wrong);
 }
 
 .classroom-root .classroom-profile {
@@ -454,6 +484,22 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 
 .classroom-root .classroom-profile-menu-item svg {
   color: rgb(var(--classroom-meta));
+}
+
+.classroom-root .classroom-profile-menu-signout {
+  border-top: 1px solid var(--classroom-line);
+  border-radius: 0 0 8px 8px;
+  margin-top: 6px;
+  padding-top: 9px;
+}
+
+.classroom-root .classroom-profile-menu-signout,
+.classroom-root .classroom-profile-menu-signout svg {
+  color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-profile-menu-signout:hover {
+  background: var(--classroom-hover);
 }
 
 .classroom-root .classroom-profile-menu-appearance {
@@ -4106,4 +4152,53 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   .classroom-root.classroom-root-journal .classroom-stage-index-hint {
     display: none;
   }
+}
+
+/* ---- Unread notes -------------------------------------------------------
+   A note is unread until it is opened (classroom_items.status === 'assigned').
+   Two markers, both quiet: a dot on the row, and a count beside the panel
+   title. Colour alone never carries the state — the dot has a size and a
+   position, the count has a number, and both rows also carry an sr-only
+   "(unread)" so this is not a colour-only signal. */
+
+.classroom-unread-dot {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: var(--classroom-accent, currentColor);
+  vertical-align: middle;
+  flex: 0 0 auto;
+}
+
+.classroom-unread-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.5rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--classroom-accent, currentColor);
+  color: var(--classroom-surface, #fff);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+}
+
+/* Group label above a list, used when Notes and recaps splits unread from
+   read. Only rendered when there is more than one list on the page. */
+.classroom-stage-index-heading {
+  margin: 1.4rem 0 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.classroom-stage-index-heading:first-child {
+  margin-top: 0;
 }

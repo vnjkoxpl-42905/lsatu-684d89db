@@ -12,9 +12,12 @@ import StructuredTAAssignmentWorkspace from "@/components/classroom/StructuredTA
 import { hasStructuredWorkspace } from "@/components/classroom/structured-assignment-model";
 import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
+import { useQueryClient } from "@tanstack/react-query";
 import { resolveItemRoute } from "@/lib/classroomItems";
+import { markNoteRead } from "@/lib/markNoteRead";
 import {
-  classroomNotes,
+  groupNotes,
+  NOTE_TYPES,
   sanitizeClassroomHtml,
 } from "@/components/classroom/classroomData";
 import {
@@ -87,6 +90,28 @@ export function ClassroomItemView() {
     () => (query.data ?? []).find((candidate) => candidate.id === itemId) ?? null,
     [itemId, query.data],
   );
+
+  const queryClient = useQueryClient();
+
+  // Opening a note marks it read and clears the bell entry that pointed at it.
+  // Deliberately not gated on status: the status update is guarded on
+  // 'assigned' inside markNoteRead so it is a no-op on a second visit, while
+  // the notification clear still has to run, because a note can be read on one
+  // device and leave its bell entry standing on another.
+  React.useEffect(() => {
+    if (!item || !NOTE_TYPES.has(item.type)) return;
+    let cancelled = false;
+    void markNoteRead(item.id)
+      .then(() => {
+        if (!cancelled) void queryClient.invalidateQueries({ queryKey: ["classroom-items"] });
+      })
+      .catch(() => {
+        // Read state is a convenience. A failure here must never block the note.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [item, queryClient]);
 
   React.useEffect(() => {
     if (!item) return;
@@ -162,7 +187,16 @@ export function ClassroomItemView() {
 
 export function ClassroomRecapsView() {
   const query = useClassroomItems();
-  const notes = classroomNotes(query.data ?? []);
+  const { unread, read } = groupNotes(query.data ?? []);
+  const total = unread.length + read.length;
+
+  const row = (note: (typeof unread)[number], isUnread: boolean) => ({
+    key: note.id,
+    title: note.title,
+    meta: shortDate(note.created_at),
+    route: `/classroom/item/${encodeURIComponent(note.id)}`,
+    unread: isUnread,
+  });
 
   return (
     <>
@@ -178,18 +212,27 @@ export function ClassroomRecapsView() {
           retry={() => void query.refetch()}
         />
       ) : null}
-      {!query.isLoading && !query.error && notes.length > 0 ? (
+      {!query.isLoading && !query.error && total > 0 ? (
         <>
-          <StageIndexHint>Choose a note or recap from the list.</StageIndexHint>
-          <StageIndexList
-            label="Notes and recaps"
-            items={notes.map((note) => ({
-              key: note.id,
-              title: note.title,
-              meta: shortDate(note.created_at),
-              route: `/classroom/item/${encodeURIComponent(note.id)}`,
-            }))}
-          />
+          <StageIndexHint>
+            {unread.length > 0
+              ? `${unread.length} unread of ${total}.`
+              : `All ${total} read.`}
+          </StageIndexHint>
+          {unread.length > 0 ? (
+            <StageIndexList
+              label="Unread notes and recaps"
+              heading="Unread"
+              items={unread.map((note) => row(note, true))}
+            />
+          ) : null}
+          {read.length > 0 ? (
+            <StageIndexList
+              label="Notes and recaps you have read"
+              heading={unread.length > 0 ? "Read" : undefined}
+              items={read.map((note) => row(note, false))}
+            />
+          ) : null}
         </>
       ) : null}
     </>

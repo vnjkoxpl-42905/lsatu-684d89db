@@ -296,3 +296,45 @@ describe("homeModel", () => {
     expect(week[5].isWeekend).toBe(true);
   });
 });
+
+describe("unread notes on Home", () => {
+  const withNote = (isNew: boolean): ClassroomHomeModel => ({
+    ...EMPTY,
+    rows: [
+      {
+        key: "item:n1",
+        title: "Causation, Part 1: the argument",
+        kind: "recap",
+        tone: "muted",
+        meta: "Note · posted 19 Aug",
+        route: "/classroom/item/n1",
+        actionLabel: "Read",
+        emphasis: true,
+        isNew,
+        dueToday: false,
+        overdue: false,
+      },
+    ],
+    newCount: isNew ? 1 : 0,
+  });
+
+  it("shows an unread note on Home with a Read action, and counts it as new", () => {
+    render(<ClassroomHomeView model={withNote(true)} onOpen={() => {}} />);
+    expect(screen.getByText("Causation, Part 1: the argument")).toBeInTheDocument();
+    expect(screen.getByText("1 NEW")).toBeInTheDocument();
+    expect(screen.getAllByText("Read").length).toBeGreaterThan(0);
+  });
+
+  it("drops the new badge once the note has been opened", () => {
+    render(<ClassroomHomeView model={withNote(false)} onOpen={() => {}} />);
+    expect(screen.getByText("Causation, Part 1: the argument")).toBeInTheDocument();
+    expect(screen.queryByText("1 NEW")).not.toBeInTheDocument();
+  });
+
+  it("opens the note at its own route", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={withNote(true)} onOpen={onOpen} />);
+    fireEvent.click(screen.getAllByText("Read")[0]);
+    expect(onOpen).toHaveBeenCalledWith("/classroom/item/n1");
+  });
+});
