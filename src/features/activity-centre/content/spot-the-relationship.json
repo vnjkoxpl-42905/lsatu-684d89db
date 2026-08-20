@@ -30,7 +30,9 @@
         "conditional, only if"
       ],
       "explanation": "Only if introduces the necessary condition. A dry wick is required for lighting, which is not the same as saying a dry wick makes the lantern light. That would be causal, and this statement does not claim it."
-    }
+    },
+    "answer_label": "Your answer",
+    "answer_placeholder": "Name the relationship and the exact words that create it…"
   },
   "items": [
     {

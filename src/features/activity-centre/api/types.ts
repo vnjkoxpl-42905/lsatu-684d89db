@@ -47,6 +47,14 @@ export interface ActivityInstructions {
     explanation: string;
   };
   task?: string;
+  /**
+   * The label and placeholder above the student's answer box. Each Activity
+   * asks for a different thing — a negation, a conditional rephrase, a plain
+   * restatement — so this is authored per Activity. Absent on legacy
+   * Activities, which fall back to neutral copy rather than to negation.
+   */
+  answer_label?: string;
+  answer_placeholder?: string;
   /** Absent on legacy Activities; the Coach then uses its negation default. */
   coach?: ActivityCoach;
 }

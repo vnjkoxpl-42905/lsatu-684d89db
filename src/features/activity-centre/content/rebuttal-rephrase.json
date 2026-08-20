@@ -29,7 +29,9 @@
         "Gum is not food."
       ],
       "explanation": "The explicit conclusion is they're wrong. That is the sentence you locate. What we want to hear is what it means: gum is not food. Every item in this activity is that move on harder material."
-    }
+    },
+    "answer_label": "Your rephrase",
+    "answer_placeholder": "Say what the author believes, at the author's exact strength…"
   },
   "items": [
     {

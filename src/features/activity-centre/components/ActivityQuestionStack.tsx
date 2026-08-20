@@ -6,6 +6,9 @@ interface ActivityQuestionStackProps {
   format: ItemFormat;
   /** This Activity's judging brief, threaded through to the Coach. */
   coach?: ActivityCoach;
+  /** Authored per Activity: what this drill asks the student to write. */
+  answerLabel?: string;
+  answerPlaceholder?: string;
   activeIndex: number;
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   onRecord: (args: {
@@ -22,6 +25,8 @@ export function ActivityQuestionStack({
   items,
   format,
   coach,
+  answerLabel,
+  answerPlaceholder,
   activeIndex,
   onResolved,
   onRecord,
@@ -48,6 +53,8 @@ export function ActivityQuestionStack({
             item={activeItem}
             format={format}
             coach={coach}
+            answerLabel={answerLabel}
+            answerPlaceholder={answerPlaceholder}
             isLast={activeIndex === items.length - 1}
             onResolved={onResolved}
             onRecord={onRecord}

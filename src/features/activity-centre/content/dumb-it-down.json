@@ -22,7 +22,9 @@
       "If the paragraph sets up a contrast between what people think and what is actually the case, both halves belong in your answer.",
       "Where two camps disagree, keep who thinks what. Losing the attribution loses the paragraph.",
       "Naming the topic is not summarizing the paragraph."
-    ]
+    ],
+    "answer_label": "Your plain-language version",
+    "answer_placeholder": "Say what the paragraph says, in plain words…"
   },
   "items": [
     {

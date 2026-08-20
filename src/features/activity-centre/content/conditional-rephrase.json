@@ -30,7 +30,9 @@
         "If you don't master conditional reasoning, you won't master the LSAT."
       ],
       "explanation": "Without marks the necessary condition, so mastering conditional reasoning goes on the then side. Both forms above are credited: the second is just the contrapositive of the first."
-    }
+    },
+    "answer_label": "Your rephrase",
+    "answer_placeholder": "Write it as If [sufficient], then [necessary], then give the contrapositive…"
   },
   "items": [
     {

@@ -29,7 +29,9 @@
         "Extended hours are not worth the risk to the collection."
       ],
       "explanation": "The attribution comes first, the pivot at But turns to the author, and the last sentence is the claim the theft history is there to support. The critics' proposal is somebody else's view, and the thefts are evidence."
-    }
+    },
+    "answer_label": "Your conclusion",
+    "answer_placeholder": "Name the claim the argument is trying to prove…"
   },
   "items": [
     {

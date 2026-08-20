@@ -12,6 +12,9 @@ interface ActivityItemViewProps {
   isLast: boolean;
   /** This Activity's judging brief, threaded through to the Coach. */
   coach?: ActivityCoach;
+  /** Authored per Activity: what this drill asks the student to write. */
+  answerLabel?: string;
+  answerPlaceholder?: string;
   /** Fired once, when the item is resolved (correct, revealed, or coach failure). */
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   /** Append-only attempt record; best-effort, errors are toasted not thrown. */
@@ -34,6 +37,8 @@ export function ActivityItemView({
   format,
   isLast,
   coach,
+  answerLabel,
+  answerPlaceholder,
   onResolved,
   onRecord,
   onNext,
@@ -109,6 +114,8 @@ export function ActivityItemView({
         revealed={revealed}
         resolved={resolved}
         isLast={isLast}
+        answerLabel={answerLabel}
+        answerPlaceholder={answerPlaceholder}
       />
     </div>
   );

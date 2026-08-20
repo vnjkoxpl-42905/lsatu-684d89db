@@ -19,7 +19,15 @@ interface AnswerPanelProps {
   revealed: boolean;
   resolved: boolean;
   isLast: boolean;
+  /** Authored per Activity: what this drill actually asks the student to write. */
+  answerLabel?: string;
+  answerPlaceholder?: string;
 }
+
+/** Neutral copy for Activities that never authored their own. Deliberately not
+ *  the negation wording, which is wrong for every drill but Negation Station. */
+const DEFAULT_ANSWER_LABEL = "Your answer";
+const DEFAULT_ANSWER_PLACEHOLDER = "Write your answer…";
 
 const emeraldBtn =
   "w-full md:w-auto bg-[hsl(var(--ac-emerald))] text-white hover:bg-[hsl(var(--ac-emerald-strong))] h-12 px-6 text-[15px] font-medium rounded-xl";
@@ -39,6 +47,8 @@ export function AnswerPanel({
   revealed,
   resolved,
   isLast,
+  answerLabel,
+  answerPlaceholder,
 }: AnswerPanelProps) {
   const canSubmit = value.trim().length > 0 && !judging && !resolved;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
@@ -46,12 +56,12 @@ export function AnswerPanel({
   return (
     <div className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9">
       <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        Your negation
+        {answerLabel ?? DEFAULT_ANSWER_LABEL}
       </label>
       <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Write the weakest statement that contradicts the original…"
+        placeholder={answerPlaceholder ?? DEFAULT_ANSWER_PLACEHOLDER}
         disabled={judging || resolved || revealed}
         rows={4}
         className="mt-3 resize-none rounded-2xl border-border bg-[hsl(var(--background))] text-[15px] leading-relaxed focus-visible:ring-0"

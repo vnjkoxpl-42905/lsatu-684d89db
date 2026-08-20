@@ -31,7 +31,9 @@
         "Capricious probably means unpredictable, erratic or changeable. I think this because it describes mood swings, and because the investors are wary, which tells me it is negative."
       ],
       "explanation": "Two clues, and the answer names both. Mood swings restates the word, and the investors' wariness fixes the valence as negative. Notice the answer hedges with probably and offers more than one candidate, which is exactly right."
-    }
+    },
+    "answer_label": "Your reading of the word",
+    "answer_placeholder": "What could the marked word mean, and why…"
   },
   "items": [
     {
