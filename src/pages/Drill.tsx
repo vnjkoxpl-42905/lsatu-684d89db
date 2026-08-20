@@ -2879,7 +2879,7 @@ function DrillContent() {
             htmlFor={`answer-${key}`}
             className={cn(
               "flex-1 cursor-pointer",
-              "text-[14px] leading-[1.45]",
+              "text-[19px] leading-[1.7]",
               "font-normal text-neutral-900",
               "select-none",
               "transition-all duration-[120ms]",
@@ -3570,7 +3570,7 @@ function DrillContent() {
         />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
         {poolExhausted ? (
           <div className="flex-1 overflow-y-auto p-8">
             <QuestionPoolExhausted
@@ -3598,17 +3598,17 @@ function DrillContent() {
         ) : (
           <>
         {/* Left Panel — Stimulus */}
-        <div className="flex-[1.1] lg:max-h-full bg-white flex flex-col overflow-hidden">
+        <div className="flex-1 lg:max-h-full bg-white flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto">
-            <div className="p-6 sm:p-8 max-w-3xl mx-auto">
+            <div className="p-6 sm:p-8">
               {currentQuestion.stimulus && (() => {
                 const fullText = normalizeText(currentQuestion.stimulus);
                 const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
                 return (
                   <div
                     className={cn(
-                      "prose prose-sm max-w-none",
-                      "text-[14px] leading-[1.5] text-neutral-900",
+                      "prose prose-lg max-w-none",
+                      "text-[19px] leading-[1.7] text-neutral-900",
                       highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                     )}
                     onMouseUp={(e) => handleTextSelection(e, 'stimulus')}
@@ -3630,12 +3630,12 @@ function DrillContent() {
 
         {/* Right Panel - Question & Answers */}
         <div className="flex-1 overflow-y-auto lg:border-l border-border lg:max-h-full bg-white">
-          <div className="p-6 sm:p-8 max-w-3xl">
+          <div className="p-6 sm:p-8">
             {/* Question Stem */}
             <div className="mb-4">
               <div
                 className={cn(
-                  "text-[15px] font-semibold text-neutral-900 leading-[1.4] tracking-tight",
+                  "text-[19px] font-semibold text-neutral-900 leading-[1.6] tracking-tight",
                   highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                 )}
                 onMouseUp={(e) => handleTextSelection(e, 'stem')}
