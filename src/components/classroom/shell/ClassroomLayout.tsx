@@ -455,7 +455,7 @@ function ClassroomSidebar({
                 }}
               >
                 <LogOut size={14} aria-hidden="true" />
-                Sign out
+                Log Out
               </button>
             </div>
           ) : null}
@@ -480,14 +480,8 @@ function ClassroomSidebar({
               aria-hidden="true"
             />
           </button>
-          <button
-            type="button"
-            className="classroom-icon-button"
-            onClick={handleSignOut}
-            aria-label="Sign out"
-            title="Sign out"
-          >
-            <LogOut size={16} aria-hidden="true" />
+          <button type="button" className="classroom-signout" onClick={handleSignOut}>
+            Log Out
           </button>
         </div>
       </div>

@@ -305,10 +305,11 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile {
-  align-items: center;
+  align-items: stretch;
   border-top: 1px solid var(--classroom-line);
   display: flex;
-  gap: 9px;
+  flex-direction: column;
+  gap: 8px;
   margin-top: auto;
   padding-top: 12px;
 }
@@ -379,21 +380,39 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   outline-offset: 2px;
 }
 
-.classroom-root .classroom-profile .classroom-icon-button {
+/* Leaving is a labelled control, not a glyph. An arrow-out icon asks the
+   student to decode it; the words do not. It sits on its own full-width row
+   because the profile row already carries three controls and a name that
+   truncates, and "Log Out" wedged in beside them is what read as cramped. */
+.classroom-root .classroom-signout {
+  align-items: center;
   background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line);
   border-radius: 9px;
-  flex: 0 0 auto;
-  height: 32px;
-  margin-left: 0;
-  width: 32px;
+  color: var(--classroom-ink);
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  padding: 9px 12px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+  width: 100%;
 }
 
-/* Sign out is the one destructive control in the frame, and as a bare glyph it
-   read as decoration. Tint it on hover so the intent lands before the click. */
-.classroom-root .classroom-profile .classroom-icon-button:hover {
+.classroom-root .classroom-signout:hover {
   background: var(--classroom-hover);
   border-color: var(--classroom-wrong);
   color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-signout:focus-visible {
+  outline: 2px solid var(--classroom-link);
+  outline-offset: 2px;
 }
 
 .classroom-root .classroom-profile {
