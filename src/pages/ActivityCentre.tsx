@@ -40,7 +40,7 @@ export default function ActivityCentre() {
       <div className="mx-auto max-w-5xl">
         <header className="max-w-2xl">
           <h1 className="ac-display text-4xl text-foreground">Activities</h1>
-          <p className="mt-2 text-[15px] text-muted-foreground">
+          <p className="mt-2 text-base leading-relaxed text-muted-foreground">
             Coach-led skill exercises, ordered by how much text each one works on: a single word
             first, a whole passage last.
           </p>
