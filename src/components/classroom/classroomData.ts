@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import type { ClassroomItem } from "@/hooks/useClassroomItems";
+import { isReadInMetadata } from "@/lib/markNoteRead";
 import type {
   StudentAssignment,
   StudentTAAssignment,
@@ -44,12 +45,16 @@ export function classroomNotes(items: ClassroomItem[]) {
 }
 
 /**
- * A note is unread until it has been opened. `markNoteRead` moves it from
- * 'assigned' to 'started' on first open, so 'assigned' is the unread state.
- * A note the student marked done is read by definition.
+ * A note is unread until it has been opened. `markNoteRead` stamps
+ * `metadata_json.read_at` on first open.
+ *
+ * Read state deliberately does not live in `status`: the database's
+ * classroom_items_status_check rejects the 'started' value the type declares,
+ * and the remaining allowed values all mean something about work rather than
+ * about reading. See src/lib/markNoteRead.ts.
  */
 export function isNoteUnread(item: ClassroomItem) {
-  return item.status === "assigned";
+  return !isReadInMetadata(item);
 }
 
 export function unreadNoteCount(items: ClassroomItem[]) {

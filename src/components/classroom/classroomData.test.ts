@@ -78,7 +78,7 @@ describe("classroomNotes", () => {
 });
 
 describe("note read state", () => {
-  const note = (id: string, status: string, created_at: string) =>
+  const note = (id: string, read: boolean, created_at: string, status = "assigned") =>
     ({
       id,
       type: "note",
@@ -87,21 +87,22 @@ describe("note read state", () => {
       created_at,
       source_table: null,
       source_id: null,
+      metadata_json: read ? { kind: "note", read_at: created_at } : { kind: "note" },
     }) as never;
 
   it("treats an unopened note as unread and an opened one as read", () => {
-    expect(isNoteUnread(note("a", "assigned", "2026-08-19T00:00:00Z"))).toBe(true);
-    expect(isNoteUnread(note("b", "started", "2026-08-19T00:00:00Z"))).toBe(false);
-    // marked done is read by definition, never shown as unread again
-    expect(isNoteUnread(note("c", "completed", "2026-08-19T00:00:00Z"))).toBe(false);
+    expect(isNoteUnread(note("a", false, "2026-08-19T00:00:00Z"))).toBe(true);
+    expect(isNoteUnread(note("b", true, "2026-08-19T00:00:00Z"))).toBe(false);
+    // marked done is read by definition, whatever the metadata says
+    expect(isNoteUnread(note("c", false, "2026-08-19T00:00:00Z", "completed"))).toBe(false);
   });
 
   it("groups unread before read, each newest first", () => {
     const items = [
-      note("old-read", "started", "2026-08-01T00:00:00Z"),
-      note("new-unread", "assigned", "2026-08-19T00:00:00Z"),
-      note("new-read", "completed", "2026-08-18T00:00:00Z"),
-      note("old-unread", "assigned", "2026-08-02T00:00:00Z"),
+      note("old-read", true, "2026-08-01T00:00:00Z"),
+      note("new-unread", false, "2026-08-19T00:00:00Z"),
+      note("new-read", true, "2026-08-18T00:00:00Z"),
+      note("old-unread", false, "2026-08-02T00:00:00Z"),
     ];
     const { unread, read } = groupNotes(items);
     expect(unread.map((n) => n.id)).toEqual(["new-unread", "old-unread"]);
@@ -118,6 +119,7 @@ describe("note read state", () => {
       created_at: "2026-08-19T00:00:00Z",
       source_table: DAY_ZERO_WELCOME_SOURCE_TABLE,
       source_id: DAY_ZERO_WELCOME_SOURCE_ID,
+      metadata_json: {},
     } as never;
     expect(unreadNoteCount([welcome])).toBe(0);
   });

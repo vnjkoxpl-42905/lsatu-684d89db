@@ -262,7 +262,16 @@ export function useClassroomHome(): {
       if (delta !== 0) return delta;
       return a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1;
     });
-    const all = [...ranked, ...readingRows];
+    // Unread reading matter goes above ordinary work but below anything
+    // overdue or due today. Appending it after every assignment looked right
+    // and was not: Home shows four rows, so a student with four open
+    // assignments never saw a new note at all, which is the case this whole
+    // feature exists for.
+    const urgent = ranked.filter((row) => row.overdue || row.dueToday);
+    const rest = ranked.filter((row) => !(row.overdue || row.dueToday));
+    const unreadReading = readingRows.filter((row) => row.isNew);
+    const readReading = readingRows.filter((row) => !row.isNew);
+    const all = [...urgent, ...unreadReading, ...rest, ...readReading];
     if (all.length) all[0] = { ...all[0], emphasis: true };
     return all;
   }, [readingRows, workRows]);

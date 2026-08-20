@@ -101,7 +101,7 @@ export function ClassroomItemView() {
   React.useEffect(() => {
     if (!item || !NOTE_TYPES.has(item.type)) return;
     let cancelled = false;
-    void markNoteRead(item.id)
+    void markNoteRead(item)
       .then(() => {
         if (!cancelled) void queryClient.invalidateQueries({ queryKey: ["classroom-items"] });
       })
