@@ -5,6 +5,8 @@ export interface StageIndexItem {
   title: string;
   meta: string;
   route: string;
+  /** Draws the unread dot and marks the row for assistive tech. */
+  unread?: boolean;
 }
 
 /**
@@ -24,15 +26,21 @@ export interface StageIndexItem {
 export function StageIndexList({
   items,
   label,
+  heading,
 }: {
   items: StageIndexItem[];
   label: string;
+  /** Optional group label, shown only when a page renders more than one list. */
+  heading?: string;
 }) {
   const navigate = useNavigate();
   if (items.length === 0) return null;
 
   return (
     <nav className="classroom-stage-index" aria-label={label}>
+      {heading ? (
+        <p className="classroom-stage-index-heading">{heading}</p>
+      ) : null}
       {items.map((item) => (
         <button
           type="button"
@@ -40,7 +48,13 @@ export function StageIndexList({
           className="classroom-panel-item"
           onClick={() => navigate(item.route)}
         >
-          <h3>{item.title}</h3>
+          <h3>
+            {item.unread ? (
+              <span className="classroom-unread-dot" aria-hidden="true" />
+            ) : null}
+            {item.title}
+            {item.unread ? <span className="sr-only"> (unread)</span> : null}
+          </h3>
           <time>{item.meta}</time>
         </button>
       ))}

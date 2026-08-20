@@ -43,6 +43,37 @@ export function classroomNotes(items: ClassroomItem[]) {
   return items.filter((item) => NOTE_TYPES.has(item.type) && !isDayZeroWelcome(item));
 }
 
+/**
+ * A note is unread until it has been opened. `markNoteRead` moves it from
+ * 'assigned' to 'started' on first open, so 'assigned' is the unread state.
+ * A note the student marked done is read by definition.
+ */
+export function isNoteUnread(item: ClassroomItem) {
+  return item.status === "assigned";
+}
+
+export function unreadNoteCount(items: ClassroomItem[]) {
+  return classroomNotes(items).filter(isNoteUnread).length;
+}
+
+/**
+ * Notes split into unread and read, each newest first.
+ *
+ * Unread come first because the reason to open this page is almost always a
+ * note that just arrived. Within each group the sort is by created_at rather
+ * than the list's incoming order, which is priority-then-due_at and means
+ * nothing for a note.
+ */
+export function groupNotes(items: ClassroomItem[]) {
+  const notes = [...classroomNotes(items)].sort(
+    (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+  );
+  return {
+    unread: notes.filter(isNoteUnread),
+    read: notes.filter((note) => !isNoteUnread(note)),
+  };
+}
+
 export type ClassroomWorkRow = {
   key: string;
   sourceTable: string;

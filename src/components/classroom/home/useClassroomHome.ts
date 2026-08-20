@@ -19,6 +19,11 @@ import {
   type AssignedTodoRow,
 } from "@/hooks/useAssignedTodoFeed";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
+import {
+  isDayZeroWelcome,
+  isNoteUnread,
+  NOTE_TYPES,
+} from "@/components/classroom/classroomData";
 import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
@@ -199,21 +204,32 @@ export function useClassroomHome(): {
       });
   }, [access.activities, assigned, dueBySourceId, now, pathname]);
 
-  /** Recent recaps and notes: reading matter, not work, so they never carry a due date. */
+  /**
+   * Recent recaps and notes: reading matter, not work, so they never carry a
+   * due date. Notes belong here too — a note posted to the classroom was
+   * invisible on this page until 2026-08-19, so a student who only ever opened
+   * Home never learned one had arrived.
+   *
+   * Unread first, and an unread one counts as new, which is what drives the
+   * NEW badge and lets it clear itself once the note has been opened.
+   */
   const readingRows = React.useMemo<HomeRow[]>(() => {
     const cutoff = Date.now() - RECAP_WINDOW_DAYS * 86_400_000;
     return (itemsQuery.data ?? [])
       .filter(
         (item: ClassroomItem) =>
-          (item.type === "session_recap" || item.type === "smartboard_recap") &&
+          NOTE_TYPES.has(item.type) &&
+          !isDayZeroWelcome(item) &&
           item.status !== "archived" &&
           item.status !== "draft" &&
           new Date(item.created_at).getTime() >= cutoff,
       )
-      .sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      )
-      .slice(0, 2)
+      .sort((a, b) => {
+        const unread = Number(isNoteUnread(b)) - Number(isNoteUnread(a));
+        if (unread !== 0) return unread;
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      })
+      .slice(0, 3)
       .map((item) => ({
         key: `item:${item.id}`,
         title: item.title,
@@ -229,7 +245,7 @@ export function useClassroomHome(): {
         route: `/classroom/item/${encodeURIComponent(item.id)}`,
         actionLabel: "Read",
         emphasis: false,
-        isNew: false,
+        isNew: isNoteUnread(item),
         dueToday: false,
         overdue: false,
       }));
@@ -420,7 +436,7 @@ export function useClassroomHome(): {
     dueTodayCount,
     hero,
     rows: listRows,
-    newCount: workRows.filter((row) => row.isNew).length,
+    newCount: rows.filter((row) => row.isNew).length,
     message,
     unreadMessages: unread,
     session,
