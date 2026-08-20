@@ -40,6 +40,8 @@ vi.mock("@/lib/classroomItems", () => ({
   syncClassroomItemStatusBySource: vi.fn().mockResolvedValue(undefined),
 }));
 
+// Deliberately titled so it matches no world: these tests are about the generic
+// rail and the exit on it. The world path has its own describe block below.
 function makeAssignment() {
   const a = SEED_ACTIVITIES[0];
   return {
@@ -48,7 +50,7 @@ function makeAssignment() {
     student_id: "user-1",
     assigned_by: "user-1",
     class_id: "user-1",
-    title: a.title,
+    title: "An Activity With No World",
     subtitle: a.subtitle,
     item_format: a.item_format,
     instructions: a.instructions,
@@ -125,7 +127,39 @@ describe("ActivityRunner exit", () => {
         <ActivityRunner assignmentId="assign-1" preview />
       </MemoryRouter>,
     );
-    await screen.findByText(SEED_ACTIVITIES[0].title);
+    await screen.findByText("An Activity With No World");
     expect(screen.queryByRole("button", { name: /exit/i })).not.toBeInTheDocument();
+  });
+});
+
+describe("ActivityRunner world", () => {
+  it("puts the Activity's own world on the running screen, not the generic rail", async () => {
+    const { NEGATION_ITEMS } = await import("../worlds/polarity/polarity");
+    activityState.assignment = {
+      ...(makeAssignment() as Record<string, unknown>),
+      title: "Negation Station",
+      items: NEGATION_ITEMS,
+    };
+    renderRouted();
+    fireEvent.click(await screen.findByRole("button", { name: /start drilling/i }));
+
+    // The Polarity Chamber's entrance plays first, then the chamber itself.
+    await waitFor(() => expect(document.querySelector(".polarity")).not.toBeNull(), {
+      timeout: 4000,
+    });
+  });
+
+  it("falls back to the generic rail for an Activity with no world", async () => {
+    activityState.assignment = {
+      ...(makeAssignment() as Record<string, unknown>),
+      title: "An Activity With No World",
+    };
+    renderRouted();
+    fireEvent.click(await screen.findByRole("button", { name: /start drilling/i }));
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /exit/i })).toBeInTheDocument(),
+    );
+    expect(document.querySelector(".polarity")).toBeNull();
+    expect(document.querySelector(".ac-hero")).not.toBeNull();
   });
 });

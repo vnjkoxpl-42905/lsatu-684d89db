@@ -1,0 +1,73 @@
+import { render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { SEED_ACTIVITIES } from "../content";
+import { WORLD_BINDINGS, slugFromTitle, worldForTitle } from "./registry";
+
+// Eight worlds were built, one per Activity, and none was reachable: the only
+// importer was the dev-only Activity Lab, so every Activity rendered the same
+// generic rail. These pin the wiring that connects them, and in particular the
+// two ways it can silently come undone — an Activity retitled so its slug no
+// longer matches, or authored content that its world can no longer parse.
+
+describe("world registry", () => {
+  it("covers every seeded Activity, plus Negation Station", () => {
+    const covered = new Set(WORLD_BINDINGS.map((w) => w.slug));
+    for (const a of SEED_ACTIVITIES) {
+      expect(covered.has(a.slug), `${a.slug} has no world`).toBe(true);
+    }
+    expect(covered.has("negation-station")).toBe(true);
+    expect(WORLD_BINDINGS).toHaveLength(8);
+  });
+
+  it("finds a world from the title alone, which is all an assignment carries", () => {
+    // An activity_assignments row snapshots title but not slug, so the lookup
+    // goes through the title. Every seeded title must normalize to its slug.
+    for (const a of SEED_ACTIVITIES) {
+      expect(slugFromTitle(a.title)).toBe(a.slug);
+      expect(worldForTitle(a.title)?.slug).toBe(a.slug);
+    }
+    expect(worldForTitle("Negation Station")?.slug).toBe("negation-station");
+  });
+
+  it("returns nothing for an unknown Activity rather than guessing one", () => {
+    expect(worldForTitle("Some Activity That Has No World")).toBeUndefined();
+    expect(worldForTitle(undefined)).toBeUndefined();
+    expect(worldForTitle("")).toBeUndefined();
+  });
+
+  it("renders each world's stage from its own Activity's first item", () => {
+    for (const a of SEED_ACTIVITIES) {
+      const world = worldForTitle(a.title)!;
+      const item = a.items[0];
+
+      const before = world.render({ item, answered: false });
+      expect(before, `${a.slug} did not render before commit`).not.toBeNull();
+      const { unmount } = render(<div>{before}</div>);
+      unmount();
+
+      const after = world.render({
+        item,
+        response: item.credited_answers[0],
+        answered: true,
+      });
+      expect(after, `${a.slug} did not render after commit`).not.toBeNull();
+      const second = render(<div>{after}</div>);
+      second.unmount();
+    }
+  });
+
+  it("returns null on an item its world cannot read, so the caller can fall back", () => {
+    const unreadable = {
+      order: 1,
+      prompt: "",
+      credited_answers: [],
+      explanation: "",
+    } as never;
+    // Not every world rejects an empty item (some render an empty surface
+    // honestly), but none may throw: a null return is the contract that lets
+    // ActivityRunner drop back to the generic rail.
+    for (const w of WORLD_BINDINGS) {
+      expect(() => w.render({ item: unreadable, answered: false })).not.toThrow();
+    }
+  });
+});

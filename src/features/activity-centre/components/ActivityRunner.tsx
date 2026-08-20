@@ -15,6 +15,7 @@ import type { Verdict } from "../api/types";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
+import { worldForTitle } from "../worlds/registry";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import "../activity-centre.css";
@@ -74,6 +75,8 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const [verdicts, setVerdicts] = useState<Record<number, Verdict | null>>({});
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [hydrated, setHydrated] = useState(false);
+  // The world's entrance plays once per run, on Start, before the first item.
+  const [entered, setEntered] = useState(false);
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
   // and for a "Practice again" re-run of a completed activity.
   const [practice, setPractice] = useState(preview);
@@ -83,6 +86,22 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     () => (assignment ? [...assignment.items].sort((a, b) => a.order - b.order) : []),
     [assignment],
   );
+
+  /**
+   * The Activity's world, when it has one. Eight were built, one per Activity,
+   * and until now none was reachable outside the dev lab. A world replaces the
+   * cover rail on the left; the answer box and Coach on the right are untouched.
+   */
+  const world = useMemo(() => worldForTitle(assignment?.title), [assignment?.title]);
+  const currentItem = items[index];
+  const worldStage = useMemo(() => {
+    if (!world || !currentItem) return null;
+    return world.render({
+      item: currentItem,
+      response: responses[currentItem.order],
+      answered: verdicts[currentItem.order] !== undefined,
+    });
+  }, [world, currentItem, responses, verdicts]);
 
   // Open behavior: runs once when the assignment loads. A completed activity
   // opens to its review summary; everything else opens to the homepage (intro)
@@ -132,6 +151,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   );
 
   const handleStart = useCallback(async () => {
+    setEntered(false);
     setPhase("running");
     if (!practice && assignment && assignment.status === "assigned") {
       try {
@@ -256,15 +276,42 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     );
   }
 
+  // The entrance is a one-shot animation that owns the screen, so it renders
+  // before the split view rather than inside it.
+  if (world && !entered) {
+    const Entrance = world.Entrance;
+    return (
+      <div className="activity-centre min-h-screen">
+        <Entrance onDone={() => setEntered(true)} title={assignment.title} />
+      </div>
+    );
+  }
+
   return (
     <div className="activity-centre min-h-screen">
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
+        {worldStage ? (
+          /* The world carries the item itself, so the rail's job here is only
+             the two things the world does not draw: the way out and the count.
+             Falls back to the hero panel whenever the item does not parse into
+             the world's domain, rather than rendering an empty world. */
+          <aside className="relative flex min-h-[560px] flex-col md:sticky md:top-0 md:h-screen">
+            <div className="flex items-center justify-between gap-3 px-5 pt-5 md:px-6">
+              {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
+              <span className="text-[11px] font-semibold tabular-nums tracking-wide text-muted-foreground">
+                {index + 1} / {items.length}
+              </span>
+            </div>
+            <div className="min-h-0 flex-1">{worldStage}</div>
+          </aside>
+        ) : (
         <ActivityHeroPanel
           assignment={assignment}
           current={index + 1}
           total={items.length}
           onExit={handleBackToIntro}
         />
+        )}
         <main className="min-h-screen bg-[hsl(var(--background))]">
           <ActivityQuestionStack
             items={items}

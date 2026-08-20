@@ -213,16 +213,31 @@ export default function ActivityLab() {
  * content so its placement and affordance can be checked without a login.
  */
 function IntroPanel() {
-  const a = SEED_ACTIVITIES[0];
+  // Every Activity, because the intro's failure modes are content-shaped: the
+  // worked example that is a whole paragraph is the one that breaks the orbs.
+  const withExample = SEED_ACTIVITIES.filter((a) => a.instructions.worked_example);
+  const [slug, setSlug] = useState(withExample[0].slug);
+  const a = withExample.find((x) => x.slug === slug)!;
   return (
-    <div className="act-home">
-      <ActivityIntro
-        title={a.title}
-        subtitle={a.subtitle}
-        instructions={a.instructions}
-        onStart={() => {}}
-        onExit={() => {}}
-      />
+    <div>
+      <div className="border-b border-border px-6 py-3">
+        <Tabs
+          options={withExample.map((x) => x.slug)}
+          value={slug}
+          onChange={setSlug}
+          label="Activity"
+        />
+      </div>
+      <div className="act-home">
+        <ActivityIntro
+          key={a.slug}
+          title={a.title}
+          subtitle={a.subtitle}
+          instructions={a.instructions}
+          onStart={() => {}}
+          onExit={() => {}}
+        />
+      </div>
     </div>
   );
 }

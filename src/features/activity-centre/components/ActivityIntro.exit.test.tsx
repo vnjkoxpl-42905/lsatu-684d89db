@@ -41,3 +41,28 @@ describe("ActivityIntro exit placement", () => {
     expect(start.parentElement!.contains(exit)).toBe(false);
   });
 });
+
+describe("ActivityIntro worked example", () => {
+  it("shows each Activity's own answer in the after orb, never a fixed string", () => {
+    // Regression: the after orb hardcoded Negation Station's gloss, so every
+    // Activity's intro claimed the same answer while the before orb beside it
+    // showed that Activity's real statement.
+    for (const a of SEED_ACTIVITIES) {
+      const ex = a.instructions.worked_example;
+      if (!ex) continue;
+      const { unmount } = render(
+        <ActivityIntro
+          title={a.title}
+          subtitle={a.subtitle}
+          instructions={a.instructions}
+          onStart={vi.fn()}
+          onExit={vi.fn()}
+        />,
+      );
+      const after = document.querySelector(".act-orb--after .act-orb-statement")!;
+      expect(after.textContent).toBe(ex.credited_answers[0]);
+      expect(after.textContent).not.toMatch(/100% conformity/);
+      unmount();
+    }
+  });
+});

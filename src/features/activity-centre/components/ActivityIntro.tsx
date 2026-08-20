@@ -24,9 +24,15 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
 
-  // The worked example carries no "after" prose, so draft one short line from
-  // the explanation for the chrome orb (Negation-Station-specific, not a field).
-  const afterLine = "The weakest claim that contradicts 100% conformity: a single counterexample.";
+  // The "after" orb is the second half of the before/after pair, so it has to
+  // be THIS Activity's answer. It used to be a hardcoded string: Negation
+  // Station's gloss, rendered on every Activity's intro. Spot the Callback and
+  // Find the Conclusion both showed a line about negating "100% conformity",
+  // which belongs to neither, while the "before" orb beside it showed their own
+  // real statement. The two halves of one example contradicted each other.
+  // Credited answer first because it is short enough to sit in a circle; the
+  // explanation is the fallback for an Activity authored without one.
+  const afterLine = ex?.credited_answers?.[0] ?? ex?.explanation ?? "";
 
   const container: Variants = {
     hidden: {},

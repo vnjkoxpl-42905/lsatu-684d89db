@@ -361,8 +361,19 @@
 }
 
 .act-home .act-orb-inner {
+  /* Centred on the circle and sized to the square that fits inside it
+     (diameter / root 2 is about 70%). It used to be positioned from the left
+     edge with a fixed 15rem cap, which on any orb narrower than 15rem ran the
+     text straight out past the curve. */
   position: absolute;
-  max-width: 15rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* 58%, not the full inscribed 70%: a circle narrows toward the top and bottom
+     of that square, so a block sized to the widest chord still clips its first
+     and last lines against the curve. */
+  width: 58%;
+  text-align: left;
 }
 
 .act-home .act-orb--before {
@@ -377,8 +388,10 @@
 }
 
 .act-home .act-orb--before .act-orb-inner {
-  left: 24%;
-  top: 38%;
+  /* Pulled up and left of centre so the After orb, which overlaps this one from
+     the lower right, stops sitting on top of the sentence. */
+  left: 44%;
+  top: 42%;
 }
 
 .act-home .act-orb--after {
@@ -410,8 +423,8 @@
 }
 
 .act-home .act-orb--after .act-orb-inner {
-  left: 36%;
-  top: 43%;
+  left: 52%;
+  top: 52%;
 }
 
 .act-home .act-orb-label {
@@ -430,18 +443,29 @@
 }
 
 .act-home .act-orb-statement {
-  font-size: clamp(0.86rem, 1.05vw, 0.98rem);
-  line-height: 1.6;
-  font-weight: 400;
+  font-size: clamp(0.82rem, 0.98vw, 0.94rem);
+  line-height: 1.5;
+  /* Was 400 at 0.6 alpha, which on a black circle and on a light gradient both
+     read as grey haze rather than text. */
+  font-weight: 500;
   margin: 0;
+  /* A worked example can be a whole paragraph, and a paragraph does not fit in
+     a circle. Clamp it rather than let it spill: the full text of every example
+     is on the page below, under the rules and the credited answers. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
 
 .act-home .act-orb--before .act-orb-statement {
-  color: hsl(40 18% 96% / 0.62);
+  color: hsl(40 18% 96% / 0.95);
 }
 
 .act-home .act-orb--after .act-orb-statement {
-  color: hsl(30 6% 10% / 0.6);
+  color: hsl(30 6% 10% / 0.92);
 }
 
 /* =====================================================================
