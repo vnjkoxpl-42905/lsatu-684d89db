@@ -108,6 +108,8 @@ import { Assay } from "@/features/activity-centre/worlds/polarity/wings/Assay";
 import { buildAssay } from "@/features/activity-centre/worlds/polarity/wings/rounds";
 import { PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
 import "@/features/activity-centre/activity-centre.css";
+import { ActivityIntro } from "@/features/activity-centre/components/ActivityIntro";
+import "@/features/activity-centre/activities-home.css";
 
 /**
  * Dev-only harness for the Activity Centre worlds.
@@ -123,6 +125,7 @@ import "@/features/activity-centre/activity-centre.css";
  */
 
 const WORLDS = [
+  { key: "intro", label: "Activity intro" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
   { key: "press", label: "The Press" },
@@ -187,6 +190,7 @@ export default function ActivityLab() {
         />
       </header>
 
+      {world === "intro" ? <IntroPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
       {world === "press" ? <PressPanel /> : null}
@@ -195,6 +199,30 @@ export default function ActivityLab() {
       {world === "observatory" ? <ObservatoryPanel /> : null}
       {world === "loom" ? <LoomPanel /> : null}
       {world === "polarity" ? <PolarityPanel /> : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The Activity intro (the screen a student lands on before drilling)
+ * ------------------------------------------------------------------ */
+
+/**
+ * The intro is the other half of the runner that auth makes impossible to look
+ * at, and the exit control lives on it. Rendered here against real seeded
+ * content so its placement and affordance can be checked without a login.
+ */
+function IntroPanel() {
+  const a = SEED_ACTIVITIES[0];
+  return (
+    <div className="act-home">
+      <ActivityIntro
+        title={a.title}
+        subtitle={a.subtitle}
+        instructions={a.instructions}
+        onStart={() => {}}
+        onExit={() => {}}
+      />
     </div>
   );
 }

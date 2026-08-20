@@ -1,5 +1,3 @@
-import { ArrowLeft } from "lucide-react";
-
 interface ActivityExitButtonProps {
   onExit: () => void;
   /**
@@ -7,6 +5,8 @@ interface ActivityExitButtonProps {
    * the parchment ground of the intro and completion screens.
    */
   tone?: "dark" | "light";
+  /** Defaults to "Exit". */
+  label?: string;
   className?: string;
 }
 
@@ -15,33 +15,41 @@ interface ActivityExitButtonProps {
  *
  * The runner is a full-screen takeover with no app chrome: no sidebar, no
  * header, no breadcrumb. Without this control a student who opened an Activity
- * had no route back to the Activity Centre short of the browser's own Back
- * button, and on the completion screen not even that read as an option.
+ * had no route back short of the browser's own Back button.
+ *
+ * Drawn as an actual button — border, ground, real label size — rather than the
+ * bare arrow-plus-micro-caps it started as. On the intro that first version sat
+ * directly above the decorative "◀ Negation Station ▶" crumb in the same weight
+ * and tracking, so the one control on the page that did something was
+ * indistinguishable from the ornament that did not. An exit has to look
+ * pressable at a glance, which means it cannot be quieter than the decoration
+ * next to it.
  *
  * Deliberately not gated behind a confirmation dialog, unlike the Drill's exit.
  * A Drill run is a timed session held in memory and abandoning it loses work; an
  * Activity writes every attempt to `activity_item_responses` as it happens and
  * replays that log on reopen, so leaving is always safe and always resumable.
- * Asking "are you sure?" would imply a risk that does not exist here.
  */
 export function ActivityExitButton({
   onExit,
   tone = "dark",
+  label = "Exit",
   className = "",
 }: ActivityExitButtonProps) {
   const palette =
     tone === "dark"
-      ? "text-white/75 hover:text-white hover:bg-white/10 focus-visible:outline-white/70"
-      : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-black/[0.06] focus-visible:outline-[hsl(var(--ac-emerald))]";
+      ? "border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/45 focus-visible:outline-white/70"
+      : // Global tokens, not the --act-* set: those are scoped to .act-home, so
+        // on the completion and not-found screens they would resolve to nothing.
+        "border-[hsl(var(--foreground)/0.25)] bg-transparent text-[hsl(var(--foreground))] hover:bg-[hsl(var(--foreground)/0.07)] hover:border-[hsl(var(--foreground)/0.45)] focus-visible:outline-[hsl(var(--foreground)/0.6)]";
 
   return (
     <button
       type="button"
       onClick={onExit}
-      className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 -ml-2 text-xs font-semibold uppercase tracking-[0.14em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${palette} ${className}`}
+      className={`inline-flex items-center justify-center min-h-[36px] rounded-full border px-5 py-2 text-sm font-semibold leading-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${palette} ${className}`}
     >
-      <ArrowLeft size={14} strokeWidth={2.5} aria-hidden />
-      Exit
+      {label}
     </button>
   );
 }
