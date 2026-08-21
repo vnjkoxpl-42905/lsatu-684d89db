@@ -207,7 +207,7 @@ export function useClassroomHome(): {
         };
 
       });
-  }, [access.activities, assigned, dueBySourceId, now, pathname]);
+  }, [access.activities, assigned, dueBySourceId, now, pathname, permissions.is_admin]);
 
   /**
    * Recent recaps and notes: reading matter, not work, so they never carry a
@@ -219,9 +219,13 @@ export function useClassroomHome(): {
    * NEW badge and lets it clear itself once the note has been opened.
    */
   const readingRows = React.useMemo<HomeRow[]>(() => {
+    // Same rule as the work rows: notes addressed to the admin account are
+    // verification artefacts, not reading the teacher owes anyone.
+    if (permissions.is_admin) return [];
     const cutoff = Date.now() - RECAP_WINDOW_DAYS * 86_400_000;
     return (itemsQuery.data ?? [])
       .filter(
+
         (item: ClassroomItem) =>
           NOTE_TYPES.has(item.type) &&
           !isDayZeroWelcome(item) &&
