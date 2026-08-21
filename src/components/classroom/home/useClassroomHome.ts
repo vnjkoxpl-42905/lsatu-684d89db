@@ -169,8 +169,13 @@ export function useClassroomHome(): {
   }, [itemsQuery.data]);
 
   const workRows = React.useMemo<HomeRow[]>(() => {
+    // A teacher is never the student. Verification writes and test assignments
+    // that name the admin account are not work; showing them as "assigned to
+    // you" is a lie about a list only students are supposed to own.
+    if (permissions.is_admin) return [];
     return assigned
       .filter((row) => row.status !== "completed")
+
       // An activity row leads to /activities/:id, which is gated on
       // has_activity_access. Showing it to someone without the flag would put a
       // locked door on the page and, worse, could make it the hero.
