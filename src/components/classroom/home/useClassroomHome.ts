@@ -258,7 +258,8 @@ export function useClassroomHome(): {
         dueToday: false,
         overdue: false,
       }));
-  }, [itemsQuery.data]);
+  }, [itemsQuery.data, permissions.is_admin]);
+
 
   /**
    * Overdue first, then due today, then the rest newest-first, then reading
