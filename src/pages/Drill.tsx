@@ -583,6 +583,34 @@ function DrillContent() {
         }
       }
 
+      // Smart Drill, custom type drills and full sections. These are drawn
+      // fresh on every launch, so the stored queue IS the run: adopt it whole
+      // rather than comparing it to a new shuffle, or the student loses the
+      // questions they already answered. An explicit ?initialIndex wins, since
+      // that is someone deliberately jumping to a question.
+      if (genericResumeKey && user && !initialIndexParam) {
+        const stored = await loadDrillResumeSession(user.id, genericResumeKey);
+        if (isResumableDrillSession(stored)) {
+          questionQueue = stored.question_queue;
+          initialIndex = guidedResumeIndex(
+            questionQueue,
+            stored.current_index,
+            stored.attempts.map((a) => a.qid),
+          );
+          for (const attempt of stored.attempts) {
+            restoredAttempts.set(attempt.qid, {
+              selectedAnswer: attempt.selected_answer,
+              correct: attempt.correct,
+              timeMs: attempt.time_ms,
+              timestamp: Date.now(),
+              confidence: undefined,
+              reviewDone: false,
+            });
+          }
+        }
+      }
+
+
       setSession({
         mode,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
