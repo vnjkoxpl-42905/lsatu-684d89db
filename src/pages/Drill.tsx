@@ -109,6 +109,14 @@ import {
   completeGuidedDrillSession,
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
+import {
+  drillResumeKey,
+  loadDrillResumeSession,
+  saveDrillResumeSnapshot,
+  completeDrillResumeSession,
+  isResumableDrillSession,
+} from '@/lib/drillResumeSession';
+
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
