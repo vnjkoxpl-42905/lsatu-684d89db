@@ -687,6 +687,27 @@ function DrillContent() {
     });
   }, [session, guidedSessionKey, user, drillResumeSnapshot]);
 
+  // And the same again for every other drill surface. Only runs with at least
+  // one answered question are written: an untouched shuffle is not progress,
+  // and storing it would freeze a stale question order in place.
+  React.useEffect(() => {
+    if (!genericResumeKey || !user || !session) return;
+    if (genericFinalizedRef.current) return;
+    if (session.questionQueue.length === 0) return;
+    const snapshot = drillResumeSnapshot(session);
+    if (!snapshot || snapshot.attempts.length === 0) return;
+    void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
+      // Non-fatal: the drill still works, they just lose the resume point.
+      console.error('[drill:resume:snapshot] resume write failed', {
+        userId: user.id,
+        key: genericResumeKey,
+        err,
+      });
+    });
+  }, [session, genericResumeKey, user, drillResumeSnapshot]);
+
+
+
   // Hydrate adaptive engine from DB before Smart Drill selects its first
   // question. If hydration fails, the selector may proceed with current-session
   // state only; it must not cold-start merely because the DB read is still in
