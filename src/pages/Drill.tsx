@@ -2018,6 +2018,10 @@ function DrillContent() {
     // Guided drill: close the resume row so a re-attempt starts fresh.
     await finalizeGuidedDrillSession(attemptsWithTiming);
 
+    // Every other drill surface: same close-out.
+    await finalizeDrillResumeSession(attemptsWithTiming);
+
+
     // Homework assignment: write status=completed + score.
     if (assignmentId && user) {
       const total = session.questionQueue.length;
