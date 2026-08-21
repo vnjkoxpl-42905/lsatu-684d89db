@@ -8,8 +8,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Aisha: Vadim is going to be laid off. Vadim’s work as a programmer has been exemplary since joining the firm. But management has already made the decision to lay off a programmer. And this firm strictly follows a policy of laying off the most recently hired programmer in such cases. Aisha’s conclusion follows logically if",
-    "questionStem": "which one of the following is assumed?",
+    "stimulus": "Aisha: Vadim is going to be laid off. Vadim’s work as a programmer has been exemplary since joining the firm. But management has already made the decision to lay off a programmer. And this firm strictly follows a policy of laying off the most recently hired programmer in such cases.",
+    "questionStem": "Aisha’s conclusion follows logically if which one of the following is assumed?",
     "answerChoices": {
       "A": "The firm values experience in its programmers more highly than any other quality.",
       "B": "When Vadim was hired, the policy of laying off the most recently hired programmer was clearly explained.",
@@ -133,8 +133,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "If one is to participate in the regional band, one must practice very hard or be very talented. Therefore, Lily, who is first trombonist in the regional band and is very talented, does not practice hard. The flawed reasoning in",
-    "questionStem": "which one of the following arguments most closely resembles the flawed reasoning in the argument above?",
+    "stimulus": "If one is to participate in the regional band, one must practice very hard or be very talented. Therefore, Lily, who is first trombonist in the regional band and is very talented, does not practice hard.",
+    "questionStem": "The flawed reasoning in which one of the following arguments most closely resembles the flawed reasoning in the argument above?",
     "answerChoices": {
       "A": "In order to have a chance to meet its objectives, the army needs good weather as a precondition for retaining its mobility. The weather is good today, so the army will meet its objectives.",
       "B": "If Lois were on vacation, she would be visiting her brother in Chicago or seeing friends in Toronto. Since she is not on vacation, she is in neither Chicago nor Toronto.",
@@ -501,8 +501,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork. Thus, it is likely that",
-    "questionStem": "the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity. Which one of the following, if true, most tends to undermine the argument?",
+    "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork.",
+    "questionStem": "Thus, it is likely that the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity. Which one of the following, if true, most tends to undermine the argument?",
     "answerChoices": {
       "A": "Some students who did not participate in the chess program had learned to play chess at home.",
       "B": "Those children who began the program but who did not successfully complete it had lower preprogram levels of achievement than did those who eventually did successfully complete the program.",

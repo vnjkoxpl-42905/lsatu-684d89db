@@ -91,8 +91,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Parent: I had tried without success to get my young child to brush her teeth. I had hoped that she would imitate me, or that she would be persuaded by reason to brush her teeth. Then, I made a point of brushing her teeth for her immediately before reading her a story before her naps and at night. After several weeks, when I would pick up a storybook at these times, she began automatically to retrieve her toothbrush and brush her teeth herself. The parent’s experience with the child most closely",
-    "questionStem": "conforms to which one of the following generalizations?",
+    "stimulus": "Parent: I had tried without success to get my young child to brush her teeth. I had hoped that she would imitate me, or that she would be persuaded by reason to brush her teeth. Then, I made a point of brushing her teeth for her immediately before reading her a story before her naps and at night. After several weeks, when I would pick up a storybook at these times, she began automatically to retrieve her toothbrush and brush her teeth herself.",
+    "questionStem": "The parent’s experience with the child most closely conforms to which one of the following generalizations?",
     "answerChoices": {
       "A": "Children are most effectively taught to do something by someone’s setting an example.",
       "B": "Children more readily adopt a behavior through habit and repetition than through other means.",
@@ -204,8 +204,8 @@
     "questionType": "Point at Issue (Disagree)",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year. Nordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000. Goswami and Nordecki disagree over the truth of which",
-    "questionStem": "one of the following statements?",
+    "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year. Nordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000.",
+    "questionStem": "Goswami and Nordecki disagree over the truth of which one of the following statements?",
     "answerChoices": {
       "A": "The average annual salary at Ergon Foods is over $29,000.",
       "B": "Pay is the primary issue over which the workers are striking at Ergon Foods.",
@@ -394,8 +394,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "If there are any inspired musical performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots. If all of the statements above are true, which one of the",
-    "questionStem": "following must also be true?",
+    "stimulus": "If there are any inspired musical performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots.",
+    "questionStem": "If all of the statements above are true, which one of the following must also be true?",
     "answerChoices": {
       "A": "If there are no sophisticated listeners in the audience, then there will be no inspired musical performances in the concert.",
       "B": "No people who understand their musical roots will be in the audience if the audience will not be treated to a good show.",
@@ -438,8 +438,8 @@
     "questionType": "Must Be True",
     "reasoningType": [],
     "questionDifficulty": 5,
-    "stimulus": "Scientist: Some critics of public funding for this research project have maintained that only if it can be indicated how the public will benefit from the project is continued public funding for it justified. If the critics were right about this, then there would not be the tremendous public support for the project that even its critics acknowledge. If the scientist’s claims are true, which one of the",
-    "questionStem": "following must also be true?",
+    "stimulus": "Scientist: Some critics of public funding for this research project have maintained that only if it can be indicated how the public will benefit from the project is continued public funding for it justified. If the critics were right about this, then there would not be the tremendous public support for the project that even its critics acknowledge.",
+    "questionStem": "If the scientist’s claims are true, which one of the following must also be true?",
     "answerChoices": {
       "A": "The benefits derived from the research project are irrelevant to whether or not its funding is justified.",
       "B": "Continued public funding for the research project is justified.",
@@ -510,8 +510,8 @@
     "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "The following passage is used for Section 3, questions 23 through 24. Tony: A new kind of videocassette has just been developed. It lasts for only half as many viewings as the old kind does but costs a third as much. Therefore, video rental stores would find it significantly more economical to purchase and stock movies recorded on the new kind of videocassette than on the old kind. Anna: But the videocassette itself only accounts for 5 percent of the price a video rental store pays to buy a copy of a movie on video; most of the price consists of royalties the store pays to the studio that produced the movie. So the price that video rental stores pay per copy would decrease by considerably less than 5 percent, and royalties would have to be paid on additional copies. 23. Anna’s reply is structured to lead to which one of the",
-    "questionStem": "following conclusions?",
+    "stimulus": "The following passage is used for Section 3, questions 23 through 24. Tony: A new kind of videocassette has just been developed. It lasts for only half as many viewings as the old kind does but costs a third as much. Therefore, video rental stores would find it significantly more economical to purchase and stock movies recorded on the new kind of videocassette than on the old kind.Anna: But the videocassette itself only accounts for 5 percent of the price a video rental store pays to buy a copy of a movie on video; most of the price consists of royalties the store pays to the studio that produced the movie. So the price that video rental stores pay per copy would decrease by considerably less than 5 percent, and royalties would have to be paid on additional copies.",
+    "questionStem": "Anna’s reply is structured to lead to which one of the following conclusions?",
     "answerChoices": {
       "A": "The royalties paid to movie studios for movies sold on videotape are excessively large.",
       "B": "Video rental stores should always stock the highest-quality videocassettes available, because durability is more important than price.",
@@ -555,8 +555,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Physician: Heart disease generally affects men at an earlier age than it does women, who tend to experience heart disease after menopause. Both sexes have the hormones estrogen and testosterone, but when they are relatively young, men have ten times as much testosterone as women, and women abruptly lose estrogen after menopause. We can conclude, then, that testosterone tends to promote, and estrogen tends to inhibit, heart disease. The physician’s argument is questionable because it presumes which one of the following without providing",
-    "questionStem": "sufficient justification?",
+    "stimulus": "Physician: Heart disease generally affects men at an earlier age than it does women, who tend to experience heart disease after menopause. Both sexes have the hormones estrogen and testosterone, but when they are relatively young, men have ten times as much testosterone as women, and women abruptly lose estrogen after menopause. We can conclude, then, that testosterone tends to promote, and estrogen tends to inhibit, heart disease.",
+    "questionStem": "The physician’s argument is questionable because it presumes which one of the following without providing sufficient justification?",
     "answerChoices": {
       "A": "Hormones are the primary factors that account for the differences in age-related heart disease risks between women and men.",
       "B": "Estrogen and testosterone are the only hormones that promote or inhibit heart disease.",

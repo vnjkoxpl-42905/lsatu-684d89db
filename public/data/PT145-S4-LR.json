@@ -218,8 +218,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Columnist: Some people argue that the government should not take over failing private-sector banks because the government does not know how to manage financial institutions. However, rather than managing a bank’s day-to-day operations, the government would just need to select the bank’s senior management. Most politicians have never been military professionals, yet they appoint the top military officials entrusted with defending the country—at least as great a responsibility as managing a bank. The columnist’s statements, if true, provide reason for rejecting",
-    "questionStem": "which one of the following?",
+    "stimulus": "Columnist: Some people argue that the government should not take over failing private-sector banks because the government does not know how to manage financial institutions. However, rather than managing a bank’s day-to-day operations, the government would just need to select the bank’s senior management. Most politicians have never been military professionals, yet they appoint the top military officials entrusted with defending the country—at least as great a responsibility as managing a bank.",
+    "questionStem": "The columnist’s statements, if true, provide reason for rejecting which one of the following?",
     "answerChoices": {
       "A": "Commanding a branch of the military requires greater knowledge than running a bank does.",
       "B": "Politicians do an adequate job of appointing the top military officials entrusted with defending the country.",
@@ -242,8 +242,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university. These polls lead us to",
-    "questionStem": "the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population. Which one of the following, if true, most seriously weakens the argument?",
+    "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university.",
+    "questionStem": "These polls lead us to the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population. Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
       "A": "The polls of graduating university students were designed to avoid overrepresenting any single academic discipline.",
       "B": "The political views of people with a university education are to a large degree influenced by their professors, and university professors are usually against reducing government social services.",
@@ -312,8 +312,8 @@
       "Causation"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Obviously, entrepreneurial ability is needed to start a successful company. Yet many entrepreneurs who succeed in starting a company fail later for lack of managerial skills. For instance, they do not adequately analyze market trends and, consequently, they fail in managing company growth. Hence, the lack of managerial skills and the lack of entrepreneurial ability can each inhibit the development of successful companies. The proposition that certain entrepreneurs fail in managing company growth plays",
-    "questionStem": "which one of the following roles in the argument above?",
+    "stimulus": "Obviously, entrepreneurial ability is needed to start a successful company. Yet many entrepreneurs who succeed in starting a company fail later for lack of managerial skills. For instance, they do not adequately analyze market trends and, consequently, they fail in managing company growth. Hence, the lack of managerial skills and the lack of entrepreneurial ability can each inhibit the development of successful companies.",
+    "questionStem": "The proposition that certain entrepreneurs fail in managing company growth plays which one of the following roles in the argument above?",
     "answerChoices": {
       "A": "It is the main conclusion drawn in the argument.",
       "B": "It is presented as an example of the phenomenon the argument seeks to explain.",

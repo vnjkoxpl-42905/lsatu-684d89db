@@ -8,8 +8,8 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Yuriko: Our city’s campaign to persuade parents to have their children vaccinated ought to be imitated by your city. In the 16 months since the enactment of legislation authorizing the campaign, vaccinations in our city have increased by 30 percent. Susan: But the major part of that increase occurred in the first 6 months after that legislation was enacted, right after your city’s free neighborhood health clinics opened, and before the vaccination campaign really got going. In responding to Yuriko, Susan does which one of the",
-    "questionStem": "following?",
+    "stimulus": "Yuriko: Our city’s campaign to persuade parents to have their children vaccinated ought to be imitated by your city. In the 16 months since the enactment of legislation authorizing the campaign, vaccinations in our city have increased by 30 percent.Susan: But the major part of that increase occurred in the first 6 months after that legislation was enacted, right after your city’s free neighborhood health clinics opened, and before the vaccination campaign really got going.",
+    "questionStem": "In responding to Yuriko, Susan does which one of the following?",
     "answerChoices": {
       "A": "She denies Yuriko’s assumption that Susan’s city wants to increase the vaccination rate for children.",
       "B": "She cites facts that tend to weaken the force of the evidence with which Yuriko supports her recommendation.",
@@ -452,8 +452,8 @@
     "questionType": "Point at Issue (Disagree)",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Dana: It is wrong to think that the same educational methods should be used with all children. Many children have been raised in more communal environments than others and would therefore learn better through group, rather than individual, activities. A child’s accustomed style of learning should always dictate what method is used. Pat: No, not always. The flexibility of being able to work either on one’s own or in a group is invaluable in a world where both skills are in demand. The conversation lends the most support to the claim that Dana and Pat disagree on which one of the",
-    "questionStem": "following?",
+    "stimulus": "Dana: It is wrong to think that the same educational methods should be used with all children. Many children have been raised in more communal environments than others and would therefore learn better through group, rather than individual, activities. A child’s accustomed style of learning should always dictate what method is used.Pat: No, not always. The flexibility of being able to work either on one’s own or in a group is invaluable in a world where both skills are in demand.",
+    "questionStem": "The conversation lends the most support to the claim that Dana and Pat disagree on which one of the following?",
     "answerChoices": {
       "A": "All children can learn valuable skills from individual activities.",
       "B": "All children should learn to adapt to various educational methods.",
@@ -514,8 +514,8 @@
     "questionType": "Must Be True",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "The increasing complexity of scientific inquiry has led to a proliferation of multiauthored technical articles. Reports of clinical trials involving patients from several hospitals are usually coauthored by physicians from each participating hospital. Likewise, physics papers reporting results from experiments using subsystems developed at various laboratories generally have authors from each laboratory. If all of the statements above are true, which one of the",
-    "questionStem": "following must be true?",
+    "stimulus": "The increasing complexity of scientific inquiry has led to a proliferation of multiauthored technical articles. Reports of clinical trials involving patients from several hospitals are usually coauthored by physicians from each participating hospital. Likewise, physics papers reporting results from experiments using subsystems developed at various laboratories generally have authors from each laboratory.",
+    "questionStem": "If all of the statements above are true, which one of the following must be true?",
     "answerChoices": {
       "A": "Clinical trials involving patients from several hospitals are never conducted solely by physicians from just one hospital.",
       "B": "Most reports of clinical trials involving patients from several hospitals have multiple authors.",

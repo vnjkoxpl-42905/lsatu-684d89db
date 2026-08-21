@@ -55,8 +55,8 @@
     "questionType": "Most Strongly Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Professor: The best users of a language are its great authors. However, these authors often use language in ways that are innovative and idiosyncratic, and are therefore less respectful of the strictures of proper usage than most of us are. The Professor’s statements, if true, most support which",
-    "questionStem": "one of the following?",
+    "stimulus": "Professor: The best users of a language are its great authors. However, these authors often use language in ways that are innovative and idiosyncratic, and are therefore less respectful of the strictures of proper usage than most of us are.",
+    "questionStem": "The Professor’s statements, if true, most support which one of the following?",
     "answerChoices": {
       "A": "People who want to become great writers should not imitate great authors’ use of language.",
       "B": "Writers who do not observe proper language usage risk developing a peculiar or idiosyncratic style.",
@@ -380,8 +380,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "People who have never been asked to do more than they can easily do are people who never do all they can. Alex is someone who has clearly not done all that he is capable of doing, so obviously no one has ever pushed him to do more than what comes to him easily. The flawed reasoning in which one of the following is most similar to the flawed reasoning in the argument",
-    "questionStem": "above?",
+    "stimulus": "People who have never been asked to do more than they can easily do are people who never do all they can. Alex is someone who has clearly not done all that he is capable of doing, so obviously no one has ever pushed him to do more than what comes to him easily.",
+    "questionStem": "The flawed reasoning in which one of the following is most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
       "A": "Anybody who has a dog knows the true value of companionship, and Alicia has demonstrated that she knows the true value of companionship; thus we can safely conclude that Alicia has a dog.",
       "B": "Anyone who discovers something new is someone who has examined all the possible solutions to a problem. Fran has surely never discovered something new. Therefore, Fran has never explored all the possible solutions to a problem.",

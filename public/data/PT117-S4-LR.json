@@ -418,8 +418,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Political scientist: All governments worthy of respect allow their citizens to dissent from governmental policies. No government worthy of respect leaves minorities unprotected. Thus any government that protects minorities permits criticism of its policies. The flawed pattern of reasoning in which one of the following most closely parallels that in the political",
-    "questionStem": "scientist’s argument?",
+    "stimulus": "Political scientist: All governments worthy of respect allow their citizens to dissent from governmental policies. No government worthy of respect leaves minorities unprotected. Thus any government that protects minorities permits criticism of its policies.",
+    "questionStem": "The flawed pattern of reasoning in which one of the following most closely parallels that in the political scientist’s argument?",
     "answerChoices": {
       "A": "Politicians are admirable if they put the interests of those they serve above their own interests. So politicians who sometimes ignore the interests of their own constituents in favor of the nation as a whole deserve admiration, for they are putting the interests of those they serve above their own.",
       "B": "All jazz musicians are capable of improvising and no jazz musician is incapable of reading music. Therefore all musicians who can read music can improvise.",
@@ -442,8 +442,8 @@
       "Causation"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Advertisement: Each of the Economic Merit Prize winners from the past 25 years is covered by the Acme retirement plan. Since the winners of the nation’s most prestigious award for economists have thus clearly recognized that the Acme plan offers them a financially secure future, it is probably a good plan for anyone with retirement needs similar to theirs. The advertisement’s argumentation is most vulnerable to",
-    "questionStem": "criticism on which one of the following grounds?",
+    "stimulus": "Advertisement: Each of the Economic Merit Prize winners from the past 25 years is covered by the Acme retirement plan. Since the winners of the nation’s most prestigious award for economists have thus clearly recognized that the Acme plan offers them a financially secure future, it is probably a good plan for anyone with retirement needs similar to theirs.",
+    "questionStem": "The advertisement’s argumentation is most vulnerable to criticism on which one of the following grounds?",
     "answerChoices": {
       "A": "It ignores the possibility that the majority of Economic Merit Prize winners from previous years used a retirement plan other than the Acme plan.",
       "B": "It fails to address adequately the possibility that any of several retirement plans would be good enough for, and offer a financially secure future to, Economic Merit Prize winners.",
@@ -526,8 +526,8 @@
     "questionType": "Argument Part",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Some people have maintained that private ownership of the means of production ultimately destroys any society that sanctions it. This may be true of a less technologically advanced society that must share its economic resources to survive. But since only private ownership of the means of production permits individuals to test new technologies without the majority’s consent, a technologically advanced society will actually endanger its survival if the means of production become public property. The proposition that private ownership of the means of production ultimately destroys any society that sanctions it plays which one of the following roles in the argument",
-    "questionStem": "above?",
+    "stimulus": "Some people have maintained that private ownership of the means of production ultimately destroys any society that sanctions it. This may be true of a less technologically advanced society that must share its economic resources to survive. But since only private ownership of the means of production permits individuals to test new technologies without the majority’s consent, a technologically advanced society will actually endanger its survival if the means of production become public property.",
+    "questionStem": "The proposition that private ownership of the means of production ultimately destroys any society that sanctions it plays which one of the following roles in the argument above?",
     "answerChoices": {
       "A": "It is a generalization that the argument suggests is no more applicable to less technologically advanced societies than to more technologically advanced societies.",
       "B": "It is a hypothesis for whose widespread acceptance the argument offers an explanation.",

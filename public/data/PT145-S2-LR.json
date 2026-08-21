@@ -235,8 +235,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "One year ago, a municipality banned dishwasher detergents containing phosphates. Anecdotal evidence indicates that many residents continued to use detergents containing phosphates; they just purchased them from out-of-town stores. However, it is clear that some residents did switch to phosphate-free detergents, since phosphate pollution from the municipal wastewater treatment plant decreased significantly in the past year. The answer to",
-    "questionStem": "which one of the following questions would most help in evaluating the argument above?",
+    "stimulus": "One year ago, a municipality banned dishwasher detergents containing phosphates. Anecdotal evidence indicates that many residents continued to use detergents containing phosphates; they just purchased them from out-of-town stores. However, it is clear that some residents did switch to phosphate-free detergents, since phosphate pollution from the municipal wastewater treatment plant decreased significantly in the past year.",
+    "questionStem": "The answer to which one of the following questions would most help in evaluating the argument above?",
     "answerChoices": {
       "A": "Why did many residents continue to use detergents containing phosphates?",
       "B": "What pollutants, if any, are present in phosphate- free dishwashing detergents?",

@@ -509,8 +509,8 @@
       "Causation"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Because the native salmon in Lake Clearwater had nearly disappeared, sockeye salmon were introduced in 1940. After being introduced, this genetically uniform group of sockeyes split into two distinct populations that do not interbreed, one inhabiting deep areas of the lake and the other inhabiting shallow areas. Since the two populations now differ genetically, some researchers hypothesize that each has adapted genetically to its distinct habitat. Which",
-    "questionStem": "of the following, if true, most strongly supports the researchers’ hypothesis?",
+    "stimulus": "Because the native salmon in Lake Clearwater had nearly disappeared, sockeye salmon were introduced in 1940. After being introduced, this genetically uniform group of sockeyes split into two distinct populations that do not interbreed, one inhabiting deep areas of the lake and the other inhabiting shallow areas. Since the two populations now differ genetically, some researchers hypothesize that each has adapted genetically to its distinct habitat.",
+    "questionStem": "Which of the following, if true, most strongly supports the researchers’ hypothesis?",
     "answerChoices": {
       "A": "Neither of the two populations of sockeyes has interbred with the native salmon.",
       "B": "When the native salmon in Lake Clearwater were numerous, they comprised two distinct populations that did not interbreed.",

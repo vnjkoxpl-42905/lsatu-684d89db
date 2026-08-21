@@ -289,8 +289,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico are now refusing to support publicly the idea that free trade should be extended to other Latin American countries. If the statement above is true,",
-    "questionStem": "which one of the following must also be true?",
+    "stimulus": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico are now refusing to support publicly the idea that free trade should be extended to other Latin American countries.",
+    "questionStem": "If the statement above is true, which one of the following must also be true?",
     "answerChoices": {
       "A": "Some of the politicians who now publicly support extending free trade to other Latin American countries did not support free trade among Canada, the United States, and Mexico.",
       "B": "Not all politicians who now publicly support extending free trade to other Latin American countries strongly supported free trade among Canada, the United States, and Mexico.",
@@ -383,8 +383,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "City leader: If our city adopts the new tourism plan, the amount of money that tourists spend here annually will increase by at least $2 billion, creating as many jobs as a new automobile manufacturing plant would. It would be reasonable for the city to spend the amount of money necessary to convince an automobile manufacturer to build a plant here, but adopting the tourism plan would cost less. The city leader’s statements, if true, provide the most support for",
-    "questionStem": "which one of the following?",
+    "stimulus": "City leader: If our city adopts the new tourism plan, the amount of money that tourists spend here annually will increase by at least $2 billion, creating as many jobs as a new automobile manufacturing plant would. It would be reasonable for the city to spend the amount of money necessary to convince an automobile manufacturer to build a plant here, but adopting the tourism plan would cost less.",
+    "questionStem": "The city leader’s statements, if true, provide the most support for which one of the following?",
     "answerChoices": {
       "A": "The city should implement the least expensive job creation measures available.",
       "B": "In general, it is reasonable for the city to spend money to try to convince manufacturing companies to build plants in the city.",

@@ -563,7 +563,7 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "",
+    "stimulus": "Anthropologist: After mapping the complete dominance hierarchy for a troupe of vervet monkeys by examining their pairwise interaction, we successfully predicted more complex forms of their group behavior by assuming that each monkey had knowledge of the complete hierarchy. Since our prediction was so accurate, it follows that the assumption we used to reach it was in fact true.\n\nPrimatologist: Although I agree that your assumption helped you make those predictions, your conclusion does not follow. You might as well argue that since we can predict the output of some bank cash machines by assuming that these machines actually want to satisfy the customers’ requests, these cash machines must really have desires.",
     "questionStem": "Which one of the following is a point about which the anthropologist and the primatologist are committed to disagreeing?",
     "answerChoices": {
       "A": "whether the anthropologist successfully predicted the behavior of individual monkeys by use of the map of the troupe’s dominance hierarchy",

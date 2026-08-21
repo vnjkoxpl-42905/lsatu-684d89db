@@ -156,8 +156,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Critic: The perennial image of the “city on a hill” associates elevated locations with elevated purposes. The city’s concert hall—its newest civic building—is located on a spectacular hilltop site. But because it is far from the center of the city, it cannot fulfill the purpose of a civic building. An example of a successful civic building is the art museum, which is situated in a densely populated downtown area. It encourages social cohesion and makes the city more alive. The critic’s reasoning most closely conforms to",
-    "questionStem": "which one of the following principles?",
+    "stimulus": "Critic: The perennial image of the “city on a hill” associates elevated locations with elevated purposes. The city’s concert hall—its newest civic building—is located on a spectacular hilltop site. But because it is far from the center of the city, it cannot fulfill the purpose of a civic building. An example of a successful civic building is the art museum, which is situated in a densely populated downtown area. It encourages social cohesion and makes the city more alive.",
+    "questionStem": "The critic’s reasoning most closely conforms to which one of the following principles?",
     "answerChoices": {
       "A": "A civic building that is located in a downtown area should, if possible, be located on an elevated site.",
       "B": "A city needs to have civic buildings if it is to have social cohesion.",
@@ -203,8 +203,8 @@
     "questionType": "Argument part",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Fraenger’s assertion that the artist Hieronymus Bosch belonged to the Brethren of the Free Spirit, a nonmainstream religious group, is unlikely to be correct. Fraenger’s hypothesis explains much of Bosch’s unusual subject matter. However, there is evidence that Bosch was a member of a mainstream church, and no evidence that he was a member of the Brethren. The statement that there is no evidence that Bosch was a member of the Brethren figures in",
-    "questionStem": "the argument in which one of the following ways?",
+    "stimulus": "Fraenger’s assertion that the artist Hieronymus Bosch belonged to the Brethren of the Free Spirit, a nonmainstream religious group, is unlikely to be correct. Fraenger’s hypothesis explains much of Bosch’s unusual subject matter. However, there is evidence that Bosch was a member of a mainstream church, and no evidence that he was a member of the Brethren.",
+    "questionStem": "The statement that there is no evidence that Bosch was a member of the Brethren figures in the argument in which one of the following ways?",
     "answerChoices": {
       "A": "It is a premise that, when combined with the other premises, guarantees the falsity of Fraenger’s assertion.",
       "B": "It is used to support the claim that Bosch was a member of a mainstream church.",
@@ -328,8 +328,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Environmentalist: Pollution from gasoline burned by cars contributes to serious environmental problems. But the cost of these problems is not reflected in gasoline prices, and hence usually does not affect consumers’ decisions about how much to drive. Heavier taxes on gasoline, however, would reflect this cost, and as a result consumers would pollute less. The environmentalist’s statements, if true, most strongly support",
-    "questionStem": "which one of the following?",
+    "stimulus": "Environmentalist: Pollution from gasoline burned by cars contributes to serious environmental problems. But the cost of these problems is not reflected in gasoline prices, and hence usually does not affect consumers’ decisions about how much to drive. Heavier taxes on gasoline, however, would reflect this cost, and as a result consumers would pollute less.",
+    "questionStem": "The environmentalist’s statements, if true, most strongly support which one of the following?",
     "answerChoices": {
       "A": "The cost of pollution from driving should not be reflected in the price of gasoline unless the amount of pollution produced would be reduced as a result.",
       "B": "Heavier taxes on gasoline would increase consumers’ awareness of the kinds of environmental problems to which pollution from driving contributes.",
@@ -423,8 +423,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "So far this summer there has been no rain in the valley. But usually a few inches of rain fall there each summer. Since only one week of summer is left, it will probably rain in the valley within the next week. The flawed pattern of reasoning in",
-    "questionStem": "the argument above is most similar to that in which one of the following arguments?",
+    "stimulus": "So far this summer there has been no rain in the valley. But usually a few inches of rain fall there each summer. Since only one week of summer is left, it will probably rain in the valley within the next week.",
+    "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
     "answerChoices": {
       "A": "Aisha has finished proofreading all but the last two pages of an issue of the journal Periodos and has encountered no errors. However, there are sometimes a few errors in an issue of the journal Periodos. So there may be errors in the pages that Aisha has not yet checked.",
       "B": "There are generally few errors in an issue of the journal Periodos. Aisha has finished proofreading all but the last two pages of an issue of this journal but has encountered no errors. Hence, there are probably no errors in the pages that Aisha has not yet checked in this issue of the journal.",

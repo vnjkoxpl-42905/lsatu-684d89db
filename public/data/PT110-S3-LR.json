@@ -27,8 +27,8 @@
     "questionType": "Paradox EXCEPT",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "To acquire a better understanding of the structure and development of the human personality, some psychologists study the personalities of animals. Each of the following, if true, contributes to an",
-    "questionStem": "explanation of the practice mentioned above except:",
+    "stimulus": "To acquire a better understanding of the structure and development of the human personality, some psychologists study the personalities of animals.",
+    "questionStem": "Each of the following, if true, contributes to an explanation of the practice mentioned above EXCEPT:",
     "answerChoices": {
       "A": "The actions of humans and animals are believed to be motivated by similar instincts, but these instincts are easier to discern in animals.",
       "B": "The law forbids certain experiments on humans but permits them on animals.",
@@ -227,8 +227,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Philosopher: People are not intellectually well suited to live in large, bureaucratic societies. Therefore, people can find happiness, if at all, only in smaller political units such as villages. The reasoning in the philosopher’s argument is flawed",
-    "questionStem": "because the argument takes for granted that",
+    "stimulus": "Philosopher: People are not intellectually well suited to live in large bureaucratic societies. Therefore, people can find happiness, if at all, only in smaller political units such as villages.",
+    "questionStem": "The reasoning in the philosopher’s argument is flawed because the argument takes for granted that",
     "answerChoices": {
       "A": "no one can ever be happy living in a society in which she or he is not intellectually well suited to live",
       "B": "the primary purpose of small political units such as villages is to make people happy",
@@ -340,8 +340,8 @@
     "questionType": "Point at Issue",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Lea: Contemporary art has become big business. Nowadays art has less to do with self- expression than with making money. The work of contemporary artists is utterly bereft of spontaneity and creativity, as a visit to any art gallery demonstrates. Susan: I disagree. One can still find spontaneous, innovative new artwork in most of the smaller, independent galleries. Lea’s and Susan’s remarks provide the most support for",
-    "questionStem": "holding that they disagree about whether",
+    "stimulus": "Lea: Contemporary art has become big business. Nowadays art has less to do with self-expression than with making money. The work of contemporary artists is utterly bereft of spontaneity and creativity, as a visit to any art gallery demonstrates.\n\nSusan: I disagree. One can still find spontaneous, innovative new artwork in most of the smaller, independent galleries.",
+    "questionStem": "Lea’s and Susan’s remarks provide the most support for holding that they disagree about whether",
     "answerChoices": {
       "A": "large galleries contain creative artwork",
       "B": "most galleries contain some artwork that lacks spontaneity and creativity",
@@ -504,8 +504,8 @@
     "questionType": "Must be false EXCEPT",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Viruses can have beneficial effects. For example, some kill more-complex microorganisms, some of which are deadly to humans. But viruses have such simple structures that replacing just a few of a beneficial virus’s several million atoms can make it deadly to humans. Clearly, since alterations of greater complexity than this are commonly produced by random mutations, any virus could easily become dangerous to humans. If the statements above are true, then each of the",
-    "questionStem": "following statements could also be true except:",
+    "stimulus": "Viruses can have beneficial effects. For example, some kill more-complex microorganisms, some of which are deadly to humans. But viruses have such simple structures that replacing just a few of a beneficial virus’s several million atoms can make it deadly to humans. Clearly, since alterations of greater complexity than this are commonly produced by random mutations, any virus could easily become dangerous to humans.",
+    "questionStem": "If the statements above are true, then each of the following statements could also be true EXCEPT:",
     "answerChoices": {
       "A": "Random mutation makes some deadly viruses beneficial to humans.",
       "B": "Some organisms of greater complexity than viruses are no more likely than viruses to undergo significant alterations through random mutation.",

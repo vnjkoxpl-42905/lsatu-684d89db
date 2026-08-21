@@ -82,8 +82,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "James: Community colleges, by their very nature, work to meet the educational needs of the communities they are in. The same is not true of universities, whose primary goals differ from those of community colleges. Margaret: A primary goal of any university is to serve the needs of the community where it is located. The main reason people have for attending a university is the same as that for attending a community college: preparing oneself for a career. James’s and Margaret’s statements provide the most support for",
-    "questionStem": "the claim that they disagree over the truth of which one of the following?",
+    "stimulus": "James: Community colleges, by their very nature, work to meet the educational needs of the communities they are in. The same is not true of universities, whose primary goals differ from those of community colleges. Margaret: A primary goal of any university is to serve the needs of the community where it is located. The main reason people have for attending a university is the same as that for attending a community college: preparing oneself for a career.",
+    "questionStem": "James’s and Margaret’s statements provide the most support for the claim that they disagree over the truth of which one of the following?",
     "answerChoices": {
       "A": "A primary goal of any university is to serve the educational needs of its community.",
       "B": "Most universities adequately serve the educational needs of the communities in which they are located.",
@@ -176,8 +176,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "The result of attempting to whip cream in a blender is a thick, velvety substance rather than fluffy whipped cream. This is because a blender’s container does not let in enough air to whip cream effectively. Although using a special whipping-cream attachment in a blender can help somewhat, it cannot fully compensate for the container’s poor air intake. If all of",
-    "questionStem": "the statements above are true, which one of the following must be true?",
+    "stimulus": "The result of attempting to whip cream in a blender is a thick, velvety substance rather than fluffy whipped cream. This is because a blender’s container does not let in enough air to whip cream effectively. Although using a special whipping-cream attachment in a blender can help somewhat, it cannot fully compensate for the container’s poor air intake.",
+    "questionStem": "If all of the statements above are true, which one of the following must be true?",
     "answerChoices": {
       "A": "Cream that has been whipped ineffectively generally becomes a thick, velvety substance rather than fluffy whipped cream.",
       "B": "The use of a special whipping-cream attachment in a blender does not suffice to whip cream completely effectively.",
@@ -316,8 +316,8 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Sharon heard her favorite novelist speak out against a political candidate that Sharon has supported for years. As a result, Sharon’s estimation of the novelist declined but her estimation of the candidate did not change. The situation described above conforms most closely to",
-    "questionStem": "which one of the following principles?",
+    "stimulus": "Sharon heard her favorite novelist speak out against a political candidate that Sharon has supported for years. As a result, Sharon’s estimation of the novelist declined but her estimation of the candidate did not change.",
+    "questionStem": "The situation described above conforms most closely to which one of the following principles?",
     "answerChoices": {
       "A": "Artists who speak out on political matters will have influence only among their most dedicated fans.",
       "B": "A political statement from an artist should be considered only if the artist has established a reputation for being an honest and knowledgeable observer of politics.",
@@ -510,8 +510,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "In marketing their products, drug companies often send gifts to physicians. According to a recent survey, most physicians believe that their own choices when prescribing drugs are not influenced by drug companies’ gifts. The same survey indicates that the majority of physicians believe that most other physicians’ prescription choices are influenced by such gifts. If the survey results are accurate,",
-    "questionStem": "which one of the following must be true?",
+    "stimulus": "In marketing their products, drug companies often send gifts to physicians. According to a recent survey, most physicians believe that their own choices when prescribing drugs are not influenced by drug companies’ gifts. The same survey indicates that the majority of physicians believe that most other physicians’ prescription choices are influenced by such gifts.",
+    "questionStem": "If the survey results are accurate, which one of the following must be true?",
     "answerChoices": {
       "A": "Physicians who do not accept gifts from drug companies are less likely to prescribe unnecessary drugs than those who do accept such gifts.",
       "B": "Most physicians believe that drug companies should adopt new guidelines that regulate their practices in sending gifts to physicians.",

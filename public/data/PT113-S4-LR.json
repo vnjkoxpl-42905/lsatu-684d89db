@@ -6,7 +6,7 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Criminals often have an unusual self-image. Embezzlers often think of their actions as \"only borrowing money.\" Many people convicted of violent crimes rationalize their actions by some sort of denial; either the victim \"deserved it\" and so the action was justified, or \"it simply wasn't my fault.\" Thus, in many cases, by criminals' characterization of their situations, _______________",
+    "stimulus": "Criminals often have an unusual self-image. Embezzlers often think of their actions as “only borrowing money.” Many people convicted of violent crimes rationalize their actions by some sort of denial; either the victim “deserved it” and so the action was justified, or “it simply wasn’t my fault. ” Thus, in many cases, by criminals’ characterization of their situations, _______.",
     "questionStem": "Which one of the following most logically completes the passage?",
     "answerChoices": {
       "A": "they ought to be rewarded for their actions",
@@ -158,8 +158,8 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Commentator: In the new century, only nations with all the latest electronic technology will experience great economic prosperity. The people in these nations will be constantly bombarded with images of how people in other countries live. This will increase their tendency to question their own customs and traditions, leading to a dissolution of those customs and traditions. Hence, in the new century, the stability of a nation's cultural identity will likely _______________",
-    "questionStem": "Which one of the following most logically completes the commentator's argument?",
+    "stimulus": "Commentator: In the new century, only nations with all the latest electronic technology will experience great economic prosperity. The people in these nations will be constantly bombarded with images of how people in other countries live. This will increase their tendency to question their own customs and traditions, leading to a dissolution of those customs and traditions. Hence, in the new century, the stability of a nation’s cultural identity will likely _______.",
+    "questionStem": "Which one of the following most logically completes the commentator’s argument?",
     "answerChoices": {
       "A": "depend on a just distribution of electronic technology among all nations",
       "B": "decrease if that nation comes to have a high level of economic wealth",

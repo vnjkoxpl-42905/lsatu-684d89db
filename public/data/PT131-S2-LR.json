@@ -245,7 +245,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "A theoretical framework facilitates conceptual organization of material and fruitful expansions of research. Many historians argue that historical analysis is therefore done best within a theoretical framework. But the past is too complex for all of its main trends to be captured within a theoretical framework. Therefore,",
+    "stimulus": "A theoretical framework facilitates conceptual organization of material and fruitful expansions of research. Many historians argue that historical analysis is therefore done best within a theoretical framework. But the past is too complex for all of its main trends to be captured within a theoretical framework. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
       "A": "there is no benefit ever to be gained in recommending to historians that they place their work within a theoretical framework",
@@ -519,8 +519,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Market analyst: According to my research, 59 percent of consumers anticipate paying off their credit card balances in full before interest charges start to accrue, intending to use the cards only to avoid carrying cash and writing checks. This research also suggests that in trying to win business from their competitors, credit card companies tend to concentrate on improving the services their customers are the most interested in. Therefore, my research would lead us to expect that",
-    "questionStem": "Which one of the following most logically completes the market analyst's argument?",
+    "stimulus": "Market analyst: According to my research, 59 percent of consumers anticipate paying off their credit card balances in full before interest charges start to accrue, intending to use the cards only to avoid carrying cash and writing checks. This research also suggests that in trying to win business from their competitors, credit card companies tend to concentrate on improving the services their customers are the most interested in. Therefore, my research would lead us to expect that _______.",
+    "questionStem": "Which one of the following most logically completes the market analyst’s argument?",
     "answerChoices": {
       "A": "most consumers would be indifferent about which company's credit card they use",
       "B": "credit card companies would not make the interest rates they charge on cards the main selling point",

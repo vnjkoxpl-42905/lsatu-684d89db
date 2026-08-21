@@ -158,8 +158,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Educator: Only those students who are genuinely curious about a topic can successfully learn about that topic. They find the satisfaction of their curiosity intrinsically gratifying, and appreciate the inherent rewards of the learning process itself. However, almost no child enters the classroom with sufficient curiosity to learn successfully all that the teacher must instill. A teacher's job, therefore,",
-    "questionStem": "Which one of the following most logically completes the educator's argument?",
+    "stimulus": "Educator: Only those students who are genuinely curious about a topic can successfully learn about that topic. They find the satisfaction of their curiosity intrinsically gratifying, and appreciate the inherent rewards of the learning process itself. However, almost no child enters the classroom with sufficient curiosity to learn successfully all that the teacher must instill. A teacher’s job, therefore, _______.",
+    "questionStem": "Which one of the following most logically completes the educator’s argument?",
     "answerChoices": {
       "A": "requires for the fulfillment of its goals the stimulation as well as the satisfaction of curiosity",
       "B": "necessitates the creative use of rewards that are not inherent in the learning process itself",

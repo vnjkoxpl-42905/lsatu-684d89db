@@ -53,8 +53,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Land developer: By attempting to preserve endangered species that otherwise would become extinct during our lifetime, we are wasting money on species that will disappear over time regardless of our efforts. Paleontologists have established that extinction is the normal fate of species on the geological time scale of millions of years. Environmentalist: To claim that we should let species disappear because all species eventually die out makes about as much sense as arguing that we should not spend money to find a cure for cancer because all humans are inevitably mortal. The method the environmentalist uses to object to the",
-    "questionStem": "land developer’s argument is to",
+    "stimulus": "Land developer: By attempting to preserve endangered species that otherwise would become extinct during our lifetime, we are wasting money on species that will disappear over time regardless of our efforts. Paleontologists have established that extinction is the normal fate of species on the geological time scale of millions of years. Environmentalist: To claim that we should let species disappear because all species eventually die out makes about as much sense as arguing that we should not spend money to find a cure for cancer because all humans are inevitably mortal.",
+    "questionStem": "The method the environmentalist uses to object to the land developer’s argument is to",
     "answerChoices": {
       "A": "clarify a dilemma that is embedded in the land developer’s argument",
       "B": "attack the character of the land developer rather than the position the land developer is taking",
@@ -173,8 +173,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects. 8. Each of the following, if true, weakens the official’s",
-    "questionStem": "argument except:",
+    "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects.",
+    "questionStem": "Each of the following, if true, weakens the official’s argument EXCEPT:",
     "answerChoices": {
       "A": "The amount of fruit that an orchard can potentially produce depends in part on how many mature trees it contains, and the number of mature pear trees in District 10 has declined steadily over the past eight years.",
       "B": "During the past five years, the farmers of the District 10 Farmers’ Cooperative have been gradually implementing a variety of insect- abatement programs, and some of these programs have proven successful.",
@@ -219,8 +219,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "The only motives that influence all human actions arise from self-interest. It is clear, therefore, that self-interest is the chief influence on human action. The reasoning in the argument is fallacious because the",
-    "questionStem": "argument",
+    "stimulus": "The only motives that influence all human actions arise from self-interest. It is clear, therefore, that self-interest is the chief influence on human action.",
+    "questionStem": "The reasoning in the argument is fallacious because the argument",
     "answerChoices": {
       "A": "denies that an observation that a trait is common to all the events in a pattern can contribute to a causal explanation of the pattern",
       "B": "takes the occurrence of one particular influence on a pattern or class of events as showing that its influence outweighs any other influence on those events",
@@ -266,8 +266,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Music critic: Some people argue that, unlike certain works of Handel, which set to music familiar religious texts, the organ symphonies of Louis Vierne are not religious music. Quite the contrary. Sitting in Notre Dame cathedral in Paris and hearing his organ symphonies demonstrates that Vierne’s works are divinely inspired. The music critic’s reasoning is vulnerable to criticism on",
-    "questionStem": "the ground that it",
+    "stimulus": "Music critic: Some people argue that, unlike certain works of Handel, which set to music familiar religious texts, the organ symphonies of Louis Vierne are not religious music. Quite the contrary. Sitting in Notre Dame cathedral in Paris and hearing his organ symphonies demonstrates that Vierne’s works are divinely inspired.",
+    "questionStem": "The music critic’s reasoning is vulnerable to criticism on the ground that it",
     "answerChoices": {
       "A": "takes for granted that all religious music is inspiring",
       "B": "confuses two different meanings of the term “religious”",
@@ -433,8 +433,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Professor Robinson: A large meteorite impact crater in a certain region was thought to be the clue to explaining the mass extinction of plant and animal species that occurred at the end of the Mesozoic era. However, the crystalline structure of rocks recovered at the site indicates that the impact that formed this crater was not the culprit. When molten rocks crystallize, they display the polarity of Earth’s magnetic field at that time. But the recrystallized rocks recovered at the site display normal magnetic polarity, even though Earth’s magnetic field was reversed at the time of the mass extinction. Each of the following is an assumption on which Professor",
-    "questionStem": "Robinson’s argument depends except:",
+    "stimulus": "Professor Robinson: A large meteorite impact crater in a certain region was thought to be the clue to explaining the mass extinction of plant and animal species that occurred at the end of the Mesozoic era. However, the crystalline structure of rocks recovered at the site indicates that the impact that formed this crater was not the culprit. When molten rocks crystallize, they display the polarity of Earth’s magnetic field at that time. But the recrystallized rocks recovered at the site display normal magnetic polarity, even though Earth’s magnetic field was reversed at the time of the mass extinction.",
+    "questionStem": "Each of the following is an assumption on which Professor Robinson’s argument depends EXCEPT:",
     "answerChoices": {
       "A": "The crater indicates an impact of more than sufficient size to have caused the mass extinction.",
       "B": "The recovered rocks recrystallized shortly after they melted.",

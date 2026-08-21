@@ -399,8 +399,8 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Essayist: Only happiness is intrinsically valuable; other things are valuable only insofar as they contribute to happiness. Some philosophers argue that the fact that we do not approve of a bad person's being happy shows that we value happiness only when it is deserved. This supposedly shows that we find something besides happiness to be intrinsically valuable. But the happiness people deserve is determined by the amount of happiness they bring to others. Therefore,",
-    "questionStem": "Which one of the following most logically completes the final sentence of the essayist's argument?",
+    "stimulus": "Essayist: Only happiness is intrinsically valuable; other things are valuable only insofar as they contribute to happiness. Some philosophers argue that the fact that we do not approve of a bad person’s being happy shows that we value happiness only when it is deserved. This supposedly shows that we find something besides happiness to be intrinsically valuable. But the happiness people deserve is determined by the amount of happiness they bring to others. Therefore, _______.",
+    "questionStem": "Which one of the following most logically completes the final sentence of the essayist’s argument?",
     "answerChoices": {
       "A": "the notion that people can be deserving of happiness is ultimately incoherent",
       "B": "people do not actually value happiness as much as they think they do",

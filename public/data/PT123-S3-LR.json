@@ -223,7 +223,7 @@
       "Causation"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Advertisers have learned that people are more easily encouraged to develop positive attitudes about things toward which they originally have neutral or even negative attitudes if those things are linked, with pictorial help rather than exclusively through prose, to things about which they already have positive attitudes. Therefore, advertisers are likely to",
+    "stimulus": "Advertisers have learned that people are more easily encouraged to develop positive attitudes about things toward which they originally have neutral or even negative attitudes if those things are linked, with pictorial help rather than exclusively through prose, to things about which they already have positive attitudes. Therefore, advertisers are likely to _______ .",
     "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
       "A": "use little if any written prose in their advertisements",
@@ -376,8 +376,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Philosopher: Nations are not literally persons; they have no thoughts or feelings, and, literally speaking, they perform no actions. Thus they have no moral rights or responsibilities. But no nation can survive unless many of its citizens attribute such rights and responsibilities to it, for nothing else could prompt people to make the sacrifices national citizenship demands. Obviously, then, a nation",
-    "questionStem": "Which one of the following most logically completes the philosopher's argument?",
+    "stimulus": "Philosopher: Nations are not literally persons; they have no thoughts or feelings, and, literally speaking, they perform no actions. Thus they have no moral rights or responsibilities. But no nation can survive unless many of its citizens attribute such rights and responsibilities to it, for nothing else could prompt people to make the sacrifices national citizenship demands. Obviously, then, a nation _______ .",
+    "questionStem": "Which one of the following most logically completes the philosopher’s argument?",
     "answerChoices": {
       "A": "cannot continue to exist unless something other than the false belief that the nation has moral rights motivates its citizens to make sacrifices",
       "B": "cannot survive unless many of its citizens have some beliefs that are literally false",

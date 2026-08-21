@@ -57,8 +57,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Psychiatrist: Breaking any habit is difficult, especially when it involves an addictive substance. People who break a habit are more likely to be motivated by immediate concerns than by long-term ones. Therefore, people who succeed in breaking their addiction to smoking cigarettes are more likely to be motivated by the social pressure against smoking—which is an immediate concern—than by health concerns, since",
-    "questionStem": "The conclusion of the psychiatrist's argument is most strongly supported if which one of the following completes the argument?",
+    "stimulus": "Psychiatrist: Breaking any habit is difficult, especially when it involves an addictive substance. People who break a habit are more likely to be motivated by immediate concerns than by long-term ones. Therefore, people who succeed in breaking their addiction to smoking cigarettes are more likely to be motivated by the social pressure against smoking—which is an immediate concern—than by health concerns, since _______.",
+    "questionStem": "The conclusion of the psychiatrist’s argument is most strongly supported if which one of the following completes the argument?",
     "answerChoices": {
       "A": "a habit that involves an addictive substance is likely to pose a greater health threat than a habit that does not involve any addictive substance",
       "B": "for most people who successfully quit smoking, smoking does not create an immediate health concern at the time they quit",
