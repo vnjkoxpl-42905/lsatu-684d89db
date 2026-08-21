@@ -109,6 +109,14 @@ import {
   completeGuidedDrillSession,
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
+import {
+  drillResumeKey,
+  loadDrillResumeSession,
+  saveDrillResumeSnapshot,
+  completeDrillResumeSession,
+  isResumableDrillSession,
+} from '@/lib/drillResumeSession';
+
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -165,6 +173,18 @@ function DrillContent() {
   // snapshot write would flip the row back to in_progress and offer a resume on
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
+  // Every remaining drill surface — Smart Drill, custom type drills, full
+  // sections — gets the same durable resume row, so closing the browser or
+  // signing out mid-drill is never a loss. Null while the guided/practice-set
+  // surfaces own the run, so the three can never write over each other.
+  const genericResumeKey = React.useMemo(() => {
+    if (isMcPractice || guidedSessionKey) return null;
+    if (!state?.mode) return null;
+    const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
+    return drillResumeKey({ mode, config: state.config });
+  }, [isMcPractice, guidedSessionKey, state]);
+  const genericFinalizedRef = React.useRef(false);
+
   const bootcampPracticeReturnTo =
     returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
       ? returnTo
@@ -563,6 +583,34 @@ function DrillContent() {
         }
       }
 
+      // Smart Drill, custom type drills and full sections. These are drawn
+      // fresh on every launch, so the stored queue IS the run: adopt it whole
+      // rather than comparing it to a new shuffle, or the student loses the
+      // questions they already answered. An explicit ?initialIndex wins, since
+      // that is someone deliberately jumping to a question.
+      if (genericResumeKey && user && !initialIndexParam) {
+        const stored = await loadDrillResumeSession(user.id, genericResumeKey);
+        if (isResumableDrillSession(stored)) {
+          questionQueue = stored.question_queue;
+          initialIndex = guidedResumeIndex(
+            questionQueue,
+            stored.current_index,
+            stored.attempts.map((a) => a.qid),
+          );
+          for (const attempt of stored.attempts) {
+            restoredAttempts.set(attempt.qid, {
+              selectedAnswer: attempt.selected_answer,
+              correct: attempt.correct,
+              timeMs: attempt.time_ms,
+              timestamp: Date.now(),
+              confidence: undefined,
+              reviewDone: false,
+            });
+          }
+        }
+      }
+
+
       setSession({
         mode,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
@@ -574,7 +622,7 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, user]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, genericResumeKey, user]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
@@ -638,6 +686,27 @@ function DrillContent() {
       });
     });
   }, [session, guidedSessionKey, user, drillResumeSnapshot]);
+
+  // And the same again for every other drill surface. Only runs with at least
+  // one answered question are written: an untouched shuffle is not progress,
+  // and storing it would freeze a stale question order in place.
+  React.useEffect(() => {
+    if (!genericResumeKey || !user || !session) return;
+    if (genericFinalizedRef.current) return;
+    if (session.questionQueue.length === 0) return;
+    const snapshot = drillResumeSnapshot(session);
+    if (!snapshot || snapshot.attempts.length === 0) return;
+    void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
+      // Non-fatal: the drill still works, they just lose the resume point.
+      console.error('[drill:resume:snapshot] resume write failed', {
+        userId: user.id,
+        key: genericResumeKey,
+        err,
+      });
+    });
+  }, [session, genericResumeKey, user, drillResumeSnapshot]);
+
+
 
   // Hydrate adaptive engine from DB before Smart Drill selects its first
   // question. If hydration fails, the selector may proceed with current-session
@@ -1884,6 +1953,31 @@ function DrillContent() {
     }
   };
 
+  /**
+   * Close out the resume row for Smart Drill / custom drills / full sections.
+   * The row keeps the queue and every answer for review; completing it only
+   * stops it being offered as a resume, so the next launch draws fresh
+   * questions instead of replaying a finished run.
+   */
+  const finalizeDrillResumeSession = async (attempts: DrillSession['attempts']): Promise<void> => {
+    if (!genericResumeKey || !user) return;
+    genericFinalizedRef.current = true;
+
+    const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
+    if (!snapshot) return;
+    try {
+      await completeDrillResumeSession(user.id, genericResumeKey, snapshot);
+    } catch (err) {
+      // Non-fatal: the attempts are already saved; this only affects resume.
+      console.error('[drill:resume:complete] resume row write failed', {
+        userId: user.id,
+        key: genericResumeKey,
+        err,
+      });
+    }
+  };
+
+
   const handleFinishPracticeSet = async () => {
     if (!session || !user) return;
 
@@ -1923,6 +2017,10 @@ function DrillContent() {
 
     // Guided drill: close the resume row so a re-attempt starts fresh.
     await finalizeGuidedDrillSession(attemptsWithTiming);
+
+    // Every other drill surface: same close-out.
+    await finalizeDrillResumeSession(attemptsWithTiming);
+
 
     // Homework assignment: write status=completed + score.
     if (assignmentId && user) {
@@ -2086,6 +2184,10 @@ function DrillContent() {
     // Guided drill closed out from here (the End Drill button) rather than by
     // answering the last question — same closeout, so a re-attempt is fresh.
     await finalizeGuidedDrillSession(updatedAttempts);
+
+    // Same for Smart Drill / custom drills / full sections.
+    await finalizeDrillResumeSession(updatedAttempts);
+
 
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);

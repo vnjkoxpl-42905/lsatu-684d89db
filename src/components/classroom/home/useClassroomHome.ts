@@ -169,8 +169,13 @@ export function useClassroomHome(): {
   }, [itemsQuery.data]);
 
   const workRows = React.useMemo<HomeRow[]>(() => {
+    // A teacher is never the student. Verification writes and test assignments
+    // that name the admin account are not work; showing them as "assigned to
+    // you" is a lie about a list only students are supposed to own.
+    if (permissions.is_admin) return [];
     return assigned
       .filter((row) => row.status !== "completed")
+
       // An activity row leads to /activities/:id, which is gated on
       // has_activity_access. Showing it to someone without the flag would put a
       // locked door on the page and, worse, could make it the hero.
@@ -202,7 +207,7 @@ export function useClassroomHome(): {
         };
 
       });
-  }, [access.activities, assigned, dueBySourceId, now, pathname]);
+  }, [access.activities, assigned, dueBySourceId, now, pathname, permissions.is_admin]);
 
   /**
    * Recent recaps and notes: reading matter, not work, so they never carry a
@@ -214,9 +219,13 @@ export function useClassroomHome(): {
    * NEW badge and lets it clear itself once the note has been opened.
    */
   const readingRows = React.useMemo<HomeRow[]>(() => {
+    // Same rule as the work rows: notes addressed to the admin account are
+    // verification artefacts, not reading the teacher owes anyone.
+    if (permissions.is_admin) return [];
     const cutoff = Date.now() - RECAP_WINDOW_DAYS * 86_400_000;
     return (itemsQuery.data ?? [])
       .filter(
+
         (item: ClassroomItem) =>
           NOTE_TYPES.has(item.type) &&
           !isDayZeroWelcome(item) &&
@@ -249,7 +258,8 @@ export function useClassroomHome(): {
         dueToday: false,
         overdue: false,
       }));
-  }, [itemsQuery.data]);
+  }, [itemsQuery.data, permissions.is_admin]);
+
 
   /**
    * Overdue first, then due today, then the rest newest-first, then reading
