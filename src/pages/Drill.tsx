@@ -1953,6 +1953,31 @@ function DrillContent() {
     }
   };
 
+  /**
+   * Close out the resume row for Smart Drill / custom drills / full sections.
+   * The row keeps the queue and every answer for review; completing it only
+   * stops it being offered as a resume, so the next launch draws fresh
+   * questions instead of replaying a finished run.
+   */
+  const finalizeDrillResumeSession = async (attempts: DrillSession['attempts']): Promise<void> => {
+    if (!genericResumeKey || !user) return;
+    genericFinalizedRef.current = true;
+
+    const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
+    if (!snapshot) return;
+    try {
+      await completeDrillResumeSession(user.id, genericResumeKey, snapshot);
+    } catch (err) {
+      // Non-fatal: the attempts are already saved; this only affects resume.
+      console.error('[drill:resume:complete] resume row write failed', {
+        userId: user.id,
+        key: genericResumeKey,
+        err,
+      });
+    }
+  };
+
+
   const handleFinishPracticeSet = async () => {
     if (!session || !user) return;
 
