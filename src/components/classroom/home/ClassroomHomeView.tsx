@@ -247,6 +247,12 @@ export function ClassroomHomeView({
 
       {/* ── bento ────────────────────────────────────────────────────── */}
       <div className="classroom-home-bento">
+        {/*
+          A teacher has no assigned work by definition, so the card is dropped
+          rather than shown empty — an "assigned to you" panel on the admin
+          account only ever held verification leftovers.
+        */}
+        {model.isAdmin && !model.rows.length ? null : (
         <section className="classroom-home-card" aria-label="Assigned to you">
           <header className="classroom-home-card-head">
             <span className="classroom-home-card-label">ASSIGNED TO YOU</span>
@@ -275,6 +281,8 @@ export function ClassroomHomeView({
             </p>
           )}
         </section>
+        )}
+
 
         <div className="classroom-home-side">
           {model.access.messages ? (
