@@ -101,6 +101,7 @@ import {
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
 import { appendGuidedResumeParams } from '@/lib/guidedDrillNavigation';
+import { DrillSplit } from '@/components/drill/DrillSplit';
 import {
   guidedSessionKeyForRunner,
   guidedResumeIndex,
@@ -3570,229 +3571,232 @@ function DrillContent() {
         />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
-        {poolExhausted ? (
-          <div className="flex-1 overflow-y-auto p-8">
-            <QuestionPoolExhausted
-              onReset={async () => {
-                if (classId) {
-                  try {
-                    await QuestionPoolService.resetPool(classId, session?.mode);
-                    toast.success('Question pool reset');
-                    window.location.reload();
-                  } catch (err) {
-                    console.error('Failed to reset question pool:', err);
-                    toast.error('Failed to reset question pool');
-                  }
-                }
-              }}
-              onExpandCriteria={() => {
-                navigate('/classroom');
-              }}
-              onSettings={() => {
-                navigate('/profile');
-              }}
-              mode={session?.mode || 'drill'}
-            />
-          </div>
-        ) : (
-          <>
-        {/* Left Panel — Stimulus */}
-        <div className="flex-1 lg:max-h-full bg-white flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-6 sm:p-8">
-              {currentQuestion.stimulus && (() => {
-                const fullText = normalizeText(currentQuestion.stimulus);
-                const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
-                return (
+      <DrillSplit
+        left={
+          poolExhausted ? (
+                <div className="min-h-0 overflow-y-auto p-8">
+                  <QuestionPoolExhausted
+                    onReset={async () => {
+                      if (classId) {
+                        try {
+                          await QuestionPoolService.resetPool(classId, session?.mode);
+                          toast.success('Question pool reset');
+                          window.location.reload();
+                        } catch (err) {
+                          console.error('Failed to reset question pool:', err);
+                          toast.error('Failed to reset question pool');
+                        }
+                      }
+                    }}
+                    onExpandCriteria={() => {
+                      navigate('/classroom');
+                    }}
+                    onSettings={() => {
+                      navigate('/profile');
+                    }}
+                    mode={session?.mode || 'drill'}
+                  />
+                </div>
+          ) : (
+            // Left Panel — Stimulus
+            <div className="flex min-h-0 flex-col overflow-hidden bg-white">
+              <div className="flex-1 overflow-y-auto">
+                <div className="p-6 sm:p-8">
+                  {currentQuestion.stimulus && (() => {
+                    const fullText = normalizeText(currentQuestion.stimulus);
+                    const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
+                    return (
+                      <div
+                        className={cn(
+                          "prose prose-lg max-w-none",
+                          "text-[19px] leading-[1.7] text-neutral-900",
+                          highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
+                        )}
+                        onMouseUp={(e) => handleTextSelection(e, 'stimulus')}
+                      >
+                        <HighlightedText
+                          text={fullText}
+                          highlights={stimulusHighlights}
+                          onHighlightClick={handleHighlightClick}
+                          eraserMode={highlightMode === 'erase'}
+                        />
+                      </div>
+                    );
+                  })()}
+
+                  {renderVoiceCoachChip()}
+                </div>
+              </div>
+            </div>
+          )
+        }
+        right={
+          poolExhausted ? undefined : (
+            // Right Panel — Question & Answers
+            <div className="min-h-0 overflow-y-auto lg:border-l border-border bg-white">
+              <div className="p-6 sm:p-8">
+                {/* Question Stem */}
+                <div className="mb-4">
                   <div
                     className={cn(
-                      "prose prose-lg max-w-none",
-                      "text-[19px] leading-[1.7] text-neutral-900",
+                      "text-[19px] font-semibold text-neutral-900 leading-[1.6] tracking-tight",
                       highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                     )}
-                    onMouseUp={(e) => handleTextSelection(e, 'stimulus')}
+                    onMouseUp={(e) => handleTextSelection(e, 'stem')}
                   >
                     <HighlightedText
-                      text={fullText}
-                      highlights={stimulusHighlights}
+                      text={currentQuestion.questionStem}
+                      highlights={highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stem') || []}
                       onHighlightClick={handleHighlightClick}
                       eraserMode={highlightMode === 'erase'}
                     />
                   </div>
-                );
-              })()}
-
-              {renderVoiceCoachChip()}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Panel - Question & Answers */}
-        <div className="flex-1 overflow-y-auto lg:border-l border-border lg:max-h-full bg-white">
-          <div className="p-6 sm:p-8">
-            {/* Question Stem */}
-            <div className="mb-4">
-              <div
-                className={cn(
-                  "text-[19px] font-semibold text-neutral-900 leading-[1.6] tracking-tight",
-                  highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
-                )}
-                onMouseUp={(e) => handleTextSelection(e, 'stem')}
-              >
-                <HighlightedText
-                  text={currentQuestion.questionStem}
-                  highlights={highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stem') || []}
-                  onHighlightClick={handleHighlightClick}
-                  eraserMode={highlightMode === 'erase'}
-                />
-              </div>
-            </div>
-
-            {/* Answer choices */}
-            {tutorChatOpen ? (
-              <div className="space-y-0">
-                {(() => {
-                  const { before, selected, after } = getAnswerGroups();
-                  
-                  return (
-                    <>
-                      {before.length > 0 && (
-                        <div className="opacity-20 blur-[1px] pointer-events-none">
-                          {before.map(([key, text]) => renderAnswerChoice(key, text, { showRadio: false, inFocusedMode: true }))}
-                        </div>
-                      )}
-
-                      <div className="relative my-4">
-                        <div className="absolute -inset-2 bg-neutral-100/80 rounded-lg blur-sm" />
-                        <div className="relative">
-                          {renderAnswerChoice(selected[0], selected[1], { 
-                            isSelected: true, 
-                            showRadio: false,
-                            inFocusedMode: true
-                          })}
-                        </div>
-                      </div>
-
-                      {after.length > 0 && (
-                        <div className="opacity-20 blur-[1px] pointer-events-none">
-                          {after.map(([key, text]) => renderAnswerChoice(key, text, { showRadio: false, inFocusedMode: true }))}
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
-            ) : (
-              <RadioGroup
-                value={selectedAnswer}
-                onValueChange={handleAnswerSelect}
-                className="space-y-1 -mx-5"
-              >
-                {Object.entries(currentQuestion.answerChoices).map(([key, text]) => 
-                  renderAnswerChoice(key, text, { 
-                    isSelected: key === selectedAnswer,
-                    showRadio: true
-                  })
-                )}
-              </RadioGroup>
-            )}
-
-            {/* Show Answer button for practice-set mode */}
-            {isPracticeSetMode && selectedAnswer && !showSolution && (
-              <div className="flex justify-center pt-6">
-                <Button
-                  onClick={handleShowAnswer}
-                  variant="outline"
-                  size="lg"
-                >
-                  Show Answer
-                </Button>
-              </div>
-            )}
-
-            {/* Submit button for adaptive mode — only manual submission triggers evaluation */}
-            {session.mode === 'adaptive' && selectedAnswer && !showSolution && !tutorChatOpen && (
-              <div className="flex justify-end gap-3 pt-6 mt-2">
-                <Button
-                  onClick={() => handleSubmit()}
-                  size="lg"
-                  disabled={timer?.isPaused}
-                >
-                  Check Answer
-                </Button>
-              </div>
-            )}
-
-            {/* Submit button for non-adaptive, non-section, non-practice-set modes */}
-            {session.mode !== 'adaptive' && session.mode !== 'full-section' && !isPracticeSetMode && selectedAnswer && !showSolution && (
-              <div className="flex justify-end gap-3 pt-6 mt-2">
-                <Button
-                  onClick={() => handleSubmitNonAdaptive()}
-                  size="lg"
-                  disabled={timer?.isPaused}
-                >
-                  Check Answer
-                </Button>
-              </div>
-            )}
-
-            {/* Solution */}
-            {showSolution && (
-              <div className="mt-6 p-6 border-t space-y-4">
-                <div className="flex items-center gap-2">
-                  {selectedAnswer === currentQuestion.correctAnswer ? (
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-destructive" />
-                  )}
-                  <span className="font-semibold text-lg">
-                    {selectedAnswer === currentQuestion.correctAnswer
-                      ? 'Correct!'
-                      : `The correct answer is (${currentQuestion.correctAnswer}).`}
-                  </span>
                 </div>
-                
-                {/* Good job message with AI explanation for retry success */}
-                {isRetryAfterWrong && selectedAnswer === currentQuestion.correctAnswer && session.mode === 'adaptive' && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-green-700 mb-2">🎉 Good Job!</h4>
-                    <p className="text-sm text-green-600 leading-relaxed">
-                      {correctExplanation || 'You got it right on your second try! That shows great learning.'}
-                    </p>
+
+                {/* Answer choices */}
+                {tutorChatOpen ? (
+                  <div className="space-y-0">
+                    {(() => {
+                      const { before, selected, after } = getAnswerGroups();
+                  
+                      return (
+                        <>
+                          {before.length > 0 && (
+                            <div className="opacity-20 blur-[1px] pointer-events-none">
+                              {before.map(([key, text]) => renderAnswerChoice(key, text, { showRadio: false, inFocusedMode: true }))}
+                            </div>
+                          )}
+
+                          <div className="relative my-4">
+                            <div className="absolute -inset-2 bg-neutral-100/80 rounded-lg blur-sm" />
+                            <div className="relative">
+                              {renderAnswerChoice(selected[0], selected[1], { 
+                                isSelected: true, 
+                                showRadio: false,
+                                inFocusedMode: true
+                              })}
+                            </div>
+                          </div>
+
+                          {after.length > 0 && (
+                            <div className="opacity-20 blur-[1px] pointer-events-none">
+                              {after.map(([key, text]) => renderAnswerChoice(key, text, { showRadio: false, inFocusedMode: true }))}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
-                )}
-
-                {/* Optional Review button for WAJ */}
-                {showReviewButton && session.mode === 'adaptive' && (
-                  <Button
-                    variant="outline"
-                    onClick={() => setWajModalOpen(true)}
-                    className="w-full mt-4"
+                ) : (
+                  <RadioGroup
+                    value={selectedAnswer}
+                    onValueChange={handleAnswerSelect}
+                    className="space-y-1 -mx-5"
                   >
-                    Review in Journal
-                  </Button>
+                    {Object.entries(currentQuestion.answerChoices).map(([key, text]) => 
+                      renderAnswerChoice(key, text, { 
+                        isSelected: key === selectedAnswer,
+                        showRadio: true
+                      })
+                    )}
+                  </RadioGroup>
                 )}
 
-                {/* Next button for adaptive mode */}
-                {session.mode === 'adaptive' && (
-                  <div className="flex justify-end pt-2">
+                {/* Show Answer button for practice-set mode */}
+                {isPracticeSetMode && selectedAnswer && !showSolution && (
+                  <div className="flex justify-center pt-6">
                     <Button
-                      onClick={handleNext}
+                      onClick={handleShowAnswer}
+                      variant="outline"
                       size="lg"
-                      className="min-w-[120px]"
                     >
-                      Next Question
+                      Show Answer
                     </Button>
                   </div>
                 )}
+
+                {/* Submit button for adaptive mode — only manual submission triggers evaluation */}
+                {session.mode === 'adaptive' && selectedAnswer && !showSolution && !tutorChatOpen && (
+                  <div className="flex justify-end gap-3 pt-6 mt-2">
+                    <Button
+                      onClick={() => handleSubmit()}
+                      size="lg"
+                      disabled={timer?.isPaused}
+                    >
+                      Check Answer
+                    </Button>
+                  </div>
+                )}
+
+                {/* Submit button for non-adaptive, non-section, non-practice-set modes */}
+                {session.mode !== 'adaptive' && session.mode !== 'full-section' && !isPracticeSetMode && selectedAnswer && !showSolution && (
+                  <div className="flex justify-end gap-3 pt-6 mt-2">
+                    <Button
+                      onClick={() => handleSubmitNonAdaptive()}
+                      size="lg"
+                      disabled={timer?.isPaused}
+                    >
+                      Check Answer
+                    </Button>
+                  </div>
+                )}
+
+                {/* Solution */}
+                {showSolution && (
+                  <div className="mt-6 p-6 border-t space-y-4">
+                    <div className="flex items-center gap-2">
+                      {selectedAnswer === currentQuestion.correctAnswer ? (
+                        <CheckCircle className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <XCircle className="w-5 h-5 text-destructive" />
+                      )}
+                      <span className="font-semibold text-lg">
+                        {selectedAnswer === currentQuestion.correctAnswer
+                          ? 'Correct!'
+                          : `The correct answer is (${currentQuestion.correctAnswer}).`}
+                      </span>
+                    </div>
+                
+                    {/* Good job message with AI explanation for retry success */}
+                    {isRetryAfterWrong && selectedAnswer === currentQuestion.correctAnswer && session.mode === 'adaptive' && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <h4 className="font-semibold text-green-700 mb-2">🎉 Good Job!</h4>
+                        <p className="text-sm text-green-600 leading-relaxed">
+                          {correctExplanation || 'You got it right on your second try! That shows great learning.'}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Optional Review button for WAJ */}
+                    {showReviewButton && session.mode === 'adaptive' && (
+                      <Button
+                        variant="outline"
+                        onClick={() => setWajModalOpen(true)}
+                        className="w-full mt-4"
+                      >
+                        Review in Journal
+                      </Button>
+                    )}
+
+                    {/* Next button for adaptive mode */}
+                    {session.mode === 'adaptive' && (
+                      <div className="flex justify-end pt-2">
+                        <Button
+                          onClick={handleNext}
+                          size="lg"
+                          className="min-w-[120px]"
+                        >
+                          Next Question
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-        </>
-        )}
-      </div>
+            </div>
+          )
+        }
+      />
 
       {/* Sticky Bottom Navigation Bar - Section & Practice-Set Modes */}
       {(session.mode === 'full-section' || isPracticeSetMode) && (

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { DrillSplit } from '@/components/drill/DrillSplit';
 
 /**
- * The two-column exam body, replicating the LR player's OfficialQuestionPane
- * geometry exactly: a 53/47 grid with a hairline divider, both columns white,
- * each scrolling on its own.
+ * The RC exam body: the shared DrillSplit primitive at the passage-weighted
+ * 53/47 ratio, filling its frame rather than taking the LR player's page cap.
+ * The column geometry itself lives in DrillSplit so RC and LR cannot drift.
  *
  * Colors come from --rc-bg / --rc-fg rather than Tailwind literals so the
  * accessibility schemes can repaint the reading surface without touching the
@@ -23,17 +24,12 @@ interface Props {
 export function RcExamPane({ schemeClassName, passageOnly, passage, question }: Props) {
   return (
     <div className={cn('rc-exam relative flex h-full min-h-0 flex-col', schemeClassName)}>
-      <div
-        className={cn(
-          'grid min-h-0 flex-1 overflow-hidden',
-          passageOnly
-            ? 'grid-cols-1'
-            : 'grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)]',
-        )}
-      >
-        {passage}
-        {!passageOnly && question}
-      </div>
+      <DrillSplit
+        ratio="passage-weighted"
+        maxWidthClassName={null}
+        left={passage}
+        right={passageOnly ? undefined : question}
+      />
     </div>
   );
 }
