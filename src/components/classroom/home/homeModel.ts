@@ -125,6 +125,9 @@ export interface ClassroomHomeModel {
   /** True when the viewer is staff looking at their own classroom. */
   isAdmin: boolean;
   access: HomeAccess;
+  /** True for an admin/teacher viewer: nothing is ever assigned to them. */
+  viewerIsTeacher: boolean;
+
   dateline: string;
   subtitle: string;
   dueTodayCount: number;
