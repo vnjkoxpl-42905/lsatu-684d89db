@@ -82,7 +82,6 @@ function MainhubHero({
     <Card className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none">
       <div className="drill-observatory-route-label" aria-hidden>
         <span>DRILL / LOGICAL REASONING</span>
-        <span>REASONING INSTRUMENT 01</span>
       </div>
 
       <div className="drill-observatory-hero-grid">
