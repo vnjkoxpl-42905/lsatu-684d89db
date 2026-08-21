@@ -91,7 +91,11 @@ export default function OfficialQuestionPane({
     cleanAnswerChoice(key, text),
   ] as const);
 
-  const baseSize = 16 * fontScale;
+  // 7Sage sets both the stimulus and the answer choices at 19px and the
+  // student reads ours next to theirs, so the two match rather than land a
+  // couple of pixels apart. The stimulus carries the extra weight of the serif
+  // face; stem and choices stay on the sans stack at the same size.
+  const baseSize = 19 * fontScale;
   const officialContentTextStyle: React.CSSProperties = {
     color: "#111827",
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -102,7 +106,7 @@ export default function OfficialQuestionPane({
   const stimStyle: React.CSSProperties = {
     ...officialContentTextStyle,
     fontFamily: "Fraunces, ui-serif, Georgia, serif",
-    fontSize: `${17 * fontScale}px`,
+    fontSize: `${19 * fontScale}px`,
     lineHeight: 1.7,
     // Fraunces is a variable font with an optical-size axis. Left on `auto` the
     // browser picks the cut from the rendered px size, which drifts as the
