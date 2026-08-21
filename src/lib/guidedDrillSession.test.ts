@@ -5,6 +5,7 @@ import {
   isResumableGuidedSession,
   guidedResumeIndex,
   guidedResumeNotice,
+  guidedSessionToDrillSession,
   GUIDED_SESSION_PREFIX,
   type GuidedDrillSession,
 } from './guidedDrillSession';
@@ -142,5 +143,44 @@ describe('guidedResumeNotice', () => {
     expect(guidedResumeNotice(null)).toBeUndefined();
     expect(guidedResumeNotice(session({ attempts: [] }))).toBeUndefined();
     expect(guidedResumeNotice(session({ status: 'completed' }))).toBeUndefined();
+  });
+});
+
+describe('guidedSessionToDrillSession', () => {
+  const finished = session({
+    status: 'completed',
+    current_index: 2,
+    attempts: [
+      { qid: 'q1', selected_answer: 'B', correct: true, time_ms: 4000 },
+      { qid: 'q2', selected_answer: 'E', correct: false, time_ms: 9000 },
+    ],
+  });
+
+  it('keeps a finished run readable, so completing a drill is not losing it', () => {
+    const rehydrated = guidedSessionToDrillSession(finished);
+    expect(rehydrated?.questionQueue).toEqual(['q1', 'q2', 'q3']);
+    expect(rehydrated?.attempts.size).toBe(2);
+  });
+
+  it('carries each answer back exactly as it was given', () => {
+    const attempts = guidedSessionToDrillSession(finished)!.attempts;
+    expect(attempts.get('q1')).toMatchObject({ selectedAnswer: 'B', correct: true, timeMs: 4000 });
+    expect(attempts.get('q2')).toMatchObject({ selectedAnswer: 'E', correct: false, timeMs: 9000 });
+  });
+
+  it('leaves an unanswered question absent rather than inventing a blank attempt', () => {
+    expect(guidedSessionToDrillSession(finished)!.attempts.has('q3')).toBe(false);
+  });
+
+  it('defaults a missing time to zero instead of NaN', () => {
+    const noTime = session({
+      attempts: [{ qid: 'q1', selected_answer: 'A', correct: true } as never],
+    });
+    expect(guidedSessionToDrillSession(noTime)!.attempts.get('q1')?.timeMs).toBe(0);
+  });
+
+  it('has nothing to show for no row or an empty queue', () => {
+    expect(guidedSessionToDrillSession(null)).toBeNull();
+    expect(guidedSessionToDrillSession(session({ question_queue: [] }))).toBeNull();
   });
 });

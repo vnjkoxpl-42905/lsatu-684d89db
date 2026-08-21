@@ -38,8 +38,12 @@ import {
   guidedSessionKey,
   guidedResumeNotice,
   loadGuidedDrillSession,
+  loadCompletedGuidedDrillSession,
+  guidedSessionToDrillSession,
   type GuidedDrillSession,
 } from '@/lib/guidedDrillSession';
+import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
+import type { DrillSession } from '@/types/drill';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
@@ -135,6 +139,32 @@ export default function GuidedDrillStart({
       cancelled = true;
     };
   }, [user, guidedKey, bootcampOverride]);
+
+  // A finished run is shown back to the student instead of being silently
+  // redrawn. Completion deliberately makes a row unresumable so a re-attempt is
+  // fresh, but that also meant reopening a completed drill reshuffled the pool
+  // and left no way to see the questions they had just answered — the work was
+  // still in the store, just never read. `retaking` is the escape hatch: once
+  // they ask for a fresh attempt we stop showing the review for this visit.
+  const [completedGuided, setCompletedGuided] = React.useState<GuidedDrillSession | null>(null);
+  const [retaking, setRetaking] = React.useState(false);
+  React.useEffect(() => {
+    let cancelled = false;
+    setCompletedGuided(null);
+    setRetaking(false);
+    if (!user || !guidedKey || bootcampOverride) return;
+    void loadCompletedGuidedDrillSession(user.id, guidedKey).then((stored) => {
+      if (!cancelled) setCompletedGuided(stored);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, guidedKey, bootcampOverride]);
+
+  const completedSession = React.useMemo(
+    () => guidedSessionToDrillSession(completedGuided),
+    [completedGuided],
+  );
 
   // An unfinished practice run is surfaced before the student presses Start, so
   // they know their earlier answers are still there rather than guessing.
@@ -398,6 +428,34 @@ export default function GuidedDrillStart({
 
   if (!drill && !bootcampOverride) {
     return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
+  }
+
+  // Reopening a drill they already finished: show what they did. The question
+  // bank has to be loaded first, since the scorecard resolves each qid through
+  // it — without that gate the rows render blank for a moment.
+  if (completedSession && !retaking && !qbLoading) {
+    const finishedOn = completedGuided?.updated_at
+      ? new Date(completedGuided.updated_at).toLocaleDateString(undefined, {
+          month: 'long',
+          day: 'numeric',
+        })
+      : null;
+    return (
+      <PracticeSetResults
+        session={completedSession as DrillSession}
+        title={drill?.title ?? 'Your results'}
+        subtitle={
+          finishedOn
+            ? `You completed this on ${finishedOn}. A fresh attempt draws a new set of questions.`
+            : 'A fresh attempt draws a new set of questions.'
+        }
+        onBack={handleReturn}
+        onRetry={() => {
+          setRetaking(true);
+          void handleStart();
+        }}
+      />
+    );
   }
 
   // No curated HTML launch page for this drill — build the identical premium

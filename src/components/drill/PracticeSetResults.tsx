@@ -9,12 +9,34 @@ import { cn } from '@/lib/utils';
 
 interface PracticeSetResultsProps {
   session: DrillSession;
-  onReviewWrong: () => void;
-  onReviewAll: () => void;
+  /**
+   * The in-runner review flows. Optional because this view is also rendered
+   * outside the runner — a finished guided drill reopened from the Classroom
+   * has no live session to hand back to, so it shows the same scorecard without
+   * the two review buttons.
+   */
+  onReviewWrong?: () => void;
+  onReviewAll?: () => void;
   onBack: () => void;
+  /** Heading. Defaults to the practice-set wording. */
+  title?: string;
+  /** Offered when a finished run can be taken again on a fresh draw. */
+  onRetry?: () => void;
+  retryLabel?: string;
+  /** Sits under the heading, e.g. when the run was completed. */
+  subtitle?: string;
 }
 
-export function PracticeSetResults({ session, onReviewWrong, onReviewAll, onBack }: PracticeSetResultsProps) {
+export function PracticeSetResults({
+  session,
+  onReviewWrong,
+  onReviewAll,
+  onBack,
+  title = 'Practice Set Results',
+  onRetry,
+  retryLabel = 'Start a fresh attempt',
+  subtitle,
+}: PracticeSetResultsProps) {
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
   
   // Calculate stats
@@ -85,7 +107,10 @@ export function PracticeSetResults({ session, onReviewWrong, onReviewAll, onBack
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          <h1 className="text-2xl font-bold">Practice Set Results</h1>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">{title}</h1>
+            {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
+          </div>
           <div className="w-20" />
         </div>
         
@@ -128,12 +153,17 @@ export function PracticeSetResults({ session, onReviewWrong, onReviewAll, onBack
         
         {/* Review Actions */}
         <div className="flex gap-3 justify-center">
-          <Button onClick={onReviewWrong} disabled={wrongCount === 0}>
-            Review Wrong ({wrongCount})
-          </Button>
-          <Button variant="outline" onClick={onReviewAll}>
-            Review All
-          </Button>
+          {onReviewWrong && (
+            <Button onClick={onReviewWrong} disabled={wrongCount === 0}>
+              Review Wrong ({wrongCount})
+            </Button>
+          )}
+          {onReviewAll && (
+            <Button variant="outline" onClick={onReviewAll}>
+              Review All
+            </Button>
+          )}
+          {onRetry && <Button onClick={onRetry}>{retryLabel}</Button>}
         </div>
         
         {/* Question List */}

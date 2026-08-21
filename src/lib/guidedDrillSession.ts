@@ -34,6 +34,7 @@ import {
   type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import type { PracticeSession } from '@/bootcamps/main-conclusion/persistence/records';
+import type { DrillSession } from '@/types/drill';
 
 export const GUIDED_SESSION_PREFIX = 'guided::';
 
@@ -195,4 +196,53 @@ export function guidedResumeNotice(stored: GuidedDrillSession | null): string | 
       stored.attempts.map((a) => a.qid),
     ) + 1;
   return `Picking up where you left off — question ${at} of ${total}, ${answered} already answered.`;
+}
+
+/**
+ * Rehydrate a finished run into the shape the results view reads.
+ *
+ * A completed row keeps the exact question queue and every answer — completion
+ * only stops it being *resumed*, it does not throw the work away. Without this
+ * the record sits in the store unread and a student who reopens a finished
+ * drill sees a fresh draw with no way back to what they actually did, which is
+ * how a completed guided drill came to look like lost work.
+ *
+ * Only the fields the results view uses are populated. `timestamp` is not
+ * stored per attempt (the snapshot schema keeps qid/answer/correct/time_ms), so
+ * it is left at 0 rather than invented — the results view sorts by queue order
+ * and never reads it.
+ */
+export function guidedSessionToDrillSession(
+  stored: GuidedDrillSession | null,
+): Pick<DrillSession, 'mode' | 'questionQueue' | 'currentIndex' | 'attempts'> | null {
+  if (!stored || stored.question_queue.length === 0) return null;
+  const attempts: DrillSession['attempts'] = new Map();
+  for (const a of stored.attempts) {
+    attempts.set(a.qid, {
+      selectedAnswer: a.selected_answer,
+      correct: a.correct,
+      timeMs: a.time_ms ?? 0,
+      timestamp: 0,
+    });
+  }
+  return {
+    mode: 'type-drill',
+    questionQueue: stored.question_queue,
+    currentIndex: stored.current_index,
+    attempts,
+  };
+}
+
+/**
+ * The finished run for this drill, if there is one. Mirrors
+ * loadGuidedDrillSession but selects the completed row instead of the resumable
+ * one, so the launch page can offer a review rather than silently redrawing.
+ */
+export async function loadCompletedGuidedDrillSession(
+  userId: string,
+  key: string | null,
+): Promise<GuidedDrillSession | null> {
+  const stored = await loadGuidedDrillSession(userId, key);
+  if (!stored || stored.status !== 'completed') return null;
+  return stored.attempts.length > 0 ? stored : null;
 }
