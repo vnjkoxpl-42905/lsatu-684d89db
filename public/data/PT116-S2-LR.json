@@ -84,7 +84,7 @@
       "D": "It uses Marie's criterion as a means of solving a moral problem Julia herself faces.",
       "E": "It proposes a radically different principle by which Marie's action might be judged, but reserves judgment as to whether Marie acted rightly."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
       "Science"
@@ -106,7 +106,7 @@
       "D": "Traffic laws in most locations state that the pedestrian always has the right of way, whether or not the pedestrian is crossing at a corner.",
       "E": "Good drivers anticipate jaywalkers as much as they anticipate pedestrians crossing at corners."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
       "Argue the Anti-Conclusion"
@@ -128,7 +128,7 @@
       "D": "a writing style should not be more complex than the ideas expressed",
       "E": "alert readers are the only readers who are sensitive to writing style"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Binaries"
@@ -175,7 +175,7 @@
       "D": "These chemicals are harmless by themselves but explosive when mixed together, so in order to be kept in the same laboratory without risk, they should be stored separately.",
       "E": "This island has two harbors but one of them is too shallow to permit large ships, so this ship will have to dock in the other harbor in order to unload its cargo."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
       "Predictions"

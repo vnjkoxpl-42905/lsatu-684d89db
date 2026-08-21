@@ -199,7 +199,7 @@
       "D": "concludes that a person has a certain attribute simply because that person belongs to a group most of whose members have that attribute",
       "E": "draws a conclusion that merely restates a claim presented in support of that conclusion"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
       "Famous Flaws"
@@ -368,7 +368,7 @@
       "D": "the appropriateness of trying to find criteria that all mystery movies must meet",
       "E": "whether the filmmaker wanted viewers to be able to solve the murder"
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker"
     ]
@@ -391,7 +391,7 @@
       "D": "The cost of expanding the programs has not been precisely determined.",
       "E": "Some children who did not participate in the programs performed exceptionally well in school."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact"
     ]
@@ -483,7 +483,7 @@
       "D": "The argument fails to consider that bees might be present even in the absence of a particular condition that would ensure their presence.",
       "E": "The argument bases a claim that there is a causal connection between beehives and excellent pollination on a mere association between them."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -548,7 +548,7 @@
       "D": "the special qualities of Stradivarius violins are due in part to the wood used to make them",
       "E": "Stradivarius did not employ any secret techniques in making his violins"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker",
       "Logical Completion"

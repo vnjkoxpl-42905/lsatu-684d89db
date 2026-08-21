@@ -432,7 +432,7 @@
       "D": "Some people think that economists can control inflation. Can meteorologists make the sun shine?",
       "E": "Some people think workaholics are compensating for a lack of interpersonal skills. However, aren't most doctors workaholics?"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT103",
@@ -452,7 +452,7 @@
       "D": "At a time when money is limited, scientific research projects that have immediate practical consequences should be given priority over projects that have few or no such consequences.",
       "E": "In allocating funds for scientific research, projects that seek to unravel fundamental mysteries should be given priority over projects that seek only immediate practical applications."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "EXCEPT"
     ]
@@ -475,7 +475,7 @@
       "D": "If the technology is developed to make desalination economically feasible, fresh water could be made available for those needs not satisfied by the natural supply.",
       "E": "The decline in freshwater supply is much less severe than is the decline in the quality of the freshwater supply."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT103",
@@ -515,7 +515,7 @@
       "D": "It overlooks the possibility that taxing junk food would encourage people to consume even more junk food.",
       "E": "It confuses something that is conducive to public health with something that is required for public health."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
       "Assumes Difference",
@@ -542,7 +542,7 @@
       "D": "The diet of elephant seals consists primarily of seabird eggs.",
       "E": "Elephant seals do not themselves ingest pesticides."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Principles in Answers"
     ]
@@ -590,7 +590,7 @@
       "D": "Playtime operates with a narrow profit margin.",
       "E": "Preventing Playtime from going out of business depends on not opposing Playtime's fare increase."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
       "2-Speaker",

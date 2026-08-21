@@ -291,7 +291,7 @@
       "D": "The more prone a jogger is to jogging injuries, the more likely he or she is to develop the habit of performing stretches before jogging.",
       "E": "Studies have found that, for certain forms of exercise, stretching beforehand can reduce the severity of injuries resulting from that exercise."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Anti-Causal"
@@ -380,7 +380,7 @@
       "D": "Archaeological sites from which artifacts have been removed rarely mislead archaeologists who later study the site.",
       "E": "The removal of artifacts from archaeological sites rarely has any environmental impact."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations"
@@ -452,7 +452,7 @@
       "D": "Some people who are not members of the Frequent Viewers club can receive the special discount coupon.",
       "E": "If Pat rents a movie from the Main Street location, then she will not receive the special discount coupon."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Quantifiers"
     ]
@@ -475,7 +475,7 @@
       "D": "New students in this program must choose either a physics class or an art class. Miyoko has no desire to take a class in either of those fields, so Miyoko will probably not enter this program.",
       "E": "To avoid predators, rabbits will either double back on their pursuers or flee for nearby cover. The rabbit being pursued by a fox in this wildlife film is in a field that offers no opportunity for nearby cover, so it will try to double back on the fox."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming"
     ]
@@ -521,7 +521,7 @@
       "D": "Promises should not be interpreted in such a way that they make no sense.",
       "E": "Promises that cannot be kept do not make any sense."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
@@ -568,6 +568,6 @@
       "D": "It is a premise that the editorial's argument relies on in reaching its conclusion.",
       "E": "It is the conclusion that the editorial's argument purports to establish."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "B"
   }
 ]

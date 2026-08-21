@@ -252,7 +252,7 @@
       "D": "The reporter fails to allow for the possibility that athlete's foot may be cured even if neither of the two medications studied is taken.",
       "E": "The reporter presumes, without providing justification, that there is no sizeable subgroup of people whose athlete's foot will be cured only if they do not take medication M."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
       "Science"
@@ -276,7 +276,7 @@
       "D": "Most marine animals that chase prey over long distances are specialized for long-distance swimming.",
       "E": "The shape of a marine animal's fin affects the way the animal swims in the same way as the shape of a bird's wing affects the way the bird flies."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
@@ -304,7 +304,7 @@
       "D": "A complicated hotel security system may cost more in customer goodwill than it saves in losses by theft.",
       "E": "An electronic keyboard may be cheaper to buy than a piano but more expensive to repair."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Implicit Principles",
       "Net Effect",
@@ -347,7 +347,7 @@
       "D": "Smith's theory about the relation of social circumstances to the understanding of meaning lacks insight.",
       "E": "The intended meaning of an author's work is not always good evidence of its true meaning."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea"
@@ -371,7 +371,7 @@
       "D": "People who have undergone throat surgery are no more likely to snore than people who have not undergone throat surgery.",
       "E": "The abnormalities in the throat muscles discovered in the study do not cause snoring."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
       "Science"

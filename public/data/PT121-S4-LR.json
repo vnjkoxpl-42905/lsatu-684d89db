@@ -503,7 +503,7 @@
       "D": "Most managers who are already efficient do not need to improve their productivity.",
       "E": "Most managers who are efficient have never attended a time management seminar."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT121",
@@ -546,7 +546,7 @@
       "D": "fails to address the possibility that some forms of therapy have never been proven to be effective as treatments for psychological problems",
       "E": "takes for granted that the sample of people studied did not have significantly more psychological problems, on average, than the population as a whole"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
       "Math-y Stuff"

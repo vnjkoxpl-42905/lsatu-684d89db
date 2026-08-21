@@ -63,7 +63,7 @@
       "D": "If Li plants old rose varieties, her garden will look beautiful. If Li's garden looks beautiful, Li's neighbors will be impressed. So if Li plants old rose varieties, her neighbors will be impressed.",
       "E": "If Bryan's fruit trees are to produce well, he must either prune them in the fall or fertilize them in the spring. Since Bryan wants his trees to produce well but forgot to prune them last fall, Bryan is sure to fertilize his trees this spring."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
       "Plans / Recommendations",
@@ -108,7 +108,7 @@
       "D": "Participating in risky sports is not the only way to confront one's fears.",
       "E": "Most of those who do not participate in risky sports believe that they lack the capacity to excel in such activities."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
       "Clarification/Misunderstanding",
@@ -160,7 +160,7 @@
       "D": "The greater a consumer's discretionary income, the more likely advertising is to encourage that consumer to buy.",
       "E": "The number of consumers over the age of 65 is increasing more rapidly than is the number of young adults."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations",
       "Science"
@@ -184,7 +184,7 @@
       "D": "reach a conclusion based on evidence that is similar to evidence commonly thought to support an analogous case",
       "E": "reach a conclusion about what democratically governed societies actually do based on premises about what democratically governed societies should do"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Causal Chains",
       "Conditional Conclusion",
@@ -210,7 +210,7 @@
       "D": "attempts to manipulate the emotions of potential customers of the advertised product rather than presenting logically sound reasons for preferring the product advertised",
       "E": "takes for granted that the product with the higher concentration of active ingredients provides faster relief than its competitor"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
@@ -237,7 +237,7 @@
       "D": "It calls into question the basis of the biologists' conception of a tool.",
       "E": "It addresses a weakness in the biologists' announcements that stems from their ambiguous use of the word \"external.\""
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Math-y Stuff"
     ]
@@ -261,7 +261,7 @@
       "D": "In reality, it is difficult to emulate fictional characters.",
       "E": "It is rarely evident which qualities of fictional characters are intended to be attractive qualities."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Medical",
@@ -287,7 +287,7 @@
       "D": "a shoddily constructed appliance can be made of high-quality parts",
       "E": "Archway's other product lines exhibit careful and safe assembly and use high-quality components"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
@@ -316,7 +316,7 @@
       "D": "The role of the male gamete in sexual reproduction is less important than the role of the female gamete.",
       "E": "It is likely that other types of genetic material that are contributed exclusively by the male gamete will be identified."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]
@@ -339,7 +339,7 @@
       "D": "The argument takes for granted that a certain behavior is more prevalent among members of one population than it is among members of another.",
       "E": "The argument infers the existence of a causal connection merely on the basis of an association."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Complex Conditionals",
       "Principles in Stimulus"
@@ -363,7 +363,7 @@
       "D": "Much of the increase in the population of wolves is due to wolves born in captivity and released into the wild.",
       "E": "The greater the number of deer, the more likely they are to be afflicted with problems such as famine and disease."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
@@ -390,7 +390,7 @@
       "D": "Lack of funds for research reduces the quality of education a university provides.",
       "E": "New means of funding faculty research at universities are needed."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Proposition/Generalization",
       "Timeframes"
@@ -414,7 +414,7 @@
       "D": "Warning labels on food products have proven to be effective in reducing consumption of those products.",
       "E": "Countries that institute new food labeling regulations often experience a change in consumer eating habits."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
       "Untriggered Conditional"
@@ -439,7 +439,7 @@
       "D": "takes a condition that suffices to prove its conclusion to be a condition necessary for the truth of that conclusion",
       "E": "concludes that a hypothesis is false simply because it contradicts other beliefs held by the advocates of that hypothesis"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
@@ -490,7 +490,7 @@
       "D": "No political system that fails to prevent conflict is legitimate.",
       "E": "Some political systems that are not totalitarian are illegitimate."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
       "Quantifiers"
@@ -515,7 +515,7 @@
       "D": "Beethoven's music became gradually more introspective as he grew older.",
       "E": "Had he not lost his hearing, Beethoven's later music would probably have been different than it is."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
       "Volume Dial"
@@ -540,7 +540,7 @@
       "D": "Most historians cannot become aware of the presuppositions that they bring to their narratives.",
       "E": "Which pattern a historian imposes upon events is affected by that historian's presuppositions."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
       "Assumes Similarity",
@@ -590,7 +590,7 @@
       "D": "provides no evidence that the revolutionary party's goals were not overambitious",
       "E": "fails to consider other major criticisms of the revolutionary party"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Part vs. Whole",
       "Missing Link / Idea",

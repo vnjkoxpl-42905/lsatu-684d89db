@@ -423,7 +423,7 @@
       "D": "The Brick Wall Review depends on donations to cover most operating expenses not covered by income from anthology sales.",
       "E": "The Brick Wall Review's annual poetry anthology always contains a number of poems by famous poets not published in the regular issues of the magazine."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
@@ -501,7 +501,7 @@
       "D": "Thanks to changes in automobile design in the past ten years, drivers are better able to maintain control of their cars in dangerous situations.",
       "E": "It was not until shortly after the introduction of the highway speed limit that most cars were equipped with features such as seat belts and airbags designed to prevent harm to passengers."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
@@ -527,7 +527,7 @@
       "D": "It is claimed to be a false assumption on which the reasoning that the argument seeks to undermine rests.",
       "E": "It is used by the argument to attempt to undermine the reasoning behind a viewpoint."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
@@ -579,7 +579,7 @@
       "D": "Some people believe humans will someday colonize other planets. Since anyone who believes that probably also believes overpopulation of Earth is not a problem, it follows that some people do not believe overpopulation of Earth is not a problem.",
       "E": "Some people believe there is life on planets other than Earth. Since anyone who believes that must also believe other planets have atmospheres that can support life, it follows that other planets do have atmospheres that can support life."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Causal Difference-Maker",
       "Math-y Stuff"
@@ -603,7 +603,7 @@
       "D": "successfully doing natural science demands careful consideration of observations not stated precisely in quantitative terms",
       "E": "useful scientific theories require the application of mathematics"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
       "Links Between Premises",
@@ -630,7 +630,7 @@
       "D": "fails to take into account the possibility that the local fishing guide mistakenly believes that some fish species other than the bullhead catfish is the most populous fish species in Stillwater Pond",
       "E": "takes for granted that Stillwater Pond has only one species of catfish living in it"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Binaries"

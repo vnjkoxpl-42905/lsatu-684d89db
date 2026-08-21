@@ -125,7 +125,7 @@
       "D": "introducing a case analogous to the one under consideration to show that a general implementation of the proposal being argued against would be impossible",
       "E": "questioning the motivation of those who made the proposal being argued against"
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker"
     ]
@@ -148,7 +148,7 @@
       "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
       "E": "Basing a marriage on a natural affinity will ensure that it will endure."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Abstract Answers",
@@ -172,7 +172,7 @@
       "D": "Sharon loved cats, but her husband was allergic to them. Still, he was occasionally willing to accompany her to cat shows. As the saying goes, \"Shared lives mean shared loves.\"",
       "E": "Raoul spent a year planning and preparing for a fantastic ski trip. He enjoyed his ski trip greatly until he broke his leg and had to spend two weeks in the hospital. As the saying goes, \"All's well that ends well.\""
     },
-    "correctAnswer": "E"
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT118",
@@ -190,7 +190,7 @@
       "D": "inferior art from past eras is generally forgotten",
       "E": "one can correctly assess the quality of art only if it was produced in past eras"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Principles in Stimulus"
     ]
@@ -211,7 +211,7 @@
       "D": "Since sugar is a major ingredient in ice cream, the price of ice cream increases whenever the price of sugar increases. The price of sugar is expected to increase next month. Therefore, the price of ice cream can be expected to increase next month.",
       "E": "Real estate prices go down when the population of those from 20 to 30 years old declines, and the number in that age group will decrease over the next decade. Therefore, real estate prices will go down over that period."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
       "Timeframes"
@@ -258,7 +258,7 @@
       "D": "presumes, without providing justification, that there are no further avenues for the play other than adaptation as a movie or revival at the Decade Festival",
       "E": "fails to recognize that the play's not satisfying one sufficient condition does not preclude its satisfying a different sufficient condition for adaptation as a movie or revival at the Decade Festival"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
       "Science"
@@ -324,7 +324,7 @@
       "D": "Many posthumously published books would have been published by the author had the author lived.",
       "E": "Some heirs of successful writers do not consider themselves qualified to judge the merits of a literary work."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -345,7 +345,7 @@
       "D": "The police always agree with government officials and the courts about what an individual's rights are.",
       "E": "One should always try to uphold one's individual rights against the government's view of what those rights are."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations"
     ]
@@ -366,7 +366,7 @@
       "D": "Flints were often used by early humans for everyday chores other than hunting.",
       "E": "Any benefits that an aesthetic sense would have given to cave-dwelling humans are poorly understood."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
       "Rebuttals"
@@ -388,7 +388,7 @@
       "D": "If a compromise between the proponents of economic growth and the environmentalists had been enacted rather than the current policies, the environment would have seen significantly less improvement.",
       "E": "The concern demonstrated by a nation for the health and integrity of its natural ecosystems leads to an increase in that nation's wealth."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact"
     ]
@@ -409,7 +409,7 @@
       "D": "takes for granted that some historical work that embodies prejudices is written by historians who purport to be objective",
       "E": "fails to recognize that not all historical explanations embodying ideologies are false"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Science"
     ]
@@ -432,7 +432,7 @@
       "D": "If there is no consistent causal link between major meteor impacts and mass extinctions, then not all mass extinctions could have followed major meteor impacts.",
       "E": "There could be a consistent causal link between major meteor impacts and mass extinctions even if not every major meteor impact has been followed by a mass extinction."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Dense Stimulus",
       "Rebuttals"
@@ -454,7 +454,7 @@
       "D": "A country's dependence on agriculture can lead to major economic crises.",
       "E": "The consequences of a drought are not restricted to the drought's impact on farm productivity."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Quantifiers",
       "Science"
@@ -476,7 +476,7 @@
       "D": "Only the immediate consequences of our actions are relevant in determining whether they are morally right.",
       "E": "An action may be morally right for one particular person without being morally right for all people."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Chains"
     ]
@@ -497,7 +497,7 @@
       "D": "It relies on experimental data derived from DNA testing that have not been shown to hold under nonexperimental conditions.",
       "E": "It fails to demonstrate that physical evidence taken from the scene of a crime is the only sort of evidence that should be admitted in criminal court proceedings."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT118",
@@ -515,7 +515,7 @@
       "D": "All of the five original planners are responsible for this problem. Yet none of the original planners will admit responsibility for the problem. Thus some of the people responsible for the problem will not admit responsibility.",
       "E": "Some members of the Liberal Party are in favor of the proposed ordinance. But all members of the city council are opposed to the proposed ordinance. Hence some members of the city council are not Liberals."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Math-y Stuff",
       "Science"
@@ -537,7 +537,7 @@
       "D": "A low unemployment rate is one of the main reasons that new residents move to a city.",
       "E": "New residents of most small cities do not start paying city taxes for at least a year."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Quantifiers"
     ]

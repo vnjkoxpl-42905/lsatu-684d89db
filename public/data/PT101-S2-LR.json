@@ -116,7 +116,7 @@
       "D": "The total number of tickets to the school fair sold by the students in Ms. Ramirez’s Milton Elementary School class was greater than the number sold by Milton students from any other class. Therefore, the Milton student who sold the most tickets to the school fair was a student in Ms. Ramirez’s class.",
       "E": "Ms. Ventura’s Milton Elementary School class assembled more birdhouses than did any of the school’s other classes. Since Ms. Ventura’s class had fewer students than any other Milton class, her students assembled more birdhouses, on average, than did the students in any other Milton class."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Part vs. Whole",
       "Math-y Stuff"

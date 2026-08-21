@@ -18,7 +18,7 @@
       "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
       "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]
@@ -268,7 +268,7 @@
       "D": "The test subjects in the recent study who ate fish twice a week were not significantly more likely than those who did not to engage regularly in activities known to augment cardiorespiratory health.",
       "E": "The test subjects in the recent study who ate fish twice a week were no more likely than those who did not to have sedentary occupations."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
@@ -446,7 +446,7 @@
       "D": "It ignores the possibility that therapists practicing the new form of therapy systematically differ from therapists practicing traditional forms of therapy with regard to some personality attribute relevant to effective treatment.",
       "E": "It presumes, without providing justification, that the personal rapport between therapist and patient has no influence on the effectiveness of the treatment the patient receives."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Conclusion",
       "Principles in Answers"
@@ -572,7 +572,7 @@
       "D": "Several people who were in control groups and only given placebos claimed that the tablets induced sleep.",
       "E": "If melatonin were helpful in treating insomnia, then every person with insomnia who took doses of melatonin would appear to be significantly affected by it."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
       "Medical",

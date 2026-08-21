@@ -93,7 +93,7 @@
       "D": "Many of the insects that were killed by the device are mosquito-eating insects.",
       "E": "The device does not succeed in killing all of the insects that it attracts."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
       "Anti-Causal"
@@ -499,7 +499,7 @@
       "D": "The development of intelligence in mammals is not independent of the chemical reactions in their brains taking place at the proper temperatures.",
       "E": "Organisms incapable of controlling their internal body temperatures are subject to unpredictable chemical processes."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",

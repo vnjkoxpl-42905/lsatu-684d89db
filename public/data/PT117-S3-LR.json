@@ -65,7 +65,7 @@
       "D": "People who assess their talents accurately generally perform near their actual level of proficiency.",
       "E": "People who think that a superior performance will please those who are testing them generally try harder."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
@@ -91,7 +91,7 @@
       "D": "the phrase \"high on the list\" is not specific enough to give useful information about what parents desire from a school",
       "E": "it fails to discuss educators' attitudes toward discipline in schools"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
       "2-Speaker",
@@ -117,7 +117,7 @@
       "D": "This painting is aesthetically valuable because it was painted by a highly controversial artist.",
       "E": "This poem is aesthetically deficient because it has little impact on its audience."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "B"
   },
   {
     "practiceTest": "PT117",
@@ -135,7 +135,7 @@
       "D": "it is safer to invest in savings bonds than to invest in the stock market",
       "E": "it is preferable to pick an investment offering a reliable income over a riskier opportunity to make a large profit quickly"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
       "Explain Curious Fact"
@@ -159,7 +159,7 @@
       "D": "If there is a similarity between two effects, then there is probably a similarity between their causes.",
       "E": "The frequency with which a hazardous activity is performed is proportional to the frequency of injuries resulting from that activity."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
@@ -399,7 +399,7 @@
       "D": "In 1980 the rate at which the cabin air was replenished in commercial airliners was sufficient to protect passengers from the effects of carbon dioxide buildup.",
       "E": "In 1980 the level of carbon dioxide in the cabin air on a two-hour commercial airline flight was lower than it is today on a similar flight."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT117",
@@ -441,7 +441,7 @@
       "D": "Weather conditions are the most important factor in determining where plants will grow.",
       "E": "Weather patterns have changed in the past 60 years."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "EXCEPT"
     ]
@@ -564,7 +564,7 @@
       "D": "Accomplished non-native speakers of a language do not perceive sentences as streams of sound.",
       "E": "Native speakers' perceptions of their own language are not more accurate than are the perceptions of persons who do not know that language."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",

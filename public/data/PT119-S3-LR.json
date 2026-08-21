@@ -15,7 +15,7 @@
       "D": "TV talk shows, by presenting immoral guests, are causing a moral decline",
       "E": "it is wrong not to let the viewers decide what they want to see"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT119",
@@ -35,7 +35,7 @@
       "D": "No parasite of the sweet-potato whitefly is also a parasite of the silverleaf whitefly.",
       "E": "In the last three years, the entomologists found no parasites of the sweet-potato whitefly."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT119",
@@ -55,7 +55,7 @@
       "D": "Since medical research is often performed on men, not all results are fully applicable to women as patients.",
       "E": "Women as patients are now beginning to take a more active role in managing their care and making sure that they understand the medical alternatives."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Plausibility",
@@ -78,7 +78,7 @@
       "D": "The therapy should not be used to treat the illness unless it is either effective or inexpensive.",
       "E": "The therapy's possible effectiveness in treating the illness is not sufficient justification for using it."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -124,7 +124,7 @@
       "D": "Albritten's groundwater contained roughly 90 milligrams of dissolved salt per liter 20 years ago.",
       "E": "Salting of Albritten's roads is likely to decrease over the next few decades."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
       "Conditional Conclusion",
@@ -170,7 +170,7 @@
       "D": "Some species of higher animals containing both female and male members are not very adaptive.",
       "E": "Some offspring of species of higher animals containing both female and male members have genetic codes more similar to one parent than to the other parent."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
       "Causal Difference-Maker",
@@ -231,7 +231,7 @@
       "D": "Some of the grain crops that could have been planted instead of corn required less fertile soil in order to flourish than corn required.",
       "E": "The people discovered some years after adopting corn as their staple grain that a diet that supplemented corn with certain readily available nongrain foods significantly improved their health."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
       "Math-y Stuff",
@@ -254,7 +254,7 @@
       "D": "When students choose courses, they choose those that require the least amount of work, not those in which they might learn the most.",
       "E": "When television executives choose programs to air, they choose the ones with the most sex and violence because that is what viewers want, not the shows with the highest artistic merit."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Implicit Principles"
     ]
@@ -320,7 +320,7 @@
       "D": "The aesthetic merit of some literary works cannot be judged in complete independence of their moral effects.",
       "E": "Modern literature is generally not as conducive to societal good as was the literature of earlier eras."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
       "Causal Chains",
@@ -344,7 +344,7 @@
       "D": "claims has a serious flaw though is not without value",
       "E": "claims is less reasonable than any other view mentioned"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT119",
@@ -410,7 +410,7 @@
       "D": "If all whales need to surface for air, then whales must be easy to observe. Blue whales are easily observed, so they must surface for air.",
       "E": "If all of a restaurant's customers like its food, it must be an exceptional restaurant. Everyone whom Sherryl consulted liked the food at Chez Louis, so it must be an exceptional restaurant."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -459,7 +459,7 @@
       "D": "John believes that 4 is a prime number and that 4 is divisible by 2. Hence John believes that there is a prime number divisible by 2.",
       "E": "Pat wants to become a social worker. It is well known that social workers are poorly paid. Pat apparently wants to be poorly paid."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
       "Net Effect",
@@ -484,7 +484,7 @@
       "D": "Without relevant evidence as to a novel's intended reading, one should avoid viewing the work allegorically.",
       "E": "The only relevant evidence in deciding the appropriate interpretation of a text is the text itself."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Math-y Stuff"
     ]
@@ -507,7 +507,7 @@
       "D": "The function of a sealer on wood siding is to retard deterioration caused by weather. However, cedar is a wood that is naturally resistant to weather-related damage and thus does not need additional protection. Sealers, therefore, should not be applied to cedar siding.",
       "E": "Traffic patterns that involve one-way streets are meant to accelerate the flow of traffic in otherwise congested areas. However, it would be detrimental to the South Main Street area to have traffic move faster. So traffic patterns involving one-way streets should not be implemented there."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws"
@@ -529,7 +529,7 @@
       "D": "If recreational activities constitute a danger to the participants in those activities, then the town council should enact ordinances prohibiting those activities.",
       "E": "Ordinances that seek to eliminate dangers should not be enacted if their enactment would lead to dangers that are greater than those they seek to eliminate."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT119",
@@ -547,7 +547,7 @@
       "D": "If the plants in one group of false chicory are not taller than those in another group of false chicory, then the two groups must have received the same amount of rainfall.",
       "E": "If a false chicory plant receives greater than twice the average rainfall of the species' usual habitat, then it will have a longer taproot than that of an average-sized false chicory plant."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Math-y Stuff"
     ]

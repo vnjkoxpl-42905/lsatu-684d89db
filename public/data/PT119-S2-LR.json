@@ -167,7 +167,7 @@
       "D": "People who are inclined to shirk their workplace responsibilities are more likely to exaggerate their credentials, leading prospective employers to believe them to be highly qualified.",
       "E": "Finding a job is less urgent for the conscientious, because they tend to have larger savings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT119",
@@ -185,7 +185,7 @@
       "D": "parents and peers are the most important influence on a child's learning of a language",
       "E": "innate mechanisms play a more important role in language acquisition than a child's immediate environment"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker"
     ]
@@ -208,7 +208,7 @@
       "D": "questions whether Mark accurately describes the kind of historical writing he deplores",
       "E": "gives reason to believe that Mark's recommendation is motivated by his professional self-interest"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Analogies",
       "Argue the Anti-Conclusion",
@@ -234,7 +234,7 @@
       "D": "Historians should aim to convey past events from the perspective of participants in those events.",
       "E": "Historians should use fictional episodes to supplement their accounts of past events if the documented record of those events is incomplete."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Sampling",
       "Argue the Anti-Conclusion",
@@ -259,7 +259,7 @@
       "D": "Any society with good cultural values will have a good cuisine.",
       "E": "When food is bad, it is because of poor soil and, ultimately, bad farming practices."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]
@@ -283,7 +283,7 @@
       "D": "denying that the drivers' view of the road is relevant to the number of road accidents",
       "E": "providing additional evidence to undermine the claim that safer driving does not necessarily reduce the number of road accidents"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "questionFeatures": [
       "New Concept in Conclusion",
       "Plans / Recommendations"
@@ -305,7 +305,7 @@
       "D": "Office workers who experienced frequent headaches were more likely than other workers to overestimate how much time they spent using VDTs.",
       "E": "Office workers who regularly used VDTs experienced the same amount of job-related stress as workers who did not use VDTS."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -326,7 +326,7 @@
       "D": "The true intentions of the writer of a work of literature can never be known to a critic of that work.",
       "E": "The deepest understanding of a literary work requires that one know the writer's history."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Principles in Answers"
     ]
@@ -349,7 +349,7 @@
       "D": "mistakes something that enables an institution to arise for something necessary to the institution",
       "E": "confuses the value of an institution with the medium by which it operates"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Net Effect"
     ]
@@ -390,7 +390,7 @@
       "D": "Bureaucratic mistakes can lead to quality reduction and inefficiency.",
       "E": "Space exploration is too dangerous to be continued."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Science",
       "Timeframes"
@@ -412,7 +412,7 @@
       "D": "People who practice hatha yoga for 75 minutes once a week are not damaging themselves physically.",
       "E": "Other forms of yoga are less effective than hatha yoga in helping people quit smoking."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "B"
   },
   {
     "practiceTest": "PT119",
@@ -433,7 +433,7 @@
       "D": "Shield's first novel has a more complicated plot than any other that she has written. Hence, that plot must be very complex.",
       "E": "Mathematics is more difficult than history. Therefore, my calculus test will be more difficult than my history test."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -477,7 +477,7 @@
       "D": "A psychiatrist's patient tells her about his recurring nightmares of having committed a terrible crime. The psychiatrist should fulfill her duty to report this to the authorities because the patient may have broken the law, even though the psychiatrist also has a duty of confidentiality to her patients.",
       "E": "A journalist thinks there is a slight chance that a story about a developing crisis will endanger innocent lives. Therefore, the journalist should await further developments before fulfilling his duty to file the story."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Alternatives",
       "Plans / Recommendations"
@@ -499,7 +499,7 @@
       "D": "Whoever loves no one is loved by no one.",
       "E": "Whoever loves everyone is kind."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT119",

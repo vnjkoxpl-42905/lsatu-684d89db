@@ -448,7 +448,7 @@
       "D": "One should try to understand an issue fully if doing so will help one to avoid misinterpreting or ignoring evidence regarding that issue.",
       "E": "It is reasonable to take a strong position on an issue only if there is important evidence conflicting with that position."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
@@ -477,7 +477,7 @@
       "D": "presumes, without providing justification, that occurrences that have coincided in the past must continue to coincide",
       "E": "draws a conclusion about the value of computer analyses from a case in which computer analysis provided no facts beyond what was already known"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Similarity",
       "Predictions",
@@ -503,7 +503,7 @@
       "D": "Because they are among the easiest food containers to make from recycled Styrofoam, most egg cartons are made from recycled Styrofoam.",
       "E": "Not every type of food container made of recycled Styrofoam is effectively prevented from coming into contact with the food it contains."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker"
     ]

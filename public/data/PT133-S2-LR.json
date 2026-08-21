@@ -140,7 +140,7 @@
       "D": "fails to consider the possibility that dinosaurs descended from birds",
       "E": "ignores the possibility that dinosaurs and birds descended from a common ancestor"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
@@ -333,7 +333,7 @@
       "D": "A chemical substance habitually used by a person throughout life without significant psychological or physiological difficulty is nonaddictive.",
       "E": "\"Addiction\" is a term that is impossible to define with precision."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
@@ -566,7 +566,7 @@
       "D": "It is, according to the argument, a commonly held opinion that is nevertheless false.",
       "E": "It reports an observation that, according to the argument, serves as evidence for the truth of its conclusion."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
@@ -593,7 +593,7 @@
       "D": "If global warming continues or if the rate of ozone depletion is not reduced, there will be an increase in the incidence of skin cancer. But reduced use of aerosols ensures both that global warming will not continue and that ozone depletion will be reduced. Thus, the incidence of skin cancer will not increase.",
       "E": "If deforestation continues at the current rate and the use of chemicals is not curtailed, wildlife species will continue to become extinct. But because of increasing population worldwide, it is inevitable that the current rate of deforestation will continue and that the use of chemicals will not be curtailed. Thus, wildlife species will continue to become extinct."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
       "Binaries",

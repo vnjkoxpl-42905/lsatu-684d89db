@@ -37,7 +37,7 @@
       "D": "presumes, without providing justification, that only objects that are beautiful are instructive",
       "E": "fails to consider the possibility that there are many things that are both beautiful and instructive but are not part of the natural world"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion"
@@ -61,7 +61,7 @@
       "D": "Some countries rely on a small number of products for the export-based sectors of their economies.",
       "E": "When international trade is free, countries can specialize in what they export."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT131",
@@ -316,7 +316,7 @@
       "D": "Persons who do not have the genetic mutation that lowers levels of cathepsin C do not get gum disease.",
       "E": "A person whose cathepsin C level has been restored to normal will not suffer from periodontitis."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Quantifiers"
     ]
@@ -340,7 +340,7 @@
       "D": "A certain aesthetic pleasure is derived from seeing several movies that develop the same plot in slightly different ways.",
       "E": "Although most modern movie plots have been used before, most of those previous uses occurred during the 1940s and 1950s."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
       "Alternatives",
@@ -417,7 +417,7 @@
       "D": "No political system that fails to prevent conflict is legitimate.",
       "E": "Some political systems that are not totalitarian are illegitimate."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
       "Worst of the Worst"
@@ -441,7 +441,7 @@
       "D": "Beethoven's music became gradually more introspective as he grew older.",
       "E": "Had he not lost his hearing, Beethoven's later music would probably have been different than it is."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT131",
@@ -524,7 +524,7 @@
       "D": "presumes, without providing justification, that art from the 1960s is the only art that cannot be adequately addressed by eighteenth-century European aesthetics",
       "E": "presumes, without providing justification, that eighteenth-century European aesthetics is as encompassing as an aesthetic theory can be"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT131",

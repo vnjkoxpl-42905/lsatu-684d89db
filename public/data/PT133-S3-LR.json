@@ -43,7 +43,7 @@
       "D": "bases its conclusion on a sample that is unlikely to accurately represent people in the country as a whole",
       "E": "fails to make a needed distinction between wanting to be an artist and making a living as an artist"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
       "Sampling"
@@ -314,7 +314,7 @@
       "D": "attempting to persuade its audience by appealing to their fear",
       "E": "attacking an argument that is not held by any actual council member"
     },
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws"
     ]
@@ -414,7 +414,7 @@
       "D": "The argument fails to show that the evidence appealed to is relevant to the conclusion asserted.",
       "E": "The argument fails to consider that what is probable will not necessarily occur."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Causal Chains",
       "Net Effect",
@@ -438,7 +438,7 @@
       "D": "arguing that because something has a certain group of characteristics, it must also have another, closely related, characteristic",
       "E": "arguing that a type of human cognition is unreliable in one instance because it has been shown to be unreliable under similar circumstances"
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Analogies"
     ]
@@ -461,7 +461,7 @@
       "D": "Most of the entries that were received after the deadline for last year's photography contest were rejected by the judges' committee. Thus, the people whose entries were received after the deadline last year will probably send them in well before the deadline this year.",
       "E": "Most of the stone artifacts that have been found at the archaeological site have been domestic tools. Thus, if the next artifact found at the site is made of stone, it will probably be a domestic tool."
     },
-    "correctAnswer": "A",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
       "Predictions",
@@ -509,7 +509,7 @@
       "D": "At least once this year, Franklin has saved a person's life in such a way as to exceed what could be reasonably expected of a police officer. Penn has not saved anyone's life this year.",
       "E": "Both Franklin and Penn have exemplary records. On several occasions this year Franklin has saved people's lives, and on many occasions this year Franklin has exceeded what could be reasonably expected of a police officer. On no occasions this year has Penn saved a person's life or exceeded what could be reasonably expected of an officer."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
       "Principles in Stimulus"

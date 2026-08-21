@@ -232,7 +232,7 @@
       "D": "overlooks the possibility that there could be unfamiliar forms of life that have evolved without the presence of liquid water",
       "E": "takes for granted that no conditions on Europa other than the supposed presence of liquid water could have accounted for the data transmitted by the spacecraft"
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
       "Science"
@@ -443,7 +443,7 @@
       "D": "A characteristic found in half of a given sample of the population might not occur in half of the entire population.",
       "E": "A factor that does not bring about a certain effect may nonetheless be more likely to be present when the effect occurs than when the effect does not occur."
     },
-    "correctAnswer": "D",
+    "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal"
     ]
