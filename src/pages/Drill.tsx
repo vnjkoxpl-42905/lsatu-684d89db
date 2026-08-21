@@ -2185,6 +2185,10 @@ function DrillContent() {
     // answering the last question — same closeout, so a re-attempt is fresh.
     await finalizeGuidedDrillSession(updatedAttempts);
 
+    // Same for Smart Drill / custom drills / full sections.
+    await finalizeDrillResumeSession(updatedAttempts);
+
+
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);
     setAutoReviewQids(reviewSet);
