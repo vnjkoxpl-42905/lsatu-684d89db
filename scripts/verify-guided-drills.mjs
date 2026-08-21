@@ -124,6 +124,15 @@ step('question stats are current', () => {
   return out.trim().split('\n').pop();
 });
 
+step('answer keys match the LSAT Lab sidecar', () => {
+  // The field the drill grades on is `correctAnswer` in the bank; the field
+  // every explanation renders from is the sidecar's correct choice. They drifted
+  // apart once — 190 questions marked students wrong for the right answer, for
+  // four months, until a student reported it. This is the tripwire.
+  const out = run('node', ['scripts/repair-correct-answers.mjs', '--check'], { quiet: true });
+  return out.trim().split('\n').pop();
+});
+
 step('drill level report is current', () => {
   run('node', ['scripts/knowledge/report-drill-levels.mjs'], { quiet: true });
   const report = JSON.parse(fs.readFileSync('scripts/out/drill-level-report.json', 'utf8'));
