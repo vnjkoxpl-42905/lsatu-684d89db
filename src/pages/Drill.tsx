@@ -173,6 +173,18 @@ function DrillContent() {
   // snapshot write would flip the row back to in_progress and offer a resume on
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
+  // Every remaining drill surface — Smart Drill, custom type drills, full
+  // sections — gets the same durable resume row, so closing the browser or
+  // signing out mid-drill is never a loss. Null while the guided/practice-set
+  // surfaces own the run, so the three can never write over each other.
+  const genericResumeKey = React.useMemo(() => {
+    if (isMcPractice || guidedSessionKey) return null;
+    if (!state?.mode) return null;
+    const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
+    return drillResumeKey({ mode, config: state.config });
+  }, [isMcPractice, guidedSessionKey, state]);
+  const genericFinalizedRef = React.useRef(false);
+
   const bootcampPracticeReturnTo =
     returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
       ? returnTo
