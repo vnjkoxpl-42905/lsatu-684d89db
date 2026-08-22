@@ -42,6 +42,15 @@ export function LoomEntrance({
       className="loom flex h-full min-h-[560px] w-full flex-col justify-center gap-8 px-5 py-8 md:px-12"
       data-testid="loom-entrance"
     >
+      {/* The dye-house wakes: the warp rises, then the linen unrolls. */}
+      <div className="lo-room" aria-hidden="true">
+        <div className="lo-warp" />
+        <div className="lo-vat" />
+        <div className="lo-skeins" />
+        <div className="lo-lamplight" />
+        <div className="lo-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="loom-mono text-xs text-[hsl(var(--lo-paper)/0.6)]">Entering</p>
         <button
@@ -68,7 +77,7 @@ export function LoomEntrance({
               {[96, 88, 92, 54].map((w, i) => (
                 <span
                   key={i}
-                  className="block h-2 rounded-[1px] bg-[hsl(var(--lo-ink)/0.12)]"
+                  className="block h-2 rounded-[1px] bg-gradient-to-r from-[hsl(224_45%_40%/0.3)] via-[hsl(var(--lo-thread)/0.35)] to-[hsl(224_45%_40%/0.22)]"
                   style={{ width: `${w}%` }}
                 />
               ))}
@@ -77,7 +86,9 @@ export function LoomEntrance({
         ))}
       </div>
 
-      <p className="ac-display text-center text-xl text-[hsl(var(--lo-paper))]">{title}</p>
+      <p className="loom-display text-center text-2xl text-[hsl(var(--lo-paper))] md:text-3xl">
+        {title}
+      </p>
     </div>
   );
 }

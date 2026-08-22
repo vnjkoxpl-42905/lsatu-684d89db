@@ -56,8 +56,19 @@ export function PolarityStage({ plate, phase, reading, chips }: PolarityStagePro
       data-glare={glare ? "true" : undefined}
       data-testid="polarity"
     >
+      {/* The room itself: aurora, rays, survey floor, motes, vignette. Pure
+          scenery, aria-hidden, and outside every tested container. */}
+      <div className="po-room" aria-hidden="true">
+        <div className="po-aurora" />
+        <div className="po-aurora-rays" />
+        <div className="po-floor" />
+        <div className="po-horizon" />
+        <div className="po-motes" />
+        <div className="po-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
-        <span className="polarity-mono text-xs text-[hsl(var(--po-ink-dim))]">
+        <span className="polarity-display text-sm text-[hsl(var(--po-ink))]">
           {inverted ? "Inverted" : refused ? "The plate held" : "The statement"}
         </span>
         <span className="polarity-mono text-xs text-[hsl(var(--po-ink-dim))]">{plate.kind}</span>

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { BarChart3, ChevronDown, Play, Sparkles, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -90,11 +89,9 @@ function ActivityCard({
   open: boolean;
   onToggle: () => void;
 }) {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const { assign, assigning } = useAssignActivity();
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [previewing, setPreviewing] = useState(false);
   const [tab, setTab] = useState<"assign" | "results">("assign");
   const [resultsKey, setResultsKey] = useState(0);
 
@@ -136,16 +133,11 @@ function ActivityCard({
     }
   };
 
-  const handleTryIt = async () => {
-    if (!user) return;
-    setPreviewing(true);
-    const res = await assign(activity, user.id);
-    setPreviewing(false);
-    if (res.ok && res.id) {
-      navigate(`/activities/${res.id}`);
-    } else {
-      toast.error(res.error || "Could not create preview assignment");
-    }
+  // Preview runs off the activity definition and writes nothing. It used to
+  // assign to the teacher's own account, which put every activity he looked at
+  // on his own Classroom's "Assigned to you" list and left it there.
+  const handleTryIt = () => {
+    navigate(`/activities/preview/${activity.id}`);
   };
 
   return (
@@ -163,11 +155,11 @@ function ActivityCard({
         <button
           type="button"
           onClick={handleTryIt}
-          disabled={previewing || assigning}
+          disabled={assigning}
           className="flex shrink-0 items-center gap-1.5 rounded-lg bg-emerald-600/20 px-3 py-1.5 text-xs font-medium text-emerald-300 hover:bg-emerald-600/30 disabled:opacity-50"
         >
           <Play className="h-3 w-3" />
-          {previewing ? "Opening…" : "Try it"}
+          Try it
         </button>
       </div>
 

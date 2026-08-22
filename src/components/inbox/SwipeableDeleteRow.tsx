@@ -24,11 +24,20 @@ export function SwipeableDeleteRow({
   label,
   onDelete,
   rounded = "rounded-xl",
+  actionLabel = "Delete",
+  actionGerund = "deleting",
 }: {
   children: ReactNode;
   label: string;
   onDelete: () => void;
   rounded?: string;
+  /**
+   * The verb on the confirm button. Home clears a message off the page rather
+   * than deleting it, and the button has to say which one it is doing.
+   */
+  actionLabel?: string;
+  /** The same verb in "Cancel …ing", which English will not derive for us. */
+  actionGerund?: string;
 }) {
   const controls = useAnimationControls();
   const reduce = useReducedMotion();
@@ -79,7 +88,7 @@ export function SwipeableDeleteRow({
         <button
           type="button"
           onClick={close}
-          aria-label={`Cancel deleting ${label}`}
+          aria-label={`Cancel ${actionGerund} ${label}`}
           tabIndex={open ? 0 : -1}
           className="flex min-w-0 flex-1 items-center justify-center bg-stone-200 px-3 text-xs font-bold text-stone-700 hover:bg-stone-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-stone-600 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-600"
         >
@@ -88,12 +97,12 @@ export function SwipeableDeleteRow({
         <button
           type="button"
           onClick={remove}
-          aria-label={`Delete ${label}`}
+          aria-label={`${actionLabel} ${label}`}
           tabIndex={open ? 0 : -1}
           className="flex min-w-0 flex-1 items-center justify-center gap-1.5 bg-red-600 px-3 text-xs font-bold text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
         >
           <Trash2 className="h-4 w-4" aria-hidden="true" />
-          Delete
+          {actionLabel}
         </button>
       </div>
 
@@ -135,7 +144,7 @@ export function SwipeableDeleteRow({
             "opacity-0 group-hover/swipe:opacity-100 focus-visible:opacity-100",
             "bg-background/80 text-muted-foreground shadow-sm hover:bg-red-500/10 hover:text-red-600",
           )}
-          aria-label={`Show delete actions for ${label}`}
+          aria-label={`Show ${actionLabel.toLowerCase()} actions for ${label}`}
         >
           <Trash2 className="h-4 w-4" aria-hidden="true" />
         </button>

@@ -146,7 +146,7 @@ function togglePopoverOption(triggerName: RegExp, checkboxId: string) {
 
 /** Type a spec and commit it the way a user does: Enter. */
 function applySpec(text: string) {
-  const input = screen.getByLabelText('Filter specification');
+  const input = screen.getByLabelText('Type a PrepTest, section and question range');
   fireEvent.change(input, { target: { value: text } });
   fireEvent.keyDown(input, { key: 'Enter' });
 }
@@ -163,7 +163,7 @@ describe('QuestionPicker unified LR drill builder', () => {
     // The scalar "Question number" input is gone; question numbers are now
     // expressed through the spec line, which sits below the focus row.
     const controls = [
-      screen.getByLabelText('Filter specification'),
+      screen.getByLabelText('Type a PrepTest, section and question range'),
       screen.getByLabelText('Add exact questions'),
       trigger(/^PrepTests/),
       trigger(/^Section/),
@@ -179,6 +179,20 @@ describe('QuestionPicker unified LR drill builder', () => {
         controls[index].compareDocumentPosition(controls[index + 1]) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
+    }
+  });
+
+  it('labels each filter row in plain words rather than internal names', () => {
+    setup();
+
+    // "Spec" was the internal name for the grammar and read as jargon beside
+    // SOURCE and FOCUS, which name what you are choosing.
+    expect(screen.queryByText('Spec')).toBeNull();
+    for (const label of ['Type it', 'Source', 'Focus']) {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    }
+    for (const hint of ['Faster than clicking', 'Where they come from', 'What they test']) {
+      expect(screen.getByText(hint)).toBeInTheDocument();
     }
   });
 
@@ -302,14 +316,14 @@ describe('QuestionPicker unified LR drill builder', () => {
       setup();
       applySpec('q2,1 pt101');
 
-      expect(screen.getByLabelText('Filter specification')).toHaveValue('PT101 Q1,2');
+      expect(screen.getByLabelText('Type a PrepTest, section and question range')).toHaveValue('PT101 Q1,2');
     });
 
     it('reflects a popover change back into the bar', () => {
       setup();
       togglePopoverOption(/^PrepTests/, 'pt-101');
 
-      expect(screen.getByLabelText('Filter specification')).toHaveValue('PT101');
+      expect(screen.getByLabelText('Type a PrepTest, section and question range')).toHaveValue('PT101');
     });
 
     it('clears a facet when its tokens are removed, rather than restoring the old value', () => {

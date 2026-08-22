@@ -41,6 +41,16 @@ export function PolarityEntrance({
       className="polarity flex h-full min-h-[560px] w-full flex-col justify-center gap-10 px-5 py-8 md:px-12"
       data-testid="polarity-entrance"
     >
+      {/* The room ignites: aurora first, then the plate descends through it. */}
+      <div className="po-room" aria-hidden="true">
+        <div className="po-aurora" />
+        <div className="po-aurora-rays" />
+        <div className="po-floor" />
+        <div className="po-horizon" />
+        <div className="po-motes" />
+        <div className="po-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="polarity-mono text-xs text-[hsl(var(--po-ink-dim))]">Entering</p>
         <button
@@ -64,7 +74,7 @@ export function PolarityEntrance({
             {[86, 62].map((w, i) => (
               <span
                 key={i}
-                className="block h-3 rounded-[1px] bg-[hsl(var(--po-ink)/0.1)]"
+                className="block h-3 rounded-[1px] bg-gradient-to-r from-[hsl(var(--po-aurora-a)/0.4)] to-[hsl(var(--po-aurora-b)/0.25)] shadow-[0_0_10px_hsl(var(--po-aurora-a)/0.25)]"
                 style={{ width: `${w}%` }}
               />
             ))}
@@ -74,7 +84,7 @@ export function PolarityEntrance({
       </div>
 
       <p
-        className="po-entrance-name polarity-mono text-center text-sm text-[hsl(var(--po-ink))]"
+        className="po-entrance-name polarity-display text-center text-2xl text-[hsl(var(--po-ink))] md:text-3xl"
         data-testid="po-entrance-name"
       >
         {title}

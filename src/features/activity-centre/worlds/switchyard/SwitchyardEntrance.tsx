@@ -51,6 +51,16 @@ export function SwitchyardEntrance({
       className="switchyard flex h-full min-h-[560px] w-full flex-col justify-center gap-10 px-5 py-8 md:px-12"
       data-testid="sy-entrance"
     >
+      {/* The yard powering up: floods strike on over the track fan. */}
+      <div className="sy-room" aria-hidden="true">
+        <div className="sy-tracks" />
+        <div className="sy-floods" />
+        <div className="sy-lamphead" data-side="left" />
+        <div className="sy-lamphead" data-side="right" />
+        <div className="sy-fog" />
+        <div className="sy-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="switchyard-mono text-xs text-[hsl(var(--sy-ink-dim))]">Entering</p>
         <button
@@ -69,7 +79,7 @@ export function SwitchyardEntrance({
         }`}
         data-testid="sy-entrance-board"
       >
-        <p className="ac-display text-xl text-[hsl(var(--sy-ink))]">{title}</p>
+        <p className="switchyard-display text-2xl text-[hsl(var(--sy-ink))]">{title}</p>
       </div>
 
       <div className="flex items-center gap-6">

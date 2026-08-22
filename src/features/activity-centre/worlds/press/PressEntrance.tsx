@@ -42,6 +42,15 @@ export function PressEntrance({
       className="press press-entrance-bed flex h-full min-h-[560px] w-full flex-col justify-center gap-8 px-5 py-8 md:px-12"
       data-testid="press-entrance"
     >
+      {/* The shop's lamp comes up over the machine. */}
+      <div className="pr-room" aria-hidden="true">
+        <div className="pr-glow" />
+        <div className="pr-frame" />
+        <div className="pr-rollers" />
+        <div className="pr-spatter" />
+        <div className="pr-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="press-mono text-xs text-[hsl(var(--pr-ink-dim))]">Entering</p>
         <button
@@ -68,7 +77,7 @@ export function PressEntrance({
             {[100, 96, 99, 92, 97, 64].map((w, i) => (
               <span
                 key={i}
-                className="block h-2 rounded-[1px] bg-[hsl(var(--pr-ink)/0.16)]"
+                className="block h-2 rounded-[1px] bg-gradient-to-r from-[hsl(var(--pr-paper)/0.3)] to-[hsl(var(--pr-paper)/0.14)]"
                 style={{ width: `${w}%` }}
               />
             ))}
@@ -76,7 +85,9 @@ export function PressEntrance({
         </div>
       </div>
 
-      <p className="ac-display text-center text-xl text-[hsl(var(--pr-ink))]">{title}</p>
+      <p className="press-display text-center text-2xl text-[hsl(var(--pr-ink))] md:text-3xl">
+        {title}
+      </p>
     </div>
   );
 }

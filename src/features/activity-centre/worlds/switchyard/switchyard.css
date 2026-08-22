@@ -1,55 +1,186 @@
 /*
  * The Switchyard: Conditional Rephrase's world.
  *
- * The Activity Centre module is pinned to a warm cream paper surface. This
- * world is specced as a rail yard at night, so the night palette is scoped to
- * .switchyard and overrides the module tokens only inside the yard. The signal
- * box (the Coach) stays on the module surface, which is the point: the Coach is
- * the constant, the room changes.
+ * A freight yard at midnight under sodium light. The night is cold blue-black
+ * steel; the light pooling over the tracks is sodium-vapor amber; the signals
+ * are emerald, and the emerald still means exactly one thing: a lamp that is
+ * telling the truth about polarity. The departures board is a solari board in
+ * rail-placard capitals, the capsules are riveted freight containers, and the
+ * yard's tracks converge on a vanishing point behind the fog.
  *
- * The black is warm-tinted rather than blue-black so the world still belongs to
- * the same family as the paper surface it sits inside.
+ * A fault is still told through machinery, never an alarm color: the gate
+ * drops, the lamp blinks, the short coupling shows.
  */
 
 .switchyard {
-  --sy-field: 30 12% 7%;
-  --sy-field-deep: 30 14% 5%;
-  --sy-rail: 38 10% 26%;
-  --sy-rail-live: 38 14% 46%;
-  --sy-ink: 40 18% 88%;
-  --sy-ink-dim: 38 8% 52%;
-  --sy-plate: 32 12% 12%;
-  --sy-plate-edge: 38 10% 30%;
-  --sy-signal: 160 72% 46%;
+  --sy-field: 212 20% 8%;
+  --sy-field-deep: 215 28% 4%;
+  --sy-rail: 213 12% 30%;
+  --sy-rail-live: 36 55% 52%;
+  --sy-ink: 38 32% 92%;
+  --sy-ink-dim: 214 12% 64%;
+  --sy-plate: 213 18% 12%;
+  --sy-plate-edge: 213 14% 30%;
+  --sy-signal: 158 78% 48%;
+  --sy-sodium: 36 96% 58%;
 
   position: relative;
-  background:
-    radial-gradient(120% 90% at 50% 0%, hsl(var(--sy-field) / 0.55), transparent 70%),
-    hsl(var(--sy-field-deep));
+  background: hsl(var(--sy-field-deep));
   color: hsl(var(--sy-ink));
   overflow: hidden;
+  isolation: isolate;
 }
 
-/* Fine schematic grid, barely there. Reads as drafting paper under the yard. */
-.switchyard::before {
-  content: "";
+.switchyard > :not(.sy-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The yard ---------- */
+
+.sy-room {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(to right, hsl(var(--sy-rail) / 0.16) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--sy-rail) / 0.16) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(120% 80% at 50% 45%, black, transparent 78%);
+  z-index: 0;
   pointer-events: none;
 }
 
-/*
- * Schematic labels. The fallback stack repeats the module token so the yard
- * still reads correctly if a world is ever mounted outside .activity-centre.
- * Weight 500 because that is a weight the webfont actually ships; leaving it at
- * 400 would have the browser synthesize a lighter face and the labels would
- * drift off the drafting-paper look.
- */
+/* The track fan: rail pairs converging toward a vanishing point in the fog. */
+.sy-tracks {
+  position: absolute;
+  left: -34%;
+  right: -34%;
+  bottom: -14%;
+  height: 58%;
+  transform: perspective(640px) rotateX(56deg);
+  transform-origin: 50% 0%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 54px,
+      hsl(var(--sy-rail) / 0.75) 54px 56px,
+      transparent 56px 74px,
+      hsl(var(--sy-rail) / 0.75) 74px 76px,
+      transparent 76px 148px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      hsl(var(--sy-rail) / 0.22) 0 2px,
+      transparent 2px 44px
+    );
+  mask-image: linear-gradient(180deg, transparent 0%, black 24%, black 84%, transparent 100%);
+  opacity: 0.85;
+}
+
+/* Two sodium floodlight cones falling across the yard. */
+.sy-floods {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(34% 60% at 18% -6%, hsl(var(--sy-sodium) / 0.26), transparent 72%),
+    radial-gradient(40% 66% at 78% -8%, hsl(var(--sy-sodium) / 0.2), transparent 74%),
+    radial-gradient(80% 40% at 50% 108%, hsl(var(--sy-sodium) / 0.08), transparent 70%);
+  animation: sy-sodium-hum 9s ease-in-out infinite alternate;
+}
+
+@keyframes sy-sodium-hum {
+  0%,
+  84% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 0.92;
+  }
+  92% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* The two lamp heads the cones fall from. */
+.sy-lamphead {
+  position: absolute;
+  top: 0;
+  width: 46px;
+  height: 5px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, hsl(213 14% 22%), hsl(var(--sy-field-deep)));
+  box-shadow: 0 3px 14px hsl(var(--sy-sodium) / 0.55);
+}
+
+.sy-lamphead::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 14px;
+  height: 4px;
+  margin-left: -7px;
+  border-radius: 2px;
+  background: hsl(var(--sy-sodium) / 0.95);
+  filter: blur(1px);
+}
+
+.sy-lamphead[data-side="left"] {
+  left: 14%;
+}
+
+.sy-lamphead[data-side="right"] {
+  left: 74%;
+}
+
+/* Ground fog drifting through the lower yard. */
+.sy-fog,
+.sy-fog::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: 0;
+  height: 46%;
+  background:
+    radial-gradient(42% 58% at 30% 78%, hsl(214 30% 46% / 0.16), transparent 72%),
+    radial-gradient(50% 62% at 74% 88%, hsl(214 30% 52% / 0.12), transparent 74%);
+  filter: blur(20px);
+  animation: sy-fog-drift 26s ease-in-out infinite alternate;
+}
+
+.sy-fog::after {
+  background:
+    radial-gradient(36% 50% at 56% 92%, hsl(36 40% 50% / 0.1), transparent 70%),
+    radial-gradient(30% 46% at 10% 70%, hsl(214 30% 50% / 0.1), transparent 72%);
+  animation-duration: 34s;
+  animation-delay: -14s;
+}
+
+@keyframes sy-fog-drift {
+  from {
+    transform: translateX(-3%);
+  }
+  to {
+    transform: translateX(4%);
+  }
+}
+
+/* The night vignette. */
+.sy-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    115% 95% at 50% 36%,
+    transparent 46%,
+    hsl(var(--sy-field-deep) / 0.75) 82%,
+    hsl(var(--sy-field-deep)) 100%
+  );
+}
+
+/* ---------- Type ---------- */
+
 .switchyard-mono {
   font-family: var(
     --ac-mono,
@@ -67,51 +198,98 @@
   text-transform: uppercase;
 }
 
+/* Rail-placard capitals: the yard's own signage face, for short labels. */
+.switchyard-display {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* The board's reading face: same placard family, sentence case, loose enough
+   to read a whole conditional closely. */
+.switchyard-board-type {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+
 /* ---------- Rails ---------- */
 
+/* A rail is now a pair: two steel lines with sleeper ticks between them. */
 .sy-rail {
   position: relative;
-  height: 1px;
-  background: hsl(var(--sy-rail));
+  height: 5px;
+  background:
+    linear-gradient(180deg, hsl(var(--sy-rail)) 0 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--sy-rail)) 0 1px, transparent 1px);
 }
 
 /* Sleepers: the repeating ticks that make a line read as track. */
 .sy-rail::after {
   content: "";
   position: absolute;
-  inset: -5px 0;
+  inset: -3px 0;
   background-image: linear-gradient(
     to right,
-    hsl(var(--sy-rail) / 0.7) 1px,
-    transparent 1px
+    hsl(var(--sy-rail) / 0.7) 2px,
+    transparent 2px
   );
-  background-size: 16px 100%;
+  background-size: 18px 100%;
   opacity: 0.5;
 }
 
 .sy-rail[data-live="true"] {
-  background: hsl(var(--sy-rail-live));
-  box-shadow: 0 0 12px hsl(var(--sy-signal) / 0.18);
+  background:
+    linear-gradient(180deg, hsl(var(--sy-rail-live)) 0 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--sy-rail-live)) 0 1px, transparent 1px);
+  box-shadow: 0 0 14px hsl(var(--sy-sodium) / 0.25);
+}
+
+.sy-rail[data-live="true"]::after {
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--sy-rail-live) / 0.8) 2px,
+    transparent 2px
+  );
 }
 
 /* ---------- Cargo capsule ---------- */
 
+/* A riveted freight container under the sodium light. */
 .sy-capsule {
-  background: linear-gradient(
-    180deg,
-    hsl(var(--sy-plate) / 0.96),
-    hsl(var(--sy-field) / 0.96)
-  );
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      hsl(var(--sy-plate)) 0%,
+      hsl(213 18% 10%) 55%,
+      hsl(var(--sy-field-deep)) 100%
+    );
   border: 1px solid hsl(var(--sy-plate-edge));
   box-shadow:
-    inset 0 1px 0 hsl(var(--sy-ink) / 0.06),
-    0 8px 20px hsl(var(--sy-field-deep) / 0.7);
+    inset 0 1px 0 hsl(var(--sy-sodium) / 0.14),
+    inset 0 -1px 0 hsl(var(--sy-field-deep)),
+    0 10px 24px hsl(var(--sy-field-deep) / 0.85);
+}
+
+/* Rivet lines along the container's top and bottom edges. */
+.sy-capsule::before {
+  content: "";
+  position: absolute;
+  inset: 3px 8px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8px 2px, hsl(var(--sy-ink) / 0.28), transparent 100%),
+    radial-gradient(1.5px 1.5px at 8px calc(100% - 2px), hsl(var(--sy-ink) / 0.2), transparent 100%);
+  background-size: 26px 100%;
+  background-repeat: repeat-x;
 }
 
 /* The polarity lamp. Lit ring means the clause is stated negatively. */
 .sy-lamp {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
   border: 1px solid hsl(var(--sy-rail-live));
   background: transparent;
@@ -120,8 +298,10 @@
 
 .sy-lamp[data-lit="true"] {
   border-color: hsl(var(--sy-signal));
-  background: hsl(var(--sy-signal) / 0.22);
-  box-shadow: 0 0 8px hsl(var(--sy-signal) / 0.55);
+  background: hsl(var(--sy-signal) / 0.3);
+  box-shadow:
+    0 0 10px hsl(var(--sy-signal) / 0.7),
+    0 0 22px hsl(var(--sy-signal) / 0.3);
 }
 
 /* ---------- The junction ---------- */
@@ -143,19 +323,18 @@
   border: 1px solid hsl(var(--sy-rail-live));
   background: linear-gradient(
     135deg,
-    hsl(var(--sy-plate) / 0.9),
-    hsl(var(--sy-field-deep) / 0.9)
+    hsl(var(--sy-plate) / 0.94),
+    hsl(var(--sy-field-deep) / 0.94)
   );
   transform: rotate(45deg);
   box-shadow:
     inset 0 0 24px hsl(var(--sy-field-deep)),
+    inset 0 1px 0 hsl(var(--sy-sodium) / 0.2),
     0 0 30px hsl(var(--sy-field-deep) / 0.9);
 }
 
-/* The crossing itself: the two tracks that meet inside the diamond.
-   It sits at mid-depth between the two plates so it stays visible from both
-   sides of the turn. Parked on the face, a half turn would bury it behind the
-   back plate and the junction would read as an empty diamond once flipped. */
+/* The crossing itself: the two tracks that meet inside the diamond. It sits at
+   mid-depth so it stays visible from both sides of the turn. */
 .sy-crossing {
   position: absolute;
   inset: 0;
@@ -169,6 +348,7 @@
   top: 50%;
   height: 1px;
   background: hsl(var(--sy-rail-live));
+  box-shadow: 0 0 6px hsl(var(--sy-sodium) / 0.4);
 }
 
 .sy-crossing span:last-child {
@@ -186,10 +366,34 @@
 
 /* ---------- Departures board ---------- */
 
+/* A solari board: enamel black, slat lines, sodium-lit text. */
 .sy-board {
-  background: linear-gradient(180deg, hsl(var(--sy-plate)), hsl(var(--sy-field)));
+  position: relative;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 26px,
+      hsl(var(--sy-field-deep) / 0.55) 26px 27px
+    ),
+    linear-gradient(180deg, hsl(var(--sy-plate)), hsl(var(--sy-field)));
   border: 1px solid hsl(var(--sy-plate-edge));
-  box-shadow: 0 18px 40px hsl(var(--sy-field-deep) / 0.8);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--sy-sodium) / 0.16),
+    0 22px 44px hsl(var(--sy-field-deep) / 0.9);
+}
+
+/* Board mounting bolts. */
+.sy-board::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 3px 3px, hsl(var(--sy-ink) / 0.3), transparent 100%),
+    radial-gradient(2px 2px at calc(100% - 3px) 3px, hsl(var(--sy-ink) / 0.3), transparent 100%),
+    radial-gradient(2px 2px at 3px calc(100% - 3px), hsl(var(--sy-ink) / 0.3), transparent 100%),
+    radial-gradient(2px 2px at calc(100% - 3px) calc(100% - 3px), hsl(var(--sy-ink) / 0.3), transparent 100%);
+  background-repeat: no-repeat;
 }
 
 /* The indicator word, lit only AFTER the verdict. Never a pre-commit hint. */
@@ -201,8 +405,21 @@
 /* ---------- Credited plates ---------- */
 
 .sy-plate {
-  background: hsl(var(--sy-plate) / 0.75);
+  background: hsl(var(--sy-plate) / 0.8);
   border: 1px solid hsl(var(--sy-plate-edge));
+  box-shadow: inset 0 1px 0 hsl(var(--sy-sodium) / 0.1);
+}
+
+/* A plate that is not yet in play keeps its label but not its words: the
+   credited answer must never be readable before the student commits, and a
+   dimmed line is still a readable line. The blur lifts with the plate. */
+.sy-plate[aria-hidden="true"] p:last-child {
+  filter: blur(7px);
+  transition: filter 500ms ease;
+}
+
+.sy-plate p:last-child {
+  transition: filter 500ms ease;
 }
 
 /* ---------- Signal faults ----------
@@ -219,13 +436,14 @@
   top: -6px;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   border-radius: 2px;
   background: repeating-linear-gradient(
     90deg,
-    hsl(var(--sy-rail-live)) 0 14px,
+    hsl(var(--sy-sodium) / 0.85) 0 14px,
     hsl(var(--sy-field-deep)) 14px 28px
   );
+  box-shadow: 0 0 12px hsl(var(--sy-sodium) / 0.3);
   transform-origin: left center;
   transform: rotate(-88deg);
   opacity: 0;
@@ -266,11 +484,23 @@
   border-style: dashed;
 }
 
+/* Before the yard routes, the cargo waits under tarpaulin: which clause sits
+   on which track IS the answer, so an unrouted capsule's contents (words and
+   polarity lamp alike) stay illegible until the student commits. */
+.sy-capsule[data-veiled="true"] {
+  filter: blur(7px);
+  transition: filter 500ms ease;
+}
+
+.sy-capsule {
+  transition: filter 500ms ease;
+}
+
 /* The docked full form sits under the incomplete capsule, on the same track. */
 .sy-fullform {
   background: hsl(var(--sy-field) / 0.7);
   border: 1px solid hsl(var(--sy-plate-edge) / 0.7);
-  border-left: 2px solid hsl(var(--sy-rail-live));
+  box-shadow: inset 1px 0 0 hsl(var(--sy-rail-live));
 }
 
 /* The polarity lamp blinking until the student takes the point. */
@@ -292,20 +522,23 @@
 }
 
 .sy-fault {
-  background: hsl(var(--sy-plate) / 0.85);
+  background: hsl(var(--sy-plate) / 0.9);
   border: 1px solid hsl(var(--sy-plate-edge));
-  border-left: 2px solid hsl(var(--sy-signal));
+  box-shadow: inset 1px 0 0 hsl(var(--sy-signal));
 }
 
 .sy-ack {
   border: 1px solid hsl(var(--sy-rail-live));
   color: hsl(var(--sy-ink));
   background: transparent;
-  transition: background-color 160ms linear;
+  transition:
+    background-color 160ms linear,
+    box-shadow 160ms linear;
 }
 
 .sy-ack:hover {
   background: hsl(var(--sy-ink) / 0.08);
+  box-shadow: 0 0 10px hsl(var(--sy-sodium) / 0.2);
 }
 
 /* ---------- The student's own routing ---------- */
@@ -327,6 +560,7 @@
 
 .sy-milepost[data-outcome="correct"] {
   background: hsl(var(--sy-signal) / 0.85);
+  box-shadow: 0 0 6px hsl(var(--sy-signal) / 0.4);
 }
 
 .sy-milepost[data-outcome="partial"] {
@@ -345,13 +579,13 @@
 .sy-milepost[data-current="true"] {
   height: 16px;
   background: hsl(var(--sy-ink));
-  box-shadow: 0 0 10px hsl(var(--sy-signal) / 0.5);
+  box-shadow: 0 0 10px hsl(var(--sy-sodium) / 0.6);
 }
 
 /* ---------- Entrance ---------- */
 
-/* The rails light section by section down the line, then the junction turns
-   once, idle, and the board flips to the first item. */
+/* The yard powers up: floods flicker on, the rails light section by section
+   down the line, the junction turns once, idle, and the board flips over. */
 @keyframes sy-light-up {
   from {
     transform: scaleX(0);
@@ -364,10 +598,10 @@
 }
 
 .sy-entrance-rail {
-  height: 1px;
+  height: 2px;
   transform-origin: left center;
-  background: hsl(var(--sy-rail-live));
-  box-shadow: 0 0 12px hsl(var(--sy-signal) / 0.2);
+  background: linear-gradient(90deg, hsl(var(--sy-rail-live)), hsl(var(--sy-sodium) / 0.8));
+  box-shadow: 0 0 14px hsl(var(--sy-sodium) / 0.35);
   animation: sy-light-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -382,6 +616,33 @@
 
 .sy-entrance-junction {
   animation: sy-idle-turn 900ms cubic-bezier(0.7, 0, 0.18, 1) 900ms both;
+}
+
+/* The floods striking on with a sodium stutter. */
+@keyframes sy-floods-strike {
+  0% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.4;
+  }
+  30% {
+    opacity: 0.12;
+  }
+  44% {
+    opacity: 0.8;
+  }
+  52% {
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.switchyard[data-testid="sy-entrance"] .sy-floods {
+  animation: sy-floods-strike 1200ms ease-out both;
 }
 
 /* ---------- Reduced motion ---------- */
@@ -399,6 +660,12 @@
   .sy-lamp[data-blinking="true"] {
     animation: none !important;
     opacity: 1;
+  }
+
+  .sy-floods,
+  .sy-fog,
+  .sy-fog::after {
+    animation: none !important;
   }
 
   .sy-entrance-rail,

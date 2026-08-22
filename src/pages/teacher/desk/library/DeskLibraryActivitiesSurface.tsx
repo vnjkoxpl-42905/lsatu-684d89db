@@ -1,53 +1,41 @@
-import { useEffect, useMemo, useState } from 'react';
-import { toast } from 'sonner';
-import { BarChart3, Loader2, Play, Send, Sparkles, Users } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { Checkbox } from '@/components/ui/checkbox';
+import { useMemo, useState } from 'react';
+import { BarChart3, Play, Plus, Send, Sparkles } from 'lucide-react';
+import { useHubStudents } from '@/hooks/useHubStudents';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { cn, openRoute } from '@/lib/utils';
+import { openRoute } from '@/lib/utils';
 import { LibraryViews, type LibraryItem } from '@/components/teacher/desk/library/LibraryViews';
 import type { LibraryView } from '@/hooks/useDeskLibraryView';
+import type { AssignWorkSheetItem } from '@/components/teacher/library/AssignWorkSheet';
 import {
   useAdminActivities,
-  useAssignActivity,
   ActivityResults,
-  listAssignmentsForStudent,
   type Activity,
 } from '@/features/activity-centre';
 
-interface StudentRow {
-  user_id: string;
-  display_name: string | null;
+/**
+ * One Activity, in the shape the one assign flow wants. Activities go through
+ * the same sheet as drills and homework so a mixed bundle ships as a single
+ * assignment event rather than as two separate pings to the same student.
+ */
+function sheetItem(activity: Activity): AssignWorkSheetItem {
+  return {
+    item: { kind: 'activity', activityId: activity.id },
+    title: activity.title,
+    kindLabel: 'Activity',
+  };
 }
 
-export function DeskLibraryActivitiesSurface({ view }: { view: LibraryView }) {
+export function DeskLibraryActivitiesSurface({
+  view,
+  onAssign,
+  onBundle,
+}: {
+  view: LibraryView;
+  onAssign: (item: AssignWorkSheetItem) => void;
+  onBundle: (item: AssignWorkSheetItem) => void;
+}) {
   const { activities, loading, error } = useAdminActivities();
-  const [students, setStudents] = useState<StudentRow[]>([]);
-  const [assignActivity, setAssignActivity] = useState<Activity | null>(null);
-
-  useEffect(() => {
-    void (async () => {
-      const { data, error: err } = await supabase
-        .from('profiles')
-        .select('class_id, display_name')
-        .order('display_name', { ascending: true });
-      if (err) {
-        // Don't silently show an empty roster: the teacher could try to assign
-        // to nobody. Surface it so they refresh instead.
-        console.error('[activity:students:list] failed', err);
-        setStudents([]);
-        toast.error('Could not load the student list. Refresh before assigning.');
-        return;
-      }
-      setStudents(
-        (data || []).map((r: { class_id: string; display_name: string | null }) => ({
-          user_id: r.class_id,
-          display_name: r.display_name,
-        })),
-      );
-    })();
-  }, []);
+  const [resultsFor, setResultsFor] = useState<Activity | null>(null);
 
   return (
     <section className="flex h-full w-full flex-col">
@@ -76,45 +64,47 @@ export function DeskLibraryActivitiesSurface({ view }: { view: LibraryView }) {
             items={activities.map((a): LibraryItem => ({
               id: a.id,
               title: a.title,
-              subtitle: `${a.subtitle} · ${a.items.length} items · ${a.item_format}`,
-              actions: <ActivityActions activity={a} onAssign={() => setAssignActivity(a)} />,
+              subtitle: a.subtitle,
+              meta: (
+                <span className="tabular-nums text-black/45">
+                  {a.items.length} items · {a.item_format}
+                </span>
+              ),
+              actions: (
+                <ActivityActions
+                  activity={a}
+                  onAssign={() => onAssign(sheetItem(a))}
+                  onBundle={() => onBundle(sheetItem(a))}
+                  onResults={() => setResultsFor(a)}
+                />
+              ),
             }))}
           />
         )}
       </div>
 
-      <ActivityAssignSheet
-        activity={assignActivity}
-        students={students}
-        onClose={() => setAssignActivity(null)}
-      />
+      <ActivityResultsSheet activity={resultsFor} onClose={() => setResultsFor(null)} />
     </section>
   );
 }
 
-function ActivityActions({ activity, onAssign }: { activity: Activity; onAssign: () => void }) {
-  const { user } = useAuth();
-  const { assign, assigning } = useAssignActivity();
-  const [opening, setOpening] = useState(false);
-
-  const handleOpen = async () => {
-    if (!user) return;
-    setOpening(true);
-    try {
-      const existing = await listAssignmentsForStudent(user.id);
-      const active = existing.find((a) => a.activity_id === activity.id && a.status !== 'completed');
-      if (active) {
-        openRoute(`/activities/${active.id}`);
-        return;
-      }
-      const res = await assign(activity, user.id);
-      if (res.ok && res.id) openRoute(`/activities/${res.id}`);
-      else toast.error(res.error || 'Could not open activity');
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Could not open activity');
-    } finally {
-      setOpening(false);
-    }
+function ActivityActions({
+  activity,
+  onAssign,
+  onBundle,
+  onResults,
+}: {
+  activity: Activity;
+  onAssign: () => void;
+  onBundle: () => void;
+  onResults: () => void;
+}) {
+  // Preview: run the activity DEFINITION, writing nothing. It used to
+  // self-assign, which is how activities Joshua only opened to look at ended up
+  // on his own Classroom's "Assigned to you" list. The old row-reuse dance
+  // existed only to stop those piling up; with no row there is nothing to pile.
+  const handleOpen = () => {
+    openRoute(`/activities/preview/${activity.id}`);
   };
 
   return (
@@ -122,15 +112,32 @@ function ActivityActions({ activity, onAssign }: { activity: Activity; onAssign:
       <button
         type="button"
         onClick={handleOpen}
-        disabled={opening || assigning}
-        className="inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25 disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black disabled:opacity-50"
       >
-        <Play className="h-3 w-3" /> {opening ? 'Opening…' : 'Open'}
+        <Play className="h-3 w-3" /> Open
+      </button>
+      <button
+        type="button"
+        onClick={onResults}
+        title="See who has done this activity"
+        aria-label={`See results for ${activity.title}`}
+        className="inline-flex items-center gap-1.5 border border-black/15 bg-white/40 px-2.5 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+      >
+        <BarChart3 className="h-3 w-3" /> Results
+      </button>
+      <button
+        type="button"
+        onClick={onBundle}
+        title="Add to the assign bundle"
+        aria-label={`Add ${activity.title} to the assign bundle`}
+        className="ml-auto inline-flex items-center gap-1 border border-black/15 bg-white/40 px-2 py-1 text-xs font-semibold text-black/65 transition hover:border-black/35 hover:text-black"
+      >
+        <Plus className="h-3 w-3" />
       </button>
       <button
         type="button"
         onClick={onAssign}
-        className="ml-auto inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
+        className="inline-flex items-center gap-1.5 border border-teacher-accent/40 bg-teacher-accent/15 px-2.5 py-1 text-xs font-semibold text-teacher-accent-strong transition hover:bg-teacher-accent/25"
       >
         <Send className="h-3 w-3" /> Assign
       </button>
@@ -138,131 +145,33 @@ function ActivityActions({ activity, onAssign }: { activity: Activity; onAssign:
   );
 }
 
-function ActivityAssignSheet({
+function ActivityResultsSheet({
   activity,
-  students,
   onClose,
 }: {
   activity: Activity | null;
-  students: StudentRow[];
   onClose: () => void;
 }) {
-  const { assign, assigning } = useAssignActivity();
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [tab, setTab] = useState<'assign' | 'results'>('assign');
-  const [resultsKey, setResultsKey] = useState(0);
+  const { rows: students } = useHubStudents();
 
-  const selectedIds = useMemo(() => [...selected], [selected]);
-  const nameFor = (studentId: string) =>
-    students.find((s) => s.user_id === studentId)?.display_name || 'Unnamed student';
-
-  const toggle = (id: string) =>
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-
-  const handleAssign = async () => {
-    if (!activity || selectedIds.length === 0) return;
-    let ok = 0;
-    let emailFailures = 0;
-    for (const studentId of selectedIds) {
-      const res = await assign(activity, studentId, { notify: true });
-      if (res.ok) {
-        ok += 1;
-        if (res.emailOk === false) emailFailures += 1;
-      } else {
-        toast.error(res.error || 'Assign failed');
-      }
-    }
-    if (ok > 0) {
-      const base = `Assigned ${activity.title} to ${ok} student${ok === 1 ? '' : 's'}`;
-      if (emailFailures > 0) {
-        toast.warning(`${base}, but email failed for ${emailFailures}. Classroom + alert still landed.`);
-      } else {
-        toast.success(`${base} — notified by email, classroom, and alert.`);
-      }
-      setSelected(new Set());
-      setResultsKey((k) => k + 1);
-    }
-  };
+  const nameFor = useMemo(() => {
+    const byId = new Map(students.map((s) => [s.class_id, s.display_name]));
+    return (studentId: string) => byId.get(studentId) || 'Unnamed student';
+  }, [students]);
 
   return (
     <Sheet open={!!activity} onOpenChange={(o) => !o && onClose()}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader>
-          <SheetTitle>Assign: {activity?.title}</SheetTitle>
+          <SheetTitle>Results: {activity?.title}</SheetTitle>
         </SheetHeader>
         {activity && (
           <div className="mt-4">
-            <div className="mb-3 flex gap-1 border border-black/12 bg-white/40 p-0.5 text-xs font-medium">
-              <TabBtn active={tab === 'assign'} onClick={() => setTab('assign')}>
-                <Users className="h-3.5 w-3.5" /> Assign
-              </TabBtn>
-              <TabBtn active={tab === 'results'} onClick={() => setTab('results')}>
-                <BarChart3 className="h-3.5 w-3.5" /> Results
-              </TabBtn>
-            </div>
-
-            {tab === 'assign' ? (
-              <>
-                {students.length === 0 ? (
-                  <p className="text-xs text-black/45">No students found.</p>
-                ) : (
-                  <div className="max-h-72 space-y-1 overflow-y-auto rounded border p-2">
-                    {students.map((s) => (
-                      <label
-                        key={s.user_id}
-                        className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-muted"
-                      >
-                        <Checkbox checked={selected.has(s.user_id)} onCheckedChange={() => toggle(s.user_id)} />
-                        <span className="text-sm">{s.display_name || 'Unnamed student'}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={handleAssign}
-                  disabled={assigning || selectedIds.length === 0}
-                  className="mt-3 inline-flex w-full items-center justify-center gap-2 bg-black px-3 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {assigning ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
-                  {assigning ? 'Assigning…' : `Assign${selectedIds.length ? ` (${selectedIds.length})` : ''}`}
-                </button>
-              </>
-            ) : (
-              <ActivityResults activityId={activity.id} nameFor={nameFor} reloadKey={resultsKey} />
-            )}
+            <ActivityResults activityId={activity.id} nameFor={nameFor} />
           </div>
         )}
       </SheetContent>
     </Sheet>
-  );
-}
-
-function TabBtn({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'flex flex-1 items-center justify-center gap-1.5 px-3 py-1.5 transition',
-        active ? 'bg-black text-white' : 'text-black/55 hover:text-black',
-      )}
-    >
-      {children}
-    </button>
   );
 }
 

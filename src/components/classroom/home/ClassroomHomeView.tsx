@@ -12,7 +12,7 @@
 
 import * as React from "react";
 import { ArrowRight, CalendarClock } from "lucide-react";
-import QuestionFinder from "@/components/questionfinder/QuestionFinder";
+import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
@@ -112,6 +112,32 @@ function MessagePreviewBody({ message }: { message: HomeMessage }) {
 }
 
 
+function MessagePreviewButton({
+  message,
+  onOpen,
+}: {
+  message: HomeMessage;
+  onOpen: (route: string) => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="classroom-home-message"
+      onClick={() => onOpen(message.route)}
+    >
+      <i className="classroom-home-shine" aria-hidden="true" />
+      <span className="classroom-home-avatar">
+        {message.initial}
+        {message.unread ? (
+          <i className="classroom-home-avatar-dot" aria-hidden="true" />
+        ) : null}
+      </span>
+      <MessagePreviewBody message={message} />
+    </button>
+  );
+}
+
+
 export function ClassroomHomeView({
   model,
   loading,
@@ -152,14 +178,12 @@ export function ClassroomHomeView({
           <p className="classroom-home-subtitle">{model.subtitle}</p>
         </div>
 
-        {/* The masthead's right edge is where Home's utilities live. The finder
-            takes one control's width and nothing below it moves, so the hero
-            keeps its rank as the loudest thing on the page. It is gated the way
-            the rail gates /classroom/drill: without the flag there is nothing
-            to find, so there is no field either. */}
+        {/* The masthead's right edge is where Home's utilities live. The due
+            pill is status, not navigation, so it is all that belongs up here —
+            the address controls moved to their own band below, where three
+            dropdowns fit at full width instead of being squeezed against the
+            masthead's right edge. */}
         <div className="classroom-home-masthead-tools">
-          {model.access.drill ? <QuestionFinder returnTo="/classroom" /> : null}
-
           {model.dueTodayCount > 0 ? (
             <span className="classroom-home-duepill">
               <i aria-hidden="true" />
@@ -170,6 +194,19 @@ export function ClassroomHomeView({
           ) : null}
         </div>
       </header>
+
+      {/* ── jump ─────────────────────────────────────────────────────────
+          Under the masthead, above the hero: the first thing after the
+          greeting, because "open PT 90 S1 Q12" is the most common reason a
+          student comes to this page at all and it used to be a click and a
+          typed query away. It is gated the way the rail gates
+          /classroom/drill — without the flag there is nothing to open, so
+          there is no row either. */}
+      {model.access.drill ? (
+        <div className="classroom-home-jump">
+          <QuestionJump returnTo="/classroom" />
+        </div>
+      ) : null}
 
       {/* ── hero ─────────────────────────────────────────────────────── */}
       {hero ? (
@@ -332,42 +369,22 @@ export function ClassroomHomeView({
               <div className="classroom-home-stack">
                 <i className="classroom-home-note classroom-home-note-back" aria-hidden="true" />
                 <i className="classroom-home-note classroom-home-note-front" aria-hidden="true" />
-                {model.isAdmin && onClearMessage ? (
+                {onClearMessage ? (
+                  // Keyed by the message: clearing one animates the row off
+                  // the page, and the next message has to arrive in a fresh
+                  // row rather than inheriting that swiped-away transform.
                   <SwipeableDeleteRow
-                    label={`conversation with ${model.message.from}`}
+                    key={model.message.id}
+                    label={`message from ${model.message.from}`}
                     rounded="rounded-xl"
+                    actionLabel="Clear"
+                    actionGerund="clearing"
                     onDelete={() => onClearMessage(model.message!.id)}
                   >
-                    <button
-                      type="button"
-                      className="classroom-home-message"
-                      onClick={() => onOpen(model.message!.route)}
-                    >
-                      <i className="classroom-home-shine" aria-hidden="true" />
-                      <span className="classroom-home-avatar">
-                        {model.message.initial}
-                        {model.message.unread ? (
-                          <i className="classroom-home-avatar-dot" aria-hidden="true" />
-                        ) : null}
-                      </span>
-                      <MessagePreviewBody message={model.message} />
-                    </button>
+                    <MessagePreviewButton message={model.message} onOpen={onOpen} />
                   </SwipeableDeleteRow>
                 ) : (
-                  <button
-                    type="button"
-                    className="classroom-home-message"
-                    onClick={() => onOpen(model.message!.route)}
-                  >
-                    <i className="classroom-home-shine" aria-hidden="true" />
-                    <span className="classroom-home-avatar">
-                      {model.message.initial}
-                      {model.message.unread ? (
-                        <i className="classroom-home-avatar-dot" aria-hidden="true" />
-                      ) : null}
-                    </span>
-                    <MessagePreviewBody message={model.message} />
-                  </button>
+                  <MessagePreviewButton message={model.message} onOpen={onOpen} />
                 )}
               </div>
             ) : (

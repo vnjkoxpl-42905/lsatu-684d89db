@@ -2,6 +2,8 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { ActivityExitButton } from "./ActivityExitButton";
+import { worldForTitle } from "../worlds/registry";
+import { renderInlineMarks } from "../prompt-format";
 import "../activities-home.css";
 
 interface ActivityIntroProps {
@@ -53,8 +55,19 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
     },
   };
 
+  // The intro is the world's own lobby: `data-world` re-bases every intro
+  // token (canvas, cards, ink, accent, display face) onto the world's shell,
+  // so each Activity's front door already stands inside its own place.
+  const world = worldForTitle(title);
+
   return (
-    <motion.div className="act-edit" variants={container} initial="hidden" animate="show">
+    <motion.div
+      className="act-edit"
+      data-world={world?.slug}
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
       {/* ---- HERO (pixel-match): crumb top-left, title top-right, orbs lower-left ---- */}
       <section className="act-hero">
         <motion.div variants={item} className="act-hero-top">
@@ -77,7 +90,9 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
             <div className="act-orb act-orb--before">
               <div className="act-orb-inner">
                 <p className="act-orb-label">Before</p>
-                <p className="act-orb-statement">{ex.statement}</p>
+                {/* Statements carry the bank's own `*mark*` notation; render it
+                    as emphasis rather than leaking asterisks at the door. */}
+                <p className="act-orb-statement">{renderInlineMarks(ex.statement, "intro-before")}</p>
               </div>
             </div>
             <div className="act-orb act-orb--after">

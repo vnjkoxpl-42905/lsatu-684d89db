@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import type { ActivityAssignment } from "../api/types";
-import { worldForTitle } from "../worlds/registry";
+import { slugFromTitle, worldForTitle } from "../worlds/registry";
+import "./activity-scenes.css";
 
 const STATUS_LABEL: Record<ActivityAssignment["status"], string> = {
   assigned: "Not started",
@@ -32,17 +33,25 @@ interface ActivityCardProps {
 export function ActivityCard({ assignment, position, onOpen }: ActivityCardProps) {
   const done = assignment.status === "completed";
   const world = worldForTitle(assignment.title);
+  const slug = slugFromTitle(assignment.title);
   const accent = world ? `hsl(${world.accent})` : "hsl(var(--muted-foreground))";
 
   return (
     <button
       type="button"
       onClick={onOpen}
-      className="group relative flex w-full flex-col gap-3 overflow-hidden rounded-[20px] border border-border bg-card p-5 text-left transition-shadow hover:shadow-[0_2px_16px_rgba(16,24,40,0.08)]"
+      className="group relative flex w-full flex-col gap-3 overflow-hidden rounded-[20px] border border-border bg-card p-2.5 pb-5 text-left transition-shadow hover:shadow-[0_10px_32px_rgba(16,24,40,0.14)]"
     >
-      <span aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: accent }} />
+      {/* The doorway: a painted miniature of the world this card opens into. */}
+      {world ? (
+        <span aria-hidden className={`act-scene act-scene--${slug}`}>
+          <span className="act-scene-extra" />
+        </span>
+      ) : (
+        <span aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: accent }} />
+      )}
 
-      <div className="flex items-baseline gap-2">
+      <div className="flex items-baseline gap-2 px-2.5">
         <span className="text-xs font-semibold tabular-nums text-muted-foreground">
           {String(position).padStart(2, "0")}
         </span>
@@ -59,14 +68,14 @@ export function ActivityCard({ assignment, position, onOpen }: ActivityCardProps
         )}
       </div>
 
-      <div className="min-w-0">
+      <div className="min-w-0 px-2.5">
         <p className="ac-display text-xl leading-tight text-foreground">{assignment.title}</p>
         {assignment.subtitle && (
           <p className="mt-1 text-sm leading-snug text-muted-foreground">{assignment.subtitle}</p>
         )}
       </div>
 
-      <div className="mt-auto flex items-center gap-2 border-t border-border pt-3 text-xs">
+      <div className="mt-auto flex items-center gap-2 border-t border-border px-2.5 pt-3 text-xs">
         {done ? (
           <span className="inline-flex items-center gap-1 font-medium text-[hsl(var(--ac-emerald-strong))]">
             <CheckCircle2 className="h-3.5 w-3.5" />

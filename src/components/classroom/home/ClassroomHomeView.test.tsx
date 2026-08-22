@@ -1,5 +1,7 @@
+import * as React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render as rtlRender, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { ClassroomHomeView } from "./ClassroomHomeView";
 import {
   buildWeek,
@@ -10,6 +12,11 @@ import {
   weekDates,
   type ClassroomHomeModel,
 } from "./homeModel";
+
+/* Home never mounts outside a router, and since the address row navigates on
+   pick it now says so: `useNavigate` throws without one. Every render here goes
+   through the same wrapper so no test can drift back to a bare mount. */
+const render = (ui: React.ReactElement) => rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
 
 const EMPTY: ClassroomHomeModel = {
   greeting: "Good morning",
@@ -23,6 +30,7 @@ const EMPTY: ClassroomHomeModel = {
   rows: [],
   newCount: 0,
   message: null,
+  messages: [],
   unreadMessages: 0,
   session: null,
   booking: { label: "Book one", href: "/booking", external: false, detail: null },
@@ -80,6 +88,17 @@ const FULL: ClassroomHomeModel = {
     unread: true,
     route: "/inbox",
   },
+  messages: [
+    {
+      id: "m",
+      from: "Joshua",
+      initial: "J",
+      timeLabel: "7:52 a.m.",
+      body: "Do the twelve before we meet.",
+      unread: true,
+      route: "/inbox",
+    },
+  ],
   unreadMessages: 1,
   session: {
     startsAt: "2026-08-07T16:00:00",
@@ -214,7 +233,58 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByText("FROM JOSHUA")).not.toBeInTheDocument();
   });
 
-  it("puts the Question finder in the masthead", () => {
+  it("lets a student reveal, cancel, and confirm clearing the message card", async () => {
+    const onClearMessage = vi.fn();
+    const model: ClassroomHomeModel = {
+      ...FULL,
+      message: { ...FULL.message!, from: "Celia", initial: "C" },
+    };
+    render(
+      <ClassroomHomeView
+        model={model}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+        onClearMessage={onClearMessage}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Show clear actions for message from Celia",
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Cancel clearing message from Celia",
+      }),
+    );
+    expect(onClearMessage).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Show clear actions for message from Celia",
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: "Clear message from Celia" }),
+    );
+    await waitFor(() => expect(onClearMessage).toHaveBeenCalledWith("m"));
+  });
+
+  it("leaves the card unswipeable when the page cannot clear a message", () => {
+    render(
+      <ClassroomHomeView
+        model={FULL}
+        loading={false}
+        onOpen={vi.fn()}
+        onSeeAllWork={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: /clear actions/i })).toBeNull();
+  });
+
+  it("puts the address row and its search on the page", () => {
     render(
       <ClassroomHomeView
         model={FULL}
@@ -224,9 +294,14 @@ describe("ClassroomHomeView", () => {
       />,
     );
     expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    // The three addresses are the point of the row: they are visible controls,
+    // not a panel the student has to open first.
+    expect(screen.getByRole("combobox", { name: /test/i })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: /section/i })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: /question/i })).toBeInTheDocument();
   });
 
-  it("shows no finder to a student without drill access", () => {
+  it("shows no address row to a student without drill access", () => {
     // Home is a shortcut into surfaces the rail already gates, so it gates
     // itself the same way: no drill access means nothing to find, and a field
     // that dead-ends on a locked route is worse than no field.
@@ -239,6 +314,7 @@ describe("ClassroomHomeView", () => {
       />,
     );
     expect(screen.queryByRole("button", { name: "Find a question" })).toBeNull();
+    expect(screen.queryByRole("combobox", { name: /test/i })).toBeNull();
   });
 
 });

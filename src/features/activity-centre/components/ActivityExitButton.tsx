@@ -39,9 +39,10 @@ export function ActivityExitButton({
   const palette =
     tone === "dark"
       ? "border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/45 focus-visible:outline-white/70"
-      : // Global tokens, not the --act-* set: those are scoped to .act-home, so
-        // on the completion and not-found screens they would resolve to nothing.
-        "border-[hsl(var(--foreground)/0.25)] bg-transparent text-[hsl(var(--foreground))] hover:bg-[hsl(var(--foreground)/0.07)] hover:border-[hsl(var(--foreground)/0.45)] focus-visible:outline-[hsl(var(--foreground)/0.6)]";
+      : // Reads the world shell's own ink when a `data-world` ancestor defines
+        // it (light ink in the dark worlds, dark ink in the Specimen Lab), and
+        // falls back to the global foreground on worldless screens.
+        "border-[hsl(var(--aw-ink,var(--foreground))/0.25)] bg-transparent text-[hsl(var(--aw-ink,var(--foreground)))] hover:bg-[hsl(var(--aw-ink,var(--foreground))/0.07)] hover:border-[hsl(var(--aw-ink,var(--foreground))/0.45)] focus-visible:outline-[hsl(var(--aw-ink,var(--foreground))/0.6)]";
 
   return (
     <button

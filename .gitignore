@@ -81,3 +81,7 @@ gha-creds-*.json
 
 # RC source bundle (build-time only, not shipped)
 scripts/rc-source/
+
+# Python bytecode from the build scripts
+scripts/__pycache__/
+**/__pycache__/

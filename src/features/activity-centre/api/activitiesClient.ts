@@ -180,3 +180,14 @@ export async function listResponsesForAssignment(
   return (data ?? []) as ActivityItemResponse[];
 }
 
+
+/** Admin: fetch one activity definition. Used by the row-free teacher preview. */
+export async function getActivity(activityId: string): Promise<Activity | null> {
+  const { data, error } = await supabase
+    .from("activities")
+    .select("*")
+    .eq("id", activityId)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? hydrateActivity(data) : null;
+}

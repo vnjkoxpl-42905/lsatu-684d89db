@@ -41,6 +41,14 @@ export function ChamberEntrance({
       className="chamber flex h-full min-h-[560px] w-full flex-col justify-center gap-10 px-5 py-8 md:px-12"
       data-testid="chamber-entrance"
     >
+      {/* The rotunda's torches catch, one plinth at a time. */}
+      <div className="ch-room" aria-hidden="true">
+        <div className="ch-columns" />
+        <div className="ch-floorveins" />
+        <div className="ch-torchlight" />
+        <div className="ch-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="chamber-mono text-xs text-[hsl(var(--ch-ink-dim))]">Entering</p>
         <button
@@ -60,7 +68,7 @@ export function ChamberEntrance({
               {[94, 82, 60].map((w, i) => (
                 <span
                   key={i}
-                  className="block h-2.5 rounded-[1px] bg-[hsl(var(--ch-ink)/0.14)]"
+                  className="block h-2.5 rounded-[1px] bg-gradient-to-r from-[hsl(var(--ch-light)/0.3)] to-[hsl(var(--ch-light)/0.1)]"
                   style={{ width: `${w}%` }}
                 />
               ))}
@@ -80,7 +88,9 @@ export function ChamberEntrance({
         </div>
       </div>
 
-      <p className="ac-display text-center text-xl text-[hsl(var(--ch-ink))]">{title}</p>
+      <p className="chamber-display text-center text-xl text-[hsl(var(--ch-ink))] md:text-2xl">
+        {title}
+      </p>
     </div>
   );
 }

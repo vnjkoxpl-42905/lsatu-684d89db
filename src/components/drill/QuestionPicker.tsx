@@ -816,8 +816,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 round-tripped through a grammar unable to express them would
                 drop them silently on every commit. */}
             <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
-                Spec
+              {/* "Spec" was the internal name for the grammar and it read as
+                  jargon on screen: it sat above SOURCE and FOCUS, which name
+                  what you are choosing, while this one named the machinery.
+                  The row is the typed alternative to the popovers below, so it
+                  says that. Each label carries a hint for the same reason —
+                  three bare nouns in a column give no order to follow. */}
+              <div className="sm:pt-3">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
+                  Type it
+                </div>
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+                  Faster than clicking
+                </p>
               </div>
               <div className="min-w-0 space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
@@ -836,7 +847,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       }}
                       onBlur={commitSpec}
                       placeholder="PT 101-110 S2,3 Q1,6,8,23"
-                      aria-label="Filter specification"
+                      aria-label="Type a PrepTest, section and question range"
                       aria-invalid={specIssues.length > 0}
                       aria-describedby={specIssues.length > 0 ? 'spec-errors' : undefined}
                       className={cn(
@@ -914,9 +925,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
-                Source
+            <div className="grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+              <div className="sm:pt-3">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
+                  Source
+                </div>
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+                  Where they come from
+                </p>
               </div>
               <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* PrepTest Filter */}
@@ -1018,9 +1034,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </div>
 
 
-            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:pt-3">
-                Focus
+            <div className="grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+              <div className="sm:pt-3">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
+                  Focus
+                </div>
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+                  What they test
+                </p>
               </div>
               <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* Question Type Filter */}

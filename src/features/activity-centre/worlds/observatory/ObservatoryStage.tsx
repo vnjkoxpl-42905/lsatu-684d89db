@@ -116,8 +116,18 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
       data-phase={phase}
       data-testid="observatory"
     >
+      {/* The dome itself: nebulae, fixed stars, gilt ribs, meridian, horizon.
+          Pure scenery, aria-hidden, outside every tested container. */}
+      <div className="ob-room" aria-hidden="true">
+        <div className="ob-nebula" />
+        <div className="ob-stars" />
+        <div className="ob-dome" />
+        <div className="ob-meridian" />
+        <div className="ob-horizonline" />
+      </div>
+
       <div className="flex items-center justify-between">
-        <span className="observatory-mono text-xs text-[hsl(var(--ob-ink-dim))]">
+        <span className="observatory-display text-sm text-[hsl(var(--ob-ink))]">
           {drawn ? "The figure" : "The field"}
         </span>
         <span className="observatory-mono text-xs text-[hsl(var(--ob-ink-dim))]">
@@ -131,7 +141,7 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
         data-arriving={!drawn ? "true" : "false"}
         data-testid="ob-field"
       >
-        <p className="observatory-type text-lg leading-loose md:text-xl">
+        <p className="observatory-type text-xl leading-loose md:text-2xl">
           {words.map((w) => (
             <span
               key={w.i}

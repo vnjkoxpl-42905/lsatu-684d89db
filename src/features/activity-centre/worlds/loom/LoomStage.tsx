@@ -99,8 +99,18 @@ export function LoomStage({ callback, phase, result, woven, decodes }: LoomStage
       data-phase={phase}
       data-testid="loom"
     >
+      {/* The dye-house: warp threads, indigo vat, skeins, lamplight. Pure
+          scenery, aria-hidden, outside every tested container. */}
+      <div className="lo-room" aria-hidden="true">
+        <div className="lo-warp" />
+        <div className="lo-vat" />
+        <div className="lo-skeins" />
+        <div className="lo-lamplight" />
+        <div className="lo-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
-        <span className="loom-mono text-xs text-[hsl(var(--lo-paper)/0.6)]">
+        <span className="loom-display text-base text-[hsl(var(--lo-paper))]">
           {thrown ? "The throw" : "The call"}
         </span>
         <span className="loom-mono text-xs text-[hsl(var(--lo-paper)/0.6)]">

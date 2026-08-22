@@ -147,9 +147,9 @@
   margin: 0;
 }
 
-/* The masthead's utility cluster: the Question finder and the due pill share
-   the right edge. A row of its own, so adding the finder cannot change where
-   the pill sits relative to the greeting. */
+/* The masthead's utility cluster: status only, now that the address controls
+   have their own band below. A row of its own, so what sits here cannot change
+   where the pill sits relative to the greeting. */
 .classroom-root .classroom-home-masthead-tools {
   align-items: center;
   animation: classroomHomeRise 560ms var(--home-ease) 100ms both;
@@ -180,6 +180,15 @@
   border-radius: 50%;
   height: 6px;
   width: 6px;
+}
+
+/* ── jump ───────────────────────────────────────────────────────────── */
+
+/* Between the masthead (40ms) and the hero (180ms), so the page still resolves
+   top to bottom. The row brings its own surface and tokens; all Home owns is
+   where it sits in the stack and when it arrives. */
+.classroom-root .classroom-home-jump {
+  animation: classroomHomeRise 600ms var(--home-ease) 120ms both;
 }
 
 /* ── hero ───────────────────────────────────────────────────────────── */

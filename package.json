@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/build-question-bank.mjs",
+    "prebuild": "node scripts/build-question-bank.mjs && node scripts/build-finder-address-index.mjs",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build",
     "build:dev": "NODE_OPTIONS=--max-old-space-size=4096 vite build --mode development",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
@@ -26,7 +26,8 @@
     "stats:build": "node scripts/knowledge/build-question-stats.mjs",
     "stats:check": "node scripts/knowledge/build-question-stats.mjs --check",
     "verify:drills": "node scripts/verify-guided-drills.mjs",
-    "verify:drills:fast": "node scripts/verify-guided-drills.mjs --fast"
+    "verify:drills:fast": "node scripts/verify-guided-drills.mjs --fast",
+    "finder:index": "node scripts/build-finder-address-index.mjs"
   },
   "dependencies": {
     "@ark-ui/react": "^5.37.2",

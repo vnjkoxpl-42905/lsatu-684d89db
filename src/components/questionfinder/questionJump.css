@@ -1,0 +1,73 @@
+/* ── the question jump row ────────────────────────────────────────────────
+ *
+ * One band, four controls: three address selects and the text-search trigger.
+ * It inherits the finder's tokens (questionFinder.css defines them on `.qf`,
+ * and `.qj` repeats the same set) so the two never drift apart visually — they
+ * are one control surface split across an inline row and a panel.
+ *
+ * Rank: this sits under the masthead and above the hero, and must read as a
+ * utility strip rather than a headline. Hence the sunk surface, the hairline
+ * rather than a border, and no shadow of its own — it recedes, the hero stays
+ * the loudest thing on the page. */
+
+.qj {
+  --qj-ink: #332f2c;
+  --qj-muted: #a7a29f;
+  --qj-sunk: #fbf8f3;
+  --qj-hair: rgba(68, 64, 61, 0.09);
+  --qj-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  width: 100%;
+}
+
+.qj[data-tone="dark"] {
+  --qj-ink: #f5f1ec;
+  --qj-muted: #8b837b;
+  --qj-sunk: rgba(255, 255, 255, 0.03);
+  --qj-hair: rgba(255, 255, 255, 0.1);
+}
+
+.qj-row {
+  align-items: end;
+  background: var(--qj-sunk);
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px var(--qj-hair);
+  display: grid;
+  /* The three addresses share equally; search takes only what its trigger
+     needs. A fourth equal column made the search button stretch into a slab
+     the width of a dropdown, which read as a fourth step in the sequence. */
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.qj-field {
+  min-width: 0;
+}
+
+/* The trigger is a control, not a field, so it aligns to the selects' baseline
+   rather than to the label row above them. */
+.qj-search {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1px;
+}
+
+/* Phones: the addresses stay a row of three — breaking them into a column
+   turns a three-second jump into a scroll — and search drops beneath. */
+@media (max-width: 600px) {
+  .qj-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 12px;
+  }
+
+  .qj-search {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
+  }
+
+  .qj-search .qf,
+  .qj-search .qf-trigger {
+    width: 100%;
+  }
+}

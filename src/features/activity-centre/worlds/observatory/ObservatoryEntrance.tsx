@@ -44,6 +44,16 @@ export function ObservatoryEntrance({
       className="observatory flex h-full min-h-[560px] w-full flex-col justify-center gap-10 px-5 py-8 md:px-12"
       data-testid="observatory-entrance"
     >
+      {/* The dome opens: nebulae and stars first, then one meteor crosses. */}
+      <div className="ob-room" aria-hidden="true">
+        <div className="ob-nebula" />
+        <div className="ob-stars" />
+        <div className="ob-dome" />
+        <div className="ob-meridian" />
+        <div className="ob-horizonline" />
+        <div className="ob-meteor" />
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="observatory-mono text-xs text-[hsl(var(--ob-ink-dim))]">Entering</p>
         <button
@@ -66,7 +76,7 @@ export function ObservatoryEntrance({
             style={{ width: `${28 + ((i * 37) % 46)}px` }}
             data-testid="ob-entrance-star"
           >
-            <span className="block h-2 rounded-[1px] bg-[hsl(var(--ob-ink)/0.1)]" />
+            <span className="block h-2 rounded-[1px] bg-gradient-to-r from-[hsl(var(--ob-star)/0.4)] to-[hsl(var(--ob-star)/0.12)] shadow-[0_0_8px_hsl(var(--ob-star)/0.3)]" />
           </span>
         ))}
       </div>
@@ -84,7 +94,9 @@ export function ObservatoryEntrance({
         ))}
       </div>
 
-      <p className="ac-display text-center text-xl text-[hsl(var(--ob-ink))]">{title}</p>
+      <p className="observatory-display text-center text-xl text-[hsl(var(--ob-ink))] md:text-2xl">
+        {title}
+      </p>
     </div>
   );
 }

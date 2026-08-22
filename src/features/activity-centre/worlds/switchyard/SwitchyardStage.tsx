@@ -87,6 +87,7 @@ function Capsule({
       className="sy-capsule flex items-center gap-3 rounded-[10px] px-4 py-3"
       data-testid="sy-capsule"
       data-trimmed={trimmed ? "true" : undefined}
+      data-veiled={live ? undefined : "true"}
     >
       <span
         className="sy-lamp"
@@ -200,6 +201,17 @@ export function SwitchyardStage({
 
   return (
     <div className="switchyard flex h-full min-h-[560px] w-full flex-col justify-between overflow-hidden px-5 py-8 md:px-12">
+      {/* The yard at night: track fan, sodium floods, fog. Pure scenery,
+          aria-hidden, outside every tested container. */}
+      <div className="sy-room" aria-hidden="true">
+        <div className="sy-tracks" />
+        <div className="sy-floods" />
+        <div className="sy-lamphead" data-side="left" />
+        <div className="sy-lamphead" data-side="right" />
+        <div className="sy-fog" />
+        <div className="sy-vignette" />
+      </div>
+
       {/* Departures board. The statement rolls on rather than appearing. */}
       <motion.div
         key={statement}
@@ -213,7 +225,7 @@ export function SwitchyardStage({
           <TrackLabel>Statement</TrackLabel>
           <TrackLabel>{turned ? "Contrapositive" : routed ? "Routed" : "Awaiting"}</TrackLabel>
         </div>
-        <p className="ac-display text-lg leading-snug text-[hsl(var(--sy-ink))] md:text-xl">
+        <p className="switchyard-board-type text-xl leading-snug text-[hsl(var(--sy-ink))] md:text-2xl">
           {board.map((part, i) =>
             typeof part === "string" ? (
               <span key={i}>{part}</span>

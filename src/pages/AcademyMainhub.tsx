@@ -18,7 +18,7 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
-import QuestionFinder from "@/components/questionfinder/QuestionFinder";
+import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { cn } from "@/lib/utils";
 import type { FullSectionConfig, TypeDrillConfig } from "@/types/drill";
 
@@ -285,14 +285,15 @@ export default function AcademyMainhub({
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
-        {/* The finder rides above the hero rather than inside it: the route
-            label row is decorative and aria-hidden, and the hero's two columns
-            are already the page's two primary actions. A slim utility row keeps
-            it in the same place it occupies on Classroom Home — top right of the
-            surface — so it is one control in one position across both mounts.
-            No access check here: the whole route is behind has_drill_access. */}
+        {/* The address row rides above the hero rather than inside it: the
+            route label row is decorative and aria-hidden, and the hero's two
+            columns are already the page's two primary actions. It sits in the
+            same place it occupies on Classroom Home — the band directly under
+            the top of the surface — so it is one control in one position across
+            both mounts. No access check here: the whole route is behind
+            has_drill_access. */}
         <div className="drill-observatory-tools">
-          <QuestionFinder returnTo={drillReturnTo} tone="dark" />
+          <QuestionJump returnTo={drillReturnTo} tone="dark" />
         </div>
 
         <MainhubHero

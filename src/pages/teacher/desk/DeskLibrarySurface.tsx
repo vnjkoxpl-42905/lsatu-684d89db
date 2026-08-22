@@ -111,7 +111,7 @@ export function DeskLibrarySurface() {
         {tab === 'bootcamps' && <DeskLibraryBootcampsSurface view={view} />}
         {tab === 'guided-drills' && <DeskLibraryGuidedDrillsSurface {...tabProps} />}
         {tab === 'homework' && <DeskLibraryHomeworkSurface {...tabProps} />}
-        {tab === 'activities' && <DeskLibraryActivitiesSurface view={view} />}
+        {tab === 'activities' && <DeskLibraryActivitiesSurface {...tabProps} />}
         {tab === 'references' && <DeskLibraryReferencesSurface />}
       </div>
 

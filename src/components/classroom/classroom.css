@@ -1073,12 +1073,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   z-index: 2;
 }
 
-/* The Question finder's row on the Drill landing workspace. Right-aligned so it
-   lands where it lands on Classroom Home; the canvas gap supplies the spacing
-   below it, so this row contributes nothing but its own control's height. */
+/* The Question jump's band on the Drill landing workspace. Full width, matching
+   Classroom Home: three dropdowns right-aligned against the canvas edge left a
+   ragged gutter beside the hero's left column, and the row is navigation for
+   the whole surface rather than a control belonging to its right side. The
+   canvas gap supplies the spacing below it, so this row contributes nothing but
+   its own height. */
 .drill-observatory-tools {
-  display: flex;
-  justify-content: flex-end;
+  display: block;
   margin-bottom: -4px;
 }
 

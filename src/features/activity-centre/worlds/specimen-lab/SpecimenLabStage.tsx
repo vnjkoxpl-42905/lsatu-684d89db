@@ -36,8 +36,16 @@ interface SpecimenLabStageProps {
   drawer?: Slide[];
 }
 
-/** Slow enough to read as examination rather than decoration. */
-const VITRINE_SPIN = { duration: 12, ease: "linear" as const, repeat: Infinity };
+/** Slow enough to read as examination rather than decoration. An oscillation
+ * rather than a full turn: at 90° the jar goes edge-on and past it the word
+ * reads mirrored, so the case rocks the way a hand would turn it and the
+ * specimen stays legible the whole time. */
+const VITRINE_SPIN = {
+  duration: 9,
+  ease: "easeInOut" as const,
+  repeat: Infinity,
+  repeatType: "mirror" as const,
+};
 const SETTLE = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const };
 
 const CHARGE_POSITIONS: Charge[] = ["neg", "neutral", "pos"];
@@ -72,6 +80,15 @@ export function SpecimenLabStage({ specimen, phase, reading, drawer }: SpecimenL
       className="specimen-lab flex h-full min-h-[560px] w-full flex-col gap-7 px-5 py-8 md:px-12"
       data-phase={phase}
     >
+      {/* The study itself: green wall, lamp pool, bench grain, fern shadow.
+          Pure scenery, aria-hidden, outside every tested container. */}
+      <div className="sl-room" aria-hidden="true">
+        <div className="sl-wall" />
+        <div className="sl-fern" />
+        <div className="sl-grain" />
+        <div className="sl-lamplight" />
+      </div>
+
       {/* The instrument rail sits above the field note, per the bench layout. */}
       <div className="grid gap-3 sm:grid-cols-3" data-testid="sl-rail">
         {INSTRUMENTS.map((key) => (
@@ -91,14 +108,16 @@ export function SpecimenLabStage({ specimen, phase, reading, drawer }: SpecimenL
         <div className="flex flex-col items-center gap-4 lg:w-[38%]">
           <div className="sl-vitrine-scene" data-testid="sl-vitrine">
             <motion.div
-              className="sl-vitrine rounded-md"
-              animate={still ? undefined : { rotateY: 360 }}
+              className="sl-vitrine"
+              initial={still ? undefined : { rotateY: -14 }}
+              animate={still ? undefined : { rotateY: 14 }}
               transition={still ? undefined : VITRINE_SPIN}
             >
-              <span className="sl-specimen ac-display text-3xl leading-tight">
+              <span className="sl-specimen text-3xl leading-tight">
                 {specimen.word}
               </span>
             </motion.div>
+            <div className="sl-plinth" aria-hidden="true" />
           </div>
 
           <motion.div

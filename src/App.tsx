@@ -433,6 +433,16 @@ const App = () => {
                       </React.Suspense>
                     } />
                   )}
+                  {/* Teacher preview. Runs off the activity DEFINITION and
+                      writes nothing, so looking at an activity never puts it on
+                      the teacher's own "Assigned to you" list. Admin only. */}
+                  <Route path="/activities/preview/:activityId" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivityRunner preview />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
                   <Route path="/activities/:assignmentId" element={
                     <ProtectedRoute flag="has_activity_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>

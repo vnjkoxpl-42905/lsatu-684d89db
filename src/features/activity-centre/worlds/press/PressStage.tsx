@@ -62,10 +62,20 @@ export function PressStage({ press, phase, response, stroke, spike }: PressStage
       className="press flex h-full min-h-[560px] w-full flex-col gap-6 px-5 py-8 md:px-12"
       data-phase={phase}
     >
+      {/* The shop: iron frame, ink rollers, work lamp, spatter. Pure scenery,
+          aria-hidden, outside every tested container. */}
+      <div className="pr-room" aria-hidden="true">
+        <div className="pr-glow" />
+        <div className="pr-frame" />
+        <div className="pr-rollers" />
+        <div className="pr-spatter" />
+        <div className="pr-vignette" />
+      </div>
+
       {/* The platen: a wide machined bar that waits above the bed. */}
       <motion.div
         className="press-platen"
-        animate={{ y: struck ? 26 : refused ? 8 : 0 }}
+        animate={{ y: struck ? 30 : refused ? 8 : 0 }}
         transition={still ? { duration: 0 } : refused ? REFUSAL : STROKE}
         data-testid="press-platen"
         data-down={struck ? "true" : "false"}
@@ -73,16 +83,23 @@ export function PressStage({ press, phase, response, stroke, spike }: PressStage
       />
 
       {/* The monolith. It compresses from its base so the type collapses down
-          onto the bed rather than shrinking towards its own middle. */}
+          onto the bed rather than shrinking towards its own middle — and the
+          bed itself closes behind the stroke: the machine's whole thesis is
+          compression, so the height the paragraph occupied is given up rather
+          than left as an empty shaft. (Deliberate exception to the no-layout-
+          animation rule: this collapse IS the content, and it runs once per
+          strike, not per frame of idle UI.) */}
       <motion.div
         className="press-monolith rounded-sm px-6 py-5"
         animate={{
           scaleY: struck && !still ? 0.06 : 1,
           opacity: struck ? 0.22 : 1,
+          height: struck && !still ? 42 : "auto",
         }}
         transition={still ? { duration: 0 } : STROKE}
         data-testid="press-monolith"
         data-ghosted={struck ? "true" : "false"}
+        style={{ overflow: "hidden" }}
       >
         <p className="press-type text-base leading-relaxed md:text-lg">{press.monolith}</p>
       </motion.div>

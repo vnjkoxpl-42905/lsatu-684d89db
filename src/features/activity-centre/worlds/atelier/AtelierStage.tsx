@@ -58,8 +58,18 @@ export function AtelierStage({ argument, phase, build, plaques }: AtelierStagePr
       data-phase={phase}
       data-testid="atelier"
     >
+      {/* The workshop: lamp cone, dust, hanging glass, bench, grid. Pure
+          scenery, aria-hidden, outside every tested container. */}
+      <div className="at-room" aria-hidden="true">
+        <div className="at-sheets" />
+        <div className="at-bench" />
+        <div className="at-gridlines" />
+        <div className="at-cone" />
+        <div className="at-dust" />
+      </div>
+
       <div className="flex items-center justify-between">
-        <span className="atelier-mono text-xs text-[hsl(var(--at-ink-dim))]">
+        <span className="atelier-display text-base text-[hsl(var(--at-ink))]">
           {built ? "The structure" : "The argument"}
         </span>
         <span className="atelier-mono text-xs text-[hsl(var(--at-ink-dim))]">

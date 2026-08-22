@@ -134,6 +134,8 @@ export interface ClassroomHomeModel {
   rows: HomeRow[];
   newCount: number;
   message: HomeMessage | null;
+  /** Every preview-worthy thread, newest first. `message` is its head. */
+  messages: HomeMessage[];
   unreadMessages: number;
   session: HomeSession | null;
   /** The one booking link that matches this student's plan. */

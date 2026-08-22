@@ -1,7 +1,35 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { getStudentAssignment, listStudentAssignments } from "../api/activitiesClient";
-import type { ActivityAssignment, ActivityStatus } from "../api/types";
+import { getActivity, getStudentAssignment, listStudentAssignments } from "../api/activitiesClient";
+import type { Activity, ActivityAssignment, ActivityStatus } from "../api/types";
+
+/**
+ * Shape an activity DEFINITION into the assignment the runner expects, without
+ * writing anything. This is what a teacher preview runs on. Previews used to
+ * call the real assign path against the teacher's own account, which wrote a
+ * genuine `activity_assignments` row plus a Classroom item, so every activity
+ * he opened to look at turned up under "Assigned to you" on his own Classroom
+ * and stayed there. A preview is a read; it gets no row.
+ */
+function previewAssignment(activity: Activity, userId: string): ActivityAssignment {
+  return {
+    id: `preview:${activity.id}`,
+    activity_id: activity.id,
+    student_id: userId,
+    title: activity.title,
+    subtitle: activity.subtitle,
+    instructions: activity.instructions,
+    item_format: activity.item_format,
+    items: activity.items,
+    status: "assigned",
+    score: null,
+    started_at: null,
+    completed_at: null,
+    assigned_by: userId,
+    class_id: userId,
+    created_at: new Date().toISOString(),
+  };
+}
 
 const STATUS_ORDER: Record<ActivityStatus, number> = {
   in_progress: 0,
@@ -45,16 +73,25 @@ export function useStudentActivities() {
 }
 
 /** Student-side single activity assignment. */
-export function useStudentActivity(assignmentId: string | undefined) {
+export function useStudentActivity(
+  assignmentId: string | undefined,
+  previewActivityId?: string,
+) {
   const { user } = useAuth();
   const [assignment, setAssignment] = useState<ActivityAssignment | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    if (!user || !assignmentId) return;
+    if (!user || (!assignmentId && !previewActivityId)) return;
     setLoading(true);
     try {
+      if (previewActivityId) {
+        const activity = await getActivity(previewActivityId);
+        setAssignment(activity ? previewAssignment(activity, user.id) : null);
+        setError(null);
+        return;
+      }
       const row = await getStudentAssignment(assignmentId, user.id);
       setAssignment(row);
       setError(null);
@@ -65,7 +102,7 @@ export function useStudentActivity(assignmentId: string | undefined) {
     } finally {
       setLoading(false);
     }
-  }, [user, assignmentId]);
+  }, [user, assignmentId, previewActivityId]);
 
   useEffect(() => {
     void refresh();

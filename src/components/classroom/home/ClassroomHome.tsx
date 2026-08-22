@@ -26,7 +26,7 @@ export default function ClassroomHome() {
         try {
           await clearMessage(conversationId);
         } catch {
-          toast.error("Could not clear that conversation. Try again.");
+          toast.error("Could not clear that message. Try again.");
         }
       }}
       completingKey={completingKey}

@@ -228,9 +228,38 @@ export function useInbox() {
     }
   }, [loadConversations]);
 
+  // Reading a thread without opening it: Home's message card clears one from
+  // the preview, and a card the student has cleared must not keep counting as
+  // unread anywhere else. Same write ConversationView does on open, so the
+  // rail badge and the inbox agree with the card.
+  const markConversationRead = useCallback(async (conversationId: string) => {
+    if (!user) return;
+    setConversations((prev) =>
+      prev.map((c) => (c.id === conversationId ? { ...c, unread: false } : c)),
+    );
+    const { error: markError } = await supabase
+      .from('conversation_participants')
+      .update({ last_read_at: new Date().toISOString() })
+      .eq('conversation_id', conversationId)
+      .eq('user_id', user.id);
+    if (markError) {
+      console.warn('[inbox] mark-as-read failed:', markError.message);
+      return;
+    }
+    window.dispatchEvent(new CustomEvent('inbox:read'));
+  }, [user]);
+
   const unreadCount = useMemo(() => conversations.filter((c) => c.unread).length, [conversations]);
 
-  return { conversations, loading, error, unreadCount, refresh: loadConversations, deleteConversation };
+  return {
+    conversations,
+    loading,
+    error,
+    unreadCount,
+    refresh: loadConversations,
+    deleteConversation,
+    markConversationRead,
+  };
 }
 
 export function useConversationMessages(conversationId: string | null) {

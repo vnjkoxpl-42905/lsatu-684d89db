@@ -52,10 +52,36 @@ import {
   weekLabelFor,
   type ClassroomHomeModel,
   type HomeKind,
+  type HomeMessage,
   type HomeRow,
 } from "./homeModel";
 
 const RECAP_WINDOW_DAYS = 21;
+
+/** Where a viewer's cleared Home messages are remembered between visits. */
+const DISMISSED_KEY = "classroom-home:cleared-messages";
+
+/**
+ * A dismissal is against a message, not a thread: clearing Joshua's last word
+ * hides that word, and a newer one puts the thread back on the card.
+ */
+function dismissKeyFor(conversationId: string, createdAt: string) {
+  return `${conversationId}:${createdAt}`;
+}
+
+function readDismissed(userId: string | undefined): string[] {
+  if (!userId || typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(`${DISMISSED_KEY}:${userId}`);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.filter((entry) => typeof entry === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+/** The candidate carries the dismissal key the view has no use for. */
+type MessageCandidate = HomeMessage & { dismissKey: string };
 
 /** Feed kinds map onto the model's kinds one-for-one. */
 const FEED_KIND: Record<AssignedTodoRow["kind"], HomeKind> = {
@@ -104,7 +130,7 @@ export function useClassroomHome(): {
   loading: boolean;
   /** Close out an assigned row by key; no-op for a row that is not work. */
   markDone: (key: string) => void;
-  /** Admin-only conversation removal used by the Home message preview. */
+  /** Clear one thread off the Home message card (marks it read; no delete). */
   clearMessage: (conversationId: string) => Promise<void>;
   completingKey: string | null;
 } {
@@ -139,7 +165,23 @@ export function useClassroomHome(): {
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
-  const { conversations, unreadCount, deleteConversation } = useInbox();
+  const { conversations, unreadCount, markConversationRead } = useInbox();
+
+  // Cleared messages survive a reload, so the card does not re-serve something
+  // the viewer already swiped away. Keyed by user: two accounts on one browser
+  // do not share a cleared list.
+  const [dismissed, setDismissed] = React.useState<string[]>(() => readDismissed(user?.id));
+  React.useEffect(() => {
+    setDismissed(readDismissed(user?.id));
+  }, [user?.id]);
+  React.useEffect(() => {
+    if (!user?.id || typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(`${DISMISSED_KEY}:${user.id}`, JSON.stringify(dismissed));
+    } catch {
+      // A full or blocked store only costs the memory of a dismissal.
+    }
+  }, [dismissed, user?.id]);
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
   // than a second round trip. The feed flattens activities to a title and a
@@ -337,26 +379,63 @@ export function useClassroomHome(): {
 
   /* ── the coach's last word ─────────────────────────────────────────── */
 
-  const message = React.useMemo(() => {
-    if (!access.messages) return null;
-    const thread = conversations.find((conversation) => conversation.last_message);
-    if (!thread?.last_message) return null;
-    const sender = thread.participants.find(
-      (participant) => participant.user_id === thread.last_message!.sender_id,
-    );
-    // The student's own last line is not news to them; only show the coach's.
-    if (thread.last_message.sender_id === user?.id) return null;
-    const from = sender?.display_name?.trim() || "Joshua";
-    return {
-      id: thread.id,
-      from,
-      initial: from.slice(0, 1).toUpperCase(),
-      timeLabel: timeLabel(thread.last_message.created_at),
-      body: thread.last_message.body,
-      unread: thread.unread,
-      route: "/inbox",
-    };
+  // Threads the card is willing to show, newest first: someone else's last
+  // word, and not one the viewer has already cleared off this page. The card
+  // shows the head of the list, so clearing one uncovers the next rather than
+  // leaving an empty box.
+  const candidates = React.useMemo<MessageCandidate[]>(() => {
+    if (!access.messages) return [];
+    return conversations.flatMap((thread) => {
+      const last = thread.last_message;
+      if (!last) return [];
+      // The student's own last line is not news to them; only show the coach's.
+      if (last.sender_id === user?.id) return [];
+      const sender = thread.participants.find(
+        (participant) => participant.user_id === last.sender_id,
+      );
+      const from = sender?.display_name?.trim() || "Joshua";
+      return [
+        {
+          id: thread.id,
+          from,
+          initial: from.slice(0, 1).toUpperCase(),
+          timeLabel: timeLabel(last.created_at),
+          body: last.body,
+          unread: thread.unread,
+          route: "/inbox",
+          dismissKey: dismissKeyFor(thread.id, last.created_at),
+        },
+      ];
+    });
   }, [access.messages, conversations, user?.id]);
+
+  const messages = React.useMemo(
+    () => candidates.filter((candidate) => !dismissed.includes(candidate.dismissKey)),
+    [candidates, dismissed],
+  );
+  const message = messages[0] ?? null;
+
+  /**
+   * Clear one thread off Home. This is not a delete: the conversation and its
+   * messages stay in the inbox. It marks the thread read (so the count here and
+   * the rail badge cannot disagree) and remembers the dismissal against that
+   * message's timestamp, so the thread comes back the moment a newer message
+   * lands in it.
+   */
+  const clearMessage = React.useCallback(
+    async (conversationId: string) => {
+      const target = candidates.find((candidate) => candidate.id === conversationId);
+      if (target) {
+        setDismissed((prev) =>
+          // Capped: the list only has to outlive the threads it names, and an
+          // unbounded one would grow in local storage forever.
+          prev.includes(target.dismissKey) ? prev : [...prev, target.dismissKey].slice(-100),
+        );
+      }
+      await markConversationRead(conversationId);
+    },
+    [candidates, markConversationRead],
+  );
 
   /* ── next session ──────────────────────────────────────────────────── */
 
@@ -445,7 +524,14 @@ export function useClassroomHome(): {
   const dueTodayCount = workRows.filter((row) => row.dueToday || row.overdue).length;
   // Without chat access there is no inbox to send them to, so the count must
   // not appear in the subtitle either — it would name something unreachable.
-  const unread = access.messages ? unreadCount : 0;
+  // A cleared card must not keep counting against the badge beside it. The
+  // mark-read write does this on the server too; subtracting here keeps the
+  // number right in the frame before that round trip lands.
+  const clearedUnread = React.useMemo(
+    () => candidates.filter((candidate) => candidate.unread && dismissed.includes(candidate.dismissKey)).length,
+    [candidates, dismissed],
+  );
+  const unread = access.messages ? Math.max(0, unreadCount - clearedUnread) : 0;
 
   const model: ClassroomHomeModel = {
     greeting: greetingFor(now),
@@ -459,6 +545,7 @@ export function useClassroomHome(): {
     rows: listRows,
     newCount: rows.filter((row) => row.isNew).length,
     message,
+    messages,
     unreadMessages: unread,
     session,
     booking,
@@ -486,7 +573,7 @@ export function useClassroomHome(): {
     model,
     loading: assignedLoading || itemsQuery.isLoading,
     markDone,
-    clearMessage: deleteConversation,
+    clearMessage,
     completingKey,
   };
 }
