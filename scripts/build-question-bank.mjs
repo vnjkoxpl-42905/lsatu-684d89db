@@ -26,7 +26,7 @@ const DATA_DIR = join(__dirname, '..', 'public', 'data');
 const OUT_NAME = '_bank.generated.json';
 const OUT_PATH = join(DATA_DIR, OUT_NAME);
 // Sidecars in public/data that are not per-section question arrays.
-const NON_SECTION_FILES = new Set([OUT_NAME, 'question-stats.json']);
+const NON_SECTION_FILES = new Set([OUT_NAME, 'question-stats.json', 'finder-address-index.json']);
 
 const files = readdirSync(DATA_DIR)
   .filter((f) => f.endsWith('.json') && !NON_SECTION_FILES.has(f))
