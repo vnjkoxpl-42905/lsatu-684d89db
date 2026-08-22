@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { mirroredSetItem, mirroredRemoveItem } from '@/lib/cloudMirror';
+import { logCsAttempt } from './csAttemptLogger';
 import { Question, Attempt } from '@/types/causationStation';
 import { Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
