@@ -16,6 +16,7 @@ export type RailItemId =
   | "journal"
   | "flagged"
   | "analytics"
+  | "history"
   | "messages"
   | "schedule";
 
@@ -57,6 +58,7 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], allowSignedIn: true, section: true },
   { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
+  { id: "history", label: "History", group: "review", flags: ["has_analytics_access"] },
   { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
   // Schedule owns booking too: one rail entry, two stage tabs (Schedule | Book
   // a session). Two adjacent Support entries for the same errand opened

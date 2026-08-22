@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { mirroredSetItem, mirroredRemoveItem } from '@/lib/cloudMirror';
+import { logCsAttempt } from './csAttemptLogger';
 import { Question, Attempt } from '@/types/causationStation';
 import { Module } from '@/data/causationStation/constants';
 import { ALL_QUESTIONS } from '@/data/causationStation/questions';
@@ -208,6 +209,15 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
       } catch (error) {
         console.error('Failed to save causation free-response attempt history:', error);
       }
+      // Durable per-question record for Drill History (survives the 200-entry
+      // rolling cache above).
+      logCsAttempt({
+        moduleId: module.id,
+        questionId: currentQuestion.id,
+        selectedAnswer: null,
+        correct: null,
+        timeMs: responseTimeMs,
+      });
     } else if (typeof data.choiceIndex !== 'undefined') {
       const answerIndex = data.choiceIndex;
       const responseTimeMs = Date.now() - questionStartTime;
@@ -241,6 +251,13 @@ const CSDrillPlayer: React.FC<CSDrillPlayerProps> = ({ module, onEndDrill }) => 
       } catch (error) {
         console.error('Failed to save causation attempt history:', error);
       }
+      logCsAttempt({
+        moduleId: module.id,
+        questionId: attempt.questionId,
+        selectedAnswer: String(attempt.answerIndex),
+        correct: attempt.correct,
+        timeMs: attempt.responseTimeMs,
+      });
     }
   };
 
