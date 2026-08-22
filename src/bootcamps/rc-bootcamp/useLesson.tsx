@@ -287,7 +287,9 @@ export function LessonProvider({
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const adapterRef = useRef(adapter);
+  const latestDataRef = useRef(state.data);
   adapterRef.current = adapter;
+  latestDataRef.current = state.data;
 
   useEffect(() => {
     let alive = true;
@@ -315,6 +317,25 @@ export function LessonProvider({
       alive = false;
     };
   }, [state.data, state.hydrated]);
+
+  // Closing the tab can happen between a React state update and the normal
+  // persistence effect. Flush the latest snapshot while the page is still
+  // alive; each adapter writes the browser mirror synchronously before waiting
+  // on the cloud request.
+  useEffect(() => {
+    const flush = () => {
+      if (state.hydrated) void adapterRef.current.save(latestDataRef.current);
+    };
+    const flushWhenHidden = () => {
+      if (document.visibilityState === 'hidden') flush();
+    };
+    window.addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', flushWhenHidden);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      document.removeEventListener('visibilitychange', flushWhenHidden);
+    };
+  }, [state.hydrated]);
 
   // Every action closes over `dispatch` alone, so these identities are stable.
   // Effects depend on them; if they changed each render the effects would loop.
