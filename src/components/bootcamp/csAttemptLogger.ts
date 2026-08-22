@@ -45,7 +45,7 @@ export function logCsAttempt(input: CsAttemptInput): void {
         selected_answer: input.selectedAnswer ?? null,
         correct: input.correct,
         time_ms: input.timeMs ?? null,
-      });
+      } as never);
       if (error) {
         console.warn('[cs_attempts] insert failed', error.message);
         seen.delete(dedupeKey);
