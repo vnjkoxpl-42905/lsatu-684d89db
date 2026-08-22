@@ -137,14 +137,14 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "The following passage is used for Section 1, questions 6 through 7.\nHospital auditor: The Rodríguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
+    "stimulus": "Hospital auditor: The Rodriguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\n\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
     "questionStem": "Which one of the following is the main point at issue between the hospital auditor and the clinic administrator?",
     "answerChoices": {
-      "A": "whether early treatment of many neurological disorders lessens the suffering associated with those disorders rather than completely eliminating such suffering",
-      "B": "whether the patients being treated at the neurological clinic are currently receiving adequate treatment for the neurological disorders from which they suffer",
-      "C": "whether the Rodríguez family clearly stipulated that the funds they donated to the neurological clinic be used to minimize patients’ suffering",
-      "D": "whether the neurological clinic is adhering strictly to the conditions the Rodríguez family placed on the allocation of the funds they donated to the clinic",
-      "E": "whether the Rodríguez family anticipated that some of the funds they donated to the neurological clinic would be used to pay for research into new diagnostic technologies"
+      "A": "Whether early treatment of many neurological disorders lessens the suffering associated with those disorders rather than completely eliminating such suffering",
+      "B": "Whether the patients being treated at the neurological clinic are currently receiving adequate treatment for the neurological disorders from which they suffer",
+      "C": "Whether the Rodríguez family clearly stipulated that the funds they donated to the neurological clinic be used to minimize patients’ suffering",
+      "D": "Whether the neurological clinic is adhering strictly to the conditions the Rodríguez family placed on the allocation of the funds they donated to the clinic",
+      "E": "Whether the Rodríguez family anticipated that some of the funds they donated to the neurological clinic would be used to pay for research into new diagnostic technologies"
     },
     "correctAnswer": "D",
     "questionFeatures": [

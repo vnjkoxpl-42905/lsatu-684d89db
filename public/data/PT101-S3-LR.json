@@ -368,14 +368,14 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
+    "stimulus": "The widespread staff reductions in a certain region’s economy are said to be causing people who still have their jobs to cut back on new purchases as though they, too, had become economically distressed. Clearly, however, actual spending by such people is undiminished, because there has been no unusual increase in the amount of money held by those people in savings account.",
     "questionStem": "The argument in the passage proceeds by doing which one of the following?",
     "answerChoices": {
-      "A": "drawing a causal conclusion on the basis of a correlation",
-      "B": "inferring a general conclusion about a category of events from a single instance of that category",
-      "C": "ruling out alternative explanations of a correlation",
-      "D": "drawing a causal conclusion by appealing to general principles about the behavior of economic systems",
-      "E": "inferring that changes in an aggregate must be explained by an individual’s actions"
+      "A": "concluding that since an expected consequence of a supposed development did not occur, that development itself did not take place",
+      "B": "concluding that since only one of the two predictable consequences of a certain kind of behavior is observed to occur, this observed occurrence cannot, in the current situation, be a consequence of such behavior",
+      "C": "arguing that since people’s economic behavior is guided by economic self-interest, only misinformation or error will cause people to engage in economic behavior that harms them economically",
+      "D": "arguing that since two alternative developments exhaust all the plausible possibilities, one of those developments occurred and the other did not",
+      "E": "concluding that since the evidence concerning a supposed change is ambiguous, it is most likely that no change is actually taking place"
     },
     "correctAnswer": "A",
     "questionFeatures": [

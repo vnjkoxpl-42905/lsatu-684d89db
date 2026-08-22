@@ -235,14 +235,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Linsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective and yet these novelists are widely held to be good writers.",
+    "stimulus": "Lindsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective and yet these novelists are widely held to be good writers.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
       "A": "Disjointed and subjective writing has a comparable effect in modern novels and in songs.",
       "B": "Some readers do not appreciate the subtleties of the disjointed and subjective style adopted by modern novelists.",
       "C": "Song lyrics that are disjointed and subjective have at least as much narrative structure as any other song lyrics do.",
       "D": "A disjointed and subjective style of writing is usually more suitable for novels and song lyrics than it is for any other written works.",
-      "E": "The quality of Linsey’s songs is better judged by the quality of their lyrics than by the quality of their musical form."
+      "E": "The quality of Lindsey’s songs is better judged by the quality of their lyrics than by the quality of their musical form."
     },
     "correctAnswer": "A",
     "questionFeatures": [

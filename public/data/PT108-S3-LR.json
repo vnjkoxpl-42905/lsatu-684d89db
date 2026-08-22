@@ -194,14 +194,14 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Magazine editor: In recent years, subscriptions to our magazine have declined, but newsstand sales have increased. Since subscribers receive issues at a lower cost per issue than do newsstand purchasers, the magazine would increase revenue by eliminating discounted subscriptions altogether.",
-    "questionStem": "Which one of the following is an assumption on which the editor’s argument depends?",
+    "stimulus": "Many people joke about Friday the thirteenth being an unlucky day, but a study showed that in one year approximately 17 percent of people scheduled to fly canceled or did not show up for their flights on Friday the thirteenth—a rate higher than that on any other day and date in that year. This shows that a significant percentage of the population would rather disrupt their travel plans than risk flying on a supposedly unlucky day.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
-      "A": "The magazine’s production costs will not increase in the near future.",
-      "B": "Most newsstand purchasers would be unwilling to pay the current subscription price for the magazine.",
-      "C": "Eliminating discounted subscriptions would not decrease newsstand sales.",
-      "D": "The magazine’s content will remain the same after eliminating discounted subscriptions.",
-      "E": "The total number of readers of the magazine would not decrease if discounted subscriptions were eliminated."
+      "A": "People who fly tend to be professionals who as a group are less superstitious than the general public.",
+      "B": "Surveys show that less than 5 percent of the population report that they believe that Friday the thirteenth is an unlucky day.",
+      "C": "Weather conditions at several major airports were severe on the Fridays that fell on the thirteenth in the year of the study.",
+      "D": "In the year of the study, automobile traffic was no lighter on Friday the thirteenth than on other Fridays.",
+      "E": "The absentee rate among airline workers was not significantly higher than normal on the Fridays that fell on the thirteenth in the year of the study."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -243,14 +243,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Historian: A city ordinance in the 1800s required chimneys to be cleaned monthly in order to prevent fires. Records show that fires decreased after the ordinance was enacted. Therefore, the monthly cleaning requirement reduced the number of fires.",
-    "questionStem": "Which one of the following, if true, most helps to justify the historian’s reasoning?",
+    "stimulus": "Geologist: A geological fault in the mountain under which the proposed nuclear waste storage facility would be buried could, after a few thousand years, cause the contents to seep out or water to seep in. Since nuclear waste remains dangerous for up to 25,000 years, such seepage would be disastrous. So we should not place a nuclear waste storage facility under this mountain until scientists investigate whether this mountain has any geological faults.",
+    "questionStem": "Which one of the following, if true, most strengthens the geologist’s argumentation?",
     "answerChoices": {
-      "A": "The ordinance was widely publicized in the city’s newspapers.",
-      "B": "The city also enacted an ordinance that required fire extinguishers to be kept in all businesses.",
-      "C": "People who failed to comply with the ordinance were subject to heavy fines.",
-      "D": "The city hired additional fire inspectors during the 1800s.",
-      "E": "The city’s population decreased during the period in which the ordinance was in effect."
+      "A": "In a few thousand years, human civilization may no longer exist.",
+      "B": "The scientists’ investigation would conclusively show whether or not the mountain has any geological faults.",
+      "C": "The proposed facility was not initially intended to be used for the storage of nuclear waste.",
+      "D": "The scientists’ investigation would increase dramatically the cost of storing nuclear waste under the mountain.",
+      "E": "Nuclear waste could be stored in the proposed facility on a temporary basis."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -282,14 +282,14 @@
     "questionType": "Parallel Flaw",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Some dietary supplements are marketed as “natural,” implying that they are safer than synthetic supplements. However, many natural substances are toxic, and many synthetics are safe. Therefore, consumers should not assume that “natural” supplements are safer than synthetic ones.",
-    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "stimulus": "Wu: Jurgens is dishonest and so should not be elected mayor.\n\nMiller: I disagree with your conclusion. Jurgens should be elected mayor. Honest people usually are not tough enough to run a city.",
+    "questionStem": "Miller’s questionable reasoning in which one of the following dialogues is most closely parallel to Miller’s questionable reasoning in the dialogue above?",
     "answerChoices": {
-      "A": "Consumers are often misled by marketing terms.",
-      "B": "The safety of a supplement depends on its chemical properties rather than its origin.",
-      "C": "Natural supplements are less effective than synthetic supplements.",
-      "D": "Synthetic supplements are regulated more strictly than natural supplements.",
-      "E": "Consumers generally prefer natural supplements to synthetic ones."
+      "A": "Wu: We should not go back to that restaurant. The service is too slow.\n\nMiller: Yes, we should. Food that is served quickly is often of poor quality.",
+      "B": "Wu: Bailey should not be the company spokesperson. He is too aggressive.\n\nMiller: Yes, he should. Aggressive people generally do not get pushed around.",
+      "C": "Wu: We should not paint the office this shade of yellow. It’s too bright.\n\nMiller: Yes, we should. Bright colors keep people feeling wide awake.",
+      "D": "Wu: We should not upgrade the software. It’s too expensive.\n\nMiller: Yes, we should. The best normally costs more.",
+      "E": "Wu: This job applicant should be hired. She has experience.\n\nMiller: No, we should hire Lyons instead. Everyone lacks experience when first starting out."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -332,14 +332,14 @@
     "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "To act responsibly in one’s role as a citizen, one must be guided by a true understanding of the facts that bear on public decisions. Our newspaper therefore has an obligation to ensure that our readers are fully informed about the issues we cover.",
-    "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
+    "stimulus": "To act responsibly in one’s professional capacity, one must act on the basis of information that one has made a reasonable effort to make sure is accurate and complete.",
+    "questionStem": "Which one of the following judgments most closely conforms to the principle cited above?",
     "answerChoices": {
-      "A": "The newspaper’s readers are not fully informed about the issues it covers.",
-      "B": "The newspaper is the best source of information on public issues.",
-      "C": "The newspaper has an obligation to ensure that its readers are fully informed about the issues it covers.",
-      "D": "A responsible citizen must be guided by a true understanding of the facts bearing on public decisions.",
-      "E": "The newspaper should only cover issues that concern public decision-making."
+      "A": "Peggy acted responsibly in ordering new computers for the school last year because they turned out to be needed due to an unexpected increase in enrollment this year.",
+      "B": "Mary acted responsibly in firing John, for she first examined the details of his work record and listened to negative reports from some of his supervisors and coworkers.",
+      "C": "Toril did not act responsibly in investing the company’s money in Twicycled Ink, for, though the investment yielded a large return, she had not investigated the risks associated with that investment.",
+      "D": "Conchita did not act responsibly in hiring Helmer to do the company’s bookkeeping because Helmer made a mistake that cost the company a lot of money, though he had never been known to make such a mistake in the past.",
+      "E": "Jennifer did not act responsibly in deciding where to go on her vacation because, instead of carefully weighing her options, she waited until the last minute and decided on impulse."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -353,14 +353,14 @@
     "questionType": "Paradox",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Linguist: The language of the Zed people has a complex system of verb endings that indicate not only tense but also the speaker’s degree of certainty. However, when Zed speakers use Zed words within sentences in another language, they often omit those endings. Therefore, in the Zed language, verb endings are not necessary for conveying meaning.",
-    "questionStem": "Which one of the following, if true, most seriously weakens the linguist’s argument?",
+    "stimulus": "Radial keratotomy (RK), a surgery that is designed to reshape the cornea so that light focuses correctly on the retina, is supposed to make eyeglasses or contact lenses that correct for nearsightedness unnecessary. Yet a study of patients who have undergone RK shows that some of them still need to wear glasses or contact lenses.",
+    "questionStem": "Each of the following, if true, would help to resolve the apparent discrepancy in the information above EXCEPT:",
     "answerChoices": {
-      "A": "When Zed speakers use Zed words in other languages, they are often trying to make jokes or puns that depend on the absence of verb endings.",
-      "B": "In Zed, the verb endings are required by the rules of grammar when speaking formally.",
-      "C": "Zed speakers who are not fluent in other languages tend to include Zed verb endings even when speaking those languages.",
-      "D": "Some Zed speakers use the endings inconsistently even when speaking Zed.",
-      "E": "In the Zed language, the verb endings affect only the form of the verb and not the meaning."
+      "A": "As the eye heals from an operation to correct nearsightedness, it may in fact overcorrect, causing the person to be farsighted.",
+      "B": "The more severe a patient’s nearsightedness, the less effective the corneal reshaping of RK will be in correcting the problem.",
+      "C": "Occasionally an RK patient’s eyes may heal differently, causing a difference in the two eyes’ visual acuity that can be overcome only with corrective lenses.",
+      "D": "RK patients who originally suffered from only mild nearsightedness may, if the cornea does not heal evenly, develop an astigmatism that requires corrective lenses.",
+      "E": "Those who choose to undergo RK tend to be as nearsighted before this operation as those who choose not to undergo RK."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -540,14 +540,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Anthropologist: A study of vervet monkeys found that they respond to certain calls by looking to specific group members. This could be explained if the monkeys know the dominance hierarchy among members of their troupe. Primatologist: That is unwarranted. You can predict the output of a bank cash machine by knowing customers’ requests, but this does not show that the machine itself knows anything. Similarly, predictions based on the monkeys’ responses do not show that the monkeys know the dominance hierarchy.",
-    "questionStem": "Which one of the following most accurately expresses the point at issue between the anthropologist and the primatologist?",
+    "stimulus": "Anthropologist: After mapping the complete dominance hierarchy for a troupe of vervet monkeys by examining their pairwise interaction, we successfully predicted more complex forms of their group behavior by assuming that each monkey had knowledge of the complete hierarchy. Since our prediction was so accurate, it follows that the assumption we used to reach it was in fact true.\n\nPrimatologist: Although I agree that your assumption helped you make those predictions, your conclusion does not follow. You might as well argue that since we can predict the output of some bank cash machines by assuming that these machines actually want to satisfy the customers’ requests, these cash machines must really have desires.",
+    "questionStem": "The primatologist uses which one of the following argumentative techniques in countering the anthropologist’s argument?",
     "answerChoices": {
-      "A": "whether vervet monkeys know the dominance hierarchy of their troupe",
-      "B": "whether vervet monkeys can use knowledge of dominance hierarchies to make predictions",
-      "C": "whether anthropologists should apply analogies from machines to animals",
-      "D": "whether vervet monkeys’ behavior can be predicted on the basis of their responses",
-      "E": "whether vervet monkeys’ calls can be distinguished by other species"
+      "A": "citing various facts that could not obtain if the anthropologist’s conclusion were correct",
+      "B": "offering another argument that has as its premise the denial of the thesis that the anthropologist defends",
+      "C": "applying one of the anthropologist’s reasoning steps in another argument in an attempt to show that it leads to an absurd conclusion",
+      "D": "attacking the anthropologist’s expertise by suggesting the anthropologist is ignorant of the analogy that can be drawn between animals and machines",
+      "E": "suggesting that the anthropologist’s argument relies on a misinterpretation of a key scientific term"
     },
     "correctAnswer": "C",
     "questionFeatures": [

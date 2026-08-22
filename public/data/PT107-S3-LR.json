@@ -242,14 +242,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Astronomer: Astronomical observatories in many areas have become useless because light from nearby cities obscures the stars. Many people argue that since streetlights are needed for safety, such interference from lights is inevitable. Here in Sandsville, however, the local observatory’s view remains relatively clear, since the city has restricted unnecessary lighting and installed special street lamps that direct all their light downward. It is therefore possible to have both well-lighted streets and relatively dark skies.",
+    "stimulus": "Astronomer: Astronomical observations in many areas have become useless because light from nearby cities obscures the stars Many people argue that since streetlights are needed for safety, such interference from lights is inevitable. Here in Sandsville, however, the local observatory’s view remains relatively clear, since the city has restricted unnecessary lighting and installed special street lamps that direct all their light downward. It is therefore possible to have both well-lighted streets and relatively dark skies.",
     "questionStem": "The astronomer’s argument proceeds by",
     "answerChoices": {
       "A": "appealing to a scientific authority to challenge a widely held belief",
       "B": "questioning the accuracy of evidence given in support of the opposing position",
       "C": "proposing an alternative scientific explanation for a natural phenomenon",
       "D": "making a distinction between terms",
-      "E": "offering a counterexample to a general claim"
+      "E": "offering a counter example to a general claim"
     },
     "correctAnswer": "E",
     "questionFeatures": [
