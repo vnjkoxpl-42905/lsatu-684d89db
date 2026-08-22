@@ -26,6 +26,8 @@ export const STORE_KEY = 'rc-ewtp-v1';
 export const AT_KEY = '__at';
 export const FURTHEST_KEY = '__furthest';
 export const COMPLETED_KEY = '__completedAt';
+/** Client-written timestamp used to reconcile this browser with the cloud. */
+export const SAVED_AT_KEY = '__savedAt';
 
 export type LessonData = Record<string, string | number>;
 
@@ -45,12 +47,28 @@ function isPlainRecord(value: unknown): value is LessonData {
   return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
-/**
- * `rc_lesson_progress` ships in the same push as this file, so it is not in the
- * generated Supabase types yet. One cast here, rather than at every call site.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const untypedDb = supabase as any;
+function savedAt(data: LessonData): number {
+  const value = data[SAVED_AT_KEY];
+  return typeof value === 'string' ? Date.parse(value) || 0 : 0;
+}
+
+function stamp(data: LessonData): LessonData {
+  return { ...data, [SAVED_AT_KEY]: new Date().toISOString() };
+}
+
+/** Prefer the newest complete snapshot. Legacy local records win so unsynced work is never discarded. */
+export function chooseLatestProgress(
+  local: LessonData,
+  remote: LessonData | null,
+  remoteUpdatedAt?: string,
+): LessonData {
+  if (!remote) return local;
+  if (Object.keys(local).length === 0) return remote;
+  const localTime = savedAt(local);
+  const remoteTime = savedAt(remote) || (remoteUpdatedAt ? Date.parse(remoteUpdatedAt) || 0 : 0);
+  if (localTime === 0) return local;
+  return remoteTime > localTime ? remote : local;
+}
 
 export const localAdapter: PersistenceAdapter = {
   async load() {
@@ -65,7 +83,7 @@ export const localAdapter: PersistenceAdapter = {
   },
   async save(data) {
     try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(data));
+      localStorage.setItem(STORE_KEY, JSON.stringify(stamp(data)));
       return true;
     } catch {
       return false;
@@ -79,59 +97,63 @@ export const localAdapter: PersistenceAdapter = {
  * the lesson degrades to prototype parity instead of losing the student's work.
  */
 export function createSupabaseAdapter(userId: string, lessonId: string): PersistenceAdapter {
-  /**
-   * If the table is missing or unreadable — the window between this code
-   * shipping and the migration running, most obviously — stop asking. One
-   * failure per session, then local only, instead of an error on every
-   * keystroke.
-   */
-  let remoteAvailable = true;
+  // Keep cloud writes ordered. Without this, a slow older request can arrive
+  // after a newer one and move a student backwards.
+  let cloudQueue: Promise<boolean> = Promise.resolve(true);
+
+  async function writeCloud(data: LessonData): Promise<boolean> {
+    try {
+      const { error } = await supabase.from('rc_lesson_progress').upsert(
+        {
+          user_id: userId,
+          lesson_id: lessonId,
+          data,
+          completed_at:
+            typeof data[COMPLETED_KEY] === 'string' ? data[COMPLETED_KEY] : null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,lesson_id' },
+      );
+      return !error;
+    } catch {
+      return false;
+    }
+  }
 
   return {
     async load() {
       const local = await localAdapter.load();
-      if (!remoteAvailable) return local;
       try {
-        const { data, error } = await untypedDb
+        const { data, error } = await supabase
           .from('rc_lesson_progress')
-          .select('data')
+          .select('data, updated_at')
           .eq('user_id', userId)
           .eq('lesson_id', lessonId)
           .maybeSingle();
-        if (error) {
-          remoteAvailable = false;
-          return local;
-        }
-        if (!data || !isPlainRecord(data.data)) return local;
-        return data.data as LessonData;
+        if (error || !data || !isPlainRecord(data.data)) return local;
+
+        const latest = chooseLatestProgress(local, data.data as LessonData, data.updated_at);
+        // Reconcile both stores on entry. This uploads work that was captured
+        // locally during an outage and downloads newer work from another device.
+        await localAdapter.save(latest);
+        if (latest === local) cloudQueue = cloudQueue.then(() => writeCloud(latest));
+        return latest;
       } catch {
-        remoteAvailable = false;
         return local;
       }
     },
     async save(data) {
-      const localOk = await localAdapter.save(data);
-      if (!remoteAvailable) return localOk;
+      const snapshot = stamp(data);
+      let localOk = false;
       try {
-        const { error } = await untypedDb.from('rc_lesson_progress').upsert(
-          {
-            user_id: userId,
-            lesson_id: lessonId,
-            data,
-            completed_at: data[COMPLETED_KEY] ?? null,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'user_id,lesson_id' },
-        );
-        if (error) {
-          remoteAvailable = false;
-          return localOk;
-        }
-        return localOk;
+        localStorage.setItem(STORE_KEY, JSON.stringify(snapshot));
+        localOk = true;
       } catch {
-        remoteAvailable = false;
-        return localOk;
+        localOk = false;
       }
+      cloudQueue = cloudQueue.then(() => writeCloud(snapshot));
+      const cloudOk = await cloudQueue;
+      return localOk && cloudOk;
     },
   };
 }

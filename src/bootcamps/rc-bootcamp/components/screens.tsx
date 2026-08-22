@@ -242,7 +242,6 @@ export function WriteScreen({
   const [text, setText] = useState(stored);
   const [savedPill, setSavedPill] = useState(false);
   const revealRef = useRef<HTMLDivElement>(null);
-  const debounce = useRef<number>();
   const questionId = `write-q-${screen.id}`;
 
   // Reset when the student navigates to a different write screen.
@@ -263,20 +262,19 @@ export function WriteScreen({
     return () => window.clearTimeout(t);
   }, [state.saveToken, state.saveOk]);
 
-  useEffect(() => () => window.clearTimeout(debounce.current), []);
-
   const trimmed = text.trim();
   const metMinimum = trimmed.length >= WRITE_MIN_CHARS;
   const words = trimmed ? trimmed.split(/\s+/).length : 0;
 
   function onChange(value: string) {
     setText(value);
-    window.clearTimeout(debounce.current);
-    debounce.current = window.setTimeout(() => setWrite(screen.storageKey, value), 600);
+    // Put every keystroke into lesson state immediately. The persistence layer
+    // mirrors that snapshot locally and serializes cloud writes, so closing or
+    // navigating away cannot strand the last 600ms of a student's response.
+    setWrite(screen.storageKey, value);
   }
 
   function onReveal() {
-    window.clearTimeout(debounce.current);
     setWrite(screen.storageKey, text);
     reveal();
   }
