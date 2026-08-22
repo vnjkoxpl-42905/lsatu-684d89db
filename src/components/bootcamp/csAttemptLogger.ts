@@ -34,7 +34,11 @@ export function logCsAttempt(input: CsAttemptInput): void {
       if (seen.has(dedupeKey)) return;
       seen.add(dedupeKey);
 
-      const { error } = await supabase.from('cs_attempts').insert({
+      // cs_attempts is not in the generated Supabase types yet (it ships in
+      // the same push as this file), so the table name is cast at the call
+      // site — the established pattern in this repo for tables ahead of a
+      // types regeneration.
+      const { error } = await supabase.from('cs_attempts' as never).insert({
         user_id: user.id,
         module_id: input.moduleId,
         question_id: input.questionId,
