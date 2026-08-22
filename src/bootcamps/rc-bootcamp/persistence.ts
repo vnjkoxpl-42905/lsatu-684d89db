@@ -124,7 +124,7 @@ export function createSupabaseAdapter(userId: string, lessonId: string): Persist
     async load() {
       const local = await localAdapter.load();
       try {
-        const { data, error } = await untypedDb
+        const { data, error } = await supabase
           .from('rc_lesson_progress')
           .select('data, updated_at')
           .eq('user_id', userId)
