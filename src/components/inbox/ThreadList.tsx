@@ -1,13 +1,11 @@
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { motion, useAnimationControls, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { CheckCheck, Paperclip, TimerReset, Trash2 } from 'lucide-react';
+import { CheckCheck, Paperclip, TimerReset } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 import { isParticipantOnline } from './inboxPresence';
+import { SwipeableDeleteRow } from './SwipeableDeleteRow';
 
 type Variant = 'admin' | 'student';
 
@@ -219,121 +217,16 @@ export function ThreadList({
         }
 
         return (
-          <SwipeableRow key={c.id} label={name} rounded={isAdmin} onDelete={() => onDelete?.(c.id)}>
+          <SwipeableDeleteRow
+            key={c.id}
+            label={`conversation with ${name}`}
+            rounded={isAdmin ? 'rounded-2xl' : 'rounded-xl'}
+            onDelete={() => onDelete?.(c.id)}
+          >
             {item}
-          </SwipeableRow>
+          </SwipeableDeleteRow>
         );
       })}
-    </div>
-  );
-}
-
-// iOS-style slide-to-delete. Drag the row left: past a small threshold it rests
-// open revealing a red Delete action; a long swipe (or a hard flick) deletes
-// outright. Tapping the revealed row closes it. A hover trashcan gives mouse
-// users the same reveal without dragging.
-const REVEAL_PX = 96;
-const SWIPE_SPRING = { type: 'spring', stiffness: 520, damping: 42, mass: 0.7 } as const;
-
-function SwipeableRow({
-  children,
-  label,
-  onDelete,
-  rounded,
-}: {
-  children: ReactNode;
-  label: string;
-  onDelete: () => void;
-  rounded: boolean;
-}) {
-  const controls = useAnimationControls();
-  const reduce = useReducedMotion();
-  const [open, setOpen] = useState(false);
-  const [dragging, setDragging] = useState(false);
-  const radius = rounded ? 'rounded-2xl' : 'rounded-xl';
-
-  const close = () => {
-    setOpen(false);
-    void controls.start({ x: 0, transition: reduce ? { duration: 0 } : SWIPE_SPRING });
-  };
-  const reveal = () => {
-    setOpen(true);
-    void controls.start({ x: -REVEAL_PX, transition: reduce ? { duration: 0 } : SWIPE_SPRING });
-  };
-  const remove = () => {
-    setOpen(false);
-    if (reduce) {
-      onDelete();
-      return;
-    }
-    void controls
-      .start({ x: -640, transition: { duration: 0.22, ease: [0.4, 0, 1, 1] } })
-      .then(onDelete);
-  };
-
-  return (
-    <div className={cn('group/thread relative select-none overflow-hidden', radius)}>
-      {/* Delete action sitting behind the row */}
-      <button
-        type="button"
-        onClick={remove}
-        aria-label={`Delete conversation with ${label}`}
-        tabIndex={open ? 0 : -1}
-        className={cn(
-          'absolute inset-y-0 right-0 flex w-24 items-center justify-center',
-          'bg-red-500 text-white transition-opacity duration-150 active:bg-red-600',
-          dragging || open ? 'opacity-100' : 'opacity-0',
-        )}
-      >
-        <Trash2 className="h-5 w-5" aria-hidden="true" />
-      </button>
-
-      <motion.div
-        drag={reduce ? false : 'x'}
-        dragDirectionLock
-        dragConstraints={{ left: -REVEAL_PX, right: 0 }}
-        dragElastic={{ left: 0.06, right: 0 }}
-        animate={controls}
-        onDragStart={() => setDragging(true)}
-        onDragEnd={(_, info) => {
-          setDragging(false);
-          const { offset, velocity } = info;
-          if (offset.x < -REVEAL_PX * 2 || velocity.x < -900) remove();
-          else if (offset.x < -REVEAL_PX / 2 || velocity.x < -260) reveal();
-          else close();
-        }}
-        className={cn('relative touch-pan-y bg-transparent', radius)}
-      >
-        {children}
-        {/* When open, an invisible layer swallows the tap to close (not select) */}
-        {open && (
-          <button
-            type="button"
-            onClick={close}
-            aria-label="Close swipe actions"
-            className="absolute inset-0 z-10"
-          />
-        )}
-      </motion.div>
-
-      {/* Hover affordance for mouse users: reveals the same Delete action */}
-      {!open && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            reveal();
-          }}
-          className={cn(
-            'absolute right-2.5 top-2.5 z-20 rounded-lg p-1.5 transition-opacity',
-            'opacity-0 group-hover/thread:opacity-100 focus-visible:opacity-100',
-            'bg-background/70 backdrop-blur-sm text-muted-foreground hover:bg-red-500/10 hover:text-red-600',
-          )}
-          aria-label={`Delete conversation with ${label}`}
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
-      )}
     </div>
   );
 }

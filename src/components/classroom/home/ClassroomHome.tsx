@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
 import { useClassroomHome } from "./useClassroomHome";
 import ClassroomHomeView from "./ClassroomHomeView";
@@ -12,7 +13,7 @@ import "./home.css";
 export default function ClassroomHome() {
   const navigate = useNavigate();
   const { openSection } = useClassroomLayout();
-  const { model, loading, markDone, completingKey } = useClassroomHome();
+  const { model, loading, markDone, clearMessage, completingKey } = useClassroomHome();
 
   return (
     <ClassroomHomeView
@@ -21,8 +22,14 @@ export default function ClassroomHome() {
       onOpen={(route) => navigate(route)}
       onSeeAllWork={() => openSection("work")}
       onMarkDone={markDone}
+      onClearMessage={async (conversationId) => {
+        try {
+          await clearMessage(conversationId);
+        } catch {
+          toast.error("Could not clear that conversation. Try again.");
+        }
+      }}
       completingKey={completingKey}
     />
   );
 }
-

@@ -104,6 +104,8 @@ export function useClassroomHome(): {
   loading: boolean;
   /** Close out an assigned row by key; no-op for a row that is not work. */
   markDone: (key: string) => void;
+  /** Admin-only conversation removal used by the Home message preview. */
+  clearMessage: (conversationId: string) => Promise<void>;
   completingKey: string | null;
 } {
 
@@ -137,7 +139,7 @@ export function useClassroomHome(): {
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
-  const { conversations, unreadCount } = useInbox();
+  const { conversations, unreadCount, deleteConversation } = useInbox();
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
   // than a second round trip. The feed flattens activities to a title and a
@@ -484,6 +486,7 @@ export function useClassroomHome(): {
     model,
     loading: assignedLoading || itemsQuery.isLoading,
     markDone,
+    clearMessage: deleteConversation,
     completingKey,
   };
 }

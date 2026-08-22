@@ -13,8 +13,10 @@
 import * as React from "react";
 import { ArrowRight, CalendarClock } from "lucide-react";
 import QuestionFinder from "@/components/questionfinder/QuestionFinder";
+import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
+  HomeMessage,
   HomeRow,
 } from "./homeModel";
 
@@ -91,6 +93,24 @@ function WorkRow({
   );
 }
 
+function MessagePreviewBody({ message }: { message: HomeMessage }) {
+  return (
+    <span className="classroom-home-message-body">
+      <span className="classroom-home-message-head">
+        <b>{message.from}</b>
+        <time>{message.timeLabel}</time>
+      </span>
+      <span className="classroom-home-message-text">{`“${message.body}”`}</span>
+      <span className="classroom-home-message-actions">
+        <span className="classroom-home-pill classroom-home-pill-accent">
+          Open in Messages
+          <ArrowRight size={12} strokeWidth={2.2} />
+        </span>
+      </span>
+    </span>
+  );
+}
+
 
 export function ClassroomHomeView({
   model,
@@ -98,12 +118,14 @@ export function ClassroomHomeView({
   onOpen,
   onSeeAllWork,
   onMarkDone,
+  onClearMessage,
   completingKey,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
+  onClearMessage?: (conversationId: string) => void;
   completingKey?: string | null;
 
   onSeeAllWork: () => void;
@@ -310,34 +332,43 @@ export function ClassroomHomeView({
               <div className="classroom-home-stack">
                 <i className="classroom-home-note classroom-home-note-back" aria-hidden="true" />
                 <i className="classroom-home-note classroom-home-note-front" aria-hidden="true" />
-                <button
-                  type="button"
-                  className="classroom-home-message"
-                  onClick={() => onOpen(model.message!.route)}
-                >
-                  <i className="classroom-home-shine" aria-hidden="true" />
-                  <span className="classroom-home-avatar">
-                    {model.message.initial}
-                    {model.message.unread ? (
-                      <i className="classroom-home-avatar-dot" aria-hidden="true" />
-                    ) : null}
-                  </span>
-                  <span className="classroom-home-message-body">
-                    <span className="classroom-home-message-head">
-                      <b>{model.message.from}</b>
-                      <time>{model.message.timeLabel}</time>
-                    </span>
-                    <span className="classroom-home-message-text">
-                      {`“${model.message.body}”`}
-                    </span>
-                    <span className="classroom-home-message-actions">
-                      <span className="classroom-home-pill classroom-home-pill-accent">
-                        Open in Messages
-                        <ArrowRight size={12} strokeWidth={2.2} />
+                {model.isAdmin && onClearMessage ? (
+                  <SwipeableDeleteRow
+                    label={`conversation with ${model.message.from}`}
+                    rounded="rounded-xl"
+                    onDelete={() => onClearMessage(model.message!.id)}
+                  >
+                    <button
+                      type="button"
+                      className="classroom-home-message"
+                      onClick={() => onOpen(model.message!.route)}
+                    >
+                      <i className="classroom-home-shine" aria-hidden="true" />
+                      <span className="classroom-home-avatar">
+                        {model.message.initial}
+                        {model.message.unread ? (
+                          <i className="classroom-home-avatar-dot" aria-hidden="true" />
+                        ) : null}
                       </span>
+                      <MessagePreviewBody message={model.message} />
+                    </button>
+                  </SwipeableDeleteRow>
+                ) : (
+                  <button
+                    type="button"
+                    className="classroom-home-message"
+                    onClick={() => onOpen(model.message!.route)}
+                  >
+                    <i className="classroom-home-shine" aria-hidden="true" />
+                    <span className="classroom-home-avatar">
+                      {model.message.initial}
+                      {model.message.unread ? (
+                        <i className="classroom-home-avatar-dot" aria-hidden="true" />
+                      ) : null}
                     </span>
-                  </span>
-                </button>
+                    <MessagePreviewBody message={model.message} />
+                  </button>
+                )}
               </div>
             ) : (
               <p className="classroom-home-empty classroom-home-empty-boxed">
