@@ -93,7 +93,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "The hormone testosterone protects brain cells from injury and reduces levels of the protein beta-amyloid in the brain. Beta-amyloid causally contributes to Alzheimer's disease, and people whose brain cells are susceptible to injury are probably more susceptible to Alzheimer's disease. So there is reason to think that ______________.",
+    "stimulus": "The hormone testosterone protects brain cells from injury and reduces levels of the protein beta-amyloid in the brain. Beta-amyloid causally contributes to Alzheimer's disease, and people whose brain cells are susceptible to injury are probably more susceptible to Alzheimer's disease. So there is reason to think that _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
       "A": "anyone whose brain cells are susceptible to injury will eventually develop Alzheimer's disease",
@@ -539,7 +539,7 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Why are violins made by Stradivarius in the early 1700s far superior to most other violins? Some experts suggest secret varnishes, but there is no evidence for this. However, climatologists have found that in the 1600s and early 1700s weather patterns in the region of Italy where Stradivarius worked affected tree growth to produce wood with special acoustic properties. Therefore, it is likely that ______________.",
+    "stimulus": "Why are violins made by Stradivarius in the early 1700s far superior to most other violins? Some experts suggest secret varnishes, but there is no evidence for this. However, climatologists have found that in the 1600s and early 1700s weather patterns in the region of Italy where Stradivarius worked affected tree growth to produce wood with special acoustic properties. Therefore, it is likely that _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
       "A": "some other Italian violin makers in the early 1700s produced violins that equaled the quality of Stradivarius violins",

@@ -176,7 +176,7 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Psychologist: Although studies of young children have revealed important facts about the influence of the environment on language acquisition, it is clear that one cannot attribute such acquisition solely to environmental influences: innate mechanisms also play a role. So, the most reasonable question that ought to be studied is whether",
+    "stimulus": "Psychologist: Although studies of young children have revealed important facts about the influence of the environment on language acquisition, it is clear that one cannot attribute such acquisition solely to environmental influences: innate mechanisms also play a role. So, the most reasonable question that ought to be studied is whether _______.",
     "questionStem": "Which one of the following most logically completes the passage?",
     "answerChoices": {
       "A": "language acquisition can ever be fully explained",

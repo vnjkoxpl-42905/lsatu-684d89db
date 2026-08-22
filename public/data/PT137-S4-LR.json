@@ -271,7 +271,7 @@
     ],
     "questionDifficulty": 3,
     "stimulus": "Tamika: Many people have been duped by the claims of those who market certain questionable medical products. Their susceptibility is easy to explain: most people yearn for easy solutions to complex medical problems but don't have the medical knowledge necessary to see through the sellers' fraudulent claims. However, the same explanation cannot be given for a recent trend among medical professionals toward a susceptibility to fraudulent claims. They, of course, have no lack of medical knowledge.",
-    "questionStem": "Tamika's argument proceeds by",
+    "questionStem": "Tamika’s argument proceeds by",
     "answerChoices": {
       "A": "showing by analogy that medical professionals should not be susceptible to the fraudulent claims of those who market certain medical products",
       "B": "arguing against a hypothesis by showing that the hypothesis cannot account for the behavior of everyone",
@@ -456,7 +456,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "A salesperson who makes a sale does not change the desires of the customer. Rather, the salesperson finds out what these desires are and then convinces the customer that a particular product will satisfy them. Persuading people to vote for a politician to whom they are initially indifferent is not significantly different. After discovering what policies the prospective voter would like to see in place, one tries to ______________.",
+    "stimulus": "A salesperson who makes a sale does not change the desires of the customer. Rather, the salesperson finds out what these desires are and then convinces the customer that a particular product will satisfy them. Persuading people to vote for a politician to whom they are initially indifferent is not significantly different. After discovering what policies the prospective voter would like to see in place, one tries to _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
       "A": "show that the opponents of the politician in question do not favor all of those policies",

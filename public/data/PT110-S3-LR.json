@@ -79,8 +79,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "",
-    "questionStem": "A group of 1,000 students was randomly selected from three high schools in a medium-sized city and asked the question, “Do you plan to finish your high school education?",
+    "stimulus": "A group of 1,000 students was randomly selected from three high schools in a medium-sized city and asked the question, “Do you plan to finish your high school education?” More than 89 percent answered “Yes. ” This shows that the overwhelming majority of students want to finish high school, and that if the national dropout rate among high school students is high, it cannot be due to a lack of desire on the part of the students.",
+    "questionStem": "The reasoning of the argument above is questionable because the argument",
     "answerChoices": {
       "A": "fails to justify its presumption that 89 percent is an overwhelming majority",
       "B": "attempts to draw two conflicting conclusions from the results of one survey",
@@ -153,8 +153,8 @@
     "questionType": "Point at Issue",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "The following passage is used for Section 3, questions 7 through 8. Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances—specialists who will thus be able to provide advice the rural patient would otherwise not receive. Dr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examinations. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer. 7. Which one of the following is a point at issue between Dr. Jones and Dr.",
-    "questionStem": "Carabella?",
+    "stimulus": "Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances—specialists who will thus be able to provide advice the rural patient would otherwise not receive. Dr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examinations. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer.",
+    "questionStem": "Which one of the following is a point at issue between Dr. Jones and Dr. Carabella?",
     "answerChoices": {
       "A": "whether medical specialists in general offer better advice than rural physicians",
       "B": "whether telemedicine technology will be installed only in rural hospitals and rural medical centers",
@@ -176,8 +176,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Dr. Carabella uses which one of the following strategies in responding to Dr.",
-    "questionStem": "Jones?",
+    "stimulus": "Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances-specialists who will thus be able to provide advice the rural patient would otherwise not receive.\n\nDr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examination. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer.",
+    "questionStem": "Dr. Carabella uses which one of the following strategies in responding to Dr. Jones?",
     "answerChoices": {
       "A": "listing a set of considerations to show that a prescribed treatment that seems to be benefiting a patient in fact harms that patient",
       "B": "describing the application of the technology discussed by Dr. Jones as one step that initiates a process that leads to an undesirable end",

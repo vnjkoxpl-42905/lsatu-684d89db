@@ -46,6 +46,120 @@ def comparable(stim, num):
     return re.sub(rf'\s*\b{num}\.\s*(?=[A-Z])', ' ', stim)
 
 
+
+BLANK = '_______'
+COMPLETION = re.compile(r'completes the (argument|passage|statement)', re.I)
+
+
+def strip_duplicated_stem(stim, stem):
+    """Drops a copy of the question stem left sitting at the end of the
+    stimulus. Compared on words so punctuation drift cannot hide it, and only
+    the tail is considered, since a passage may legitimately echo its question
+    earlier on."""
+    stem_key = words(stem)
+    if len(stem_key) < 40:
+        return stim
+    lines = stim.rstrip().split('\n')
+    while lines:
+        tail_key = words(lines[-1])
+        if tail_key and (stem_key.startswith(tail_key) or tail_key.startswith(stem_key[:60])):
+            lines.pop()
+            continue
+        break
+    return '\n'.join(lines).rstrip() or stim
+
+
+def normalize_blank_marker(stim, stem):
+    """Gives a fill-in-the-blank question the blank its neighbours have, and
+    settles the ones that already have one on a single marker width."""
+    if not COMPLETION.search(stem or ''):
+        return stim
+    existing = re.search(r'_{2,}', stim)
+    if existing:
+        return stim[:existing.start()] + BLANK + stim[existing.end():]
+    tail = stim.rstrip()
+    # Only a passage that stops mid-sentence is missing its blank. One that ends
+    # on a finished sentence is a different problem — either the blank line was
+    # dropped in capture or the stem is mislabelled — and guessing where the
+    # blank goes would be inventing test content.
+    if not tail or re.search(r'[.!?"”\'\)\]]$', tail):
+        return stim
+    return f'{tail} {BLANK}.'
+
+
+def typeset(text):
+    """The vault transcription types apostrophes and quotes straight; the bank
+    is curly throughout, and a repaired question sitting beside its neighbours
+    should not be the one that looks different."""
+    text = text.replace("'", '\u2019')
+    out, opening = [], True
+    for chunk in text.split('"'):
+        out.append(chunk)
+        out.append('\u201c' if opening else '\u201d')
+        opening = not opening
+    return ''.join(out[:-1])
+
+
+def cut_at_words(text, key):
+    """Character offset in `text` where its word-stream reaches `key`, or None.
+    Lets a boundary found on the comparison key be applied to the real text,
+    punctuation and all."""
+    if not key:
+        return None
+    seen, index = '', 0
+    for i, ch in enumerate(text):
+        if re.match(r'[a-z0-9]', ch.lower()):
+            seen += ch.lower()
+            index += 1
+            if index == len(key):
+                return i + 1 if seen == key else None
+            if not key.startswith(seen):
+                return None
+    return None
+
+
+def rebuild_from_record(stim, stem, num, prompt):
+    """Reassembles a scrambled shared-passage record.
+
+    The import left these in several shapes: the passage with the neighbour's
+    numbered stem stranded on the end and a copy of the passage sitting in the
+    stem field; the stem split across both fields; the passage only in the stem.
+    The vault's prompt says where the question starts, and everything else is
+    taken from the bank, whose transcription of the passage is the better one.
+
+    Returns (stimulus, stem) or None.
+    """
+    prompt_key = words(prompt)
+    stim, stem = stim.strip(), stem.strip()
+
+    # The printed question number marks where the stem was glued on.
+    marker = re.search(rf'\s*\b{num}\.\s+(?=[A-Z“"(])', stim)
+    passage, fragment = (stim[:marker.start()].strip(), stim[marker.end():].strip()) if marker else (stim, '')
+
+    if fragment:
+        # The fragment has to be the opening of this question, not the tail of
+        # the passage or the neighbour's question.
+        if not prompt_key.startswith(words(fragment)):
+            return None
+    elif not passage:
+        return None
+
+    if passage and words(passage) and prompt_key.startswith(words(passage)):
+        # The whole "passage" was really the question. Not a shape we repair.
+        return None
+
+    # The passage may instead be sitting in the stem field, ahead of the prompt.
+    if not passage:
+        cut = cut_at_words(stem, words(stem)[:len(words(stem)) - len(prompt_key)])
+        if cut is None or not words(stem).endswith(prompt_key):
+            return None
+        passage = stem[:cut].strip()
+
+    if not passage:
+        return None
+    return ROUTING.sub('', passage).strip(), typeset(prompt.strip())
+
+
 SENTENCE_END = re.compile(r'[.!?][\s"”\')\]]*(?=[A-Z“"(])')
 
 
@@ -110,17 +224,39 @@ def main():
         for q in questions:
             pt, sec, num = q.get('practiceTest'), q.get('sectionNumber'), q.get('questionNumber')
             stim, stem = q.get('stimulus') or '', q.get('questionStem') or ''
+            qid = f'{pt}-S{sec}-Q{num}'
+
+            # Two repairs that need no outside authority, done first so the
+            # checks below see the tidied record.
+            if stim.strip() and stem.strip():
+                # The stem was copied onto the end of the passage as well as
+                # into its own field. The passage keeps only the passage.
+                trimmed = strip_duplicated_stem(stim, stem)
+                if trimmed != stim:
+                    q['stimulus'] = stim = trimmed
+                    fixed.append((qid, 'duplicated stem removed from the stimulus'))
+                    dirty = True
+                # Fill-in-the-blank questions carry a blank. Fifty-one of them
+                # already do; the stragglers looked like truncated passages.
+                marked = normalize_blank_marker(stim, stem)
+                if marked != stim:
+                    q['stimulus'] = stim = marked
+                    fixed.append((qid, 'blank marker'))
+                    dirty = True
+
             blank = not stim.strip()
             # A stem that starts lower-case, or a stimulus that ends without
             # terminal punctuation, is the signature of the split.
             split = bool(stem) and (
                 re.match(r'^[a-z]', stem.strip())
                 or not re.search(r'[.!?"”\'\)\]]\s*$', stim.strip())
+                # "Carabella?" — the tail end of a question whose opening is
+                # stranded on the stimulus. Too short to be a stem of its own.
+                or len(stem.strip()) < 30
             )
             if not blank and not split:
                 continue
 
-            qid = f'{pt}-S{sec}-Q{num}'
             kind_override = None
             if pt not in vaults:
                 vaults[pt] = load_vault(pt)
@@ -157,7 +293,43 @@ def main():
                     skipped.append((qid, 'no vault record'))
                 continue
 
-            if blank:
+            # Shared two-question passages came through the import badly
+            # scrambled: the passage appears twice, the neighbour's stem is
+            # stranded on the end of it, and the stem field holds a copy of the
+            # passage instead of the question. The vault entry is the clean
+            # version of the same question, so it is adopted whole — but only on
+            # proof that this record really is that question: either the bank's
+            # own stimulus contains the vault's passage, or the fragments the
+            # bank does hold spell out the vault's prompt exactly.
+            record_key = bank_key + words(stem)
+            # A capture that stops partway through the passage and never reaches
+            # the question. Everything the bank holds is the opening of the
+            # vault's passage, so the vault's copy is the whole record restored,
+            # not new text.
+            if (
+                record_key
+                and len(record_key) < len(words(entry['stimulus']))
+                and words(entry['stimulus']).startswith(record_key)
+            ):
+                q['stimulus'] = typeset(entry['stimulus'])
+                q['questionStem'] = typeset(entry['prompt'])
+                fixed.append((qid, 'truncated capture restored'))
+                dirty = True
+                continue
+
+            rebuilt = rebuild_from_record(stim, stem, num, entry['prompt'])
+            if rebuilt and words(entry['prompt']) in record_key:
+                q['stimulus'], q['questionStem'] = rebuilt
+                fixed.append((qid, 'shared-passage reassembled'))
+                dirty = True
+                continue
+            if (
+                words(entry['stimulus']) in record_key
+                or words(entry['prompt']) == record_key
+                or words(entry['prompt']) == words(stim) + words(stem)
+            ) and words(entry['stimulus']) + words(entry['prompt']) != record_key:
+                kind_override = 'shared-passage rebuilt'
+            elif blank:
                 if words(entry['prompt']) != words(stem):
                     skipped.append((qid, 'vault prompt does not match the bank stem'))
                     continue
@@ -182,18 +354,6 @@ def main():
                     else:
                         skipped.append((qid, 'vault text differs from the bank beyond the boundary'))
                     continue
-
-            # The vault transcription types apostrophes and quotes straight;
-            # the bank is curly throughout, and a repaired question sitting
-            # beside its neighbours should not be the one that looks different.
-            def typeset(t):
-                t = t.replace("'", '\u2019')
-                out, opening = [], True
-                for chunk in t.split('"'):
-                    out.append(chunk)
-                    out.append('\u201c' if opening else '\u201d')
-                    opening = not opening
-                return ''.join(out[:-1])
 
             entry = {'stimulus': typeset(entry['stimulus']), 'prompt': typeset(entry['prompt'])}
 

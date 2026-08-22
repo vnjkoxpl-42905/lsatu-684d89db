@@ -200,7 +200,7 @@
     ],
     "questionDifficulty": 2,
     "stimulus": "Lydia: Red squirrels are known to make holes in the bark of sugar maple trees and to consume the trees' sap. Since sugar maple sap is essentially water with a small concentration of sugar, the squirrels almost certainly are after either water or sugar. Water is easily available from other sources in places where maple trees grow, so the squirrels would not go to the trouble of chewing holes in trees just to get water. Therefore, they are probably after the sugar.\nGalina: It must be something other than sugar, because the concentration of sugar in the maple sap is so low that a squirrel would need to drink an enormous amount of sap to get any significant amount of sugar.",
-    "questionStem": "Lydia's argument proceeds by",
+    "questionStem": "Lydia’s argument proceeds by",
     "answerChoices": {
       "A": "dismissing potentially disconfirming data",
       "B": "citing a general rule of which the conclusion is a specific instance",

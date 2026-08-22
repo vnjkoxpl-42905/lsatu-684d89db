@@ -355,7 +355,7 @@
     ],
     "questionDifficulty": 4,
     "stimulus": "Selena: Asteroid impact on the Earth caused the extinction of the dinosaurs by raising vast clouds of dust, thus blocking the Sun's rays and cooling the planet beyond the capacity of the dinosaurs, or perhaps the vegetation that supported them, to adapt. A worldwide dust layer provides evidence of asteroid impact at approximately the correct time, and a huge crater exists on the edge of the Yucatán peninsula in Mexico.\nTrent: That asteroid crater is not large enough for the requisite amount of dust to have been produced. Besides, the extinction of dinosaur species took many years, not just one or two. So the extinctions must have been due not to asteroid impact on the Earth but to some other kind of cause.",
-    "questionStem": "Trent's argument assumes that",
+    "questionStem": "Trent’s argument assumes that",
     "answerChoices": {
       "A": "any collision of an asteroid with the Earth would have occurred on a land area rather than an ocean",
       "B": "dinosaurs in the neighborhood of an asteroid impact but not within the zone of direct impact would have survived such an impact",

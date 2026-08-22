@@ -492,7 +492,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "The following passage is used for Section 4, questions 23 through 24.\nParty spokesperson: The opposition party’s proposal to stimulate economic activity in the province by refunding $600 million in provincial taxes to\ntaxpayers, who could be expected to spend the money, envisions an illusory benefit. Since the province’s budget is required to be in balance, either new taxes would be needed to make up the shortfall, in which case the purpose of the refund would be defeated, or else workers for the province would be dismissed. So either the province’s taxpayers or its workers, who are also residents of the province, will have the $600 million to spend, but there can be no resulting net increase in spending to stimulate the province’s economy.",
+    "stimulus": "Party spokesperson: The opposition party’s proposal to stimulate economic activity in the province by refunding $600 million in provincial taxes to\ntaxpayers, who could be expected to spend the money, envisions an illusory benefit. Since the province’s budget is required to be in balance, either new taxes would be needed to make up the shortfall, in which case the purpose of the refund would be defeated, or else workers for the province would be dismissed. So either the province’s taxpayers or its workers, who are also residents of the province, will have the $600 million to spend, but there can be no resulting net increase in spending to stimulate the province’s economy.",
     "questionStem": "The spokesperson proceeds by",
     "answerChoices": {
       "A": "reinterpreting a term that is central to an opposing argument",
