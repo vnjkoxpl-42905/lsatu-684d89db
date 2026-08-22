@@ -1169,6 +1169,39 @@ export type Database = {
         }
         Relationships: []
       }
+      cs_attempts: {
+        Row: {
+          correct: boolean | null
+          created_at: string
+          id: string
+          module_id: string
+          question_id: string
+          selected_answer: string | null
+          time_ms: number | null
+          user_id: string
+        }
+        Insert: {
+          correct?: boolean | null
+          created_at?: string
+          id?: string
+          module_id: string
+          question_id: string
+          selected_answer?: string | null
+          time_ms?: number | null
+          user_id: string
+        }
+        Update: {
+          correct?: boolean | null
+          created_at?: string
+          id?: string
+          module_id?: string
+          question_id?: string
+          selected_answer?: string | null
+          time_ms?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       curriculum_track_items: {
         Row: {
           created_at: string
@@ -5025,6 +5058,21 @@ export type Database = {
       }
     }
     Views: {
+      drill_history: {
+        Row: {
+          attempted_at: string | null
+          correct: boolean | null
+          detail: string | null
+          mode: string | null
+          question_key: string | null
+          question_ref: string | null
+          selected_answer: string | null
+          source: string | null
+          time_ms: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       students_safe: {
         Row: {
           class_id: string | null
