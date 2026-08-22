@@ -297,7 +297,7 @@ export function LessonProvider({
     return () => {
       alive = false;
     };
-  }, []);
+  }, [adapter]);
 
   // Single write path: every change to the record is persisted, and the result
   // is reported back so the "Saved" pill can only ever reflect a real save.
@@ -306,9 +306,9 @@ export function LessonProvider({
     if (!state.hydrated) return;
     const serialized = JSON.stringify(state.data);
     if (serialized === lastPersisted.current) return;
-    lastPersisted.current = serialized;
     let alive = true;
     adapterRef.current.save(state.data).then((ok) => {
+      if (ok) lastPersisted.current = serialized;
       if (alive) dispatch({ type: 'SAVE_RESULT', ok });
     });
     return () => {
