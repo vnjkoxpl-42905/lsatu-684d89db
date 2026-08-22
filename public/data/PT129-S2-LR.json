@@ -570,14 +570,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Some people believe there is intelligent life somewhere in the universe besides Earth. But no one who believes that could also believe all planets other than Earth are devoid of life. Thus, some people do not believe all planets other than Earth are devoid of life.",
-    "questionStem": "The reasoning in which one of the following is most similar to the reasoning in the argument above?",
+    "stimulus": "Taxi drivers, whose income is based on the fares they receive, usually decide when to finish work each day by setting a daily income target; they stop when they reach that target. This means that they typically work fewer hours on a busy day than on a slow day.",
+    "questionStem": "The facts described above provide the strongest evidence against which one of the following?",
     "answerChoices": {
-      "A": "Some people believe computers are capable of thought. Since no one who does not believe computer chess programs sometimes beat human chess masters believes computers can think, it follows that computer chess programs do sometimes beat human chess masters.",
-      "B": "Some cat owners believe cats are incapable of feeling guilty. Since one could think that an animal is capable of feeling guilty only if one thought the animal had a conception of morality, it follows that some cat owners do not believe cats have a conception of morality.",
-      "C": "Some dog owners believe their dogs are emotionally attached to them. Since no one could believe that and also believe dogs are incapable of thought, it follows that some dog owners do not believe dogs are incapable of thought.",
-      "D": "Some people believe humans will someday colonize other planets. Since anyone who believes that probably also believes overpopulation of Earth is not a problem, it follows that some people do not believe overpopulation of Earth is not a problem.",
-      "E": "Some people believe there is life on planets other than Earth. Since anyone who believes that must also believe other planets have atmospheres that can support life, it follows that other planets do have atmospheres that can support life."
+      "A": "The number of hours per day that a person is willing to work depends on that person’s financial needs.",
+      "B": "People work longer when their effective hourly wage is high than when it is low.",
+      "C": "Workers will accept a lower hourly wage in exchange for the freedom to set their own schedules.",
+      "D": "People are willing to work many hours a day in order to avoid a reduction in their standard of living.",
+      "E": "People who are paid based on their production work more efficiently than those who are paid a fixed hourly wage."
     },
     "correctAnswer": "B",
     "questionFeatures": [

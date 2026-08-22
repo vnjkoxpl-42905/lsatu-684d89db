@@ -54,14 +54,14 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "If Patricia eats a heavy, spicy meal tonight, she will get a bad case of heartburn later. If Patricia gets a bad case of heartburn later, she will be grouchy tomorrow morning. So if Patricia eats a heavy, spicy meal tonight, she will be grouchy tomorrow morning.",
-    "questionStem": "Which one of the following arguments is most similar in its logical features to the argument above?",
+    "stimulus": "Although free international trade allows countries to specialize, which in turn increases productivity, such specialization carries risks. After all, small countries often rely on one or two products for the bulk of their exports. If those products are raw materials, the supply is finite and can be used up. If they are foodstuffs, a natural disaster can wipe out a season’s production overnight.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument as a whole?",
     "answerChoices": {
-      "A": "If Ruth plants only daffodils, the squirrels will eat the bulbs. If the squirrels eat the bulbs, then no flowers will bloom in Ruth's garden. Since no flowers are blooming in Ruth's garden, she must have planted only daffodils.",
-      "B": "If Shawn starts gardening in early spring, he can plant tomatoes early. If Shawn can plant tomatoes early, he will have plenty of tomatoes for canning. But he does not have plenty of tomatoes for canning, so either he did not start gardening in early spring or he did not plant tomatoes early.",
-      "C": "Maria plants either petunias or geraniums in her garden. If Maria plants petunias, she plants purple ones. If Maria plants geraniums, she plants red ones. Since both petunias and geraniums are flowers, Maria will have either purple or red flowers in her garden.",
-      "D": "If Li plants old rose varieties, her garden will look beautiful. If Li's garden looks beautiful, Li's neighbors will be impressed. So if Li plants old rose varieties, her neighbors will be impressed.",
-      "E": "If Bryan's fruit trees are to produce well, he must either prune them in the fall or fertilize them in the spring. Since Bryan wants his trees to produce well but forgot to prune them last fall, Bryan is sure to fertilize his trees this spring."
+      "A": "Specialization within international trade comes with risks.",
+      "B": "A natural disaster can destroy a whole season’s production overnight, devastating a small country’s economy.",
+      "C": "A small country’s supply of raw materials can be used up in a short period.",
+      "D": "Some countries rely on a small number of products for the export-based sectors of their economies.",
+      "E": "When international trade is free, countries can specialize in what they export."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -79,14 +79,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Huang: Most people who commit violent crimes do not carefully consider whether or how they will be punished for these crimes. And those who don't commit violent crimes have no inclination to do so. Rather than impose harsh mandatory sentences, we should attend to the root causes of violence to reduce the rate of violent crime.\nSuarez: Would you say the same about nonviolent crimes, such as tax evasion? Surely mandatory penalties are a useful deterrent in these cases. At any rate, I am confident that mandatory sentences prevent most people who would otherwise physically harm others from doing so.",
-    "questionStem": "The dialogue between Huang and Suarez most strongly supports the claim that they disagree about whether",
+    "stimulus": "Two randomly selected groups of 30 adults each were asked to write short stories on a particular topic. One group was told that the best stories would be awarded cash prizes, while the other group was not told of any prizes. Each story was evaluated by a team of judges who were given no indication of the group from which the story came. The stories submitted by those who thought they were competing for prizes were ranked on average significantly lower than the stories from the other group.",
+    "questionStem": "Which one of the following, if true, most helps to explain the difference in average ranking between the two groups’ stories?",
     "answerChoices": {
-      "A": "the best way to reduce violent crime is to address the root causes of violence",
-      "B": "people who commit violent crimes deserve harsh punishment",
-      "C": "people who commit violent crimes carefully consider how they will be punished for their crimes",
-      "D": "mandatory sentences will deter most people who might otherwise commit violent crimes",
-      "E": "severe penalties reduce the incidence of tax evasion"
+      "A": "The cash prizes were too small to motivate an average adult to make a significant effort to produce stories of high quality.",
+      "B": "People writing to win prizes show a greater than usual tendency to produce stereotypical stories that show little creativity.",
+      "C": "Most adults show little originality in writing stories on a topic suggested by someone else.",
+      "D": "The team of judges was biased in favor of stories that they judged to be more realistic.",
+      "E": "No one explained clearly to either group what standards would be used in judging their stories."
     },
     "correctAnswer": "B"
   },
@@ -151,14 +151,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "In an attempt to create brand loyalties, television advertisers currently target young adults, ages 18 to 25, because on average they have higher discretionary income than do consumers of other age groups. But since the average discretionary income of those over 65 will soon be greater than that of young adults, in the future television advertisers would do better to target consumers over 65 instead.",
-    "questionStem": "Which one of the following, if true, would most weaken the argument above?",
+    "stimulus": "Scientists removed all viruses from a seawater sample and then measured the growth rate of the plankton population in the water. They expected the rate to increase dramatically, but the population actually got smaller.",
+    "questionStem": "Which one of the following, if true, most helps to explain the unexpected result described above?",
     "answerChoices": {
-      "A": "Consumers over the age of 65 tend to watch different television shows than do young adults.",
-      "B": "The older a consumer is, the more likely he or she is to have already established brand loyalties.",
-      "C": "The average discretionary income of young adults is projected to rise in the near future.",
-      "D": "The greater a consumer's discretionary income, the more likely advertising is to encourage that consumer to buy.",
-      "E": "The number of consumers over the age of 65 is increasing more rapidly than is the number of young adults."
+      "A": "Viruses in seawater help to keep the plankton population below the maximum level that the resources in the water will support.",
+      "B": "Plankton and viruses in seawater compete for some of the same nutrients.",
+      "C": "Plankton utilize the nutrients released by the death of organisms killed by viruses.",
+      "D": "The absence of viruses can facilitate the flourishing of bacteria that sometimes damage other organisms.",
+      "E": "At any given time, a considerable portion of the plankton in seawater are already infected by viruses."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -175,14 +175,14 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Politician: It is widely accepted that because democratic politics cannot exist without debate about political issues, and because self-governance flourishes when citizens are allowed to express their feelings verbally, a democratically governed society should refrain from interfering in individual citizens' speech. I argue that a democratically governed society should also refrain from exercising strict control over the clothing and grooming of its citizens, for this is clearly a venue of self-expression, and it can also serve to make a variety of political statements, without using words.",
-    "questionStem": "A logical strategy used in the politician's argument is to",
+    "stimulus": "City council member: The Senior Guild has asked for a temporary exception to the ordinance prohibiting automobiles in municipal parks. Their case does appear to deserve the exception. However, if we grant this exception, we will find ourselves granting many other exceptions to this ordinance, some of which will be undeserved. Before long, we will be granting exceptions to all manner of other city ordinances. If we are to prevent anarchy in our city, we must deny the Senior Guild’s request.",
+    "questionStem": "The city council member’s argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
-      "A": "argue for a conclusion by suggesting that the opposite conclusion leads to an absurdity",
-      "B": "reach a general conclusion based on the absence of clear counterexamples to an empirical thesis",
-      "C": "support a conclusion by claiming that it is widely accepted",
-      "D": "reach a conclusion based on evidence that is similar to evidence commonly thought to support an analogous case",
-      "E": "reach a conclusion about what democratically governed societies actually do based on premises about what democratically governed societies should do"
+      "A": "distorts an argument and then attacks this distorted argument",
+      "B": "dismisses a claim because of its source rather than because of its content",
+      "C": "presumes, without sufficient warrant, that one event will lead to a particular causal sequence of events",
+      "D": "contains premises that contradict one another",
+      "E": "fails to make a needed distinction between deserved exceptions and undeserved ones"
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -228,14 +228,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Biologists often announce that a certain kind of animal has been found capable of using tools; this usually refers to something like using a stick to hunt for ants in a log, or a stone to crack nuts. But such announcements are completely unsurprising, since all animals use tools. Birds build nests, fish hide in the mud to escape predators, and squirrels use buildings as shortcuts between trees. If an animal executes its purpose by means of an external physical object, then that object can reasonably be regarded as a tool.",
-    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the biologists' announcements that a certain animal has been found capable of using tools are unsurprising?",
+    "stimulus": "Columnist: The failure of bicyclists to obey traffic regulations is a causal factor in more than one quarter of the traffic accidents involving bicycles. Since inadequate bicycle safety equipment is also a factor in more than a quarter of such accidents, bicyclists are at least partially responsible for more than half of the traffic accidents involving bicycles.",
+    "questionStem": "The columnist’s reasoning is flawed in that it",
     "answerChoices": {
-      "A": "It provides evidence that the animals' activities given as examples are purposeful.",
-      "B": "It is the conclusion of the argument.",
-      "C": "It is an assumption used by the argument to justify acceptance of a broader conception of what a tool is than that usually accepted by the biologists.",
-      "D": "It calls into question the basis of the biologists' conception of a tool.",
-      "E": "It addresses a weakness in the biologists' announcements that stems from their ambiguous use of the word \"external.\""
+      "A": "presumes, without providing justification, that motorists are a factor in less than half of the traffic accidents involving bicycles",
+      "B": "improperly infers the presence of a causal connection on the basis of a correlation",
+      "C": "fails to consider the possibility that more than one factor may contribute to a given accident",
+      "D": "fails to provide the source of the figures it cites",
+      "E": "fails to consider that the severity of injuries to bicyclists from traffic accidents can vary widely"
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -381,14 +381,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "The primary task of a university is to educate. But to teach well, professors must be informed about new developments in their disciplines, and that requires research. Yet many universities cannot afford to support faculty research adequately. So a lack of funds for research adversely affects the degree to which a university can fulfill its central mission.",
-    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
+    "stimulus": "Critic: As modern methods of communication and transportation have continued to improve, the pace of life today has become faster than ever before. This speed has created feelings of impermanence and instability, making us feel as if we never have enough time to achieve what we want—or at least what we think we want.",
+    "questionStem": "The critic’s statements most closely conform to which one of the following assessments?",
     "answerChoices": {
-      "A": "In order to be able to teach well, university professors must conduct research.",
-      "B": "Lack of financial support for faculty research is the root of ineffective teaching at universities.",
-      "C": "Effective teaching is the primary mission of a university.",
-      "D": "Lack of funds for research reduces the quality of education a university provides.",
-      "E": "New means of funding faculty research at universities are needed."
+      "A": "The fast pace of modern life has made it difficult for people to achieve their goals.",
+      "B": "The disadvantages of technological progress often outweigh the advantages.",
+      "C": "Changes in people’s feelings about life can result from technological changes.",
+      "D": "The perception of impermanence in contemporary life makes it more difficult for people to know what they want.",
+      "E": "Changes in people’s feelings fuel the need for technological advancement."
     },
     "correctAnswer": "C",
     "questionFeatures": [

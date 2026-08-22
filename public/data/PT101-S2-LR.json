@@ -152,14 +152,14 @@
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Residents of the city of Krisville have been protesting the very poor state of the city’s recreation facilities. In response, city officials plan to build ten new recreation centers, one in each of the city’s ten neighborhoods. These centers will include a range of exercise facilities. City officials argue that when these facilities are available, many residents will begin to get the regular exercise they need, thereby improving their health; this increase in the health of the population will result in a decrease in the city’s per capita medical costs. So although the centers will be expensive to build, they will ultimately cause the city’s per capita medical costs to decrease.",
-    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "stimulus": "A neighborhood group plans to protest the closing of the neighborhood’s only recreation center on the grounds that to do so would leave the neighborhood without local access to a recreation center. “Our neighborhood already has the most residents per center of any neighborhood in the city, ” complained one resident, “and closing this center would make the situation unacceptable since access to recreational facilities is a necessity for this neighborhood. ”",
+    "questionStem": "Each of the following, if true, weakens the resident’s argument EXCEPT:",
     "answerChoices": {
-      "A": "Because recreation centers are distributed among many neighborhoods, it is not time-consuming for residents to get to and from a center.",
-      "B": "The exercise machines in the new recreation centers will be convenient and easy to use.",
-      "C": "Krisville’s recreation centers will be scheduled so as to minimize conflicts between different age groups.",
-      "D": "Most residents who have been exercising regularly for at least a year belong to private health clubs.",
-      "E": "In other cities where recreation centers have been provided, the per capita medical costs have decreased."
+      "A": "A large number of the neighborhood’s residents are unable to travel outside their locality to gain access to recreational facilities.",
+      "B": "Children, the main users of recreational facilities, make up a disproportionately small segment of the neighborhood’s population.",
+      "C": "Often the recreation center in the neighborhood is open but not being used.",
+      "D": "Programs that are routinely filled at other recreation centers must be canceled at the neighborhood’s recreation center due to lack of interest.",
+      "E": "As people become more involved in computers and computer games, recreation centers are becoming increasingly less important."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -264,14 +264,14 @@
     "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "For years scientists have been scanning the skies in search of life elsewhere in the universe. To date there has been no success in this endeavor. The budget for the project of searching for extraterrestrial life is being reduced, and critics argue that the budget should be reduced even further.",
-    "questionStem": "Which one of the following findings would be most relevant to deciding whether the budget of the project should be reduced?",
+    "stimulus": "For years scientists have been scanning the skies in the hope of finding life on other planets. But in spite of the ever-increasing sophistication of the equipment they employ, some of it costing hundreds of millions of dollars, not the first shred of evidence of such life has been forthcoming. And there is no reason to think that these scientists will be anymore successful in the future, no matter how much money is invested in the search. The dream of finding extraterrestrial life is destined to remain a dream, as science’s experience up to this point should indicate.",
+    "questionStem": "Which one of the following most accurately states the main point of the argument?",
     "answerChoices": {
-      "A": "The number of newly discovered planets has been increasing over the last few years.",
-      "B": "The project sometimes shares its funds with other space-research programs.",
-      "C": "The number of new planets that have been discovered has been dropping in recent years.",
-      "D": "The number of scientists working on the project has been increasing steadily.",
-      "E": "The cost of the project has been increasing faster than the overall cost of space research."
+      "A": "There is no reason to believe that life exists on other planets.",
+      "B": "The equipment that scientists employ is not as sophisticated as it should be.",
+      "C": "Scientists searching for extraterrestrial life will not find it.",
+      "D": "Only if scientists had already found evidence of life on other planets would continued search be justified.",
+      "E": "We should not spend money on sophisticated equipment to aid in the search for extraterrestrial life."
     },
     "correctAnswer": "C"
   },
@@ -282,14 +282,14 @@
     "questionType": "Parallel",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "There are whitecaps on the ocean of Venus. Hence there must be wind on Venus, since there cannot be whitecaps without wind.",
-    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "stimulus": "Carl’s Coffee Emporium stocks only two decaffeinated coffees: French Roast and Mocha Java. Yusef only serves decaffeinated coffee, and the coffee he served after dinner last night was far too smooth and mellow to have been French Roast. So, if Yusef still gets all his coffee from Carl’s, what he served last night was Mocha Java.",
+    "questionStem": "The argument above is most similar in its logical structure to which one of the following?",
     "answerChoices": {
-      "A": "The surface of Venus is mostly hot, dry land.",
-      "B": "Curves of shadows across Venus from the telescope’s rectangular aperture produce an optical illusion that can make Venus’s land surface appear ruffled like a stormy sea.",
-      "C": "The planet Venus has no atmosphere.",
-      "D": "Only if there exist wavelike disturbances in the clouds of Venus is it possible that the winds on Venus blow in one direction and thus could be responsible for some or all of the observed evidence that someone might describe as “whitecaps.”",
-      "E": "The cloud cover on Venus is often broken, allowing occasional glimpses of the planet’s surface."
+      "A": "Samuel wants to take three friends to the beach. His mother owns both a sedan and a convertible. The convertible holds four people so, although the sedan has a more powerful engine, if Samuel borrows a vehicle from his mother, he will borrow the convertible.",
+      "B": "If Anna wants to walk from her house to the office where she works, she must either go through the park or take the overpass across the railroad tracks. The park paths are muddy, and Anna does not like using the overpass, so she never walks to work.",
+      "C": "Rose can either take a two-week vacation in July or wait until October and take a three- week vacation. The trail she had planned to hike requires three weeks to complete but is closed by October, so if Rose takes a vacation, it will not be the one she had planned.",
+      "D": "Werdix, Inc., has offered Arno a choice between a job in sales and a job in research. Arno would like to work at Werdix but he would never take a job in sales when another job is available, so if he accepts one of these jobs, it will be the one in research.",
+      "E": "If Teresa does not fire her assistant, her staff will rebel and her department’s efficiency will decline. Losing her assistant would also reduce its efficiency, so, if no alternative solution can be found, Teresa’s department will become less efficient."
     },
     "correctAnswer": "D"
   },
@@ -372,14 +372,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "An economic downturn has recently affected the region of Krisville and nearby areas, and therefore many citizens have lost their jobs. Storeowners in Krisville expected that people would buy fewer goods and that sales in Krisville stores would decline. However, it is now reported that the use of credit cards in Krisville has dramatically increased. This would not occur if people were purchasing fewer goods, since the only way of paying for goods with a credit card is to purchase those goods. Therefore, it is likely that sales in Krisville stores have not declined.",
-    "questionStem": "The argument in the passage proceeds by doing which one of the following?",
+    "stimulus": "After the Second World War, the charter of the newly formed United Nations established an eleven- member Security Council and charged it with taking collective action in response to threats to world peace. The charter further provided that the five nations that were then the major powers would permanently have sole authority to cast vetoes. The reason given for this arrangement was that the burden of maintaining world peace would rest on the world’s major powers, and no nation should be required to assume the burden of enforcing a decision it found repugnant.",
+    "questionStem": "The reasoning given for the structure of the Security Council assumes that",
     "answerChoices": {
-      "A": "concluding that since an expected consequence of a supposed development did not occur, that development itself did not take place",
-      "B": "concluding that since only one of the two predictable consequences of a certain kind of behavior is observed to occur, this observed occurrence cannot, in the current situation, be a consequence of such behavior",
-      "C": "arguing that since people’s economic behavior is guided by economic self-interest, only misinformation or error will cause people to engage in economic behavior that harms them economically",
-      "D": "arguing that since two alternative developments exhaust all the plausible possibilities, one of those developments occurred and the other did not",
-      "E": "concluding that since the evidence concerning a supposed change is ambiguous, it is most likely that no change is actually taking place"
+      "A": "it does not make sense to provide for democracy among nations when nations themselves are not all democracies",
+      "B": "no nation that was not among the major powers at the end of the Second World War would become a major power",
+      "C": "nations would not eventually gravitate into large geographical blocs, each containing minor powers as well as at least one major power",
+      "D": "minor powers would not ally themselves with major powers to gain the protection of the veto exercised by major powers",
+      "E": "decisions reached by a majority of nations in response to threats to world peace would be biased in favor of one or more major powers"
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -397,14 +397,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "An economic downturn has recently affected the region of Krisville and nearby areas, and therefore many citizens have lost their jobs. Storeowners in Krisville expected that people would buy fewer goods and that sales in Krisville stores would decline. However, it is now reported that the use of credit cards in Krisville\nhas dramatically increased. This would not occur if people were purchasing fewer goods, since the only way of paying for goods with a credit card is to purchase those goods. Therefore, it is likely that sales in Krisville stores have not declined.",
-    "questionStem": "Which one of the following is an assumption on which the argument relies?",
+    "stimulus": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands, while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago). Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago. Nevertheless, the current amount of government funding for the preservation  of wetlands is inadequate and should be augmented.",
+    "questionStem": "Which one of the following, if true, most helps to reconcile the environmental scientist’s conclusion with the evidence cited above?",
     "answerChoices": {
-      "A": "If people in the region who continue to be employed have debts, they are not now paying them off at an accelerated rate.",
-      "B": "People in the region who continue to be employed and who have relatives who have lost their jobs commonly assist those relatives financially.",
-      "C": "If people in the region who have lost jobs get new jobs, the new jobs generally pay less well than the ones they lost.",
-      "D": "People in the region who continue to be employed are pessimistic about their prospects for increasing their incomes.",
-      "E": "There exist no statistics about sales of goods in the region as a whole."
+      "A": "The governmental agency responsible for administering wetland-preservation funds has been consistently mismanaged and run inefficiently over the past ten years.",
+      "B": "Over the past ten years, the salaries of scientists employed by the government to work on the preservation of wetlands have increased at a rate higher than the inflation rate.",
+      "C": "Research over the past ten years has enabled scientists today to identify wetlands in need of preservation well before the areas are at serious risk of destruction.",
+      "D": "More people today, scientists and nonscientists alike, are working to preserve all natural resources, including wetlands.",
+      "E": "Unlike today, funding for the preservation of wetlands was almost nonexistent ten years ago."
     },
     "correctAnswer": "E",
     "questionFeatures": [

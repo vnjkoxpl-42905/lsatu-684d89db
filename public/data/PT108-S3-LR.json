@@ -73,14 +73,14 @@
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "The four finalists in the city’s robotics competition are teams Helios, Ion, Kepler, and Lyra. The awards committee will award exactly two equal first prizes. However, Helios cannot share a prize with Lyra, and Kepler cannot share a prize with Ion.",
-    "questionStem": "Which one of the following must be true?",
+    "stimulus": "The average 40-year-old North American will have watched more than one million TV commercials in his or her lifetime. We may safely conclude, therefore, that the TV commercial has influenced North American habits of thought.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
     "answerChoices": {
-      "A": "Exactly one of Helios and Ion wins a first prize.",
-      "B": "Exactly one of Helios and Kepler wins a first prize.",
-      "C": "Helios and Kepler both win first prizes.",
-      "D": "Helios and Lyra both win first prizes.",
-      "E": "Ion and Lyra both win first prizes."
+      "A": "The habits of thought that people develop are largely determined by external influences.",
+      "B": "Anything people are exposed to in great quantity will influence their habits of thought.",
+      "C": "It is impossible to avoid or ignore television commercials.",
+      "D": "Some people find television commercials more interesting to watch than the programs themselves.",
+      "E": "Certain forms of communication to which people are subjected will affect their habits of thought."
     },
     "correctAnswer": "B"
   },
@@ -93,14 +93,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "The citizens of Maloria have been debating whether to rank candidates on their ballots, with first and second choices. The advocates of ranked-choice voting claim that this will lead to the election of the most broadly\nacceptable candidate. But this ignores the fact that voters’ second choices are determined in part by strategic considerations.",
-    "questionStem": "Which one of the following most logically completes the argument?",
+    "stimulus": "Researchers have developed a membrane that quickly removes the oxygen from a refrigerator, thereby killing bacteria and enabling food to be stored almost indefinitely. Since food need not be kept as cold to prevent spoilage, energy costs will be greatly reduced. Thus, over the long run, oxygen-removing refrigerators will prove far less expensive than current models.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it does not",
     "answerChoices": {
-      "A": "Therefore, the election of the most broadly acceptable candidate will not necessarily result from the adoption of ranked-choice voting.",
-      "B": "Therefore, ranked-choice voting will be adopted only if a majority of citizens support it.",
-      "C": "Therefore, strategic considerations play no role in determining voters’ first choices.",
-      "D": "Therefore, the most broadly acceptable candidate will be the one who is most likely to be ranked first by a majority of voters.",
-      "E": "Therefore, ranked-choice voting should be adopted only in those cases where there are more than two candidates."
+      "A": "address the expense of building or refitting a refrigerator with the new technology",
+      "B": "address the possibility of consumer discomfort with the new refrigerators",
+      "C": "explain the technology that enabled the oxygen-removing membrane to be developed",
+      "D": "take into account the effectiveness of current refrigerator technology in preventing food spoilage",
+      "E": "take into account the inconvenience caused by food spoilage in current refrigerators"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -134,14 +134,14 @@
     "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Psychologist: In our study, drivers who listened to audiobooks while driving were less likely to miss important traffic signals than those who did not. This shows that passive listening can help drivers maintain focus on the road by preventing their minds from wandering.",
-    "questionStem": "Which one of the following, if true, most strengthens the psychologist’s reasoning?",
+    "stimulus": "The existing works of ancient literature, science, and philosophy do not represent the most original work produced in ancient times. The most compelling evidence for this view is that the existing works frequently refer to other works that we no longer have.",
+    "questionStem": "Which one of the following statements, if added to the argument, most helps to justify its conclusion?",
     "answerChoices": {
-      "A": "Listening to audiobooks reduces the reaction time of drivers who are fatigued.",
-      "B": "The drivers who listened to audiobooks were already more experienced than the drivers who did not.",
-      "C": "The audiobooks used in the study were recorded with different narrators, some of whom were more engaging than others.",
-      "D": "Drivers who listened to talk radio were more likely to miss traffic signals than drivers who listened to audiobooks.",
-      "E": "The study included drivers who listened to audiobooks and music, and both groups had similar rates of missing traffic signals."
+      "A": "Works that contain frequent references to other works tend to be derivative.",
+      "B": "Many extant works have laudable things to say about the missing works.",
+      "C": "A surprisingly large number of ancient texts have been irretrievably lost.",
+      "D": "Subversive ideas tend to be suppressed whenever they are proposed.",
+      "E": "Most current ideas regarded as original were already proposed in ancient times."
     },
     "correctAnswer": "A"
   },
@@ -152,14 +152,14 @@
     "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Several high schools have implemented a policy of random locker checks to reduce the presence of contraband. Critics argue that this policy violates students’ privacy, but a survey of parents indicates that most parents support the policy. Since parents are responsible for their children’s upbringing, the policy is therefore justified.",
-    "questionStem": "Which one of the following most closely conforms to the principle illustrated above?",
+    "stimulus": "A metaphor is the application of a word or phrase to something to which it does not literally apply in order to emphasize or indicate a similarity between that to which it would ordinarily apply and that to which it is—nonliterally—being applied. Some extremists claim that all uses of language are metaphorical. But this cannot be so, for unless some uses of words are literal, there can be no nonliteral uses of any words.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
     "answerChoices": {
-      "A": "A neighborhood with numerous traffic accidents installs more stop signs, as most residents favor doing so.",
-      "B": "A university enacts a new attendance policy because most students request it.",
-      "C": "A workplace bans personal phone use because most customers want their calls answered quickly.",
-      "D": "A city enacts a curfew for minors because most parents want their children home earlier.",
-      "E": "A museum extends its hours because most visitors prefer to come in the evenings."
+      "A": "It is not the case that all uses of language are metaphorical.",
+      "B": "Either all uses of words are literal or all uses of words are metaphorical.",
+      "C": "Nonliteral meaning is possible only if some uses of words employ their literal meanings.",
+      "D": "Metaphors are nonliteral uses of language that can be used to suggest similarities between objects.",
+      "E": "The ordinary meanings of words must be fixed by convention if the similarities between objects are to be representable by language."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -174,14 +174,14 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Botanist: Some species of plants produce fruit with brightly colored skins, apparently to attract animals that will eat the fruit and disperse the seeds. But some of these fruits are bright even before the seeds have developed. Since animals cannot aid in dispersal before the seeds are viable, the color cannot be only for the benefit of the plant.",
-    "questionStem": "The reasoning in the botanist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "In a recent poll of chief executive officers (CEOs) of 125 large corporations, the overwhelming majority claimed that employee training and welfare is of the same high priority as customer satisfaction. So the popular belief that the top management of large corporations behaves indifferently to the needs and aspirations of employees is unfounded.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
-      "A": "confuses a condition that is necessary for a result to occur with a condition that is sufficient for that result",
-      "B": "presumes, without providing justification, that plants benefit when animals eat their fruit",
-      "C": "overlooks the possibility that a single trait can serve more than one function",
-      "D": "fails to consider that the color of fruit may change as the fruit ripens",
-      "E": "assumes, without warrant, that a trait’s current function must be identical to the function it had when it first evolved"
+      "A": "fails to define adequately the term “top management”",
+      "B": "presumes, without giving justification, that one is not indifferent to something that one considers a top priority",
+      "C": "presumes, without giving justification, that the CEOs’ priorities tend to be misplaced",
+      "D": "presumes, without giving justification, that the CEOs’ claims are reflected in actual practice",
+      "E": "makes a generalization based on an unrepresentative sample"
     },
     "correctAnswer": "D"
   },
@@ -218,14 +218,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Philologist: The recently discovered manuscript contains variations in spelling and grammar not found in other texts from the same era. Some scholars argue that this means the manuscript is a modern forgery. But inconsistent spelling and grammar can be found even in genuine documents from that period.",
-    "questionStem": "Which one of the following most accurately expresses the main conclusion of the philologist’s argument?",
+    "stimulus": "The everyday behavior of whales is particularly difficult to study because introducing novel stimuli, such as divers or submarines, into the whales’ environment causes whales to behave in unusual ways. Some biologists plan to train sea lions to carry video cameras on their backs and, on command, to swim along with whales. They argue that since whales are accustomed to there being sea lions nearby, using the sea lions to film the whales would allow biologists to study the everyday behavior of the whales.",
+    "questionStem": "Which one of the following is an assumption on which the biologists’ reasoning depends?",
     "answerChoices": {
-      "A": "The manuscript is not a modern forgery.",
-      "B": "Genuineness cannot be determined on the basis of spelling and grammar alone.",
-      "C": "Inconsistent spelling and grammar are common in manuscripts from the period in question.",
-      "D": "Some scholars’ standards for determining genuineness are inappropriate.",
-      "E": "The recently discovered manuscript is similar to other texts from the same era."
+      "A": "Whales will often react aggressively in the presence of divers and submarines although aggressive behavior is unusual for whales.",
+      "B": "The behavior of the sea lions under human command will be within the range of sea lion behavior to which the whales are accustomed.",
+      "C": "The trained sea lions will not be aware that they are carrying video cameras on their backs.",
+      "D": "Sea lions carrying video cameras will be able to film whales at a much closer range than divers can.",
+      "E": "Whales prefer the presence of sea lions to that of either divers or submarines."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -264,14 +264,14 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Eighteenth-century astronomers believed that comets were atmospheric phenomena because their apparent position against the background stars changed from night to night. Now we know that these changes are due to the comet’s motion relative to the earth and other planets, showing comets to be celestial bodies.",
-    "questionStem": "Which one of the following principles most helps to justify the reasoning in the argument?",
+    "stimulus": "Mall manager: By congregating in large groups near the stores in our mall, teenagers create an atmosphere in which many adult shoppers feel uncomfortable. As a result, the adults have begun to spend less time shopping than they have in the past. The mall’s goal in this situation is to prevent a significant loss in overall sales, so merchants should do their utmost to discourage teenagers from congregating near stores.\n\nMerchant: But the amount spent by teenagers who congregate near mall stores constitutes a significant percentage of the total amount spent in those stores.",
+    "questionStem": "The merchant’s response to the manager’s argument is most accurately described as",
     "answerChoices": {
-      "A": "The best explanation is the one that invokes the fewest assumptions.",
-      "B": "A hypothesis should be rejected if it conflicts with contemporary scientific consensus.",
-      "C": "Observations that are inconsistent with a hypothesis provide evidence against that hypothesis.",
-      "D": "If a hypothesis explains phenomena more accurately than competing hypotheses do, it should be preferred to those other hypotheses.",
-      "E": "A hypothesis should be accepted if it explains the phenomena more simply than competing hypotheses do."
+      "A": "disputing the truth of claims the manager offers as support for the recommendation",
+      "B": "giving information that pertains to the relation between the manager’s recommendation and the mall’s goal",
+      "C": "suggesting that the mall’s goal is an undesirable one",
+      "D": "contending that the manager’s recommendation is sound but for reasons other than those given by the manager",
+      "E": "using the information cited by the manager to make an additional recommendation that would help achieve the goal"
     },
     "correctAnswer": "B"
   },
@@ -377,14 +377,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "In a certain region, farmers have begun planting drought-resistant crops in response to climate change. At the same time, they have also begun adopting more efficient irrigation techniques. Yields in the region have increased in recent years. Therefore, the drought-resistant crops are responsible for the increase in yields.",
-    "questionStem": "Which one of the following, if true, most seriously\nundermines the reasoning?",
+    "stimulus": "Chelas and Stelma are required to leave their respective stations immediately to pursue any prisoner who attempts to escape from their sector. Furthermore, unless they are pursuing such a prisoner, Chelas and Stelma are forbidden to leave their stations until their replacements have arrived. On May 11 at 9 P.M., when Chelas and Stelma finished the four-hour shift in their sector and their replacements arrived, it was discovered that Chelas had violated these rules and Stelma had not.",
+    "questionStem": "If the statements above are true, each of the following could be true EXCEPT:",
     "answerChoices": {
-      "A": "Yields have increased in regions where farmers have not adopted drought-resistant crops but have adopted efficient irrigation techniques.",
-      "B": "The total acreage devoted to farming in the region has decreased in recent years.",
-      "C": "Drought-resistant crops have lower yields than non-drought-resistant crops under optimal conditions.",
-      "D": "The region experienced fewer droughts in recent years than in previous years.",
-      "E": "The cost of irrigation equipment has increased in recent years."
+      "A": "Chelas and Stelma were at their respective stations at 9 P.M.",
+      "B": "Stelma left her station before 9 P.M. but Chelas did not.",
+      "C": "Chelas left his station before 9 P.M. but Stelma did not.",
+      "D": "A prisoner attempted to escape from Chelas and Stelma’s sector at 7 P.M. and neither Chelas nor Stelma left his or her station before 9 P.M.",
+      "E": "A prisoner attempted to escape from Chelas and Stelma’s sector at 7 P.M. and both Chelas and Stelma left their stations before 9 P.M."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -401,14 +401,14 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Film critic: The success of a film is usually attributed to its director, but this is misguided. Many films are successful not because of their direction, but because of the performances of their actors, the quality of the screenplay, or the marketing. Therefore, critics who praise directors for successful films are often praising the wrong people.",
-    "questionStem": "The reasoning in the critic’s argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Faden: Most of our exercise machines are still in use after one year. A recent survey of our customers shows this.\n\nGreenwall: But many of those customers could easily be lying because they are too embarrassed to admit that they don’t exercise anymore.\n\nFaden: You have no way of showing that customers were lying. Your objection is absurd.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning above?",
     "answerChoices": {
-      "A": "fails to consider the possibility that a film can be successful for more than one reason",
-      "B": "overlooks the influence of the audience’s expectations on a film’s success",
-      "C": "presumes, without providing warrant, that directors have little influence on the success of a film",
-      "D": "does not provide any examples of successful films that were not well directed",
-      "E": "concludes that a practice is misguided without considering any arguments in its favor"
+      "A": "Greenwall takes for granted that many customers have stopped using the equipment but are too embarrassed to admit it.",
+      "B": "Greenwall presumes, without giving justification, that most people are dishonest about their personal habits.",
+      "C": "Faden presumes, without providing justification, that the more conclusive the evidence is for a claim, the less believable the claim becomes.",
+      "D": "Faden presumes, without providing justification, that the evidence for a claim has not been undermined unless that evidence has been proven false.",
+      "E": "Greenwall ignores the possibility that some people stopped using the equipment but were not embarrassed about it"
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -426,14 +426,14 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Astronomer: Some newly discovered planets orbit very close to their stars, completing an orbit in just a few days. This proximity means that one side of the planet always faces the star. Therefore, these planets must be uninhabitable, since the side facing the star would be too hot for life, and the other side would be too cold.",
-    "questionStem": "Which one of the following, if true, most weakens the astronomer’s argument?",
+    "stimulus": "Sarah: Reporters, by allotting time to some events rather than others, are exercising their judgment as to what is newsworthy and what is not. In other words, they always interpret the news.\n\nRamon: Reporters should never interpret the news. Once they deem a story to be newsworthy, they are obliged to relay the facts to me untainted.",
+    "questionStem": "Sarah and Ramon’s remarks provide the most support for holding that they disagree about the truth of which one of the following statements?",
     "answerChoices": {
-      "A": "Some planets that are far from their stars are also uninhabitable.",
-      "B": "Some planets with short orbital periods have thick atmospheres that redistribute heat around the planet.",
-      "C": "Planets with short orbital periods are unlikely to have moons.",
-      "D": "The presence of liquid water is essential for life.",
-      "E": "Some planets orbit stars that are much cooler than our sun."
+      "A": "Reporters actually do interpret the news every time they report it.",
+      "B": "Reporters should exercise their own judgment as to which events are newsworthy.",
+      "C": "Reporters’ primary responsibility is to see that people are kept informed of the facts.",
+      "D": "Reporters should not allot time to reporting some events rather than others.",
+      "E": "Reporting on certain events rather than others qualifies as interpreting the news."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -450,14 +450,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Literary critic: The works of author X are often praised for their originality. But originality is not a virtue in itself. Many original works are bad, and many unoriginal works are good. Therefore, praising author X’s works for their originality alone is mistaken.",
-    "questionStem": "Which one of the following most accurately\nexpresses the main conclusion of the critic’s argument?",
+    "stimulus": "Advertisement for a lactase supplement: Lactase, an enzyme produced by the body, aids in the digestion of lactose, a natural sugar found in dairy foods. Many subjects in an experiment who drank a liter of milk on an empty stomach showed signs of lactose intolerance—difficulty in digesting dairy products because of insufficient lactase. Thus, extrapolating from the number of subjects adversely affected, at least 50 million people in North America alone should take lactase supplements.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
-      "A": "Originality is not a virtue in itself.",
-      "B": "Many original works are bad.",
-      "C": "Praising author X’s works for their originality alone is mistaken.",
-      "D": "Many unoriginal works are good.",
-      "E": "The works of author X are not original."
+      "A": "Eating solid food when drinking milk can decrease the amount of lactase produced by the body.",
+      "B": "Most people who consume dairy products consume less lactose at each meal than the amount found in a liter of milk.",
+      "C": "The production of lactase by the human body increases with age.",
+      "D": "Lactose intolerance can interfere with proper nutrition.",
+      "E": "Some dairy foods, such as cheese, contain a form of lactose more difficult to digest than that found in milk."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -474,14 +474,14 @@
     "questionType": "Principle-Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Economist: Some argue that a country should always protect its domestic industries from foreign competition. But if every country did this, global trade would shrink, harming all economies. Therefore, countries should not always protect domestic industries from foreign competition.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the economist’s reasoning?",
+    "stimulus": "Jim: I hear that the company is considering giving Fred and Dorothy 25 percent raises. That would make their salaries higher than mine. Since I have worked here longer than they have, it would be unfair to raise their salaries unless mine is raised to at least what theirs will be.\n\nTasha: Thirty-five employees have been here the same length of time you have and earn the same salary you earn. It would be unfair to raise your salary without raising theirs.",
+    "questionStem": "Which one of the following principles most helps to justify both parties’ statements?",
     "answerChoices": {
-      "A": "A policy should not be adopted unless there is evidence that it will benefit the country adopting it.",
-      "B": "If everyone were to adopt a certain policy and the result would be harmful, then that policy should not be adopted.",
-      "C": "A policy that benefits one country may harm another country.",
-      "D": "Policies should be adopted only when they benefit all countries equally.",
-      "E": "A policy should be adopted only if it increases global trade."
+      "A": "In order to be fair, a business must pay identical salaries to employees with identical duties.",
+      "B": "In order to be fair, a business must pay an employee a salary commensurate with his or her experience in the field.",
+      "C": "In order to be fair, a business must always pay one employee more than another if the first employee has worked for the company longer than the second has.",
+      "D": "In order to be fair, a business must never pay one employee more than another unless the first employee has worked for the company longer than the second has.",
+      "E": "In order to be fair, a business must always pay employees a salary commensurate with the amount of time they work every day."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -498,14 +498,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Nutritionist: People who eat a diet high in refined sugars are more likely to develop certain chronic conditions. However, my patients who replaced refined sugars with whole fruits did not experience these negative effects. Therefore, it is not sugar itself, but the refining process, that leads to these health problems.",
-    "questionStem": "Which one of the following, if true, most strengthens the nutritionist’s argument?",
+    "stimulus": "Commentator: A political constitution that provides the framework for the laws of a nation must be interpreted to apply to new situations not envisioned by its authors. Although these interpretations express the moral and political beliefs of the interpreters, they are usually portrayed as embodying the intentions of the authors. This fiction is vital because without it the illusion, so necessary for political stability, that laws are the bequest of a long tradition rather than the preferences of contemporary politicians would vanish.",
+    "questionStem": "Which one of the following is most strongly supported by the commentator’s statements, if they are true?",
     "answerChoices": {
-      "A": "Whole fruits contain fiber and other nutrients that refined sugars lack.",
-      "B": "Some people who eat a diet low in sugar still develop chronic conditions.",
-      "C": "People who eat whole fruits tend to exercise more than those who eat refined sugars.",
-      "D": "Refined sugars are often added to processed foods that also contain unhealthy fats.",
-      "E": "The patients who replaced refined sugars with whole fruits also reduced their overall calorie intake."
+      "A": "If the people of a nation do not believe that the laws under which they live express the intentions of their political leaders, that nation will become more politically unstable.",
+      "B": "Political instability will increase if the people of a nation cease to believe that their constitution is being interpreted consistently with the intentions of its authors.",
+      "C": "Political instability will ensue if people come to believe there is a divergence between the beliefs of the authors of their constitution and those of their present political leaders.",
+      "D": "A written constitution preserves the illusion that laws are the bequest of a long tradition rather than the creations of modern politicians.",
+      "E": "The perceived lack of a long legal tradition in a nation makes the political stability of that nation dependent upon the fiction that its present political leaders share the intentions of the authors of the constitution of that nation."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -519,14 +519,14 @@
     "questionType": "Parallel",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Philosopher: Moral rules that prohibit lying are sometimes criticized for being too rigid. But if lying were permitted whenever one judged it to be expedient, trust would quickly erode. Therefore, a strong presumption against lying is justified.",
-    "questionStem": "Which one of the following most logically completes the argument?",
+    "stimulus": "Only if a family manages its finances wisely will it obtain fiscal security. But without realistic projections of financial obligations, a functional budget cannot be devised. So, if either fiscal security is to be obtained or a workable budget devised, finances must be managed wisely or financial obligations must be projected realistically.",
+    "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to that in the argument above?",
     "answerChoices": {
-      "A": "Thus, a moral rule that prohibits lying in all cases is too rigid to be justified.",
-      "B": "Thus, moral rules that prohibit lying should be abandoned.",
-      "C": "Thus, it is sometimes wrong not to lie.",
-      "D": "Thus, a strong presumption against lying is necessary to maintain trust.",
-      "E": "Thus, lying is always wrong."
+      "A": "Without continued use of pesticides it is not possible to grow enough food for the world’s people. But only when researchers develop pesticides harmless to humans will persistent health problems be reduced. Thus, pesticide use must continue or pesticides harmless to humans must be developed if enough food is to be produced or persistent health problems are to be reduced.",
+      "B": "Reasonably healthy people who wish to lose weight must alter their balance of caloric intake and caloric burn off. But without benefit of medical supervision, drastic changes in diet or exercise patterns would be harmful. So, one who wishes to lose weight but does not want to risk health problems should seek medical supervision before beginning a diet or exercise program.",
+      "C": "Many popular, low-maintenance houseplants are available. Yet some of these plants, because they are toxic, are unsuitable for homes where pets are kept indoors. As a result, pet owners should either select nontoxic plants or keep the plants out of a pet’s reach if they want low-maintenance houseplants or cannot keep their pets outside.",
+      "D": "Only employees who work diligently will be retained in this company until they are eligible for retirement. Also, we can retain only those employees who fit the new organizational structure of our proposed redesign process. So, if this redesign process is carried out, any employee who seeks continuing employment here must work diligently and fit the new organizational structure.",
+      "E": "A successful charity drive requires detailed planning. Volunteers must be recruited and trained, and equipment and facilities must be prepared months before the drive is to begin. Thus, if a group is organizing a charity drive, the group must formulate a detailed plan well ahead of time or it can expect failure."
     },
     "correctAnswer": "A"
   },

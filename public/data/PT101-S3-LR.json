@@ -392,14 +392,14 @@
       "Causation"
     ],
     "questionDifficulty": 5,
-    "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
+    "stimulus": "The widespread staff reductions in a certain region’s economy are said to be causing people who still have their jobs to cut back on new purchases as though they, too, had become economically distressed. Clearly, however, actual spending by such people is undiminished, because there has been no unusual increase in the amount of money held by those people in savings account.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
     "answerChoices": {
-      "A": "people in the region who continue to be employed are not now paying off their debts at an accelerated rate",
-      "B": "people in the region who continue to be employed are pessimistic about their prospects for continued employment",
-      "C": "people in the region who have lost their jobs had no savings to draw on",
-      "D": "retail sales depend on people’s expectations as well as on their current resources",
-      "E": "people in the region who continue to be employed have debts they are paying off at an accelerated rate"
+      "A": "If people in the region who continue to be employed have debts, they are not now paying them off at an accelerated rate.",
+      "B": "People in the region who continue to be employed and who have relatives who have lost their jobs commonly assist those relatives financially.",
+      "C": "If people in the region who have lost jobs get new jobs, the new jobs generally pay less well than the ones they lost.",
+      "D": "People in the region who continue to be employed are pessimistic about their prospects for increasing their incomes.",
+      "E": "There exist no statistics about sales of goods in the region as a whole."
     },
     "correctAnswer": "A",
     "questionFeatures": [

@@ -348,8 +348,8 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Editorialist: Society is obliged to bestow the privileges of adulthood upon its members once they are mature enough to accept the corresponding responsibilities. But science has established that physiological development is completed in most persons by age seventeen. Since this maturing process has been completed by most seventeenyear-olds, there is no reason not to grant these citizens all of the privileges of adulthood.",
-    "questionStem": "The editorialist's argument is most vulnerable to criticism on the ground that it",
+    "stimulus": "Editorialist: Society is obligated to bestow the privileges of adulthood upon its members once they are mature enough to accept the corresponding responsibilities. But science has established that physiological development is completed in most persons by age seventeen. Since this maturing process has been completed by most seventeen-year-olds, there is no reason not to grant these citizens all of the privileges of adulthood.",
+    "questionStem": "The editorialist’s argument is most vulnerable to criticism on the ground that it",
     "answerChoices": {
       "A": "assumes what it is trying to prove",
       "B": "too hastily reaches a general conclusion on the basis of a few examples",
@@ -423,14 +423,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Some people believe that witnessing violence in movies will discharge aggressive energy. Does watching someone else eat fill one's own stomach?",
-    "questionStem": "In which one of the following does the reasoning most closely parallel that employed in the passage?",
+    "stimulus": "Each child in a group of young children read aloud both a short paragraph and a list of randomly ordered words from the paragraph. The more experienced readers among them made fewer pronunciation errors in whichever task they performed second, whether it was the list or the paragraph. The order in which the two tasks were performed, however, had no effect on the performance of beginning readers, who always made fewer pronunciation errors when reading the paragraph than when reading the list.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the order in which the tasks were performed was not significant for the beginning readers?",
     "answerChoices": {
-      "A": "Some people think appropriating supplies at work for their own personal use is morally wrong. Isn't shoplifting morally wrong?",
-      "B": "Some people think nationalism is defensible. Hasn't nationalism been the excuse for committing abominable crimes?",
-      "C": "Some people think that boxing is fixed just because wrestling usually is. Are the two sports managed by the same sort of people?",
-      "D": "Some people think that economists can control inflation. Can meteorologists make the sun shine?",
-      "E": "Some people think workaholics are compensating for a lack of interpersonal skills. However, aren't most doctors workaholics?"
+      "A": "Because several words were used more than once in the paragraph but only once in the list, the list was shorter than the paragraph.",
+      "B": "In reading the paragraph, the more experienced readers were better at using context to guess at difficult words than were the beginning readers.",
+      "C": "The more experienced readers sounded out difficult words, while the beginning readers relied solely on context to guess at difficult words.",
+      "D": "Both tasks used the same words, so that the words the children read in whichever task was performed first would be recognized in the second task.",
+      "E": "The beginning readers made more pronunciation errors than the more experienced readers did in reading both the paragraph and the list."
     },
     "correctAnswer": "C"
   },
@@ -486,14 +486,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "A group of citizens opposes developing a nearby abandoned railroad grade into a hiking trail. Its members argue that trail users will likely litter the area with food wrappers and other debris and that the waste will attract animals that will damage flora and fauna. However, this objection is groundless. Most trail users have great concern for the environment and are careful not to litter.",
-    "questionStem": "The argument depends on which one of the following assumptions?",
+    "stimulus": "Attorney for Ziegler: My client continued to do consulting work between the time of his arrest for attempted murder and the start of this trial. But I contend that Ziegler was insane at the time that he fired the shot. This is the only reasonable conclusion to draw from the fact that the accusers have submitted no evidence that he was sane at the time he pulled the trigger, only that he was sane some time after he did so.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of Ziegler’s attorney?",
     "answerChoices": {
-      "A": "Animals are not attracted to certain kinds of trash, such as food wrappers and other debris.",
-      "B": "If trail users do litter near the trail, then the likely environmental damage will be negligible.",
-      "C": "There is a more reasonable basis for objecting to developing the abandoned railroad grade into a hiking trail.",
-      "D": "Concern for the environment is the primary motive for most trail users not to litter.",
-      "E": "Most trail users are representative of trail users in general with regard to concern for the environment."
+      "A": "It presumes that being a well-educated professional is relevant to being guilty or innocent.",
+      "B": "It concludes on the basis of evidence against Ziegler’s being sane that there is a lack of evidence for Ziegler’s being sane.",
+      "C": "It fails to consider that Ziegler might have been insane when he worked as a consultant.",
+      "D": "It presumes that whether one is sane is relevant to whether one is morally responsible for one’s actions.",
+      "E": "It fails to consider the possibility that Ziegler’s being sane after the shooting is an indication that he was sane at the time of the shooting."
     },
     "correctAnswer": "E"
   },
@@ -533,14 +533,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "The population of elephant seals on the Farallon Islands is now three times greater than it was in 1960. This is due in large part to a reduction in the use of pesticides, since pesticides were weakening the shells of the sea bird eggs that make up a large part of the elephant seals' diet.",
-    "questionStem": "Which one of the following can be properly inferred from the information above?",
+    "stimulus": "In a certain municipality, a judge overturned a suspect’s conviction for possession of an illegal weapon. The suspect had fled upon seeing police and subsequently discarded the illegal weapon after the police gave chase. The judge reasoned as follows: the only cause for the police giving chase was the suspect’s flight; by itself, flight from the police does not create a reasonable suspicion of a criminal act; evidence collected during an illegal chase is inadmissible; therefore, the evidence in this case was inadmissible.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the judge’s decision that the evidence was inadmissible?",
     "answerChoices": {
-      "A": "The eggshells of seabird eggs were thicker in 1960 than they are now.",
-      "B": "The elephant seals were eating eggs with weakened shells in 1960.",
-      "C": "Before 1960, pesticides were more widely used than they are now.",
-      "D": "The diet of elephant seals consists primarily of seabird eggs.",
-      "E": "Elephant seals do not themselves ingest pesticides."
+      "A": "Flight from the police could create a reasonable suspicion of a criminal act as long as other significant factors are involved.",
+      "B": "People can legally flee from the police only when those people are not involved in a criminal act at the time.",
+      "C": "Police can legally give chase to a person only when the person’s actions have created a reasonable suspicion of a criminal act.",
+      "D": "Flight from the police should not itself be considered a criminal act.",
+      "E": "In all cases in which a person’s actions have created a reasonable suspicion of a criminal act, police can legally give chase to that person."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -581,14 +581,14 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Market analyst: According to my analysis, the attempt to regulate Playtime's recent fare increase will fail. If Playtime does not get the increase, it will be unable to meet its expenses and so will discontinue service. People in the community will be angered by the loss of service, and those in the government responsible for regulating fares will be blamed. Once the public understands this, no one will support the opposition to Playtime's fare hike.",
-    "questionStem": "Which one of the following, if assumed, allows the market analyst's conclusion to be properly drawn?",
+    "stimulus": "Monica: The sculpture commissioned for our town plaza has been scorned by the public ever since it went up. But since the people in our town do not know very much about contemporary art, the unpopularity of the work says nothing about its artistic merit and thus gives no reason for removing it.\n\nHector: You may be right about what the sculpture’s popularity means about its artistic merit. However, a work of art that was commissioned for a public space ought to benefit the public, and popular opinion is ultimately the only way of determining what the public feels is to its benefit. Thus, if public opinion of this sculpture is what you say, then it certainly ought to be removed.",
+    "questionStem": "The argument Hector makes in responding to Monica depends on the assumption that",
     "answerChoices": {
-      "A": "The government officials who are responsible for regulating the fares charged by companies like Playtime desire to continue holding their positions.",
-      "B": "Those who stand to be blamed for Playtime's going out of business will support whatever course of action would prevent that result.",
-      "C": "Playtime's expense reports have always been accurate in the past.",
-      "D": "Playtime operates with a narrow profit margin.",
-      "E": "Preventing Playtime from going out of business depends on not opposing Playtime's fare increase."
+      "A": "no matter what the public’s opinion is on an issue affecting the public good, that public opinion ought to be acted on, even though the opinion may not be a knowledgeable one",
+      "B": "Monica’s assessment of the public’s opinion of the sculpture is accurate",
+      "C": "if the sculpture had artistic merit, then even a public that was not knowledgeable about modern art would not scorn the sculpture",
+      "D": "works of art commissioned for public spaces ought not to be expected to have artistic merit",
+      "E": "if the public feels that it does not benefit from the sculpture, this shows that the public does not in fact benefit from the sculpture"
     },
     "correctAnswer": "E",
     "questionFeatures": [

@@ -162,14 +162,14 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "The following passage is used for Section 1, questions 6 through 7.\nHospital auditor: The Rodríguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
+    "stimulus": "Hospital auditor: The Rodriguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\n\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
     "questionStem": "The clinic administrator responds to the hospital auditor by doing which one of the following?",
     "answerChoices": {
-      "A": "demonstrating that the hospital auditor’s conclusion, though broadly correct, stands in need of a minor qualification",
-      "B": "showing that the hospital auditor’s argument fails to separate what is the case from what ought to be the case",
-      "C": "reminding the hospital auditor that, in the case at issue, being told what to do is tantamount to being told how to do it",
-      "D": "arguing that, in assessing the severity of a violation, the reasoning motivating the violation needs to be considered",
-      "E": "reinterpreting a key phrase in the hospital auditor’s argument so as to undermine an assumption underlying that argument"
+      "A": "Demonstrating that the hospital auditor’s conclusion, though broadly correct, stands in need of a minor qualification",
+      "B": "Showing that the hospital auditor’s argument fails to separate what is the case from what ought to be the case",
+      "C": "Reminding the hospital auditor that, in the case at issue, being told what to do is tantamount to being told how to do it",
+      "D": "Arguing that, in assessing the severity of a violation, the reasoning motivating the violation needs to be considered",
+      "E": "Reinterpreting a key phrase in the hospital auditor’s argument so as to undermine an assumption underlying that argument"
     },
     "correctAnswer": "E",
     "questionFeatures": [

@@ -24,7 +24,7 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Raymond Burr played the role of lawyer Perry Mason on television. Burr’s death in 1993 prompted a prominent lawyer to say “Although not a lawyer, Mr. Burr strove for such authenticity that we feel as if we lost one of our own.” This comment from a prestigious attorney provides appalling evidence that, in the face of television, even some legal professionals are losing their ability to distinguish fiction from reality.",
+    "stimulus": "Raymond Burr played the role of Perry Mason on television. Burr’s death in 1993 prompted a prominent lawyer to say, “Although not a lawyer, Mr. Burr strove for such authenticity that we feel as if we lost one of our own.” This comment from a prestigious attorney provides appalling evidence that, in the face of television, even some legal professionals are losing their ability to distinguish fiction from reality.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
     "answerChoices": {
       "A": "takes the views of one lawyer to represent the views of all lawyers",
@@ -66,7 +66,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "For next year, the Chefs’ Union has requested a 10 percent salary increase for each of its members, whereas the Hotel Managers’ Union has requested only an 8 percent salary increase for each of its members. These facts demonstrate that the average dollar amount of the raises that the Chefs’ Union has requested for next year is greater than that of the raises requested by the Hotel Managers’ Union.",
+    "stimulus": "For the next year, the Chefs’ Union has requested a 10 percent salary increase for each of its members, whereas the Hotel Managers’ Union has requested only an 8 percent salary increase for each of its members. These facts demonstrate that the average dollar amount of the raises that the Chefs’ Union has requested for next year is greater than that of the raises requested by the Hotel Managers’ Union.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
     "answerChoices": {
       "A": "The Chefs’ Union has many more members than does the Hotel Managers’ Union.",
@@ -394,7 +394,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "If there are any inspired musical performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots.",
+    "stimulus": "If there are any inspired performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots.",
     "questionStem": "If all of the statements above are true, which one of the following must also be true?",
     "answerChoices": {
       "A": "If there are no sophisticated listeners in the audience, then there will be no inspired musical performances in the concert.",
