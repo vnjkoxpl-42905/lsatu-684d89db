@@ -44,6 +44,29 @@ describe("StatementPanel renders authored prompt structure", () => {
     expect(within(chip as HTMLElement).getByText(/Rung 4/)).toBeTruthy();
   });
 
+  it("stands down when the Activity's world already shows the prompt", () => {
+    // The world fills the left column with the item as written, so drawing it
+    // again here put a Callback passage on screen twice, side by side.
+    const item = itemFrom("spot-the-callback", 4);
+    const { container } = render(
+      <StatementPanel item={item} showQuestionType={false} showPrompt={false} />,
+    );
+    expect(container.textContent).toBe("");
+  });
+
+  it("keeps the question-type chip even when the world has the prompt", () => {
+    // The chip appears only after a first attempt, and it is not a duplicate of
+    // anything the world draws, so it survives. It comes without the card,
+    // which on its own would read as a panel that failed to load.
+    const item = itemFrom("spot-the-relationship", 48);
+    const { container } = render(
+      <StatementPanel item={item} showQuestionType showPrompt={false} />,
+    );
+    expect(within(container).getByText(/Rung 4/)).toBeTruthy();
+    expect(container.textContent).not.toContain(item.prompt);
+    expect(container.querySelector(".ac-display")).toBeNull();
+  });
+
   it("renders every seeded item without throwing or leaking a marker", () => {
     for (const activity of SEED_ACTIVITIES) {
       for (const item of activity.items) {

@@ -106,10 +106,12 @@ import {
 import { PolarityEntrance } from "@/features/activity-centre/worlds/polarity/PolarityEntrance";
 import { Assay } from "@/features/activity-centre/worlds/polarity/wings/Assay";
 import { buildAssay } from "@/features/activity-centre/worlds/polarity/wings/rounds";
-import { PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
+import { NEGATION_ITEMS, PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
 import "@/features/activity-centre/activity-centre.css";
 import { ActivityIntro } from "@/features/activity-centre/components/ActivityIntro";
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
+import { ActivityQuestionStack } from "@/features/activity-centre/components/ActivityQuestionStack";
+import { worldForTitle } from "@/features/activity-centre/worlds/registry";
 import { librarySortIndex } from "@/features/activity-centre/content";
 import "@/features/activity-centre/activities-home.css";
 
@@ -129,6 +131,7 @@ import "@/features/activity-centre/activities-home.css";
 const WORLDS = [
   { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
+  { key: "shell", label: "Runner shell" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
   { key: "press", label: "The Press" },
@@ -195,6 +198,7 @@ export default function ActivityLab() {
 
       {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
+      {world === "shell" ? <ShellPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
       {world === "press" ? <PressPanel /> : null}
@@ -212,12 +216,40 @@ export default function ActivityLab() {
  * ------------------------------------------------------------------ */
 
 /**
+ * The eight Activities a student can actually be assigned.
+ *
+ * SEED_ACTIVITIES is only seven: Negation Station predates the content pipeline
+ * and is deliberately never re-seeded, so it has no file in content/. That is
+ * correct for the pipeline and wrong for the lab, which was left unable to draw
+ * the one Activity every student meets first -- its card art and its running
+ * shell had never been looked at once. Its items come from the world's own
+ * verbatim extract of the seed migration; the rest of the row is that same
+ * migration's copy, kept here only so the lab can render it.
+ */
+const NEGATION_STATION_LAB_ROW = {
+  slug: "negation-station",
+  title: "Negation Station",
+  subtitle: "Write the weakest statement that contradicts the original",
+  item_format: "free-text" as const,
+  instructions: {
+    // No `coach`: Negation Station is the one Activity that relies on the edge
+    // function's default rubric, which is its own. See the pipeline README.
+    tagline: "Practice the Negation Test using the weakest statement that contradicts the original.",
+    answer_label: "Your negation",
+    answer_placeholder: "Write the weakest statement that contradicts the original…",
+  },
+  items: NEGATION_ITEMS,
+};
+
+const LAB_ACTIVITIES = [...SEED_ACTIVITIES, NEGATION_STATION_LAB_ROW as (typeof SEED_ACTIVITIES)[number]];
+
+/**
  * The list is behind auth and a feature flag like everything else here, so its
  * layout could not be looked at while building. Rendered from the seed content
  * in the same teaching order the page sorts by.
  */
 function ListPanel() {
-  const rows = [...SEED_ACTIVITIES]
+  const rows = [...LAB_ACTIVITIES]
     .sort((a, b) => librarySortIndex(a.slug) - librarySortIndex(b.slug))
     .map((a, i) => ({
       id: a.slug,
@@ -241,6 +273,59 @@ function ListPanel() {
           {rows.map((a, i) => (
             <ActivityCard key={a.id} assignment={a as never} position={i + 1} onOpen={() => {}} />
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The runner shell (the split view a student works inside)
+ * ------------------------------------------------------------------ */
+
+/**
+ * The running screen is the last surface auth keeps invisible: the world fills
+ * the left column and the answer column stands on the world's own ground via
+ * its `data-world` shell. Composed here from the same pieces the real runner
+ * mounts (world stage + ActivityQuestionStack) so the per-world shell can be
+ * seen without a login. Answering is inert: the Coach is not judged here.
+ */
+function ShellPanel() {
+  const [slug, setSlug] = useState<string>(LAB_ACTIVITIES[0].slug);
+  const activity = LAB_ACTIVITIES.find((a) => a.slug === slug) ?? LAB_ACTIVITIES[0];
+  const world = worldForTitle(activity.title);
+  const stage = world?.render({ item: activity.items[0], answered: false });
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border bg-card px-6 py-3">
+        <Tabs
+          options={LAB_ACTIVITIES.map((a) => a.slug)}
+          value={slug}
+          onChange={setSlug}
+          label="Shell"
+        />
+      </div>
+
+      <div className="activity-centre" data-world={world?.slug}>
+        <div className="grid min-h-[720px] grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
+          <aside className="relative flex min-h-[560px] flex-col">
+            <div className="min-h-0 flex-1">{stage}</div>
+          </aside>
+          <main className="bg-[hsl(var(--aw-page,var(--background)))]">
+            <ActivityQuestionStack
+              items={activity.items}
+              format={activity.item_format}
+              coach={activity.instructions?.coach}
+              answerLabel={activity.instructions?.answer_label}
+              answerPlaceholder={activity.instructions?.answer_placeholder}
+              promptInWorld={Boolean(stage && world?.carriesPrompt)}
+              activeIndex={0}
+              onResolved={() => {}}
+              onRecord={async () => {}}
+              onNext={() => {}}
+            />
+          </main>
         </div>
       </div>
     </div>
@@ -272,7 +357,8 @@ function IntroPanel() {
           label="Activity"
         />
       </div>
-      <div className="act-home">
+      {/* Mirrors the runner's intro wrapper, which carries the same attribute. */}
+      <div className="act-home" data-world={worldForTitle(a.title)?.slug}>
         <ActivityIntro
           key={a.slug}
           title={a.title}

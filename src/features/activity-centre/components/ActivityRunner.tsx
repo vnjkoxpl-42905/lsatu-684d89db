@@ -50,7 +50,10 @@ export interface ActivityRunnerProps {
 }
 
 export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
-  const params = useParams<{ assignmentId: string }>();
+  const params = useParams<{ assignmentId: string; activityId: string }>();
+  // The routed preview names an ACTIVITY, not an assignment: it runs off the
+  // definition and no row exists to name. Everything else names an assignment.
+  const previewActivityId = preview ? params.activityId : undefined;
   const assignmentId = assignmentIdProp ?? params.assignmentId;
   const navigate = useNavigate();
   // Only the routed runner owns the whole viewport and therefore needs its own
@@ -68,7 +71,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
   const handleLeave = routed ? () => navigate("/activities") : undefined;
   const { user } = useAuth();
-  const { assignment, loading, error } = useStudentActivity(assignmentId);
+  const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [index, setIndex] = useState(0);
@@ -241,7 +244,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
   if (phase === "intro") {
     return (
-      <div className="activity-centre act-home">
+      <div className="activity-centre act-home" data-world={world?.slug}>
         <ActivityIntro
           title={assignment.title}
           subtitle={assignment.subtitle}
@@ -255,7 +258,10 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
   if (phase === "done") {
     return (
-      <div className="activity-centre min-h-screen px-4 py-8 md:px-8 md:py-12">
+      <div
+        className="activity-centre min-h-screen bg-[hsl(var(--aw-page,var(--background)))] px-4 py-8 md:px-8 md:py-12"
+        data-world={world?.slug}
+      >
         <div className="mx-auto max-w-5xl">
           {handleLeave && (
             <div className="mb-6">
@@ -281,14 +287,14 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   if (world && !entered) {
     const Entrance = world.Entrance;
     return (
-      <div className="activity-centre min-h-screen">
+      <div className="activity-centre min-h-screen" data-world={world.slug}>
         <Entrance onDone={() => setEntered(true)} title={assignment.title} />
       </div>
     );
   }
 
   return (
-    <div className="activity-centre min-h-screen">
+    <div className="activity-centre min-h-screen" data-world={world?.slug}>
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
         {worldStage ? (
           /* The world carries the item itself, so the rail's job here is only
@@ -298,7 +304,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           <aside className="relative flex min-h-[560px] flex-col md:sticky md:top-0 md:h-screen">
             <div className="flex items-center justify-between gap-3 px-5 pt-5 md:px-6">
               {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
-              <span className="text-[11px] font-semibold tabular-nums tracking-wide text-muted-foreground">
+              <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
                 {index + 1} / {items.length}
               </span>
             </div>
@@ -312,13 +318,16 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           onExit={handleBackToIntro}
         />
         )}
-        <main className="min-h-screen bg-[hsl(var(--background))]">
+        {/* The answer column stands on the world's own ground; the work cards
+            inside keep their light reading surface. */}
+        <main className="min-h-screen bg-[hsl(var(--aw-page,var(--background)))]">
           <ActivityQuestionStack
             items={items}
             format={assignment.item_format}
             coach={assignment.instructions?.coach}
             answerLabel={assignment.instructions?.answer_label}
             answerPlaceholder={assignment.instructions?.answer_placeholder}
+            promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             activeIndex={index}
             onResolved={handleResolved}
             onRecord={handleRecord}

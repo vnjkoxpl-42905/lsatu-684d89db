@@ -1,5 +1,6 @@
 import type { ComponentType, ReactElement } from "react";
 import type { ActivityItem } from "../api/types";
+import "./world-shells.css";
 
 import { AtelierEntrance } from "./atelier/AtelierEntrance";
 import { AtelierStage } from "./atelier/AtelierStage";
@@ -81,6 +82,20 @@ export interface WorldBinding {
    * accent only says which world a card leads into.
    */
   accent: string;
+  /**
+   * Whether this world shows the item's text as written.
+   *
+   * Six of the eight do: the plate, the field note, the statement card, the
+   * bed and the woven cards all carry the prompt as written, so the answer
+   * column repeating it puts the same words on screen twice, side by side. At
+   * passage length that is two full paragraphs read twice.
+   *
+   * The Atelier and the Chamber do not: they take the argument apart, so the
+   * panes and the claim cards are a reading of the prompt rather than the
+   * prompt. The student still needs the original sentence to answer, and it
+   * stays in the answer column for those two.
+   */
+  carriesPrompt: boolean;
   Entrance: ComponentType<{ onDone: () => void; title?: string }>;
   render: (args: WorldRenderArgs) => ReactElement | null;
 }
@@ -90,7 +105,8 @@ const WORLDS: WorldBinding[] = [
     slug: "negation-station",
     label: "The Polarity Chamber",
     scope: "a statement, negated",
-    accent: "280 32% 50%",
+    accent: "275 70% 58%",
+    carriesPrompt: true,
     Entrance: PolarityEntrance,
     render: ({ item, response, answered }) => {
       const plate = parsePlate(item);
@@ -103,7 +119,8 @@ const WORLDS: WorldBinding[] = [
     slug: "vocab-rehab",
     label: "The Specimen Lab",
     scope: "a word",
-    accent: "185 42% 36%",
+    accent: "165 38% 34%",
+    carriesPrompt: true,
     Entrance: SpecimenLabEntrance,
     render: ({ item, response, answered }) => {
       const specimen = parseSpecimen(item);
@@ -118,7 +135,8 @@ const WORLDS: WorldBinding[] = [
     slug: "spot-the-relationship",
     label: "The Signal Observatory",
     scope: "a sentence",
-    accent: "232 38% 52%",
+    accent: "235 48% 56%",
+    carriesPrompt: true,
     Entrance: ObservatoryEntrance,
     render: ({ item, response, answered }) => {
       const signal = parseSignal(item);
@@ -131,7 +149,8 @@ const WORLDS: WorldBinding[] = [
     slug: "conditional-rephrase",
     label: "The Switchyard",
     scope: "a statement, translated",
-    accent: "160 52% 32%",
+    accent: "36 88% 46%",
+    carriesPrompt: true,
     Entrance: SwitchyardEntrance,
     render: ({ item, response, answered }) => {
       const credited = item.credited_answers?.[0];
@@ -156,7 +175,8 @@ const WORLDS: WorldBinding[] = [
     slug: "find-the-conclusion",
     label: "The Argument Atelier",
     scope: "an argument",
-    accent: "18 62% 47%",
+    accent: "40 78% 48%",
+    carriesPrompt: false,
     Entrance: AtelierEntrance,
     render: ({ item, response, answered }) => {
       const argument = parseArgument(item);
@@ -169,7 +189,8 @@ const WORLDS: WorldBinding[] = [
     slug: "rebuttal-rephrase",
     label: "The Debate Chamber",
     scope: "an argument, restated",
-    accent: "355 46% 48%",
+    accent: "356 48% 46%",
+    carriesPrompt: false,
     Entrance: ChamberEntrance,
     render: ({ item, response, answered }) => {
       const rebuttal = parseRebuttal(item);
@@ -189,7 +210,8 @@ const WORLDS: WorldBinding[] = [
     slug: "dumb-it-down",
     label: "The Press",
     scope: "a paragraph",
-    accent: "38 58% 40%",
+    accent: "14 70% 46%",
+    carriesPrompt: true,
     Entrance: PressEntrance,
     render: ({ item, response, answered }) => {
       const press = parsePress(item);
@@ -209,7 +231,8 @@ const WORLDS: WorldBinding[] = [
     slug: "spot-the-callback",
     label: "The Loom",
     scope: "a passage",
-    accent: "205 38% 42%",
+    accent: "224 52% 46%",
+    carriesPrompt: true,
     Entrance: LoomEntrance,
     render: ({ item, response, answered }) => {
       const callback = parseCallback(item);

@@ -56,6 +56,41 @@ describe("world registry", () => {
     }
   });
 
+  it("shows the item's own words in every world that claims to carry the prompt", () => {
+    // `carriesPrompt` is what tells the answer column to stop drawing the
+    // statement, so a world that claims it and then stops showing the text
+    // would leave the student with no question at all. The claim is checked
+    // against what the world actually renders, not taken on trust.
+    const carriers = WORLD_BINDINGS.filter((w) => w.carriesPrompt);
+    expect(carriers.length).toBeGreaterThan(0);
+
+    for (const a of SEED_ACTIVITIES) {
+      const world = worldForTitle(a.title)!;
+      if (!world.carriesPrompt) continue;
+
+      const item = a.items[0];
+      const { container, unmount } = render(<div>{world.render({ item, answered: false })}</div>);
+      const shown = container.textContent ?? "";
+
+      // Compare on content words: the worlds set the prompt in their own
+      // furniture, so whitespace and the authored emphasis marks differ.
+      const words = item.prompt
+        .replace(/[*_]/g, "")
+        .split(/\s+/)
+        .filter((w) => w.replace(/\W/g, "").length > 6);
+      const missing = words.filter((w) => !shown.includes(w.replace(/[^\w'-]/g, "")));
+
+      // Guard against passing vacuously on a prompt with nothing long enough
+      // to compare, which would make the check above meaningless.
+      expect(words.length, `${a.slug} gave the check nothing to compare`).toBeGreaterThan(2);
+      expect(
+        missing.length,
+        `${a.slug} claims to carry the prompt but its stage is missing: ${missing.join(", ")}`,
+      ).toBe(0);
+      unmount();
+    }
+  });
+
   it("returns null on an item its world cannot read, so the caller can fall back", () => {
     const unreadable = {
       order: 1,

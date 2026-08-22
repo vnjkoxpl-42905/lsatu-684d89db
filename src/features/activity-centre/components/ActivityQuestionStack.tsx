@@ -9,6 +9,8 @@ interface ActivityQuestionStackProps {
   /** Authored per Activity: what this drill asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
+  /** True when the Activity's world already shows the prompt as written. */
+  promptInWorld?: boolean;
   activeIndex: number;
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   onRecord: (args: {
@@ -27,6 +29,7 @@ export function ActivityQuestionStack({
   coach,
   answerLabel,
   answerPlaceholder,
+  promptInWorld = false,
   activeIndex,
   onResolved,
   onRecord,
@@ -43,7 +46,7 @@ export function ActivityQuestionStack({
         aria-current="step"
         className="ac-question-card w-full"
       >
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--ac-emerald-strong))]">
+        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--aw-eyebrow,var(--ac-emerald-strong)))]">
           Question {activeIndex + 1}
         </div>
 
@@ -55,6 +58,7 @@ export function ActivityQuestionStack({
             coach={coach}
             answerLabel={answerLabel}
             answerPlaceholder={answerPlaceholder}
+            promptInWorld={promptInWorld}
             isLast={activeIndex === items.length - 1}
             onResolved={onResolved}
             onRecord={onRecord}

@@ -15,6 +15,8 @@ interface ActivityItemViewProps {
   /** Authored per Activity: what this drill asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
+  /** True when the Activity's world already shows the prompt as written. */
+  promptInWorld?: boolean;
   /** Fired once, when the item is resolved (correct, revealed, or coach failure). */
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   /** Append-only attempt record; best-effort, errors are toasted not thrown. */
@@ -39,6 +41,7 @@ export function ActivityItemView({
   coach,
   answerLabel,
   answerPlaceholder,
+  promptInWorld = false,
   onResolved,
   onRecord,
   onNext,
@@ -98,7 +101,11 @@ export function ActivityItemView({
 
   return (
     <div className="space-y-5">
-      <StatementPanel item={item} showQuestionType={attempts > 0} />
+      <StatementPanel
+        item={item}
+        showQuestionType={attempts > 0}
+        showPrompt={!promptInWorld}
+      />
       <ItemPrompt
         format={format}
         item={item}

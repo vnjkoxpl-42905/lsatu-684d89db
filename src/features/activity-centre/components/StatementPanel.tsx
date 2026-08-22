@@ -4,6 +4,12 @@ import { PROMPT_SCALE_CLASS, promptScale, renderPrompt } from "../prompt-format"
 interface StatementPanelProps {
   item: ActivityItem;
   showQuestionType: boolean;
+  /**
+   * Whether to draw the prompt here. False when the Activity's world already
+   * shows it as written, which would otherwise put the same text on screen
+   * twice. The question-type chip is not a duplicate and still appears.
+   */
+  showPrompt?: boolean;
 }
 
 /**
@@ -15,15 +21,22 @@ interface StatementPanelProps {
  * bare string so those marks appear as emphasis instead of asterisks, and so a
  * passage-length prompt steps down off display type into something readable.
  */
-export function StatementPanel({ item, showQuestionType }: StatementPanelProps) {
+export function StatementPanel({ item, showQuestionType, showPrompt = true }: StatementPanelProps) {
   const scale = promptScale(item.prompt);
+  const chip = showQuestionType && item.category ? (
+    <span className="inline-flex w-fit items-center rounded-full bg-[hsl(var(--muted))] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+      {item.category}
+    </span>
+  ) : null;
+
+  // The world already has the prompt. The chip is not a duplicate and stays,
+  // but on its own it does not earn a card: an empty panel with one small tag
+  // in it reads as a box that failed to load.
+  if (!showPrompt) return chip;
+
   return (
     <div className="rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9">
-      {showQuestionType && item.category && (
-        <span className="mb-4 inline-flex w-fit items-center rounded-full bg-[hsl(var(--muted))] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-          {item.category}
-        </span>
-      )}
+      {chip && <div className="mb-4">{chip}</div>}
       <div className={`ac-display text-foreground ${PROMPT_SCALE_CLASS[scale]}`}>
         {renderPrompt(item.prompt)}
       </div>

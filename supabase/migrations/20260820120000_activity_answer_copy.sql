@@ -21,8 +21,17 @@ from (values
 where public.activities.slug = v.slug;
 
 -- Assignments snapshot instructions at assign time, so live student work keeps
--- the wrong label unless it is backfilled too. Matched by title, which is what
--- the snapshot carries.
+-- the wrong label unless it is backfilled too.
+--
+-- The guard has to come off for that write. activity_assignments_guard_
+-- immutables raises on any change to a snapshot column, and it exempts admins
+-- by testing has_role(auth.uid(), 'admin') -- which inside a migration is
+-- has_role(NULL, ...), i.e. false. Without this the UPDATE below raises, the
+-- migration aborts, and the activities UPDATE above rolls back with it, so
+-- nothing lands at all. The guard exists to stop a student rewriting their own
+-- snapshot; it was never meant to stop the authoring side correcting copy.
+alter table public.activity_assignments disable trigger user;
+
 update public.activity_assignments a
 set instructions = a.instructions
   || jsonb_build_object(
@@ -32,3 +41,5 @@ from public.activities src
 where a.activity_id = src.id
   and src.instructions ? 'answer_label'
   and not (a.instructions ? 'answer_label');
+
+alter table public.activity_assignments enable trigger user;

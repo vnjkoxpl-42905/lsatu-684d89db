@@ -67,8 +67,17 @@ export function ChamberStage({
       data-phase={phase}
       data-testid="chamber"
     >
+      {/* The rotunda: torch flames, pilasters, floor veins. Pure scenery,
+          aria-hidden, outside every tested container. */}
+      <div className="ch-room" aria-hidden="true">
+        <div className="ch-columns" />
+        <div className="ch-floorveins" />
+        <div className="ch-torchlight" />
+        <div className="ch-vignette" />
+      </div>
+
       <div className="flex items-center justify-between">
-        <span className="chamber-mono text-xs text-[hsl(var(--ch-ink-dim))]">
+        <span className="chamber-display text-sm text-[hsl(var(--ch-ink))]">
           {resolved ? "Two positions" : "One position, and a rejection"}
         </span>
         <span className="chamber-mono text-xs text-[hsl(var(--ch-ink-dim))]">
@@ -259,7 +268,7 @@ function CertaintyArc({
   };
 
   return (
-    <div data-testid="ch-arc" data-lit="true">
+    <div className="ch-arc" data-testid="ch-arc" data-lit="true">
       <p className="chamber-mono mb-1 text-xs text-[hsl(var(--ch-ink-dim))]">Certainty arc</p>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-[460px]" role="img"
@@ -279,7 +288,7 @@ function CertaintyArc({
       </svg>
 
       {/* Labels as HTML, on the document's own type ramp. */}
-      <div className="mt-1 flex justify-between" style={{ maxWidth: 460 }}>
+      <div className="ch-arc-labels mt-1 flex justify-between" style={{ maxWidth: 460 }}>
         {ARC.map((s) => (
           <span
             key={s}
