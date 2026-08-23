@@ -217,15 +217,41 @@ export function useClassroomHome(): {
   // do not share a cleared list.
   const [dismissed, setDismissed] = React.useState<string[]>(() => readDismissed(user?.id));
   React.useEffect(() => {
+    // Local cache first so the card never flickers, then merge the cloud copy:
+    // a dismissal made on another device (or before this device's cache was
+    // cleared) must hide the message here too.
     setDismissed(readDismissed(user?.id));
+    if (!user?.id) return;
+    let cancelled = false;
+    void fetchCloudDismissed(user.id).then((cloud) => {
+      if (cancelled || cloud.length === 0) return;
+      setDismissed((prev) => {
+        const merged = [...prev];
+        let added = false;
+        for (const key of cloud) {
+          if (!merged.includes(key)) {
+            merged.push(key);
+            added = true;
+          }
+        }
+        return added ? merged : prev;
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [user?.id]);
   React.useEffect(() => {
     if (!user?.id || typeof window === "undefined") return;
     try {
       window.localStorage.setItem(`${DISMISSED_KEY}:${user.id}`, JSON.stringify(dismissed));
     } catch {
-      // A full or blocked store only costs the memory of a dismissal.
+      // A full or blocked store only costs the local copy of a dismissal.
     }
+    // Persist the same list to the cloud row for this account. The write is
+    // idempotent (full-list upsert), so the extra call on first load is cheap
+    // and doubles as convergence when a merge pulled in another device's keys.
+    void saveCloudDismissed(user.id, dismissed);
   }, [dismissed, user?.id]);
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
