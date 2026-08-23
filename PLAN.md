@@ -550,6 +550,22 @@ Nothing above touches item content. When the conditional-logic teaching content 
 
 A content change ships as a new migration in the same shape as `20260822190000_conditional_rephrase_ladder.sql`, and re-snapshots unstarted assignments only.
 
+> **Built 2026-08-23, first content pass.** `20260823190000_conditional_rephrase_rules_and_rubric.sql`, with `content/conditional-rephrase.json` updated to match and all nineteen strings verified verbatim across the two. `rules` goes 5 → 10 and `coach.rubric` 4 → 9. **Item content is untouched**: no prompt, credited answer, explanation, Question Type or ladder position moves, and the ladder order stands as built.
+>
+> Three rules the drill tests and the instructions never stated:
+>
+> 1. **The compound flip**, and the reason this shipped first. Contraposing "If A and B, then C" gives "If not C, then not A **or** not B". The old rules said only "keep compound conditions whole", which a student satisfies perfectly while writing "not A and not B" — a strictly stronger claim than the statement supports. The rubric had no line that would catch it, so it was being credited. This was a live grading defect, not a copy gap.
+> 2. **The two illegal moves, by name.** Reversing the arrow, and negating the trigger. The rubric now names both so the Coach hands back which one the student made.
+> 3. **Biconditionals.** `if and only if`, `then and only then`, and the `otherwise` construction run the arrow both ways; nothing previously let a two-way answer be correct.
+>
+> Also written down: `unless`/`until`/`without` as an if-not translation, and where the negation lands in a `no`/`none` statement. Both were already drilled by items in the bank with nothing in the rules to support them.
+>
+> The [v2] re-snapshot requirement above is honoured: the migration copies `instructions` onto `status = 'assigned'` rows behind the trigger-disable dance, so the new rubric reaches assignments already issued.
+>
+> Verified: 734 activity-centre tests pass (730 + 4 new), full suite 1885 passed / 1 skipped / 0 failed on the pushed tree, typecheck exit 0, and all ten rules render numbered in the intro without truncation. One test asserted "wording is free" at `rubric[3]`, the old last slot; it now asserts on contents rather than position.
+>
+> **Still open:** the ladder order and the family grouping Stage 12 depends on have not been revisited against the rule set, and the 38 items that fail the derivability gate still get the authored plate and no derived rails.
+
 **[v2] That migration copies only `items`.** Verified. So a change to `task`, `rules` or `coach.rubric` would update the `activities` row and leave every existing unstarted assignment snapshot carrying the **old instructions** — including the old coach rubric, which is what actually grades the student. Any content migration that touches `instructions` has to re-snapshot that column too, or the fix reaches new assignments only and silently misses the ones already issued.
 
 ---
