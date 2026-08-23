@@ -114,11 +114,9 @@ export async function recordItemResponse(input: {
     parser_version: input.shadowFault === undefined ? null : input.parserVersion ?? null,
   };
 
-  // The generated DB types are regenerated from the live schema and do not know
-  // the telemetry columns until the migration lands, so the widened row is cast
-  // here rather than hand-editing that generated file.
-  const table = supabase.from("activity_item_responses");
-  const { error } = await table.insert({ ...attempt, ...telemetry } as never);
+  const { error } = await supabase
+    .from("activity_item_responses")
+    .insert({ ...attempt, ...telemetry });
   if (!error) return;
   if (!isUnknownColumn(error)) throw error;
 
