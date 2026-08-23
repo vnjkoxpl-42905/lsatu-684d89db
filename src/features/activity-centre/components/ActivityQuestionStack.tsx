@@ -58,7 +58,11 @@ export function ActivityQuestionStack({
   if (!activeItem) return null;
 
   return (
-    <div className="flex min-h-screen items-center px-5 py-10 md:px-12 md:py-12">
+    /* Centring the card in a full-screen flex box is right beside the world on
+       a wide screen and wrong beneath it on a phone, where it added ~700px of
+       empty space above the question. Below md the card starts where the band
+       ends. */
+    <div className="flex items-start px-5 py-6 md:min-h-screen md:items-center md:px-12 md:py-12">
       <section
         key={activeItem.order}
         aria-current="step"

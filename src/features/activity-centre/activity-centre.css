@@ -105,3 +105,73 @@
 .activity-centre .ac-question-card {
   scroll-margin-top: 4rem;
 }
+
+
+/* ---------- The world as a band, on a phone ----------
+ *
+ * Below md the two columns stack and the world lands first. Measured at
+ * 375x812 it was 864px tall, so the answer box for every one of 62 questions
+ * sat a full screen down, and the routing beat played off-screen behind the
+ * student while they were still reading what they had typed.
+ *
+ * The world does not change. It rides in a capped, sticky band with its own
+ * open control, so the answer box is on the first screen and the yard is one
+ * tap away when it is the thing worth looking at.
+ */
+@media (max-width: 767px) {
+  .ac-yard-band {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    overflow: hidden;
+  }
+
+  .ac-yard-band[data-expanded="false"] {
+    max-height: 260px;
+  }
+
+  /* The cap clips whatever the world was drawing. A hard edge reads as broken;
+     a fade reads as "there is more of this, open it". */
+  .ac-yard-band[data-expanded="false"]::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 56px;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(to top, hsl(var(--background)) 8%, hsl(var(--background) / 0));
+  }
+
+  /* The worlds declare their own comfortable floor for a full column. In the
+     band that floor is what pushes the answer box off the screen. */
+  .ac-yard-band[data-expanded="false"] .switchyard,
+  .ac-yard-band[data-expanded="false"] .world-shell {
+    min-height: 0;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  /* What the band carries: the statement, the two rails, the junction. The
+     credited plates and the progress rail are the parts worth opening for. */
+  .ac-yard-band[data-expanded="false"] [data-testid="sy-plates"],
+  .ac-yard-band[data-expanded="false"] [data-testid="sy-mileposts"] {
+    display: none;
+  }
+
+  .ac-band-toggle {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.5rem;
+    z-index: 2;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background) / 0.82);
+    backdrop-filter: blur(6px);
+    padding: 0.25rem 0.7rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: hsl(var(--foreground) / 0.75);
+  }
+}

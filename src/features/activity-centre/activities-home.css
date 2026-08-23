@@ -623,3 +623,48 @@
     text-align: left;
   }
 }
+
+
+/* ---------- The Start dock ----------
+ *
+ * The intro ends with its primary action, under the rules and the worked
+ * example: measured at 1280x900, Start sat 1123px down an 1186px page. The one
+ * button the student came for was below the fold on a desktop window and
+ * further on a laptop.
+ *
+ * The dock carries it until the real button is on screen, then retires. It is
+ * never a second button competing with the first: only one of the two is
+ * reachable at a time.
+ */
+.act-start-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(
+    to top,
+    hsl(var(--aw-page, var(--background))) 45%,
+    hsl(var(--aw-page, var(--background)) / 0)
+  );
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+@media (min-width: 768px) {
+  .act-start-dock {
+    padding-right: 2.5rem;
+  }
+}
+
+.act-start-dock[data-retired="true"] {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-start-dock {
+    transition: none;
+  }
+}

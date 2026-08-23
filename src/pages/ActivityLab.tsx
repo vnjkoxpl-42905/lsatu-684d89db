@@ -296,6 +296,9 @@ function ShellPanel() {
   const activity = LAB_ACTIVITIES.find((a) => a.slug === slug) ?? LAB_ACTIVITIES[0];
   const world = worldForTitle(activity.title);
   const stage = world?.render({ item: activity.items[0], answered: false });
+  // Mirrors the runner's phone band. The shell is only useful as a proxy for a
+  // screen auth makes unreachable if it carries the same container decisions.
+  const [bandExpanded, setBandExpanded] = useState(false);
 
   return (
     <div>
@@ -310,8 +313,19 @@ function ShellPanel() {
 
       <div className="activity-centre" data-world={world?.slug}>
         <div className="grid min-h-[720px] grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
-          <aside className="relative flex min-h-[560px] flex-col">
+          <aside
+            className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px]"
+            data-expanded={bandExpanded ? "true" : "false"}
+          >
             <div className="min-h-0 flex-1">{stage}</div>
+            <button
+              type="button"
+              className="ac-band-toggle md:hidden"
+              onClick={() => setBandExpanded((open) => !open)}
+              aria-expanded={bandExpanded}
+            >
+              {bandExpanded ? "Collapse" : "Expand"}
+            </button>
           </aside>
           <main className="bg-[hsl(var(--aw-page,var(--background)))]">
             <ActivityQuestionStack

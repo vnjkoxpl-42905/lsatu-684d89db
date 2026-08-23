@@ -475,6 +475,10 @@ The world's internals do not need to change; `switchyard.css` already drives its
 
 **Proof. [v2]** `AGENTS.md:60` requires the **full emulate matrix before pushing**: narrow, mid, wide, and the sidecar-docked case, every time. v1 specified one phone width, which is below this repo's own gate. So: 375×812, a mid width, a wide width, and sidecar-docked — answer box visible without scrolling on load in each, and the routing beat on screen when it plays.
 
+> **Built 2026-08-23.** Measured before: the world was **864px** at 375x812 (the plan recorded 774) and the answer box sat at **y=1663**. Two causes, not one. The world's own floor, now a capped sticky band with an Expand control and a fade at the clip edge; and `ActivityQuestionStack` centring the card inside a `min-h-screen` flex box, which is right beside the world on a wide screen and added ~700px of empty space beneath it on a phone. Both are `md:`-gated, so nothing above the breakpoint moves. The band scrolls itself into view when the verdict lands, so the routing beat is watched rather than playing off-screen behind the student, and it collapses again on the next question.
+>
+> After, at 375x812: band **260px**, answer box at **431**, Submit fully visible at **611**. Matrix run at 375, 480, 768 and 1440: answer box reachable without scrolling at every one.
+
 **Moves:** Mobile 60 → 90.
 
 ---
@@ -486,6 +490,12 @@ The world's internals do not need to change; `switchyard.css` already drives its
 **The change.** A sticky action bar carrying **Start** / **Back to question N**, pinned to the bottom of the intro until the real button scrolls into view, and a tightened orb cluster. The resume affordance already knows which question it would return to (`ActivityIntro` `resumeAt`), so the sticky bar carries real information rather than being a duplicate button.
 
 **Proof. [v2]** Re-measure across the full matrix required by `AGENTS.md:60` — narrow, mid, wide, sidecar-docked — with Start reachable without scrolling in each.
+
+> **Built 2026-08-23.** Confirmed first: Start at **1123px** inside an **1186px** intro on a 900px viewport. A sticky dock now carries the action, labelled from the same source as the real button so a resumed run reads "Back to question 24" in both places. It is rendered only where there is an `IntersectionObserver` to retire it, because a dock that can never retire is a permanent second Start and worse than the scroll it saves.
+>
+> **Verified in two halves, honestly.** The placement half is live: the dock is pinned and reachable with no scrolling at 375, 480, 768 and 1440. The retire-on-scroll half is covered by test only — the browser pane reports `document.hidden === true`, and Chrome withholds IntersectionObserver callbacks from a hidden document, so a *fresh* observer gets no entries either. Nine tests drive the observer directly and assert it watches the real button, retires on intersect, returns when scrolled away, leaves exactly one Start in the tab order once retired, and disconnects on unmount.
+>
+> Six existing runner tests broke on an ambiguous "Start" and were updated rather than the design changed: the page now genuinely offers the action twice, and both call the same handler.
 
 **Moves:** Mobile 90 → 94.
 

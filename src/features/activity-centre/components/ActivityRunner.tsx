@@ -85,6 +85,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
    */
   const [resumeAt, setResumeAt] = useState<{ index: number; attempts: number; text: string } | null>(null);
   const hydratingRef = useRef(false);
+  /**
+   * The world, on a phone.
+   *
+   * Below md the two columns stack, and the yard came first at 864px measured
+   * at 375x812 -- so the student scrolled past a full screen of scenery to
+   * reach the answer box on every one of 62 questions, and the routing beat
+   * then played off-screen behind them. It rides as a compact sticky band
+   * instead, opened on tap when they want the whole yard.
+   */
+  const [bandExpanded, setBandExpanded] = useState(false);
+  const bandRef = useRef<HTMLElement | null>(null);
 
   const items = useMemo(
     () => (assignment ? [...assignment.items].sort((a, b) => a.order - b.order) : []),
@@ -283,11 +294,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
   const handleResolved = useCallback((order: number, finalVerdict: Verdict | null) => {
     setVerdicts((prev) => ({ ...prev, [order]: finalVerdict }));
+    // The routing and the flip are the payoff. On a phone the band is above the
+    // answer box, so without this they play behind the student while they are
+    // still looking at what they typed. Desktop already has both in view.
+    if (typeof window === "undefined" || window.matchMedia("(min-width: 768px)").matches) return;
+    bandRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   const handleNext = useCallback(async () => {
     if (index < items.length - 1) {
       setIndex((i) => i + 1);
+      setBandExpanded(false); // a new question starts with the answer box in reach
       return;
     }
     if (!practice && assignment) {
@@ -411,7 +428,11 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
              the two things the world does not draw: the way out and the count.
              Falls back to the hero panel whenever the item does not parse into
              the world's domain, rather than rendering an empty world. */
-          <aside className="relative flex min-h-[560px] flex-col md:sticky md:top-0 md:h-screen">
+          <aside
+            ref={bandRef}
+            className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px] md:sticky md:top-0 md:h-screen"
+            data-expanded={bandExpanded ? "true" : "false"}
+          >
             <div className="flex items-center justify-between gap-3 px-5 pt-5 md:px-6">
               {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
               <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
@@ -419,6 +440,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
               </span>
             </div>
             <div className="min-h-0 flex-1">{worldStage}</div>
+            {/* Phone only. The world is the reward, not the route to the answer
+                box: below md it rides as a band the student can open when they
+                want it, and the answer box stays on the first screen. */}
+            <button
+              type="button"
+              className="ac-band-toggle md:hidden"
+              onClick={() => setBandExpanded((open) => !open)}
+              aria-expanded={bandExpanded}
+            >
+              {bandExpanded ? "Collapse" : "Expand"}
+            </button>
           </aside>
         ) : (
         <ActivityHeroPanel

@@ -388,7 +388,7 @@ export function SwitchyardStage({
       ) : null}
 
       {/* Credited plates */}
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid gap-3 md:grid-cols-2" data-testid="sy-plates">
         <Plate label="Perfect answer" active={routed}>
           {`If ${routing.ifClause.text}, then ${routing.thenClause.text}.`}
         </Plate>

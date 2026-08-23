@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
@@ -44,6 +45,33 @@ export function ActivityIntro({
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
   const resuming = (resumeAt ?? 1) > 1;
+  const startLabel = resuming ? `Back to question ${resumeAt}` : "Start";
+
+  /**
+   * The primary action is the last thing on this page, under the rules and the
+   * worked example. Measured at 1280x900 it sat 1123px down a 1186px page: the
+   * one button the student came here to press was below the fold on a desktop
+   * window, and further on a laptop.
+   *
+   * A sticky bar carries it until the real button is actually on screen, then
+   * gets out of the way. It carries the resume label too, so it says which
+   * question it would return them to rather than being a second Start.
+   */
+  const startRef = useRef<HTMLButtonElement | null>(null);
+  const [startInView, setStartInView] = useState(false);
+  // Without an observer the dock could never retire, and a permanent second
+  // Start is worse than the scroll it was meant to save. No observer, no dock.
+  const [dockSupported] = useState(() => typeof IntersectionObserver !== "undefined");
+  useEffect(() => {
+    const node = startRef.current;
+    if (!node || !dockSupported) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setStartInView(entry.isIntersecting),
+      { rootMargin: "0px 0px -24px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [dockSupported]);
 
   // The "after" orb is the second half of the before/after pair, so it has to
   // be THIS Activity's answer. It used to be a hardcoded string: Negation
@@ -179,12 +207,30 @@ export function ActivityIntro({
         </motion.div>
 
         <motion.div variants={item}>
-          <button type="button" onClick={onStart} className="act-start">
-            {resuming ? `Back to question ${resumeAt}` : "Start"}
+          <button type="button" onClick={onStart} className="act-start" ref={startRef}>
+            {startLabel}
             <ArrowRight size={18} strokeWidth={2.25} />
           </button>
         </motion.div>
       </section>
+
+      {/* Retires the moment the real button is on screen: hidden, unfocusable
+          and click-through, so it never competes with the button it stands in
+          for. While it is live the real Start is simply further down the page,
+          still in the tab order where it belongs. */}
+      {dockSupported && (
+        <div
+          className="act-start-dock"
+          data-testid="act-start-dock"
+          data-retired={startInView ? "true" : "false"}
+          aria-hidden={startInView}
+        >
+          <button type="button" onClick={onStart} className="act-start" tabIndex={startInView ? -1 : 0}>
+            {startLabel}
+            <ArrowRight size={18} strokeWidth={2.25} />
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 }

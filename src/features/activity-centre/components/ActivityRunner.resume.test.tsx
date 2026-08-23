@@ -140,7 +140,7 @@ describe("ActivityRunner resume", () => {
   it("still opens on the homepage for a run that was never started", async () => {
     activityState.assignment = makeAssignment("assigned");
     renderRouted();
-    expect(await screen.findByRole("button", { name: /^start$/i })).toBeInTheDocument();
+    expect(await screen.findAllByRole("button", { name: /^start$/i })).not.toHaveLength(0);
     expect(screen.getByText("Do the thing the Activity asks for.")).toBeInTheDocument();
   });
 
@@ -193,7 +193,11 @@ describe("ActivityRunner resume", () => {
     listItemResponses.mockRejectedValue(new Error("network"));
     renderRouted();
     // The homepage, not question one of a run that would re-answer everything.
-    expect(await screen.findByRole("button", { name: /back to question 1|^start$/i })).toBeInTheDocument();
+    // Start appears twice on the intro: the real button and the sticky dock
+    // that stands in for it until it scrolls into view.
+    expect(
+      await screen.findAllByRole("button", { name: /back to question 1|^start$/i }),
+    ).not.toHaveLength(0);
     expect(toast).toHaveBeenCalledWith(
       expect.objectContaining({ title: expect.stringMatching(/saved progress/i) }),
     );
