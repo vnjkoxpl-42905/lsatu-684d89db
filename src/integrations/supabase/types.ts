@@ -305,7 +305,11 @@ export type Database = {
           created_at: string
           id: string
           item_order: number
+          judge_source: string | null
+          latency_ms: number | null
+          parser_version: string | null
           response_text: string
+          shadow_fault: string | null
           student_id: string
           verdict: string | null
         }
@@ -315,7 +319,11 @@ export type Database = {
           created_at?: string
           id?: string
           item_order: number
+          judge_source?: string | null
+          latency_ms?: number | null
+          parser_version?: string | null
           response_text?: string
+          shadow_fault?: string | null
           student_id: string
           verdict?: string | null
         }
@@ -325,7 +333,11 @@ export type Database = {
           created_at?: string
           id?: string
           item_order?: number
+          judge_source?: string | null
+          latency_ms?: number | null
+          parser_version?: string | null
           response_text?: string
+          shadow_fault?: string | null
           student_id?: string
           verdict?: string | null
         }
