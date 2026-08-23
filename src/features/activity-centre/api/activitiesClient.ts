@@ -10,6 +10,7 @@ import type {
   JudgeSource,
   Verdict,
 } from "./types";
+import type { RunScore } from "../progress";
 
 // Thin data layer for the Activity Centre. The jsonb columns (instructions,
 // items) come back from PostgREST as `Json`; we cast them to the domain shapes
@@ -145,16 +146,39 @@ export async function listItemResponses(
 }
 
 /** Student: complete an assignment, writing the final score. */
-export async function completeAssignment(assignmentId: string, score: number): Promise<void> {
+export async function completeAssignment(assignmentId: string, score: RunScore): Promise<void> {
+  const completion = {
+    status: "completed" satisfies ActivityStatus,
+    // Null when nothing was judged. The card then shows "not scored" rather
+    // than a 0% nobody earned.
+    score: score.percent,
+    completed_at: new Date().toISOString(),
+  };
+  const breakdown = {
+    score_numerator: score.numerator,
+    score_judged: score.judged,
+    score_total: score.total,
+    scoring_version: 2,
+  };
+
+  // The generated DB types are built from the live schema and do not know the
+  // breakdown columns until the migration lands, so the widened row is cast here
+  // rather than hand-editing that generated file. Drop the cast once applied.
   const { error } = await supabase
     .from("activity_assignments")
-    .update({
-      status: "completed" satisfies ActivityStatus,
-      score,
-      completed_at: new Date().toISOString(),
-    })
+    .update({ ...completion, ...breakdown } as never)
     .eq("id", assignmentId);
-  if (error) throw error;
+  if (!error) return;
+  if (!isUnknownColumn(error)) throw error;
+
+  // The breakdown columns arrive with their own migration. Closing the run is
+  // what the student is waiting on; the audit trail for the denominator is not
+  // worth failing the completion over.
+  const { error: retryError } = await supabase
+    .from("activity_assignments")
+    .update(completion)
+    .eq("id", assignmentId);
+  if (retryError) throw retryError;
 }
 
 // --- Admin -----------------------------------------------------------------

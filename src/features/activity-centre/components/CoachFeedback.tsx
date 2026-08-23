@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import type { ActivityItem, Verdict } from "../api/types";
+import type { ActivityItem, FeedbackState } from "../api/types";
 
 interface CoachFeedbackProps {
-  verdict: Verdict;
+  verdict: FeedbackState;
   feedback: string;
   /** When true, show the credited answer. Only a reveal earns that. */
   revealed: boolean;
@@ -25,7 +25,7 @@ interface CoachFeedbackProps {
 
 const DEFAULT_SECONDARY_LABEL = "Also accepted";
 
-const VERDICT_STYLE: Record<Verdict, { label: string; chip: string; dot: string }> = {
+const VERDICT_STYLE: Record<FeedbackState, { label: string; chip: string; dot: string }> = {
   correct: {
     label: "Correct",
     chip: "bg-[hsl(var(--state-correct)/0.12)] text-[hsl(var(--ac-emerald-strong))]",
@@ -40,6 +40,13 @@ const VERDICT_STYLE: Record<Verdict, { label: string; chip: string; dot: string 
     label: "Not yet",
     chip: "bg-[hsl(var(--state-incorrect)/0.12)] text-[hsl(350_80%_45%)]",
     dot: "bg-[hsl(var(--state-incorrect))]",
+  },
+  // Deliberately neutral. The student answered and nobody read it; the app has
+  // no basis for the red chip it used to show here.
+  unchecked: {
+    label: "Not checked",
+    chip: "bg-[hsl(var(--muted))] text-muted-foreground",
+    dot: "bg-[hsl(var(--muted-foreground)/0.6)]",
   },
 };
 

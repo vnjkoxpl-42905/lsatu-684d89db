@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { reconstructProgress } from "./progress";
+import { reconstructProgress, scoreFor } from "./progress";
 import { MAX_ATTEMPTS } from "./api/types";
 import type { ActivityItem, ActivityItemResponse, Verdict } from "./api/types";
 
@@ -110,5 +110,50 @@ describe("reconstructProgress", () => {
     const p = reconstructProgress(items(3), log);
     expect(p.resolvedCount).toBe(0);
     expect(p.pendingAttempts).toBe(1);
+  });
+});
+
+describe("scoreFor", () => {
+  const ten = (v: (Verdict | null)[]) =>
+    Object.fromEntries(v.map((verdict, i) => [i + 1, verdict])) as Record<number, Verdict | null>;
+
+  it("scores a clean run over every item", () => {
+    const score = scoreFor(ten(Array(10).fill("correct")), 10);
+    expect(score).toEqual({ numerator: 10, judged: 10, total: 10, percent: 100 });
+  });
+
+  it("weights a partial at half", () => {
+    const score = scoreFor(ten(["correct", "partial", ...Array(8).fill("incorrect")]), 10);
+    expect(score.numerator).toBe(1.5);
+    expect(score.percent).toBe(15);
+  });
+
+  // The defect this exists to kill: an item nobody judged used to be
+  // arithmetically identical to an item the student got wrong.
+  it("does not count an unjudged item as a wrong one", () => {
+    const withOutage = scoreFor(ten([...Array(9).fill("correct"), null]), 10);
+    const withoutIt = scoreFor(ten(Array(9).fill("correct")), 9);
+    expect(withOutage.percent).toBe(100);
+    expect(withOutage.percent).toBe(withoutIt.percent);
+  });
+
+  it("keeps the denominator it used in view", () => {
+    const score = scoreFor(ten([...Array(9).fill("correct"), null]), 10);
+    expect(score.judged).toBe(9);
+    expect(score.total).toBe(10);
+  });
+
+  // Returning 0 here would repeat the false judgement, just with a bigger number.
+  it("returns no percentage at all when nothing was judged", () => {
+    expect(scoreFor(ten(Array(5).fill(null)), 5).percent).toBeNull();
+    expect(scoreFor({}, 5).percent).toBeNull();
+  });
+
+  it("returns no percentage for an empty run rather than dividing by zero", () => {
+    expect(scoreFor({}, 0)).toEqual({ numerator: 0, judged: 0, total: 0, percent: null });
+  });
+
+  it("rounds to a whole percent", () => {
+    expect(scoreFor(ten(["correct", "correct", "incorrect"]), 3).percent).toBe(67);
   });
 });

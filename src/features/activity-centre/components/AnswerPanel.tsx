@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import type { ActivityItem, CoachVerdict } from "../api/types";
+import type { ActivityItem, FeedbackState } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { CoachFeedback } from "./CoachFeedback";
 
@@ -15,7 +15,7 @@ interface AnswerPanelProps {
   onNext: () => void;
   judging: boolean;
   attempts: number;
-  result: CoachVerdict | null;
+  result: { verdict: FeedbackState; feedback: string; covered?: number[] } | null;
   revealed: boolean;
   resolved: boolean;
   isLast: boolean;

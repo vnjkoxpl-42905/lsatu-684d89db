@@ -170,8 +170,14 @@ describe("ActivityRunner resume", () => {
     ]);
     renderRouted();
     await waitFor(() => expect(completeAssignment).toHaveBeenCalled());
-    // (4 * 1 + 1 * 0.5 + 1 * 0) / 6 = 75%
-    expect(completeAssignment).toHaveBeenCalledWith("assign-1", 75);
+    // (4 * 1 + 1 * 0.5 + 1 * 0) / 6 judged = 75%. Every item reached a verdict
+    // here, so the judged denominator and the item count agree.
+    expect(completeAssignment).toHaveBeenCalledWith("assign-1", {
+      numerator: 4.5,
+      judged: 6,
+      total: 6,
+      percent: 75,
+    });
     expect(await screen.findByText("75%")).toBeInTheDocument();
   });
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
-import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, JudgeSource, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { StatementPanel } from "./StatementPanel";
 import { ItemPrompt } from "./ItemPrompt";
@@ -77,7 +77,7 @@ export function ActivityItemView({
   const { judge, judging } = useActivityCoach();
   const [value, setValue] = useState(initialValue);
   const [attempts, setAttempts] = useState(initialAttempts);
-  const [result, setResult] = useState<CoachVerdict | null>(null);
+  const [result, setResult] = useState<{ verdict: FeedbackState; feedback: string; covered?: number[] } | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [resolved, setResolved] = useState(false);
 
@@ -117,11 +117,13 @@ export function ActivityItemView({
     setAttempts(attemptNo);
 
     if (!res.ok || !res.verdict) {
-      // Coach failed: surface it, record the attempt with no verdict, and fall
-      // back to revealing the credited answer so the student is never stuck.
+      // Coach failed. The student is never left stuck, so the credited answer is
+      // revealed and the item ends -- but it ends UNJUDGED. It used to end as
+      // "incorrect", which put a red verdict on an answer nobody had read and
+      // then scored it as a zero for the rest of time.
       toast({
         title: "Coach unavailable",
-        description: "Showing the credited answer so you can keep moving.",
+        description: "Showing the credited answer so you can keep moving. This one is not counted.",
         variant: "destructive",
       });
       void onRecord({
@@ -133,7 +135,7 @@ export function ActivityItemView({
         shadowFault: shadowFault?.(item, value) ?? null,
         latencyMs: since(),
       });
-      setResult({ verdict: "incorrect", feedback: "" });
+      setResult({ verdict: "unchecked", feedback: "" });
       resolve(null, true);
       return;
     }
@@ -172,7 +174,9 @@ export function ActivityItemView({
    * verdict they actually earned so the score is unchanged.
    */
   const handleShowAnswer = () => {
-    const verdict = result?.verdict ?? null;
+    // "unchecked" is not a verdict and must not be written to the log as one.
+    const shown = result?.verdict;
+    const verdict = shown && shown !== "unchecked" ? shown : null;
     void onRecord({
       itemOrder: item.order,
       responseText: value,

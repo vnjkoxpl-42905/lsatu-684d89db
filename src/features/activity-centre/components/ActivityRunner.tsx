@@ -8,7 +8,8 @@ import {
   markAssignmentStarted,
   recordItemResponse,
 } from "../api/activitiesClient";
-import { reconstructProgress } from "../progress";
+import { reconstructProgress, scoreFor } from "../progress";
+import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
 import { MAX_ATTEMPTS } from "../api/types";
@@ -22,14 +23,6 @@ import { CompletionSummary } from "./CompletionSummary";
 import "../activity-centre.css";
 
 type Phase = "intro" | "running" | "done";
-
-const VERDICT_WEIGHT: Record<string, number> = { correct: 1, partial: 0.5, incorrect: 0 };
-
-function scoreFor(verdicts: Record<number, Verdict | null>, total: number): number {
-  if (total === 0) return 0;
-  const sum = Object.values(verdicts).reduce((acc, v) => acc + (v ? VERDICT_WEIGHT[v] ?? 0 : 0), 0);
-  return Math.round((sum / total) * 100);
-}
 
 /**
  * Student player: intro -> split-screen quiz -> completion summary.
@@ -339,11 +332,22 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     );
   }
 
-  // Graded completion shows the stored score; a practice run shows its live score.
-  const displayScore =
-    !practice && assignment.status === "completed" && assignment.score != null
-      ? assignment.score
-      : scoreFor(verdicts, items.length);
+  // Graded completion shows the score as it was STORED, so re-opening a finished
+  // run never quietly re-scores it under today's rules. A run stored under
+  // scoring_version 1 counted unjudged items as wrong, and its parts were never
+  // written down, so it is shown over its own item count and left alone. A
+  // practice run has nothing stored and is always scored live.
+  const liveScore = scoreFor(verdicts, items.length);
+  const storedScore: RunScore | null =
+    !practice && assignment.status === "completed"
+      ? {
+          numerator: assignment.score_numerator ?? 0,
+          judged: assignment.score_judged ?? items.length,
+          total: assignment.score_total ?? items.length,
+          percent: assignment.score,
+        }
+      : null;
+  const displayScore = storedScore ?? liveScore;
 
   if (phase === "intro") {
     return (

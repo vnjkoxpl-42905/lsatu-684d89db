@@ -2,13 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ActivityItem, Verdict } from "../api/types";
+import type { RunScore } from "../progress";
 
 interface CompletionSummaryProps {
   title: string;
   items: ActivityItem[];
   verdicts: Record<number, Verdict | null>;
   responses: Record<number, string>;
-  score: number;
+  /** The score with its denominator, so the screen can say what it counted. */
+  score: RunScore;
   /** True when this is an ungraded practice run, not the graded result. */
   practice?: boolean;
   /** Re-run the activity for ungraded practice. */
@@ -19,7 +21,8 @@ const VERDICT_LABEL: Record<string, { label: string; cls: string }> = {
   correct: { label: "Correct", cls: "text-[hsl(var(--ac-emerald-strong))]" },
   partial: { label: "Almost", cls: "text-[hsl(38_92%_34%)]" },
   incorrect: { label: "Not yet", cls: "text-[hsl(350_80%_45%)]" },
-  none: { label: "Skipped", cls: "text-muted-foreground" },
+  // Not "Skipped": the student answered it. Nobody read the answer.
+  none: { label: "Not checked", cls: "text-muted-foreground" },
 };
 
 /** Completion: score, per-item recap, Done, optional ungraded re-run. */
@@ -27,6 +30,7 @@ export function CompletionSummary({ title, items, verdicts, responses, score, pr
   const navigate = useNavigate();
   const correct = items.filter((i) => verdicts[i.order] === "correct").length;
   const partial = items.filter((i) => verdicts[i.order] === "partial").length;
+  const unchecked = score.total - score.judged;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -34,10 +38,19 @@ export function CompletionSummary({ title, items, verdicts, responses, score, pr
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           {practice ? `${title} · practice` : `${title} complete`}
         </p>
-        <p className="ac-display mt-3 text-6xl text-foreground">{score}%</p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {correct} correct · {partial} almost · {items.length} items
+        <p className="ac-display mt-3 text-6xl text-foreground">
+          {score.percent === null ? "Not scored" : `${score.percent}%`}
         </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {correct} correct · {partial} almost ·{" "}
+          {unchecked > 0 ? `${score.judged} of ${score.total} checked` : `${score.total} items`}
+        </p>
+        {unchecked > 0 && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            {unchecked === 1 ? "One answer" : `${unchecked} answers`} could not be checked and{" "}
+            {unchecked === 1 ? "is" : "are"} not counted for or against you.
+          </p>
+        )}
         {practice && (
           <p className="mt-2 text-xs text-muted-foreground">
             Practice run. Not counted toward your graded score.

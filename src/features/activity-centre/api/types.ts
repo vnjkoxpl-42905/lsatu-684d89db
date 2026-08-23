@@ -16,6 +16,16 @@ export type Verdict = "correct" | "partial" | "incorrect";
  * number rather than a claim.
  */
 export type JudgeSource = "fast-path" | "coach" | "fallback";
+
+/**
+ * What the answer column is showing about the last submission.
+ *
+ * "unchecked" is not a verdict and must never be scored as one. It is the state
+ * an item is left in when the Coach could not be reached: the student answered,
+ * nobody judged it, and stamping a red "Not yet" over it was a claim the app
+ * had no basis for.
+ */
+export type FeedbackState = Verdict | "unchecked";
 export type ActivityStatus = "assigned" | "in_progress" | "completed";
 export type ItemFormat = "free-text" | "mcq" | "variation";
 
@@ -104,6 +114,20 @@ export interface ActivityAssignment {
   items: ActivityItem[];
   status: ActivityStatus;
   score: number | null;
+  /**
+   * The score's parts, kept so the screen can name the denominator it used.
+   * `score` alone cannot distinguish "88% of 59 checked" from "88% of 62", and
+   * the Activity card renders a bare number.
+   */
+  score_numerator?: number | null;
+  score_judged?: number | null;
+  score_total?: number | null;
+  /**
+   * 1 = scored over every item, so an unjudged item counted as wrong. 2 = scored
+   * over the judged items only. Old rows keep 1 and their original meaning;
+   * nothing is backfilled into a version it was not computed under.
+   */
+  scoring_version?: number | null;
   started_at: string | null;
   completed_at: string | null;
   assigned_by: string;

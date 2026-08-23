@@ -349,6 +349,8 @@ After Stage 2's fast path, this path fires less often. It still has to be right 
 
 **Proof.** Unit: `scoreFor` with one null in ten equals nine of nine, and zero-judged returns "not scored" rather than 0. Live: force a 401, confirm the chip is neutral, the summary names the denominator, and the stored row carries `scoring_version = 2`.
 
+> **Built 2026-08-23, option (ii) as recommended.** The Coach-failure branch now sets a neutral `unchecked` state instead of a fake `incorrect`; `scoreFor` moved to `progress.ts` and returns `{numerator, judged, total, percent}` with `percent: null` when nothing was judged; the summary names its denominator and calls an unjudged item "Not checked", not "Skipped". The parts persist via `20260823120000_activity_assignment_honest_score.sql`, and a completed run is displayed from what was STORED, so a version-1 row is never silently re-scored under version-2 rules. `completeAssignment` degrades to the bare completion if the columns are not there yet: closing the run matters more than the audit trail for its denominator.
+
 **Moves:** Durability 84 → 92 · Correctness 68 → 82.
 
 ---

@@ -82,3 +82,51 @@ export function reconstructProgress(
 
   return { verdicts, responses: text, resolvedCount, pendingAttempts, pendingText };
 }
+
+/* ------------------------------------------------------------------ *
+ * Scoring
+ *
+ * A null verdict means the Coach could not be reached. It is not a wrong
+ * answer, and it used to be scored as one: the weighted sum divided by the item
+ * COUNT, so an item nobody judged was arithmetically identical to an item the
+ * student got wrong. A student whose network dropped on question nine was
+ * marked down for it, permanently.
+ *
+ * The denominator is now the number of items that actually got a verdict, and
+ * the parts are carried separately so the screen can say which denominator it
+ * used rather than presenting a percentage and hoping.
+ * ------------------------------------------------------------------ */
+
+const VERDICT_WEIGHT: Record<Verdict, number> = { correct: 1, partial: 0.5, incorrect: 0 };
+
+export interface RunScore {
+  /** Weighted sum over the judged items. */
+  numerator: number;
+  /** How many items reached a verdict, right or wrong. */
+  judged: number;
+  /** How many items the run contained. */
+  total: number;
+  /**
+   * Percentage over the judged items, or null when nothing was judged at all.
+   * Null is the honest answer there: returning 0 would repeat the false
+   * judgement this function exists to remove, and it renders as "not scored".
+   */
+  percent: number | null;
+}
+
+/** The run's score, with the denominator it was computed over kept in view. */
+export function scoreFor(verdicts: Record<number, Verdict | null>, total: number): RunScore {
+  let numerator = 0;
+  let judged = 0;
+  for (const verdict of Object.values(verdicts)) {
+    if (!verdict) continue; // the Coach never answered: not a zero, not counted
+    numerator += VERDICT_WEIGHT[verdict] ?? 0;
+    judged += 1;
+  }
+  return {
+    numerator,
+    judged,
+    total,
+    percent: judged === 0 ? null : Math.round((numerator / judged) * 100),
+  };
+}

@@ -91,6 +91,30 @@ describe("what the item writes to the attempt log", () => {
     expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ attemptNo: 2 }));
   });
 
+  // A Coach outage used to render as a red "Not yet" over an answer nobody had
+  // read, and then score it as a zero for the rest of time.
+  it("shows a neutral not-checked state rather than a verdict when the Coach fails", async () => {
+    invoke.mockResolvedValue({ data: null, error: { message: "down" } });
+    renderItem();
+    await submit("If it is not refueled, the beacon goes dark.");
+    expect(await screen.findByText("Not checked")).toBeInTheDocument();
+    expect(screen.queryByText("Not yet")).not.toBeInTheDocument();
+  });
+
+  it("ends the item on an outage rather than offering a retry it cannot judge", async () => {
+    invoke.mockResolvedValue({ data: null, error: { message: "down" } });
+    const { onRecord } = renderItem();
+    await submit("anything");
+    // Resolved and revealed: the student is never stuck waiting on a Coach that
+    // is not answering, and there is nothing left to submit.
+    expect(screen.queryByRole("button", { name: /show answer/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /try again/i })).not.toBeInTheDocument();
+    expect(screen.getByText("Credited answer")).toBeInTheDocument();
+    for (const call of onRecord.mock.calls) {
+      expect(call[0].verdict).toBeNull();
+    }
+  });
+
   it("records the failed attempt with no verdict when the Coach is unreachable", async () => {
     invoke.mockResolvedValue({ data: null, error: { message: "down" } });
     const { onRecord, onResolved } = renderItem();
