@@ -25,6 +25,7 @@ import {
   NOTE_TYPES,
 } from "@/components/classroom/classroomData";
 import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
+import { supabase } from "@/integrations/supabase/client";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
 import { resolveStudentBookingCta } from "@/lib/studentBookingCta";
