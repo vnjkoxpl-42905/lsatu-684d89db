@@ -1,97 +1,188 @@
-# Plan Review Log: Native Single Session booking page
+# Plan Review Log: Conditional Rephrase (The Switchyard) — build plan to 100
 
-Act 1 (grill-with-docs) complete — plan locked, CONTEXT.md (Booking) created, ADR 0005 recorded, CONTEXT-MAP updated. MAX_ROUNDS=5.
+Started 2026-08-23, session start. MAX_ROUNDS=1.
+Plan under review: `docs/plans/2026-08-22-conditional-rephrase-build-plan.md`, copied to `PLAN.md` for the review.
+Source audit: `docs/audits/conditional-rephrase-activity-audit-2026-08-22.md` (graded 72/100).
 
-## Round 1 — Codex (gpt-5.6-sol, read-only)
+Reviewer: Codex CLI 0.146.0, model `gpt-5.6-sol`, `model_reasoning_effort=high` (overridden up from the config default of `low` because a single round makes critique depth the whole value). Sandbox: read-only, enforced explicitly.
+Roles: Codex is a read-only critic. Claude implements. No code is written during the loop.
 
-VERDICT: REVISE. 17 findings; full text preserved below.
+## Round 1 — Codex
 
-1. CRITICAL — Cal.com stays live and cannot see a database Hold; Cal can book the held slot; finalization then fails the FreeBusy check. Fix: retire the Cal link at launch or create a tentative Google event per Hold.
-2. CRITICAL — the promised cross-table exclusion constraint cannot exist in Postgres (single-table only; no now() in predicates). Fix: one occupancy table or one slot-claim RPC + expiry sweeper.
-3. CRITICAL — the synthetic 1-credit Booking Pass violates the domain (root glossary: single session "needs no booking pass") and the schema (one_resumable_pass_per_student unique index; token_hash/created_by required). Fix: first-class standalone booking record.
-4. CRITICAL — 2:10/3:20 starts violate the redemption slot policy (:00/:30) and the ±15-min padded exclusion range makes adjacent 70-min slots conflict. Fix: offer-aware SQL policy.
-5. CRITICAL — plan both pre-creates a redemption and calls bookSession (which creates its own); with Holds as busy, bookSession would reject its own Hold. Fix: dedicated atomic finalize RPC.
-6. HIGH — Hold + Stripe Checkout creation is not atomic; needs a saga with idempotency keys, CAS transitions, recovery sweeps.
-7. HIGH — expiry alignment does not remove the late-payment race (paid at T-ε, webhook after expiry). Needs arbitration + auto-refund path for paid-but-unconvertible.
-8. HIGH — cancel_url is browser navigation; the Checkout stays payable. Release only after the backend expires the Stripe session.
-9. HIGH — webhook not hardened for a money boundary (2xx before durable commit, unbounded body, single-sig parse, no payment_status/amount/currency/mode/livemode validation).
-10. HIGH — retries can permanently skip calendar/email side effects; needs per-step state + reconciler coverage.
-11. HIGH — unverified email match must not attach a public purchase to an account (paid data injection). Keep guest-owned unless authenticated.
-12. HIGH — existing cancellation RPC restores credit/reactivates passes; single sessions need a non-credit cancellation path with cutoff semantics.
-13. HIGH — booking_offers.provider CHECK only allows stripe|calcom; add a native provider honestly, keep legacy Cal mapping.
-14. MEDIUM — abuse/PII underspecified: hold caps, guest caps, RLS, retention.
-15. MEDIUM — no real state machine for confirmation/observability; define checkout_open → paid_finalizing → booked | expired | manual_attention with alerts and truthful UI.
-16. MEDIUM — reuse existing scheduler primitives (CalendlyBookingCard) instead of a second calendar implementation; proof list missing double-submit/reload/stale-slot/back-from-checkout/a11y/viewports.
-17. MEDIUM — domain-language conflicts with the root glossary ("one-off" is an avoided term; Booking Pass ≠ wallet; $45/hour vs $45/70min).
+_Model `gpt-5.6-sol`, reasoning effort high, read-only. Thread `01a02ccc-2691-73d3-b700-28c5aff233aa`._
 
-### Claude's response (Round 1)
+The plan is not safe to implement as written. Stage 2 can assign false verdicts to credited answers, Stage 3 has no coherent persistence model, Stage 4 cannot represent the full bank, and Stage 1’s route inventory is incomplete.
 
-Accepted 1 (tentative GCal event per Hold — also closes cross-engine blocking through the channel every engine already reads), 2 (single claim RPC + advisory lock + sweeper; in-table exclusion for holds), 3+4+5+12 (model pivot: `single_session_bookings` is a first-class record that is BOTH Hold and booking via a status lifecycle; no pass, no redemption; its own SQL policy; its own non-credit cancellation), 6 (explicit saga), 7 (completion-wins arbitration + automatic refund for paid-but-unconvertible — the one place refund automation now exists), 8 (backend-expire before release), 9 (full webhook hardening list), 10 (per-side-effect state + reconciler), 13 (provider 'native' migration, legacy row retained), 15 (state machine + health), 16 (extract/parameterize existing primitives; expanded proof list), 17 (glossary reconciled to root; "$45 flat for the 70-minute session" per live Cal config — the root glossary's "per hour" framing flagged to Joshua rather than silently rewritten).
+## 1. Blocker: Stage 2 is not a sound grader
 
-Partially accepted 11: bookings are guest-owned; attachment to a student account happens only via an authenticated session at booking time (JWT), never by unverified email match. Teacher surfaces list single sessions by email (service-role only) — that is operator visibility, not account data injection.
+The central claim is WRONG. `parseRouting()` is a display parser for one authored format, not a semantic free-text parser. It accepts only `If X, then Y`, including the comma and the word “then”; the rubric explicitly allows free wording and either logical direction. [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:26) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:10)
 
-Partially accepted 14: hold caps (per-IP, per-email, global), guest cap + normalization, service-role RLS, 30-day PII purge on terminal non-booked rows — all in. CAPTCHA/bot-suite declined for v1: the $45 payment wall is the effective rate limiter, and the caps bound the damage of a hold-exhaustion attempt; revisit if abuse is observed.
+Concrete failures:
 
-## Round 2 — Codex (same session)
+- An exact credited contrapositive can be marked `partial: reversal`. Item 1’s second credited answer is `If not B, then not A`. Compared against the first answer’s `A → B`, `diagnose()` sees the clauses crossed and returns reversal before checking polarity. That means an answer copied verbatim from `credited_answers[1]` receives a false verdict. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:42) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:187)
 
-VERDICT: REVISE. Resolved: first-class record, SQL-authoritative policy, authenticated-only attachment, non-credit cancellation, Stripe-expire-before-release, payment validation, RLS, PII cleanup, scheduler reuse, truthful confirmation states. Remaining/new:
+- Item 48 is biconditional and explicitly credits the converse. A student writing “If every fixture is shielded, then certification is granted” would again look like a reversal to `diagnose()`, despite the authored explanation saying that direction is credited. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:510) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:194)
 
-1. CRITICAL — advisory lock asymmetric: package redeem RPC never takes it nor checks the new table.
-2. CRITICAL — `draft` doesn't occupy the slot; exclusion predicate omits it.
-3. CRITICAL — `expired → paid_finalizing` arbitration self-detonates on the exclusion constraint when the slot was retaken.
-4. CRITICAL — money strands between the webhook's two DB calls; needs one atomic RPC or a leased resumer.
-5. CRITICAL — refunds have no durable lifecycle (state, refund id, attempts, retry worker).
-6. HIGH — Stripe-create crash leaves an unidentifiable session; sweeper must replay create with the same idempotency key.
-7. HIGH — exact now+30min expires_at can dip under Stripe's floor; request 31+ and store Stripe's returned value.
-8. HIGH — public token model undefined beyond cancel; needs purpose-bound hashed expiring tokens + exact routes/DTOs.
-9. HIGH — hold DoS still free; first-x-forwarded-for is spoofable; needs platform IP source, atomic caps in the RPC, Turnstile.
-10. HIGH — claim RPC checks mirrors, not live FreeBusy; tentative-event insert doesn't detect overlap; fail closed.
-11. HIGH — student/Classroom/Schedule surfaces read only redemptions; needs a source-discriminated unified booking DTO.
-12. HIGH — fixed email/gcal state columns can't represent multiple notifications; needs an outbox.
-13. HIGH — offer id cutover: legacy row owns pk `single-session` + historical FKs; needs stable ids and a safe cutover.
-14. MEDIUM — sweeper/reconciler have no deployment contract (cron install, heartbeats, alerts).
-15. MEDIUM — root brain glossary still says "Stripe-linked Cal.com link" and "$45 per hour".
+- Items 46 and 47 encode “not both,” where either direction is valid and both directions are authored. The same generic reversal rule would falsely penalize the second direction. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:489) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:499)
 
-### Claude's response (Round 2)
+- A student who follows the displayed instruction and writes both sentences in one response is mis-parsed. The regex takes everything after the first `then` as one `thenClause`; negation in the second sentence can then produce a false `dropped-negation` diagnosis against an otherwise correct answer. `parseRouting()` has no sentence splitting or two-routing representation. [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:26) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:68) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:18)
 
-Accepted 1 (one shared advisory-lock key — normalized slot-window bucket — taken by the native claim RPC, `redeem_booking_pass_v2`, and the arbitration RPC; each checks both occupancy tables in-transaction), 2 (lifecycle simplified; `draft` occupies: exclusion covers draft/checkout_open/booked, and the claim RPC sweeps stale rows for the window inside its own transaction first), 3+4 (states collapse: the webhook calls ONE atomic `finalize_single_session_payment` RPC that locks the slot key, persists payment facts, and chooses `booked` or non-occupying `refund_pending` — `paid_finalizing` is gone; 2xx only after commit; Stripe redelivery is the resumer), 5 (refund lifecycle `refund_pending → refunded | refund_failed` with stripe_refund_id, attempts, idempotency key, worker retry, alert on failure; apology email only after refund succeeds), 6 (sweeper replays checkout create with the row-id idempotency key to recover, attach, then expire), 7 (request 35 min, store Stripe's returned expires_at as authoritative; Hold expiry = that value), 8 (purpose-bound hashed tokens: booking token for status/abandon minted at claim, cancel token minted at booked, both expiring; routes + redacted DTOs specified; Meet link only on booked status with valid token), 9 (platform-authenticated IP, hashed storage, caps enforced atomically inside the claim RPC, Cloudflare Turnstile before any occupying Hold — accepted as v1 scope, invisible mode), 10 (fresh FreeBusy immediately before claim; tentative-event create failure fails closed — claim released, no checkout), 11 (source-discriminated unified booking DTO; Schedule, Classroom home, recent activity, teacher dossier updated — explicit workstream), 12 (outbox keyed booking/action/recipient with leases, attempts, idempotency keys; calendar promote/delete are outbox actions too), 13 (new `single-session-native` offer id; legacy `single-session` row kept for history + webhook mapping, deactivated in UI via explicit flag; BookingOfferHub updated; no FK rewrite), 14 (cron install + auth in a migration, heartbeat table, stale-worker alert in health, deployment verification in proof), 15 (root glossary amended NOW in the brain — Single session entry no longer names Cal.com, price stated as $45 per session (70 minutes); noted to Joshua).
+- Correct forms such as `If X, Y`, `Y if X`, `Whenever X, Y`, `X → Y`, or a shorthand contrapositive are rejected. Even the bank contains accepted `If X, Y` answers without “then” and shorthand such as “Tank fine, pumps cycled.” [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:62) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:259)
 
-Nothing rejected this round.
+- Ordinary semantic paraphrases parse but do not match. `differs()` requires the normalized token sequence to be identical; it has no stemming, synonym handling, reference resolution, or tense normalization. “Fans are running all night” versus “fans run overnight” therefore falls back despite being permitted by the rubric. [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:152) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:215)
 
-## Round 3 — Codex (same session)
+- `diagnose()` can award `partial` to a substantially wrong answer. For item 18, “If the generator is refueled by dusk, then bananas dance” gets an exact content alignment on the first clause, reaches `straight >= 1`, and returns `dropped-negation` before noticing that the outcome is unrelated. The authored rubric says an unsupported relationship is `incorrect`. [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:187) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:199) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:15)
 
-VERDICT: REVISE. 18 findings: (1) webhook replay after `booked` could route to refund; (2) event dedup not atomic with finalization; (3) refund job absent from schema; (4) occupying `draft` had no expiry clock; (5) Stripe replay not byte-equivalent (recomputed expires_at breaks idempotency); (6) outbox lacks causal order — promote could resurrect a cancelled booking; (7) confirmation email could precede Meet creation; (8) tentative-event timeout/orphan recovery undefined; (9) finalize could conflict with its own tentative event / miss a Cal booking not yet mirrored; (10) status-token transport & lifetime contradictory; (11) plaintext cancel-token delivery unspecified; (12) DTO migration missed BookingView.tsx + CalendlyBookingCard.tsx; (13) offer cutover strands student_booking_offers overrides; (14) package webhook branch not hardened; (15) refund creation ≠ completion; (16) worker secret not deployable as stated; (17) retention missed auxiliary PII stores; (18) two inaccurate claims (glossary; `active` column already exists).
+The proposed API is also incomplete. `diagnose() === null` means both “clean” and “too different to classify”; the existing tests explicitly pin both meanings. The proposed `LocalVerdict` does not explain how a parseable but unclassifiable answer becomes `unparsed`. [faults.test.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/faults.test.ts:13) [faults.test.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/faults.test.ts:42) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:176)
 
-### Claude's response (Round 3)
+The model-call savings claim is internally contradictory. Stage 2 says correct and partial answers still call the model for prose, so it does not produce “60-70% fewer model calls.” It merely changes the prompt and makes the call asynchronous. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:189) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:172)
 
-All 18 accepted; nothing rejected. Structural changes: finalize RPC claims the webhook event and finalizes in one transaction, business-object-idempotent, with `booked → refund_pending` prohibited (1,2); `stripe_refund` becomes an outbox action with lease/attempts/provider-status and `refunded` only on provider `succeeded` via refund webhooks + polling backstop (3,15); `draft_expires_at` at claim, superseded by Stripe's returned value (4); `checkout_request_fingerprint` persisted before the first Stripe call so sweeper replays are byte-equivalent (5); outbox rows carry status/lifecycle_version preconditions, incompatible pending work is superseded atomically, and `gcal_promote` chains the confirmation emails after persisting meet_url (6,7); deterministic-id adoption on timeout/409 + derive-or-search deletion for every terminal draft (8); finalization runs an event-aware live-calendar check excluding the booking's own tentative event, with a forced-sliver race test (9); booking token travels in the success_url/cancel_url we compose, valid 24 h, abandon authority bounded by `checkout_open` status (10); plaintext cancel token exists only in the protected outbox payload, purged on delivery (11); BookingView.tsx + CalendlyBookingCard.tsx + tests named in the DTO workstream, unified DTO becomes the sole info contract (12); legacy overrides migrated/aliased to `single-session-native` in the same migration with arrangement tests (13); immutable-payment validation + fail-closed persistence extended to the package branch (14); dedicated least-privilege worker secret from function secrets, rotation + fail-closed + post-deploy cron assertion (16); retention extended to outbox payloads, redacted commerce-event projections, token hashes, rotating-key ip HMAC, PII-free logs (17); corrected the log's overstated glossary claim (the glossary rightly says Cal is today's link) and the migration now uses the existing `active` column (18).
+Safer design: use a local fast path only for high-confidence exact matches against every credited logical direction. Send everything else, especially all partial classifications, to the Coach. Run `diagnose()` in shadow mode and record disagreements before making it authoritative.
 
-## Round 4 — Codex (same session)
+## 2. Blocker: Stage 4 cannot model several bank items
 
-VERDICT: REVISE. 9 findings: (1) finalization could conflict with its own mirrored tentative event in the SQL check; (2) the Google check cannot be transactional with Postgres — the "closed race" claim was overstated; (3) the plaintext cancel token had no durable home until gcal_promote succeeded; (4) version preconditions don't fence an already-in-flight side effect; (5) the checkout fingerprint stores the plaintext booking token, contradicting hash-only retention; (6) two saga recovery branches undefined (no-fingerprint drafts; expiry winning mid-Stripe-create); (7) a static migration can't read function secrets — cron deploy is two-stage; (8) guest-to-dossier association ambiguous; (9) legacy override migration lacked field-level semantics (external url_override).
+The negation-stripping premise is WRONG. `isNegated()` returns only a boolean. It does not return a matched span, and generic `no + noun` is detected through a separate regex outside `NEGATIONS`. There is no existing “same operation” that can be reused to derive `core`. [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:30) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:52) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:269)
 
-### Claude's response (Round 4)
+Bank-specific breakage includes:
 
-All 9 accepted; nothing rejected. (1) every occupancy check — SQL mirror and live Calendar — excludes the booking's own gcal_event_id; tentative events stamped with the booking id. (2) live Google checks are now explicitly pre-RPC observations; the milliseconds residual race is accepted and monitored (reconciler double-booking detection + alert to Joshua) while Cal stays live, and retiring Cal ends it. (3) finalization enqueues blocked confirmation rows carrying the encrypted token; promote activates them; bounded promote failure activates them anyway with truthful "Meet link to follow" copy. (4) per-booking advisory lock around each side-effect call + post-call lifecycle_version re-check with immediate compensation. (5) fingerprint stored envelope-encrypted, purged on attachment/terminal. (6) no-fingerprint drafts expire directly (no Stripe call can predate the fingerprint); failed attachment CAS immediately expires the Stripe session; terminal-with-fingerprint-no-session rows swept by replay-then-expire. (7) two-stage deployment contract spelled out (migration, then Vault/Management-API secret provisioning + cron install, then heartbeat assertion), matching the repo's existing email-cron pattern. (8) dossier precedence: verified user_id only; labeled operator-only unverified email suggestions; unmatched stay on the global admin list. (9) field-level override migration: enabled-state verbatim, native-relative URLs carry, external URLs stay on the legacy row and are emitted for manual review.
+- `cannot yet climb` becomes something like `cubs yet climb`; `cannot be amended` becomes `bids be amended`. Removing the negative modal does not recover the positive modal. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:339) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:369)
 
-## Round 5 — Codex (same session, FINAL — MAX_ROUNDS reached)
+- Item 46’s clause is the ellipsis `the string quartet is not`. Stripping `is not` leaves no predicate, so neither `[string quartet]` nor `NOT [string quartet]` is a meaningful proposition. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:489)
 
-VERDICT: REVISE, reduced to 2 findings: (1) fingerprint purge-on-terminal contradicts the sweeper's terminal replay-and-expire recovery; (2) refund_failed had no transition to refunded when late authoritative Stripe success arrives, and unknown outcomes were conflated with confirmed failures.
+- Item 59 uses `no trace of taint`. The generic `no` detection has no matched `NEGATIONS` span for the proposed stripping algorithm. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:619) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:53)
 
-### Claude's response (Round 5) — resolution at cap
+- Item 61 uses lexical negation, `lack impulsive onsets`, which `isNegated()` treats as positive. The proposed model therefore does not actually separate this clause’s content from polarity. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:639) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:30)
 
-Both accepted and folded in: the fingerprint is purged only on durable Stripe attachment or durably recorded expiry/confirmed absence (never on terminal status alone); refund_failed is reserved for confirmed provider failure, unknown outcomes stay refund_pending with manual-attention alerts, and verified Stripe success moves any refund-branch state to refunded.
+- Item 62 is two linked conditionals. `parseRouting()` incorrectly turns the whole second conditional into part of one `thenClause`; swapping two capsules cannot express the authored chained contrapositive. [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:649) [routing.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.ts:68)
 
-## Resolution
+The proof is unbuildable as written. The plan acknowledges that only 13 second answers parse as `If X, then Y`, then proposes testing all 62 derived flips against the authored contrapositive’s two polarities without defining a parser or oracle for the other 49. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:23) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:292)
 
-MAX_ROUNDS=5 reached without a formal APPROVED. Honest state: no open disagreement remains between the models — Round 5's two findings were accepted and incorporated; they simply have not been re-verified by Codex. Trajectory: 17 findings → 15 → 18 → 9 → 2, with the plan restructured twice (record model, payment lifecycle) and hardened throughout. Handed to Joshua for sign-off with that caveat stated plainly.
+Calling the rails a diagram does not resolve scope. `NOT [both X and Y]`, `NOT [X rather than Y]`, and `NOT [lack X]` require explicit proposition boundaries. The bank needs a human-reviewed logical AST or authored display atoms, including an array of edges for item 62. That conflicts with the plan’s promise not to touch item content. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:7) [conditional-rephrase.json](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/content/conditional-rephrase.json:589)
 
-## Act 3 — Build
+## 3. High: Stage 1’s route inventory is incomplete
 
-### Round 1 — Codex build (thread 01a00d42-729f-7861-869d-19e7015909d9, workspace-write sandbox)
+Removing the catch-all provider without additional wrappers breaks these live paths:
 
-Implemented the full spec in one round: 3 migrations (schema + lifecycle RPCs + workers/offers), single-session public function, outbox + sweeper workers, hardened webhook (all branches), tentative-event machinery, unified booking DTO across student/teacher surfaces, /book/session page with extracted calendar primitives, email templates, ops runbook (docs/ops/native-single-session-workers.md), and the SQL + Vitest test suites. Reported proof: typecheck + 1576 tests pass, build passes, deno check passes for new functions. Honest deviations reported: SQL concurrency suite needs a real Postgres (sandbox shmget denied), browser viewport verification blocked in sandbox, deno check of the webhook blocked offline by npm:stripe, no deployment/secrets/live testing performed.
+- `/drill`, through `DrillContent`. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:405) [Drill.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/pages/Drill.tsx:122)
+- `/classroom/drill` when its launcher panels mount. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:469) [AcademyMainhub.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/pages/AcademyMainhub.tsx:149)
+- `/journal/:qid`. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:495) [JournalViews.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/JournalViews.tsx:236)
+- `/flagged/:qid`. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:487) [FlaggedViews.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/components/classroom/FlaggedViews.tsx:251)
+- `/teacher/library/guided-drills`. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:625) [DeskLibrarySurface.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/pages/teacher/desk/DeskLibrarySurface.tsx:109) [DeskLibraryGuidedDrillsSurface.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/pages/teacher/desk/library/DeskLibraryGuidedDrillsSurface.tsx:21)
+- `/teacher/library/homework/:setId`, through `QuestionMultiPicker`. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:620) [TeacherHomeworkDetail.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/pages/teacher/library/TeacherHomeworkDetail.tsx:190) [QuestionMultiPicker.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/components/homework/QuestionMultiPicker.tsx:30)
+- `/bootcamp/principle-flaw` when the Practice tab mounts. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:777) [Practice.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/bootcamps/principle-flaw/components/Practice.tsx:210)
+- `/bootcamp/fallacy-flaw`, including its initial Home and Guided Drills surfaces. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:784) [Home.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/bootcamps/fallacy-flaw-v2/components/Home.tsx:137) [GuidedDrills.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/bootcamps/fallacy-flaw-v2/components/GuidedDrills.tsx:24)
+- `/bootcamp/intro-to-lr/hard-sentences/capstone` when its explanation modal opens. `LRQuestionModal` calls the bank hook even in inline mode. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:772) [routes.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/bootcamps/main-conclusion/routes.tsx:320) [LRQuestionModal.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/components/drill/shared/LRQuestionModal.tsx:71)
 
-### Claude's verdict (Round 1)
+The admin homework, admin guided-drill, and two public guided-drill routes are already individually wrapped. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:293) [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:342) [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:380)
 
-Verified independently: `npm run typecheck && npm run test` re-run by Claude — clean, 169 files / 1576 passed, 1 skipped; `npm run test:booking:edge` 2/2. Diff read across the money paths: schema (lifecycle trigger enforces the exact reviewed transition graph incl. booked→refund_pending prohibition and refund_failed→refunded repair; occupying-state exclusion; service-role-only RLS), lifecycle RPCs (symmetric advisory lock in claim/finalize/redeem; atomic webhook-event claim inside finalize; business-object idempotency; own-event exclusion; caps in-RPC; guest normalization), public function (Turnstile, HMAC platform IP, body cap, redacted DTOs, fail-closed tentative event with adoption, envelope-encrypted fingerprint, Stripe-expire-before-abandon), webhook (official SDK verification, livemode/amount/currency/mode validation on every branch incl. packages against live payment-link line items, refund.* consumption, no raw payloads), sweeper (all recovery branches incl. provider-authoritative absence search; never expires paid sessions), PII purge (all four stores), route order, config.toml. No spec violations found; zero fix rounds needed. Outstanding items are environmental, not code: run the SQL suite on real Postgres, deploy-time secret/cron provisioning, Stripe test-mode E2E, live viewport verification.
+The claimed “one nested layout route” is not enough. `/activities` shares the persistent `ClassroomLayout` tree with several consumers. Wrapping that whole tree reloads the bank on `/activities`; selectively wrapping its children requires additional pathless layouts, while full-screen and bootcamp consumers live elsewhere. [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:454) [App.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/App.tsx:522)
+
+## 4. Blocker: Stage 3 has no coherent scoring or replay model
+
+The schema stores only one percentage. It has no judged count, total count, or scoring-version column, so the proposed denominator cannot be displayed or audited later. [20260614205124…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260614205124_c7587ecf-bf12-4d97-93aa-071befbd42e4.sql:60)
+
+Existing completed assignments keep their stored score and the runner deliberately displays that stored value. The Activity card also displays only a bare percentage. Old total-denominator scores and new judged-only scores would therefore be indistinguishable. [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:330) [ActivityCard.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityCard.tsx:78)
+
+The replay proposal is contradictory:
+
+- Today a null verdict resolves the item. [progress.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/progress.ts:62)
+- The last item completes the assignment regardless of whether its verdict was null. [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:283)
+- A completed assignment opens directly to the summary before any retry branch. [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:192)
+
+Therefore “offer it again on next open” is false unless completion semantics change. If null becomes unresolved but the student is allowed to continue, the replay algorithm’s resolved-prefix invariant is broken, and later answered rows are ignored when replay stops at the earlier unjudged item. [progress.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/progress.ts:3) [progress.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/progress.ts:58)
+
+The plan also does not define the score for zero judged items. Returning `0%` would repeat the same false judgment it is trying to remove. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:225)
+
+Required decision: either keep the assignment `in_progress` until all items are judged, or persist numerator, judged denominator, total items, and scoring version. A bare percentage is insufficient.
+
+## 5. High: the sequence misses hard dependencies
+
+- Stage 2 cannot precede the contrapositive-credit decision. The plan says Stage 2 must know that answer, but puts the decision’s content update in Stage 11 after Stage 2. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:199) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:387) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:455)
+
+- Stage 2b conflicts with first-attempt partials. The runner considers a world “answered” only after `onResolved`; a first partial is deliberately not resolved because the student gets another attempt. Routing immediately therefore either removes the retry or requires a new state distinct from `resolved`. [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:121) [ActivityItemView.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityItemView.tsx:92)
+
+- Stage 4’s 1.2-second flip conflicts with Next being available as soon as the item resolves. Stage 6’s Enter-to-continue makes skipping the animation and pending prose even easier. [AnswerPanel.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/AnswerPanel.tsx:101) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:284)
+
+- Stage 5’s outbox needs idempotency and replay ordering before Stage 10 parallelizes loading. The response table has no uniqueness constraint or client idempotency key, so retries can insert duplicate attempts. [20260614205124…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260614205124_c7587ecf-bf12-4d97-93aa-071befbd42e4.sql:150) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:302)
+
+- Stage 11 says a same-shaped migration will update instructions and resnapshot unstarted assignments, but the referenced migration copies only `items`. Updated task/rubric instructions would remain stale in existing unstarted snapshots. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:389) [20260822190000…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260822190000_conditional_rephrase_ladder.sql:666)
+
+## 6. High: deployment, RLS, and trust are under-specified
+
+Stage 0’s command does not deploy a migration. `safe-push.sh` typechecks, fetches, merges, and runs `git push`; it never applies SQL or deploys an Edge Function. This repo’s own deployment documentation says Lovable must apply production migrations and functions separately. [safe-push.sh](/Users/joshuaf/ai-os/projects/lsatu/.claude/safe-push.sh:12) [PHASE6-LOVABLE-DEPLOY.md](/Users/joshuaf/ai-os/projects/lsatu/docs/implementation-plans/PHASE6-LOVABLE-DEPLOY.md:1)
+
+Calling local judging “authoritative” also ignores the current trust boundary. Students may update their own assignment rows, and the immutability trigger protects snapshot fields but not `score`, `status`, or completion timestamps. A modified client can assign itself any score. [20260614205124…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260614205124_c7587ecf-bf12-4d97-93aa-071befbd42e4.sql:89) [20260614205124…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260614205124_c7587ecf-bf12-4d97-93aa-071befbd42e4.sql:116)
+
+The response INSERT policy checks only that `student_id = auth.uid()`; it does not verify that the referenced assignment belongs to that student. [20260614205124…sql](/Users/joshuaf/ai-os/projects/lsatu/supabase/migrations/20260614205124_c7587ecf-bf12-4d97-93aa-071befbd42e4.sql:177)
+
+The proposed `decidedVerdict` and `fault` are caller-controlled fields. The plan does not require enum validation or restrict that branch to Conditional Rephrase. Interpolating an unchecked fault into the system prompt also creates a prompt-injection path. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:191) [activity-coach/index.ts](/Users/joshuaf/ai-os/projects/lsatu/supabase/functions/activity-coach/index.ts:73)
+
+Stage 10’s suggestion to “drop” `auth.getUser()` is not a harmless performance tweak. That call is the function’s authentication check; removing it without replacement admits any request carrying an arbitrary Authorization header. [activity-coach/index.ts](/Users/joshuaf/ai-os/projects/lsatu/supabase/functions/activity-coach/index.ts:63)
+
+## 7. High: tests and observability would not catch the dangerous failures
+
+The Stage 2 proof is self-fulfilling: canonical answer, mechanically reversed answer, and mechanically stripped negation. It omits alternative credited answers, biconditionals, not-both items, multi-sentence submissions, paraphrases, missing “then,” shorthand, and item 62’s chain. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:209) [routing.test.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/worlds/switchyard/routing.test.ts:11)
+
+The feature-only Vitest gate does not validate the `App.tsx` provider move, Edge Function behavior, migration/backfill, or authenticated production runner. The audit explicitly says the signed-in runner was not exercised. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:463) [conditional-rephrase-activity-audit-2026-08-22.md](/Users/joshuaf/ai-os/projects/lsatu/docs/audits/conditional-rephrase-activity-audit-2026-08-22.md:31)
+
+The attempt log stores only verdict and response. There is no `judge_source`, parser version, fault, latency, or fallback reason, so a bad local judge cannot be audited or rolled back from production data. [types.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/api/types.ts:96) [activitiesClient.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/api/activitiesClient.ts:69)
+
+The responsive proof is below repository requirements. The plan checks one phone size and two desktop sizes; the project requires narrow, mid, wide, and sidecar-docked verification. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:351) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:363) [AGENTS.md](/Users/joshuaf/ai-os/projects/lsatu/AGENTS.md:60)
+
+## 8. Additional under-specified stages
+
+- Stage 10’s summary query cannot continue returning `ActivityAssignment`. `hydrateAssignment()` converts a missing `items` field to `[]`, while the card still reads `assignment.items.length`; without a new summary type and card contract, every card will say `0 items`. [activitiesClient.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/api/activitiesClient.ts:17) [ActivityCard.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityCard.tsx:87)
+
+- Streaming is not a one-line addition. The hook uses `supabase.functions.invoke`, while the Edge Function buffers the upstream response, parses complete JSON, and only then returns it. Both client and server protocols must change. [useActivityCoach.ts](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/hooks/useActivityCoach.ts:36) [activity-coach/index.ts](/Users/joshuaf/ai-os/projects/lsatu/supabase/functions/activity-coach/index.ts:189)
+
+- Stage 12’s re-drill path does not currently accept filtered items. `handlePracticeAgain()` merely resets state, and `items` always comes from the full assignment snapshot. [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:96) [ActivityRunner.tsx](/Users/joshuaf/ai-os/projects/lsatu/src/features/activity-centre/components/ActivityRunner.tsx:300)
+
+- Stage 12 has no normalized family key. It proposes aggregating mutable display strings in `category`, including 53 distinct labels, without defining the grouping map, versioning, teacher query, or teacher UI surface. [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:391) [PLAN.md](/Users/joshuaf/ai-os/projects/lsatu/PLAN.md:399)
+
+VERDICT: REVISE
+
+### Claude's response — Round 1
+
+I independently verified the load-bearing claims rather than accepting them. **Every claim I checked held.** The verdict is correct and the plan needed material rework, not touch-ups.
+
+#### Accepted, verified by me, and rewritten in the plan
+
+1. **Stage 2 was unsound. This is the big one.** I traced `diagnose()` by hand on item 1 with the authored contrapositive as the student answer:
+   `straight = 0`, `crossed = 0.8 + 0.75 = 1.55`, so `crossed > straight && crossed >= 1` fires and returns `{kind: "reversal"}`.
+   **A student who types the credited contrapositive verbatim would have been graded `partial: reversal`.** The task field literally asks for that answer. My plan proposed making this authoritative for a graded score, which would have shipped exactly the truthfulness violation Stage 2 claimed to fix. Items 46, 47 and 48 break it the same way: all three author *both* logical directions as credited, and `diagnose()` calls the second one a reversal.
+   Also verified: `"If the generator is refueled by dusk, then bananas dance"` on item 18 hits `straight === 1`, skips the `< 1` bail, and returns `dropped-negation` — a nonsense answer graded `partial`.
+   Stage 2 is rewritten: exact-match fast path against **every** credited direction, `diagnose()` demoted to **shadow mode** with disagreement telemetry before it is ever trusted, everything else to the Coach.
+
+2. **Stage 4's negation-stripping premise was wrong.** I claimed stripping the negation "is the same operation `parseRouting` already performs". It is not: `isNegated()` returns a bare boolean (`routing.ts:52`), and the generic `no + noun` case is a separate regex outside `NEGATIONS`. Verified Codex's bank cases: item 46's clause is the ellipsis `"the string quartet is not"` (strip it and no proposition remains), item 61 uses lexical negation `"lack impulsive onsets"` that `isNegated()` reads as positive, item 59 uses `"no trace of taint"`.
+
+3. **Stage 1's route inventory was incomplete.** Codex enumerated nine consumer routes. Verified the structural objection: `/activities` sits inside the same `ClassroomLayout` tree (`App.tsx:464`) as `/journal/:qid`, `/flagged/:qid` and `/classroom/drill`, which are all bank consumers. My "one nested layout route" is therefore not sufficient.
+
+4. **`safe-push.sh` does not deploy anything.** Read it: typecheck, fetch, merge, `git push origin main`. No SQL applied, no Edge Function deployed. Stage 0 was materially wrong about what pushing accomplishes.
+
+5. **Stage 10's "drop `auth.getUser()`" would have removed authentication.** `activity-coach/index.ts:68` is the auth check, not a performance tax. Correct and important catch; struck from the plan.
+
+6. **The 60-70% model-call saving was internally contradictory.** I said correct and partial answers still call the Coach for prose, then claimed the calls go away. Both cannot be true. Corrected to what it actually buys: latency masking, not call volume.
+
+7. **Stage 3 had no persistence model.** Verified: `activity_assignments` stores one bare `score` percentage. A judged-only denominator is unrepresentable and unauditable, and old and new scores would be indistinguishable. Also verified the replay contradiction: a null verdict resolves the item (`progress.ts:62`), the last item completes the assignment regardless (`ActivityRunner.tsx:283`), and a completed assignment opens straight to the summary (`:192`), so "offer it again on next open" was false as written.
+
+8. **Missed dependencies, all verified:** Stage 2b conflicts with first-attempt partials (a first partial deliberately does not resolve, so `answered` is false and the world cannot route); Stage 11's migration copies only `items`, so updated instructions would stay stale in unstarted snapshots; the response table has no uniqueness constraint, so Stage 5's outbox needs an idempotency key.
+
+9. **My responsive proof was below this repo's own gate.** `AGENTS.md:60` requires narrow, mid, wide **and** sidecar-docked. I specified one phone plus two desktop widths.
+
+#### New finding Codex surfaced that neither the audit nor I caught
+
+**Item 62 is malformed in the yard today, before any change in this plan.** `parseRouting` is non-greedy on the first clause and anchored on the second, so on item 62 it yields
+`THEN = "the flood layer dates to spring; and if the match is trustworthy, then the stratum was sealed"` —
+an entire second conditional stuffed into one capsule. Verified by running the regex. This is a live display defect, filed as finding D.
+
+#### Accepted with corrected attribution
+
+**The trust-boundary finding is real but is not caused by Stage 2.** Verified: students can update their own `activity_assignments` rows (`USING student_id = auth.uid()`), and `activity_item_responses` INSERT checks only `student_id = auth.uid()` without verifying the assignment belongs to that student. But the client **already** computes the score and writes it today (`ActivityRunner.tsx:290`). Codex is right that calling local judging "authoritative" is loose language; it is wrong that Stage 2 introduces the exposure. Logged as pre-existing finding E, not as a Stage 2 blocker.
+
+#### Held, with reason
+
+**"The bank needs a human-reviewed logical AST, which conflicts with the promise not to touch item content."** Correct as analysis, wrong as an objection to the plan. Joshua has explicitly reserved item content for himself and is supplying it. The right response is not to break that constraint but to **scope Stage 4 to what is provably safe without authored structure, and route the rest to him as a content decision.** That is what the revision does. Recorded as a decision for Joshua, not as a plan defect.
+
+#### Outcome
+
+MAX_ROUNDS=1 reached. Verdict stands at **REVISE**. This is not a deadlock: there is no material disagreement left between the two models. The plan was wrong in the ways described, I verified each one, and v2 rewrites Stages 0, 1, 2, 3, 4 and 10 accordingly. What remains open are three product decisions that belong to Joshua and that no amount of further review can settle.
