@@ -34,7 +34,7 @@ import {
   listStudentAssignments,
   listItemResponses,
 } from "@/features/activity-centre/api/activitiesClient";
-import type { ActivityAssignment } from "@/features/activity-centre/api/types";
+import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/types";
 import { localDayISO } from "@/lib/localDate";
 import {
   KIND_LABEL,
@@ -186,7 +186,7 @@ export function useClassroomHome(): {
   // Same key and same fetcher as the todo feed, so this is a cache read rather
   // than a second round trip. The feed flattens activities to a title and a
   // subtitle; the hero needs the authored tagline and the item count too.
-  const { data: activities = [] } = useQuery<ActivityAssignment[]>({
+  const { data: activities = [] } = useQuery<ActivityAssignmentSummary[]>({
     queryKey: ["todo-feed:activity", user?.id],
     enabled: !!user,
     staleTime: 30_000,
@@ -354,7 +354,7 @@ export function useClassroomHome(): {
   const hero = React.useMemo(() => {
     if (!heroRow) return null;
     const started = !heroRow.isNew;
-    const total = heroActivity?.items?.length ?? 0;
+    const total = heroActivity?.item_count ?? 0;
     const answered = responses
       ? new Set(responses.map((response) => response.item_order)).size
       : null;

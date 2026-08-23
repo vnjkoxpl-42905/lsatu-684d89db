@@ -22,6 +22,8 @@ interface ActivityQuestionStackProps {
   resumeAttempts?: number;
   /** What the student had written on the active item when they left. */
   resumeValue?: string;
+  /** Where to cache what they are typing before it is submitted. */
+  draftKeyFor?: (itemOrder: number) => string;
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   onRecord: (args: {
     itemOrder: number;
@@ -49,6 +51,7 @@ export function ActivityQuestionStack({
   activeIndex,
   resumeAttempts = 0,
   resumeValue = "",
+  draftKeyFor,
   onResolved,
   onRecord,
   onNext,
@@ -86,6 +89,7 @@ export function ActivityQuestionStack({
             shadowFault={shadowFault}
             initialAttempts={resumeAttempts}
             initialValue={resumeValue}
+            draftKey={draftKeyFor?.(activeItem.order)}
             isLast={activeIndex === items.length - 1}
             onResolved={onResolved}
             onRecord={onRecord}

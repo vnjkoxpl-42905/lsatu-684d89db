@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getActivity, getStudentAssignment, listStudentAssignments } from "../api/activitiesClient";
-import type { Activity, ActivityAssignment, ActivityStatus } from "../api/types";
+import type { Activity, ActivityAssignment, ActivityAssignmentSummary, ActivityStatus } from "../api/types";
 
 /**
  * Shape an activity DEFINITION into the assignment the runner expects, without
@@ -40,7 +40,7 @@ const STATUS_ORDER: Record<ActivityStatus, number> = {
 /** Student-side list of my activity assignments, sorted by status then recency. */
 export function useStudentActivities() {
   const { user } = useAuth();
-  const [assignments, setAssignments] = useState<ActivityAssignment[]>([]);
+  const [assignments, setAssignments] = useState<ActivityAssignmentSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

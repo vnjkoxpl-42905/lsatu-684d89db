@@ -102,6 +102,42 @@ export interface Activity {
   updated_at: string;
 }
 
+/**
+ * A list row: everything a card draws, and nothing else.
+ *
+ * The list used to select `*`, which carries each assignment's whole `items`
+ * snapshot -- roughly 30KB for Conditional Rephrase alone -- so that a card
+ * could render a title, a status, a score and a count. The count is the only
+ * thing it ever needed from that payload, and the database can do the counting.
+ *
+ * The list and the runner deliberately stop sharing a shape here. They never
+ * needed the same data, and the shared type is what made the waste invisible.
+ */
+export interface ActivityAssignmentSummary {
+  id: string;
+  activity_id: string | null;
+  student_id: string;
+  title: string;
+  subtitle: string | null;
+  status: ActivityStatus;
+  score: number | null;
+  score_numerator?: number | null;
+  score_judged?: number | null;
+  score_total?: number | null;
+  scoring_version?: number | null;
+  /**
+   * Kept, unlike `items`. The Classroom hero draws its authored tagline from
+   * here, and the whole object is a few hundred bytes against the snapshot's
+   * thirty thousand.
+   */
+  instructions: ActivityInstructions;
+  created_at: string;
+  started_at: string | null;
+  completed_at: string | null;
+  /** How many items the run holds. Counted in the database, not shipped. */
+  item_count: number;
+}
+
 /** A row of `activity_assignments` (per-student snapshot). */
 export interface ActivityAssignment {
   id: string;

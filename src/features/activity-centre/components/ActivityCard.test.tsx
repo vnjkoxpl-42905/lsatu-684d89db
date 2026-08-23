@@ -3,16 +3,31 @@ import { describe, expect, it, vi } from "vitest";
 import { SEED_ACTIVITIES, librarySortIndex } from "../content";
 import { slugFromTitle } from "../worlds/registry";
 import { ActivityCard } from "./ActivityCard";
+import type { ActivityAssignmentSummary } from "../api/types";
 
-function asAssignment(a: (typeof SEED_ACTIVITIES)[number], status = "assigned") {
+/**
+ * A list row, which is what the card takes: a count, never the questions. The
+ * old fixture handed it `items` and cast the shape away, so it kept passing
+ * after the card stopped reading them.
+ */
+function asAssignment(
+  a: (typeof SEED_ACTIVITIES)[number],
+  status: ActivityAssignmentSummary["status"] = "assigned",
+): ActivityAssignmentSummary {
   return {
     id: a.slug,
+    activity_id: null,
+    student_id: "student",
     title: a.title,
     subtitle: a.subtitle,
-    items: a.items,
+    instructions: a.instructions,
     status,
     score: null,
-  } as never;
+    created_at: "2026-08-01T00:00:00.000Z",
+    started_at: null,
+    completed_at: null,
+    item_count: a.items.length,
+  };
 }
 
 describe("ActivityCard", () => {

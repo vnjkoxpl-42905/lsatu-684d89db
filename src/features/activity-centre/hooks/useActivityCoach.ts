@@ -30,13 +30,28 @@ export interface JudgeResult {
   error?: string;
 }
 
+/**
+ * How long a student waits before the Coach is treated as unreachable. Long
+ * enough for a slow model call, short enough that nobody sits looking at a
+ * spinner wondering whether the page is broken.
+ */
+const COACH_TIMEOUT_MS = 12_000;
+
 export function useActivityCoach() {
   const [judging, setJudging] = useState(false);
 
   const judge = useCallback(async ({ item, studentResponse, attemptNo, coach, ideas }: JudgeArgs): Promise<JudgeResult> => {
     setJudging(true);
+    // A hung gateway used to leave the textarea disabled and the spinner
+    // spinning with no way out: no timeout, no abort, nothing for the student
+    // to do but reload and lose the answer. The item now falls through to the
+    // Coach-unavailable path, which reveals the credited answer and records the
+    // attempt unjudged.
+    const abort = new AbortController();
+    const timeout = setTimeout(() => abort.abort(), COACH_TIMEOUT_MS);
     try {
       const { data, error } = await supabase.functions.invoke("activity-coach", {
+        signal: abort.signal,
         body: {
           statement: item.prompt,
           studentResponse,
@@ -68,9 +83,14 @@ export function useActivityCoach() {
 
       return { ok: true, verdict: { verdict: data.verdict, feedback: data.feedback ?? "", covered } };
     } catch (e) {
+      if (abort.signal.aborted) {
+        console.error("[activity-coach] timed out", { ms: COACH_TIMEOUT_MS });
+        return { ok: false, error: "Coach timed out" };
+      }
       console.error("[activity-coach] threw", e);
       return { ok: false, error: e instanceof Error ? e.message : "Coach error" };
     } finally {
+      clearTimeout(timeout);
       setJudging(false);
     }
   }, []);

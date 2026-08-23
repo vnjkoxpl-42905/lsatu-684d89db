@@ -1,16 +1,21 @@
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import type { ActivityAssignment } from "../api/types";
+import type { ActivityAssignmentSummary } from "../api/types";
 import { slugFromTitle, worldForTitle } from "../worlds/registry";
 import "./activity-scenes.css";
 
-const STATUS_LABEL: Record<ActivityAssignment["status"], string> = {
+const STATUS_LABEL: Record<ActivityAssignmentSummary["status"], string> = {
   assigned: "Not started",
   in_progress: "In progress",
   completed: "Completed",
 };
 
 interface ActivityCardProps {
-  assignment: ActivityAssignment;
+  /**
+   * A list row, not a run. The card draws a title, a status, a score and a
+   * count; it never needed the question snapshot, and taking it off this type
+   * is what keeps the narrowed query honest.
+   */
+  assignment: ActivityAssignmentSummary;
   /** Position in the teaching progression, 1-based. */
   position: number;
   onOpen: () => void;
@@ -84,7 +89,7 @@ export function ActivityCard({ assignment, position, onOpen }: ActivityCardProps
         ) : (
           <span className="text-muted-foreground">{STATUS_LABEL[assignment.status]}</span>
         )}
-        <span className="text-muted-foreground">· {assignment.items.length} items</span>
+        <span className="text-muted-foreground">· {assignment.item_count} items</span>
         <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
       </div>
     </button>

@@ -427,6 +427,14 @@ Everything needed already exists: the half-turn (`SwitchyardStage.tsx:122`), `ME
 
 **Proof.** Type into question 24, kill the tab, reopen: the text is there. Take the network down, submit, restore it, submit the next item, confirm both rows land.
 
+> **Built 2026-08-23, points 1-3. Point 4 stays parked, as written.**
+>
+> Drafts are a debounced (400ms) `localStorage` entry keyed `(assignmentId, itemOrder)`, cleared the moment the attempt is on record. The outbox holds a refused write, replaces rather than stacks on the same `(assignment, item, attempt)`, caps at 50 so it stays a retry queue rather than a leak, discards a corrupt payload instead of carrying it forever, and flushes both on mount and after the next good write. Every path is best-effort: `localStorage` throws in private mode and when full, and failing to cache a draft must never take down the run it was protecting. The toast no longer lies -- it says the attempt is held on the device and will go up, which is now true.
+>
+> **The idempotency key was load-bearing, exactly as the sequencing note said.** `20260823140000_..._one_row_per_attempt.sql` collapses any existing duplicates (keeping the earliest of each group, which is the attempt the student actually made) and adds a unique index on `(assignment_id, student_id, item_order, attempt_no)`. The client treats `23505` as success: the row it was trying to record is on record. Without it the outbox would have written a second row per retry, and `reconstructProgress` counts rows -- so a duplicate reads as an extra attempt and can strand a student on a question they never exhausted.
+>
+> Try again keeps the text and selects it, so starting over is still one keystroke.
+
 **Moves:** Durability 92 → 99.
 
 ---
@@ -442,6 +450,8 @@ Everything needed already exists: the half-turn (`SwitchyardStage.tsx:122`), `ME
 - Negation readability is handled by Stage 4.
 
 **Proof.** VoiceOver: submit an answer and hear the verdict. Then run one full item start to finish without touching the mouse.
+
+> **Built 2026-08-23.** The verdict block is `role="status" aria-live="polite"` and takes focus when the item resolves, so the announcement is also where the student is standing. The textarea autofocuses. Enter continues from a resolved item, and steps aside for any button under the cursor so it never double-fires. The `⌘↵` hint is on screen under the box, and gains ", Enter to continue" once there is nothing left to answer.
 
 **Moves:** Accessibility 58 → 92.
 
@@ -517,6 +527,14 @@ Everything left after Stage 1, none of it large individually.
 **[v2] One more thing this stage must not do.** If Stage 2's `decidedVerdict` and `fault` are ever sent to the edge function, they are **caller-controlled input**. They must be enum-validated server-side and never interpolated raw into the system prompt, or they are a prompt-injection path. Stage 2 as redesigned does not send them, so this is a guard rail for the later promotion decision, not work for now.
 
 **Proof.** Network panel on `/activities`: response size for the list query, and every card showing a correct item count. Runner open: two requests in flight together. Coach: a forced hang recovers at 12s with a usable UI.
+
+> **Built 2026-08-23. The narrowed list needed more than the plan predicted, and the type system found it.**
+>
+> `ActivityAssignmentSummary` landed as specified, and the compiler immediately caught two consumers the plan had not named: `useClassroomHome` reads `heroActivity.instructions.tagline` for the hero, so `instructions` stays in the summary (a few hundred bytes against the snapshot's thirty thousand), and `ActivityCentre.asCard` was building a whole assignment for a card. A third slipped through both, because it lied about its shape: `ActivityCard.test.tsx` cast its fixture `as never`, so it kept passing after the card stopped reading `items`. A fourth was caught only by looking -- the dev lab's list rendered "· items" with no number.
+>
+> The count is a **generated column** (`20260823150000_..._item_count.sql`), so the questions genuinely leave the wire rather than being fetched and discarded. The client falls back to counting a carried array where that column does not exist yet.
+>
+> The open is one round trip: the attempt log starts at mount, keyed by ids known before either request goes out, instead of waiting for the assignment. The Coach call has a 12s `AbortController` timeout -- a hung gateway used to leave the textarea disabled and the spinner spinning with no way out -- and `max_tokens: 220` on the model call. `auth.getUser()` is untouched, and streaming stays parked, both as the review required.
 
 **Moves:** Performance 88 → 97.
 

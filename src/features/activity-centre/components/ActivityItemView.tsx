@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
 import type { ActivityCoach, ActivityItem, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
+import { clearDraft, saveDraft } from "../drafts";
 import { StatementPanel } from "./StatementPanel";
 import { ItemPrompt } from "./ItemPrompt";
 
@@ -37,6 +38,12 @@ interface ActivityItemViewProps {
   initialAttempts?: number;
   /** What they had written when they left, so a half-typed answer survives. */
   initialValue?: string;
+  /**
+   * Where to cache what they are typing, before it is ever submitted. Until
+   * now text only reached storage as part of a submitted attempt, so closing
+   * the tab mid-sentence on question 24 lost the sentence.
+   */
+  draftKey?: string;
   /** Fired once, when the item is resolved (correct, revealed, or coach failure). */
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   /** Append-only attempt record; best-effort, errors are toasted not thrown. */
@@ -70,16 +77,32 @@ export function ActivityItemView({
   shadowFault,
   initialAttempts = 0,
   initialValue = "",
+  draftKey,
   onResolved,
   onRecord,
   onNext,
 }: ActivityItemViewProps) {
   const { judge, judging } = useActivityCoach();
   const [value, setValue] = useState(initialValue);
+  const answerRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Debounced rather than per-keystroke: a draft is not durable state and does
+  // not deserve a write on every character.
+  useEffect(() => {
+    if (!draftKey) return;
+    const t = setTimeout(() => saveDraft(draftKey, value), 400);
+    return () => clearTimeout(t);
+  }, [draftKey, value]);
   const [attempts, setAttempts] = useState(initialAttempts);
   const [result, setResult] = useState<{ verdict: FeedbackState; feedback: string; covered?: number[] } | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [resolved, setResolved] = useState(false);
+
+  const record = (args: Parameters<ActivityItemViewProps["onRecord"]>[0]) => {
+    // The attempt is the durable record now; the draft has done its job.
+    if (draftKey) clearDraft(draftKey);
+    void onRecord(args);
+  };
 
   const resolve = (finalVerdict: Verdict | null, reveal: boolean) => {
     setRevealed(reveal);
@@ -100,7 +123,7 @@ export function ActivityItemView({
     if (fastPath?.(item, value)) {
       setAttempts(attemptNo);
       setResult({ verdict: "correct", feedback: "" });
-      void onRecord({
+      record({
         itemOrder: item.order,
         responseText: value,
         verdict: "correct",
@@ -126,7 +149,7 @@ export function ActivityItemView({
         description: "Showing the credited answer so you can keep moving. This one is not counted.",
         variant: "destructive",
       });
-      void onRecord({
+      record({
         itemOrder: item.order,
         responseText: value,
         verdict: null,
@@ -142,7 +165,7 @@ export function ActivityItemView({
 
     const verdict = res.verdict.verdict;
     setResult(res.verdict);
-    void onRecord({
+    record({
       itemOrder: item.order,
       responseText: value,
       verdict,
@@ -160,9 +183,20 @@ export function ActivityItemView({
     // else: leave unresolved so the Try again / Show answer affordances show.
   };
 
+  /**
+   * Try again used to empty the box. With a twenty-word answer and a one-word
+   * miss that is a punishment for being close: the student retypes nineteen
+   * words they had right. The text stays and arrives selected, so starting over
+   * is still one keystroke away.
+   */
   const handleRetry = () => {
     setResult(null);
-    setValue("");
+    requestAnimationFrame(() => {
+      const box = answerRef.current;
+      if (!box) return;
+      box.focus();
+      box.select();
+    });
   };
 
   /**
@@ -177,7 +211,7 @@ export function ActivityItemView({
     // "unchecked" is not a verdict and must not be written to the log as one.
     const shown = result?.verdict;
     const verdict = shown && shown !== "unchecked" ? shown : null;
-    void onRecord({
+    record({
       itemOrder: item.order,
       responseText: value,
       verdict,
@@ -199,6 +233,7 @@ export function ActivityItemView({
         value={value}
         onChange={setValue}
         onSubmit={handleSubmit}
+        answerRef={answerRef}
         onRetry={handleRetry}
         onShowAnswer={handleShowAnswer}
         onNext={onNext}

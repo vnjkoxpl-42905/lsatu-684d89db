@@ -9,6 +9,7 @@ import {
   recordItemResponse,
 } from "../api/activitiesClient";
 import { reconstructProgress, scoreFor } from "../progress";
+import { draftKey, flushOutbox, queueAttempt, type PendingAttempt } from "../drafts";
 import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
@@ -66,6 +67,24 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const handleLeave = routed ? () => navigate("/activities") : undefined;
   const { user } = useAuth();
   const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
+
+  /**
+   * The attempt log, started at mount rather than after the assignment lands.
+   *
+   * Both reads are keyed by ids that are known before either request goes out:
+   * the assignment id from the route and the student id from the session. The
+   * hydrate effect used to await the assignment and only then ask for the log,
+   * which made the slowest screen in the flow two sequential round trips for no
+   * reason. It is one now, and the effect awaits a promise that has been in
+   * flight the whole time.
+   */
+  const logRef = useRef<Promise<Awaited<ReturnType<typeof listItemResponses>>> | null>(null);
+  if (!logRef.current && assignmentId && user && !preview) {
+    logRef.current = listItemResponses(assignmentId, user.id);
+    // Nothing awaits this until the effect does, and an unhandled rejection in
+    // between would surface as a page-level error. The effect still sees it.
+    logRef.current.catch(() => {});
+  }
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [index, setIndex] = useState(0);
@@ -171,7 +190,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
       let log: Awaited<ReturnType<typeof listItemResponses>> = [];
       try {
-        log = await listItemResponses(assignment.id, user.id);
+        log = await (logRef.current ?? listItemResponses(assignment.id, user.id));
       } catch (e) {
         // A failed read must not silently look like "no progress" and hand the
         // student a blank run over the top of real saved work. Start them at
@@ -271,26 +290,44 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       // again; leaving it set would re-apply an old attempt count on a remount.
       setResumeAt((prev) => (prev && items[prev.index]?.order === args.itemOrder ? null : prev));
       if (practice || !user || !assignment) return; // practice runs are never persisted
+      const payload: PendingAttempt = {
+        assignmentId: assignment.id,
+        studentId: user.id,
+        itemOrder: args.itemOrder,
+        responseText: args.responseText,
+        verdict: args.verdict,
+        attemptNo: args.attemptNo,
+        judgeSource: args.judgeSource,
+        shadowFault: args.shadowFault,
+        latencyMs: args.latencyMs,
+        parserVersion: world?.parserVersion,
+      };
       try {
-        await recordItemResponse({
-          assignmentId: assignment.id,
-          studentId: user.id,
-          itemOrder: args.itemOrder,
-          responseText: args.responseText,
-          verdict: args.verdict,
-          attemptNo: args.attemptNo,
-          judgeSource: args.judgeSource,
-          shadowFault: args.shadowFault,
-          latencyMs: args.latencyMs,
-          parserVersion: world?.parserVersion,
-        });
+        await recordItemResponse(payload);
+        // A good write is the moment to try whatever failed before it.
+        void flushOutbox((pending) => recordItemResponse(pending));
       } catch (e) {
         console.error("[activity:record] failed", e);
-        toast({ title: "Could not save that attempt", description: "Your progress this session still counts.", variant: "destructive" });
+        // The toast used to say the progress still counted while queueing
+        // nothing at all, so the sentence was false the moment it appeared.
+        // It is true now: the attempt is held and retried.
+        queueAttempt(payload);
+        toast({
+          title: "Could not save that attempt",
+          description: "It is saved on this device and will go up when the connection is back.",
+          variant: "destructive",
+        });
       }
     },
     [user, assignment, practice, items, world],
   );
+
+  // Anything stranded by an earlier session goes up as soon as there is a
+  // student to attribute it to, without waiting for them to answer again.
+  useEffect(() => {
+    if (practice || !user) return;
+    void flushOutbox((pending) => recordItemResponse(pending));
+  }, [practice, user]);
 
   const handleResolved = useCallback((order: number, finalVerdict: Verdict | null) => {
     setVerdicts((prev) => ({ ...prev, [order]: finalVerdict }));
@@ -476,6 +513,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             activeIndex={index}
             resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}
             resumeValue={resumeAt?.index === index ? resumeAt.text : ""}
+            draftKeyFor={(itemOrder) => draftKey(assignment.id, itemOrder)}
             onResolved={handleResolved}
             onRecord={handleRecord}
             onNext={handleNext}

@@ -110,6 +110,7 @@ import { NEGATION_ITEMS, PLATES, readPush } from "@/features/activity-centre/wor
 import "@/features/activity-centre/activity-centre.css";
 import { ActivityIntro } from "@/features/activity-centre/components/ActivityIntro";
 import { MAX_ATTEMPTS } from "@/features/activity-centre/api/types";
+import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/types";
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
 import { ActivityQuestionStack } from "@/features/activity-centre/components/ActivityQuestionStack";
 import { worldForTitle } from "@/features/activity-centre/worlds/registry";
@@ -252,13 +253,20 @@ const LAB_ACTIVITIES = [...SEED_ACTIVITIES, NEGATION_STATION_LAB_ROW as (typeof 
 function ListPanel() {
   const rows = [...LAB_ACTIVITIES]
     .sort((a, b) => librarySortIndex(a.slug) - librarySortIndex(b.slug))
-    .map((a, i) => ({
+    // A list row, which is what the card takes: the count, never the questions.
+    .map((a, i): ActivityAssignmentSummary => ({
       id: a.slug,
+      activity_id: null,
+      student_id: "lab",
       title: a.title,
       subtitle: a.subtitle,
-      items: a.items,
+      instructions: a.instructions,
       status: i === 0 ? "in_progress" : i === 1 ? "completed" : "assigned",
       score: i === 1 ? 80 : null,
+      created_at: "2026-08-01T00:00:00.000Z",
+      started_at: null,
+      completed_at: null,
+      item_count: a.items.length,
     }));
   return (
     <div className="activity-centre">
@@ -272,7 +280,7 @@ function ListPanel() {
         </header>
         <div className="mt-8 grid gap-3 md:grid-cols-2">
           {rows.map((a, i) => (
-            <ActivityCard key={a.id} assignment={a as never} position={i + 1} onOpen={() => {}} />
+            <ActivityCard key={a.id} assignment={a} position={i + 1} onOpen={() => {}} />
           ))}
         </div>
       </div>

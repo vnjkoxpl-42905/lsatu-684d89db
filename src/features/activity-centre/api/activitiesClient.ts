@@ -3,6 +3,7 @@ import { librarySortIndex } from "../content";
 import type {
   Activity,
   ActivityAssignment,
+  ActivityAssignmentSummary,
   ActivityInstructions,
   ActivityItem,
   ActivityItemResponse,
@@ -32,15 +33,54 @@ function hydrateActivity(row: Record<string, unknown>): Activity {
   };
 }
 
+/**
+ * The columns a card actually draws. `items` is deliberately absent: it is the
+ * whole per-student snapshot, ~30KB for Conditional Rephrase, shipped once per
+ * row so a card could print a number the database can count.
+ */
+const SUMMARY_COLUMNS =
+  "id,activity_id,student_id,title,subtitle,status,score,score_numerator,score_judged,score_total,scoring_version,instructions,created_at,started_at,completed_at";
+
 /** Student: list my activity assignments. RLS scopes to student_id = auth.uid(). */
-export async function listStudentAssignments(studentId: string): Promise<ActivityAssignment[]> {
+export async function listStudentAssignments(
+  studentId: string,
+): Promise<ActivityAssignmentSummary[]> {
+  // `item_count` is a generated column the generated types do not know until the
+  // migration lands, so the projection is cast here rather than hand-editing
+  // that generated file. Drop the cast once applied.
   const { data, error } = await supabase
     .from("activity_assignments")
-    .select("*")
+    .select(`${SUMMARY_COLUMNS},item_count` as typeof SUMMARY_COLUMNS)
     .eq("student_id", studentId)
     .order("created_at", { ascending: false });
-  if (error) throw error;
-  return (data ?? []).map(hydrateAssignment);
+  if (!error) return ((data ?? []) as unknown as Record<string, unknown>[]).map(toSummary);
+
+  // `item_count` arrives with its own migration. Until it is applied the
+  // narrowed select is rejected for naming a column that does not exist, and a
+  // list that renders is worth more than the bytes this saves.
+  if (!isUnknownColumn(error)) throw error;
+  const fallback = await supabase
+    .from("activity_assignments")
+    .select(`${SUMMARY_COLUMNS},items`)
+    .eq("student_id", studentId)
+    .order("created_at", { ascending: false });
+  if (fallback.error) throw fallback.error;
+  return ((fallback.data ?? []) as unknown as Record<string, unknown>[]).map(toSummary);
+}
+
+/**
+ * A list row. `item_count` is a generated column, so the count arrives without
+ * the questions; the fallback path counts a carried array instead, for a
+ * database that has not been given the column yet.
+ */
+function toSummary(row: Record<string, unknown>): ActivityAssignmentSummary {
+  const summary = {
+    ...(row as unknown as ActivityAssignmentSummary),
+    instructions: (row.instructions ?? {}) as ActivityInstructions,
+  };
+  if (typeof summary.item_count === "number") return summary;
+  const items = row.items;
+  return { ...summary, item_count: Array.isArray(items) ? items.length : 0 };
 }
 
 /** Student: fetch one assignment I own. */
@@ -119,10 +159,25 @@ export async function recordItemResponse(input: {
     .from("activity_item_responses")
     .insert({ ...attempt, ...telemetry });
   if (!error) return;
+  if (isDuplicateAttempt(error)) return; // already on record; a retry is not a second attempt
   if (!isUnknownColumn(error)) throw error;
 
   const { error: retryError } = await supabase.from("activity_item_responses").insert(attempt);
-  if (retryError) throw retryError;
+  if (retryError && !isDuplicateAttempt(retryError)) throw retryError;
+}
+
+/**
+ * The row is already there.
+ *
+ * The log is append-only with no natural key, so a retry -- from the outbox, or
+ * from a student's second tap on a flaky connection -- used to write a SECOND
+ * row for the same attempt. The replay counts rows, so a duplicate reads as an
+ * extra attempt and can push an item past the cap it never reached. A unique
+ * index makes the retry safe, and hitting it is success, not failure: the thing
+ * we were trying to record is recorded.
+ */
+function isDuplicateAttempt(error: { code?: string } | null): boolean {
+  return error?.code === "23505";
 }
 
 /**

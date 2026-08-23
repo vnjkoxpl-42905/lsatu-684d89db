@@ -4,7 +4,7 @@ import { Send } from "lucide-react";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { AssignWorkSheet, type AssignWorkSheetItem } from "@/components/teacher/library/AssignWorkSheet";
 import { useAdminActivities, useStudentActivities } from "@/features/activity-centre";
-import type { Activity, ActivityAssignment } from "@/features/activity-centre";
+import type { Activity, ActivityAssignmentSummary } from "@/features/activity-centre";
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
 import { librarySortIndex } from "@/features/activity-centre/content";
 import { slugFromTitle } from "@/features/activity-centre/worlds/registry";
@@ -200,7 +200,8 @@ function AdminLibrary({ assignedCount }: { assignedCount: number }) {
  * progress, no score -- so the card shows the item count and nothing it cannot
  * back up.
  */
-function asCard(activity: Activity): ActivityAssignment {
+/** A definition dressed as the list row a card draws. */
+function asCard(activity: Activity): ActivityAssignmentSummary {
   return {
     id: activity.id,
     activity_id: activity.id,
@@ -208,14 +209,11 @@ function asCard(activity: Activity): ActivityAssignment {
     title: activity.title,
     subtitle: activity.subtitle,
     instructions: activity.instructions,
-    item_format: activity.item_format,
-    items: activity.items,
     status: "assigned",
     score: null,
     started_at: null,
     completed_at: null,
-    assigned_by: "",
-    class_id: "",
     created_at: activity.created_at,
+    item_count: activity.items.length,
   };
 }

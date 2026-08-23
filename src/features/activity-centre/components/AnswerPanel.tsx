@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +8,8 @@ import { CoachFeedback } from "./CoachFeedback";
 
 interface AnswerPanelProps {
   item: ActivityItem;
+  /** So the item can put the cursor back in the box on Try again and on Next. */
+  answerRef?: React.RefObject<HTMLTextAreaElement>;
   value: string;
   onChange: (v: string) => void;
   onSubmit: () => void;
@@ -37,6 +40,7 @@ const emeraldBtn =
 /** Right panel: textarea, submit, and the coach feedback / retry / reveal flow. */
 export function AnswerPanel({
   item,
+  answerRef,
   value,
   onChange,
   onSubmit,
@@ -60,12 +64,36 @@ export function AnswerPanel({
   // letting the student spend their last try thinking it is their first.
   const resumedMidItem = attempts > 0 && !result && !resolved;
 
+  /**
+   * Where the verdict is read. Focus lands here when the item resolves, so the
+   * announcement is also the place the student is standing: from here Enter
+   * continues, and nothing needs the mouse.
+   */
+  const feedbackRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (resolved) feedbackRef.current?.focus();
+  }, [resolved]);
+
   return (
-    <div className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9">
+    <div
+      className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9"
+      onKeyDown={(e) => {
+        // Enter continues once there is nothing left to answer. A button under
+        // the cursor keeps its own Enter, so this never double-fires.
+        if (!resolved || e.key !== "Enter" || e.shiftKey) return;
+        if ((e.target as HTMLElement).closest("button")) return;
+        e.preventDefault();
+        onNext();
+      }}
+    >
       <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
         {answerLabel ?? DEFAULT_ANSWER_LABEL}
       </label>
       <Textarea
+        ref={answerRef}
+        // Every world's entrance autofocuses; the box the student actually
+        // types in did not. Over 62 questions that is 62 mouse trips.
+        autoFocus
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={answerPlaceholder ?? DEFAULT_ANSWER_PLACEHOLDER}
@@ -76,6 +104,13 @@ export function AnswerPanel({
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && canSubmit) onSubmit();
         }}
       />
+      {/* The shortcut has always worked and has never been mentioned. */}
+      <p className="mt-2 text-xs text-muted-foreground">
+        <kbd className="rounded border border-border px-1 py-0.5 font-sans text-[10px]">⌘</kbd>
+        <span aria-hidden="true"> + </span>
+        <kbd className="rounded border border-border px-1 py-0.5 font-sans text-[10px]">↵</kbd>
+        <span> to submit{resolved ? ", Enter to continue" : ""}</span>
+      </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         {!resolved && !showRetry && (
@@ -108,8 +143,16 @@ export function AnswerPanel({
         )}
       </div>
 
+      {/* A screen-reader user got silence after submitting: the chip and the
+          prose both rendered with nothing announcing them. */}
       {result && (
-        <div className="mt-6 border-t border-border pt-6">
+        <div
+          ref={feedbackRef}
+          tabIndex={-1}
+          className="mt-6 border-t border-border pt-6 outline-none"
+          role="status"
+          aria-live="polite"
+        >
           <CoachFeedback
             verdict={result.verdict}
             feedback={result.feedback}
