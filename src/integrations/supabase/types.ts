@@ -248,6 +248,10 @@ export type Database = {
           item_format: string
           items: Json
           score: number | null
+          score_judged: number | null
+          score_numerator: number | null
+          score_total: number | null
+          scoring_version: number | null
           started_at: string | null
           status: string
           student_id: string
@@ -265,6 +269,10 @@ export type Database = {
           item_format?: string
           items?: Json
           score?: number | null
+          score_judged?: number | null
+          score_numerator?: number | null
+          score_total?: number | null
+          scoring_version?: number | null
           started_at?: string | null
           status?: string
           student_id: string
@@ -282,6 +290,10 @@ export type Database = {
           item_format?: string
           items?: Json
           score?: number | null
+          score_judged?: number | null
+          score_numerator?: number | null
+          score_total?: number | null
+          scoring_version?: number | null
           started_at?: string | null
           status?: string
           student_id?: string
