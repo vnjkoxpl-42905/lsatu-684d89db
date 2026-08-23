@@ -433,6 +433,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             coach={assignment.instructions?.coach}
             answerLabel={assignment.instructions?.answer_label}
             answerPlaceholder={assignment.instructions?.answer_placeholder}
+            creditedSecondaryLabel={assignment.instructions?.credited_secondary_label}
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             fastPath={world?.fastPath}
             shadowFault={world?.shadowFault}

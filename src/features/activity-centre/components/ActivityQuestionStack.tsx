@@ -9,6 +9,8 @@ interface ActivityQuestionStackProps {
   /** Authored per Activity: what this drill asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
+  /** Authored per Activity: what the credited answers after the first are called. */
+  creditedSecondaryLabel?: string;
   /** True when the Activity's world already shows the prompt as written. */
   promptInWorld?: boolean;
   /** The world's local check for an answer the author already wrote down. */
@@ -40,6 +42,7 @@ export function ActivityQuestionStack({
   coach,
   answerLabel,
   answerPlaceholder,
+  creditedSecondaryLabel,
   promptInWorld = false,
   fastPath,
   shadowFault,
@@ -73,6 +76,7 @@ export function ActivityQuestionStack({
             coach={coach}
             answerLabel={answerLabel}
             answerPlaceholder={answerPlaceholder}
+            creditedSecondaryLabel={creditedSecondaryLabel}
             promptInWorld={promptInWorld}
             fastPath={fastPath}
             shadowFault={shadowFault}

@@ -4,10 +4,26 @@ import type { ActivityItem, Verdict } from "../api/types";
 interface CoachFeedbackProps {
   verdict: Verdict;
   feedback: string;
-  /** When true, show the credited answer + explanation reveal. */
+  /** When true, show the credited answer. Only a reveal earns that. */
   revealed: boolean;
+  /**
+   * When true, the item is finished one way or another. The authored
+   * explanation shows from here on, including on a correct answer: it names the
+   * indicator word and the discrimination the item teaches, and withholding it
+   * from the students who are getting it right is backwards.
+   */
+  resolved: boolean;
+  /**
+   * What to call the credited answers after the first. Authored per Activity,
+   * because the generic wording is wrong wherever the second answer is not an
+   * alternative phrasing: in Conditional Rephrase it is the contrapositive, the
+   * other half of what the task asked for.
+   */
+  secondaryLabel?: string;
   item: ActivityItem;
 }
+
+const DEFAULT_SECONDARY_LABEL = "Also accepted";
 
 const VERDICT_STYLE: Record<Verdict, { label: string; chip: string; dot: string }> = {
   correct: {
@@ -27,8 +43,15 @@ const VERDICT_STYLE: Record<Verdict, { label: string; chip: string; dot: string 
   },
 };
 
-/** Coach verdict chip + message, with the optional credited-answer reveal. */
-export function CoachFeedback({ verdict, feedback, revealed, item }: CoachFeedbackProps) {
+/** Coach verdict chip + message, the authored teaching note, and the reveal. */
+export function CoachFeedback({
+  verdict,
+  feedback,
+  revealed,
+  resolved,
+  secondaryLabel,
+  item,
+}: CoachFeedbackProps) {
   const style = VERDICT_STYLE[verdict];
   return (
     <div className="space-y-4">
@@ -56,13 +79,16 @@ export function CoachFeedback({ verdict, feedback, revealed, item }: CoachFeedba
           </p>
           {item.credited_answers.length > 1 && (
             <p className="mt-1 text-xs text-muted-foreground">
-              Also accepted: {item.credited_answers.slice(1).join(" · ")}
+              {secondaryLabel || DEFAULT_SECONDARY_LABEL}: {item.credited_answers.slice(1).join(" · ")}
             </p>
           )}
-          {item.explanation && (
-            <p className="mt-3 text-sm leading-relaxed text-foreground/75">{item.explanation}</p>
-          )}
         </div>
+      )}
+
+      {resolved && item.explanation && (
+        <p className="border-l-2 border-[hsl(var(--ac-emerald)/0.35)] pl-4 text-sm leading-relaxed text-foreground/75">
+          {item.explanation}
+        </p>
       )}
     </div>
   );

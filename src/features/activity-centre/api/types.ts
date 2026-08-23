@@ -66,6 +66,13 @@ export interface ActivityInstructions {
    */
   answer_label?: string;
   answer_placeholder?: string;
+  /**
+   * What to call the credited answers after the first. "Also accepted" is true
+   * for an Activity whose extra answers are alternative phrasings and false for
+   * one whose second answer is a different thing the task asked for -- the
+   * contrapositive, in Conditional Rephrase. Absent leaves today's wording.
+   */
+  credited_secondary_label?: string;
   /** Absent on legacy Activities; the Coach then uses its negation default. */
   coach?: ActivityCoach;
 }

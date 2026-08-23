@@ -14,6 +14,7 @@ import type { ActivityItem } from "../api/types";
 // student's Question Type chip. These pin the repair.
 
 const items = conditionalRephrase.items as ActivityItem[];
+const instructions = conditionalRephrase.instructions;
 const LOADED = [
   "Compound condition",
   "Stacked negatives",
@@ -138,5 +139,11 @@ describe("what a Conditional Rephrase student is shown", () => {
       // The first is always the if-then form, which is what the yard parses.
       expect(item.credited_answers[0], `item ${item.order}`).toMatch(/^if .+, then .+/i);
     }
+  });
+
+  // Slot 1 is the contrapositive, not an alternative phrasing, so the generic
+  // "Also accepted" told the student the thing the task asked for was optional.
+  it("calls the second credited answer what it actually is", () => {
+    expect(instructions.credited_secondary_label).toBe("Contrapositive");
   });
 });

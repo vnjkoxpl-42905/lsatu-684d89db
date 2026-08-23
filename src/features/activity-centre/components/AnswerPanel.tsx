@@ -22,6 +22,8 @@ interface AnswerPanelProps {
   /** Authored per Activity: what this drill actually asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
+  /** Authored per Activity: what the credited answers after the first are called. */
+  creditedSecondaryLabel?: string;
 }
 
 /** Neutral copy for Activities that never authored their own. Deliberately not
@@ -49,6 +51,7 @@ export function AnswerPanel({
   isLast,
   answerLabel,
   answerPlaceholder,
+  creditedSecondaryLabel,
 }: AnswerPanelProps) {
   const canSubmit = value.trim().length > 0 && !judging && !resolved;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
@@ -107,7 +110,14 @@ export function AnswerPanel({
 
       {result && (
         <div className="mt-6 border-t border-border pt-6">
-          <CoachFeedback verdict={result.verdict} feedback={result.feedback} revealed={revealed} item={item} />
+          <CoachFeedback
+            verdict={result.verdict}
+            feedback={result.feedback}
+            revealed={revealed}
+            resolved={resolved}
+            secondaryLabel={creditedSecondaryLabel}
+            item={item}
+          />
         </div>
       )}
     </div>

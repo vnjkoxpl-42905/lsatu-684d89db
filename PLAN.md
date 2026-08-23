@@ -54,7 +54,7 @@ The label is generic engine copy that happens to be true for Negation Station an
 
 ### New finding C — a spec contradiction, for Joshua (content, not built here)
 
-> **Decided 2026-08-23 by Joshua: either direction is credited, both are praised.** The rubric wins; `instructions.task` is the field that is wrong. Stage 2's fast path is built on this and credits any authored direction. The task copy still says "Then give me the contrapositive" and now contradicts the grader out loud, so the sentence needs correcting **inside `20260822190000_conditional_rephrase_ladder.sql` before that migration is applied** — the live Activity row is what a student reads, and rewriting it afterwards costs a second migration. That edit is content and is Joshua's; it is the one line Stage 11 must not miss.
+> **Decided 2026-08-23 by Joshua: either direction is credited, both are praised.** The rubric wins; `instructions.task` is the field that is wrong. Stage 2's fast path is built on this and credits any authored direction. The task copy still says "Then give me the contrapositive" and now contradicts the grader out loud, so the sentence needs correcting on the live Activity row. Note that the ladder migration writes `items` only and never touches `instructions`, so this is not a line to edit inside it: it is a small `jsonb_set` on `instructions`, of exactly the shape `20260823061500_conditional_rephrase_contrapositive_label.sql` already uses, and it can ride in that file or its own. That edit is content and is Joshua's; it is the one line Stage 11 must not miss.
 
 Two authored fields disagree about what the student is being asked for:
 
@@ -438,6 +438,10 @@ Everything needed already exists: the half-turn (`SwitchyardStage.tsx:122`), `ME
 1. **Show `item.explanation` on a correct answer.** `CoachFeedback.tsx:49` gates it behind `revealed`, which is false when the student is right. Every one of the 62 explanations names the indicator word and its discrimination. Withholding them from the students who are succeeding is backwards. Show the explanation on every resolved item; keep the credited-answer block gated on `revealed` as it is now, because that part genuinely is a reveal.
 2. **Stop calling the contrapositive "Also accepted".** `CoachFeedback.tsx:59` labels `credited_answers.slice(1)` generically. Give the label a per-Activity override in `instructions` (`credited_secondary_label`), so Conditional Rephrase says **"Contrapositive"** and every other Activity keeps today's wording untouched. Default unchanged, so nothing else moves.
 3. **A one-line legend for the polarity lamp** in the yard, now that Stage 4 has made the lamp reinforcement rather than the only signal.
+
+> **Built 2026-08-23, points 1 and 2.** The explanation now shows on every resolved item and moved out of the reveal box so it renders once, in both states; the credited-answer block stays gated on `revealed` exactly as before. The label is `instructions.credited_secondary_label`, default unchanged, set to "Contrapositive" for this Activity in the content seed and in `20260823061500_conditional_rephrase_contrapositive_label.sql` for the live row. This also fills the gap Stage 2 opened: a fast-path correct answer arrives with no Coach prose, and without this it landed as a bare chip.
+>
+> **Point 3 is deferred, and deliberately.** The polarity-lamp legend is written to describe a lamp that Stage 4 has demoted to reinforcement. Stage 4 is not built, so the legend would describe a signal that is still the only one there is. It belongs with Stage 4.
 
 **Proof.** Answer item 1 correctly and read the "Whenever" explanation on screen. Reveal item 62 and see "Contrapositive", not "Also accepted".
 
