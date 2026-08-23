@@ -161,12 +161,9 @@ export async function completeAssignment(assignmentId: string, score: RunScore):
     scoring_version: 2,
   };
 
-  // The generated DB types are built from the live schema and do not know the
-  // breakdown columns until the migration lands, so the widened row is cast here
-  // rather than hand-editing that generated file. Drop the cast once applied.
   const { error } = await supabase
     .from("activity_assignments")
-    .update({ ...completion, ...breakdown } as never)
+    .update({ ...completion, ...breakdown })
     .eq("id", assignmentId);
   if (!error) return;
   if (!isUnknownColumn(error)) throw error;
