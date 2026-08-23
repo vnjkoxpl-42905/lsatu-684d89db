@@ -45,12 +45,9 @@ const SUMMARY_COLUMNS =
 export async function listStudentAssignments(
   studentId: string,
 ): Promise<ActivityAssignmentSummary[]> {
-  // `item_count` is a generated column the generated types do not know until the
-  // migration lands, so the projection is cast here rather than hand-editing
-  // that generated file. Drop the cast once applied.
   const { data, error } = await supabase
     .from("activity_assignments")
-    .select(`${SUMMARY_COLUMNS},item_count` as typeof SUMMARY_COLUMNS)
+    .select(`${SUMMARY_COLUMNS},item_count`)
     .eq("student_id", studentId)
     .order("created_at", { ascending: false });
   if (!error) return ((data ?? []) as unknown as Record<string, unknown>[]).map(toSummary);
