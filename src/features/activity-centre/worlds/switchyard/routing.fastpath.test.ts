@@ -41,8 +41,15 @@ describe("matchesAnyCredited", () => {
     expect(misses).toEqual([]);
   });
 
-  it("matches the first credited answer on all 62 items", () => {
+  it("matches the first credited answer on every item the yard can parse", () => {
+    // Item 62 is excluded on purpose: its credited answer carries two
+    // conditionals, so parseRouting refuses it rather than returning a
+    // confident wrong parse, and the Coach takes that item.
     for (const item of items) {
+      if (!parseRouting(item.credited_answers[0])) {
+        expect(item.order).toBe(62);
+        continue;
+      }
       expect(matchesAnyCredited(item.credited_answers, item.credited_answers[0])).toBe(true);
     }
   });

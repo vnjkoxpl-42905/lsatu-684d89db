@@ -304,6 +304,23 @@
     0 0 22px hsl(var(--sy-signal) / 0.3);
 }
 
+/* The polarity said in words. The lamp is a signal a student has to have been
+   taught to read; this is the fact itself, and it rides beside the clause on a
+   derived flip, where the sentence on the rail no longer says it. */
+.sy-polarity {
+  flex: none;
+  font-family: var(--sy-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: hsl(var(--sy-signal));
+  border: 1px solid hsl(var(--sy-signal) / 0.5);
+  background: hsl(var(--sy-signal) / 0.12);
+}
+
 /* ---------- The junction ---------- */
 
 .sy-junction-scene {

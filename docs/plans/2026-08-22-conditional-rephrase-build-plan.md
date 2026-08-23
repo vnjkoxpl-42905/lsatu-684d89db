@@ -397,6 +397,18 @@ Everything needed already exists: the half-turn (`SwitchyardStage.tsx:122`), `ME
 
 **Proof.** A test that computes the derivable set and asserts every member's derived flip polarity matches its authored contrapositive's polarity on both sides, and asserts every non-member renders the plate with no derived rails. Item 62 asserted to render the fallback, not a malformed capsule. Live: item 18 flipped, rails and plate screenshotted together, in agreement.
 
+> **Built 2026-08-23. The census, first, as the stage required: 24 of 62 items are derivable.**
+>
+> `1, 3, 4, 5, 6, 8, 11, 18, 19, 21, 22, 24, 27, 30, 31, 33, 34, 40, 47, 48, 49, 50, 51, 54`. The 38 excluded break down as 22 whose authored contrapositive does not parse even under the relaxed `If X, Y` form, 8 whose contrapositive clauses cannot be stated positively, 7 whose own clauses cannot (46, 56-61: ellipsis, lexical negation, the bare `no + noun` path), and item 62, which no longer parses at all.
+>
+> **The gate gained a fourth condition during the build, and it earned its place.** The first three admitted items 52 and 53, whose clause is *"takes the color unevenly"* — lexical negation carried by a prefix, invisible to any list of negation words worth maintaining. The derived flip would have rendered a double negative for the student to untangle. So derivability now also requires that the **derived polarity agree with the authored contrapositive on both sides**. That is self-verifying: anything the word lists have not thought of disagrees with the author and drops silently to the plate. 52 and 53 excluded themselves the moment the rule went in.
+>
+> Requiring the strict `If X, then Y` form for that check excluded item 18 — the stage's own showcase — because only 13 of 62 contrapositives are written that way. A relaxed comma form is used for verification only; the display parse is unchanged.
+>
+> **Finding D** is fixed at the source: `parseRouting` refuses a sentence carrying two conditionals rather than handing back the whole tail as one clause. Exactly one item is refused, and the count is asserted so a second cannot appear unnoticed.
+>
+> **Polarity is now readable text**, not only an unlabelled lamp: every capsule announces it to assistive technology, and a derived flip shows it as a `NOT` token beside the clause. The hold is 1.2s, interruptible by construction since nothing in the yard gates Next, it never runs over a fault, and reduced motion arrives at the flip without travelling. A replay control offers the flip in both directions.
+
 **Moves:** Correctness 82 → 94 · Accessibility +6, once the polarity is readable text on derivable items rather than only a lamp.
 
 ---

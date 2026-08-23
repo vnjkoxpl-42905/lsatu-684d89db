@@ -2,7 +2,7 @@ import { act, fireEvent, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SEED_ACTIVITIES } from "../../content";
 import { SwitchyardStage, type Milepost } from "./SwitchyardStage";
-import { diagnose, parseRouting, type Routing } from "./routing";
+import { derivedFlip, diagnose, flipIsDerivable, parseRouting, type Routing } from "./routing";
 
 // The fault choreography is the yard's error-specific feedback: each named
 // partial gets its own visible failure. What matters is that the yard shows the
@@ -13,12 +13,16 @@ const conditional = SEED_ACTIVITIES.find((a) => a.slug === "conditional-rephrase
 const item = conditional.items[0];
 const credited = parseRouting(item.credited_answers[0])!;
 
+// Mirrors the registry: an item only gets a derivation if it passed the gate.
+const derived = flipIsDerivable(item.credited_answers) ? derivedFlip(credited) : null;
+
 function stage(studentRouting: Routing | null, phase: "routed" | "flipped" = "routed") {
   return render(
     <SwitchyardStage
       statement={item.prompt}
       routing={credited}
       contrapositive={item.credited_answers[1] ?? ""}
+      derived={derived}
       phase={phase}
       studentRouting={studentRouting}
       fault={diagnose(credited, studentRouting)}
@@ -26,10 +30,13 @@ function stage(studentRouting: Routing | null, phase: "routed" | "flipped" = "ro
   );
 }
 
+/** The clause a capsule carries, with the polarity token read separately. */
 function capsuleTexts(container: HTMLElement) {
-  return [...container.querySelectorAll('[data-testid="sy-capsule"]')].map((c) =>
-    c.textContent?.trim(),
-  );
+  return [...container.querySelectorAll('[data-testid="sy-capsule"]')].map((c) => {
+    const clone = c.cloneNode(true) as HTMLElement;
+    clone.querySelector('[data-testid="sy-polarity"]')?.remove();
+    return clone.textContent?.trim();
+  });
 }
 
 const reversed: Routing = { ifClause: credited.thenClause, thenClause: credited.ifClause };

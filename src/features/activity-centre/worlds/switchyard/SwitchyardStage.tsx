@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import type { Clause, Fault, Routing } from "./routing";
-import { differs, flip } from "./routing";
+import type { Clause, DerivedRouting, Fault, Routing } from "./routing";
+import { differs } from "./routing";
 import "./switchyard.css";
 
 /**
@@ -28,6 +28,13 @@ interface SwitchyardStageProps {
   routing: Routing;
   /** The authored contrapositive, shown on its plate once the junction turns. */
   contrapositive: string;
+  /**
+   * The contrapositive as structure the yard can perform, or null when this
+   * item did not pass the derivability gate. Null means the junction never
+   * turns on its own and the authored plate carries the contrapositive instead:
+   * a plate is not a downgrade, it is the sentence the author wrote.
+   */
+  derived?: DerivedRouting | null;
   /**
    * The indicator word ("only if", "unless"). Lit on the board only once the
    * yard has routed, never before: no pre-commit hints.
@@ -61,6 +68,13 @@ const ROLL_ON = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const };
  */
 const REVERSAL_TIMELINE = { gate: 700, backing: 1300, credited: 2000 };
 
+/**
+ * How long the routed arrangement is held before the junction turns. Long
+ * enough to read the two rails, short enough that nobody waits for it -- and
+ * interruptible by construction, since Next never waits on the yard.
+ */
+const FLIP_HOLD = 1200;
+
 type ReversalStep = "student" | "gate" | "backing" | "credited";
 
 function TrackLabel({ children }: { children: string }) {
@@ -74,6 +88,7 @@ function Capsule({
   live,
   blinking,
   trimmed,
+  readable,
 }: {
   clause: Clause;
   live: boolean;
@@ -81,6 +96,13 @@ function Capsule({
   blinking?: boolean;
   /** The trimmed-condition fault: the capsule arrives missing a coupling. */
   trimmed?: boolean;
+  /**
+   * Say the polarity in words as well as with the lamp. Set on a derived flip,
+   * where the capsule is carrying a clause the student never wrote: the lamp
+   * alone asked them to remember that an unlabelled ring means "negative" while
+   * reading a sentence that no longer says so.
+   */
+  readable?: boolean;
 }) {
   return (
     <div
@@ -96,6 +118,11 @@ function Capsule({
         data-testid="sy-lamp"
         aria-hidden="true"
       />
+      {/* The lamp is decoration; this is the fact. Read out on every capsule,
+          shown on the ones carrying a derived clause. */}
+      <span className={readable && clause.negated ? "sy-polarity" : "sr-only"} data-testid="sy-polarity">
+        {clause.negated ? "NOT" : "positive"}
+      </span>
       <span
         className={`text-base leading-snug ${
           live ? "text-[hsl(var(--sy-ink))]" : "text-[hsl(var(--sy-ink-dim))]"
@@ -167,6 +194,7 @@ export function SwitchyardStage({
   statement,
   routing,
   contrapositive,
+  derived = null,
   indicator,
   phase,
   studentRouting = null,
@@ -176,11 +204,42 @@ export function SwitchyardStage({
 }: SwitchyardStageProps) {
   const still = useReducedMotion() ?? false;
   const routed = phase !== "arrival";
-  const turned = phase === "flipped";
+
+  /**
+   * The flip, at last performed. The world was built for this beat -- the half
+   * turn, the capsule swap, the contrapositive plate -- and had never once run
+   * it, because a flipped rail would have shown the ORIGINAL clause text under
+   * an inverted lamp and contradicted the plate beneath it.
+   *
+   * It runs only for an item that passed the gate, only after the routing has
+   * been read, and never over a fault: a student who made an error is watching
+   * their own correction, and the junction turning through it would talk over
+   * the thing they most need to see. The replay control offers it to them.
+   *
+   * The hold is a reward, never a gate. Next is live from the moment the item
+   * resolves, and nothing here blocks it.
+   */
+  const [autoTurned, setAutoTurned] = useState(false);
+  const canFlip = Boolean(derived);
+  useEffect(() => {
+    setAutoTurned(false);
+    if (!canFlip || !routed || fault) return;
+    if (still) {
+      setAutoTurned(true); // reduced motion arrives at the flip, it just does not travel
+      return;
+    }
+    const t = setTimeout(() => setAutoTurned(true), FLIP_HOLD);
+    return () => clearTimeout(t);
+  }, [canFlip, routed, fault, still, statement]);
+
+  // An explicit `flipped` phase still drives the beat for the dev lab, but it
+  // cannot conjure a derivation: an item that failed the gate has no flipped
+  // arrangement to show, so the junction stays put and the plate does the work.
+  const turned = (phase === "flipped" || autoTurned) && canFlip;
 
   // The fault only plays over the routing. Once the junction turns, the yard is
   // demonstrating the contrapositive and the error display would fight it.
-  const faultLive = phase === "routed" ? fault : null;
+  const faultLive = !turned ? fault : null;
   const reversal = useReversalSequence(faultLive?.kind === "reversal", still);
   const showingStudent = faultLive?.kind === "reversal" && reversal !== "credited";
 
@@ -192,8 +251,18 @@ export function SwitchyardStage({
     faultLive?.kind === "dropped-negation" && !acknowledged ? faultLive.side : null;
   const trimmedSide = faultLive?.kind === "trimmed-condition" ? faultLive.side : null;
 
-  const credited = turned ? flip(routing) : routing;
+  // A derived flip carries the clause stated positively with its polarity said
+  // out loud beside it. `flip()` alone only swaps the tracks and inverts a lamp,
+  // which is why it was never allowed on screen.
+  const credited: Routing =
+    turned && derived
+      ? {
+          ifClause: { text: derived.ifClause.core, negated: derived.ifClause.negated },
+          thenClause: { text: derived.thenClause.core, negated: derived.thenClause.negated },
+        }
+      : routing;
   const shown = showingStudent && studentRouting ? studentRouting : credited;
+  const readableRails = turned && Boolean(derived);
 
   // The board lights the indicator only after the yard has routed.
   const board = indicator && routed ? highlight(statement, indicator) : [statement];
@@ -264,6 +333,7 @@ export function SwitchyardStage({
                 live={routed}
                 blinking={blinkSide === "if"}
                 trimmed={trimmedSide === "if"}
+                readable={readableRails}
               />
             </motion.div>
             {trimmedSide === "if" ? <FullForm clause={routing.ifClause} /> : null}
@@ -284,14 +354,28 @@ export function SwitchyardStage({
                 live={routed}
                 blinking={blinkSide === "then"}
                 trimmed={trimmedSide === "then"}
+                readable={readableRails}
               />
             </motion.div>
             {trimmedSide === "then" ? <FullForm clause={routing.thenClause} /> : null}
           </Track>
         </div>
 
-        <div className="flex justify-center md:block">
+        <div className="flex flex-col items-center gap-2 md:block">
           <Junction turned={turned} still={still} />
+          {/* The junction is a diamond on its corner, so it draws well outside
+              its 92px box; the control clears the point rather than sitting
+              across it. */}
+          {canFlip && routed ? (
+            <button
+              type="button"
+              className="switchyard-mono mt-6 text-xs text-[hsl(var(--sy-ink-dim))] underline underline-offset-4 transition-colors hover:text-[hsl(var(--sy-ink))] md:w-[92px] md:text-center"
+              onClick={() => setAutoTurned((t) => !t)}
+              data-testid="sy-replay"
+            >
+              {turned ? "Show the original" : "Show the flip"}
+            </button>
+          ) : null}
         </div>
       </div>
 

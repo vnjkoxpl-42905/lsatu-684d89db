@@ -32,7 +32,7 @@ import { parseSpecimen, readExamination } from "./specimen-lab/specimen";
 
 import { SwitchyardEntrance } from "./switchyard/SwitchyardEntrance";
 import { SwitchyardStage } from "./switchyard/SwitchyardStage";
-import { diagnose, indicatorOf, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
+import { derivedFlip, diagnose, flipIsDerivable, indicatorOf, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
 
 /**
  * Which world belongs to which Activity, and how to drive it from a live run.
@@ -190,10 +190,15 @@ const WORLDS: WorldBinding[] = [
       const routing = parseRouting(credited);
       if (!routing) return null;
       const studentRouting = answered && response ? parseRouting(response) : null;
+      // Only an item that passed the derivability gate is handed a structure to
+      // perform. Everything else gets null and shows the authored plate, which
+      // is correct by construction rather than derived and hoped over.
+      const derived = flipIsDerivable(item.credited_answers) ? derivedFlip(routing) : null;
       return (
         <SwitchyardStage
           statement={item.prompt}
           routing={routing}
+          derived={derived}
           contrapositive={item.credited_answers?.[1] ?? credited}
           indicator={item.explanation ? indicatorOf(item.explanation) : undefined}
           phase={answered ? "routed" : "arrival"}

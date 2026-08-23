@@ -31,14 +31,30 @@ describe("parseRouting", () => {
     expect(parseRouting("")).toBeNull();
   });
 
-  it("parses the credited answer of every item in the bank", () => {
+  it("parses the credited answer of every item the world can honestly route", () => {
     // The routing animation is this drill's reveal, so an item the world cannot
     // route is an item that cannot be run. This started at 88% because six
     // placement-study items carried shorthand ("Same translation exactly") in
     // the credited-answer slot, which the Coach would have judged students
-    // against. Full coverage is the invariant now, not an aspiration.
+    // against.
+    //
+    // Full coverage was the invariant until item 62 showed that a PARSE is not
+    // the same thing as a correct one: its credited answer carries two
+    // conditionals, and the regex handed the whole tail back as a single
+    // clause, so the yard drew an entire second rule inside one capsule. It is
+    // refused now. Refusing is the honest outcome -- the world falls back to
+    // the plain prompt and the authored answers, which are correct -- and the
+    // count is asserted so a second refusal cannot appear unnoticed.
     const unroutable = conditional.items.filter((i) => !parseRouting(i.credited_answers[0]));
-    expect(unroutable.map((i) => i.order)).toEqual([]);
+    expect(unroutable.map((i) => i.order)).toEqual([62]);
+  });
+
+  it("refuses a sentence carrying two conditionals rather than guessing its clauses", () => {
+    expect(
+      parseRouting("If A is confirmed, then B dates to spring; and if C is trustworthy, then D was sealed."),
+    ).toBeNull();
+    // A single conditional with the same punctuation is still fine.
+    expect(parseRouting("If A is confirmed, then B dates to spring.")).not.toBeNull();
   });
 
   it("gives every item a distinct authored contrapositive to show on the plate", () => {

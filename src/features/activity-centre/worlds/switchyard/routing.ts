@@ -74,6 +74,15 @@ export function parseRouting(creditedAnswer: string): Routing | null {
   const thenText = trimTerminal(necessary);
   if (!ifText || !thenText) return null;
 
+  // A sentence carrying TWO conditionals is not two clauses, and the regex above
+  // will happily hand back the whole tail as one. Item 62 parsed to a THEN of
+  // "the flood layer dates to spring; and if the match is trustworthy, then the
+  // stratum was sealed" -- an entire second rule inside one capsule, drawn on
+  // screen as though it were a single condition. Returning null is the honest
+  // answer: the world already falls back to the plain prompt and the authored
+  // answers, which is correct, rather than a diagram that is wrong.
+  if (/\bif\b|\bthen\b/i.test(ifText) || /\bif\b|\bthen\b/i.test(thenText)) return null;
+
   return {
     ifClause: { text: ifText, negated: isNegated(ifText) },
     thenClause: { text: thenText, negated: isNegated(thenText) },
@@ -252,4 +261,188 @@ export function matchesAnyCredited(creditedAnswers: string[] | undefined, respon
     const routing = parseRouting(credited);
     return routing ? !differs(routing, student) : false;
   });
+}
+
+/* ------------------------------------------------------------------ *
+ * The flip, and where it is safe to perform
+ *
+ * `flip()` swaps the clauses and inverts the polarity flag, but it cannot
+ * rewrite the clause TEXT -- so a flipped rail used to read "the beacon goes
+ * dark" with the lamp lit, directly above a plate reading "If the beacon did
+ * not go dark". They contradicted each other on screen, in the drill about
+ * negation. That is why the flip was never performed.
+ *
+ * Making it true means showing polarity as readable text rather than as an
+ * unlabelled lamp, which needs the clause split into a positive core and a
+ * polarity. That split is only sound for some of the bank:
+ *
+ *   - "the string quartet is not"      an ellipsis; the core is a noun phrase
+ *   - "lack impulsive onsets"          lexical negation, invisible to the list
+ *   - "no fixture is shielded"         the bare no + noun path
+ *   - "both X and Y" / "X rather than Y"   NOT [...] does not resolve the scope
+ *
+ * Rather than guess at those, an item earns the animated flip only by passing a
+ * gate that is checkable in a test. Everything else shows the AUTHORED
+ * contrapositive plate with a static junction and no derived rails, which is
+ * not a downgrade: the authored sentence is correct by construction.
+ * ------------------------------------------------------------------ */
+
+/**
+ * Negations that behave as auxiliaries: they sit between a subject and its
+ * predicate, and swapping them for their positive form leaves a clause that
+ * still reads. Longest-first so "cannot" is never matched as "can not".
+ */
+const POLARITY_PAIRS: [negative: string, positive: string][] = [
+  ["cannot", "can"],
+  ["can not", "can"],
+  ["does not", "does"],
+  ["do not", "do"],
+  ["did not", "did"],
+  ["is not", "is"],
+  ["are not", "are"],
+  ["was not", "was"],
+  ["were not", "were"],
+  ["will not", "will"],
+  ["would not", "would"],
+  ["has not", "has"],
+  ["have not", "have"],
+  ["had not", "had"],
+  ["may not", "may"],
+  ["must not", "must"],
+];
+
+/**
+ * Negation the list above cannot lift: it is carried by the verb itself, by a
+ * determiner, or by a word with no positive twin. A clause containing any of
+ * these is negative in a way this module cannot state positively, so it is
+ * excluded rather than guessed at.
+ */
+const UNLIFTABLE_NEGATION =
+  /\b(never|neither|nothing|none|nobody|nor|without|lack|lacks|lacked|lacking|absent|fail|fails|failed|unable|refuses?|refused|omits?|omitted|missing|no longer|barred|prevents?|prevented)\b/i;
+
+/** Structures where a single polarity token cannot say what it applies to. */
+const NEEDS_SCOPE = /\b(and|or|but|rather than|instead of|both|either|unless|except)\b|[;:]/i;
+
+export interface Polarity {
+  /** The clause stated positively, ready to carry a polarity token beside it. */
+  core: string;
+  /** Whether the clause as authored is negative. */
+  negated: boolean;
+}
+
+/**
+ * Split a clause into a positive core and a polarity, or return null when that
+ * cannot be done truthfully. Null is the load-bearing return: it is what keeps
+ * an unsound flip off the screen.
+ */
+export function readPolarity(clause: string): Polarity | null {
+  const text = clause.trim();
+  if (!text) return null;
+  if (NEEDS_SCOPE.test(text)) return null;
+  if (UNLIFTABLE_NEGATION.test(text)) return null;
+  // The bare "no + noun" path: negation carried by a determiner, which cannot be
+  // lifted out without rewriting the noun phrase.
+  if (/\bno\s+\w/i.test(text)) return null;
+
+  const lower = text.toLowerCase();
+  const hits = POLARITY_PAIRS.filter(([negative]) =>
+    new RegExp(`\\b${negative.replace(/ /g, "\\s+")}\\b`, "i").test(lower),
+  );
+  if (hits.length === 0) {
+    // No negation signal of any kind. Guard against the contracted forms the
+    // pair list does not carry rather than calling the clause positive.
+    if (/n't\b/i.test(text)) return null;
+    return { core: text, negated: false };
+  }
+  if (hits.length > 1) return null; // two negations: not this module's problem
+
+  const [negative, positive] = hits[0];
+  const span = new RegExp(`\\b${negative.replace(/ /g, "\\s+")}\\b`, "i");
+  // An ellipsis ends ON the negation ("the string quartet is not"), so lifting
+  // it leaves a noun phrase rather than a clause.
+  if (span.test(text) && /\b(is|are|was|were|does|do|did|has|have|had|will|would|may|must|can)?\s*not\s*$/i.test(text)) {
+    return null;
+  }
+  const core = text.replace(span, positive).replace(/\s+/g, " ").trim();
+  if (!core || core === text) return null;
+  return { core, negated: true };
+}
+
+/** A routing whose every clause can be stated positively with a polarity beside it. */
+export interface DerivedRouting {
+  ifClause: Polarity;
+  thenClause: Polarity;
+}
+
+/**
+ * The contrapositive as readable structure: the clauses swap tracks and each
+ * polarity inverts, with the core text carried across untouched. Returns null
+ * when either clause cannot be read, which is the signal to show the authored
+ * plate instead of a derived diagram.
+ */
+export function derivedFlip(routing: Routing): DerivedRouting | null {
+  const ifSide = readPolarity(routing.ifClause.text);
+  const thenSide = readPolarity(routing.thenClause.text);
+  if (!ifSide || !thenSide) return null;
+  return {
+    ifClause: { core: thenSide.core, negated: !thenSide.negated },
+    thenClause: { core: ifSide.core, negated: !ifSide.negated },
+  };
+}
+
+// Authored contrapositives are written loosely: only 13 of 62 use "If X, then
+// Y", while 36 drop the "then". This reads that looser form, and is used ONLY
+// to check a derived flip against what the author wrote. It never feeds the
+// display, which still requires the strict form.
+const IF_COMMA = /^\s*if\s+(.+?),\s*(.+?)\s*$/i;
+
+export function parseAuthoredContrapositive(answer: string): Routing | null {
+  const strict = parseRouting(answer);
+  if (strict) return strict;
+
+  const match = trimTerminal(answer).match(IF_COMMA);
+  if (!match) return null;
+  const ifText = trimTerminal(match[1]);
+  const thenText = trimTerminal(match[2]);
+  if (!ifText || !thenText) return null;
+  if (/\bif\b|\bthen\b/i.test(ifText) || /\bif\b|\bthen\b/i.test(thenText)) return null;
+  return {
+    ifClause: { text: ifText, negated: isNegated(ifText) },
+    thenClause: { text: thenText, negated: isNegated(thenText) },
+  };
+}
+
+/**
+ * Whether this item earns the animated flip.
+ *
+ * The last condition is the one that makes the rest trustworthy: the derived
+ * polarity must AGREE with the polarity of the sentence the author wrote. That
+ * is not belt and braces. Items 52 and 53 turn on "takes the color unevenly" --
+ * lexical negation carried by a prefix, invisible to any list of negation words
+ * worth maintaining -- and the derived flip would have rendered a double
+ * negative the student had to untangle. Checking against the author catches
+ * that, and catches every other case the word lists have not thought of yet.
+ *
+ * An item that fails any condition is not broken. It shows the authored plate,
+ * which is correct by construction.
+ */
+export function flipIsDerivable(creditedAnswers: string[] | undefined): boolean {
+  const [first, second] = creditedAnswers ?? [];
+  if (!first || !second) return false;
+
+  const routing = parseRouting(first);
+  if (!routing) return false;
+  const derived = derivedFlip(routing);
+  if (!derived) return false;
+
+  const authored = parseAuthoredContrapositive(second);
+  if (!authored) return false;
+  const authoredIf = readPolarity(authored.ifClause.text);
+  const authoredThen = readPolarity(authored.thenClause.text);
+  if (!authoredIf || !authoredThen) return false;
+
+  return (
+    derived.ifClause.negated === authoredIf.negated &&
+    derived.thenClause.negated === authoredThen.negated
+  );
 }

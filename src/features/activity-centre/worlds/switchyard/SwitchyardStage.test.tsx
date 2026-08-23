@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SEED_ACTIVITIES } from "../../content";
 import { SwitchyardStage } from "./SwitchyardStage";
-import { indicatorOf, parseRouting } from "./routing";
+import { derivedFlip, flipIsDerivable, indicatorOf, parseRouting } from "./routing";
 
 // The yard's teaching claim is that the contrapositive is one machine movement,
 // not a second fact: the capsules swap tracks and their polarity inverts in the
@@ -26,22 +26,29 @@ function itemStarting(prefix: string) {
 
 function stageFor(item: (typeof conditional.items)[number], phase: "arrival" | "routed" | "flipped") {
   const routing = parseRouting(item.credited_answers[0])!;
+  // Mirrors the registry: only an item that passed the derivability gate is
+  // handed a structure to perform.
+  const derived = flipIsDerivable(item.credited_answers) ? derivedFlip(routing) : null;
   const utils = render(
     <SwitchyardStage
       statement={item.prompt}
       routing={routing}
       contrapositive={item.credited_answers[1]}
+      derived={derived}
       indicator={indicatorOf(item.explanation)}
       phase={phase}
     />,
   );
-  return { ...utils, item, routing };
+  return { ...utils, item, routing, derived };
 }
 
+/** The clause a capsule carries, with the polarity token read separately. */
 function capsuleTexts(container: HTMLElement) {
-  return [...container.querySelectorAll('[data-testid="sy-capsule"]')].map((c) =>
-    c.textContent?.trim(),
-  );
+  return [...container.querySelectorAll('[data-testid="sy-capsule"]')].map((c) => {
+    const clone = c.cloneNode(true) as HTMLElement;
+    clone.querySelector('[data-testid="sy-polarity"]')?.remove();
+    return clone.textContent?.trim();
+  });
 }
 
 function lampStates(container: HTMLElement) {
@@ -124,16 +131,30 @@ describe("the flip", () => {
   });
 });
 
-describe("every item in the bank can run through the yard", () => {
-  it("renders all three phases for all 62 items with both capsules present", () => {
-    for (const item of conditional.items) {
+describe("every item the yard accepts can run through it", () => {
+  // Item 62 is the exception, and it is deliberate. Its credited answer carries
+  // TWO conditionals, so parseRouting refuses it rather than drawing a whole
+  // second rule inside one capsule. The world falls back to the plain prompt.
+  const routable = conditional.items.filter((i) => parseRouting(i.credited_answers[0]));
+
+  it("accepts 61 of the 62, and refuses only the malformed one", () => {
+    expect(routable).toHaveLength(61);
+    expect(
+      conditional.items.filter((i) => !parseRouting(i.credited_answers[0])).map((i) => i.order),
+    ).toEqual([62]);
+  });
+
+  it("renders all three phases with both capsules present", () => {
+    for (const item of routable) {
       const routing = parseRouting(item.credited_answers[0])!;
+      const derived = flipIsDerivable(item.credited_answers) ? derivedFlip(routing) : null;
       for (const phase of ["arrival", "routed", "flipped"] as const) {
         const { container, unmount } = render(
           <SwitchyardStage
             statement={item.prompt}
             routing={routing}
             contrapositive={item.credited_answers[1]}
+            derived={derived}
             indicator={indicatorOf(item.explanation)}
             phase={phase}
           />,
