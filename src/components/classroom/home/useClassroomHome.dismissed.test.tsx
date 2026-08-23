@@ -171,7 +171,8 @@ describe("useClassroomHome dismissed messages", () => {
       JSON.stringify([DISMISS_KEY]),
     );
     const { result } = renderHook(() => useClassroomHome(), { wrapper });
-    await waitFor(() => expect(result.current.loading).toBe(false));
+    // No waiting: the local cache is read in the initial state, so the card
+    // must already be hidden on the very first render after a refresh.
     expect(result.current.model.message).toBeNull();
   });
 });
