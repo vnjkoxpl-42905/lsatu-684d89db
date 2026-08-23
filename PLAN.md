@@ -54,6 +54,8 @@ The label is generic engine copy that happens to be true for Negation Station an
 
 ### New finding C — a spec contradiction, for Joshua (content, not built here)
 
+> **Closed 2026-08-23.** The task now reads *"Rephrase the statement as If [sufficient], then [necessary], in your own words. The contrapositive counts too, since it says the same thing."* The placeholder no longer re-demands the contrapositive either. Shipped as `20260823130000_conditional_rephrase_task_copy.sql`, with a regression test asserting the task and the rubric cannot drift apart again.
+>
 > **Decided 2026-08-23 by Joshua: either direction is credited, both are praised.** The rubric wins; `instructions.task` is the field that is wrong. Stage 2's fast path is built on this and credits any authored direction. The task copy still says "Then give me the contrapositive" and now contradicts the grader out loud, so the sentence needs correcting on the live Activity row. Note that the ladder migration writes `items` only and never touches `instructions`, so this is not a line to edit inside it: it is a small `jsonb_set` on `instructions`, of exactly the shape `20260823061500_conditional_rephrase_contrapositive_label.sql` already uses, and it can ride in that file or its own. That edit is content and is Joshua's; it is the one line Stage 11 must not miss.
 
 Two authored fields disagree about what the student is being asked for:

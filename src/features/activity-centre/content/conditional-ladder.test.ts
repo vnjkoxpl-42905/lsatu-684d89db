@@ -146,4 +146,25 @@ describe("what a Conditional Rephrase student is shown", () => {
   it("calls the second credited answer what it actually is", () => {
     expect(instructions.credited_secondary_label).toBe("Contrapositive");
   });
+
+  // Finding C. The task demanded the contrapositive while the rubric credited
+  // either direction on its own, so a student following the instruction to the
+  // letter and a student ignoring half of it were graded identically. The
+  // rubric is what has actually been grading, and it is the only reading under
+  // which items 46, 47 and 48 cohere, so the task is the field that was wrong.
+  it("asks for something the rubric will actually credit", () => {
+    expect(instructions.coach.rubric[0]).toMatch(/either direction is credited/i);
+    expect(instructions.task).not.toMatch(/then give me the contrapositive/i);
+    expect(instructions.task).toMatch(/if \[sufficient\], then \[necessary\]/i);
+    expect(instructions.task).toMatch(/contrapositive counts too/i);
+  });
+
+  it("tells the student their own wording is fine, which the rubric already assumed", () => {
+    expect(instructions.coach.rubric[3]).toMatch(/wording is free/i);
+    expect(instructions.task).toMatch(/in your own words/i);
+  });
+
+  it("does not re-demand the contrapositive in the answer box", () => {
+    expect(instructions.answer_placeholder).not.toMatch(/contrapositive/i);
+  });
 });

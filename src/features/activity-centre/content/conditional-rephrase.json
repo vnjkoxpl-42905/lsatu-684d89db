@@ -15,7 +15,7 @@
       "partial_rule": "Mark 'partial' when the student produces a well-formed conditional but reverses sufficiency and necessity, drops a negation, or trims a compound or contrasting condition down to one part. Mark 'incorrect' when the response is not a conditional at all, or states a relationship the statement does not support."
     },
     "tagline": "Find the trigger word, and it tells you which side is which.",
-    "task": "Rephrase the statement as If [sufficient], then [necessary]. Then give me the contrapositive.",
+    "task": "Rephrase the statement as If [sufficient], then [necessary], in your own words. The contrapositive counts too, since it says the same thing.",
     "rules": [
       "Some words introduce the sufficient condition and some introduce the necessary one. That is the whole game.",
       "If, when, whenever, every, all, the only: these mark the sufficient side, the trigger.",
@@ -32,7 +32,7 @@
       "explanation": "Without marks the necessary condition, so mastering conditional reasoning goes on the then side. Both forms above are credited: the second is just the contrapositive of the first."
     },
     "answer_label": "Your rephrase",
-    "answer_placeholder": "Write it as If [sufficient], then [necessary], then give the contrapositive…",
+    "answer_placeholder": "Write it as If [sufficient], then [necessary]…",
     "credited_secondary_label": "Contrapositive"
   },
   "items": [
