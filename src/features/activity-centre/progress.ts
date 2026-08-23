@@ -18,6 +18,16 @@ export interface ReconstructedProgress {
   responses: Record<number, string>;
   /** Count of resolved items at the front; also the index to resume at. */
   resolvedCount: number;
+  /**
+   * Attempts already spent on the item they stopped ON (the first unresolved
+   * one). Zero when that item was never touched. Resuming has to carry this:
+   * restarting the counter at zero both hands back an attempt the student
+   * already used and writes a second `attempt_no = 1` row, which makes the log
+   * ambiguous for every later replay.
+   */
+  pendingAttempts: number;
+  /** What they last wrote on that item, so a half-finished answer survives a reload. */
+  pendingText: string;
 }
 
 /**
@@ -42,6 +52,8 @@ export function reconstructProgress(
   const verdicts: Record<number, Verdict | null> = {};
   const text: Record<number, string> = {};
   let resolvedCount = 0;
+  let pendingAttempts = 0;
+  let pendingText = "";
 
   for (const item of items) {
     const rows = byItem.get(item.order);
@@ -53,10 +65,14 @@ export function reconstructProgress(
     const coachFailed = rows.some((r) => r.verdict === null);
     const resolved = Boolean(correct) || hitCap || coachFailed;
 
-    // One sub-cap, non-correct attempt means they were mid-retry (or bailed via
-    // Show answer, which we don't log) — treat as unresolved so they resume on
-    // this item with a fresh shot.
-    if (!resolved) break;
+    // One sub-cap, non-correct attempt means they were mid-retry. The item is
+    // NOT resolved, so the run resumes here, but the attempt they already spent
+    // and the words they already wrote come back with it.
+    if (!resolved) {
+      pendingAttempts = last.attempt_no;
+      pendingText = last.response_text;
+      break;
+    }
 
     const resolver = correct ?? last;
     verdicts[item.order] = correct ? "correct" : last.verdict;
@@ -64,5 +80,5 @@ export function reconstructProgress(
     resolvedCount += 1;
   }
 
-  return { verdicts, responses: text, resolvedCount };
+  return { verdicts, responses: text, resolvedCount, pendingAttempts, pendingText };
 }

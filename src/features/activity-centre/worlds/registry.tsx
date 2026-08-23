@@ -1,5 +1,5 @@
 import type { ComponentType, ReactElement } from "react";
-import type { ActivityItem } from "../api/types";
+import type { ActivityItem, Verdict } from "../api/types";
 import "./world-shells.css";
 
 import { AtelierEntrance } from "./atelier/AtelierEntrance";
@@ -53,11 +53,22 @@ import { diagnose, indicatorOf, parseRouting } from "./switchyard/routing";
  * whose content drifts away from what its world can read degrades to the plain
  * surface instead of crashing or drawing an empty set.
  *
- * Progress ornaments (chips, plaques, the rail, mileposts) are deliberately
- * omitted. Each Stage documents that omitting them renders nothing rather than
- * faking a run, which is the honest default here; feeding them real per-item
- * verdicts is its own piece of work.
+ * Progress ornaments are fed real per-item verdicts, replayed from the saved
+ * attempt log, via `mileposts`. A world that draws none simply ignores the
+ * argument; a Stage handed nothing renders nothing rather than faking a run,
+ * which stays the honest default for the worlds not yet wired to it.
  */
+
+/**
+ * One marker per item in the run. `outcome` is the verdict the student actually
+ * earned, or null for items not yet reached: a world never renders progress it
+ * cannot trace to a real answer. Replayed from the saved attempt log, so it
+ * spans every sitting rather than only the current one.
+ */
+export interface RunMilepost {
+  order: number;
+  outcome: Verdict | null;
+}
 
 export interface WorldRenderArgs {
   item: ActivityItem;
@@ -65,6 +76,10 @@ export interface WorldRenderArgs {
   response?: string;
   /** Whether the run has judged this item yet. Drives the world's phase. */
   answered: boolean;
+  /** The whole run's progress. Worlds that draw a rail read it; the rest ignore it. */
+  mileposts?: RunMilepost[];
+  /** Which milepost is the item on screen. */
+  currentOrder?: number;
 }
 
 export interface WorldBinding {
@@ -152,7 +167,7 @@ const WORLDS: WorldBinding[] = [
     accent: "36 88% 46%",
     carriesPrompt: true,
     Entrance: SwitchyardEntrance,
-    render: ({ item, response, answered }) => {
+    render: ({ item, response, answered, mileposts, currentOrder }) => {
       const credited = item.credited_answers?.[0];
       if (!credited) return null;
       const routing = parseRouting(credited);
@@ -167,6 +182,8 @@ const WORLDS: WorldBinding[] = [
           phase={answered ? "routed" : "arrival"}
           studentRouting={studentRouting}
           fault={answered ? diagnose(routing, studentRouting) : null}
+          mileposts={mileposts}
+          currentOrder={currentOrder}
         />
       );
     },

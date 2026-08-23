@@ -40,7 +40,7 @@ export function CompletionSummary({ title, items, verdicts, responses, score, pr
         </p>
         {practice && (
           <p className="mt-2 text-xs text-muted-foreground">
-            Practice run — not counted toward your graded score.
+            Practice run. Not counted toward your graded score.
           </p>
         )}
         <div className="mt-7 flex flex-wrap items-center justify-center gap-3">

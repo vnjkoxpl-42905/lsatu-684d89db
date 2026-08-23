@@ -12,6 +12,10 @@ interface ActivityQuestionStackProps {
   /** True when the Activity's world already shows the prompt as written. */
   promptInWorld?: boolean;
   activeIndex: number;
+  /** Attempts already spent on the ACTIVE item in an earlier sitting. */
+  resumeAttempts?: number;
+  /** What the student had written on the active item when they left. */
+  resumeValue?: string;
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   onRecord: (args: {
     itemOrder: number;
@@ -31,6 +35,8 @@ export function ActivityQuestionStack({
   answerPlaceholder,
   promptInWorld = false,
   activeIndex,
+  resumeAttempts = 0,
+  resumeValue = "",
   onResolved,
   onRecord,
   onNext,
@@ -59,6 +65,8 @@ export function ActivityQuestionStack({
             answerLabel={answerLabel}
             answerPlaceholder={answerPlaceholder}
             promptInWorld={promptInWorld}
+            initialAttempts={resumeAttempts}
+            initialValue={resumeValue}
             isLast={activeIndex === items.length - 1}
             onResolved={onResolved}
             onRecord={onRecord}

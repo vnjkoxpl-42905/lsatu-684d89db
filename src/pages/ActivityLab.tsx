@@ -109,6 +109,7 @@ import { buildAssay } from "@/features/activity-centre/worlds/polarity/wings/rou
 import { NEGATION_ITEMS, PLATES, readPush } from "@/features/activity-centre/worlds/polarity/polarity";
 import "@/features/activity-centre/activity-centre.css";
 import { ActivityIntro } from "@/features/activity-centre/components/ActivityIntro";
+import { MAX_ATTEMPTS } from "@/features/activity-centre/api/types";
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
 import { ActivityQuestionStack } from "@/features/activity-centre/components/ActivityQuestionStack";
 import { worldForTitle } from "@/features/activity-centre/worlds/registry";
@@ -364,6 +365,8 @@ function IntroPanel() {
           title={a.title}
           subtitle={a.subtitle}
           instructions={a.instructions}
+          itemCount={a.items.length}
+          maxAttempts={MAX_ATTEMPTS}
           onStart={() => {}}
           onExit={() => {}}
         />
@@ -1677,7 +1680,7 @@ function SignalBox({
 
       <dl className="mt-8 space-y-4 text-sm">
         <div>
-          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Level</dt>
+          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Question type</dt>
           <dd className="mt-1 text-foreground">{level}</dd>
         </div>
         {rows.map(([k, v]) => (

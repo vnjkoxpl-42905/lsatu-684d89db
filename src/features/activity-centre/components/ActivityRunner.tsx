@@ -11,6 +11,7 @@ import {
 import { reconstructProgress } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
+import { MAX_ATTEMPTS } from "../api/types";
 import type { Verdict } from "../api/types";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
@@ -66,7 +67,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // worked example, the rules. Dropping straight to the Activity Centre there
   // skips past the page you were actually trying to reach. From the intro
   // itself there is nowhere further in to go, so that one leaves for the
-  // Centre. Returning to the intro keeps `index`, so Start drilling resumes on
+  // Centre. Returning to the intro keeps `index`, so the Start action resumes on
   // the same question rather than restarting the Activity.
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
   const handleLeave = routed ? () => navigate("/activities") : undefined;
@@ -83,6 +84,13 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
   // and for a "Practice again" re-run of a completed activity.
   const [practice, setPractice] = useState(preview);
+  /**
+   * The item the student stopped ON, mid-attempt, in an earlier sitting: which
+   * index it is, how many attempts they had already spent, and what they had
+   * typed. Applied only while `index` still points at that item, so moving on
+   * never re-seeds a later question with an older question's words.
+   */
+  const [resumeAt, setResumeAt] = useState<{ index: number; attempts: number; text: string } | null>(null);
   const hydratingRef = useRef(false);
 
   const items = useMemo(
@@ -97,47 +105,29 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
    */
   const world = useMemo(() => worldForTitle(assignment?.title), [assignment?.title]);
   const currentItem = items[index];
+
+  /**
+   * One marker per item, carrying the verdict the student actually earned.
+   * Replayed progress is in `verdicts`, so this survives leaving and coming
+   * back: the rail a student sees on their third sitting shows all three.
+   * Items not yet reached carry null and the world draws them as untravelled
+   * rather than inventing an outcome.
+   */
+  const mileposts = useMemo(
+    () => items.map((i) => ({ order: i.order, outcome: verdicts[i.order] ?? null })),
+    [items, verdicts],
+  );
+
   const worldStage = useMemo(() => {
     if (!world || !currentItem) return null;
     return world.render({
       item: currentItem,
       response: responses[currentItem.order],
       answered: verdicts[currentItem.order] !== undefined,
+      mileposts,
+      currentOrder: currentItem.order,
     });
-  }, [world, currentItem, responses, verdicts]);
-
-  // Open behavior: runs once when the assignment loads. A completed activity
-  // opens to its review summary; everything else opens to the homepage (intro)
-  // and Start begins fresh at question 1. We deliberately do NOT resume
-  // mid-drill — the homepage is always the entry point for an unfinished run.
-  useEffect(() => {
-    if (!assignment || !user || hydrated || hydratingRef.current) return;
-    hydratingRef.current = true;
-
-    (async () => {
-      // Teacher preview: always enter at the intro, never load saved progress.
-      if (preview) {
-        setPhase("intro");
-        setHydrated(true);
-        return;
-      }
-      if (assignment.status === "completed") {
-        // Load the attempt log only to render the stored answers in the summary.
-        try {
-          const log = await listItemResponses(assignment.id, user.id);
-          const progress = reconstructProgress(items, log);
-          setVerdicts(progress.verdicts);
-          setResponses(progress.responses);
-        } catch (e) {
-          console.error("[activity:review:load] failed", e);
-        }
-        setPhase("done");
-      } else {
-        setPhase("intro");
-      }
-      setHydrated(true);
-    })();
-  }, [assignment, user, items, hydrated, preview]);
+  }, [world, currentItem, responses, verdicts, mileposts]);
 
   // Mirror progress into the Classroom feed row so a completed activity stops
   // showing "Start". Best-effort: the assignment is the source of truth.
@@ -152,6 +142,102 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     },
     [assignment, practice],
   );
+
+  // Open behavior: runs once when the assignment loads.
+  //
+  // Every attempt is already written to `activity_item_responses` as it
+  // happens, so the log is a complete record of where the student got to. This
+  // replays it. A completed activity opens to its review summary; an
+  // unfinished one opens ON the question they stopped at, with the verdicts
+  // they already earned restored so the final score counts every sitting, not
+  // just the last one. The intro is the front door exactly once: a run that has
+  // been started resumes straight into the work rather than sending the student
+  // back through the rules they have already read.
+  useEffect(() => {
+    if (!assignment || !user || hydrated || hydratingRef.current) return;
+    hydratingRef.current = true;
+
+    (async () => {
+      // Teacher preview: always enter at the intro, never load saved progress.
+      if (preview) {
+        setPhase("intro");
+        setHydrated(true);
+        return;
+      }
+
+      let log: Awaited<ReturnType<typeof listItemResponses>> = [];
+      try {
+        log = await listItemResponses(assignment.id, user.id);
+      } catch (e) {
+        // A failed read must not silently look like "no progress" and hand the
+        // student a blank run over the top of real saved work. Start them at
+        // the intro, say so, and leave the log untouched.
+        console.error("[activity:resume:load] failed", e);
+        if (assignment.status !== "completed") {
+          toast({
+            title: "Could not load your saved progress",
+            description: "Your earlier answers are safe. Reload to pick up where you left off.",
+            variant: "destructive",
+          });
+          setPhase("intro");
+          setHydrated(true);
+          return;
+        }
+      }
+
+      const progress = reconstructProgress(items, log);
+      setVerdicts(progress.verdicts);
+      setResponses(progress.responses);
+
+      if (assignment.status === "completed") {
+        setPhase("done");
+        setHydrated(true);
+        return;
+      }
+
+      // Every item resolved but the run never closed (the tab went away on the
+      // last Finish). The work is done; write the completion rather than
+      // parking the student on a run with nothing left in it.
+      if (items.length > 0 && progress.resolvedCount >= items.length) {
+        setIndex(items.length - 1);
+        setPhase("done");
+        try {
+          await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
+          void syncClassroom("completed");
+        } catch (e) {
+          console.error("[activity:resume:complete] failed", e);
+        }
+        setHydrated(true);
+        return;
+      }
+
+      setIndex(progress.resolvedCount);
+      setResumeAt(
+        progress.pendingAttempts > 0
+          ? { index: progress.resolvedCount, attempts: progress.pendingAttempts, text: progress.pendingText }
+          : null,
+      );
+
+      const started = assignment.status === "in_progress" || progress.resolvedCount > 0;
+      setPhase(started ? "running" : "intro");
+      // The world's entrance is the ceremony of arriving, and it runs two and a
+      // half seconds. It belongs to Start, not to every reopen: a student who
+      // works this Activity over five sittings should not pay for it five
+      // times. Coming back drops them straight onto the question.
+      if (started) setEntered(true);
+      if (started && assignment.status === "assigned") {
+        // Attempts on record but the status never moved: repair it, so the
+        // Centre and the Classroom stop calling this run unopened.
+        try {
+          await markAssignmentStarted(assignment.id);
+        } catch (e) {
+          console.error("[activity:resume:start] failed", e);
+        }
+        void syncClassroom("in_progress");
+      }
+      setHydrated(true);
+    })();
+  }, [assignment, user, items, hydrated, preview, syncClassroom]);
 
   const handleStart = useCallback(async () => {
     setEntered(false);
@@ -169,6 +255,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const handleRecord = useCallback(
     async (args: { itemOrder: number; responseText: string; verdict: Verdict | null; attemptNo: number }) => {
       setResponses((prev) => ({ ...prev, [args.itemOrder]: args.responseText }));
+      // The seed has served its purpose the moment this item is written to
+      // again; leaving it set would re-apply an old attempt count on a remount.
+      setResumeAt((prev) => (prev && items[prev.index]?.order === args.itemOrder ? null : prev));
       if (practice || !user || !assignment) return; // practice runs are never persisted
       try {
         await recordItemResponse({
@@ -184,7 +273,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         toast({ title: "Could not save that attempt", description: "Your progress this session still counts.", variant: "destructive" });
       }
     },
-    [user, assignment, practice],
+    [user, assignment, practice, items],
   );
 
   const handleResolved = useCallback((order: number, finalVerdict: Verdict | null) => {
@@ -213,7 +302,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     setPractice(true);
     setVerdicts({});
     setResponses({});
+    setResumeAt(null);
     setIndex(0);
+    setEntered(true);
     setPhase("running");
   }, []);
 
@@ -249,6 +340,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           title={assignment.title}
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
+          itemCount={items.length}
+          maxAttempts={MAX_ATTEMPTS}
+          resumeAt={index + 1}
           onStart={handleStart}
           onExit={handleLeave}
         />
@@ -329,6 +423,8 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             answerPlaceholder={assignment.instructions?.answer_placeholder}
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             activeIndex={index}
+            resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}
+            resumeValue={resumeAt?.index === index ? resumeAt.text : ""}
             onResolved={handleResolved}
             onRecord={handleRecord}
             onNext={handleNext}

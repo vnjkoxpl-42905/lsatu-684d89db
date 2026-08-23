@@ -132,7 +132,10 @@ serve(async (req) => {
 
     const userPrompt = [
       `The item the student is working on:\n"${statement}"`,
-      category ? `\nItem difficulty band: ${category}` : "",
+      // The item's own Question Type ("Requirement word: unless", "Compound
+      // condition: the only"). It names the form, not a difficulty band, and
+      // tells the model which discrimination this item exists to teach.
+      category ? `\nItem type: ${category}` : "",
       `\nStudent's response:\n"${studentResponse}"`,
       `\nCredited answer(s):\n${creditedAnswers.map((a: string) => `- ${a}`).join("\n")}`,
       explanation ? `\nAuthor's note on this item (traps, near misses, the teaching point):\n${explanation}` : "",

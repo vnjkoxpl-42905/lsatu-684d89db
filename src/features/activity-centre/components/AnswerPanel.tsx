@@ -52,6 +52,10 @@ export function AnswerPanel({
 }: AnswerPanelProps) {
   const canSubmit = value.trim().length > 0 && !judging && !resolved;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
+  // Picked this item back up mid-attempt: the count came from the saved log,
+  // not from anything that happened on this screen, so say so rather than
+  // letting the student spend their last try thinking it is their first.
+  const resumedMidItem = attempts > 0 && !result && !resolved;
 
   return (
     <div className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9">
@@ -75,6 +79,11 @@ export function AnswerPanel({
           <Button onClick={onSubmit} disabled={!canSubmit} className={emeraldBtn}>
             {judging ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit"}
           </Button>
+        )}
+        {resumedMidItem && (
+          <span className="text-xs text-muted-foreground">
+            Picked up where you left off. Attempt {attempts} of {MAX_ATTEMPTS} already used.
+          </span>
         )}
         {showRetry && (
           <>

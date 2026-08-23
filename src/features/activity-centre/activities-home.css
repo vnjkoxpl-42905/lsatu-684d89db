@@ -542,3 +542,84 @@
     width: min(100%, 26rem);
   }
 }
+
+/* ---------------------------------------------------------------------
+ * The brief: the tagline under the title, and the task above the rules.
+ *
+ * The intro used to name its subject and withhold its instruction. These are
+ * the two blocks that say what the student is about to do, so they sit on the
+ * two positions the eye already lands on: beside the title, and first in the
+ * detail section above the rules.
+ * ------------------------------------------------------------------- */
+
+.act-home .act-hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.act-home .act-hero-tagline {
+  margin: 0;
+  text-align: right;
+  max-width: 30rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+  line-height: 1.55;
+  font-weight: 400;
+  color: hsl(var(--act-ink) / 0.68);
+}
+
+.act-home .act-brief {
+  margin-top: clamp(1.25rem, 2.5vh, 2rem);
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem);
+  border-top: 1px solid hsl(var(--act-hairline));
+}
+
+/* Wide enough for the orbs to leave the hero's right half empty: the brief
+   moves into that space and the page grows by nothing. */
+@media (min-width: 900px) {
+  .act-home .act-hero .act-brief {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: min(32rem, 48%);
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+.act-home .act-brief-label {
+  margin: 0 0 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-brief .act-task {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-how {
+  margin: 0.7rem 0 0;
+  max-width: 46rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink-soft));
+}
+
+@media (max-width: 640px) {
+  .act-home .act-hero-heading {
+    align-items: flex-start;
+  }
+  .act-home .act-hero-tagline {
+    text-align: left;
+  }
+}

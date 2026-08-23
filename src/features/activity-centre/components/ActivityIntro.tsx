@@ -10,6 +10,15 @@ interface ActivityIntroProps {
   title: string;
   subtitle: string | null;
   instructions: ActivityInstructions;
+  /** How many questions the run holds. Shown so the student can size the sitting. */
+  itemCount?: number;
+  /** How many attempts the Coach allows per question, before the answer shows. */
+  maxAttempts?: number;
+  /**
+   * 1-based question the Start action would drop them on. Above 1 the run is
+   * already under way and the button says so rather than reading as a restart.
+   */
+  resumeAt?: number;
   onStart: () => void;
   /** Omitted when the runner is embedded (teacher preview), which has its own chrome. */
   onExit?: () => void;
@@ -22,9 +31,19 @@ interface ActivityIntroProps {
  * large upper label and a single prose line), then a compact detail section
  * below (credited negations + lean rules + the Start action).
  */
-export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }: ActivityIntroProps) {
+export function ActivityIntro({
+  title,
+  subtitle,
+  instructions,
+  itemCount,
+  maxAttempts,
+  resumeAt,
+  onStart,
+  onExit,
+}: ActivityIntroProps) {
   const ex = instructions.worked_example;
   const reduce = useReducedMotion();
+  const resuming = (resumeAt ?? 1) > 1;
 
   // The "after" orb is the second half of the before/after pair, so it has to
   // be THIS Activity's answer. It used to be a hardcoded string: Negation
@@ -79,10 +98,13 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
               <span className="act-edit-crumb-arrow">▶</span>
             </span>
           </div>
-          <h1 className="act-edit-title">
-            <span className="act-edit-title-bold">{title}.</span>{" "}
-            {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
-          </h1>
+          <div className="act-hero-heading">
+            <h1 className="act-edit-title">
+              <span className="act-edit-title-bold">{title}.</span>{" "}
+              {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
+            </h1>
+            {instructions.tagline && <p className="act-hero-tagline">{instructions.tagline}</p>}
+          </div>
         </motion.div>
 
         {ex && (
@@ -103,9 +125,34 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
             </div>
           </motion.div>
         )}
+
+        {/* What the student is actually being asked to do.
+            The page used to open on a title, two orbs and five rules about
+            indicator words, and never once said what to write in the box. The
+            task was authored all along (`instructions.task`) and simply had no
+            renderer, so every Activity's front door explained its subject and
+            withheld its instruction.
+
+            It sits in the hero rather than below the rules because the hero's
+            right-hand side under the title is the one large empty region on the
+            page, so the instruction costs the layout no height at all. Putting
+            it under the rules pushed a Start action that is already past the
+            fold a further hundred and forty pixels down. */}
+        {instructions.task && (
+          <motion.div variants={item} className="act-brief">
+            <p className="act-brief-label">What to do</p>
+            <p className="act-task">{instructions.task}</p>
+            <p className="act-how">
+              {itemCount ? `${itemCount} questions. ` : ""}
+              {maxAttempts ? `${maxAttempts} tries each, then the credited answer shows. ` : ""}
+              Every answer saves as you go, so you can stop whenever you like and pick up on the
+              same question.
+            </p>
+          </motion.div>
+        )}
       </section>
 
-      {/* ---- DETAIL (compact): credited negations + lean rules + Start ---- */}
+      {/* ---- DETAIL (compact): the rules, the credited answers, Start ---- */}
       <section className="act-detail">
         <motion.div variants={item} className="act-detail-grid">
           {instructions.rules?.length ? (
@@ -133,7 +180,7 @@ export function ActivityIntro({ title, subtitle, instructions, onStart, onExit }
 
         <motion.div variants={item}>
           <button type="button" onClick={onStart} className="act-start">
-            Start drilling
+            {resuming ? `Back to question ${resumeAt}` : "Start"}
             <ArrowRight size={18} strokeWidth={2.25} />
           </button>
         </motion.div>

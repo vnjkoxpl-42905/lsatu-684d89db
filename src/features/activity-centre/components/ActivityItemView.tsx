@@ -17,6 +17,15 @@ interface ActivityItemViewProps {
   answerPlaceholder?: string;
   /** True when the Activity's world already shows the prompt as written. */
   promptInWorld?: boolean;
+  /**
+   * Attempts already spent on this item in an earlier sitting, replayed from
+   * the attempt log. Zero for an item being met for the first time. The next
+   * submit continues the numbering rather than restarting it, so the student
+   * neither gets a spent attempt back nor writes a duplicate `attempt_no`.
+   */
+  initialAttempts?: number;
+  /** What they had written when they left, so a half-typed answer survives. */
+  initialValue?: string;
   /** Fired once, when the item is resolved (correct, revealed, or coach failure). */
   onResolved: (order: number, finalVerdict: Verdict | null) => void;
   /** Append-only attempt record; best-effort, errors are toasted not thrown. */
@@ -42,13 +51,15 @@ export function ActivityItemView({
   answerLabel,
   answerPlaceholder,
   promptInWorld = false,
+  initialAttempts = 0,
+  initialValue = "",
   onResolved,
   onRecord,
   onNext,
 }: ActivityItemViewProps) {
   const { judge, judging } = useActivityCoach();
-  const [value, setValue] = useState("");
-  const [attempts, setAttempts] = useState(0);
+  const [value, setValue] = useState(initialValue);
+  const [attempts, setAttempts] = useState(initialAttempts);
   const [result, setResult] = useState<CoachVerdict | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [resolved, setResolved] = useState(false);
@@ -95,8 +106,23 @@ export function ActivityItemView({
     setValue("");
   };
 
+  /**
+   * Bailing out to the credited answer ends the item, so the log has to say so.
+   * It used to write nothing: the replay then saw one sub-cap attempt, called
+   * the item unresolved, and served it again on the next sitting as though the
+   * student had never reached it. The row is written at the attempt cap, which
+   * is what "I am done with this one" means to the replay, and carries the
+   * verdict they actually earned so the score is unchanged.
+   */
   const handleShowAnswer = () => {
-    resolve(result?.verdict ?? null, true);
+    const verdict = result?.verdict ?? null;
+    void onRecord({
+      itemOrder: item.order,
+      responseText: value,
+      verdict,
+      attemptNo: Math.max(attempts + 1, MAX_ATTEMPTS),
+    });
+    resolve(verdict, true);
   };
 
   return (
