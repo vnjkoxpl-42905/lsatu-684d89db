@@ -29,6 +29,7 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const Drill = safeLazy(() => import("./pages/Drill"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
+const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
 const RcHub = safeLazy(() => import("./features/rc/pages/RcHub"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
@@ -528,6 +529,9 @@ const App = () => {
                     } />
                     <Route path="/analytics" element={
                       <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
+                    } />
+                    <Route path="/history" element={
+                      <ProtectedRoute flag="has_analytics_access"><DrillHistory /></ProtectedRoute>
                     } />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
