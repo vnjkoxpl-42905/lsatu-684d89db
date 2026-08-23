@@ -245,6 +245,7 @@ export type Database = {
           created_at: string
           id: string
           instructions: Json
+          item_count: number | null
           item_format: string
           items: Json
           score: number | null
@@ -266,6 +267,7 @@ export type Database = {
           created_at?: string
           id?: string
           instructions?: Json
+          item_count?: number | null
           item_format?: string
           items?: Json
           score?: number | null
@@ -287,6 +289,7 @@ export type Database = {
           created_at?: string
           id?: string
           instructions?: Json
+          item_count?: number | null
           item_format?: string
           items?: Json
           score?: number | null
