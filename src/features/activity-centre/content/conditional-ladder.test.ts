@@ -159,12 +159,45 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(instructions.task).toMatch(/contrapositive counts too/i);
   });
 
+  // Asserted by content rather than by index: the rubric grew when the
+  // conditional-logic rule set landed, and pinning this line to the last slot
+  // of a four-line rubric made an unrelated rubric addition look like a
+  // regression in what the student is told about wording.
   it("tells the student their own wording is fine, which the rubric already assumed", () => {
-    expect(instructions.coach.rubric[3]).toMatch(/wording is free/i);
+    expect(instructions.coach.rubric.some((r) => /wording is free/i.test(r))).toBe(true);
     expect(instructions.task).toMatch(/in your own words/i);
   });
 
   it("does not re-demand the contrapositive in the answer box", () => {
     expect(instructions.answer_placeholder).not.toMatch(/contrapositive/i);
+  });
+
+  // Stage 11. Three rules the drill tests and the instructions never stated.
+  // The compound flip is the load-bearing one: without it a student who
+  // contraposes "If A and B, then C" to "If not C, then not A and not B" has
+  // claimed something strictly stronger than the statement supports, and the
+  // rubric had no line that would catch it.
+  const joined = (xs: string[]) => xs.join(" ");
+
+  it("states the compound flip to the student and to the grader", () => {
+    expect(joined(instructions.rules)).toMatch(/and becomes or, and or becomes and/i);
+    expect(joined(instructions.coach.rubric)).toMatch(/not a or not b/i);
+  });
+
+  it("names both illegal moves so the coach can name the one that happened", () => {
+    const rubric = joined(instructions.coach.rubric);
+    expect(rubric).toMatch(/reversing the arrow/i);
+    expect(rubric).toMatch(/negating the trigger/i);
+    expect(joined(instructions.rules)).toMatch(/two moves are always wrong/i);
+  });
+
+  it("acknowledges biconditionals, where the reverse direction is legal", () => {
+    expect(joined(instructions.rules)).toMatch(/if and only if/i);
+    expect(joined(instructions.coach.rubric)).toMatch(/biconditional/i);
+  });
+
+  it("keeps the rules readable rather than exhaustive", () => {
+    expect(instructions.rules.length).toBeLessThanOrEqual(10);
+    for (const r of instructions.rules) expect(r.length).toBeLessThan(200);
   });
 });
