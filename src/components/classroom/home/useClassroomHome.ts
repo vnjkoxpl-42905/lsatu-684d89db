@@ -25,6 +25,7 @@ import {
   NOTE_TYPES,
 } from "@/components/classroom/classroomData";
 import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
+import { supabase } from "@/integrations/supabase/client";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
 import { resolveStudentBookingCta } from "@/lib/studentBookingCta";
@@ -77,6 +78,50 @@ function readDismissed(userId: string | undefined): string[] {
     return Array.isArray(parsed) ? parsed.filter((entry) => typeof entry === "string") : [];
   } catch {
     return [];
+  }
+}
+
+/**
+ * Dismissals also live in the database so they survive a cache clear, a
+ * sign-out, and a different device. One row per account in bootcamp_kv, whose
+ * RLS already scopes every row to its owner (admins alone can delete), so no
+ * account can ever see or lose another account's cleared list. localStorage
+ * stays as the instant read cache; the cloud row is the source of truth that
+ * gets merged in on load and rewritten on every change.
+ */
+const CLOUD_DISMISSED_TABLE = "home_message_dismissals";
+
+async function fetchCloudDismissed(userId: string): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from("bootcamp_kv")
+      .select("data")
+      .eq("user_id", userId)
+      .eq("table_name", CLOUD_DISMISSED_TABLE)
+      .eq("record_id", userId)
+      .maybeSingle();
+    if (error || !data) return [];
+    const keys = (data.data as { keys?: unknown } | null)?.keys;
+    return Array.isArray(keys)
+      ? keys.filter((key): key is string => typeof key === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+async function saveCloudDismissed(userId: string, keys: string[]): Promise<void> {
+  const { error } = await supabase.from("bootcamp_kv").upsert(
+    {
+      user_id: userId,
+      table_name: CLOUD_DISMISSED_TABLE,
+      record_id: userId,
+      data: { keys },
+    },
+    { onConflict: "user_id,table_name,record_id" },
+  );
+  if (error) {
+    console.warn("[useClassroomHome] dismissed sync failed:", error.message);
   }
 }
 
@@ -172,15 +217,41 @@ export function useClassroomHome(): {
   // do not share a cleared list.
   const [dismissed, setDismissed] = React.useState<string[]>(() => readDismissed(user?.id));
   React.useEffect(() => {
+    // Local cache first so the card never flickers, then merge the cloud copy:
+    // a dismissal made on another device (or before this device's cache was
+    // cleared) must hide the message here too.
     setDismissed(readDismissed(user?.id));
+    if (!user?.id) return;
+    let cancelled = false;
+    void fetchCloudDismissed(user.id).then((cloud) => {
+      if (cancelled || cloud.length === 0) return;
+      setDismissed((prev) => {
+        const merged = [...prev];
+        let added = false;
+        for (const key of cloud) {
+          if (!merged.includes(key)) {
+            merged.push(key);
+            added = true;
+          }
+        }
+        return added ? merged : prev;
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [user?.id]);
   React.useEffect(() => {
     if (!user?.id || typeof window === "undefined") return;
     try {
       window.localStorage.setItem(`${DISMISSED_KEY}:${user.id}`, JSON.stringify(dismissed));
     } catch {
-      // A full or blocked store only costs the memory of a dismissal.
+      // A full or blocked store only costs the local copy of a dismissal.
     }
+    // Persist the same list to the cloud row for this account. The write is
+    // idempotent (full-list upsert), so the extra call on first load is cheap
+    // and doubles as convergence when a merge pulled in another device's keys.
+    void saveCloudDismissed(user.id, dismissed);
   }, [dismissed, user?.id]);
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
