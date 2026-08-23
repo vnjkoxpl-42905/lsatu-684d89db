@@ -81,6 +81,50 @@ function readDismissed(userId: string | undefined): string[] {
   }
 }
 
+/**
+ * Dismissals also live in the database so they survive a cache clear, a
+ * sign-out, and a different device. One row per account in bootcamp_kv, whose
+ * RLS already scopes every row to its owner (admins alone can delete), so no
+ * account can ever see or lose another account's cleared list. localStorage
+ * stays as the instant read cache; the cloud row is the source of truth that
+ * gets merged in on load and rewritten on every change.
+ */
+const CLOUD_DISMISSED_TABLE = "home_message_dismissals";
+
+async function fetchCloudDismissed(userId: string): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from("bootcamp_kv")
+      .select("data")
+      .eq("user_id", userId)
+      .eq("table_name", CLOUD_DISMISSED_TABLE)
+      .eq("record_id", userId)
+      .maybeSingle();
+    if (error || !data) return [];
+    const keys = (data.data as { keys?: unknown } | null)?.keys;
+    return Array.isArray(keys)
+      ? keys.filter((key): key is string => typeof key === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+async function saveCloudDismissed(userId: string, keys: string[]): Promise<void> {
+  const { error } = await supabase.from("bootcamp_kv").upsert(
+    {
+      user_id: userId,
+      table_name: CLOUD_DISMISSED_TABLE,
+      record_id: userId,
+      data: { keys },
+    },
+    { onConflict: "user_id,table_name,record_id" },
+  );
+  if (error) {
+    console.warn("[useClassroomHome] dismissed sync failed:", error.message);
+  }
+}
+
 /** The candidate carries the dismissal key the view has no use for. */
 type MessageCandidate = HomeMessage & { dismissKey: string };
 
