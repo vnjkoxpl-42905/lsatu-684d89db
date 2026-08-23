@@ -32,7 +32,7 @@ import { parseSpecimen, readExamination } from "./specimen-lab/specimen";
 
 import { SwitchyardEntrance } from "./switchyard/SwitchyardEntrance";
 import { SwitchyardStage } from "./switchyard/SwitchyardStage";
-import { diagnose, indicatorOf, parseRouting } from "./switchyard/routing";
+import { diagnose, indicatorOf, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
 
 /**
  * Which world belongs to which Activity, and how to drive it from a live run.
@@ -113,6 +113,23 @@ export interface WorldBinding {
   carriesPrompt: boolean;
   Entrance: ComponentType<{ onDone: () => void; title?: string }>;
   render: (args: WorldRenderArgs) => ReactElement | null;
+  /**
+   * A local, authoritative check that the student has written an answer the
+   * author already wrote down. True means `correct`, decided without a model
+   * call; false is not a claim that the answer is wrong, only that it cannot be
+   * settled here and the Coach takes it. A world whose answers have no authored
+   * structure omits this and always asks the Coach.
+   */
+  fastPath?: (item: ActivityItem, response: string) => boolean;
+  /**
+   * What the world's structural classifier WOULD have called this answer.
+   * Recorded next to the verdict the Coach actually gave, and never shown or
+   * scored: it exists so a future decision to trust the classifier can be made
+   * against a real disagreement rate instead of an argument.
+   */
+  shadowFault?: (item: ActivityItem, response: string) => string | null;
+  /** Names the ruleset `shadowFault` used, so a rule change stays attributable. */
+  parserVersion?: string;
 }
 
 const WORLDS: WorldBinding[] = [
@@ -187,6 +204,15 @@ const WORLDS: WorldBinding[] = [
         />
       );
     },
+    fastPath: (item, response) => matchesAnyCredited(item.credited_answers, response),
+    shadowFault: (item, response) => {
+      const credited = item.credited_answers?.[0];
+      const routing = credited ? parseRouting(credited) : null;
+      if (!routing) return null;
+      const fault = diagnose(routing, parseRouting(response));
+      return fault ? `${fault.kind}:${fault.side}` : null;
+    },
+    parserVersion: PARSER_VERSION,
   },
   {
     slug: "find-the-conclusion",

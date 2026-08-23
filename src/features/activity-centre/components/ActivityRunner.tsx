@@ -12,7 +12,7 @@ import { reconstructProgress } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
 import { MAX_ATTEMPTS } from "../api/types";
-import type { Verdict } from "../api/types";
+import type { JudgeSource, Verdict } from "../api/types";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
@@ -253,7 +253,15 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   }, [assignment, practice, syncClassroom]);
 
   const handleRecord = useCallback(
-    async (args: { itemOrder: number; responseText: string; verdict: Verdict | null; attemptNo: number }) => {
+    async (args: {
+      itemOrder: number;
+      responseText: string;
+      verdict: Verdict | null;
+      attemptNo: number;
+      judgeSource?: JudgeSource;
+      shadowFault?: string | null;
+      latencyMs?: number;
+    }) => {
       setResponses((prev) => ({ ...prev, [args.itemOrder]: args.responseText }));
       // The seed has served its purpose the moment this item is written to
       // again; leaving it set would re-apply an old attempt count on a remount.
@@ -267,13 +275,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           responseText: args.responseText,
           verdict: args.verdict,
           attemptNo: args.attemptNo,
+          judgeSource: args.judgeSource,
+          shadowFault: args.shadowFault,
+          latencyMs: args.latencyMs,
+          parserVersion: world?.parserVersion,
         });
       } catch (e) {
         console.error("[activity:record] failed", e);
         toast({ title: "Could not save that attempt", description: "Your progress this session still counts.", variant: "destructive" });
       }
     },
-    [user, assignment, practice, items],
+    [user, assignment, practice, items, world],
   );
 
   const handleResolved = useCallback((order: number, finalVerdict: Verdict | null) => {
@@ -422,6 +434,8 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             answerLabel={assignment.instructions?.answer_label}
             answerPlaceholder={assignment.instructions?.answer_placeholder}
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
+            fastPath={world?.fastPath}
+            shadowFault={world?.shadowFault}
             activeIndex={index}
             resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}
             resumeValue={resumeAt?.index === index ? resumeAt.text : ""}

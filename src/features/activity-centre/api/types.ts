@@ -5,6 +5,17 @@
 // validated shape to these on read.
 
 export type Verdict = "correct" | "partial" | "incorrect";
+
+/**
+ * Who decided an attempt's verdict.
+ *
+ * `fast-path` is the world's local match against an authored credited answer,
+ * settled with no model call. `coach` is the edge function. `fallback` is a
+ * Coach outage, where the credited answer is revealed and no verdict is earned.
+ * Recorded so the share of attempts that never reach the model is a measured
+ * number rather than a claim.
+ */
+export type JudgeSource = "fast-path" | "coach" | "fallback";
 export type ActivityStatus = "assigned" | "in_progress" | "completed";
 export type ItemFormat = "free-text" | "mcq" | "variation";
 

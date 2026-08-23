@@ -55,12 +55,15 @@ describe("what the item writes to the attempt log", () => {
     invoke.mockResolvedValue({ data: { verdict: "correct", feedback: "Yes." }, error: null });
     const { onRecord } = renderItem();
     await submit("If it is not refueled, the beacon goes dark.");
-    expect(onRecord).toHaveBeenCalledWith({
-      itemOrder: 7,
-      responseText: "If it is not refueled, the beacon goes dark.",
-      verdict: "correct",
-      attemptNo: 1,
-    });
+    expect(onRecord).toHaveBeenCalledWith(
+      expect.objectContaining({
+        itemOrder: 7,
+        responseText: "If it is not refueled, the beacon goes dark.",
+        verdict: "correct",
+        attemptNo: 1,
+        judgeSource: "coach",
+      }),
+    );
   });
 
   it("records a resolving row when the student bails out to the credited answer", async () => {
@@ -92,7 +95,9 @@ describe("what the item writes to the attempt log", () => {
     invoke.mockResolvedValue({ data: null, error: { message: "down" } });
     const { onRecord, onResolved } = renderItem();
     await submit("anything");
-    expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ verdict: null, attemptNo: 1 }));
+    expect(onRecord).toHaveBeenCalledWith(
+      expect.objectContaining({ verdict: null, attemptNo: 1, judgeSource: "fallback" }),
+    );
     expect(onResolved).toHaveBeenCalledWith(7, null);
   });
 });

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
-import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { StatementPanel } from "./StatementPanel";
 import { ItemPrompt } from "./ItemPrompt";
@@ -17,6 +17,15 @@ interface ActivityItemViewProps {
   answerPlaceholder?: string;
   /** True when the Activity's world already shows the prompt as written. */
   promptInWorld?: boolean;
+  /**
+   * The world's local check for an answer the author already wrote down. When
+   * it returns true the item is correct, decided here, with no model call and
+   * no spinner. Absent for Activities whose answers have no authored structure,
+   * which then judge exactly as they did before.
+   */
+  fastPath?: (item: ActivityItem, response: string) => boolean;
+  /** The world's structural read of the answer, recorded as telemetry only. */
+  shadowFault?: (item: ActivityItem, response: string) => string | null;
   /**
    * Attempts already spent on this item in an earlier sitting, replayed from
    * the attempt log. Zero for an item being met for the first time. The next
@@ -34,6 +43,9 @@ interface ActivityItemViewProps {
     responseText: string;
     verdict: Verdict | null;
     attemptNo: number;
+    judgeSource?: JudgeSource;
+    shadowFault?: string | null;
+    latencyMs?: number;
   }) => Promise<void>;
   onNext: () => void;
 }
@@ -51,6 +63,8 @@ export function ActivityItemView({
   answerLabel,
   answerPlaceholder,
   promptInWorld = false,
+  fastPath,
+  shadowFault,
   initialAttempts = 0,
   initialValue = "",
   onResolved,
@@ -72,6 +86,30 @@ export function ActivityItemView({
 
   const handleSubmit = async () => {
     const attemptNo = attempts + 1;
+    const startedAt = performance.now();
+    const since = () => Math.round(performance.now() - startedAt);
+
+    // The author already wrote this answer down, so recognising it needs no
+    // model. Only an exact structural match against a credited answer takes
+    // this path, which is why it can be trusted: it confirms the answer key
+    // rather than reasoning about it. Everything else falls through and is
+    // judged exactly as before.
+    if (fastPath?.(item, value)) {
+      setAttempts(attemptNo);
+      setResult({ verdict: "correct", feedback: "" });
+      void onRecord({
+        itemOrder: item.order,
+        responseText: value,
+        verdict: "correct",
+        attemptNo,
+        judgeSource: "fast-path",
+        shadowFault: shadowFault?.(item, value) ?? null,
+        latencyMs: since(),
+      });
+      resolve("correct", false);
+      return;
+    }
+
     const res = await judge({ item, studentResponse: value, attemptNo, coach });
     setAttempts(attemptNo);
 
@@ -83,7 +121,15 @@ export function ActivityItemView({
         description: "Showing the credited answer so you can keep moving.",
         variant: "destructive",
       });
-      void onRecord({ itemOrder: item.order, responseText: value, verdict: null, attemptNo });
+      void onRecord({
+        itemOrder: item.order,
+        responseText: value,
+        verdict: null,
+        attemptNo,
+        judgeSource: "fallback",
+        shadowFault: shadowFault?.(item, value) ?? null,
+        latencyMs: since(),
+      });
       setResult({ verdict: "incorrect", feedback: "" });
       resolve(null, true);
       return;
@@ -91,7 +137,15 @@ export function ActivityItemView({
 
     const verdict = res.verdict.verdict;
     setResult(res.verdict);
-    void onRecord({ itemOrder: item.order, responseText: value, verdict, attemptNo });
+    void onRecord({
+      itemOrder: item.order,
+      responseText: value,
+      verdict,
+      attemptNo,
+      judgeSource: "coach",
+      shadowFault: shadowFault?.(item, value) ?? null,
+      latencyMs: since(),
+    });
 
     if (verdict === "correct") {
       resolve("correct", false);

@@ -7,6 +7,7 @@ import type {
   ActivityItem,
   ActivityItemResponse,
   ActivityStatus,
+  JudgeSource,
   Verdict,
 } from "./types";
 
@@ -66,7 +67,25 @@ export async function markAssignmentStarted(assignmentId: string): Promise<void>
   if (error) throw error;
 }
 
-/** Student: write a verdict-bearing attempt to the append-only log. */
+/**
+ * PostgREST's two ways of saying "you named a column I do not have": the schema
+ * cache miss on insert, and Postgres's own undefined_column. Either means the
+ * telemetry migration has not been applied to this database yet.
+ */
+function isUnknownColumn(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  return error.code === "PGRST204" || error.code === "42703";
+}
+
+/**
+ * Student: write a verdict-bearing attempt to the append-only log.
+ *
+ * The telemetry fields ride along on the same row: which judge decided the
+ * verdict, what the world's structural classifier would have said, and how long
+ * it took. They are measurement, never score, and they are strictly less
+ * valuable than the attempt itself — so if the database has not been given
+ * their columns yet, the attempt is written without them rather than lost.
+ */
 export async function recordItemResponse(input: {
   assignmentId: string;
   studentId: string;
@@ -74,16 +93,37 @@ export async function recordItemResponse(input: {
   responseText: string;
   verdict: Verdict | null;
   attemptNo: number;
+  judgeSource?: JudgeSource;
+  shadowFault?: string | null;
+  latencyMs?: number;
+  parserVersion?: string;
 }): Promise<void> {
-  const { error } = await supabase.from("activity_item_responses").insert({
+  const attempt = {
     assignment_id: input.assignmentId,
     student_id: input.studentId,
     item_order: input.itemOrder,
     response_text: input.responseText,
     verdict: input.verdict,
     attempt_no: input.attemptNo,
-  });
-  if (error) throw error;
+  };
+  const telemetry = {
+    judge_source: input.judgeSource ?? null,
+    shadow_fault: input.shadowFault ?? null,
+    latency_ms: input.latencyMs ?? null,
+    // Only meaningful alongside a shadow reading, so it is null when there is none.
+    parser_version: input.shadowFault === undefined ? null : input.parserVersion ?? null,
+  };
+
+  // The generated DB types are regenerated from the live schema and do not know
+  // the telemetry columns until the migration lands, so the widened row is cast
+  // here rather than hand-editing that generated file.
+  const table = supabase.from("activity_item_responses");
+  const { error } = await table.insert({ ...attempt, ...telemetry } as never);
+  if (!error) return;
+  if (!isUnknownColumn(error)) throw error;
+
+  const { error: retryError } = await supabase.from("activity_item_responses").insert(attempt);
+  if (retryError) throw retryError;
 }
 
 /**

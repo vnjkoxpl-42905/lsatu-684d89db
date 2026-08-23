@@ -54,6 +54,8 @@ The label is generic engine copy that happens to be true for Negation Station an
 
 ### New finding C — a spec contradiction, for Joshua (content, not built here)
 
+> **Decided 2026-08-23 by Joshua: either direction is credited, both are praised.** The rubric wins; `instructions.task` is the field that is wrong. Stage 2's fast path is built on this and credits any authored direction. The task copy still says "Then give me the contrapositive" and now contradicts the grader out loud, so the sentence needs correcting **inside `20260822190000_conditional_rephrase_ladder.sql` before that migration is applied** — the live Activity row is what a student reads, and rewriting it afterwards costs a second migration. That edit is content and is Joshua's; it is the one line Stage 11 must not miss.
+
 Two authored fields disagree about what the student is being asked for:
 
 - `instructions.task`: *"Rephrase the statement as If [sufficient], then [necessary]. **Then give me the contrapositive.**"* — both required.
@@ -152,6 +154,8 @@ S = under a day. M = one to two days.
 ---
 
 ## Stage 0 — Ship the migration *(blocking)* **[v2 — rewritten]**
+
+> **Status 2026-08-23.** Finding C is settled (above). The migration is still **unapplied**: Stage 1 was cherry-picked to `origin/main` on its own so the app win could ship without deploying the new app in front of the old content, and the ladder commit stays local until Joshua applies the SQL through Lovable. Stage 2 is built and local on the same branch.
 
 `2bc21447` is committed and unpushed. It contains `supabase/migrations/20260822190000_conditional_rephrase_ladder.sql`, which rewrites the live `activities` row for Conditional Rephrase and re-snapshots assignments that have not been started. Until it is applied, the live Activity still serves the **old two-ladder content**, and every stage below is being built against a version of the Activity no student is running.
 
@@ -295,6 +299,8 @@ Once a fast-path `correct` is known synchronously, the capsules can couple the i
 The fast path needs finding C's answer — is the contrapositive required, or is either direction enough? See §5. **Sequencing consequence: this decision cannot wait for Stage 11.** v1 put the decision's content update after Stage 2 while also saying Stage 2 depends on it. The decision moves to Stage 0, ahead of everything.
 
 **Proof.** A table-driven suite over all 62 items asserting: every credited answer for an item matches the fast path for that item (this is the test v1 got wrong — it only checked `credited_answers[0]`); items 46, 47 and 48 match on **both** authored directions; item 1's contrapositive matches; the item 18 `"bananas dance"` case does **not** reach a verdict locally and goes to the Coach. Then a live submission showing the yard routed with no completed network request.
+
+> **Built 2026-08-23.** 2a and 2c shipped; 2b ships its columns as `20260823060000_activity_response_judge_telemetry.sql`, and the client writes the attempt without the telemetry if that migration has not been applied yet, so an unapplied migration costs measurement rather than a student's attempt. `diagnose()` remains disabled for scoring, exactly as designed.
 
 **Moves:** Performance 78 → 88. **Correctness: unchanged at 68 by this stage**, because the fast path only confirms answers the author already wrote. v1 claimed 68 → 88 here; that credit belonged to a design that did not survive review.
 

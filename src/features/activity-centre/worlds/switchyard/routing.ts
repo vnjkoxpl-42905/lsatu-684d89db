@@ -219,3 +219,37 @@ export function differs(credited: Routing, student: Routing | null): boolean {
     a.negated === b.negated && contentTokens(a.text).join(" ") === contentTokens(b.text).join(" ");
   return !(same(student.ifClause, credited.ifClause) && same(student.thenClause, credited.thenClause));
 }
+
+/* ------------------------------------------------------------------ *
+ * The fast path
+ *
+ * A student who writes an answer the author already wrote down needs no model
+ * to confirm it. This recognises exactly that case and nothing else.
+ *
+ * It compares against EVERY credited answer, not just the first. In this bank
+ * the second credited answer is the contrapositive, and on items 46, 47 and 48
+ * it is a genuinely different logical direction. Checking only slot 0 would
+ * grade the answer the task explicitly asks for as wrong.
+ *
+ * It makes no inference: a correct paraphrase the author did not write ("fans
+ * are running all night" for "fans run overnight") falls through, because
+ * `differs` compares token sequences with no stemming or synonyms. Falling
+ * through means asking the Coach, which is the safe direction to fail in.
+ * ------------------------------------------------------------------ */
+
+/** Bumped whenever the rules above change, so shadow telemetry is attributable. */
+export const PARSER_VERSION = "routing-1";
+
+/**
+ * True when the student's routing is structurally identical to one of the
+ * item's credited answers. False is not a claim that the answer is wrong; it
+ * only means this cannot be settled without the Coach.
+ */
+export function matchesAnyCredited(creditedAnswers: string[] | undefined, response: string): boolean {
+  const student = parseRouting(response);
+  if (!student) return false;
+  return (creditedAnswers ?? []).some((credited) => {
+    const routing = parseRouting(credited);
+    return routing ? !differs(routing, student) : false;
+  });
+}

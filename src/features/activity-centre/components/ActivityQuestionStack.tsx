@@ -1,4 +1,4 @@
-import type { ActivityCoach, ActivityItem, ItemFormat, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { ActivityItemView } from "./ActivityItemView";
 
 interface ActivityQuestionStackProps {
@@ -11,6 +11,10 @@ interface ActivityQuestionStackProps {
   answerPlaceholder?: string;
   /** True when the Activity's world already shows the prompt as written. */
   promptInWorld?: boolean;
+  /** The world's local check for an answer the author already wrote down. */
+  fastPath?: (item: ActivityItem, response: string) => boolean;
+  /** The world's structural read of the answer, recorded as telemetry only. */
+  shadowFault?: (item: ActivityItem, response: string) => string | null;
   activeIndex: number;
   /** Attempts already spent on the ACTIVE item in an earlier sitting. */
   resumeAttempts?: number;
@@ -22,6 +26,9 @@ interface ActivityQuestionStackProps {
     responseText: string;
     verdict: Verdict | null;
     attemptNo: number;
+    judgeSource?: JudgeSource;
+    shadowFault?: string | null;
+    latencyMs?: number;
   }) => Promise<void>;
   onNext: () => void;
 }
@@ -34,6 +41,8 @@ export function ActivityQuestionStack({
   answerLabel,
   answerPlaceholder,
   promptInWorld = false,
+  fastPath,
+  shadowFault,
   activeIndex,
   resumeAttempts = 0,
   resumeValue = "",
@@ -65,6 +74,8 @@ export function ActivityQuestionStack({
             answerLabel={answerLabel}
             answerPlaceholder={answerPlaceholder}
             promptInWorld={promptInWorld}
+            fastPath={fastPath}
+            shadowFault={shadowFault}
             initialAttempts={resumeAttempts}
             initialValue={resumeValue}
             isLast={activeIndex === items.length - 1}
