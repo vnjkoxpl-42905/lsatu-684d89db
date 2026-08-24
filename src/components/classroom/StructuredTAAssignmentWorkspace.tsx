@@ -1,6 +1,6 @@
 import * as React from "react";
-import DOMPurify from "dompurify";
 import { toast } from "sonner";
+import { sanitizeClassroomHtml } from "./classroomData";
 import {
   saveTAAssignmentResponses,
   submitTAAssignmentResponses,
@@ -190,7 +190,7 @@ export default function StructuredTAAssignmentWorkspace({ assignment, refresh }:
   };
 
   const safeAnswerKey = React.useMemo(
-    () => DOMPurify.sanitize(assignment.answer_key_html ?? ""),
+    () => sanitizeClassroomHtml(assignment.answer_key_html ?? ""),
     [assignment.answer_key_html],
   );
 

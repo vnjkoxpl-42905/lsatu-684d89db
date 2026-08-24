@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import DOMPurify from "dompurify";
 import { ArrowLeft, Check, Download, GraduationCap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { sanitizeClassroomHtml } from "@/components/classroom/classroomData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
@@ -95,7 +95,7 @@ export default function ClassroomTAAssignmentDetail() {
   };
 
   const sanitized = React.useMemo(
-    () => (assignment ? DOMPurify.sanitize(assignment.content_html || "") : ""),
+    () => (assignment ? sanitizeClassroomHtml(assignment.content_html || "") : ""),
     [assignment]
   );
 

@@ -6,6 +6,14 @@
   --classroom-hover: rgba(246, 235, 225, 0.4);
   --classroom-dash: rgba(0, 0, 0, 0.15);
   --classroom-link: #ff8906;
+  /* Text-safe pair. --classroom-link and --classroom-meta are tuned for fills,
+     rules and decorative use, where WCAG 1.4.11's 3:1 does not apply. Against
+     white they measure 2.38:1 and 2.54:1, so they fail 1.4.3 as TEXT.
+     Use these two instead whenever the colour carries words or notation.
+     Same hue (32deg / 30deg), darkened only in value: 5.39:1 and 5.38:1 on
+     white, and >=4.5:1 on every 10% tint used in the classroom. */
+  --classroom-link-text: #a25704;
+  --classroom-meta-text: #6d6a67;
   --classroom-active: #43403c;
   --classroom-active-ink: #ffffff;
   --classroom-meta-soft: rgba(67, 64, 60, 0.4);
@@ -42,6 +50,10 @@ html.dark .classroom-root {
   --classroom-active: #3d3c48;
   --classroom-active-ink: #e5e5e5;
   --classroom-meta-soft: #a7a9be;
+  /* On the dark page both base values already clear 8:1, so the text-safe pair
+     is the same colour here. Declared so the token means one thing everywhere. */
+  --classroom-link-text: #ff8906;
+  --classroom-meta-text: #a7a9be;
   --classroom-panel: #0a0913;
   --classroom-page: #0f0e17;
   --classroom-drill-page: #121019;

@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import DOMPurify from 'dompurify';
 import { Button } from '@/components/ui/button';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
+import { sanitizeClassroomHtml } from '@/components/classroom/classroomData';
 import { format } from 'date-fns';
 
 /**
@@ -58,7 +58,7 @@ export default function ClassroomItem() {
     );
   }
 
-  const safeHtml = item.content_html ? DOMPurify.sanitize(item.content_html) : '';
+  const safeHtml = item.content_html ? sanitizeClassroomHtml(item.content_html) : '';
 
   return (
     <div className="min-h-screen bg-background">

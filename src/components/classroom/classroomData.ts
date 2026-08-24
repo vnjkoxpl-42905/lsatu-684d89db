@@ -16,9 +16,24 @@ export const NOTE_TYPES = new Set<ClassroomItem["type"]>([
   "smartboard_recap",
 ]);
 
+/**
+ * Classroom notes and assignments are authored ONLY by the teacher/admin, never
+ * by students. Nothing a student types is ever rendered as HTML anywhere in the
+ * app (messages and free responses render as React text, which escapes), so this
+ * sanitizer is not what protects the teacher from students.
+ *
+ * <style> is therefore allowed: it lets an authored note carry its own design as
+ * a self-contained file, which is how the rest of the app already treats teacher
+ * content (every bootcamp lesson renders its HTML raw).
+ *
+ * <script> stays blocked. That is the one that could steal a session, and there
+ * is no authoring reason to want it.
+ */
 export function sanitizeClassroomHtml(html: string) {
   const sanitized = DOMPurify.sanitize(html, {
     ADD_ATTR: ["loading", "sizes", "srcset"],
+    ADD_TAGS: ["style"],
+    FORBID_TAGS: ["script"],
   });
   if (typeof document === "undefined") return sanitized;
   const template = document.createElement("template");
