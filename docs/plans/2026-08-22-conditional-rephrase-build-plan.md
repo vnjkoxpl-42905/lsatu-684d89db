@@ -157,6 +157,8 @@ S = under a day. M = one to two days.
 
 ## Stage 0 — Ship the migration *(blocking)* **[v2 — rewritten]**
 
+> **Status 2026-08-24. Applied.** The live `activities` row for this slug reads 62 items, which is this migration's snapshot, so the ladder is what students are running. The paragraph below described the state on 2026-08-23 and is kept for the reasoning, not for the status.
+>
 > **Status 2026-08-23.** Finding C is settled (above). The migration is still **unapplied**: Stage 1 was cherry-picked to `origin/main` on its own so the app win could ship without deploying the new app in front of the old content, and the ladder commit stays local until Joshua applies the SQL through Lovable. Stage 2 is built and local on the same branch.
 
 `2bc21447` is committed and unpushed. It contains `supabase/migrations/20260822190000_conditional_rephrase_ladder.sql`, which rewrites the live `activities` row for Conditional Rephrase and re-snapshots assignments that have not been started. Until it is applied, the live Activity still serves the **old two-ladder content**, and every stage below is being built against a version of the Activity no student is running.
@@ -467,7 +469,9 @@ Everything needed already exists: the half-turn (`SwitchyardStage.tsx:122`), `ME
 
 > **Built 2026-08-23, points 1 and 2.** The explanation now shows on every resolved item and moved out of the reveal box so it renders once, in both states; the credited-answer block stays gated on `revealed` exactly as before. The label is `instructions.credited_secondary_label`, default unchanged, set to "Contrapositive" for this Activity in the content seed and in `20260823061500_conditional_rephrase_contrapositive_label.sql` for the live row. This also fills the gap Stage 2 opened: a fast-path correct answer arrives with no Coach prose, and without this it landed as a bare chip.
 >
-> **Point 3 is deferred, and deliberately.** The polarity-lamp legend is written to describe a lamp that Stage 4 has demoted to reinforcement. Stage 4 is not built, so the legend would describe a signal that is still the only one there is. It belongs with Stage 4.
+> **Point 3 was deferred, and deliberately.** The polarity-lamp legend is written to describe a lamp that Stage 4 has demoted to reinforcement. Stage 4 was not built, so the legend would have described a signal that was still the only one there is. It belonged with Stage 4.
+>
+> **Built 2026-08-24, once Stage 4 had shipped and made it true.** The key sits under the yard from the moment the routing lands, and carries a real `.sy-lamp` in each state rather than a drawing of one, so it cannot drift from the signal it explains. It is `aria-hidden`: every capsule already announces its own polarity in words, and describing the colour of a ring a screen reader cannot see is noise on top of the fact. On a phone it joins the plates and the milepost rail behind the band's Expand control, because in a 260px cap it wraps to two lines and spends them explaining a signal instead of showing one.
 
 **Proof.** Answer item 1 correctly and read the "Whenever" explanation on screen. Reveal item 62 and see "Contrapositive", not "Also accepted".
 
@@ -598,6 +602,28 @@ The attempt log already holds a verdict per item, and every item already carries
 - **The practice path cannot take a filtered item list yet.** `handlePracticeAgain()` (`ActivityRunner.tsx:301`) only resets state, and `items` always comes from the full assignment snapshot (`:96`). "Re-drill the nine you missed" needs `items` to accept an override. Small, but it is real work and not free.
 
 **Moves:** Craft 96 → 100, and it is the only stage that produces something for Joshua rather than only for the student.
+
+> **Built 2026-08-24. The three core pieces; three of the "if wanted" list are not, and are named below.**
+>
+> **The family map earned its place before it was written.** 53 distinct categories over 62 items is the item list with extra steps, not a diagnosis. The map is an explicit table of all 53, held in `indicator-families.ts` and versioned, exactly as v2 required, and the reason is the one v2 gave: `category` is display copy. Group on the string and the ledger silently re-buckets itself the day somebody fixes a capital letter; group on the map and that reword fails a test instead. Four tests hold it: every one of the 62 items placed, no dead entry, every entry in a declared family, no family standing empty.
+>
+> **Eight families, not seven.** The plan predicted `trigger / requirement / negative-requirement / negated-result / look-alike / compound / chained`. The content asked for one more: `biconditional`, because "if and only if" is the single form that runs both ways and filing it under compound would have taught the wrong thing about it. Two categories that read like families are not: "Same rule, new seat" is a teaching device, so its unless is a negative requirement and its only if is a requirement; "Contrast inside the condition" is one item drilling *necessitates*, and a family of one reads as noise in a diagnosis rather than as a lesson.
+>
+> **The map carries the indicator separately from the family**, which is what lets "Requirement word: presupposes" and "Requirement word under jargon: presupposes" merge into one word a student missed twice rather than two words they missed once.
+>
+> **A partial is a miss.** The score already docks it half a mark, and a ledger that forgave what the percentage on the same screen punished would be lying to the student twice at once. An unjudged item is neither a miss nor a clean pass and is absent from both numerator and denominator: a Coach outage is not evidence about a word. The ledger declines to render at all rather than guess, for an Activity nobody has grouped and for a run where nothing was judged.
+>
+> **The re-drill needed the second prerequisite v2 named**, and it was real work as predicted. `items` now takes an override, set only from the completion screen and only alongside practice mode, so a graded run can never be narrowed to a subset the student picked. An override matching nothing falls back to the full set: a stale list is not an empty activity. "Practice again" repeats whatever set was just run rather than always reopening all 62.
+>
+> **The teacher's half splits its aggregation in two, deliberately.** Per assignment the runs stay separate, because two runs of the same Activity can disagree about an item and there is no obvious rule for which one describes the student. Across assignments the families merge, because that question is about the student, and a word missed in two runs has cost them twice. Two queries, not N+1. It resolves class_id through `students` the way the bootcamp panel beside it does, and falls back to the class_id when no mapping row exists.
+>
+> **The completion screen was the last surface auth made unreachable**, so the dev lab grew a panel for it: any Activity, three run shapes (some missed, none missed, some never judged), with the teacher's view of the same run underneath. Verified there on the real bank: "only if cost you 3 questions", 27 of 62 across 7 families, and the outage shape correctly counting 55 rather than 62.
+>
+> **Not built, and still optional as the stage wrote them:** the session shape ("ten and stop"), which is a product decision about what a sitting is rather than an engineering one; navigable mileposts; and `last_item_order` on the card. Note that the runner already shows "24 / 62" in its own header, so that last one is only about the Activity CARD on the list page, which is a smaller gap than the stage assumed.
+>
+> **Not verified:** the signed-in dossier. Reaching it needs credentials, so the branch logic is held by tests and the presentation by the lab.
+>
+> 798 tests pass, up 47 across the two stages built today. Typecheck clean.
 
 ---
 
