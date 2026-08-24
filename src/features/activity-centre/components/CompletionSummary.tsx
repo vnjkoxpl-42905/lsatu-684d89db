@@ -1,8 +1,11 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ActivityItem, Verdict } from "../api/types";
+import { buildIndicatorLedger } from "../ledger";
 import type { RunScore } from "../progress";
+import { IndicatorLedgerPanel } from "./IndicatorLedgerPanel";
 
 interface CompletionSummaryProps {
   title: string;
@@ -15,6 +18,8 @@ interface CompletionSummaryProps {
   practice?: boolean;
   /** Re-run the activity for ungraded practice. */
   onPractice?: () => void;
+  /** Re-run just the items named, ungraded. Absent leaves the ledger read-only. */
+  onRedrill?: (orders: number[]) => void;
 }
 
 const VERDICT_LABEL: Record<string, { label: string; cls: string }> = {
@@ -26,11 +31,18 @@ const VERDICT_LABEL: Record<string, { label: string; cls: string }> = {
 };
 
 /** Completion: score, per-item recap, Done, optional ungraded re-run. */
-export function CompletionSummary({ title, items, verdicts, responses, score, practice, onPractice }: CompletionSummaryProps) {
+export function CompletionSummary({ title, items, verdicts, responses, score, practice, onPractice, onRedrill }: CompletionSummaryProps) {
   const navigate = useNavigate();
   const correct = items.filter((i) => verdicts[i.order] === "correct").length;
   const partial = items.filter((i) => verdicts[i.order] === "partial").length;
   const unchecked = score.total - score.judged;
+  // Null for an Activity whose categories nobody has grouped, and for a run with
+  // nothing judged. Both are "no diagnosis available", and the screen simply
+  // stays as it was rather than showing an empty ledger that implies otherwise.
+  const ledger = useMemo(
+    () => buildIndicatorLedger(title, items, verdicts),
+    [title, items, verdicts],
+  );
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -74,6 +86,8 @@ export function CompletionSummary({ title, items, verdicts, responses, score, pr
           )}
         </div>
       </div>
+
+      {ledger && <IndicatorLedgerPanel ledger={ledger} onRedrill={onRedrill} />}
 
       <div className="mt-6 space-y-3">
         {items.map((item) => {

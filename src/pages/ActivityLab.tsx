@@ -112,6 +112,9 @@ import { ActivityIntro } from "@/features/activity-centre/components/ActivityInt
 import { MAX_ATTEMPTS } from "@/features/activity-centre/api/types";
 import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/types";
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
+import { CompletionSummary } from "@/features/activity-centre/components/CompletionSummary";
+import { scoreFor } from "@/features/activity-centre/progress";
+import type { Verdict } from "@/features/activity-centre/api/types";
 import { ActivityQuestionStack } from "@/features/activity-centre/components/ActivityQuestionStack";
 import { worldForTitle } from "@/features/activity-centre/worlds/registry";
 import { librarySortIndex } from "@/features/activity-centre/content";
@@ -142,6 +145,7 @@ const WORLDS = [
   { key: "observatory", label: "The Signal Observatory" },
   { key: "loom", label: "The Loom" },
   { key: "polarity", label: "The Polarity Chamber" },
+  { key: "completion", label: "Completion + indicator ledger" },
 ] as const;
 type World = (typeof WORLDS)[number]["key"];
 
@@ -209,6 +213,7 @@ export default function ActivityLab() {
       {world === "observatory" ? <ObservatoryPanel /> : null}
       {world === "loom" ? <LoomPanel /> : null}
       {world === "polarity" ? <PolarityPanel /> : null}
+      {world === "completion" ? <CompletionPanel /> : null}
     </div>
   );
 }
@@ -1717,5 +1722,88 @@ function SignalBox({
         </div>
       </dl>
     </aside>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * The completion screen, and the indicator ledger on it
+ * ------------------------------------------------------------------ */
+
+const RUN_OUTCOMES = ["mixed", "clean", "outage"] as const;
+type RunOutcome = (typeof RUN_OUTCOMES)[number];
+
+/**
+ * The last screen of a run, and the hardest one to reach: it needs an account,
+ * an assignment and a finished attempt log, which is three things the lab
+ * deliberately has none of.
+ *
+ * The verdicts here are a deterministic stand-in for a real run, not a
+ * simulation of one. They exist so the ledger's arithmetic, grouping and copy
+ * can be looked at across the three shapes a finished run actually takes: some
+ * missed, none missed, and some never judged because the Coach was unreachable.
+ */
+function CompletionPanel() {
+  const [slug, setSlug] = useState<string>("conditional-rephrase");
+  const [outcome, setOutcome] = useState<RunOutcome>("mixed");
+  const activity = LAB_ACTIVITIES.find((a) => a.slug === slug) ?? LAB_ACTIVITIES[0];
+  const items = useMemo(
+    () => [...activity.items].sort((a, b) => a.order - b.order),
+    [activity],
+  );
+
+  const verdicts = useMemo(() => {
+    const v: Record<number, Verdict | null> = {};
+    items.forEach((item, i) => {
+      if (outcome === "clean") {
+        v[item.order] = "correct";
+        return;
+      }
+      // The outage shape: a handful of items the Coach never answered. They must
+      // read as "not checked" on the score line and be absent from the ledger
+      // entirely, because a dropped connection is not evidence about a word.
+      if (outcome === "outage" && i % 9 === 4) {
+        v[item.order] = null;
+        return;
+      }
+      v[item.order] = i % 4 === 0 ? "incorrect" : i % 6 === 1 ? "partial" : "correct";
+    });
+    return v;
+  }, [items, outcome]);
+
+  const score = scoreFor(verdicts, items.length);
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border bg-card px-6 py-3">
+        <Tabs
+          options={LAB_ACTIVITIES.map((a) => a.slug)}
+          value={slug}
+          onChange={setSlug}
+          label="Completion"
+        />
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Run</span>
+          <Tabs<RunOutcome>
+            options={RUN_OUTCOMES}
+            value={outcome}
+            onChange={setOutcome}
+            label="Outcome"
+          />
+        </div>
+      </div>
+      <div className="activity-centre px-4 py-8 md:px-8 md:py-12">
+        <div className="mx-auto max-w-5xl">
+          <CompletionSummary
+            title={activity.title}
+            items={items}
+            verdicts={verdicts}
+            responses={{}}
+            score={score}
+            onPractice={() => {}}
+            onRedrill={() => {}}
+          />
+        </div>
+      </div>
+    </div>
   );
 }

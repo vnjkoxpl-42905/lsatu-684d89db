@@ -160,10 +160,26 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const [bandExpanded, setBandExpanded] = useState(false);
   const bandRef = useRef<HTMLElement | null>(null);
 
-  const items = useMemo(
-    () => (assignment ? [...assignment.items].sort((a, b) => a.order - b.order) : []),
-    [assignment],
-  );
+  /**
+   * The item orders a re-drill is running, or null for the whole set.
+   *
+   * Only ever set alongside `practice`, and only from the completion screen, so
+   * it cannot narrow a graded run: a student is never scored over a subset they
+   * chose. It is also set long after the hydrate effect has replayed the log,
+   * which is the other thing that must never see a filtered list.
+   */
+  const [redrillOrders, setRedrillOrders] = useState<number[] | null>(null);
+
+  const items = useMemo(() => {
+    if (!assignment) return [];
+    const all = [...assignment.items].sort((a, b) => a.order - b.order);
+    if (!redrillOrders) return all;
+    const wanted = new Set(redrillOrders);
+    const subset = all.filter((i) => wanted.has(i.order));
+    // An override that matches nothing is a stale list, not an empty activity.
+    // Running the whole set is the wrong answer; running zero items is worse.
+    return subset.length > 0 ? subset : all;
+  }, [assignment, redrillOrders]);
 
   /**
    * The Activity's world, when it has one. Eight were built, one per Activity,
@@ -401,8 +417,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   }, [index, items.length, verdicts, assignment, practice, syncClassroom]);
 
   // Re-run a completed activity for practice. Clears local state, writes nothing.
-  const handlePracticeAgain = useCallback(() => {
+  const startPractice = useCallback((orders: number[] | null) => {
     setPractice(true);
+    setRedrillOrders(orders);
     setVerdicts({});
     setResponses({});
     setResumeAt(null);
@@ -410,6 +427,23 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     setEntered(true);
     setPhase("running");
   }, []);
+
+  /**
+   * "Practice again" repeats whatever set was just run, rather than always
+   * reopening all 62. A student who has just worked five misses and presses it
+   * means those five again; sending them back to the top of the full Activity
+   * would be an answer to a question they did not ask.
+   */
+  const handlePracticeAgain = useCallback(
+    () => startPractice(redrillOrders),
+    [startPractice, redrillOrders],
+  );
+
+  /** The ledger's re-drill: the misses, ungraded, in their original order. */
+  const handleRedrill = useCallback(
+    (orders: number[]) => startPractice(orders),
+    [startPractice],
+  );
 
   // The empty-load case is still resolving until the ownership probe answers,
   // so it waits here rather than showing a sentence it may have to take back.
@@ -497,6 +531,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             score={displayScore}
             practice={practice}
             onPractice={handlePracticeAgain}
+            onRedrill={handleRedrill}
           />
         </div>
       </div>
