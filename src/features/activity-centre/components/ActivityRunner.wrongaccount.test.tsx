@@ -121,6 +121,21 @@ describe("ActivityRunner, wrong account", () => {
     expect(await screen.findByText(/different account/i)).toBeInTheDocument();
   });
 
+  // Found in round 2 of the same review. Holding the spinner until the probe
+  // answers is right, but a route with no assignment id never makes that call,
+  // so "unknown" would have hung the screen on a spinner with nothing coming.
+  it("does not hang on a spinner when there is no assignment id to probe", async () => {
+    render(
+      <MemoryRouter initialEntries={["/activities"]}>
+        <Routes>
+          <Route path="/activities" element={<ActivityRunner />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(await screen.findByText(/activity not found/i)).toBeInTheDocument();
+    expect(vi.mocked(assignmentBelongsToAnotherAccount)).not.toHaveBeenCalled();
+  });
+
   it("does not probe when the load failed outright, since the error is the message", async () => {
     activityState.error = "boom";
     renderAt();

@@ -84,8 +84,16 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // path costs nothing. The probe reads by id alone and returns a boolean, so
   // a student who cannot see the row keeps the plain not-found wording.
   useEffect(() => {
-    if (loading || error || assignment || !assignmentId) {
+    if (loading || error || assignment) {
       setOwnership("unknown");
+      return;
+    }
+    // No id to probe (teacher preview, or a malformed route) can never resolve
+    // to "belongs to someone else", and leaving it "unknown" would hold the
+    // spinner up forever. Settle it here rather than waiting on a call that is
+    // never made.
+    if (!assignmentId) {
+      setOwnership("absent");
       return;
     }
     let live = true;

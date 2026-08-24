@@ -206,6 +206,15 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(rubric).not.toMatch(/either direction is credited/i);
   });
 
+  // Round 2 of the review. Scoping matters as much as stating: rubric[7]
+  // credits the converse on biconditionals, so a blanket prohibition earlier in
+  // the same prompt is a contradiction, not emphasis.
+  it("scopes the converse prohibition to one-way conditionals, since biconditionals are the exception", () => {
+    expect(instructions.coach.rubric[0]).toMatch(/one-way conditional/i);
+    expect(instructions.coach.rubric[0]).toMatch(/biconditional/i);
+    expect(instructions.coach.rubric[4]).toMatch(/not to biconditionals/i);
+  });
+
   it("credits the converse only on biconditionals, and not as an exclusive either-or", () => {
     const rubric = joined(instructions.coach.rubric);
     expect(rubric).toMatch(/biconditional/i);
