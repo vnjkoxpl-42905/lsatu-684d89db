@@ -254,3 +254,57 @@ when it first matters, not a decision blocking anything today.
 **Revised status of (d): latent, not live. Revisit the first time a real
 student is mid-drill during a rubric change.** The cheap guard, if wanted then,
 is adding `'in_progress'` to the re-snapshot WHERE clause in that migration.
+
+---
+
+## Exercising the student runner (2026-08-23) — a misleading error, and three wrong diagnoses
+
+Stage 11 shipped and was applied to production. The last unverified item on the
+whole build was the signed-in student runner at `/activities/:assignmentId`,
+never once exercised. Attempting it produced the session's most useful finding,
+which was not in the plan at all.
+
+**What happened.** Opening the one existing assignment
+(`06cb5f8f-a407-4b17-a46e-412d173aa7d2`) in Joshua's Chrome rendered
+"Activity not found." Three diagnoses followed, in order, and all three were
+wrong:
+
+1. *Not signed in.* Wrong: `localStorage` held a live session.
+2. *RLS is hiding the row.* Wrong, and this one was seductive because the
+   policy `Students read own activity assignments` is `student_id = auth.uid()`.
+   But there is also `Admins read all activity assignments`, and the signed-in
+   account **is** an admin (`has_role` returned true). RLS was never the block.
+3. *Something about the migration.* Never even plausible once checked.
+
+**The actual cause**, visible in one line of the network tab:
+
+```
+GET /rest/v1/activity_assignments?select=*&id=eq.06cb5f8f…&student_id=eq.5ff160ef…
+```
+
+`getStudentAssignment` filters on `student_id` as well as `id`. The client
+scopes to the signed-in user regardless of role, which is correct behaviour —
+an admin should not run a student's assignment as them — and the assignment
+belonged to Joshua's *other* account (`joshua.fisseha01@gmail.com`, no roles)
+while Chrome held his admin one (`contact@aspiringattorneys.com`).
+
+**So the code was right and the sentence was wrong.** "Activity not found."
+was doing duty for two situations that want opposite responses: an id that was
+never real, and a real assignment on another account.
+
+**Fixed in `71438cab`.** The runner probes by id alone and lets RLS answer:
+an admin gets a hit and is told the assignment belongs to a different account,
+and is shown which account they are actually signed in as. A student gets no
+hit and keeps the plain wording, which for them is true. The probe returns a
+boolean and never the row. Every failure resolves to `false` rather than
+rejecting, because a probe that cannot answer must not send a student hunting
+for an account that does not exist — the test for a rejecting probe caught a
+real unhandled rejection, not a hypothetical one. Seven tests cover it.
+
+**Lesson, recorded to memory as `joshua-has-two-lsatu-accounts`.** Read the
+network request before theorising. The query string named the cause
+immediately and would have skipped all three wrong turns.
+
+**Still not done:** the runner has *still* not been exercised end to end. The
+attempt found a bug instead, which is worth more, but the original gap stands.
+The path is a throwaway assignment on the admin account, used and then deleted.
