@@ -7,6 +7,7 @@ import {
   groupNotes,
   isNoteUnread,
   unreadNoteCount,
+  sanitizeClassroomHtml,
   DAY_ZERO_WELCOME_SOURCE_ID,
   DAY_ZERO_WELCOME_SOURCE_TABLE,
 } from "./classroomData";
@@ -122,5 +123,41 @@ describe("note read state", () => {
       metadata_json: {},
     } as never;
     expect(unreadNoteCount([welcome])).toBe(0);
+  });
+});
+
+describe("sanitizeClassroomHtml", () => {
+  it("keeps a <style> block that opens the note", () => {
+    // The parser hoists a document-opening <style> into <head>, which DOMPurify
+    // then throws away. Without the wrapper this returns markup with no design.
+    const clean = sanitizeClassroomHtml(
+      "<style>.cl-note{color:red}</style><div class=\"cl-note\">Hi</div>",
+    );
+    expect(clean).toContain("<style>.cl-note{color:red}</style>");
+    expect(clean).toContain("Hi");
+  });
+
+  it("does not leave its parse wrapper in the output", () => {
+    expect(sanitizeClassroomHtml("<p>Hi</p>")).toBe("<p>Hi</p>");
+  });
+
+  it("keeps the at-rules a self-contained design needs", () => {
+    const css =
+      "@media (prefers-color-scheme:dark){.a{color:#fff}}@keyframes k{to{opacity:1}}";
+    expect(sanitizeClassroomHtml(`<style>${css}</style><p>x</p>`)).toContain(css);
+  });
+
+  it("still blocks scripts and event handlers", () => {
+    const clean = sanitizeClassroomHtml(
+      '<script>window.x=1</script><button onclick="alert(1)">b</button>',
+    );
+    expect(clean).not.toContain("<script");
+    expect(clean).not.toContain("onclick");
+  });
+
+  it("still lazy-loads images", () => {
+    expect(sanitizeClassroomHtml('<img src="https://x/y.png">')).toContain(
+      'loading="lazy"',
+    );
   });
 });

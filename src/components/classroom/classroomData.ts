@@ -29,15 +29,34 @@ export const NOTE_TYPES = new Set<ClassroomItem["type"]>([
  * <script> stays blocked. That is the one that could steal a session, and there
  * is no authoring reason to want it.
  */
+const NOTE_WRAPPER_ATTR = "data-note-parse-wrapper";
+
 export function sanitizeClassroomHtml(html: string) {
-  const sanitized = DOMPurify.sanitize(html, {
-    ADD_ATTR: ["loading", "sizes", "srcset"],
+  /**
+   * The wrapper is a parser fix, not decoration. DOMPurify parses into a whole
+   * document and returns only the body, and the HTML parser hoists a <style>
+   * that OPENS the document into <head> — so a note whose design block comes
+   * first would lose the entire design and render unstyled. Verified in Chrome
+   * against DOMPurify 3.4.1: leading <style> is dropped, nested <style> survives
+   * with @import, @media, @keyframes and custom properties intact. Parsing
+   * inside a wrapper keeps the note in body flow; the wrapper is unwrapped below
+   * so the rendered markup is exactly what was authored.
+   */
+  const sanitized = DOMPurify.sanitize(`<div ${NOTE_WRAPPER_ATTR}="">${html}</div>`, {
+    ADD_ATTR: ["loading", "sizes", "srcset", NOTE_WRAPPER_ATTR],
     ADD_TAGS: ["style"],
     FORBID_TAGS: ["script"],
   });
-  if (typeof document === "undefined") return sanitized;
+  if (typeof document === "undefined") {
+    return sanitized
+      .replace(new RegExp(`^<div ${NOTE_WRAPPER_ATTR}="">`), "")
+      .replace(/<\/div>$/, "");
+  }
   const template = document.createElement("template");
   template.innerHTML = sanitized;
+  template.content
+    .querySelectorAll(`[${NOTE_WRAPPER_ATTR}]`)
+    .forEach((wrapper) => wrapper.replaceWith(...wrapper.childNodes));
   template.content.querySelectorAll("img").forEach((image) => {
     image.setAttribute("loading", "lazy");
     image.setAttribute("sizes", "(min-width: 720px) 720px");
