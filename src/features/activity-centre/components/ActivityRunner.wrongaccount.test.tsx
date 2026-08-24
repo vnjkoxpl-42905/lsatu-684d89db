@@ -101,6 +101,26 @@ describe("ActivityRunner, wrong account", () => {
     });
   });
 
+  // Found by adversarial review, not by a student. A boolean starting false
+  // rendered "Activity not found." on the first paint and corrected itself once
+  // the probe answered, so the wrong sentence flashed before the right one.
+  it("shows no verdict at all until the ownership probe has answered", async () => {
+    let settle: (v: boolean) => void = () => {};
+    vi.mocked(assignmentBelongsToAnotherAccount).mockReturnValue(
+      new Promise<boolean>((res) => {
+        settle = res;
+      }),
+    );
+    renderAt();
+    await waitFor(() => {
+      expect(vi.mocked(assignmentBelongsToAnotherAccount)).toHaveBeenCalled();
+    });
+    expect(screen.queryByText(/activity not found/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/different account/i)).not.toBeInTheDocument();
+    settle(true);
+    expect(await screen.findByText(/different account/i)).toBeInTheDocument();
+  });
+
   it("does not probe when the load failed outright, since the error is the message", async () => {
     activityState.error = "boom";
     renderAt();

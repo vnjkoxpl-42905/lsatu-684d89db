@@ -73,7 +73,11 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // account. The second is the common one for anyone signed in as admin while
   // the assignment sits on their student login, and the old wording sent the
   // reader looking for a routing or RLS bug that was never there.
-  const [ownedElsewhere, setOwnedElsewhere] = useState(false);
+  // Tri-state, not a boolean. A boolean starting false means the first paint
+  // after an empty load says "Activity not found." and only corrects itself
+  // once the probe answers, so the wrong sentence is shown first and the right
+  // one arrives as a flicker. "unknown" keeps the spinner up instead.
+  const [ownership, setOwnership] = useState<"unknown" | "elsewhere" | "absent">("unknown");
   const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
 
   // Only asked when the load has genuinely come back empty, so the ordinary
@@ -81,18 +85,19 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // a student who cannot see the row keeps the plain not-found wording.
   useEffect(() => {
     if (loading || error || assignment || !assignmentId) {
-      setOwnedElsewhere(false);
+      setOwnership("unknown");
       return;
     }
     let live = true;
     void assignmentBelongsToAnotherAccount(assignmentId)
       .then((yes) => {
-        if (live) setOwnedElsewhere(yes);
+        if (live) setOwnership(yes ? "elsewhere" : "absent");
       })
       .catch(() => {
         // The helper already swallows its own failures; this is the guard for
         // anything it cannot, so a probe never becomes an unhandled rejection.
-        if (live) setOwnedElsewhere(false);
+        // Resolving to "absent" keeps the plain wording, never the stronger claim.
+        if (live) setOwnership("absent");
       });
     return () => {
       live = false;
@@ -398,7 +403,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     setPhase("running");
   }, []);
 
-  if (loading || (assignment && !hydrated)) {
+  // The empty-load case is still resolving until the ownership probe answers,
+  // so it waits here rather than showing a sentence it may have to take back.
+  if (loading || (assignment && !hydrated) || (!error && !assignment && ownership === "unknown")) {
     return (
       <div className="activity-centre min-h-screen flex items-center justify-center">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-[hsl(var(--muted))] border-t-[hsl(var(--ac-emerald))]" />
@@ -412,13 +419,13 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         <p className="text-sm text-muted-foreground">
           {error
             ? `Could not load this activity: ${error}`
-            : ownedElsewhere
+            : ownership === "elsewhere"
               ? "This activity was assigned to a different account."
               : "Activity not found."}
         </p>
         {!error && user?.email && (
           <p className="text-xs text-muted-foreground/70">
-            {ownedElsewhere
+            {ownership === "elsewhere"
               ? `You are signed in as ${user.email}. Sign in as the account it was assigned to.`
               : `Signed in as ${user.email}.`}
           </p>

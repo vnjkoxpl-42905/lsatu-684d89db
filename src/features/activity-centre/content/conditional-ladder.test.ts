@@ -153,7 +153,11 @@ describe("what a Conditional Rephrase student is shown", () => {
   // rubric is what has actually been grading, and it is the only reading under
   // which items 46, 47 and 48 cohere, so the task is the field that was wrong.
   it("asks for something the rubric will actually credit", () => {
-    expect(instructions.coach.rubric[0]).toMatch(/either direction is credited/i);
+    // Was pinned to the literal phrase "either direction is credited". That
+    // wording was removed precisely because "either direction" could be read as
+    // licensing the converse; the intent it stood for is asserted instead.
+    expect(instructions.coach.rubric[0]).toMatch(/contrapositive/i);
+    expect(instructions.coach.rubric[0]).toMatch(/credited/i);
     expect(instructions.task).not.toMatch(/then give me the contrapositive/i);
     expect(instructions.task).toMatch(/if \[sufficient\], then \[necessary\]/i);
     expect(instructions.task).toMatch(/contrapositive counts too/i);
@@ -189,6 +193,23 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(rubric).toMatch(/reversing the arrow/i);
     expect(rubric).toMatch(/negating the trigger/i);
     expect(joined(instructions.rules)).toMatch(/two moves are always wrong/i);
+  });
+
+  // Both found by adversarial review of the shipped rubric. The prompt held two
+  // contradictions: "either direction is credited" could be read as licensing
+  // the converse, which the illegal-moves rule forbids in the same breath; and
+  // "either-or" reads as EXCLUSIVE or, the opposite of a biconditional.
+  it("never lets the rubric license the converse it also calls an error", () => {
+    const rubric = joined(instructions.coach.rubric);
+    expect(rubric).toMatch(/converse/i);
+    expect(rubric).toMatch(/inverse/i);
+    expect(rubric).not.toMatch(/either direction is credited/i);
+  });
+
+  it("credits the converse only on biconditionals, and not as an exclusive either-or", () => {
+    const rubric = joined(instructions.coach.rubric);
+    expect(rubric).toMatch(/biconditional/i);
+    expect(rubric).toMatch(/do not credit an exclusive either-or/i);
   });
 
   it("acknowledges biconditionals, where the reverse direction is legal", () => {
