@@ -564,6 +564,12 @@ A content change ships as a new migration in the same shape as `20260822190000_c
 >
 > Verified: 734 activity-centre tests pass (730 + 4 new), full suite 1885 passed / 1 skipped / 0 failed on the pushed tree, typecheck exit 0, and all ten rules render numbered in the intro without truncation. One test asserted "wording is free" at `rubric[3]`, the old last slot; it now asserts on contents rather than position.
 >
+> **Applied to production 2026-08-23**, directly via the Lovable connector rather than by handing the file to Lovable. Verified after the write: `activities` for this slug reads `rules = 10`, `rubric = 9`, `items = 62` unchanged; the single `activity_assignments` row (`status = 'assigned'`, the only assignment that exists) carries the same; every other Activity's rules, rubric and item counts are untouched; and `activity_assignments_guard_immutables` is back to `tgenabled = 'O'`. The re-snapshot ran inside a `do $$ ... $$` block so a mid-way failure would have rolled the trigger disable back with it.
+>
+> Two notes from doing it live. There is exactly ONE user trigger on `activity_assignments`, so the "disables every user trigger" caution recorded during review is narrower in practice than it reads. And this migration is deliberately NOT inserted into `supabase_migrations.schema_migrations`: the hand-authored migrations in this repo are not tracked there at all (only Lovable's UUID-named ones are), which is why each one ends up duplicated. Re-running is harmless because the migration is idempotent.
+>
+> **Also settled:** the mid-drill concern raised in review is empty. There are zero `in_progress` assignments for this Activity, so no student was ever being graded by the stale rubric.
+>
 > **Still open:** the ladder order and the family grouping Stage 12 depends on have not been revisited against the rule set, and the 38 items that fail the derivability gate still get the authored plate and no derived rails.
 
 **[v2] That migration copies only `items`.** Verified. So a change to `task`, `rules` or `coach.rubric` would update the `activities` row and leave every existing unstarted assignment snapshot carrying the **old instructions** — including the old coach rubric, which is what actually grades the student. Any content migration that touches `instructions` has to re-snapshot that column too, or the fix reaches new assignments only and silently misses the ones already issued.
