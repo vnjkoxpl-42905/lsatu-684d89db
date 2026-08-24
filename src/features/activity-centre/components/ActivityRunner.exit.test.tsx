@@ -30,6 +30,7 @@ vi.mock("@/contexts/AuthContext", () => ({
 vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
 
 vi.mock("../api/activitiesClient", () => ({
+  assignmentBelongsToAnotherAccount: vi.fn().mockResolvedValue(false),
   completeAssignment: vi.fn().mockResolvedValue(undefined),
   listItemResponses: vi.fn().mockResolvedValue([]),
   markAssignmentStarted: vi.fn().mockResolvedValue(undefined),

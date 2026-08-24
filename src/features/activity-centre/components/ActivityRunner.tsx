@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useStudentActivity } from "../hooks/useStudentActivities";
 import {
+  assignmentBelongsToAnotherAccount,
   completeAssignment,
   listItemResponses,
   markAssignmentStarted,
@@ -66,7 +67,37 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
   const handleLeave = routed ? () => navigate("/activities") : undefined;
   const { user } = useAuth();
+
+  // "Activity not found." was shown for two very different situations: an id
+  // that is not real, and an assignment that IS real but was issued to another
+  // account. The second is the common one for anyone signed in as admin while
+  // the assignment sits on their student login, and the old wording sent the
+  // reader looking for a routing or RLS bug that was never there.
+  const [ownedElsewhere, setOwnedElsewhere] = useState(false);
   const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
+
+  // Only asked when the load has genuinely come back empty, so the ordinary
+  // path costs nothing. The probe reads by id alone and returns a boolean, so
+  // a student who cannot see the row keeps the plain not-found wording.
+  useEffect(() => {
+    if (loading || error || assignment || !assignmentId) {
+      setOwnedElsewhere(false);
+      return;
+    }
+    let live = true;
+    void assignmentBelongsToAnotherAccount(assignmentId)
+      .then((yes) => {
+        if (live) setOwnedElsewhere(yes);
+      })
+      .catch(() => {
+        // The helper already swallows its own failures; this is the guard for
+        // anything it cannot, so a probe never becomes an unhandled rejection.
+        if (live) setOwnedElsewhere(false);
+      });
+    return () => {
+      live = false;
+    };
+  }, [assignmentId, assignment, loading, error]);
 
   /**
    * The attempt log, started at mount rather than after the assignment lands.
@@ -377,10 +408,21 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
   if (error || !assignment) {
     return (
-      <div className="activity-centre min-h-screen flex flex-col items-center justify-center gap-4 p-6">
+      <div className="activity-centre min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center">
         <p className="text-sm text-muted-foreground">
-          {error ? `Could not load this activity: ${error}` : "Activity not found."}
+          {error
+            ? `Could not load this activity: ${error}`
+            : ownedElsewhere
+              ? "This activity was assigned to a different account."
+              : "Activity not found."}
         </p>
+        {!error && user?.email && (
+          <p className="text-xs text-muted-foreground/70">
+            {ownedElsewhere
+              ? `You are signed in as ${user.email}. Sign in as the account it was assigned to.`
+              : `Signed in as ${user.email}.`}
+          </p>
+        )}
         {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
       </div>
     );

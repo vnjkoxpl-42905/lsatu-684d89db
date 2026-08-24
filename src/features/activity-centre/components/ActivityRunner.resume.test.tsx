@@ -37,6 +37,7 @@ const markAssignmentStarted = vi.fn().mockResolvedValue(undefined);
 const recordItemResponse = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("../api/activitiesClient", () => ({
+  assignmentBelongsToAnotherAccount: vi.fn().mockResolvedValue(false),
   completeAssignment: (...a: unknown[]) => completeAssignment(...a),
   listItemResponses: (...a: unknown[]) => listItemResponses(...a),
   markAssignmentStarted: (...a: unknown[]) => markAssignmentStarted(...a),

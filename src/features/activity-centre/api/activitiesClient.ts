@@ -95,6 +95,40 @@ export async function getStudentAssignment(
   return data ? hydrateAssignment(data) : null;
 }
 
+/**
+ * Does this assignment exist, but belong to somebody else?
+ *
+ * `getStudentAssignment` filters on `student_id` as well as `id`, so an
+ * assignment issued to a DIFFERENT account comes back as `null` and is
+ * indistinguishable from an id that was never real. The runner rendered both as
+ * "Activity not found.", which sent a reader hunting for a broken route or an
+ * RLS bug when the actual answer was "you are signed in as the wrong account".
+ * That happens constantly to anyone holding both an admin and a student login.
+ *
+ * This probes by id alone and lets RLS answer. An admin can read every
+ * assignment, so a `true` here means the row is real and owned by someone else.
+ * A student reads only their own, so they get `false` and keep the plain
+ * not-found wording, which for them is the truth. It never returns the row or
+ * anything in it, only whether one exists.
+ */
+export async function assignmentBelongsToAnotherAccount(assignmentId: string): Promise<boolean> {
+  // Every failure resolves to false rather than rejecting. This only ever
+  // upgrades an error message, so a probe that cannot answer must leave the
+  // plain wording alone instead of taking the screen down with it, or telling
+  // a student to go hunting for an account that does not exist.
+  try {
+    const { data, error } = await supabase
+      .from("activity_assignments")
+      .select("id")
+      .eq("id", assignmentId)
+      .maybeSingle();
+    if (error) return false;
+    return Boolean(data);
+  } catch {
+    return false;
+  }
+}
+
 /** Student: mark an assignment in_progress on first open (assigned -> in_progress only). */
 export async function markAssignmentStarted(assignmentId: string): Promise<void> {
   const { error } = await supabase
