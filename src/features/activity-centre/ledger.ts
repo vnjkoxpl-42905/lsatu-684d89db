@@ -16,7 +16,14 @@
  * evidence about a word.
  */
 
-import type { ActivityItem, Verdict } from "./api/types";
+import type {
+  ActivityAssignment,
+  ActivityItem,
+  ActivityItemResponse,
+  ActivityStatus,
+  Verdict,
+} from "./api/types";
+import { reconstructProgress } from "./progress";
 import {
   INDICATOR_FAMILIES,
   indicatorFor,
@@ -174,4 +181,124 @@ export function ledgerHeadline(ledger: IndicatorLedger): string | null {
   const top = words[0];
   const n = top.missed;
   return `${top.indicator} cost you ${n === 1 ? "one question" : `${n} questions`}.`;
+}
+
+/* ------------------------------------------------------------------ *
+ * The same join, on the teacher's side
+ *
+ * Nothing new is captured for this and nothing new is computed. It is the
+ * student's own ledger, read from the attempt log the student already wrote,
+ * shown to the person preparing their next session. That is the whole feature:
+ * the data has been sitting there since the first run.
+ * ------------------------------------------------------------------ */
+
+export interface AssignmentLedger {
+  assignmentId: string;
+  title: string;
+  status: ActivityStatus;
+  startedAt: string | null;
+  completedAt: string | null;
+  /** How far through the run the attempt log reaches. */
+  resolved: number;
+  total: number;
+  ledger: IndicatorLedger;
+}
+
+/**
+ * One ledger per assignment that has something to say, newest first.
+ *
+ * Per assignment, deliberately, rather than merged per Activity. Two runs of the
+ * same Activity can disagree about an item -- missed in March, clean in August --
+ * and there is no obvious rule for which one describes the student. Showing both
+ * runs answers that honestly; picking one silently would not. If a merge policy
+ * is ever wanted it belongs here, decided out loud.
+ *
+ * An assignment nobody has started has no attempts, so `buildIndicatorLedger`
+ * returns null for it and it drops out rather than appearing as a row of zeroes.
+ */
+export function ledgersForAssignments(
+  assignments: ActivityAssignment[],
+  responses: ActivityItemResponse[],
+): AssignmentLedger[] {
+  const byAssignment = new Map<string, ActivityItemResponse[]>();
+  for (const r of responses) {
+    const list = byAssignment.get(r.assignment_id);
+    if (list) list.push(r);
+    else byAssignment.set(r.assignment_id, [r]);
+  }
+
+  const out: AssignmentLedger[] = [];
+  for (const a of assignments) {
+    const rows = byAssignment.get(a.id);
+    if (!rows || rows.length === 0) continue;
+    const items = [...a.items].sort((x, y) => x.order - y.order);
+    const progress = reconstructProgress(items, rows);
+    const ledger = buildIndicatorLedger(a.title, items, progress.verdicts);
+    if (!ledger) continue;
+    out.push({
+      assignmentId: a.id,
+      title: a.title,
+      status: a.status,
+      startedAt: a.started_at,
+      completedAt: a.completed_at,
+      resolved: progress.resolvedCount,
+      total: items.length,
+      ledger,
+    });
+  }
+
+  // Newest first, on the timestamp that describes the WORK rather than the
+  // paperwork: when they finished it, else when they started, else when it was
+  // handed to them. Sorting on created_at would put a run they did yesterday
+  // below an assignment issued last month and never opened.
+  return out.sort((a, b) => {
+    const at = a.completedAt ?? a.startedAt ?? "";
+    const bt = b.completedAt ?? b.startedAt ?? "";
+    return bt.localeCompare(at);
+  });
+}
+
+/**
+ * The families costing this student the most, across every run they have done.
+ *
+ * This one DOES aggregate across assignments, because the question it answers is
+ * about the student rather than about a run: what to spend the next session on.
+ * It counts every judged item once per run, so a word they missed in two separate
+ * runs is a word that has cost them twice, which is the honest reading of "this
+ * keeps happening".
+ */
+export function familiesAcrossRuns(ledgers: AssignmentLedger[]): FamilyTally[] {
+  const merged = new Map<IndicatorFamily, FamilyTally>();
+  for (const { ledger } of ledgers) {
+    for (const f of [...ledger.missedFamilies, ...ledger.cleanFamilies]) {
+      const existing = merged.get(f.family);
+      if (!existing) {
+        merged.set(f.family, {
+          ...f,
+          indicators: f.indicators.map((i) => ({ ...i, orders: [...i.orders] })),
+        });
+        continue;
+      }
+      existing.missed += f.missed;
+      existing.asked += f.asked;
+      for (const i of f.indicators) {
+        const found = existing.indicators.find((x) => x.indicator === i.indicator);
+        if (found) {
+          found.missed += i.missed;
+          found.asked += i.asked;
+          found.orders.push(...i.orders);
+        } else {
+          existing.indicators.push({ ...i, orders: [...i.orders] });
+        }
+      }
+    }
+  }
+
+  for (const f of merged.values()) {
+    f.indicators.sort((a, b) => b.missed - a.missed || a.indicator.localeCompare(b.indicator));
+  }
+
+  return [...merged.values()]
+    .filter((f) => f.missed > 0)
+    .sort((a, b) => b.missed - a.missed || a.asked - b.asked);
 }

@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import HubAssignments from '@/components/hub/HubAssignments';
 import { BootcampLessonProgress } from '@/components/teacher/bootcamps/BootcampLessonProgress';
+import { StudentIndicatorLedger } from '@/features/activity-centre/components/StudentIndicatorLedger';
 import { useDossier } from './StudentDossier';
 
 /**
@@ -35,6 +36,10 @@ export default function DossierWork() {
       {/* Renders nothing when there is no stored progress, so it never adds an
           empty block. */}
       <BootcampLessonProgress studentClassId={studentId} />
+
+      {/* What their Activity work says to teach next, read from the attempts
+          they have already made. Also renders nothing when there are none. */}
+      <StudentIndicatorLedger studentClassId={studentId} />
     </div>
   );
 }

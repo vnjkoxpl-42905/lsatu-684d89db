@@ -114,6 +114,12 @@ import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/t
 import { ActivityCard } from "@/features/activity-centre/components/ActivityCard";
 import { CompletionSummary } from "@/features/activity-centre/components/CompletionSummary";
 import { scoreFor } from "@/features/activity-centre/progress";
+import { IndicatorLedgerReport } from "@/features/activity-centre/components/StudentIndicatorLedger";
+import {
+  buildIndicatorLedger,
+  familiesAcrossRuns,
+  type AssignmentLedger,
+} from "@/features/activity-centre/ledger";
 import type { Verdict } from "@/features/activity-centre/api/types";
 import { ActivityQuestionStack } from "@/features/activity-centre/components/ActivityQuestionStack";
 import { worldForTitle } from "@/features/activity-centre/worlds/registry";
@@ -1772,6 +1778,27 @@ function CompletionPanel() {
 
   const score = scoreFor(verdicts, items.length);
 
+  /**
+   * The teacher's view of the same run. One "assignment", built here rather than
+   * read, because the lab has no database and the point is the presentation.
+   */
+  const teacherRuns = useMemo((): AssignmentLedger[] => {
+    const ledger = buildIndicatorLedger(activity.title, items, verdicts);
+    if (!ledger) return [];
+    return [
+      {
+        assignmentId: "lab",
+        title: activity.title,
+        status: "completed",
+        startedAt: "2026-08-20T00:00:00.000Z",
+        completedAt: "2026-08-21T00:00:00.000Z",
+        resolved: Object.keys(verdicts).length,
+        total: items.length,
+        ledger,
+      },
+    ];
+  }, [activity.title, items, verdicts]);
+
   return (
     <div>
       <div className="flex flex-wrap items-center gap-4 border-b border-border bg-card px-6 py-3">
@@ -1802,6 +1829,26 @@ function CompletionPanel() {
             onPractice={() => {}}
             onRedrill={() => {}}
           />
+        </div>
+      </div>
+
+      {/* The same ledger, as the teacher meets it on a student's dossier. That
+          surface is behind admin auth AND needs a student who has done the work,
+          so it is two gates away from being looked at; this is the only place it
+          can be seen while it is being built. Presentation only -- the real panel
+          reads the student's own attempt log. */}
+      <div className="border-t border-border bg-[#f2efe9] px-4 py-8 md:px-8">
+        <div className="mx-auto max-w-2xl">
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-black/45">
+            On the student dossier
+          </p>
+          {teacherRuns.length > 0 ? (
+            <IndicatorLedgerReport runs={teacherRuns} families={familiesAcrossRuns(teacherRuns)} />
+          ) : (
+            <p className="text-sm text-black/60">
+              Nothing to show: this Activity has no family map, so the dossier renders no block.
+            </p>
+          )}
         </div>
       </div>
     </div>

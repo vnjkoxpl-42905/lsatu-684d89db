@@ -326,6 +326,28 @@ export async function listResponsesForAssignment(
 }
 
 
+/**
+ * Admin: every attempt across several assignments, in one round trip.
+ *
+ * The per-assignment reader above is right for the runner, which only ever has
+ * one. The dossier has as many as the student has been given, and calling it in
+ * a loop is an N+1 on a page that already runs several queries. An empty id list
+ * asks nothing rather than asking for everything.
+ */
+export async function listResponsesForAssignments(
+  assignmentIds: string[],
+): Promise<ActivityItemResponse[]> {
+  if (assignmentIds.length === 0) return [];
+  const { data, error } = await supabase
+    .from("activity_item_responses")
+    .select("*")
+    .in("assignment_id", assignmentIds)
+    .order("item_order", { ascending: true })
+    .order("attempt_no", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as ActivityItemResponse[];
+}
+
 /** Admin: fetch one activity definition. Used by the row-free teacher preview. */
 export async function getActivity(activityId: string): Promise<Activity | null> {
   const { data, error } = await supabase

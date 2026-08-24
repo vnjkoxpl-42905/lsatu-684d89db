@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { SEED_ACTIVITIES } from "./content";
 import type { ActivityItem, Verdict } from "./api/types";
-import { buildIndicatorLedger, ledgerHeadline } from "./ledger";
+import {
+  buildIndicatorLedger,
+  familiesAcrossRuns,
+  ledgerHeadline,
+  ledgersForAssignments,
+} from "./ledger";
 import {
   CONDITIONAL_REPHRASE_INDICATORS,
   INDICATOR_FAMILIES,
@@ -201,5 +206,168 @@ describe("the headline", () => {
   it("stays quiet on a clean run, which has a better sentence of its own", () => {
     const l = buildIndicatorLedger("Conditional Rephrase", ITEMS, { 1: "correct" })!;
     expect(ledgerHeadline(l)).toBeNull();
+  });
+});
+
+/* ------------------------------------------------------------------ *
+ * The teacher's side
+ * ------------------------------------------------------------------ */
+
+function assignment(
+  id: string,
+  overrides: Partial<{
+    status: "assigned" | "in_progress" | "completed";
+    started_at: string | null;
+    completed_at: string | null;
+    title: string;
+  }> = {},
+) {
+  return {
+    id,
+    activity_id: "act-1",
+    student_id: "user-1",
+    assigned_by: "teacher",
+    class_id: "class-1",
+    title: overrides.title ?? "Conditional Rephrase",
+    subtitle: null,
+    instructions: {},
+    item_format: "free-text" as const,
+    items: ITEMS,
+    status: overrides.status ?? ("completed" as const),
+    score: null,
+    started_at: overrides.started_at ?? "2026-08-01T00:00:00.000Z",
+    completed_at: overrides.completed_at ?? "2026-08-02T00:00:00.000Z",
+    created_at: "2026-07-01T00:00:00.000Z",
+  };
+}
+
+let rowId = 0;
+function attempt(
+  assignment_id: string,
+  item_order: number,
+  verdict: Verdict | null,
+  attempt_no = 1,
+) {
+  return {
+    id: `row-${rowId++}`,
+    assignment_id,
+    student_id: "user-1",
+    item_order,
+    attempt_no,
+    verdict,
+    response_text: "wrote something",
+    created_at: "2026-08-01T00:00:00.000Z",
+  };
+}
+
+/** A finished miss is two rows: one attempt below the cap, then the cap. */
+function missedRows(assignment_id: string, item_order: number, final: Verdict) {
+  return [
+    attempt(assignment_id, item_order, "incorrect", 1),
+    attempt(assignment_id, item_order, final, 2),
+  ];
+}
+
+describe("a student's ledgers, for the teacher", () => {
+  it("builds one per assignment that has attempts", () => {
+    const runs = ledgersForAssignments(
+      [assignment("a1")],
+      [
+        ...missedRows("a1", 1, "incorrect"),
+        attempt("a1", 2, "correct"),
+        attempt("a1", 3, "correct"),
+        attempt("a1", 4, "correct"),
+        attempt("a1", 5, "correct"),
+        attempt("a1", 6, "correct"),
+      ],
+    );
+    expect(runs).toHaveLength(1);
+    expect(runs[0].ledger.missed).toBe(1);
+    expect(runs[0].resolved).toBe(6);
+    expect(runs[0].total).toBe(6);
+  });
+
+  it("drops an assignment nobody has opened rather than showing a row of zeroes", () => {
+    const runs = ledgersForAssignments(
+      [assignment("a1", { status: "assigned", started_at: null, completed_at: null })],
+      [],
+    );
+    expect(runs).toEqual([]);
+  });
+
+  it("drops an Activity nobody has grouped", () => {
+    const runs = ledgersForAssignments(
+      [assignment("a1", { title: "Vocab Rehab" })],
+      [attempt("a1", 1, "correct")],
+    );
+    expect(runs).toEqual([]);
+  });
+
+  it("orders by the work, not by the paperwork", () => {
+    // a2 was handed out first but finished later. It goes on top.
+    const runs = ledgersForAssignments(
+      [
+        assignment("a1", { completed_at: "2026-08-02T00:00:00.000Z" }),
+        assignment("a2", { completed_at: "2026-08-20T00:00:00.000Z" }),
+      ],
+      [attempt("a1", 1, "correct"), attempt("a2", 1, "correct")],
+    );
+    expect(runs.map((r) => r.assignmentId)).toEqual(["a2", "a1"]);
+  });
+
+  it("keeps two runs of the same Activity apart rather than picking one silently", () => {
+    const runs = ledgersForAssignments(
+      [
+        assignment("a1", { completed_at: "2026-03-01T00:00:00.000Z" }),
+        assignment("a2", { completed_at: "2026-08-01T00:00:00.000Z" }),
+      ],
+      [
+        ...missedRows("a1", 1, "incorrect"), // missed in March
+        attempt("a2", 1, "correct"), // clean in August
+      ],
+    );
+    expect(runs).toHaveLength(2);
+    expect(runs.find((r) => r.assignmentId === "a1")!.ledger.missed).toBe(1);
+    expect(runs.find((r) => r.assignmentId === "a2")!.ledger.missed).toBe(0);
+  });
+
+  it("counts a word missed in two runs as having cost the student twice", () => {
+    const runs = ledgersForAssignments(
+      [assignment("a1"), assignment("a2", { completed_at: "2026-08-20T00:00:00.000Z" })],
+      [
+        ...missedRows("a1", 1, "incorrect"), // unless
+        ...missedRows("a2", 1, "incorrect"), // unless again
+        // Item 2 has to be here. The replay walks the run in order and stops at
+        // the first item with no attempts, because that is where the student
+        // stopped; a log with a hole in it is a shorter run, not a sparse one.
+        attempt("a2", 2, "correct"),
+        ...missedRows("a2", 3, "partial"), // without
+      ],
+    );
+    const families = familiesAcrossRuns(runs);
+    expect(families).toHaveLength(1);
+    expect(families[0].label).toBe("Negative requirements");
+    expect(families[0].missed).toBe(3);
+    expect(families[0].indicators.map((i) => [i.indicator, i.missed])).toEqual([
+      ["unless", 2],
+      ["without", 1],
+    ]);
+  });
+
+  it("reports only families that cost marks, so a clean student shows an empty list", () => {
+    const runs = ledgersForAssignments([assignment("a1")], [attempt("a1", 1, "correct")]);
+    expect(runs).toHaveLength(1);
+    expect(familiesAcrossRuns(runs)).toEqual([]);
+  });
+
+  it("does not mutate the per-run ledgers while merging them", () => {
+    const runs = ledgersForAssignments(
+      [assignment("a1"), assignment("a2", { completed_at: "2026-08-20T00:00:00.000Z" })],
+      [...missedRows("a1", 1, "incorrect"), ...missedRows("a2", 1, "incorrect")],
+    );
+    familiesAcrossRuns(runs);
+    // Each run still describes its own single miss, not the merged two.
+    expect(runs.map((r) => r.ledger.missedFamilies[0].missed)).toEqual([1, 1]);
+    expect(runs.map((r) => r.ledger.missedFamilies[0].indicators[0].missed)).toEqual([1, 1]);
   });
 });
