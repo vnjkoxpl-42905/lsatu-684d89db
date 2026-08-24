@@ -186,3 +186,71 @@ an entire second conditional stuffed into one capsule. Verified by running the r
 #### Outcome
 
 MAX_ROUNDS=1 reached. Verdict stands at **REVISE**. This is not a deadlock: there is no material disagreement left between the two models. The plan was wrong in the ways described, I verified each one, and v2 rewrites Stages 0, 1, 2, 3, 4 and 10 accordingly. What remains open are three product decisions that belong to Joshua and that no amount of further review can settle.
+
+---
+
+## Round 1 (2026-08-23, post-Stage-11) — Codex: NO VERDICT, run stalled
+
+Scope sent: Stage 11's shipped migration + JSON, and Stage 12's assumptions.
+Model `gpt-5.6-sol`, `model_reasoning_effort = low`, sandbox read-only.
+
+Thread `01a0314c-7d5c-7682-8800-f5e04243afd1` started, then produced no output
+for 10 minutes. A narrowed resume (migration correctness only, bank and Stage 12
+explicitly excluded) also produced nothing in 10 minutes. `/tmp/codex-verdict.txt`
+was never written by either call. Run killed rather than left burning.
+
+**No Codex verdict exists for Stage 11. Do not record one.**
+
+### Claude's own review, in place of the round
+
+Findings (a)-(d) checked directly against the schema and the runner:
+
+- **(a) `jsonb_set` on `'{coach,rubric}'` — OK here, fragile in general.**
+  `instructions->'coach'` exists for this slug, so the path resolves and the
+  rubric is replaced. Worth knowing: `create_missing` only creates the LAST
+  path element. Had `coach` been absent, `jsonb_set` would return the target
+  UNCHANGED and the migration would silently no-op on the rubric while still
+  reporting success. Not a defect today; a trap for the next slug.
+  *Fix if reused:* assert `instructions ? 'coach'` in the WHERE clause.
+
+- **(b) Idempotent.** Both statements are value-assignments from literals, and
+  the re-snapshot carries `is distinct from`, so a second run is a no-op.
+
+- **(c) Trigger dance is transaction-safe, but wider than it looks.** If the
+  UPDATE raises, the whole migration rolls back including the `disable`, so
+  triggers are never left off. Two real costs: `disable trigger user` disables
+  EVERY user trigger on `activity_assignments`, not just the immutability
+  guard, and it takes an ACCESS EXCLUSIVE lock, briefly blocking all reads and
+  writes to the table. Established precedent (the task-copy migration does the
+  same), so this is a note, not a blocker.
+
+- **(d) Re-snapshot scope is correct as specified, and that is the problem.**
+  `status IN ('assigned','in_progress','completed')` per
+  `20260614100100_create_activity_assignments.sql:18`. The migration touches
+  `'assigned'` only. `ActivityRunner.tsx:506` passes
+  `coach={assignment.instructions?.coach}` — the grader reads the SNAPSHOT, not
+  the activity. So **a student already `in_progress` keeps the old rubric for
+  the rest of their run and keeps being credited for the compound error.**
+
+  This is where Stage 11 differs from every prior content migration. Those
+  changed what the student is ASKED, and leaving a run alone was right. This
+  changes whether their answers are GRADED CORRECTLY, and the old grading is
+  wrong. Escalated to Joshua as a product call rather than decided here.
+
+### Correction (same session)
+
+Finding (d) was escalated to Joshua as a product decision. That was premature.
+He pushed back with "which student" and he is right: it cannot be checked from
+here (`SUPABASE_SERVICE_ROLE_KEY` is commented out in `~/ai-os/.env`, so
+`scripts/db-pull.mjs` refuses to run, and the Lovable MCP connector is
+unauthorized in this session), and the standing not-verified list says the
+signed-in student runner at `/activities/:assignmentId` has never been
+exercised with a real account at all.
+
+If no student has ever run this Activity, there is no `in_progress` row and the
+gap is real in the code but empty in practice. It is a latent defect to fix
+when it first matters, not a decision blocking anything today.
+
+**Revised status of (d): latent, not live. Revisit the first time a real
+student is mid-drill during a rubric change.** The cheap guard, if wanted then,
+is adding `'in_progress'` to the re-snapshot WHERE clause in that migration.
