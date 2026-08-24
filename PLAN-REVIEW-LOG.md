@@ -308,3 +308,58 @@ immediately and would have skipped all three wrong turns.
 **Still not done:** the runner has *still* not been exercised end to end. The
 attempt found a bug instead, which is worth more, but the original gap stands.
 The path is a throwaway assignment on the admin account, used and then deleted.
+
+---
+
+## The student runner, finally exercised (2026-08-23) — and the compound flip proven in production
+
+The gap that had been open across six sessions is closed. Everything below was
+done against the live site, signed in, not in the Activity Lab.
+
+**First, a deploy fact worth writing down.** Pushing to `main` does NOT update
+`lsatprep.study`. Lovable ingests the commit and updates its *preview*, but the
+published site needs an explicit publish. `CLAUDE.md` currently claims a push
+"ships and auto-deploys", which is why a stale bundle was reloaded four times
+before the hash was checked. Publishing moved `assets/index-ChMkc4n0.js` to
+`assets/index-C4jwxHDM.js`; that hash is the only reliable signal.
+
+**The wrong-account fix, verified on the URL that caused it.** The same link
+that had read "Activity not found." now reads:
+
+> This activity was assigned to a different account.
+> You are signed in as contact@aspiringattorneys.com. Sign in as the account it
+> was assigned to.
+
+**The runner works end to end.** A throwaway assignment on the admin account
+loaded, showed the new ten-rule intro, accepted a deliberately paraphrased
+answer (so the exact-match fast path could not swallow it), and came back
+`verdict: correct`, `judge_source: coach`, with the flip rails, the authored
+explanation and the counter all rendering. It persisted: the row landed in
+`activity_item_responses` and the assignment moved to `in_progress` with
+`started_at` set. That is the first confirmation this build has ever had that a
+signed-in student can actually use it.
+
+**The compound flip caught, live.** Item 58, "No restoration receives the
+guild's seal without both a reversible adhesive and a documented provenance
+chain." The answer given was the exact error Stage 11 exists to catch:
+
+> If a restoration does not use a reversible adhesive AND does not have a
+> documented provenance chain, then it does not receive the guild's seal.
+
+Before today the rubric had no line that could see anything wrong with that.
+The Coach now returns **partial**, not correct, and says why:
+
+> when negating a compound 'both X and Y', it becomes 'not X or not Y' in the
+> contrapositive
+
+That is the rule reaching a real student on the real site. Stage 11 is not just
+applied, it is working.
+
+**Cleanup verified.** Both throwaway rows and their responses are deleted, the
+immutability guard is back to `tgenabled = 'O'`, the activity still carries 62
+items, and Joshua's own assignment is untouched at `status = 'assigned'` with no
+responses. One assignment exists, exactly as before this session.
+
+**Note for the next run:** `activity_assignments_active_unique` forbids two
+active assignments of the same activity for one student, so a probe assignment
+has to reuse or replace, not sit alongside.
