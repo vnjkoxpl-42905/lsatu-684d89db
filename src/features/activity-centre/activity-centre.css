@@ -153,8 +153,13 @@
   }
 
   /* What the band carries: the statement, the two rails, the junction. The
-     credited plates and the progress rail are the parts worth opening for. */
+     credited plates and the progress rail are the parts worth opening for.
+     The lamp key goes with them: in a 260px cap it wraps to two lines and
+     spends them explaining a signal rather than showing one, which is the wrong
+     trade on the screen where height is scarcest. It is there when the band is
+     open, beside the lamps it describes. */
   .ac-yard-band[data-expanded="false"] [data-testid="sy-plates"],
+  .ac-yard-band[data-expanded="false"] [data-testid="sy-legend"],
   .ac-yard-band[data-expanded="false"] [data-testid="sy-mileposts"] {
     display: none;
   }

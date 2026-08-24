@@ -379,6 +379,34 @@ export function SwitchyardStage({
         </div>
       </div>
 
+      {/* The lamp legend, and the reason it is only worth a line now. Before
+          Stage 4 the lamp was the ONLY polarity signal, and a legend would have
+          been a footnote asking the student to hold a colour code in their head
+          while reading a sentence. Polarity is words on the rail now, so this is
+          reinforcement for a signal they can already read, which is what a
+          legend should be.
+
+          Hidden from assistive technology on purpose. Every capsule announces
+          its own polarity (`sy-polarity`, sr-only unless derived), so a screen
+          reader already has the fact; a sentence describing the colour of a ring
+          it cannot see would be noise on top of it.
+
+          Only once routed, because an unrouted yard has veiled rails and the
+          lamps are not saying anything yet. */}
+      {routed ? (
+        <p
+          className="sy-legend switchyard-mono flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[hsl(var(--sy-ink-dim))]"
+          data-testid="sy-legend"
+          aria-hidden="true"
+        >
+          <span className="sy-lamp" data-lit="true" />
+          <span>lit: the clause is negative</span>
+          <span className="sy-legend-sep" />
+          <span className="sy-lamp" data-lit="false" />
+          <span>dark: the clause is positive</span>
+        </p>
+      ) : null}
+
       {faultLive ? (
         <FaultCaption
           fault={faultLive}

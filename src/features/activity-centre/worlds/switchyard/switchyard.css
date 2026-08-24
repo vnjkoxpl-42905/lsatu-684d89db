@@ -321,6 +321,22 @@
   background: hsl(var(--sy-signal) / 0.12);
 }
 
+/* The lamp key. It sits under the yard reading as a key rather than as another
+   thing to do, which is why it is dim and why the swatches are the real
+   `.sy-lamp` rather than a drawing of one: a key that does not match the signal
+   it explains is worse than no key. */
+.sy-legend {
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+.sy-legend-sep {
+  width: 1px;
+  height: 10px;
+  background: hsl(var(--sy-rail-live) / 0.5);
+  flex: none;
+}
+
 /* ---------- The junction ---------- */
 
 .sy-junction-scene {

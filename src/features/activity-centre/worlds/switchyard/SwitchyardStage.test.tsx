@@ -97,6 +97,46 @@ describe("the yard once routed", () => {
   });
 });
 
+describe("the lamp key", () => {
+  it("stays off the screen at arrival, when the lamps are not saying anything yet", () => {
+    const { container } = stageFor(WHENEVER, "arrival");
+    expect(container.querySelector('[data-testid="sy-legend"]')).toBeNull();
+  });
+
+  it("appears once routed and says what each state of the lamp means", () => {
+    const { container } = stageFor(WHENEVER, "routed");
+    const legend = container.querySelector('[data-testid="sy-legend"]') as HTMLElement;
+    expect(legend).toBeTruthy();
+    expect(legend.textContent).toMatch(/lit: the clause is negative/i);
+    expect(legend.textContent).toMatch(/dark: the clause is positive/i);
+  });
+
+  it("carries a real lamp in each state, so the key cannot drift from the signal", () => {
+    const { container } = stageFor(WHENEVER, "routed");
+    const legend = container.querySelector('[data-testid="sy-legend"]') as HTMLElement;
+    expect([...legend.querySelectorAll(".sy-lamp")].map((l) => (l as HTMLElement).dataset.lit)).toEqual(
+      ["true", "false"],
+    );
+  });
+
+  it("is hidden from assistive technology, which already hears the polarity in words", () => {
+    const { container } = stageFor(UNLESS, "routed");
+    const legend = container.querySelector('[data-testid="sy-legend"]') as HTMLElement;
+    expect(legend.getAttribute("aria-hidden")).toBe("true");
+    // The fact itself is still announced, on the capsule, whatever the key does.
+    expect(
+      [...container.querySelectorAll('[data-testid="sy-polarity"]')].map((p) => p.textContent),
+    ).toEqual(["NOT", "positive"]);
+  });
+
+  it("does not disturb the lamp census the capsules are read by", () => {
+    // `lampStates` addresses capsules by testid; the key's swatches deliberately
+    // carry none, so adding a key never changes what a polarity test counts.
+    const { container } = stageFor(UNLESS, "routed");
+    expect(lampStates(container)).toEqual(["true", "false"]);
+  });
+});
+
 describe("the flip", () => {
   it("swaps the capsules onto each other's tracks", () => {
     const { container, routing } = stageFor(WHENEVER, "flipped");
