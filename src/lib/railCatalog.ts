@@ -50,9 +50,9 @@ export const RAIL_GROUPS: { id: RailGroupId; title: string }[] = [
 
 export const RAIL_CATALOG: RailItem[] = [
   { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, required: true },
-  { id: "notes", label: "Notes and recaps", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
+  { id: "drill", label: "Drill", group: "classroom", flags: ["has_drill_access"] },
   { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
-  { id: "drill", label: "Drill", group: "study", flags: ["has_drill_access"] },
+  { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
   { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], allowSignedIn: true, section: true },
