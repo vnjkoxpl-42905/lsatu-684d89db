@@ -20,6 +20,7 @@ function conversation(over: Partial<Conversation> = {}): Conversation {
     created_by: OWN_ID,
     created_at: '2026-08-01T10:00:00.000Z',
     last_message_at: '2026-08-03T10:00:00.000Z',
+    home_cleared_at: null,
     participants: [
       { id: 'p1', conversation_id: 'c1', user_id: OWN_ID, last_read_at: '', display_name: 'Joshua', is_admin: true },
       { id: 'p2', conversation_id: 'c1', user_id: 'stu-1', last_read_at: '', display_name: 'Lexi Rivera' },

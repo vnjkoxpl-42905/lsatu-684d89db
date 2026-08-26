@@ -175,6 +175,7 @@ function instructorConversation(overrides: Partial<Conversation> = {}): Conversa
     created_by: "admin-1",
     created_at: "2026-06-29T12:00:00.000Z",
     last_message_at: "2026-06-29T13:00:00.000Z",
+    home_cleared_at: null,
     participants: [
       {
         id: "part-1",
