@@ -28,6 +28,13 @@ interface SectionSelectorProps {
   onStartSection: (config: FullSectionConfig) => void;
   /** Starts an RC section by navigating to the link `rcSectionHref` builds. */
   onStartRcSection?: (href: string) => void;
+  /**
+   * Which kind the selector opens on. The drill hub's RC section passes 'rc'
+   * so a student who has already thrown the LR/RC switch is not asked the same
+   * question twice. Uncontrolled after mount — the selector's own tab strip
+   * still switches it.
+   */
+  initialKind?: SectionKind;
   onCancel: () => void;
 }
 
@@ -35,10 +42,11 @@ export function SectionSelector({
   manifest,
   onStartSection,
   onStartRcSection,
+  initialKind = 'lr',
   onCancel,
 }: SectionSelectorProps) {
   const { settings } = useUserSettings();
-  const [kind, setKind] = useState<SectionKind>('lr');
+  const [kind, setKind] = useState<SectionKind>(initialKind);
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const [timingOption, setTimingOption] = useState<'standard' | '1.5x' | '2x' | 'custom'>('standard');
@@ -330,7 +338,7 @@ export function SectionSelector({
                 {formatRcSectionClock(chosenRcSection, rcPaceId)}
                 {chosenRcSection.fullLength
                   ? ''
-                  : ' — shorter than a real section, because questions without a published explanation cannot be drilled'}
+                  : '. Shorter than a real section, because questions without a published explanation cannot be drilled'}
               </p>
             )}
 

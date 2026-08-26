@@ -446,3 +446,52 @@
   background: var(--observatory-ink);
   color: var(--observatory-surface-card);
 }
+
+
+/* ------------------------------------------------- embedded in the drill hub */
+
+/*
+ * The same builder, mounted inside the drill hub's RC section rather than at
+ * /rc. It keeps the `.rc-page` class because that is where the observatory
+ * token ladder is declared; what it drops is the page frame. The launcher
+ * panel around it already draws the card, the padding, and the column.
+ */
+.rc-page.rc-embedded {
+  background: none;
+  min-height: 0;
+  padding: 0;
+}
+
+.rc-page.rc-embedded > * {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
+
+/* The builder's own cards lose their frame too — a card inside a card is one
+   ring too many on a page whose only borders are hairlines. */
+.rc-page.rc-embedded .rc-card {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.rc-page.rc-embedded .rc-card + .rc-card {
+  border-top: 1px solid var(--observatory-hairline);
+  margin-top: var(--observatory-space-6);
+  padding-top: var(--observatory-space-6);
+}
+
+/* The hand-pick table is 11 columns wide and the bay it sits in is not. It
+   scrolls sideways rather than crushing the columns — the wide launcher stage
+   gives it the full canvas, and this is what holds it together below that. */
+.rc-page.rc-embedded .rc-table {
+  min-width: 720px;
+}
+
+.rc-page.rc-embedded .rc-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--observatory-space-2);
+}

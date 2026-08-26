@@ -30,7 +30,7 @@ const AcademyMainhub = safeLazy(loadDrillHub);
 const Drill = safeLazy(() => import("./pages/Drill"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
-const RcHub = safeLazy(() => import("./features/rc/pages/RcHub"));
+const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
@@ -408,8 +408,11 @@ const App = () => {
                   } />
                   {/* Reading Comprehension drilling. Content is static JSON; only
                       progress touches the database. See src/features/rc/CONTEXT.md. */}
+                  {/* The RC hub is a section of the drill hub now, chosen by
+                      the LR/RC switch. This route survives as a
+                      query-preserving adapter — see RcRedirect. */}
                   <Route path="/rc" element={
-                    <ProtectedRoute flag="has_drill_access"><RcHub /></ProtectedRoute>
+                    <ProtectedRoute flag="has_drill_access"><RcRedirect /></ProtectedRoute>
                   } />
                   <Route path="/rc/drill" element={
                     <ProtectedRoute flag="has_drill_access"><RcPlayer /></ProtectedRoute>

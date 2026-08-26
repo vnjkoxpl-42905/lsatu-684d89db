@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
+import RcPracticeStage from "@/components/mainhub/RcPracticeStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,22 +20,28 @@ import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
+import { SectionToggle } from "@/components/drill/SectionToggle";
+import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
+import {
+  DRILL_SECTION_LABELS,
+  DRILL_SECTION_PARAM,
+  rememberSection,
+  resolveDrillSection,
+  type DrillSection,
+} from "@/lib/drillSection";
 import { cn } from "@/lib/utils";
 import type { FullSectionConfig, TypeDrillConfig } from "@/types/drill";
 
-function MainhubHero({
-  drillReturnTo,
-  onOpenBuilder,
-}: {
-  drillReturnTo: string;
-  onOpenBuilder: () => void;
-}) {
-  const navigate = useNavigate();
+/**
+ * The greeting name, resolved once per mount: profiles.display_name, falling
+ * back to metadata then email. Lifted out of the hero because the hero
+ * remounts on every section flip, and re-querying profiles to redraw the same
+ * name would be a database round trip per toggle.
+ */
+function useGreetingName() {
+  const { user } = useAuth();
   const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
 
-  const { user } = useAuth();
-
-  // Canonical greeting name: profiles.display_name, falling back to metadata/email.
   React.useEffect(() => {
     if (!user) return;
     let cancelled = false;
@@ -51,7 +58,7 @@ function MainhubHero({
     };
   }, [user]);
 
-  const firstName = React.useMemo(() => {
+  return React.useMemo(() => {
     const raw =
       profileDisplayName ||
       (user?.user_metadata?.display_name as string | undefined) ||
@@ -60,6 +67,22 @@ function MainhubHero({
     const name = raw.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, "");
     return name ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : "";
   }, [profileDisplayName, user]);
+}
+
+function MainhubHero({
+  section,
+  firstName,
+  drillReturnTo,
+  onOpenBuilder,
+  onStartSmartRc,
+}: {
+  section: DrillSection;
+  firstName: string;
+  drillReturnTo: string;
+  onOpenBuilder: () => void;
+  onStartSmartRc: () => void;
+}) {
+  const navigate = useNavigate();
 
   const todayLabel = React.useMemo(
     () =>
@@ -79,9 +102,14 @@ function MainhubHero({
     /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
        horizon image needs image-set() and a two-layer scrim pseudo-element,
        neither of which belongs in a className. */
-    <Card className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none">
+    <Card
+      data-section={section}
+      className="drill-observatory-hero drill-observatory-section-flip-face w-full border-0 bg-transparent p-0 shadow-none"
+    >
+      {/* Says which section you are in. Decoration — the switch that CHANGES
+          it is the one in the tools row, which is a real control. */}
       <div className="drill-observatory-route-label" aria-hidden>
-        <span>DRILL / LOGICAL REASONING</span>
+        <span>{DRILL_SECTION_LABELS[section].route}</span>
       </div>
 
       <div className="drill-observatory-hero-grid">
@@ -103,14 +131,16 @@ function MainhubHero({
               )}
             </h2>
             <p className="drill-observatory-ink-62 text-sm leading-[1.55]">
-              Pick up where you left off, or build a drill around exactly what you want to practice.
+              {section === "rc"
+                ? "Pick up where you left off, or build a set of passages around exactly what you want to read."
+                : "Pick up where you left off, or build a drill around exactly what you want to practice."}
             </p>
           </div>
           <Button
-            onClick={startSmartDrill}
+            onClick={section === "rc" ? onStartSmartRc : startSmartDrill}
             className="drill-observatory-cta mt-5 w-fit"
           >
-            Start Smart Drill
+            {section === "rc" ? "Start Smart Reading Drill" : "Start Smart Drill"}
             <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
           </Button>
         </div>
@@ -119,11 +149,12 @@ function MainhubHero({
           <div className="flex h-full flex-col justify-between gap-6">
             <div className="space-y-3">
               <h3 className="text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em] text-[#f4f1ea]">
-                Build the drill you need.
+                {section === "rc" ? "Build the reading set you need." : "Build the drill you need."}
               </h3>
               <p className="drill-observatory-ink-62 max-w-[48ch] text-sm leading-[1.6]">
-                Choose PrepTests, question types, reasoning, features, and levels independently.
-                Preview the exact set before you start.
+                {section === "rc"
+                  ? "Choose PrepTests, topics, formats, frameworks, and difficulty independently. Hand-pick the exact passages, or let the set fill itself."
+                  : "Choose PrepTests, question types, reasoning, features, and levels independently. Preview the exact set before you start."}
               </p>
             </div>
             <Button
@@ -131,7 +162,7 @@ function MainhubHero({
               onClick={onOpenBuilder}
               className="drill-observatory-console-start"
             >
-              Set up an LR drill
+              {section === "rc" ? "Set up an RC drill" : "Set up an LR drill"}
               <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
             </Button>
           </div>
@@ -148,10 +179,12 @@ function MainhubHero({
  */
 function LauncherStage({
   kind,
+  section,
   drillReturnTo,
   onCancel,
 }: {
   kind: "full-section" | "type-drill";
+  section: DrillSection;
   drillReturnTo: string;
   onCancel: () => void;
 }) {
@@ -164,6 +197,21 @@ function LauncherStage({
     },
     [drillReturnTo, navigate],
   );
+
+  /* RC's builder reads the passage index, not the LR question bank, so it
+     returns before `useQuestionBank`'s loading gate — waiting on 5.5 MB of LR
+     questions to draw a reading drill would be a spinner for nothing. RC's
+     Full Section still goes through SectionSelector below, which needs the
+     manifest for its shared shell. */
+  if (section === "rc" && kind === "type-drill") {
+    return (
+      <div className="drill-observatory-launcher relative overflow-hidden">
+        <div className="relative z-10">
+          <RcHubSurface embedded showHistory={false} onCancel={onCancel} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="drill-observatory-launcher relative overflow-hidden">
@@ -189,6 +237,7 @@ function LauncherStage({
             {kind === "full-section" ? (
               <SectionSelector
                 manifest={manifest}
+                initialKind={section}
                 onStartSection={(config) => start("full-section", config)}
                 // An RC section is the four published passages of one real
                 // section, run by the RC player rather than the LR runner, so
@@ -222,6 +271,13 @@ export default function AcademyMainhub({
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [searchParams, setSearchParams] = useSearchParams();
+  const firstName = useGreetingName();
+
+  /* Which section the hub is showing. URL first, then what this browser
+     remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
+     URL rather than from state is what makes a refresh, a Back press, and a
+     shared link all land in the same place. */
+  const section = resolveDrillSection(searchParams.get(DRILL_SECTION_PARAM));
 
   const stageParam = searchParams.get("stage");
   const stage =
@@ -246,29 +302,72 @@ export default function AcademyMainhub({
   const canOpenAnalytics = can("has_analytics_access");
   const canOpenJournal = can("has_journal_access");
 
-  const openAnalytics = React.useCallback(
-    (tab: string = "overview") => {
-      setSearchParams({ stage: "analytics", tab }, { replace: false });
+  /* Throwing the switch REPLACES the query rather than merging into it: an LR
+     launcher stage has no RC counterpart at the same key, so carrying `stage`
+     across would land a student on a panel that does not exist for the section
+     they just chose. Pushed, not replaced, so Back returns to the section they
+     came from.
+
+     The switch is unconditional. A half-built LR set is discarded without a
+     prompt — Joshua's call, 2026-08-26: a flip that stops to ask is not a
+     flip. */
+  const changeSection = React.useCallback(
+    (next: DrillSection) => {
+      rememberSection(next);
+      setSearchParams({ [DRILL_SECTION_PARAM]: next }, { replace: false });
     },
     [setSearchParams],
+  );
+
+  const openAnalytics = React.useCallback(
+    (tab: string = "overview") => {
+      setSearchParams(
+        { [DRILL_SECTION_PARAM]: section, stage: "analytics", tab },
+        { replace: false },
+      );
+    },
+    [section, setSearchParams],
   );
 
   const setAnalyticsTab = React.useCallback(
     (tab: string) => {
-      setSearchParams({ stage: "analytics", tab }, { replace: true });
+      setSearchParams(
+        { [DRILL_SECTION_PARAM]: section, stage: "analytics", tab },
+        { replace: true },
+      );
     },
-    [setSearchParams],
+    [section, setSearchParams],
   );
 
   const openLauncher = React.useCallback(
     (kind: "full-section" | "type-drill") => {
-      setSearchParams({ stage: kind }, { replace: false });
+      setSearchParams({ [DRILL_SECTION_PARAM]: section, stage: kind }, { replace: false });
     },
-    [setSearchParams],
+    [section, setSearchParams],
   );
 
   const closeStage = React.useCallback(() => {
-    setSearchParams({}, { replace: true });
+    setSearchParams({ [DRILL_SECTION_PARAM]: section }, { replace: true });
+  }, [section, setSearchParams]);
+
+  /* Smart Reading Drill: one passage, untimed, answers after each passage —
+     RcHubSurface's own defaults, spelled in the URL so the builder mounts,
+     applies them, and starts itself. The student sees the builder for the
+     moment the passage index is loading and then lands in the drill; they
+     never have to press Start a second time. */
+  const startSmartRc = React.useCallback(() => {
+    rememberSection("rc");
+    setSearchParams(
+      {
+        [DRILL_SECTION_PARAM]: "rc",
+        stage: "type-drill",
+        count: "1",
+        timing: "untimed",
+        reveal: "per_passage",
+        start: "1",
+      },
+      { replace: false },
+    );
   }, [setSearchParams]);
 
   // The analytics stage takes over the below-hero area; suppress mainhub
@@ -294,11 +393,21 @@ export default function AcademyMainhub({
             has_drill_access. */}
         <div className="drill-observatory-tools">
           <QuestionJump returnTo={drillReturnTo} tone="dark" />
+          {/* The section switch. Top right of the same band, opposite the jump
+              box — one control, one position, on both mounts of this page. */}
+          <SectionToggle section={section} onChange={changeSection} />
         </div>
 
+        {/* Keyed on the section so the flip animation replays on every throw of
+            the switch. The hero is presentational now (see useGreetingName), so
+            remounting it costs no query. */}
         <MainhubHero
+          key={section}
+          section={section}
+          firstName={firstName}
           drillReturnTo={drillReturnTo}
           onOpenBuilder={() => openLauncher("type-drill")}
+          onStartSmartRc={startSmartRc}
         />
 
         {stage === "analytics" ? (
@@ -337,19 +446,39 @@ export default function AcademyMainhub({
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
           >
+            {/* The bay flips with the hero; Today does not. That contrast is
+                what makes the flip read as "this half changed" rather than as
+                a page reload — and TodayFocusPanel is live status that belongs
+                to the student, not to a section. It is a sibling here, so the
+                key below cannot remount it. */}
             <section
-              className="drill-observatory-practice-bay"
+              key={section}
+              data-section={section}
+              className="drill-observatory-practice-bay drill-observatory-section-flip-face"
               aria-label={
                 stage === "default" ? "Practice and insight workspace" : "Drill launcher"
               }
               data-tour={stage === "default" ? "mainhub-practice" : "mainhub-launcher"}
             >
               {isLauncherStage ? (
-                <LauncherStage kind={stage} drillReturnTo={drillReturnTo} onCancel={closeStage} />
+                <LauncherStage
+                  kind={stage}
+                  section={section}
+                  drillReturnTo={drillReturnTo}
+                  onCancel={closeStage}
+                />
+              ) : section === "rc" ? (
+                <RcPracticeStage
+                  onOpenAnalytics={openAnalytics}
+                  onOpenLauncher={openLauncher}
+                  canOpenAnalytics={canOpenAnalytics}
+                  canOpenJournal={canOpenJournal}
+                />
               ) : (
                 <PracticeInsightStage
                   onOpenAnalytics={openAnalytics}
                   onOpenLauncher={openLauncher}
+                  onOpenRcSection={() => changeSection("rc")}
                   canOpenAnalytics={canOpenAnalytics}
                   canOpenJournal={canOpenJournal}
                 />

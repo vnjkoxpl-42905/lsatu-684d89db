@@ -137,6 +137,18 @@ export interface RcQuestionIndex {
 
 export type RcRevealMode = 'per_question' | 'per_passage' | 'end_of_set';
 
+/**
+ * One phrasing per reveal mode, lowercase so it reads inside a sentence like
+ * "1 passage · untimed · after each passage". Lives here rather than beside a
+ * builder because two surfaces render a session's summary and they must not
+ * describe the same session differently.
+ */
+export const REVEAL_LABELS: Record<RcRevealMode, string> = {
+  per_question: 'after each question',
+  per_passage: 'after each passage',
+  end_of_set: 'at the end',
+};
+
 export type RcTiming =
   | { mode: 'unlimited' }
   | { mode: 'per_passage_budget'; secondsPerPassage: number };

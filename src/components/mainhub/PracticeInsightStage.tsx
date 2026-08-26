@@ -23,6 +23,12 @@ interface PracticeInsightStageProps {
   onOpenAnalytics: (tab?: string) => void;
   /** Opens an embedded drill-launcher stage (was the /practice hub). */
   onOpenLauncher: (kind: "full-section" | "type-drill") => void;
+  /**
+   * Throws the hub's LR/RC switch to RC. The Reading Comprehension tile is a
+   * second affordance for the switch in the tools row, never a second
+   * destination — RC has one door now.
+   */
+  onOpenRcSection: () => void;
   canOpenAnalytics: boolean;
   canOpenJournal: boolean;
 }
@@ -35,6 +41,7 @@ interface PracticeInsightStageProps {
 export default function PracticeInsightStage({
   onOpenAnalytics,
   onOpenLauncher,
+  onOpenRcSection,
   canOpenAnalytics,
   canOpenJournal,
 }: PracticeInsightStageProps) {
@@ -48,7 +55,6 @@ export default function PracticeInsightStage({
   const [index, setIndex] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
   const [userPaused, setUserPaused] = React.useState(false);
-  const [rcOpen, setRcOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (paused || userPaused || slides.length <= 1) return;
@@ -89,35 +95,30 @@ export default function PracticeInsightStage({
         <p className="drill-observatory-label drill-observatory-ink-42 mb-4">
           Practice tools
         </p>
-        {/* Reading Comprehension is the one tool whose shape a student picks
-            before leaving this page, so its tile turns the tool row over
-            rather than navigating away cold. */}
-        <FlipDeck
-          flipped={rcOpen}
-          front={
-            <div className="drill-observatory-practice-tools">
-              <PracticeTile
-                icon={Layers}
-                title="Full Section"
-                description="Start a timed official section."
-                onClick={() => onOpenLauncher("full-section")}
-              />
-              <PracticeTile
-                icon={Grid3x3}
-                title="Build a Set"
-                description="Assemble a targeted question set."
-                onClick={() => onOpenLauncher("type-drill")}
-              />
-              <PracticeTile
-                icon={ScrollText}
-                title="Reading Comprehension"
-                description="Drill full passages the way they appear on the test."
-                onClick={() => setRcOpen(true)}
-              />
-            </div>
-          }
-          back={<RcQuickBuild onClose={() => setRcOpen(false)} />}
-        />
+        {/* The Reading Comprehension tile throws the section switch rather
+            than opening a builder of its own. It used to turn the tool row over
+            onto a three-choice quick build, which was a second, smaller RC
+            builder that could disagree with the real one. */}
+        <div className="drill-observatory-practice-tools">
+          <PracticeTile
+            icon={Layers}
+            title="Full Section"
+            description="Start a timed official section."
+            onClick={() => onOpenLauncher("full-section")}
+          />
+          <PracticeTile
+            icon={Grid3x3}
+            title="Build a Set"
+            description="Assemble a targeted question set."
+            onClick={() => onOpenLauncher("type-drill")}
+          />
+          <PracticeTile
+            icon={ScrollText}
+            title="Reading Comprehension"
+            description="Drill full passages the way they appear on the test."
+            onClick={onOpenRcSection}
+          />
+        </div>
         <div className="mt-[18px] flex flex-wrap gap-2">
           {canOpenAnalytics && (
             <SecondaryLink icon={BarChart3} label="Analytics" onClick={() => onOpenAnalytics("overview")} />
@@ -229,218 +230,8 @@ export default function PracticeInsightStage({
   );
 }
 
-/**
- * Two faces sharing one footprint, turned on the Y axis. The faces are stacked
- * absolutely so the taller one cannot pad out the shorter, and the deck's own
- * height is measured from whichever face is showing — a fixed height would
- * either clip the back or leave a hole under the front.
- */
-function FlipDeck({
-  flipped,
-  front,
-  back,
-}: {
-  flipped: boolean;
-  front: React.ReactNode;
-  back: React.ReactNode;
-}) {
-  const frontRef = React.useRef<HTMLDivElement>(null);
-  const backRef = React.useRef<HTMLDivElement>(null);
-  const [height, setHeight] = React.useState<number>();
 
-  React.useLayoutEffect(() => {
-    const measure = () => {
-      const face = flipped ? backRef.current : frontRef.current;
-      if (face) setHeight(face.offsetHeight);
-    };
-    measure();
-    // Both faces are observed: the hidden one can reflow (a wrap at a new
-    // width) while it waits, and it has to be right the moment it turns.
-    const observer = new ResizeObserver(measure);
-    if (frontRef.current) observer.observe(frontRef.current);
-    if (backRef.current) observer.observe(backRef.current);
-    // A resize event is dispatched even when the observer's callbacks are not
-    // being delivered — a tab in the background has no rendering steps, so a
-    // window resized there would otherwise leave the deck at a stale height.
-    window.addEventListener("resize", measure);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, [flipped]);
-
-  return (
-    <div
-      className={cn("drill-observatory-flip", flipped && "is-flipped")}
-      style={height ? { height } : undefined}
-    >
-      <div
-        ref={frontRef}
-        className="drill-observatory-flip-face drill-observatory-flip-front"
-        aria-hidden={flipped}
-      >
-        {front}
-      </div>
-      <div
-        ref={backRef}
-        className="drill-observatory-flip-face drill-observatory-flip-back"
-        aria-hidden={!flipped}
-      >
-        {back}
-      </div>
-    </div>
-  );
-}
-
-const RC_COUNTS = [1, 2, 3, 4] as const;
-
-const RC_PACES = [
-  { id: "untimed", label: "Untimed" },
-  { id: "standard", label: "Standard", caption: "8:45 each" },
-] as const;
-
-const RC_REVEALS = [
-  { id: "per_passage", label: "After each passage" },
-  { id: "end_of_set", label: "At the end" },
-] as const;
-
-/**
- * The back of the tool row: the three choices that actually change an RC drill,
- * then straight into it. Anything finer (topic, format, hand-picking) lives on
- * the RC hub, one link away.
- */
-function RcQuickBuild({ onClose }: { onClose: () => void }) {
-  const navigate = useNavigate();
-  const [count, setCount] = React.useState<number>(1);
-  const [pace, setPace] = React.useState<string>("untimed");
-  const [reveal, setReveal] = React.useState<string>("per_passage");
-
-  const start = () => {
-    const query = new URLSearchParams({
-      count: String(count),
-      timing: pace,
-      reveal,
-      start: "1",
-    });
-    navigate(`/rc?${query.toString()}`);
-  };
-
-  return (
-    <div className="drill-observatory-rc-build">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <div className="drill-observatory-ink-full text-[15px] font-semibold">
-            Reading Comprehension
-          </div>
-          <div className="drill-observatory-ink-48 mt-[3px] text-[12.5px] leading-[1.45]">
-            Set the shape of the drill, then go.
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="drill-observatory-secondary-link inline-flex shrink-0 items-center"
-        >
-          <ArrowLeft className="h-[13px] w-[13px]" strokeWidth={1.8} aria-hidden />
-          Back to tools
-        </button>
-      </div>
-
-      <RcChoiceRow label="Passages">
-        {RC_COUNTS.map((n) => (
-          <RcChip key={n} active={count === n} onClick={() => setCount(n)}>
-            {n}
-          </RcChip>
-        ))}
-      </RcChoiceRow>
-
-      <RcChoiceRow label="Pace">
-        {RC_PACES.map((option) => (
-          <RcChip
-            key={option.id}
-            active={pace === option.id}
-            onClick={() => setPace(option.id)}
-          >
-            {option.label}
-            {"caption" in option && option.caption && (
-              <span className="drill-observatory-ink-48 ml-1.5">{option.caption}</span>
-            )}
-          </RcChip>
-        ))}
-      </RcChoiceRow>
-
-      <RcChoiceRow label="Reveal answers">
-        {RC_REVEALS.map((option) => (
-          <RcChip
-            key={option.id}
-            active={reveal === option.id}
-            onClick={() => setReveal(option.id)}
-          >
-            {option.label}
-          </RcChip>
-        ))}
-      </RcChoiceRow>
-
-      <div className="drill-observatory-rc-build-actions">
-        <button
-          type="button"
-          onClick={start}
-          className="drill-observatory-console-start inline-flex items-center justify-center gap-2"
-        >
-          Start reading drill
-          <ArrowRight className="h-[13px] w-[13px]" strokeWidth={2} aria-hidden />
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate("/rc")}
-          className="drill-observatory-secondary-link inline-flex items-center"
-        >
-          All passages and filters
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function RcChoiceRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-38 mb-2">
-        {label}
-      </p>
-      <div className="flex flex-wrap gap-2">{children}</div>
-    </div>
-  );
-}
-
-function RcChip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn("drill-observatory-rc-chip", active && "is-active")}
-    >
-      {children}
-    </button>
-  );
-}
-
-function PracticeTile({
+export function PracticeTile({
   icon: Icon,
   title,
   description,
@@ -475,7 +266,7 @@ function PracticeTile({
   );
 }
 
-function SecondaryLink({
+export function SecondaryLink({
   icon: Icon,
   label,
   onClick,

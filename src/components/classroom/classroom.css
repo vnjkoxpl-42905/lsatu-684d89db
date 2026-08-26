@@ -1091,9 +1091,138 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    the whole surface rather than a control belonging to its right side. The
    canvas gap supplies the spacing below it, so this row contributes nothing but
    its own height. */
+/* The tools row carries two controls now: QuestionJump on the left, the
+   LR/RC section switch hard right. It was `display: block` while it held only
+   the one. */
 .drill-observatory-tools {
-  display: block;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
   margin-bottom: -4px;
+}
+
+/* ── Section switch (LR | RC) ────────────────────────────────────────────── */
+
+/* Note the surface it sits on: the observatory is dark CARDS on a light cream
+   stage, and the tools row is on the stage, not on a card. So the switch is
+   inked dark-on-light and takes its values from the Question finder beside it
+   (questionJump.css light tone) — the two are one utility strip and must not
+   read as two different systems. An ivory-on-ivory switch, which the first
+   pass shipped, was invisible here. */
+.drill-observatory-section-toggle {
+  align-items: center;
+  background: #fbf8f3;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(68, 64, 61, 0.09);
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  margin-left: auto;
+  padding: 3px;
+}
+
+.drill-observatory-section-toggle-option {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: #a7a29f;
+  cursor: pointer;
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 600;
+  letter-spacing: var(--observatory-track-route);
+  line-height: 1;
+  padding: 7px 16px;
+  position: relative;
+  transition: color 200ms cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+
+.drill-observatory-section-toggle-option:hover {
+  color: #332f2c;
+}
+
+.drill-observatory-section-toggle-option.is-active {
+  color: #f5f1ec;
+}
+
+.drill-observatory-section-toggle-option:focus-visible {
+  box-shadow: 0 0 0 2px rgba(51, 47, 44, 0.35);
+  outline: none;
+}
+
+/* The travelling lit slot. Sits behind the label — the label carries
+   `position: relative` and a z-index of its own so it is never covered. */
+.drill-observatory-section-toggle-indicator {
+  background: #332f2c;
+  border-radius: 999px;
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+/* ── The band flip ───────────────────────────────────────────────────────── */
+
+/* Hero and practice bay turn as one card when the switch is thrown. Shallow on
+   purpose (~7deg): enough depth to read as a flip, not enough to throw text
+   off-axis mid-turn. LR turns one way and RC the other, so the direction says
+   which way you moved.
+
+   Perspective rides inside the transform rather than on a parent, because the
+   two faces are at different depths of the tree — the hero is a child of the
+   canvas, the practice bay a grandchild inside the deck grid — and a
+   `perspective` property only reaches direct children. */
+.drill-observatory-section-flip-face {
+  /* No fill mode, deliberately. With `both` the face holds the keyframe's
+     opacity: 0 until the animation runs — and a tab whose rendering is
+     suspended (backgrounded, or a screenshot taken before first paint) never
+     runs it, so the whole section renders invisible. Without a fill the
+     element's own styles apply outside the animation's active period, and the
+     worst case is one unanimated frame. */
+  animation: drill-section-flip-in 320ms cubic-bezier(0.22, 0.68, 0.24, 1);
+  transform-origin: 50% 50%;
+}
+
+.drill-observatory-section-flip-face[data-section="rc"] {
+  animation-name: drill-section-flip-in-rc;
+}
+
+@keyframes drill-section-flip-in {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) rotateY(-7deg) translateZ(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drill-section-flip-in-rc {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) rotateY(7deg) translateZ(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 719px) {
+  /* Narrow: the switch drops under QuestionJump at full width rather than
+     shrinking into two unreadable slots. It is never hidden — unlike the route
+     label's trailing span, which is decoration. */
+  .drill-observatory-section-toggle {
+    justify-content: center;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .drill-observatory-section-toggle-option {
+    flex: 1 1 0;
+  }
 }
 
 .drill-observatory-hero-grid {
@@ -1844,6 +1973,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   .drill-observatory-practice-tile:hover,
   .drill-observatory-today-rail:hover {
     transform: none;
+  }
+
+  /* The section flip becomes an instant swap: no rotation, no depth. The
+     global rule above already flattens durations; this removes the transform
+     so a reduced-motion student never sees the card turn at all. */
+  .drill-observatory-section-flip-face,
+  .drill-observatory-section-flip-face[data-section="rc"] {
+    animation: none;
   }
 }
 
