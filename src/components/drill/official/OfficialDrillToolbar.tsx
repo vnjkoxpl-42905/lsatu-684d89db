@@ -144,6 +144,7 @@ export default function OfficialDrillToolbar({
   highlightToolsVisible = true,
   fontScaleOptions = FONT_SCALES,
   a11yExtraSections,
+  sectionToggle,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
