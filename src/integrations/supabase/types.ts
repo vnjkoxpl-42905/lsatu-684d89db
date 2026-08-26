@@ -1144,6 +1144,7 @@ export type Database = {
         Row: {
           conversation_id: string
           created_at: string
+          home_cleared_at: string | null
           id: string
           last_read_at: string
           user_id: string
@@ -1151,6 +1152,7 @@ export type Database = {
         Insert: {
           conversation_id: string
           created_at?: string
+          home_cleared_at?: string | null
           id?: string
           last_read_at?: string
           user_id: string
@@ -1158,6 +1160,7 @@ export type Database = {
         Update: {
           conversation_id?: string
           created_at?: string
+          home_cleared_at?: string | null
           id?: string
           last_read_at?: string
           user_id?: string

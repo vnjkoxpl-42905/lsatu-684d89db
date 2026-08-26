@@ -7,6 +7,7 @@ export interface Participant {
   conversation_id: string;
   user_id: string;
   last_read_at: string;
+  home_cleared_at?: string | null;
   display_name?: string | null;
   is_admin?: boolean;
   last_seen_at?: string | null;
@@ -21,6 +22,12 @@ export interface Conversation {
   participants: Participant[];
   last_message?: { body: string; created_at: string; sender_id: string } | null;
   unread: boolean;
+  /**
+   * The viewer's own Home card is cleared through this instant. A message at or
+   * before it is not news on Home; a newer one is. Null means never cleared.
+   * Server state, so every device and every surface agrees without a sync step.
+   */
+  home_cleared_at: string | null;
   hasAttachments: boolean;
 }
 
@@ -65,7 +72,7 @@ export function useInbox() {
     // On any failure we set an error, KEEP the prior conversations, and stop.
     const { data: myParts, error: partsError } = await supabase
       .from('conversation_participants')
-      .select('conversation_id, last_read_at')
+      .select('conversation_id, last_read_at, home_cleared_at')
       .eq('user_id', user.id);
     if (partsError) {
       console.error('[inbox] load participants failed:', partsError);
@@ -84,6 +91,10 @@ export function useInbox() {
 
     const lastReadMap = new Map<string, string>(
       (myParts ?? []).map((p) => [p.conversation_id, p.last_read_at])
+    );
+
+    const homeClearedMap = new Map<string, string | null>(
+      (myParts ?? []).map((p) => [p.conversation_id, p.home_cleared_at ?? null])
     );
 
     const { data: convs, error: convsError } = await supabase
@@ -184,6 +195,7 @@ export function useInbox() {
         participants: parts,
         last_message: lastMsg,
         unread,
+        home_cleared_at: homeClearedMap.get(c.id) ?? null,
         hasAttachments: attachmentConvIds.has(c.id),
       };
     });
@@ -249,6 +261,39 @@ export function useInbox() {
     window.dispatchEvent(new CustomEvent('inbox:read'));
   }, [user]);
 
+  /**
+   * Clear a thread off the Classroom Home card, through the message the viewer
+   * was actually looking at.
+   *
+   * This is deliberately NOT mark-as-read and NOT a delete. The conversation,
+   * its messages and its unread state are all left alone, so the inbox still
+   * shows the thread as unread and every per-student surface keeps its dot.
+   * Clearing only says "not on my Home screen". Because the watermark is the
+   * message's own timestamp rather than now(), a message that arrives while
+   * the request is in flight is never swallowed - it is newer, so it comes
+   * back to Home as new, which is the whole point.
+   */
+  const clearConversationFromHome = useCallback(async (conversationId: string, throughIso: string) => {
+    if (!user) return;
+    const previous = conversations;
+    setConversations((prev) =>
+      prev.map((c) => (c.id === conversationId ? { ...c, home_cleared_at: throughIso } : c)),
+    );
+    const { error: clearError } = await supabase
+      .from('conversation_participants')
+      .update({ home_cleared_at: throughIso })
+      .eq('conversation_id', conversationId)
+      .eq('user_id', user.id);
+    if (clearError) {
+      // Put the card back rather than leave it hidden on a write that failed:
+      // a silently-swallowed clear is a message the viewer never sees again.
+      console.error('[inbox] clear-from-home failed:', clearError);
+      setConversations(previous);
+      throw clearError;
+    }
+    window.dispatchEvent(new CustomEvent('inbox:home-cleared'));
+  }, [user, conversations]);
+
   const unreadCount = useMemo(() => conversations.filter((c) => c.unread).length, [conversations]);
 
   return {
@@ -258,6 +303,7 @@ export function useInbox() {
     unreadCount,
     refresh: loadConversations,
     deleteConversation,
+    clearConversationFromHome,
     markConversationRead,
   };
 }

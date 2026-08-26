@@ -59,74 +59,8 @@ import {
 
 const RECAP_WINDOW_DAYS = 21;
 
-/** Where a viewer's cleared Home messages are remembered between visits. */
-const DISMISSED_KEY = "classroom-home:cleared-messages";
-
-/**
- * A dismissal is against a message, not a thread: clearing Joshua's last word
- * hides that word, and a newer one puts the thread back on the card.
- */
-function dismissKeyFor(conversationId: string, createdAt: string) {
-  return `${conversationId}:${createdAt}`;
-}
-
-function readDismissed(userId: string | undefined): string[] {
-  if (!userId || typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(`${DISMISSED_KEY}:${userId}`);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed.filter((entry) => typeof entry === "string") : [];
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Dismissals also live in the database so they survive a cache clear, a
- * sign-out, and a different device. One row per account in bootcamp_kv, whose
- * RLS already scopes every row to its owner (admins alone can delete), so no
- * account can ever see or lose another account's cleared list. localStorage
- * stays as the instant read cache; the cloud row is the source of truth that
- * gets merged in on load and rewritten on every change.
- */
-const CLOUD_DISMISSED_TABLE = "home_message_dismissals";
-
-async function fetchCloudDismissed(userId: string): Promise<string[]> {
-  try {
-    const { data, error } = await supabase
-      .from("bootcamp_kv")
-      .select("data")
-      .eq("user_id", userId)
-      .eq("table_name", CLOUD_DISMISSED_TABLE)
-      .eq("record_id", userId)
-      .maybeSingle();
-    if (error || !data) return [];
-    const keys = (data.data as { keys?: unknown } | null)?.keys;
-    return Array.isArray(keys)
-      ? keys.filter((key): key is string => typeof key === "string")
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-async function saveCloudDismissed(userId: string, keys: string[]): Promise<void> {
-  const { error } = await supabase.from("bootcamp_kv").upsert(
-    {
-      user_id: userId,
-      table_name: CLOUD_DISMISSED_TABLE,
-      record_id: userId,
-      data: { keys },
-    },
-    { onConflict: "user_id,table_name,record_id" },
-  );
-  if (error) {
-    console.warn("[useClassroomHome] dismissed sync failed:", error.message);
-  }
-}
-
-/** The candidate carries the dismissal key the view has no use for. */
-type MessageCandidate = HomeMessage & { dismissKey: string };
+/** The candidate carries the timestamp a clear is recorded against. */
+type MessageCandidate = HomeMessage & { lastMessageAt: string };
 
 /** Feed kinds map onto the model's kinds one-for-one. */
 const FEED_KIND: Record<AssignedTodoRow["kind"], HomeKind> = {
@@ -210,49 +144,7 @@ export function useClassroomHome(): {
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
-  const { conversations, unreadCount, markConversationRead } = useInbox();
-
-  // Cleared messages survive a reload, so the card does not re-serve something
-  // the viewer already swiped away. Keyed by user: two accounts on one browser
-  // do not share a cleared list.
-  const [dismissed, setDismissed] = React.useState<string[]>(() => readDismissed(user?.id));
-  React.useEffect(() => {
-    // Local cache first so the card never flickers, then merge the cloud copy:
-    // a dismissal made on another device (or before this device's cache was
-    // cleared) must hide the message here too.
-    setDismissed(readDismissed(user?.id));
-    if (!user?.id) return;
-    let cancelled = false;
-    void fetchCloudDismissed(user.id).then((cloud) => {
-      if (cancelled || cloud.length === 0) return;
-      setDismissed((prev) => {
-        const merged = [...prev];
-        let added = false;
-        for (const key of cloud) {
-          if (!merged.includes(key)) {
-            merged.push(key);
-            added = true;
-          }
-        }
-        return added ? merged : prev;
-      });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [user?.id]);
-  React.useEffect(() => {
-    if (!user?.id || typeof window === "undefined") return;
-    try {
-      window.localStorage.setItem(`${DISMISSED_KEY}:${user.id}`, JSON.stringify(dismissed));
-    } catch {
-      // A full or blocked store only costs the local copy of a dismissal.
-    }
-    // Persist the same list to the cloud row for this account. The write is
-    // idempotent (full-list upsert), so the extra call on first load is cheap
-    // and doubles as convergence when a merge pulled in another device's keys.
-    void saveCloudDismissed(user.id, dismissed);
-  }, [dismissed, user?.id]);
+  const { conversations, clearConversationFromHome } = useInbox();
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
   // than a second round trip. The feed flattens activities to a title and a
@@ -450,17 +342,32 @@ export function useClassroomHome(): {
 
   /* ── the coach's last word ─────────────────────────────────────────── */
 
-  // Threads the card is willing to show, newest first: someone else's last
-  // word, and not one the viewer has already cleared off this page. The card
-  // shows the head of the list, so clearing one uncovers the next rather than
-  // leaving an empty box.
+  // What the card is willing to show, newest first.
+  //
+  // Two server-side facts decide it, and nothing local does:
+  //
+  //   read     - thread.unread is false once last_read_at passes the message,
+  //              which the inbox writes the moment the thread is opened. Read
+  //              it anywhere and it leaves Home everywhere.
+  //   cleared  - home_cleared_at is the instant Home was cleared through. A
+  //              message at or before it is settled; a newer one is news.
+  //
+  // Both live on conversation_participants, so a phone and a laptop cannot
+  // disagree, and the migration's floor means the historic backlog starts out
+  // settled rather than queued up behind the card.
   const candidates = React.useMemo<MessageCandidate[]>(() => {
     if (!access.messages) return [];
     return conversations.flatMap((thread) => {
       const last = thread.last_message;
       if (!last) return [];
-      // The student's own last line is not news to them; only show the coach's.
+      // The viewer's own last line is not news to them.
       if (last.sender_id === user?.id) return [];
+      // Already read, in the inbox or anywhere else.
+      if (!thread.unread) return [];
+      // Already cleared off Home, this message or an older one.
+      if (thread.home_cleared_at && new Date(last.created_at) <= new Date(thread.home_cleared_at)) {
+        return [];
+      }
       const sender = thread.participants.find(
         (participant) => participant.user_id === last.sender_id,
       );
@@ -474,38 +381,30 @@ export function useClassroomHome(): {
           body: last.body,
           unread: thread.unread,
           route: "/inbox",
-          dismissKey: dismissKeyFor(thread.id, last.created_at),
+          lastMessageAt: last.created_at,
         },
       ];
     });
   }, [access.messages, conversations, user?.id]);
 
-  const messages = React.useMemo(
-    () => candidates.filter((candidate) => !dismissed.includes(candidate.dismissKey)),
-    [candidates, dismissed],
-  );
+  const messages = candidates;
   const message = messages[0] ?? null;
 
   /**
-   * Clear one thread off Home. This is not a delete: the conversation and its
-   * messages stay in the inbox. It marks the thread read (so the count here and
-   * the rail badge cannot disagree) and remembers the dismissal against that
-   * message's timestamp, so the thread comes back the moment a newer message
-   * lands in it.
+   * Clear one message off Home.
+   *
+   * Not a delete and not a mark-as-read: the conversation stays in the inbox,
+   * still unread, and every per-student surface keeps its dot. It records the
+   * clear against THAT message's timestamp, so the next thing this person
+   * sends is newer and comes back to Home as new.
    */
   const clearMessage = React.useCallback(
     async (conversationId: string) => {
       const target = candidates.find((candidate) => candidate.id === conversationId);
-      if (target) {
-        setDismissed((prev) =>
-          // Capped: the list only has to outlive the threads it names, and an
-          // unbounded one would grow in local storage forever.
-          prev.includes(target.dismissKey) ? prev : [...prev, target.dismissKey].slice(-100),
-        );
-      }
-      await markConversationRead(conversationId);
+      if (!target) return;
+      await clearConversationFromHome(conversationId, target.lastMessageAt);
     },
-    [candidates, markConversationRead],
+    [candidates, clearConversationFromHome],
   );
 
   /* ── next session ──────────────────────────────────────────────────── */
@@ -595,14 +494,10 @@ export function useClassroomHome(): {
   const dueTodayCount = workRows.filter((row) => row.dueToday || row.overdue).length;
   // Without chat access there is no inbox to send them to, so the count must
   // not appear in the subtitle either — it would name something unreachable.
-  // A cleared card must not keep counting against the badge beside it. The
-  // mark-read write does this on the server too; subtracting here keeps the
-  // number right in the frame before that round trip lands.
-  const clearedUnread = React.useMemo(
-    () => candidates.filter((candidate) => candidate.unread && dismissed.includes(candidate.dismissKey)).length,
-    [candidates, dismissed],
-  );
-  const unread = access.messages ? Math.max(0, unreadCount - clearedUnread) : 0;
+  // The badge sits above the card, so it counts what the card can actually
+  // show. Anything read or cleared is gone from both at the same instant -
+  // the two cannot disagree, because they read the same list.
+  const unread = access.messages ? messages.length : 0;
 
   const model: ClassroomHomeModel = {
     greeting: greetingFor(now),
