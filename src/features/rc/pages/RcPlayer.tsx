@@ -436,6 +436,12 @@ export default function RcPlayer() {
       >
         <OfficialDrillToolbar
           directions={RC_DIRECTIONS}
+          sectionToggle={{
+            active: 'rc',
+            onSelect: (section) => {
+              if (section === 'lr') navigate('/drill');
+            },
+          }}
           highlightMode={highlightMode}
           setHighlightMode={(mode) => setHighlightMode(mode as RcHighlightMode)}
           searchTerm={findQuery}
