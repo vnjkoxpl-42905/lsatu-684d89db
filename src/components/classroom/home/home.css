@@ -182,15 +182,6 @@
   width: 6px;
 }
 
-/* ── jump ───────────────────────────────────────────────────────────── */
-
-/* Between the masthead (40ms) and the hero (180ms), so the page still resolves
-   top to bottom. The row brings its own surface and tokens; all Home owns is
-   where it sits in the stack and when it arrives. */
-.classroom-root .classroom-home-jump {
-  animation: classroomHomeRise 600ms var(--home-ease) 120ms both;
-}
-
 /* ── hero ───────────────────────────────────────────────────────────── */
 
 .classroom-root .classroom-home-hero {

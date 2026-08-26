@@ -12,7 +12,6 @@
 
 import * as React from "react";
 import { ArrowRight, CalendarClock } from "lucide-react";
-import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
@@ -194,19 +193,6 @@ export function ClassroomHomeView({
           ) : null}
         </div>
       </header>
-
-      {/* ── jump ─────────────────────────────────────────────────────────
-          Under the masthead, above the hero: the first thing after the
-          greeting, because "open PT 90 S1 Q12" is the most common reason a
-          student comes to this page at all and it used to be a click and a
-          typed query away. It is gated the way the rail gates
-          /classroom/drill — without the flag there is nothing to open, so
-          there is no row either. */}
-      {model.access.drill ? (
-        <div className="classroom-home-jump">
-          <QuestionJump returnTo="/classroom" />
-        </div>
-      ) : null}
 
       {/* ── hero ─────────────────────────────────────────────────────── */}
       {hero ? (

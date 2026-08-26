@@ -284,7 +284,12 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByRole("button", { name: /clear actions/i })).toBeNull();
   });
 
-  it("puts the address row and its search on the page", () => {
+  // Home is the greeting and the day's state, not a search surface. The
+  // question picker rode onto this page in an Aug-22 checkpoint commit that
+  // swept up uncommitted work from parallel sessions; it was never a decision
+  // about Home. Finding a question belongs on Drill, which the rail already
+  // links. This test is the guard so it does not drift back.
+  it("keeps the question picker off Home", () => {
     render(
       <ClassroomHomeView
         model={FULL}
@@ -293,28 +298,27 @@ describe("ClassroomHomeView", () => {
         onSeeAllWork={vi.fn()}
       />,
     );
-    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
-    // The three addresses are the point of the row: they are visible controls,
-    // not a panel the student has to open first.
-    expect(screen.getByRole("combobox", { name: /test/i })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /section/i })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /question/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Find a question" })).toBeNull();
+    expect(screen.queryByRole("combobox", { name: /test/i })).toBeNull();
+    expect(screen.queryByRole("combobox", { name: /section/i })).toBeNull();
+    expect(screen.queryByRole("combobox", { name: /question/i })).toBeNull();
   });
 
-  it("shows no address row to a student without drill access", () => {
-    // Home is a shortcut into surfaces the rail already gates, so it gates
-    // itself the same way: no drill access means nothing to find, and a field
-    // that dead-ends on a locked route is worse than no field.
+  // The masthead runs straight into the hero, the way it did before the
+  // picker was inserted between them.
+  it("puts the hero directly under the greeting", () => {
     render(
       <ClassroomHomeView
-        model={{ ...FULL, access: { ...FULL.access, drill: false } }}
+        model={FULL}
         loading={false}
         onOpen={vi.fn()}
         onSeeAllWork={vi.fn()}
       />,
     );
-    expect(screen.queryByRole("button", { name: "Find a question" })).toBeNull();
-    expect(screen.queryByRole("combobox", { name: /test/i })).toBeNull();
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Pick up where you left off"),
+    ).toBeInTheDocument();
   });
 
 });
