@@ -3461,6 +3461,12 @@ function DrillContent() {
             setSearchTerm={setOfficialSearchTerm}
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
+            sectionToggle={{
+              active: 'lr',
+              onSelect: (section) => {
+                if (section === 'rc') navigate('/rc');
+              },
+            }}
             notesButtonVisible={usesSmartChrome}
             notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
