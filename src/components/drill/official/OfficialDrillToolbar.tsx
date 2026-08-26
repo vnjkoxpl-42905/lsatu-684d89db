@@ -115,6 +115,14 @@ interface Props {
    * line height and color scheme here so text settings stay in one control.
    */
   a11yExtraSections?: React.ReactNode;
+  /**
+   * LR ⇄ RC section switch shown at the far left of the toolbar. Lets a student
+   * jump straight from a Logical Reasoning drill into the RC passages and back.
+   */
+  sectionToggle?: {
+    active: "lr" | "rc";
+    onSelect: (section: "lr" | "rc") => void;
+  };
 }
 
 export default function OfficialDrillToolbar({
