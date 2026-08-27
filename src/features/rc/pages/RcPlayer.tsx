@@ -41,6 +41,7 @@ import {
   setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
+import { useDrillHubSectionNavigation } from '@/hooks/useDrillHubSectionNavigation';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
 import '../rc.css';
@@ -56,6 +57,7 @@ export default function RcPlayer() {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
+  const openDrillHubSection = useDrillHubSectionNavigation();
 
   const [config, setConfig] = React.useState<RcDrillConfig>(DEFAULT_CONFIG);
   const [passages, setPassages] = React.useState<RcPassage[] | null>(null);
@@ -439,7 +441,7 @@ export default function RcPlayer() {
           sectionToggle={{
             active: 'rc',
             onSelect: (section) => {
-              if (section === 'lr') navigate('/drill');
+              if (section === 'lr') openDrillHubSection('lr');
             },
           }}
           highlightMode={highlightMode}
