@@ -387,19 +387,34 @@ export default function RcPlayer() {
   const passageDone = passageComplete(state, item.passage.passageId);
   const passageReviewed = state.reviewedPassages.has(item.passage.passageId);
 
-  /** Pill colors for a pager entry that is not the current question. */
-  const pillState = (entry: RcPagerEntry): string => {
-    if (entry.kind !== 'question' || entry.questionId == null) return '';
+  /**
+   * A pager entry's verdict as a value. Derived once so the colour classes and
+   * the glyph/aria status below can never disagree about what a pill means.
+   */
+  const pillStatus = (entry: RcPagerEntry): 'correct' | 'incorrect' | 'answered' | 'unanswered' => {
+    if (entry.kind !== 'question' || entry.questionId == null) return 'unanswered';
     const target = state.items.find((i) => i.question.questionId === entry.questionId);
     const pick = state.answers.get(entry.questionId);
     const showResult = target ? isRevealed(state, config.reveal, target) : false;
     if (showResult && pick && target) {
-      return pick === target.question.correctAnswer
-        ? 'border-green-600 bg-green-50 text-green-700'
-        : 'border-red-500 bg-red-50 text-red-700';
+      return pick === target.question.correctAnswer ? 'correct' : 'incorrect';
     }
-    if (pick) return 'border-slate-400 bg-slate-100 text-slate-700';
-    return 'border-slate-300 bg-white text-slate-600 hover:bg-slate-100';
+    return pick ? 'answered' : 'unanswered';
+  };
+
+  /** Pill colors for a pager entry that is not the current question. */
+  const pillState = (entry: RcPagerEntry): string => {
+    if (entry.kind !== 'question' || entry.questionId == null) return '';
+    switch (pillStatus(entry)) {
+      case 'correct':
+        return 'border-green-600 bg-green-50 text-green-700';
+      case 'incorrect':
+        return 'border-red-500 bg-red-50 text-red-700';
+      case 'answered':
+        return 'border-slate-400 bg-slate-100 text-slate-700';
+      default:
+        return 'border-slate-300 bg-white text-slate-600 hover:bg-slate-100';
+    }
   };
 
   /** Label and handler for the footer's primary pill, per reveal mode. */
@@ -586,6 +601,7 @@ export default function RcPlayer() {
               entries={pagerEntries(state)}
               currentIndex={state.currentIndex}
               pillState={pillState}
+              pillStatus={pillStatus}
               isFlagged={(entry) =>
                 entry.kind === 'question' && entry.questionId != null
                   ? state.flagged.has(entry.questionId)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { RcPagerEntry } from '../lib/rcSession';
 
@@ -71,11 +71,26 @@ export function RcToolbarIcon({
 
 /* ------------------------------------------------------------------ pager */
 
+/** Spoken suffix for each pill verdict, so screen readers get the status too. */
+const PILL_STATUS_LABEL: Record<'correct' | 'incorrect' | 'answered' | 'unanswered', string> = {
+  correct: ', correct',
+  incorrect: ', incorrect',
+  answered: ', answered',
+  unanswered: '',
+};
+
 interface PagerProps {
   entries: RcPagerEntry[];
   currentIndex: number;
   /** Extra classes for a question pill: answered / correct / incorrect. */
   pillState: (entry: RcPagerEntry) => string;
+  /**
+   * The pill's verdict as a VALUE, not a colour. green-600 and red-500 are not
+   * separable under deuteranopia, so the pager cannot encode correctness with
+   * fill alone — it needs a glyph and a spoken status too.
+   * See docs/chart-palette.md §3.
+   */
+  pillStatus: (entry: RcPagerEntry) => 'correct' | 'incorrect' | 'answered' | 'unanswered';
   isFlagged: (entry: RcPagerEntry) => boolean;
   onNavigate: (index: number) => void;
   onPrev: () => void;
@@ -93,6 +108,7 @@ export function RcPager({
   entries,
   currentIndex,
   pillState,
+  pillStatus,
   isFlagged,
   onNavigate,
   onPrev,
@@ -119,7 +135,9 @@ export function RcPager({
               key={`q-${entry.questionId}`}
               type="button"
               onClick={() => onNavigate(entry.index)}
-              aria-label={`Question ${entry.label}`}
+              aria-label={`Question ${entry.label}${PILL_STATUS_LABEL[pillStatus(entry)]}${
+                isFlagged(entry) ? ', flagged' : ''
+              }`}
               aria-current={isCurrent ? 'true' : undefined}
               className={cn(
                 'relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[13px] font-medium tabular-nums transition-colors',
@@ -129,6 +147,25 @@ export function RcPager({
               )}
             >
               {entry.label}
+              {(() => {
+                const status = pillStatus(entry);
+                if (status !== 'correct' && status !== 'incorrect') return null;
+                return (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'absolute -bottom-0.5 -left-0.5 flex h-3 w-3 items-center justify-center rounded-full border border-white',
+                      status === 'correct' ? 'bg-green-600' : 'bg-red-500',
+                    )}
+                  >
+                    {status === 'correct' ? (
+                      <Check size={8} strokeWidth={4} className="text-white" />
+                    ) : (
+                      <X size={8} strokeWidth={4} className="text-white" />
+                    )}
+                  </span>
+                );
+              })()}
               {isFlagged(entry) && (
                 <span
                   aria-hidden
