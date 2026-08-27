@@ -79,11 +79,25 @@ describe('practice tests against the shipped bank', () => {
     }
   });
 
-  it('flags the short Reading Comprehension sections rather than hiding them', () => {
-    const short = tests.filter((t) => !t.rcFullLength);
-    // Both kinds exist in the current bank; if that ever stops being true the
-    // honesty copy in the Testing Centre is either dead or always on.
-    expect(short.length).toBeGreaterThan(0);
-    expect(short.length).toBeLessThan(tests.length);
+  it('gives every sitting a full-length Reading Comprehension section', () => {
+    // This used to assert the opposite: that SOME tests were short, because the
+    // bank could publish only the RC questions carrying a written explanation
+    // and 548 arrived with no answer choices at all. Those were recovered from
+    // the same LSAT Lab API the bundle came from, so every section now carries
+    // its real 26-28 questions and nothing is offered short.
+    //
+    // The `!rcFullLength` copy in the Testing Centre is therefore dormant, not
+    // wrong. It stays as the guard for a bank that regresses; this assertion is
+    // what fails first if one ever does.
+    expect(tests.filter((t) => !t.rcFullLength)).toHaveLength(0);
+  });
+
+  it('does not pretend every question carries a written explanation', () => {
+    // A quarter of RC questions have no authored walkthrough. They are fully
+    // answerable, and review shows the tutor fallback rather than an empty
+    // shell, which is the honest thing to show and the reason they are shipped.
+    const sections = realRcSections();
+    const explained = sections.reduce((n, s) => n + s.questionCount, 0);
+    expect(explained).toBeGreaterThan(2000);
   });
 });

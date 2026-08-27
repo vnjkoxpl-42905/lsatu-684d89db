@@ -80,7 +80,23 @@ gha-creds-*.json
 .agents/skills/lsatu-cc-handoff
 
 # RC source bundle (build-time only, not shipped)
-scripts/rc-source/
+# Excluded by contents, not as a directory: git cannot re-include a path inside
+# an excluded directory, and one file in here does need versioning.
+scripts/rc-source/*
+# The recovery pull is the exception. The rest of that directory is a 15MB
+# vendor bundle re-extractable from its zip; this file is not — it is the 548
+# RC questions pulled back from the LSAT Lab API, it is what makes every
+# practice test complete, and at ~600KB it is worth keeping in the repo.
+!scripts/rc-source/recovered/
+scripts/rc-source/recovered/*
+!scripts/rc-source/recovered/questions.ndjson
+# questions.csv is the other exception, and for the same reason: at ~100KB it is
+# the roster of what every RC section is SUPPOSED to contain, which is what lets
+# audit-practice-tests.mjs see a missing tail rather than only an interior gap.
+# Without it the audit silently degrades to a lower bound, so it ships.
+!scripts/rc-source/data/
+scripts/rc-source/data/*
+!scripts/rc-source/data/questions.csv
 
 # Python bytecode from the build scripts
 scripts/__pycache__/

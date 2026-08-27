@@ -10,7 +10,7 @@
  * The script re-reads its own output and asserts the expected totals. It exits
  * non-zero on any validation failure; it never warns and continues.
  */
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'csv-parse/sync';
@@ -20,7 +20,7 @@ const SRC = join(ROOT, 'scripts/rc-source/data');
 const OUT = join(ROOT, 'public/data/rc');
 const REPORT = join(ROOT, 'scripts/rc-source/conversion-report.txt');
 
-const EXPECTED = { passages: 320, questions: 2150, choices: 8010, explained: 1602 };
+const BASE_EXPECTED = { passages: 320, questions: 2150, choices: 8010, explained: 1602 };
 
 const fail = (msg) => {
   console.error(`\nFAIL: ${msg}\n`);
@@ -49,6 +49,35 @@ const frameworksCsv = readCsv('passage_frameworks.csv');
 const taxonomyCsv = readCsv('taxonomy.csv');
 const passageTexts = readNdjson('passage_texts.ndjson');
 const explanations = readNdjson('question_explanations.ndjson');
+
+/**
+ * The recovery overlay, when one has been pulled.
+ *
+ * The original extract fetched answer choices only for questions carrying a
+ * written explanation, so 548 real questions arrived with no choices at all and
+ * could not be published. scripts/rc-recovery-sink.mjs collects them from the
+ * same authenticated API; this merges them back in.
+ *
+ * They stay honestly unexplained: `hasWrittenExplanation` false, no explanation
+ * blocks, and the review layer's tutor fallback is what a student meets. What
+ * they gain is a prompt and five choices, which is all it takes to answer one.
+ * Absent the file this is a no-op and the build is byte-identical to before.
+ */
+const RECOVERED = join(ROOT, 'scripts/rc-source/recovered/questions.ndjson');
+const recovered = existsSync(RECOVERED)
+  ? readFileSync(RECOVERED, 'utf8')
+      .split('\n')
+      .filter((l) => l.trim())
+      .map((l) => JSON.parse(l))
+  : [];
+const recoveredById = new Map(recovered.map((r) => [Number(r.question_id), r]));
+
+// Recovering a question adds five choices and nothing else: it was always
+// counted in questions.csv, and it stays unexplained.
+const EXPECTED = {
+  ...BASE_EXPECTED,
+  choices: BASE_EXPECTED.choices + recovered.length * 5,
+};
 
 const srcCounts = {
   'passages.csv': passagesCsv.length,
@@ -104,6 +133,26 @@ for (const r of choicesCsv) {
   });
 }
 
+// A recovered question has no row in answer_choices.csv, so its five choices are
+// added rather than overwriting anything. Tag and explanation stay null, which
+// is the truth: LSAT Lab has no authored prose for these.
+for (const r of recovered) {
+  const id = Number(r.question_id);
+  if (choicesByQuestion.has(id)) continue; // never shadow the original extract
+  choicesByQuestion.set(
+    id,
+    (r.answers ?? []).map((a) => ({
+      letter: a.letter,
+      text: a.text,
+      tag: null,
+      percent: a.percent ?? null,
+      responseCount: a.response_count ?? null,
+      correct: !!a.correct,
+      explanation: null,
+    })),
+  );
+}
+
 const questionsByPassage = new Map();
 for (const r of questionsCsv) {
   const pid = Number(r.passage_id);
@@ -147,7 +196,10 @@ for (const p of passagesCsv) {
     // correct_answer is authored only for explained questions; for the rest the
     // credited letter comes from answer_choices.correct.
     const correctAnswer = nullable(expl?.correct_answer) ?? correctChoices[0].letter;
-    const prompt = nullable(expl?.prompt);
+    // The prompt normally rides on the explanation record, which a recovered
+    // question does not have; its questiontext comes from the API instead.
+    const rec = recoveredById.get(questionId);
+    const prompt = nullable(expl?.prompt) ?? nullable(rec?.questiontext) ?? null;
     if (prompt === null) nullPromptCount += 1;
 
     questions.push({
@@ -160,7 +212,7 @@ for (const p of passagesCsv) {
       correctAnswer,
       hasWrittenExplanation: hasWritten,
       explanationBlocks: expl?.explanation_blocks ?? null,
-      totalResponses: expl?.total_responses ?? null,
+      totalResponses: expl?.total_responses ?? rec?.total_responses ?? null,
       features: featuresByQuestion.get(questionId) ?? [],
       choices,
     });

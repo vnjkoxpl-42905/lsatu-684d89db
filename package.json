@@ -25,6 +25,8 @@
     "knowledge:generate": "node scripts/knowledge/generate-lr-jsonl.mjs",
     "stats:build": "node scripts/knowledge/build-question-stats.mjs",
     "stats:check": "node scripts/knowledge/build-question-stats.mjs --check",
+    "audit:practice-tests": "node scripts/audit-practice-tests.mjs",
+    "audit:practice-tests:gaps": "node scripts/audit-practice-tests.mjs --summary --report-only --json scripts/practice-test-gaps.generated.json",
     "verify:drills": "node scripts/verify-guided-drills.mjs",
     "verify:drills:fast": "node scripts/verify-guided-drills.mjs --fast",
     "finder:index": "node scripts/build-finder-address-index.mjs"
