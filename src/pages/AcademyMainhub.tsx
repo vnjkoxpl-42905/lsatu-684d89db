@@ -277,7 +277,24 @@ export default function AcademyMainhub({
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
      URL rather than from state is what makes a refresh, a Back press, and a
      shared link all land in the same place. */
-  const section = resolveDrillSection(searchParams.get(DRILL_SECTION_PARAM));
+  const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
+  const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+
+  /* A bare URL states no section, so it resolves from what this browser
+     remembers — and memory MOVES. Land on /classroom/drill in LR, throw the
+     switch to RC, then press Back: the bare entry re-resolves against the
+     now-RC memory and Back appears to do nothing.
+
+     So the first thing the hub does is write the resolved section into the
+     URL, replacing the entry rather than pushing one. Every history entry then
+     states its own section and Back is deterministic. Runs once: the guard is
+     false as soon as the param exists. */
+  React.useEffect(() => {
+    if (sectionParam != null && sectionParam.trim() !== "") return;
+    const next = new URLSearchParams(searchParams);
+    next.set(DRILL_SECTION_PARAM, section);
+    setSearchParams(next, { replace: true });
+  }, [section, sectionParam, searchParams, setSearchParams]);
 
   const stageParam = searchParams.get("stage");
   const stage =

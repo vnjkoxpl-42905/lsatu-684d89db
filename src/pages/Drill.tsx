@@ -2652,6 +2652,11 @@ function DrillContent() {
           brResults={brResults}
           classId={classId}
           onBack={() => navigate(drillReturnTo || '/classroom')}
+          backLabel={
+            drillReturnTo?.startsWith('/testing/test/')
+              ? 'Back to your practice test'
+              : 'Back to Home'
+          }
         />
       );
     }

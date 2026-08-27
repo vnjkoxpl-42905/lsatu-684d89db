@@ -22,6 +22,7 @@ const ROUTE_FOR: Record<RailItemId, string> = {
   notes: '/classroom',
   work: '/classroom',
   drill: 'drill',
+  testing: '/testing',
   bootcamps: '/bootcamps',
   activities: '/activities',
   journal: '/journal',

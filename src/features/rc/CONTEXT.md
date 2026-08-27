@@ -117,14 +117,19 @@ _Avoid_: note, markup, comment
 
 | Route | Page | What it is |
 |---|---|---|
-| `/rc` | `pages/RcHub.tsx` | Build a drill, hand-pick passages, resume or review past drills |
+| `/classroom/drill?section=rc` | `pages/AcademyMainhub.tsx` | **The RC hub.** A section of the drill hub, chosen by the LR/RC switch in its tools row. `&stage=type-drill` opens the builder (`components/RcHubSurface.tsx`), `&stage=full-section` the section selector |
+| `/rc` | `pages/RcRedirect.tsx` | Compatibility adapter, not a page. Redirects to the route above, preserving the query verbatim; a query carrying builder params also gets `stage=type-drill` so the builder is mounted to read them. Links to it are in the wild, so it stays |
 | `/rc/drill` | `pages/RcPlayer.tsx` | The player. `?sessionId=` resumes, `?passage=` starts an ad-hoc single-passage drill, `?review=1` opens read-only review |
 | `/rc/results/:sessionId` | `pages/RcResults.tsx` | Score, per-passage breakdown, question table, and the actions off a finished drill |
 | `/rc/search` | `pages/RcSearch.tsx` | Search passages and questions by keyword and every tag (topic, format, framework, family, type, feature, difficulty, PrepTest range). Results open the passage in the player |
 
 Assignment is a link, not a table: `/rc/drill?passage=<id>` for one passage, or
 `/rc?passages=1188,1201&reveal=per_passage&timing=unlimited` to pre-fill the
-builder. A **Section** is the same contract with its four passage ids in
+builder. **The `/rc?…` form is still the contract** — it now arrives through the
+adapter rather than at a page of its own, and every param below survives that
+hop. A link that also carries `start=1` starts the drill itself and replaces its
+own history entry, so Back from the player cannot re-fire it into a second
+session. A **Section** is the same contract with its four passage ids in
 published order, `reveal=end_of_set`, and `timing=standard`
 (`RC_STANDARD_SECONDS_PER_PASSAGE` × 4 = 2100s, exactly 35:00 — the section
 clock needs no separate timing mode). `secondsPerPassage=<n>` overrides the

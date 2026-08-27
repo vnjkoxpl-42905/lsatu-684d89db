@@ -25,6 +25,12 @@ interface LRSectionResultsProps {
   brResults?: BlindReviewResult[];
   classId: string;
   onBack: () => void;
+  /**
+   * What the back control says. A section sat inside a practice test is not
+   * over when this screen appears, so "Back to Home" would be a lie about
+   * where that button goes.
+   */
+  backLabel?: string;
 }
 
 interface QuestionStat {
@@ -52,7 +58,7 @@ interface FocusArea {
   avgTimeMs: number;
 }
 
-export function LRSectionResults({ session, brResults, classId, onBack }: LRSectionResultsProps) {
+export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home' }: LRSectionResultsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
@@ -270,7 +276,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           <div className="flex items-center justify-between mb-6">
             <Button variant="ghost" size="sm" onClick={onBack}>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
+              {backLabel}
             </Button>
             <h1 className="text-2xl font-bold">Section Results</h1>
             <div className="w-24" />

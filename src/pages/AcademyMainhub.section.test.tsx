@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, useLocation } from "react-router-dom";
+import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
 
@@ -153,6 +153,16 @@ function UrlProbe() {
   return <div data-testid="url">{search}</div>;
 }
 
+/** Drives the router's own history — MemoryRouter does not use window.history. */
+function BackButton() {
+  const navigate = useNavigate();
+  return (
+    <button type="button" onClick={() => navigate(-1)}>
+      go back
+    </button>
+  );
+}
+
 function renderHub(entry: string) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
@@ -163,6 +173,7 @@ function renderHub(entry: string) {
       >
         <AcademyMainhub />
         <UrlProbe />
+        <BackButton />
       </MemoryRouter>
     </QueryClientProvider>,
   );
@@ -243,6 +254,20 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(rcSwitch());
     expect(confirmSpy).not.toHaveBeenCalled();
     confirmSpy.mockRestore();
+  });
+
+  it("Back after a toggle returns to the section you came from", () => {
+    // The bare entry resolves from memory. If it is left bare, memory has
+    // MOVED by the time Back returns to it, so Back re-resolves to the section
+    // the student just switched TO and the switch looks stuck.
+    renderHub("/classroom/drill");
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+
+    fireEvent.click(rcSwitch());
+    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "go back" }));
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
   });
 
   it("keeps Today mounted across the toggle — it is status, not a section", () => {

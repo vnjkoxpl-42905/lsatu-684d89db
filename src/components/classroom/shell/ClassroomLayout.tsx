@@ -258,6 +258,11 @@ function ClassroomSidebar({
           onClick: () => go("/classroom/drill"),
           onPrefetch: preloadDrillHub,
         };
+      case "testing":
+        return {
+          active: location.pathname.startsWith("/testing"),
+          onClick: () => go("/testing"),
+        };
       case "bootcamps":
         return { active: false, onClick: () => go("/bootcamps") };
       case "activities":
