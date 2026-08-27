@@ -121,3 +121,24 @@ What the argument actually improved:
 - A duplicate RC session on every Back press after any autostart link, which would have hit Smart RC, the RC full section, and the practice test's RC leg alike.
 - A deep link that opened the wrong section, and a second one that started the wrong passages, both from state that outlived the URL that set it.
 - A truthful failure state where a Supabase error had been rendering as "No reading drills yet."
+
+
+## Round 4 — Claude, solo (Codex out of quota)
+
+Codex hit its usage limit, so this round is a self-review. Two things it never got to, one of them a real defect.
+
+**1. Back was stuck after a toggle — FIXED, and neither the browser pass nor Codex caught it.**
+
+A bare `/classroom/drill` states no section, so it resolves from what the browser remembers — and memory MOVES when the switch is thrown. Land in LR, switch to RC, press Back: the bare entry re-resolves against the now-RC memory and Back appears to do nothing. Every history entry has to state its own section for Back to be deterministic.
+
+The hub now writes the resolved section into the URL on arrival, **replacing** the entry rather than pushing one, and only while the param is absent. Caught by writing the failing test first (`AcademyMainhub.section.test.tsx`, "Back after a toggle returns to the section you came from"), which went red on the old code and green on the new. 14 tests in that file now.
+
+This is the class of bug a screenshot cannot show: the page looked right at every single URL I visited. It only appears in the *relationship* between two history entries.
+
+**2. `src/features/rc/CONTEXT.md` updated.** The RC glossary's Routes table still called `/rc` the hub. It now names `/classroom/drill?section=rc` as the hub and `/rc` as the adapter, and the assignment-link section says the `/rc?…` contract survives the hop and that a `start=1` link replaces its own history entry. The routes changed, and that file is the thing that says what the routes are.
+
+**Also swept:** every `/rc?…` producer in the repo — `rcSectionHref` (RC full section) and `rcLegHref` (the practice test's RC leg) are the only two, both covered by the adapter, both carrying `start=1` and therefore both fixed by the `replace` change. Nothing in `scripts/`, `supabase/`, or the docs builds one.
+
+**Tree hazard, not a finding:** `src/lib/analyticsBreakdowns.ts` does not typecheck right now — the parallel analytics workstream is mid-refactor and has removed imports it still calls. Unrelated to this feature and not mine to fix, but `safe-push.sh` typechecks the working tree, so a push while it is broken would be gated on somebody else's half-finished edit. Merge-conflict markers also appeared and vanished in `RcPlayer.tsx` between two consecutive commands. **Do not push until that workstream settles.**
+
+Gates after this round: my files typecheck clean (only `analyticsBreakdowns.ts` errors), 210 test files / 2,014 tests pass.
