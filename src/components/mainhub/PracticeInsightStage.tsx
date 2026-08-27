@@ -6,7 +6,6 @@ import {
   BookOpen,
   Grid3x3,
   Layers,
-  ScrollText,
   ArrowLeft,
   ArrowRight,
   Pause,
@@ -23,12 +22,6 @@ interface PracticeInsightStageProps {
   onOpenAnalytics: (tab?: string) => void;
   /** Opens an embedded drill-launcher stage (was the /practice hub). */
   onOpenLauncher: (kind: "full-section" | "type-drill") => void;
-  /**
-   * Throws the hub's LR/RC switch to RC. The Reading Comprehension tile is a
-   * second affordance for the switch in the tools row, never a second
-   * destination — RC has one door now.
-   */
-  onOpenRcSection: () => void;
   canOpenAnalytics: boolean;
   canOpenJournal: boolean;
 }
@@ -41,7 +34,6 @@ interface PracticeInsightStageProps {
 export default function PracticeInsightStage({
   onOpenAnalytics,
   onOpenLauncher,
-  onOpenRcSection,
   canOpenAnalytics,
   canOpenJournal,
 }: PracticeInsightStageProps) {
@@ -95,10 +87,8 @@ export default function PracticeInsightStage({
         <p className="drill-observatory-label drill-observatory-ink-42 mb-4">
           Practice tools
         </p>
-        {/* The Reading Comprehension tile throws the section switch rather
-            than opening a builder of its own. It used to turn the tool row over
-            onto a three-choice quick build, which was a second, smaller RC
-            builder that could disagree with the real one. */}
+        {/* Section choice belongs to the LR/RC switch above. Practice tools
+            only describe what the student can do inside the active section. */}
         <div className="drill-observatory-practice-tools">
           <PracticeTile
             icon={Layers}
@@ -111,12 +101,6 @@ export default function PracticeInsightStage({
             title="Build a Set"
             description="Assemble a targeted question set."
             onClick={() => onOpenLauncher("type-drill")}
-          />
-          <PracticeTile
-            icon={ScrollText}
-            title="Reading Comprehension"
-            description="Drill full passages the way they appear on the test."
-            onClick={onOpenRcSection}
           />
         </div>
         <div className="mt-[18px] flex flex-wrap gap-2">

@@ -245,11 +245,25 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     confirmSpy.mockRestore();
   });
 
-  it("keeps Today mounted across the flip — it is status, not a section", () => {
+  it("keeps Today mounted across the toggle — it is status, not a section", () => {
     renderHub("/classroom/drill");
     const before = screen.getByRole("region", { name: "Today" });
     fireEvent.click(rcSwitch());
     expect(screen.getByRole("region", { name: "Today" })).toBe(before);
+  });
+
+  it("switches LR and RC in place without remounting or animating the surfaces", () => {
+    renderHub("/classroom/drill?section=lr");
+    const hero = screen.getByText("Build the drill you need.").closest(".drill-observatory-hero");
+    const practiceBay = screen.getByRole("region", { name: "Practice and insight workspace" });
+
+    expect(hero).not.toHaveClass("drill-observatory-section-flip-face");
+    expect(practiceBay).not.toHaveClass("drill-observatory-section-flip-face");
+
+    fireEvent.click(rcSwitch());
+
+    expect(screen.getByText("Build the reading set you need.").closest(".drill-observatory-hero")).toBe(hero);
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBe(practiceBay);
   });
 
   it("opens the RC builder from the console, and Cancel returns to the RC section", () => {
@@ -283,9 +297,15 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("lr");
   });
 
-  it("still reaches RC from the Reading Comprehension tile, without a builder of its own", () => {
+  it("keeps section choice in the LR/RC switch instead of repeating it as a practice tile", () => {
     renderHub("/classroom/drill");
-    fireEvent.click(screen.getByText("Reading Comprehension"));
+    expect(
+      screen.queryByRole("button", {
+        name: "Reading Comprehension Drill full passages the way they appear on the test.",
+      }),
+    ).toBeNull();
+
+    fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
     expect(screen.getByText("Reading tools")).toBeInTheDocument();
   });

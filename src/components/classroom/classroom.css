@@ -1162,54 +1162,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   z-index: 0;
 }
 
-/* ── The band flip ───────────────────────────────────────────────────────── */
-
-/* Hero and practice bay turn as one card when the switch is thrown. Shallow on
-   purpose (~7deg): enough depth to read as a flip, not enough to throw text
-   off-axis mid-turn. LR turns one way and RC the other, so the direction says
-   which way you moved.
-
-   Perspective rides inside the transform rather than on a parent, because the
-   two faces are at different depths of the tree — the hero is a child of the
-   canvas, the practice bay a grandchild inside the deck grid — and a
-   `perspective` property only reaches direct children. */
-.drill-observatory-section-flip-face {
-  /* No fill mode, deliberately. With `both` the face holds the keyframe's
-     opacity: 0 until the animation runs — and a tab whose rendering is
-     suspended (backgrounded, or a screenshot taken before first paint) never
-     runs it, so the whole section renders invisible. Without a fill the
-     element's own styles apply outside the animation's active period, and the
-     worst case is one unanimated frame. */
-  animation: drill-section-flip-in 320ms cubic-bezier(0.22, 0.68, 0.24, 1);
-  transform-origin: 50% 50%;
-}
-
-.drill-observatory-section-flip-face[data-section="rc"] {
-  animation-name: drill-section-flip-in-rc;
-}
-
-@keyframes drill-section-flip-in {
-  from {
-    opacity: 0;
-    transform: perspective(1600px) rotateY(-7deg) translateZ(-18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes drill-section-flip-in-rc {
-  from {
-    opacity: 0;
-    transform: perspective(1600px) rotateY(7deg) translateZ(-18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @media (max-width: 719px) {
   /* Narrow: the switch drops under QuestionJump at full width rather than
      shrinking into two unreadable slots. It is never hidden — unlike the route
@@ -1975,13 +1927,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     transform: none;
   }
 
-  /* The section flip becomes an instant swap: no rotation, no depth. The
-     global rule above already flattens durations; this removes the transform
-     so a reduced-motion student never sees the card turn at all. */
-  .drill-observatory-section-flip-face,
-  .drill-observatory-section-flip-face[data-section="rc"] {
-    animation: none;
-  }
 }
 
 .classroom-root .classroom-section-trigger {

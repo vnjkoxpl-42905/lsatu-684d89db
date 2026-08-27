@@ -104,7 +104,7 @@ function MainhubHero({
        neither of which belongs in a className. */
     <Card
       data-section={section}
-      className="drill-observatory-hero drill-observatory-section-flip-face w-full border-0 bg-transparent p-0 shadow-none"
+      className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       {/* Says which section you are in. Decoration — the switch that CHANGES
           it is the one in the tools row, which is a real control. */}
@@ -398,11 +398,10 @@ export default function AcademyMainhub({
           <SectionToggle section={section} onChange={changeSection} />
         </div>
 
-        {/* Keyed on the section so the flip animation replays on every throw of
-            the switch. The hero is presentational now (see useGreetingName), so
-            remounting it costs no query. */}
+        {/* The same hero stays mounted across section changes. Swapping its
+            content in place prevents the LR/RC control from producing a flash
+            or an intermediate empty frame. */}
         <MainhubHero
-          key={section}
           section={section}
           firstName={firstName}
           drillReturnTo={drillReturnTo}
@@ -446,15 +445,12 @@ export default function AcademyMainhub({
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
           >
-            {/* The bay flips with the hero; Today does not. That contrast is
-                what makes the flip read as "this half changed" rather than as
-                a page reload — and TodayFocusPanel is live status that belongs
-                to the student, not to a section. It is a sibling here, so the
-                key below cannot remount it. */}
+            {/* The bay itself stays mounted and only its contents change. This
+                makes LR/RC a true in-place toggle, while Today remains the
+                unchanged live-status sibling beside it. */}
             <section
-              key={section}
               data-section={section}
-              className="drill-observatory-practice-bay drill-observatory-section-flip-face"
+              className="drill-observatory-practice-bay"
               aria-label={
                 stage === "default" ? "Practice and insight workspace" : "Drill launcher"
               }
@@ -478,7 +474,6 @@ export default function AcademyMainhub({
                 <PracticeInsightStage
                   onOpenAnalytics={openAnalytics}
                   onOpenLauncher={openLauncher}
-                  onOpenRcSection={() => changeSection("rc")}
                   canOpenAnalytics={canOpenAnalytics}
                   canOpenJournal={canOpenJournal}
                 />
