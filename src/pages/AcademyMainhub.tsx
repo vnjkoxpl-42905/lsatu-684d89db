@@ -19,6 +19,7 @@ import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
+import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
@@ -122,17 +123,23 @@ function MainhubHero({
                 "Welcome back"
               )}
             </h2>
+            {/* Says what the button below actually does. It used to open
+                "Pick up where you left off" on both sections, and neither CTA
+                resumes anything — resuming lives in Today, one card over. */}
             <p className="drill-observatory-ink-62 text-sm leading-[1.55]">
               {section === "rc"
-                ? "Pick up where you left off, or build a set of passages around exactly what you want to read."
-                : "Pick up where you left off, or build a drill around exactly what you want to practice."}
+                ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around exactly what you want to read."
+                : "Start an adaptive set that follows your weakest question types, or build a drill around exactly what you want to practice."}
             </p>
           </div>
           <Button
             onClick={section === "rc" ? onStartSmartRc : startSmartDrill}
             className="drill-observatory-cta mt-5 w-fit"
           >
-            {section === "rc" ? "Start Smart Reading Drill" : "Start Smart Drill"}
+            {/* RC's "smart" is one untimed passage, not the adaptive engine
+                LR's button opens. Same word, two promises — so it says what it
+                starts. */}
+            {section === "rc" ? "Start One Passage" : "Start Smart Drill"}
             <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
           </Button>
         </div>
@@ -401,10 +408,21 @@ export default function AcademyMainhub({
             both mounts. No access check here: the whole route is behind
             has_drill_access. */}
         <div className="drill-observatory-tools">
-          <QuestionJump returnTo={drillReturnTo} tone="dark" bank={section} />
-          {/* The section switch. Top right of the same band, opposite the jump
-              box — one control, one position, on both mounts of this page. */}
-          <SectionToggle section={section} onChange={changeSection} />
+          <QuestionJump
+            returnTo={drillReturnTo}
+            tone="dark"
+            bank={section}
+            withSearch={false}
+          />
+          {/* Search and the section switch are one cluster hard right, on the
+              same line. The search trigger used to ride at the end of the
+              address row, which parked it directly above the LR/RC switch and
+              read as a stack of two unrelated controls. Side by side they read
+              as what they are: the two utilities of this band. */}
+          <div className="drill-observatory-tools-aside">
+            <QuestionFinder returnTo={drillReturnTo} tone="dark" bank={section} />
+            <SectionToggle section={section} onChange={changeSection} />
+          </div>
         </div>
 
         {/* The same hero stays mounted across section changes. Swapping its
@@ -424,7 +442,11 @@ export default function AcademyMainhub({
             aria-label="Analytics workspace"
             data-tour="mainhub-analytics"
           >
-            <AnalyticsStage tab={analyticsTab} onTabChange={setAnalyticsTab} />
+            <AnalyticsStage
+              tab={analyticsTab}
+              section={section}
+              onTabChange={setAnalyticsTab}
+            />
           </section>
         ) : (
           /* A launcher swaps out ONLY the practice bay. Today (assignments,
@@ -474,6 +496,7 @@ export default function AcademyMainhub({
                 />
               ) : (
                 <PracticeInsightStage
+                  section={section}
                   onOpenAnalytics={openAnalytics}
                   onOpenLauncher={openLauncher}
                   canOpenAnalytics={canOpenAnalytics}

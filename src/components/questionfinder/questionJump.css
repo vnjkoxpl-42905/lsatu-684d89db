@@ -41,6 +41,12 @@
   padding: 12px 14px;
 }
 
+/* Without the search trigger the row is three addresses and nothing else, so
+   the reserved `auto` column would leave a dead gutter on the right. */
+.qj-row[data-search="false"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .qj-field {
   min-width: 0;
 }

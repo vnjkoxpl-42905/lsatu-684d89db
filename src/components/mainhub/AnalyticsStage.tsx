@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
 import ImportedMetricsPanel from "@/components/analytics/ImportedMetricsPanel";
 import type { DimensionStat, PriorityRow } from "@/lib/mainhubAnalytics";
+import { DRILL_SECTION_PARAM, type DrillSection } from "@/lib/drillSection";
 
 const ACTIVE_TABS = ["overview", "drills", "priorities"] as const;
 const LOCKED_TABS = ["sections", "preptests", "questions"] as const;
@@ -24,6 +25,13 @@ const LOCKED_TABS = ["sections", "preptests", "questions"] as const;
 interface AnalyticsStageProps {
   tab: string;
   onTabChange: (tab: string) => void;
+  /**
+   * Which section the hub was on when this opened. Everything below is built
+   * from LR attempts — RC keeps its own bank and its analytics are not built
+   * yet — so from RC the workspace says so rather than letting a student read
+   * LR numbers as their reading performance.
+   */
+  section?: DrillSection;
 }
 
 function pct(v: number | null): string {
@@ -39,8 +47,16 @@ function secs(ms: number | null): string {
  * value comes from the signed-in student's real attempts; missing data renders
  * a truthful empty/low-sample state instead of a fake chart.
  */
-export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps) {
+export default function AnalyticsStage({
+  tab,
+  onTabChange,
+  section = "lr",
+}: AnalyticsStageProps) {
   const navigate = useNavigate();
+  /* Every link out of here carries the section back with it. Without it a
+     student who opened analytics from RC returned to LR. */
+  const backTo = (stage: string) =>
+    `/classroom/drill?${DRILL_SECTION_PARAM}=${section}&stage=${stage}`;
   const { analytics, streak, loading, error, refetch } = useStudentAnalytics();
   const activeTab = (ACTIVE_TABS as readonly string[]).includes(tab) ? tab : "overview";
 
@@ -80,7 +96,7 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
         </p>
         <button
           type="button"
-          onClick={() => navigate("/classroom/drill?stage=full-section")}
+          onClick={() => navigate(backTo("full-section"))}
           className="mt-5 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800"
         >
           Start practicing
@@ -98,6 +114,12 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
           <p className="text-xs text-slate-500">
             {analytics.totalQuestions} questions · {analytics.totalAttempts} attempts · first-attempt diagnostics
           </p>
+          {section === "rc" && (
+            <p className="mt-1 text-xs font-medium text-slate-600">
+              These numbers cover Logical Reasoning. Reading Comprehension
+              analytics are not built yet.
+            </p>
+          )}
         </div>
         <button
           type="button"
@@ -110,9 +132,10 @@ export default function AnalyticsStage({ tab, onTabChange }: AnalyticsStageProps
       </div>
 
       {/* Top priorities */}
-      <TopPriorities priorities={analytics.priorities} onDrill={() =>
-        navigate("/classroom/drill?stage=type-drill")
-      } />
+      <TopPriorities
+        priorities={analytics.priorities}
+        onDrill={() => navigate(backTo("type-drill"))}
+      />
 
       <Tabs value={activeTab} onValueChange={onTabChange}>
         <TabsList className="flex flex-wrap gap-1 bg-slate-100">

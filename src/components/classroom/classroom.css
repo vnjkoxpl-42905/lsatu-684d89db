@@ -1089,6 +1089,26 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   margin-bottom: -4px;
 }
 
+/* The address row takes the space that is left; the search trigger and the
+   switch keep their intrinsic width and stay together on one line, wrapping as
+   a pair rather than one above the other. */
+.drill-observatory-tools > .qj {
+  flex: 1 1 320px;
+  width: auto;
+}
+
+.drill-observatory-tools-aside {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.drill-observatory-tools-aside .drill-observatory-section-toggle {
+  margin-left: 0;
+}
+
 /* ── Section switch (LR | RC) ────────────────────────────────────────────── */
 
 /* Note the surface it sits on: the observatory is dark CARDS on a light cream

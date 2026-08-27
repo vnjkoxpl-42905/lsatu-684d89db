@@ -200,20 +200,24 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("opens on RC when the link says so", () => {
     renderHub("/classroom/drill?section=rc");
     expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start Smart Reading Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start One Passage" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
     expect(screen.getByText("Practice tools")).toBeInTheDocument();
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
   });
 
-  it("uses the same two practice tools in RC as it does in LR", () => {
+  it("uses the same two practice tools in RC as it does in LR, named for the RC bank", () => {
     renderHub("/classroom/drill?section=rc");
     expect(
-      screen.getByRole("button", { name: "Full Section Start a timed official section." }),
+      screen.getByRole("button", {
+        name: "Full Section Sit one real RC section, four passages, under the clock.",
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Build a Set Assemble a targeted question set." }),
+      screen.getByRole("button", {
+        name: "Build a Set Choose passages by topic, format, and difficulty.",
+      }),
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
     expect(screen.getByText("Insight preview")).toBeInTheDocument();
@@ -317,9 +321,9 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("rc");
   });
 
-  it("Start Smart Reading Drill asks the builder for one untimed passage and starts it", () => {
+  it("Start One Passage asks the builder for one untimed passage and starts it", () => {
     renderHub("/classroom/drill?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Start Smart Reading Drill" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start One Passage" }));
     const q = url();
     expect(q.get("section")).toBe("rc");
     expect(q.get("stage")).toBe("type-drill");

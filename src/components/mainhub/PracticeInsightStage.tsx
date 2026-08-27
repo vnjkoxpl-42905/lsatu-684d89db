@@ -14,10 +14,17 @@ import {
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
 import { buildInsightSlides } from "@/components/mainhub/insightSlides";
+import type { DrillSection } from "@/lib/drillSection";
 
 const ROTATE_MS = 7000;
 
 interface PracticeInsightStageProps {
+  /**
+   * Which bank the hub is on. The bay is shared by both sections now, so the
+   * two tiles name the bank they open: "a targeted question set" was
+   * describing a passage builder on the RC side.
+   */
+  section?: DrillSection;
   /** Opens the embedded analytics stage at the given tab. */
   onOpenAnalytics: (tab?: string) => void;
   /** Opens an embedded drill-launcher stage (was the /practice hub). */
@@ -32,6 +39,7 @@ interface PracticeInsightStageProps {
  * carousel. Dark/glass to sit as a sibling to the hero and Today panel.
  */
 export default function PracticeInsightStage({
+  section = "lr",
   onOpenAnalytics,
   onOpenLauncher,
   canOpenAnalytics,
@@ -93,13 +101,21 @@ export default function PracticeInsightStage({
           <PracticeTile
             icon={Layers}
             title="Full Section"
-            description="Start a timed official section."
+            description={
+              section === "rc"
+                ? "Sit one real RC section, four passages, under the clock."
+                : "Sit one real LR section under the clock."
+            }
             onClick={() => onOpenLauncher("full-section")}
           />
           <PracticeTile
             icon={Grid3x3}
             title="Build a Set"
-            description="Assemble a targeted question set."
+            description={
+              section === "rc"
+                ? "Choose passages by topic, format, and difficulty."
+                : "Choose questions by type, reasoning, and level."
+            }
             onClick={() => onOpenLauncher("type-drill")}
           />
         </div>
@@ -122,6 +138,9 @@ export default function PracticeInsightStage({
         <div className="mb-3.5 flex items-center justify-between">
           <p className="drill-observatory-label drill-observatory-ink-42">
             Insight preview
+            {section === "rc" && (
+              <span className="drill-observatory-ink-38"> · from your LR attempts</span>
+            )}
           </p>
           <div className="flex items-center gap-1">
             <div className="flex items-center gap-1.5" role="tablist" aria-label="Insight slides">

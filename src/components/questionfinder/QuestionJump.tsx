@@ -18,6 +18,14 @@ export interface QuestionJumpProps {
   tone?: "light" | "dark";
   /** Active side of the hub switch. */
   bank?: QuestionFinderBank;
+  /**
+   * Whether the text-search trigger rides at the end of the address row.
+   *
+   * The drill hub hosts it in the tools row instead, beside the LR/RC switch,
+   * so the two utility controls sit on one line rather than stacked. Everywhere
+   * else the trigger stays where it was born: at the end of this row.
+   */
+  withSearch?: boolean;
 }
 
 /**
@@ -36,7 +44,12 @@ export interface QuestionJumpProps {
  * The third select always lists official question numbers. LR opens the chosen
  * question in the drill runner; RC opens its passage at the chosen question.
  */
-export default function QuestionJump({ returnTo, tone = "light", bank }: QuestionJumpProps) {
+export default function QuestionJump({
+  returnTo,
+  tone = "light",
+  bank,
+  withSearch = true,
+}: QuestionJumpProps) {
   const navigate = useNavigate();
   const { tests, loading, failed } = useFinderAddressIndex();
 
@@ -107,7 +120,7 @@ export default function QuestionJump({ returnTo, tone = "light", bank }: Questio
 
   return (
     <div className="qj" data-tone={tone}>
-      <div className="qj-row" role="group" aria-label="Jump to a question by PrepTest, section, and number">
+      <div className="qj-row" data-search={withSearch ? "true" : "false"} role="group" aria-label="Jump to a question by PrepTest, section, and number">
         <label className="qf-field qj-field">
           <span className="qf-field-label">Test</span>
           <select
@@ -179,9 +192,11 @@ export default function QuestionJump({ returnTo, tone = "light", bank }: Questio
           </select>
         </label>
 
-        <div className="qj-search">
-          <QuestionFinder returnTo={returnTo} tone={tone} bank={bank} />
-        </div>
+        {withSearch ? (
+          <div className="qj-search">
+            <QuestionFinder returnTo={returnTo} tone={tone} bank={bank} />
+          </div>
+        ) : null}
       </div>
     </div>
   );
