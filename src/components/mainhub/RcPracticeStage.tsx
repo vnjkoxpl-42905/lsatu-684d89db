@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { BarChart3, BookOpen, Layers, Search, ScrollText } from "lucide-react";
+import { BarChart3, BookOpen, Grid3x3, Layers } from "lucide-react";
 import { PracticeTile, SecondaryLink } from "@/components/mainhub/PracticeInsightStage";
 import { RcSessionHistory } from "@/features/rc/components/RcSessionHistory";
 import "@/features/rc/rc.css";
@@ -38,26 +38,20 @@ export default function RcPracticeStage({
     <div className="drill-observatory-practice relative flex flex-col overflow-hidden">
       <div>
         <p className="drill-observatory-label drill-observatory-ink-42 mb-4">
-          Reading tools
+          Practice tools
         </p>
         <div className="drill-observatory-practice-tools">
           <PracticeTile
             icon={Layers}
             title="Full Section"
-            description="Sit the four passages of one real section."
+            description="Start a timed official section."
             onClick={() => onOpenLauncher("full-section")}
           />
           <PracticeTile
-            icon={ScrollText}
-            title="Build a reading drill"
-            description="Choose passages by topic, format, and difficulty."
+            icon={Grid3x3}
+            title="Build a Set"
+            description="Assemble a targeted question set."
             onClick={() => onOpenLauncher("type-drill")}
-          />
-          <PracticeTile
-            icon={Search}
-            title="Search passages"
-            description="Find a passage or a question by what it says."
-            onClick={() => navigate("/rc/search")}
           />
         </div>
         <div className="mt-[18px] flex flex-wrap gap-2">

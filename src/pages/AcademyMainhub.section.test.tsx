@@ -203,8 +203,19 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("button", { name: "Start Smart Reading Drill" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("uses the same two practice tools in RC as it does in LR", () => {
+    renderHub("/classroom/drill?section=rc");
+    expect(
+      screen.getByRole("button", { name: "Full Section Start a timed official section." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Build a Set Assemble a targeted question set." }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
   });
 
   it("treats an unrecognised section as LR rather than as an error", () => {
@@ -217,7 +228,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     renderHub("/classroom/drill");
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
     fireEvent.click(lrSwitch());
     expect(url().get("section")).toBe("lr");
     expect(screen.getByText("Practice tools")).toBeInTheDocument();
@@ -229,7 +240,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     first.unmount();
 
     renderHub("/classroom/drill");
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
   });
 
   it("lets an explicit ?section=lr outrank the remembered RC", () => {
@@ -247,7 +258,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(rcSwitch());
     expect(url().get("stage")).toBeNull();
     expect(screen.queryByRole("region", { name: "Unified LR drill builder" })).not.toBeInTheDocument();
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
   });
 
   it("switches silently — a half-built LR set is discarded with no prompt", () => {
@@ -266,7 +277,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByText("Practice tools")).toBeInTheDocument();
 
     fireEvent.click(rcSwitch());
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "go back" }));
     expect(screen.getByText("Practice tools")).toBeInTheDocument();
@@ -334,6 +345,6 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByText("Reading tools")).toBeInTheDocument();
+    expect(screen.getByText("Practice tools")).toBeInTheDocument();
   });
 });
