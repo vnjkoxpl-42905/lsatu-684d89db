@@ -11,7 +11,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
-import RcPracticeStage from "@/components/mainhub/RcPracticeStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -472,13 +471,6 @@ export default function AcademyMainhub({
                   section={section}
                   drillReturnTo={drillReturnTo}
                   onCancel={closeStage}
-                />
-              ) : section === "rc" ? (
-                <RcPracticeStage
-                  onOpenAnalytics={openAnalytics}
-                  onOpenLauncher={openLauncher}
-                  canOpenAnalytics={canOpenAnalytics}
-                  canOpenJournal={canOpenJournal}
                 />
               ) : (
                 <PracticeInsightStage

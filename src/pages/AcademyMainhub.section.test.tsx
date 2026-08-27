@@ -216,6 +216,8 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
       screen.getByRole("button", { name: "Build a Set Assemble a targeted question set." }),
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
+    expect(screen.getByText("Insight preview")).toBeInTheDocument();
+    expect(screen.queryByText("Your reading drills")).not.toBeInTheDocument();
   });
 
   it("treats an unrecognised section as LR rather than as an error", () => {
