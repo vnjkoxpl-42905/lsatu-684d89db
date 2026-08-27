@@ -19,6 +19,7 @@ import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { loadPassage, loadPassages } from '../lib/rcBank';
+import { hydrateFromAttempts } from '../lib/rcHydration';
 import {
   currentItem as getCurrentItem,
   initialState,
@@ -85,6 +86,21 @@ export default function RcPlayer() {
 
   React.useEffect(() => {
     let cancelled = false;
+
+    // A new drill starts clean. React Router keeps this component mounted
+    // across a search-param change, so without this the previous sitting's
+    // re-attempts, clock, scroll positions and open modal ride into the next one.
+    setError(null);
+    setReattemptPicks(new Map());
+    setSkippedReattempt(new Set());
+    setFirstAttemptEliminations(new Map());
+    setScrollTops(new Map());
+    setElapsed(0);
+    setPassageOnly(false);
+    setFindQuery('');
+    setFindIndex(0);
+    setHighlightMode('none');
+    setModal(null);
 
     (async () => {
       try {
@@ -163,34 +179,55 @@ export default function RcPlayer() {
     });
 
     if (!sessionId) return;
+    // The component stays mounted across a session change, so this promise can
+    // land after the player has already moved to a different drill. Without the
+    // guard, session A's answers get restored into session B.
+    let cancelled = false;
     getSessionAttempts(sessionId)
       .then((attempts) => {
-        if (attempts.length === 0) return;
-        const answers = new Map<number, RcLetter>();
-        const flagged = new Set<number>();
-        const recorded = new Set<number>();
-        for (const a of attempts) {
-          if (a.selected) answers.set(a.questionId, a.selected);
-          if (a.flagged) flagged.add(a.questionId);
-          recorded.add(a.questionId);
-        }
-        const firstUnanswered = seeded.items.findIndex((i) => !answers.has(i.question.questionId));
+        if (cancelled || attempts.length === 0) return;
+        const hydrated = hydrateFromAttempts({
+          items: seeded.items,
+          attempts,
+          revealMode: config.reveal,
+          reviewOnly,
+        });
         dispatch({
           type: 'restore',
           state: {
-            answers,
-            flagged,
-            recorded,
+            answers: hydrated.answers,
+            // In review this stays empty: `state.eliminations` is what a
+            // re-attempt writes, and seeding it with the FIRST attempt's
+            // cross-outs would file them against the second. The restored set
+            // goes to `firstAttemptEliminations`, for display only. Resuming a
+            // live drill is the opposite case — there they are still the
+            // student's working set, so they come straight back.
+            eliminations: reviewOnly ? new Map() : hydrated.eliminations,
+            flagged: hydrated.flagged,
+            recorded: hydrated.recorded,
+            revealed: hydrated.revealed,
+            reviewedPassages: hydrated.reviewedPassages,
             currentIndex:
-              targetIndex >= 0 ? targetIndex : firstUnanswered === -1 ? 0 : firstUnanswered,
-            // Review deep links show every question's feedback at once.
-            submitted: reviewOnly,
+              targetIndex >= 0
+                ? targetIndex
+                : hydrated.firstUnansweredIndex === -1
+                  ? 0
+                  : hydrated.firstUnansweredIndex,
+            submitted: hydrated.submitted,
           },
         });
+        // What the student crossed out the first time is theirs to see in
+        // review. It is display only: the array written with a re-attempt is
+        // built from what they do on this visit, not from this.
+        setFirstAttemptEliminations(hydrated.eliminations);
       })
       .catch(() => {
         /* resuming without prior answers is still a usable drill */
       });
+
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passages, sessionId, targetQuestionId]);
 
@@ -209,6 +246,15 @@ export default function RcPlayer() {
   const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
+  /**
+   * What the student crossed out on their FIRST attempt, restored so review can
+   * show it back to them. Held apart from `state.eliminations` on purpose: that
+   * map is what a re-attempt writes, and merging the two would file the first
+   * attempt's cross-outs against the second.
+   */
+  const [firstAttemptEliminations, setFirstAttemptEliminations] = React.useState<
+    Map<number, RcLetter[]>
+  >(new Map());
 
   const item = getCurrentItem(state);
   const type = React.useMemo(
@@ -240,6 +286,11 @@ export default function RcPlayer() {
   const writeAttempt = React.useCallback(
     async (target: RcSessionItem, selected: RcLetter | null) => {
       if (!sessionId) return;
+      // A question already written once in this session is not written again.
+      // Resume used to lose the reveal state, which left Confirm enabled on a
+      // question that was already answered and inserted a second attempt row
+      // for it. The reveal state is restored now; this is the belt.
+      if (state.recorded.has(target.question.questionId)) return;
       const timeMs = Math.max(0, Date.now() - questionStart.current);
       try {
         await recordAttempt({
@@ -258,7 +309,7 @@ export default function RcPlayer() {
         // A failed write must not swallow the student's place in the drill.
       }
     },
-    [sessionId, state.flagged, state.eliminations],
+    [sessionId, state.flagged, state.eliminations, state.recorded],
   );
 
   const recordPassage = React.useCallback(
@@ -318,29 +369,108 @@ export default function RcPlayer() {
     [sessionId, state.flagged],
   );
 
+  /* ------------------------------------------------- selection, guarded */
+
+  /**
+   * Is this question still waiting on a blind re-attempt?
+   *
+   * Review of work the student did not just answer starts with a fresh attempt,
+   * and until they make it, nothing on screen may state the verdict — not the
+   * question pane, and not the pager.
+   *
+   * This and everything below it sit ABOVE the loading and error returns. They
+   * have to: the keyboard effect is a hook, the early returns are conditional,
+   * and a hook declared past a conditional return changes the hook count
+   * between renders.
+   */
+  const awaitingReattempt = React.useCallback(
+    (id: number) =>
+      reviewOnly &&
+      state.recorded.has(id) &&
+      !reattemptPicks.has(id) &&
+      !skippedReattempt.has(id),
+    [reviewOnly, state.recorded, reattemptPicks, skippedReattempt],
+  );
+
+  const revealed = item ? isRevealed(state, config.reveal, item) : false;
+  const reattemptMode = item ? awaitingReattempt(item.question.questionId) : false;
+
+  /**
+   * The ONE way a choice gets picked.
+   *
+   * The pane and the keyboard used to take different routes: the pane's handler
+   * carried the re-attempt and revealed guards, and the keyboard dispatched
+   * straight into the reducer with neither. So a keypress during blind review
+   * silently overwrote the student's recorded first answer — invisibly, because
+   * the row highlight reads `reattemptPick` in that state, not `selected` — and
+   * the verdict then reported a first pick they never made.
+   */
+  const selectLetter = React.useCallback(
+    (letter: RcLetter) => {
+      if (!item) return;
+      const id = item.question.questionId;
+      if (!item.question.choices.some((c) => c.letter === letter)) return;
+
+      if (awaitingReattempt(id)) {
+        setReattemptPicks((prev) => new Map(prev).set(id, letter));
+        if (!sessionId) return;
+        void recordAttempt({
+          sessionId,
+          questionId: id,
+          passageId: item.passage.passageId,
+          selected: letter,
+          isCorrect: letter === item.question.correctAnswer,
+          timeMs: Math.max(0, Date.now() - questionStart.current),
+          flagged: state.flagged.has(id),
+          // What they cross out on THIS visit. The first attempt's cross-outs
+          // live in `firstAttemptEliminations` and are never written here.
+          eliminations: state.eliminations.get(id) ?? [],
+          isFirstAttempt: false,
+        });
+        return;
+      }
+
+      if (revealed) return;
+      dispatch({ type: 'select', questionId: id, letter });
+    },
+    [item, awaitingReattempt, revealed, sessionId, state.flagged, state.eliminations],
+  );
+
   /* -------------------------------------------------------- keyboard */
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
-      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') return;
-      if (modal) return;
       if (!item) return;
+      // A paused drill is paused for the keyboard too. The scrim stops the
+      // pointer and used to stop nothing else.
+      if (state.paused) return;
+      if (modal) return;
 
-      if (e.key === 'ArrowLeft') dispatch({ type: 'prev' });
-      else if (e.key === 'ArrowRight') dispatch({ type: 'next' });
-      else if (e.key.toLowerCase() === 'f') {
+      const target = e.target as HTMLElement | null;
+      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') return;
+      if (target?.isContentEditable) return;
+      // Radix renders dialogs, sheets and popovers into a portal outside this
+      // tree, so `modal` alone does not know they are open. Typing a letter
+      // with focus inside one must not answer the question underneath it.
+      if (target?.closest?.('[role="dialog"], [role="menu"], [role="listbox"]')) return;
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo(state.currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goTo(state.currentIndex + 1);
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
         toggleFlag(item.question.questionId);
       } else if (/^[a-eA-E]$/.test(e.key)) {
-        const letter = e.key.toUpperCase() as RcLetter;
-        if (item.question.choices.some((c) => c.letter === letter)) {
-          dispatch({ type: 'select', questionId: item.question.questionId, letter });
-        }
+        e.preventDefault();
+        selectLetter(e.key.toUpperCase() as RcLetter);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [item, modal, toggleFlag]);
+  }, [item, modal, state.paused, state.currentIndex, toggleFlag, goTo, selectLetter]);
 
   /* ----------------------------------------------------------- render */
 
@@ -371,26 +501,10 @@ export default function RcPlayer() {
     );
   }
 
-  const revealed = isRevealed(state, config.reveal, item);
+  // `revealed`, `reattemptMode` and `awaitingReattempt` are declared above the
+  // early returns, with the guarded selector that shares them.
   const questionId = item.question.questionId;
   const selected = state.answers.get(questionId) ?? null;
-
-  /**
-   * Is this question still waiting on a blind re-attempt?
-   *
-   * Review of work the student did not just answer starts with a fresh attempt,
-   * and until they make it, nothing on screen may state the verdict — not the
-   * question pane, and not the pager.
-   */
-  /* A plain function, not a hook: this sits below the loading and error
-     returns, and a useCallback here changes the hook count between renders. */
-  const awaitingReattempt = (id: number) =>
-    reviewOnly &&
-    state.recorded.has(id) &&
-    !reattemptPicks.has(id) &&
-    !skippedReattempt.has(id);
-
-  const reattemptMode = awaitingReattempt(questionId);
 
   const passageDone = passageComplete(state, item.passage.passageId);
   const passageReviewed = state.reviewedPassages.has(item.passage.passageId);
@@ -405,7 +519,11 @@ export default function RcPlayer() {
     // to answer again blind has already answered it for them.
     if (awaitingReattempt(entry.questionId)) return 'unanswered';
     const target = state.items.find((i) => i.question.questionId === entry.questionId);
-    const pick = state.answers.get(entry.questionId);
+    // The pill states the same verdict the review layer does, which reads the
+    // latest pick (`secondPick ?? firstPick`). Reading `answers` alone put a
+    // green check beside a question whose banner said "Not quite" — the pill
+    // was scoring the first attempt while the banner scored the re-attempt.
+    const pick = reattemptPicks.get(entry.questionId) ?? state.answers.get(entry.questionId);
     const showResult = target ? isRevealed(state, config.reveal, target) : false;
     if (showResult && pick && target) {
       return pick === target.question.correctAnswer ? 'correct' : 'incorrect';
@@ -514,17 +632,13 @@ export default function RcPlayer() {
              explanations counts nothing and reads as pressure. */
           timerMode={reviewOnly ? undefined : budget != null ? 'countdown' : 'stopwatch'}
           timerOverBudget={overBudget}
+          /* No REVIEW badge here. The toolbar's left group is where the
+             section's tools live, and the breadcrumb plus the absent clock
+             already say what this is. LR carries no such badge in any mode. */
           leftTools={
-            <>
-              <RcToolbarButton onClick={() => setPassageOnly((v) => !v)}>
-                {passageOnly ? 'Passage + Question' : 'Passage Only'}
-              </RcToolbarButton>
-              {reviewOnly && (
-                <span className="ml-1 rounded-full bg-[#7f1d1d] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                  Review
-                </span>
-              )}
-            </>
+            <RcToolbarButton onClick={() => setPassageOnly((v) => !v)}>
+              {passageOnly ? 'Passage + Question' : 'Passage Only'}
+            </RcToolbarButton>
           }
         />
 
@@ -569,32 +683,21 @@ export default function RcPlayer() {
             <RcQuestionPane
               item={item}
               selected={selected}
-              eliminations={state.eliminations.get(questionId) ?? []}
+              eliminations={
+                // In review the cross-outs on screen are the ones the student
+                // made the first time round, restored from their attempt. In a
+                // live drill they are the ones they are making now.
+                (reviewOnly
+                  ? firstAttemptEliminations.get(questionId)
+                  : state.eliminations.get(questionId)) ?? []
+              }
               revealed={revealed}
               reattemptMode={reattemptMode}
               reattemptPick={reattemptPicks.get(questionId) ?? null}
               flagged={state.flagged.has(questionId)}
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
-              onSelect={(letter) => {
-                if (reattemptMode) {
-                  setReattemptPicks((prev) => new Map(prev).set(questionId, letter));
-                  void recordAttempt({
-                    sessionId: sessionId!,
-                    questionId,
-                    passageId: item.passage.passageId,
-                    selected: letter,
-                    isCorrect: letter === item.question.correctAnswer,
-                    timeMs: Math.max(0, Date.now() - questionStart.current),
-                    flagged: state.flagged.has(questionId),
-                    eliminations: state.eliminations.get(questionId) ?? [],
-                    isFirstAttempt: false,
-                  });
-                  return;
-                }
-                if (revealed) return;
-                dispatch({ type: 'select', questionId, letter });
-              }}
+              onSelect={selectLetter}
               onToggleElimination={(letter) =>
                 dispatch({ type: 'toggleElimination', questionId, letter })
               }
@@ -610,6 +713,7 @@ export default function RcPlayer() {
           primaryDisabled={primary?.disabled}
           onSubmit={() => primary?.onClick()}
           onNext={() => undefined}
+          endLabel={reviewOnly ? 'Exit' : undefined}
           onEnd={() => navigate(exitPath)}
           onOpenMenu={() => setModal('menu')}
           disabled={state.paused}
@@ -647,11 +751,20 @@ export default function RcPlayer() {
         <RcOverflowMenu
           onClose={() => setModal(null)}
           onQuestionDetails={() => setModal('details')}
-          onPause={() => {
-            dispatch({ type: 'setPaused', paused: true });
-            setModal(null);
-          }}
+          /* Review has no clock and nothing to pause, which is why the header
+             strip dropped Pause. The menu kept offering it, so the one place
+             the student could still put a scrim over their own answers was in
+             here. Same rule, both places now. */
+          onPause={
+            reviewOnly
+              ? undefined
+              : () => {
+                  dispatch({ type: 'setPaused', paused: true });
+                  setModal(null);
+                }
+          }
           onSaveExit={() => navigate(exitPath)}
+          saveExitLabel={reviewOnly ? 'Exit review' : 'Save and exit'}
           onSubmit={
             config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined
           }

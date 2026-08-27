@@ -27,6 +27,17 @@ interface Props {
   onSelect: (letter: RcLetter) => void;
   onToggleElimination: (letter: RcLetter) => void;
   disabled?: boolean;
+  /**
+   * Disables the cross-out control ALONE, leaving the choice selectable.
+   *
+   * Kept separate from `disabled` on purpose. A blind re-attempt has to hide
+   * the student's original cross-outs while they answer again, and it also has
+   * to let them answer — so the row cannot simply be disabled. Before this
+   * existed, the eye stayed live while its effect was suppressed: the click
+   * reached the reducer, the row never changed, and the label never flipped to
+   * "Restore". A control that does nothing is worse than one that is off.
+   */
+  eliminationDisabled?: boolean;
   textStyle?: React.CSSProperties;
   badgeStyle?: React.CSSProperties;
   /** The per-choice disclosure, rendered under the text in review. */
@@ -41,11 +52,13 @@ export function RcChoiceRow({
   onSelect,
   onToggleElimination,
   disabled,
+  eliminationDisabled,
   textStyle,
   badgeStyle,
   children,
 }: Props) {
   const isCorrect = revealed && choice.correct;
+  const noCrossOut = disabled || eliminationDisabled;
   const pick = () => {
     if (!disabled && !eliminated) onSelect(choice.letter);
   };
@@ -102,9 +115,11 @@ export function RcChoiceRow({
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          if (!disabled) onToggleElimination(choice.letter);
+          // Guarded here as well as on the element: a disabled attribute alone
+          // still leaves the handler reachable by a synthetic event.
+          if (!noCrossOut) onToggleElimination(choice.letter);
         }}
-        disabled={disabled}
+        disabled={noCrossOut}
         aria-label={
           eliminated ? `Restore choice ${choice.letter}` : `Cross out choice ${choice.letter}`
         }

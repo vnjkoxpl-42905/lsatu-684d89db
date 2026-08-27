@@ -64,14 +64,22 @@
   margin-bottom: 14px;
 }
 
+/*
+ * One verdict, one green.
+ *
+ * These used to be #2f9e64 on #eaf6ef while the correct choice row three lines
+ * below was Tailwind green-500 on green-50 — two greens for the same verdict on
+ * the same screen. They are the row's values now, so the banner and the choice
+ * it is describing agree.
+ */
 .rc-verdict-right {
-  background: #eaf6ef;
-  border: 1px solid #2f9e64;
+  background: #f0fdf4; /* green-50, as RcChoiceRow */
+  border: 1px solid #22c55e; /* green-500, as RcChoiceRow */
 }
 
 .rc-verdict-wrong {
-  background: #fdecec;
-  border: 1px solid #e5484d;
+  background: #fef2f2; /* red-50 */
+  border: 1px solid #ef4444; /* red-500 */
 }
 
 .rc-verdict-detail {
@@ -147,7 +155,7 @@
   background: hsl(var(--muted));
 }
 
-.rc-tag-correct { background: #2f9e64; color: #ffffff; }
+.rc-tag-correct { background: #16a34a; color: #ffffff; } /* green-600, as LR's chip */
 
 .rc-tag-outline {
   background: transparent;
@@ -164,28 +172,49 @@
 
 .rc-tutor-fallback p { margin: 0 0 10px; }
 
+/*
+ * The blind re-attempt banner.
+ *
+ * It used to be built from the product's app tokens — hsl(var(--primary) / 0.1)
+ * resolves to a flat grey — inside an exam pane that is otherwise LawHub slate.
+ * It read as pasted in from the marketing side of the app. It sits on the exam
+ * chrome's own palette now, at a size that belongs to the pane it introduces.
+ */
 .rc-reattempt-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  border-radius: var(--radius);
-  background: hsl(var(--primary) / 0.1);
-  border: 1px solid hsl(var(--primary) / 0.35);
-  padding: 9px 12px;
-  font-size: 13px;
+  gap: 16px;
+  border-radius: 6px;
+  background: #f8fafc; /* slate-50, as the toolbar */
+  border: 1px solid #cbd5e1; /* slate-300 */
+  padding: 10px 14px;
+  font-size: 14px;
   margin-bottom: 14px;
+}
+
+/* The message takes whatever the link does not, rather than both wrapping. */
+.rc-reattempt-banner > span {
+  min-width: 0;
 }
 
 .rc-skip-link {
   border: none;
   background: transparent;
-  font-size: 13px;
-  opacity: 0.7;
+  font-size: 14px;
   cursor: pointer;
   text-decoration: underline;
-  color: inherit;
+  color: #334155; /* slate-700 */
+  padding: 0;
+  /*
+   * "Show my answer" was breaking to "Show my / answer" and taking the message
+   * with it, which left a 62px banner holding two ragged two-line blocks.
+   */
+  white-space: nowrap;
+  flex-shrink: 0;
 }
+
+.rc-skip-link:hover { color: #0f172a; }
 
 .rc-summary-toggle {
   margin-top: 22px;

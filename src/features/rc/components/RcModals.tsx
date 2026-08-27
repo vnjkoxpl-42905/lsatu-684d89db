@@ -307,8 +307,11 @@ export function RcQuestionDetails({
 interface MenuProps {
   onClose: () => void;
   onQuestionDetails: () => void;
-  onPause: () => void;
+  /** Omitted in review, which has no clock and nothing to pause. */
+  onPause?: () => void;
   onSaveExit: () => void;
+  /** Names the exit for the mode: nothing is being saved in review. */
+  saveExitLabel?: string;
   onSubmit?: () => void;
 }
 
@@ -317,6 +320,7 @@ export function RcOverflowMenu({
   onQuestionDetails,
   onPause,
   onSaveExit,
+  saveExitLabel = 'Save and exit',
   onSubmit,
 }: MenuProps) {
   useEscape(onClose);
@@ -338,11 +342,13 @@ export function RcOverflowMenu({
           <button type="button" className={MENU_ROW} onClick={onQuestionDetails}>
             Question details
           </button>
-          <button type="button" className={MENU_ROW} onClick={onPause}>
-            Pause
-          </button>
+          {onPause && (
+            <button type="button" className={MENU_ROW} onClick={onPause}>
+              Pause
+            </button>
+          )}
           <button type="button" className={MENU_ROW} onClick={onSaveExit}>
-            Save and exit
+            {saveExitLabel}
           </button>
           {onSubmit && (
             <button type="button" className={MENU_ROW} onClick={onSubmit}>

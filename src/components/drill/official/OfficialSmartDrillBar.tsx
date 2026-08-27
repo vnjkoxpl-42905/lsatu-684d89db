@@ -36,6 +36,8 @@ interface Props {
    * here; the official RC interface carries one and LR does not.
    */
   pager?: React.ReactNode;
+  /** Overrides the left action's label. Review exits rather than ends. */
+  endLabel?: string;
   onEnd: () => void;
   /** Opens the question drawer on Details. Hidden if omitted. */
   onOpenMenu?: () => void;
@@ -62,6 +64,7 @@ export default function OfficialSmartDrillBar({
   onSkip,
   skipDisabled,
   pager,
+  endLabel,
   onEnd,
   onOpenMenu,
   disabled,
@@ -79,7 +82,7 @@ export default function OfficialSmartDrillBar({
           disabled={disabled}
           className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          End
+          {endLabel ?? "End"}
         </button>
 
         {/* Menu — opens the question drawer on Details */}

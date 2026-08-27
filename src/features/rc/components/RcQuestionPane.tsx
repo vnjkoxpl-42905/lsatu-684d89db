@@ -121,9 +121,17 @@ export function RcQuestionPane({
               key={choice.letter}
               choice={choice}
               selected={isPicked}
-              eliminated={!reattemptMode && eliminations.includes(choice.letter)}
+              eliminated={
+                // Hidden outright while they answer again, and never drawn on
+                // the choice they have just picked: a row that is selected AND
+                // struck through reads as "you crossed out your own answer",
+                // when what happened is that they landed on a choice they had
+                // eliminated the first time round.
+                !reattemptMode && !isPicked && eliminations.includes(choice.letter)
+              }
               revealed={showFeedback}
               disabled={showFeedback}
+              eliminationDisabled={reattemptMode}
               onSelect={onSelect}
               onToggleElimination={onToggleElimination}
               textStyle={type.choiceText}
