@@ -92,6 +92,7 @@ import {
   type DrillRouteState,
 } from '@/lib/drillRouteState';
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
+import { useDrillHubSectionNavigation } from '@/hooks/useDrillHubSectionNavigation';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
 import {
@@ -124,6 +125,7 @@ function DrillContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const openDrillHubSection = useDrillHubSectionNavigation();
   const { user } = useAuth();
   const { settings } = useUserSettings();
   const permissions = useUserPermissions();
@@ -3466,6 +3468,12 @@ function DrillContent() {
             setSearchTerm={setOfficialSearchTerm}
             fontScale={officialFontScale}
             setFontScale={setOfficialFontScale}
+            sectionToggle={{
+              active: 'lr',
+              onSelect: (section) => {
+                if (section === 'rc') openDrillHubSection('rc');
+              },
+            }}
             notesButtonVisible={usesSmartChrome}
             notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}

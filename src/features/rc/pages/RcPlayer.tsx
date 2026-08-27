@@ -41,6 +41,7 @@ import {
   setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
+import { useDrillHubSectionNavigation } from '@/hooks/useDrillHubSectionNavigation';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
 import '../rc.css';
@@ -65,8 +66,13 @@ export default function RcPlayer() {
     returnToParam && returnToParam.startsWith('/') && !returnToParam.startsWith('//')
       ? returnToParam
       : null;
-  /** The way out of the player: back where we came from, or the RC hub. */
+  /**
+   * The way out of the player. A leg of a practice test says where it came
+   * from; anything else lands on the RC hub. The LR/RC toggle is a different
+   * errand and keeps its own hub navigation below.
+   */
   const exitPath = returnTo ?? '/rc';
+  const openDrillHubSection = useDrillHubSectionNavigation();
 
   const [config, setConfig] = React.useState<RcDrillConfig>(DEFAULT_CONFIG);
   const [passages, setPassages] = React.useState<RcPassage[] | null>(null);
@@ -449,6 +455,12 @@ export default function RcPlayer() {
       >
         <OfficialDrillToolbar
           directions={RC_DIRECTIONS}
+          sectionToggle={{
+            active: 'rc',
+            onSelect: (section) => {
+              if (section === 'lr') openDrillHubSection('lr');
+            },
+          }}
           highlightMode={highlightMode}
           setHighlightMode={(mode) => setHighlightMode(mode as RcHighlightMode)}
           searchTerm={findQuery}

@@ -115,6 +115,14 @@ interface Props {
    * line height and color scheme here so text settings stay in one control.
    */
   a11yExtraSections?: React.ReactNode;
+  /**
+   * LR ⇄ RC section switch shown at the far left of the toolbar. Lets a student
+   * jump straight from a Logical Reasoning drill into the RC passages and back.
+   */
+  sectionToggle?: {
+    active: "lr" | "rc";
+    onSelect: (section: "lr" | "rc") => void;
+  };
 }
 
 export default function OfficialDrillToolbar({
@@ -136,6 +144,7 @@ export default function OfficialDrillToolbar({
   highlightToolsVisible = true,
   fontScaleOptions = FONT_SCALES,
   a11yExtraSections,
+  sectionToggle,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
@@ -164,6 +173,35 @@ export default function OfficialDrillToolbar({
     <>
       <div className="border-b border-slate-300 bg-slate-50">
         <div className="px-3 sm:px-4 py-2 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-800">
+          {sectionToggle && (
+            <div
+              role="group"
+              aria-label="Section"
+              className="mr-1 inline-flex overflow-hidden rounded-sm border border-slate-500 bg-white"
+            >
+              {(["lr", "rc"] as const).map((section) => {
+                const isActive = sectionToggle.active === section;
+                return (
+                  <button
+                    key={section}
+                    type="button"
+                    aria-pressed={isActive}
+                    title={section === "lr" ? "Logical Reasoning" : "Reading Comprehension passages"}
+                    onClick={() => !isActive && sectionToggle.onSelect(section)}
+                    className={cn(
+                      "px-3 py-1.5 text-[13px] font-bold uppercase tracking-wider transition-colors",
+                      isActive
+                        ? "bg-[#7f1d1d] text-white"
+                        : "text-slate-700 hover:bg-slate-100",
+                    )}
+                  >
+                    {section.toUpperCase()}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {directions && (
             <button
               type="button"
