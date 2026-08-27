@@ -199,6 +199,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("opens on RC when the link says so", () => {
     renderHub("/classroom/drill?section=rc");
+    expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start Smart Reading Drill" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
@@ -208,6 +209,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("treats an unrecognised section as LR rather than as an error", () => {
     renderHub("/classroom/drill?section=sideways");
+    expect(screen.queryByText("DRILL / LOGICAL REASONING")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
   });
 

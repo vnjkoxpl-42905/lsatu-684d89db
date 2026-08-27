@@ -23,7 +23,6 @@ import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { SectionToggle } from "@/components/drill/SectionToggle";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
-  DRILL_SECTION_LABELS,
   DRILL_SECTION_PARAM,
   rememberSection,
   resolveDrillSection,
@@ -106,12 +105,6 @@ function MainhubHero({
       data-section={section}
       className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
-      {/* Says which section you are in. Decoration — the switch that CHANGES
-          it is the one in the tools row, which is a real control. */}
-      <div className="drill-observatory-route-label" aria-hidden>
-        <span>{DRILL_SECTION_LABELS[section].route}</span>
-      </div>
-
       <div className="drill-observatory-hero-grid">
         <div className="drill-observatory-greeting flex flex-col justify-end">
           <div className="flex flex-col gap-[9px]">

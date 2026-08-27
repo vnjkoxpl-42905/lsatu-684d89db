@@ -1071,20 +1071,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   z-index: 0;
 }
 
-.drill-observatory-route-label {
-  align-items: center;
-  color: var(--observatory-ink-50);
-  display: flex;
-  font-family: var(--observatory-label-font);
-  font-size: var(--observatory-text-label);
-  font-weight: 500;
-  justify-content: space-between;
-  letter-spacing: var(--observatory-track-route);
-  padding: var(--observatory-space-5) var(--observatory-space-7) 0;
-  position: relative;
-  z-index: 2;
-}
-
 /* The Question jump's band on the Drill landing workspace. Full width, matching
    Classroom Home: three dropdowns right-aligned against the canvas edge left a
    ragged gutter beside the hero's left column, and the row is navigation for
@@ -1823,9 +1809,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     padding: var(--observatory-space-2) var(--observatory-space-6) var(--observatory-space-6) !important;
   }
 
-  .drill-observatory-route-label {
-    padding: var(--observatory-space-5) var(--observatory-space-6) 0;
-  }
 }
 
 @media (max-width: 1023px) {
@@ -1833,18 +1816,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     padding: var(--observatory-space-4) var(--observatory-space-5) var(--observatory-space-5);
   }
 
-  /* The sidebar collapses to a floating hamburger at this width (it sits at
-     16-54px), so the route label has to clear it. */
-  .drill-observatory-route-label {
-    padding-left: calc(var(--observatory-space-7) + var(--observatory-space-4));
-  }
 }
 
 @media (max-width: 899px) {
-  /* Stacked, the greeting is top-aligned instead of bottom-aligned, so it rises
-     into the route label above it — the two sat 6px apart and read as one
-     run-on line. The 8px body padding only works while the greeting is anchored
-     to the bottom of a 400px row. */
   .drill-observatory-hero-grid {
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: auto auto !important;
@@ -1870,15 +1844,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 @media (max-width: 759px) {
   .classroom-root.classroom-root-drill .classroom-stage {
     padding: var(--observatory-space-3) var(--observatory-space-4) var(--observatory-space-5);
-  }
-
-  .drill-observatory-route-label span:last-child {
-    display: none;
-  }
-
-  .drill-observatory-route-label {
-    padding: var(--observatory-space-4) var(--observatory-space-4) 0
-      calc(var(--observatory-space-7) + var(--observatory-space-4));
   }
 
   .drill-observatory-hero-grid {
