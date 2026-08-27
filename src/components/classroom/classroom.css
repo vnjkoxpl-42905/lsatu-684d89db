@@ -1178,6 +1178,15 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     width: 100%;
   }
 
+  /* Except when it is riding in the aside beside the search trigger, where
+     100% is 100% of a box that already holds the trigger — the switch grew
+     past its own container and off the right edge of the screen. In the
+     cluster it takes its natural width; the trigger has collapsed to its icon
+     by here, so the pair fits on one line. */
+  .drill-observatory-tools-aside .drill-observatory-section-toggle {
+    width: auto;
+  }
+
   .drill-observatory-section-toggle-option {
     flex: 1 1 0;
   }
