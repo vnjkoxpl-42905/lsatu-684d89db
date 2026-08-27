@@ -1,0 +1,196 @@
+/**
+ * The Testing Centre.
+ *
+ * Deliberately quieter than the drill hub: this is the room where a clock
+ * starts, so it reads as a lobby with two doors rather than a launcher with
+ * options. Colour is carried by the classroom tokens, so it follows light and
+ * dark with everything else.
+ */
+
+.classroom-root .testing-lede {
+  color: var(--classroom-meta);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: -12px 0 32px;
+  max-width: 62ch;
+}
+
+.classroom-root .testing-doors {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+  .classroom-root .testing-doors {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.classroom-root .testing-door {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  text-align: left;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease,
+    transform var(--classroom-transition) ease;
+}
+
+.classroom-root .testing-door:hover {
+  background: var(--classroom-hover);
+  transform: translateY(-1px);
+}
+
+.classroom-root .testing-door[aria-pressed='true'] {
+  border-color: var(--classroom-ink);
+}
+
+.classroom-root .testing-door h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.classroom-root .testing-door p {
+  color: var(--classroom-meta);
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.classroom-root .testing-door-meta {
+  color: var(--classroom-meta-soft);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-panel {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  padding: 24px;
+}
+
+.classroom-root .testing-field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.classroom-root .testing-field > label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-shape {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: grid;
+  gap: 0;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.classroom-root .testing-shape-row {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.classroom-root .testing-shape-row + .testing-shape-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .testing-shape-row b {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  min-width: 78px;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-shape-row span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-root .testing-shape-row em {
+  color: var(--classroom-meta-soft);
+  font-size: 12.5px;
+  font-style: normal;
+  margin-left: auto;
+}
+
+.classroom-root .testing-shape-row[data-state='done'] em {
+  color: var(--classroom-ink);
+  font-weight: 600;
+}
+
+.classroom-root .testing-shape-row[data-state='current'] {
+  background: var(--classroom-active);
+}
+
+.classroom-root .testing-shape-row[data-state='break'] b,
+.classroom-root .testing-shape-row[data-state='break'] span {
+  color: var(--classroom-meta-soft);
+}
+
+.classroom-root .testing-note {
+  color: var(--classroom-meta-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 16px 0 0;
+}
+
+.classroom-root .testing-score {
+  align-items: baseline;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.classroom-root .testing-score strong {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.classroom-root .testing-score span {
+  color: var(--classroom-meta);
+  font-size: 14px;
+}
+
+.classroom-root .testing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.classroom-root .testing-resume {
+  margin-bottom: 32px;
+}
+
+.classroom-root .testing-resume h3 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}

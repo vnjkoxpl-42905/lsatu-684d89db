@@ -34,6 +34,8 @@ const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
+const TestingCentre = safeLazy(() => import("./pages/TestingCentre"));
+const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
 const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
@@ -482,6 +484,18 @@ const App = () => {
                       <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
                       <Route path=":assignmentId" element={<ClassroomAssignmentView />} />
                     </Route>
+
+                    {/* The Testing Centre sits inside the classroom frame on
+                        purpose: choosing a section is still classroom time, and
+                        the rail has to stay reachable right up to the moment the
+                        clock starts. The runners themselves are full-screen
+                        takeovers registered above, outside this shell. */}
+                    <Route path="/testing" element={
+                      <ProtectedRoute flag="has_drill_access"><TestingCentre /></ProtectedRoute>
+                    } />
+                    <Route path="/testing/test/:runId" element={
+                      <ProtectedRoute flag="has_drill_access"><PracticeTestRunPage /></ProtectedRoute>
+                    } />
 
                     {/* Flagged keeps its own URL and its own place in the rail;
                         only the frame that draws it has changed. */}

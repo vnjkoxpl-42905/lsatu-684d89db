@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -49,6 +49,16 @@ interface FocusArea {
 export default function RcResults() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  /**
+   * Set when this section was one leg of something larger — a practice test.
+   * Same-origin paths only; it arrives on the query string.
+   */
+  const returnToParam = searchParams.get('returnTo');
+  const returnTo =
+    returnToParam && returnToParam.startsWith('/') && !returnToParam.startsWith('//')
+      ? returnToParam
+      : null;
 
   const [session, setSession] = React.useState<RcDrillSession | null>(null);
   const [passages, setPassages] = React.useState<RcPassage[]>([]);
@@ -566,7 +576,15 @@ export default function RcResults() {
 
       {/* Actions */}
       <div className="mx-auto mt-8 flex max-w-7xl flex-wrap gap-3 px-6">
-        <Button onClick={() => navigate(`/rc/drill?sessionId=${session.id}&review=1`)}>
+        {/* Inside a practice test the sitting is not over, so getting back to it
+            is the primary action and everything else waits until the end. */}
+        {returnTo && (
+          <Button onClick={() => navigate(returnTo)}>Back to your practice test</Button>
+        )}
+        <Button
+          variant={returnTo ? 'outline' : 'default'}
+          onClick={() => navigate(`/rc/drill?sessionId=${session.id}&review=1`)}
+        >
           Review all
         </Button>
         <Button

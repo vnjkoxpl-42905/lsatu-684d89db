@@ -11,6 +11,7 @@ export type RailItemId =
   | "notes"
   | "work"
   | "drill"
+  | "testing"
   | "bootcamps"
   | "activities"
   | "journal"
@@ -51,6 +52,12 @@ export const RAIL_GROUPS: { id: RailGroupId; title: string }[] = [
 export const RAIL_CATALOG: RailItem[] = [
   { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, required: true },
   { id: "drill", label: "Drill", group: "classroom", flags: ["has_drill_access"] },
+  // The Testing Centre is where a student sits something under test conditions:
+  // one real timed section, or a full practice test. It is deliberately its own
+  // rail entry rather than a tab inside Drill — drilling is practice you stop
+  // and think inside, and a sitting is not, so putting them behind one door
+  // invites starting a 35:00 clock by accident.
+  { id: "testing", label: "Testing Centre", group: "classroom", flags: ["has_drill_access"] },
   { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
   { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },

@@ -56,6 +56,17 @@ export default function RcPlayer() {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
+  /**
+   * Where to go when this sitting is over. Same-origin paths only — it arrives
+   * on the query string, so anything else would be an open redirect.
+   */
+  const returnToParam = params.get('returnTo');
+  const returnTo =
+    returnToParam && returnToParam.startsWith('/') && !returnToParam.startsWith('//')
+      ? returnToParam
+      : null;
+  /** The way out of the player: back where we came from, or the RC hub. */
+  const exitPath = returnTo ?? '/rc';
 
   const [config, setConfig] = React.useState<RcDrillConfig>(DEFAULT_CONFIG);
   const [passages, setPassages] = React.useState<RcPassage[] | null>(null);
@@ -276,9 +287,11 @@ export default function RcPlayer() {
     dispatch({ type: 'submit' });
     if (sessionId) {
       await completeSession(sessionId);
-      navigate(`/rc/results/${sessionId}`);
+      // Carried, not dropped: a leg of a practice test has somewhere to be
+      // after the results screen, and only this query string knows where.
+      navigate(`/rc/results/${sessionId}${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`);
     }
-  }, [state, writeAttempt, sessionId, navigate]);
+  }, [state, writeAttempt, sessionId, navigate, returnTo]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {
@@ -324,7 +337,7 @@ export default function RcPlayer() {
           <button
             type="button"
             className="rounded-full bg-slate-900 px-7 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-black"
-            onClick={() => navigate('/rc')}
+            onClick={() => navigate(exitPath)}
           >
             Go to Reading Comprehension
           </button>
@@ -408,7 +421,7 @@ export default function RcPlayer() {
   })();
 
   const breadcrumbs = [
-    { label: 'Reading Comprehension', onClick: () => navigate('/rc') },
+    { label: 'Reading Comprehension', onClick: () => navigate(exitPath) },
     { label: `The Official LSAT PrepTest ${item.passage.preptest}` },
     {
       label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.number}`,
@@ -542,7 +555,7 @@ export default function RcPlayer() {
           primaryDisabled={primary?.disabled}
           onSubmit={() => primary?.onClick()}
           onNext={() => undefined}
-          onEnd={() => navigate('/rc')}
+          onEnd={() => navigate(exitPath)}
           onOpenMenu={() => setModal('menu')}
           disabled={state.paused}
           pager={
@@ -582,7 +595,7 @@ export default function RcPlayer() {
             dispatch({ type: 'setPaused', paused: true });
             setModal(null);
           }}
-          onSaveExit={() => navigate('/rc')}
+          onSaveExit={() => navigate(exitPath)}
           onSubmit={
             config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined
           }
