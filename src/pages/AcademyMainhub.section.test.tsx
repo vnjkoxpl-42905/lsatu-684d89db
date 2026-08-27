@@ -220,8 +220,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
-    expect(screen.getByText("Insight preview")).toBeInTheDocument();
-    expect(screen.queryByText("Your reading drills")).not.toBeInTheDocument();
+    // The bay is shared, but the panel under the tools is not: the carousel is
+    // built from LR attempts, so RC shows its own drill history instead.
+    expect(screen.getByText("Your reading drills")).toBeInTheDocument();
+    expect(screen.queryByText("Insight preview")).not.toBeInTheDocument();
   });
 
   it("treats an unrecognised section as LR rather than as an error", () => {

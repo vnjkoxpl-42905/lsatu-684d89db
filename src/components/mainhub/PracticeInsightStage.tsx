@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
 import { buildInsightSlides } from "@/components/mainhub/insightSlides";
 import type { DrillSection } from "@/lib/drillSection";
+import { RcSessionHistory } from "@/features/rc/components/RcSessionHistory";
+import "@/features/rc/rc.css";
 
 const ROTATE_MS = 7000;
 
@@ -57,13 +59,14 @@ export default function PracticeInsightStage({
   const [userPaused, setUserPaused] = React.useState(false);
 
   React.useEffect(() => {
-    if (paused || userPaused || slides.length <= 1) return;
+    // RC does not draw the carousel, so nothing should be rotating behind it.
+    if (section === "rc" || paused || userPaused || slides.length <= 1) return;
     const t = window.setInterval(
       () => setIndex((i) => (i + 1) % slides.length),
       ROTATE_MS,
     );
     return () => window.clearInterval(t);
-  }, [paused, userPaused, slides.length]);
+  }, [section, paused, userPaused, slides.length]);
 
   const slide = slides[index] ?? slides[0];
 
@@ -129,7 +132,22 @@ export default function PracticeInsightStage({
         </div>
       </div>
 
-      {/* Rotating insight preview */}
+      {/* Rotating insight preview — LR only. The carousel is built from LR
+          attempts, so on RC it would be one section's numbers presented as the
+          other's. RC's own drill history takes the slot instead: it is the
+          real, RC-specific status, and it had nowhere to live once the two
+          bays became one. RcHubSurface still skips drawing a history of its
+          own on the assumption that this slot carries it. */}
+      {section === "rc" ? (
+        <div className="drill-observatory-insight-section relative">
+          <div className="mb-3.5 flex items-center justify-between">
+            <p className="drill-observatory-label drill-observatory-ink-42">
+              Your reading drills
+            </p>
+          </div>
+          <RcSessionHistory tone="dark" />
+        </div>
+      ) : (
       <div
         className="drill-observatory-insight-section relative"
         onMouseEnter={() => setPaused(true)}
@@ -138,9 +156,6 @@ export default function PracticeInsightStage({
         <div className="mb-3.5 flex items-center justify-between">
           <p className="drill-observatory-label drill-observatory-ink-42">
             Insight preview
-            {section === "rc" && (
-              <span className="drill-observatory-ink-38"> · from your LR attempts</span>
-            )}
           </p>
           <div className="flex items-center gap-1">
             <div className="flex items-center gap-1.5" role="tablist" aria-label="Insight slides">
@@ -229,6 +244,7 @@ export default function PracticeInsightStage({
           </AnimatePresence>
         </div>
       </div>
+      )}
     </div>
   );
 }
