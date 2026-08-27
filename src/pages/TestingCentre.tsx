@@ -240,9 +240,8 @@ export default function TestingCentre() {
     <>
       <h1 className="classroom-title">Testing Centre</h1>
       <p className="testing-lede">
-        Sit something under test conditions. One real section on its own clock,
-        or a full practice test end to end. Either way the answers stay hidden
-        until you are finished, the way they do on the day.
+        Practice under realistic test conditions. Complete a timed section or a
+        full practice test, with answers hidden until you finish.
       </p>
 
       <ResumeList
@@ -260,8 +259,8 @@ export default function TestingCentre() {
         >
           <h2>Take a section</h2>
           <p>
-            One real Logical Reasoning or Reading Comprehension section from a
-            PrepTest, in its published order, on a 35:00 clock.
+            Complete an official Logical Reasoning or Reading Comprehension
+            section in 35 minutes.
           </p>
           <span className="testing-door-meta">One section · about 35 minutes</span>
         </button>
@@ -274,9 +273,8 @@ export default function TestingCentre() {
         >
           <h2>Take a practice test</h2>
           <p>
-            Three scored sections from one PrepTest: two Logical Reasoning
-            and one Reading Comprehension, with a break in the middle and an
-            estimated score at the end.
+            Complete three scored sections from one PrepTest, with a scheduled
+            break and an estimated score at the end.
           </p>
           <span className="testing-door-meta">Three sections · about 2 hours</span>
         </button>
