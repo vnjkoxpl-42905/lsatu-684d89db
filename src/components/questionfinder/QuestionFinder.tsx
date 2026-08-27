@@ -19,6 +19,7 @@ import {
   runFinderSearch,
   type FinderHit,
   type FinderSnippet,
+  type QuestionFinderBank,
 } from "./questionFinderSearch";
 import { useQuestionFinderBanks } from "./useQuestionFinderBanks";
 import "./questionFinder.css";
@@ -31,21 +32,23 @@ export interface QuestionFinderProps {
   /** The host's surface. The panel follows it so the overlay never flashes a
    *  warm-paper card over the near-black Drill landing workspace. */
   tone?: "light" | "dark";
+  /** Restricts results to the active side of the LR/RC hub switch. */
+  bank?: QuestionFinderBank;
 }
 
 /**
  * The Question finder.
  *
  * A labelled field that opens a panel: type words to search question text, or
- * type a question address (PT90 S1 Q12) to go straight there. It searches both
- * banks and keeps the results in two groups, because a hit lands differently in
- * each — an LR hit opens that one question, an RC hit opens its whole passage.
+ * type a question address (PT90 S1 Q12) to go straight there. It can search
+ * both banks or follow the Drill hub's active bank. LR and RC question hits
+ * both open the exact question; RC passage matches open the matching passage.
  * See `docs/adr/0008-question-finder-lands-differently-by-bank.md`.
  *
  * It never builds a set. That is the Drill console's job, and the last row of
  * the panel is the door to it.
  */
-export default function QuestionFinder({ returnTo, tone = "light" }: QuestionFinderProps) {
+export default function QuestionFinder({ returnTo, tone = "light", bank }: QuestionFinderProps) {
   const [open, setOpen] = React.useState(false);
 
   /* Cmd/Ctrl+K is an accelerator on top of a visible, labelled control — never
@@ -88,7 +91,7 @@ export default function QuestionFinder({ returnTo, tone = "light" }: QuestionFin
         </span>
       </button>
 
-      {open && <FinderPanel returnTo={returnTo} tone={tone} onClose={() => setOpen(false)} />}
+      {open && <FinderPanel returnTo={returnTo} tone={tone} bank={bank} onClose={() => setOpen(false)} />}
     </div>
   );
 }
@@ -98,10 +101,12 @@ export default function QuestionFinder({ returnTo, tone = "light" }: QuestionFin
 function FinderPanel({
   returnTo,
   tone,
+  bank,
   onClose,
 }: {
   returnTo: string;
   tone: "light" | "dark";
+  bank?: QuestionFinderBank;
   onClose: () => void;
 }) {
   const navigate = useNavigate();
@@ -123,8 +128,9 @@ function FinderPanel({
         rcPassages: banks.rcPassages,
         rcQuestions: banks.rcQuestions,
         limit: PER_BANK_LIMIT,
+        bank,
       }),
-    [banks.lr, banks.rcPassages, banks.rcQuestions, query],
+    [bank, banks.lr, banks.rcPassages, banks.rcQuestions, query],
   );
 
   const hits = React.useMemo<FinderHit[]>(
@@ -316,12 +322,11 @@ function FinderPanel({
 
             {results.rc.length > 0 && (
               <div className="qf-group">
-                {/* The note is load-bearing, not decoration: an RC hit opens the
-                    whole passage, and this is where that is said once rather
-                    than being discovered after the click. */}
+                {/* An RC result always opens its matching passage and targets
+                    the exact question when the result came from question text. */}
                 <p className="qf-grouphead">
                   Reading Comprehension
-                  <span className="qf-grouphead-note">opens the whole passage</span>
+                  <span className="qf-grouphead-note">opens the matching passage</span>
                   <i aria-hidden />
                 </p>
                 {results.rc.map((hit, index) => {
@@ -336,7 +341,7 @@ function FinderPanel({
                       onClick={() => openHit(hit)}
                     >
                       <span className="qf-addr">
-                        PT {hit.preptest} · S{hit.section} · P{hit.setNumber}
+                        PT {hit.preptest} · S{hit.section} · {hit.qnum ? `Q${hit.qnum}` : `P${hit.setNumber}`}
                       </span>
                       <span className="qf-row-text">
                         <span className="qf-row-title">
@@ -382,6 +387,8 @@ function FinderPanel({
               <BrowseByTest
                 lr={banks.lr}
                 rcPassages={banks.rcPassages}
+                rcQuestions={banks.rcQuestions}
+                bank={bank}
                 disabled={banks.loading}
                 onPick={setQuery}
               />
@@ -391,7 +398,7 @@ function FinderPanel({
               type="button"
               className="qf-door"
               onClick={() => {
-                navigate("/classroom/drill?stage=type-drill");
+                navigate(`/classroom/drill?section=${bank ?? "lr"}&stage=type-drill`);
                 onClose();
               }}
             >
@@ -452,17 +459,21 @@ function Snippet({
  *
  * Picking PrepTest 90 writes "PT90" into the same input the student could have
  * typed, so browsing and typing converge on one code path and one result list.
- * Options are drawn from BOTH banks — selectors built from LR alone would
- * silently disagree with the RC results sitting beside them.
+ * On the hub, options follow its active LR/RC switch. Elsewhere both banks are
+ * available. Either way browsing and typing use the same resolver.
  */
 function BrowseByTest({
   lr,
   rcPassages,
+  rcQuestions,
+  bank,
   disabled,
   onPick,
 }: {
   lr: { pt: number; section: number; qnum: number }[];
   rcPassages: { preptest: number; section: number }[];
+  rcQuestions: { preptest: number; section: number; qnum: number }[];
+  bank?: QuestionFinderBank;
   disabled: boolean;
   onPick: (query: string) => void;
 }) {
@@ -471,30 +482,43 @@ function BrowseByTest({
 
   const pts = React.useMemo(() => {
     const all = new Set<number>();
-    for (const question of lr) all.add(question.pt);
-    for (const passage of rcPassages) all.add(passage.preptest);
+    if (bank !== "rc") for (const question of lr) all.add(question.pt);
+    if (bank !== "lr") for (const passage of rcPassages) all.add(passage.preptest);
     return [...all].sort((a, b) => b - a);
-  }, [lr, rcPassages]);
+  }, [bank, lr, rcPassages]);
 
   const sections = React.useMemo(() => {
     if (!pt) return [] as number[];
     const target = Number(pt);
     const all = new Set<number>();
-    for (const question of lr) if (question.pt === target) all.add(question.section);
-    for (const passage of rcPassages) if (passage.preptest === target) all.add(passage.section);
+    if (bank !== "rc") {
+      for (const question of lr) if (question.pt === target) all.add(question.section);
+    }
+    if (bank !== "lr") {
+      for (const passage of rcPassages) if (passage.preptest === target) all.add(passage.section);
+    }
     return [...all].sort((a, b) => a - b);
-  }, [lr, pt, rcPassages]);
+  }, [bank, lr, pt, rcPassages]);
 
   const qnums = React.useMemo(() => {
     if (!pt || !section) return [] as number[];
     const all = new Set<number>();
-    for (const question of lr) {
-      if (question.pt === Number(pt) && question.section === Number(section)) {
-        all.add(question.qnum);
+    if (bank !== "rc") {
+      for (const question of lr) {
+        if (question.pt === Number(pt) && question.section === Number(section)) {
+          all.add(question.qnum);
+        }
+      }
+    }
+    if (bank !== "lr") {
+      for (const question of rcQuestions) {
+        if (question.preptest === Number(pt) && question.section === Number(section)) {
+          all.add(question.qnum);
+        }
       }
     }
     return [...all].sort((a, b) => a - b);
-  }, [lr, pt, section]);
+  }, [bank, lr, pt, rcQuestions, section]);
 
   const pick = (nextPt: string, nextSection: string, nextQnum: string) => {
     if (!nextPt) return onPick("");

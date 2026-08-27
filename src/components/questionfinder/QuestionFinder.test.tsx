@@ -39,15 +39,15 @@ vi.mock("./useQuestionFinderBanks", () => ({
       },
     ],
     rcQuestions: [
-      { passageId: 4021, preptest: 88, section: 3, prompt: "The passage suggests the reasoning was..." },
+      { questionId: 503, passageId: 4021, preptest: 88, section: 3, qnum: 3, position: 3, prompt: "The passage mentions the stretcher frame." },
     ],
   }),
 }));
 
-const openFinder = () => {
+const openFinder = (bank?: "lr" | "rc") => {
   render(
     <MemoryRouter>
-      <QuestionFinder returnTo="/classroom" />
+      <QuestionFinder returnTo="/classroom" bank={bank} />
     </MemoryRouter>,
   );
   fireEvent.click(screen.getByRole("button", { name: /find a question/i }));
@@ -75,18 +75,25 @@ describe("QuestionFinder", () => {
     );
   });
 
-  it("says an RC hit opens the whole passage before it is clicked", async () => {
+  it("says an RC hit opens its matching passage before it is clicked", async () => {
     const dialog = openFinder();
     type(dialog, "stretcher frame");
-    expect(await within(dialog).findByText(/opens the whole passage/i)).toBeInTheDocument();
+    expect(await within(dialog).findByText(/opens the matching passage/i)).toBeInTheDocument();
     expect(within(dialog).getByText("7 questions")).toBeInTheDocument();
   });
 
-  it("opens an RC hit at its passage, not at the question that matched", async () => {
+  it("opens an RC hit at the matching question inside its passage", async () => {
     const dialog = openFinder();
     type(dialog, "stretcher frame");
     fireEvent.click(await within(dialog).findByRole("button", { name: /PT 88/ }));
-    expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=4021");
+    expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=4021&q=503");
+  });
+
+  it("uses the active RC side and understands a spoken-style full address", async () => {
+    const dialog = openFinder("rc");
+    type(dialog, "Practice Test 88 section number 3 question number 3");
+    expect(await within(dialog).findByRole("button", { name: /PT 88 · S3 · Q3/ })).toBeInTheDocument();
+    expect(within(dialog).queryByText("Logical Reasoning")).toBeNull();
   });
 
   it("echoes a recognised address back so the syntax is learned by using it", async () => {
@@ -135,7 +142,7 @@ describe("QuestionFinder", () => {
   it("hands set-building to the Drill console instead of doing it here", () => {
     const dialog = openFinder();
     fireEvent.click(within(dialog).getByRole("button", { name: /build a set/i }));
-    expect(navigate).toHaveBeenCalledWith("/classroom/drill?stage=type-drill");
+    expect(navigate).toHaveBeenCalledWith("/classroom/drill?section=lr&stage=type-drill");
   });
 
   it("offers both banks in Browse by test, not LR alone", () => {
@@ -151,5 +158,14 @@ describe("QuestionFinder", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /browse by test/i }));
     fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
     expect(within(dialog).getByRole("textbox")).toHaveValue("PT90");
+  });
+
+  it("keeps Browse by test synchronized with the active RC bank", () => {
+    const dialog = openFinder("rc");
+    fireEvent.click(within(dialog).getByRole("button", { name: /browse by test/i }));
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "88" } });
+    fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "3" } });
+    expect(within(dialog).getByRole("option", { name: "Question 3" })).toBeInTheDocument();
+    expect(within(dialog).queryByRole("option", { name: "PT 90" })).toBeNull();
   });
 });

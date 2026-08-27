@@ -401,7 +401,7 @@ export default function AcademyMainhub({
             both mounts. No access check here: the whole route is behind
             has_drill_access. */}
         <div className="drill-observatory-tools">
-          <QuestionJump returnTo={drillReturnTo} tone="dark" />
+          <QuestionJump returnTo={drillReturnTo} tone="dark" bank={section} />
           {/* The section switch. Top right of the same band, opposite the jump
               box — one control, one position, on both mounts of this page. */}
           <SectionToggle section={section} onChange={changeSection} />

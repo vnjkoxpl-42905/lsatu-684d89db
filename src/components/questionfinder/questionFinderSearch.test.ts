@@ -65,10 +65,10 @@ const rcPassages: FinderRcPassageSource[] = [
 ];
 
 const rcQuestions: FinderRcQuestionSource[] = [
-  { passageId: 4021, preptest: 88, section: 3, prompt: "The passage suggests the artist's reasoning was..." },
-  { passageId: 4021, preptest: 88, section: 3, prompt: "Which one of the following best describes the reasoning?" },
-  { passageId: 4021, preptest: 88, section: 3, prompt: "The author mentions the stretcher frame primarily to..." },
-  { passageId: 4022, preptest: 88, section: 3, prompt: "According to the passage, the drought was caused by..." },
+  { questionId: 501, passageId: 4021, preptest: 88, section: 3, qnum: 1, position: 1, prompt: "The passage suggests the artist's reasoning was..." },
+  { questionId: 502, passageId: 4021, preptest: 88, section: 3, qnum: 2, position: 2, prompt: "Which one of the following best describes the reasoning?" },
+  { questionId: 503, passageId: 4021, preptest: 88, section: 3, qnum: 3, position: 3, prompt: "The author mentions the stretcher frame primarily to..." },
+  { questionId: 508, passageId: 4022, preptest: 88, section: 3, qnum: 8, position: 1, prompt: "According to the passage, the drought was caused by..." },
 ];
 
 const search = (query: string, limit?: number) =>
@@ -78,6 +78,9 @@ describe("parseQuestionAddress", () => {
   it.each([
     ["PT90 S1 Q12", { pt: 90, section: 1, qnum: 12 }],
     ["pt 90 section 1 question 12", { pt: 90, section: 1, qnum: 12 }],
+    ["Practice Test 90 section number 1 question number 12", { pt: 90, section: 1, qnum: 12 }],
+    ["Practice Test 90, section 1, question 12", { pt: 90, section: 1, qnum: 12 }],
+    ["PT90 Q12", { pt: 90, qnum: 12 }],
     ["PT90-S1-Q12", { pt: 90, section: 1, qnum: 12 }],
     ["90.1.12", { pt: 90, section: 1, qnum: 12 }],
     ["90-1-12", { pt: 90, section: 1, qnum: 12 }],
@@ -113,12 +116,11 @@ describe("runFinderSearch — free text", () => {
     expect(results.rc.length).toBeGreaterThan(0);
   });
 
-  it("collapses RC matches to one row per passage", () => {
-    // Three questions on passage 4021 mention reasoning; that is one result.
+  it("returns each matching RC question with its official section number", () => {
     const results = search("reasoning");
     const passage = results.rc.filter((hit) => hit.passageId === 4021);
-    expect(passage).toHaveLength(1);
-    expect(passage[0].matchedCount).toBe(2);
+    expect(passage).toHaveLength(2);
+    expect(passage.map((hit) => hit.qnum)).toEqual([1, 2]);
     expect(passage[0].questionCount).toBe(7);
   });
 
@@ -133,6 +135,11 @@ describe("runFinderSearch — free text", () => {
     const hit = results.lr.find((h) => h.qid === "PT84-S3-Q7");
     expect(hit?.snippet?.match).toBe("flaw in the reasoning");
     expect(hit?.snippet?.before).toContain("commits a");
+  });
+
+  it("matches remembered words even when their order is not exact", () => {
+    const results = search("drought fertilizer sales");
+    expect(results.lr.map((hit) => hit.qid)).toContain("PT90-S1-Q13");
   });
 
   it("limits each bank independently rather than sharing a budget", () => {
@@ -173,6 +180,12 @@ describe("runFinderSearch — addresses", () => {
     expect(results.lr).toHaveLength(0);
   });
 
+  it("resolves an RC PT, section, and question address to one exact question", () => {
+    const results = search("PT88 S3 Q2");
+    expect(results.rc).toHaveLength(1);
+    expect(results.rc[0]).toMatchObject({ questionId: 502, qnum: 2, passageId: 4021 });
+  });
+
   it("returns an unresolved address for a question that does not exist", () => {
     const results = search("PT90 S1 Q99");
     expect(results.address).toEqual({ pt: 90, section: 1, qnum: 99 });
@@ -199,9 +212,9 @@ describe("landings", () => {
     expect(href).toContain("returnTo=%2Fclassroom");
   });
 
-  it("sends an RC hit to the whole passage, not to one question", () => {
+  it("sends an RC question hit to its passage and exact question", () => {
     const hit = search("stretcher frame").rc[0];
-    expect(rcHitHref(hit)).toBe("/rc/drill?passage=4021");
+    expect(rcHitHref(hit)).toBe("/rc/drill?passage=4021&q=503");
   });
 });
 
@@ -245,6 +258,7 @@ describe("landing contracts against the runners that consume them", () => {
     // DEFAULT_CONFIG, which names no question subset, so every question on the
     // passage is asked. That IS the ADR 0008 behaviour, and adding a subset
     // here would quietly revert it.
+    expect(url.searchParams.get("q")).toBe("503");
     expect(url.searchParams.get("qids")).toBeNull();
     expect(url.searchParams.get("questions")).toBeNull();
   });

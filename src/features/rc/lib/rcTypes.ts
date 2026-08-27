@@ -34,7 +34,7 @@ export interface RcFeature {
 
 export interface RcQuestion {
   questionId: number;
-  /** 1-based position within the passage's question block. */
+  /** Official 1-based question number across the full RC section. */
   position: number;
   questionType: string;
   questionTypeFamily: string;

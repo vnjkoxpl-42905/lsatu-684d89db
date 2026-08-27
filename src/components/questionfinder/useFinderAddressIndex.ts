@@ -5,6 +5,12 @@ export interface FinderAddressRcPassage {
   /** The passage's position in its section — RC's Position, not a Set. */
   position: number;
   title: string | null;
+  questions: Array<{
+    /** Internal question id used to deep-link the RC player. */
+    id: number;
+    /** Official question number across the full section. */
+    number: number;
+  }>;
 }
 
 export interface FinderAddressSection {

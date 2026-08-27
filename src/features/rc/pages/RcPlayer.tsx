@@ -81,6 +81,7 @@ export default function RcPlayer() {
   const [state, dispatch] = React.useReducer(rcSessionReducer, [], () => initialState([]));
 
   const reviewOnly = params.get('review') === '1';
+  const targetQuestionId = Number(params.get('q')) || null;
 
   /* ------------------------------------------------------------ boot */
 
@@ -152,7 +153,16 @@ export default function RcPlayer() {
   React.useEffect(() => {
     if (!passages) return;
     const seeded = initialState(passages);
-    dispatch({ type: 'restore', state: seeded });
+    const targetIndex = targetQuestionId
+      ? seeded.items.findIndex((item) => item.question.questionId === targetQuestionId)
+      : -1;
+    dispatch({
+      type: 'restore',
+      state: {
+        ...seeded,
+        currentIndex: targetIndex >= 0 ? targetIndex : seeded.currentIndex,
+      },
+    });
 
     if (!sessionId) return;
     getSessionAttempts(sessionId)
@@ -173,7 +183,8 @@ export default function RcPlayer() {
             answers,
             flagged,
             recorded,
-            currentIndex: firstUnanswered === -1 ? 0 : firstUnanswered,
+            currentIndex:
+              targetIndex >= 0 ? targetIndex : firstUnanswered === -1 ? 0 : firstUnanswered,
             // Review deep links show every question's feedback at once.
             submitted: reviewOnly,
           },
@@ -183,7 +194,7 @@ export default function RcPlayer() {
         /* resuming without prior answers is still a usable drill */
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passages, sessionId]);
+  }, [passages, sessionId, targetQuestionId]);
 
   /* ----------------------------------------------------------- tools */
 

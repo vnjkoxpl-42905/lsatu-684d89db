@@ -56,17 +56,41 @@ for (const file of lrFiles) {
 }
 
 const rcIndex = JSON.parse(readFileSync(resolve(root, "public/data/rc/rc-index.json"), "utf8"));
+const rcQuestionIndex = JSON.parse(
+  readFileSync(resolve(root, "public/data/rc/rc-question-index.json"), "utf8"),
+);
+const rcQuestionsByPassage = new Map();
+for (const question of rcQuestionIndex.questions ?? []) {
+  const rows = rcQuestionsByPassage.get(question.passageId) ?? [];
+  rows.push(question);
+  rcQuestionsByPassage.set(question.passageId, rows);
+}
 for (const entry of rcIndex.preptests ?? []) {
   const pt = Number(entry.preptest);
   if (!Number.isFinite(pt)) continue;
+  const bySection = new Map();
   for (const passage of entry.passages ?? []) {
-    const sec = Number(passage.section);
+    const rows = bySection.get(passage.section) ?? [];
+    rows.push(passage);
+    bySection.set(passage.section, rows);
+  }
+  for (const [rawSection, passages] of bySection) {
+    const sec = Number(rawSection);
     if (!Number.isFinite(sec)) continue;
-    section(pt, sec).rc.push({
-      id: Number(passage.passageId),
-      position: Number(passage.setNumber),
-      title: passage.title ?? null,
-    });
+    for (const passage of [...passages].sort((a, b) => a.setNumber - b.setNumber)) {
+      const questions = [...(rcQuestionsByPassage.get(passage.passageId) ?? [])]
+        .sort((a, b) => a.position - b.position)
+        .map((question) => ({
+          id: Number(question.questionId),
+          number: Number(question.position),
+        }));
+      section(pt, sec).rc.push({
+        id: Number(passage.passageId),
+        position: Number(passage.setNumber),
+        title: passage.title ?? null,
+        questions,
+      });
+    }
   }
 }
 

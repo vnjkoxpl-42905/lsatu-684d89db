@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import QuestionFinder from "./QuestionFinder";
+import type { QuestionFinderBank } from "./questionFinderSearch";
 import {
   useFinderAddressIndex,
   type FinderAddressSection,
@@ -15,6 +16,8 @@ export interface QuestionJumpProps {
   returnTo: string;
   /** The host's surface, passed straight through to the search panel. */
   tone?: "light" | "dark";
+  /** Active side of the hub switch. */
+  bank?: QuestionFinderBank;
 }
 
 /**
@@ -30,22 +33,34 @@ export interface QuestionJumpProps {
  * row does; searching question *text* is still the panel's job, and its trigger
  * sits at the end of the row.
  *
- * A third select changes meaning with the section it belongs to, deliberately:
- * an LR section lists question numbers and opens one question in the drill
- * runner, an RC section lists passages and opens the whole passage. That is
- * ADR 0008's rule about a hit landing differently by bank, applied to browsing.
+ * The third select always lists official question numbers. LR opens the chosen
+ * question in the drill runner; RC opens its passage at the chosen question.
  */
-export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpProps) {
+export default function QuestionJump({ returnTo, tone = "light", bank }: QuestionJumpProps) {
   const navigate = useNavigate();
   const { tests, loading, failed } = useFinderAddressIndex();
 
   const [pt, setPt] = React.useState("");
   const [section, setSection] = React.useState("");
 
+  const availableTests = React.useMemo(
+    () =>
+      bank
+        ? tests.filter((test) =>
+            test.sections.some((entry) =>
+              bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0,
+            ),
+          )
+        : tests,
+    [bank, tests],
+  );
+
   const sections = React.useMemo<FinderAddressSection[]>(() => {
     if (!pt) return [];
-    return tests.find((test) => test.pt === Number(pt))?.sections ?? [];
-  }, [pt, tests]);
+    const all = availableTests.find((test) => test.pt === Number(pt))?.sections ?? [];
+    if (!bank) return all;
+    return all.filter((entry) => (bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0));
+  }, [availableTests, bank, pt]);
 
   const activeSection = React.useMemo(
     () => (section ? sections.find((s) => s.section === Number(section)) ?? null : null),
@@ -54,10 +69,15 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
 
   const isRc = !!activeSection && activeSection.lr.length === 0 && activeSection.rc.length > 0;
 
-  /* A section's kind is worth saying out loud in the label. Without it the
-     third dropdown silently changes from questions to passages and the student
-     is left to infer why "Question 12" vanished. */
-  const thirdLabel = isRc ? "Passage" : "Question";
+  const rcQuestions = React.useMemo(
+    () =>
+      (activeSection?.rc ?? []).flatMap((passage) =>
+        (passage.questions ?? []).map((question) => ({ ...question, passage })),
+      ),
+    [activeSection],
+  );
+
+  const thirdLabel = "Question";
 
   const openLr = (qnum: string) => {
     const params = new URLSearchParams({
@@ -69,8 +89,11 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
     navigate(`/drill?${params.toString()}`);
   };
 
-  const openRc = (passageId: string) => {
-    navigate(`/rc/drill?passage=${passageId}`);
+  const openRc = (target: string) => {
+    const [passageId, questionId] = target.split(":");
+    const params = new URLSearchParams({ passage: passageId });
+    if (questionId) params.set("q", questionId);
+    navigate(`/rc/drill?${params.toString()}`);
   };
 
   const thirdDisabled = loading || !activeSection;
@@ -79,7 +102,7 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
     : !section
       ? "Pick a section"
       : isRc
-        ? "Passage"
+        ? "Question"
         : "Question";
 
   return (
@@ -99,7 +122,7 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
             <option value="">
               {failed ? "Unavailable" : loading ? "Loading…" : "PrepTest"}
             </option>
-            {tests.map((test) => (
+            {availableTests.map((test) => (
               <option key={test.pt} value={test.pt}>
                 PT {test.pt}
               </option>
@@ -143,11 +166,9 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
           >
             <option value="">{thirdPlaceholder}</option>
             {isRc
-              ? activeSection!.rc.map((passage) => (
-                  <option key={passage.id} value={passage.id}>
-                    {passage.title
-                      ? `${passage.position}. ${passage.title}`
-                      : `Passage ${passage.position}`}
+              ? rcQuestions.map((question) => (
+                  <option key={question.id} value={`${question.passage.id}:${question.id}`}>
+                    Question {question.number} · Passage {question.passage.position}
                   </option>
                 ))
               : (activeSection?.lr ?? []).map((qnum) => (
@@ -159,7 +180,7 @@ export default function QuestionJump({ returnTo, tone = "light" }: QuestionJumpP
         </label>
 
         <div className="qj-search">
-          <QuestionFinder returnTo={returnTo} tone={tone} />
+          <QuestionFinder returnTo={returnTo} tone={tone} bank={bank} />
         </div>
       </div>
     </div>

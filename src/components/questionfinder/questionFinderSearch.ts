@@ -44,9 +44,14 @@ export interface FinderLrSource {
 /** The RC fields the finder reads, flattened from the passage index and the
  *  question index so this module never learns either file's shape. */
 export interface FinderRcQuestionSource {
+  questionId: number;
   passageId: number;
   preptest: number;
   section: number;
+  /** Official 1-based question number across the full RC section. */
+  qnum: number;
+  /** Canonical section-wide position from the RC source index. */
+  position: number;
   prompt: string | null;
 }
 
@@ -90,6 +95,9 @@ export interface FinderRcHit {
   topic: string | null;
   /** Every question on the passage — what actually opens. */
   questionCount: number;
+  /** Present when the query resolves to one precise RC question. */
+  questionId?: number;
+  qnum?: number;
   /** How many of them matched the query. Never the scope of the work. */
   matchedCount: number;
   snippet: FinderSnippet | null;
@@ -132,6 +140,32 @@ export function buildFinderSnippet(text: string, query: string): FinderSnippet |
   };
 }
 
+/**
+ * Falls back from an exact phrase to an all-words match. Students rarely
+ * remember the source sentence word-for-word; "drought fertilizer sales"
+ * should still find a sentence containing those ideas in another order.
+ */
+export function buildSmartFinderSnippet(text: string, query: string): FinderSnippet | null {
+  const exact = buildFinderSnippet(text, query);
+  if (exact) return exact;
+
+  const haystack = normalizeFinderText(text);
+  const folded = haystack.toLocaleLowerCase();
+  const terms = [...new Set(
+    normalizeFinderText(query)
+      .toLocaleLowerCase()
+      .split(/[^\p{L}\p{N}]+/u)
+      .filter((term) => term.length >= 2),
+  )];
+  if (terms.length < 2 || !terms.every((term) => folded.includes(term))) return null;
+
+  const first = terms
+    .map((term) => ({ term, index: folded.indexOf(term) }))
+    .filter(({ index }) => index >= 0)
+    .sort((a, b) => a.index - b.index)[0];
+  return first ? buildFinderSnippet(haystack, first.term) : null;
+}
+
 /* ------------------------------------------------------------ address parse */
 
 /* Four spellings, because a student types whichever one is in their head and
@@ -146,8 +180,10 @@ export function buildFinderSnippet(text: string, query: string): FinderSnippet |
    unlabelled forms: three loose numbers separated by spaces is far more likely
    to be a phrase from a stimulus than an address, so it is not accepted. */
 const LABELLED =
-  /^\s*(?:pt|preptest|test)?\s*[-.]?\s*(\d{1,3})\s*(?:[-.\s]\s*)?(?:s|sec|section)\s*[-.]?\s*(\d{1,2})\s*(?:(?:[-.\s]\s*)?(?:q|question)\s*[-.]?\s*(\d{1,3}))?\s*$/i;
-const LABELLED_PT_ONLY = /^\s*(?:pt|preptest|test)\s*[-.]?\s*(\d{1,3})\s*$/i;
+  /^\s*(?:pt|preptest|practice\s*test|test)?\s*[-.]?\s*(\d{1,3})\s*(?:[-.,:/\s]\s*)?(?:s|sec|section)\s*(?:(?:number|no\.?|#)\s*)?[-.]?\s*(\d{1,2})\s*(?:(?:[-.,:/\s]\s*)?(?:q|question)\s*(?:(?:number|no\.?|#)\s*)?[-.]?\s*(\d{1,3}))?\s*$/i;
+const LABELLED_PT_ONLY = /^\s*(?:pt|preptest|practice\s*test|test)\s*[-.]?\s*(\d{1,3})\s*$/i;
+const LABELLED_PT_QUESTION =
+  /^\s*(?:pt|preptest|practice\s*test|test)\s*[-.]?\s*(\d{1,3})\s*(?:[-.,:/\s]\s*)?(?:q|question)\s*(?:(?:number|no\.?|#)\s*)?[-.]?\s*(\d{1,3})\s*$/i;
 const NUMERIC = /^\s*(\d{1,3})\s*[-.]\s*(\d{1,2})\s*(?:[-.]\s*(\d{1,3}))?\s*$/;
 const BARE_PT = /^\s*(\d{1,3})\s*$/;
 
@@ -163,6 +199,9 @@ export function parseQuestionAddress(input: string): QuestionAddress | null {
       return address;
     }
   }
+
+  const ptQuestion = value.match(LABELLED_PT_QUESTION);
+  if (ptQuestion) return { pt: Number(ptQuestion[1]), qnum: Number(ptQuestion[2]) };
 
   const ptOnly = value.match(LABELLED_PT_ONLY) ?? value.match(BARE_PT);
   if (ptOnly) return { pt: Number(ptOnly[1]) };
@@ -220,15 +259,16 @@ export interface FinderSearchInput {
   rcQuestions: FinderRcQuestionSource[];
   /** Per bank, not overall — the two groups never compete for the same slots. */
   limit?: number;
+  /** When mounted from the drill hub, search only the active side of its switch. */
+  bank?: QuestionFinderBank;
 }
 
 /**
  * One query, two banks, two independently-ranked groups.
  *
- * The groups are never interleaved. Each bank's engine ranks its own hits, and
- * the RC group collapses to one row per passage because a passage is what an RC
- * hit opens — three matching questions in one passage are one result, not three
- * rows that all lead to the same place.
+ * The groups are never interleaved. Each bank's engine ranks its own hits. RC
+ * question matches point at the exact question inside its passage, while
+ * passage metadata matches remain passage-level results.
  */
 export function runFinderSearch({
   query,
@@ -236,6 +276,7 @@ export function runFinderSearch({
   rcPassages,
   rcQuestions,
   limit = 6,
+  bank,
 }: FinderSearchInput): FinderResults {
   const text = normalizeFinderText(query);
   const address = parseQuestionAddress(text);
@@ -246,15 +287,15 @@ export function runFinderSearch({
   const lrHits: FinderLrHit[] = [];
   let exact: FinderLrHit | null = null;
 
-  for (const question of lr) {
+  for (const question of bank === "rc" ? [] : lr) {
     if (!matchesAddress(address, question.pt, question.section, question.qnum)) continue;
 
     let snippet: FinderSnippet | null = null;
     if (phrase) {
       snippet =
-        buildFinderSnippet(question.stimulus ?? "", phrase) ??
-        buildFinderSnippet(question.questionStem, phrase) ??
-        buildFinderSnippet(question.qid, phrase);
+        buildSmartFinderSnippet(question.stimulus ?? "", phrase) ??
+        buildSmartFinderSnippet(question.questionStem, phrase) ??
+        buildSmartFinderSnippet(question.qid, phrase);
       if (!snippet) continue;
     }
 
@@ -277,60 +318,75 @@ export function runFinderSearch({
     if (lrHits.length >= limit && (exact || address?.qnum === undefined)) break;
   }
 
-  /* RC collapses to passages. Count every matching question first, then emit one
-     row per passage carrying that count alongside the passage's full size. */
-  const matchedByPassage = new Map<number, number>();
-  const snippetByPassage = new Map<number, FinderSnippet>();
-
-  if (phrase || address) {
-    for (const question of rcQuestions) {
-      if (!matchesAddress(address, question.preptest, question.section)) continue;
-      if (phrase) {
-        const snippet = buildFinderSnippet(question.prompt ?? "", phrase);
-        if (!snippet) continue;
-        if (!snippetByPassage.has(question.passageId)) {
-          snippetByPassage.set(question.passageId, snippet);
-        }
-      }
-      matchedByPassage.set(
-        question.passageId,
-        (matchedByPassage.get(question.passageId) ?? 0) + 1,
-      );
-    }
-  }
-
   const rcHits: FinderRcHit[] = [];
-  for (const passage of rcPassages) {
-    if (!matchesAddress(address, passage.preptest, passage.section)) continue;
+  if (bank !== "lr") {
+    const passageById = new Map(rcPassages.map((passage) => [passage.passageId, passage]));
+    const passagesWithQuestionHits = new Set<number>();
 
-    let matchedCount = matchedByPassage.get(passage.passageId) ?? 0;
-    let snippet = snippetByPassage.get(passage.passageId) ?? null;
+    /* A question-address or prompt match is one precise result. It still opens
+       its passage, but now lands on the numbered question the student named. */
+    if (phrase || address?.qnum !== undefined) {
+      for (const question of rcQuestions) {
+        if (!matchesAddress(address, question.preptest, question.section, question.qnum)) continue;
+        const passage = passageById.get(question.passageId);
+        if (!passage) continue;
+        const snippet = phrase
+          ? buildSmartFinderSnippet(question.prompt ?? "", phrase)
+          : null;
+        if (phrase && !snippet) continue;
 
-    if (phrase && matchedCount === 0) {
-      /* A passage can match on its own title or opening line even when no
-         question prompt does — that is still the passage the student meant. */
-      snippet =
-        buildFinderSnippet(passage.title ?? "", phrase) ??
-        buildFinderSnippet(passage.firstWords, phrase) ??
-        buildFinderSnippet(passage.topic ?? "", phrase);
-      if (!snippet) continue;
-      matchedCount = 0;
+        rcHits.push({
+          bank: "rc",
+          key: `rc-question:${question.questionId}`,
+          passageId: passage.passageId,
+          preptest: passage.preptest,
+          section: passage.section,
+          setNumber: passage.setNumber,
+          title: passage.title,
+          topic: passage.topic,
+          questionCount: passage.questionCount,
+          questionId: question.questionId,
+          qnum: question.qnum,
+          matchedCount: 1,
+          snippet,
+        });
+        passagesWithQuestionHits.add(passage.passageId);
+        if (rcHits.length >= limit) break;
+      }
     }
 
-    rcHits.push({
-      bank: "rc",
-      key: `rc:${passage.passageId}`,
-      passageId: passage.passageId,
-      preptest: passage.preptest,
-      section: passage.section,
-      setNumber: passage.setNumber,
-      title: passage.title,
-      topic: passage.topic,
-      questionCount: passage.questionCount,
-      matchedCount,
-      snippet,
-    });
-    if (rcHits.length >= limit) break;
+    /* Partial addresses and passage-text queries resolve at passage scope. Do
+       not repeat a passage already represented by a precise question hit. */
+    if (rcHits.length < limit && address?.qnum === undefined) {
+      for (const passage of rcPassages) {
+        if (!matchesAddress(address, passage.preptest, passage.section)) continue;
+        if (passagesWithQuestionHits.has(passage.passageId)) continue;
+
+        let snippet: FinderSnippet | null = null;
+        if (phrase) {
+          snippet =
+            buildSmartFinderSnippet(passage.title ?? "", phrase) ??
+            buildSmartFinderSnippet(passage.firstWords, phrase) ??
+            buildSmartFinderSnippet(passage.topic ?? "", phrase);
+          if (!snippet) continue;
+        }
+
+        rcHits.push({
+          bank: "rc",
+          key: `rc:${passage.passageId}`,
+          passageId: passage.passageId,
+          preptest: passage.preptest,
+          section: passage.section,
+          setNumber: passage.setNumber,
+          title: passage.title,
+          topic: passage.topic,
+          questionCount: passage.questionCount,
+          matchedCount: 0,
+          snippet,
+        });
+        if (rcHits.length >= limit) break;
+      }
+    }
   }
 
   return { lr: lrHits, rc: rcHits, address, exact };
@@ -353,7 +409,9 @@ export function lrHitHref(hit: FinderLrHit, returnTo: string): string {
   return `/drill?${params.toString()}`;
 }
 
-/** Where an RC hit goes: the whole passage, every question on it. ADR 0008. */
+/** Opens an RC passage, targeting the matched question when one is known. */
 export function rcHitHref(hit: FinderRcHit): string {
-  return `/rc/drill?passage=${hit.passageId}`;
+  const params = new URLSearchParams({ passage: String(hit.passageId) });
+  if (hit.questionId !== undefined) params.set("q", String(hit.questionId));
+  return `/rc/drill?${params.toString()}`;
 }

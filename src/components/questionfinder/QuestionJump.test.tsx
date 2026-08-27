@@ -25,8 +25,18 @@ vi.mock("./useFinderAddressIndex", () => ({
             section: 2,
             lr: [],
             rc: [
-              { id: 1188, position: 1, title: "Risk Communication" },
-              { id: 1190, position: 2, title: null },
+              {
+                id: 1188,
+                position: 1,
+                title: "Risk Communication",
+                questions: [{ id: 701, number: 1 }, { id: 702, number: 2 }],
+              },
+              {
+                id: 1190,
+                position: 2,
+                title: null,
+                questions: [{ id: 708, number: 8 }],
+              },
             ],
           },
         ],
@@ -35,10 +45,10 @@ vi.mock("./useFinderAddressIndex", () => ({
   }),
 }));
 
-function mount() {
+function mount(bank?: "lr" | "rc") {
   return render(
     <MemoryRouter>
-      <QuestionJump returnTo="/classroom" />
+      <QuestionJump returnTo="/classroom" bank={bank} />
     </MemoryRouter>,
   );
 }
@@ -71,18 +81,23 @@ describe("QuestionJump", () => {
     expect(href).toContain("returnTo=%2Fclassroom");
   });
 
-  it("opens the whole passage on an RC section, and says Passage rather than Question", async () => {
-    mount();
+  it("opens the RC passage at the official question selected", async () => {
+    mount("rc");
     fireEvent.change(testSelect(), { target: { value: "90" } });
     fireEvent.change(sectionSelect(), { target: { value: "2" } });
 
-    const third = screen.getByRole("combobox", { name: /^passage$/i });
-    expect(screen.queryByRole("combobox", { name: /^question$/i })).toBeNull();
-    // An untitled passage still has to be pickable, by position.
-    expect(screen.getByRole("option", { name: "Passage 2" })).toBeInTheDocument();
+    const third = screen.getByRole("combobox", { name: /^question$/i });
+    expect(screen.getByRole("option", { name: "Question 8 · Passage 2" })).toBeInTheDocument();
 
-    fireEvent.change(third, { target: { value: "1188" } });
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=1188"));
+    fireEvent.change(third, { target: { value: "1190:708" } });
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=1190&q=708"));
+  });
+
+  it("shows only sections belonging to the active bank", () => {
+    mount("lr");
+    fireEvent.change(testSelect(), { target: { value: "90" } });
+    expect(screen.getByRole("option", { name: "Section 1 · LR" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Section 2 · RC" })).toBeNull();
   });
 
   it("clears the section when the test changes, so a stale address cannot be opened", () => {

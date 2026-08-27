@@ -326,9 +326,7 @@ html.dark .qf-panel,
   height: 1px;
 }
 
-/* The RC group says what opens BEFORE anything is clicked. An RC hit opens the
-   whole passage (ADR 0008), and a heading is the only place that can be said
-   once instead of on every row. */
+/* The RC group says what context opens before anything is clicked. */
 .qf-grouphead-note {
   color: var(--qf-soft);
   flex: none;

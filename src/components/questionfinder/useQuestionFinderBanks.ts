@@ -91,9 +91,12 @@ export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
         }
       }
       const questions: FinderRcQuestionSource[] = questionIndex.questions.map((entry) => ({
+        questionId: entry.questionId,
         passageId: entry.passageId,
         preptest: entry.preptest,
         section: entry.section,
+        qnum: entry.position,
+        position: entry.position,
         prompt: entry.prompt,
       }));
       return { passages, questions };
