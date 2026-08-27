@@ -10,11 +10,14 @@ import { cn } from '@/lib/utils';
  * cap and the columns stopped lining up with the bottom bar — so the geometry
  * lives here and nowhere else. A spacing fix is made once.
  *
- * What stays configurable is only what the two players genuinely disagree on:
- * the column ratio (LR splits evenly, RC gives the passage the extra room), the
- * page cap (LR caps at the bottom bar's max-w-7xl, RC fills its frame), and
- * whether the right column is present at all (RC's Passage Only View, and the
- * LR pool-exhausted state, both render a single full-width pane).
+ * What stays configurable is the column ratio, the page cap, and whether the
+ * right column is present at all (RC's Passage Only View, and the LR
+ * pool-exhausted state, both render a single full-width pane).
+ *
+ * Both drill runners currently pass `passage-weighted` with no page cap, so the
+ * defaults below are for other callers rather than for them. The doc used to
+ * say LR split evenly and capped at max-w-7xl, which stopped being true when
+ * the LR pane was rebuilt and was never corrected.
  */
 
 export type DrillSplitRatio = 'even' | 'passage-weighted';

@@ -6,7 +6,6 @@ import {
   RC_LINE_HEIGHTS,
   type RcA11ySettings,
 } from '../hooks/useRcA11y';
-import type { RcSessionItem } from '../lib/rcSession';
 import type { RcPassage, RcQuestion } from '../lib/rcTypes';
 
 /* ----------------------------------------------------------------- shared */
@@ -69,108 +68,6 @@ function Modal({ title, onClose, children }: ShellProps) {
         {children}
       </div>
     </div>
-  );
-}
-
-/* ---------------------------------------------------------------- review */
-
-interface ReviewModalProps {
-  items: RcSessionItem[];
-  currentIndex: number;
-  answered: (item: RcSessionItem) => boolean;
-  flagged: (item: RcSessionItem) => boolean;
-  /** State classes for a pill, matching the footer pager. */
-  pillClass: (item: RcSessionItem, index: number) => string;
-  onNavigate: (index: number) => void;
-  onClose: () => void;
-  onSubmit?: () => void;
-}
-
-export function RcReviewModal({
-  items,
-  currentIndex,
-  answered,
-  flagged,
-  pillClass,
-  onNavigate,
-  onClose,
-  onSubmit,
-}: ReviewModalProps) {
-  const [onlyFlagged, setOnlyFlagged] = React.useState(false);
-  const [onlyUnattempted, setOnlyUnattempted] = React.useState(false);
-
-  const visible = items.filter((item) => {
-    if (onlyFlagged && !flagged(item)) return false;
-    if (onlyUnattempted && answered(item)) return false;
-    return true;
-  });
-
-  return (
-    <Modal title="Review" onClose={onClose}>
-      <div className="flex gap-5 text-[13px] text-slate-700">
-        <label className="inline-flex cursor-pointer items-center gap-2">
-          <input
-            type="checkbox"
-            checked={onlyFlagged}
-            onChange={(e) => setOnlyFlagged(e.target.checked)}
-          />
-          Flagged
-        </label>
-        <label className="inline-flex cursor-pointer items-center gap-2">
-          <input
-            type="checkbox"
-            checked={onlyUnattempted}
-            onChange={(e) => setOnlyUnattempted(e.target.checked)}
-          />
-          Unattempted
-        </label>
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {visible.map((item) => {
-          const index = items.indexOf(item);
-          const isCurrent = index === currentIndex;
-          return (
-            <button
-              key={item.question.questionId}
-              type="button"
-              className={cn(
-                'relative flex h-8 w-8 items-center justify-center rounded-full border text-[13px] font-medium tabular-nums transition-colors',
-                isCurrent
-                  ? 'border-slate-900 bg-slate-900 text-white'
-                  : pillClass(item, index),
-              )}
-              aria-label={`Go to question ${item.number}`}
-              aria-current={isCurrent ? 'true' : undefined}
-              onClick={() => {
-                onNavigate(index);
-                onClose();
-              }}
-            >
-              {item.number}
-              {flagged(item) && (
-                <span
-                  aria-hidden
-                  className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-amber-500"
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {visible.length === 0 && (
-        <p className="mt-3 text-[13px] text-slate-600">Nothing matches those filters.</p>
-      )}
-
-      {onSubmit && (
-        <div className="mt-6 text-right">
-          <button type="button" className={PILL_PRIMARY} onClick={onSubmit}>
-            Submit
-          </button>
-        </div>
-      )}
-    </Modal>
   );
 }
 

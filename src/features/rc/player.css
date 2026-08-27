@@ -68,8 +68,29 @@
   margin: 0 0 12px;
 }
 
-/* Passage Only View: the passage takes the full width in two columns. */
-.rc-passage-col.rc-passage-only {
+/*
+ * Passage Only View: the passage takes the full width in two columns.
+ *
+ * Two things were wrong here, and they compound.
+ *
+ * `column-count: 2` on its own meant two columns at every width, including
+ * 375px, where it produced two ~150px ribbons of Fraunces. Naming a
+ * `column-width` as well makes the count a CAP rather than a demand: the
+ * browser fits as many columns of at least that width as it can, up to two, and
+ * drops to one when it cannot. It reads this element's own width, not the
+ * viewport, so a docked or split pane is handled like a narrow window.
+ *
+ * The columns also sat on `.rc-passage-col`, which is the SCROLL container and
+ * so has a fixed height. A multi-column box that cannot grow downwards grows
+ * sideways instead: at 375px the pane's scrollWidth was 2856px against a 357px
+ * frame, and the passage became a horizontal scroller. (Setting `column-count:
+ * 1` does not help — any column property makes it a multicol container, and it
+ * still overflowed inline.) Moving the columns onto the inner text, whose
+ * height is free, lets them balance and the pane scroll down like every other
+ * reading surface. Measured after: scrollWidth 357 against a 357px frame.
+ */
+.rc-passage-only .rc-passage-text {
+  column-width: 20rem;
   column-count: 2;
   column-gap: 48px;
 }

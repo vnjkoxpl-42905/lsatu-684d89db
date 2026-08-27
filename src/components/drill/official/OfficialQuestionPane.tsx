@@ -260,6 +260,13 @@ export default function OfficialQuestionPane({
                         if (!answerRevealed) onEliminate(key);
                       }}
                       disabled={answerRevealed}
+                      // A screen reader announced this as an unlabelled button.
+                      // RC's equivalent has carried both of these since it was
+                      // written; this is LR catching up to it.
+                      aria-label={
+                        isEliminated ? `Restore choice ${key}` : `Cross out choice ${key}`
+                      }
+                      title={isEliminated ? "Restore" : "Cross out"}
                       className={cn(
                         "mt-0.5 p-1 transition-opacity",
                         isEliminated ? "text-slate-700" : "text-slate-400 opacity-0 group-hover:opacity-100 hover:text-slate-800",

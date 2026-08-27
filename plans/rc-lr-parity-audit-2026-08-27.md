@@ -211,6 +211,43 @@ Codex argued these cost more than they return, and I agree on each:
 
 ---
 
+## 3a. Status — what has shipped **[v3]**
+
+| Step | Item | State |
+|---|---|---|
+| 1 | Blind-review state machine tests | **done** — `rcHydration.test.ts`, 16 cases where there were none |
+| 2 | Hydration projection (A3, A5, A10) | **done** — `rcHydration.ts`; confirmed against real rows |
+| 3 | Guarded selector + elimination split (A1, A2) | **done** |
+| 4 | A4, A6, A7, A8 | **done** |
+| 5 | A11 write failures | **done** — writes report success; reveal, passage review and submit all wait on it |
+| 6 | B2 badge, B7+B6 banner, B3 Help | **done** — `HelpSheet` mounted and keyboard-gated behind it |
+| 7 | B12 Passage Only responsive | **done** — and it turned out to be worse than the audit said: see below |
+| 8 | B1 type scale | **open — Joshua's call**, screenshots taken at both sizes |
+| 9 | B5 hexes, B11 LR label, B4 copy | **done** |
+| 10 | D3 Find | **done** — built the match navigation rather than deleting the plumbing |
+| 11 | D1/D2/D4/D5 hygiene | **done** — D2 stopped being dead code by becoming the Find buttons |
+
+**B12 was two defects, not one.** The columns sat on `.rc-passage-col`, which is
+the scroll container and therefore height-constrained. A multi-column box that
+cannot grow down grows sideways: at 375px the pane's `scrollWidth` was **2856px
+against a 357px frame**, so Passage Only was a horizontal scroller at every
+width, not only a two-column one. `column-count: 1` does not fix that — any
+column property makes the element a multicol container and it still overflows
+inline. The columns moved onto the inner text, whose height is free. Measured
+after, across 375 / 680 / 900 / 1440: one column below ~900, two above, no
+horizontal overflow anywhere, page `scrollWidth` equal to the viewport at all four.
+
+**New finding, not in the audit, for B1's decision.** The reading measure is
+~78 characters per line at 17px and ~80 at 19px. The `52ch` cap is doing its
+job (`max-width` computes to exactly 52ch) but 52ch of Fraunces is 573px, not
+the "~68 real characters" `OfficialQuestionPane` claims — so both players run
+above the 45-75 band the same comment cites. **The size change does not move
+this**: the cap scales with the font, so 17px and 19px land within two
+characters of each other. The measure is a separate decision from B1 and is
+left for Joshua.
+
+---
+
 ## 4. Order of work **[v3: de-duplicated per Codex]**
 
 Tests first, because the state-machine fixes below are exactly the class of bug that shipped last night without one. v2 split the hydration work across steps 2 and 3, which was circular; it is one step now.

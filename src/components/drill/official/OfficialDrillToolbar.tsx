@@ -100,7 +100,9 @@ interface Props {
   leftTools?: React.ReactNode;
   /**
    * Rendered in the right cluster after the text controls and before the timer.
-   * RC uses it for response masking, the review grid, and full screen.
+   * RC puts its find-match readout and the next/previous match buttons here.
+   * (This used to claim response masking, a review grid and full screen, none
+   * of which RC has ever passed.)
    */
   rightTools?: React.ReactNode;
   /**

@@ -4,7 +4,9 @@ import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
-import { RcPager, RcToolbarButton, formatClock } from '../components/RcChrome';
+import HelpSheet from '@/components/help/HelpSheet';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../components/RcChrome';
 import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
 import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
@@ -91,6 +93,7 @@ export default function RcPlayer() {
     // across a search-param change, so without this the previous sitting's
     // re-attempts, clock, scroll positions and open modal ride into the next one.
     setError(null);
+    setSaveError(null);
     setReattemptPicks(new Map());
     setSkippedReattempt(new Set());
     setFirstAttemptEliminations(new Map());
@@ -255,6 +258,14 @@ export default function RcPlayer() {
   const [firstAttemptEliminations, setFirstAttemptEliminations] = React.useState<
     Map<number, RcLetter[]>
   >(new Map());
+  /** A write that did not land. Shown to the student rather than swallowed. */
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+  /**
+   * LR carries a help circle on every question and RC carried none, in either
+   * mode — so a student stuck on a passage had no route to Joshua from where
+   * they were stuck.
+   */
+  const [helpOpen, setHelpOpen] = React.useState(false);
 
   const item = getCurrentItem(state);
   const type = React.useMemo(
@@ -284,13 +295,13 @@ export default function RcPlayer() {
   /* --------------------------------------------------------- writing */
 
   const writeAttempt = React.useCallback(
-    async (target: RcSessionItem, selected: RcLetter | null) => {
-      if (!sessionId) return;
+    async (target: RcSessionItem, selected: RcLetter | null): Promise<boolean> => {
+      if (!sessionId) return false;
       // A question already written once in this session is not written again.
       // Resume used to lose the reveal state, which left Confirm enabled on a
       // question that was already answered and inserted a second attempt row
       // for it. The reveal state is restored now; this is the belt.
-      if (state.recorded.has(target.question.questionId)) return;
+      if (state.recorded.has(target.question.questionId)) return true;
       const timeMs = Math.max(0, Date.now() - questionStart.current);
       try {
         await recordAttempt({
@@ -305,8 +316,17 @@ export default function RcPlayer() {
           isFirstAttempt: true,
         });
         dispatch({ type: 'markRecorded', questionIds: [target.question.questionId] });
+        return true;
       } catch {
-        // A failed write must not swallow the student's place in the drill.
+        /*
+         * A failed write used to return quietly and the caller carried on:
+         * Confirm revealed, the passage moved into review, and submit walked to
+         * the results screen — all of it telling the student work was recorded
+         * when none of it was. Losing their place is still the wrong cure, so
+         * the drill stays where it is and says what happened instead.
+         */
+        setSaveError('That answer did not save.');
+        return false;
       }
     },
     [sessionId, state.flagged, state.eliminations, state.recorded],
@@ -317,10 +337,18 @@ export default function RcPlayer() {
       const items = itemsForPassage(state, passageId).filter(
         (i) => !state.recorded.has(i.question.questionId),
       );
+      let allSaved = true;
       for (const target of items) {
-        await writeAttempt(target, state.answers.get(target.question.questionId) ?? null);
+        const saved = await writeAttempt(
+          target,
+          state.answers.get(target.question.questionId) ?? null,
+        );
+        if (!saved) allSaved = false;
       }
-      dispatch({ type: 'reviewPassage', passageId });
+      // Feedback is the reward for a recorded answer. Opening it over a write
+      // that failed would show the student a verdict on work nothing holds.
+      if (allSaved) dispatch({ type: 'reviewPassage', passageId });
+      return allSaved;
     },
     [state, writeAttempt],
   );
@@ -347,12 +375,24 @@ export default function RcPlayer() {
   const handleSubmit = React.useCallback(async () => {
     for (const target of state.items) {
       if (!state.recorded.has(target.question.questionId)) {
-        await writeAttempt(target, state.answers.get(target.question.questionId) ?? null);
+        const saved = await writeAttempt(
+          target,
+          state.answers.get(target.question.questionId) ?? null,
+        );
+        // Stop at the first failure. Completing the session and walking to a
+        // results screen built on answers that were never stored is the worst
+        // version of this: the student sees a score for work that is gone.
+        if (!saved) return;
       }
     }
     dispatch({ type: 'submit' });
     if (sessionId) {
-      await completeSession(sessionId);
+      try {
+        await completeSession(sessionId);
+      } catch {
+        setSaveError('The drill did not finish saving.');
+        return;
+      }
       // Carried, not dropped: a leg of a practice test has somewhere to be
       // after the results screen, and only this query string knows where.
       navigate(`/rc/results/${sessionId}${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`);
@@ -426,6 +466,10 @@ export default function RcPlayer() {
           // live in `firstAttemptEliminations` and are never written here.
           eliminations: state.eliminations.get(id) ?? [],
           isFirstAttempt: false,
+        }).catch(() => {
+          // This was fire-and-forget with no catch, so a failed re-attempt
+          // was an unhandled rejection and the student was told nothing.
+          setSaveError('That second answer did not save.');
         });
         return;
       }
@@ -444,7 +488,7 @@ export default function RcPlayer() {
       // A paused drill is paused for the keyboard too. The scrim stops the
       // pointer and used to stop nothing else.
       if (state.paused) return;
-      if (modal) return;
+      if (modal || helpOpen) return;
 
       const target = e.target as HTMLElement | null;
       if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') return;
@@ -470,7 +514,7 @@ export default function RcPlayer() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [item, modal, state.paused, state.currentIndex, toggleFlag, goTo, selectLetter]);
+  }, [item, modal, helpOpen, state.paused, state.currentIndex, toggleFlag, goTo, selectLetter]);
 
   /* ----------------------------------------------------------- render */
 
@@ -554,8 +598,10 @@ export default function RcPlayer() {
         label: 'Confirm',
         disabled: !selected || revealed,
         onClick: async () => {
-          await writeAttempt(item, selected);
-          dispatch({ type: 'reveal', questionId });
+          // Reveal is the reward for a recorded answer, so it waits for one.
+          if (await writeAttempt(item, selected)) {
+            dispatch({ type: 'reveal', questionId });
+          }
         },
       };
     }
@@ -609,6 +655,7 @@ export default function RcPlayer() {
                 : () => dispatch({ type: 'setPaused', paused: !state.paused })
             }
             onComplete={reviewOnly ? undefined : () => setModal('submit')}
+            onOpenHelp={() => setHelpOpen(true)}
             pauseNoun="Drill"
             completeLabel="Complete Drill"
           />
@@ -632,6 +679,35 @@ export default function RcPlayer() {
              explanations counts nothing and reads as pressure. */
           timerMode={reviewOnly ? undefined : budget != null ? 'countdown' : 'stopwatch'}
           timerOverBudget={overBudget}
+          /*
+           * Find used to collect a match count nothing read and an index
+           * nothing advanced, so searching a 500-word passage jumped to the
+           * first hit and stopped there. The count and the index were already
+           * wired all the way to the paint layer; only the controls were
+           * missing. This is also the slot the prop docs always claimed RC
+           * used and never did.
+           */
+          rightTools={
+            findCount > 0 ? (
+              <>
+                <span className="px-1 text-[13px] tabular-nums text-slate-700">
+                  {Math.min(findIndex, findCount - 1) + 1} of {findCount}
+                </span>
+                <RcToolbarIcon
+                  label="Previous match"
+                  onClick={() => setFindIndex((i) => (i - 1 + findCount) % findCount)}
+                >
+                  <ChevronUp size={18} />
+                </RcToolbarIcon>
+                <RcToolbarIcon
+                  label="Next match"
+                  onClick={() => setFindIndex((i) => (i + 1) % findCount)}
+                >
+                  <ChevronDown size={18} />
+                </RcToolbarIcon>
+              </>
+            ) : undefined
+          }
           /* No REVIEW badge here. The toolbar's left group is where the
              section's tools live, and the breadcrumb plus the absent clock
              already say what this is. LR carries no such badge in any mode. */
@@ -706,6 +782,15 @@ export default function RcPlayer() {
           }
         />
 
+        {saveError && (
+          <div className="rc-save-error" role="alert">
+            <span>{saveError} Your place in the drill is safe.</span>
+            <button type="button" className="rc-skip-link" onClick={() => setSaveError(null)}>
+              Dismiss
+            </button>
+          </div>
+        )}
+
         <OfficialSmartDrillBar
           primaryAction="submit"
           primaryVisible={!!primary}
@@ -737,6 +822,8 @@ export default function RcPlayer() {
           }
         />
       </OfficialDrillFrame>
+
+      {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}
 
       {modal === 'details' && (
         <RcQuestionDetails

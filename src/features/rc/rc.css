@@ -524,3 +524,23 @@
   flex-direction: column;
   gap: var(--observatory-space-2);
 }
+
+/*
+ * A write that did not land.
+ *
+ * Every failure used to be caught and dropped, so Confirm revealed, the passage
+ * moved into review and submit walked to a results screen — all of it telling
+ * the student their work was recorded when nothing held it. The drill still
+ * keeps their place; it just stops claiming the save happened.
+ */
+.rc-save-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid #fca5a5; /* red-300 */
+  background: #fef2f2; /* red-50, as the wrong verdict */
+  color: #7f1d1d;
+  padding: 10px 24px;
+  font-size: 14px;
+}
