@@ -110,8 +110,10 @@ export function RcChoiceRow({
         }
         title={eliminated ? 'Restore' : 'Cross out'}
         className={cn(
-          'mt-0.5 p-1 transition-colors',
-          eliminated ? 'text-slate-700' : 'text-slate-400 hover:text-slate-800',
+          'mt-0.5 p-1 transition-opacity',
+          eliminated
+            ? 'text-slate-700'
+            : 'text-slate-400 opacity-0 hover:text-slate-800 focus-visible:opacity-100 group-hover:opacity-100',
         )}
       >
         {eliminated ? <EyeOff size={16} /> : <Eye size={16} />}

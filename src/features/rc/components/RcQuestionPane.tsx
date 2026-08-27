@@ -63,9 +63,11 @@ export function RcQuestionPane({
     >
       {reattemptMode && (
         <div className="rc-reattempt-banner">
-          <span>Answer again, then compare.</span>
+          <span>
+            Your answer is hidden. Pick again, then see both.
+          </span>
           <button type="button" className="rc-skip-link" onClick={onSkipToAnswer}>
-            Skip to answer
+            Show my answer
           </button>
         </div>
       )}
@@ -107,13 +109,19 @@ export function RcQuestionPane({
 
       <ul className="mt-4 space-y-3.5">
         {question.choices.map((choice) => {
-          const isPicked = (reattemptPick ?? selected) === choice.letter;
+          /* Blind means blind. `reattemptPick ?? selected` fell back to the
+             original answer while the student was being asked to answer again,
+             so the pane highlighted the very choice it was hiding — the
+             re-attempt was answering itself. */
+          const isPicked = reattemptMode
+            ? reattemptPick === choice.letter
+            : (reattemptPick ?? selected) === choice.letter;
           return (
             <RcChoiceRow
               key={choice.letter}
               choice={choice}
               selected={isPicked}
-              eliminated={eliminations.includes(choice.letter)}
+              eliminated={!reattemptMode && eliminations.includes(choice.letter)}
               revealed={showFeedback}
               disabled={showFeedback}
               onSelect={onSelect}

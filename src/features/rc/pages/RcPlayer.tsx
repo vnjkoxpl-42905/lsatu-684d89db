@@ -41,7 +41,6 @@ import {
   setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
-import { useDrillHubSectionNavigation } from '@/hooks/useDrillHubSectionNavigation';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
 import '../rc.css';
@@ -72,7 +71,6 @@ export default function RcPlayer() {
    * errand and keeps its own hub navigation below.
    */
   const exitPath = returnTo ?? '/rc';
-  const openDrillHubSection = useDrillHubSectionNavigation();
 
   const [config, setConfig] = React.useState<RcDrillConfig>(DEFAULT_CONFIG);
   const [passages, setPassages] = React.useState<RcPassage[] | null>(null);
@@ -377,12 +375,22 @@ export default function RcPlayer() {
   const questionId = item.question.questionId;
   const selected = state.answers.get(questionId) ?? null;
 
-  // Review of work the student did not just answer starts with a fresh attempt.
-  const reattemptMode =
+  /**
+   * Is this question still waiting on a blind re-attempt?
+   *
+   * Review of work the student did not just answer starts with a fresh attempt,
+   * and until they make it, nothing on screen may state the verdict — not the
+   * question pane, and not the pager.
+   */
+  /* A plain function, not a hook: this sits below the loading and error
+     returns, and a useCallback here changes the hook count between renders. */
+  const awaitingReattempt = (id: number) =>
     reviewOnly &&
-    state.recorded.has(questionId) &&
-    !reattemptPicks.has(questionId) &&
-    !skippedReattempt.has(questionId);
+    state.recorded.has(id) &&
+    !reattemptPicks.has(id) &&
+    !skippedReattempt.has(id);
+
+  const reattemptMode = awaitingReattempt(questionId);
 
   const passageDone = passageComplete(state, item.passage.passageId);
   const passageReviewed = state.reviewedPassages.has(item.passage.passageId);
@@ -393,6 +401,9 @@ export default function RcPlayer() {
    */
   const pillStatus = (entry: RcPagerEntry): 'correct' | 'incorrect' | 'answered' | 'unanswered' => {
     if (entry.kind !== 'question' || entry.questionId == null) return 'unanswered';
+    // A pill that reads "correct" beside a question the student is being asked
+    // to answer again blind has already answered it for them.
+    if (awaitingReattempt(entry.questionId)) return 'unanswered';
     const target = state.items.find((i) => i.question.questionId === entry.questionId);
     const pick = state.answers.get(entry.questionId);
     const showResult = target ? isRevealed(state, config.reveal, target) : false;
@@ -472,7 +483,13 @@ export default function RcPlayer() {
           <OfficialSessionStrip
             breadcrumbs={breadcrumbs}
             isPaused={state.paused}
-            onTogglePause={() => dispatch({ type: 'setPaused', paused: !state.paused })}
+            /* Review has no clock and nothing to pause — the work is already
+               done. Pausing a review only puts a scrim over your own answers. */
+            onTogglePause={
+              reviewOnly
+                ? undefined
+                : () => dispatch({ type: 'setPaused', paused: !state.paused })
+            }
             onComplete={reviewOnly ? undefined : () => setModal('submit')}
             pauseNoun="Drill"
             completeLabel="Complete Drill"
@@ -481,12 +498,6 @@ export default function RcPlayer() {
       >
         <OfficialDrillToolbar
           directions={RC_DIRECTIONS}
-          sectionToggle={{
-            active: 'rc',
-            onSelect: (section) => {
-              if (section === 'lr') openDrillHubSection('lr');
-            },
-          }}
           highlightMode={highlightMode}
           setHighlightMode={(mode) => setHighlightMode(mode as RcHighlightMode)}
           searchTerm={findQuery}
@@ -499,12 +510,14 @@ export default function RcPlayer() {
           fontScaleOptions={RC_FONT_SCALE_OPTIONS}
           a11yExtraSections={<RcTextSettings settings={a11y.settings} onChange={a11y.update} />}
           timerLabel={`${budget != null && clockSeconds < 0 ? '+' : ''}${formatClock(Math.abs(clockSeconds))}`}
-          timerMode={budget != null ? 'countdown' : 'stopwatch'}
+          /* No timer in review. A stopwatch running while you read your own
+             explanations counts nothing and reads as pressure. */
+          timerMode={reviewOnly ? undefined : budget != null ? 'countdown' : 'stopwatch'}
           timerOverBudget={overBudget}
           leftTools={
             <>
               <RcToolbarButton onClick={() => setPassageOnly((v) => !v)}>
-                {passageOnly ? 'Passage with Question View' : 'Passage Only View'}
+                {passageOnly ? 'Passage + Question' : 'Passage Only'}
               </RcToolbarButton>
               {reviewOnly && (
                 <span className="ml-1 rounded-full bg-[#7f1d1d] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
@@ -544,8 +557,12 @@ export default function RcPlayer() {
               textStyle={type.passage}
               passageOnly={passageOnly}
             >
-              {/* The summary is review material, so it only appears once feedback is on. */}
-              {revealed && <RcPassageSummary summaries={item.passage.summaries} />}
+              {/* Review material, so it waits for feedback — and it stays shut
+                  during a blind re-answer. A summary states the main point, and
+                  the first question on most passages asks for exactly that. */}
+              {revealed && !reattemptMode && (
+                <RcPassageSummary summaries={item.passage.summaries} />
+              )}
             </RcPassagePane>
           }
           question={
