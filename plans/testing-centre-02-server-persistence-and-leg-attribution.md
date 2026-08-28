@@ -33,19 +33,16 @@ that assumes the new schema.
 integrity exists, but it does NOT close the window on its own, because runs outlive
 deploys: a run can start after change 2 lands, sit one or more legs under the old
 resettable clock, survive the change-4 deploy in flight, and then receive an official
-snapshot once change 3 lands. Ordering the deploys does not order the sittings. So
-either:
+snapshot once change 3 lands. Ordering the deploys does not order the sittings. **Decision: changes 2 and 4 deploy as a single release. This is mandatory, not a
+preference.** The alternative — a `clock_integrity` marker on runs created after change
+4 — was considered and rejected: carrying it properly means adding the column and the
+model field, threading a second distinct reason through change 3's `estimate` path, and
+teaching change 5's trajectory and teacher surfaces to label or exclude those
+nonstandard scores. That is a schema-and-surface change across three plans to support a
+deploy split that buys nothing. Ship them together and no run can exist in the gap.
 
-- **Preferred: deploy 2 and 4 as a single release**, so no run can ever exist in the
-  gap; or
-- if they must ship separately, **invalidate every in-progress run created before clock
-  integrity landed** — stamp a `clock_integrity` marker (a column or a version int) on
-  rows created after change 4, and have change 3 refuse to mint an `official-table`
-  snapshot for any run without it, falling back to `estimate` with the nonstandard
-  qualification change 3 already defines for unscoreable sittings.
-
-Whichever is chosen must be recorded here before implementation starts, because change
-3's finalization reads it.
+If for some reason they cannot ship together, STOP and re-plan rather than improvising a
+marker — do not deploy change 2 alone and sort it out later.
 
 ## The problem
 
@@ -341,7 +338,16 @@ In practiceTest.ts / a new coordinator:
      would discard every one of those on the next reload and make change 3's
      finalization un-retryable in exactly the case it must be retryable. So: keep the
      already-committed terminal STATUS immutable, and reconcile the remaining fields
-     by higher revision as usual.
+     by higher revision — but **enrichment is monotonic and never subtractive.**
+     Selecting the whole higher-revision row would let a newer offline row that has no
+     snapshot overwrite a server row that already carries `scaled_score` and
+     `completed_at`, erasing an official score with a stale local copy. Once the server
+     holds a non-null `completed_at` or score snapshot, those fields are immutable:
+     reconciliation may FILL them when absent, never clear or replace them. Implement
+     it as a field-level floor on exactly these terminal fields (the "never merge
+     field-by-field" rule still governs everything else). Test: server row complete
+     WITH a snapshot, local row complete at a higher revision WITHOUT one, reconcile,
+     assert the snapshot survives.
   Between two non-terminal candidates, higher revision wins, then more legs with
   `completedAt`, then recency. Never merge field-by-field — case 3 still selects a
   whole row, it just selects on revision rather than reflexively on origin.
@@ -353,8 +359,11 @@ In practiceTest.ts / a new coordinator:
   never starts before save N settles; (b) have every acknowledgement carry the revision
   it was sent with, and clear `dirty` only when that equals the current local revision.
   If the local revision has moved on, the run STAYS dirty and the newer revision is
-  scheduled. Test this directly: schedule save A, schedule save B, resolve B, then
-  resolve A, and assert the run is still dirty at B's revision.
+  scheduled. These are two separate guarantees and need two separate tests — once saves
+  are serialized, B cannot resolve before A, so a single interleaving test cannot cover
+  both: (i) an ORDERING test asserting save B never starts until save A settles; and
+  (ii) a STALE-ACKNOWLEDGEMENT test that delivers an acknowledgement carrying an older
+  revision than the current local one and asserts the run stays dirty.
 - Failure handling: failed remote save → sidecar `dirty: true`; Testing Centre and
   PracticeTestRun retry dirty runs on load; the resume list shows a quiet "not yet
   synced to your account" line on dirty rows. **Discard keeps a dirty local tombstone**
@@ -390,7 +399,16 @@ Wire it:
   happened. Restructure instead:
   - Add a parent bootstrap component that owns the async work: read `ptRun`/`ptLeg` from
     the URL, load the run via the store (local + remote, reconciled), and validate it
-    (leg in range, run owned by the current user, run in-progress).
+    (see the validation set below).
+  - **Validate hard — `ptLeg` is student-editable.** Ownership, leg-in-range, and
+    in-progress are not enough: a hand-edited `ptLeg` could start a future leg, restart
+    a completed one, or open an RC leg through the LR runner, consuming that leg's
+    single result slot. Require ALL of: run owned by the current user; run
+    `status === 'in-progress'`; `ptLeg === run.currentLeg` (never an arbitrary index);
+    the leg's `kind` matches the runner being entered (LR here, RC in RcPlayer); the
+    leg has a valid `startedAt`; and the leg has no `completedAt`. Take the section
+    number, passage set, and pace from the RUN, never from the URL — the URL supplies
+    identity only. Any failure takes the existing redirect.
   - While that is pending, render the drill's existing loading state. Render NOTHING
     that redirects, and do not construct `TimerProvider` yet — a timer built from a
     mode-derived duration and then corrected once `remainingMs` arrives is precisely

@@ -107,10 +107,17 @@ In practiceTest.ts:
     render it as a snapshotless completed run (the raw-only path this plan already
     defines), and retry finalization on the next load. That path is now reachable by
     design, not just by legacy data.
-  - Prefer to remove the failure mode outright: bundle the validated JSON as a static
-    import so it ships in the app bundle and cannot 404 at runtime. If it is bundled,
-    `failed` is unreachable and only `loaded` remains — say so explicitly in the
-    implementation rather than leaving dead branches unexplained.
+  - **Decision: bundle the curves and delete the failure state.** A `failed` load
+    produces a snapshotless completed run that must be retried later, while a LEGACY
+    snapshotless run must stay raw-only and never be rescored — and after a reload the
+    schema cannot tell those two apart, so a retry pass would either miss the first or
+    wrongly rescore the second. Rather than add a `score_finalization_pending` marker
+    to carry that distinction, remove the state that needs it: import the validated
+    JSON statically so it ships in the bundle and cannot 404. **Note Vite cannot
+    statically import JSON out of `public/` — put the file at `src/data/pt-curves.json`
+    and import it directly** (the validator script and its test path move with it).
+    Then only `loaded` exists, every snapshotless completed run is unambiguously
+    legacy, and the raw-only rendering below is its permanent treatment.
 - **Write the terminal snapshot through ONE `finalizeRun` function, covering every
   completion path.** Review round 2 found the trap: a run can reach
   `status: 'complete'` from TWO places in PracticeTestRun.tsx — the readback effect

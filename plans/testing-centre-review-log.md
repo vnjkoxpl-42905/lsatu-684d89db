@@ -421,3 +421,77 @@ Accepted all 11 plus the minor. Rejected: none. Notable resolutions:
   `clock_integrity` marker), and plan 03's header enforces it at finalization.
 - 11: RPC gains `exclude_ids text[] default '{}'` in plan 02; plan 05 passes unresolved
   dirty ids and skips cleanup entirely if the list cannot be built.
+
+## Round 5 (final round of the loop)
+
+Six findings, all rated implementation blockers, plus four non-blocking polish items.
+Two of the six were regressions introduced by round 4's own fixes.
+
+### Codex's findings (round 5)
+
+1. **Plan 01, WAJ retry unreachable.** Round 4 let `section_history` be written before
+   WAJ coverage completed. `PracticeTestRunPage` treats that row as "leg finished" and
+   advances, so the student can never re-enter to retry the missing entries.
+   **Fix:** WAJ coverage gates the history write.
+
+2. **Plan 02, Step 4, leg validation too weak.** Ownership + range + in-progress lets a
+   hand-edited `ptLeg` start a future leg, restart a completed one, or open an RC leg
+   in the LR runner, consuming its single result slot.
+   **Fix:** require `ptLeg === run.currentLeg`, matching kind, valid `startedAt`, no
+   `completedAt`; take section/passage/pace from the run, never the URL.
+
+3. **Plan 04, fail-closed contradiction.** "Enforce when the run cannot load" combined
+   with clamping a missing `startedAt` to now grants a FRESH clock — more generous than
+   the bug. A valid old timestamp also means expired, not garbage.
+   **Fix:** lock answering and offer retry; never invent a deadline for an attributed
+   session; clamping applies only to a present-but-malformed value.
+
+4. **Plans 02 and 03, enrichment can erase a score.** Round 4's "identical terminals
+   reconcile by revision" selects the whole higher-revision row, so a newer offline
+   snapshotless row overwrites a server row holding an official score.
+   **Fix:** make terminal enrichment monotonic — fill absent fields, never clear or
+   replace `completed_at` or the score snapshot.
+
+5. **Plan 03, retryable vs legacy snapshotless are indistinguishable.** A curve-load
+   failure and a legacy run both produce snapshotless completed rows, but one must be
+   retried and the other must never be rescored, and the schema cannot tell them apart.
+   **Fix:** bundle the curves and delete the failure state, or persist an explicit
+   pending marker.
+
+6. **Plans 02/03/05, the separate-deploy path is half-specified.** The `clock_integrity`
+   marker is mentioned but never added to the schema or model, its estimate reason is
+   not distinguished, and analytics is not told to label or exclude those scores.
+   **Fix:** make the combined 02+04 deploy mandatory, or specify the marker fully
+   across all three plans.
+
+Polish: plan 04 still shows two-argument `lrLegLaunch`/`rcLegHref` calls; plan 02's
+A/B test cannot resolve B before A once saves are serialized; Vite cannot statically
+import JSON from `public/`; add tests for forged leg parameters, unavailable attributed
+runs, WAJ failure flow, and snapshot monotonicity.
+
+VERDICT: REVISE
+
+### Claude's response (round 5) — loop cap reached, adjudicated
+
+Round 5 is the loop's cap, so this is adjudication rather than another round. Accepted
+all six plus the polish; rejected none. Where a finding offered a strict option and a
+flexible one, the strict option was taken in every case, because each flexible option
+bought optionality we do not need at the cost of schema or surface complexity:
+
+- 1: ordering is now attempts -> WAJ coverage -> history -> finalize resume -> navigate.
+  An incomplete journal leaves the leg unscored and recoverable (the invigilator's
+  existing `noResult` branch renders it honestly) rather than scored with misses lost.
+- 2: full validation set specified; the URL supplies identity only, never data.
+- 3: no authoritative deadline means lock answering and retry, never a fresh clock;
+  clamping is scoped to present-but-malformed timestamps, and a valid old one expires.
+- 4: terminal enrichment is a monotonic field-level floor on `completed_at` and the
+  score snapshot; everything else still selects whole rows.
+- 5: curves are bundled from `src/data/pt-curves.json` (Vite cannot statically import
+  from `public/`), which deletes the `failed` state entirely — so every snapshotless
+  completed run is unambiguously legacy and no pending marker is needed.
+- 6: the combined 02+04 deploy is now mandatory and the marker path is struck. If they
+  cannot ship together, stop and re-plan rather than improvise.
+
+Loop closed at round 5. Findings from all five rounds: 25 / 23 / 15 / 11+1 / 6+4 = 80
+raised, 80 absorbed, 0 rejected. Build proceeds from plan 01, implemented by Claude
+rather than handed to Codex (Joshua's call, 2026-08-28).

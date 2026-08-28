@@ -69,6 +69,12 @@ In PracticeTestRun.tsx `begin()`: stamp `startedAt` only when absent; after buil
 `next`, resolve `const stampedLeg = next.legs[next.currentLeg]` and pass THAT to
 `lrLegLaunch` / `rcLegHref`.
 
+**Call arity:** change 1 gives `lrLegLaunch` a required leg index (it stamps
+`ptRun: {runId, legIndex}` into launch state). Every call site in this plan that still
+reads `lrLegLaunch(run, leg)` / `rcLegHref(run, leg)` must pass the index —
+`next.currentLeg` at the sites that advance the run. Check each one; the two-argument
+form no longer type-checks.
+
 ### Step 1b — sitting status comes from persisted attribution, never from `returnTo`
 
 **This governs every enforcement decision in this plan.** `isSittingReturn(returnTo)`
@@ -92,9 +98,18 @@ standard one level up, to the question of whether this is a sitting at all:
 - `isSittingReturn(returnTo)` keeps exactly one job: a cheap synchronous hint for
   ROUTING and score-UI suppression in change 1, on the fast path where launch state is
   present. It is never sufficient on its own to grant standalone behaviour.
-- **Fail closed.** If attribution is present but the run cannot be loaded, treat the
-  leg as a sitting and enforce; do not fall back to standalone. The only sessions that
-  get standalone treatment are those with no attribution at all.
+- **Fail closed, and never invent a deadline.** If attribution is present but the run
+  cannot be loaded, treat the leg as a sitting and enforce; do not fall back to
+  standalone. The only sessions that get standalone treatment are those with no
+  attribution at all. Critically, "enforce" must not mean "clamp the missing
+  `startedAt` to now" — that hands out a fresh full-length clock and is more generous
+  than the bug it replaces. With no authoritative deadline: **lock answering
+  immediately** (the same frozen, reveal-nothing state the hard stop uses), show a
+  plain "we could not load this sitting" message with a retry, and resolve the clock
+  only once the run loads. The existing "clamp a future or absurdly old `startedAt`"
+  rule applies ONLY to a value that is present and malformed; a valid old timestamp
+  means the leg is EXPIRED, not garbage, and must run the hard stop rather than be
+  clamped forward.
 
 ### Step 2 — LR remaining time (math shipped in change 2; this plan wires the behaviour)
 

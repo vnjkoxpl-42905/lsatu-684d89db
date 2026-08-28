@@ -163,11 +163,21 @@ In Drill.tsx:
      unanswered questions this change now journals) and require `wajQids` to cover it
      before finalizing the resume record or deleting the key. Have
      `commitSessionAttempts` return the qids it actually journaled (not just a count)
-     so the closeout can record them precisely. If the set is incomplete: keep the
+     so the closeout can record them precisely.
+
+     **WAJ coverage gates the `section_history` write — it does not follow it.** The
+     obvious ordering (save history, let the journal catch up later) makes the retry
+     unreachable: `PracticeTestRunPage` treats the presence of a `section_history` row
+     as "this leg is finished" and advances to the next leg, so the student can never
+     re-enter this leg to retry the missing entries. The final order is therefore:
+     **attempts -> WAJ coverage complete -> history persist -> finalize resume ->
+     navigate.** If WAJ coverage is incomplete, do NOT write the history row: keep the
      closeout key, still navigate back to the invigilator in the `finally` (never trap
-     the student), and let re-entry retry only the missing qids. The leg's
-     `section_history` row is unaffected — scoring stays correct while the journal
-     catches up.
+     the student), and let re-entry resume the closeout and retry only the missing
+     qids. The leg reads as unfinished until then, which the invigilator's existing
+     `noResult` branch already renders honestly ("go back" / "mark unfinished"). An
+     unscored-but-recoverable leg is strictly better than a scored leg with misses
+     silently missing from the journal forever.
 
 ### Step 3 — route a sitting's RC leg straight back
 
