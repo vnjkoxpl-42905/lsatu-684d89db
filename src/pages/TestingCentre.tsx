@@ -145,8 +145,7 @@ function PracticeTestSelector({
           </div>
           <p className="testing-note" style={{ marginTop: 0 }}>
             {chosen.questionCount} scored questions, with a ten-minute break
-            after the second section. Nothing is revealed until the whole sitting
-            is over.
+            after the second section.
           </p>
           {!chosen.rcFullLength && (
             <p className="testing-note">
@@ -236,12 +235,28 @@ export default function TestingCentre() {
     setRuns((current) => current.filter((r) => r.id !== run.id));
   };
 
+  // A door's panel renders below the two door buttons, which on a laptop puts it
+  // under the fold: the click looks like it did nothing, and the section type
+  // picker (Logical Reasoning / Reading Comprehension) is never seen, so the door
+  // reads as LR-only. Bring the panel to the student when it opens.
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
+  React.useEffect(() => {
+    if (!door) return;
+    const prefersReducedMotion = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    panelRef.current?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [door]);
+
   return (
     <>
       <h1 className="classroom-title">Testing Centre</h1>
       <p className="testing-lede">
-        Practice under realistic test conditions. Complete a timed section or a
-        full practice test, with answers hidden until you finish.
+        Official LSAT material, administered under standard timing and exam
+        conditions.
       </p>
 
       <ResumeList
@@ -259,10 +274,10 @@ export default function TestingCentre() {
         >
           <h2>Take a section</h2>
           <p>
-            Complete an official Logical Reasoning or Reading Comprehension
-            section in 35 minutes.
+            One official Logical Reasoning or Reading Comprehension section,
+            administered under standard 35-minute timing.
           </p>
-          <span className="testing-door-meta">One section · about 35 minutes</span>
+          <span className="testing-door-meta">One section · 35 minutes</span>
         </button>
 
         <button
@@ -273,13 +288,14 @@ export default function TestingCentre() {
         >
           <h2>Take a practice test</h2>
           <p>
-            Complete three scored sections from one PrepTest, with a scheduled
-            break and an estimated score at the end.
+            Three scored sections from a single PrepTest, administered in
+            published order with a scheduled break.
           </p>
           <span className="testing-door-meta">Three sections · about 2 hours</span>
         </button>
       </div>
 
+      <div ref={panelRef}>
       {door === "section" && (
         <div className="testing-panel">
           {isLoading && (
@@ -326,6 +342,7 @@ export default function TestingCentre() {
           )}
         </>
       )}
+      </div>
     </>
   );
 }
