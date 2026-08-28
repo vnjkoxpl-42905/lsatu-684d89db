@@ -166,12 +166,20 @@ Deno.serve(async (req) => {
         if (!class_id || !ALL_FLAGS.includes(field) || typeof value !== "boolean") {
           return jsonRes({ error: "Invalid params" }, 400);
         }
-        const { error } = await admin
+        // Return the row we actually wrote. A filter that matches nothing is
+        // not an error in PostgREST, so without this the dashboard would show
+        // a successful toggle that never landed and then snap back on reload.
+        const { data: updated, error } = await admin
           .from("profiles")
           .update({ [field]: value })
-          .eq("class_id", class_id);
+          .eq("class_id", class_id)
+          .select("class_id, " + field);
         if (error) throw error;
-        return jsonRes({ success: true });
+        if (!updated || updated.length === 0) {
+          console.error("toggle: no profile matched", { class_id, field, value });
+          return jsonRes({ error: "No profile matched that class_id" }, 404);
+        }
+        return jsonRes({ success: true, profile: updated[0] });
       }
 
       // Apply a template (explicit flag map) to a user. One DB update so

@@ -139,8 +139,13 @@ export function DeskPeopleSurface() {
         body: { class_id: classId, field, value },
       });
       if (res.error) throw res.error;
-    } catch {
+      // Trust the row the server wrote back rather than the optimistic guess,
+      // so a toggle that never landed can't look like it worked.
+      const written = (res.data as { profile?: Record<string, unknown> } | null)?.profile;
+      if (!written || written[field] !== value) throw new Error('Permission was not saved');
+    } catch (error) {
       setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: !value } : user)));
+      console.error('toggleAccess failed', { classId, field, value, error });
       toast.error('Failed to update permission');
     }
   };

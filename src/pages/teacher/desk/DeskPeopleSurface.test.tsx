@@ -4,9 +4,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { DeskPeopleSurface } from './DeskPeopleSurface';
 
-const { invokeMock, getSessionMock } = vi.hoisted(() => ({
+const { invokeMock, getSessionMock, toastErrorMock } = vi.hoisted(() => ({
   invokeMock: vi.fn(),
   getSessionMock: vi.fn(),
+  toastErrorMock: vi.fn(),
 }));
 
 vi.mock('@/integrations/supabase/client', () => ({
@@ -55,7 +56,7 @@ vi.mock('@/hooks/useHubStudents', () => ({
 
 vi.mock('sonner', () => ({
   toast: {
-    error: vi.fn(),
+    error: toastErrorMock,
     success: vi.fn(),
   },
 }));
@@ -131,6 +132,13 @@ describe('DeskPeopleSurface', () => {
           error: null,
         });
       }
+      if (options?.method === 'POST') {
+        const { class_id, field, value } = options.body as Record<string, unknown>;
+        return Promise.resolve({
+          data: { success: true, profile: { class_id, [field as string]: value } },
+          error: null,
+        });
+      }
       return Promise.resolve({ data: users, error: null });
     });
   });
@@ -193,5 +201,28 @@ describe('DeskPeopleSurface', () => {
       method: 'POST',
       body: { class_id: 'student-1', field: 'has_drill_access', value: false },
     });
+
+    expect(await within(row).findByText(/Drill off/i)).toBeInTheDocument();
+  });
+
+  it('reverts the row when the server reports that nothing was written', async () => {
+    const listImplementation = invokeMock.getMockImplementation()!;
+    invokeMock.mockImplementation((name, options) => {
+      if (options?.method === 'POST') {
+        // PostgREST treats a filter that matches no row as a success, so the
+        // function returns no profile. The row must snap back immediately
+        // rather than showing a revoke that never landed.
+        return Promise.resolve({ data: { success: true }, error: null });
+      }
+      return listImplementation(name, options);
+    });
+
+    renderPeople();
+
+    const row = await screen.findByTestId('people-row-student-1');
+    fireEvent.click(within(row).getByRole('button', { name: /Revoke Drill Access/i }));
+
+    expect(await within(row).findByText(/Drill on/i)).toBeInTheDocument();
+    expect(toastErrorMock).toHaveBeenCalledWith('Failed to update permission');
   });
 });
