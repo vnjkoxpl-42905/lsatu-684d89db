@@ -93,7 +93,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const markReady = (s: Session | null) => {
       if (cancelled) return;
       setSession(s);
-      setUser(s?.user ?? null);
+      // Keep the user object's identity stable across TOKEN_REFRESHED. Supabase
+      // fires that roughly hourly and on tab refocus with a fresh object for the
+      // same person; handing it straight to setUser re-runs every effect keyed on
+      // `user` downstream. One of those rebuilt a live drill session mid-lesson.
+      setUser((prev) => {
+        const next = s?.user ?? null;
+        if (prev && next && prev.id === next.id) return prev;
+        return next;
+      });
       setLoading(false);
       setAuthReady(true);
       sessionStorage.removeItem('oauth_pending');
