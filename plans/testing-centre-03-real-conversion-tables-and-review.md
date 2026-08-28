@@ -8,7 +8,20 @@ Priority: **fourth — reordered in review round 3.** Hard dependencies: change 
 (clock integrity)**. The reorder exists because this change starts writing permanent
 `official-table` score snapshots: a snapshot minted while sittings can still be paused,
 clock-reset, or sat past expiry would carry pre-integrity scores into the trajectory
-and teacher surfaces unmarked. Ship the clock first, then start certifying scores. The scaled score is the single number students care about; today it is an
+and teacher surfaces unmarked. Ship the clock first, then start certifying scores.
+
+**Ordering alone is not sufficient, and this change is where that is enforced.** Runs
+outlive deploys: a sitting can begin after change 2, sit legs under the old resettable
+clock, survive the change-4 deploy, and still be sitting here waiting for a score.
+Change 2 now requires that changes 2 and 4 ship as one release, or else that runs
+created before clock integrity carry a marker. Whichever change 2 recorded, honour it
+here: **`finalizeRun` may mint `score_source: 'official-table'` only for a run that is
+known to have been sat under clock integrity.** A run without that guarantee finalizes
+as `estimate`, carrying the same nonstandard qualification this plan already defines,
+and the score report says plainly that the sitting's conditions were not standard.
+Never mint an official-table score for a sitting whose clock could have been reset.
+
+The scaled score is the single number students care about; today it is an
 interpolated guess, and the report is a dead end once read.
 
 ## Repo conventions that bind this work
@@ -81,6 +94,23 @@ In practiceTest.ts:
   match how other `public/data` files are loaded; `rcBank.ts` fetches, the LR manifest
   goes through `QuestionBankContext`; the simplest consistent choice is a fetch with
   in-module cache used from `PracticeTestRunPage`).
+- **A failed load and a loaded-but-missing-PT are different outcomes and must not
+  collapse into the same fallback.** `scaledScoreForRun` falls back to `estimate` when
+  `curves[run.pt]` is absent — correct when the file loaded and genuinely has no curve
+  for that PT, but catastrophic when the fetch itself failed (offline, 404, a bad
+  deploy). Combined with write-once finalization, one transient network failure
+  permanently stamps `score_source: 'estimate'` on a sitting for which an official
+  table exists, and the student quotes that number. Model the load as three states —
+  `loaded` / `failed` / `pending` — and:
+  - only a `loaded` curve set may trigger the missing-PT fallback to `estimate`;
+  - `failed` or `pending` BLOCKS finalization entirely. Leave the run unfinalized,
+    render it as a snapshotless completed run (the raw-only path this plan already
+    defines), and retry finalization on the next load. That path is now reachable by
+    design, not just by legacy data.
+  - Prefer to remove the failure mode outright: bundle the validated JSON as a static
+    import so it ships in the app bundle and cannot 404 at runtime. If it is bundled,
+    `failed` is unreachable and only `loaded` remains — say so explicitly in the
+    implementation rather than leaving dead branches unexplained.
 - **Write the terminal snapshot through ONE `finalizeRun` function, covering every
   completion path.** Review round 2 found the trap: a run can reach
   `status: 'complete'` from TWO places in PracticeTestRun.tsx — the readback effect
@@ -115,10 +145,15 @@ Extend `ScoreReport` in PracticeTestRun.tsx:
     `/journal` renders a different component than `src/pages/Journal.tsx`) labelled
     "Your wrong answers land in the journal", with no claim that the view is scoped to
     this sitting. A true sitting-scoped LR review is future work and out of scope.
-    **Gate the link on the journal's own permission flag** — the Testing Centre is
-    behind `has_drill_access`, the journal surface behind its own flag (check the
-    route's `ProtectedRoute` in `src/App.tsx`); for a student without it, render the
-    sentence without a link rather than a link into an access wall.
+    **Do not flag-gate the link without first checking the route.** The premise that
+    the journal sits behind its own flag is stale: `ProtectedRoute`
+    ([ProtectedRoute.tsx](src/components/ProtectedRoute.tsx) ~line 98) returns children
+    for ANY signed-in user when `allowSignedIn` is set, before it ever evaluates
+    `flag`. If the journal route is declared that way, gating the link on a flag would
+    hide a page the student can actually open. Read the journal route's props in
+    `src/App.tsx` first: if it is `allowSignedIn`, always render the link; only if it
+    genuinely carries a `flag` should a student without that flag get the sentence
+    without a link, rather than a link into an access wall.
 - Below the legs: one line stating how many questions were missed across the sitting.
   Derive it from the terminal snapshot's whole-sitting `raw_total - raw_correct` —
   the same numbers the score is computed from (`practiceTestRaw` counts every leg's

@@ -309,3 +309,115 @@ Accepted all 15. Notable resolutions:
   official-table snapshot is ever minted from a pre-clock-integrity sitting.
 
 Rejected: none.
+
+## Round 4
+
+Codex re-read the five committed plans at `2da957fd` plus this log. It opened by
+correcting the request itself: the round-4 prompt named plans 02, 03, and 05 by
+shortened filenames that do not exist, and Codex reviewed the real committed files
+instead of reporting a dead end. Eleven findings plus one minor.
+
+### Codex's findings (round 4)
+
+1. **Plan 01, Step 2, closeout key identity:** the key needs `runId` and `legIndex`,
+   but `lrLegLaunch` passes only PT, section, and `returnTo` — Drill has no leg index
+   before plan 02.
+   **Fix:** carry explicit run and leg identifiers in launch state as part of plan 01.
+
+2. **Plan 01, Step 2, WAJ failures:** `commitSessionAttempts` counts WAJ failures
+   without throwing, so the resume record can be finalized and the closeout key deleted
+   while `wajQids` are still missing.
+   **Fix:** require the expected WAJ set to be covered before finalizing or deleting.
+
+3. **Plan 02, Step 1a, RLS:** "replace or supplement" is unsafe — PostgreSQL ORs
+   permissive policies, so the legacy class-only INSERT policy remains a live bypass.
+   **Fix:** drop every legacy INSERT policy by name; create exactly one requiring both
+   the class predicate and `user_id = auth.uid()`.
+
+4. **Plan 02, Step 1d, dedupe:** `ctid` is physical location, not chronology, so the
+   supplied SQL can retain the wrong row as "first"; deleting duplicates also destroys
+   RC attempt history that should survive as later attempts.
+   **Fix:** rank by `created_at, id`, keep the earliest, and DEMOTE the rest to
+   `is_first_attempt = false` rather than deleting.
+
+5. **Plan 02, Steps 2-3, acknowledgement race:** saves are scheduled without
+   serialization or a revision guard, so an older save can acknowledge after a newer one
+   failed and wrongly clear `dirty`.
+   **Fix:** serialize saves per run and clear `dirty` only on a revision-matched ack.
+
+6. **Plan 02, Step 4, reload bootstrap:** `Drill` builds `TimerProvider` synchronously
+   and `DrillContent` resolves route state synchronously, so a reload redirects before
+   any async run fetch can reconstruct it.
+   **Fix:** add a parent bootstrap that resolves and validates the run first, renders
+   loading meanwhile, and only then constructs the timer and content.
+
+7. **Plans 02 and 03, terminal reconciliation:** "server always wins between terminals"
+   discards same-status enrichment (score snapshot, derived `completed_at`), making
+   plan 03's retryable finalization un-retryable.
+   **Fix:** server wins only when terminal statuses CONFLICT; identical terminal
+   statuses keep the immutable status and reconcile remaining fields by revision.
+
+8. **Plan 03, Step 2, curve load:** a failed fetch is not distinguished from a loaded
+   file missing that PT, so one transient failure can permanently stamp `estimate`.
+   **Fix:** model loaded/failed/pending; only `loaded` may fall back; failure blocks
+   finalization. Prefer bundling the JSON so the failure mode disappears.
+
+9. **Plan 04, Step 4, RC enforcement:** `isSittingReturn(returnTo)` decides whether the
+   hard stop applies, so editing navigation state restores standalone soft overtime on
+   an attributed leg.
+   **Fix:** derive sitting status, run, leg, deadline, and return path from persisted
+   attribution; `returnTo` is a routing hint only, and enforcement fails closed.
+
+10. **Plans 02, 04, 03, deploy window:** reordering does not close the gap, because runs
+    outlive deploys — a run can start after plan 02, sit legs under the old clock,
+    survive the plan 04 deploy, and still receive an official score.
+    **Fix:** ship 2 and 4 as one release, or mark pre-integrity runs and refuse to mint
+    `official-table` for them.
+
+11. **Plan 05, Step 3, stale abandonment:** the no-argument RPC still abandons a
+    failed-dirty run; skipping the local prune does not help, because terminal-wins
+    then selects the abandoned server row.
+    **Fix:** pass unresolved dirty ids to the RPC as exclusions; if the list cannot be
+    built, skip cleanup for that load.
+
+Minor: plan 03's journal permission claim is stale — `ProtectedRoute` returns children
+for any signed-in user when `allowSignedIn` is set, before evaluating `flag`.
+
+VERDICT: REVISE
+
+### Claude's response (round 4)
+
+Spot-checked the load-bearing code claims against the repo before accepting any of
+them: `LrLegLaunch.state` does carry only `mode`/`config`/`returnTo`/`practicingLabel`
+(1); `commitSessionAttempts` does count `wajFailed` while only `attemptErrors` throws
+(2); `isSittingReturn` is plan 04's own proposed helper over mutable nav state, not
+existing code (9); and `ProtectedRoute` does return children on `allowSignedIn` before
+any flag check (minor). All four held.
+
+Accepted all 11 plus the minor. Rejected: none. Notable resolutions:
+- 1: new Step 2a in plan 01 adds `ptRun: {runId, legIndex}` to `LrLegLaunch.state`,
+  with the leg index passed in rather than re-derived by search (`legs` can hold two
+  legs of the same section). Parsing identity back out of `returnTo` was rejected
+  outright, since finding 9 requires plan 04 to stop trusting that string.
+- 2: `commitSessionAttempts` now returns the qids it actually journaled, and the
+  closeout requires that set to cover every expected WAJ entry before finalizing.
+  Incomplete means keep the key and still navigate back — never trap the student.
+- 3: migration now enumerates `pg_policy` for `polcmd='a'`, drops each legacy policy by
+  name, creates one combined policy, and asserts exactly one INSERT policy remains.
+- 4: replaced with a `row_number() over (partition by session_id, question_id order by
+  created_at asc, id asc)` demotion; the fixture test now asserts no row was deleted.
+- 5: per-run promise chain plus revision-matched ack, with the A/B interleaving test
+  written into the plan.
+- 6: parent bootstrap component; explicitly forbids constructing `TimerProvider` before
+  `remainingMs` is known, since a corrected-after-mount timer is the same leak plan 04
+  closes. Standalone pass-through called out for verification.
+- 7: reconcile rule restated as three cases, separating conflicting from identical
+  terminal statuses.
+- 8: loaded/failed/pending tri-state, with bundling the JSON named as the preferred fix
+  that removes the failure branch entirely.
+- 9: new Step 1b in plan 04 makes persisted attribution the source of sitting status for
+  BOTH leg types, demotes `isSittingReturn` to a routing hint, and fails closed.
+- 10: plan 02's deploy gate now requires 2 and 4 to ship together (or a
+  `clock_integrity` marker), and plan 03's header enforces it at finalization.
+- 11: RPC gains `exclude_ids text[] default '{}'` in plan 02; plan 05 passes unresolved
+  dirty ids and skips cleanup entirely if the list cannot be built.

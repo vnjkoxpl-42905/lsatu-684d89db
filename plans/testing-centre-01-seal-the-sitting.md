@@ -91,10 +91,33 @@ Create `src/lib/sectionHistorySave.ts`:
 
 ### Step 2 — route a sitting's LR leg straight back to the invigilator
 
+**Step 2a — carry run and leg identity in launch state (prerequisite, do it first).**
+The closeout key below is `...:<runId>:<legIndex>`, but today `LrLegLaunch.state`
+([practiceTestRunner.ts](src/lib/practiceTestRunner.ts) ~line 42) carries only
+`mode`, `config`, `returnTo`, and `practicingLabel` — Drill has no run id and no leg
+index, so the key cannot be constructed. Parsing them back out of `returnTo` is not
+acceptable: change 4 must stop trusting that string entirely (see below). So, in THIS
+change:
+
+- Extend `LrLegLaunch.state` with an explicit `ptRun: { runId: string; legIndex: number }`
+  and populate it in `lrLegLaunch(run, leg)` from the run and the leg's index in
+  `run.legs`. Give `lrLegLaunch` the leg index as an argument rather than re-deriving
+  it by search — `legs` can contain two legs of the same section.
+- Read it in Drill.tsx alongside the other route state. Treat it as optional at the
+  type level (a standalone drill has none) but REQUIRED whenever `inSitting` is true;
+  if `inSitting` and `ptRun` is missing, that is a bug, not a fallback — log it and
+  take the `noResult` path rather than inventing a key.
+- Do the same for the RC leg's launch state so change 4 has persisted attribution to
+  read (change 2 is what mirrors both into URL parameters and the server row; this
+  step only guarantees the identity exists in memory from the first leg onward).
+
 In Drill.tsx:
 
 - Derive one flag near where `drillReturnTo` is computed (~line 150):
   `const inSitting = !!drillReturnTo?.startsWith('/testing/test/');`
+  This flag decides ROUTING only (where to navigate, whether to show score UI).
+  It must never be the basis of a clock or integrity decision — change 4 derives
+  those from persisted attribution instead.
 - Gate blind review off inside a sitting: change `brEnabled` (~line 345) to
   `(sessionMode === 'full-section' || sessionMode === 'type-drill') && !inSitting`.
 - On section finish, when `inSitting`: await `persistSectionResults(...)` and then
@@ -130,6 +153,21 @@ In Drill.tsx:
      insert when `historySaved` (the change-2 unique index backstops that one
      anyway). Delete the key once the whole closeout succeeds. No server-side
      transaction machinery — per-question bookkeeping is enough at this scale.
+  3. **A WAJ failure is unfinished closeout work, not a warning.**
+     `commitSessionAttempts` (Drill.tsx ~line 1251) counts WAJ failures into
+     `wajFailed` and logs them, but only `attemptErrors` throws — so today it can
+     return normally having journaled nothing. If the sitting closeout treats that
+     return as success, it finalizes the resume record and deletes the closeout key
+     while `wajQids` is still short, and those misses are gone for good. Therefore:
+     compute the EXPECTED WAJ set for the leg (every non-correct attempt, plus the
+     unanswered questions this change now journals) and require `wajQids` to cover it
+     before finalizing the resume record or deleting the key. Have
+     `commitSessionAttempts` return the qids it actually journaled (not just a count)
+     so the closeout can record them precisely. If the set is incomplete: keep the
+     closeout key, still navigate back to the invigilator in the `finally` (never trap
+     the student), and let re-entry retry only the missing qids. The leg's
+     `section_history` row is unaffected — scoring stays correct while the journal
+     catches up.
 
 ### Step 3 — route a sitting's RC leg straight back
 

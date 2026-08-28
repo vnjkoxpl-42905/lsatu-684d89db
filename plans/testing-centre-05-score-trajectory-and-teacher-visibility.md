@@ -76,13 +76,22 @@ routing). Add a "Practice tests" panel to the per-student teacher view:
   cannot express `now() - interval '14 days'` as a filter value, so change 2's
   migration ships `public.abandon_stale_practice_tests()` — owner-scoped, server
   `now()`, filters on `status='in-progress'`, bumps revision, returns affected ids.
-  **Ordering in the load path matters:** first retry dirty local runs (pushing any
-  offline progress up, which refreshes `updated_at`), then call
-  `supabase.rpc('abandon_stale_practice_tests')` — excluding is unnecessary once the
-  dirty retries have landed, but any run whose dirty retry FAILED must be left out of
-  local pruning so its progress is not destroyed by a terminal-wins reconcile — then
-  reload and reconcile. Drop local copies of the returned ids only when they are not
-  dirty. `updated_at` is trigger-maintained (change 2), so any leg progress refreshes
+  **Ordering in the load path matters, and skipping the local prune is not enough.**
+  First retry dirty local runs (pushing any offline progress up, which refreshes
+  `updated_at`). Then call the stale-run RPC — but a run whose dirty retry FAILED still
+  looks stale server-side, because its offline progress never landed to refresh
+  `updated_at`. The round-3 fix only kept such a run out of LOCAL pruning, which does
+  not save it: the no-argument RPC abandons it server-side anyway, and the very next
+  terminal-wins reconcile selects that abandoned server row and destroys the offline
+  progress the prune was protecting. The exclusion has to reach the server.
+
+  So: **pass the unresolved dirty run ids to the RPC as exclusions**
+  (`abandon_stale_practice_tests(exclude_ids text[])`, defined in change 2's step 1e),
+  so those runs are never abandoned while their progress is still trying to sync. If
+  the exclusion list cannot be built for any reason, **skip stale cleanup entirely for
+  that load** rather than running it unguarded — cleanup is housekeeping and deferring
+  it costs nothing, while running it here costs a student their section. Then reload
+  and reconcile. Drop local copies of the returned ids only when they are not dirty. `updated_at` is trigger-maintained (change 2), so any leg progress refreshes
   it.
 - **Discard = abandon, tombstoned:** change 2's rule verbatim — discard keeps a dirty
   local abandoned tombstone until the remote transition is confirmed, and only then

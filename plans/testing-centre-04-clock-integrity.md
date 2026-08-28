@@ -69,14 +69,42 @@ In PracticeTestRun.tsx `begin()`: stamp `startedAt` only when absent; after buil
 `next`, resolve `const stampedLeg = next.legs[next.currentLeg]` and pass THAT to
 `lrLegLaunch` / `rcLegHref`.
 
+### Step 1b — sitting status comes from persisted attribution, never from `returnTo`
+
+**This governs every enforcement decision in this plan.** `isSittingReturn(returnTo)`
+is a routing helper over `location.state` / a query string — mutable, student-visible,
+and trivially removable. If it decides whether the hard stop applies, then clearing or
+editing `returnTo` turns an attributed practice-test leg back into a standalone drill
+with soft overtime and a pause button, while the leg still writes into the sitting and
+still receives an official score. That is the whole integrity guarantee, defeated by
+editing a URL.
+
+The plan already refuses to trust a query param for `startedAtMs`. Apply the same
+standard one level up, to the question of whether this is a sitting at all:
+
+- Derive **sitting status, run id, leg index, and the leg deadline** from the persisted
+  attribution — the `practice_test_runs` row plus the attribution columns change 2
+  stores on `rc_drill_sessions` (RC) and the validated `ptRun`/`ptLeg` the change-2
+  bootstrap resolves against the store (LR). If the persisted record says this session
+  belongs to an in-progress run, it is a sitting, whatever the URL says.
+- Derive the **canonical return path** from the run id too, rather than echoing back
+  whatever `returnTo` contained.
+- `isSittingReturn(returnTo)` keeps exactly one job: a cheap synchronous hint for
+  ROUTING and score-UI suppression in change 1, on the fast path where launch state is
+  present. It is never sufficient on its own to grant standalone behaviour.
+- **Fail closed.** If attribution is present but the run cannot be loaded, treat the
+  leg as a sitting and enforce; do not fall back to standalone. The only sessions that
+  get standalone treatment are those with no attribution at all.
+
 ### Step 2 — LR remaining time (math shipped in change 2; this plan wires the behaviour)
 
 `legRemainingSeconds`, the `remainingMs` timer-config field, and
 `getTimerConfigForDrillRoute` support all land in change 2 (its Step 4). Here:
 
 - Verify `lrLegLaunch` computes `remainingMs` from the STAMPED leg (Step 1's fix).
-- In Drill.tsx, when in a sitting (`isSittingReturn(drillReturnTo)`): hide/disable the
-  pause control and ignore any paused state from navigation.
+- In Drill.tsx, when in a sitting (**resolved per Step 1b from the validated run, not
+  from `drillReturnTo`**): hide/disable the pause control and ignore any paused state
+  from navigation.
 - `remainingMs === 0` at launch means the leg is already expired: skip straight to the
   hard-stop path below rather than mounting a dead runner.
 
@@ -93,7 +121,8 @@ section" state rather than silently teleporting. Outside a sitting, change nothi
 
 ### Step 4 — RC leg: wall-clock, visibility-proof, hard stop
 
-- In RcPlayer, for a sitting (shared `isSittingReturn` helper): derive the clock as
+- In RcPlayer, for a sitting (**resolved per Step 1b from the session's persisted
+  attribution, not from `returnTo`**): derive the clock as
   `Date.now() - startedAtMs` **on every tick and on every `visibilitychange`**, where
   `startedAtMs` comes from the session's persisted run/leg attribution (change 2 stores
   it on the `rc_drill_sessions` row and returns it through the session-load path —

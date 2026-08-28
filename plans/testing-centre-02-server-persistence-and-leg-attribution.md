@@ -28,6 +28,25 @@ verify the columns exist, THEN push the code. If you cannot apply the migration 
 environment, stop at the ready-to-apply state and say so explicitly; do not push code
 that assumes the new schema.
 
+**This change and change 4 ship together, in one deploy.** Reordering the program to
+1 -> 2 -> 4 -> 3 (round 3) stops change 3 from minting official scores before clock
+integrity exists, but it does NOT close the window on its own, because runs outlive
+deploys: a run can start after change 2 lands, sit one or more legs under the old
+resettable clock, survive the change-4 deploy in flight, and then receive an official
+snapshot once change 3 lands. Ordering the deploys does not order the sittings. So
+either:
+
+- **Preferred: deploy 2 and 4 as a single release**, so no run can ever exist in the
+  gap; or
+- if they must ship separately, **invalidate every in-progress run created before clock
+  integrity landed** — stamp a `clock_integrity` marker (a column or a version int) on
+  rows created after change 4, and have change 3 refuse to mint an `official-table`
+  snapshot for any run without it, falling back to `estimate` with the nonstandard
+  qualification change 3 already defines for unscoreable sittings.
+
+Whichever is chosen must be recorded here before implementation starts, because change
+3's finalization reads it.
+
 ## The problem
 
 1. **A sitting exists only in one browser, and is not even scoped to an account.** Runs
@@ -81,10 +100,31 @@ alter table public.section_history alter column completed_at set default now();
 alter table public.section_history alter column section_mode drop not null;
 ```
 
-Also tighten the INSERT RLS: the existing policy checks only `class_id`. Replace or
-supplement it so inserts require `user_id = auth.uid()` (change 1 makes the app always
-set it) — without this, the composite FK below is moot because anyone can insert
-attributed rows.
+Also tighten the INSERT RLS. **Supplementing is not enough and must not be done.**
+PostgreSQL ORs permissive policies together, so adding a second policy that requires
+`user_id = auth.uid()` leaves the existing class-only policy as a live bypass — the
+weaker rule still admits the row. The composite FK below is moot if that path stays
+open. Enumerate and DROP every legacy INSERT policy on the table, then create exactly
+one that requires both predicates:
+
+```sql
+-- enumerate first; the migration must name each one it drops
+select polname from pg_policy
+  where polrelid = 'public.section_history'::regclass and polcmd = 'a';
+
+drop policy if exists "<each legacy insert policy name>" on public.section_history;
+
+create policy "section_history_owner_insert" on public.section_history
+  for insert with check (
+    user_id = auth.uid()
+    and <the canonical class predicate the legacy policy used>
+  );
+```
+
+Verify afterwards that `polcmd = 'a'` returns exactly one row for this table. If
+introspection turns up an insert path that legitimately needs different attribution
+(a service-role or admin importer), express it as its own explicit policy naming that
+role — never by leaving the old class-only rule in place.
 
 (Adjust to what introspection shows — e.g. skip statements for columns the live table
 already has — but the committed migration must contain the full convergent set so a
@@ -194,36 +234,62 @@ read-then-insert with no constraint, so racing writes can double-count):
 Existing data may already hold duplicates (the live path is read-then-insert), and a
 unique index build fails on them — dedupe first, deterministically, then index:
 
+**Demote, do not delete.** A duplicate is a real attempt the student made; only its
+`is_first_attempt` flag is wrong. Deleting it destroys RC attempt history that the
+review surfaces legitimately show as a later attempt. And `ctid` is physical row
+location, not chronology — ordering by it can retain the wrong row as "first". Rank
+explicitly and demote the losers:
+
 ```sql
-delete from public.rc_attempts a using public.rc_attempts b
-  where a.session_id = b.session_id and a.question_id = b.question_id
-    and a.is_first_attempt and b.is_first_attempt and a.ctid > b.ctid;
+with ranked as (
+  select id,
+         row_number() over (
+           partition by session_id, question_id
+           order by created_at asc, id asc
+         ) as rn
+  from public.rc_attempts
+  where is_first_attempt
+)
+update public.rc_attempts a
+  set is_first_attempt = false
+  from ranked r
+  where a.id = r.id and r.rn > 1;
+
 create unique index if not exists rc_attempts_first_once
   on public.rc_attempts (session_id, question_id)
   where is_first_attempt;
 ```
 
-(Keep the earliest row — order by created_at via ctid comparison only if created_at is
-absent; prefer `a.created_at > b.created_at` with ctid as tiebreak if the column
-exists.) Make the RC attempt insert conflict-safe (on conflict do nothing / treat
-23505 as already-recorded) where `is_first_attempt` rows are written, and test the
-migration against a fixture containing duplicates.
+`order by created_at asc, id asc` makes the winner deterministic even when timestamps
+tie. If `created_at` turns out not to exist on this table, introspection will say so —
+fall back to `id` alone, never to `ctid`. Make the RC attempt insert conflict-safe
+(on conflict do nothing / treat 23505 as already-recorded) where `is_first_attempt`
+rows are written, and test the migration against a fixture containing duplicates,
+asserting both that exactly one row per (session, question) keeps the flag AND that
+no row was deleted.
 
 **1e. Stale-run RPC** (used by change 5, created here so one migration carries all DDL):
 
 ```sql
-create or replace function public.abandon_stale_practice_tests()
+create or replace function public.abandon_stale_practice_tests(
+  exclude_ids text[] default '{}'
+)
 returns setof text language sql security invoker as $$
   update public.practice_test_runs
      set status = 'abandoned', revision = revision + 1
    where user_id = auth.uid()
      and status = 'in-progress'
      and updated_at < now() - interval '14 days'
+     and not (id = any(coalesce(exclude_ids, '{}')))
   returning id;
 $$;
 ```
 
-Server `now()`, owner-scoped, terminal-respecting (filters on in-progress).
+Server `now()`, owner-scoped, terminal-respecting (filters on in-progress). The
+`exclude_ids` parameter exists for change 5: a run whose dirty retry failed still looks
+stale (its offline progress never landed to refresh `updated_at`), and abandoning it
+server-side would let the terminal-wins reconcile destroy that progress. Change 5 passes
+those ids here. The default keeps the no-argument call valid.
 
 ### Step 2 — the run model: owner, revision, and a mutation coordinator
 
@@ -260,12 +326,35 @@ In practiceTest.ts / a new coordinator:
 - **Any transition to `complete` stamps `completed_at`** (the coordinator sets it with
   the status flip; change 3's finalizeRun later adds the score fields). A completed
   run without a completion date breaks every downstream surface.
-- Reconcile rule (pure, unit-tested): **a terminal run (complete or abandoned) always
-  beats an in-progress run regardless of revision**, and **between two terminal
-  candidates the server's committed terminal state is authoritative** (a cross-device
-  complete/discard race must converge on what the server accepted first, or the loser
-  stays dirty forever); between two non-terminal candidates, higher revision wins,
-  then more legs with `completedAt`, then recency. Never merge field-by-field.
+- Reconcile rule (pure, unit-tested), in three cases — the distinction between the
+  second and third is load-bearing and was missed until round 4:
+  1. **Terminal beats non-terminal.** A terminal run (complete or abandoned) always
+     beats an in-progress run regardless of revision.
+  2. **Terminal statuses that CONFLICT: the server wins.** `complete` on one device
+     versus `abandoned` on another must converge on what the server accepted first,
+     or the loser stays dirty forever. The status is then immutable.
+  3. **Terminal statuses that MATCH: reconcile normally by revision.** Two rows both
+     `complete` are not a conflict — they are the same decision, and the newer one is
+     usually a legitimate *enrichment* of the older: change 3's `finalizeRun` adds
+     `raw_correct`/`raw_total`/`scaled_score`/`score_source`, and this change derives
+     `completed_at` for legacy rows. Blanket "server always wins between terminals"
+     would discard every one of those on the next reload and make change 3's
+     finalization un-retryable in exactly the case it must be retryable. So: keep the
+     already-committed terminal STATUS immutable, and reconcile the remaining fields
+     by higher revision as usual.
+  Between two non-terminal candidates, higher revision wins, then more legs with
+  `completedAt`, then recency. Never merge field-by-field — case 3 still selects a
+  whole row, it just selects on revision rather than reflexively on origin.
+- **Saves are serialized per run, and `dirty` is cleared only by a matching
+  acknowledgement.** Nothing in the scheduling above orders two in-flight saves, so an
+  older save can acknowledge AFTER a newer save has already failed and re-marked the
+  run dirty — clearing `dirty` on a mutation that never reached the server, which then
+  looks synced forever. Two requirements: (a) hold a per-run promise chain so save N+1
+  never starts before save N settles; (b) have every acknowledgement carry the revision
+  it was sent with, and clear `dirty` only when that equals the current local revision.
+  If the local revision has moved on, the run STAYS dirty and the newer revision is
+  scheduled. Test this directly: schedule save A, schedule save B, resolve B, then
+  resolve A, and assert the run is still dirty at B's revision.
 - Failure handling: failed remote save → sidecar `dirty: true`; Testing Centre and
   PracticeTestRun retry dirty runs on load; the resume list shows a quiet "not yet
   synced to your account" line on dirty rows. **Discard keeps a dirty local tombstone**
@@ -290,11 +379,28 @@ Wire it:
   `remainingMs` from the stamped leg. (Change 4 adds stamp-once, hard stops, and pause
   removal on top.)
 - `lrLegLaunch`: navigate to `/drill?ptRun=<runId>&ptLeg=<i>` with config still in
-  `location.state` for the fast path. In Drill.tsx, when the params are present but
-  state is absent (a reload), reconstruct: load the run via the store (local + remote,
-  reconciled), rebuild the `full-section` config from the leg with `remainingMs` from
-  `legRemainingSeconds`, set `drillReturnTo`. Validate (leg in range, run owned by the
-  current user, run in-progress); fall back to the existing redirect when invalid.
+  `location.state` for the fast path (change 1 already put `ptRun: {runId, legIndex}`
+  in that state; the URL parameters are what survive a reload).
+- **The reconstruction needs an asynchronous bootstrap boundary, and Drill.tsx does not
+  have one today.** The outer `Drill` component ([Drill.tsx](src/pages/Drill.tsx) ~line 3999)
+  constructs `TimerProvider` synchronously, and `DrillContent` resolves route state
+  synchronously — so on a reload it sees no `location.state`, decides the route is
+  invalid, and redirects before any asynchronous run fetch could reconstruct it. Adding
+  an `await` inside the existing component does not fix this; the redirect has already
+  happened. Restructure instead:
+  - Add a parent bootstrap component that owns the async work: read `ptRun`/`ptLeg` from
+    the URL, load the run via the store (local + remote, reconciled), and validate it
+    (leg in range, run owned by the current user, run in-progress).
+  - While that is pending, render the drill's existing loading state. Render NOTHING
+    that redirects, and do not construct `TimerProvider` yet — a timer built from a
+    mode-derived duration and then corrected once `remainingMs` arrives is precisely
+    the clock leak change 4 exists to close.
+  - Only once the run resolves, construct `TimerProvider` and `DrillContent` with the
+    rebuilt `full-section` config (`remainingMs` from `legRemainingSeconds`) and
+    `drillReturnTo` already set.
+  - If validation fails, fall back to the existing redirect. If the URL carries no
+    `ptRun` at all, this bootstrap is a pass-through and the standalone drill path is
+    untouched — verify that explicitly, since every standalone drill renders through it.
 - **LR resume identity**: `drillResumeKey` currently keys full sections by pt+section
   only, so a sitting, a standalone section, and a second sitting of the same PT collide
   and can hydrate each other's answers. Namespace the resume key for sitting legs with
