@@ -366,6 +366,33 @@ export type Database = {
           },
         ]
       }
+      admin_question_notes: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          qid: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          body?: string
+          created_at?: string
+          id?: string
+          qid: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          qid?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_ta_drafts: {
         Row: {
           approved_at: string | null
