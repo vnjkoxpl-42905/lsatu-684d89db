@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { ArrowRight, Calendar, Check, ChevronLeft, Clock, Loader2, Paperclip, Video, X } from "lucide-react";
+import { bookingErrorMessage } from "@/lib/edgeFunctionError";
 import "@/pages/booking/booking-theme.css";
 
 // Shared, phased booking-confirm dialog used by BOTH the authed schedule panel
@@ -151,7 +152,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
           return next;
         });
       } catch (e) {
-        toast.error(e instanceof Error ? e.message : "Could not remove staged file");
+        toast.error("Could not remove that file. Try again.");
         return;
       }
     }
@@ -193,12 +194,11 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
         }
       }
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Booking failed";
-      if (msg.includes("slot_conflict")) toast.error("That time was just taken. Pick another.");
-      else if (msg.includes("slot_unavailable")) toast.error("That time isn't available. Pick another.");
-      else if (msg.includes("pass_exhausted") || msg.includes("no_sessions")) toast.error("You're out of sessions for now. Message Joshua for more.");
-      else if (msg.includes("pass_expired")) toast.error("Your booking access has expired.");
-      else toast.error(msg);
+      // Never toast a raw message here. An unrecognised backend code, or the
+      // bare supabase-js wrapper, both resolve to the plain fallback rather
+      // than leaking an internal string like "redeem_failed" at a student.
+      const msg = e instanceof Error ? e.message : "";
+      toast.error(bookingErrorMessage(msg));
       if (onCommitError) await onCommitError(); // refresh so a taken slot disappears
     } finally {
       setBooking(false);

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { edgeErrorText } from "@/lib/edgeFunctionError";
 import CalendlyBookingCard, { type BookingApi } from "@/components/booking/CalendlyBookingCard";
 import BookingOfferHub, { type BookingCommerceItem, type BookingOffer, type ExternalBookingItem } from "@/components/booking/BookingOfferHub";
 
@@ -15,7 +16,11 @@ import BookingOfferHub, { type BookingCommerceItem, type BookingOffer, type Exte
 
 const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
   const { data, error } = await supabase.functions.invoke("student-booking", { body: { action, ...extra } });
-  if (error) throw new Error(error.message);
+  // supabase-js discards the response body on a non-2xx, leaving only the
+  // generic wrapper string. Read the real `{ error }` back off the Response so
+  // the code (slot_conflict, no_active_pass, ...) survives to the UI, which
+  // maps it to something the student can act on.
+  if (error) throw new Error(await edgeErrorText(error));
   if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
   return data;
 };

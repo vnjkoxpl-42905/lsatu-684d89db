@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { extractEdgeFunctionError } from "@/lib/edgeFunctionError";
 import {
   executeActionProposal,
   isActionProposal,
@@ -44,23 +45,6 @@ export type TABackend = "ta-chat" | "ta-agent";
 
 // Sentinel key for the global (no student selected) agent thread.
 const GLOBAL_KEY = "__global__";
-
-// Pull the real `{ error }` message out of a FunctionsHttpError. supabase-js
-// stashes the failing Response on `.context`; its JSON body carries the
-// backend's actual error text. Returns null if nothing usable is found.
-async function extractEdgeFunctionError(error: unknown): Promise<string | null> {
-  const ctx = (error as { context?: unknown }).context;
-  if (ctx instanceof Response) {
-    try {
-      const body = await ctx.clone().json();
-      const msg = (body as { error?: string })?.error;
-      if (typeof msg === "string" && msg.trim()) return msg;
-    } catch {
-      // not JSON — fall through
-    }
-  }
-  return null;
-}
 
 /**
  * @param studentId  null only in agent mode (global thread).

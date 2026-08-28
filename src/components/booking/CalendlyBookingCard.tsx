@@ -4,6 +4,7 @@ import BookingConfirmDialog from "@/components/booking/BookingConfirmDialog";
 import { toast } from "sonner";
 import { CalendarClock, CheckCircle2, ChevronLeft, ChevronRight, Clock, Loader2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { bookingErrorMessage } from "@/lib/edgeFunctionError";
 import "@/pages/booking/booking-theme.css";
 import { buildMonthCells, dayKey, formatBookingTime, groupSlotsByDay, startOfDay } from "@/components/booking/bookingCalendar";
 
@@ -120,7 +121,7 @@ export default function CalendlyBookingCard({
     setInfoError(null);
     try { setInfo(await api.loadInfo()); }
     catch (e) {
-      const message = e instanceof Error ? e.message : "Failed to load booking access";
+      const message = bookingErrorMessage(e instanceof Error ? e.message : "");
       setInfoError(message);
       toast.error(message);
     }
@@ -132,7 +133,7 @@ export default function CalendlyBookingCard({
     setSlotsError(null);
     try { const res = await api.loadSlots(); setSlots(res.slots ?? []); }
     catch (e) {
-      const message = e instanceof Error ? e.message : "Failed to load times";
+      const message = bookingErrorMessage(e instanceof Error ? e.message : "");
       setSlotsError(message);
       toast.error(message);
     }
