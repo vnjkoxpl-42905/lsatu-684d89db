@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { AdminQuestionNotes } from '@/components/drill/AdminQuestionNotes';
+import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -47,6 +48,18 @@ import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useClassId } from '@/hooks/useClassId';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { questionBank } from '@/lib/questionLoader';
+import {
+  buildSectionStats,
+  logSectionWrongAnswers,
+  persistSectionResults,
+  wajQidsForSection,
+} from '@/lib/sectionHistorySave';
+import {
+  clearCloseoutProgress,
+  closeoutKey,
+  outstandingWajQids,
+  recordCloseoutProgress,
+} from '@/lib/practiceTestCloseout';
 import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
@@ -125,6 +138,13 @@ function DrillContent() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  // Depend on the id, never the user object: Supabase hands out a fresh object
+  // on every token refresh, and effects keyed on the object re-run for no reason.
+  const userId = user?.id;
+  // Teaching notes under the question are an admin surface. The panel stays
+  // open across questions once opened, so a teaching pass is one click, not ten.
+  const { is_admin: isAdmin } = useUserPermissions();
+  const [teachingNotesOpen, setTeachingNotesOpen] = React.useState(false);
   const { settings } = useUserSettings();
   const permissions = useUserPermissions();
   const { isLoading: qbLoading } = useQuestionBank();
@@ -148,6 +168,12 @@ function DrillContent() {
   const origin = searchParams.get('origin');
   const returnTo = searchParams.get('returnTo');
   const drillReturnTo = state.returnTo ?? (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : undefined);
+  // Which run and leg this section belongs to, when it belongs to one. Comes
+  // from launch state rather than from returnTo: that string is a routing hint
+  // and nothing load-bearing may depend on it.
+  const ptRun = (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
+  // Routing and score-UI suppression only. Never a clock or integrity decision.
+  const inSitting = !!drillReturnTo?.startsWith('/testing/test/');
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const initialIndexParam = searchParams.get('initialIndex');
@@ -342,9 +368,20 @@ function DrillContent() {
 
   // BR only for Full Section and Type Drill modes
   const sessionMode = session?.mode;
-  const brEnabled = sessionMode === 'full-section' || sessionMode === 'type-drill';
+  // Blind review is a review affordance, and a sitting reveals nothing between
+  // sections, so its selection and flow screens must not appear mid-sitting.
+  const brEnabled =
+    (sessionMode === 'full-section' || sessionMode === 'type-drill') && !inSitting;
 
   // class_id resolved via useClassId() hook above (F1.10).
+
+  // Guards the session initializer against re-entry. The effect below builds the
+  // run once per drill launch; anything that re-fires it afterwards (a Supabase
+  // TOKEN_REFRESHED handing React a new `user` object, a settings write) used to
+  // re-hydrate from the stored resume row and silently jump the student forward
+  // to their furthest-answered question. Mid-lesson that reads as the page
+  // skipping on its own. The key is the identity of the run, not of the user.
+  const sessionInitKeyRef = React.useRef<string | null>(null);
 
   // Initialize session with question pool filtering
   React.useEffect(() => {
@@ -360,6 +397,20 @@ function DrillContent() {
       // answers and causing a premature "could not resolve your class" toast.
       if (classIdLoading) return;
       if (qbLoading) return;
+
+      // One initialization per (launch state, user, resume target). Once the
+      // run is live, a repeat firing is a no-op rather than a reset.
+      const initKey = JSON.stringify([
+        state.mode,
+        userId ?? null,
+        classId,
+        guidedSessionKey ?? null,
+        genericResumeKey ?? null,
+        mcPracticePool?.slug ?? null,
+        initialIndexParam ?? null,
+      ]);
+      if (sessionInitKeyRef.current === initKey) return;
+      sessionInitKeyRef.current = initKey;
 
       const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
       let questionQueue: string[] = [];
@@ -623,7 +674,7 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, genericResumeKey, user]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, genericResumeKey, userId]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
@@ -1206,11 +1257,21 @@ function DrillContent() {
   const commitSessionAttempts = async (
     attempts: DrillSession['attempts'],
     mode: DrillMode
-  ): Promise<{ saved: number; wajFailed: number; timeMsZero: number }> => {
+  ): Promise<{
+    saved: number;
+    wajFailed: number;
+    timeMsZero: number;
+    /** Attempt rows that landed, so a retry can skip them. */
+    savedQids: string[];
+    /** Journal rows that landed. A short list means closeout work is owed. */
+    wajQids: string[];
+  }> => {
     let saved = 0;
     let wajFailed = 0;
     let timeMsZero = 0;
     const attemptErrors: unknown[] = [];
+    const savedQids: string[] = [];
+    const wajQids: string[] = [];
 
     for (const [qid, attempt] of attempts) {
       const question = questionBank.getQuestion(qid);
@@ -1243,6 +1304,7 @@ function DrillContent() {
           );
         } else {
           saved++;
+          savedQids.push(qid);
         }
       } catch (e) {
         attemptErrors.push(e);
@@ -1264,6 +1326,7 @@ function DrillContent() {
             time_ms: attempt.timeMs,
             confidence_1_5: null,
           });
+          wajQids.push(qid);
         } catch (error) {
           wajFailed++;
           console.error('[drill:waj:log] commit row failed', {
@@ -1284,7 +1347,7 @@ function DrillContent() {
         `commitSessionAttempts: ${attemptErrors.length} attempt write(s) failed; first: ${firstMsg}`,
       );
     }
-    return { saved, wajFailed, timeMsZero };
+    return { saved, wajFailed, timeMsZero, savedQids, wajQids };
   };
 
   const handleWAJSave = async (review: { whyWrong: string; whyEliminated: string; plan: string }) => {
@@ -2116,6 +2179,91 @@ function DrillContent() {
     }
   };
 
+  // One-shot: expiry firing while a manual finish is in flight must be a no-op.
+  const sittingCloseoutRef = React.useRef(false);
+
+  /**
+   * Close out one leg of a practice test.
+   *
+   * Order is load-bearing: attempts, then the journal, then section_history,
+   * then the resume record. The invigilator reads a section_history row as
+   * "this leg is finished" and advances past it, so writing history before the
+   * journal is complete would make the journal retry unreachable. And the
+   * resume record is finalized only after history lands, or a failed persist
+   * would leave a completed resume row that re-entry rejects, stranding a leg
+   * that can never be scored.
+   */
+  const runSittingCloseout = async (
+    attempts: DrillSession['attempts'],
+    finishedSession: DrillSession,
+  ) => {
+    const back = drillReturnTo || '/classroom';
+    const key =
+      user && ptRun
+        ? closeoutKey(user.id, ptRun.runId, ptRun.legIndex)
+        : null;
+
+    try {
+      if (!user) throw new Error('sitting closeout without a signed-in user');
+      if (!ptRun) {
+        // A sitting whose launch state lost its identity is a bug, not a case
+        // to paper over with a guessed key.
+        throw new Error('sitting closeout without run identity');
+      }
+
+      const stats = buildSectionStats(finishedSession, undefined);
+      const expectedWaj = wajQidsForSection(stats);
+
+      const { savedQids, wajQids } = await commitSessionAttempts(
+        attempts,
+        'full-section',
+      );
+      let progress = recordCloseoutProgress(key!, { savedQids, wajQids });
+
+      // commitSessionAttempts journals only ANSWERED misses. The unanswered
+      // ones are misses too, and nothing else records them once the results
+      // screen stops rendering.
+      const owed = outstandingWajQids(expectedWaj, progress);
+      if (owed.length > 0) {
+        const written = await logSectionWrongAnswers({
+          stats,
+          qids: owed,
+          classId,
+        });
+        progress = recordCloseoutProgress(key!, { wajQids: written });
+      }
+
+      // Incomplete journal means the leg is not finished. Leave the key, write
+      // no history row, and let re-entry retry only what is still owed.
+      const stillOwed = outstandingWajQids(expectedWaj, progress);
+      if (stillOwed.length > 0) {
+        console.error('[drill:sitting-closeout] journal incomplete', {
+          runId: ptRun.runId,
+          legIndex: ptRun.legIndex,
+          owed: stillOwed.length,
+        });
+        return;
+      }
+
+      if (!progress.historySaved) {
+        await persistSectionResults({
+          session: finishedSession,
+          stats,
+          classId,
+          userId: user.id,
+        });
+        progress = recordCloseoutProgress(key!, { historySaved: true });
+      }
+
+      await finalizeDrillResumeSession(attempts);
+      clearCloseoutProgress(key!);
+    } catch (error) {
+      console.error('[drill:sitting-closeout] failed', error);
+    } finally {
+      navigate(back);
+    }
+  };
+
   const handleFinishSection = async (
     attemptsOverride?: DrillSession['attempts'],
     options?: { returnToAfterFinish?: string },
@@ -2147,6 +2295,18 @@ function DrillContent() {
       ...session,
       attempts: updatedAttempts,
     };
+
+    // A section sat inside a practice test closes out to the invigilator and
+    // never shows a score. The whole path is failure-proof and retryable: any
+    // throw still navigates back, because trapping a student on a dead drill
+    // screen is worse than an unscored leg, which the invigilator already
+    // renders honestly.
+    if (inSitting) {
+      if (sittingCloseoutRef.current) return;
+      sittingCloseoutRef.current = true;
+      await runSittingCloseout(updatedAttempts, updatedSession);
+      return;
+    }
 
     // Persist per-question attempts to DB (F2.15). commitSessionAttempts throws
     // if any attempt write fails — per the don't-swallow-errors policy, we
@@ -3808,6 +3968,13 @@ function DrillContent() {
                     )}
                   </RadioGroup>
                 )}
+
+                <AdminQuestionNotes
+                  qid={currentQuestion.qid}
+                  isAdmin={isAdmin}
+                  open={teachingNotesOpen}
+                  onOpenChange={setTeachingNotesOpen}
+                />
 
                 {/* Show Answer button for practice-set mode */}
                 {isPracticeSetMode && selectedAnswer && !showSolution && (

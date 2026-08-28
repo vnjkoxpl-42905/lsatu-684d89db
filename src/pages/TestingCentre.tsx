@@ -35,7 +35,6 @@ import {
   legLabel,
   listPracticeTestRuns,
   PRACTICE_TEST_PACES,
-  practiceTestRaw,
   type PracticeTestBlueprint,
   type PracticeTestPaceId,
   type PracticeTestRun,
@@ -184,14 +183,13 @@ function ResumeList({
       <h3>Unfinished sittings</h3>
       <div className="testing-shape">
         {runs.map((run) => {
-          const { correct, total } = practiceTestRaw(run);
           return (
             <div className="testing-shape-row" key={run.id}>
               <b>PT {run.pt}</b>
               <span>
                 Section {Math.min(run.currentLeg + 1, run.legs.length)} of{" "}
                 {run.legs.length}
-                {correct > 0 ? ` · ${correct}/${total} so far` : ""}
+
               </span>
               <em style={{ display: "flex", gap: 8 }}>
                 <Button size="sm" variant="outline" onClick={() => onResume(run)}>

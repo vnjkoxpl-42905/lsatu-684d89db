@@ -39,6 +39,20 @@ function timerModeForPace(pace: PracticeTestPaceId): TimerMode {
   }
 }
 
+/**
+ * Which run and which leg a runner was launched for.
+ *
+ * The runner needs this to key its closeout bookkeeping, and it cannot be
+ * recovered from `returnTo`: that string is a routing hint, editable and
+ * removable, and clock integrity must never depend on it. The leg INDEX is
+ * passed rather than searched for, because `legs` can hold two legs of the same
+ * section and matching by section number would pick the wrong one.
+ */
+export interface PtLegIdentity {
+  runId: string;
+  legIndex: number;
+}
+
 export interface LrLegLaunch {
   pathname: '/drill';
   state: {
@@ -46,10 +60,15 @@ export interface LrLegLaunch {
     config: FullSectionConfig;
     returnTo: string;
     practicingLabel: string;
+    ptRun: PtLegIdentity;
   };
 }
 
-export function lrLegLaunch(run: PracticeTestRun, leg: PracticeTestLeg): LrLegLaunch {
+export function lrLegLaunch(
+  run: PracticeTestRun,
+  leg: PracticeTestLeg,
+  legIndex: number,
+): LrLegLaunch {
   return {
     pathname: '/drill',
     state: {
@@ -66,6 +85,7 @@ export function lrLegLaunch(run: PracticeTestRun, leg: PracticeTestLeg): LrLegLa
       },
       returnTo: practiceTestPath(run.id),
       practicingLabel: `Practice Test ${run.pt}`,
+      ptRun: { runId: run.id, legIndex },
     },
   };
 }
@@ -75,7 +95,11 @@ export function lrLegLaunch(run: PracticeTestRun, leg: PracticeTestLeg): LrLegLa
  * conditions — nothing is revealed until the sitting is over, and inside a
  * practice test that is doubly true.
  */
-export function rcLegHref(run: PracticeTestRun, leg: PracticeTestLeg): string {
+export function rcLegHref(
+  run: PracticeTestRun,
+  leg: PracticeTestLeg,
+  legIndex: number,
+): string {
   const secondsPerPassage = (() => {
     const sectionSeconds = practiceTestPace(run.pace).sectionSeconds;
     if (sectionSeconds === null) return null;
@@ -89,6 +113,8 @@ export function rcLegHref(run: PracticeTestRun, leg: PracticeTestLeg): string {
     timing: secondsPerPassage === null ? 'untimed' : 'standard',
     start: '1',
     returnTo: practiceTestPath(run.id),
+    ptRun: run.id,
+    ptLeg: String(legIndex),
   });
   if (secondsPerPassage !== null && secondsPerPassage !== RC_STANDARD_SECONDS_PER_PASSAGE) {
     params.set('secondsPerPassage', String(secondsPerPassage));

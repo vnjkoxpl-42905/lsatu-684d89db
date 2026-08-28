@@ -393,7 +393,16 @@ export default function RcPlayer() {
         setSaveError('The drill did not finish saving.');
         return;
       }
-      // Carried, not dropped: a leg of a practice test has somewhere to be
+      // A leg of a practice test goes straight back to the invigilator. The
+      // session is already completed in the database by this point, so the
+      // sitting can score it; showing the results screen first would reveal a
+      // section score with sections still to sit. RC is frequently section 1
+      // or 2, so this is the common case, not an edge one.
+      if (returnTo?.startsWith('/testing/test/')) {
+        navigate(returnTo);
+        return;
+      }
+      // Carried, not dropped: anything else with a returnTo has somewhere to be
       // after the results screen, and only this query string knows where.
       navigate(`/rc/results/${sessionId}${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`);
     }

@@ -207,10 +207,10 @@ export default function PracticeTestRunPage() {
     setNoResult(false);
 
     if (leg.kind === "lr") {
-      const launch = lrLegLaunch(next, leg);
+      const launch = lrLegLaunch(next, leg, next.currentLeg);
       navigate(launch.pathname, { state: launch.state });
     } else {
-      navigate(rcLegHref(next, leg));
+      navigate(rcLegHref(next, leg, next.currentLeg));
     }
   };
 
@@ -262,9 +262,10 @@ export default function PracticeTestRunPage() {
             <b>Section {i + 1}</b>
             <span>{legLabel(l)}</span>
             <em>
-              {l.completedAt
-                ? `${l.correct ?? 0}/${l.questionCount}`
-                : `${l.questionCount} questions`}
+              {/* No number until the whole sitting is over. Knowing section 1's
+                  score changes how the rest is sat, which is the difference
+                  between a practice test and three drills. */}
+              {l.completedAt ? 'Finished' : `${l.questionCount} questions`}
             </em>
           </div>
         ))}
@@ -319,8 +320,7 @@ export default function PracticeTestRunPage() {
         <div className="testing-panel">
           <p className="testing-note" style={{ marginTop: 0 }}>
             Next: <strong>{legLabel(leg)}</strong>, {leg.questionCount} questions
-            {clock ? `, ${clock} on the clock` : ", untimed"}. Nothing is revealed
-            until the sitting is over.
+            {clock ? `, ${clock} on the clock` : ", untimed"}.
           </p>
           <div className="testing-actions">
             <Button onClick={begin}>
