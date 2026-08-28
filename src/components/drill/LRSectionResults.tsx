@@ -15,8 +15,15 @@ import {
 import { cn } from '@/lib/utils';
 import ScoreRing from '@/components/drill/ScoreRing';
 import { questionBank } from '@/lib/questionLoader';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import {
+  buildSectionStats,
+  buildSectionTotals,
+  logSectionWrongAnswers,
+  persistSectionResults,
+  wajQidsForSection,
+  type SectionQuestionStat,
+} from '@/lib/sectionHistorySave';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 import { toast } from 'sonner';
 
@@ -33,22 +40,7 @@ interface LRSectionResultsProps {
   backLabel?: string;
 }
 
-interface QuestionStat {
-  qid: string;
-  qnum: number;
-  qtype: string;
-  difficulty: number;
-  initialAnswer: string;
-  correctAnswer: string;
-  initialCorrect: boolean;
-  brAnswer?: string;
-  brCorrect?: boolean;
-  brChanged?: boolean;
-  timeMs: number;
-  brTimeMs?: number;
-  switchCount: number;
-  flagged: boolean;
-}
+type QuestionStat = SectionQuestionStat;
 
 interface FocusArea {
   qtype: string;
@@ -66,48 +58,27 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
   const savedRef = React.useRef(false);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
 
-  // Build question stats
-  const stats: QuestionStat[] = React.useMemo(() => {
-    return session.questionQueue.map((qid, idx) => {
-      const question = questionBank.getQuestion(qid);
-      const attempt = session.attempts.get(qid);
-      const brResult = brResults?.find(br => br.qid === qid);
-      
-      if (!question) return null;
+  // Built by the shared helper so this screen and the practice-test closeout can
+  // never disagree about what the section scored.
+  const stats: QuestionStat[] = React.useMemo(
+    () => buildSectionStats(session, brResults),
+    [session, brResults],
+  );
 
-      // Handle unanswered questions (no attempt = treated as wrong)
-      return {
-        qid,
-        qnum: idx + 1,
-        qtype: question.qtype,
-        difficulty: question.difficulty,
-        initialAnswer: attempt?.selectedAnswer || '—',
-        correctAnswer: question.correctAnswer,
-        initialCorrect: attempt?.correct || false,
-        brAnswer: brResult?.brAnswer,
-        brCorrect: brResult?.correct,
-        brChanged: brResult?.brChanged,
-        timeMs: attempt?.timeMs || 0,
-        brTimeMs: brResult?.brTimeMs,
-        switchCount: attempt?.switchCount || 0,
-        flagged: attempt?.brMarked || false,
-      };
-    }).filter(Boolean) as QuestionStat[];
-  }, [session, brResults]);
-
-  // Calculate scores
-  const initialScore = stats.filter(s => s.initialCorrect).length;
-  const initialTotal = stats.length;
-  const initialPercent = Math.round((initialScore / initialTotal) * 100);
-
-  const brScore = brResults ? stats.filter(s => s.brCorrect).length : null;
-  const brPercent = brScore !== null ? Math.round((brScore / initialTotal) * 100) : null;
-  const delta = brScore !== null ? brScore - initialScore : null;
-
-  // Calculate stats
-  const totalTimeMs = stats.reduce((sum, s) => sum + s.timeMs, 0);
-  const avgTimeMs = Math.round(totalTimeMs / stats.length);
-  const unansweredCount = stats.filter(s => s.initialAnswer === '—').length;
+  const {
+    initialScore,
+    initialTotal,
+    initialPercent,
+    brScore,
+    brPercent,
+    delta,
+    totalTimeMs,
+    avgTimeMs,
+    unansweredCount,
+  } = React.useMemo(
+    () => buildSectionTotals(stats, brResults),
+    [stats, brResults],
+  );
 
   // Per-question-type breakdown, sorted by lowest accuracy first so the
   // weakest areas surface at the top of "Show all types".
@@ -155,78 +126,22 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
       savedRef.current = true;
 
       try {
-        // Build by_qtype_json
-        const byQtype: Record<string, { correct: number; total: number }> = {};
-        stats.forEach(s => {
-          if (!byQtype[s.qtype]) {
-            byQtype[s.qtype] = { correct: 0, total: 0 };
-          }
-          byQtype[s.qtype].total++;
-          if (s.initialCorrect) byQtype[s.qtype].correct++;
+        await persistSectionResults({
+          session,
+          stats,
+          brResults,
+          classId,
+          userId: user.id,
         });
 
-        // Build by_difficulty_json
-        const byDifficulty: Record<number, { correct: number; total: number }> = {};
-        stats.forEach(s => {
-          if (!byDifficulty[s.difficulty]) {
-            byDifficulty[s.difficulty] = { correct: 0, total: 0 };
-          }
-          byDifficulty[s.difficulty].total++;
-          if (s.initialCorrect) byDifficulty[s.difficulty].correct++;
+        // Every question that was not answered correctly, answered or not. On the
+        // standalone path nothing else journals this section, so the whole set
+        // belongs here.
+        await logSectionWrongAnswers({
+          stats,
+          qids: wajQidsForSection(stats),
+          classId,
         });
-
-        const resolvedClassId = classId;
-        const pt = session.fullSectionConfig?.pt || 0;
-        const section = session.fullSectionConfig?.section || 0;
-
-        const { error: sectionHistoryError } = await supabase.from('section_history').insert({
-          class_id: resolvedClassId,
-          pt,
-          section,
-          mode: session.mode,
-          initial_score: initialScore,
-          initial_total: initialTotal,
-          initial_percent: initialPercent,
-          br_score: brScore,
-          br_total: brScore !== null ? initialTotal : null,
-          br_percent: brPercent,
-          br_delta: delta,
-          total_time_ms: totalTimeMs,
-          avg_time_ms: avgTimeMs,
-          unanswered_count: unansweredCount,
-          by_qtype_json: byQtype,
-          by_difficulty_json: byDifficulty,
-          br_used: !!brResults,
-        });
-        if (sectionHistoryError) throw sectionHistoryError;
-
-        // Add wrong answers to WAJ
-        const { logWrongAnswer } = await import('@/lib/wajService');
-        for (const stat of stats) {
-          if (!stat.initialCorrect) {
-            const question = questionBank.getQuestion(stat.qid);
-            if (question) {
-              await logWrongAnswer({
-                class_id: resolvedClassId,
-                qid: stat.qid,
-                pt: question.pt,
-                section: question.section,
-                qnum: question.qnum,
-                qtype: stat.qtype,
-                level: stat.difficulty,
-                chosen_answer: stat.initialAnswer,
-                correct_answer: stat.correctAnswer,
-                time_ms: stat.timeMs,
-                confidence_1_5: null,
-                review: {
-                  q1: '',
-                  q2: '',
-                  q3: '',
-                },
-              });
-            }
-          }
-        }
       } catch (error) {
         toast.error('Failed to save section results. Please try again.');
         console.error('Failed to save section history:', error);
