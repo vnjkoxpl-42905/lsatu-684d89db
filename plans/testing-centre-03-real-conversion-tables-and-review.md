@@ -1,8 +1,15 @@
 # Testing Centre change 3: a score report worth quoting — official conversion tables and post-sitting review
 
-Priority: third. Depends on change 1 (sealed sitting) and benefits heavily from change 2
-(leg session ids). The scaled score is the single number students care about; today it is
-an interpolated guess, and the report is a dead end once read.
+_Revised after Codex adversarial review round 1 (see plans/testing-centre-review-log.md)._
+
+Priority: **fourth — reordered in review round 3.** Hard dependencies: change 1
+(sealed sitting), change 2 with its migration applied (the review links need the leg
+`sessionId` it stores; the finished-sittings list needs the runs table), **and change 4
+(clock integrity)**. The reorder exists because this change starts writing permanent
+`official-table` score snapshots: a snapshot minted while sittings can still be paused,
+clock-reset, or sat past expiry would carry pre-integrity scores into the trajectory
+and teacher surfaces unmarked. Ship the clock first, then start certifying scores. The scaled score is the single number students care about; today it is an
+interpolated guess, and the report is a dead end once read.
 
 ## Repo conventions that bind this work
 
@@ -39,21 +46,30 @@ an interpolated guess, and the report is a dead end once read.
   numbering is LSAT Lab's PT1xx scheme, which is NOT the LSAC numbering, and the offset
   is not constant. The ingestion doc (next bullet) must say the mapping is by the bank's
   own PT number as it appears in the Testing Centre.
-- Write `scripts/validate-pt-curves.mjs`: every curve covers scaled 120-180 without gaps,
-  raw ranges are contiguous from 0 to `total`, scaled is monotonically non-increasing as
-  raw decreases. Add it to the test suite via a small vitest that runs the same checks
-  in-process (mirror how `practiceTest.bank.test.ts` reads `public/data` directly).
+- Write `scripts/validate-pt-curves.mjs`: raw coverage is contiguous from 0 to `total`
+  with no gaps or overlaps, scaled values are monotonically non-decreasing in raw,
+  bounded to [120, 180], with valid endpoints. Do NOT require every scaled integer
+  120-180 to appear — real tables skip scaled values, and demanding surjectivity on
+  that axis rejects legitimate data. Lookup completeness lives on the raw axis. Add a
+  small vitest running the same checks in-process (mirror how
+  `practiceTest.bank.test.ts` reads `public/data` directly).
 - Add `plans/` note or README section telling Joshua exactly what to paste and where.
 
 ### Step 2 — scoring uses the real table when it exists
 
 In practiceTest.ts:
 
-- `scaledScoreForRun(run, curves)` (new): if `curves[run.pt]` exists and the run's raw
-  total equals the curve's `total`, look up exactly. If the totals differ (a leg was
-  marked unfinished still counts its questions, so totals should match; but guard it),
-  fall back to the estimate. If no curve exists for the PT, fall back to
-  `estimateScaledScore` unchanged.
+- `scaledScoreForRun(run, curves)` (new): the official table applies ONLY when
+  `curves[run.pt]` exists AND the run's raw total exactly equals the curve's `total`.
+  Anything else — total mismatch, missing curve — falls back to `estimateScaledScore`
+  unchanged. This exact-total gate is the honesty guard the review demanded: the
+  blueprint takes the lowest-numbered two of three LR sections when a PT carries a third
+  (the experimental is unknowable), so a matching total is the necessary condition for
+  claiming the official composition was scored; when it does not hold, the number is an
+  estimate and must say so. Return `{ scaled, source: 'official-table' | 'estimate' }`
+  so callers can persist the provenance (change 2's `score_source` column) — the report
+  and any later chart must show the number as scored at completion time, never
+  re-derived against a curve file that changed since.
 - The report copy must state which one it used:
   - Real table: "Scored with PrepTest N's own conversion table."
   - Estimate: keep today's "Estimated from a typical modern LSAT curve... Treat it as a
@@ -65,6 +81,23 @@ In practiceTest.ts:
   match how other `public/data` files are loaded; `rcBank.ts` fetches, the LR manifest
   goes through `QuestionBankContext`; the simplest consistent choice is a fetch with
   in-module cache used from `PracticeTestRunPage`).
+- **Write the terminal snapshot through ONE `finalizeRun` function, covering every
+  completion path.** Review round 2 found the trap: a run can reach
+  `status: 'complete'` from TWO places in PracticeTestRun.tsx — the readback effect
+  AND the "Mark it unfinished and continue" button on the last leg. A snapshot written
+  only in the readback effect leaves button-completed runs snapshotless. Create
+  `finalizeRun(run, curves)` (write-once: no-op if a snapshot exists) that computes
+  and persists `completed_at`, `raw_correct`, `raw_total`, `scaled_score`,
+  `score_source`, and route BOTH transitions through it (via change 2's mutation
+  coordinator). Every later surface renders the snapshot, never a recomputation.
+- **Snapshotless completed runs render raw-only.** Runs completed after change 2 but
+  before this change (or where finalize failed) have no snapshot. ScoreReport and the
+  finished-sittings list show their raw score with "scaled score unavailable for this
+  sitting" — never a freshly computed scaled number, and never a blank crash. They DO
+  have a completion date: change 2 stamps `completed_at` on every completion
+  transition; for any completed row that still lacks it, derive-and-persist it from
+  `updated_at` once, so the receipt list and the change-5 trajectory always have a
+  date axis.
 
 ### Step 3 — the report opens back up
 
@@ -74,14 +107,23 @@ Extend `ScoreReport` in PracticeTestRun.tsx:
   (`leg.sessionId`, added in change 2):
   - RC leg → navigate to `/rc/results/<sessionId>?returnTo=/testing/test/<runId>`.
     That page already exists and already renders full review with explanations.
-  - LR leg → there is no history-driven LR review page today. Do NOT rebuild
-    LRSectionResults from a history row in this change. Instead link to the Wrong
-    Answer Journal filtered to that PT/section if the WAJ surface supports filter
-    params (inspect `src/pages/Journal.tsx` / `wajService` for a query-param filter;
-    if none exists, add pt+section params to it — small, contained), with the label
-    "Review your wrong answers".
-- Below the legs: one line stating how many wrong answers were added to the journal
-  across the sitting, linking to `/journal` (verify the route name in `src/App.tsx`).
+  - LR leg → there is no history-driven LR review page today, and review round 1
+    established that journal filtering cannot be made sitting-scoped (WAJ rows carry no
+    run/leg attribution, and the live journal surface reads no filter params). Do NOT
+    build a filtered-journal feature here. The LR row gets a plain link to the journal
+    surface (verify the actual route and component in `src/App.tsx` — the review found
+    `/journal` renders a different component than `src/pages/Journal.tsx`) labelled
+    "Your wrong answers land in the journal", with no claim that the view is scoped to
+    this sitting. A true sitting-scoped LR review is future work and out of scope.
+    **Gate the link on the journal's own permission flag** — the Testing Centre is
+    behind `has_drill_access`, the journal surface behind its own flag (check the
+    route's `ProtectedRoute` in `src/App.tsx`); for a student without it, render the
+    sentence without a link rather than a link into an access wall.
+- Below the legs: one line stating how many questions were missed across the sitting.
+  Derive it from the terminal snapshot's whole-sitting `raw_total - raw_correct` —
+  the same numbers the score is computed from (`practiceTestRaw` counts every leg's
+  questions, unfinished legs included, so a per-completed-leg sum would show fewer
+  misses than the stored raw result). Never from WAJ.
 - Keep the unfinished-sections paragraph exactly as is.
 
 ### Step 4 — the report is reachable again later
@@ -94,9 +136,14 @@ recent; this is a receipts list, not the analytics surface (that is change 5).
 
 ## Tests
 
-- Curve validator vitest (structure + monotonicity + coverage) over the real
+- Curve validator vitest (structure + monotonicity + raw coverage) over the real
   `public/data/pt-curves.json`, skipping gracefully (with an explicit `it.skip` count
   message) while the file has no curves yet.
+- `finalizeRun` tests — this invariant is load-bearing and has two entry paths:
+  completion via readback, completion via last-leg "mark unfinished and continue",
+  repeated finalization is a no-op (write-once), failed snapshot persistence leaves
+  the run complete-but-snapshotless (and retryable), and snapshotless runs render
+  raw-only with a derived date.
 - Unit tests for `scaledScoreForRun`: exact lookup, total-mismatch fallback, missing-PT
   fallback, and that the estimate path is byte-identical to `estimateScaledScore`.
 - Update `TestingCentre.test.tsx` for the finished-sittings section (mock the store).

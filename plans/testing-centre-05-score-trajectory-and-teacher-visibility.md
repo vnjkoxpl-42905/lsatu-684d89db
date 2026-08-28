@@ -1,7 +1,11 @@
 # Testing Centre change 5: the score trajectory — analytics for the student, visibility for Joshua
 
-Priority: fifth. Hard dependency on change 2 (server-side `practice_test_runs` + RLS
-admin read). Do not start it before change 2 has landed and its migration is applied.
+_Revised after Codex adversarial review round 1 (see plans/testing-centre-review-log.md)._
+
+Priority: fifth (ship order after round 3's reorder: 1 → 2 → 4 → 3 → 5). **Hard
+dependencies: change 2 (server-side `practice_test_runs` + admin-read RLS + the
+terminal snapshot columns + the stale-run RPC) AND change 3 (`scaledScoreForRun` and
+`finalizeRun`).** Do not start before both have landed and the migration is applied.
 
 ## Repo conventions that bind this work
 
@@ -9,9 +13,11 @@ admin read). Do not start it before change 2 has landed and its migration is app
   `npm run test` before push; push via `bash .claude/safe-push.sh`. Browser verification
   of page/component changes is a hard gate — for anything responsive, verify narrow,
   mid, and wide viewports BEFORE pushing.
-- Charts: read `plans/analytics-viz-palette.md` and `chart-palette.md` at repo root, and
-  match whatever charting approach `src/pages/Analytics.tsx` already uses. Do not
-  introduce a new chart library.
+- Charts: the canonical palette is `docs/chart-palette.md` (review round 2:
+  `plans/analytics-viz-palette.md` marks itself superseded — do not follow it), and the
+  existing Recharts trend idiom to copy is in `src/components/mainhub/AnalyticsStage.tsx`,
+  not `src/pages/Analytics.tsx`. Verify both at build time before writing chart code.
+  Do not introduce a new chart library.
 - No fake data, ever. A student with one sitting gets one point and honest copy, not an
   invented trend. Admin surfaces must be desktop AND mobile responsive (product rule).
 
@@ -28,17 +34,25 @@ trend for the student, no roll-up for Joshua, and abandoned runs accumulate fore
 In `src/pages/Analytics.tsx` (inspect its existing section structure first and add a
 section in its idiom):
 
-- "Practice tests" block: a line/dot chart of scaled score over `created_at` for the
-  signed-in user's `status = 'complete'` runs, plus a small table of sittings (date, PT,
-  pace, raw, scaled). Pace matters: an untimed or double-time sitting is not comparable
-  to standard — mark non-standard paces visually (a labelled dot, not a footnote) and
-  say so in one line of copy.
-- Empty state: if zero completed sittings, one sentence pointing at the Testing Centre.
-  No placeholder chart.
-- Data access goes through a new `src/lib/practiceTestAnalytics.ts` with a
-  `listCompletedRuns(userId?)` that both this page and the teacher surface share.
-  Scaled score comes from change 3's `scaledScoreForRun` so the chart and the report
-  can never disagree.
+- "Practice tests" block: a line/dot chart of the **stored `scaled_score` snapshot over
+  `completed_at`** for the signed-in user's `status = 'complete'` runs — never
+  `created_at` (a run finished days after it began plots out of order) and never a
+  recomputation against the current curve file (a curve edit must not silently rewrite
+  history). Runs without a snapshot (completed before change 3 shipped) are listed in
+  the table with their raw score and excluded from the scaled-score line, with one line
+  of copy saying why. Plus a small table of sittings (completed date, PT, pace, raw,
+  scaled, score source). Pace matters: an untimed or double-time sitting is not
+  comparable to standard — mark non-standard paces visually (a labelled dot, not a
+  footnote) and say so in one line of copy.
+- **Four states, both panels (student and teacher): loading, error, empty, data.** A
+  failed runs query must render an error state with a retry action — never the empty
+  state; "no sittings yet" when the query actually failed is fake data by another name.
+  Empty state: one sentence pointing at the Testing Centre, no placeholder chart.
+- Data access goes through a new `src/lib/practiceTestAnalytics.ts` with ONE shared
+  query function `listRuns({ userId, statuses })` — the student chart calls it with
+  `statuses: ['complete']`; the teacher panel (which must also show in-progress and
+  abandoned) calls it with all three. Do not ship a completed-only function and then
+  need a second one.
 
 ### Step 2 — teacher-side visibility
 
@@ -56,12 +70,23 @@ routing). Add a "Practice tests" panel to the per-student teacher view:
 
 ### Step 3 — run hygiene
 
-- **Auto-abandon:** in the Testing Centre's load path (where the resume list is built),
-  any in-progress run whose `createdAt` is older than 14 days is marked `abandoned`
-  (remote + local) instead of being listed. One line of copy is unnecessary; it simply
-  stops appearing.
-- **Discard = abandon:** confirm change 2's rule holds (discard sets remote
-  `status='abandoned'`, deletes only the local copy).
+- **Auto-abandon on inactivity, decided server-side via the RPC.** Not client-side by
+  `createdAt`: a 15-day-old sitting the student touched yesterday is active, and a
+  stale device must not abandon a run being sat elsewhere. A PostgREST filtered update
+  cannot express `now() - interval '14 days'` as a filter value, so change 2's
+  migration ships `public.abandon_stale_practice_tests()` — owner-scoped, server
+  `now()`, filters on `status='in-progress'`, bumps revision, returns affected ids.
+  **Ordering in the load path matters:** first retry dirty local runs (pushing any
+  offline progress up, which refreshes `updated_at`), then call
+  `supabase.rpc('abandon_stale_practice_tests')` — excluding is unnecessary once the
+  dirty retries have landed, but any run whose dirty retry FAILED must be left out of
+  local pruning so its progress is not destroyed by a terminal-wins reconcile — then
+  reload and reconcile. Drop local copies of the returned ids only when they are not
+  dirty. `updated_at` is trigger-maintained (change 2), so any leg progress refreshes
+  it.
+- **Discard = abandon, tombstoned:** change 2's rule verbatim — discard keeps a dirty
+  local abandoned tombstone until the remote transition is confirmed, and only then
+  prunes the local copy. Never delete the local copy on an unconfirmed abandon.
 - **Local prune:** after a run is confirmed present server-side with status complete or
   abandoned, remove its localStorage entry on next Testing Centre visit, keeping the
   local store to genuinely active sittings.
@@ -75,8 +100,10 @@ this step and note it as skipped.
 
 ## Tests
 
-- `src/lib/practiceTestAnalytics.test.ts`: ordering, completed-only filtering, the
-  14-day auto-abandon cutoff math (pure function taking `now`).
+- `src/lib/practiceTestAnalytics.test.ts`: ordering by `completed_at`, statuses
+  filtering through `listRuns`, snapshot-missing rows excluded from the chart series,
+  the auto-abandon path calling the RPC and pruning returned ids, and error-state
+  propagation (a query failure surfaces as an error result, not an empty list).
 - Update `TestingCentre.test.tsx` if the resume-list load path changed shape.
 - `npm run test`, `npm run typecheck`.
 

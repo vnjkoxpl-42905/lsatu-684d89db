@@ -1,7 +1,15 @@
 # Testing Centre change 4: the clock is real — no resets, no pauses, hard stops
 
-Priority: fourth. Independent of changes 2/3; do after change 1 (it touches the same
-Drill/RcPlayer seams and will conflict if done in parallel).
+_Revised after Codex adversarial review round 1 (see plans/testing-centre-review-log.md)._
+
+Priority: **third — swapped ahead of the conversion-tables change in review round 3**,
+so that no permanent official score snapshot is ever minted from a sitting whose clock
+could still be paused or reset. **Hard dependency: change 2** — review round 2 resolved the circular
+ordering by moving the pure deadline math (`legRemainingSeconds`, `remainingMs` in the
+timer config, `getTimerConfigForDrillRoute` support) INTO change 2, along with the
+URL-param reload reconstruction and the RC session attribution this plan's clock reads.
+This plan builds on top of those: stamp-once, pause removal, hard stops, RC wall-clock
+derivation, expiry copy. Do after changes 1 and 2.
 
 ## Repo conventions that bind this work
 
@@ -17,95 +25,114 @@ A sitting's clock is currently advisory, three different ways:
    ([practiceTestRunner.ts](src/lib/practiceTestRunner.ts) ~lines 52-71) builds the timer with
    `elapsedMs: 0, startedAt: Date.now()` at every launch, and `begin()` in
    [PracticeTestRun.tsx](src/pages/PracticeTestRun.tsx) (~lines 194-215) re-stamps `leg.startedAt`
-   unconditionally on every press, including "Return to section N". Leave a section at
-   30:00 elapsed, come back, and you have a fresh 35:00. That is a scoring exploit and a
-   fidelity failure in one.
+   unconditionally on every press, including "Return to section N".
 2. **The LR runner allows pausing.** Drill's timer UI has pause/resume (Drill.tsx
-   ~line 3607 renders a resume button). Inside a sitting there is no pause on the
-   real test.
+   ~line 3607 renders a resume button).
 3. **The RC clock resets on reload and never enforces.** RcPlayer holds `elapsed` in
-   `useState(0)` ([RcPlayer.tsx](src/features/rc/pages/RcPlayer.tsx) ~line 278) — a reload zeroes
-   it — and the budget is soft: `overBudget` (~line 293) only flips the display into
-   `+m:ss` overtime. Under test conditions the section ends when the clock does.
+   `useState(0)` ([RcPlayer.tsx](src/features/rc/pages/RcPlayer.tsx) ~line 278) driven by a
+   `setInterval` increment — a reload zeroes it, and background-tab throttling loses
+   time — and the budget is soft: `overBudget` (~line 293) only flips the display into
+   overtime.
 
 The break clock, by contrast, is already right: `breakStartedAt` is an ISO stamp in the
-run, so it survives reloads (PracticeTestRun.tsx BreakScreen). Use it as the model.
+run. Use it as the model.
+
+## Two facts the review established — build around them
+
+- **The live timer ignores `elapsedMs`.** `getTimerConfigForDrillRoute`
+  ([drillRouteState.ts](src/lib/drillRouteState.ts) ~lines 91-117) derives the countdown purely from
+  `config.timer.mode` → a fixed `durationMs`; the timer then starts fresh from
+  `performance.now()` on mount. Writing a nonzero `elapsedMs` into the launch config
+  changes nothing. The fix must flow through the config derivation, not the launch
+  payload.
+- **`begin()` re-stamps and then launches with the STALE leg object.** Even with a
+  stamp-once fix, `begin()` builds `next` and then must call
+  `lrLegLaunch(next, next.legs[next.currentLeg])` / `rcLegHref(next, ...)` — passing the
+  old `leg` variable hands the builders an unstamped leg and the remaining-time math a
+  fresh clock.
 
 ## Design principle
 
-Inside a sitting, **wall clock is the truth**. The section's clock starts when the leg
-starts (`leg.startedAt`, already an ISO stamp saved before navigation) and runs whether
-or not the tab is open. Remaining time is always
-`paceSeconds - (now - Parse(leg.startedAt))`. No stored elapsed counters to drift, no
-pause state to reconcile. Untimed pace is exempt from all of this.
+Inside a sitting, **wall clock is the truth**. The section's clock starts at
+`leg.startedAt` (ISO, saved before navigation) and runs whether or not the tab is open.
+Remaining time is always `paceSeconds - (now - Parse(leg.startedAt))`, recomputed from
+`Date.now()` — never accumulated by an interval counter. Untimed pace is exempt from
+all of this. The `startedAt` the runners trust is the one in the persisted run (server-
+backed after change 2), not a user-editable query param: a param is a hint for the
+fast path, the run row is the authority the runner re-reads.
 
 ## The change
 
-### Step 1 — startedAt becomes stamp-once
+### Step 1 — startedAt becomes stamp-once, and the stamped leg is what launches
 
-In PracticeTestRun.tsx `begin()`: only stamp `startedAt` when the leg does not already
-have one. On re-entry ("Return to section N"), reuse the existing stamp.
+In PracticeTestRun.tsx `begin()`: stamp `startedAt` only when absent; after building
+`next`, resolve `const stampedLeg = next.legs[next.currentLeg]` and pass THAT to
+`lrLegLaunch` / `rcLegHref`.
 
-### Step 2 — LR leg resumes with the wall-clock remainder
+### Step 2 — LR remaining time (math shipped in change 2; this plan wires the behaviour)
 
-- In `lrLegLaunch`, compute from the leg: if `leg.startedAt` exists, set the timer's
-  `elapsedMs` to `Date.now() - Date.parse(leg.startedAt)` (clamped to
-  `[0, paceSeconds*1000]`) instead of 0. First entry (fresh stamp) still yields ~0.
-- Add `practiceTest` sitting context to the launch state if change 1/2 have not already
-  (`isSittingReturn(drillReturnTo)` is the flag inside Drill).
-- In Drill.tsx, when in a sitting: hide/disable the pause control for the section timer
-  (find where the timer pause UI renders near the ~3607 resume button and gate it), and
-  do not honour a paused state from navigation.
+`legRemainingSeconds`, the `remainingMs` timer-config field, and
+`getTimerConfigForDrillRoute` support all land in change 2 (its Step 4). Here:
+
+- Verify `lrLegLaunch` computes `remainingMs` from the STAMPED leg (Step 1's fix).
+- In Drill.tsx, when in a sitting (`isSittingReturn(drillReturnTo)`): hide/disable the
+  pause control and ignore any paused state from navigation.
+- `remainingMs === 0` at launch means the leg is already expired: skip straight to the
+  hard-stop path below rather than mounting a dead runner.
 
 ### Step 3 — LR hard stop
 
-Investigate how full-section mode currently behaves at 0:00 (search Drill.tsx and
-`src/hooks/useTimer.ts` for expiry handling; a grep for `expire`/`timeUp` finds nothing
-today, so expect "clock shows 0, student keeps answering"). Inside a sitting at a timed
-pace: when remaining hits 0, force-finish the section through the exact same finish path
-change 1 built (persist results, then navigate back to the invigilator). Unanswered
-questions count wrong via the existing unanswered accounting. Show a brief
-non-interactive "Time is up on this section" state (a simple full-screen card for ~2s or
-a confirm-free transition) rather than silently teleporting. Outside a sitting, change
-nothing.
+Full-section mode today has no expiry action (no `expire`/`timeUp` handling exists —
+the countdown reaches 0 and the student keeps answering). Inside a sitting at a timed
+pace: when the countdown reaches 0, force-finish through the exact closeout path change
+1 built (one-shot guard, persist, navigate back to the invigilator). The closeout's
+existing one-shot ref is the submission mutex — expiry firing while a manual finish is
+in flight must be a no-op, and the DB-side partial unique index from change 2 makes a
+duplicate row impossible even if both slip through. Show a brief "Time is up on this
+section" state rather than silently teleporting. Outside a sitting, change nothing.
 
-### Step 4 — RC leg: persistent clock and hard stop
+### Step 4 — RC leg: wall-clock, visibility-proof, hard stop
 
-- Persist the RC clock against the wall: the sitting's RC leg also has `leg.startedAt`.
-  Pass the deadline into the player: when `returnTo` is a sitting (use the shared
-  `isSittingReturn` helper), derive remaining from `startedAt` + the section budget
-  rather than the in-memory `elapsed`. Concretely: add an optional
-  `startedAt=<iso>` query param in `rcLegHref` (practiceTestRunner.ts ~line 78), and in
-  RcPlayer compute `elapsed` seeded from it. Reloads then cost time instead of
-  refunding it.
-- Hard stop: in a sitting, when the pooled budget reaches 0, auto-submit the set through
-  the existing submit handler (the one at ~line 380-400 that calls `completeSession` and,
-  after change 1, navigates back to the invigilator). Unanswered questions are simply
-  unanswered. Outside a sitting, keep the soft overtime display unchanged.
+- In RcPlayer, for a sitting (shared `isSittingReturn` helper): derive the clock as
+  `Date.now() - startedAtMs` **on every tick and on every `visibilitychange`**, where
+  `startedAtMs` comes from the session's persisted run/leg attribution (change 2 stores
+  it on the `rc_drill_sessions` row and returns it through the session-load path —
+  never trust a query param for the authoritative clock; clamp any fallback value that
+  is in the future or absurdly old to "now"). Do not seed the existing
+  interval-increment counter — replace the elapsed source for sitting sessions.
+- Hard stop with a recoverable failure path (review round 2): at budget 0 in a sitting,
+  **immediately lock answering** — a frozen, reveal-nothing state; the student can no
+  longer change or enter answers regardless of what happens next — then run the submit
+  handler (the ~line 380-400 path that calls `completeSession` and, after change 1,
+  navigates back to the invigilator). The handler can fail (`saveError` return): the
+  one-shot mutex must protect against DOUBLE submission, not against RETRY — keep
+  answering locked, show the existing save-error surface with a retry action, and
+  release the mutex only for that controlled retry. A permanently stuck player and a
+  student answering past expiry are both failures. Outside a sitting, keep the soft
+  overtime display unchanged.
 
 ### Step 5 — the invigilator tells the truth about an expired leg
 
-In PracticeTestRunPage, when a leg has a `startedAt` older than its full budget and no
-result row was found (`noResult`), the copy currently implies the student can "go back
-and finish it". With hard stops, re-entering an expired timed leg would immediately
-force-finish, which is correct but should be said: adjust the noResult copy for that case
-to offer "Submit it as it stands" as the primary action.
+When a leg's `startedAt` is older than its full budget and no result row was found
+(`noResult`), the current copy implies the student can "go back and finish it". With
+hard stops, re-entering immediately force-finishes. Adjust the noResult copy for the
+expired case: primary action "Submit it as it stands" (which triggers the same
+force-finish), secondary "Mark it unfinished and continue".
 
 ## Tests
 
-- Unit-test the remaining-time math as a pure function (put
-  `legRemainingSeconds(leg, pace, now)` in practiceTest.ts or practiceTestRunner.ts):
-  fresh leg ≈ full budget; re-entry after 10 minutes at standard = 25:00; past-deadline
-  clamps to 0; untimed returns null.
-- Unit-test stamp-once `begin` behaviour if it is extractable; otherwise cover via the
-  launch builder: `lrLegLaunch` with a pre-stamped leg yields nonzero `elapsedMs`.
+- `legRemainingSeconds` and `drillRouteState` tests ship with change 2; extend them
+  here only if this plan changes their behaviour.
+- `lrLegLaunch` with a pre-stamped leg yields a reduced `remainingMs`; `begin()`
+  stamp-once covered via the run-transition function if extractable.
 - `npm run test`, `npm run typecheck`.
 
 ## Browser verification (mandatory)
 
 In dev: start a sitting leg, note the clock, reload the tab — the clock must come back
-lower, not reset. Leave to the invigilator and return — same. Set a short artificial
-budget (temporarily, or use double-time and dev-tools time travel if impractical) to
-watch a hard stop fire and land back on the invigilator with the leg scored. Confirm a
-standalone (non-sitting) full section still pauses and still runs soft overtime.
-Screenshots of each.
+lower, not reset (with change 2 in place; without it, verify re-entry from the
+invigilator instead). Leave to the invigilator and return — same. Background the tab
+for a minute mid-RC and confirm the clock caught up on return. Trigger a hard stop
+(double-time pace with a temporarily shortened budget constant if needed) and confirm it
+lands back on the invigilator with the leg scored exactly once. Confirm a standalone
+full section still pauses and still runs soft overtime. Screenshots of each.

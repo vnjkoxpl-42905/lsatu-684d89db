@@ -1,7 +1,14 @@
 # Testing Centre change 1: seal the sitting (no reveal until the whole test is over)
 
+_Revised after Codex adversarial review round 1 (see plans/testing-centre-review-log.md)._
+
 Priority: **do this first.** Highest leverage of the five Testing Centre changes:
-smallest diff, and it repairs the one invariant the room is built on.
+smallest diff, and it repairs the one invariant the room is built on. It also fixes a
+live scoring bug found in review: `section_history.user_id` is nullable with no
+default and no trigger (confirmed in `supabase/migrations/20251020135043_*.sql` and
+`20260406070119_*.sql:42`), and the current insert in LRSectionResults omits it,
+while `readLrLegResult` filters `.eq('user_id', userId)` — so LR leg readback most
+likely never matches in production today.
 
 ## Repo conventions that bind this work
 
@@ -54,20 +61,33 @@ Create `src/lib/sectionHistorySave.ts`:
 
 - Move the body of the save effect from LRSectionResults.tsx (~lines 152-232) into an
   exported async function, e.g.
-  `persistSectionResults(args: { session, brResults, classId, stats, questionBank, extra? })`.
-  Keep the exact insert payload (`class_id`, `pt`, `section`, `mode`, `initial_*`,
+  `persistSectionResults(args: { session, brResults, classId, userId, stats, questionBank })`.
+  Keep the insert payload (`class_id`, `pt`, `section`, `mode`, `initial_*`,
   `br_*`, `total_time_ms`, `avg_time_ms`, `unanswered_count`, `by_qtype_json`,
-  `by_difficulty_json`, `br_used`) byte-for-byte — the readback and analytics
-  widgets depend on these columns. `user_id`/`completed_at` are set by DB
-  defaults today; do not start setting them client-side.
+  `by_difficulty_json`, `br_used`) with one addition: **set `user_id: userId`
+  explicitly.** The column is nullable with no DB default and no trigger, and the
+  sitting's readback matches on it. Do NOT rely on a claimed default — there is none.
+  (`completed_at` does have a `now()` default; leave it to the DB.)
 - The `stats` computation currently lives inside LRSectionResults (a `useMemo`
   over `session.attempts`). Extract that computation too (a pure
   `buildSectionStats(session, questionBank)` in the same lib file) so both the
   component and Drill.tsx can produce identical rows.
-- Keep WAJ logging inside `persistSectionResults` — wrong answers from a sitting
-  SHOULD land in the journal; that is data capture, not reveal.
-- Refactor LRSectionResults to call these functions from its effect (guarded by its
-  existing `savedRef`) so the standalone full-section path is behaviourally unchanged.
+- **Do NOT move the WAJ logging into `persistSectionResults`, and delete it from
+  LRSectionResults — but preserve the unanswered-question behaviour.**
+  `commitSessionAttempts` (Drill.tsx ~line 1251 region) already journals every
+  ANSWERED miss, and the LRSectionResults loop (~lines 203-229) journals every
+  non-correct stat again — including UNANSWERED questions, which
+  `commitSessionAttempts` skips (no `selectedAnswer`). So the deletion alone would
+  both fix the duplicate and silently stop journaling unanswered questions. Decision:
+  unanswered questions in a timed section stay in the journal (they are misses the
+  student needs to see). In the finalization path, after `commitSessionAttempts`, log
+  ONLY the unanswered questions to WAJ (the entries commitSessionAttempts skipped) —
+  answered misses exactly once, unanswered exactly once, standalone behaviour
+  preserved minus the duplicates. Before deleting the component's loop, confirm every
+  route that mounts LRSectionResults runs the finish path first.
+- Refactor LRSectionResults to call `persistSectionResults` from its effect (guarded by
+  its existing `savedRef`) so the standalone full-section path is behaviourally
+  unchanged apart from the two fixes above (user_id set, WAJ logged once).
 
 ### Step 2 — route a sitting's LR leg straight back to the invigilator
 
@@ -81,13 +101,35 @@ In Drill.tsx:
   navigate to `drillReturnTo`, never rendering `LRSectionResults`, BR selection, or
   any score UI. The cleanest seam is `handleFinishSection` (~lines 2121-2201), which
   already supports `options.returnToAfterFinish` — persist first, then reuse that
-  navigation. Whatever seam you use, the ORDER is load-bearing: **persist, then
-  navigate.** The invigilator (`PracticeTestRunPage`) reads the row the moment the
-  route changes back.
-- If the persist call throws (network), still navigate back. The invigilator's
-  existing `noResult` branch (PracticeTestRun.tsx ~lines 280-305) handles a missing
-  row honestly ("go back" / "mark unfinished"); a thrown error trapping the student
-  on a dead drill screen is worse.
+  navigation. The ORDER is load-bearing: **persist, then navigate.**
+- **The whole sitting closeout must be failure-proof, not just the last call.**
+  `handleFinishSection` runs `commitSessionAttempts` (~line 2156) before your persist
+  call, and it can throw. Wrap the entire in-sitting closeout so that ANY throw —
+  attempts commit or history persist — is caught, and navigation back to the
+  invigilator happens in a `finally`. Add a one-shot guard (a ref) so the closeout
+  cannot run twice from a double-click or a re-render. The invigilator's existing
+  `noResult` branch (PracticeTestRun.tsx ~lines 280-305) handles a missing row
+  honestly ("go back" / "mark unfinished"); a thrown error trapping the student on a
+  dead drill screen is worse.
+- **Closeout ordering and retryability.** Two review-confirmed constraints:
+  1. `handleFinishSection` calls `finalizeDrillResumeSession` (marks the resumable
+     session complete) on its way to the results screen. In the sitting closeout,
+     the resume record must be finalized ONLY AFTER the `section_history` insert
+     succeeds — otherwise a failed persist plus the `finally` navigation leaves a
+     completed resume row that re-entry rejects, and the leg can never be scored.
+     Reorder: attempts → history persist → finalize resume → navigate.
+  2. A retried closeout must not double-write the earlier phases, and phase-level
+     flags are too coarse: `commitSessionAttempts` can save SOME attempts and then
+     throw, so a boolean `attemptsCommitted` would re-insert the ones that succeeded.
+     Persist closeout progress under its OWN localStorage key
+     (`lsatu:pt-closeout:<userId>:<runId>:<legIndex>` — do NOT try to graft fields
+     onto the existing drill resume record; its persisted schema parses only known
+     fields and extending it is surgery this change does not need):
+     `{ savedQids: string[], wajQids: string[], historySaved: boolean }`, updated as
+     each write lands. Retry skips qids already in the lists and skips the history
+     insert when `historySaved` (the change-2 unique index backstops that one
+     anyway). Delete the key once the whole closeout succeeds. No server-side
+     transaction machinery — per-question bookkeeping is enough at this scale.
 
 ### Step 3 — route a sitting's RC leg straight back
 
