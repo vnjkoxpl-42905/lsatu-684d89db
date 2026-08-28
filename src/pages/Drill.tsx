@@ -59,6 +59,7 @@ import {
   outstandingWajQids,
   recordCloseoutProgress,
 } from '@/lib/practiceTestCloseout';
+import { isSittingReturn } from '@/lib/practiceTestRunner';
 import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
@@ -172,7 +173,7 @@ function DrillContent() {
   // and nothing load-bearing may depend on it.
   const ptRun = (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
   // Routing and score-UI suppression only. Never a clock or integrity decision.
-  const inSitting = !!drillReturnTo?.startsWith('/testing/test/');
+  const inSitting = isSittingReturn(drillReturnTo);
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const initialIndexParam = searchParams.get('initialIndex');
@@ -2803,7 +2804,7 @@ function DrillContent() {
           classId={classId}
           onBack={() => navigate(drillReturnTo || '/classroom')}
           backLabel={
-            drillReturnTo?.startsWith('/testing/test/')
+            isSittingReturn(drillReturnTo)
               ? 'Back to your practice test'
               : 'Back to Home'
           }

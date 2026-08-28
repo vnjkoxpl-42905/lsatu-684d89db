@@ -5,6 +5,7 @@ import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStr
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import HelpSheet from '@/components/help/HelpSheet';
+import { isSittingReturn } from '@/lib/practiceTestRunner';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../components/RcChrome';
 import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
@@ -398,7 +399,7 @@ export default function RcPlayer() {
       // sitting can score it; showing the results screen first would reveal a
       // section score with sections still to sit. RC is frequently section 1
       // or 2, so this is the common case, not an edge one.
-      if (returnTo?.startsWith('/testing/test/')) {
+      if (isSittingReturn(returnTo)) {
         navigate(returnTo);
         return;
       }

@@ -22,8 +22,25 @@ import {
 } from '@/lib/practiceTest';
 import { RC_STANDARD_SECONDS_PER_PASSAGE } from '@/features/rc/lib/rcTypes';
 
+const PRACTICE_TEST_PATH_PREFIX = '/testing/test/';
+
 export function practiceTestPath(runId: string): string {
-  return `/testing/test/${runId}`;
+  return `${PRACTICE_TEST_PATH_PREFIX}${runId}`;
+}
+
+/**
+ * Whether a return path points back into a sitting.
+ *
+ * ROUTING ONLY: it decides where a runner navigates and whether score UI is
+ * suppressed. It must never gate a clock or an integrity rule, because the path
+ * it reads is student-editable. Anything load-bearing reads persisted run and
+ * leg attribution instead.
+ *
+ * The prefix lives here, next to the function that writes it, so the two cannot
+ * drift apart.
+ */
+export function isSittingReturn(path: string | null | undefined): boolean {
+  return !!path?.startsWith(PRACTICE_TEST_PATH_PREFIX);
 }
 
 function timerModeForPace(pace: PracticeTestPaceId): TimerMode {
