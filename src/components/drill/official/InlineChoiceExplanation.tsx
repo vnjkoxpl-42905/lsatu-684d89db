@@ -1,10 +1,15 @@
 import * as React from "react";
-import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
  * The per-choice explanation layer that sits directly beneath an answer choice
  * in `OfficialQuestionPane`. Replaces the old dark `ExplanationPanel` sheet.
+ *
+ * The explanation is ALWAYS VISIBLE. It used to sit behind a "Why this is
+ * wrong" disclosure, which cost a click per choice and, on a shared screen
+ * during teaching, hid the very thing being taught. Reading five choices meant
+ * five clicks. The prose is the point of the review screen, so it is set at
+ * reading size and shown outright.
  *
  * Two rules carried over from that panel, and tightened to apply per choice
  * rather than per question:
@@ -33,51 +38,6 @@ interface Props {
   /** The student's own pick, marked so they can find it fast. */
   isSelected: boolean;
   content: InlineChoiceNote;
-  open: boolean;
-  onToggle: (letter: string) => void;
-}
-
-/**
- * Open/closed state for a question's disclosures.
- *
- * Disclosures are independent — any number open at once — so the correct
- * choice and the student's own pick can be read side by side. On reveal those
- * two start open and the rest start closed. State resets on question change.
- */
-export function useInlineDisclosures({
-  questionKey,
-  revealed,
-  correctLetter,
-  selectedLetter,
-}: {
-  questionKey?: string | null;
-  revealed: boolean;
-  correctLetter?: string | null;
-  selectedLetter?: string | null;
-}) {
-  const [openLetters, setOpenLetters] = React.useState<Set<string>>(() => new Set());
-
-  React.useEffect(() => {
-    if (!revealed) {
-      setOpenLetters(new Set());
-      return;
-    }
-    const next = new Set<string>();
-    if (correctLetter) next.add(correctLetter);
-    if (selectedLetter) next.add(selectedLetter);
-    setOpenLetters(next);
-  }, [questionKey, revealed, correctLetter, selectedLetter]);
-
-  const toggleLetter = React.useCallback((letter: string) => {
-    setOpenLetters((prev) => {
-      const next = new Set(prev);
-      if (next.has(letter)) next.delete(letter);
-      else next.add(letter);
-      return next;
-    });
-  }, []);
-
-  return { openLetters, toggleLetter };
 }
 
 /** True when there is nothing real to render for this letter. */
@@ -92,19 +52,16 @@ export default function InlineChoiceExplanation({
   isCorrect,
   isSelected,
   content,
-  open,
-  onToggle,
 }: Props) {
   const { tag, studentPercent, note } = content;
   const hasNote = typeof note === "string" && note.trim().length > 0;
-  const panelId = `inline-explanation-${letter}`;
 
   if (isInlineChoiceEmpty(content, isSelected)) return null;
 
   return (
-    <div className="mt-2 text-[13px] leading-relaxed">
+    <div className="mt-2.5">
       {/* Tag, percentage, and the student's own pick. Any of these may be absent. */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 text-[12px]">
         {tag && (
           <span
             className={cn(
@@ -125,37 +82,31 @@ export default function InlineChoiceExplanation({
         )}
       </div>
 
-      {/* No note means no disclosure. The absence is the honest render. */}
+      {/* No note means nothing here. The absence is the honest render. */}
       {hasNote && (
-        <>
-          <button
-            type="button"
-            onClick={() => onToggle(letter)}
-            aria-expanded={open}
-            aria-controls={panelId}
+        <div
+          className={cn(
+            // A left rule in the choice's own colour anchors the prose to the
+            // choice it belongs to. Without it, five explanations down a page
+            // read as one undifferentiated column of text.
+            "mt-2 border-l-2 pl-3",
+            isCorrect ? "border-green-600/50" : "border-slate-300",
+          )}
+        >
+          <p
             className={cn(
-              "mt-1.5 inline-flex items-center gap-1 rounded px-1 -ml-1 py-0.5 font-semibold transition-colors",
-              isCorrect
-                ? "text-green-800 hover:bg-green-100"
-                : "text-slate-700 hover:bg-slate-100",
+              "text-[12px] font-semibold uppercase tracking-wide",
+              isCorrect ? "text-green-800" : "text-slate-500",
             )}
           >
-            <ChevronRight
-              aria-hidden
-              className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-90")}
-            />
             {isCorrect ? "Why this is correct" : "Why this is wrong"}
-          </button>
-
-          {open && (
-            <p
-              id={panelId}
-              className="mt-1 whitespace-pre-line pl-[18px] text-slate-600"
-            >
-              {note}
-            </p>
-          )}
-        </>
+          </p>
+          {/* Reading size, not caption size: this is the sentence the student
+              is meant to actually read, and it carries the teaching. */}
+          <p className="mt-1 whitespace-pre-line text-[15px] leading-7 text-slate-800">
+            {note}
+          </p>
+        </div>
       )}
     </div>
   );

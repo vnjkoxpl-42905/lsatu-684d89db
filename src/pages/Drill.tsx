@@ -18,7 +18,6 @@ import type {
 } from '@/components/drill/official/DrillNotesPanel';
 import type { DrillExplanationContext } from '@/components/drill/official/DrillExplanationTab';
 import {
-  useInlineDisclosures,
   type InlineChoiceNotes,
 } from '@/components/drill/official/InlineChoiceExplanation';
 import { useLrExplanation, type LrStyleKey } from '@/hooks/useLrExplanation';
@@ -2744,13 +2743,6 @@ function DrillContent() {
     return map;
   }, [lrExplanation, currentStyle]);
 
-  const { openLetters, toggleLetter } = useInlineDisclosures({
-    questionKey: currentQuestion?.qid,
-    revealed: currentRevealed,
-    correctLetter: currentQuestion?.correctAnswer,
-    selectedLetter: selectedAnswer,
-  });
-
 
 
   // Handle session completion and post-section flow
@@ -3645,8 +3637,6 @@ function DrillContent() {
             answerRevealed={currentRevealed}
             correctAnswer={currentQuestion.correctAnswer}
             inlineNotes={inlineNotes}
-            openInlineLetters={openLetters}
-            onToggleInlineLetter={toggleLetter}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}

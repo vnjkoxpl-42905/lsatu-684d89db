@@ -30,9 +30,6 @@ interface Props {
    * and no inline layer renders at all.
    */
   inlineNotes?: InlineChoiceNotes | null;
-  /** Letters whose disclosure is currently open. See `useInlineDisclosures`. */
-  openInlineLetters?: Set<string>;
-  onToggleInlineLetter?: (letter: string) => void;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
   searchTerm?: string;
@@ -70,8 +67,6 @@ export default function OfficialQuestionPane({
   answerRevealed = false,
   correctAnswer,
   inlineNotes,
-  openInlineLetters,
-  onToggleInlineLetter,
   highlights,
   highlightMode,
   searchTerm,
@@ -281,8 +276,6 @@ export default function OfficialQuestionPane({
                           isCorrect={isCorrect}
                           isSelected={isSelected}
                           content={inline}
-                          open={!!openInlineLetters?.has(key)}
-                          onToggle={(letter) => onToggleInlineLetter?.(letter)}
                         />
                       </div>
                     )}

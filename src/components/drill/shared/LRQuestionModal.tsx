@@ -17,7 +17,6 @@ import { X, ChevronLeft, ChevronRight, CheckCircle2, XCircle } from "lucide-reac
 import { toast } from "sonner";
 import OfficialQuestionPane from "@/components/drill/official/OfficialQuestionPane";
 import {
-  useInlineDisclosures,
   type InlineChoiceNotes,
 } from "@/components/drill/official/InlineChoiceExplanation";
 import { useLrExplanation } from "@/hooks/useLrExplanation";
@@ -231,13 +230,6 @@ export default function LRQuestionModal(props: Props) {
     return map;
   }, [submitted, renderQuestion, explanations, correctAnswer, lrExplanation]);
 
-  const { openLetters, toggleLetter } = useInlineDisclosures({
-    questionKey: qid,
-    revealed: submitted,
-    correctLetter: correctAnswer,
-    selectedLetter: selected,
-  });
-
   return (
     <AnimatePresence>
       <motion.div
@@ -317,8 +309,6 @@ export default function LRQuestionModal(props: Props) {
                   answerRevealed={submitted}
                   correctAnswer={correctAnswer}
                   inlineNotes={inlineNotes}
-                  openInlineLetters={openLetters}
-                  onToggleInlineLetter={toggleLetter}
                   highlights={[]}
                   highlightMode="none"
                   onAnswerSelect={(k) => !submitted && setSelected(k)}
