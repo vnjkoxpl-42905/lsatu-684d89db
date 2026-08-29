@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
 import { SEED_ACTIVITIES } from "@/features/activity-centre/content";
+import { RecallStage } from "@/features/activity-centre/recall/RecallStage";
+import { buildSession, type Phase as RecallPhase } from "@/features/activity-centre/recall/session";
+import "@/features/activity-centre/recall/recall.css";
 import {
   SwitchyardStage,
   type Milepost,
@@ -142,6 +145,7 @@ import "@/features/activity-centre/activities-home.css";
 const WORLDS = [
   { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
+  { key: "recall", label: "Read, Recall, Colour" },
   { key: "shell", label: "Runner shell" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
@@ -210,6 +214,7 @@ export default function ActivityLab() {
 
       {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
+      {world === "recall" ? <RecallPanel /> : null}
       {world === "shell" ? <ShellPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
@@ -1859,6 +1864,70 @@ function CompletionPanel() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Read, Recall, Colour: the stage
+ * ------------------------------------------------------------------ */
+
+const RECALL_PHASES = ["read", "recall", "colour", "feedback"] as const;
+
+/**
+ * The recall screen, which nothing else in the app could draw.
+ *
+ * `RecallRunner` needs a built session, a signed-in user and a real assignment
+ * row, so the one screen a student spends the entire sitting on could not be
+ * looked at at all while it was being built. That is the same gap that let the
+ * intro ship with its brief printed over its own title: a surface no harness
+ * can render is a surface nobody checks.
+ *
+ * `RecallStage` is presentational, so the lab drives it directly.
+ */
+function RecallPanel() {
+  const rrc = SEED_ACTIVITIES.find((a) => a.slug === "read-recall-colour");
+  const session = useMemo(() => (rrc ? buildSession(rrc.items[0]) : null), [rrc]);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [phase, setPhase] = useState<RecallPhase>("recall");
+
+  if (!session) {
+    return <p className="px-6 py-8 text-sm text-zinc-500">No spoken-recall Activity in the seed content.</p>;
+  }
+  const step = session.steps[Math.min(stepIndex, session.steps.length - 1)];
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={RECALL_PHASES as unknown as RecallPhase[]}
+          value={phase}
+          onChange={(v) => setPhase(v)}
+          label="Phase"
+        />
+        <Tabs
+          options={session.steps.map((_, i) => String(i + 1))}
+          value={String(stepIndex + 1)}
+          onChange={(v) => setStepIndex(Number(v) - 1)}
+          label="Step"
+        />
+        <span className="text-xs text-zinc-500">{step.kind}</span>
+      </div>
+      <RecallStage
+        key={`${stepIndex}:${phase}`}
+        step={step}
+        phase={phase}
+        stepNumber={stepIndex + 1}
+        totalSteps={session.steps.length}
+        mood="idle"
+        level={0}
+        spoken
+        onReadDone={() => setPhase("recall")}
+        onHold={() => {}}
+        onRelease={() => {}}
+        onSubmitText={(text) => console.info("[lab] submitted:", text)}
+        onFeedbackDone={() => setPhase("recall")}
+      />
     </div>
   );
 }

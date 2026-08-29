@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import readRecallColour from "../content/read-recall-colour.json";
 import type { RecallItem } from "../api/types";
 import { RecallStage } from "./RecallStage";
@@ -28,6 +28,7 @@ const props = {
   onReadDone: () => {},
   onHold: () => {},
   onRelease: () => {},
+  onSubmitText: () => {},
   onFeedbackDone: () => {},
 };
 
@@ -172,5 +173,77 @@ describe("RecallStage", () => {
     const { container } = render(<RecallStage {...props} step={chunk} phase="colour" />);
     expect(container.querySelectorAll("[data-state]")).toHaveLength(0);
     expect(container.textContent).not.toMatch(/generic|good|nice|score/i);
+  });
+});
+
+/**
+ * The dictation field.
+ *
+ * It is what a desktop transcriber types into, which is the whole reason it
+ * exists: those tools are markedly better than the browser's own recognition at
+ * the things this drill actually scores.
+ */
+describe("the dictation field", () => {
+  it("is on screen and focused during a recall, since dictation types into focus", () => {
+    render(<RecallStage {...props} step={chunk} phase="recall" />);
+    const box = screen.getByPlaceholderText(/hold your dictation key/i);
+    expect(box).toBeInTheDocument();
+    // A field she has to click first silently drops the first recall of a chunk.
+    expect(document.activeElement).toBe(box);
+  });
+
+  it("still shows nothing readable from the chunk", () => {
+    const { container } = render(<RecallStage {...props} step={chunk} phase="recall" />);
+    expect(container.textContent).not.toContain(chunk.text!);
+    for (const detail of chunk.details) {
+      expect(container.textContent).not.toContain(detail.text);
+    }
+  });
+
+  it("hands the answer up and clears itself", () => {
+    const onSubmitText = vi.fn();
+    render(<RecallStage {...props} step={chunk} phase="recall" onSubmitText={onSubmitText} />);
+    const box = screen.getByPlaceholderText(/hold your dictation key/i) as HTMLTextAreaElement;
+
+    fireEvent.change(box, { target: { value: "a news show covered a row about the freeway" } });
+    fireEvent.click(screen.getByRole("button", { name: /^done$/i }));
+
+    expect(onSubmitText).toHaveBeenCalledWith("a news show covered a row about the freeway");
+    expect(box.value).toBe("");
+  });
+
+  it("sends on Enter and keeps Shift+Enter for a line break", () => {
+    const onSubmitText = vi.fn();
+    render(<RecallStage {...props} step={chunk} phase="recall" onSubmitText={onSubmitText} />);
+    const box = screen.getByPlaceholderText(/hold your dictation key/i) as HTMLTextAreaElement;
+
+    fireEvent.change(box, { target: { value: "first line" } });
+    fireEvent.keyDown(box, { key: "Enter", shiftKey: true });
+    expect(onSubmitText).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(box, { key: "Enter" });
+    expect(onSubmitText).toHaveBeenCalledWith("first line");
+  });
+
+  it("does not submit an empty answer", () => {
+    const onSubmitText = vi.fn();
+    render(<RecallStage {...props} step={chunk} phase="recall" onSubmitText={onSubmitText} />);
+    const done = screen.getByRole("button", { name: /^done$/i });
+    expect(done).toBeDisabled();
+    fireEvent.click(done);
+    expect(onSubmitText).not.toHaveBeenCalled();
+  });
+
+  it("asks for a reaction rather than a recall on the colour step", () => {
+    render(<RecallStage {...props} step={chunk} phase="colour" />);
+    expect(screen.getByText(/write your reaction/i)).toBeInTheDocument();
+  });
+
+  it("is absent outside a capture, so it never sits under the chunk or the feedback", () => {
+    const read = render(<RecallStage {...props} step={chunk} phase="read" />);
+    expect(read.queryByPlaceholderText(/hold your dictation key/i)).toBeNull();
+    read.unmount();
+    const feedback = render(<RecallStage {...props} step={chunk} phase="feedback" />);
+    expect(feedback.queryByPlaceholderText(/hold your dictation key/i)).toBeNull();
   });
 });

@@ -62,6 +62,18 @@ export type GateEvent =
   | { type: "release" }
   /** Recognition produced a final transcript. */
   | { type: "heard"; text: string }
+  /**
+   * She entered the answer herself, by typing it or by dictating into the field
+   * with a desktop transcriber.
+   *
+   * Deliberately not `heard`. A `heard` from an unexpected phase is the app
+   * hearing its own voice, and the gate counts it into `selfHeard`, the number
+   * that separates a bad microphone from the app grading itself. Nothing the
+   * orb says can reach her keyboard, so routing a typed answer through `heard`
+   * would inflate that diagnostic with events that are not the fault it
+   * measures.
+   */
+  | { type: "submitted"; text: string }
   /** Stop everything: she exited, or the step moved on. */
   | { type: "stop" };
 
@@ -110,6 +122,18 @@ export function gate(state: GateState, event: GateEvent): GateState {
         return state.phase === "settling" ? { ...state, phase: "idle" } : state;
       }
       return { ...state, phase: "idle", captured: event.text };
+    }
+
+    case "submitted": {
+      if (!event.text.trim()) return state;
+      // Accepted from any phase, because typing does not depend on the
+      // microphone being free. `speaking` is the one phase not collapsed to
+      // idle: the orb still owns it and `speech-end` ends it, and reporting
+      // idle mid-utterance would change the orb's character while it is still
+      // talking.
+      return state.phase === "speaking"
+        ? { ...state, captured: event.text }
+        : { ...state, phase: "idle", pendingListen: false, captured: event.text };
     }
 
     case "stop":

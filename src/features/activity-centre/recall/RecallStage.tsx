@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { RecallOrb } from "./RecallOrb";
 import { PROMPTS } from "./speech";
 import type { OrbMood } from "./orb";
@@ -43,6 +44,16 @@ export interface RecallStageProps {
   onReadDone: () => void;
   onHold: () => void;
   onRelease: () => void;
+  /**
+   * The answer she entered herself, from the dictation field.
+   *
+   * The field exists because the browser's own recognition is the weakest part
+   * of this activity, and a desktop transcriber is markedly better at exactly
+   * the thing this drill scores: names, numbers and small connecting words.
+   * Those tools type into whatever field has focus, so the app's job here is
+   * only to have a field and keep it focused.
+   */
+  onSubmitText: (text: string) => void;
   onFeedbackDone: () => void;
 }
 
@@ -68,6 +79,7 @@ export function RecallStage({
   onReadDone,
   onHold,
   onRelease,
+  onSubmitText,
   onFeedbackDone,
 }: RecallStageProps) {
   const capturing = phase === "recall" || phase === "colour";
@@ -113,6 +125,12 @@ export function RecallStage({
           >
             Hold to talk
           </button>
+
+          <DictationField
+            phase={phase}
+            stepKey={`${stepNumber}:${phase}`}
+            onSubmit={onSubmitText}
+          />
         </div>
       )}
 
@@ -193,3 +211,86 @@ function RecallScorecard({ step, score }: { step: RecallStep; score: RecallScore
 }
 
 export default RecallStage;
+
+
+/**
+ * The dictation field.
+ *
+ * Does not break the rule this screen exists to keep. That rule is that the
+ * CHUNK is not on screen during recall, so there is nothing to lean on instead
+ * of memory. What appears here is what she is producing, not the source, and it
+ * only ever contains her own words.
+ *
+ * Focused on mount and refocused on every step, because the desktop
+ * transcribers this is for type into whatever field holds focus. A field she
+ * has to click first is a field that silently drops the first recall of every
+ * chunk.
+ */
+function DictationField({
+  phase,
+  stepKey,
+  onSubmit,
+}: {
+  phase: Phase;
+  stepKey: string;
+  onSubmit: (text: string) => void;
+}) {
+  const [text, setText] = useState("");
+  const box = useRef<HTMLTextAreaElement | null>(null);
+
+  // New step, new answer. Without this the previous chunk's words are still
+  // sitting in the field when the next recall starts, and she would submit them
+  // again on top of the new one.
+  useEffect(() => {
+    setText("");
+    box.current?.focus();
+  }, [stepKey]);
+
+  const send = () => {
+    const answer = text.trim();
+    if (!answer) return;
+    setText("");
+    onSubmit(answer);
+  };
+
+  return (
+    <div className="ac-recall-dictate">
+      {/* Done rides the label row rather than sitting under the box. Below it,
+          the capture block ran 939px tall and put the submit control 39px past
+          the fold at a 900px viewport, so the one screen in this activity that
+          should never scroll did. */}
+      <div className="ac-recall-dictate-top">
+        <label className="ac-recall-dictate-label" htmlFor="rrc-dictate">
+          {phase === "colour" ? "Or write your reaction" : "Or dictate it here"}
+        </label>
+        <button
+          type="button"
+          className="ac-recall-dictate-send"
+          onClick={send}
+          disabled={!text.trim()}
+        >
+          Done
+        </button>
+      </div>
+      <textarea
+        id="rrc-dictate"
+        ref={box}
+        className="ac-recall-dictate-box"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => {
+          // Enter sends, Shift+Enter breaks the line. A recall runs to a few
+          // sentences, so the line break has to stay reachable.
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            send();
+          }
+        }}
+        rows={2}
+        autoComplete="off"
+        spellCheck={false}
+        placeholder="Hold your dictation key and talk, or type it here."
+      />
+    </div>
+  );
+}

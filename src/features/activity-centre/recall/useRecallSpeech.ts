@@ -84,6 +84,12 @@ export interface RecallSpeech {
   hold: () => void;
   /** Release. The final transcript arrives after this. */
   release: () => void;
+  /**
+   * Take the answer she entered herself, typed or dictated into the field by a
+   * desktop transcriber. It goes in through the same gate as a spoken one, so
+   * there is still exactly one way a transcript enters this feature.
+   */
+  submit: (text: string) => void;
   /** Say a line, then optionally start listening the moment it ends. */
   say: (text: string, thenListen?: boolean) => void;
   /** Abandon everything, e.g. she exited the run. */
@@ -272,6 +278,14 @@ export function useRecallSpeech(lang = "en-US"): RecallSpeech {
 
   const hold = useCallback(() => dispatch({ type: "listen" }), []);
   const release = useCallback(() => dispatch({ type: "release" }), []);
+  const submit = useCallback((text: string) => {
+    // Silence the orb first. She has answered, so a prompt still being read out
+    // is talking over the answer it asked for.
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    dispatch({ type: "submitted", text });
+  }, []);
   const stop = useCallback(() => {
     if (supported) window.speechSynthesis.cancel();
     setLevel(0);
@@ -284,6 +298,7 @@ export function useRecallSpeech(lang = "en-US"): RecallSpeech {
     transcript: state.captured,
     hold,
     release,
+    submit,
     say,
     stop,
     error,

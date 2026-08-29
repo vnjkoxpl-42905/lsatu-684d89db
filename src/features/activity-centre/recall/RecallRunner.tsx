@@ -270,6 +270,7 @@ function RunnerBody({
       onReadDone={() => dispatch({ type: "read-done" })}
       onHold={speech.hold}
       onRelease={speech.release}
+      onSubmitText={speech.submit}
       onFeedbackDone={() => {
         setCapture({});
         dispatch({ type: "feedback-done" });

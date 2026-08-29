@@ -243,3 +243,65 @@ describe("the orb's level while it is talking", () => {
     expect(level).toBe(0);
   });
 });
+
+/**
+ * The typed / dictated answer.
+ *
+ * The browser's recognition is the weakest part of this activity, so the answer
+ * can also arrive from the field, which is what a desktop transcriber types
+ * into. It enters through the same gate, but never as `heard`.
+ */
+describe("a submitted answer", () => {
+  it("is accepted from idle, where a heard transcript would be discarded", () => {
+    const heard = gate(initialGate, { type: "heard", text: "the orb talking" });
+    expect(heard.captured).toBeNull();
+    expect(heard.selfHeard).toBe(1);
+
+    const typed = gate(initialGate, { type: "submitted", text: "the orchids bloom by morning" });
+    expect(typed.captured).toBe("the orchids bloom by morning");
+    expect(typed.phase).toBe("idle");
+  });
+
+  it("never counts toward selfHeard, which measures a different fault", () => {
+    // selfHeard is the number that separates a bad microphone from the app
+    // grading itself. Nothing the orb says can reach her keyboard, so a typed
+    // answer inflating it would make that diagnostic useless.
+    let s = initialGate;
+    for (const text of ["one", "two", "three"]) {
+      s = gate(s, { type: "submitted", text });
+    }
+    expect(s.selfHeard).toBe(0);
+    expect(s.captured).toBe("three");
+  });
+
+  it("is accepted while listening, so typing mid-hold is not lost", () => {
+    const listening = gate(initialGate, { type: "listen" });
+    const s = gate(listening, { type: "submitted", text: "typed instead" });
+    expect(s.captured).toBe("typed instead");
+    expect(s.phase).toBe("idle");
+  });
+
+  it("leaves the phase alone while the orb is still speaking", () => {
+    const speaking = gate(initialGate, { type: "speak" });
+    const s = gate(speaking, { type: "submitted", text: "answered early" });
+    expect(s.captured).toBe("answered early");
+    // Reporting idle here would change the orb's character mid-utterance.
+    expect(s.phase).toBe("speaking");
+    expect(gate(s, { type: "speech-end" }).phase).toBe("idle");
+  });
+
+  it("ignores an empty submission rather than recording a blank answer", () => {
+    const s = gate(initialGate, { type: "submitted", text: "   " });
+    expect(s.captured).toBeNull();
+    expect(s).toEqual(initialGate);
+  });
+
+  it("clears a queued listen, because she has already answered", () => {
+    const queued = gate(gate(initialGate, { type: "speak" }), { type: "listen" });
+    expect(queued.pendingListen).toBe(true);
+    const ended = gate(queued, { type: "speech-end" });
+    const s = gate(ended, { type: "submitted", text: "done" });
+    expect(s.pendingListen).toBe(false);
+    expect(s.captured).toBe("done");
+  });
+});

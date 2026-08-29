@@ -230,3 +230,92 @@
     box-shadow: 0 0 3rem hsl(320 60% 62% / 0.18);
   }
 }
+
+/* ---------------------------------------------------------------------
+ * The dictation field.
+ *
+ * The browser's own recognition is the weakest part of this activity, and it
+ * is weakest at exactly what the drill scores: names, numbers, dates and the
+ * small connecting words. A desktop transcriber is markedly better at those,
+ * and it types into whatever field holds focus, so all the app has to provide
+ * is a field and keep it focused.
+ *
+ * It does not break the rule this screen keeps. That rule is that the CHUNK is
+ * not on screen during recall, so there is nothing to lean on instead of
+ * memory. What sits here is what she is producing, never the source.
+ *
+ * Same near-monochrome ink as the rest of the surface. No new hue.
+ * ------------------------------------------------------------------- */
+.ac-recall-dictate {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  width: min(38rem, 100%);
+  margin-top: 1rem;
+}
+
+.ac-recall-dictate-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ac-recall-dictate-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: hsl(0 0% 96% / 0.45);
+}
+
+.ac-recall-dictate-box {
+  width: 100%;
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid hsl(0 0% 96% / 0.22);
+  background: hsl(0 0% 96% / 0.05);
+  padding: 0.85rem 1rem;
+  color: hsl(0 0% 96%);
+  /* 16px so iOS does not zoom the whole activity on focus. */
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.ac-recall-dictate-box::placeholder {
+  color: hsl(0 0% 96% / 0.35);
+}
+
+.ac-recall-dictate-box:focus-visible,
+.ac-recall-dictate-box:focus {
+  outline: none;
+  border-color: hsl(0 0% 96% / 0.6);
+  box-shadow: 0 0 0 3px hsl(0 0% 96% / 0.14);
+}
+
+.ac-recall-dictate-send {
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid hsl(0 0% 96% / 0.25);
+  background: transparent;
+  padding: 0.6rem 1.9rem;
+  color: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.ac-recall-dictate-send:hover:not(:disabled) {
+  border-color: hsl(0 0% 96% / 0.6);
+}
+
+.ac-recall-dictate-send:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(0 0% 96% / 0.2);
+}
+
+.ac-recall-dictate-send:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
