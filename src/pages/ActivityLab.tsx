@@ -378,14 +378,21 @@ function ShellPanel() {
 function IntroPanel() {
   // Every Activity, because the intro's failure modes are content-shaped: the
   // worked example that is a whole paragraph is the one that breaks the orbs.
-  const withExample = SEED_ACTIVITIES.filter((a) => a.instructions.worked_example);
-  const [slug, setSlug] = useState(withExample[0].slug);
-  const a = withExample.find((x) => x.slug === slug)!;
+  //
+  // This used to filter to `instructions.worked_example`, which quietly excluded
+  // the content shape that broke hardest. An Activity with a task and NO worked
+  // example renders no orbs at all, so the hero has nothing to give it height
+  // and the absolutely-positioned brief lands on top of the title. Read, Recall,
+  // Colour and Dumb it Down are both that shape, and both shipped broken because
+  // the one harness meant to catch content-shaped failures could not draw them.
+  const shapes = SEED_ACTIVITIES;
+  const [slug, setSlug] = useState(shapes[0].slug);
+  const a = shapes.find((x) => x.slug === slug)!;
   return (
     <div>
       <div className="border-b border-border px-6 py-3">
         <Tabs
-          options={withExample.map((x) => x.slug)}
+          options={shapes.map((x) => x.slug)}
           value={slug}
           onChange={setSlug}
           label="Activity"
@@ -400,6 +407,7 @@ function IntroPanel() {
           instructions={a.instructions}
           itemCount={a.items.length}
           maxAttempts={MAX_ATTEMPTS}
+          format={a.item_format}
           onStart={() => {}}
           onExit={() => {}}
         />

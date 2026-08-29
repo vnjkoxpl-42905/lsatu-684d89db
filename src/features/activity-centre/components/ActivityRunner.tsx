@@ -504,6 +504,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           instructions={assignment.instructions}
           itemCount={items.length}
           maxAttempts={MAX_ATTEMPTS}
+          format={assignment.item_format}
           resumeAt={index + 1}
           onStart={handleStart}
           onExit={handleLeave}

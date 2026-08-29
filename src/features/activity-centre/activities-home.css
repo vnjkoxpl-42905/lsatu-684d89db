@@ -577,9 +577,17 @@
 }
 
 /* Wide enough for the orbs to leave the hero's right half empty: the brief
-   moves into that space and the page grows by nothing. */
+   moves into that space and the page grows by nothing.
+ *
+ * Gated on `data-orbs` because the orb cluster is the only thing that gives the
+ * hero a lower half to move into. An Activity with a task and no worked example
+ * renders no orbs, the hero collapses to the height of the title row, and a
+ * brief pinned to `bottom: 0` prints straight over the title. Read, Recall,
+ * Colour and Dumb it Down are both that shape. With no orbs the brief keeps its
+ * ordinary flow position under the title, which is what the narrow layout
+ * already does. */
 @media (min-width: 900px) {
-  .act-home .act-hero .act-brief {
+  .act-home .act-hero[data-orbs="true"] .act-brief {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -666,5 +674,64 @@
 @media (prefers-reduced-motion: reduce) {
   .act-start-dock {
     transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The hero without orbs.
+ *
+ * The title is right-aligned because the orb cluster owns the lower left and
+ * the two read as one diagonal composition. With no worked example there are
+ * no orbs, so a right-aligned title hangs beside an empty left half while the
+ * brief, the rules and the Start action below it all run left. The hero was
+ * the only element on the page not agreeing with the others.
+ *
+ * Scoped to `[data-orbs="false"]` so the six Activities that do have orbs keep
+ * the composition the layout was drawn for.
+ * ------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  .act-home .act-hero[data-orbs="false"] .act-hero-top {
+    display: block;
+  }
+
+  .act-home .act-hero[data-orbs="false"] .act-hero-heading {
+    align-items: flex-start;
+    margin-top: 1.25rem;
+  }
+
+  .act-home .act-hero[data-orbs="false"] .act-edit-title,
+  .act-home .act-hero[data-orbs="false"] .act-hero-tagline {
+    text-align: left;
+    max-width: 44rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The hero on a phone.
+ *
+ * `.act-hero-top` is a two-column flex row: the exit control and crumb on the
+ * left, the title block on the right. At 375px that leaves the title 143px of
+ * a 335px row, so it sets one or two words per line down a tall right-hand
+ * gutter with the whole left side empty.
+ *
+ * The existing `max-width: 640px` rules fixed half of this -- they start-align
+ * the heading box and left-align the tagline -- but the row itself stayed a
+ * flex pair and the title kept `text-align: right`, so neither could take
+ * effect. Stacking the row is what actually gives the title the full measure.
+ * This is not specific to Read, Recall, Colour; every Activity intro reads
+ * this way on a phone.
+ * ------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .act-home .act-hero-top {
+    display: block;
+  }
+
+  .act-home .act-hero-heading {
+    margin-top: 1rem;
+  }
+
+  .act-home .act-edit-title {
+    text-align: left;
+    max-width: none;
   }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import type { ActivityInstructions } from "../api/types";
+import type { ActivityInstructions, ItemFormat } from "../api/types";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { renderInlineMarks } from "../prompt-format";
@@ -15,6 +15,11 @@ interface ActivityIntroProps {
   itemCount?: number;
   /** How many attempts the Coach allows per question, before the answer shows. */
   maxAttempts?: number;
+  /**
+   * The Activity's format, because the line describing the sitting is only true
+   * of the typed Activities. A spoken one has no tries and no credited answer.
+   */
+  format?: ItemFormat;
   /**
    * 1-based question the Start action would drop them on. Above 1 the run is
    * already under way and the button says so rather than reading as a restart.
@@ -38,6 +43,7 @@ export function ActivityIntro({
   instructions,
   itemCount,
   maxAttempts,
+  format,
   resumeAt,
   onStart,
   onExit,
@@ -83,6 +89,30 @@ export function ActivityIntro({
   // explanation is the fallback for an Activity authored without one.
   const afterLine = ex?.credited_answers?.[0] ?? ex?.explanation ?? "";
 
+  /**
+   * The line under the task, which tells the student the shape of the sitting.
+   *
+   * It was one hardcoded sentence written for the typed Activities, and it made
+   * two claims that are false of a spoken one: that there are tries before a
+   * credited answer shows, and that what saves is an answer. Read, Recall,
+   * Colour has neither. It also read "1 questions" for any Activity holding a
+   * single item, which Read, Recall, Colour does.
+   *
+   * No chunk count here on purpose. The intro is handed `items.length`, and for
+   * a spoken Activity that is 1 whatever the chunking is, so a number in this
+   * sentence would be a number the intro cannot actually see.
+   */
+  const howLine =
+    format === "spoken-recall"
+      ? "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
+      : [
+          itemCount ? `${itemCount} ${itemCount === 1 ? "question" : "questions"}.` : "",
+          maxAttempts ? `${maxAttempts} tries each, then the credited answer shows.` : "",
+          "Every answer saves as you go, so you can stop whenever you like and pick up on the same question.",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
   const container: Variants = {
     hidden: {},
     show: {
@@ -116,7 +146,14 @@ export function ActivityIntro({
       animate="show"
     >
       {/* ---- HERO (pixel-match): crumb top-left, title top-right, orbs lower-left ---- */}
-      <section className="act-hero">
+      {/* `data-orbs` is what tells the CSS whether the hero has a lower half.
+          The brief is absolutely positioned into the hero's empty right side,
+          and the ONLY thing giving the hero the height to hold it is the orb
+          cluster. An Activity with a task and no worked example renders no
+          orbs, so the hero collapses to the title row and the brief lands on
+          top of the title. Read, Recall, Colour and Dumb it Down are both that
+          shape. Without orbs the brief goes back to ordinary flow below. */}
+      <section className="act-hero" data-orbs={ex ? "true" : "false"}>
         <motion.div variants={item} className="act-hero-top">
           <div className="flex flex-col items-start gap-2">
             {onExit && <ActivityExitButton onExit={onExit} tone="light" />}
@@ -170,12 +207,7 @@ export function ActivityIntro({
           <motion.div variants={item} className="act-brief">
             <p className="act-brief-label">What to do</p>
             <p className="act-task">{instructions.task}</p>
-            <p className="act-how">
-              {itemCount ? `${itemCount} questions. ` : ""}
-              {maxAttempts ? `${maxAttempts} tries each, then the credited answer shows. ` : ""}
-              Every answer saves as you go, so you can stop whenever you like and pick up on the
-              same question.
-            </p>
+            <p className="act-how">{howLine}</p>
           </motion.div>
         )}
       </section>
