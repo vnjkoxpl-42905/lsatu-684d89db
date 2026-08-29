@@ -115,6 +115,10 @@ describe("OrientationCardView", () => {
     );
     await screen.findByText("When are you taking the LSAT?");
 
+    // Real sittings only. The free date field let a student pick a day the
+    // LSAT is not given, and the classroom then counted down to it.
+    expect(document.querySelector('input[type="date"]')).toBeNull();
+
     fireEvent.click(screen.getByRole("button", { name: /I haven't picked a date yet/ }));
     fireEvent.click(screen.getByRole("button", { name: /Continue/ }));
 

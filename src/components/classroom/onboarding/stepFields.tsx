@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, Clock3, Search, X } from "lucide-react";
+import { Check, Clock3, Plus, Search, X } from "lucide-react";
 import {
   DAYS,
   DEFAULT_STUDY_TIME,
@@ -17,6 +17,11 @@ import {
   type StudyTimeValue,
   type TargetScoreValue,
 } from "@/lib/onboarding";
+import {
+  registrationClosed,
+  upcomingAdministrations,
+} from "@/data/lsatAdministrations";
+import { searchLawSchools } from "@/data/lawSchools";
 
 /**
  * The intake inputs, owned in one place.
@@ -119,8 +124,8 @@ export function StepField({
     value: OnboardingAnswers[K],
   ) => onChange({ ...answers, [key]: value });
 
-  const addSchool = () => {
-    const value = schoolInput.trim();
+  const addSchool = (name?: string) => {
+    const value = (name ?? schoolInput).trim();
     if (!value) return;
     const current = answers.schools ?? [];
     if (current.length >= 5 || current.includes(value)) {
@@ -184,6 +189,21 @@ export function StepField({
   }
 
   if (step === "schools") {
+    const chosen = answers.schools ?? [];
+    const full = chosen.length >= 5;
+    // Suggestions come from the real list, but the field never refuses a name
+    // it does not know: a school missing from our data must not cost a student
+    // their answer.
+    const suggestions = full
+      ? []
+      : searchLawSchools(schoolInput).filter((school) => !chosen.includes(school.name));
+    const typedIsNew =
+      schoolInput.trim().length > 1 &&
+      !suggestions.some(
+        (school) => school.name.toLowerCase() === schoolInput.trim().toLowerCase(),
+      ) &&
+      !chosen.includes(schoolInput.trim());
+
     return (
       <>
         <div className="classroom-orientation-search">
@@ -195,18 +215,47 @@ export function StepField({
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
-                addSchool();
+                // Enter takes the top suggestion when there is one, so the
+                // common case never needs the mouse.
+                addSchool(suggestions[0]?.name);
               }
             }}
-            placeholder="Type a school, press Enter"
-            aria-label="Add a school"
+            placeholder="Start typing a law school"
+            aria-label="Search law schools"
             autoFocus={autoFocus}
-            disabled={(answers.schools ?? []).length >= 5}
+            disabled={full}
           />
         </div>
-        <p className="classroom-orientation-hint">Add up to 5 schools.</p>
+
+        {suggestions.length > 0 || typedIsNew ? (
+          <ul className="classroom-orientation-suggestions" aria-label="Matching law schools">
+            {suggestions.map((school) => (
+              <li key={school.name}>
+                <button type="button" onClick={() => addSchool(school.name)}>
+                  <span className="classroom-orientation-suggestion-name">{school.name}</span>
+                  <span className="classroom-orientation-suggestion-region">{school.region}</span>
+                  <Plus size={14} aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+            {typedIsNew ? (
+              <li>
+                <button type="button" onClick={() => addSchool()}>
+                  <span className="classroom-orientation-suggestion-name">
+                    Add "{schoolInput.trim()}"
+                  </span>
+                  <Plus size={14} aria-hidden="true" />
+                </button>
+              </li>
+            ) : null}
+          </ul>
+        ) : null}
+
+        <p className="classroom-orientation-hint">
+          {full ? "That's five. Remove one to add another." : "Add up to 5 schools."}
+        </p>
         <div className="classroom-orientation-list">
-          {(answers.schools ?? []).map((school, index) => (
+          {chosen.map((school, index) => (
             <div key={school} className="classroom-orientation-list-row">
               <span className="classroom-orientation-list-index">{index + 1}</span>
               <span className="classroom-orientation-list-label">{school}</span>
@@ -215,7 +264,7 @@ export function StepField({
                 onClick={() =>
                   set(
                     "schools",
-                    (answers.schools ?? []).filter((entry) => entry !== school),
+                    chosen.filter((entry) => entry !== school),
                   )
                 }
                 aria-label={`Remove ${school}`}
@@ -246,21 +295,26 @@ export function StepField({
   }
 
   if (step === "test_date") {
+    // Real LSAC sittings, not a free date field: a student typing 2026-11-15
+    // was picking a day the LSAT is not given, and the countdown then paced
+    // their week to a date that does not exist.
+    const sittings = upcomingAdministrations();
     return (
       <>
-        <input
-          type="date"
-          className="classroom-orientation-input classroom-orientation-date"
-          value={
-            answers.test_date && answers.test_date !== UNDECIDED_TEST_DATE
-              ? answers.test_date
-              : ""
-          }
-          onChange={(event) => set("test_date", event.target.value || undefined)}
-          autoFocus={autoFocus}
-          aria-label="Your test date"
-        />
         <div className="classroom-orientation-chips">
+          {sittings.map((sitting) => (
+            <Chip
+              key={sitting.date}
+              selected={answers.test_date === sitting.date}
+              onClick={() => set("test_date", sitting.date)}
+            >
+              {sitting.label}
+              <small className="classroom-orientation-chip-note">
+                {sitting.window}
+                {registrationClosed(sitting) ? " · registration closed" : ""}
+              </small>
+            </Chip>
+          ))}
           <Chip
             selected={answers.test_date === UNDECIDED_TEST_DATE}
             onClick={() => set("test_date", UNDECIDED_TEST_DATE)}
@@ -268,6 +322,15 @@ export function StepField({
             I haven't picked a date yet
           </Chip>
         </div>
+        {/* A student who already sat down with a date outside the published
+            calendar keeps it rather than being silently re-asked. */}
+        {answers.test_date &&
+        answers.test_date !== UNDECIDED_TEST_DATE &&
+        !sittings.some((sitting) => sitting.date === answers.test_date) ? (
+          <p className="classroom-orientation-hint">
+            Currently set to {answers.test_date}. Pick a sitting above to change it.
+          </p>
+        ) : null}
       </>
     );
   }
