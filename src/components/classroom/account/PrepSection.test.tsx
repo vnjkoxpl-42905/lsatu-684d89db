@@ -103,3 +103,45 @@ describe("PrepSectionView", () => {
     expect(screen.getByRole("button", { name: "Cancel" })).toBeTruthy();
   });
 });
+
+describe("starting the setup again", () => {
+  it("asks before wiping the answers", () => {
+    const onStartOver = vi.fn().mockResolvedValue(true);
+    const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
+    render(
+      <PrepSectionView
+        answers={{ has_taken_lsat: true }}
+        loading={false}
+        onSave={vi.fn()}
+        onStartOver={onStartOver}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Start my setup again/ }));
+    expect(confirm).toHaveBeenCalled();
+    expect(onStartOver).not.toHaveBeenCalled();
+    confirm.mockRestore();
+  });
+
+  it("resets once they say yes", async () => {
+    const onStartOver = vi.fn().mockResolvedValue(true);
+    const confirm = vi.spyOn(window, "confirm").mockReturnValue(true);
+    render(
+      <PrepSectionView
+        answers={{ has_taken_lsat: true }}
+        loading={false}
+        onSave={vi.fn()}
+        onStartOver={onStartOver}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Start my setup again/ }));
+    await waitFor(() => expect(onStartOver).toHaveBeenCalled());
+    confirm.mockRestore();
+  });
+
+  it("offers nothing to reset where the page cannot do it", () => {
+    render(
+      <PrepSectionView answers={{}} loading={false} onSave={vi.fn()} />,
+    );
+    expect(screen.queryByRole("button", { name: /Start my setup again/ })).toBeNull();
+  });
+});

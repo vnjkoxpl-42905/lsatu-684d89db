@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Loader2, Pencil } from "lucide-react";
+import { Loader2, Pencil, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,14 +26,33 @@ export function PrepSectionView({
   answers,
   loading,
   onSave,
+  onStartOver,
 }: {
   answers: OnboardingAnswers;
   loading: boolean;
   onSave: (next: OnboardingAnswers) => Promise<boolean>;
+  /** Wipes the answers so the setup card runs again from the first question. */
+  onStartOver?: () => Promise<boolean>;
 }) {
   const [editing, setEditing] = React.useState<OnboardingStepId | null>(null);
   const [draft, setDraft] = React.useState<OnboardingAnswers>(answers);
   const [saving, setSaving] = React.useState(false);
+  const [resetting, setResetting] = React.useState(false);
+
+  const startOver = async () => {
+    if (!onStartOver) return;
+    if (!window.confirm(
+      "Start your setup again?\n\nYour answers are cleared and the setup card " +
+      "runs from the first question. Your work and your account stay exactly as " +
+      "they are.",
+    )) return;
+    setResetting(true);
+    try {
+      await onStartOver();
+    } finally {
+      setResetting(false);
+    }
+  };
 
   const startEdit = (step: OnboardingStepId) => {
     setDraft(answers);
@@ -129,6 +148,31 @@ export function PrepSectionView({
           </div>
         );
       })}
+
+      {/* Editing a row at a time covers a date that moved. Answering the whole
+          thing again is a different need - the first pass was rushed, or the
+          plan changed underneath it - and there was no way to do it. */}
+      {onStartOver ? (
+        <div className="classroom-account-prep-reset">
+          <button
+            type="button"
+            className="classroom-account-ghost-button"
+            onClick={() => void startOver()}
+            disabled={resetting}
+          >
+            {resetting ? (
+              <Loader2 size={13} className="classroom-spin" aria-hidden="true" />
+            ) : (
+              <RotateCcw size={13} aria-hidden="true" />
+            )}
+            Start my setup again
+          </button>
+          <small>
+            Clears these answers and runs the setup card from the first question.
+            Your work and your account are untouched.
+          </small>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -184,5 +228,38 @@ export default function PrepSection() {
     [setTestDate, user],
   );
 
-  return <PrepSectionView answers={answers} loading={loading} onSave={save} />;
+  // Clearing the completion stamp is what makes the card come back: Classroom
+  // draws it whenever onboarding_completed_at is null. The notified stamp goes
+  // too, so the finished intake mails Joshua the new answers rather than being
+  // silently swallowed as a duplicate.
+  const startOver = React.useCallback(async (): Promise<boolean> => {
+    if (!user) return false;
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        onboarding: null,
+        onboarding_completed_at: null,
+        onboarding_notified_at: null,
+      } as never)
+      .eq("class_id", user.id);
+    if (error) {
+      console.error("[prep] start over failed", error);
+      toast.error("Could not reset your setup. Please try again.");
+      return false;
+    }
+    setAnswers({});
+    toast.success("Your setup is ready to run again");
+    // The card is drawn by Classroom, which read the old stamp on mount.
+    window.location.assign("/classroom");
+    return true;
+  }, [user]);
+
+  return (
+    <PrepSectionView
+      answers={answers}
+      loading={loading}
+      onSave={save}
+      onStartOver={startOver}
+    />
+  );
 }

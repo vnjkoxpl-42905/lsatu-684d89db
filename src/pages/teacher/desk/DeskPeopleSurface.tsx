@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronUp,
   Crown,
+  RotateCcw,
   Search,
   Shield,
   User,
@@ -150,6 +151,31 @@ export function DeskPeopleSurface() {
     }
   };
 
+  // Puts an account back to the state a new signup is in: no intake answers, no
+  // name, the intake email re-armed, every paid door shut. Used to test the
+  // signup path for real, and when a student needs to answer the intake again.
+  const resetOnboarding = async (person: PeopleRow) => {
+    const who = person.display_name || person.email;
+    if (!window.confirm(
+      `Reset ${who} to a brand-new account?\n\n` +
+      'Clears their setup answers and name, re-locks access, and lets the ' +
+      'intake run again. Their login and their practice history are untouched.',
+    )) return;
+
+    try {
+      const res = await supabase.functions.invoke('admin-manage-users', {
+        method: 'POST',
+        body: { action: 'reset_onboarding', class_id: person.class_id },
+      });
+      if (res.error) throw res.error;
+      toast.success(`${who} is back to a new account`);
+      await fetchData();
+    } catch (error) {
+      console.error('resetOnboarding failed', { class_id: person.class_id, error });
+      toast.error('Failed to reset the account');
+    }
+  };
+
   const setRole = async (userId: string, role: 'admin' | 'user') => {
     const prev = users.find((user) => user.class_id === userId);
     if (!prev) return;
@@ -280,6 +306,7 @@ export function DeskPeopleSurface() {
           setExpandedUser={setExpandedUser}
           toggleAccess={toggleAccess}
           setRole={setRole}
+          resetOnboarding={resetOnboarding}
           refresh={fetchData}
         />
       </div>
@@ -294,6 +321,7 @@ function PeopleList({
   setExpandedUser,
   toggleAccess,
   setRole,
+  resetOnboarding,
   refresh,
 }: {
   filtered: PeopleRow[];
@@ -302,6 +330,7 @@ function PeopleList({
   setExpandedUser: (id: string | null) => void;
   toggleAccess: (classId: string, field: string, value: boolean) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
+  resetOnboarding: (person: PeopleRow) => void;
   refresh: () => void;
 }) {
   if (studentsLoading && filtered.length === 0) {
@@ -342,7 +371,13 @@ function PeopleList({
           return (
             <div key={person.class_id} data-testid={`people-row-${person.class_id}`} className="bg-white/10">
               <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} toggleAccess={toggleAccess} />
-              {isExpanded && <PersonAccessPanel person={person} setRole={setRole} />}
+              {isExpanded && (
+                <PersonAccessPanel
+                  person={person}
+                  setRole={setRole}
+                  resetOnboarding={resetOnboarding}
+                />
+              )}
             </div>
           );
         })}
@@ -453,6 +488,7 @@ function PersonRow({
           </button>
         )}
       </div>
+
     </div>
   );
 }
@@ -460,9 +496,11 @@ function PersonRow({
 function PersonAccessPanel({
   person,
   setRole,
+  resetOnboarding,
 }: {
   person: PeopleRow;
   setRole: (userId: string, role: 'admin' | 'user') => void;
+  resetOnboarding: (person: PeopleRow) => void;
 }) {
   return (
     <div className="space-y-4 border-t border-black/10 px-8 py-4">
@@ -496,6 +534,22 @@ function PersonAccessPanel({
             Demote to User
           </button>
         )}
+      </div>
+
+      <div className="border-t border-black/10 pt-3">
+        <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">Account</div>
+        <button
+          type="button"
+          onClick={() => resetOnboarding(person)}
+          className="inline-flex items-center gap-1.5 border border-black/15 px-2.5 py-1.5 text-xs font-semibold text-black/55 transition hover:bg-white/25 hover:text-black"
+        >
+          <RotateCcw className="h-3.5 w-3.5" strokeWidth={1.5} />
+          Reset to a new account
+        </button>
+        <p className="mt-2 text-xs leading-relaxed text-black/45">
+          Clears their setup answers and name, re-locks access, and lets the intake
+          run again. The login and their practice history survive.
+        </p>
       </div>
     </div>
   );

@@ -4591,3 +4591,25 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: var(--classroom-hover);
   color: var(--classroom-ink);
 }
+
+
+/* "Start my setup again" sits below the editable rows, quiet and separated:
+   it is a real reset, not another row to tweak. */
+.classroom-root .classroom-account-prep-reset {
+  border-top: 1px solid var(--classroom-line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.classroom-root .classroom-account-prep-reset button {
+  align-self: flex-start;
+}
+
+.classroom-root .classroom-account-prep-reset small {
+  color: rgb(var(--classroom-meta));
+  font-size: 11.5px;
+  line-height: 1.5;
+}

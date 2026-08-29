@@ -222,6 +222,45 @@ Deno.serve(async (req) => {
         return jsonRes({ success: true });
       }
 
+      // Put an account back to the state a brand-new signup is in: no intake
+      // answers, no name, the intake email re-armed, and every paid door shut.
+      // Built for testing the signup path end to end without hand-written SQL,
+      // and for the case where a student needs to answer the intake again.
+      //
+      // Deliberately does not touch auth: the account, its password and its
+      // work all survive. Nothing here deletes a student's practice history.
+      if (action === "reset_onboarding") {
+        const { class_id, lock = true } = body;
+        if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
+
+        const updates: Record<string, unknown> = {
+          onboarding: null,
+          onboarding_completed_at: null,
+          onboarding_notified_at: null,
+          display_name: null,
+        };
+        if (lock) {
+          for (const flag of ALL_FLAGS) updates[flag] = false;
+          // The three a locked account still needs: somewhere to stand, a way
+          // to reach Joshua, and a way to book.
+          updates.has_classroom_access = true;
+          updates.has_chat_access = true;
+          updates.has_schedule_access = true;
+        }
+
+        const { data: reset, error } = await admin
+          .from("profiles")
+          .update(updates)
+          .eq("class_id", class_id)
+          .select("class_id, display_name, onboarding_completed_at, onboarding_notified_at");
+        if (error) throw error;
+        if (!reset || reset.length === 0) {
+          console.error("reset_onboarding: no profile matched", { class_id });
+          return jsonRes({ error: "No profile matched that class_id" }, 404);
+        }
+        return jsonRes({ success: true, profile: reset[0] });
+      }
+
       // Set role
       if (action === "set_role") {
         const { user_id, role } = body;
