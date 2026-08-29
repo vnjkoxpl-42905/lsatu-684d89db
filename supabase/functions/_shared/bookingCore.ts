@@ -15,6 +15,9 @@
 // The GoogleCalendar dependency is injected so tests can supply a deterministic
 // mock and exercise the crash matrix without touching Google.
 
+import { sendAppEmail } from "./sendAppEmail.ts";
+
+
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
   bufferMin: 15,
