@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { sendAppEmail } from "../_shared/sendAppEmail.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -80,18 +81,9 @@ Deno.serve(async (req) => {
     const appBase = Deno.env.get("APP_BASE_URL") ?? "https://lsatprep.study";
     const link = `${appBase}${route}`;
 
-    // Forward to the Lovable Emails transactional sender.
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const r = await fetch(`${supabaseUrl}/functions/v1/send-transactional-email`, {
-      method: "POST",
-      headers: {
-        Authorization: authHeader,
-        apikey: Deno.env.get("SUPABASE_ANON_KEY")!,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        templateName: "assignment-notification",
-        recipientEmail: email,
+    // Send through Lovable's managed email delivery.
+    try {
+      const result = await sendAppEmail("assignment-notification", email, {
         idempotencyKey: `assign-${studentId}-${route}-${title}`.slice(0, 200),
         templateData: {
           studentName,
@@ -100,14 +92,14 @@ Deno.serve(async (req) => {
           assignedBy: "Joshua",
           link,
         },
-      }),
-    });
-
-    if (!r.ok) {
-      let detail = "";
-      try { detail = await r.text(); } catch { /* ignore */ }
-      console.error("[send-assignment-email] enqueue failed", { status: r.status, detail });
-      return jsonRes({ ok: false, error: `email ${r.status}` });
+      });
+      if (!result.sent) {
+        return jsonRes({ ok: false, error: "recipient_suppressed" });
+      }
+    } catch (mailErr) {
+      const detail = mailErr instanceof Error ? mailErr.message : String(mailErr);
+      console.error("[send-assignment-email] send failed", { detail });
+      return jsonRes({ ok: false, error: "email send failed" });
     }
 
     return jsonRes({ ok: true });

@@ -3,6 +3,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { deleteEvent, getEvent, patchEvent, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { decryptEnvelope } from "../_shared/singleSessionCrypto.ts";
 import { createRefund, retrieveRefund } from "../_shared/stripe.ts";
+import { sendAppEmail } from "../_shared/sendAppEmail.ts";
 
 const WORKER_NAME = "single-session-outbox";
 const MAX_BODY_BYTES = 1024;
@@ -74,21 +75,10 @@ async function sendEmail(job: any, booking: any, payload: any) {
       whenText: whenText(booking.start_at),
     };
   }
-  const response = await fetch(`${requiredEnv("SUPABASE_URL")}/functions/v1/send-transactional-email`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${requiredEnv("SUPABASE_SERVICE_ROLE_KEY")}`,
-      apikey: requiredEnv("SUPABASE_ANON_KEY"),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      templateName,
-      recipientEmail,
-      idempotencyKey: job.idempotency_key,
-      templateData,
-    }),
+  await sendAppEmail(templateName, recipientEmail, {
+    idempotencyKey: job.idempotency_key,
+    templateData,
   });
-  if (!response.ok) throw new Error(`transactional_email_http_${response.status}`);
 }
 
 async function complete(supabase: any, job: any, options: { providerStatus?: string; result?: any; meetUrl?: string } = {}) {
