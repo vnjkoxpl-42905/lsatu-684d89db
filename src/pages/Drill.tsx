@@ -39,6 +39,7 @@ import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
 import { BlindReviewFlow, type BlindReviewResult as LegacyBlindReviewResult } from '@/components/drill/BlindReviewFlow';
 import { SectionComplete } from '@/components/drill/SectionComplete';
+import { ScorePrediction } from '@/components/drill/ScorePrediction';
 import { ScoreReport } from '@/components/drill/ScoreReport';
 import { LRSectionResults } from '@/components/drill/LRSectionResults';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
@@ -299,6 +300,12 @@ function DrillContent() {
   const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
   const [isFlagged, setIsFlagged] = React.useState(false);
   const [showExitDialog, setShowExitDialog] = React.useState(false);
+  /**
+   * Complete Section asks first. A section ends once, and a student who meant
+   * to press Next should not lose the rest of it to a mis-click — least of all
+   * silently, with questions still blank and time still on the clock.
+   */
+  const [submitConfirmOpen, setSubmitConfirmOpen] = React.useState(false);
   const [exitDestination, setExitDestination] = React.useState<string>('/');
   const [tutorMode, setTutorMode] = React.useState(true);
   const [brMarked, setBrMarked] = React.useState<Set<string>>(new Set());
@@ -312,7 +319,13 @@ function DrillContent() {
   const [isEndingBootcampPracticeDrill, setIsEndingBootcampPracticeDrill] = React.useState(false);
   
   // New post-section flow states
-  const [postSectionScreen, setPostSectionScreen] = React.useState<'complete' | 'review' | 'score-report' | null>(null);
+  const [postSectionScreen, setPostSectionScreen] = React.useState<'predict' | 'complete' | 'review' | 'score-report' | null>(null);
+  /**
+   * What the student guessed before seeing anything. Held for this sitting only
+   * and shown beside the real score; nothing persists it, so nothing claims it
+   * as history.
+   */
+  const [predictedScore, setPredictedScore] = React.useState<number | null>(null);
   const [autoReviewQids, setAutoReviewQids] = React.useState<string[]>([]);
   /**
    * Which questions blind review walks. Null means the whole section, which is
@@ -2374,8 +2387,10 @@ function DrillContent() {
       return;
     }
 
-    // Show section complete screen
-    setPostSectionScreen('complete');
+    // Guess first, then the fork. The guess is only worth anything while the
+    // real number is still unknown.
+    setPredictedScore(null);
+    setPostSectionScreen(session.mode === 'full-section' ? 'predict' : 'complete');
   };
 
   // Build automatic review set: all wrong + all flagged + all unanswered + 2 longest-time + 3 hard-right
@@ -2763,6 +2778,19 @@ function DrillContent() {
 
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
+  if (postSectionScreen === 'predict' && session) {
+    return (
+      <ScorePrediction
+        total={session.questionQueue.length}
+        onPredict={(score) => {
+          setPredictedScore(score);
+          setPostSectionScreen('complete');
+        }}
+        onSkip={() => setPostSectionScreen('complete')}
+      />
+    );
+  }
+
   if (postSectionScreen === 'complete') {
     return (
       <SectionComplete
@@ -2836,6 +2864,7 @@ function DrillContent() {
               ? 'Back to your practice test'
               : 'Back to Home'
           }
+          predictedScore={predictedScore}
         />
       );
     }
@@ -3607,6 +3636,43 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={submitConfirmOpen} onOpenChange={setSubmitConfirmOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Submit this section?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {(() => {
+                  const unanswered = session.questionQueue.filter(
+                    (qid) => !session.attempts.get(qid)?.selectedAnswer,
+                  ).length;
+                  const timeLeft =
+                    timer?.mode === 'countdown' && timer.ms > 0 ? timer.label : null;
+                  if (unanswered === 0 && !timeLeft) {
+                    return 'This ends the section and scores it.';
+                  }
+                  return [
+                    unanswered > 0
+                      ? `You have ${unanswered} unanswered question${unanswered === 1 ? '' : 's'}`
+                      : null,
+                    timeLeft ? `${timeLeft} left on the clock` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(' and ') + '.';
+                })()}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              {/* Go back is the primary. Submitting early is the exception. */}
+              <AlertDialogAction onClick={() => setSubmitConfirmOpen(false)}>
+                Go back
+              </AlertDialogAction>
+              <AlertDialogCancel onClick={() => { void handleFinishSection(); }}>
+                Submit anyway
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <AlertDialog open={revealConfirmOpen} onOpenChange={setRevealConfirmOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -3654,7 +3720,7 @@ function DrillContent() {
                 // so the way out of a section is this pill, as on LawHub. Every
                 // other mode keeps its End in the bottom bar and hides this.
                 isFullSection
-                  ? () => handleFinishSection()
+                  ? () => setSubmitConfirmOpen(true)
                   : usesSmartChrome
                   ? undefined
                   : isMcPractice

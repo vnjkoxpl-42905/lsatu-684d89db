@@ -38,6 +38,12 @@ interface LRSectionResultsProps {
    * where that button goes.
    */
   backLabel?: string;
+  /**
+   * What the student guessed before seeing the score, if they guessed. Shown
+   * beside the real number, because the gap between the two is the point of
+   * having asked.
+   */
+  predictedScore?: number | null;
 }
 
 type QuestionStat = SectionQuestionStat;
@@ -50,7 +56,7 @@ interface FocusArea {
   avgTimeMs: number;
 }
 
-export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home' }: LRSectionResultsProps) {
+export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore }: LRSectionResultsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
@@ -209,6 +215,18 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
               <div className="text-center">
                 <div className="text-xl font-bold">{initialPercent}%</div>
                 <div className="text-xs text-muted-foreground">Initial Score</div>
+                {typeof predictedScore === 'number' && (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    You guessed {predictedScore}
+                    {predictedScore !== initialScore && (
+                      <>
+                        {' · '}
+                        {predictedScore > initialScore ? 'over' : 'under'} by{' '}
+                        {Math.abs(predictedScore - initialScore)}
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
