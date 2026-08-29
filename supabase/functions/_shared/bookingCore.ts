@@ -15,6 +15,9 @@
 // The GoogleCalendar dependency is injected so tests can supply a deterministic
 // mock and exercise the crash matrix without touching Google.
 
+import { sendAppEmail } from "./sendAppEmail.ts";
+
+
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
   bufferMin: 15,
@@ -427,27 +430,16 @@ export async function bookSession(opts: {
   });
   const sendConfirmation = async (recipientEmail: string, recipientRole: "student" | "admin") => {
     try {
-      const response = await fetch(`${opts.supabaseUrl}/functions/v1/send-transactional-email`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${opts.serviceKey}`,
-          apikey: opts.anonKey,
-          "Content-Type": "application/json",
+      await sendAppEmail("booking-confirmation", recipientEmail, {
+        idempotencyKey: `booking-${redemptionId}-${recipientRole}`.slice(0, 200),
+        templateData: {
+          recipientRole, studentName, studentEmail, whenText,
+          durationMinutes: pass.session_length_minutes, meetUrl,
+          // Only the admin copy surfaces the submission.
+          studentNote: recipientRole === "admin" ? studentNote : "",
+          fileNames: recipientRole === "admin" ? uploadedFileNames : [],
         },
-        body: JSON.stringify({
-          templateName: "booking-confirmation",
-          recipientEmail,
-          idempotencyKey: `booking-${redemptionId}-${recipientRole}`.slice(0, 200),
-          templateData: {
-            recipientRole, studentName, studentEmail, whenText,
-            durationMinutes: pass.session_length_minutes, meetUrl,
-            // Only the admin copy surfaces the submission.
-            studentNote: recipientRole === "admin" ? studentNote : "",
-            fileNames: recipientRole === "admin" ? uploadedFileNames : [],
-          },
-        }),
       });
-      if (!response.ok) throw new Error(`confirmation_email_http_${response.status}`);
     } catch (mailErr) {
       const message = mailErr instanceof Error ? mailErr.message : String(mailErr);
       console.error(`confirmation email to ${recipientRole} failed`, { redemptionId, error: message });

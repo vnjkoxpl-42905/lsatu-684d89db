@@ -1,15 +1,5 @@
 project_id = "atrcqxpmqrynmtvvyjju"
 
-[functions.process-email-queue]
-verify_jwt = true
-
-[functions.send-transactional-email]
-# Gateway JWT verification is off because internal callers (bookingCore, queue
-# workers) authenticate with the service-role key, which the gateway rejects
-# under asymmetric signing keys. The function itself enforces
-# service_role-or-admin authorization in code.
-verify_jwt = false
-
 [functions.preview-transactional-email]
 verify_jwt = false
 
@@ -17,12 +7,6 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.booking-upload]
-verify_jwt = false
-
-[functions.handle-email-unsubscribe]
-verify_jwt = false
-
-[functions.handle-email-suppression]
 verify_jwt = false
 
 [functions.gemini-proxy]
