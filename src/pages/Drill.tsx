@@ -95,7 +95,7 @@ import type {
   FullSectionConfig,
   TypeDrillConfig,
 } from '@/types/drill';
-import { QuestionPoolService, type QuestionUsage } from '@/lib/questionPoolService';
+import { QuestionPoolService, servesFixedQueue, type QuestionUsage } from '@/lib/questionPoolService';
 import { QuestionPoolChip } from '@/components/drill/QuestionPoolChip';
 import { QuestionPoolExhausted } from '@/components/drill/QuestionPoolExhausted';
 import { toast } from 'sonner';
@@ -484,12 +484,16 @@ function DrillContent() {
       let available = rawQuestions;
       let exhausted = false;
       
-      const explicitQids =
-        (mode === 'type-drill' || mode === 'natural-drill') &&
-        state.config &&
-        ((state.config as TypeDrillConfig).selectedQids?.length ?? 0) > 0;
+      // A section is served whole or not at all. Pool dedupe used to run for
+      // every mode, so a full section silently lost any question the student
+      // had already met in a drill — PT103.S1 handed over 25 of its 26 with
+      // nothing on screen to say one was missing.
+      const fixedQueue = servesFixedQueue(
+        mode,
+        state.config as { selectedQids?: string[] } | null,
+      );
 
-      if (classId && !explicitQids) {
+      if (classId && !fixedQueue) {
         // Dedupe read can fail (RLS/transport). Don't block the drill: fall back
         // to an empty usage map (repeats possible) but tell the student why.
         let usage: Map<string, QuestionUsage> = new Map();

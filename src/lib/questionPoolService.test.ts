@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { QuestionPoolService } from './questionPoolService';
+import { QuestionPoolService, servesFixedQueue } from './questionPoolService';
 
 // Phase 2: markQuestionSeen is an atomic increment (increment_question_seen).
 // It is fire-and-forget telemetry: it must warn (not throw) on error so it never
@@ -99,5 +99,26 @@ describe('filterQuestionPool (allowRepeats)', () => {
     });
     // A and B seen today, recycle window 7d -> only unseen C, D available.
     expect(ids(r)).toEqual(['C', 'D']);
+  });
+});
+
+describe('servesFixedQueue', () => {
+  it('exempts a full section, which is an artifact and not a selection', () => {
+    // The bug: PT103.S1 is 26 questions in a fixed order, and pool dedupe was
+    // handing over 25 of them because one had been met in a drill.
+    expect(servesFixedQueue('full-section', null)).toBe(true);
+    expect(servesFixedQueue('full-section', { selectedQids: [] })).toBe(true);
+  });
+
+  it('exempts a queue the caller named by qid', () => {
+    expect(servesFixedQueue('type-drill', { selectedQids: ['q1'] })).toBe(true);
+    expect(servesFixedQueue('natural-drill', { selectedQids: ['q1'] })).toBe(true);
+  });
+
+  it('still pools a generated drill, which is what dedupe is for', () => {
+    expect(servesFixedQueue('type-drill', { selectedQids: [] })).toBe(false);
+    expect(servesFixedQueue('type-drill', null)).toBe(false);
+    expect(servesFixedQueue('natural-drill', undefined)).toBe(false);
+    expect(servesFixedQueue('adaptive', null)).toBe(false);
   });
 });

@@ -15,6 +15,30 @@ export interface QuestionUsage {
 }
 
 /**
+ * Does this launch define its own queue, rather than draw one from a pool?
+ *
+ * Pool dedupe exists so a GENERATED drill does not re-serve questions the
+ * student has already worked. Pointed at a queue that was named rather than
+ * generated, it silently deletes the thing that was asked for.
+ *
+ * A full section is the clearest case. PT103 Section 1 is 26 questions in one
+ * fixed order; a "section" missing the three the student happened to drill last
+ * week is not that section, and it was being served as though it were — 25 of
+ * 26, with nothing on screen to say so. A section is an artifact, not a
+ * selection, and the same holds for any queue the caller specified by qid.
+ */
+export function servesFixedQueue(
+  mode: string,
+  config?: { selectedQids?: string[] } | null,
+): boolean {
+  if (mode === 'full-section') return true;
+  if (mode === 'type-drill' || mode === 'natural-drill') {
+    return (config?.selectedQids?.length ?? 0) > 0;
+  }
+  return false;
+}
+
+/**
  * Service for managing question pool with deduplication and usage tracking
  */
 export class QuestionPoolService {
