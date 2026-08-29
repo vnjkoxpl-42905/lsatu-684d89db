@@ -315,6 +315,16 @@ export default function OrientationCard() {
       if (patch.answers && "test_date" in patch.answers) {
         setTestDate(testDateColumnValue(patch.answers.test_date));
       }
+
+      // Finishing the intake mails Joshua the answers. Deliberately not awaited
+      // and never surfaced: the student's card is done either way, and the
+      // function stamps the profile so a closed tab is picked up by the sweep
+      // instead of double-sending.
+      if (patch.complete) {
+        void supabase.functions
+          .invoke("onboarding-intake-notify", { body: {} })
+          .catch((error) => console.error("[orientation] intake notify failed", error));
+      }
       return true;
     },
     [setDisplayName, setTestDate, user],
