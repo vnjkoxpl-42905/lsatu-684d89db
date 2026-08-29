@@ -42,8 +42,14 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
-    const { data: userRes } = await supabase.auth.getUser(token);
-    const user = userRes?.user;
+    // Validate the caller JWT with the anon client: getClaims() supports the
+    // asymmetric signing-keys system, unlike getUser() on a service-role client.
+    const authClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+    );
+    const { data: claimsRes } = await authClient.auth.getClaims(token);
+    const user = claimsRes?.claims?.sub ? { id: String(claimsRes.claims.sub) } : null;
     if (!user) return json({ error: "unauthorized" }, 401);
     const { data: roleRow, error: roleError } = await supabase
       .from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
