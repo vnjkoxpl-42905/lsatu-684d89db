@@ -77,6 +77,12 @@ interface Props {
   timerMode?: "countdown" | "stopwatch";
   /** Paint the timer as overrun. A countdown that has passed zero keeps going. */
   timerOverBudget?: boolean;
+  /**
+   * Fraction of the section's time still left, 0..1. Drives the depleting bar
+   * the official interface paints under the clock. Omit for a stopwatch or an
+   * untimed section and the bar is not rendered — there is nothing to deplete.
+   */
+  timerProgress?: number;
   /** Controlled Find Text value. */
   searchTerm: string;
   setSearchTerm: (s: string) => void;
@@ -133,6 +139,7 @@ export default function OfficialDrillToolbar({
   timerLabel,
   timerMode,
   timerOverBudget,
+  timerProgress,
   searchTerm,
   setSearchTerm,
   fontScale,
@@ -170,6 +177,19 @@ export default function OfficialDrillToolbar({
       ? "Time Elapsed"
       : null;
   const paddedTimer = (timerLabel || "00:00").replace(/^(\d):/, "0$1:");
+  // The bar is the at-a-glance read; the digits are the precise one. It goes
+  // amber in the last quarter and red in the last tenth so the student feels
+  // the section closing without having to parse numbers mid-question.
+  const timerFraction =
+    typeof timerProgress === "number"
+      ? Math.max(0, Math.min(1, timerProgress))
+      : null;
+  const timerBarColor =
+    timerOverBudget || (timerFraction !== null && timerFraction <= 0.1)
+      ? "bg-red-600"
+      : timerFraction !== null && timerFraction <= 0.25
+      ? "bg-amber-500"
+      : "bg-green-600";
 
   return (
     <>
@@ -326,14 +346,31 @@ export default function OfficialDrillToolbar({
             {timerLabelPrefix && (
               <>
                 <PipeSeparator />
-                <div
-                  role="timer"
-                  className={cn(
-                    "text-[14px] font-semibold tabular-nums whitespace-nowrap pl-1",
-                    timerOverBudget ? "text-red-700" : "text-slate-900",
+                <div className="pl-1 min-w-[168px]">
+                  <div
+                    role="timer"
+                    className={cn(
+                      "text-[14px] font-semibold tabular-nums whitespace-nowrap",
+                      timerOverBudget ? "text-red-700" : "text-slate-900",
+                    )}
+                  >
+                    {timerLabelPrefix}: {paddedTimer}
+                  </div>
+                  {timerFraction !== null && (
+                    <div
+                      className="mt-1 h-[5px] w-full rounded-full bg-slate-200 overflow-hidden"
+                      role="progressbar"
+                      aria-label="Section time remaining"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(timerFraction * 100)}
+                    >
+                      <div
+                        className={cn("h-full rounded-full transition-[width] duration-1000 ease-linear", timerBarColor)}
+                        style={{ width: `${timerFraction * 100}%` }}
+                      />
+                    </div>
                   )}
-                >
-                  {timerLabelPrefix}: {paddedTimer}
                 </div>
               </>
             )}

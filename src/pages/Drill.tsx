@@ -25,6 +25,7 @@ import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
+import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
@@ -268,6 +269,10 @@ function DrillContent() {
   // FloatingHelpButton is suppressed on /drill so no bubble floats over the
   // question card.
   const [helpOpen, setHelpOpen] = React.useState(false);
+  // Section mode's opt-in reveal, shown on the section navigator. Off by
+  // default and deliberately not persisted: a real section shows nothing, and
+  // that stays the default every time.
+  const [sectionRevealEnabled, setSectionRevealEnabled] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
   const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   const [tutorChatMode, setTutorChatMode] = React.useState<TutorMode>('pre-answer');
@@ -2702,7 +2707,10 @@ function DrillContent() {
   // Declared here, above every conditional early return, so hook order stays
   // stable. One fetch feeds both surfaces: the drawer tab and the inline layer.
   const currentRevealed =
-    !!currentQuestion && !!showAnswerRevealed.get(currentQuestion.qid);
+    !!currentQuestion &&
+    (!!showAnswerRevealed.get(currentQuestion.qid) ||
+      // Section mode's opt-in toggle: once on, an answered question reveals.
+      (sectionRevealEnabled && !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
 
   const {
     data: lrExplanation,
@@ -3387,10 +3395,26 @@ function DrillContent() {
         case 'unlimited': totalMs = undefined; break;
       }
     }
+    // Fraction still left on the clock, for the depleting bar under the timer.
+    // Only a countdown against a known budget has one; a stopwatch or an
+    // unlimited section leaves it undefined and the bar does not render.
+    const timerProgress =
+      timer?.mode === 'countdown' && totalMs
+        ? Math.max(0, Math.min(1, timer.ms / totalMs))
+        : undefined;
     const attemptedQids = new Set<string>();
     for (const [qid, attempt] of session.attempts) {
       if (attempt.selectedAnswer) attemptedQids.add(qid);
     }
+    // Fixed-queue navigation. A real section lets the student move anywhere in
+    // the queue at any time, which is what the oval strip is for. Jumping is
+    // frozen while the timer is paused so the paused screen is not a peephole.
+    const jumpEnabled = !timer?.isPaused;
+    const handleJumpTo = (idx: number) => {
+      if (!session) return;
+      if (isPracticeSetMode) questionTimer.current.pause();
+      setSession({ ...session, currentIndex: idx });
+    };
     const handleTogglePauseClick = timer
       ? () => {
           if (timer.isPaused) timer.resume();
@@ -3410,12 +3434,26 @@ function DrillContent() {
       onStyleChange: setActiveStyle,
       onAskTutor: () => openTutorForCurrent(),
     };
-    const drawerSimilar: DrillSimilarContext = {
-      qid: currentQuestion.qid,
-      qtype: currentQuestion.qtype,
-      onJumpToQuestion: jumpToQuestion,
-    };
+    // Find similar walks the student out of the queue they are sitting. That is
+    // fine in a drill and wrong in a section or a practice test: the timer is
+    // running on THIS queue, and jumping to another question mid-section is an
+    // escape hatch, not a study tool. Null hides the whole block there.
+    const drawerSimilar: DrillSimilarContext | null =
+      isFullSection || inSitting || isPracticeSetMode
+        ? null
+        : {
+            qid: currentQuestion.qid,
+            qtype: currentQuestion.qtype,
+            onJumpToQuestion: jumpToQuestion,
+          };
     const requiresAnswerBeforeNext = !isFullSection && !isPracticeSetMode;
+    const officialNextDisabled =
+      !!timer?.isPaused ||
+      (requiresAnswerBeforeNext &&
+        !selectedAnswer &&
+        !currentAttempted &&
+        !currentUnscored);
+    const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
     const officialNext = async () => {
       if (timer?.isPaused) return;
       let committedAttempts: DrillSession['attempts'] | null = null;
@@ -3588,7 +3626,12 @@ function DrillContent() {
               pauseNoun={isFullSection ? 'Section' : 'Question'}
               completeLabel={isMcPractice ? 'End Drill' : undefined}
               onComplete={
-                usesSmartChrome
+                // A section's bottom bar is the navigator, which has no End —
+                // so the way out of a section is this pill, as on LawHub. Every
+                // other mode keeps its End in the bottom bar and hides this.
+                isFullSection
+                  ? () => handleFinishSection()
+                  : usesSmartChrome
                   ? undefined
                   : isMcPractice
                   ? () => { void handleEndBootcampPracticeDrill(); }
@@ -3615,6 +3658,7 @@ function DrillContent() {
             setHighlightMode={setHighlightMode}
             timerLabel={timer?.label ?? ""}
             timerMode={timer?.mode}
+            timerProgress={timerProgress}
             searchTerm={officialSearchTerm}
             setSearchTerm={setOfficialSearchTerm}
             fontScale={officialFontScale}
@@ -3669,6 +3713,39 @@ function DrillContent() {
               skipDisabled={currentAttempted || !!timer?.isPaused}
               onEnd={() => handleNavigation('/classroom')}
               disabled={!!timer?.isPaused}
+            />
+          ) : isFullSection ? (
+            // A real timed section is not a submit-one-at-a-time drill: the
+            // answer commits the moment it is selected, so Skip and Submit have
+            // nothing to do. What the section needs is the official navigator —
+            // the oval strip for the whole queue and prev/next arrows in the
+            // bottom-right corner, exactly where the paper-and-LawHub interface
+            // puts them. Leaving the section runs through Complete Section in
+            // the header strip.
+            <OfficialAnswerNavigator
+              questionQueue={session.questionQueue}
+              currentIndex={session.currentIndex}
+              attemptedQids={attemptedQids}
+              jumpEnabled={jumpEnabled}
+              jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
+              showQuestionList
+              prevDisabled={session.currentIndex <= 0 || !!timer?.isPaused}
+              nextDisabled={
+                officialNextDisabled ||
+                session.currentIndex >= session.questionQueue.length - 1
+              }
+              nextDisabledReason={
+                timer?.isPaused
+                  ? 'Paused — resume to navigate'
+                  : session.currentIndex >= session.questionQueue.length - 1
+                  ? 'Last question — use Complete Section to finish'
+                  : undefined
+              }
+              onJumpTo={handleJumpTo}
+              onPrev={officialPrev}
+              onNext={() => { void officialNext(); }}
+              revealEnabled={sectionRevealEnabled}
+              onRevealEnabledChange={setSectionRevealEnabled}
             />
           ) : (
             // Same chrome as the adaptive Smart Drill, but driven by the fixed
