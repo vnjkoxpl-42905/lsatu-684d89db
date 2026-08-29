@@ -22,7 +22,6 @@ import SectionTimingPicker, {
 import { loadAllIndexPassages } from '@/features/rc/lib/rcBank';
 import {
   buildRcSections,
-  formatRcSectionClock,
   rcSectionHref,
   rcSectionPreptests,
   rcSectionsForPreptest,
@@ -471,15 +470,15 @@ export function SectionSelector({
               contentClassName="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50"
             />
 
-            {/* What the chosen section will actually run for. */}
-            {kind === 'rc' && chosenRcSection && (
+            {/* No passage or question counts: the clock is already on the
+                control above, and restating the size of the section under it
+                is furniture. The one thing that is NOT self-evident stays —
+                that this particular section is short of a real one, which
+                changes what sitting it proves. It renders only when true. */}
+            {kind === 'rc' && chosenRcSection && !chosenRcSection.fullLength && (
               <p className="text-sm text-muted-foreground/70">
-                {chosenRcSection.passageCount} passages ·{' '}
-                {chosenRcSection.questionCount} questions ·{' '}
-                {formatRcSectionClock(chosenRcSection, rcPaceId)}
-                {chosenRcSection.fullLength
-                  ? ''
-                  : '. Shorter than a real section, because questions without a published explanation cannot be drilled'}
+                Shorter than a real section, because questions without a published
+                explanation cannot be drilled
               </p>
             )}
           </div>
