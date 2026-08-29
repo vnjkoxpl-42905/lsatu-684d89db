@@ -1,5 +1,19 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+/**
+ * The generated insert shape for one attempt row.
+ *
+ * `rrc` is intentionally absent from it: the column was added by
+ * `20260829140000_recall_responses.sql` and `types.ts` is generated from the
+ * deployed schema, so it will only learn about the column the next time types
+ * are pulled against a database that has the migration applied. Hand-editing
+ * that file is against the repo's rules, so the row is typed as the generated
+ * shape plus the one field, and narrowed back at the call. Delete the
+ * intersection once types are regenerated.
+ */
+type ResponseInsert = Database["public"]["Tables"]["activity_item_responses"]["Insert"];
 import type { ActivityCoach } from "../api/types";
 import { RecallStage } from "./RecallStage";
 import { useRecallCoach } from "./useRecallCoach";
@@ -100,7 +114,15 @@ function RunnerBody({
       // Append-only, one row per capture, exactly like the typed path. `verdict`
       // stays null: a recall is not correct or incorrect, it is a set of
       // details that did or did not survive.
-      const { error } = await supabase.from("activity_item_responses").insert({
+      //
+      // The cast is for `rrc`, added by 20260829140000_recall_responses.sql.
+      // `src/integrations/supabase/types.ts` is generated from the deployed
+      // schema and does not know the column yet, which makes the insert payload
+      // type `never`. Regenerating types is a separate step against a database
+      // that has had the migration applied; hand-editing that file is against
+      // the repo's rules. This narrows to the one row shape rather than
+      // reaching for `any`, and can be deleted the next time types are pulled.
+      const row: ResponseInsert & { rrc: unknown } = {
         assignment_id: assignmentId,
         student_id: studentId,
         item_order: itemOrder,
@@ -121,7 +143,10 @@ function RunnerBody({
           overlap: score?.overlap ?? null,
           elapsed_ms: Date.now() - startedAt.current,
         },
-      });
+      };
+      const { error } = await supabase
+        .from("activity_item_responses")
+        .insert(row as ResponseInsert);
       if (error) console.error("[rrc] could not record a capture", error);
     },
     [assignmentId, studentId, itemOrder, step],
