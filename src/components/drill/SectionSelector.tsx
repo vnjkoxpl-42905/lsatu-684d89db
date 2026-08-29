@@ -349,16 +349,17 @@ export function SectionSelector({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                    {/* Each option states what it filters to. "Fresh" on its
-                        own is our word, not the student's, and a filter nobody
-                        can read is a filter nobody trusts. Single-line so the
-                        trigger, which renders the chosen item's children,
-                        keeps saying it after the menu closes. */}
+                    {/* "Fresh" on its own is our word, not the student's, so it
+                        says what it filters to. Single-line, because the
+                        trigger renders the chosen item's children and has to
+                        keep reading straight once the menu closes. "Any" needs
+                        no gloss: it is the absence of the filter, and spelling
+                        that out only makes the pair harder to scan. */}
                     <SelectItem value="fresh" className="text-base py-3 focus:bg-foreground/5">
-                      Fresh · never worked
+                      Fresh · never attempted
                     </SelectItem>
                     <SelectItem value="any" className="text-base py-3 focus:bg-foreground/5">
-                      Any · worked or not
+                      Any
                     </SelectItem>
                   </SelectContent>
                 </Select>

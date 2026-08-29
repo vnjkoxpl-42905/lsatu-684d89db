@@ -91,9 +91,10 @@ describe('SectionSelector', () => {
   it('says what each Status filter actually filters to', async () => {
     renderSelector();
 
-    // The default is already legible on the closed trigger.
-    await openSelectShowing(/Fresh · never worked/);
-    expect(await screen.findByText(/Any · worked or not/)).toBeTruthy();
+    // The default is already legible on the closed trigger. "Any" carries no
+    // gloss on purpose — it is the absence of the filter, not a second rule.
+    await openSelectShowing(/Fresh · never attempted/);
+    expect(await screen.findByText(/^Any$/)).toBeTruthy();
   });
 
   it('promises nothing before a section is chosen', async () => {
