@@ -23,8 +23,6 @@ import { loadAllIndexPassages } from '@/features/rc/lib/rcBank';
 import {
   buildRcSections,
   rcSectionHref,
-  rcSectionPreptests,
-  rcSectionsForPreptest,
   type RcSection,
   type RcSectionPaceId,
 } from '@/features/rc/lib/rcSections';
@@ -143,12 +141,14 @@ export function SectionSelector({
     };
   }, [classId, classIdLoading, manifest]);
 
-  const rcPTs = useMemo(() => (rcSections ? rcSectionPreptests(rcSections) : []), [rcSections]);
-  const rcSectionsForPT = useMemo(
-    () => (rcSections && selectedPT ? rcSectionsForPreptest(rcSections, selectedPT) : []),
-    [rcSections, selectedPT],
+  const chosenRcSection = useMemo(
+    () =>
+      rcSections && selectedPT && selectedSection
+        ? (rcSections.find((s) => s.preptest === selectedPT && s.section === selectedSection) ??
+          null)
+        : null,
+    [rcSections, selectedPT, selectedSection],
   );
-  const chosenRcSection = rcSectionsForPT.find((s) => s.section === selectedSection) ?? null;
 
   /**
    * RC's clock is a per-passage budget, so it can only run the three paces
@@ -182,33 +182,33 @@ export function SectionSelector({
     [manifest, freshness, freshnessFilter],
   );
 
-  // PrepTests are derived from the surviving sections rather than listed whole,
-  // so picking a PrepTest can never lead to an empty Section list.
-  const lrPTs = useMemo(
-    () => Array.from(new Set(lrSectionsInFilter.map((s) => s.pt))).sort((a, b) => a - b),
-    [lrSectionsInFilter],
-  );
-  const availablePTs = kind === 'rc' ? rcPTs : lrPTs;
-
-  const availableSections = !selectedPT
-    ? []
-    : kind === 'rc'
-      ? rcSectionsForPT.map((s) => s.section)
-      : Array.from(
-          new Set(lrSectionsInFilter.filter((s) => s.pt === selectedPT).map((s) => s.section)),
-        ).sort((a, b) => a - b);
+  /**
+   * Every section that can be started right now, as one flat list, newest
+   * first. A PrepTest picker feeding a Section picker made the student walk an
+   * index we already hold the answer to: the Status filter has already decided
+   * what is offered, so the only real question left is which of these to sit.
+   * Newest first because the recent PrepTests are the ones nearest test day.
+   */
+  const pickableSections = useMemo(() => {
+    const rows =
+      kind === 'rc'
+        ? (rcSections ?? []).map((s) => ({ pt: s.preptest, section: s.section }))
+        : lrSectionsInFilter.map((s) => ({ pt: s.pt, section: s.section }));
+    return rows.sort((a, b) => b.pt - a.pt || a.section - b.section);
+  }, [kind, rcSections, lrSectionsInFilter]);
 
   // Flipping the filter can strand a choice that no longer qualifies. Drop it
   // rather than leaving a trigger naming a section the list no longer offers.
   useEffect(() => {
-    if (kind === 'rc') return;
-    if (selectedPT && !lrPTs.includes(selectedPT)) {
+    if (!selectedPT || !selectedSection) return;
+    const stillOffered = pickableSections.some(
+      (s) => s.pt === selectedPT && s.section === selectedSection,
+    );
+    if (!stillOffered) {
       setSelectedPT(null);
       setSelectedSection(null);
-    } else if (selectedSection && !availableSections.includes(selectedSection)) {
-      setSelectedSection(null);
     }
-  }, [kind, lrPTs, availableSections, selectedPT, selectedSection]);
+  }, [pickableSections, selectedPT, selectedSection]);
 
   const handleStart = () => {
     if (kind === 'rc') {
@@ -371,7 +371,7 @@ export function SectionSelector({
                     {freshnessError} Every section is listed until it can.
                   </p>
                 )}
-                {!freshnessLoading && !freshnessError && availablePTs.length === 0 && (
+                {!freshnessLoading && !freshnessError && pickableSections.length === 0 && (
                   <p className="text-sm text-muted-foreground/70">
                     No untouched LR sections left. Switch to Any to sit one again.
                   </p>
@@ -379,77 +379,47 @@ export function SectionSelector({
               </div>
             )}
 
-            {/* PrepTest */}
+            {/* Section — one list, not a PrepTest picker feeding a Section
+                picker. Named the way the section is named everywhere else in
+                LSAT world, `PT130.S3`, so the row a student reads here is the
+                same string they will quote back in a lesson. Bare on purpose:
+                counts and freshness percentages stacked on every row read as a
+                spreadsheet, the Status filter already guarantees what is in
+                this list, and the line above Start states what the chosen
+                section holds. */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-                PrepTest
+                Section
               </label>
               <Select
-                value={selectedPT?.toString()}
+                value={
+                  selectedPT && selectedSection ? `${selectedPT}.${selectedSection}` : undefined
+                }
                 onValueChange={(val) => {
-                  setSelectedPT(Number(val));
-                  setSelectedSection(null);
+                  const [pt, section] = val.split('.').map(Number);
+                  setSelectedPT(pt);
+                  setSelectedSection(section);
                 }}
               >
-                <SelectTrigger 
+                <SelectTrigger
                   className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
-                  id="pt-select"
+                  id="section-select"
                 >
-                  <SelectValue placeholder="Select PrepTest" />
+                  <SelectValue placeholder="Select a section" />
                 </SelectTrigger>
                 <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                  {availablePTs.map(pt => (
-                    <SelectItem 
-                      key={pt} 
-                      value={pt.toString()}
+                  {pickableSections.map(({ pt, section }) => (
+                    <SelectItem
+                      key={`${pt}.${section}`}
+                      value={`${pt}.${section}`}
                       className="text-base py-3 focus:bg-foreground/5"
                     >
-                      PrepTest {pt}
+                      PT{pt}.S{section}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Section (appears only after PT selected) */}
-            {selectedPT && (
-              <div 
-                className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-200"
-              >
-                <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-                  Section
-                </label>
-                <Select
-                  value={selectedSection?.toString()}
-                  onValueChange={(val) => setSelectedSection(Number(val))}
-                >
-                  <SelectTrigger 
-                    className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
-                    id="section-select"
-                  >
-                    <SelectValue placeholder="Select Section" />
-                  </SelectTrigger>
-                  <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                    {availableSections.map(section => {
-                      return (
-                        <SelectItem
-                          key={section}
-                          value={section.toString()}
-                          className="text-base py-3 focus:bg-foreground/5"
-                        >
-                          {/* Bare, like the real thing. Counts and freshness
-                              percentages stacked on every row read as a
-                              spreadsheet; the Status filter already guarantees
-                              what is in this list, and the line under Timing
-                              states what the chosen section actually holds. */}
-                          Section {section}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
           </div>
 
           {/* Timing Selector */}

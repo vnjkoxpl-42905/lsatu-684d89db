@@ -31,7 +31,7 @@ vi.mock('@/lib/sectionFreshness', async () => {
   return { ...actual, fetchAnsweredQids: () => Promise.resolve(new Set<string>()) };
 });
 
-/** PT 130 S1 is 25 questions; PT 130 S3 is 26. The count on screen is this one. */
+/** Section 1 is 25 questions, section 3 is 26. The count on screen is this one. */
 vi.mock('@/lib/questionLoader', () => ({
   questionBank: {
     getSection: (_pt: number, section: number) =>
@@ -43,10 +43,12 @@ vi.mock('@/features/rc/lib/rcBank', () => ({
   loadAllIndexPassages: () => Promise.resolve([]),
 }));
 
+/** Two PrepTests, deliberately listed oldest-first so the ordering is earned. */
 const manifest = {
   sections: [
     { pt: 130, section: 1, count: 25, filename: 'PT130-S1-LR.json' },
     { pt: 130, section: 3, count: 26, filename: 'PT130-S3-LR.json' },
+    { pt: 131, section: 1, count: 25, filename: 'PT131-S1-LR.json' },
   ],
 } as unknown as Parameters<typeof SectionSelector>[0]['manifest'];
 
@@ -81,10 +83,8 @@ const openSelectShowing = async (text: RegExp) => {
 };
 
 const pickSection = async () => {
-  await openSelectShowing(/Select PrepTest/);
-  fireEvent.click(await screen.findByText(/PrepTest 130/));
-  await openSelectShowing(/Select Section/);
-  fireEvent.click(await screen.findByText(/^Section 3$/));
+  await openSelectShowing(/Select a section/);
+  fireEvent.click(await screen.findByText(/^PT130\.S3$/));
 };
 
 describe('SectionSelector', () => {
@@ -97,9 +97,23 @@ describe('SectionSelector', () => {
     expect(await screen.findByText(/^Any$/)).toBeTruthy();
   });
 
+  it('offers every section in one list, newest first', async () => {
+    renderSelector();
+    await openSelectShowing(/Select a section/);
+
+    // No PrepTest step to walk through: the sections are the options.
+    await screen.findByText(/^PT131\.S1$/);
+    const rows = screen
+      .getAllByRole('option')
+      .map((el) => el.textContent)
+      .filter((t): t is string => Boolean(t?.startsWith('PT')));
+
+    expect(rows).toEqual(['PT131.S1', 'PT130.S1', 'PT130.S3']);
+  });
+
   it('promises nothing before a section is chosen', async () => {
     renderSelector();
-    await screen.findByText(/Select PrepTest/);
+    await screen.findByText(/Select a section/);
 
     expect(screen.queryByText(/in their published order/)).toBeNull();
   });
