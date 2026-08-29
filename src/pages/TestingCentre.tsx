@@ -253,8 +253,7 @@ export default function TestingCentre() {
     <>
       <h1 className="classroom-title">Testing Centre</h1>
       <p className="testing-lede">
-        Official LSAT material, administered under standard timing and exam
-        conditions.
+        Official LSAT material, timed the way test day times it.
       </p>
 
       <ResumeList
@@ -272,8 +271,8 @@ export default function TestingCentre() {
         >
           <h2>Take a section</h2>
           <p>
-            One official Logical Reasoning or Reading Comprehension section,
-            administered under standard 35-minute timing.
+            One real section from an official PrepTest, Logical Reasoning or
+            Reading Comprehension, on a 35 minute clock.
           </p>
           <span className="testing-door-meta">One section · 35 minutes</span>
         </button>
@@ -286,8 +285,8 @@ export default function TestingCentre() {
         >
           <h2>Take a practice test</h2>
           <p>
-            Three scored sections from a single PrepTest, administered in
-            published order with a scheduled break.
+            Three scored sections from one PrepTest, in the order they came,
+            with a break in the middle.
           </p>
           <span className="testing-door-meta">Three sections · about 2 hours</span>
         </button>
