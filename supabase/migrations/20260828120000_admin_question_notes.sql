@@ -40,19 +40,29 @@ alter table public.admin_question_notes enable row level security;
 -- (say) delete cannot silently widen select. Each is the same two-part test:
 -- the caller is an admin, AND the row is their own. Being an admin does not
 -- grant sight of another admin's notes; these are personal teaching notes.
+--
+-- Each create is preceded by a guarded drop. This same migration exists in two
+-- places (supabase/migrations and drizzle/migrations) after a parallel session
+-- and a Lovable commit produced it independently. The table and trigger were
+-- already idempotent; the policies were not, so applying both would fail here
+-- on the first create. Consolidating to one home is still worth doing.
+drop policy if exists "admins read their own question notes" on public.admin_question_notes;
 create policy "admins read their own question notes"
   on public.admin_question_notes for select
   using (public.has_role(auth.uid(), 'admin') and author_id = auth.uid());
 
+drop policy if exists "admins write their own question notes" on public.admin_question_notes;
 create policy "admins write their own question notes"
   on public.admin_question_notes for insert
   with check (public.has_role(auth.uid(), 'admin') and author_id = auth.uid());
 
+drop policy if exists "admins update their own question notes" on public.admin_question_notes;
 create policy "admins update their own question notes"
   on public.admin_question_notes for update
   using (public.has_role(auth.uid(), 'admin') and author_id = auth.uid())
   with check (public.has_role(auth.uid(), 'admin') and author_id = auth.uid());
 
+drop policy if exists "admins delete their own question notes" on public.admin_question_notes;
 create policy "admins delete their own question notes"
   on public.admin_question_notes for delete
   using (public.has_role(auth.uid(), 'admin') and author_id = auth.uid());
