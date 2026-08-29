@@ -239,6 +239,8 @@ const App = () => {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
+            <Route path="/__orientation-preview" element={<React.Suspense fallback={null}>{React.createElement(React.lazy(() => import("./pages/OrientationPreview")))}</React.Suspense>} />
+
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
             {/* Static Single Session route must precede the bearer-slug route. */}
             <Route path="/book/session" element={<React.Suspense fallback={null}><SingleSession /></React.Suspense>} />
