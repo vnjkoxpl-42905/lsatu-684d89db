@@ -4,7 +4,12 @@ import { cn } from '@/lib/utils';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import type { FullSectionConfig, TimerMode } from '@/types/drill';
 // TimerMode used in handleStart to type the local `mode` variable
-import type { QuestionManifest } from '@/lib/questionLoader';
+import { questionBank, type QuestionManifest } from '@/lib/questionLoader';
+import SectionTimingPicker, {
+  AccommodationNote,
+  STANDARD_TIMING,
+  type SectionTiming,
+} from '@/components/drill/SectionTimingPicker';
 import { loadAllIndexPassages } from '@/features/rc/lib/rcBank';
 import {
   buildRcSections,
@@ -49,8 +54,7 @@ export function SectionSelector({
   const [kind, setKind] = useState<SectionKind>(initialKind);
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
-  const [timingOption, setTimingOption] = useState<'standard' | '1.5x' | '2x' | 'custom'>('standard');
-  const [customMinutes, setCustomMinutes] = useState<number | ''>(35);
+  const [timing, setTiming] = useState<SectionTiming>(STANDARD_TIMING);
 
   // RC sections come from the passage index, which is small and separate from
   // the LR bank. Loaded once when the student switches to RC rather than on
@@ -73,6 +77,14 @@ export function SectionSelector({
     };
   }, [kind, rcSections]);
 
+  /**
+   * The student's own standard clock, in minutes — 35 unless they carry extra
+   * time. Every percentage on the timing control is a percentage of this, so
+   * 100% means "my normal section" for everyone.
+   */
+  const baseMinutes =
+    settings.defaultTimingMode === '52.5' ? 52.5 : settings.defaultTimingMode === '70' ? 70 : 35;
+
   const rcPTs = useMemo(() => (rcSections ? rcSectionPreptests(rcSections) : []), [rcSections]);
   const rcSectionsForPT = useMemo(
     () => (rcSections && selectedPT ? rcSectionsForPreptest(rcSections, selectedPT) : []),
@@ -80,9 +92,17 @@ export function SectionSelector({
   );
   const chosenRcSection = rcSectionsForPT.find((s) => s.section === selectedSection) ?? null;
 
-  /** The LR timing control maps onto RC's paces one for one. */
+  /**
+   * RC's clock is a per-passage budget, so it can only run the three paces
+   * that budget divides into. The timing control is restricted to those for
+   * RC, which makes this mapping total rather than a silent rounding.
+   */
   const rcPaceId: RcSectionPaceId =
-    timingOption === '1.5x' ? 'time-and-a-half' : timingOption === '2x' ? 'double-time' : 'standard';
+    timing.mode === 'timed' && timing.percent >= 200
+      ? 'double-time'
+      : timing.mode === 'timed' && timing.percent >= 150
+        ? 'time-and-a-half'
+        : 'standard';
 
   const switchKind = (next: SectionKind) => {
     if (next === kind) return;
@@ -112,24 +132,25 @@ export function SectionSelector({
   const handleStart = () => {
     if (kind === 'rc') {
       if (chosenRcSection && onStartRcSection) {
-        onStartRcSection(
-          rcSectionHref(chosenRcSection, timingOption === 'custom' ? 'standard' : rcPaceId),
-        );
+        onStartRcSection(rcSectionHref(chosenRcSection, rcPaceId));
       }
       return;
     }
     if (selectedPT && selectedSection) {
       let mode: TimerMode;
       let customMins: number | undefined;
-      if (timingOption === 'standard') {
+      if (timing.mode === 'unlimited') {
+        mode = 'unlimited';
+      } else if (timing.percent === 100) {
+        // 100% IS the student's standing default, whatever that is, so hand
+        // the timer the same mode it would have got before this control existed.
         mode = settings.defaultTimingMode;
-      } else if (timingOption === '1.5x') {
-        mode = '52.5';
-      } else if (timingOption === '2x') {
-        mode = '70';
       } else {
+        // Everything else is a derived clock. customMinutes is consumed as
+        // `minutes * 60 * 1000`, so a fractional value is exact to the second
+        // and 94% of 35:00 runs for 32:54 rather than a rounded 33:00.
         mode = 'custom';
-        customMins = customMinutes === '' ? 35 : customMinutes;
+        customMins = (baseMinutes * timing.percent) / 100;
       }
       onStartSection({
         pt: selectedPT,
@@ -145,22 +166,24 @@ export function SectionSelector({
     }
   };
 
-  const getStandardTimingLabel = () => {
-    const mode = settings.defaultTimingMode;
-    if (mode === '35') return '35:00';
-    if (mode === '52.5') return '52:30';
-    if (mode === '70') return '70:00';
-    return 'Stopwatch';
-  };
+  /**
+   * Questions in the section actually chosen, which is what turns a clock into
+   * a pace. Undefined until a section is picked; the control then shows the
+   * clock alone rather than a per-question figure for a section nobody chose.
+   */
+  const chosenQuestionCount = useMemo(() => {
+    if (kind === 'rc') return chosenRcSection?.questionCount;
+    if (!selectedPT || !selectedSection) return undefined;
+    // Counted off the queue the runner will actually serve, NOT off
+    // manifest.sections[].count. The manifest counts parsed rows while the bank
+    // is keyed by qid, so a section with a duplicated qid manifests as 26 and
+    // runs as 25 — and a per-question pace quoted off the wrong denominator is
+    // a number the student paces against and misses by.
+    return questionBank.getSection(selectedPT, selectedSection).length || undefined;
+  }, [kind, chosenRcSection, selectedPT, selectedSection]);
 
   const isReadyToStart =
-    kind === 'rc'
-      ? Boolean(chosenRcSection)
-      : Boolean(
-          selectedPT &&
-            selectedSection &&
-            (timingOption !== 'custom' || (customMinutes !== '' && customMinutes > 0)),
-        );
+    kind === 'rc' ? Boolean(chosenRcSection) : Boolean(selectedPT && selectedSection);
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -294,41 +317,26 @@ export function SectionSelector({
           </div>
 
           {/* Timing Selector */}
-          <div className="space-y-4 mb-12">
-            <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-              Timing
-            </label>
-            <div className="grid grid-cols-2 gap-2 p-1.5 bg-muted/30 rounded-xl sm:gap-3">
-              {(
-                [
-                  { key: 'standard', label: 'Standard', sub: kind === 'rc' ? '35:00' : getStandardTimingLabel() },
-                  { key: '1.5x',     label: 'Time & a Half', sub: '52 min' },
-                  { key: '2x',       label: 'Double Time',   sub: '70 min' },
-                  // An RC section's clock is a per-passage budget, so an
-                  // arbitrary total has nowhere to live. Offering it here and
-                  // silently rounding it to Standard would be a lie.
-                  ...(kind === 'rc' ? [] : [{ key: 'custom', label: 'Custom', sub: 'Set your time' } as const]),
-                ] as const
-              ).map(({ key, label, sub }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setTimingOption(key)}
-                  className={cn(
-                    "relative px-2 py-4 rounded-lg text-sm font-medium transition-all duration-150 sm:px-6",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
-                    timingOption === key
-                      ? "bg-background shadow-sm text-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-background/50"
-                  )}
-                >
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="whitespace-nowrap text-[13px] font-semibold sm:text-sm">{label}</span>
-                    <span className="whitespace-nowrap text-xs opacity-60">{sub}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+          {/* The picker carries its own TIMING eyebrow, the way the PrepTest and
+              Section fields carry theirs, so this block adds no second label. */}
+          <div className="space-y-3 mb-12">
+            <SectionTimingPicker
+              value={timing}
+              onChange={setTiming}
+              baseMinutes={kind === 'rc' ? 35 : baseMinutes}
+              questionCount={chosenQuestionCount}
+              // RC runs a per-passage budget, so it offers only the three paces
+              // that budget divides into — no speed training, no arbitrary clock.
+              allowedPercents={kind === 'rc' ? [100, 150, 200] : undefined}
+              labels={
+                kind === 'rc'
+                  ? { 100: 'Standard', 150: 'Time & a half', 200: 'Double time' }
+                  : undefined
+              }
+              accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
+              className="h-14 border-border/50 bg-background/50 hover:bg-background/80"
+              contentClassName="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50"
+            />
 
             {/* What the chosen section will actually run for. */}
             {kind === 'rc' && chosenRcSection && (
@@ -340,27 +348,6 @@ export function SectionSelector({
                   ? ''
                   : '. Shorter than a real section, because questions without a published explanation cannot be drilled'}
               </p>
-            )}
-
-            {/* Custom Time Input */}
-            {kind !== 'rc' && timingOption === 'custom' && (
-              <div className="animate-in fade-in slide-in-from-top-1 duration-150">
-                <input
-                  type="number"
-                  min={1}
-                  max={999}
-                  value={customMinutes}
-                  onChange={(e) => setCustomMinutes(e.target.value === '' ? '' : Number(e.target.value))}
-                  className={cn(
-                    "w-full h-12 px-4 text-base text-center rounded-lg",
-                    "bg-background/50 border border-border/50",
-                    "focus:outline-none focus:ring-2 focus:ring-foreground/20",
-                    "transition-all duration-200"
-                  )}
-                  placeholder="Minutes"
-                  aria-label="Custom minutes"
-                />
-              </div>
             )}
           </div>
 
