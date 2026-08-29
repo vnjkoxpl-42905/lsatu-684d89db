@@ -350,10 +350,10 @@ export function SectionSelector({
                   </SelectTrigger>
                   <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
                     <SelectItem value="fresh" className="text-base py-3 focus:bg-foreground/5">
-                      Fresh — never worked
+                      Fresh
                     </SelectItem>
-                    <SelectItem value="not-fresh" className="text-base py-3 focus:bg-foreground/5">
-                      Not fresh — already started
+                    <SelectItem value="any" className="text-base py-3 focus:bg-foreground/5">
+                      Any
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -367,9 +367,7 @@ export function SectionSelector({
                 )}
                 {!freshnessLoading && !freshnessError && availablePTs.length === 0 && (
                   <p className="text-sm text-muted-foreground/70">
-                    {freshnessFilter === 'fresh'
-                      ? 'No untouched LR sections left. Switch to Not fresh to sit one again.'
-                      : 'You have not started any LR section yet. Switch to Fresh to pick one.'}
+                    No untouched LR sections left. Switch to Any to sit one again.
                   </p>
                 )}
               </div>

@@ -48,16 +48,19 @@ describe('matchesFreshness', () => {
   const fresh = { isFresh: true } as SectionFreshness;
   const touched = { isFresh: false } as SectionFreshness;
 
-  it('splits fresh from touched', () => {
+  it('keeps only untouched sections under Fresh', () => {
     expect(matchesFreshness(fresh, 'fresh')).toBe(true);
-    expect(matchesFreshness(fresh, 'not-fresh')).toBe(false);
-    expect(matchesFreshness(touched, 'not-fresh')).toBe(true);
     expect(matchesFreshness(touched, 'fresh')).toBe(false);
+  });
+
+  it('lifts the filter under Any rather than inverting it', () => {
+    expect(matchesFreshness(fresh, 'any')).toBe(true);
+    expect(matchesFreshness(touched, 'any')).toBe(true);
   });
 
   it('lets an unknown section through both filters rather than hiding it on a guess', () => {
     expect(matchesFreshness(undefined, 'fresh')).toBe(true);
-    expect(matchesFreshness(undefined, 'not-fresh')).toBe(true);
+    expect(matchesFreshness(undefined, 'any')).toBe(true);
   });
 });
 

@@ -73,22 +73,27 @@ export function buildSectionFreshness(
   return out;
 }
 
-export type FreshnessFilter = 'fresh' | 'not-fresh';
+export type FreshnessFilter = 'fresh' | 'any';
 
 /**
  * Does this section belong under the chosen filter?
  *
- * Unknown freshness passes both filters. When the usage lookup failed we do
- * not know whether a section is spent, and hiding a section on a guess is
- * worse than offering one the student has already sat — the label beside it
- * says nothing either way, so nothing is claimed that is not known.
+ * `any` is the escape hatch, not a mirror of `fresh`: a student who wants a
+ * section they have already sat wants THAT section, and making them work out
+ * which half of a split it fell into to reach it is a puzzle nobody asked for.
+ * So the second option lifts the filter rather than inverting it.
+ *
+ * Unknown freshness passes both. When the history read failed we do not know
+ * whether a section is spent, and hiding one on a guess is worse than offering
+ * one already sat.
  */
 export function matchesFreshness(
   freshness: SectionFreshness | undefined,
   filter: FreshnessFilter,
 ): boolean {
+  if (filter === 'any') return true;
   if (!freshness) return true;
-  return filter === 'fresh' ? freshness.isFresh : !freshness.isFresh;
+  return freshness.isFresh;
 }
 
 /** "100% fresh" / "42% fresh" / "spent" — the label beside a section. */
