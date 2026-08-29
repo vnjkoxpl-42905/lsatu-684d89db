@@ -324,6 +324,7 @@ export type Database = {
           latency_ms: number | null
           parser_version: string | null
           response_text: string
+          rrc: Json | null
           shadow_fault: string | null
           student_id: string
           verdict: string | null
@@ -338,6 +339,7 @@ export type Database = {
           latency_ms?: number | null
           parser_version?: string | null
           response_text?: string
+          rrc?: Json | null
           shadow_fault?: string | null
           student_id: string
           verdict?: string | null
@@ -352,6 +354,7 @@ export type Database = {
           latency_ms?: number | null
           parser_version?: string | null
           response_text?: string
+          rrc?: Json | null
           shadow_fault?: string | null
           student_id?: string
           verdict?: string | null
@@ -5317,15 +5320,6 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      delete_email: {
-        Args: { message_id: number; queue_name: string }
-        Returns: boolean
-      }
-      email_queue_dispatch: { Args: never; Returns: undefined }
-      enqueue_email: {
-        Args: { payload: Json; queue_name: string }
-        Returns: number
-      }
       fts_lsatu_content: {
         Args: { kind_filter?: string[]; match_count?: number; q: string }
         Returns: {
@@ -5573,26 +5567,9 @@ export type Database = {
         Returns: Json
       }
       mcp_require_admin: { Args: never; Returns: string }
-      move_to_dlq: {
-        Args: {
-          dlq_name: string
-          message_id: number
-          payload: Json
-          source_queue: string
-        }
-        Returns: number
-      }
       promote_lsat_knowledge_version: {
         Args: { _expected_count: number; _slug: string; _version: string }
         Returns: Json
-      }
-      read_email_batch: {
-        Args: { batch_size: number; queue_name: string; vt: number }
-        Returns: {
-          message: Json
-          msg_id: number
-          read_ct: number
-        }[]
       }
       reconcile_booking_calendar_event: {
         Args: {
