@@ -253,7 +253,7 @@ export default function TestingCentre() {
     <>
       <h1 className="classroom-title">Testing Centre</h1>
       <p className="testing-lede">
-        Official LSAT material, timed the way test day times it.
+        Official LSAT material, timed like test day.
       </p>
 
       <ResumeList
@@ -270,10 +270,8 @@ export default function TestingCentre() {
           onClick={() => setDoor(door === "section" ? null : "section")}
         >
           <h2>Take a section</h2>
-          <p>
-            One real section from an official PrepTest, Logical Reasoning or
-            Reading Comprehension, on a 35 minute clock.
-          </p>
+          {/* No clock here: the meta line below already carries it. */}
+          <p>One real LR or RC section from an official PrepTest.</p>
           <span className="testing-door-meta">One section · 35 minutes</span>
         </button>
 
@@ -284,10 +282,7 @@ export default function TestingCentre() {
           onClick={() => setDoor(door === "test" ? null : "test")}
         >
           <h2>Take a practice test</h2>
-          <p>
-            Three scored sections from one PrepTest, in the order they came,
-            with a break in the middle.
-          </p>
+          <p>Three scored sections from one PrepTest, in order, with a break.</p>
           <span className="testing-door-meta">Three sections · about 2 hours</span>
         </button>
       </div>
