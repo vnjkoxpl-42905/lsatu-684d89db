@@ -37,3 +37,18 @@ describe('lawSchools', () => {
     expect(searchLawSchools('law').length).toBeLessThanOrEqual(8);
   });
 });
+
+describe('who leads the results', () => {
+  it('puts American schools ahead of Canadian ones at equal relevance', () => {
+    const results = searchLawSchools('university of');
+    expect(results[0].country).toBeUndefined();
+  });
+
+  it('carries the ABA schools the source list missed', () => {
+    const names = LAW_SCHOOLS.map((s) => s.name);
+    expect(names).toContain("Atlanta's John Marshall Law School");
+    expect(names).toContain('University of La Verne College of Law');
+    // Not a JD an applicant applies to.
+    expect(names.some((n) => n.includes('Judge Advocate'))).toBe(false);
+  });
+});

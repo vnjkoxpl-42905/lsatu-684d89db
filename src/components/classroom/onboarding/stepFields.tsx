@@ -198,10 +198,8 @@ export function StepField({
       ? []
       : searchLawSchools(schoolInput).filter((school) => !chosen.includes(school.name));
     const typedIsNew =
-      schoolInput.trim().length > 1 &&
-      !suggestions.some(
-        (school) => school.name.toLowerCase() === schoolInput.trim().toLowerCase(),
-      ) &&
+      suggestions.length === 0 &&
+      schoolInput.trim().length > 2 &&
       !chosen.includes(schoolInput.trim());
 
     return (
@@ -375,6 +373,13 @@ export function StepField({
           the same object, so the shape of an honest week is visible while they
           are still deciding it. */}
       <div className="classroom-orientation-week" aria-label="Weekly LSAT availability">
+        {/* The scale, so a height means something. Without it the columns were
+            four anonymous blocks and the student had to guess the units. */}
+        <div className="classroom-orientation-scale" aria-hidden="true">
+          {[...STUDY_TIME_OPTIONS].reverse().map((option) => (
+            <span key={option.value}>{option.label}</span>
+          ))}
+        </div>
         {DAYS.map((day) => {
           const current = answers.study_time?.[day.key as DayKey];
           const level = STUDY_TIME_OPTIONS.findIndex((option) => option.value === current);

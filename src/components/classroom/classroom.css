@@ -4025,7 +4025,30 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-orientation-week {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  grid-template-columns: 52px repeat(7, minmax(0, 1fr));
+}
+
+/* Reads against the bar segments, so a filled height has units. */
+.classroom-root .classroom-orientation-scale {
+  color: rgb(var(--classroom-meta));
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  gap: 3px;
+  height: 104px;
+  text-align: right;
+}
+
+.classroom-root .classroom-orientation-scale span {
+  align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  justify-content: flex-end;
+}
+
+/* "No time" is the floor of the chart, matching the short segment it labels. */
+.classroom-root .classroom-orientation-scale span:last-child {
+  flex: 0 0 16px;
 }
 
 .classroom-root .classroom-orientation-day {
@@ -4101,18 +4124,26 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   flex: 0 0 16px;
 }
 
+/* The bar has to read as a bar across the room, so the fill carries the
+   classroom accent at real strength rather than a tint that disappears
+   against the warm ground. */
 .classroom-root .classroom-orientation-segment-filled {
-  background: color-mix(in srgb, var(--classroom-link) 32%, transparent);
+  background: color-mix(in srgb, var(--classroom-link) 55%, transparent);
 }
 
+/* The chosen height is the top of the bar: full accent, so the eye lands on
+   where the week actually stops. */
 .classroom-root .classroom-orientation-segment-on {
+  background: var(--classroom-link);
+  border-color: var(--classroom-link);
+  color: #ffffff;
+}
+
+/* A day marked as no time is a deliberate answer, not an empty one, but it is
+   not study time either: it reads as a dark floor rather than more bar. */
+.classroom-root .classroom-orientation-segment-off.classroom-orientation-segment-on {
   background: var(--classroom-active);
   border-color: var(--classroom-active);
-  color: var(--classroom-active-ink);
-}
-
-.classroom-root .classroom-orientation-segment-off.classroom-orientation-segment-on {
-  background: rgb(var(--classroom-meta));
 }
 
 .classroom-root .classroom-availability-summary {
@@ -4212,6 +4243,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   /* One day per row on a phone: the label leads and the bar lies on its side,
      so the same four targets stay thumb-sized instead of a stack seven tall. */
+  .classroom-root .classroom-orientation-scale {
+    display: none;
+  }
+
   .classroom-root .classroom-orientation-day-head {
     order: 0;
   }

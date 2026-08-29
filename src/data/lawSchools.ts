@@ -19,6 +19,8 @@ export interface LawSchool {
   region: string;
   /** Other names a student might type. */
   aliases?: string[];
+  /** Set on the Canadian faculties. US schools carry nothing and lead. */
+  country?: 'CA';
 }
 
 export const LAW_SCHOOLS: LawSchool[] = [
@@ -46,6 +48,7 @@ export const LAW_SCHOOLS: LawSchool[] = [
   { name: "University of San Diego School of Law", region: "CA" },
   { name: "University of San Francisco School of Law", region: "CA" },
   { name: "Gould School of Law", region: "CA", aliases: ["University of Southern California", "USC"] },
+  { name: "University of La Verne College of Law", region: "CA" },
   { name: "University of Colorado Law School", region: "CO" },
   { name: "Sturm College of Law", region: "CO", aliases: ["University of Denver"] },
   { name: "Quinnipiac University School of Law", region: "CT" },
@@ -72,6 +75,7 @@ export const LAW_SCHOOLS: LawSchool[] = [
   { name: "Georgia State University College of Law", region: "GA" },
   { name: "University of Georgia School of Law", region: "GA" },
   { name: "Mercer University School of Law", region: "GA" },
+  { name: "Atlanta's John Marshall Law School", region: "GA" },
   { name: "William S. Richardson School of Law", region: "HI", aliases: ["University of Hawaii"] },
   { name: "University of Idaho College of Law", region: "ID" },
   { name: "Chicago-Kent College of Law", region: "IL", aliases: ["Illinois Institute of Technology"] },
@@ -109,7 +113,7 @@ export const LAW_SCHOOLS: LawSchool[] = [
   { name: "University of Massachusetts School of Law", region: "MA" },
   { name: "Western New England University School of Law", region: "MA" },
   { name: "Michigan State University College of Law", region: "MI" },
-  { name: "Cooley Law School", region: "MI", aliases: ["Thomas M. Cooley"] },
+  { name: "Cooley Law School", region: "FL", aliases: ["Thomas M. Cooley", "Western Michigan"] },
   { name: "University of Detroit Mercy School of Law", region: "MI" },
   { name: "University of Michigan Law School", region: "MI" },
   { name: "Wayne State University Law School", region: "MI" },
@@ -216,24 +220,24 @@ export const LAW_SCHOOLS: LawSchool[] = [
   { name: "Marquette University Law School", region: "WI" },
   { name: "University of Wisconsin Law School", region: "WI" },
   { name: "University of Wyoming College of Law", region: "WY" },
-  { name: "Osgoode Hall Law School", region: "ON", aliases: ["York University"] },
-  { name: "University of Toronto Faculty of Law", region: "ON", aliases: ["U of T"] },
-  { name: "Queen's University Faculty of Law", region: "ON" },
-  { name: "Western University Faculty of Law", region: "ON", aliases: ["Western Law"] },
-  { name: "University of Ottawa Faculty of Law", region: "ON", aliases: ["uOttawa"] },
-  { name: "University of Windsor Faculty of Law", region: "ON" },
-  { name: "Toronto Metropolitan University Lincoln Alexander School of Law", region: "ON", aliases: ["TMU", "Ryerson"] },
-  { name: "Lakehead University Bora Laskin Faculty of Law", region: "ON" },
-  { name: "McGill University Faculty of Law", region: "QC" },
-  { name: "Dalhousie University Schulich School of Law", region: "NS" },
-  { name: "University of New Brunswick Faculty of Law", region: "NB", aliases: ["UNB"] },
-  { name: "University of Manitoba Robson Hall Faculty of Law", region: "MB" },
-  { name: "University of Saskatchewan College of Law", region: "SK" },
-  { name: "University of Alberta Faculty of Law", region: "AB" },
-  { name: "University of Calgary Faculty of Law", region: "AB" },
-  { name: "University of British Columbia Peter A. Allard School of Law", region: "BC", aliases: ["UBC"] },
-  { name: "University of Victoria Faculty of Law", region: "BC", aliases: ["UVic"] },
-  { name: "Thompson Rivers University Faculty of Law", region: "BC", aliases: ["TRU"] },
+  { name: "Osgoode Hall Law School", region: "ON", aliases: ["York University"], country: 'CA' },
+  { name: "University of Toronto Faculty of Law", region: "ON", aliases: ["U of T"], country: 'CA' },
+  { name: "Queen's University Faculty of Law", region: "ON", country: 'CA' },
+  { name: "Western University Faculty of Law", region: "ON", aliases: ["Western Law"], country: 'CA' },
+  { name: "University of Ottawa Faculty of Law", region: "ON", aliases: ["uOttawa"], country: 'CA' },
+  { name: "University of Windsor Faculty of Law", region: "ON", country: 'CA' },
+  { name: "Toronto Metropolitan University Lincoln Alexander School of Law", region: "ON", aliases: ["TMU", "Ryerson"], country: 'CA' },
+  { name: "Lakehead University Bora Laskin Faculty of Law", region: "ON", country: 'CA' },
+  { name: "McGill University Faculty of Law", region: "QC", country: 'CA' },
+  { name: "Dalhousie University Schulich School of Law", region: "NS", country: 'CA' },
+  { name: "University of New Brunswick Faculty of Law", region: "NB", aliases: ["UNB"], country: 'CA' },
+  { name: "University of Manitoba Robson Hall Faculty of Law", region: "MB", country: 'CA' },
+  { name: "University of Saskatchewan College of Law", region: "SK", country: 'CA' },
+  { name: "University of Alberta Faculty of Law", region: "AB", country: 'CA' },
+  { name: "University of Calgary Faculty of Law", region: "AB", country: 'CA' },
+  { name: "University of British Columbia Peter A. Allard School of Law", region: "BC", aliases: ["UBC"], country: 'CA' },
+  { name: "University of Victoria Faculty of Law", region: "BC", aliases: ["UVic"], country: 'CA' },
+  { name: "Thompson Rivers University Faculty of Law", region: "BC", aliases: ["TRU"], country: 'CA' },
 ];
 
 /**
@@ -261,7 +265,14 @@ export function searchLawSchools(query: string, limit = 8): LawSchool[] {
   }
 
   return scored
-    .sort((a, b) => a.score - b.score || a.school.name.localeCompare(b.school.name))
+    .sort(
+      (a, b) =>
+        a.score - b.score ||
+        // American schools first at equal relevance: that is where almost
+        // every one of these students is applying.
+        Number(!!a.school.country) - Number(!!b.school.country) ||
+        a.school.name.localeCompare(b.school.name),
+    )
     .slice(0, limit)
     .map((entry) => entry.school);
 }
