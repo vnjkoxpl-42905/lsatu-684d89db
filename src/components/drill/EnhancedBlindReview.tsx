@@ -53,6 +53,13 @@ export function EnhancedBlindReview({
   const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
   const [flaggedQuestions, setFlaggedQuestions] = React.useState<Set<string>>(new Set());
   const [jumpToInput, setJumpToInput] = React.useState('');
+  /**
+   * Which answer is on screen. `br` is the live second pass; `actual` is a
+   * read-only look at what was chosen under the clock. Both are kept per
+   * question, so the student can see what they are changing away from without
+   * losing it. Resets to `br` on every question, because the review is the job.
+   */
+  const [answerTab, setAnswerTab] = React.useState<'actual' | 'br'>('br');
   const timerRef = React.useRef(new QuestionTimer());
   const [longPressTimer, setLongPressTimer] = React.useState<ReturnType<typeof setTimeout> | null>(null);
 
@@ -232,6 +239,12 @@ export function EnhancedBlindReview({
     }
   };
 
+  // The review is the job, so every question opens on the BR pass. Landing on
+  // Actual would put a read-only screen in front of the work.
+  React.useEffect(() => {
+    setAnswerTab('br');
+  }, [currentIndex]);
+
   const handleUndo = () => {
     if (highlightHistory.length === 0) return;
     
@@ -262,6 +275,7 @@ export function EnhancedBlindReview({
   const currentEliminated = eliminatedAnswers.get(currentQid) || new Set<string>();
   const isFlagged = flaggedQuestions.has(currentQid);
   const isRecommended = !!recommendedQids?.has(currentQid);
+  const readOnly = answerTab === 'actual';
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -359,8 +373,43 @@ export function EnhancedBlindReview({
               />
             </div>
 
+            {/* Actual / BR. The timed answer stays reachable rather than being
+                overwritten, which is what makes a change feel like a decision
+                instead of a guess into the void. */}
+            <div className="flex items-center gap-1 border-b border-border">
+              {(['actual', 'br'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  role="tab"
+                  aria-selected={answerTab === tab}
+                  onClick={() => setAnswerTab(tab)}
+                  className={cn(
+                    '-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors',
+                    answerTab === tab
+                      ? 'border-primary text-foreground'
+                      : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  {tab === 'actual' ? 'Actual' : 'BR'}
+                </button>
+              ))}
+              <span className="ml-auto text-xs text-muted-foreground">
+                {answerTab === 'actual'
+                  ? previousAttempt?.selectedAnswer
+                    ? `You chose ${previousAttempt.selectedAnswer} under the clock`
+                    : 'You left this one blank'
+                  : currentAnswer
+                    ? `Reviewed answer: ${currentAnswer}`
+                    : 'No change yet'}
+              </span>
+            </div>
+
             {/* Answer Choices */}
-            <RadioGroup value={currentAnswer} onValueChange={handleAnswerSelect}>
+            <RadioGroup
+              value={answerTab === 'actual' ? previousAttempt?.selectedAnswer || '' : currentAnswer}
+              onValueChange={answerTab === 'actual' ? () => {} : handleAnswerSelect}
+            >
               {Object.entries(currentQuestion.answerChoices).map(([key, text]) => {
                 const isEliminated = currentEliminated.has(key);
                 
@@ -370,28 +419,30 @@ export function EnhancedBlindReview({
                     className={cn(
                       "flex items-start gap-4 py-4 px-4 rounded-lg border",
                       "transition-all duration-[120ms] ease-out",
-                      "hover:bg-accent/30 cursor-pointer",
-                      currentAnswer === key && "bg-primary/5 border-primary/50",
+                      readOnly ? "cursor-default" : "hover:bg-accent/30 cursor-pointer",
+                      (readOnly ? previousAttempt?.selectedAnswer === key : currentAnswer === key) &&
+                        "bg-primary/5 border-primary/50",
                       isEliminated && "opacity-55"
                     )}
-                    onClick={() => !isEliminated && handleAnswerSelect(key)}
-                    onMouseDown={() => handleLongPressStart(key)}
+                    onClick={() => !readOnly && !isEliminated && handleAnswerSelect(key)}
+                    onMouseDown={() => !readOnly && handleLongPressStart(key)}
                     onMouseUp={handleLongPressEnd}
                     onMouseLeave={handleLongPressEnd}
-                    onTouchStart={() => handleLongPressStart(key)}
+                    onTouchStart={() => !readOnly && handleLongPressStart(key)}
                     onTouchEnd={handleLongPressEnd}
                     onTouchCancel={handleLongPressEnd}
                   >
-                    <RadioGroupItem 
-                      value={key} 
-                      id={`answer-${key}`} 
-                      disabled={isEliminated}
+                    <RadioGroupItem
+                      value={key}
+                      id={`answer-${key}`}
+                      disabled={readOnly || isEliminated}
                       className="mt-1"
                     />
                     <Label
                       htmlFor={`answer-${key}`}
                       className={cn(
-                        "flex-1 cursor-pointer leading-relaxed select-none",
+                        "flex-1 leading-relaxed select-none",
+                        readOnly ? "cursor-default" : "cursor-pointer",
                         "transition-all duration-[120ms]",
                         isEliminated && "line-through decoration-2 decoration-muted-foreground"
                       )}
@@ -402,8 +453,9 @@ export function EnhancedBlindReview({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleEliminateAnswer(key);
+                        if (!readOnly) handleEliminateAnswer(key);
                       }}
+                      disabled={readOnly}
                       className={cn(
                         "shrink-0 flex items-center justify-center",
                         "w-11 h-11 -my-2 -mr-2",

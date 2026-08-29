@@ -2768,6 +2768,12 @@ function DrillContent() {
       <SectionComplete
         onBlindReview={() => setPostSectionScreen('review')}
         onSeeResults={() => setPostSectionScreen('score-report')}
+        score={
+          session
+            ? [...session.attempts.values()].filter((a) => a.correct).length
+            : undefined
+        }
+        total={session?.questionQueue.length}
       />
     );
   }
