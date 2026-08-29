@@ -3804,6 +3804,30 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   flex: 0 0 auto;
 }
 
+/* The visible way to add. Sits with the field so the pair reads as one
+   control: type a name, press Add. */
+.classroom-root .classroom-orientation-add {
+  align-items: center;
+  background: var(--classroom-active);
+  border: 1px solid var(--classroom-active);
+  border-radius: 8px;
+  color: var(--classroom-active-ink);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 5px;
+  padding: 9px 14px;
+  transition: opacity var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-add:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
 /* Chips */
 .classroom-root .classroom-orientation-chips {
   display: flex;

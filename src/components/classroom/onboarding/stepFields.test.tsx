@@ -73,3 +73,33 @@ describe("the test-date step", () => {
     expect(chips.length).toBeGreaterThan(1);
   });
 });
+
+describe("the Add button on the schools step", () => {
+  it("adds the top match without the student clicking the list", () => {
+    const onChange = renderSchools();
+    fireEvent.change(screen.getByLabelText("Search law schools"), {
+      target: { value: "harv" },
+    });
+    fireEvent.click(screen.getByLabelText("Add this school"));
+    expect(onChange).toHaveBeenCalledWith({ schools: ["Harvard Law School"] });
+  });
+
+  it("adds what they typed when the list has nothing", () => {
+    const onChange = renderSchools();
+    fireEvent.change(screen.getByLabelText("Search law schools"), {
+      target: { value: "Some New Law School" },
+    });
+    fireEvent.click(screen.getByLabelText("Add this school"));
+    expect(onChange).toHaveBeenCalledWith({ schools: ["Some New Law School"] });
+  });
+
+  it("stays dead until there is something to add", () => {
+    renderSchools();
+    const add = screen.getByLabelText("Add this school") as HTMLButtonElement;
+    expect(add.disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText("Search law schools"), {
+      target: { value: "ya" },
+    });
+    expect(add.disabled).toBe(false);
+  });
+});

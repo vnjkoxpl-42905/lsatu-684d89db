@@ -223,6 +223,20 @@ export function StepField({
             autoFocus={autoFocus}
             disabled={full}
           />
+          {/* Clicking a suggestion and pressing Enter both add, but neither is
+              visible: a student who typed a name and stopped needs a button to
+              press. It takes the top match, or their own words when the list
+              has nothing. */}
+          <button
+            type="button"
+            className="classroom-orientation-add"
+            onClick={() => addSchool(suggestions[0]?.name)}
+            disabled={full || schoolInput.trim().length < 2}
+            aria-label="Add this school"
+          >
+            <Plus size={14} aria-hidden="true" />
+            Add
+          </button>
         </div>
 
         {suggestions.length > 0 || typedIsNew ? (
