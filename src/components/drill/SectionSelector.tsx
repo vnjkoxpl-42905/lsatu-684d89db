@@ -470,17 +470,8 @@ export function SectionSelector({
               contentClassName="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50"
             />
 
-            {/* No passage or question counts: the clock is already on the
-                control above, and restating the size of the section under it
-                is furniture. The one thing that is NOT self-evident stays —
-                that this particular section is short of a real one, which
-                changes what sitting it proves. It renders only when true. */}
-            {kind === 'rc' && chosenRcSection && !chosenRcSection.fullLength && (
-              <p className="text-sm text-muted-foreground/70">
-                Shorter than a real section, because questions without a published
-                explanation cannot be drilled
-              </p>
-            )}
+            {/* Nothing under the control. No counts, no caveats — the clock
+                is already on it and the panel is four fields and a button. */}
           </div>
 
           {/* Divider */}
