@@ -207,18 +207,15 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
   });
 
-  it("uses the same two practice tools in RC as it does in LR, named for the RC bank", () => {
+  it("offers Build a Set named for the RC bank, and does not offer a section to sit", () => {
     renderHub("/classroom/drill?section=rc");
-    expect(
-      screen.getByRole("button", {
-        name: "Full Section Sit one real RC section, four passages, under the clock.",
-      }),
-    ).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
         name: "Build a Set Choose passages by topic, format, and difficulty.",
       }),
     ).toBeInTheDocument();
+    // Sitting a real section lives in the Testing Centre, in RC as in LR.
+    expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
     // The bay is shared, but the panel under the tools is not: the carousel is
     // built from LR attempts, so RC shows its own drill history instead.

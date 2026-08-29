@@ -5,7 +5,6 @@ import {
   BarChart3,
   BookOpen,
   Grid3x3,
-  Layers,
   ArrowLeft,
   ArrowRight,
   Pause,
@@ -30,7 +29,7 @@ interface PracticeInsightStageProps {
   /** Opens the embedded analytics stage at the given tab. */
   onOpenAnalytics: (tab?: string) => void;
   /** Opens an embedded drill-launcher stage (was the /practice hub). */
-  onOpenLauncher: (kind: "full-section" | "type-drill") => void;
+  onOpenLauncher: (kind: "type-drill") => void;
   canOpenAnalytics: boolean;
   canOpenJournal: boolean;
 }
@@ -76,10 +75,6 @@ export default function PracticeInsightStage({
         onOpenAnalytics(tab);
         return;
       }
-      if (href.startsWith("/classroom/drill?stage=full-section")) {
-        onOpenLauncher("full-section");
-        return;
-      }
       if (href.startsWith("/classroom/drill?stage=type-drill")) {
         onOpenLauncher("type-drill");
         return;
@@ -101,16 +96,6 @@ export default function PracticeInsightStage({
         {/* Section choice belongs to the LR/RC switch above. Practice tools
             only describe what the student can do inside the active section. */}
         <div className="drill-observatory-practice-tools">
-          <PracticeTile
-            icon={Layers}
-            title="Full Section"
-            description={
-              section === "rc"
-                ? "Sit one real RC section, four passages, under the clock."
-                : "Sit one real LR section under the clock."
-            }
-            onClick={() => onOpenLauncher("full-section")}
-          />
           <PracticeTile
             icon={Grid3x3}
             title="Build a Set"

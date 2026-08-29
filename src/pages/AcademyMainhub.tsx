@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
-import { SectionSelector } from "@/components/drill/SectionSelector";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import QuestionFinder from "@/components/questionfinder/QuestionFinder";
@@ -29,7 +28,7 @@ import {
   type DrillSection,
 } from "@/lib/drillSection";
 import { cn } from "@/lib/utils";
-import type { FullSectionConfig, TypeDrillConfig } from "@/types/drill";
+import type { TypeDrillConfig } from "@/types/drill";
 
 /**
  * The greeting name, resolved once per mount: profiles.display_name, falling
@@ -172,9 +171,9 @@ function MainhubHero({
 }
 
 /**
- * Launcher stage — hosts the Full Section and Build a Set panels that used to
- * live on the now-removed /practice hub. Rendered in the drill hub's dark
- * surface so it reads as a sibling of the hero rather than a light overlay.
+ * Launcher stage — hosts the Build a Set panel. Sitting a real section is NOT
+ * here: that is the Testing Centre's job, and having both doors made the drill
+ * hub the second place to do the same thing.
  */
 function LauncherStage({
   kind,
@@ -182,7 +181,7 @@ function LauncherStage({
   drillReturnTo,
   onCancel,
 }: {
-  kind: "full-section" | "type-drill";
+  kind: "type-drill";
   section: DrillSection;
   drillReturnTo: string;
   onCancel: () => void;
@@ -191,7 +190,7 @@ function LauncherStage({
   const { manifest, isLoading, error } = useQuestionBank();
 
   const start = React.useCallback(
-    (mode: "full-section" | "type-drill", config: FullSectionConfig | TypeDrillConfig) => {
+    (mode: "type-drill", config: TypeDrillConfig) => {
       navigate("/drill", { state: { mode, config, returnTo: drillReturnTo } });
     },
     [drillReturnTo, navigate],
@@ -199,10 +198,8 @@ function LauncherStage({
 
   /* RC's builder reads the passage index, not the LR question bank, so it
      returns before `useQuestionBank`'s loading gate — waiting on 5.5 MB of LR
-     questions to draw a reading drill would be a spinner for nothing. RC's
-     Full Section still goes through SectionSelector below, which needs the
-     manifest for its shared shell. */
-  if (section === "rc" && kind === "type-drill") {
+     questions to draw a reading drill would be a spinner for nothing. */
+  if (section === "rc") {
     return (
       <div className="drill-observatory-launcher relative overflow-hidden">
         <div className="relative z-10">
@@ -214,9 +211,8 @@ function LauncherStage({
 
   return (
     <div className="drill-observatory-launcher relative overflow-hidden">
-      {/* No header here on purpose: SectionSelector and QuestionPicker each
-          render their own title and Cancel control, so adding one would show
-          the student two titles and two Cancel buttons. */}
+      {/* No header here on purpose: QuestionPicker renders its own title and
+          Cancel control, so adding one would show two titles and two Cancels. */}
       <div className="relative z-10">
         {isLoading && (
           <div className="flex flex-col items-center justify-center gap-3 py-14">
@@ -233,25 +229,11 @@ function LauncherStage({
 
         {!isLoading && !error && manifest && (
           <div className="drill-observatory-launcher-panel">
-            {kind === "full-section" ? (
-              <SectionSelector
-                manifest={manifest}
-                initialKind={section}
-                onStartSection={(config) => start("full-section", config)}
-                // An RC section is the four published passages of one real
-                // section, run by the RC player rather than the LR runner, so
-                // it starts through the hub's own link contract instead of
-                // /drill's router state.
-                onStartRcSection={(href) => navigate(href)}
-                onCancel={onCancel}
-              />
-            ) : (
-              <QuestionPicker
-                manifest={manifest}
-                onStartDrill={(config) => start("type-drill", config)}
-                onCancel={onCancel}
-              />
-            )}
+            <QuestionPicker
+              manifest={manifest}
+              onStartDrill={(config) => start("type-drill", config)}
+              onCancel={onCancel}
+            />
           </div>
         )}
       </div>
@@ -271,6 +253,7 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [searchParams, setSearchParams] = useSearchParams();
   const firstName = useGreetingName();
+  const navigate = useNavigate();
 
   /* Which section the hub is showing. URL first, then what this browser
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
@@ -299,15 +282,19 @@ export default function AcademyMainhub({
   const stage =
     stageParam === "analytics"
       ? "analytics"
-      : stageParam === "full-section" || stageParam === "type-drill"
+      : stageParam === "type-drill"
       ? stageParam
       : "default";
-  const isLauncherStage = stage === "full-section" || stage === "type-drill";
-  /* Only Build a Set needs the whole canvas. Its picker is a dense two-column
-     panel that got its Set Summary column clipped inside the ~600px bay.
-     Full Section is a single centred form capped at max-w-2xl — giving it the
-     full width would only add dead space and push Today off-screen, so it
-     stays beside Today where both are in sight. */
+  const isLauncherStage = stage === "type-drill";
+
+  /* Sitting a section moved to the Testing Centre. Old links, bookmarks and
+     anything a student had open land there rather than silently falling back
+     to the hub's default stage with no explanation. */
+  React.useEffect(() => {
+    if (stageParam === "full-section") navigate("/testing", { replace: true });
+  }, [stageParam, navigate]);
+  /* Build a Set needs the whole canvas: its picker is a dense two-column panel
+     that got its Set Summary column clipped inside the ~600px bay. */
   const isWideLauncherStage = stage === "type-drill";
   const analyticsTab = searchParams.get("tab") ?? "overview";
 
@@ -356,7 +343,7 @@ export default function AcademyMainhub({
   );
 
   const openLauncher = React.useCallback(
-    (kind: "full-section" | "type-drill") => {
+    (kind: "type-drill") => {
       setSearchParams({ [DRILL_SECTION_PARAM]: section, stage: kind }, { replace: false });
     },
     [section, setSearchParams],

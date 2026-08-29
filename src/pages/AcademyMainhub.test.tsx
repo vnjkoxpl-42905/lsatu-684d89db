@@ -161,8 +161,10 @@ describe("AcademyMainhub", () => {
       screen.getByRole("region", { name: "Practice and insight workspace" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Practice tools")).toBeInTheDocument();
-    expect(screen.getByText("Full Section")).toBeInTheDocument();
     expect(screen.getByText("Build a Set")).toBeInTheDocument();
+    // Sitting a section is the Testing Centre's job. Two doors to the same
+    // thing is what made this hub feel packed.
+    expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
     expect(screen.getByText("Insight preview")).toBeInTheDocument();
     // The Question finder's second mount. Without it, a student standing on the
     // page that exists for picking questions has to go back to Home to search.

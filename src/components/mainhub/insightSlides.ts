@@ -28,7 +28,8 @@ function fmtPct(v: number | null): string {
 
 const ANALYTICS = "/classroom/drill?stage=analytics";
 const TYPE_DRILL = "/classroom/drill?stage=type-drill";
-const FULL_SECTION = "/classroom/drill?stage=full-section";
+// Sitting a section lives in the Testing Centre, not the drill hub.
+const FULL_SECTION = "/testing";
 
 /**
  * Derives the rotating insight slides from real analytics + streak. Slides
