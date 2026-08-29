@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import {
   OrientationCardView,
   ORIENTATION_STEPS,
@@ -132,18 +133,21 @@ describe("OrientationCardView", () => {
 
   it("requires an explicit availability choice before finishing", async () => {
     const onSave = save();
+    // The done panel offers a link to booking, so this one needs a router.
     render(
-      <OrientationCardView
-        initialName="Ada"
-        initialAnswers={{
-          has_taken_lsat: true,
-          last_score_band: "156_160",
-          target_score_band: "166_170",
-          test_date: "2026-11-14",
-          life_stage: "working",
-        }}
-        onSave={onSave}
-      />,
+      <MemoryRouter>
+        <OrientationCardView
+          initialName="Ada"
+          initialAnswers={{
+            has_taken_lsat: true,
+            last_score_band: "156_160",
+            target_score_band: "166_170",
+            test_date: "2026-11-14",
+            life_stage: "working",
+          }}
+          onSave={onSave}
+        />
+      </MemoryRouter>,
     );
     await screen.findByText("Build your study week");
 
@@ -173,5 +177,45 @@ describe("OrientationCardView", () => {
     await waitFor(() => expect(onSave).toHaveBeenCalled());
     expect(screen.getByLabelText("Your name")).toBeTruthy();
     expect(screen.getByText(`Step 1 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
+  });
+});
+
+describe("the finish line", () => {
+  /** Walk the last step so the done panel renders the way a student sees it. */
+  const finish = async () => {
+    render(
+      <MemoryRouter>
+        <OrientationCardView
+          initialName="Ada"
+          initialAnswers={{
+            has_taken_lsat: true,
+            last_score_band: "156_160",
+            target_score_band: "166_170",
+            test_date: "2026-11-14",
+            life_stage: "working",
+          }}
+          onSave={vi.fn().mockResolvedValue(true)}
+          onDone={vi.fn()}
+        />
+      </MemoryRouter>,
+    );
+    await screen.findByText("Build your study week");
+    fireEvent.click(screen.getByRole("button", { name: "Mon: 1–2 hrs" }));
+    fireEvent.click(screen.getByRole("button", { name: /Finish/ }));
+    await screen.findByText("You're set up");
+  };
+
+  it("offers the session before the classroom", async () => {
+    await finish();
+    const book = screen.getByRole("link", { name: /Book a session/ });
+    expect(book.getAttribute("href")).toBe("/book/session");
+    expect(screen.getByRole("button", { name: /Open my classroom/ })).toBeTruthy();
+  });
+
+  it("never sends them to an outside booking link", async () => {
+    await finish();
+    const hrefs = [...document.querySelectorAll("a")].map((a) => a.getAttribute("href") ?? "");
+    expect(hrefs.length).toBeGreaterThan(0);
+    expect(hrefs.every((href) => href.startsWith("/"))).toBe(true);
   });
 });

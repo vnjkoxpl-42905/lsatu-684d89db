@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
@@ -142,18 +143,28 @@ export function OrientationCardView({
           <div>
             <h2>You're set up</h2>
             <p>
-              Joshua has what he needs to build your plan.
+              Joshua has what he needs to build your plan. The next move is a
+              session: that is where the plan gets made and where the rest of
+              the classroom opens up.
             </p>
-            {onDone ? (
-              <button
-                type="button"
-                className="classroom-orientation-continue"
-                onClick={onDone}
-              >
-                Open my classroom
+            {/* Booking leads. Finishing the intake is the moment a student is
+                most willing to book, and sending them into a classroom whose
+                doors are still locked wastes it. */}
+            <div className="classroom-orientation-done-actions">
+              <Link className="classroom-orientation-continue" to="/book/session">
+                Book a session
                 <ArrowRight size={14} />
-              </button>
-            ) : null}
+              </Link>
+              {onDone ? (
+                <button
+                  type="button"
+                  className="classroom-orientation-continue-quiet"
+                  onClick={onDone}
+                >
+                  Open my classroom
+                </button>
+              ) : null}
+            </div>
           </div>
         </div>
       </section>

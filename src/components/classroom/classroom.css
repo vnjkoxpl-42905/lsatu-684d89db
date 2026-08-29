@@ -4564,3 +4564,30 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: rgb(var(--classroom-meta));
   font-size: 13.5px;
 }
+
+
+/* The finish line offers the session first and the classroom second. */
+.classroom-root .classroom-orientation-done-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.classroom-root .classroom-orientation-continue-quiet {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: 999px;
+  color: rgb(var(--classroom-meta));
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+}
+
+.classroom-root .classroom-orientation-continue-quiet:hover {
+  background: var(--classroom-hover);
+  color: var(--classroom-ink);
+}
