@@ -72,7 +72,6 @@ const PrincipleFlawBootcamp = safeLazy(() => import("./pages/PrincipleFlawBootca
 const FallacyFlawBootcamp = safeLazy(() => import("./pages/FallacyFlawBootcamp"));
 const RcEngagingPassageBootcamp = safeLazy(() => import("./pages/RcEngagingPassageBootcamp"));
 import NotFound from "./pages/NotFound";
-const Unsubscribe = safeLazy(() => import("./pages/Unsubscribe"));
 // Hoisted out of render (were inline React.lazy(...) in the route element, which
 // recreated the lazy component every render). COMPREHENSIVEAUDIT Phase 3.
 const Trust = safeLazy(() => import("./pages/Trust"));
@@ -237,7 +236,6 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
 
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
