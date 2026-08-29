@@ -226,6 +226,47 @@ describe('persistSectionResults', () => {
     });
   });
 
+  it('writes the per-question record, so the results table survives the render', async () => {
+    await persistSectionResults({
+      session: session([], []),
+      stats: stats(),
+      classId: 'c',
+      userId: 'u',
+    });
+
+    const row = insert.mock.calls[0][0];
+    expect(row.questions_json).toHaveLength(2);
+    expect(row.questions_json[0]).toMatchObject({
+      qid: 'q1',
+      qnum: 1,
+      initialAnswer: 'B',
+      correctAnswer: 'B',
+      initialCorrect: true,
+      timeMs: 1000,
+    });
+    expect(row.questions_json[1]).toMatchObject({
+      qid: 'q2',
+      qnum: 2,
+      initialAnswer: 'A',
+      initialCorrect: false,
+    });
+  });
+
+  it('fills the legacy NOT NULL columns rather than leaving them zero', async () => {
+    await persistSectionResults({
+      session: session([], []),
+      stats: stats(),
+      classId: 'c',
+      userId: 'u',
+    });
+
+    const row = insert.mock.calls[0][0];
+    expect(row.total_questions).toBe(2);
+    expect(row.time_taken_ms).toBe(3000);
+    expect(row.total_questions).toBe(row.initial_total);
+    expect(row.time_taken_ms).toBe(row.total_time_ms);
+  });
+
   it('throws when the insert fails, so a sitting can tell the leg is unfinished', async () => {
     insert.mockResolvedValue({ error: { message: 'nope' } });
 

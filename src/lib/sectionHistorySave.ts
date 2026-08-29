@@ -23,6 +23,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { questionBank } from '@/lib/questionLoader';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 
@@ -216,6 +217,21 @@ export async function persistSectionResults({
     by_qtype_json: tally(stats, (s) => s.qtype),
     by_difficulty_json: tally(stats, (s) => s.difficulty),
     br_used: hasBlindReview(brResults),
+    // The per-question record. Without it the row holds totals and nothing
+    // else, so the Section Results table — which answer, which correct, how
+    // long, flagged or not — exists only for the single render that follows
+    // the sitting and is unrecoverable afterwards. Writing it is what makes a
+    // sat section a thing a student can come back to.
+    // Cast because `Json` demands an index signature and a named interface has
+    // none. The value is plain JSON-safe data; the shape is `SectionQuestionStat[]`
+    // and `sectionHistory.ts` reads it back as exactly that.
+    questions_json: stats as unknown as Json,
+    // Legacy NOT NULL columns. Nothing writes them, so every row has carried
+    // two zeroes that read as "no questions, no time". `readLrLegResult` only
+    // survives it by falling back to initial_total / total_time_ms; any query
+    // that trusts these instead gets nothing. Same numbers, stated honestly.
+    total_questions: totals.initialTotal,
+    time_taken_ms: totals.totalTimeMs,
   });
 
   if (error) throw error;

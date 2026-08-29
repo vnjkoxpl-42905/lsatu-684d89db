@@ -23,10 +23,18 @@ import {
   type DrillHistoryRow,
   type DrillHistorySource,
 } from '@/lib/drillHistory';
+import { fetchSectionHistory, type SectionHistoryRow } from '@/lib/sectionHistory';
+import SectionHistoryList from '@/components/history/SectionHistoryList';
 import { Check, ListFilter, Loader2, Minus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type ViewMode = 'timeline' | 'by-question';
+type ViewMode = 'timeline' | 'by-question' | 'sections';
+
+const VIEW_LABELS: Record<ViewMode, string> = {
+  timeline: 'Timeline',
+  'by-question': 'By question',
+  sections: 'Sections',
+};
 type ResultFilter = 'all' | 'correct' | 'missed';
 type SourceFilter = 'all' | DrillHistorySource;
 
@@ -87,6 +95,27 @@ const DrillHistory: React.FC = () => {
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
   const [resultFilter, setResultFilter] = useState<ResultFilter>('all');
   const [search, setSearch] = useState('');
+  const [sections, setSections] = useState<SectionHistoryRow[] | null>(null);
+
+  // Sections load alongside the attempts rather than on tab entry: the count
+  // belongs on the tab, and a student who lands here should not watch a second
+  // spinner to find out whether they have sat any.
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    fetchSectionHistory(user.id)
+      .then((data) => {
+        if (!cancelled) setSections(data);
+      })
+      .catch(() => {
+        // A section-history failure must not take down the attempts view, which
+        // is the page's main job. An empty list is the honest fallback.
+        if (!cancelled) setSections([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -184,7 +213,14 @@ const DrillHistory: React.FC = () => {
           </p>
         </header>
 
-        <section className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* The attempt tiles describe questions, not sittings. The Sections view
+            brings its own, so they are swapped rather than stacked. */}
+        <section
+          className={cn(
+            'mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4',
+            view === 'sections' && 'hidden',
+          )}
+        >
           <StatCard label="Attempts" value={stats.attempts.toLocaleString()} />
           <StatCard
             label="Accuracy"
@@ -197,7 +233,7 @@ const DrillHistory: React.FC = () => {
 
         <section className="mb-4 flex flex-wrap items-center gap-2">
           <div className="flex rounded-lg border border-border bg-card p-0.5">
-            {(['timeline', 'by-question'] as const).map((m) => (
+            {(['timeline', 'by-question', 'sections'] as const).map((m) => (
               <button
                 key={m}
                 type="button"
@@ -207,11 +243,18 @@ const DrillHistory: React.FC = () => {
                   view === m ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                {m === 'timeline' ? 'Timeline' : 'By question'}
+                {VIEW_LABELS[m]}
+                {m === 'sections' && sections !== null && sections.length > 0 && (
+                  <span className="ml-1.5 tabular-nums opacity-60">{sections.length}</span>
+                )}
               </button>
             ))}
           </div>
 
+          {/* Source, result and free text all filter attempts. None of them
+              means anything against a list of sittings, so they leave with it. */}
+          {view !== 'sections' && (
+            <>
           <div className="flex items-center gap-1 rounded-lg border border-border bg-card p-0.5">
             <ListFilter className="ml-2 h-3.5 w-3.5 text-muted-foreground" />
             {(['all', ...presentSources] as SourceFilter[]).map((s) => (
@@ -256,9 +299,19 @@ const DrillHistory: React.FC = () => {
             placeholder="Search question or type…"
             className="min-w-40 flex-1 rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
+            </>
+          )}
         </section>
 
-        {filtered.length === 0 ? (
+        {view === 'sections' ? (
+          sections === null ? (
+            <div className="flex justify-center py-16">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : (
+            <SectionHistoryList rows={sections} />
+          )
+        ) : filtered.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-10 text-center">
             <p className="font-medium text-foreground">
               {rows.length === 0 ? 'No attempts recorded yet.' : 'Nothing matches these filters.'}

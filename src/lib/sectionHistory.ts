@@ -1,0 +1,143 @@
+/**
+ * Sat sections — reading `section_history` back out.
+ *
+ * The table has been written since the first full section shipped and, until
+ * now, read by exactly two things: the dashboard's last-five widget and the
+ * practice-test scorer. No page ever showed a student the sections they had
+ * sat. A section was a screen you got once, at the moment you finished, and
+ * never again.
+ *
+ * This is the reader. A sat section becomes an object with a history: a score,
+ * a blind review or the honest absence of one, timing, and — for rows written
+ * after `questions_json` started being persisted — the question-by-question
+ * record behind the totals.
+ *
+ * Rows written before that carry `questions_json: []`. They are not broken and
+ * they are not empty sections; the detail simply was not kept. {@link hasDetail}
+ * is the distinction, so the UI can say so rather than render a blank table.
+ */
+
+import { supabase } from '@/integrations/supabase/client';
+import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
+
+export interface SectionHistoryRow {
+  id: string;
+  pt: number;
+  section: number;
+  mode: string | null;
+  initialScore: number;
+  initialTotal: number;
+  initialPercent: number;
+  /** null when no blind review was sat. Never 0 — that would be a review scored. */
+  brScore: number | null;
+  brPercent: number | null;
+  brDelta: number | null;
+  brUsed: boolean;
+  totalTimeMs: number;
+  avgTimeMs: number;
+  unansweredCount: number;
+  byQtype: Record<string, { correct: number; total: number }>;
+  byDifficulty: Record<string, { correct: number; total: number }>;
+  /** Empty for sections sat before the per-question record was persisted. */
+  questions: SectionQuestionStat[];
+  completedAt: string;
+}
+
+/** Did this row keep its question-by-question record? */
+export const hasDetail = (row: SectionHistoryRow): boolean => row.questions.length > 0;
+
+/** `PT105.S2`, the label 7Sage uses and the one that reads fastest. */
+export const sectionLabel = (row: SectionHistoryRow): string =>
+  `PT${row.pt}.S${row.section}`;
+
+const asTally = (v: unknown): Record<string, { correct: number; total: number }> =>
+  v && typeof v === 'object' && !Array.isArray(v)
+    ? (v as Record<string, { correct: number; total: number }>)
+    : {};
+
+const asQuestions = (v: unknown): SectionQuestionStat[] =>
+  Array.isArray(v) ? (v as SectionQuestionStat[]) : [];
+
+/**
+ * Every section this student has sat, newest first.
+ *
+ * Filtered on `user_id` rather than `class_id`: the row carries both, and the
+ * question "which sections have I sat" is about the person, not the class they
+ * happened to be in at the time.
+ */
+export async function fetchSectionHistory(
+  userId: string,
+): Promise<SectionHistoryRow[]> {
+  const { data, error } = await supabase
+    .from('section_history')
+    .select(
+      'id, pt, section, mode, initial_score, initial_total, initial_percent, br_score, br_percent, br_delta, br_used, total_time_ms, avg_time_ms, unanswered_count, by_qtype_json, by_difficulty_json, questions_json, completed_at, created_at',
+    )
+    .eq('user_id', userId)
+    .order('completed_at', { ascending: false });
+
+  if (error) throw error;
+
+  return (data ?? []).map((r) => ({
+    id: r.id,
+    pt: r.pt,
+    section: r.section,
+    mode: r.mode,
+    initialScore: r.initial_score ?? 0,
+    initialTotal: r.initial_total ?? 0,
+    initialPercent: r.initial_percent ?? 0,
+    // `br_used` is the authority, not the presence of a number. A row from
+    // before the empty-array fix can carry a br_score for a review that was
+    // never sat; without this guard those rows would report it as real.
+    brScore: r.br_used ? r.br_score : null,
+    brPercent: r.br_used ? r.br_percent : null,
+    brDelta: r.br_used ? r.br_delta : null,
+    brUsed: Boolean(r.br_used),
+    totalTimeMs: r.total_time_ms ?? 0,
+    avgTimeMs: r.avg_time_ms ?? 0,
+    unansweredCount: r.unanswered_count ?? 0,
+    byQtype: asTally(r.by_qtype_json),
+    byDifficulty: asTally(r.by_difficulty_json),
+    questions: asQuestions(r.questions_json),
+    completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
+  }));
+}
+
+export interface SectionSummary {
+  sections: number;
+  /** Highest percent scored. null when nothing has been sat. */
+  bestPercent: number | null;
+  bestLabel: string | null;
+  averagePercent: number | null;
+  totalTimeMs: number;
+}
+
+/**
+ * Best and average across a set of sections, 7Sage's two headline tiles.
+ *
+ * Averages the percent rather than the raw score, because sections are not all
+ * the same length and a mean of raw scores across a 24 and a 26 is a number
+ * that means nothing.
+ */
+export function summarizeSections(rows: SectionHistoryRow[]): SectionSummary {
+  if (rows.length === 0) {
+    return {
+      sections: 0,
+      bestPercent: null,
+      bestLabel: null,
+      averagePercent: null,
+      totalTimeMs: 0,
+    };
+  }
+
+  const best = rows.reduce((a, b) => (b.initialPercent > a.initialPercent ? b : a));
+  const sum = rows.reduce((n, r) => n + r.initialPercent, 0);
+
+  return {
+    sections: rows.length,
+    bestPercent: best.initialPercent,
+    bestLabel: sectionLabel(best),
+    averagePercent: Math.round(sum / rows.length),
+    totalTimeMs: rows.reduce((n, r) => n + r.totalTimeMs, 0),
+  };
+}
