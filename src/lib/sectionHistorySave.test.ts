@@ -151,6 +151,29 @@ describe('buildSectionTotals', () => {
       ] as never),
     ).toMatchObject({ initialScore: 0, brScore: 1, brPercent: 50, delta: 1 });
   });
+
+  it('reports no blind review for an empty results array, not a score of zero', () => {
+    const stats = buildSectionStats(
+      session(
+        ['q1', 'q2', 'q3'],
+        [
+          ['q1', { selectedAnswer: 'B', correct: true, timeMs: 1000 }],
+          ['q2', { selectedAnswer: 'B', correct: true, timeMs: 1000 }],
+          ['q3', { selectedAnswer: 'A', correct: false, timeMs: 1000 }],
+        ],
+      ),
+    );
+
+    // Drill holds brResults as [] until a review is actually done, so this is
+    // the state of every student who goes straight to See Results. Reporting
+    // 0 / -2 there tells them they failed a review they never sat.
+    expect(buildSectionTotals(stats, [])).toMatchObject({
+      initialScore: 2,
+      brScore: null,
+      brPercent: null,
+      delta: null,
+    });
+  });
 });
 
 describe('persistSectionResults', () => {

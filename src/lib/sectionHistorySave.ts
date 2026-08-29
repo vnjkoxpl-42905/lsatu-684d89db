@@ -107,6 +107,14 @@ export interface SectionTotals {
  * column, so the whole insert failed on an edge case that should simply record
  * zeroes.
  */
+/**
+ * Was a blind review actually done? One predicate, used by both the totals and
+ * the persisted row, so the score on screen and the row in section_history can
+ * never disagree about whether a review happened.
+ */
+const hasBlindReview = (brResults?: BlindReviewResult[]): boolean =>
+  Array.isArray(brResults) && brResults.length > 0;
+
 export function buildSectionTotals(
   stats: SectionQuestionStat[],
   brResults?: BlindReviewResult[],
@@ -117,7 +125,11 @@ export function buildSectionTotals(
     ? Math.round((initialScore / initialTotal) * 100)
     : 0;
 
-  const brScore = brResults ? stats.filter((s) => s.brCorrect).length : null;
+  // An EMPTY array is not a blind review. `brResults ?` treated `[]` as one,
+  // so a student who skipped straight to the score report was told they had
+  // scored 0 on a review they never sat, with a delta to match. Null is the
+  // only honest answer when there is nothing to report.
+  const brScore = hasBlindReview(brResults) ? stats.filter((s) => s.brCorrect).length : null;
   const brPercent =
     brScore !== null && initialTotal
       ? Math.round((brScore / initialTotal) * 100)
@@ -203,7 +215,7 @@ export async function persistSectionResults({
     unanswered_count: totals.unansweredCount,
     by_qtype_json: tally(stats, (s) => s.qtype),
     by_difficulty_json: tally(stats, (s) => s.difficulty),
-    br_used: !!brResults,
+    br_used: hasBlindReview(brResults),
   });
 
   if (error) throw error;
