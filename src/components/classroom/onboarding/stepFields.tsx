@@ -369,9 +369,15 @@ export function StepField({
         </div>
       </div>
 
+      {/* The week reads as a bar chart the student builds by clicking: each
+          day is a column of four segments, tallest at the top, and the filled
+          height is the time they can protect. The control and the picture are
+          the same object, so the shape of an honest week is visible while they
+          are still deciding it. */}
       <div className="classroom-orientation-week" aria-label="Weekly LSAT availability">
         {DAYS.map((day) => {
           const current = answers.study_time?.[day.key as DayKey];
+          const level = STUDY_TIME_OPTIONS.findIndex((option) => option.value === current);
           const currentLabel = current
             ? STUDY_TIME_OPTIONS.find((option) => option.value === current)?.label
             : "Not set";
@@ -382,35 +388,46 @@ export function StepField({
                 current && current !== "none" ? " classroom-orientation-day-on" : ""
               }`}
             >
+              <div className="classroom-orientation-bar">
+                {[...STUDY_TIME_OPTIONS].reverse().map((option) => {
+                  const index = STUDY_TIME_OPTIONS.findIndex((o) => o.value === option.value);
+                  // Everything up to the chosen level is filled, so the column
+                  // reads as one bar rather than four separate switches.
+                  const filled = level > 0 && index > 0 && index <= level;
+                  const chosen = current === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      aria-pressed={chosen}
+                      aria-label={`${day.label}: ${option.label}`}
+                      title={`${day.label}: ${option.label}`}
+                      onClick={() =>
+                        set("study_time", {
+                          ...DEFAULT_STUDY_TIME,
+                          ...(answers.study_time ?? {}),
+                          [day.key]: option.value as StudyTimeValue,
+                        })
+                      }
+                      className={[
+                        "classroom-orientation-segment",
+                        option.value === "none" ? "classroom-orientation-segment-off" : "",
+                        filled ? "classroom-orientation-segment-filled" : "",
+                        chosen ? "classroom-orientation-segment-on" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {option.value === "none" && chosen ? (
+                        <Check size={11} aria-hidden="true" />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
               <div className="classroom-orientation-day-head">
                 <span className="classroom-orientation-day-label">{day.label}</span>
                 <span className="classroom-orientation-day-value">{currentLabel}</span>
-              </div>
-              <div className="classroom-orientation-day-meter" aria-hidden="true">
-                <span data-level={current ?? "unset"} />
-              </div>
-              <div className="classroom-orientation-day-options">
-                {STUDY_TIME_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    aria-pressed={current === option.value}
-                    aria-label={`${day.label}: ${option.label}`}
-                    onClick={() =>
-                      set("study_time", {
-                        ...DEFAULT_STUDY_TIME,
-                        ...(answers.study_time ?? {}),
-                        [day.key]: option.value as StudyTimeValue,
-                      })
-                    }
-                    className={`classroom-orientation-slot${
-                      current === option.value ? " classroom-orientation-slot-on" : ""
-                    }`}
-                  >
-                    {current === option.value ? <Check size={12} aria-hidden="true" /> : null}
-                    {option.label}
-                  </button>
-                ))}
               </div>
             </section>
           );

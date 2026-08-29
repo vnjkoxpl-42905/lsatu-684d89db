@@ -4064,69 +4064,55 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   min-height: 16px;
 }
 
-.classroom-root .classroom-orientation-day-meter {
-  align-items: flex-end;
-  background: var(--classroom-hover);
-  border-radius: 8px;
+/* The clickable bar. Four segments per day, tallest at the top: the student
+   clicks the height they can protect, and the filled part is the answer. The
+   picture and the control are the same object. */
+.classroom-root .classroom-orientation-bar {
   display: flex;
-  height: 54px;
-  overflow: hidden;
-}
-
-.classroom-root .classroom-orientation-day-meter span {
-  background: var(--classroom-link);
-  display: block;
-  height: 0;
-  opacity: 0.82;
-  transition: height 240ms cubic-bezier(0.22, 1, 0.36, 1);
-  width: 100%;
-}
-
-.classroom-root .classroom-orientation-day-meter span[data-level="lt_1"] {
-  height: 28%;
-}
-
-.classroom-root .classroom-orientation-day-meter span[data-level="1_2"] {
-  height: 58%;
-}
-
-.classroom-root .classroom-orientation-day-meter span[data-level="3_plus"] {
-  height: 100%;
-}
-
-.classroom-root .classroom-orientation-day-options {
-  display: grid;
+  flex-direction: column;
   gap: 3px;
+  height: 104px;
 }
 
-.classroom-root .classroom-orientation-slot {
+.classroom-root .classroom-orientation-segment {
   align-items: center;
-  background: transparent;
+  background: var(--classroom-hover);
   border: 1px solid transparent;
-  border-radius: 6px;
-  color: rgb(var(--classroom-meta));
+  border-radius: 5px;
+  color: inherit;
   cursor: pointer;
   display: flex;
-  font-family: inherit;
-  font-size: 10.5px;
-  gap: 3px;
+  flex: 1 1 0;
   justify-content: center;
-  min-height: 32px;
-  padding: 4px;
+  min-height: 0;
+  padding: 0;
   transition:
     background-color var(--classroom-transition) ease,
-    color var(--classroom-transition) ease;
+    border-color var(--classroom-transition) ease;
 }
 
-.classroom-root .classroom-orientation-slot:hover {
-  color: var(--classroom-ink);
+.classroom-root .classroom-orientation-segment:hover {
+  border-color: color-mix(in srgb, var(--classroom-link) 60%, transparent);
 }
 
-.classroom-root .classroom-orientation-slot-on,
-.classroom-root .classroom-orientation-slot-on:hover {
+/* "No time" is a floor, not a quantity: it stays a thin base the student can
+   press deliberately rather than a quarter of the bar they seem to have filled. */
+.classroom-root .classroom-orientation-segment-off {
+  flex: 0 0 16px;
+}
+
+.classroom-root .classroom-orientation-segment-filled {
+  background: color-mix(in srgb, var(--classroom-link) 32%, transparent);
+}
+
+.classroom-root .classroom-orientation-segment-on {
   background: var(--classroom-active);
   border-color: var(--classroom-active);
   color: var(--classroom-active-ink);
+}
+
+.classroom-root .classroom-orientation-segment-off.classroom-orientation-segment-on {
+  background: rgb(var(--classroom-meta));
 }
 
 .classroom-root .classroom-availability-summary {
@@ -4224,16 +4210,20 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     text-align: left;
   }
 
-  .classroom-root .classroom-orientation-day-meter {
-    display: none;
+  /* One day per row on a phone: the label leads and the bar lies on its side,
+     so the same four targets stay thumb-sized instead of a stack seven tall. */
+  .classroom-root .classroom-orientation-day-head {
+    order: 0;
   }
 
-  .classroom-root .classroom-orientation-day-options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .classroom-root .classroom-orientation-bar {
+    flex-direction: row-reverse;
+    height: 44px;
+    order: 1;
   }
 
-  .classroom-root .classroom-orientation-slot {
-    min-height: 44px;
+  .classroom-root .classroom-orientation-segment-off {
+    flex: 0 0 34px;
   }
 
   .classroom-root .classroom-availability-summary {
