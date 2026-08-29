@@ -314,6 +314,12 @@ function DrillContent() {
   // New post-section flow states
   const [postSectionScreen, setPostSectionScreen] = React.useState<'complete' | 'review' | 'score-report' | null>(null);
   const [autoReviewQids, setAutoReviewQids] = React.useState<string[]>([]);
+  /**
+   * Which questions blind review walks. Null means the whole section, which is
+   * what a section's blind review always is. Practice sets set it explicitly,
+   * because "Review wrong" there is a shortlist by name and should stay one.
+   */
+  const [brPassQids, setBrPassQids] = React.useState<string[] | null>(null);
   const [longPressTimer, setLongPressTimer] = React.useState<ReturnType<typeof setTimeout> | null>(null);
   
   // Question pool state
@@ -2358,6 +2364,7 @@ function DrillContent() {
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);
     setAutoReviewQids(reviewSet);
+    setBrPassQids(null);
 
     // Update session state
     setSession(updatedSession);
@@ -2769,7 +2776,11 @@ function DrillContent() {
     return (
       <EnhancedBlindReview
         session={session}
-        reviewQids={autoReviewQids}
+        // The pass is the whole section. `autoReviewQids` rides alongside as a
+        // marker: a review that shows only the suspect questions announces
+        // which ones they are, which is the one thing a BLIND review must not do.
+        reviewQids={brPassQids ?? session.questionQueue}
+        recommendedQids={new Set(autoReviewQids)}
         onComplete={async (results: DrillBlindReviewResult[]) => {
           setBrResults(results);
           setPostSectionScreen('score-report');
@@ -2791,11 +2802,14 @@ function DrillContent() {
               const attempt = session.attempts.get(qid);
               return attempt && !attempt.correct;
             });
-            setAutoReviewQids(wrongQids);
+            // Named a shortlist, so it stays one.
+            setBrPassQids(wrongQids);
+            setAutoReviewQids([]);
             setPostSectionScreen('review');
           }}
           onReviewAll={() => {
-            setAutoReviewQids(session.questionQueue);
+            setBrPassQids(null);
+            setAutoReviewQids([]);
             setPostSectionScreen('review');
           }}
           onBack={() => navigate(drillReturnTo || '/classroom')}
@@ -2826,7 +2840,8 @@ function DrillContent() {
         session={session}
         onStartReview={() => setPostSectionScreen('review')}
         onFullReview={() => {
-          setAutoReviewQids(session.questionQueue);
+          setBrPassQids(null);
+          setAutoReviewQids([]);
           setPostSectionScreen('review');
         }}
         onBack={() => navigate(drillReturnTo || '/classroom')}
@@ -2924,6 +2939,9 @@ function DrillContent() {
             const enrichedResults: DrillBlindReviewResult[] = results.map((result) => ({
               ...result,
               preCorrect: session!.attempts.get(result.qid)?.correct ?? false,
+              // The legacy flow only ever ran questions the student chose, so
+              // every result it returns is one they actually re-answered.
+              brTouched: true,
             }));
             setBrResults(enrichedResults);
             setShowBRFlow(false);

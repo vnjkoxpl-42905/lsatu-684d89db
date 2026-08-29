@@ -63,6 +63,15 @@ export interface BlindReviewResult {
   brRationale: string;
   brTimeMs: number;
   brChanged: boolean;
+  /**
+   * Whether the student put a fresh answer on this question during review.
+   *
+   * Blind review walks the WHOLE section, so most questions come back
+   * untouched. An untouched question is not a wrong one: it keeps the answer
+   * and the result it already had, which is what makes the review score
+   * comparable to the timed score instead of a strictly worse number.
+   */
+  brTouched: boolean;
   correct: boolean;
   preCorrect: boolean;
   switchCount?: number;

@@ -18,12 +18,31 @@ import type { Highlight, HighlightColor } from '@/lib/highlightUtils';
 
 interface EnhancedBlindReviewProps {
   session: DrillSession;
+  /**
+   * Every question in the section, in order. Blind review is a second pass over
+   * the WHOLE section, not over a shortlist: a pass containing only the
+   * questions we suspect tells the student which ones they got wrong, which is
+   * the one thing a blind review must not do.
+   */
   reviewQids: string[];
+  /**
+   * Questions worth a second look. Drawn as a marker beside the question and on
+   * its pager token, and nothing more — it never removes a question from the
+   * pass. Deliberately padded with a couple the student got right, so the
+   * marker cannot be read as "you missed this".
+   */
+  recommendedQids?: Set<string>;
   onComplete: (results: BlindReviewResult[]) => void;
   onBack: () => void;
 }
 
-export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }: EnhancedBlindReviewProps) {
+export function EnhancedBlindReview({
+  session,
+  reviewQids,
+  recommendedQids,
+  onComplete,
+  onBack,
+}: EnhancedBlindReviewProps) {
   const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [brAnswers, setBrAnswers] = React.useState<Map<string, string>>(new Map());
@@ -127,14 +146,21 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
       const preAnswer = previousAttempt?.selectedAnswer || '';
       const preCorrect = previousAttempt?.correct || false;
 
+      // Untouched means the student read it again and let their answer stand,
+      // so the question keeps the result it already had. Scoring it as wrong
+      // because review collected no new letter is what made a blind review
+      // read as a collapse rather than a second look.
+      const brTouched = brAnswer !== '';
+
       return {
         qid,
         preAnswer,
         brAnswer,
         brRationale,
         brTimeMs: metrics.totalTimeMs,
-        brChanged: brAnswer !== preAnswer,
-        correct: brAnswer === question.correctAnswer,
+        brTouched,
+        brChanged: brTouched && brAnswer !== preAnswer,
+        correct: brTouched ? brAnswer === question.correctAnswer : preCorrect,
         preCorrect,
         switchCount: metrics.answerSwitchCount,
         revisitCount: metrics.revisitCount,
@@ -235,6 +261,7 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
   const questionHighlights = highlights.get(currentQid) || [];
   const currentEliminated = eliminatedAnswers.get(currentQid) || new Set<string>();
   const isFlagged = flaggedQuestions.has(currentQid);
+  const isRecommended = !!recommendedQids?.has(currentQid);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -295,9 +322,19 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
 
           {/* Question Card */}
           <div className="bg-card border rounded-xl p-6 space-y-6">
-            {/* Question ID */}
-            <div className="text-sm text-muted-foreground font-mono">
-              PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum} • {currentQuestion.qtype}
+            {/* Question ID, and the recommendation marker if this one carries it. */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-sm text-muted-foreground font-mono">
+                PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum} • {currentQuestion.qtype}
+              </div>
+              {isRecommended && (
+                <span
+                  className="rounded-full border border-primary/40 px-2.5 py-0.5 text-xs font-medium text-primary"
+                  title="Worth a second look. Some questions you got right are marked too."
+                >
+                  Recommended
+                </span>
+              )}
             </div>
 
             {/* Stimulus */}
@@ -422,9 +459,12 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
 
           <div className="flex items-center gap-2">
             {reviewQids.map((qid, idx) => {
-              const hasAnswer = brAnswers.has(qid);
-              const hasRationale = (brRationales.get(qid) || '').trim().length > 0;
-              
+              // Filled once a fresh answer exists. A rationale is optional, so
+              // requiring one to fill the token made answered questions look
+              // untouched.
+              const answered = (brAnswers.get(qid) || '') !== '';
+              const recommended = !!recommendedQids?.has(qid);
+
               return (
                 <button
                   key={qid}
@@ -432,10 +472,14 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
                     timerRef.current.pause();
                     setCurrentIndex(idx);
                   }}
+                  aria-label={`Question ${idx + 1}${recommended ? ', recommended' : ''}${answered ? ', reviewed' : ''}`}
                   className={cn(
                     "w-8 h-8 rounded-full border text-xs font-medium transition-all duration-150",
                     idx === currentIndex && "ring-2 ring-primary ring-offset-2",
-                    hasAnswer && hasRationale ? "bg-primary text-primary-foreground" : "bg-card",
+                    answered ? "bg-primary text-primary-foreground" : "bg-card",
+                    // The marker rides on the token itself so the whole section
+                    // stays walkable while the suggestions still read at a glance.
+                    recommended && !answered && "border-primary/60 border-dashed",
                     "hover:scale-110"
                   )}
                 >
