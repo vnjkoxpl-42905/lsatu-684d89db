@@ -5,6 +5,16 @@ import { useUserSettings } from '@/contexts/UserSettingsContext';
 import type { FullSectionConfig, TimerMode } from '@/types/drill';
 // TimerMode used in handleStart to type the local `mode` variable
 import { questionBank, type QuestionManifest } from '@/lib/questionLoader';
+import { useClassId } from '@/hooks/useClassId';
+import {
+  buildSectionFreshness,
+  fetchAnsweredQids,
+  freshnessLabel,
+  matchesFreshness,
+  sectionKey,
+  type FreshnessFilter,
+  type SectionFreshness,
+} from '@/lib/sectionFreshness';
 import SectionTimingPicker, {
   AccommodationNote,
   STANDARD_TIMING,
@@ -55,6 +65,13 @@ export function SectionSelector({
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const [timing, setTiming] = useState<SectionTiming>(STANDARD_TIMING);
+  // A PrepTest is a consumable, so the first question is which sections are
+  // still unspent. Defaults to Fresh, which is what a student wants nine times
+  // in ten and the only state that gives a clean read on where they stand.
+  const [freshnessFilter, setFreshnessFilter] = useState<FreshnessFilter>('fresh');
+  const [freshness, setFreshness] = useState<Map<string, SectionFreshness> | null>(null);
+  const [freshnessLoading, setFreshnessLoading] = useState(true);
+  const [freshnessError, setFreshnessError] = useState<string | null>(null);
 
   // RC sections come from the passage index, which is small and separate from
   // the LR bank. Loaded once when the student switches to RC rather than on
@@ -85,6 +102,52 @@ export function SectionSelector({
   const baseMinutes =
     settings.defaultTimingMode === '52.5' ? 52.5 : settings.defaultTimingMode === '70' ? 70 : 35;
 
+  /**
+   * Load every question the student has answered and fold it into per-section
+   * freshness. Only the LR runner writes attempts, so this is LR-only and the
+   * control is hidden for RC rather than reporting every RC section fresh on
+   * the strength of rows that were never written.
+   */
+  const { classId, loading: classIdLoading } = useClassId();
+  useEffect(() => {
+    if (classIdLoading) return;
+    if (!classId) {
+      // Signed out or unprovisioned: no history to read, so claim none.
+      setFreshness(null);
+      setFreshnessLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setFreshnessLoading(true);
+    fetchAnsweredQids(classId)
+      .then((answered) => {
+        if (cancelled) return;
+        const sections = manifest.sections.map((s) => ({
+          pt: s.pt,
+          section: s.section,
+          qids: questionBank.getSection(s.pt, s.section).map((q) => q.qid),
+        }));
+        setFreshness(buildSectionFreshness(sections, answered));
+        setFreshnessError(null);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        // Say so rather than showing everything as fresh. An unknown section
+        // still passes every filter, so nothing becomes unreachable.
+        setFreshness(null);
+        setFreshnessError("Couldn't check which sections you've already worked.");
+      })
+      .finally(() => {
+        if (!cancelled) setFreshnessLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [classId, classIdLoading, manifest]);
+
+  const freshnessFor = (pt: number, section: number) =>
+    kind === 'rc' ? undefined : freshness?.get(sectionKey(pt, section));
+
   const rcPTs = useMemo(() => (rcSections ? rcSectionPreptests(rcSections) : []), [rcSections]);
   const rcSectionsForPT = useMemo(
     () => (rcSections && selectedPT ? rcSectionsForPreptest(rcSections, selectedPT) : []),
@@ -114,7 +177,22 @@ export function SectionSelector({
     setSelectedSection(null);
   };
 
-  const lrPTs = Array.from(new Set(manifest.sections.map(s => s.pt))).sort((a, b) => a - b);
+  // LR sections surviving the freshness filter. A section whose freshness is
+  // unknown survives both filters, so a failed history read narrows nothing.
+  const lrSectionsInFilter = useMemo(
+    () =>
+      manifest.sections.filter((s) =>
+        matchesFreshness(freshness?.get(sectionKey(s.pt, s.section)), freshnessFilter),
+      ),
+    [manifest, freshness, freshnessFilter],
+  );
+
+  // PrepTests are derived from the surviving sections rather than listed whole,
+  // so picking a PrepTest can never lead to an empty Section list.
+  const lrPTs = useMemo(
+    () => Array.from(new Set(lrSectionsInFilter.map((s) => s.pt))).sort((a, b) => a - b),
+    [lrSectionsInFilter],
+  );
   const availablePTs = kind === 'rc' ? rcPTs : lrPTs;
 
   const availableSections = !selectedPT
@@ -122,12 +200,20 @@ export function SectionSelector({
     : kind === 'rc'
       ? rcSectionsForPT.map((s) => s.section)
       : Array.from(
-          new Set(
-            manifest.sections
-              .filter(s => s.pt === selectedPT)
-              .map(s => s.section)
-          )
+          new Set(lrSectionsInFilter.filter((s) => s.pt === selectedPT).map((s) => s.section)),
         ).sort((a, b) => a - b);
+
+  // Flipping the filter can strand a choice that no longer qualifies. Drop it
+  // rather than leaving a trigger naming a section the list no longer offers.
+  useEffect(() => {
+    if (kind === 'rc') return;
+    if (selectedPT && !lrPTs.includes(selectedPT)) {
+      setSelectedPT(null);
+      setSelectedSection(null);
+    } else if (selectedSection && !availableSections.includes(selectedSection)) {
+      setSelectedSection(null);
+    }
+  }, [kind, lrPTs, availableSections, selectedPT, selectedSection]);
 
   const handleStart = () => {
     if (kind === 'rc') {
@@ -247,6 +333,53 @@ export function SectionSelector({
 
           {/* PrepTest & Section Selectors */}
           <div className="space-y-8 mb-12">
+            {/* Status — comes before the PrepTest because it decides which
+                PrepTests are even offered. There are 59 of them and no more
+                coming, so "have I already spent this one" is the first
+                question, not a filter bolted on afterwards. RC has no history
+                to read, so it does not get the control. */}
+            {kind === 'lr' && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
+                  Status
+                </label>
+                <Select
+                  value={freshnessFilter}
+                  onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+                >
+                  <SelectTrigger
+                    className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
+                    id="status-select"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
+                    <SelectItem value="fresh" className="text-base py-3 focus:bg-foreground/5">
+                      Fresh — never worked
+                    </SelectItem>
+                    <SelectItem value="not-fresh" className="text-base py-3 focus:bg-foreground/5">
+                      Not fresh — already started
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                {freshnessLoading && (
+                  <p className="text-sm text-muted-foreground/70">Checking what you have worked…</p>
+                )}
+                {freshnessError && (
+                  <p className="text-sm text-muted-foreground/70">
+                    {freshnessError} Every section is listed until it can.
+                  </p>
+                )}
+                {!freshnessLoading && !freshnessError && availablePTs.length === 0 && (
+                  <p className="text-sm text-muted-foreground/70">
+                    {freshnessFilter === 'fresh'
+                      ? 'No untouched LR sections left. Switch to Not fresh to sit one again.'
+                      : 'You have not started any LR section yet. Switch to Fresh to pick one.'}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* PrepTest */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
@@ -308,7 +441,12 @@ export function SectionSelector({
                         >
                           {rc
                             ? `Section ${section} · ${rc.passageCount} passages · ${rc.questionCount} question${rc.questionCount === 1 ? '' : 's'}${rc.fullLength ? '' : ' (short)'}`
-                            : `Section ${section}`}
+                            : [
+                                `Section ${section}`,
+                                freshnessLabel(freshnessFor(selectedPT!, section)),
+                              ]
+                                .filter(Boolean)
+                                .join(' · ')}
                         </SelectItem>
                       );
                     })}
