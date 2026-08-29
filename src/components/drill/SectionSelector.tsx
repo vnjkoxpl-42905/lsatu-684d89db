@@ -174,11 +174,13 @@ export function SectionSelector({
   const chosenQuestionCount = useMemo(() => {
     if (kind === 'rc') return chosenRcSection?.questionCount;
     if (!selectedPT || !selectedSection) return undefined;
-    // Counted off the queue the runner will actually serve, NOT off
-    // manifest.sections[].count. The manifest counts parsed rows while the bank
-    // is keyed by qid, so a section with a duplicated qid manifests as 26 and
-    // runs as 25 — and a per-question pace quoted off the wrong denominator is
-    // a number the student paces against and misses by.
+    // Read from the bank, the same call the runner makes, rather than from
+    // manifest.sections[].count — one source for the denominator means the
+    // quoted pace and the served section cannot describe different sections.
+    // (The runner can still serve fewer: a full section is currently passed
+    // through the question-pool dedupe filter, which drops questions the
+    // student has already seen. That is a bug in the runner, not a reason to
+    // quote a pace for anything other than the real published section.)
     return questionBank.getSection(selectedPT, selectedSection).length || undefined;
   }, [kind, chosenRcSection, selectedPT, selectedSection]);
 
