@@ -38,7 +38,10 @@
   <link rel="icon" type="image/png" href="/pwa-192x192.png">
 </head>
 
-  <body style="background-color:#000000;margin:0;">
+  <!-- No background here. The boot fallback below paints its own dark ground;
+       an inline background on <body> would outrank `body { @apply bg-background }`
+       for the life of the page and leave black behind the booted app. -->
+  <body style="margin:0;">
     <!-- Boot fallback. React's createRoot clears #root on mount, so everything
          below is replaced the instant the app renders. It only stays on screen
          when the bundle never boots — a stale cached shell pointing at deleted
