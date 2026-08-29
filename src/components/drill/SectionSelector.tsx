@@ -9,7 +9,6 @@ import { useClassId } from '@/hooks/useClassId';
 import {
   buildSectionFreshness,
   fetchAnsweredQids,
-  freshnessLabel,
   matchesFreshness,
   sectionKey,
   type FreshnessFilter,
@@ -144,9 +143,6 @@ export function SectionSelector({
       cancelled = true;
     };
   }, [classId, classIdLoading, manifest]);
-
-  const freshnessFor = (pt: number, section: number) =>
-    kind === 'rc' ? undefined : freshness?.get(sectionKey(pt, section));
 
   const rcPTs = useMemo(() => (rcSections ? rcSectionPreptests(rcSections) : []), [rcSections]);
   const rcSectionsForPT = useMemo(
@@ -432,21 +428,18 @@ export function SectionSelector({
                   </SelectTrigger>
                   <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
                     {availableSections.map(section => {
-                      const rc = rcSectionsForPT.find((s) => s.section === section);
                       return (
                         <SelectItem
                           key={section}
                           value={section.toString()}
                           className="text-base py-3 focus:bg-foreground/5"
                         >
-                          {rc
-                            ? `Section ${section} · ${rc.passageCount} passages · ${rc.questionCount} question${rc.questionCount === 1 ? '' : 's'}${rc.fullLength ? '' : ' (short)'}`
-                            : [
-                                `Section ${section}`,
-                                freshnessLabel(freshnessFor(selectedPT!, section)),
-                              ]
-                                .filter(Boolean)
-                                .join(' · ')}
+                          {/* Bare, like the real thing. Counts and freshness
+                              percentages stacked on every row read as a
+                              spreadsheet; the Status filter already guarantees
+                              what is in this list, and the line under Timing
+                              states what the chosen section actually holds. */}
+                          Section {section}
                         </SelectItem>
                       );
                     })}
