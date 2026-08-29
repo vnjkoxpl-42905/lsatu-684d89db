@@ -349,11 +349,16 @@ export function SectionSelector({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
+                    {/* Each option states what it filters to. "Fresh" on its
+                        own is our word, not the student's, and a filter nobody
+                        can read is a filter nobody trusts. Single-line so the
+                        trigger, which renders the chosen item's children,
+                        keeps saying it after the menu closes. */}
                     <SelectItem value="fresh" className="text-base py-3 focus:bg-foreground/5">
-                      Fresh
+                      Fresh · never worked
                     </SelectItem>
                     <SelectItem value="any" className="text-base py-3 focus:bg-foreground/5">
-                      Any
+                      Any · worked or not
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -474,6 +479,23 @@ export function SectionSelector({
 
           {/* Divider */}
           <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent mb-8" />
+
+          {/* What the button does. Every field above states a choice; none of
+              them says what happens once the choice is made, and a student
+              pressing Start should already know they are committing to the
+              whole section rather than a drill they can leave. Appears only
+              once a section is actually chosen, so the count is the real one
+              and this is never a promise about nothing. Deliberately not under
+              the timing control, which was cleared on purpose. */}
+          {isReadyToStart && chosenQuestionCount && (
+            <p className="mb-6 text-sm text-muted-foreground/70">
+              All {chosenQuestionCount} questions, in their published order.{' '}
+              {timing.mode === 'unlimited'
+                ? 'No clock, so take as long as you want.'
+                : 'The clock starts straight away.'}{' '}
+              It is scored when you submit, and blind review comes after.
+            </p>
+          )}
 
           {/* Actions */}
           <div className="flex items-center justify-between">

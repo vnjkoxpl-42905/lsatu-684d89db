@@ -1,0 +1,136 @@
+/**
+ * What the section launcher tells a student before they commit.
+ *
+ * Two pieces of copy are load-bearing here. "Fresh" is our word for a section
+ * with no attempts against it, and on its own it is a filter nobody can read.
+ * And every field on this panel states a choice while none of them says what
+ * happens once the choice is made — a student pressing Start is committing to
+ * the whole section under a clock, and should know that before they press it.
+ *
+ * The commitment line has to be conditional in two directions: it cannot quote
+ * a question count before a section is chosen, and it cannot promise a clock
+ * that Unlimited does not start.
+ */
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { SectionSelector } from './SectionSelector';
+
+vi.mock('@/contexts/UserSettingsContext', () => ({
+  useUserSettings: () => ({ settings: { defaultTimingMode: '35' } }),
+}));
+
+vi.mock('@/hooks/useClassId', () => ({
+  useClassId: () => ({ classId: 'class-1', loading: false }),
+}));
+
+/** Nothing answered, so every section reads fresh and both filters keep them. */
+vi.mock('@/lib/sectionFreshness', async () => {
+  const actual =
+    await vi.importActual<typeof import('@/lib/sectionFreshness')>('@/lib/sectionFreshness');
+  return { ...actual, fetchAnsweredQids: () => Promise.resolve(new Set<string>()) };
+});
+
+/** PT 130 S1 is 25 questions; PT 130 S3 is 26. The count on screen is this one. */
+vi.mock('@/lib/questionLoader', () => ({
+  questionBank: {
+    getSection: (_pt: number, section: number) =>
+      Array.from({ length: section === 1 ? 25 : 26 }, (_, i) => ({ qid: `q${section}-${i}` })),
+  },
+}));
+
+vi.mock('@/features/rc/lib/rcBank', () => ({
+  loadAllIndexPassages: () => Promise.resolve([]),
+}));
+
+const manifest = {
+  sections: [
+    { pt: 130, section: 1, count: 25, filename: 'PT130-S1-LR.json' },
+    { pt: 130, section: 3, count: 26, filename: 'PT130-S3-LR.json' },
+  ],
+} as unknown as Parameters<typeof SectionSelector>[0]['manifest'];
+
+/** Radix Select drives its trigger through pointer-capture APIs jsdom lacks. */
+beforeAll(() => {
+  const proto = window.HTMLElement.prototype as unknown as Record<string, unknown>;
+  proto.hasPointerCapture = () => false;
+  proto.setPointerCapture = () => undefined;
+  proto.releasePointerCapture = () => undefined;
+  proto.scrollIntoView = () => undefined;
+});
+
+/** Routed: the timing popover carries the accommodations note, which links out. */
+const renderSelector = () =>
+  render(
+    <MemoryRouter>
+      <SectionSelector manifest={manifest} onStartSection={vi.fn()} onCancel={vi.fn()} />
+    </MemoryRouter>,
+  );
+
+/**
+ * The panel's labels are not tied to their triggers, so a combobox here has no
+ * accessible name to query by. Each trigger is found through the text it is
+ * currently showing instead, and opened by keyboard: Radix's pointer path needs
+ * layout and capture APIs jsdom does not provide, and the keyboard path is the
+ * same open.
+ */
+const openSelectShowing = async (text: RegExp) => {
+  const trigger = (await screen.findByText(text)).closest('[role="combobox"]') as HTMLElement;
+  trigger.focus();
+  fireEvent.keyDown(trigger, { key: 'Enter', code: 'Enter' });
+};
+
+const pickSection = async () => {
+  await openSelectShowing(/Select PrepTest/);
+  fireEvent.click(await screen.findByText(/PrepTest 130/));
+  await openSelectShowing(/Select Section/);
+  fireEvent.click(await screen.findByText(/^Section 3$/));
+};
+
+describe('SectionSelector', () => {
+  it('says what each Status filter actually filters to', async () => {
+    renderSelector();
+
+    // The default is already legible on the closed trigger.
+    await openSelectShowing(/Fresh · never worked/);
+    expect(await screen.findByText(/Any · worked or not/)).toBeTruthy();
+  });
+
+  it('promises nothing before a section is chosen', async () => {
+    renderSelector();
+    await screen.findByText(/Select PrepTest/);
+
+    expect(screen.queryByText(/in their published order/)).toBeNull();
+  });
+
+  it('states the real question count and the clock once a section is chosen', async () => {
+    renderSelector();
+    await pickSection();
+
+    // 26, from the bank the runner reads — not the manifest's own count.
+    const line = await screen.findByText(/All 26 questions, in their published order\./);
+    expect(line.textContent).toMatch(/The clock starts straight away\./);
+    expect(line.textContent).toMatch(/blind review comes after/);
+  });
+
+  it('does not promise a clock that Unlimited never starts', async () => {
+    renderSelector();
+
+    // Let the freshness read settle before opening the popover. The picker
+    // defines its option rows inside its own render, so any re-render swaps
+    // them for fresh nodes and a row captured beforehand is left detached —
+    // clicking it then does nothing. A student clicks whatever is on screen
+    // and never meets this; a test holding a reference across a render does.
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+
+    fireEvent.click(screen.getByRole('button', { name: /Section timing/i }));
+    fireEvent.click(await screen.findByRole('option', { name: /Unlimited/ }));
+    await pickSection();
+
+    const line = await screen.findByText(
+      (_, el) => el?.tagName === 'P' && /No clock, so take as long as you want\./.test(el.textContent ?? ''),
+    );
+    expect(line.textContent).toMatch(/All 26 questions, in their published order\./);
+    expect(line.textContent).not.toMatch(/The clock starts straight away/);
+  });
+});
