@@ -73,14 +73,22 @@ export function OrientationCardView({
   initialName,
   initialAnswers,
   onSave,
+  onDone,
+  startCollapsed = false,
 }: {
   initialName: string;
   initialAnswers: OnboardingAnswers;
   onSave: (patch: OrientationSavePatch) => Promise<boolean>;
+  /** Opens on the invitation rather than the first question. The full-stage
+   *  intake starts here so a new student chooses to begin. */
+  startCollapsed?: boolean;
+  /** Rendered as the way out of the done panel. Omitted inline on Home, where
+   *  the card simply disappears on the next load. */
+  onDone?: () => void;
 }) {
   // Incomplete setup is the first job on Home. Open it immediately instead of
   // making a new student discover and expand a collapsed invitation.
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(!startCollapsed);
   const [finished, setFinished] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [stepIndex, setStepIndex] = React.useState(() =>
@@ -134,9 +142,18 @@ export function OrientationCardView({
           <div>
             <h2>You're set up</h2>
             <p>
-              Joshua has what he needs to build your plan. Your to-do list is right
-              below.
+              Joshua has what he needs to build your plan.
             </p>
+            {onDone ? (
+              <button
+                type="button"
+                className="classroom-orientation-continue"
+                onClick={onDone}
+              >
+                Open my classroom
+                <ArrowRight size={14} />
+              </button>
+            ) : null}
           </div>
         </div>
       </section>
@@ -257,9 +274,12 @@ export function OrientationCardView({
 
 /**
  * Live half: reads the profile once, then writes each step as it is answered.
- * Renders nothing at all once onboarding_completed_at is set.
+ *
+ * Exposed as a hook because the intake owns the whole stage while it is
+ * unfinished — Classroom has to know whether to draw the home at all, and that
+ * decision cannot live inside a card that renders itself.
  */
-export default function OrientationCard() {
+export function useOrientation() {
   const { user } = useAuth();
   const { setDisplayName, setTestDate } = useClassroomLayout();
   const [loaded, setLoaded] = React.useState(false);
@@ -342,8 +362,13 @@ export default function OrientationCard() {
     [setDisplayName, setTestDate, user],
   );
 
-  if (!loaded || completed) return null;
+  return { loaded, completed, setCompleted, name, answers, save };
+}
 
+/** The inline card, for any surface that wants it as one block among many. */
+export default function OrientationCard() {
+  const { loaded, completed, name, answers, save } = useOrientation();
+  if (!loaded || completed) return null;
   return (
     <OrientationCardView initialName={name} initialAnswers={answers} onSave={save} />
   );
