@@ -40,6 +40,7 @@ const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
 import Classroom from "./pages/Classroom";
+import AdmissionsPage from "./pages/classroom/AdmissionsPage";
 import ClassroomLayout from "./components/classroom/shell/ClassroomLayout";
 import {
   ClassroomAssignmentView,
@@ -479,6 +480,14 @@ const App = () => {
                       <Route path="uploads" element={<ClassroomUploadsView />} />
                       <Route path="account" element={<ClassroomAccountView />} />
                       <Route path="recaps" element={<ClassroomRecapsView />} />
+                      {/* Admissions is reference, not a paid feature: a student
+                          deciding whether to work with Joshua should be able to
+                          see what the schools they want actually took. */}
+                      <Route path="admissions" element={
+                        <ProtectedRoute flag="has_classroom_access" allowSignedIn>
+                          <AdmissionsPage />
+                        </ProtectedRoute>
+                      } />
                       <Route path="item/:itemId" element={<ClassroomItemView />} />
                       <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
                       <Route path=":assignmentId" element={<ClassroomAssignmentView />} />

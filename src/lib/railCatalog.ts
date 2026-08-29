@@ -18,6 +18,7 @@ export type RailItemId =
   | "flagged"
   | "analytics"
   | "history"
+  | "admissions"
   | "messages"
   | "schedule";
 
@@ -65,6 +66,9 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], allowSignedIn: true, section: true },
   { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
+  // Reference, not a paid feature: what the schools a student is aiming at
+  // actually admitted. Open to anyone signed in, like Home.
+  { id: "admissions", label: "Admissions", group: "review", flags: ["has_classroom_access"], allowSignedIn: true },
   { id: "history", label: "History", group: "review", flags: ["has_analytics_access"] },
   { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
   // Schedule owns booking too: one rail entry, two stage tabs (Schedule | Book

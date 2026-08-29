@@ -29,6 +29,7 @@ const ROUTE_FOR: Record<RailItemId, string> = {
   flagged: '/flagged',
   analytics: '/analytics',
   history: '/history',
+  admissions: 'admissions',
   messages: '/inbox/*',
   // Schedule owns booking: `/booking` is the same shell with the Book tab
   // open, so there is no separate `booking` rail item to map.

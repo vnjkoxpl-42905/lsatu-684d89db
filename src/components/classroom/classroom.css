@@ -4424,3 +4424,143 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-stage-index-heading:first-child {
   margin-top: 0;
 }
+
+
+/* ── Admissions ─────────────────────────────────────────────────────────────
+   The 509 numbers for every accredited school, and where the student's own
+   score sits against each class. A table, deliberately: the student is
+   comparing rows, and anything prettier would make that harder. */
+
+.classroom-root .classroom-admissions-head {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.classroom-root .classroom-admissions-head h1 {
+  font-family: "Fraunces", Georgia, ui-serif, serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+
+.classroom-root .classroom-admissions-head p {
+  color: rgb(var(--classroom-meta));
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.classroom-root .classroom-admissions-score {
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-admissions-score strong {
+  color: var(--classroom-ink);
+  font-size: 17px;
+}
+
+.classroom-root .classroom-admissions-section {
+  align-items: center;
+  display: flex;
+  font-size: 11px;
+  font-weight: 650;
+  gap: 6px;
+  letter-spacing: 0.12em;
+  margin: 22px 0 8px;
+  text-transform: uppercase;
+}
+
+/* The table scrolls inside its own box: seven columns will not fit a phone,
+   and the page itself must never scroll sideways. */
+.classroom-root .classroom-admissions-scroll {
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.classroom-root .classroom-admissions-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 620px;
+  width: 100%;
+}
+
+.classroom-root .classroom-admissions-table th,
+.classroom-root .classroom-admissions-table td {
+  padding: 9px 12px;
+  text-align: left;
+}
+
+.classroom-root .classroom-admissions-table thead th {
+  border-bottom: 1px solid var(--classroom-line);
+  color: rgb(var(--classroom-meta));
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.classroom-root .classroom-admissions-table tbody tr + tr th,
+.classroom-root .classroom-admissions-table tbody tr + tr td {
+  border-top: 1px solid color-mix(in srgb, var(--classroom-line) 60%, transparent);
+}
+
+.classroom-root .classroom-admissions-table tbody tr:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-admissions-name {
+  display: block;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-admissions-state {
+  color: rgb(var(--classroom-meta));
+  font-size: 11.5px;
+}
+
+.classroom-root .classroom-admissions-num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.classroom-root .classroom-admissions-median {
+  font-weight: 700;
+}
+
+.classroom-root .classroom-admissions-band {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.classroom-root .admissions-band-strong {
+  background: color-mix(in srgb, #2f7d4f 14%, transparent);
+  color: #24623d;
+}
+
+.classroom-root .admissions-band-mid {
+  background: color-mix(in srgb, var(--classroom-link) 16%, transparent);
+  color: #9a4f04;
+}
+
+.classroom-root .admissions-band-low {
+  background: var(--classroom-hover);
+  color: rgb(var(--classroom-meta));
+}
+
+.classroom-root .classroom-admissions-empty {
+  color: rgb(var(--classroom-meta));
+  font-size: 13.5px;
+}

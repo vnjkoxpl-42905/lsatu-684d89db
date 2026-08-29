@@ -276,6 +276,11 @@ function ClassroomSidebar({
           active: location.pathname.startsWith("/analytics"),
           onClick: () => go("/analytics"),
         };
+      case "admissions":
+        return {
+          active: location.pathname === "/classroom/admissions",
+          onClick: () => go("/classroom/admissions"),
+        };
       case "history":
         return {
           active: location.pathname.startsWith("/history"),
