@@ -735,3 +735,110 @@
     max-width: none;
   }
 }
+
+/* ---------------------------------------------------------------------
+ * The breakdown.
+ *
+ * A reading surface, not chrome. The numbered rules above are scannable and
+ * procedural; this is the part a student actually reads once, before they
+ * start, and it has to be worth reading.
+ *
+ * Two columns from 1024px so the whole thing is one page rather than a long
+ * scroll, with sections kept intact across the break. Below that it is a
+ * single column at a comfortable measure.
+ * ------------------------------------------------------------------- */
+.act-home .act-briefing {
+  margin-top: clamp(2rem, 4vh, 3rem);
+  padding-top: clamp(1.5rem, 3vh, 2.25rem);
+  border-top: 1px solid hsl(var(--act-hairline));
+}
+
+.act-home .act-briefing-lede {
+  margin: 0 0 clamp(1.5rem, 3vh, 2.25rem);
+  max-width: 46rem;
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: hsl(var(--act-ink) / 0.9);
+}
+
+.act-home .act-briefing-section {
+  /* Keeps a heading from being orphaned at the foot of a column. */
+  break-inside: avoid;
+  page-break-inside: avoid;
+  max-width: 40rem;
+}
+
+.act-home .act-briefing-section + .act-briefing-section {
+  margin-top: 1.9rem;
+}
+
+.act-home .act-briefing-heading {
+  margin: 0 0 0.6rem;
+  font-size: 1.02rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.008em;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-briefing-body {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-briefing-body + .act-briefing-body {
+  margin-top: 0.7rem;
+}
+
+/* The last beat before Start. Set apart by a rule and the accent, so the page
+   ends on a sentence rather than trailing off into the final section. */
+.act-home .act-briefing-closer {
+  margin: clamp(1.75rem, 3.5vh, 2.5rem) 0 0;
+  padding-left: 0.9rem;
+  border-left: 1px solid hsl(var(--act-accent-strong) / 0.55);
+  max-width: 40rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink) / 0.86);
+}
+
+@media (min-width: 1024px) {
+  .act-home .act-briefing-flow {
+    columns: 2;
+    column-gap: 3.5rem;
+  }
+
+  /* `margin-top` on the first section of the second column would push it off
+     the top rule and break the two columns' shared baseline. */
+  .act-home .act-briefing-section {
+    margin-top: 0;
+    margin-bottom: 1.9rem;
+  }
+
+  .act-home .act-briefing-section + .act-briefing-section {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-home .act-briefing {
+    transition: none;
+  }
+}
+
+/* The detail grid reserves a second column for the credited answers. An
+   Activity with no worked example has none, so the rules were left sitting
+   against an empty half at every width above 820px. */
+@media (min-width: 820px) {
+  .act-home .act-detail-grid[data-credited="false"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .act-home .act-detail-grid[data-credited="false"] .act-steps {
+    max-width: 46rem;
+  }
+}

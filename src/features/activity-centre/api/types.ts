@@ -121,10 +121,30 @@ export interface ActivityCoach {
   partial_rule: string;
 }
 
+/**
+ * The long-form breakdown on an Activity's front door: what the drill actually
+ * trains, why it is built the way it is, and what doing it properly looks like.
+ *
+ * The numbered `rules` are the procedure and answer "what do I press". They do
+ * not answer "why am I doing this", and for a drill whose whole design is
+ * counter-intuitive -- the text is taken away on purpose, a summary is a
+ * failure, going slowly is correct -- a student who does not have the why will
+ * quietly do the easier thing instead.
+ */
+export interface ActivityBriefing {
+  /** The line under the section label, before the sections. */
+  lede?: string;
+  sections: { heading: string; body: string[] }[];
+  /** The last beat before the Start action. */
+  closer?: string;
+}
+
 /** The intro / rules block stored in `instructions`. */
 export interface ActivityInstructions {
   tagline?: string;
   rules?: string[];
+  /** Absent on the Activities whose procedure is self-explanatory. */
+  briefing?: ActivityBriefing;
   worked_example?: {
     statement: string;
     credited_answers: string[];

@@ -24,6 +24,62 @@
       "Then react to it out loud. Any reaction counts, nothing is scored, and you cannot move on without one.",
       "Every few chunks you will be asked to say back everything so far, still with nothing on the screen."
     ],
+    "briefing": {
+      "lede": "This is the drill that decides whether you still have the stimulus by the time you reach the answer choices.",
+      "sections": [
+        {
+          "heading": "Understanding it is not the same as holding it.",
+          "body": [
+            "You can follow a stimulus perfectly, sentence by sentence, and still get down to answer choice C with almost nothing left. That is not a comprehension problem. It is a retention problem, and it is the one this drill was built for.",
+            "Understanding is necessary for everything and sufficient for nothing. If the argument is not still with you while you work the answers, your understanding never gets the chance to help."
+          ]
+        },
+        {
+          "heading": "The text disappears, and that is the point.",
+          "body": [
+            "Once you tap Got it, the chunk is gone and it is not coming back.",
+            "If you could glance back, you would, and then none of this is recall. You are just reading it a second time, and you will start handing it back in their words instead of yours. Taking the text away is the only thing that keeps the stage honest."
+          ]
+        },
+        {
+          "heading": "Say it the way you would tell a friend.",
+          "body": [
+            "Out loud, in your own words, in whatever order it comes out. Casual is fine. Stumbling is fine. Laughing is fine.",
+            "These stimuli are often built to be hard to hold onto. Your job is to cut one down to size and say the same thing in plain language. Saying a complicated thing simply is the whole skill."
+          ]
+        },
+        {
+          "heading": "Plain is not the same as short.",
+          "body": [
+            "Keep everything. Names, numbers, dates, quantities, and the small connecting words that tell you how two ideas are related. Each one is its own detail, and none of them are safe to drop because the sentence around them survived.",
+            "The pull is always toward giving the gist and moving on. But you cannot know which parts mattered until after you have read it, so filtering on the way through mostly means quietly throwing out the piece you were going to need.",
+            "You already know what this sounds like from the other side. When someone repeats your problem back to you and half of it is missing, you can tell straight away that they were not really listening. Say it back the way you would want it said back to you."
+          ]
+        },
+        {
+          "heading": "Then react to it, and mean it.",
+          "body": [
+            "After the chunk is back, say what you actually think of it. Anything genuine counts, none of it is scored, and you cannot move on without it.",
+            "One standard: if your reaction would fit any sentence on the test, it is not a reaction. \"Okay, makes sense\" is not doing anything. The moment you push on a claim, notice what it quietly takes for granted, or connect it to something you already know, you have started doing the question rather than waiting for it."
+          ]
+        },
+        {
+          "heading": "The load grows on purpose.",
+          "body": [
+            "Every few chunks you will be asked for everything so far, still with nothing on the screen. First one chunk, then the first two together, then the whole thing.",
+            "That is the part almost nobody makes themselves do on paper, and it is the part that matters most. The answer choices arrive after the entire stimulus, never after one sentence of it."
+          ]
+        },
+        {
+          "heading": "Go slowly here. It is the fast route.",
+          "body": [
+            "What you intend on the way in decides what you keep. Read only to be finished and your brain will happily cooperate, sliding past anything that feels like a speed bump, including the clause the question turns on.",
+            "Nothing here is timed. Take the pause, sit in the part where you cannot remember what came next, and let yourself be slow while you are slow. Speed arrives later, and it comes from having done this properly, not from having done it faster."
+          ]
+        }
+      ],
+      "closer": "Expect the first few to feel slow and a little ridiculous. That is what this feels like when it is working."
+    },
     "answer_label": "What you said",
     "answer_placeholder": "Say the chunk back from memory, keeping every detail…"
   },

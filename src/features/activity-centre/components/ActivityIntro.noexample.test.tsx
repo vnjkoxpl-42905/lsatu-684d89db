@@ -162,3 +162,49 @@ describe("the line describing the sitting", () => {
     expect(container.querySelector(".act-how")!.textContent).toMatch(/^51 questions\./);
   });
 });
+
+describe("the breakdown", () => {
+  it("renders every section of an Activity that has one", () => {
+    const rrc = SEED_ACTIVITIES.find((a) => a.slug === "read-recall-colour")!;
+    const briefing = rrc.instructions.briefing!;
+    expect(briefing.sections.length).toBeGreaterThan(0);
+
+    const { container } = render(
+      <ActivityIntro
+        title={rrc.title}
+        subtitle={rrc.subtitle}
+        instructions={rrc.instructions}
+        itemCount={rrc.items.length}
+        format={rrc.item_format}
+        onStart={() => {}}
+      />,
+    );
+    expect(container.querySelectorAll(".act-briefing-section")).toHaveLength(
+      briefing.sections.length,
+    );
+    for (const section of briefing.sections) {
+      expect(screen.getByText(section.heading)).toBeInTheDocument();
+    }
+    expect(screen.getByText(briefing.closer!)).toBeInTheDocument();
+  });
+
+  it("is absent, not empty, on an Activity without one", () => {
+    const { container } = render(
+      <ActivityIntro
+        title="Vocab Rehab"
+        subtitle="Work out the word"
+        instructions={withExample}
+        itemCount={51}
+        onStart={() => {}}
+      />,
+    );
+    expect(container.querySelector(".act-briefing")).toBeNull();
+  });
+
+  it("carries no em dash, which Joshua never types", () => {
+    // Student-facing copy. An em dash reads as machine-written and costs trust.
+    const rrc = SEED_ACTIVITIES.find((a) => a.slug === "read-recall-colour")!;
+    const prose = JSON.stringify(rrc.instructions.briefing);
+    expect(prose).not.toMatch(/[—–]/);
+  });
+});

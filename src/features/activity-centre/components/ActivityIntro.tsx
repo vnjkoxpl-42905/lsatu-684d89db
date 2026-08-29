@@ -214,7 +214,10 @@ export function ActivityIntro({
 
       {/* ---- DETAIL (compact): the rules, the credited answers, Start ---- */}
       <section className="act-detail">
-        <motion.div variants={item} className="act-detail-grid">
+        <motion.div variants={item} className="act-detail-grid" data-credited={ex ? "true" : "false"}>
+          {/* No worked example means no credited-answers block, so the second
+              column has nothing to hold and the rules sit against an empty
+              half. Same failure as the hero, one section further down. */}
           {instructions.rules?.length ? (
             <ol className="act-steps">
               {instructions.rules.map((rule, i) => (
@@ -224,7 +227,7 @@ export function ActivityIntro({
                 </li>
               ))}
             </ol>
-          ) : <span />}
+          ) : null}
 
           {ex && (
             <div className="act-credited">
@@ -237,6 +240,35 @@ export function ActivityIntro({
             </div>
           )}
         </motion.div>
+
+        {/* The breakdown.
+            The numbered rules above say which buttons to press. They do not say
+            why the text is taken away, why a summary counts as a miss, or why
+            going slowly is the correct way to do this, and every one of those
+            is counter-intuitive enough that a student without the reason will
+            reasonably do the easier thing instead. Authored per Activity and
+            absent on the ones whose procedure explains itself. */}
+        {instructions.briefing && (
+          <motion.section variants={item} className="act-briefing" aria-label="How this drill works">
+            <p className="act-brief-label">How this works</p>
+            {instructions.briefing.lede && (
+              <p className="act-briefing-lede">{instructions.briefing.lede}</p>
+            )}
+            <div className="act-briefing-flow">
+              {instructions.briefing.sections.map((section, i) => (
+                <section key={i} className="act-briefing-section">
+                  <h2 className="act-briefing-heading">{section.heading}</h2>
+                  {section.body.map((para, j) => (
+                    <p key={j} className="act-briefing-body">{para}</p>
+                  ))}
+                </section>
+              ))}
+            </div>
+            {instructions.briefing.closer && (
+              <p className="act-briefing-closer">{instructions.briefing.closer}</p>
+            )}
+          </motion.section>
+        )}
 
         <motion.div variants={item}>
           <button type="button" onClick={onStart} className="act-start" ref={startRef}>
