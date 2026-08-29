@@ -42,6 +42,30 @@ async function sha256Hex(s: string): Promise<string> {
 
 const gcal: GoogleCal = { insertEvent, patchEvent, getEvent, deleteEvent, freeBusy, meetUrlFromEvent };
 
+/** True only for a caller holding a valid admin JWT, so an error response can
+ *  carry its real cause without leaking it to students. */
+async function callerIsAdmin(req: Request): Promise<boolean> {
+  try {
+    const authorization = req.headers.get("authorization") || "";
+    if (!authorization.startsWith("Bearer ")) return false;
+    const admin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+    );
+    const { data, error } = await admin.auth.getUser(authorization.slice(7));
+    if (error || !data?.user) return false;
+    const { data: role } = await admin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    return !!role;
+  } catch {
+    return false;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -171,7 +195,12 @@ Deno.serve(async (req) => {
 
     return json({ error: "unknown_action" }, 400);
   } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
     console.error("public-booking error", e);
+    // Same rule as single-session: a student sees nothing, an admin holding a
+    // valid JWT gets the real cause, because the logs are not reachable from
+    // where the page is broken.
+    if (await callerIsAdmin(req)) return json({ error: "server_error", detail }, 500);
     return json({ error: "server_error" }, 500);
   }
 });

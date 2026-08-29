@@ -88,8 +88,43 @@ async function rateLimit(supabase: any, ipHash: string, action: string, limit: n
     _slug: "single-session",
     _action: action,
   });
-  if (error) throw error;
+  // Fail open. This is a throttle, not a gate: a counter that cannot write is
+  // a reason to log loudly, never a reason to stop every student from booking
+  // a session. Throwing here took the whole booking page down.
+  if (error) {
+    console.error("single-session rate limit unavailable, allowing", {
+      action,
+      code: error.code,
+      message: error.message,
+      details: error.details,
+    });
+    return true;
+  }
   return Number(data ?? 0) <= limit;
+}
+
+/** True only for a caller holding a valid admin JWT. Used to decide whether an
+ *  error response may carry its real cause. */
+async function callerIsAdmin(req: Request): Promise<boolean> {
+  try {
+    const authorization = req.headers.get("authorization") || "";
+    if (!authorization.startsWith("Bearer ")) return false;
+    const admin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+    );
+    const { data, error } = await admin.auth.getUser(authorization.slice(7));
+    if (error || !data?.user) return false;
+    const { data: role } = await admin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    return !!role;
+  } catch {
+    return false;
+  }
 }
 
 async function optionalUserId(supabase: any, req: Request): Promise<string | null> {
@@ -172,7 +207,12 @@ Deno.serve(async (req) => {
     const serviceKey = requiredEnv("SUPABASE_SERVICE_ROLE_KEY");
     const supabase = createClient(supabaseUrl, serviceKey);
     const ip = clientIp(req);
-    const ipHash = await hmacHex(requiredEnv("BOOKING_IP_HMAC_KEY"), ip);
+    // Keyed when the secret is there, plain digest when it is not. Either way
+    // it is only a bucket key for counting hits, and a missing secret must not
+    // cost every student the ability to book.
+    const hmacKey = Deno.env.get("BOOKING_IP_HMAC_KEY");
+    if (!hmacKey) console.error("BOOKING_IP_HMAC_KEY is not set; throttle keys are unkeyed digests");
+    const ipHash = hmacKey ? await hmacHex(hmacKey, ip) : await sha256Hex(ip);
     const isWrite = ["hold", "abandon", "cancel"].includes(action);
     if (!await rateLimit(supabase, ipHash, isWrite ? action : "read", isWrite ? WRITE_LIMIT : READ_LIMIT)) {
       return json({ error: "rate_limited" }, 429);
@@ -414,7 +454,12 @@ Deno.serve(async (req) => {
     return json({ error: "unknown_action" }, 400);
   } catch (error) {
     if (error instanceof Error && error.message === "payload_too_large") return json({ error: "payload_too_large" }, 413);
-    console.error("single-session error", { error: error instanceof Error ? error.message : String(error) });
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error("single-session error", { error: detail });
+    // Students see nothing but "server_error". An admin, proven by their own
+    // JWT, gets the actual reason - otherwise a broken booking page is a
+    // guessing game from the outside.
+    if (await callerIsAdmin(req)) return json({ error: "server_error", detail }, 500);
     return json({ error: "server_error" }, 500);
   }
 });
