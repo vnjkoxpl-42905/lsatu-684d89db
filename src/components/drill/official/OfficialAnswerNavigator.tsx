@@ -22,6 +22,12 @@ interface Props {
   jumpDisabledReason?: string;
   /** Adaptive smart drills do not have a fixed queue to display. */
   showQuestionList?: boolean;
+  /**
+   * Questions worth a second look, marked on their ovals. Blind review passes
+   * this; a section does not. It is a marker only and never changes which
+   * questions the strip shows.
+   */
+  recommendedQids?: Set<string>;
   prevDisabled?: boolean;
   nextDisabled?: boolean;
   nextDisabledReason?: string;
@@ -50,6 +56,7 @@ export default function OfficialAnswerNavigator({
   jumpEnabled,
   jumpDisabledReason,
   showQuestionList = true,
+  recommendedQids,
   prevDisabled,
   nextDisabled,
   nextDisabledReason,
@@ -70,6 +77,7 @@ export default function OfficialAnswerNavigator({
             {questionQueue.map((qid, i) => {
               const isCurrent = i === currentIndex;
               const isAnswered = attemptedQids.has(qid);
+              const isRecommended = !!recommendedQids?.has(qid);
               const isClickable = jumpEnabled && i !== currentIndex;
               return (
                 <li
@@ -87,7 +95,7 @@ export default function OfficialAnswerNavigator({
                     onClick={() => isClickable && onJumpTo(i)}
                     disabled={!isClickable}
                     aria-current={isCurrent ? "true" : undefined}
-                    aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${
+                    aria-label={`Question ${i + 1}${isRecommended ? ", recommended" : ""}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${
                       !isClickable && !isCurrent && jumpDisabledReason ? `, ${jumpDisabledReason}` : ""
                     }`}
                     title={
@@ -96,8 +104,11 @@ export default function OfficialAnswerNavigator({
                         : undefined
                     }
                     className={cn(
-                      "w-[28px] h-[15px] rounded-full border border-slate-500 transition-colors",
+                      "w-[28px] h-[15px] rounded-full border transition-colors",
                       isAnswered ? "bg-slate-400" : "bg-white",
+                      // A marker, never a filter: the strip still shows every
+                      // question, this one just asks to be looked at again.
+                      isRecommended ? "border-[#7f1d1d] border-2" : "border-slate-500",
                       isClickable && "hover:bg-slate-200 cursor-pointer",
                       !isClickable && !isCurrent && "cursor-default",
                     )}

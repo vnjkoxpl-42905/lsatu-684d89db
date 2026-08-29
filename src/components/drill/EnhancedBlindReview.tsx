@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, ArrowLeft, XCircle } from 'lucide-react';
-import { HighlightedText } from './HighlightedText';
-import { HighlightToolbar } from './HighlightToolbar';
+import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
+import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
+import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
+import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import { questionBank } from '@/lib/questionLoader';
-import { normalizeText, cn } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { QuestionTimer } from '@/lib/questionTimer';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -60,6 +56,8 @@ export function EnhancedBlindReview({
    * losing it. Resets to `br` on every question, because the review is the job.
    */
   const [answerTab, setAnswerTab] = React.useState<'actual' | 'br'>('br');
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [fontScale, setFontScale] = React.useState(1);
   const timerRef = React.useRef(new QuestionTimer());
   const [longPressTimer, setLongPressTimer] = React.useState<ReturnType<typeof setTimeout> | null>(null);
 
@@ -277,125 +275,100 @@ export function EnhancedBlindReview({
   const isRecommended = !!recommendedQids?.has(currentQid);
   const readOnly = answerTab === 'actual';
 
+  const attemptedQids = new Set<string>();
+  for (const qid of reviewQids) {
+    if ((brAnswers.get(qid) || '') !== '') attemptedQids.add(qid);
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-card border-b">
-        <div className="max-w-5xl mx-auto px-6 py-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={onBack}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <h2 className="text-xl font-bold">Blind Review</h2>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  placeholder="#"
-                  value={jumpToInput}
-                  onChange={(e) => setJumpToInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleJumpTo()}
-                  className="w-16 h-8"
-                  min={1}
-                  max={reviewQids.length}
-                />
-                <Button size="sm" onClick={handleJumpTo}>Go</Button>
-              </div>
-
-              <Button onClick={handleFinish} size="sm">
-                Finish Review
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              Question {currentIndex + 1} / {reviewQids.length}
-            </div>
-            <Progress value={progress} className="flex-1 h-1.5" />
+    <OfficialDrillFrame
+      header={
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 w-full text-[14px]">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate text-[15px]">
+            <button
+              type="button"
+              onClick={onBack}
+              className="text-blue-700 hover:text-blue-800 font-semibold transition-colors"
+            >
+              Section complete
+            </button>
+            <span aria-hidden className="text-slate-300">/</span>
+            <span className="text-[#7f1d1d] font-semibold" aria-current="page">
+              Blind Review · Question {currentIndex + 1} of {reviewQids.length}
+            </span>
+          </nav>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleFinish}
+              className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-3 sm:px-5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors"
+            >
+              Submit blind review
+            </button>
           </div>
         </div>
-      </div>
+      }
+    >
+      {/* Same toolbar as the section, minus the clock. A blind review is
+          untimed, so there is no timer to show and none is passed. */}
+      <OfficialDrillToolbar
+        highlightMode={highlightMode}
+        setHighlightMode={setHighlightMode}
+        timerLabel=""
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        fontScale={fontScale}
+        setFontScale={setFontScale}
+      />
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="max-w-5xl mx-auto space-y-6">
-          {/* Toolbar */}
-          <HighlightToolbar
-            mode={highlightMode}
-            onModeChange={setHighlightMode}
-            onUndo={handleUndo}
-            canUndo={highlightHistory.length > 0}
-            onToggleFlag={handleToggleFlag}
-            isFlagged={isFlagged}
-          />
-
-          {/* Question Card */}
-          <div className="bg-card border rounded-xl p-6 space-y-6">
-            {/* Question ID, and the recommendation marker if this one carries it. */}
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-sm text-muted-foreground font-mono">
-                PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum} • {currentQuestion.qtype}
-              </div>
+      <OfficialQuestionPane
+        question={{
+          qid: currentQuestion.qid,
+          qnum: currentQuestion.qnum,
+          stimulus: currentQuestion.stimulus,
+          questionStem: currentQuestion.questionStem,
+          answerChoices: currentQuestion.answerChoices,
+        }}
+        displayNumber={currentIndex + 1}
+        selectedAnswer={readOnly ? previousAttempt?.selectedAnswer || '' : currentAnswer}
+        eliminatedAnswers={readOnly ? new Set<string>() : currentEliminated}
+        isFlagged={isFlagged}
+        highlights={questionHighlights}
+        highlightMode={highlightMode}
+        searchTerm={searchTerm}
+        fontScale={fontScale}
+        onAnswerSelect={(key) => !readOnly && handleAnswerSelect(key)}
+        onEliminate={(key) => !readOnly && handleEliminateAnswer(key)}
+        onToggleFlag={handleToggleFlag}
+        onTextSelection={() => {}}
+        onHighlightClick={() => {}}
+        aboveChoices={
+          <div className="flex items-center gap-1 border-b border-slate-200">
+            {(['actual', 'br'] as const).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={answerTab === tab}
+                onClick={() => setAnswerTab(tab)}
+                className={cn(
+                  '-mb-px border-b-2 px-3 py-2 text-[14px] font-semibold transition-colors',
+                  answerTab === tab
+                    ? 'border-[#7f1d1d] text-slate-900'
+                    : 'border-transparent text-slate-500 hover:text-slate-900',
+                )}
+              >
+                {tab === 'actual' ? 'Actual' : 'BR'}
+              </button>
+            ))}
+            <span className="ml-auto flex items-center gap-3 text-[13px] text-slate-500">
               {isRecommended && (
-                <span
-                  className="rounded-full border border-primary/40 px-2.5 py-0.5 text-xs font-medium text-primary"
-                  title="Worth a second look. Some questions you got right are marked too."
-                >
-                  Recommended
+                <span className="rounded-full border border-[#7f1d1d]/40 px-2.5 py-0.5 font-medium text-[#7f1d1d]">
+                  Recommended for BR
                 </span>
               )}
-            </div>
-
-            {/* Stimulus */}
-            {currentQuestion.stimulus && (
-              <div className="pl-4 py-2 border-l">
-                <HighlightedText
-                  text={normalizeText(currentQuestion.stimulus)}
-                  highlights={questionHighlights.filter(h => h.section === 'stimulus')}
-                  onHighlightClick={() => {}}
-                  eraserMode={highlightMode === 'erase'}
-                />
-              </div>
-            )}
-
-            {/* Question Stem */}
-            <div className="text-lg font-medium leading-relaxed">
-              <HighlightedText
-                text={normalizeText(currentQuestion.questionStem)}
-                highlights={questionHighlights.filter(h => h.section === 'stem')}
-                onHighlightClick={() => {}}
-                eraserMode={highlightMode === 'erase'}
-              />
-            </div>
-
-            {/* Actual / BR. The timed answer stays reachable rather than being
-                overwritten, which is what makes a change feel like a decision
-                instead of a guess into the void. */}
-            <div className="flex items-center gap-1 border-b border-border">
-              {(['actual', 'br'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  role="tab"
-                  aria-selected={answerTab === tab}
-                  onClick={() => setAnswerTab(tab)}
-                  className={cn(
-                    '-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors',
-                    answerTab === tab
-                      ? 'border-primary text-foreground'
-                      : 'border-transparent text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  {tab === 'actual' ? 'Actual' : 'BR'}
-                </button>
-              ))}
-              <span className="ml-auto text-xs text-muted-foreground">
-                {answerTab === 'actual'
+              <span>
+                {readOnly
                   ? previousAttempt?.selectedAnswer
                     ? `You chose ${previousAttempt.selectedAnswer} under the clock`
                     : 'You left this one blank'
@@ -403,155 +376,27 @@ export function EnhancedBlindReview({
                     ? `Reviewed answer: ${currentAnswer}`
                     : 'No change yet'}
               </span>
-            </div>
-
-            {/* Answer Choices */}
-            <RadioGroup
-              value={answerTab === 'actual' ? previousAttempt?.selectedAnswer || '' : currentAnswer}
-              onValueChange={answerTab === 'actual' ? () => {} : handleAnswerSelect}
-            >
-              {Object.entries(currentQuestion.answerChoices).map(([key, text]) => {
-                const isEliminated = currentEliminated.has(key);
-                
-                return (
-                  <div
-                    key={key}
-                    className={cn(
-                      "flex items-start gap-4 py-4 px-4 rounded-lg border",
-                      "transition-all duration-[120ms] ease-out",
-                      readOnly ? "cursor-default" : "hover:bg-accent/30 cursor-pointer",
-                      (readOnly ? previousAttempt?.selectedAnswer === key : currentAnswer === key) &&
-                        "bg-primary/5 border-primary/50",
-                      isEliminated && "opacity-55"
-                    )}
-                    onClick={() => !readOnly && !isEliminated && handleAnswerSelect(key)}
-                    onMouseDown={() => !readOnly && handleLongPressStart(key)}
-                    onMouseUp={handleLongPressEnd}
-                    onMouseLeave={handleLongPressEnd}
-                    onTouchStart={() => !readOnly && handleLongPressStart(key)}
-                    onTouchEnd={handleLongPressEnd}
-                    onTouchCancel={handleLongPressEnd}
-                  >
-                    <RadioGroupItem
-                      value={key}
-                      id={`answer-${key}`}
-                      disabled={readOnly || isEliminated}
-                      className="mt-1"
-                    />
-                    <Label
-                      htmlFor={`answer-${key}`}
-                      className={cn(
-                        "flex-1 leading-relaxed select-none",
-                        readOnly ? "cursor-default" : "cursor-pointer",
-                        "transition-all duration-[120ms]",
-                        isEliminated && "line-through decoration-2 decoration-muted-foreground"
-                      )}
-                    >
-                      <span className="font-semibold mr-3">({key})</span>
-                      {text}
-                    </Label>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!readOnly) handleEliminateAnswer(key);
-                      }}
-                      disabled={readOnly}
-                      className={cn(
-                        "shrink-0 flex items-center justify-center",
-                        "w-11 h-11 -my-2 -mr-2",
-                        "rounded-md transition-all duration-[120ms]",
-                        "hover:bg-accent/50 active:scale-95",
-                        "text-muted-foreground hover:text-foreground"
-                      )}
-                      aria-pressed={isEliminated}
-                      aria-label={`Cross out choice ${key}`}
-                      title={isEliminated ? `Restore choice ${key}` : `Cross out choice ${key}`}
-                    >
-                      <XCircle 
-                        className={cn(
-                          "w-5 h-5 transition-all duration-[120ms]",
-                          isEliminated ? "fill-current" : "fill-none"
-                        )} 
-                      />
-                    </button>
-                  </div>
-                );
-              })}
-            </RadioGroup>
-
-            {/* Rationale */}
-            <div className="space-y-2 pt-4 border-t">
-              <Label htmlFor="rationale" className="text-sm">
-                Your rationale (one line)
-              </Label>
-              <Input
-                id="rationale"
-                value={currentRationale}
-                onChange={(e) => handleRationaleChange(e.target.value)}
-                placeholder="Why did you choose this answer?"
-                className="w-full"
-              />
-            </div>
+            </span>
           </div>
-        </div>
-      </div>
+        }
+      />
 
-      {/* Sticky Footer Navigation */}
-      <div className="sticky bottom-0 z-20 bg-card border-t">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Previous
-          </Button>
-
-          <div className="flex items-center gap-2">
-            {reviewQids.map((qid, idx) => {
-              // Filled once a fresh answer exists. A rationale is optional, so
-              // requiring one to fill the token made answered questions look
-              // untouched.
-              const answered = (brAnswers.get(qid) || '') !== '';
-              const recommended = !!recommendedQids?.has(qid);
-
-              return (
-                <button
-                  key={qid}
-                  onClick={() => {
-                    timerRef.current.pause();
-                    setCurrentIndex(idx);
-                  }}
-                  aria-label={`Question ${idx + 1}${recommended ? ', recommended' : ''}${answered ? ', reviewed' : ''}`}
-                  className={cn(
-                    "w-8 h-8 rounded-full border text-xs font-medium transition-all duration-150",
-                    idx === currentIndex && "ring-2 ring-primary ring-offset-2",
-                    answered ? "bg-primary text-primary-foreground" : "bg-card",
-                    // The marker rides on the token itself so the whole section
-                    // stays walkable while the suggestions still read at a glance.
-                    recommended && !answered && "border-primary/60 border-dashed",
-                    "hover:scale-110"
-                  )}
-                >
-                  {idx + 1}
-                </button>
-              );
-            })}
-          </div>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleNext}
-            disabled={currentIndex === reviewQids.length - 1}
-          >
-            Next
-            <ChevronRight className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
-      </div>
-    </div>
+      <OfficialAnswerNavigator
+        questionQueue={reviewQids}
+        currentIndex={currentIndex}
+        attemptedQids={attemptedQids}
+        jumpEnabled
+        showQuestionList
+        recommendedQids={recommendedQids}
+        prevDisabled={currentIndex === 0}
+        nextDisabled={currentIndex >= reviewQids.length - 1}
+        onJumpTo={(idx) => {
+          timerRef.current.pause();
+          setCurrentIndex(idx);
+        }}
+        onPrev={handlePrevious}
+        onNext={handleNext}
+      />
+    </OfficialDrillFrame>
   );
 }

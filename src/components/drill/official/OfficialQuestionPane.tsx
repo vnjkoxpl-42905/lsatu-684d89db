@@ -39,6 +39,12 @@ interface Props {
   onToggleFlag: () => void;
   onTextSelection: (e: React.MouseEvent<HTMLDivElement>, section: "stimulus" | "stem") => void;
   onHighlightClick: (highlightId: string) => void;
+  /**
+   * Rendered between the stem and the choices. Blind review puts its Actual/BR
+   * tabs here so it can run inside this exact pane rather than reimplementing
+   * the exam screen a second time in a different visual language.
+   */
+  aboveChoices?: React.ReactNode;
 }
 
 function stripDataArtifacts(text: string): string {
@@ -76,6 +82,7 @@ export default function OfficialQuestionPane({
   onToggleFlag,
   onTextSelection,
   onHighlightClick,
+  aboveChoices,
 }: Props) {
   const stimulusHighlights = highlights.filter((h) => h.section === "stimulus");
   const stemHighlights = highlights.filter((h) => h.section === "stem");
@@ -191,6 +198,8 @@ export default function OfficialQuestionPane({
                 />
               </button>
             </div>
+
+            {aboveChoices && <div className="mt-4">{aboveChoices}</div>}
 
             <ul className="mt-4 space-y-3.5">
               {answerEntries.map(([key, text]) => {
