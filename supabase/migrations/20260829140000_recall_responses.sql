@@ -28,3 +28,20 @@ COMMENT ON COLUMN public.activity_item_responses.rrc IS
 CREATE INDEX IF NOT EXISTS activity_item_responses_rrc_idx
   ON public.activity_item_responses (assignment_id, item_order)
   WHERE rrc IS NOT NULL;
+
+-- The `activities.item_format` check constraint predates spoken work and allows
+-- only free-text, mcq and variation. Read, Recall, Colour is `spoken-recall`,
+-- and that string is not cosmetic: `ActivityRunner` switches on it to hand the
+-- whole screen to a different player (docs/adr/0009). Without widening this the
+-- seed insert fails outright, which is exactly how it failed when the seed was
+-- first applied by hand on 2026-08-29.
+--
+-- Dropped and recreated rather than altered because Postgres has no ALTER for a
+-- check expression. The window where the table is unconstrained is inside this
+-- transaction, so nothing can write through it.
+ALTER TABLE public.activities
+  DROP CONSTRAINT IF EXISTS activities_item_format_check;
+
+ALTER TABLE public.activities
+  ADD CONSTRAINT activities_item_format_check
+  CHECK (item_format = ANY (ARRAY['free-text'::text, 'mcq'::text, 'variation'::text, 'spoken-recall'::text]));

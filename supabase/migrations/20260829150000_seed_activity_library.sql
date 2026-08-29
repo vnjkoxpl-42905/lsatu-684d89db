@@ -46,10 +46,14 @@ BEGIN
     RETURN;
   END IF;
 
-  SELECT p.class_id INTO admin_class FROM public.profiles p WHERE p.id = admin_id;
-  IF admin_class IS NULL THEN
-    admin_class := admin_id;  -- profiles.class_id = user_id invariant
-  END IF;
+  -- `public.profiles` has no `id` column: its PRIMARY KEY is `class_id`, which
+  -- holds the user id, and it is `text` where `activities.class_id` is `uuid`.
+  -- Looking up `profiles.id` aborted this whole DO block with 42703 the first
+  -- time it was applied by hand (2026-08-29). The lookup was never doing
+  -- anything anyway: the class_id = user_id invariant is the answer, and it
+  -- matches every row already in `activities`, where created_by and class_id
+  -- are the same uuid.
+  admin_class := admin_id;
 
   INSERT INTO public.activities
     (slug, title, subtitle, instructions, item_format, items, created_by, class_id)
