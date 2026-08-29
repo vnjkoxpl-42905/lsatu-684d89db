@@ -3,6 +3,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { deleteEvent, getEvent, patchEvent, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { decryptEnvelope } from "../_shared/singleSessionCrypto.ts";
 import { createRefund, retrieveRefund } from "../_shared/stripe.ts";
+import { sendAppEmail } from "../_shared/sendAppEmail.ts";
 
 const WORKER_NAME = "single-session-outbox";
 const MAX_BODY_BYTES = 1024;
