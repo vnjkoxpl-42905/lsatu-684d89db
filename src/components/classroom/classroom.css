@@ -4049,17 +4049,19 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-orientation-week {
   display: grid;
   gap: 8px;
-  grid-template-columns: 52px repeat(7, minmax(0, 1fr));
+  grid-template-columns: 58px repeat(7, minmax(0, 1fr));
 }
 
 /* Reads against the bar segments, so a filled height has units. */
 .classroom-root .classroom-orientation-scale {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-ink);
   display: flex;
   flex-direction: column;
-  font-size: 10px;
+  font-size: 11.5px;
+  font-weight: 650;
   gap: 3px;
   height: 104px;
+  letter-spacing: -0.01em;
   text-align: right;
 }
 
