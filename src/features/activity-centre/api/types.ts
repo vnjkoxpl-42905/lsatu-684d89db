@@ -27,7 +27,15 @@ export type JudgeSource = "fast-path" | "coach" | "fallback";
  */
 export type FeedbackState = Verdict | "unchecked";
 export type ActivityStatus = "assigned" | "in_progress" | "completed";
-export type ItemFormat = "free-text" | "mcq" | "variation";
+/**
+ * How a student answers an Activity's items.
+ *
+ * `spoken-recall` is Read, Recall, Colour: she speaks rather than types, and
+ * the unit she answers is a chunk of an item rather than the item itself. It is
+ * listed here because the column is a plain string and every other format is,
+ * not because the runner branches on it; the world does that.
+ */
+export type ItemFormat = "free-text" | "mcq" | "variation" | "spoken-recall";
 
 /** One authored prompt within an Activity. */
 export interface ActivityItem {
@@ -40,6 +48,61 @@ export interface ActivityItem {
   explanation: string;
   /** Optional grouping label (e.g. "Universal Statement"). */
   category?: string;
+}
+
+/**
+ * One conceptual unit of a chunk, and the only thing completeness is measured
+ * against.
+ *
+ * Written in plain analytic language, never in the stimulus's own wording. A
+ * recall is REQUIRED to be in the student's own words, so a detail phrased as a
+ * quotation could not be matched without failing the own-words criterion at the
+ * same moment.
+ */
+export interface ChunkDetail {
+  /** Authored position in the list, 1-based. */
+  n: number;
+  text: string;
+}
+
+/**
+ * One step of a spoken-recall item: what the student reads, and what has to
+ * survive when she says it back with the text hidden.
+ *
+ * Chunking rule, which is settled and not a per-item judgement call: default to
+ * one sentence, allow smaller down to a comma or a third of a sentence, and
+ * never combine sentences, because the first sentence's details are what get
+ * lost when you do. Round down, not up. The one exception is a chunk that is
+ * not yet a complete thought, which may take slightly more.
+ */
+export interface RecallChunk {
+  n: number;
+  /** Verbatim from the item's prompt. The chunks must reassemble it exactly. */
+  text: string;
+  details: ChunkDetail[];
+}
+
+/**
+ * A Read, Recall, Colour item: one whole stimulus, cut into chunks.
+ *
+ * `prompt` is the entire stimulus and is never shown whole to the student; she
+ * only ever sees one chunk at a time, and only until she taps past it. It is
+ * stored whole because the chunks are checked against it and because the final
+ * cumulative round is scored against everything in it.
+ *
+ * `credited_answers` holds one entry: a model retelling of the whole stimulus
+ * in plain words with every detail intact. It is the reference for that final
+ * cumulative round, and the clearest single statement of what "close enough"
+ * means here. Per-chunk there is no credited answer, only `details`.
+ */
+export interface RecallItem extends ActivityItem {
+  chunks: RecallChunk[];
+  /**
+   * The chunk numbers after which the student says back everything so far with
+   * nothing on screen. The load grows every round, which is the point of the
+   * drill and the part software can enforce that paper cannot.
+   */
+  cumulative_after: number[];
 }
 
 /**

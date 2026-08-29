@@ -132,6 +132,37 @@ export interface WorldBinding {
   parserVersion?: string;
 }
 
+/**
+ * What a library card wears above the title: a name, a scope and an accent.
+ *
+ * Every Activity worked on a surface takes its world's. Read, Recall, Colour
+ * has no world by design (ADR 0009) and, at Joshua's call, no themed name
+ * either: it asks the student to stop looking at the screen, so inventing a
+ * room for it works against the point. It still needs to be told apart in the
+ * list, though, so it carries what it actually is instead of a place that does
+ * not exist. Without this it is the one unlabelled row among labelled ones,
+ * which reads as a bug rather than as a different kind of thing.
+ */
+export interface CardIdentity {
+  label: string;
+  scope: string;
+  accent: string;
+}
+
+const UNWORLDED: Record<string, CardIdentity> = {
+  "read-recall-colour": {
+    label: "Out Loud",
+    scope: "a stimulus, from memory",
+    accent: "320 60% 62%",
+  },
+};
+
+export function cardIdentityFor(title: string | null | undefined): CardIdentity | null {
+  const world = worldForTitle(title);
+  if (world) return { label: world.label, scope: world.scope, accent: world.accent };
+  return UNWORLDED[slugFromTitle(title ?? "")] ?? null;
+}
+
 const WORLDS: WorldBinding[] = [
   {
     slug: "negation-station",

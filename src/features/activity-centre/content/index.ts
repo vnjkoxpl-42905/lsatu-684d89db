@@ -11,6 +11,7 @@
 import type { ActivityInstructions, ActivityItem, ItemFormat } from "../api/types";
 
 import conditionalRephrase from "./conditional-rephrase.json";
+import readRecallColour from "./read-recall-colour.json";
 import dumbItDown from "./dumb-it-down.json";
 import findTheConclusion from "./find-the-conclusion.json";
 import rebuttalRephrase from "./rebuttal-rephrase.json";
@@ -42,6 +43,12 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
   rebuttalRephrase as SeedActivity, // an argument, restated
   dumbItDown as SeedActivity, // a paragraph
   spotTheCallback as SeedActivity, // a passage
+  // Last, and not because its text is the longest. The order above is the scope
+  // of text a skill works on, and this one is a different axis: a stimulus
+  // worked from memory rather than analysed on the page. It is also the only
+  // `spoken-recall` Activity, so it is the only one ActivityRunner hands to a
+  // different player entirely.
+  readRecallColour as unknown as SeedActivity,
 ];
 
 export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);
@@ -51,7 +58,7 @@ export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);
  * first: the scope of text the skill operates on, a word up to a passage.
  *
  * This is separate from SEED_ACTIVITIES on purpose. That array is the seed
- * pipeline's input and must stay exactly the seven Activities the migration
+ * pipeline's input and must stay exactly the Activities the migration
  * inserts. This one is the display order and includes Negation Station, which
  * predates the pipeline but still has to sit somewhere sensible in the list.
  * It goes with the other statement-level work, beside Conditional Rephrase:
@@ -71,6 +78,7 @@ export const ACTIVITY_LIBRARY_ORDER = [
   "rebuttal-rephrase", // an argument, restated
   "dumb-it-down", // a paragraph
   "spot-the-callback", // a passage
+  "read-recall-colour", // a stimulus, from memory
 ] as const;
 
 /**

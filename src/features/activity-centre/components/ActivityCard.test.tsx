@@ -36,10 +36,15 @@ describe("ActivityCard", () => {
       const { unmount } = render(
         <ActivityCard assignment={asAssignment(a)} position={1} onOpen={vi.fn()} />,
       );
-      // Eight identical rows read as one list; the world is what tells them apart.
+      // Nine identical rows read as one list; the eyebrow is what tells them
+      // apart. Every Activity has one, including the spoken one, which has no
+      // world (ADR 0009) and would otherwise be the single unlabelled row.
       expect(screen.getByText(a.title)).toBeInTheDocument();
       const eyebrow = document.querySelector('[class*="uppercase"]');
-      expect(eyebrow?.textContent).toMatch(/^The /);
+      expect(eyebrow?.textContent?.trim(), `${a.slug} has no eyebrow`).toBeTruthy();
+      if (a.item_format !== "spoken-recall") {
+        expect(eyebrow?.textContent).toMatch(/^The /);
+      }
       unmount();
     }
   });
@@ -61,6 +66,10 @@ describe("Activity Centre ordering", () => {
       (x, y) => librarySortIndex(slugFromTitle(x)) - librarySortIndex(slugFromTitle(y)),
     );
     expect(ordered[0]).toBe("Vocab Rehab");
-    expect(ordered[ordered.length - 1]).toBe("Spot the Callback");
+    // The spoken Activity sits last, and not because its text is longest: it is
+    // off the scope line entirely, working a stimulus from memory rather than
+    // analysing one on the page.
+    expect(ordered[ordered.length - 1]).toBe("Read, Recall, Colour");
+    expect(ordered[ordered.length - 2]).toBe("Spot the Callback");
   });
 });

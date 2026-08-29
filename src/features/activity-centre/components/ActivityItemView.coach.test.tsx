@@ -52,7 +52,23 @@ describe("ActivityItemView sends the Activity's own Coach brief", () => {
     invoke.mockResolvedValue({ data: { verdict: "correct", feedback: "Yes." }, error: null });
   });
 
-  it.each(SEED_ACTIVITIES.map((a, i) => [a.slug, i] as const))(
+  /**
+   * The spoken Activity is excluded, and not for convenience.
+   *
+   * `ActivityItemView` is the typed path: it renders a textarea and asks the
+   * Coach about what was written in it. Read, Recall, Colour never reaches this
+   * component at all, because `ActivityRunner` hands it the whole screen on
+   * `item_format` (ADR 0009), and it has no textbox to type into. Its Coach
+   * brief is exercised by the recall module's own tests instead.
+   *
+   * Filtered on the format rather than the slug so a second spoken Activity is
+   * excluded automatically rather than remembered.
+   */
+  it.each(
+    SEED_ACTIVITIES.map((a, i) => [a.slug, i, a.item_format] as const)
+      .filter(([, , format]) => format !== "spoken-recall")
+      .map(([slug, i]) => [slug, i] as const),
+  )(
     "%s sends its own rubric, not the negation default",
     async (slug, index) => {
       const { activity, item } = renderItem(index, true);

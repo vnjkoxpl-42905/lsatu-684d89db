@@ -7,8 +7,8 @@ import { SEED_ACTIVITIES } from "./index";
 // rather than trusted.
 
 describe("seed Activities", () => {
-  it("ships the seven authored Activities with unique slugs", () => {
-    expect(SEED_ACTIVITIES).toHaveLength(7);
+  it("ships the eight authored Activities with unique slugs", () => {
+    expect(SEED_ACTIVITIES).toHaveLength(8);
     const slugs = SEED_ACTIVITIES.map((a) => a.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
   });
@@ -18,7 +18,13 @@ describe("seed Activities", () => {
     (_slug, activity) => {
       expect(activity.title.trim()).not.toBe("");
       expect(activity.subtitle.trim()).not.toBe("");
-      expect(activity.item_format).toBe("free-text");
+      // Every Activity is typed until one is spoken. Read, Recall, Colour is
+      // the only `spoken-recall` one, and that string is not cosmetic: it is
+      // what ActivityRunner switches on to hand the whole screen to a different
+      // player (docs/adr/0009). A typo here shows a student the wrong runner.
+      expect(activity.item_format).toBe(
+        activity.slug === "read-recall-colour" ? "spoken-recall" : "free-text",
+      );
       expect(activity.items.length).toBeGreaterThan(0);
     },
   );

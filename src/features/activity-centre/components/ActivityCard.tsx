@@ -1,6 +1,6 @@
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import type { ActivityAssignmentSummary } from "../api/types";
-import { slugFromTitle, worldForTitle } from "../worlds/registry";
+import { cardIdentityFor, slugFromTitle, worldForTitle } from "../worlds/registry";
 import "./activity-scenes.css";
 
 const STATUS_LABEL: Record<ActivityAssignmentSummary["status"], string> = {
@@ -38,8 +38,13 @@ interface ActivityCardProps {
 export function ActivityCard({ assignment, position, onOpen }: ActivityCardProps) {
   const done = assignment.status === "completed";
   const world = worldForTitle(assignment.title);
+  /**
+   * The eyebrow. Falls back for an Activity that has no world, so the spoken
+   * one is not the single unlabelled row in a list of labelled ones.
+   */
+  const identity = cardIdentityFor(assignment.title);
   const slug = slugFromTitle(assignment.title);
-  const accent = world ? `hsl(${world.accent})` : "hsl(var(--muted-foreground))";
+  const accent = identity ? `hsl(${identity.accent})` : "hsl(var(--muted-foreground))";
 
   return (
     <button
@@ -60,15 +65,15 @@ export function ActivityCard({ assignment, position, onOpen }: ActivityCardProps
         <span className="text-xs font-semibold tabular-nums text-muted-foreground">
           {String(position).padStart(2, "0")}
         </span>
-        {world && (
+        {identity && (
           <>
             <span
               className="text-xs font-semibold uppercase tracking-[0.12em]"
               style={{ color: accent }}
             >
-              {world.label}
+              {identity.label}
             </span>
-            <span className="ml-auto text-xs text-muted-foreground">{world.scope}</span>
+            <span className="ml-auto text-xs text-muted-foreground">{identity.scope}</span>
           </>
         )}
       </div>

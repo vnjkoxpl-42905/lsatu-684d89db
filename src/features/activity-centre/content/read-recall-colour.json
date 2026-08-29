@@ -1,0 +1,125 @@
+{
+  "slug": "read-recall-colour",
+  "title": "Read, Recall, Colour",
+  "subtitle": "Read a chunk, lose it, and say it back with every detail intact",
+  "item_format": "spoken-recall",
+  "instructions": {
+    "coach": {
+      "drill": "a spoken recall drill, where the student reads one chunk of a stimulus, loses sight of it, and says it back from memory in her own words",
+      "rubric": [
+        "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the chunk's phrasing. Equivalent phrasing carries the detail.",
+        "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",
+        "Casual, unpolished, laughing delivery is expected. Never mark down for style, length or fluency.",
+        "A detail merely gestured at is not carried. Naming the topic is not the same as saying what was claimed about it.",
+        "Numbers, names, dates, quantities and connecting words are each their own detail. Never treat one as carried because the sentence around it was."
+      ],
+      "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
+    },
+    "tagline": "Read it once. Then say it back with nothing on the screen.",
+    "task": "Say the chunk back from memory, out loud, in your own words, keeping every detail.",
+    "rules": [
+      "Read the chunk once. When you tap Got it, it disappears, and it is not coming back.",
+      "Say it back out loud, in your own words, the way you would tell a friend. Out of order is fine. Laughing is fine.",
+      "Keep everything. Names, numbers, dates and small connecting words all count. This is not a summary.",
+      "Then react to it out loud. Any reaction counts, nothing is scored, and you cannot move on without one.",
+      "Every few chunks you will be asked to say back everything so far, still with nothing on the screen."
+    ],
+    "answer_label": "What you said",
+    "answer_placeholder": "Say the chunk back from memory, keeping every detail…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "In its coverage of a controversy regarding a proposal to build a new freeway, a television news program showed interviews with several people who would be affected by the proposed freeway. Of the interviews shown, those conducted with people against the new freeway outnumbered those conducted with people for it two to one. The television program is therefore biased against the proposed freeway.",
+      "credited_answers": [
+        "So people are arguing about whether to put in a new freeway, and a TV news show did a segment on it. They talked to a handful of folks who would have to live with it either way. Out of the clips they actually ran, there were twice as many from people who don't want it as from people who do. So the point being made is that the show is slanted against the freeway."
+      ],
+      "explanation": "The details your recall has to carry, by chunk: (1) There is a controversy. · The controversy is over a proposal to build a new freeway. · A television news program was covering it. · The program showed interviews. · The interviews were with several people. · Those people would be affected by the proposed freeway. (2) This is about the interviews the program actually showed. · Some of the people interviewed were against the new freeway. · Some of the people interviewed were for it. · The against interviews outnumbered the for interviews. · The margin was two to one. (3) This is the conclusion drawn from what came before it. · The claim is about the television program. · The program is biased. · The bias is against the proposed freeway. Named misses: **Gist.** \"A news show interviewed people about a freeway and it came out biased.\" Fails details kept: no ratio, no who was affected, no controversy. This is the common one and it is why \"complete, not a gist\" is stated first. **Verbatim.** Saying \"those conducted with people against the new freeway outnumbered those conducted with people for it two to one\" back word for word. Passes details kept and fails own words. She has not retold it, she has quoted it, which is the habit rereading produces. **Pieces come apart.** \"There was a controversy, some people were interviewed, two to one, the program is biased.\" Every detail is technically present and nothing supports anything else. Fails how the pieces fit: the ratio is no longer the reason for the bias claim, it is just a number sitting there.",
+      "category": "Argument: a conclusion drawn from a count",
+      "chunks": [
+        {
+          "n": 1,
+          "text": "In its coverage of a controversy regarding a proposal to build a new freeway, a television news program showed interviews with several people who would be affected by the proposed freeway.",
+          "details": [
+            {
+              "n": 1,
+              "text": "There is a controversy."
+            },
+            {
+              "n": 2,
+              "text": "The controversy is over a proposal to build a new freeway."
+            },
+            {
+              "n": 3,
+              "text": "A television news program was covering it."
+            },
+            {
+              "n": 4,
+              "text": "The program showed interviews."
+            },
+            {
+              "n": 5,
+              "text": "The interviews were with several people."
+            },
+            {
+              "n": 6,
+              "text": "Those people would be affected by the proposed freeway."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "Of the interviews shown, those conducted with people against the new freeway outnumbered those conducted with people for it two to one.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about the interviews the program actually showed."
+            },
+            {
+              "n": 2,
+              "text": "Some of the people interviewed were against the new freeway."
+            },
+            {
+              "n": 3,
+              "text": "Some of the people interviewed were for it."
+            },
+            {
+              "n": 4,
+              "text": "The against interviews outnumbered the for interviews."
+            },
+            {
+              "n": 5,
+              "text": "The margin was two to one."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "The television program is therefore biased against the proposed freeway.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is the conclusion drawn from what came before it."
+            },
+            {
+              "n": 2,
+              "text": "The claim is about the television program."
+            },
+            {
+              "n": 3,
+              "text": "The program is biased."
+            },
+            {
+              "n": 4,
+              "text": "The bias is against the proposed freeway."
+            }
+          ]
+        }
+      ],
+      "cumulative_after": [
+        2,
+        3
+      ]
+    }
+  ]
+}

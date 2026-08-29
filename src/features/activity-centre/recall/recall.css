@@ -1,0 +1,232 @@
+/* Read, Recall, Colour.
+ *
+ * There is no themed environment here on purpose. Every other Activity gets a
+ * named surface because each is something you work ON; this one asks her to
+ * stop looking, so decorating the screen she is meant to ignore works against
+ * the only thing that makes it worth building.
+ *
+ * The whole design is therefore one dark field, one object in the middle of it,
+ * and as little else as the moment allows.
+ */
+
+.ac-recall {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 1.5rem 4rem;
+  background: #050102;
+  color: hsl(0 0% 96%);
+  text-align: center;
+}
+
+/* The step count is the only persistent text. It says where she is without
+   saying how long anything is taking: time is measured silently and reported at
+   the end, because a clock on screen is what produces the rushed reading this
+   drill exists to treat. */
+.ac-recall-head {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Assignment-gated and full screen. Without a way out, the only exit is the
+   browser's back button, which is a trap rather than a design. */
+.ac-recall-exit {
+  border: none;
+  background: none;
+  padding: 0;
+  color: hsl(0 0% 96% / 0.4);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.ac-recall-exit:hover {
+  color: hsl(0 0% 96% / 0.8);
+}
+
+/* A microphone fault, said plainly. She cannot tell a dead input from her own
+   silence, and letting her talk into nothing is worse than any error copy. */
+.ac-recall-error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: hsl(30 80% 72%);
+}
+
+.ac-recall-count {
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: hsl(0 0% 96% / 0.4);
+}
+
+.ac-recall-read,
+.ac-recall-capture,
+.ac-recall-feedback {
+  display: flex;
+  width: min(46rem, 100%);
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+/* The chunk. Set for reading once, unhurried, at a size that does not invite
+   skimming: this is the only stage where reading is the job. */
+.ac-recall-chunk {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.ac-recall-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: hsl(0 0% 96% / 0.45);
+}
+
+.ac-recall-orb {
+  display: grid;
+  place-items: center;
+}
+
+/* Nothing is drawn here until the orb's scripts land. An empty box is the right
+   placeholder: a spinner would be a loading state at exactly the rhythm the orb
+   exists to cover. */
+.ac-recall-orb[data-ready="false"] {
+  opacity: 0;
+}
+
+.ac-recall-hold {
+  border-radius: 999px;
+  border: 1px solid hsl(0 0% 96% / 0.25);
+  background: transparent;
+  padding: 0.85rem 2.25rem;
+  color: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  /* Hold-to-talk. Selecting the label mid-hold would end the gesture on some
+     browsers, and a long-press context menu on touch would too. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+.ac-recall-hold:active {
+  border-color: hsl(0 0% 96% / 0.6);
+}
+
+.ac-recall-primary {
+  border-radius: 999px;
+  border: none;
+  background: hsl(0 0% 96%);
+  padding: 0.8rem 2.25rem;
+  color: #050102;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.ac-recall-spoken-fallback {
+  margin: 0;
+  font-size: 0.95rem;
+  color: hsl(0 0% 96% / 0.75);
+}
+
+/* Feedback. The one moment the text comes back, and it comes back once. */
+.ac-recall-details {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  width: 100%;
+}
+
+.ac-recall-details li {
+  border-left: 2px solid transparent;
+  padding-left: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.ac-recall-details li[data-state="kept"] {
+  border-left-color: hsl(152 40% 52%);
+  color: hsl(0 0% 96% / 0.85);
+}
+
+/* A dropped detail is the whole point of the feedback, so it is the thing that
+   reads loudest. It is not styled as an error: she did not do anything wrong,
+   she is being shown what her memory let go of. */
+.ac-recall-details li[data-state="lost"] {
+  border-left-color: hsl(30 80% 58%);
+  color: hsl(0 0% 100%);
+}
+
+.ac-recall-misses p {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  color: hsl(30 80% 72%);
+  text-align: left;
+}
+
+.ac-recall-said {
+  margin: 0;
+  border-left: 2px solid hsl(0 0% 96% / 0.18);
+  padding-left: 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: hsl(0 0% 96% / 0.6);
+  text-align: left;
+}
+
+.ac-recall-said-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(0 0% 96% / 0.35);
+}
+
+.ac-recall-recited {
+  margin: 0;
+  font-size: 0.88rem;
+  color: hsl(30 80% 72%);
+}
+
+.ac-recall-unjudged {
+  margin: 0;
+  font-size: 0.88rem;
+  color: hsl(0 0% 96% / 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The orb animates continuously by nature, so honouring the preference means
+     not drawing it rather than freezing it mid-frame. But she still needs to
+     know the microphone is live, and the alternative to a moving object cannot
+     be text: reading is the habit this screen exists to interrupt. A static
+     ring says "something is here" and says nothing at all. */
+  .ac-recall-orb > * {
+    display: none;
+  }
+
+  .ac-recall-orb::after {
+    content: "";
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 1px solid hsl(320 60% 62% / 0.5);
+    box-shadow: 0 0 3rem hsl(320 60% 62% / 0.18);
+  }
+}

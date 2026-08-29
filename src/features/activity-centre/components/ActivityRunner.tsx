@@ -20,6 +20,7 @@ import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
+import { RecallRunner } from "../recall/RecallRunner";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import "../activity-centre.css";
@@ -534,6 +535,37 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             onRedrill={handleRedrill}
           />
         </div>
+      </div>
+    );
+  }
+
+  /**
+   * Read, Recall, Colour takes the whole screen, not a column of it.
+   *
+   * It is a runner rather than a world
+   * (`docs/adr/0009-read-recall-colour-is-a-runner-not-a-world.md`): there is no
+   * typed answer for a world to sit beside, the unit she answers is a chunk
+   * rather than an item, and during the recall the screen must carry nothing
+   * readable at all, which a world could not arrange without reaching outside
+   * itself to suppress the answer column.
+   *
+   * The hand-off is on `item_format`, which used to be a display string and is
+   * now the switch that picks a player. Everything above this line still runs:
+   * the assignment, its snapshot, its ownership check and its resume are the
+   * same for RRC as for anything else.
+   */
+  if (assignment.item_format === "spoken-recall") {
+    if (!currentItem || !user) return null;
+    return (
+      <div className="activity-centre min-h-screen" data-runner="recall">
+        <RecallRunner
+          assignmentId={assignment.id}
+          studentId={user.id}
+          item={currentItem}
+          itemOrder={currentItem.order}
+          coach={assignment.instructions?.coach}
+          onComplete={handleBackToIntro}
+        />
       </div>
     );
   }

@@ -1,6 +1,21 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SEED_ACTIVITIES } from "../content";
+
+/**
+ * Every Activity gets a world except the spoken one.
+ *
+ * Read, Recall, Colour is a runner rather than a world
+ * (`docs/adr/0009-read-recall-colour-is-a-runner-not-a-world.md`): it has no
+ * typed answer for a world to sit beside, its answering unit is a chunk rather
+ * than an item, and during a recall the screen must carry nothing readable at
+ * all. `ActivityRunner` hands it the whole screen on `item_format`, so it never
+ * reaches this registry and must not be asserted against it.
+ *
+ * Filtering on the format rather than the slug is deliberate: a second spoken
+ * Activity should be excluded automatically, not remembered.
+ */
+const WORLDED = SEED_ACTIVITIES.filter((a) => a.item_format !== "spoken-recall");
 import { WORLD_BINDINGS, slugFromTitle, worldForTitle } from "./registry";
 
 // Eight worlds were built, one per Activity, and none was reachable: the only
@@ -12,7 +27,7 @@ import { WORLD_BINDINGS, slugFromTitle, worldForTitle } from "./registry";
 describe("world registry", () => {
   it("covers every seeded Activity, plus Negation Station", () => {
     const covered = new Set(WORLD_BINDINGS.map((w) => w.slug));
-    for (const a of SEED_ACTIVITIES) {
+    for (const a of WORLDED) {
       expect(covered.has(a.slug), `${a.slug} has no world`).toBe(true);
     }
     expect(covered.has("negation-station")).toBe(true);
@@ -22,7 +37,7 @@ describe("world registry", () => {
   it("finds a world from the title alone, which is all an assignment carries", () => {
     // An activity_assignments row snapshots title but not slug, so the lookup
     // goes through the title. Every seeded title must normalize to its slug.
-    for (const a of SEED_ACTIVITIES) {
+    for (const a of WORLDED) {
       expect(slugFromTitle(a.title)).toBe(a.slug);
       expect(worldForTitle(a.title)?.slug).toBe(a.slug);
     }
@@ -36,7 +51,7 @@ describe("world registry", () => {
   });
 
   it("renders each world's stage from its own Activity's first item", () => {
-    for (const a of SEED_ACTIVITIES) {
+    for (const a of WORLDED) {
       const world = worldForTitle(a.title)!;
       const item = a.items[0];
 
@@ -64,7 +79,7 @@ describe("world registry", () => {
     const carriers = WORLD_BINDINGS.filter((w) => w.carriesPrompt);
     expect(carriers.length).toBeGreaterThan(0);
 
-    for (const a of SEED_ACTIVITIES) {
+    for (const a of WORLDED) {
       const world = worldForTitle(a.title)!;
       if (!world.carriesPrompt) continue;
 

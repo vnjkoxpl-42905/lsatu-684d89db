@@ -10,8 +10,8 @@ import {
 // used to be thrown away at query time in favour of created_at. These pin it.
 
 describe("the library order", () => {
-  it("lists all eight Activities, including the one outside the seed pipeline", () => {
-    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(8);
+  it("lists all nine Activities, including the one outside the seed pipeline", () => {
+    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(9);
     expect(ACTIVITY_LIBRARY_ORDER).toContain("negation-station");
   });
 
@@ -25,7 +25,7 @@ describe("the library order", () => {
     expect(new Set(ACTIVITY_LIBRARY_ORDER).size).toBe(ACTIVITY_LIBRARY_ORDER.length);
   });
 
-  it("runs from the smallest scope of text to the largest", () => {
+  it("runs from the smallest scope of text to the largest, then the one that is not on that line", () => {
     expect([...ACTIVITY_LIBRARY_ORDER]).toEqual([
       "vocab-rehab", // a word
       "spot-the-relationship", // a sentence
@@ -35,7 +35,17 @@ describe("the library order", () => {
       "rebuttal-rephrase", // an argument, restated
       "dumb-it-down", // a paragraph
       "spot-the-callback", // a passage
+      // Last, and deliberately not because its text is the longest. Everything
+      // above is ordered by the scope of text a skill works on. Read, Recall,
+      // Colour is a different axis: a stimulus worked from memory rather than
+      // analysed on the page. Sitting at the end says "different kind of thing"
+      // rather than "bigger version of the last one".
+      "read-recall-colour", // a stimulus, from memory
     ]);
+  });
+
+  it("keeps the spoken Activity last, where a scope-ordered list cannot rank it", () => {
+    expect(ACTIVITY_LIBRARY_ORDER.at(-1)).toBe("read-recall-colour");
   });
 
   it("keeps the two statement-level Activities together", () => {
@@ -58,6 +68,7 @@ describe("sorting a library page", () => {
       { slug: "rebuttal-rephrase" },
       { slug: "dumb-it-down" },
       { slug: "negation-station" },
+      { slug: "read-recall-colour" },
     ];
     expect(sortForLibrary(fromQuery).map((r) => r.slug)).toEqual([
       ...ACTIVITY_LIBRARY_ORDER,
