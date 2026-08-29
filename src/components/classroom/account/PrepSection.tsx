@@ -8,7 +8,7 @@ import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout
 import { StepField, answerSummary } from "@/components/classroom/onboarding/stepFields";
 import {
   STEP_LABELS,
-  STEP_ORDER,
+  visibleSteps,
   testDateColumnValue,
   type OnboardingAnswers,
   type OnboardingStepId,
@@ -73,7 +73,7 @@ export function PrepSectionView({
         it stops being true.
       </p>
 
-      {STEP_ORDER.map((step) => {
+      {visibleSteps(answers).map((step) => {
         const summary = answerSummary(step, answers);
         const open = editing === step;
         return (

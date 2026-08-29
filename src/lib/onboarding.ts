@@ -23,8 +23,11 @@ export const SCORE_BANDS = [
 export type ScoreBand = (typeof SCORE_BANDS)[number]['value'];
 
 // Per-field extras appended after the shared bands.
+// "Haven't taken it" is no longer an option here: the taken_lsat step asks that
+// first and skips this step entirely, so the question is never put to someone it
+// does not apply to. The stored value survives for students who answered it
+// under the old flow.
 export const LAST_SCORE_EXTRAS = [
-  { value: 'not_taken', label: "I haven't taken the LSAT yet" },
   { value: 'not_sure', label: "I'm not sure" },
 ] as const;
 
@@ -89,6 +92,7 @@ export function testDateColumnValue(value: TestDateValue | undefined): string | 
 
 // ── The stored answer shape (profiles.onboarding) ───────────────────────────
 export interface OnboardingAnswers {
+  has_taken_lsat?: boolean;
   last_score_band?: LastScoreValue;
   experience_text?: string;
   schools?: string[];
@@ -102,6 +106,7 @@ export interface OnboardingAnswers {
 // the approved reference, with the test date slotted in after the target score
 // so the three "where are you headed" questions sit together.
 export type OnboardingStepId =
+  | 'taken_lsat'
   | 'last_score'
   | 'experience'
   | 'schools'
@@ -113,6 +118,7 @@ export type OnboardingStepId =
 // Which answer field each step fills. Used to compute the first unanswered step
 // on resume. Steps whose field is optional never block resume-completion.
 export const STEP_ORDER: OnboardingStepId[] = [
+  'taken_lsat',
   'last_score',
   'experience',
   'schools',
@@ -125,6 +131,7 @@ export const STEP_ORDER: OnboardingStepId[] = [
 // Required steps gate the "first unanswered step" on resume. Optional steps
 // (experience, schools) are skippable within the flow without blocking.
 export const REQUIRED_STEPS: Record<OnboardingStepId, boolean> = {
+  taken_lsat: true,
   last_score: true,
   experience: false,
   schools: false,
@@ -143,6 +150,10 @@ export const NAME_STEP_COPY = {
 };
 
 export const STEP_COPY: Record<OnboardingStepId, { title: string; subtitle?: string }> = {
+  taken_lsat: {
+    title: 'Have you taken the LSAT?',
+    subtitle: 'An official, scored test. Practice tests do not count here.',
+  },
   last_score: {
     title: 'What did you get on your last LSAT?',
     subtitle: 'This sets your starting point.',
@@ -177,6 +188,7 @@ export const STEP_COPY: Record<OnboardingStepId, { title: string; subtitle?: str
 // Short row labels for the Account page, where the answers are listed rather
 // than asked. The full questions live in STEP_COPY and stay the card's voice.
 export const STEP_LABELS: Record<OnboardingStepId, string> = {
+  taken_lsat: 'Taken the LSAT',
   last_score: 'Last LSAT score',
   experience: 'How it has gone so far',
   schools: 'Target schools',
@@ -186,9 +198,20 @@ export const STEP_LABELS: Record<OnboardingStepId, string> = {
   study_time: 'Weekly study time',
 };
 
+/**
+ * The steps this student is actually asked, in order. Answering "no" to
+ * taken_lsat drops the score step rather than showing it with an escape hatch,
+ * which also keeps the "Step N of M" counter honest.
+ */
+export function visibleSteps(a: OnboardingAnswers): OnboardingStepId[] {
+  return STEP_ORDER.filter((step) => step !== 'last_score' || a.has_taken_lsat !== false);
+}
+
 /** Whether a given step's answer is present. Drives resume and the Continue gate. */
 export function isStepAnswered(step: OnboardingStepId, a: OnboardingAnswers): boolean {
   switch (step) {
+    case 'taken_lsat':
+      return typeof a.has_taken_lsat === 'boolean';
     case 'last_score':
       return !!a.last_score_band;
     case 'experience':

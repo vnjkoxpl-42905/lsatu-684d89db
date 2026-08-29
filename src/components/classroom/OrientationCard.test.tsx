@@ -25,7 +25,7 @@ describe("orientation progress helpers", () => {
     expect(firstUnansweredStep("Ada", {})).toBe(1);
     // Optional steps never hold the resume point.
     expect(
-      firstUnansweredStep("Ada", { last_score_band: "156_160" }),
+      firstUnansweredStep("Ada", { has_taken_lsat: true, last_score_band: "156_160" }),
     ).toBe(ORIENTATION_STEPS.indexOf("target_score"));
   });
 });
@@ -41,12 +41,12 @@ describe("OrientationCardView", () => {
     render(
       <OrientationCardView
         initialName="Ada"
-        initialAnswers={{ last_score_band: "156_160" }}
+        initialAnswers={{ has_taken_lsat: true, last_score_band: "156_160" }}
         onSave={save()}
       />,
     );
     expect(screen.getByText("What score are you aiming for?")).toBeTruthy();
-    expect(screen.getByText(`Step 5 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
+    expect(screen.getByText(`Step 6 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
   });
 
   it("saves the name on the first Continue and moves on", async () => {
@@ -59,12 +59,16 @@ describe("OrientationCardView", () => {
     fireEvent.click(screen.getByRole("button", { name: /Continue/ }));
 
     await waitFor(() => expect(onSave).toHaveBeenCalledWith({ name: "Ada Lovelace" }));
-    await screen.findByText("What did you get on your last LSAT?");
+    await screen.findByText("Have you taken the LSAT?");
   });
 
   it("will not continue past a required step with no answer", () => {
     render(
-      <OrientationCardView initialName="Ada" initialAnswers={{}} onSave={save()} />,
+      <OrientationCardView
+        initialName="Ada"
+        initialAnswers={{ has_taken_lsat: true }}
+        onSave={save()}
+      />,
     );
     const button = screen.getByRole("button", { name: /Continue/ }) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
@@ -72,12 +76,40 @@ describe("OrientationCardView", () => {
     expect(button.disabled).toBe(false);
   });
 
+  it("never asks for a score from someone who has not taken the LSAT", async () => {
+    const onSave = save();
+    render(
+      <OrientationCardView initialName="Ada" initialAnswers={{}} onSave={onSave} />,
+    );
+    await screen.findByText("Have you taken the LSAT?");
+    // One step shorter than the full walk, and the counter says so.
+    expect(screen.getByText(`Step 2 of ${ORIENTATION_STEPS.length}`)).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: /Not yet/ }));
+    expect(screen.getByText(`Step 2 of ${ORIENTATION_STEPS.length - 1}`)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /Continue/ }));
+
+    await screen.findByText("How has your LSAT experience been so far?");
+    expect(screen.queryByText("What did you get on your last LSAT?")).toBeNull();
+  });
+
+  it("asks for the score when they have taken it", async () => {
+    render(
+      <OrientationCardView initialName="Ada" initialAnswers={{}} onSave={save()} />,
+    );
+    await screen.findByText("Have you taken the LSAT?");
+    fireEvent.click(screen.getByRole("button", { name: /Yes, I have taken it/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue/ }));
+
+    await screen.findByText("What did you get on your last LSAT?");
+  });
+
   it("answers the test-date step with 'no date yet' and saves it", async () => {
     const onSave = save();
     render(
       <OrientationCardView
         initialName="Ada"
-        initialAnswers={{ last_score_band: "156_160", target_score_band: "166_170" }}
+        initialAnswers={{ has_taken_lsat: true, last_score_band: "156_160", target_score_band: "166_170" }}
         onSave={onSave}
       />,
     );
@@ -100,6 +132,7 @@ describe("OrientationCardView", () => {
       <OrientationCardView
         initialName="Ada"
         initialAnswers={{
+          has_taken_lsat: true,
           last_score_band: "156_160",
           target_score_band: "166_170",
           test_date: "2026-11-14",

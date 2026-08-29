@@ -2,6 +2,7 @@
 // durable database commit; raw provider payloads and Booker PII never enter logs.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@18.5.0";
+import { grantStudentAccess } from "../_shared/grantStudentAccess.ts";
 
 import { insertEvent, listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { hasConflictingCalendarEvent, SINGLE_SESSION, validateSingleSessionCheckout } from "../_shared/singleSessionCore.ts";
@@ -198,6 +199,23 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
 
   if (event.type !== "checkout.session.completed") return json({ received: true });
   const session = event.data.object;
+
+  // Any completed payment opens the product for that email, whatever it was
+  // for. A single session, a package, a bootcamp: someone who has paid Joshua
+  // money is a student, and the branches below still do their own work.
+  if (session.payment_status === "paid") {
+    try {
+      const grant = await grantStudentAccess(
+        supabase,
+        session.customer_details?.email ?? session.customer_email ?? null,
+      );
+      console.log("access grant", { event: event.id, ...grant });
+    } catch (err) {
+      // Access is a convenience on top of the payment record. Failing to open
+      // it must never make Stripe retry a payment that was already recorded.
+      console.error("access grant failed", { event: event.id, err });
+    }
+  }
 
   if (session.metadata?.product === "single_session") {
     const validation = validateSingleSessionCheckout(session, expectedLivemode());

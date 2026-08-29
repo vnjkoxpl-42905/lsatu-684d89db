@@ -5,6 +5,7 @@ import { answerSummary } from "@/components/classroom/onboarding/stepFields";
 import { UNDECIDED_TEST_DATE, type OnboardingAnswers } from "@/lib/onboarding";
 
 const ANSWERS: OnboardingAnswers = {
+  has_taken_lsat: true,
   last_score_band: "156_160",
   schools: ["Osgoode", "U of T"],
   target_score_band: "166_170",
@@ -23,6 +24,8 @@ const ANSWERS: OnboardingAnswers = {
 
 describe("answerSummary", () => {
   it("reads each answer back in the student's terms", () => {
+    expect(answerSummary("taken_lsat", ANSWERS)).toBe("Yes");
+    expect(answerSummary("taken_lsat", { has_taken_lsat: false })).toBe("Not yet");
     expect(answerSummary("last_score", ANSWERS)).toBe("156–160");
     expect(answerSummary("schools", ANSWERS)).toBe("Osgoode, U of T");
     expect(answerSummary("test_date", ANSWERS)).toBe("November 14, 2026");
@@ -33,6 +36,7 @@ describe("answerSummary", () => {
   it("does not invent an answer that was never given", () => {
     expect(answerSummary("experience", ANSWERS)).toBeNull();
     expect(answerSummary("last_score", {})).toBeNull();
+    expect(answerSummary("taken_lsat", {})).toBeNull();
     expect(answerSummary("study_time", {})).toBeNull();
   });
 

@@ -87,6 +87,12 @@ export function buildOnboardingMarkdown(profile: OnboardingProfile): string {
     ? answers.test_date
     : 'No date registered yet';
 
+  // Someone who has not sat the test is never asked for a score, so the intake
+  // has to say that rather than reporting the answer as missing.
+  const lastScore = answers.has_taken_lsat === false
+    ? 'Has not taken the LSAT yet'
+    : label(SCORE_LABELS, answers.last_score_band);
+
   return [
     '---',
     `student: ${name}`,
@@ -99,7 +105,7 @@ export function buildOnboardingMarkdown(profile: OnboardingProfile): string {
     `# Onboarding intake - ${name}`,
     '',
     '## Where they are',
-    `- Last LSAT: ${label(SCORE_LABELS, answers.last_score_band)}`,
+    `- Last LSAT: ${lastScore}`,
     `- Target score: ${label(SCORE_LABELS, answers.target_score_band)}`,
     `- Test date: ${testDate}`,
     `- Life stage: ${label(LIFE_STAGE_LABELS, answers.life_stage)}`,

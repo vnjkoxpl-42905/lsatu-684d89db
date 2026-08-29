@@ -63,6 +63,9 @@ export function answerSummary(
   answers: OnboardingAnswers,
 ): string | null {
   switch (step) {
+    case "taken_lsat":
+      if (typeof answers.has_taken_lsat !== "boolean") return null;
+      return answers.has_taken_lsat ? "Yes" : "Not yet";
     case "last_score":
       return labelFor([...SCORE_BANDS, ...LAST_SCORE_EXTRAS], answers.last_score_band);
     case "experience":
@@ -128,6 +131,28 @@ export function StepField({
     setSchoolInput("");
   };
 
+  if (step === "taken_lsat") {
+    return (
+      <div className="classroom-orientation-chips">
+        <Chip
+          selected={answers.has_taken_lsat === true}
+          onClick={() => set("has_taken_lsat", true)}
+        >
+          Yes, I have taken it
+        </Chip>
+        <Chip
+          selected={answers.has_taken_lsat === false}
+          // Answering no drops the score they never got. Leaving a stale band
+          // behind would put a score in Joshua's intake for someone who has
+          // never sat the test.
+          onClick={() => onChange({ ...answers, has_taken_lsat: false, last_score_band: undefined })}
+        >
+          Not yet
+        </Chip>
+      </div>
+    );
+  }
+
   if (step === "last_score") {
     return (
       <div className="classroom-orientation-chips">
@@ -150,7 +175,7 @@ export function StepField({
         className="classroom-orientation-input classroom-orientation-textarea"
         value={answers.experience_text ?? ""}
         onChange={(event) => set("experience_text", event.target.value)}
-        placeholder="Logic Games felt easier, but Necessary Assumption questions are still hard for me."
+        placeholder="Reading Comp timing is my problem, and Necessary Assumption questions still trip me up."
         rows={4}
         autoFocus={autoFocus}
         aria-label="How your LSAT experience has been"

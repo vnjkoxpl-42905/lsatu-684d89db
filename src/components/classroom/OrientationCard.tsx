@@ -11,6 +11,7 @@ import {
   REQUIRED_STEPS,
   STEP_COPY,
   STEP_ORDER,
+  visibleSteps,
   isStepAnswered,
   testDateColumnValue,
   type OnboardingAnswers,
@@ -33,6 +34,13 @@ type CardStep = "name" | OnboardingStepId;
 
 export const ORIENTATION_STEPS: CardStep[] = ["name", ...STEP_ORDER];
 
+/** The steps this student walks, which is the full list minus anything their
+ *  own answers make irrelevant (today: the score step, for someone who has not
+ *  sat the test). */
+export function cardSteps(answers: OnboardingAnswers): CardStep[] {
+  return ["name", ...visibleSteps(answers)];
+}
+
 export interface OrientationSavePatch {
   name?: string;
   answers?: OnboardingAnswers;
@@ -42,17 +50,18 @@ export interface OrientationSavePatch {
 
 /** How many steps the student has already answered, for the collapsed summary. */
 export function answeredCount(name: string, answers: OnboardingAnswers): number {
-  const intake = STEP_ORDER.filter((step) => isStepAnswered(step, answers)).length;
+  const intake = visibleSteps(answers).filter((step) => isStepAnswered(step, answers)).length;
   return (name.trim() ? 1 : 0) + intake;
 }
 
 /** The first step still owed, so an interrupted card reopens in the right place. */
 export function firstUnansweredStep(name: string, answers: OnboardingAnswers): number {
   if (!name.trim()) return 0;
-  const index = STEP_ORDER.findIndex(
+  const steps = visibleSteps(answers);
+  const index = steps.findIndex(
     (step) => REQUIRED_STEPS[step] && !isStepAnswered(step, answers),
   );
-  return index === -1 ? ORIENTATION_STEPS.length - 1 : index + 1;
+  return index === -1 ? steps.length : index + 1;
 }
 
 /**
@@ -80,8 +89,11 @@ export function OrientationCardView({
   const [name, setName] = React.useState(initialName);
   const [answers, setAnswers] = React.useState<OnboardingAnswers>(initialAnswers);
 
-  const total = ORIENTATION_STEPS.length;
-  const step = ORIENTATION_STEPS[stepIndex];
+  // Recomputed from the live answers: saying "not yet" to the LSAT question
+  // removes the score step from the walk on the spot, counter included.
+  const steps = cardSteps(answers);
+  const total = steps.length;
+  const step = steps[Math.min(stepIndex, total - 1)];
   const isLastStep = stepIndex === total - 1;
   const done = answeredCount(name, answers);
 

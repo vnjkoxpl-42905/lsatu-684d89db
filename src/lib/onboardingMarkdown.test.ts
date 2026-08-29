@@ -40,7 +40,7 @@ describe('buildOnboardingMarkdown', () => {
     const md = buildOnboardingMarkdown({
       ...PROFILE,
       onboarding: {
-        last_score_band: 'not_taken',
+        has_taken_lsat: false,
         test_date: 'undecided',
         study_time: { sun: 'none', mon: 'none', tue: 'none', wed: 'none', thu: 'none', fri: 'none', sat: 'none' },
       },
