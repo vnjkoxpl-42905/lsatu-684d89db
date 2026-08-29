@@ -21,6 +21,7 @@ import {
   type InlineChoiceNotes,
 } from '@/components/drill/official/InlineChoiceExplanation';
 import { useLrExplanation, type LrStyleKey } from '@/hooks/useLrExplanation';
+import SectionReviewWalk from '@/components/drill/SectionReviewWalk';
 import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
@@ -319,7 +320,7 @@ function DrillContent() {
   const [isEndingBootcampPracticeDrill, setIsEndingBootcampPracticeDrill] = React.useState(false);
   
   // New post-section flow states
-  const [postSectionScreen, setPostSectionScreen] = React.useState<'predict' | 'complete' | 'review' | 'score-report' | null>(null);
+  const [postSectionScreen, setPostSectionScreen] = React.useState<'predict' | 'complete' | 'review' | 'review-walk' | 'score-report' | null>(null);
   /**
    * What the student guessed before seeing anything. Held for this sitting only
    * and shown beside the real score; nothing persists it, so nothing claims it
@@ -2825,6 +2826,19 @@ function DrillContent() {
     );
   }
   
+  // Reading a finished section back, read-only. Distinct from 'review', which
+  // is the blind review: that one takes answers and scores them, this one takes
+  // nothing and writes nothing.
+  if (postSectionScreen === 'review-walk' && session) {
+    return (
+      <SectionReviewWalk
+        session={session}
+        brResults={brResults}
+        onBack={() => setPostSectionScreen('score-report')}
+      />
+    );
+  }
+
   if (postSectionScreen === 'score-report' && session) {
     // Use PracticeSetResults for practice-set mode
     if (isPracticeSetMode) {
@@ -2858,6 +2872,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
+          onReviewSection={() => setPostSectionScreen('review-walk')}
           onBack={() => navigate(drillReturnTo || '/classroom')}
           backLabel={
             isSittingReturn(drillReturnTo)

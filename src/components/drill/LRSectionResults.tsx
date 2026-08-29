@@ -44,6 +44,11 @@ interface LRSectionResultsProps {
    * having asked.
    */
   predictedScore?: number | null;
+  /**
+   * Opens the read-only walk over the whole section. Omit it and the control
+   * is not rendered — a surface with no review walk should not offer one.
+   */
+  onReviewSection?: () => void;
 }
 
 type QuestionStat = SectionQuestionStat;
@@ -56,7 +61,7 @@ interface FocusArea {
   avgTimeMs: number;
 }
 
-export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore }: LRSectionResultsProps) {
+export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection }: LRSectionResultsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
@@ -200,7 +205,16 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
               {backLabel}
             </Button>
             <h1 className="text-2xl font-bold">Section Results</h1>
-            <div className="w-24" />
+            {/* The way back INTO the section. Reviewing used to mean re-serving
+                one question as a fresh drill and answering it again; this walks
+                the whole thing without touching the record. */}
+            {onReviewSection ? (
+              <Button variant="outline" size="sm" onClick={onReviewSection}>
+                Review section
+              </Button>
+            ) : (
+              <div className="w-24" />
+            )}
           </div>
 
           {/* Rings */}

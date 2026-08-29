@@ -34,6 +34,15 @@
         ],
         "createdAt": "2026-08-06T11:40:18.748Z",
         "reason": "The official chrome's primary pill hover (hover:bg-black)"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "*",
+        "files": [
+          "src/components/drill/SectionReviewWalk.tsx"
+        ],
+        "createdAt": "2026-08-29T08:10:25.249Z",
+        "reason": "The official drill chrome (OfficialDrillFrame/Toolbar/QuestionPane/AnswerNavigator) runs its own LawHub-style type scale, not the app ramp. Evidence: sibling EnhancedBlindReview.tsx:286,287,355 uses the identical text-[14px]/text-[15px] literals; this screen sits beside it in the same frame and must match it."
       }
     ]
   }
