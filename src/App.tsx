@@ -479,7 +479,13 @@ const App = () => {
                       } />
                       <Route path="uploads" element={<ClassroomUploadsView />} />
                       <Route path="account" element={<ClassroomAccountView />} />
-                      <Route path="recaps" element={<ClassroomRecapsView />} />
+                      {/* The outlet above lets any signed-in user through so a
+                          fresh signup can reach the intake and their account.
+                          Coursework does not ride on that: notes, recaps and
+                          assigned work are what has_classroom_access buys. */}
+                      <Route path="recaps" element={
+                        <ProtectedRoute flag="has_classroom_access"><ClassroomRecapsView /></ProtectedRoute>
+                      } />
                       {/* Admissions is reference, not a paid feature: a student
                           deciding whether to work with Joshua should be able to
                           see what the schools they want actually took. */}
@@ -488,9 +494,15 @@ const App = () => {
                           <AdmissionsPage />
                         </ProtectedRoute>
                       } />
-                      <Route path="item/:itemId" element={<ClassroomItemView />} />
-                      <Route path="ta/:assignmentId" element={<ClassroomTAAssignmentView />} />
-                      <Route path=":assignmentId" element={<ClassroomAssignmentView />} />
+                      <Route path="item/:itemId" element={
+                        <ProtectedRoute flag="has_classroom_access"><ClassroomItemView /></ProtectedRoute>
+                      } />
+                      <Route path="ta/:assignmentId" element={
+                        <ProtectedRoute flag="has_classroom_access"><ClassroomTAAssignmentView /></ProtectedRoute>
+                      } />
+                      <Route path=":assignmentId" element={
+                        <ProtectedRoute flag="has_classroom_access"><ClassroomAssignmentView /></ProtectedRoute>
+                      } />
                     </Route>
 
                     {/* The Testing Centre sits inside the classroom frame on
@@ -514,12 +526,12 @@ const App = () => {
                       <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
                     } />
                     <Route path="/journal" element={
-                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]}>
                         <JournalIndexView />
                       </ProtectedRoute>
                     } />
                     <Route path="/journal/:qid" element={
-                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]} allowSignedIn>
+                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]}>
                         <JournalEntryView />
                       </ProtectedRoute>
                     } />

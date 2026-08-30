@@ -209,7 +209,7 @@ describe("the finish line", () => {
     await finish();
     const book = screen.getByRole("link", { name: /Book a session/ });
     expect(book.getAttribute("href")).toBe("/book/session");
-    expect(screen.getByRole("button", { name: /Open my classroom/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Back to home/ })).toBeTruthy();
   });
 
   it("never sends them to an outside booking link", async () => {

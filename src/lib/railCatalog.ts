@@ -59,11 +59,11 @@ export const RAIL_CATALOG: RailItem[] = [
   // and think inside, and a sitting is not, so putting them behind one door
   // invites starting a 35:00 clock by accident.
   { id: "testing", label: "Testing Centre", group: "classroom", flags: ["has_drill_access"] },
-  { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
-  { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], allowSignedIn: true, section: true },
+  { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], section: true },
+  { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
-  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], allowSignedIn: true, section: true },
+  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], section: true },
   { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
   // Reference, not a paid feature: what the schools a student is aiming at

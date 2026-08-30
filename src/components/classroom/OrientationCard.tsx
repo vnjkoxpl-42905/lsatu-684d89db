@@ -149,11 +149,11 @@ export function OrientationCardView({
             </p>
             {/* Booking leads. Finishing the intake is the moment a student is
                 most willing to book, and sending them into a classroom whose
-                doors are still locked wastes it. */}
+                doors are still locked wastes it. No arrow on the link: it is a
+                destination, not a step in a flow. */}
             <div className="classroom-orientation-done-actions">
               <Link className="classroom-orientation-continue" to="/book/session">
                 Book a session
-                <ArrowRight size={14} />
               </Link>
               {onDone ? (
                 <button
@@ -161,7 +161,7 @@ export function OrientationCardView({
                   className="classroom-orientation-continue-quiet"
                   onClick={onDone}
                 >
-                  Open my classroom
+                  Back to home
                 </button>
               ) : null}
             </div>

@@ -19,8 +19,11 @@ const APP_SOURCE = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
 /** The rail item -> the path its route registers under. */
 const ROUTE_FOR: Record<RailItemId, string> = {
   home: '/classroom',
-  notes: '/classroom',
-  work: '/classroom',
+  // Notes/recaps and assigned work are the coursework inside the shell, and
+  // they carry their own guard. The shell itself (home) stays signed-in-open so
+  // a fresh signup can reach the intake.
+  notes: 'recaps',
+  work: ':assignmentId',
   drill: 'drill',
   testing: '/testing',
   bootcamps: '/bootcamps',
