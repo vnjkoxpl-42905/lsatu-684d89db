@@ -286,3 +286,75 @@ Not a score predictor, not a grade of the student, and not a list of every quest
 got wrong — they already have that. It is the tutor's read of one sitting: what the clock
 did, what the process did, what the fundamentals did, and which of the three to spend the
 next week on.
+
+---
+
+## 6. Everything else worth capturing
+
+§4 lists what the eleven rules need. This is the wider sweep: what would make the report
+a tutor's read rather than a scorer's, ordered by what it costs us to get.
+
+### 6.1 Already in the data, unused
+
+Nothing to capture. These are rules we have not written yet.
+
+- **Reasoning tags on the question bank.** Every question already carries `reasoningType`
+  and `questionFeatures` — conditional, causal, quantifier. This is the direct detector
+  for error category 2, which is otherwise the hardest to tell from category 3: misses
+  clustering on conditional-tagged questions *is* a conditional reasoning gap, and it
+  names the curriculum page to go back to. The webinar reaches this conclusion by hand
+  ("the student needed a little help on conditional reasoning and causation"); we can
+  reach it from the tags.
+- **Which wrong choice was chosen, and how many people choose it.** The bank's
+  explanations carry per-choice text and, where transcribed, the share of test takers who
+  pick each one. "You took the trap that 38% take" is a finding. "You took a choice
+  almost nobody takes" is a different finding — that is a reading error, not a trap.
+- **Cohort accuracy per question.** Difficulty stars are coarse. Missing a question that
+  85% of test takers get right is the single most actionable line a report can contain,
+  and it is what makes R6's economics real rather than nominal.
+- **Repeat exposure.** `question_usage` and `question_views` already know whether this
+  student has seen this question before. A miss on a question they have already worked is
+  a different fact from a miss on a fresh one.
+
+### 6.2 Cheap capture, high value
+
+- **The section timeline in absolute clock offsets.** We store how long each question
+  took. We do not store *when in the section* it happened. That one field turns the
+  per-question list into the timing bar chart the whole webinar is read off — where the
+  gaps are, when the second pass started, and what was happening in the last four minutes.
+  Everything in R1 gets sharper and the report gains a picture.
+- **Skip decisions.** A question entered, worked, and left unanswered is a decision; a
+  question never reached is a clock failure. Today both land as "unanswered" and the
+  webinar's category 4 depends on telling them apart ("I skipped something I wasn't
+  supposed to skip" versus "I didn't skip when I should have").
+- **Flag events, not final flag state.** A flag placed and then removed says the student
+  talked themselves out of a doubt they were right to have. When it was placed — during
+  the first pass, or at the end — is the difference between flagging as a working tool and
+  flagging as an afterthought.
+- **Bulk-fill at the buzzer.** Answers landing in the last sixty seconds are guesses, and
+  counting them as knowledge inflates every category. With absolute offsets this is free.
+- **Pause count and duration.** A section sat in three chunks over two days is not a
+  section, and no report should compare it to one sat straight through. We now resume
+  sections across devices, which makes this necessary rather than nice.
+- **When it was sat.** Date, hour, and how many sittings it took. "Sat at 11:40pm across
+  three sittings" explains a result that otherwise looks like a knowledge collapse.
+- **Highlighting.** The runner already has highlights and discards them. Whether a student
+  annotated the stimulus at all is a real signal in RC, where the webinar's prescription
+  is literally to move time out of the questions and back into the passage.
+
+### 6.3 Bigger builds, worth naming now
+
+- **RC: reading time versus question time, per passage.** The webinar's central RC advice
+  is to take time out of the questions and put it back into the passage. We cannot say
+  whether a student is doing that without splitting the two. This is the one measurement
+  that would let the RC half of the report stand on its own.
+- **The pre-test note.** The webinar tells students, in as many words, to write down
+  before the next test what they thought the issue was and what they will do differently.
+  A field on the next sitting holding that note closes the loop no other product closes:
+  the following report can open with whether they did the thing they said they would.
+- **The tutor's own tag.** One field per question where Joshua records his read after
+  working it with the student. The engine's category is inference; his is evidence, and
+  over a term it becomes the training set for every rule here.
+- **Stamina.** Accuracy by position in the section, tracked across every section sat.
+  Nothing in one sitting reveals it; twenty sittings do, and it changes what a study plan
+  should look like.
