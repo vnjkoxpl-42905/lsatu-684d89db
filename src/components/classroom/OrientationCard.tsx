@@ -152,7 +152,11 @@ export function OrientationCardView({
                 doors are still locked wastes it. No arrow on the link: it is a
                 destination, not a step in a flow. */}
             <div className="classroom-orientation-done-actions">
-              <Link className="classroom-orientation-continue" to="/book/session">
+              {/* The offer hub, not the single-session page: a student who
+                  just finished the intake should see all three ways in (one
+                  session, 5 hours, 10 hours) and pick, rather than being
+                  committed to the cheapest one by the only link on the page. */}
+              <Link className="classroom-orientation-continue" to="/booking">
                 Book a session
               </Link>
               {onDone ? (

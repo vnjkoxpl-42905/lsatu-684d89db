@@ -208,7 +208,7 @@ describe("the finish line", () => {
   it("offers the session before the classroom", async () => {
     await finish();
     const book = screen.getByRole("link", { name: /Book a session/ });
-    expect(book.getAttribute("href")).toBe("/book/session");
+    expect(book.getAttribute("href")).toBe("/booking");
     expect(screen.getByRole("button", { name: /Back to home/ })).toBeTruthy();
   });
 
