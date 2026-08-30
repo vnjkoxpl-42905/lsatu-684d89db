@@ -267,6 +267,11 @@ function DrillContent() {
   const [unscoredQids, setUnscoredQids] = React.useState<Set<string>>(new Set());
   // Confirm shown when Answer is pressed before an attempt.
   const [revealConfirmOpen, setRevealConfirmOpen] = React.useState(false);
+  // Which pill opened the unscored-reveal confirm, so "Show me" finishes the
+  // job that was actually asked for: Answer reveals in place, Explanation
+  // reveals and brings the drawer with it.
+  const [pendingRevealIntent, setPendingRevealIntent] =
+    React.useState<'answer' | 'explanation'>('answer');
   // Help sheet, opened from the header strip beside Pause. The global
   // FloatingHelpButton is suppressed on /drill so no bubble floats over the
   // question card.
@@ -286,6 +291,14 @@ function DrillContent() {
   // revealed (answer committed) and no overlay is already open. Derived, not
   // stored, so it appears on every reveal path automatically.
   const [questionStartTime, setQuestionStartTime] = React.useState(performance.now());
+  /**
+   * Where this question's answer trail had got to when the student opened it.
+   * The per-question clock restarts on every visit, so a question revisited
+   * after two minutes would otherwise stamp its second answer earlier than its
+   * first. Carrying the furthest point forward keeps the trail monotonic and
+   * makes the results timeline read as one run.
+   */
+  const trailBaseMs = React.useRef(0);
   const [hasTimer, setHasTimer] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
   const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
@@ -1015,6 +1028,10 @@ function DrillContent() {
     // (Adaptive is narrowed out by prior control flow in this effect.)
     if (session) {
       const qid = session.questionQueue[session.currentIndex];
+      // A revisit picks the answer trail up where it left off rather than
+      // restarting it at zero.
+      const priorTrail = qid ? session.attempts.get(qid)?.answerTrail : undefined;
+      trailBaseMs.current = priorTrail?.length ? priorTrail[priorTrail.length - 1].atMs : 0;
       if (qid) {
         const savedAttempt = session.attempts.get(qid);
         if (savedAttempt?.selectedAnswer) {
@@ -1108,7 +1125,13 @@ function DrillContent() {
       if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
         const newAttempts = new Map(session.attempts);
         const existingAttempt = newAttempts.get(currentQuestion.qid);
-        
+        // When this choice was made, measured from the start of the question.
+        const atMs = Math.max(
+          0,
+          trailBaseMs.current + Math.floor(performance.now() - questionStartTime),
+        );
+        const answerTrail = [...(existingAttempt?.answerTrail ?? []), { answer, atMs }];
+
         newAttempts.set(currentQuestion.qid, {
           selectedAnswer: answer,
           correct: answer === currentQuestion.correctAnswer,
@@ -1119,6 +1142,10 @@ function DrillContent() {
           confidence: existingAttempt?.confidence || null,
           reviewDone: false,
           answerRevealed: existingAttempt?.answerRevealed || false,
+          answerTrail,
+          // Every entry after the first is a change of mind. Derived here so
+          // the count and the trail can never disagree.
+          switchCount: Math.max(0, answerTrail.length - 1),
         });
         setSession({ ...session, attempts: newAttempts });
         
@@ -1974,13 +2001,12 @@ function DrillContent() {
       questionTimer.current.pause();
     }
     
-    // Move to previous
-    if (session.currentIndex > 0) {
-      setSession({
-        ...session,
-        currentIndex: session.currentIndex - 1,
-      });
-    }
+    // Move to previous. Functional, like every other queue move: stepping back
+    // can follow an answer that was just committed, and a spread of the
+    // closure's `session` would write that attempt straight back out.
+    setSession(prev =>
+      prev && prev.currentIndex > 0 ? { ...prev, currentIndex: prev.currentIndex - 1 } : prev,
+    );
   };
 
   /**
@@ -2199,13 +2225,11 @@ function DrillContent() {
   const handlePrevious = () => {
     if (!session || session.mode === 'adaptive') return;
     
-    // Move to previous in queue
-    if (session.currentIndex > 0) {
-      setSession({
-        ...session,
-        currentIndex: session.currentIndex - 1,
-      });
-    }
+    // Move to previous in queue. See handlePracticeSetPrevious: functional, so
+    // an attempt committed moments earlier survives the step back.
+    setSession(prev =>
+      prev && prev.currentIndex > 0 ? { ...prev, currentIndex: prev.currentIndex - 1 } : prev,
+    );
   };
 
   // One-shot: expiry firing while a manual finish is in flight must be a no-op.
@@ -3293,6 +3317,37 @@ function DrillContent() {
     setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
   };
 
+  // Revealing is a toggle, not a one-way door. Pressing Answer or Explanation
+  // again puts the question back the way it was: correct letter hidden, the
+  // per-choice explanations collapsed, the choices live again. Teaching off a
+  // built set needs exactly this — showing the answer used to spend the
+  // question for good.
+  //
+  // Only the view is undone. An attempt already written keeps
+  // `answerRevealed: true`, because that record is what happened, not what is
+  // currently on screen.
+  const hideAnswerForCurrent = () => {
+    if (!currentQuestion) return;
+    const qid = currentQuestion.qid;
+    setShowAnswerRevealed(prev => {
+      if (!prev.has(qid)) return prev;
+      const next = new Map(prev);
+      next.delete(qid);
+      return next;
+    });
+    // The peek is forgiven along with the reveal: `unscoredQids` only gates
+    // this runner's chrome, so leaving it set would strand the question on
+    // Next with no way back to Submit.
+    setUnscoredQids(prev => {
+      if (!prev.has(qid)) return prev;
+      const next = new Set(prev);
+      next.delete(qid);
+      return next;
+    });
+    setShowSolution(false);
+    if (!session?.attempts.get(qid)?.selectedAnswer) setAnswerLocked(false);
+  };
+
   // The runner has exactly one panel now. Menu, Explanation, and Notes all
   // open it, each on its own tab — there are no separate sheets left.
   //
@@ -3304,6 +3359,12 @@ function DrillContent() {
       setNotesOpen(false);
       return;
     }
+    setDrawerTab(tab);
+    setNotesOpen(true);
+  };
+
+  /** Open, never close — the reveal path needs the drawer up, not flipped. */
+  const openDrawerOn = (tab: DrawerTab) => {
     setDrawerTab(tab);
     setNotesOpen(true);
   };
@@ -3321,11 +3382,16 @@ function DrillContent() {
   // Answer, pressed before an attempt, is the escape hatch: it reveals
   // everything at once and gives up the score for that question. Pressed after
   // an attempt there is nothing to give up, so it just reveals.
-  const handleRevealRequest = (attempted: boolean) => {
+  const handleRevealRequest = (
+    attempted: boolean,
+    intent: 'answer' | 'explanation' = 'answer',
+  ) => {
     if (attempted) {
       revealAnswerForCurrent();
+      if (intent === 'explanation') openDrawerOn('explanation');
       return;
     }
+    setPendingRevealIntent(intent);
     setRevealConfirmOpen(true);
   };
 
@@ -3334,7 +3400,37 @@ function DrillContent() {
       setUnscoredQids((prev) => new Set(prev).add(currentQuestion.qid));
     }
     revealAnswerForCurrent();
+    if (pendingRevealIntent === 'explanation') openDrawerOn('explanation');
     setRevealConfirmOpen(false);
+  };
+
+  // Answer and Explanation are the same switch with different reach. Answer
+  // flips the reveal in place; Explanation flips it and takes the drawer with
+  // it, so one press gives the whole breakdown and the next press clears the
+  // screen back to an untouched question.
+  const toggleAnswerReveal = (attempted: boolean, revealed: boolean) => {
+    if (revealed) {
+      hideAnswerForCurrent();
+      return;
+    }
+    handleRevealRequest(attempted, 'answer');
+  };
+
+  const toggleExplanation = (
+    attempted: boolean,
+    revealed: boolean,
+    explanationOpen: boolean,
+  ) => {
+    if (explanationOpen) {
+      setNotesOpen(false);
+      if (revealed) hideAnswerForCurrent();
+      return;
+    }
+    if (revealed) {
+      openDrawerOn('explanation');
+      return;
+    }
+    handleRevealRequest(attempted, 'explanation');
   };
 
 
@@ -3525,7 +3621,24 @@ function DrillContent() {
         !selectedAnswer &&
         !currentAttempted &&
         !currentUnscored);
+    const explanationOpen = notesOpen && drawerTab === 'explanation';
     const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
+    // Walking a built set is free movement in both directions, so an answer
+    // sitting on screen uncommitted is saved on the way out rather than
+    // silently dropped when the question changes.
+    const commitPendingSelection = async () => {
+      if (isAdaptiveMode || !selectedAnswer || currentAttempted || currentUnscored) return;
+      await handleSubmitNonAdaptive(selectedAnswer);
+    };
+    const advanceInQueue = () => {
+      if (isPracticeSetMode) {
+        handlePracticeSetNext();
+      } else if (session.currentIndex >= session.questionQueue.length - 1) {
+        void handleFinishSection();
+      } else {
+        handleNext();
+      }
+    };
     const officialNext = async () => {
       if (timer?.isPaused) return;
       let committedAttempts: DrillSession['attempts'] | null = null;
@@ -3754,10 +3867,22 @@ function DrillContent() {
               // exercise. (Adaptive mode never hits it — the two session modes
               // are mutually exclusive.)
               showAnswerVisible
-              onShowAnswer={() => handleRevealRequest(currentAttempted)}
+              onShowAnswer={() => toggleAnswerReveal(currentAttempted, currentRevealed)}
+              showAnswerActive={currentRevealed}
               showAnswerDisabled={!!timer?.isPaused || (isFullSection && !currentAttempted)}
-              onExplanation={() => toggleDrawerOn('explanation')}
-              explanationDisabled={!!timer?.isPaused || !currentRevealed}
+              // Explanation no longer waits on a separate reveal press: it is
+              // the one control that opens the whole breakdown — correct letter,
+              // every choice's explanation inline, drawer up — and pressing it
+              // again collapses all of it back to an untouched question. A timed
+              // section keeps the old gate, where revealing early is not a study
+              // move but an escape hatch.
+              onExplanation={() =>
+                toggleExplanation(currentAttempted, currentRevealed, explanationOpen)
+              }
+              explanationActive={explanationOpen}
+              explanationDisabled={
+                !!timer?.isPaused || (isFullSection && !currentRevealed)
+              }
               onOpenHelp={() => setHelpOpen(true)}
             />
           }
@@ -3892,16 +4017,29 @@ function DrillContent() {
                 })();
               }}
               onNext={() => { void officialNext(); }}
-              onSkip={() => {
-                if (isPracticeSetMode) {
-                  handlePracticeSetNext();
-                } else if (session.currentIndex >= session.questionQueue.length - 1) {
-                  void handleFinishSection();
-                } else {
-                  handleNext();
-                }
+              // A built set is a fixed list, so it walks both ways. Skip only
+              // ever went forward, and only before the question was answered,
+              // which left no way back to a question already worked — the one
+              // thing reviewing a set is for.
+              onPrev={() => {
+                void (async () => {
+                  await commitPendingSelection();
+                  officialPrev();
+                })();
               }}
-              skipDisabled={currentAttempted || !!timer?.isPaused}
+              prevDisabled={session.currentIndex <= 0 || !!timer?.isPaused}
+              onAdvance={() => {
+                void (async () => {
+                  await commitPendingSelection();
+                  advanceInQueue();
+                })();
+              }}
+              advanceDisabled={!!timer?.isPaused}
+              // Submit is only ever the commit action now. Once the question is
+              // answered (or deliberately revealed unscored) the Next pill is
+              // what carries the student on, so a second "Next" in the primary
+              // slot would just be the same control twice.
+              primaryVisible={!currentAttempted && !currentUnscored}
               onEnd={() => handleNavigation('/classroom/drill')}
               disabled={!!timer?.isPaused}
             />

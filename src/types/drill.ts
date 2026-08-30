@@ -49,6 +49,14 @@ export interface DrillSession {
     reviewDone?: boolean;
     brMarked?: boolean; // Marked for Blind Review
     switchCount?: number; // Number of answer changes
+    /**
+     * Every choice the student put down on this question, in order, each
+     * stamped with how far into the question it was made. A single answer is
+     * a trail of one; changing A to B a minute in is two entries, and that is
+     * what the results screen draws as a timeline. Times accumulate across
+     * revisits, so a question returned to twice reads as one continuous run.
+     */
+    answerTrail?: Array<{ answer: string; atMs: number }>;
     revisitCount?: number; // Number of times returned to question
     answerRevealed?: boolean; // Tracks if "Show Answer" clicked
   }>;

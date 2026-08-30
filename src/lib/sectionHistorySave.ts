@@ -42,6 +42,12 @@ export interface SectionQuestionStat {
   timeMs: number;
   brTimeMs?: number;
   switchCount: number;
+  /**
+   * Every choice put down on this question, in order, each stamped with how
+   * far into the question it was made. The results screen draws it as a
+   * timeline; an unanswered question has none.
+   */
+  answerTrail?: Array<{ answer: string; atMs: number }>;
   flagged: boolean;
 }
 
@@ -81,6 +87,7 @@ export function buildSectionStats(
         timeMs: attempt?.timeMs || 0,
         brTimeMs: brResult?.brTimeMs,
         switchCount: attempt?.switchCount || 0,
+        answerTrail: attempt?.answerTrail,
         flagged: attempt?.brMarked || false,
       };
     })

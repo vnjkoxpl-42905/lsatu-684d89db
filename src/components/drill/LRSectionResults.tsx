@@ -22,6 +22,7 @@ import {
   logSectionWrongAnswers,
   persistSectionResults,
   wajQidsForSection,
+  UNANSWERED,
   type SectionQuestionStat,
 } from '@/lib/sectionHistorySave';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
@@ -59,6 +60,103 @@ interface FocusArea {
   total: number;
   accuracy: number;
   avgTimeMs: number;
+}
+
+/** m:ss, which is how a question's clock is read everywhere on this screen. */
+const formatClock = (ms: number) => {
+  const totalSec = Math.floor(ms / 1000);
+  return `${Math.floor(totalSec / 60)}:${(totalSec % 60).toString().padStart(2, '0')}`;
+};
+
+/**
+ * One question's time, drawn rather than spelled.
+ *
+ * The track is the section's own scale, so every row is comparable at a
+ * glance. On it: a tick at the pace this student owed the question — their
+ * section clock divided by its questions, so a student with time and a half
+ * is measured against 2:01 and not against 1:21 — and a marker at every
+ * choice they put down, in order. Two markers mean they changed their mind,
+ * and where the second one sits says how long that cost. The last marker is
+ * the answer that was scored, so it carries the verdict colour; the ones
+ * before it are the thinking, and stay quiet.
+ */
+function AnswerTimeline({
+  stat,
+  scaleMs,
+  targetMs,
+}: {
+  stat: QuestionStat;
+  scaleMs: number;
+  targetMs: number | null;
+}) {
+  // Sections sat before the trail was recorded still have one answer and one
+  // time, so they draw a single marker at the end of their run rather than an
+  // empty track that reads as unanswered.
+  const trail =
+    stat.answerTrail && stat.answerTrail.length > 0
+      ? stat.answerTrail
+      : stat.initialAnswer && stat.initialAnswer !== UNANSWERED
+        ? [{ answer: stat.initialAnswer, atMs: stat.timeMs }]
+        : [];
+  // The clock the markers sit on. A trail can run past the recorded total when
+  // a question was revisited, and a marker outside its own track would be a
+  // lie about the section rather than a rounding.
+  const runMs = Math.max(stat.timeMs, trail.length ? trail[trail.length - 1].atMs : 0);
+  const span = Math.max(scaleMs, 1);
+  const pct = (ms: number) => Math.min(100, Math.max(0, (ms / span) * 100));
+
+  return (
+    <div className="flex-1 min-w-[8rem] flex items-center gap-3">
+      <div className="relative flex-1 h-7">
+        {/* Track */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-muted" />
+        {/* Time actually spent */}
+        <div
+          className={cn(
+            'absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full',
+            stat.initialCorrect ? 'bg-primary/50' : 'bg-destructive/40',
+          )}
+          style={{ width: `${Math.max(pct(runMs), runMs > 0 ? 1.5 : 0)}%` }}
+        />
+        {/* Pace tick. Absent under an unlimited clock, which owes nothing. */}
+        {targetMs !== null && targetMs > 0 && targetMs <= span && (
+          <div
+            className="absolute top-1/2 -translate-y-1/2 h-4 w-px bg-foreground/30"
+            style={{ left: `${pct(targetMs)}%` }}
+            title={`Pace: ${formatClock(targetMs)} per question`}
+          />
+        )}
+        {/* Every choice, where it was made */}
+        {trail.map((entry, i) => {
+          const isFinal = i === trail.length - 1;
+          return (
+            <div
+              key={`${entry.atMs}-${entry.answer}-${i}`}
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+              style={{ left: `${pct(entry.atMs)}%` }}
+              title={`${entry.answer} at ${formatClock(entry.atMs)}`}
+            >
+              <div
+                className={cn(
+                  'w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-mono font-bold',
+                  isFinal
+                    ? stat.initialCorrect
+                      ? 'bg-green-600 border-green-600 text-white'
+                      : 'bg-destructive border-destructive text-white'
+                    : 'bg-background border-border text-muted-foreground line-through',
+                )}
+              >
+                {entry.answer}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="w-12 flex-shrink-0 text-sm font-mono tabular-nums text-right">
+        {formatClock(stat.timeMs)}
+      </div>
+    </div>
+  );
 }
 
 export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection }: LRSectionResultsProps) {
@@ -194,28 +292,71 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
     }
   }
 
+  /**
+   * What this student owed each question: the clock they actually sat divided
+   * by the questions in the section. Read off the session's own timer, so
+   * extra time is already in it — 70 minutes over 26 questions is 2:41, and
+   * nothing on this screen measures an accommodated student against 1:21.
+   * Unlimited owes nothing, so it draws no tick.
+   */
+  const targetMsPerQuestion = React.useMemo(() => {
+    const timer = session.fullSectionConfig?.timer;
+    if (!timer || timer.mode === 'unlimited' || stats.length === 0) return null;
+    const minutes =
+      timer.mode === 'custom'
+        ? (timer.customMinutes ?? 0)
+        : Number(timer.mode);
+    if (!minutes || Number.isNaN(minutes)) return null;
+    return (minutes * 60_000) / stats.length;
+  }, [session.fullSectionConfig, stats.length]);
+
+  // The shared scale every row is drawn on. Taken from what is on screen, so a
+  // filtered view compares the questions it is showing; the pace tick is kept
+  // inside the track so it never falls off the end of a fast section.
+  const slowestTimeMs = displayStats.reduce(
+    (max, s) => Math.max(max, s.timeMs, s.answerTrail?.[s.answerTrail.length - 1]?.atMs ?? 0),
+    0,
+  );
+  const timelineScaleMs = Math.max(slowestTimeMs, (targetMsPerQuestion ?? 0) * 1.1, 1);
+
   return (
     <div className="min-h-screen bg-background pb-12">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-card border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between mb-6">
-            <Button variant="ghost" size="sm" onClick={onBack}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              {backLabel}
-            </Button>
-            <h1 className="text-2xl font-bold">Section Results</h1>
-            {/* The way back INTO the section. Reviewing used to mean re-serving
-                one question as a fresh drill and answering it again; this walks
-                the whole thing without touching the record. */}
-            {onReviewSection ? (
-              <Button variant="outline" size="sm" onClick={onReviewSection}>
-                Review section
-              </Button>
-            ) : (
-              <div className="w-24" />
-            )}
+      {/* The only thing that stays pinned: the two controls off this screen,
+          the title, and the score. Everything under it — rings, chips, focus
+          areas, difficulty — is a summary you read once and then scroll past.
+          Pinning the whole summary made it a ~600px lid: the questions, which
+          are what a student actually works through, scrolled underneath it
+          through a slot a few rows tall. */}
+      <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
+          <Button variant="ghost" size="sm" onClick={onBack}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {backLabel}
+          </Button>
+          <div className="flex items-baseline gap-3 min-w-0">
+            <h1 className="text-lg font-bold truncate">Section Results</h1>
+            {/* The score rides along, so scrolling into the question list
+                never loses the number the list is about. */}
+            <span className="text-sm text-muted-foreground tabular-nums whitespace-nowrap">
+              {initialScore}/{initialTotal} · {initialPercent}%
+            </span>
           </div>
+          {/* The way back INTO the section. Reviewing used to mean re-serving
+              one question as a fresh drill and answering it again; this walks
+              the whole thing without touching the record. */}
+          {onReviewSection ? (
+            <Button variant="outline" size="sm" onClick={onReviewSection}>
+              Review section
+            </Button>
+          ) : (
+            <div className="w-24" />
+          )}
+        </div>
+      </div>
+
+      {/* Summary. Scrolls away with the page. */}
+      <div className="bg-card border-b">
+        <div className="max-w-7xl mx-auto px-6 py-6">
 
           {/* Rings */}
           <div className="flex items-center justify-center gap-12 mb-8">
@@ -432,11 +573,32 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
         </div>
       </div>
 
-      {/* Question Table */}
+      {/* Question Table. The questions are the screen, so the rows carry the
+          weight the summary used to: a bigger number, a bigger type, and a bar
+          per question so the section's time reads as a shape rather than
+          twenty-six identical mm:ss strings. */}
       <div className="max-w-7xl mx-auto px-6 mt-6 space-y-2">
+        {/* One line, once, so the timeline needs no explaining per row. */}
+        <div className="flex items-center justify-end gap-4 pb-1 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-3.5 h-3.5 rounded-full border border-border bg-background" />
+            answer changed
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-3.5 h-3.5 rounded-full bg-green-600" />
+            <span className="inline-block w-3.5 h-3.5 rounded-full bg-destructive" />
+            answer scored
+          </span>
+          {targetMsPerQuestion !== null && (
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-px h-3.5 bg-foreground/40" />
+              pace · {formatClock(targetMsPerQuestion)} per question
+            </span>
+          )}
+        </div>
         {displayStats.map((stat) => {
           const isExpanded = expandedRows.has(stat.qid);
-          
+
           return (
             <Card
               key={stat.qid}
@@ -448,58 +610,40 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
               {/* Main Row */}
               <button
                 onClick={() => toggleRow(stat.qid)}
-                className="w-full flex items-center gap-4 px-4 py-3 hover:bg-accent/30 transition-colors text-left"
+                className="w-full flex items-center gap-4 px-4 py-4 hover:bg-accent/30 transition-colors text-left"
               >
                 {/* Q# */}
-                <div className="w-12 flex-shrink-0 text-sm font-mono font-bold">
+                <div className="w-14 flex-shrink-0 text-base font-mono font-bold">
                   Q{stat.qnum}
                 </div>
 
                 {/* Type & Difficulty */}
-                <div className="w-32 flex-shrink-0">
-                  <div className="text-sm font-medium">{stat.qtype}</div>
+                <div className="w-40 flex-shrink-0">
+                  <div className="text-base font-semibold leading-tight">{stat.qtype}</div>
                   <div className="text-xs text-muted-foreground">
                     Level {stat.difficulty}
                   </div>
                 </div>
 
-                {/* Initial Answer */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center font-mono text-sm",
-                      stat.initialCorrect ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-600" : 
-                      stat.initialAnswer === '—' ? "bg-muted" : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-600"
-                    )}
-                  >
-                    {stat.initialAnswer}
-                  </Badge>
-                </div>
-
-                {/* Correct Answer */}
+                {/* The answer that was right. The answers the student gave
+                    are on the timeline, coloured — repeating the last of them
+                    in a badge beside it said the same thing twice. */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Badge
                     variant="outline"
                     className="w-8 h-8 rounded-full flex items-center justify-center font-mono text-sm bg-muted"
+                    title={`Correct answer: ${stat.correctAnswer}`}
                   >
                     {stat.correctAnswer}
                   </Badge>
                 </div>
 
-                {/* Result */}
-                <div className="flex-shrink-0">
-                  {stat.initialCorrect ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-destructive" />
-                  )}
-                </div>
-
-                {/* Time */}
-                <div className="flex-1 min-w-0 text-sm font-mono">
-                  {formatTime(stat.timeMs)}
-                </div>
+                {/* Time, drawn: the pace owed, and every answer they put down. */}
+                <AnswerTimeline
+                  stat={stat}
+                  scaleMs={timelineScaleMs}
+                  targetMs={targetMsPerQuestion}
+                />
 
                 {/* Flag */}
                 <div className="flex-shrink-0">
