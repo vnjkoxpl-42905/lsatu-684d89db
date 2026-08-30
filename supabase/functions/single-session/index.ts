@@ -19,10 +19,14 @@ import {
   buildCheckoutFingerprint,
   deterministicSingleSessionEventId,
   generateSingleSessionSlots,
+  hasConflictingCalendarEvent,
   normalizeEmail,
   normalizeGuests,
   SINGLE_SESSION,
+  SINGLE_SESSION_EVENT,
+  toEventConfig,
   toPublicBooking,
+  type BookingEventConfig,
 } from "../_shared/singleSessionCore.ts";
 import {
   decryptEnvelope,
@@ -37,9 +41,47 @@ const MAX_BODY_BYTES = 8192;
 const READ_LIMIT = 30;
 const WRITE_LIMIT = 5;
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
-let slotsCache: { expiresAt: number; payload: { slots: unknown[]; timezone: string } } | null = null;
+const slotsCache = new Map<string, { expiresAt: number; payload: { slots: unknown[]; timezone: string } }>();
 
 const gcal: GoogleCal = { insertEvent, patchEvent, getEvent, deleteEvent, freeBusy, meetUrlFromEvent };
+
+/**
+ * The capability token the caller gets back for a free booking. Only the caller
+ * that minted this token may cancel with it, so a replay from a different
+ * request gets nothing rather than someone else's token.
+ */
+function responseBookingTokenForFree(
+  booking: { booking_token_hash?: string | null },
+  bookingTokenHash: string,
+  bookingToken: string,
+): string {
+  return booking.booking_token_hash === bookingTokenHash ? bookingToken : "";
+}
+
+/**
+ * Is the host's calendar actually free for this booking's window, ignoring the
+ * booking's own tentative event. Mirrors the check the Stripe webhook runs
+ * before it promotes a paid hold.
+ */
+async function calendarClearFor(supabase: any, booking: any): Promise<boolean> {
+  const { data: state, error } = await supabase.from("gcal_sync_state")
+    .select("calendar_id,busy_calendar_ids").eq("id", 1).maybeSingle();
+  if (error) throw error;
+  const ids = [...new Set([state?.calendar_id || "primary", ...(state?.busy_calendar_ids ?? [])])];
+  for (const calendar of ids) {
+    const page = await listEvents(calendar, {
+      timeMin: booking.start_at,
+      timeMax: booking.end_at,
+      singleEvents: "true",
+      showDeleted: "false",
+      maxResults: "50",
+    });
+    if (hasConflictingCalendarEvent(page?.items ?? [], booking.start_at, booking.end_at, booking.gcal_event_id)) {
+      return false;
+    }
+  }
+  return true;
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -196,6 +238,27 @@ async function cleanupTentative(calendar: string, bookingId: string, knownEventI
   catch (error) { console.error("single-session calendar cleanup failed", { bookingId, eventId, error: error instanceof Error ? error.message : String(error) }); }
 }
 
+/**
+ * The event this request is about. Defaults to the single session so an older
+ * client that sends no slug keeps working exactly as it did.
+ */
+async function loadEvent(supabase: any, slug: unknown): Promise<BookingEventConfig> {
+  const wanted = String(slug || "single-session").trim().slice(0, 64) || "single-session";
+  const { data, error } = await supabase
+    .from("booking_event_types")
+    .select("*")
+    .eq("slug", wanted)
+    .eq("active", true)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) {
+    // An unknown slug must not silently fall back to the paid session.
+    if (wanted !== "single-session") throw new Error("unknown_event");
+    return SINGLE_SESSION_EVENT;
+  }
+  return toEventConfig(data);
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
@@ -219,29 +282,36 @@ Deno.serve(async (req) => {
     }
 
     if (action === "info") {
+      const event = await loadEvent(supabase, body.event);
       return json({
-        host: { name: "Joshua", title: "LSAT Session" },
-        duration_minutes: SINGLE_SESSION.durationMinutes,
-        amount_cents: SINGLE_SESSION.amountCents,
-        currency: SINGLE_SESSION.currency,
+        host: { name: "Joshua", title: event.label },
+        event: event.slug,
+        duration_minutes: event.lengthMinutes,
+        amount_cents: event.priceCents,
+        currency: event.currency,
+        requires_payment: event.requiresPayment,
         timezone: SINGLE_SESSION.hostTimezone,
       });
     }
 
     if (action === "slots") {
-      if (slotsCache && slotsCache.expiresAt > Date.now()) return json(slotsCache.payload);
+      const event = await loadEvent(supabase, body.event);
+      // Keyed by event: a consultation and a session have different lengths,
+      // buffers and windows, so one cached answer cannot serve both.
+      const cached = slotsCache.get(event.slug);
+      if (cached && cached.expiresAt > Date.now()) return json(cached.payload);
       const nowMs = Date.now();
-      const rangeStart = new Date(nowMs + SINGLE_SESSION.leadMinutes * 60_000).toISOString();
+      const rangeStart = new Date(nowMs + event.minimumNoticeMinutes * 60_000).toISOString();
       const rangeEnd = new Date(nowMs + 16 * 86_400_000).toISOString();
       const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
       const { data: availability, error } = await supabase.rpc("get_booking_availability");
       if (error) throw error;
       const { hostTz, rangesByDow } = parseAvailability(availability);
       const payload = {
-        slots: generateSingleSessionSlots({ nowMs, hostTz, rangesByDow, busy, businessDays: SINGLE_SESSION.businessDays }),
+        slots: generateSingleSessionSlots({ nowMs, hostTz, rangesByDow, busy, event }),
         timezone: hostTz,
       };
-      slotsCache = { expiresAt: Date.now() + 15_000, payload };
+      slotsCache.set(event.slug, { expiresAt: Date.now() + 15_000, payload });
       return json(payload);
     }
 
@@ -266,7 +336,8 @@ Deno.serve(async (req) => {
       const startAt = new Date(String(body.start_at || ""));
       if (!name || clientIdempotencyKey.length < 8 || !Number.isFinite(startAt.getTime())) return json({ error: "invalid_request" }, 400);
       if (!await verifyTurnstile(String(body.turnstile_token || ""), ip)) return json({ error: "verification_failed" }, 403);
-      const endAt = new Date(startAt.getTime() + SINGLE_SESSION.durationMinutes * 60_000);
+      const event = await loadEvent(supabase, body.event);
+      const endAt = new Date(startAt.getTime() + event.lengthMinutes * 60_000);
 
       // A replay must not conflict with its own DB hold or tentative Google
       // event. New claims still take the live observation immediately before
@@ -302,6 +373,7 @@ Deno.serve(async (req) => {
         _booking_token_hash: bookingTokenHash,
         _ip_hash: ipHash,
         _user_id: await optionalUserId(supabase, req),
+        _event_slug: event.slug,
       });
       if (claimError) {
         const status = claimError.code === "P0429" ? 429
@@ -351,6 +423,46 @@ Deno.serve(async (req) => {
         await cleanupTentative(targetCalendar, booking.id, tentative?.id);
         console.error("single-session tentative event failed", { bookingId: booking.id, error: calendarError instanceof Error ? calendarError.message : String(calendarError) });
         return json({ error: "slot_unavailable" }, 409);
+      }
+
+      // A free event has no middle step. The slot is held and the tentative
+      // calendar event is up; there is no payment to wait for, so confirm now.
+      // finalize_single_session_free refuses on any event whose type says it
+      // requires payment, so this door cannot be walked through by a session.
+      if (!event.requiresPayment) {
+        const cancelToken = generateCapabilityToken();
+        const cancelPayload = await encryptEnvelope({
+          cancel_token: cancelToken,
+          cancel_url: `${APP_ORIGIN}/book/${event.slug}?cancel_token=${encodeURIComponent(cancelToken)}`,
+        }, encryptionSecret);
+        // Same last look the paid path takes on the webhook, and for the same
+        // reason: the tentative event we just wrote is our own, so it has to be
+        // excluded or every booking would look like a clash with itself.
+        const liveCalendarClear = await calendarClearFor(supabase, booking);
+        const { data: freeResult, error: freeError } = await supabase.rpc("finalize_single_session_free", {
+          _booking_id: booking.id,
+          _expected_version: booking.lifecycle_version,
+          _live_calendar_clear: liveCalendarClear,
+          _cancel_token_hash: await sha256Hex(cancelToken),
+          _cancel_payload_ciphertext: cancelPayload,
+        });
+        if (freeError) {
+          await cleanupTentative(targetCalendar, booking.id, booking.gcal_event_id);
+          const status = freeError.code === "P0409" ? 409 : freeError.code === "P0400" ? 400 : 500;
+          return json({ error: status === 409 ? "slot_unavailable" : status === 400 ? "invalid_request" : "server_error" }, status);
+        }
+        if (freeResult?.status !== "booked") {
+          await cleanupTentative(targetCalendar, booking.id, booking.gcal_event_id);
+          return json({ error: "slot_unavailable" }, 409);
+        }
+        const { data: confirmed } = await supabase
+          .from("single_session_bookings").select("*").eq("id", booking.id).maybeSingle();
+        return json({
+          booking: toPublicBooking(confirmed ?? booking),
+          booking_token: responseBookingTokenForFree(booking, bookingTokenHash, bookingToken),
+          checkout_session_id: null,
+          checkout_url: null,
+        });
       }
 
       let fingerprint: ReturnType<typeof buildCheckoutFingerprint>;

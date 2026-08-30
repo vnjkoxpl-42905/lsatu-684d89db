@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildCheckoutFingerprint,
   generateSingleSessionSlots,
+  SINGLE_SESSION_EVENT,
   hasConflictingCalendarEvent,
   normalizeGuests,
   parseStripeSignature,
@@ -58,6 +59,41 @@ describe("single-session booking core", () => {
 
     // Saturday 2026-09-05, 2:00pm Toronto = 18:00Z.
     expect(slots.map((slot) => slot.start_at)).toContain("2026-09-05T18:00:00.000Z");
+  });
+
+  it("runs a consultation on its own 30-minute grid, buffers included", () => {
+    // Consultation, read from Cal.com: 30 minutes, 30 minutes of buffer on each
+    // side, so a meeting ending at 1:30 blocks the 1:30 and 2:00 starts.
+    const consultation = {
+      ...SINGLE_SESSION_EVENT,
+      slug: "consultation",
+      lengthMinutes: 30,
+      bufferBeforeMinutes: 30,
+      bufferAfterMinutes: 30,
+      windowBusinessDays: 5,
+      requiresPayment: false,
+    };
+    const slots = generateSingleSessionSlots({
+      nowMs: Date.parse("2026-09-01T12:00:00.000Z"),
+      hostTz: "America/Toronto",
+      // Thursday 1:00pm - 3:00pm Toronto.
+      rangesByDow: { 4: [{ startMin: 13 * 60, endMin: 15 * 60 }] },
+      busy: [{
+        start: Date.parse("2026-09-03T17:00:00.000Z"), // 1:00pm Toronto
+        end: Date.parse("2026-09-03T17:30:00.000Z"),   // 1:30pm Toronto
+      }],
+      event: consultation,
+    });
+
+    const thursday = slots
+      .filter((slot) => slot.start_at.startsWith("2026-09-03"))
+      .map((slot) => slot.start_at);
+    // 1:00 is taken. 1:30 starts the instant the meeting ends, so the 30-minute
+    // before-buffer kills it. 2:00 clears it by exactly 30 minutes and stands.
+    expect(thursday).toEqual([
+      "2026-09-03T18:00:00.000Z", // 2:00pm
+      "2026-09-03T18:30:00.000Z", // 2:30pm
+    ]);
   });
 
   it("excludes the booking's tentative event from finalization conflict checks", () => {

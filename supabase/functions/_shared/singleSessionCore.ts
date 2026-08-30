@@ -12,6 +12,56 @@ export const SINGLE_SESSION = {
 
 export type SingleSessionSlot = { start_at: string; end_at: string };
 
+/**
+ * One row of booking_event_types, as the edge function sees it. The constants in
+ * SINGLE_SESSION are now only the fallback for a caller that has not loaded one.
+ */
+export type BookingEventConfig = {
+  slug: string;
+  label: string;
+  lengthMinutes: number;
+  /** Null means slots start every lengthMinutes, which is what Cal.com does. */
+  slotIntervalMinutes: number | null;
+  minimumNoticeMinutes: number;
+  bufferBeforeMinutes: number;
+  bufferAfterMinutes: number;
+  windowBusinessDays: number;
+  priceCents: number;
+  currency: string;
+  requiresPayment: boolean;
+};
+
+export const SINGLE_SESSION_EVENT: BookingEventConfig = {
+  slug: "single-session",
+  label: "LSAT Session",
+  lengthMinutes: SINGLE_SESSION.durationMinutes,
+  slotIntervalMinutes: null,
+  minimumNoticeMinutes: SINGLE_SESSION.leadMinutes,
+  bufferBeforeMinutes: 0,
+  bufferAfterMinutes: 0,
+  windowBusinessDays: SINGLE_SESSION.businessDays,
+  priceCents: SINGLE_SESSION.amountCents,
+  currency: SINGLE_SESSION.currency,
+  requiresPayment: true,
+};
+
+/** Maps a booking_event_types row onto the shape the slot generator wants. */
+export function toEventConfig(row: Record<string, unknown>): BookingEventConfig {
+  return {
+    slug: String(row.slug),
+    label: String(row.label ?? ""),
+    lengthMinutes: Number(row.length_minutes),
+    slotIntervalMinutes: row.slot_interval_minutes == null ? null : Number(row.slot_interval_minutes),
+    minimumNoticeMinutes: Number(row.minimum_notice_minutes),
+    bufferBeforeMinutes: Number(row.buffer_before_minutes ?? 0),
+    bufferAfterMinutes: Number(row.buffer_after_minutes ?? 0),
+    windowBusinessDays: Number(row.window_business_days),
+    priceCents: Number(row.price_cents ?? 0),
+    currency: String(row.currency ?? "usd"),
+    requiresPayment: row.requires_payment !== false,
+  };
+}
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function normalizeEmail(value: unknown): string {
@@ -77,12 +127,20 @@ export function generateSingleSessionSlots(opts: {
   rangesByDow: Record<number, { startMin: number; endMin: number }[]>;
   busy: { start: number; end: number }[];
   businessDays?: number;
+  /** Defaults to the single session, so existing callers are unaffected. */
+  event?: BookingEventConfig;
 }): SingleSessionSlot[] {
-  const leadAt = opts.nowMs + SINGLE_SESSION.leadMinutes * 60_000;
+  const event = opts.event ?? SINGLE_SESSION_EVENT;
+  const length = event.lengthMinutes;
+  const pitch = event.slotIntervalMinutes ?? event.lengthMinutes;
+  const beforeMs = event.bufferBeforeMinutes * 60_000;
+  const afterMs = event.bufferAfterMinutes * 60_000;
+  const leadAt = opts.nowMs + event.minimumNoticeMinutes * 60_000;
+  const businessDays = opts.businessDays ?? event.windowBusinessDays;
   const slots: SingleSessionSlot[] = [];
   let weekdaysSeen = 0;
 
-  for (let offset = 0; offset < 16 && weekdaysSeen < (opts.businessDays ?? SINGLE_SESSION.businessDays); offset++) {
+  for (let offset = 0; offset < 16 && weekdaysSeen < businessDays; offset++) {
     const calendarDay = new Date(opts.nowMs + offset * 86_400_000);
     const { year, month, day, dow } = hostDateParts(opts.hostTz, calendarDay);
     // businessDays is the *span*, not a filter. Cal.com counts business days to
@@ -96,13 +154,15 @@ export function generateSingleSessionSlots(opts: {
     for (const range of opts.rangesByDow[dow] ?? []) {
       for (
         let startMinute = range.startMin;
-        startMinute + SINGLE_SESSION.durationMinutes <= range.endMin;
-        startMinute += SINGLE_SESSION.pitchMinutes
+        startMinute + length <= range.endMin;
+        startMinute += pitch
       ) {
         const start = hostLocalToUtc(opts.hostTz, year, month, day, startMinute).getTime();
-        const end = start + SINGLE_SESSION.durationMinutes * 60_000;
+        const end = start + length * 60_000;
         if (start < leadAt) continue;
-        if (opts.busy.some((busy) => busy.start < end && busy.end > start)) continue;
+        // Buffers widen what counts as a clash: a consultation carries 30
+        // minutes on each side, so a meeting that ends at 2:00 blocks a 2:15.
+        if (opts.busy.some((busy) => busy.start < end + afterMs && busy.end > start - beforeMs)) continue;
         slots.push({ start_at: new Date(start).toISOString(), end_at: new Date(end).toISOString() });
       }
     }
