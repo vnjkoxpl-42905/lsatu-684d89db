@@ -119,6 +119,7 @@ const TeacherTemplates = safeLazy(() => import("./pages/teacher/TeacherTemplates
 const BootcampReferences = safeLazy(() => import("./pages/teacher/BootcampReferences"));
 const TutorCorpus = safeLazy(() => import("./pages/teacher/TutorCorpus"));
 const TeacherSessionIngest = safeLazy(() => import("./pages/teacher/TeacherSessionIngest"));
+const BookingAccess = safeLazy(() => import("./pages/teacher/BookingAccess"));
 
 const BootcampReferenceDetail = safeLazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = safeLazy(() => import("./pages/PublicBooking"));
@@ -775,6 +776,17 @@ const App = () => {
                     <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                         <TutorCorpus />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+
+                  {/* Who can book what, and at what price. Writes straight to
+                      the booking tables under admin RLS, so what this screen
+                      shows is what the booking page reads. */}
+                  <Route path="/teacher/booking-access" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <BookingAccess />
                       </React.Suspense>
                     </ProtectedRoute>
                   } />
