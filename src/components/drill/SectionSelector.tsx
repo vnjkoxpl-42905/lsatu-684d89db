@@ -197,17 +197,36 @@ export function SectionSelector({
     return rows.sort((a, b) => b.pt - a.pt || a.section - b.section);
   }, [kind, rcSections, lrSectionsInFilter]);
 
+  /**
+   * The PrepTest step. A student thinks in PrepTests first and a section
+   * number second, so the pickable sections are rolled up to the tests that
+   * still have something in them, newest first.
+   */
+  const pickablePTs = useMemo(
+    () => [...new Set(pickableSections.map((s) => s.pt))],
+    [pickableSections],
+  );
+
+  /** Sections of the chosen PrepTest, in published order. */
+  const sectionsForPT = useMemo(
+    () => pickableSections.filter((s) => s.pt === selectedPT).map((s) => s.section),
+    [pickableSections, selectedPT],
+  );
+
   // Flipping the filter can strand a choice that no longer qualifies. Drop it
   // rather than leaving a trigger naming a section the list no longer offers.
   useEffect(() => {
-    if (!selectedPT || !selectedSection) return;
+    if (!selectedPT) return;
+    if (!pickableSections.some((s) => s.pt === selectedPT)) {
+      setSelectedPT(null);
+      setSelectedSection(null);
+      return;
+    }
+    if (!selectedSection) return;
     const stillOffered = pickableSections.some(
       (s) => s.pt === selectedPT && s.section === selectedSection,
     );
-    if (!stillOffered) {
-      setSelectedPT(null);
-      setSelectedSection(null);
-    }
+    if (!stillOffered) setSelectedSection(null);
   }, [pickableSections, selectedPT, selectedSection]);
 
   const handleStart = () => {
@@ -379,42 +398,69 @@ export function SectionSelector({
               </div>
             )}
 
-            {/* Section — one list, not a PrepTest picker feeding a Section
-                picker. Named the way the section is named everywhere else in
-                LSAT world, `PT130.S3`, so the row a student reads here is the
-                same string they will quote back in a lesson. Bare on purpose:
-                counts and freshness percentages stacked on every row read as a
-                spreadsheet, the Status filter already guarantees what is in
-                this list, and the line above Start states what the chosen
-                section holds. */}
+            {/* PrepTest, then section. Two steps rather than one flat list of
+                `PT130.S3` rows: a student picks the test first and the section
+                number second, which is the order they already hold it in. The
+                Status filter above has decided which tests are offered at all,
+                so nothing here needs counts or percentages on the rows. */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
+                PrepTest
+              </label>
+              <Select
+                value={selectedPT ? String(selectedPT) : ''}
+                onValueChange={(val) => {
+                  setSelectedPT(Number(val));
+                  // The section number means a different section in a different
+                  // test, so carrying it across would start the wrong thing.
+                  setSelectedSection(null);
+                }}
+              >
+                <SelectTrigger
+                  className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
+                  id="preptest-select"
+                >
+                  <SelectValue placeholder="Select a PrepTest" />
+                </SelectTrigger>
+                <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
+                  {pickablePTs.map((pt) => (
+                    <SelectItem
+                      key={pt}
+                      value={String(pt)}
+                      className="text-base py-3 focus:bg-foreground/5"
+                    >
+                      PrepTest {pt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
                 Section
               </label>
               <Select
-                value={
-                  selectedPT && selectedSection ? `${selectedPT}.${selectedSection}` : undefined
-                }
-                onValueChange={(val) => {
-                  const [pt, section] = val.split('.').map(Number);
-                  setSelectedPT(pt);
-                  setSelectedSection(section);
-                }}
+                value={selectedSection ? String(selectedSection) : ''}
+                onValueChange={(val) => setSelectedSection(Number(val))}
+                disabled={!selectedPT}
               >
                 <SelectTrigger
                   className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
                   id="section-select"
                 >
-                  <SelectValue placeholder="Select a section" />
+                  <SelectValue
+                    placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
+                  />
                 </SelectTrigger>
                 <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                  {pickableSections.map(({ pt, section }) => (
+                  {sectionsForPT.map((section) => (
                     <SelectItem
-                      key={`${pt}.${section}`}
-                      value={`${pt}.${section}`}
+                      key={section}
+                      value={String(section)}
                       className="text-base py-3 focus:bg-foreground/5"
                     >
-                      PT{pt}.S{section}
+                      Section {section}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -431,14 +477,16 @@ export function SectionSelector({
               onChange={setTiming}
               baseMinutes={kind === 'rc' ? 35 : baseMinutes}
               questionCount={chosenQuestionCount}
-              // RC runs a per-passage budget, so it offers only the three paces
-              // that budget divides into — no speed training, no arbitrary clock.
-              allowedPercents={kind === 'rc' ? [100, 150, 200] : undefined}
-              labels={
-                kind === 'rc'
-                  ? { 100: 'Standard', 150: 'Time & a half', 200: 'Double time' }
-                  : undefined
-              }
+              // Three clocks and no more. 100% is the student's own standard,
+              // and the two above it are the accommodations the LSAT actually
+              // grants — +50% and +100%. The old speed-training presets (97%,
+              // 94%, 70%) and the custom stepper read as arbitrary numbers on
+              // a panel whose job is to start a real section.
+              allowedPercents={[100, 150, 200]}
+              // RC's clock is a per-passage budget with only three paces, and
+              // no stopwatch to fall back to.
+              allowUnlimited={kind === 'lr'}
+              labels={{ 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
               accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
               className="h-14 border-border/50 bg-background/50 hover:bg-background/80"
               contentClassName="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50"

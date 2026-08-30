@@ -83,8 +83,10 @@ const openSelectShowing = async (text: RegExp) => {
 };
 
 const pickSection = async () => {
+  await openSelectShowing(/Select a PrepTest/);
+  fireEvent.click(await screen.findByText(/^PrepTest 130$/));
   await openSelectShowing(/Select a section/);
-  fireEvent.click(await screen.findByText(/^PT130\.S3$/));
+  fireEvent.click(await screen.findByText(/^Section 3$/));
 };
 
 describe('SectionSelector', () => {
@@ -97,23 +99,29 @@ describe('SectionSelector', () => {
     expect(await screen.findByText(/^Any$/)).toBeTruthy();
   });
 
-  it('offers every section in one list, newest first', async () => {
+  it("offers the PrepTests newest first, then that test's own sections", async () => {
     renderSelector();
-    await openSelectShowing(/Select a section/);
+    await openSelectShowing(/Select a PrepTest/);
 
-    // No PrepTest step to walk through: the sections are the options.
-    await screen.findByText(/^PT131\.S1$/);
-    const rows = screen
+    await screen.findByText(/^PrepTest 131$/);
+    const tests = screen
       .getAllByRole('option')
       .map((el) => el.textContent)
-      .filter((t): t is string => Boolean(t?.startsWith('PT')));
+      .filter((t): t is string => Boolean(t?.startsWith('PrepTest')));
+    expect(tests).toEqual(['PrepTest 131', 'PrepTest 130']);
 
-    expect(rows).toEqual(['PT131.S1', 'PT130.S1', 'PT130.S3']);
+    fireEvent.click(await screen.findByText(/^PrepTest 130$/));
+    await openSelectShowing(/Select a section/);
+    const sections = screen
+      .getAllByRole('option')
+      .map((el) => el.textContent)
+      .filter((t): t is string => Boolean(t?.startsWith('Section')));
+    expect(sections).toEqual(['Section 1', 'Section 3']);
   });
 
   it('promises nothing before a section is chosen', async () => {
     renderSelector();
-    await screen.findByText(/Select a section/);
+    await screen.findByText(/Select a PrepTest/);
 
     expect(screen.queryByText(/in their published order/)).toBeNull();
   });

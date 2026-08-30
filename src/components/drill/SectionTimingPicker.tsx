@@ -271,15 +271,30 @@ export default function SectionTimingPicker({
         )}
       >
         {restricted ? (
-          allowedPercents!.map((percent) => (
-            <Row
-              key={percent}
-              selected={isTimed && Math.round(currentPercent) === Math.round(percent)}
-              title={labelFor(percent)}
-              detail={describe(percent)}
-              onSelect={() => selectPercent(percent)}
-            />
-          ))
+          <>
+            {allowedPercents!.map((percent) => (
+              <Row
+                key={percent}
+                selected={isTimed && Math.round(currentPercent) === Math.round(percent)}
+                title={labelFor(percent)}
+                detail={describe(percent)}
+                onSelect={() => selectPercent(percent)}
+              />
+            ))}
+            {/* Restricting the paces does not remove the no-clock escape —
+                that is a different decision from which clock to run. */}
+            {allowUnlimited && (
+              <Row
+                selected={value.mode === 'unlimited'}
+                title="Unlimited"
+                detail="∞"
+                onSelect={() => {
+                  onChange({ mode: 'unlimited' });
+                  setOpen(false);
+                }}
+              />
+            )}
+          </>
         ) : (
           <>
             <Row
