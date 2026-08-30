@@ -45,6 +45,21 @@ describe("single-session booking core", () => {
     ]);
   });
 
+  it("offers the Saturday window that falls inside the business-day span", () => {
+    // Cal.com counts business days to size the window, then offers every day in
+    // it the weekly hours cover. Saturday 2-5pm is one of Joshua's windows.
+    const slots = generateSingleSessionSlots({
+      nowMs: Date.parse("2026-08-31T12:00:00.000Z"),
+      hostTz: "America/Toronto",
+      rangesByDow: { 6: [{ startMin: 14 * 60, endMin: 17 * 60 }] },
+      busy: [],
+      businessDays: 6,
+    });
+
+    // Saturday 2026-09-05, 2:00pm Toronto = 18:00Z.
+    expect(slots.map((slot) => slot.start_at)).toContain("2026-09-05T18:00:00.000Z");
+  });
+
   it("excludes the booking's tentative event from finalization conflict checks", () => {
     const events = [
       { id: "own", status: "tentative", start: { dateTime: "2026-08-20T17:00:00Z" }, end: { dateTime: "2026-08-20T18:10:00Z" } },

@@ -85,8 +85,13 @@ export function generateSingleSessionSlots(opts: {
   for (let offset = 0; offset < 16 && weekdaysSeen < (opts.businessDays ?? SINGLE_SESSION.businessDays); offset++) {
     const calendarDay = new Date(opts.nowMs + offset * 86_400_000);
     const { year, month, day, dow } = hostDateParts(opts.hostTz, calendarDay);
-    if (dow === 0 || dow === 6) continue;
-    weekdaysSeen++;
+    // businessDays is the *span*, not a filter. Cal.com counts business days to
+    // decide how far ahead the window reaches, then offers every day inside it
+    // that the weekly hours cover -- Saturday included. Skipping weekend days
+    // outright dropped the Saturday 2-5pm window from this page entirely while
+    // Cal.com kept offering it.
+    const isWeekend = dow === 0 || dow === 6;
+    if (!isWeekend) weekdaysSeen++;
 
     for (const range of opts.rangesByDow[dow] ?? []) {
       for (
