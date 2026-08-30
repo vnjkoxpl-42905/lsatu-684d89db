@@ -200,6 +200,21 @@ function DrillContent() {
   const ptRun = (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
   // Routing and score-UI suppression only. Never a clock or integrity decision.
   const inSitting = isSittingReturn(drillReturnTo);
+  /**
+   * Answer and Explanation are not rendered at all for this run.
+   *
+   * Two runs are sealed. A practice-test sitting, because a sitting reveals
+   * nothing until it is scored and the old per-question gate quietly broke
+   * that: attempt a question inside a sitting and the reveal unlocked. And a
+   * run launched `?sealed=1`, which is how an assigned section is handed over.
+   *
+   * The full-section gate further down is a different and weaker thing. It
+   * withholds the reveal until the question is attempted and then allows it.
+   * That is right for a section a student chose to sit; it is wrong for one
+   * assigned as a measurement, where the answer to question 3 must not be
+   * available while question 4 is still open.
+   */
+  const revealSealed = inSitting || !!state.sealed;
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
   const initialIndexParam = searchParams.get('initialIndex');
@@ -2978,7 +2993,9 @@ function DrillContent() {
     !!currentQuestion &&
     (!!showAnswerRevealed.get(currentQuestion.qid) ||
       // Section mode's opt-in toggle: once on, an answered question reveals.
-      (sectionRevealEnabled && !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
+      (!revealSealed &&
+        sectionRevealEnabled &&
+        !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
 
   const {
     data: lrExplanation,
@@ -4130,8 +4147,12 @@ function DrillContent() {
               // mid-section is not an escape hatch there, it defeats the
               // exercise. (Adaptive mode never hits it — the two session modes
               // are mutually exclusive.)
-              showAnswerVisible
-              onShowAnswer={() => toggleAnswerReveal(currentAttempted, currentRevealed)}
+              showAnswerVisible={!revealSealed}
+              onShowAnswer={
+                revealSealed
+                  ? undefined
+                  : () => toggleAnswerReveal(currentAttempted, currentRevealed)
+              }
               showAnswerActive={currentRevealed}
               showAnswerDisabled={!!timer?.isPaused || (isFullSection && !currentAttempted)}
               // Explanation no longer waits on a separate reveal press: it is
@@ -4140,8 +4161,11 @@ function DrillContent() {
               // again collapses all of it back to an untouched question. A timed
               // section keeps the old gate, where revealing early is not a study
               // move but an escape hatch.
-              onExplanation={() =>
-                toggleExplanation(currentAttempted, currentRevealed, explanationOpen)
+              onExplanation={
+                revealSealed
+                  ? undefined
+                  : () =>
+                      toggleExplanation(currentAttempted, currentRevealed, explanationOpen)
               }
               explanationActive={explanationOpen}
               explanationDisabled={
@@ -4242,8 +4266,8 @@ function DrillContent() {
               onJumpTo={handleJumpTo}
               onPrev={officialPrev}
               onNext={() => { void officialNext(); }}
-              revealEnabled={sectionRevealEnabled}
-              onRevealEnabledChange={setSectionRevealEnabled}
+              revealEnabled={revealSealed ? false : sectionRevealEnabled}
+              onRevealEnabledChange={revealSealed ? undefined : setSectionRevealEnabled}
             />
           ) : (
             // Same chrome as the adaptive Smart Drill, but driven by the fixed

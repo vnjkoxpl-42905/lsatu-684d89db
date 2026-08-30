@@ -15,6 +15,20 @@ export interface DrillRouteState {
    * card sets this so a hand-picked question looks identical to the Auto run.
    */
   present?: "smart";
+  /**
+   * Seals the run: Answer and Explanation are not rendered at all, for the
+   * whole session, for every question.
+   *
+   * This is NOT the full-section gate below it, which only withholds a reveal
+   * until the question has been attempted and then hands it over. A sealed run
+   * never hands it over. It exists because a section assigned as a measurement
+   * stops measuring the moment the student can check question 3 before
+   * answering question 4, and an honour-system instruction is not a control.
+   *
+   * Set from `?sealed=1` at launch. It is deliberately a launch property and
+   * not a student setting: the person who assigns the section decides.
+   */
+  sealed?: boolean;
 }
 
 
@@ -39,6 +53,38 @@ export function getResolvedDrillRouteState(
   locationState: unknown,
 ): DrillRouteState {
   const urlMode = searchParams.get("mode");
+  const sealed = searchParams.get("sealed") === "1";
+
+  // A real section, launched from a link. Everything else about a full section
+  // already worked; only the launch did not, and it was reachable solely as
+  // router state. That made an assigned section impossible to hand over as a
+  // URL, which is what a Classroom item is.
+  if (urlMode === "full-section") {
+    const pt = positiveNumberParam(searchParams.get("pt"));
+    const section = positiveNumberParam(searchParams.get("section"));
+    if (pt && section) {
+      const minutes = positiveNumberParam(searchParams.get("minutes"));
+      const config: FullSectionConfig = {
+        pt,
+        section,
+        timer: {
+          mode: minutes ? "custom" : "35",
+          customMinutes: minutes,
+          isPaused: false,
+          elapsedMs: 0,
+          startedAt: Date.now(),
+        },
+      };
+      return {
+        mode: "full-section",
+        config,
+        returnTo: safeReturnTo(searchParams.get("returnTo")),
+        practicingLabel: searchParams.get("label") || undefined,
+        sealed,
+      };
+    }
+  }
+
   if (urlMode) {
     const qids = (searchParams.get("qids") ?? "")
       .split(",")
@@ -64,6 +110,7 @@ export function getResolvedDrillRouteState(
       returnTo,
       isGuidedDrill,
       guidedDurationMinutes,
+      sealed,
     };
   }
 
@@ -71,7 +118,7 @@ export function getResolvedDrillRouteState(
   const returnTo = safeReturnTo(state.returnTo);
   const normalized: DrillRouteState =
     state.mode === "practice-set" ? { ...state, mode: "type-drill" as DrillMode } : state;
-  return { ...normalized, returnTo };
+  return { ...normalized, returnTo, sealed: normalized.sealed ?? sealed };
 }
 
 export function getTimerConfigForDrillRoute(

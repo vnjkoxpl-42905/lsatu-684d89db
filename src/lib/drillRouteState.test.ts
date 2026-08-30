@@ -141,3 +141,69 @@ describe("drill route state helpers", () => {
     ).toEqual({ mode: "countdown", durationMs: 35 * 60 * 1000 });
   });
 });
+
+describe("sealed section launches", () => {
+  it("builds a full-section run from the URL with a custom clock", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams(
+        "mode=full-section&pt=155&section=1&minutes=53&sealed=1&returnTo=%2Fclassroom",
+      ),
+      null,
+    );
+
+    expect(state.mode).toBe("full-section");
+    const config = state.config as FullSectionConfig;
+    expect(config.pt).toBe(155);
+    expect(config.section).toBe(1);
+    expect(config.timer.mode).toBe("custom");
+    expect(config.timer.customMinutes).toBe(53);
+    expect(state.sealed).toBe(true);
+    expect(state.returnTo).toBe("/classroom");
+  });
+
+  it("gives a URL full section a 53 minute countdown", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=full-section&pt=155&section=1&minutes=53"),
+      null,
+    );
+
+    expect(getTimerConfigForDrillRoute(state)).toEqual({
+      mode: "countdown",
+      durationMs: 53 * 60 * 1000,
+    });
+  });
+
+  it("defaults an unsealed section launch to 35 minutes and no seal", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=full-section&pt=155&section=2"),
+      null,
+    );
+
+    expect((state.config as FullSectionConfig).timer.mode).toBe("35");
+    expect(state.sealed).toBe(false);
+    expect(getTimerConfigForDrillRoute(state)).toEqual({
+      mode: "countdown",
+      durationMs: 35 * 60 * 1000,
+    });
+  });
+
+  it("ignores a section launch missing pt or section", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=full-section&pt=155"),
+      null,
+    );
+
+    // Falls through to the qid branch rather than building a broken section.
+    expect(state.mode).toBe("full-section");
+    expect((state.config as { selectedQids?: string[] }).selectedQids).toEqual([]);
+  });
+
+  it("does not seal an ordinary qid drill", () => {
+    const state = getResolvedDrillRouteState(
+      new URLSearchParams("mode=type-drill&qids=PT155-S1-Q1"),
+      null,
+    );
+
+    expect(state.sealed).toBe(false);
+  });
+});
