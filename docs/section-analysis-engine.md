@@ -358,3 +358,250 @@ Nothing to capture. These are rules we have not written yet.
 - **Stamina.** Accuracy by position in the section, tracked across every section sat.
   Nothing in one sitting reveals it; twenty sittings do, and it changes what a study plan
   should look like.
+
+---
+
+## Appendix A — the complete tip inventory
+
+Every instruction, threshold, and heuristic stated in the webinar, in the order it is
+said, with what it means and what the engine does with it. Nothing from the source is
+left out, including the parts said in the Q&A rather than the presentation, because
+half the usable thresholds are in the Q&A.
+
+Each entry is: **timestamp · the tip · what we do with it.** "Detector" means the engine
+can fire on it from data. "Prescription" means it is text the report hands the student
+when a detector fires. "Teaching" means it belongs in the product's own copy, because no
+report can enforce it from the outside.
+
+### A.1 The frame (1:10 - 5:29)
+
+1. **1:10 · Read the score report after every section.** The report exists at the end of
+   blind review and holds the timing breakdown and every right and wrong answer. The
+   student in the first example had never opened hers. *Teaching — the report has to
+   arrive rather than wait to be found.*
+2. **1:42 · Classify every error into one of four types.** Reading, logical reasoning
+   (fundamentals), question type process, test taking. *The engine's whole output shape.*
+3. **2:05 · Reading error** — misread something, a grammatical issue, a quantifier or a
+   conclusion taken wrongly. *Category 1.*
+4. **2:21 · Logical reasoning error** — causation, conditional reasoning, the fundamentals
+   underneath the question. *Category 2.*
+5. **2:21 · Question type process error** — "I don't know how to do a necessary assumption
+   question," "I don't know how to do a most strongly supported question." *Category 3.*
+6. **2:43 · Test-taking error** — skipped what should not have been skipped, did not skip
+   what should have been, too long on a question, too long on the stimulus. *Category 4.*
+7. **3:28 · Classification decides the prescription, and two of them are opposites.** A
+   fundamentals error means it may be wrong to be sitting sections or prep tests at all
+   right now — go back to the core curriculum. A test-taking error means the opposite:
+   you are in the right place, sit more sections and more prep tests. *The report's
+   "what to do next" block branches on category and must say which of these two it is.*
+8. **4:30 · Diagnosis exists to produce a plan.** The point of naming the error is the
+   remedy that follows from it, not the naming. *A finding with no prescription is not
+   shipped.*
+9. **4:57 · Students stop at the first label and miss the rest.** "I got this wrong
+   because I misread" and then nothing — when the timing breakdown holds most of the
+   story. *Why the report leads with the section's timing story, not the miss list.*
+
+### A.2 The RC section (5:29 - 13:26)
+
+10. **6:16 · Equal misses, unequal time, means the time bought nothing.** Passage 4 felt
+    hard; she missed the same number on passages 2 and 3 while spending far longer there.
+    *Detector R2.*
+11. **6:42 · Know your own tool's quirks.** He warns the audience off a five-minute figure
+    that was the comparative passage's B half, not a real reading. *Our own segmentation
+    must never produce a number that needs explaining away.*
+12. **7:14 · The last passage was not the problem; the earlier ones were.** She did not
+    struggle with passage 4, she ran out of clock before it. *Detector R1 — the headline
+    rule.*
+13. **7:46 · Look at what the misses have in common within the slow stretch.** All of hers
+    were inference questions, which turns a timing story into a timing *and* process
+    story. *Detector R8, run inside the window R1 identifies rather than across the whole
+    section.*
+14. **8:30 · Time spent on questions can be moved back into the passage.** If the extra
+    minutes on the questions are not buying accuracy, spend them understanding the
+    passage instead and answer more efficiently. *Prescription, RC only, fires with R2.*
+15. **9:02 · Rereading the passage hunting for a phrase is an inference-question process
+    error.** Three minutes of scanning for something explicitly stated, on a question type
+    whose answers are never explicitly stated. *Prescription attached to inference misses
+    with long times.*
+16. **9:47 · Mentioned is not supported.** The definitive line for the accept-the-stimulus
+    family: something mentioned in the passage and something supported by the passage are
+    different things. *Prescription text, verbatim in spirit.*
+17. **9:47 · One section can carry two categories at once.** Test-taking and process, both
+    real, both named. *The report never picks a single cause when two fired.*
+18. **10:55 · Re-work every question of the failing type in that set, including the ones
+    you got right.** You may have got them right for the wrong reason. *Prescription — the
+    assignment generated from a process finding covers the whole type, not just the
+    misses.*
+19. **11:39 · The golden retriever example.** The author says all dogs are cute; an
+    inference answer about golden retrievers is supported without ever being mentioned.
+    *Teaching copy for the inference prescription.*
+20. **12:01 · Write down, before the next test, what the issue was and what you will do
+    differently.** *Product feature — §6.3's pre-test note. The next report opens on it.*
+21. **12:22 · Treat every passage as if you were rushed.** She got the same results on the
+    rushed passage as on the slow ones, so the slow pace was not buying anything and the
+    rushed pace was not costing anything. *Prescription attached to R2 in RC.*
+
+### A.3 The LG section (13:26 - 15:58)
+
+Logic games are gone from the modern LSAT, so these do not run as detectors. The reasoning
+transfers exactly to RC passages and to LR question clusters, which is why they are kept.
+
+22. **13:44 · Slow-but-correct earlier work causes wrong answers later.** Questions he got
+    right, taken slowly, are what cost him game 4. *Detector R1 counts time spent on
+    correct answers, not only on misses. This is the part everyone leaves out.*
+23. **14:32 · Blind review proves it was not a knowledge gap.** He got game 4's questions
+    right in blind review, so the failure was the clock. *Detector R10, the separator.*
+24. **14:55 · Fool-proof the earlier items until they come in under target time.*** The
+    remedy is applied to the fast-and-slow ones at the start, not the ones missed at the
+    end. *Prescription — the assignment targets the upstream items.*
+25. **15:37 · Do not fixate on red at the bottom.** The most common mistake he sees in new
+    clients' analytics. *Why the report's first paragraph is the section story and the
+    miss list comes after it.*
+
+### A.4 The second pass, round two (16:20 - 21:08)
+
+26. **16:20 · Gaps in the timing bars are the second pass.** A gap means the student came
+    back to that question later. *Requires absolute clock offsets (§6.2). This is the
+    single field that makes the second pass visible at all.*
+27. **17:09 · Six questions revisited, none changed.** He counts them out loud, by number.
+    *Detector R4 — and the report must name the numbers the same way.*
+28. **17:59 · The reason: reusing the first reading.** Going back with the understanding
+    that produced the wrong answer inevitably reproduces the wrong answer. *Prescription.*
+29. **18:38 · The fix is fewer questions, more time each.** Scrap some, spend the round-two
+    minutes on the two you can actually convert; two points is the gap between a 150 and a
+    160. *Prescription attached to R4.*
+30. **19:26 · The two she did change were both the same question type.** Necessary
+    assumption, twice — a process finding hiding inside a timing finding. *Detector R8
+    run over the changed-answer subset specifically.*
+31. **19:53 · Necessary assumption run as strengthen.** The specific, named confusion, with
+    its cousin: pseudo-sufficient versus sufficient assumption. *Prescription.*
+32. **20:40 · "Round two" means going back during the timed section, not blind review.**
+    The distinction the whole of A.4 depends on. *Our data must not conflate an in-section
+    revisit with a blind-review visit; they are different passes.*
+
+### A.5 Confidence, flags, and question economics (21:24 - 38:38)
+
+33. **22:21 · Overconfidence error — wrong, and never flagged.** The student did not know
+    they were in trouble, so they never came back. *Detector R5.*
+34. **22:53 · A five-star question is a bad place to spend a second pass.** Anyone has a
+    better chance of converting a three-star than a five-star. *Detector R6.*
+35. **23:19 · She had the right answer and changed it to E at the end.** *Detector R7,
+    straight off the answer trail.*
+36. **23:40 · If you are down to two answer choices, flag it.** His primary flag criterion.
+    *Detector once eliminations are persisted (§4.3); prescription until then.*
+37. **24:29 · Two to five minutes agonizing, then getting it wrong, is common and costly.**
+    Scott's addition. *Detector R3, with the report naming the minutes.*
+38. **24:56 · Even getting the hard question right can be the error.** If an easier one was
+    available and unconverted, the time was misallocated whatever the outcome. *Detector
+    R6 must not exempt correct answers.*
+39. **29:36 · The accept/EXCEPT question chosen instantly and wrongly.** Picking the choice
+    that *does* resolve, on a question asking which does not. *Detector R9 — fast answer,
+    EXCEPT stem, wrong.*
+40. **30:25 · The most time went to must be true and must be false.** Time clustering on
+    one family, whether or not it produced misses. *Detector — time by family, not only
+    accuracy by family.*
+41. **31:10 · That cluster was a fundamentals gap.** Conditional reasoning and causation,
+    not the question type's process. *Detector: cross the slow/missed cluster against the
+    bank's reasoning tags (§6.1). This is the cleanest path to category 2 we have.*
+42. **31:28 · Know when a must-be-true has become too hard, and leave it.** *Prescription.*
+43. **31:58 · Six minutes across two questions for one point.** He names both numbers and
+    the better use — a two-star strengthen left on the table. *Detector R3 in its strongest
+    form: cost in minutes, return in points, and the cheaper question that went unworked.*
+44. **25:40 · Misses that look random by label share one process.** Strengthen, weaken,
+    resolve, evaluate, sufficient assumption — all of them add new information to the
+    argument. *Detector R8, the family map.*
+45. **27:15 · "It has nothing to do with the argument" is the wrong elimination.** Valid on
+    a must-be-true, invalid on anything in the add-evidence family, where the answer is
+    additional evidence and is not supposed to be in the stimulus. *Prescription — the
+    single most reusable teaching line in the webinar.*
+46. **33:01 · Underconfidence error — flagged or revisited, and right all along.** "Almost
+    as egregious," because the second pass went to a question that did not need it.
+    *Detector R5, the other half.*
+47. **34:16 · Judge the section as a whole, not the one question that went wrong.**
+    Restated on a near-perfect section. *Report structure.*
+48. **35:21 · She went back to the questions she thought were hardest.** Q23 and Q24, both
+    already right, while Q7 sat there cheap and unconverted. *Detector R6 over the
+    second-pass set: what did the revisits cost, and what was available instead.*
+49. **36:32 · Not going back to a flagged five-star question is correct play.** A flag is
+    not an obligation. *Prevents the report from scolding a student for an unreturned flag
+    when the economics were right.*
+50. **37:09 · The goal is maximum points, not every question.** Going after the hard ones
+    reads as a student trying to get everything right, which is the wrong strategy below
+    a 180 target. *Report tone, and the basis of R6.*
+51. **38:03 · Time economics, stated exactly.** Every question is worth the same and they
+    cost different amounts of time, so buy the cheapest first — true even for a 180
+    scorer. *The sentence R6 hands back.*
+
+### A.6 The Q&A (38:38 - 1:01:14)
+
+52. **39:46 · For RC, comprehension comes before tactics.** Skimming or reading too fast
+    produces the low score, and no tactical fix outranks understanding what you read.
+    *Prescription, RC.*
+53. **40:48 · Diagnose which RC problem you have before choosing a fix.** Only reaching
+    three passages is a timing problem; finishing with two minutes left and still missing
+    is a comprehension problem. Same score, opposite remedies. *Detector: reached-count
+    and leftover clock, which needs skip-versus-never-reached (§6.2).*
+54. **41:25 · Accurate diagnosis is the hardest skill and the one they spend most time
+    training.** *The reason this engine is worth building.*
+55. **42:56 · Over target time with a near-perfect score is still a finding.** *Detector —
+    a stretch can be flagged on time alone, with no misses in it.*
+56. **43:24 · Split diffuse slowness from a single sink.** One question that ate the time
+    is a different problem from a few extra seconds on every question; the second is a
+    workflow problem, not a question problem. *Detector: compare the max single overage
+    against the median overage before naming the cause.*
+57. **44:28 · Fool-proof for inefficiency, not only for errors.** Mastery is getting it
+    right *and* leaving time for the rest of the section. *Prescription.*
+58. **46:02 · Flag to convert questions, not to express unease.** *Teaching.*
+59. **46:18 · Do not flag when you confidently eliminated four and cannot articulate why
+    the fifth is right.** That is a finished question. *Teaching — and it stops the report
+    from treating every unflagged miss as an overconfidence error.*
+60. **47:10 · The threshold: flag at 89% confident or below, do not flag at 90-100%.** If
+    you flagged everything under 100% you would flag the whole section. *Detector once
+    confidence is captured (§4.2); teaching until then.*
+61. **47:25 · Flagging changes purpose as the test approaches.** Early on, flag for blind
+    review; close to test day, flag only to convert points under time. *Report tone shifts
+    with proximity to their test date, which we know.*
+62. **47:45 · Flag on the clock: over 60-90s early in LR, over 90-120s later.** The "speed
+    bump" rule, and the mechanic behind it — flagging and moving on relocates the question
+    to the end of the section. *Detector: a question over the threshold for its position
+    that was neither flagged nor left.*
+63. **49:40 · On a flagged question, throw the first reading away.** You flagged it because
+    something went wrong and you do not know what; treat it as wrong and redo it with a
+    fine-tooth comb. Yes, it takes longer, and there is no other way to be confident.
+    *Prescription attached to R4.*
+64. **52:54 · Anything unflagged should be a 90% or better.** *Teaching, the mirror of 60.*
+65. **53:15 · Under time you are not trying to get everything right.** Flagging everything
+    destroys the signal — you can no longer tell a real doubt from nerves. *Teaching.*
+66. **54:06 · The assumption-family pattern: slow when right, fast when wrong.** Her
+    sufficient assumption and weaken questions took forever when she got them and were
+    quick when she missed them. *Detector: per-family, compare mean time on correct
+    answers against mean time on misses. A large gap in either direction is a finding —
+    slow-right means no process, fast-wrong means a process being applied wrongly at
+    speed.*
+67. **54:25 · Know the goal of the question type, which is the fix for all of it.** For
+    sufficient assumption: plug the choice in as a premise and ask whether the conclusion
+    is now true, yes or no. *Prescription.*
+68. **55:16 · "It was not stated in the stimulus" is not an objection to additional
+    evidence.** Second statement of the same error as 45, on a different family.
+    *Prescription.*
+69. **55:36 · Sufficient assumption's bar is 100%, strengthen's is "more likely."** Meeting
+    the strengthen bar on a sufficient assumption question is the specific failure.
+    *Prescription.*
+70. **56:34 · RC benchmarks: about 8 minutes a regular passage, about 9 for the
+    comparative.** Over 12 on a comparative is where the problem is. And the read-A,
+    answer, read-B method is legitimate but costs time. *Detector R11.*
+71. **58:28 · Blind review must mirror the timed process.** Ask "under time conditions, how
+    can I get this right," not "how can I get this right." *Teaching — the copy on the
+    blind review screen itself.*
+72. **1:00:00 · A blind review you could never reproduce under time is worse than none.**
+    Taking your sweet time and reaching for a dictionary trains a habit the section will
+    not allow, and confuses which process you are meant to be running. *Teaching.*
+
+### A.7 What is in the source that we deliberately do not implement
+
+- **Logic games detectors.** The section no longer exists. Their *reasoning* is kept
+  wherever it transfers (22, 23, 24, 55, 56, 57).
+- **The 7Sage star ratings as such.** We have our own difficulty plus, where transcribed,
+  real cohort accuracy — which is strictly better than a star and should be preferred
+  wherever a rule says "five-star."
+- **Nothing else.** Every other tip above is either a detector, a prescription, or copy.
