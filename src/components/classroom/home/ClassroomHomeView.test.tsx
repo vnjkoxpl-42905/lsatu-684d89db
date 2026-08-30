@@ -353,11 +353,34 @@ describe("homeModel", () => {
     expect(subtitleFor(0, 0, 2)).toContain("Two unread messages.");
   });
 
-  it("starts the week on Monday and ends it on Sunday", () => {
+  it("rolls the strip forward from today rather than from Monday", () => {
     // 2026-08-06 is a Thursday.
     const dates = weekDates(new Date(2026, 7, 6));
-    expect(dates[0]).toBe("2026-08-03");
-    expect(dates[6]).toBe("2026-08-09");
+    expect(dates[0]).toBe("2026-08-06");
+    expect(dates[6]).toBe("2026-08-12");
+  });
+
+  it("keeps tomorrow on the strip when today is Sunday", () => {
+    // The case a Monday-first week hid: Sunday sat in the last cell, so work
+    // due Monday night was not on the strip at all.
+    const dates = weekDates(new Date(2026, 7, 30));
+    expect(dates[0]).toBe("2026-08-30");
+    expect(dates[1]).toBe("2026-08-31");
+  });
+
+  it("reads an evening deadline as its local day, not its UTC day", () => {
+    // 23:59 on the 30th in New York is 03:59 on the 31st in UTC. Slicing the
+    // stored timestamp called that tomorrow and cost the row its "due today"
+    // rank, so the hero opened the wrong section.
+    const now = new Date(2026, 7, 30, 9, 0, 0);
+    expect(dueLabel("2026-08-31T03:59:00+00:00", now)).toBe("due today");
+    expect(dueLabel("2026-09-01T03:59:00+00:00", now)).toBe("due tomorrow");
+  });
+
+  it("still reads a bare calendar date as itself", () => {
+    const now = new Date(2026, 7, 30, 9, 0, 0);
+    expect(dueLabel("2026-08-30", now)).toBe("due today");
+    expect(dueLabel("2026-08-31", now)).toBe("due tomorrow");
   });
 
   it("folds several items onto one day without stretching the cell", () => {

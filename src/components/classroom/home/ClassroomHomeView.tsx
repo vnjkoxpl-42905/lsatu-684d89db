@@ -420,9 +420,9 @@ export function ClassroomHomeView({
       </div>
 
       {/* ── this week ────────────────────────────────────────────────── */}
-      <section className="classroom-home-week" aria-label="This week">
+      <section className="classroom-home-week" aria-label="Next seven days">
         <header className="classroom-home-rule">
-          <span className="classroom-home-card-label">THIS WEEK</span>
+          <span className="classroom-home-card-label">NEXT SEVEN DAYS</span>
           <i className="classroom-home-rule-draw" aria-hidden="true" />
           <span className="classroom-home-week-range">{model.weekLabel}</span>
         </header>

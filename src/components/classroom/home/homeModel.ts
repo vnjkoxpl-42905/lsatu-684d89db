@@ -174,8 +174,24 @@ export function datelineFor(now: Date = new Date()): string {
   ].join(" · ");
 }
 
+/**
+ * The LOCAL calendar day a timestamp falls on.
+ *
+ * `iso.slice(0, 10)` is right for a bare `YYYY-MM-DD` and wrong for anything
+ * carrying a time, because the stored timestamp is UTC. A section due at
+ * 23:59 on the 30th in New York is stored as 03:59 on the 31st, and slicing
+ * that reads the due date as tomorrow: the row loses its "due today" rank, the
+ * hero picks the wrong assignment, and the label says "due Tuesday" for work
+ * due Monday night. Every evening deadline in a western timezone hit this.
+ */
+function calendarDay(iso: string): string {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso.trim())) return iso.trim();
+  const parsed = new Date(iso);
+  return Number.isNaN(parsed.getTime()) ? iso.slice(0, 10) : localDayISO(parsed);
+}
+
 function dayDiff(iso: string, today = localDayISO()): number | null {
-  const a = parseLocalDay(iso.slice(0, 10));
+  const a = parseLocalDay(calendarDay(iso));
   const b = parseLocalDay(today);
   if (!a || !b) return null;
   return Math.round((a.getTime() - b.getTime()) / 86_400_000);
@@ -190,12 +206,12 @@ export function dueLabel(dueAt: string | null, now: Date = new Date()): string |
   if (diff === 0) return "due today";
   if (diff === 1) return "due tomorrow";
   if (diff <= 6) {
-    const date = parseLocalDay(dueAt.slice(0, 10));
+    const date = parseLocalDay(calendarDay(dueAt));
     return date
       ? `due ${new Intl.DateTimeFormat("en-CA", { weekday: "long" }).format(date)}`
       : null;
   }
-  const date = parseLocalDay(dueAt.slice(0, 10));
+  const date = parseLocalDay(calendarDay(dueAt));
   return date
     ? `due ${new Intl.DateTimeFormat("en-CA", { day: "numeric", month: "short" }).format(date)}`
     : null;
@@ -304,12 +320,18 @@ export function subtitleFor(dueToday: number, openWork: number, unread: number):
 const ABBR = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 /** The Monday-based week containing `now`, as seven local ISO dates. */
+/**
+ * Seven days starting TODAY, not Monday to Sunday.
+ *
+ * A fixed calendar week hides tomorrow whenever today is Sunday, which is
+ * exactly when a student most needs to see what is coming: work assigned for
+ * Monday night simply was not on the strip. A rolling window always shows
+ * today first and the next six days, and it re-labels itself as the days pass,
+ * so tomorrow's assignment becomes today's without anything being rewritten.
+ */
 export function weekDates(now: Date = new Date()): string[] {
   const start = new Date(now);
   start.setHours(0, 0, 0, 0);
-  // getDay(): 0 = Sunday. Monday-first means Sunday sits at the end.
-  const offset = (start.getDay() + 6) % 7;
-  start.setDate(start.getDate() - offset);
   return Array.from({ length: 7 }, (_, index) => {
     const day = new Date(start);
     day.setDate(start.getDate() + index);
