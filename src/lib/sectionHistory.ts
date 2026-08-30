@@ -68,12 +68,35 @@ const asQuestions = (v: unknown): SectionQuestionStat[] =>
 export async function fetchSectionHistory(
   userId: string,
 ): Promise<SectionHistoryRow[]> {
+  return fetchSectionHistoryBy('user_id', userId);
+}
+
+/**
+ * The same list, addressed by class rather than by user.
+ *
+ * The teacher workspace knows a student by their class_id — it is what the
+ * roster, the classroom items and every assignment are keyed on — and has no
+ * reason to hold their auth user id. Reading these rows at all depends on the
+ * admin SELECT policy; without it this returns an empty list rather than an
+ * error, which is why the teacher surface must never render an empty result
+ * as "this student has done nothing".
+ */
+export async function fetchSectionHistoryByClass(
+  classId: string,
+): Promise<SectionHistoryRow[]> {
+  return fetchSectionHistoryBy('class_id', classId);
+}
+
+async function fetchSectionHistoryBy(
+  column: 'user_id' | 'class_id',
+  value: string,
+): Promise<SectionHistoryRow[]> {
   const { data, error } = await supabase
     .from('section_history')
     .select(
       'id, pt, section, mode, initial_score, initial_total, initial_percent, br_score, br_percent, br_delta, br_used, total_time_ms, avg_time_ms, unanswered_count, by_qtype_json, by_difficulty_json, questions_json, completed_at, created_at',
     )
-    .eq('user_id', userId)
+    .eq(column, value)
     .order('completed_at', { ascending: false });
 
   if (error) throw error;

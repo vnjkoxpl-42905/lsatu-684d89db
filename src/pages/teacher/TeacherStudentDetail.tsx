@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 import RecapComposer from '@/components/teacher/RecapComposer';
 import { BootcampLessonProgress } from '@/components/teacher/bootcamps/BootcampLessonProgress';
 import AssignmentBuilder from '@/components/teacher/AssignmentBuilder';
+import StudentWorkPanel from '@/components/teacher/StudentWorkPanel';
 import { useAuth } from '@/contexts/AuthContext';
 
 // Student dossier — tabbed shell (build-spec §8). Real tabs only: every tab
@@ -131,6 +132,7 @@ export default function TeacherStudentDetail() {
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="bg-white/35 border border-black/12">
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="work">Work &amp; analytics</TabsTrigger>
           <TabsTrigger value="sessions">Sessions / Transcripts</TabsTrigger>
           <TabsTrigger value="homework">Homework</TabsTrigger>
           <TabsTrigger value="notes">Notes</TabsTrigger>
@@ -163,6 +165,12 @@ export default function TeacherStudentDetail() {
         </TabsContent>
 
         {/* Sessions / Transcripts — pipeline output lives here */}
+        {/* Everything they have sat, and when they were on. Read-only: the
+            admin policy grants SELECT and nothing else. */}
+        <TabsContent value="work" className="mt-4">
+          <StudentWorkPanel classId={studentId} />
+        </TabsContent>
+
         <TabsContent value="sessions" className="mt-4 space-y-3">
           {sessions.length === 0 ? (
             <EmptyState>
