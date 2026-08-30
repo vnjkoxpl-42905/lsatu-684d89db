@@ -54,6 +54,8 @@ export interface SectionQuestionStat {
   /** How many times the student opened it, and how many of those changed nothing. */
   visitCount?: number;
   noChangeRevisits?: number;
+  /** Choices crossed off. Three of them is "down to two", the flag criterion. */
+  eliminations?: string[];
   /**
    * Did they ever open it? A question worked and left blank is a decision; one
    * never reached is the clock. Both are "unanswered" without this.
@@ -123,6 +125,7 @@ export function buildSectionStats(
         answerTrail: attempt?.answerTrail,
         visitCount: attempt?.visitCount,
         noChangeRevisits: attempt?.noChangeRevisits,
+        eliminations: attempt?.eliminations,
         // Undefined rather than false when nothing was recorded at all: a
         // sitting from before visits were tracked must not report every
         // question as one the student never opened.

@@ -370,3 +370,29 @@ describe('a skip and a question never reached are different findings', () => {
     expect(r1.detail).toMatch(/Q2 you opened and left/);
   });
 });
+
+describe('down to two, and not flagged', () => {
+  it('points at the moment rather than reciting the rule', () => {
+    const out = run([
+      q({
+        qnum: 19,
+        initialCorrect: false,
+        brCorrect: false,
+        eliminations: ['A', 'B', 'D'],
+      }),
+      q({ qnum: 4, eliminations: ['A'] }),
+      q({ qnum: 8, eliminations: ['A', 'C', 'E'], flagged: true }),
+    ]);
+
+    const finding = out.findings.find((f) => /down to two/.test(f.headline))!;
+    // Only Q19: Q4 crossed off one, and Q8 was down to two and did flag it.
+    expect(finding.qnums).toEqual([19]);
+    expect(finding.detail).toMatch(/a flag would have bought a second look/);
+    expect(finding.prescription).toMatch(/eliminated three/);
+  });
+
+  it('stays silent on a sitting where nothing was crossed off', () => {
+    const out = run([q({ qnum: 1, initialCorrect: false, brCorrect: false })]);
+    expect(out.findings.some((f) => /down to two/.test(f.headline))).toBe(false);
+  });
+});

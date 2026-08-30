@@ -329,9 +329,17 @@ function DrillContent() {
    * which is a finding in its own right and invisible from the trail alone.
    */
   const openVisit = React.useRef<{ qid: string; trailLength: number } | null>(null);
+  /**
+   * Latest eliminations, readable from the visit closer without making it
+   * depend on state that changes on every cross-off.
+   */
+  const eliminatedRef = React.useRef<Map<string, Set<string>>>(new Map());
   const [hasTimer, setHasTimer] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
   const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
+  // Kept current for the visit closer, which must not re-subscribe on every
+  // cross-off just to read the latest set.
+  eliminatedRef.current = eliminatedByQid;
   // Derived: eliminations for the displayed question only (read-only proxy).
   // Adaptive Smart Drill can render a currentQuestion outside the queued index.
   // Shaped so we can later promote into session.attempts.get(qid).eliminated.
@@ -1216,10 +1224,15 @@ function DrillContent() {
       const trailLength = attempt?.answerTrail?.length ?? 0;
       const changedNothing = trailLength > 0 && trailLength === visit.trailLength;
       if (attempt) {
+        const crossedOff = [...(eliminatedRef.current.get(visit.qid) ?? [])];
         attempts.set(visit.qid, {
           ...attempt,
           visitCount: (attempt.visitCount ?? 0) + 1,
           noChangeRevisits: (attempt.noChangeRevisits ?? 0) + (changedNothing ? 1 : 0),
+          // Kept rather than discarded with the question: three crossed off and
+          // a choice between the last two is the state the webinar says must
+          // always be flagged.
+          eliminations: crossedOff.length > 0 ? crossedOff : attempt.eliminations,
         });
       }
       const visited = new Set(prev.visitedQids ?? []);

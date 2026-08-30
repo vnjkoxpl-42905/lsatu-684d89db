@@ -579,6 +579,31 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       weight: 75,
     });
   }
+  /**
+   * Down to two, and not flagged.
+   *
+   * The webinar's primary flag criterion, and until the eliminations were kept
+   * the report could only recite the rule. Three choices crossed off means the
+   * student was choosing between the last two and knew it — which is the exact
+   * state he says must always be flagged, whatever the answer turned out to be.
+   */
+  const downToTwoUnflagged = questions.filter(
+    (q) => (q.eliminations?.length ?? 0) >= 3 && !q.flagged && !isUnanswered(q),
+  );
+  if (downToTwoUnflagged.length > 0) {
+    const missed = downToTwoUnflagged.filter((q) => !q.initialCorrect);
+    findings.push({
+      rule: 'R5',
+      category: 'test-taking',
+      headline: `You were down to two on ${list(downToTwoUnflagged.map((q) => q.qnum))} and flagged none of them.`,
+      detail: `Three choices crossed off is a coin flip you can see yourself making.${missed.length > 0 ? ` ${list(missed.map((q) => q.qnum))} came out wrong, and a flag would have bought a second look at ${missed.length === 1 ? 'it' : 'them'}.` : ' They came out right, which is luck rather than method.'}`,
+      prescription:
+        'If you are down to two, flag it. That is the whole rule — not "if it feels hard", not "if you are unsure", but the specific moment when you have eliminated three and cannot separate the last two.',
+      qnums: downToTwoUnflagged.map((q) => q.qnum),
+      weight: 82,
+    });
+  }
+
   const underconfident = questions.filter((q) => q.flagged && q.initialCorrect);
   if (underconfident.length > 0) {
     findings.push({

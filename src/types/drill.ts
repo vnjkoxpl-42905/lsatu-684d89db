@@ -69,6 +69,16 @@ export interface DrillSession {
      */
     visitCount?: number;
     noChangeRevisits?: number;
+    /**
+     * Answer choices the student crossed off, in the order they crossed them.
+     *
+     * The runner has always tracked these and thrown them away at the end of
+     * the question. Kept, they answer the webinar's primary flagging question:
+     * "were you down to two?" Three eliminations and a choice between the last
+     * two is exactly the state he says must always be flagged, and without
+     * this the report can only offer the rule rather than point at the moment.
+     */
+    eliminations?: string[];
     revisitCount?: number; // Number of times returned to question
     answerRevealed?: boolean; // Tracks if "Show Answer" clicked
   }>;
