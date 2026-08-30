@@ -52,6 +52,8 @@ export interface PracticeSessionSnapshot {
   questionQueue: string[];
   currentIndex: number;
   attempts: PracticeSessionAttempt[];
+  /** Section clock already spent, for the surfaces that run one. */
+  elapsedMs?: number;
 }
 
 /**
@@ -131,6 +133,9 @@ export async function savePracticeSessionSnapshot(
     ),
     attempts: snapshot.attempts,
     status: 'in_progress',
+    // Never hand back time already spent: a snapshot with no clock keeps
+    // whatever the row already knew rather than clearing it.
+    elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
     started_at: existing?.started_at ?? now(),
     updated_at: now(),
   });
@@ -164,6 +169,7 @@ export async function completePracticeSession(
     current_index: Math.max(snapshot.questionQueue.length - 1, 0),
     attempts: snapshot.attempts.length ? snapshot.attempts : existing?.attempts ?? [],
     status: 'completed',
+    elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
     started_at: existing?.started_at ?? now(),
     updated_at: now(),
   });

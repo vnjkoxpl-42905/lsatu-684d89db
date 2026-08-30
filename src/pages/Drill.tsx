@@ -93,6 +93,7 @@ import type {
   DrillMode,
   DrillSession,
   FullSectionConfig,
+  TimerConfig,
   TypeDrillConfig,
 } from '@/types/drill';
 import { QuestionPoolService, servesFixedQueue, type QuestionUsage } from '@/lib/questionPoolService';
@@ -114,6 +115,7 @@ import {
   loadPracticeSession,
   savePracticeSessionSnapshot,
   completePracticeSession,
+  type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { recordFlawPerformance } from '@/bootcamps/fallacy-flaw-v2/lib/recordFlawPerformance';
 import { appendGuidedResumeParams } from '@/lib/guidedDrillNavigation';
@@ -134,6 +136,26 @@ import {
   isResumableDrillSession,
 } from '@/lib/drillResumeSession';
 
+
+/**
+ * The clock a full section was started under, in milliseconds. Unlimited has
+ * no budget, which is not the same as a budget of zero.
+ */
+function sectionBudgetMs(timer?: TimerConfig): number | undefined {
+  if (!timer) return undefined;
+  switch (timer.mode) {
+    case '35':
+      return 35 * 60 * 1000;
+    case '52.5':
+      return 52.5 * 60 * 1000;
+    case '70':
+      return 70 * 60 * 1000;
+    case 'custom':
+      return timer.customMinutes ? timer.customMinutes * 60 * 1000 : undefined;
+    default:
+      return undefined;
+  }
+}
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
@@ -403,6 +425,13 @@ function DrillContent() {
   const [drawerTab, setDrawerTab] = React.useState<DrawerTab>('details');
   
   const timer = useTimerContextSafe();
+  /**
+   * Time already spent on a resumed run, waiting for the clock to start. Read
+   * off the stored row while the session loads and folded in once the timer is
+   * running, because the provider's duration is fixed at mount and cannot know
+   * about a resume that had not been read yet.
+   */
+  const pendingResumeElapsedMs = React.useRef<number | null>(null);
 
   // BR only for Full Section and Type Drill modes
   const sessionMode = session?.mode;
@@ -637,6 +666,14 @@ function DrillContent() {
               timestamp: Date.now(),
               confidence: undefined,
               reviewDone: false,
+              // The record, not just the answer. A resumed run used to come
+              // back flattened: no changes of mind, no marks for review.
+              switchCount: attempt.switch_count,
+              brMarked: attempt.flagged,
+              answerTrail: attempt.answer_trail?.map((e) => ({
+                answer: e.answer,
+                atMs: e.at_ms,
+              })),
             });
           }
         } else if (stored && !sameSet && stored.status === 'in_progress') {
@@ -668,6 +705,14 @@ function DrillContent() {
               timestamp: Date.now(),
               confidence: undefined,
               reviewDone: false,
+              // The record, not just the answer. A resumed run used to come
+              // back flattened: no changes of mind, no marks for review.
+              switchCount: attempt.switch_count,
+              brMarked: attempt.flagged,
+              answerTrail: attempt.answer_trail?.map((e) => ({
+                answer: e.answer,
+                atMs: e.at_ms,
+              })),
             });
           }
         } else if (stored?.status === 'in_progress') {
@@ -685,6 +730,10 @@ function DrillContent() {
       if (genericResumeKey && user && !initialIndexParam) {
         const stored = await loadDrillResumeSession(user.id, genericResumeKey);
         if (isResumableDrillSession(stored)) {
+          // Come back on the clock they left. A timed section that resumed
+          // with a fresh 35:00 was handing back time already spent, which
+          // makes the score it produces meaningless.
+          if (stored?.elapsed_ms) pendingResumeElapsedMs.current = stored.elapsed_ms;
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(
             questionQueue,
@@ -699,6 +748,14 @@ function DrillContent() {
               timestamp: Date.now(),
               confidence: undefined,
               reviewDone: false,
+              // The record, not just the answer. A resumed run used to come
+              // back flattened: no changes of mind, no marks for review.
+              switchCount: attempt.switch_count,
+              brMarked: attempt.flagged,
+              answerTrail: attempt.answer_trail?.map((e) => ({
+                answer: e.answer,
+                atMs: e.at_ms,
+              })),
             });
           }
         }
@@ -723,12 +780,23 @@ function DrillContent() {
   // written on every answer and every question move, so leaving mid-drill is
   // never a loss. The persistence layer writes locally at once and debounces the
   // cloud upsert, so this stays cheap enough to run on each session change.
+  /**
+   * How much of the section clock has been spent, right now.
+   *
+   * A countdown reports what is left, so the spend is the budget minus that; a
+   * stopwatch already reports the spend. Null when there is no clock at all,
+   * which is the difference between "no time used" and "no time to use".
+   */
+  const sectionElapsedMs = React.useCallback((): number | undefined => {
+    if (!timer) return undefined;
+    if (timer.mode === 'stopwatch') return Math.max(0, Math.round(timer.ms));
+    const total = sectionBudgetMs(session?.fullSectionConfig?.timer);
+    if (!total) return undefined;
+    return Math.max(0, Math.round(total - timer.ms));
+  }, [timer, session?.fullSectionConfig?.timer]);
+
   const drillResumeSnapshot = React.useCallback(
-    (source: DrillSession | null): {
-      questionQueue: string[];
-      currentIndex: number;
-      attempts: Array<{ qid: string; selected_answer: string; correct: boolean; time_ms: number }>;
-    } | null => {
+    (source: DrillSession | null): PracticeSessionSnapshot | null => {
       if (!source) return null;
       return {
         questionQueue: source.questionQueue,
@@ -740,11 +808,43 @@ function DrillContent() {
             selected_answer: attempt.selectedAnswer,
             correct: !!attempt.correct,
             time_ms: Number.isFinite(attempt.timeMs) ? Math.max(0, Math.round(attempt.timeMs)) : 0,
+            switch_count: attempt.switchCount ?? 0,
+            flagged: !!attempt.brMarked,
+            answer_trail: attempt.answerTrail?.map((e) => ({
+              answer: e.answer,
+              at_ms: Math.max(0, Math.round(e.atMs)),
+            })),
           })),
+        // Stored as time SPENT, so it reads the same whether the surface
+        // counts down or up.
+        elapsedMs: sectionElapsedMs(),
       };
     },
-    [],
+    [sectionElapsedMs],
   );
+
+  /**
+   * The clock keeps running between answers, and a student can sit on one
+   * question for five minutes. Snapshots written only on answer changes would
+   * hand those five minutes back on resume, so a timed section also saves on a
+   * slow heartbeat. Held in a ref because the snapshot function changes on
+   * every tick and would otherwise restart the interval each time.
+   */
+  const snapshotRef = React.useRef(drillResumeSnapshot);
+  snapshotRef.current = drillResumeSnapshot;
+  React.useEffect(() => {
+    if (!genericResumeKey || !user || !session || !timer) return;
+    if (genericFinalizedRef.current) return;
+    if (session.mode !== 'full-section') return;
+    const id = window.setInterval(() => {
+      const snapshot = snapshotRef.current(session);
+      if (!snapshot || snapshot.attempts.length === 0) return;
+      void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
+        console.error('[drill:resume:heartbeat] resume write failed', { err });
+      });
+    }, 20_000);
+    return () => window.clearInterval(id);
+  }, [genericResumeKey, user, session, timer]);
 
   React.useEffect(() => {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
@@ -2737,6 +2837,15 @@ function DrillContent() {
     if (timer && !timer.running && !timer.isPaused) {
       timer.start();
     }
+  }, [timer]);
+
+  // Fold a resumed section's spent time into the running clock, once.
+  React.useEffect(() => {
+    if (!timer?.running) return;
+    const spent = pendingResumeElapsedMs.current;
+    if (!spent) return;
+    pendingResumeElapsedMs.current = null;
+    timer.adoptElapsed(spent);
   }, [timer]);
 
   // Metadata for the drawer's Details tab, drawn from the active question.

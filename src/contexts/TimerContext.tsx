@@ -9,6 +9,8 @@ interface TimerContextValue {
   pause: () => void;
   resume: () => void;
   reset: () => void;
+  /** Fold already-spent time into the running clock (see useTimer). */
+  adoptElapsed: (ms: number) => void;
   running: boolean;
   isPaused: boolean;
 }

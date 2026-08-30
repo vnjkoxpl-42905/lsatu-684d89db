@@ -63,6 +63,20 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
     tick();
   }, [tick]);
 
+  /**
+   * Fold time already spent into a clock that is starting now.
+   *
+   * A section resumed on another device, or after a closed tab, has to come
+   * back on the clock it left rather than on a fresh 35:00. Shifting the start
+   * backwards is how: every later read of elapsed/remaining already accounts
+   * for it, and nothing else in the timer has to know a resume happened.
+   */
+  const adoptElapsed = React.useCallback((ms: number) => {
+    if (!Number.isFinite(ms) || ms <= 0) return;
+    state.current.startedAt -= ms;
+    force();
+  }, []);
+
   const reset = React.useCallback(() => {
     state.current = {
       startedAt: 0,
@@ -110,6 +124,7 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
     pause,
     resume,
     reset,
+    adoptElapsed,
     running: state.current.running,
     isPaused: state.current.pausedAt > 0 && !state.current.running
   };

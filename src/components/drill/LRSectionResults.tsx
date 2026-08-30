@@ -299,16 +299,31 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
    * nothing on this screen measures an accommodated student against 1:21.
    * Unlimited owes nothing, so it draws no tick.
    */
-  const targetMsPerQuestion = React.useMemo(() => {
+  const sectionClock = React.useMemo(() => {
     const timer = session.fullSectionConfig?.timer;
     if (!timer || timer.mode === 'unlimited' || stats.length === 0) return null;
     const minutes =
-      timer.mode === 'custom'
-        ? (timer.customMinutes ?? 0)
-        : Number(timer.mode);
+      timer.mode === 'custom' ? (timer.customMinutes ?? 0) : Number(timer.mode);
     if (!minutes || Number.isNaN(minutes)) return null;
-    return (minutes * 60_000) / stats.length;
+    // Named the way the clock was chosen, not as a percentage of somebody
+    // else's: a student on time and a half sat 52:30, and that is the whole
+    // label. Only the section time is stated — the per-question figure is the
+    // tick's position on every bar, and does not need spelling out too.
+    const label =
+      minutes === 35
+        ? 'Standard'
+        : minutes === 52.5
+          ? 'Time and a half'
+          : minutes === 70
+            ? 'Double time'
+            : null;
+    return {
+      totalMs: minutes * 60_000,
+      perQuestionMs: (minutes * 60_000) / stats.length,
+      label,
+    };
   }, [session.fullSectionConfig, stats.length]);
+  const targetMsPerQuestion = sectionClock?.perQuestionMs ?? null;
 
   // The shared scale every row is drawn on. Taken from what is on screen, so a
   // filtered view compares the questions it is showing; the pace tick is kept
@@ -589,10 +604,11 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
             <span className="inline-block w-3.5 h-3.5 rounded-full bg-destructive" />
             answer scored
           </span>
-          {targetMsPerQuestion !== null && (
+          {sectionClock && (
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-px h-3.5 bg-foreground/40" />
-              pace · {formatClock(targetMsPerQuestion)} per question
+              pace · {formatClock(sectionClock.totalMs)} section
+              {sectionClock.label ? ` · ${sectionClock.label}` : ''}
             </span>
           )}
         </div>

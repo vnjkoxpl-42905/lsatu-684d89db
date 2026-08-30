@@ -186,6 +186,18 @@ export const PracticeSessionAttempt = z.object({
   selected_answer: z.string(),
   correct: z.boolean(),
   time_ms: z.number().int().min(0).default(0),
+  /**
+   * Everything a resumed run must not lose. A student who leaves a section
+   * half-sat and comes back should find the same record they left, not a
+   * flattened one: the answers they changed their mind about, how many times,
+   * and what they marked for review. All optional — rows written before this
+   * existed are still valid, they simply carry less.
+   */
+  switch_count: z.number().int().min(0).optional(),
+  flagged: z.boolean().optional(),
+  answer_trail: z
+    .array(z.object({ answer: z.string(), at_ms: z.number().min(0) }))
+    .optional(),
 });
 export type PracticeSessionAttempt = z.infer<typeof PracticeSessionAttempt>;
 
@@ -198,6 +210,12 @@ export const PracticeSession = z.object({
   current_index: z.number().int().min(0).default(0),
   attempts: z.array(PracticeSessionAttempt).default([]),
   status: z.enum(['in_progress', 'completed']).default('in_progress'),
+  /**
+   * How much of the section clock has already been spent. A timed section that
+   * resumed with a fresh 35:00 was handing back time the student had already
+   * used, which makes the score meaningless. Absent for anything untimed.
+   */
+  elapsed_ms: z.number().min(0).optional(),
   started_at: IsoDateSchema,
   updated_at: IsoDateSchema,
 });

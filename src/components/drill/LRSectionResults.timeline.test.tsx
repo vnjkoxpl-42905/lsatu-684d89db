@@ -82,7 +82,7 @@ describe('LRSectionResults answer timeline', () => {
       </MemoryRouter>,
     );
 
-    // 52:30 over one question, not 35:00 and not a national-time default.
-    expect(screen.getByText(/pace · 52:30 per question/)).toBeTruthy();
+    // The clock they sat, named the way they chose it.
+    expect(screen.getByText(/pace · 52:30 section · Time and a half/)).toBeTruthy();
   });
 });
