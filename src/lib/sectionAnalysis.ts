@@ -1,0 +1,547 @@
+/**
+ * The report on a sat section.
+ *
+ * Written to the spec in `docs/section-analysis-engine.md`, which is the 7Sage
+ * tutoring webinar's diagnosis turned into rules. Read that first: every rule
+ * here carries the number it has there, and the reasoning lives there rather
+ * than in these comments.
+ *
+ * Two properties matter more than any single rule.
+ *
+ * 1. **A wrong answer is not a finding.** Why it was wrong is the finding,
+ *    because the four categories prescribe different work and two of them
+ *    prescribe opposite work — a fundamentals gap means stop sitting sections,
+ *    a test-taking gap means sit more of them.
+ * 2. **Every claim carries its questions.** No category without its question
+ *    numbers, no percentage without the count behind it. A rule with nothing to
+ *    say is silent rather than reassuring.
+ *
+ * Pure. Takes a finished section and returns the report; touches no database,
+ * no clock, and no React. The caller stores what comes back and never
+ * regenerates it, so a report stays a record of what was said at the time.
+ */
+
+import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
+import { UNANSWERED } from '@/lib/sectionHistorySave';
+
+/** The webinar's four, in its order. */
+export type ErrorCategory = 'reading' | 'fundamentals' | 'process' | 'test-taking';
+
+export const CATEGORY_LABEL: Record<ErrorCategory, string> = {
+  reading: 'Reading error',
+  fundamentals: 'Logical reasoning error',
+  process: 'Question type process error',
+  'test-taking': 'Test-taking error',
+};
+
+/**
+ * What each category tells the student to do next. Note that the first two
+ * lines point in opposite directions; that is the whole reason for
+ * categorising at all.
+ */
+export const CATEGORY_PRESCRIPTION: Record<ErrorCategory, string> = {
+  fundamentals:
+    'Go back to the curriculum on the reasoning underneath these, not to more sections. Sitting sections does not fix a gap in conditional or causal reasoning, and it uses up PrepTests while you have it.',
+  process:
+    'Rebuild the process for these question types, then drill that type on its own. Re-work every question of the type in this section, including the ones you got right, in case you got them right for the wrong reason.',
+  'test-taking':
+    'Sit more sections. This is not a study problem, it is a practice problem, and the only way to fix it is to keep making these decisions under a clock until they are automatic.',
+  reading:
+    'Slow down on the specific thing that was misread. This is not a curriculum gap: the reasoning was available, the sentence was not read as written.',
+};
+
+/**
+ * The process a question type actually runs, which is what a student gets
+ * wrong. The webinar's best move is grouping by this rather than by label:
+ * six misses that look scattered across Strengthen, Weaken, Resolve and
+ * Sufficient Assumption are one finding, because all four add new evidence to
+ * an argument and the student was eliminating choices for not being in the
+ * stimulus.
+ */
+export type ProcessFamily = 'add-evidence' | 'accept-stimulus' | 'argument-structure' | 'assumption';
+
+export const FAMILY_LABEL: Record<ProcessFamily, string> = {
+  'add-evidence': 'Adding new evidence',
+  'accept-stimulus': 'Taking the stimulus as true',
+  'argument-structure': 'Describing the argument',
+  assumption: 'Assumption',
+};
+
+/** What the shared failure in each family sounds like, in the student's words. */
+export const FAMILY_FAILURE: Record<ProcessFamily, string> = {
+  'add-evidence':
+    'Eliminating a choice because it was not stated in the argument. On these the answer IS new evidence, so it is not supposed to be there. That objection belongs on a Must Be True, not here.',
+  'accept-stimulus':
+    'Treating what is mentioned as what is supported. These two are different things, and the right answer is often about something the passage never names.',
+  'argument-structure':
+    'Reading for what the argument says rather than for what it is doing. These ask about the shape, not the content.',
+  assumption:
+    'Running a Necessary Assumption like a Strengthen. Strengthen only has to help; a necessary assumption has to be required, and a sufficient assumption has to make the conclusion airtight.',
+};
+
+const FAMILY_BY_TYPE: Record<string, ProcessFamily> = {
+  Strengthen: 'add-evidence',
+  Weaken: 'add-evidence',
+  Paradox: 'add-evidence',
+  'Sufficient Assumption': 'add-evidence',
+  'Principle-Strengthen': 'add-evidence',
+  Evaluate: 'add-evidence',
+  'Most Strongly Supported': 'accept-stimulus',
+  'Must Be True': 'accept-stimulus',
+  'Must Be False': 'accept-stimulus',
+  'Agree/Disagree': 'accept-stimulus',
+  Flaw: 'argument-structure',
+  'Method of Reasoning': 'argument-structure',
+  'Main Conclusion': 'argument-structure',
+  Role: 'argument-structure',
+  'Parallel Reasoning': 'argument-structure',
+  'Parallel Flaw': 'argument-structure',
+  'Principle-Conform': 'argument-structure',
+  'Necessary Assumption': 'assumption',
+};
+
+export const familyOf = (qtype: string): ProcessFamily | null => FAMILY_BY_TYPE[qtype] ?? null;
+
+/** One question, enriched with what the bank knows about it. */
+export interface AnalysisQuestion extends SectionQuestionStat {
+  /** Conditional, causal, quantifier … straight off the bank. Drives R-tags. */
+  reasoningTypes?: string[];
+  /** Share of test takers who get it right, 0-1, where we have it. Beats stars. */
+  cohortAccuracy?: number;
+}
+
+export interface AnalysisInput {
+  questions: AnalysisQuestion[];
+  /**
+   * Milliseconds this student owed each question: their own section clock over
+   * its questions. Null for an unlimited section, where nothing is owed and
+   * every timing rule stays silent rather than inventing a standard.
+   */
+  paceMsPerQuestion: number | null;
+  /** Whether a blind review was actually sat. Without it R10 cannot run. */
+  blindReviewDone: boolean;
+  /** RC reads differently from LR in a few places. */
+  kind?: 'lr' | 'rc';
+}
+
+/** One thing the report says, with the questions that earned it. */
+export interface Finding {
+  /** The rule's number in the spec, so a finding can always be traced back. */
+  rule: string;
+  /** One sentence, in the student's second person. */
+  headline: string;
+  /** The detail, including the numbers. */
+  detail: string;
+  /** What to do about it. */
+  prescription: string;
+  /** Question numbers this is about. Never empty. */
+  qnums: number[];
+  /** How hard this hits: findings are reported worst first. */
+  weight: number;
+}
+
+export interface CategoryBreakdown {
+  category: ErrorCategory;
+  qnums: number[];
+  /** Share of the section's misses, 0-100, rounded. */
+  percentOfMisses: number;
+  prescription: string;
+}
+
+export interface SectionAnalysis {
+  /** The one sentence that opens the report. */
+  headline: string;
+  categories: CategoryBreakdown[];
+  findings: Finding[];
+  /** Per-question category calls, for the table. */
+  perQuestion: Array<{ qnum: number; qtype: string; category: ErrorCategory; why: string }>;
+  totals: {
+    answered: number;
+    correct: number;
+    missed: number;
+    unanswered: number;
+    /** Misses that blind review recovered: not knowledge gaps. */
+    recoveredInBlindReview: number;
+    medianTimeMs: number;
+    paceMsPerQuestion: number | null;
+  };
+  /** Rules that could not run, and what they need. Honest about its own blind spots. */
+  notRun: string[];
+}
+
+const median = (xs: number[]): number => {
+  if (xs.length === 0) return 0;
+  const s = [...xs].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : Math.round((s[mid - 1] + s[mid]) / 2);
+};
+
+const clock = (ms: number): string => {
+  const total = Math.round(ms / 1000);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+};
+
+const list = (qnums: number[]): string =>
+  qnums.length === 1
+    ? `Q${qnums[0]}`
+    : `Q${qnums.slice(0, -1).join(', Q')} and Q${qnums[qnums.length - 1]}`;
+
+const isUnanswered = (q: AnalysisQuestion) => q.initialAnswer === UNANSWERED;
+
+/**
+ * Where a miss belongs, and why.
+ *
+ * The order is the order of evidence strength, not the spec's numbering. Blind
+ * review is asked first because it is the only signal that separates a
+ * knowledge gap from a timing one, which is the split the whole report exists
+ * to make.
+ */
+function categoriseMiss(
+  q: AnalysisQuestion,
+  ctx: {
+    paceMs: number | null;
+    blindReviewDone: boolean;
+    familyMisses: Map<ProcessFamily, number>;
+    tagMisses: Map<string, number>;
+  },
+): { category: ErrorCategory; why: string } {
+  // Never reached, or left blank. Nothing about the question was the problem.
+  if (isUnanswered(q)) {
+    return {
+      category: 'test-taking',
+      why: 'never answered — the clock, not the question',
+    };
+  }
+
+  // Blind review got it. Whatever went wrong, it was not that the reasoning was
+  // beyond them: they can do it, just not the way they did it under time.
+  if (ctx.blindReviewDone && q.brCorrect) {
+    const slow = ctx.paceMs !== null && q.timeMs > ctx.paceMs * 1.5;
+    const fast = ctx.paceMs !== null && q.timeMs < ctx.paceMs * 0.5;
+    if (fast) {
+      return {
+        category: 'reading',
+        why: `right in blind review, and answered in ${clock(q.timeMs)} — read too fast, not misunderstood`,
+      };
+    }
+    return {
+      category: 'test-taking',
+      why: slow
+        ? `right in blind review after ${clock(q.timeMs)} under time — a timing problem, not a knowledge one`
+        : 'right in blind review — you have this; the timed run is what failed',
+    };
+  }
+
+  // Wrong twice. Now it is a knowledge question, and the tags say which kind.
+  const tagHit = (q.reasoningTypes ?? []).find((t) => (ctx.tagMisses.get(t) ?? 0) >= 2);
+  if (tagHit) {
+    return {
+      category: 'fundamentals',
+      why: `missed with ${tagHit} reasoning, and you missed others with it in this section`,
+    };
+  }
+
+  const family = familyOf(q.qtype);
+  if (family && (ctx.familyMisses.get(family) ?? 0) >= 2) {
+    return {
+      category: 'process',
+      why: `part of a cluster in ${FAMILY_LABEL[family].toLowerCase()} questions`,
+    };
+  }
+
+  // An answer they had and gave away is a reading call, not a knowledge one:
+  // the right answer was in hand.
+  if (gaveAwayCorrect(q)) {
+    return {
+      category: 'reading',
+      why: 'you had the right answer and changed it',
+    };
+  }
+
+  return {
+    category: 'process',
+    why: `wrong under time and wrong again in review on a ${q.qtype} question`,
+  };
+}
+
+/** Did the trail hold the correct answer before its final entry? (R7) */
+function gaveAwayCorrect(q: AnalysisQuestion): boolean {
+  const trail = q.answerTrail ?? [];
+  if (trail.length < 2) return false;
+  const final = trail[trail.length - 1].answer;
+  if (final === q.correctAnswer) return false;
+  return trail.slice(0, -1).some((e) => e.answer === q.correctAnswer);
+}
+
+export function analyseSection(input: AnalysisInput): SectionAnalysis {
+  const { questions, paceMsPerQuestion: paceMs, blindReviewDone } = input;
+  const findings: Finding[] = [];
+  const notRun: string[] = [];
+
+  const answered = questions.filter((q) => !isUnanswered(q));
+  const misses = questions.filter((q) => !q.initialCorrect);
+  const times = answered.map((q) => q.timeMs).filter((t) => t > 0);
+  const med = median(times);
+
+  // Miss counts by family and by reasoning tag, computed before categorising so
+  // a single question can be told a cluster from a one-off.
+  const familyMisses = new Map<ProcessFamily, number>();
+  const tagMisses = new Map<string, number>();
+  for (const q of misses) {
+    if (isUnanswered(q)) continue;
+    const f = familyOf(q.qtype);
+    if (f) familyMisses.set(f, (familyMisses.get(f) ?? 0) + 1);
+    if (blindReviewDone && q.brCorrect) continue; // recovered: not a knowledge miss
+    for (const t of q.reasoningTypes ?? []) tagMisses.set(t, (tagMisses.get(t) ?? 0) + 1);
+  }
+
+  const perQuestion = misses.map((q) => ({
+    qnum: q.qnum,
+    qtype: q.qtype,
+    ...categoriseMiss(q, { paceMs, blindReviewDone, familyMisses, tagMisses }),
+  }));
+
+  // ── R1 · time debt upstream ───────────────────────────────────────────────
+  // The rule students get backwards. Time spent on questions they got RIGHT
+  // counts here: in the webinar it is the slow correct work at the start that
+  // costs the questions at the end.
+  const unreached = questions.filter(isUnanswered);
+  if (paceMs !== null && unreached.length > 0) {
+    const lastReachedIdx = questions.findIndex((q) => q.qnum === unreached[0].qnum);
+    const upstream = questions
+      .slice(0, Math.max(lastReachedIdx, 0))
+      .filter((q) => q.timeMs > paceMs * 1.5);
+    const overspend = upstream.reduce((sum, q) => sum + (q.timeMs - paceMs), 0);
+    if (upstream.length > 0) {
+      findings.push({
+        rule: 'R1',
+        headline: `You did not run out of ability at the end of this section. You ran out of clock.`,
+        detail: `${unreached.length} question${unreached.length === 1 ? '' : 's'} went unanswered (${list(unreached.map((q) => q.qnum))}), and ${clock(overspend)} of overspend upstream is where that time went — ${list(upstream.map((q) => q.qnum))} each ran past the ${clock(paceMs)} they were owed. That includes questions you got right: slow and correct early is what costs you the ones at the end.`,
+        prescription:
+          'Work the earlier questions at the pace you worked the last ones. The rushed pace was not costing you accuracy and the slow pace was not buying any.',
+        qnums: [...upstream.map((q) => q.qnum), ...unreached.map((q) => q.qnum)],
+        weight: 100,
+      });
+    }
+  }
+
+  // ── R2 · time that bought nothing ─────────────────────────────────────────
+  if (answered.length >= 8) {
+    const half = Math.floor(answered.length / 2);
+    const first = answered.slice(0, half);
+    const second = answered.slice(half);
+    const t1 = first.reduce((s, q) => s + q.timeMs, 0);
+    const t2 = second.reduce((s, q) => s + q.timeMs, 0);
+    const c1 = first.filter((q) => q.initialCorrect).length;
+    const c2 = second.filter((q) => q.initialCorrect).length;
+    const rate1 = c1 / first.length;
+    const rate2 = c2 / second.length;
+    const slowerFirst = t1 > t2 * 1.3;
+    const slowerSecond = t2 > t1 * 1.3;
+    if ((slowerFirst && rate1 <= rate2) || (slowerSecond && rate2 <= rate1)) {
+      const slowHalf = slowerFirst ? 'first' : 'second';
+      findings.push({
+        rule: 'R2',
+        headline: `The extra time in the ${slowHalf} half did not buy accuracy.`,
+        detail: `First half: ${clock(t1)} for ${c1}/${first.length}. Second half: ${clock(t2)} for ${c2}/${second.length}. The slower stretch scored no better than the faster one, so those minutes were not being converted.`,
+        prescription:
+          'Take the pace of the faster stretch as your working pace. The time is worth more spent on questions you have not reached than on questions you have already read twice.',
+        qnums: (slowerFirst ? first : second).map((q) => q.qnum),
+        weight: 70,
+      });
+    }
+  }
+
+  // ── R3 · bang for the buck ────────────────────────────────────────────────
+  if (paceMs !== null) {
+    const sinks = answered
+      .filter((q) => q.timeMs > paceMs * 2.5)
+      .sort((a, b) => b.timeMs - a.timeMs);
+    if (sinks.length > 0) {
+      const wrongSinks = sinks.filter((q) => !q.initialCorrect);
+      const spent = sinks.reduce((s, q) => s + q.timeMs, 0);
+      const got = sinks.filter((q) => q.initialCorrect).length;
+      findings.push({
+        rule: 'R3',
+        headline:
+          wrongSinks.length > 0
+            ? `You spent ${clock(spent)} on ${sinks.length} question${sinks.length === 1 ? '' : 's'} and got ${got} of them.`
+            : `You spent ${clock(spent)} on ${sinks.length} question${sinks.length === 1 ? '' : 's'} you did get.`,
+        detail: sinks
+          .slice(0, 4)
+          .map(
+            (q) =>
+              `Q${q.qnum} (${q.qtype}, level ${q.difficulty}) took ${clock(q.timeMs)} and you ${q.initialCorrect ? 'got it' : 'missed it'}.`,
+          )
+          .join(' '),
+        prescription:
+          'A question you cannot answer in about twice the pace is a question to flag and leave. Flagging moves it to the end of the section, which is where a question this expensive belongs.',
+        qnums: sinks.map((q) => q.qnum),
+        weight: 80,
+      });
+    }
+  }
+
+  // ── R5 · confidence errors ────────────────────────────────────────────────
+  const overconfident = misses.filter((q) => !isUnanswered(q) && !q.flagged);
+  if (overconfident.length > 0) {
+    findings.push({
+      rule: 'R5',
+      headline: `${overconfident.length} of your misses were never flagged.`,
+      detail: `On ${list(overconfident.map((q) => q.qnum))} you did not know you were in trouble, so you never came back. That is the expensive kind of miss: a flag buys a second look, and an unflagged wrong answer buys nothing.`,
+      prescription:
+        'Flag when you are down to two answer choices, and flag anything you are 89% or less sure of. Do not flag when you confidently eliminated four and simply cannot say why the fifth is right — that question is finished.',
+      qnums: overconfident.map((q) => q.qnum),
+      weight: 75,
+    });
+  }
+  const underconfident = questions.filter((q) => q.flagged && q.initialCorrect);
+  if (underconfident.length > 0) {
+    findings.push({
+      rule: 'R5',
+      headline: `${underconfident.length} question${underconfident.length === 1 ? '' : 's'} you flagged you had right all along.`,
+      detail: `${list(underconfident.map((q) => q.qnum))} were correct when you flagged them. Any second pass spent there is a second pass not spent on something you could have converted.`,
+      prescription:
+        'Flagging is for converting points, not for recording unease. If you can say why the answer is right, it does not need the flag.',
+      qnums: underconfident.map((q) => q.qnum),
+      weight: 40,
+    });
+  }
+
+  // ── R6 · question economics ───────────────────────────────────────────────
+  if (paceMs !== null) {
+    const hardSlow = answered.filter((q) => q.difficulty >= 4 && q.timeMs > paceMs * 2);
+    const cheapMissed = misses.filter((q) => q.difficulty <= 2);
+    if (hardSlow.length > 0 && cheapMissed.length > 0) {
+      const spent = hardSlow.reduce((s, q) => s + q.timeMs, 0);
+      findings.push({
+        rule: 'R6',
+        headline: 'You bought the expensive questions and left cheap ones on the table.',
+        detail: `${clock(spent)} went to ${list(hardSlow.map((q) => q.qnum))} at level 4-5, while ${list(cheapMissed.map((q) => q.qnum))} at level 1-2 went wrong. Every question is worth the same point and they cost very different amounts of time.`,
+        prescription:
+          'Buy the cheapest questions first. Spending time on a hard question while an easy one is still unworked is a bad trade even when the hard one comes out right.',
+        qnums: [...hardSlow.map((q) => q.qnum), ...cheapMissed.map((q) => q.qnum)],
+        weight: 85,
+      });
+    }
+  }
+
+  // ── R7 · the answer they had and gave away ────────────────────────────────
+  const gaveAway = questions.filter(gaveAwayCorrect);
+  if (gaveAway.length > 0) {
+    findings.push({
+      rule: 'R7',
+      headline: `You had the right answer on ${list(gaveAway.map((q) => q.qnum))} and changed it.`,
+      detail: gaveAway
+        .map((q) => {
+          const trail = q.answerTrail ?? [];
+          const at = trail.find((e) => e.answer === q.correctAnswer);
+          return `Q${q.qnum}: ${q.correctAnswer} at ${clock(at?.atMs ?? 0)}, then ${q.initialAnswer} at ${clock(trail[trail.length - 1]?.atMs ?? q.timeMs)}${q.flagged ? ', flagged' : ', not flagged'}.`;
+        })
+        .join(' '),
+      prescription:
+        'A change of mind this late is worth flagging every time. If you were torn enough to switch, you were down to two, and down to two is the flag criterion.',
+      qnums: gaveAway.map((q) => q.qnum),
+      weight: 65,
+    });
+  }
+
+  // ── R8 · process families ─────────────────────────────────────────────────
+  for (const [family, count] of familyMisses) {
+    if (count < 2) continue;
+    const qs = misses.filter((q) => familyOf(q.qtype) === family);
+    const types = [...new Set(qs.map((q) => q.qtype))];
+    findings.push({
+      rule: 'R8',
+      headline: `${count} misses in one process: ${FAMILY_LABEL[family].toLowerCase()}.`,
+      detail: `${list(qs.map((q) => q.qnum))} look scattered by label — ${types.join(', ')} — but they run the same process, so this is one problem rather than ${types.length}. ${FAMILY_FAILURE[family]}`,
+      prescription:
+        'Re-work every question of these types in this section, the ones you got right included. Getting one right for the wrong reason is the same problem waiting for a harder question.',
+      qnums: qs.map((q) => q.qnum),
+      weight: 90,
+    });
+  }
+
+  // ── R10 · blind review as the separator ───────────────────────────────────
+  const recovered = blindReviewDone ? misses.filter((q) => q.brCorrect) : [];
+  if (blindReviewDone && misses.length > 0) {
+    const stuck = misses.filter((q) => !q.brCorrect && !isUnanswered(q));
+    findings.push({
+      rule: 'R10',
+      headline:
+        recovered.length >= stuck.length
+          ? 'Most of what you missed, you can already do.'
+          : 'Most of what you missed stayed missed in review.',
+      detail: `${recovered.length} of ${misses.length} misses came back right in blind review, which makes them timing or process rather than knowledge. ${stuck.length} stayed wrong, and those are the ones that point at the material itself.`,
+      prescription:
+        recovered.length >= stuck.length
+          ? 'Your work this week is the clock and the decisions, not the content. Sit sections.'
+          : 'Your work this week is the content. Sections will not fix what blind review could not.',
+      qnums: misses.map((q) => q.qnum),
+      weight: 95,
+    });
+  } else if (!blindReviewDone) {
+    notRun.push(
+      'R10 (knowledge gap versus timing gap) — no blind review was sat, and without one there is no way to tell a question you could not do from one you did not have time to do properly.',
+    );
+  }
+
+  if (paceMs === null) {
+    notRun.push(
+      'R1, R3 and R6 (everything about the clock) — this section was sat untimed, so nothing was owed and no pace can be judged.',
+    );
+  }
+  notRun.push(
+    'R4 (a second pass that changed nothing) — we record every answer change but not yet a revisit that left the answer alone.',
+  );
+  notRun.push(
+    'R9 (EXCEPT-stem misreads) — the question bank does not yet flag which stems are EXCEPT / LEAST / NOT.',
+  );
+
+  // ── The categories, and the headline ──────────────────────────────────────
+  const categories: CategoryBreakdown[] = (
+    ['test-taking', 'process', 'fundamentals', 'reading'] as ErrorCategory[]
+  )
+    .map((category) => {
+      const qnums = perQuestion.filter((p) => p.category === category).map((p) => p.qnum);
+      return {
+        category,
+        qnums,
+        percentOfMisses: misses.length ? Math.round((qnums.length / misses.length) * 100) : 0,
+        prescription: CATEGORY_PRESCRIPTION[category],
+      };
+    })
+    .filter((c) => c.qnums.length > 0)
+    .sort((a, b) => b.qnums.length - a.qnums.length);
+
+  const dominant = categories[0]?.category;
+  const headline =
+    misses.length === 0
+      ? 'Clean section. Nothing to diagnose.'
+      : dominant === 'test-taking'
+        ? 'This was a timing section, not a knowledge section. What went wrong was decisions under the clock.'
+        : dominant === 'fundamentals'
+          ? 'This was a fundamentals section. The reasoning underneath these questions is the work, and more sections will not do it.'
+          : dominant === 'process'
+            ? 'This was a process section. You know the material; the way you are running these question types is what missed.'
+            : 'This was a reading section. The reasoning was available in every one of these — the sentence was not read as written.';
+
+  findings.sort((a, b) => b.weight - a.weight);
+
+  return {
+    headline,
+    categories,
+    findings,
+    perQuestion,
+    totals: {
+      answered: answered.length,
+      correct: questions.filter((q) => q.initialCorrect).length,
+      missed: misses.length,
+      unanswered: unreached.length,
+      recoveredInBlindReview: recovered.length,
+      medianTimeMs: med,
+      paceMsPerQuestion: paceMs,
+    },
+    notRun,
+  };
+}
