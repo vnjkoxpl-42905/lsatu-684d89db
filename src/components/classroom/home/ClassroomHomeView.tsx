@@ -231,7 +231,7 @@ export function ClassroomHomeView({
                     className="classroom-home-ghost"
                     onClick={onSeeAllWork}
                   >
-                    See all assigned work
+                    Open assigned work
                   </button>
                   {hero.row.canComplete && onMarkDone ? (
                     <button

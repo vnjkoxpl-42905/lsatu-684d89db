@@ -127,6 +127,21 @@ export function nextActionFor(items: ClassroomItem[]): ClassroomItem | null {
 }
 
 /**
+ * An assignment that carries its own page rather than pointing at one.
+ *
+ * A timed section is written straight into `classroom_items` with its cover
+ * page in `content_html` and no backing assignment row, because there is no
+ * assignment table for "sit PT 155 section 1 on a 53 minute clock". Both the
+ * route resolver and the item view assumed every `homework` row was a mirror of
+ * something else: the resolver sent it to `/classroom` and the item view
+ * redirected it off its own page, so the button did nothing at all and the
+ * direct link bounced back to Home.
+ */
+export function isSelfContainedItem(item: ClassroomItem): boolean {
+  return !item.source_id && !!(item.content_html || item.content_markdown);
+}
+
+/**
  * Resolve a classroom_items row to the right student-facing route.
  * Returns the path to navigate to, or null if the item is not actionable.
  */
@@ -140,6 +155,7 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       return '/drill';
     case 'homework':
       if (item.source_id) return `/classroom/${encodeURIComponent(item.source_id)}`;
+      if (isSelfContainedItem(item)) return `/classroom/item/${encodeURIComponent(item.id)}`;
       return '/classroom';
     case 'activity':
       // source_id is the activity_assignments row id; source_table='activity_assignments'.

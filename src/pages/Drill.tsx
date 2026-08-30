@@ -109,6 +109,7 @@ import {
   getTimerConfigForDrillRoute,
   type DrillRouteState,
 } from '@/lib/drillRouteState';
+import { closeOutAssignedSection } from '@/lib/closeOutAssignedSection';
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
@@ -2607,6 +2608,19 @@ function DrillContent() {
 
     // Same for Smart Drill / custom drills / full sections.
     await finalizeDrillResumeSession(updatedAttempts);
+
+    // An assigned section closes its own Classroom card. Sitting the section is
+    // the completion, so there is nothing for the student to assert afterwards
+    // and no "Mark done" to press. Quiet by design: a failure here leaves the
+    // card up, which is where we already were, and must never interrupt the
+    // results screen.
+    if (session.mode === 'full-section' && user && session.fullSectionConfig) {
+      await closeOutAssignedSection(
+        user.id,
+        session.fullSectionConfig.pt,
+        session.fullSectionConfig.section,
+      );
+    }
 
 
     // Build automatic review set based on rules (using updated session)

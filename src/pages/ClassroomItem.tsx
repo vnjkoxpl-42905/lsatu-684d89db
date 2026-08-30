@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
-import { resolveItemRoute } from '@/lib/classroomItems';
+import { isSelfContainedItem, resolveItemRoute } from '@/lib/classroomItems';
 import { sanitizeClassroomHtml } from '@/components/classroom/classroomData';
 import { format } from 'date-fns';
 
@@ -27,6 +27,9 @@ export default function ClassroomItem() {
   // Action items redirect.
   useEffect(() => {
     if (!item) return;
+    // A self-contained item IS its own page, so redirecting it away from
+    // itself is a bounce back to Home and the student never sees the content.
+    if (isSelfContainedItem(item)) return;
     if (
       item.type === 'drill' ||
       item.type === 'homework' ||

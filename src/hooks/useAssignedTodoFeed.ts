@@ -25,6 +25,13 @@ export interface AssignedTodoRow {
   /** Due date, when a classroom_items row carries one. */
   dueAt: string | null;
   route: string;
+  /**
+   * Work that reports its own completion, so the student is never asked to
+   * assert it. A timed section is the case: sitting it IS finishing it, and a
+   * "Mark done" button beside one can be pressed without doing the section at
+   * all, which is worse than useless on work assigned as a measurement.
+   */
+  selfCompleting?: boolean;
 }
 
 type GuidedRow = GuidedDrillAssignment & { guided_drill: GuidedDrill };
@@ -206,6 +213,8 @@ export function buildAssignedRows({
         createdAt: item.created_at,
         dueAt: item.due_at,
         route,
+        selfCompleting:
+          (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section',
       });
     }
 

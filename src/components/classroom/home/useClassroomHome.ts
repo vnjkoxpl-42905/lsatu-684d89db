@@ -210,7 +210,8 @@ export function useClassroomHome(): {
           isNew: row.status === "assigned",
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
-          canComplete: true,
+          // Suppressed for work that closes its own card. See selfCompleting.
+          canComplete: !row.selfCompleting,
         };
 
       });
