@@ -4615,3 +4615,156 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-size: 11.5px;
   line-height: 1.5;
 }
+
+/* ── Section briefing ──────────────────────────────────────────────────────
+   The screen between Home and a timed section. It covers the stage instead of
+   navigating, so Home is still underneath and "Not now" costs nothing.
+   Everything here reads off the classroom tokens, so it follows the theme. */
+.section-briefing {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 6vw, 5rem) clamp(1.25rem, 6vw, 4rem);
+  background: var(--classroom-page);
+  animation: section-briefing-in 320ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.section-briefing-inner {
+  width: 100%;
+  max-width: 46rem;
+  margin: auto;
+}
+
+.section-briefing-eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--classroom-link-text);
+}
+
+.section-briefing-head h1 {
+  margin: 0.9rem 0 0;
+  font-size: clamp(2.25rem, 7vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  color: var(--classroom-ink);
+}
+
+.section-briefing-lede {
+  margin: 1rem 0 0;
+  max-width: 34rem;
+  font-size: clamp(1rem, 2.4vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--classroom-meta-text);
+}
+
+.section-briefing-cols {
+  display: grid;
+  gap: clamp(1.75rem, 5vw, 3rem);
+  margin-top: clamp(2.25rem, 6vw, 3.25rem);
+  padding-top: clamp(2.25rem, 6vw, 3.25rem);
+  border-top: 1px solid var(--classroom-line);
+}
+
+@media (min-width: 46rem) {
+  .section-briefing-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.section-briefing-cols h2 {
+  margin: 0 0 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--classroom-meta));
+}
+
+.section-briefing-cols ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.section-briefing-cols li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--classroom-ink-body);
+}
+
+.section-briefing-cols li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 1px;
+  background: var(--classroom-link-text);
+}
+
+.section-briefing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: clamp(2.25rem, 6vw, 3.25rem);
+}
+
+.section-briefing-start {
+  padding: 0.95rem 2.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--classroom-link-text);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.section-briefing-start:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.section-briefing-start:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 3px;
+}
+
+.section-briefing-later {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+.section-briefing-later:hover {
+  color: var(--classroom-ink);
+  text-decoration: underline;
+}
+
+@keyframes section-briefing-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-briefing { animation-duration: 1ms; }
+  .section-briefing-start { transition: none; }
+}

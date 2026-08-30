@@ -109,6 +109,79 @@ const FULL: ClassroomHomeModel = {
 };
 
 describe("ClassroomHomeView", () => {
+  describe("a timed section", () => {
+    const BRIEFING = {
+      minutes: 53,
+      sectionName: "Logical Reasoning",
+      href: "/drill?mode=full-section&pt=155&section=1&minutes=53&sealed=1",
+      sealed: true,
+    };
+    const sectionRow = {
+      ...FULL.rows[0],
+      key: "sec",
+      title: "Logical Reasoning · Timed Section",
+      kind: "homework" as const,
+      tone: "drill" as const,
+      route: "/classroom/item/abc",
+      briefing: BRIEFING,
+    };
+    const model = {
+      ...FULL,
+      rows: [sectionRow],
+      hero: { ...FULL.hero!, primaryLabel: "Open the set", row: sectionRow },
+    };
+
+    it("raises the instructions over Home instead of navigating away", () => {
+      const onOpen = vi.fn();
+      render(
+        <ClassroomHomeView model={model} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Open the set" }));
+
+      expect(onOpen).not.toHaveBeenCalled();
+      expect(screen.getByRole("dialog", { name: "Logical Reasoning" })).toBeTruthy();
+      expect(screen.getByText(/53 minutes, one sitting/)).toBeTruthy();
+    });
+
+    it("starts the section on Enter, at the clock the assignment named", () => {
+      const onOpen = vi.fn();
+      render(
+        <ClassroomHomeView model={model} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Open the set" }));
+      fireEvent.click(screen.getByRole("button", { name: "Enter" }));
+
+      expect(onOpen).toHaveBeenCalledWith(BRIEFING.href);
+    });
+
+    it("puts Home back untouched when the student declines", () => {
+      const onOpen = vi.fn();
+      render(
+        <ClassroomHomeView model={model} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Open the set" }));
+      fireEvent.click(screen.getByRole("button", { name: "Not now" }));
+
+      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(onOpen).not.toHaveBeenCalled();
+    });
+
+    it("still navigates for work that is not a timed section", () => {
+      const onOpen = vi.fn();
+      render(
+        <ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Start the activity" }));
+
+      expect(onOpen).toHaveBeenCalledWith("/activities/a");
+      expect(screen.queryByRole("dialog")).toBeNull();
+    });
+  });
+
   it("offers a Mark done control on assigned work and reports the row key", () => {
     const onMarkDone = vi.fn();
     const model = {

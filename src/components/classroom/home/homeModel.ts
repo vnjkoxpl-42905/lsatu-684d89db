@@ -10,6 +10,7 @@
  */
 
 import { localDayISO, parseLocalDay } from "@/lib/localDate";
+import type { SectionBriefing } from "@/lib/sectionBriefing";
 
 export type HomeKind =
   | "activity"
@@ -42,6 +43,11 @@ export interface HomeRow {
   overdue: boolean;
   /** Work the student can close out by hand; reading matter cannot. */
   canComplete?: boolean;
+  /**
+   * A timed section's instructions, carried on the row so Home can raise them
+   * over the stage rather than sending the student to a page to read them.
+   */
+  briefing?: SectionBriefing;
 
 }
 

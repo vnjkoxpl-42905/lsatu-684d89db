@@ -212,6 +212,7 @@ export function useClassroomHome(): {
           overdue: !!due?.includes("overdue"),
           // Suppressed for work that closes its own card. See selfCompleting.
           canComplete: !row.selfCompleting,
+          briefing: row.briefing,
         };
 
       });

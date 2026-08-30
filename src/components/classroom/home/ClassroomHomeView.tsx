@@ -18,6 +18,8 @@ import type {
   HomeMessage,
   HomeRow,
 } from "./homeModel";
+import type { SectionBriefing as SectionBriefingData } from "@/lib/sectionBriefing";
+import { SectionBriefing } from "./SectionBriefing";
 
 function Pill({
   children,
@@ -156,11 +158,48 @@ export function ClassroomHomeView({
   onSeeAllWork: () => void;
 }) {
   const { hero } = model;
+  const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
+
+  /**
+   * A timed section is the one kind of assigned work whose page was only ever
+   * instructions. Opening it raises those instructions over Home instead of
+   * navigating: the student is one Escape from where they were, and Enter is
+   * the only thing that starts a clock.
+   *
+   * Keyed by route so the hero, the work rows, and anything else that opens by
+   * route all behave the same without a second callback threaded through.
+   */
+  const briefingByRoute = React.useMemo(() => {
+    const map = new Map<string, SectionBriefingData>();
+    const add = (row?: HomeRow | null) => {
+      if (row?.briefing) map.set(row.route, row.briefing);
+    };
+    add(model.hero?.row);
+    model.rows.forEach(add);
+    return map;
+  }, [model.hero, model.rows]);
+
+  const handleOpen = React.useCallback(
+    (route: string) => {
+      const found = briefingByRoute.get(route);
+      if (found) setBriefing(found);
+      else onOpen(route);
+    },
+    [briefingByRoute, onOpen],
+  );
 
   return (
     <div className="classroom-home">
       <div className="classroom-home-glow classroom-home-glow-a" aria-hidden="true" />
       <div className="classroom-home-glow classroom-home-glow-b" aria-hidden="true" />
+
+      {briefing ? (
+        <SectionBriefing
+          briefing={briefing}
+          onStart={() => onOpen(briefing.href)}
+          onDismiss={() => setBriefing(null)}
+        />
+      ) : null}
 
       {/* ── masthead ─────────────────────────────────────────────────── */}
       <header className="classroom-home-masthead">
@@ -221,7 +260,7 @@ export function ClassroomHomeView({
                   <button
                     type="button"
                     className="classroom-home-cta"
-                    onClick={() => onOpen(hero.row.route)}
+                    onClick={() => handleOpen(hero.row.route)}
                   >
                     {hero.primaryLabel}
                     <ArrowRight size={15} strokeWidth={2.2} />
@@ -313,7 +352,7 @@ export function ClassroomHomeView({
                 <WorkRow
                   key={row.key}
                   row={row}
-                  onOpen={onOpen}
+                  onOpen={handleOpen}
                   onMarkDone={onMarkDone}
                   completing={completingKey === row.key}
                 />
@@ -367,10 +406,10 @@ export function ClassroomHomeView({
                     actionGerund="clearing"
                     onDelete={() => onClearMessage(model.message!.id)}
                   >
-                    <MessagePreviewButton message={model.message} onOpen={onOpen} />
+                    <MessagePreviewButton message={model.message} onOpen={handleOpen} />
                   </SwipeableDeleteRow>
                 ) : (
-                  <MessagePreviewButton message={model.message} onOpen={onOpen} />
+                  <MessagePreviewButton message={model.message} onOpen={handleOpen} />
                 )}
               </div>
             ) : (
@@ -409,7 +448,7 @@ export function ClassroomHomeView({
                 onClick={() => {
                   const target = model.booking?.href ?? "/booking";
                   if (model.booking?.external) window.open(target, "_blank", "noopener,noreferrer");
-                  else onOpen(target);
+                  else handleOpen(target);
                 }}
               >
                 {model.booking?.label ?? (model.session ? "Book another" : "Book one")}
@@ -463,7 +502,7 @@ export function ClassroomHomeView({
                 key={day.iso}
                 type="button"
                 className={`classroom-home-day${tone}`}
-                onClick={() => onOpen("/schedule")}
+                onClick={() => handleOpen("/schedule")}
               >
                 {body}
               </button>

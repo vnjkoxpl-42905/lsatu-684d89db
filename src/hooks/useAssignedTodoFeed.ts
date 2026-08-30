@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStudentAssignments';
 import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
+import { readSectionBriefing, type SectionBriefing } from '@/lib/sectionBriefing';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
 
@@ -32,6 +33,11 @@ export interface AssignedTodoRow {
    * all, which is worse than useless on work assigned as a measurement.
    */
   selfCompleting?: boolean;
+  /**
+   * Present only on a timed section. Home opens these instructions over the
+   * stage instead of navigating, so declining costs the student nothing.
+   */
+  briefing?: SectionBriefing;
 }
 
 type GuidedRow = GuidedDrillAssignment & { guided_drill: GuidedDrill };
@@ -215,6 +221,7 @@ export function buildAssignedRows({
         route,
         selfCompleting:
           (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section',
+        briefing: readSectionBriefing(item.metadata_json) ?? undefined,
       });
     }
 
