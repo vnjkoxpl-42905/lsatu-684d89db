@@ -404,7 +404,6 @@ function DrillContent() {
    * as history.
    */
   const [predictedScore, setPredictedScore] = React.useState<number | null>(null);
-  const [autoReviewQids, setAutoReviewQids] = React.useState<string[]>([]);
   /**
    * Which questions blind review walks. Null means the whole section, which is
    * what a section's blind review always is. Practice sets set it explicitly,
@@ -2623,9 +2622,6 @@ function DrillContent() {
     }
 
 
-    // Build automatic review set based on rules (using updated session)
-    const reviewSet = buildAutoReviewSet(updatedSession);
-    setAutoReviewQids(reviewSet);
     setBrPassQids(null);
 
     // Update session state
@@ -2640,62 +2636,6 @@ function DrillContent() {
     // real number is still unknown.
     setPredictedScore(null);
     setPostSectionScreen(session.mode === 'full-section' ? 'predict' : 'complete');
-  };
-
-  // Build automatic review set: all wrong + all flagged + all unanswered + 2 longest-time + 3 hard-right
-  const buildAutoReviewSet = (session: DrillSession): string[] => {
-    const qids: string[] = [];
-    const wrongQids: string[] = [];
-    const unansweredQids: string[] = [];
-    const flaggedQids: string[] = [];
-    const correctQids: { qid: string; timeMs: number; difficulty: number }[] = [];
-    
-    // Check all questions in the queue
-    for (const qid of session.questionQueue) {
-      const attempt = session.attempts.get(qid);
-      
-      if (!attempt) {
-        // Unanswered questions are treated as wrong
-        unansweredQids.push(qid);
-      } else if (!attempt.correct) {
-        wrongQids.push(qid);
-      } else {
-        const question = questionBank.getQuestion(qid);
-        if (question) {
-          correctQids.push({ qid, timeMs: attempt.timeMs, difficulty: question.difficulty });
-        }
-      }
-      
-      if (attempt?.brMarked) {
-        flaggedQids.push(qid);
-      }
-    }
-    
-    // Add all wrong and unanswered
-    qids.push(...wrongQids, ...unansweredQids);
-    
-    // Add all flagged (if not already added)
-    for (const qid of flaggedQids) {
-      if (!qids.includes(qid)) qids.push(qid);
-    }
-    
-    // If no flagged, add 2 longest-time correct answers
-    if (flaggedQids.length === 0) {
-      const longestTime = [...correctQids]
-        .filter(c => !qids.includes(c.qid))
-        .sort((a, b) => b.timeMs - a.timeMs)
-        .slice(0, 2);
-      qids.push(...longestTime.map(c => c.qid));
-    }
-    
-    // Add 3 hard-right (difficulty 4-5, correct)
-    const hardRight = [...correctQids]
-      .filter(c => !qids.includes(c.qid) && c.difficulty >= 4)
-      .sort((a, b) => b.difficulty - a.difficulty)
-      .slice(0, 3);
-    qids.push(...hardRight.map(c => c.qid));
-    
-    return qids;
   };
 
   // Enhanced keyboard navigation for section mode
@@ -3087,11 +3027,10 @@ function DrillContent() {
     return (
       <EnhancedBlindReview
         session={session}
-        // The pass is the whole section. `autoReviewQids` rides alongside as a
-        // marker: a review that shows only the suspect questions announces
-        // which ones they are, which is the one thing a BLIND review must not do.
+        // The pass is the whole section and it carries no marks. Blind review
+        // runs before the score, so anything drawn from correctness announces
+        // which ones they missed, which is the one thing it must not do.
         reviewQids={brPassQids ?? session.questionQueue}
-        recommendedQids={new Set(autoReviewQids)}
         onComplete={async (results: DrillBlindReviewResult[]) => {
           setBrResults(results);
           setPostSectionScreen('score-report');
@@ -3128,12 +3067,10 @@ function DrillContent() {
             });
             // Named a shortlist, so it stays one.
             setBrPassQids(wrongQids);
-            setAutoReviewQids([]);
             setPostSectionScreen('review');
           }}
           onReviewAll={() => {
             setBrPassQids(null);
-            setAutoReviewQids([]);
             setPostSectionScreen('review');
           }}
           onBack={() => navigate(drillReturnTo || '/classroom')}
@@ -3167,7 +3104,6 @@ function DrillContent() {
         onStartReview={() => setPostSectionScreen('review')}
         onFullReview={() => {
           setBrPassQids(null);
-          setAutoReviewQids([]);
           setPostSectionScreen('review');
         }}
         onBack={() => navigate(drillReturnTo || '/classroom')}

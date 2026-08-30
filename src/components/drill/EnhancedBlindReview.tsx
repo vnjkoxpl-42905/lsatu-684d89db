@@ -21,13 +21,6 @@ interface EnhancedBlindReviewProps {
    * the one thing a blind review must not do.
    */
   reviewQids: string[];
-  /**
-   * Questions worth a second look. Drawn as a marker beside the question and on
-   * its pager token, and nothing more — it never removes a question from the
-   * pass. Deliberately padded with a couple the student got right, so the
-   * marker cannot be read as "you missed this".
-   */
-  recommendedQids?: Set<string>;
   onComplete: (results: BlindReviewResult[]) => void;
   onBack: () => void;
 }
@@ -35,7 +28,6 @@ interface EnhancedBlindReviewProps {
 export function EnhancedBlindReview({
   session,
   reviewQids,
-  recommendedQids,
   onComplete,
   onBack,
 }: EnhancedBlindReviewProps) {
@@ -272,7 +264,6 @@ export function EnhancedBlindReview({
   const questionHighlights = highlights.get(currentQid) || [];
   const currentEliminated = eliminatedAnswers.get(currentQid) || new Set<string>();
   const isFlagged = flaggedQuestions.has(currentQid);
-  const isRecommended = !!recommendedQids?.has(currentQid);
   const readOnly = answerTab === 'actual';
 
   const attemptedQids = new Set<string>();
@@ -362,11 +353,6 @@ export function EnhancedBlindReview({
               </button>
             ))}
             <span className="ml-auto flex items-center gap-3 text-[13px] text-slate-500">
-              {isRecommended && (
-                <span className="rounded-full border border-[#7f1d1d]/40 px-2.5 py-0.5 font-medium text-[#7f1d1d]">
-                  Recommended for BR
-                </span>
-              )}
               <span>
                 {readOnly
                   ? previousAttempt?.selectedAnswer
@@ -387,7 +373,6 @@ export function EnhancedBlindReview({
         attemptedQids={attemptedQids}
         jumpEnabled
         showQuestionList
-        recommendedQids={recommendedQids}
         prevDisabled={currentIndex === 0}
         nextDisabled={currentIndex >= reviewQids.length - 1}
         onJumpTo={(idx) => {
