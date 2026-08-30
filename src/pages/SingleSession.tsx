@@ -32,10 +32,25 @@ type HoldInput = {
   turnstile_token: string;
   booking_token?: string;
 };
-type HoldResult = { checkout_url: string; booking_token: string; checkout_session_id: string };
+// A free event finishes inside `hold`: there is no checkout to send anyone to,
+// so the url and session id come back null and the booking is already booked.
+type HoldResult = {
+  checkout_url: string | null;
+  booking_token: string;
+  checkout_session_id: string | null;
+  booking?: SingleSessionStatus;
+};
+
+export type EventInfo = {
+  host: { name: string; title: string };
+  duration_minutes: number;
+  amount_cents: number;
+  currency: string;
+  requires_payment?: boolean;
+};
 
 export type SingleSessionApi = {
-  info: () => Promise<{ host: { name: string; title: string }; duration_minutes: number; amount_cents: number; currency: string }>;
+  info: () => Promise<EventInfo>;
   slots: () => Promise<{ slots: SingleSessionSlot[] }>;
   hold: (input: HoldInput) => Promise<HoldResult>;
   status: (checkoutSessionId: string, bookingToken: string) => Promise<SingleSessionStatus>;
@@ -48,6 +63,13 @@ export type SingleSessionApi = {
 type PendingCheckout = HoldResult;
 const PENDING_KEY = "lsatu.single-session.pending";
 const IDEMPOTENCY_KEY = "lsatu.single-session.idempotency";
+// The single session keeps the original, unsuffixed keys so a hold already in
+// someone's browser survives this change. Other events get their own namespace
+// so a held consultation and a held session can never read each other's token.
+const pendingKey = (event: string) =>
+  event === "single-session" ? PENDING_KEY : `${PENDING_KEY}.${event}`;
+const idempotencyKeyFor = (event: string) =>
+  event === "single-session" ? IDEMPOTENCY_KEY : `${IDEMPOTENCY_KEY}.${event}`;
 
 declare global {
   interface Window {
@@ -103,20 +125,29 @@ function turnstileToken(): Promise<string> {
   });
 }
 
-const defaultApi: SingleSessionApi = {
-  info: () => invoke("info"),
-  slots: () => invoke("slots"),
-  hold: (input) => invoke("hold", input),
-  status: (checkoutSessionId, bookingToken) => invoke("status", { checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
-  abandon: (checkoutSessionId, bookingToken) => invoke("abandon", { checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
-  cancel: (cancelToken, confirm) => invoke("cancel", { cancel_token: cancelToken, confirm }),
-  getTurnstileToken: turnstileToken,
-  redirectToCheckout: (url) => window.location.assign(url),
-};
+/**
+ * One api per event. Every call names the event it is about, so the same page
+ * serves the paid session and the free consultation without either of them
+ * being able to answer for the other.
+ */
+export function makeApi(eventSlug: string): SingleSessionApi {
+  return {
+    info: () => invoke("info", { event: eventSlug }),
+    slots: () => invoke("slots", { event: eventSlug }),
+    hold: (input) => invoke("hold", { ...input, event: eventSlug }),
+    status: (checkoutSessionId, bookingToken) => invoke("status", { event: eventSlug, checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
+    abandon: (checkoutSessionId, bookingToken) => invoke("abandon", { event: eventSlug, checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
+    cancel: (cancelToken, confirm) => invoke("cancel", { event: eventSlug, cancel_token: cancelToken, confirm }),
+    getTurnstileToken: turnstileToken,
+    redirectToCheckout: (url) => window.location.assign(url),
+  };
+}
 
-function readPending(): PendingCheckout | null {
+const defaultApi: SingleSessionApi = makeApi("single-session");
+
+function readPending(event = "single-session"): PendingCheckout | null {
   try {
-    const parsed = JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? "null") as Partial<PendingCheckout> | null;
+    const parsed = JSON.parse(sessionStorage.getItem(pendingKey(event)) ?? "null") as Partial<PendingCheckout> | null;
     return parsed?.booking_token && parsed.checkout_session_id && parsed.checkout_url ? parsed as PendingCheckout : null;
   } catch { return null; }
 }
@@ -173,12 +204,17 @@ function ResultView({ state, checkoutSessionId }: { state: SingleSessionStatus; 
   </main>;
 }
 
-export default function SingleSession({ api = defaultApi }: { api?: SingleSessionApi }) {
+export default function SingleSession({
+  api,
+  event = "single-session",
+}: { api?: SingleSessionApi; event?: string }) {
+  // Built once per event. A caller that hands in its own api (the tests) still wins.
+  const resolvedApi = useMemo(() => api ?? (event === "single-session" ? defaultApi : makeApi(event)), [api, event]);
   const [params] = useSearchParams();
   const bookingToken = params.get("booking_token");
   const checkoutSessionId = params.get("checkout_session_id");
   const cancelToken = params.get("cancel_token");
-  const [info, setInfo] = useState<{ host: { name: string; title: string }; duration_minutes: number; amount_cents: number; currency: string } | null>(null);
+  const [info, setInfo] = useState<EventInfo | null>(null);
   const [slots, setSlots] = useState<SingleSessionSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
@@ -205,7 +241,7 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
   }, [timezone]);
 
   const loadAvailability = useCallback(async () => {
-    const [nextInfo, nextSlots] = await Promise.all([api.info(), api.slots()]);
+    const [nextInfo, nextSlots] = await Promise.all([resolvedApi.info(), resolvedApi.slots()]);
     setInfo(nextInfo);
     setSlots(nextSlots.slots ?? []);
     const first = nextSlots.slots?.[0];
@@ -221,15 +257,15 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
     async function start() {
       try {
         if (cancelToken) {
-          const preview = await api.cancel(cancelToken, false);
+          const preview = await resolvedApi.cancel(cancelToken, false);
           if (!cancelled) setCancelPreview(preview);
           return;
         }
-        const pending = readPending();
+        const pending = readPending(event);
         const token = bookingToken ?? pending?.booking_token;
         const session = checkoutSessionId ?? pending?.checkout_session_id;
         if (token && session) {
-          const state = await api.status(session, token);
+          const state = await resolvedApi.status(session, token);
           if (cancelled) return;
           if (!checkoutSessionId && state.status === "checkout_open" && pending) setResume(pending);
           else setResult(state);
@@ -255,7 +291,7 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
         if (stopped) return;
         attempts += 1;
         try {
-          const next = await api.status(checkoutSessionId, bookingToken);
+          const next = await resolvedApi.status(checkoutSessionId, bookingToken);
           if (!stopped) setResult(next);
           if (next.status !== "checkout_open" && next.status !== "draft") return;
         } catch { /* the bounded confirmation fallback remains truthful */ }
@@ -267,8 +303,8 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
 
   useEffect(() => {
     if (!result || result.status === "checkout_open" || result.status === "draft") return;
-    sessionStorage.removeItem(PENDING_KEY);
-    sessionStorage.removeItem(IDEMPOTENCY_KEY);
+    sessionStorage.removeItem(pendingKey(event));
+    sessionStorage.removeItem(idempotencyKeyFor(event));
   }, [result]);
 
   const slotsByDay = useMemo(() => groupSlotsByDay(slots), [slots]);
@@ -282,8 +318,10 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
     window.setTimeout(() => document.getElementById("single-session-name")?.focus(), 0);
   };
 
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
+  // Named formEvent, not event: `event` is the booking event this page is for,
+  // and shadowing it here would silently key the session storage on a DOM object.
+  const submit = (formEvent: FormEvent) => {
+    formEvent.preventDefault();
     if (!selected || submitPromise.current) return;
     const work = (async () => {
       setSubmitting(true);
@@ -291,31 +329,42 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
       try {
         const normalizedEmail = email.trim().toLowerCase();
         const normalizedGuests = [...new Set(guests.map((guest) => guest.trim().toLowerCase()).filter((guest) => guest && guest !== normalizedEmail))].slice(0, 10);
-        let idempotencyKey = sessionStorage.getItem(IDEMPOTENCY_KEY);
+        let idempotencyKey = sessionStorage.getItem(idempotencyKeyFor(event));
         if (!idempotencyKey) {
           idempotencyKey = crypto.randomUUID();
-          sessionStorage.setItem(IDEMPOTENCY_KEY, idempotencyKey);
+          sessionStorage.setItem(idempotencyKeyFor(event), idempotencyKey);
         }
-        const token = await api.getTurnstileToken();
-        const hold = await api.hold({
+        const token = await resolvedApi.getTurnstileToken();
+        const hold = await resolvedApi.hold({
           start_at: selected.start_at,
           name: name.trim(), email: normalizedEmail, notes: notes.trim(), guests: normalizedGuests,
           timezone, client_idempotency_key: idempotencyKey, turnstile_token: token,
-          ...(readPending()?.booking_token ? { booking_token: readPending()!.booking_token } : {}),
+          ...(readPending(event)?.booking_token ? { booking_token: readPending(event)!.booking_token } : {}),
         });
-        sessionStorage.setItem(PENDING_KEY, JSON.stringify(hold));
-        api.redirectToCheckout(hold.checkout_url);
+        // A free event is already booked by the time hold returns: there is no
+        // checkout to send anyone to, so show the confirmation instead of
+        // navigating away to a Stripe page that does not exist.
+        if (!hold.checkout_url) {
+          sessionStorage.removeItem(pendingKey(event));
+          sessionStorage.removeItem(idempotencyKeyFor(event));
+          setResult(hold.booking ?? null);
+          return;
+        }
+        sessionStorage.setItem(pendingKey(event), JSON.stringify(hold));
+        resolvedApi.redirectToCheckout(hold.checkout_url);
       } catch (e) {
         const message = e instanceof Error ? e.message : "booking_failed";
         if (message.includes("slot") || message.includes("unavailable") || message.includes("conflict")) {
-          sessionStorage.removeItem(IDEMPOTENCY_KEY);
+          sessionStorage.removeItem(idempotencyKeyFor(event));
           setError("That time was just taken. We refreshed the available times so you can choose another.");
           setSelected(null);
           await loadAvailability();
           window.setTimeout(() => availabilityHeading.current?.focus(), 0);
         } else if (message.includes("security_check")) {
           setError("We couldn't complete the security check. Please try again.");
-        } else setError("We couldn't open checkout. Your card was not charged. Please try again.");
+        } else setError(info?.requires_payment === false
+          ? "We couldn't confirm that time. Please try again."
+          : "We couldn't open checkout. Your card was not charged. Please try again.");
       } finally {
         setSubmitting(false);
         submitPromise.current = null;
@@ -328,15 +377,20 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
   if (result) return <ResultView state={result} checkoutSessionId={checkoutSessionId} />;
   if (resume) return <main className="booking-holo min-h-screen px-4 py-12 sm:py-20"><section className="booking-shadow mx-auto max-w-xl rounded-2xl border border-border bg-card p-6 text-center sm:p-10">
     <h1 className="text-2xl font-semibold">Finish your payment</h1><p className="mt-2 text-sm text-muted-foreground">Your time is still held. Return to Stripe to finish booking it.</p>
-    <Button className="mt-6" onClick={() => api.redirectToCheckout(resume.checkout_url)}>Return to secure checkout <ExternalLink className="ml-2 h-4 w-4" /></Button>
-    <Button variant="ghost" className="mt-3 block w-full" onClick={async () => { await api.abandon(resume.checkout_session_id, resume.booking_token); sessionStorage.removeItem(PENDING_KEY); sessionStorage.removeItem(IDEMPOTENCY_KEY); setResume(null); await loadAvailability(); }}>Release this time</Button>
+    <Button className="mt-6" onClick={() => resolvedApi.redirectToCheckout(resume.checkout_url)}>Return to secure checkout <ExternalLink className="ml-2 h-4 w-4" /></Button>
+    <Button variant="ghost" className="mt-3 block w-full" onClick={async () => { await resolvedApi.abandon(resume.checkout_session_id, resume.booking_token); sessionStorage.removeItem(pendingKey(event)); sessionStorage.removeItem(idempotencyKeyFor(event)); setResume(null); await loadAvailability(); }}>Release this time</Button>
   </section></main>;
   if (cancelToken && cancelPreview) return <main className="booking-holo min-h-screen px-4 py-12 sm:py-20"><section className="booking-shadow mx-auto max-w-xl rounded-2xl border border-border bg-card p-6 text-center sm:p-10">
     <h1 className="text-2xl font-semibold">Cancel this session?</h1><p className="mt-2 text-sm text-muted-foreground">{formatSlot(cancelPreview.start_at)}</p><p className="mt-4 text-sm">Cancelling does not automatically issue a refund.</p>
-    <Button variant="destructive" className="mt-6" onClick={async () => { setSubmitting(true); try { setResult(await api.cancel(cancelToken, true)); } finally { setSubmitting(false); } }} disabled={submitting}>{submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" /> : null}Cancel session</Button>
+    <Button variant="destructive" className="mt-6" onClick={async () => { setSubmitting(true); try { setResult(await resolvedApi.cancel(cancelToken, true)); } finally { setSubmitting(false); } }} disabled={submitting}>{submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" /> : null}Cancel session</Button>
   </section></main>;
 
-  const price = info ? new Intl.NumberFormat(undefined, { style: "currency", currency: info.currency.toUpperCase() }).format(info.amount_cents / 100) : "$45.00";
+  // A free event says "Free" rather than "$0.00", which reads like a bug.
+  const price = info
+    ? (info.requires_payment === false || info.amount_cents === 0
+        ? "Free"
+        : new Intl.NumberFormat(undefined, { style: "currency", currency: info.currency.toUpperCase() }).format(info.amount_cents / 100))
+    : "$45.00";
   const title = info?.host.title ?? "LSAT Session";
   return <main className="booking-holo single-session-page min-h-screen px-3 py-4 sm:px-6 sm:py-8 lg:flex lg:items-center">
     <section className="booking-shadow mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-border bg-card">
@@ -366,7 +420,7 @@ export default function SingleSession({ api = defaultApi }: { api?: SingleSessio
               <fieldset><legend className="text-sm font-medium">Guests</legend>{guests.map((guest, index) => <div key={index} className="mt-2 flex gap-2"><Input aria-label={`Guest ${index + 1} email address`} type="email" value={guest} onChange={(event) => setGuests((current) => current.map((value, guestIndex) => guestIndex === index ? event.target.value : value))} className="min-h-11" /><Button type="button" variant="ghost" size="icon" aria-label={`Remove guest ${index + 1}`} onClick={() => setGuests((current) => current.filter((_, guestIndex) => guestIndex !== index))}><Trash2 className="h-4 w-4" /></Button></div>)}
                 {guests.length < 10 ? <Button type="button" variant="ghost" className="mt-2 -ml-3" onClick={() => setGuests((current) => [...current, ""])}><Plus className="mr-1 h-4 w-4" />Add guests</Button> : null}</fieldset>
             </div>
-            <Button type="submit" className="mt-7 min-h-12 w-full" disabled={submitting}>{submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" /> : null}Pay to book</Button>
+            <Button type="submit" className="mt-7 min-h-12 w-full" disabled={submitting}>{submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" /> : null}{info?.requires_payment === false ? "Confirm booking" : "Pay to book"}</Button>
             <p className="mt-3 text-center text-xs text-muted-foreground">You'll finish payment securely on Stripe.</p>
           </form> : <>
             <div className="flex flex-wrap items-center justify-between gap-3"><h2 ref={availabilityHeading} tabIndex={-1} className="text-xl font-semibold outline-none">Select a time</h2><div className="inline-flex rounded-lg border border-border p-1" aria-label="Time format"><button type="button" aria-pressed={hour12} onClick={() => setHour12(true)} className={cn("min-h-9 rounded-md px-3 text-xs font-medium", hour12 && "bg-primary text-primary-foreground")}>12h</button><button type="button" aria-pressed={!hour12} onClick={() => setHour12(false)} className={cn("min-h-9 rounded-md px-3 text-xs font-medium", !hour12 && "bg-primary text-primary-foreground")}>24h</button></div></div>

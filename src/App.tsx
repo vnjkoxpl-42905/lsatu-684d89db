@@ -242,6 +242,11 @@ const App = () => {
             <Route path="/.lovable/oauth/consent" element={<React.Suspense fallback={null}><OAuthConsent /></React.Suspense>} />
             {/* Static Single Session route must precede the bearer-slug route. */}
             <Route path="/book/session" element={<React.Suspense fallback={null}><SingleSession /></React.Suspense>} />
+            {/* The consultation runs on the same engine as the session: same
+                slot policy, same calendar, same cancel flow. It differs only by
+                what booking_event_types says it is -- 30 minutes, buffered, and
+                free, so it books without a Stripe leg. */}
+            <Route path="/book/consultation" element={<React.Suspense fallback={null}><SingleSession event="consultation" /></React.Suspense>} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
             {/* Legacy booking-workspace URLs used to mount a second app shell.

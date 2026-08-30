@@ -22,8 +22,8 @@ function api(overrides: Partial<SingleSessionApi> = {}): SingleSessionApi {
   };
 }
 
-function renderPage(client = api(), entry = "/book/session") {
-  render(<MemoryRouter initialEntries={[entry]}><SingleSession api={client} /></MemoryRouter>);
+function renderPage(client = api(), entry = "/book/session", event = "single-session") {
+  render(<MemoryRouter initialEntries={[entry]}><SingleSession api={client} event={event} /></MemoryRouter>);
   return client;
 }
 
@@ -52,6 +52,33 @@ describe("SingleSession", () => {
       client_idempotency_key: expect.any(String),
     }));
     expect(client.redirectToCheckout).toHaveBeenCalledWith("https://checkout.stripe.test/session");
+  });
+
+  it("confirms a free consultation without sending anyone to checkout", async () => {
+    // The free path finishes inside hold: no checkout_url comes back, and the
+    // booking is already booked. Redirecting here would land on a Stripe page
+    // that was never created.
+    const client = api({
+      info: vi.fn().mockResolvedValue({
+        host: { name: "Joshua", title: "Consultation" },
+        duration_minutes: 30, amount_cents: 0, currency: "usd", requires_payment: false,
+      }),
+      hold: vi.fn().mockResolvedValue({
+        checkout_url: null,
+        checkout_session_id: null,
+        booking_token: "book-token",
+        booking: { status: "booked", start_at: slot.start_at, end_at: slot.end_at },
+      }),
+    });
+    renderPage(client, "/book/consultation", "consultation");
+
+    await screen.findAllByText("Free");
+    await chooseSlotAndFillForm();
+    fireEvent.click(screen.getByRole("button", { name: /Confirm booking/i }));
+
+    await screen.findByRole("heading", { name: /You're booked/i });
+    expect(client.redirectToCheckout).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem("lsatu.single-session.pending.consultation")).toBeNull();
   });
 
   it("announces a stale Slot and returns focus to refreshed availability", async () => {
