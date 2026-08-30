@@ -26,6 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { questionBank } from '@/lib/questionLoader';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
+import { analyseSection, type AnalysisInput } from '@/lib/sectionAnalysis';
 
 /** One question's outcome in a sat section. */
 export interface SectionQuestionStat {
@@ -190,6 +191,43 @@ function tally<K extends string | number>(
   return out;
 }
 
+/**
+ * The analysis input for a sat section, enriched from the question bank.
+ *
+ * The bank already knows which reasoning each question runs on — conditional,
+ * causal, quantifier — and that is the cleanest signal we have for a
+ * fundamentals gap, which is otherwise the hardest category to tell apart from
+ * a process one. It has been sitting unread; this is what reads it.
+ */
+export function buildAnalysisInput(
+  session: DrillSession,
+  stats: SectionQuestionStat[],
+  brResults?: BlindReviewResult[],
+): AnalysisInput {
+  const timer = session.fullSectionConfig?.timer;
+  const minutes =
+    !timer || timer.mode === 'unlimited'
+      ? null
+      : timer.mode === 'custom'
+        ? (timer.customMinutes ?? null)
+        : Number(timer.mode);
+
+  return {
+    questions: stats.map((s) => {
+      const question = questionBank.getQuestion(s.qid);
+      return {
+        ...s,
+        reasoningTypes: question?.reasoningType,
+      };
+    }),
+    // The student's own clock over the section's questions, so an accommodated
+    // section is judged against the time it was actually given.
+    paceMsPerQuestion:
+      minutes && stats.length ? (minutes * 60_000) / stats.length : null,
+    blindReviewDone: hasBlindReview(brResults),
+  };
+}
+
 export interface PersistSectionResultsArgs {
   session: DrillSession;
   stats: SectionQuestionStat[];
@@ -207,6 +245,9 @@ export interface PersistSectionResultsArgs {
  *
  * Throws on failure. Callers decide what that means: the results screen toasts,
  * the practice-test closeout treats the leg as unfinished and retries.
+ *
+ * Returns the new row's id, which is what the report email is addressed by. A
+ * caller that does not want the email can ignore it.
  */
 export async function persistSectionResults({
   session,
@@ -214,10 +255,14 @@ export async function persistSectionResults({
   brResults,
   classId,
   userId,
-}: PersistSectionResultsArgs): Promise<void> {
+}: PersistSectionResultsArgs): Promise<string | null> {
   const totals = buildSectionTotals(stats, brResults);
 
-  const { error } = await supabase.from('section_history').insert({
+  // The generated Supabase types are regenerated from the deployed schema, so
+  // they lag a migration that has not been applied yet. `analysis_json` is real
+  // in the migration and absent from the types until then; casting the row is
+  // the honest way to say that, rather than hand-editing a generated file.
+  const row = {
     class_id: classId,
     user_id: userId,
     pt: session.fullSectionConfig?.pt || 0,
@@ -245,15 +290,51 @@ export async function persistSectionResults({
     // none. The value is plain JSON-safe data; the shape is `SectionQuestionStat[]`
     // and `sectionHistory.ts` reads it back as exactly that.
     questions_json: stats as unknown as Json,
+    // The diagnosis, written once. Everything above is what happened; this is
+    // what it means, and it is stored rather than recomputed on read so a
+    // student can be shown next month exactly what they were told today.
+    analysis_json: analyseSection(
+      buildAnalysisInput(session, stats, brResults),
+    ) as unknown as Json,
     // Legacy NOT NULL columns. Nothing writes them, so every row has carried
     // two zeroes that read as "no questions, no time". `readLrLegResult` only
     // survives it by falling back to initial_total / total_time_ms; any query
     // that trusts these instead gets nothing. Same numbers, stated honestly.
     total_questions: totals.initialTotal,
     time_taken_ms: totals.totalTimeMs,
-  });
+  };
+
+  const { data, error } = await supabase
+    .from('section_history')
+    .insert(row as unknown as never)
+    .select('id')
+    .maybeSingle();
 
   if (error) throw error;
+  return (data as { id?: string } | null)?.id ?? null;
+}
+
+/**
+ * Sends the teacher the finished section: the whole record, then the diagnosis.
+ *
+ * Fire and forget by design. The sitting is already saved and the student is
+ * already looking at their results; an email that cannot be sent must not take
+ * the results screen down with it. The failure is recorded on the row by the
+ * function itself, so it is visible rather than lost.
+ */
+export async function emailSectionReport(sectionHistoryId: string | null): Promise<void> {
+  if (!sectionHistoryId) return;
+  try {
+    const { data, error } = await supabase.functions.invoke('send-section-report', {
+      body: { sectionHistoryId },
+    });
+    if (error) throw error;
+    if (data && data.ok === false) {
+      console.error('[section-report] not sent', data.error);
+    }
+  } catch (e) {
+    console.error('[section-report] invoke failed', e);
+  }
 }
 
 /**

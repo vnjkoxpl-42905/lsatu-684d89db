@@ -53,6 +53,7 @@ import { questionBank } from '@/lib/questionLoader';
 import {
   buildSectionStats,
   logSectionWrongAnswers,
+  emailSectionReport,
   persistSectionResults,
   wajQidsForSection,
 } from '@/lib/sectionHistorySave';
@@ -2416,12 +2417,16 @@ function DrillContent() {
       }
 
       if (!progress.historySaved) {
-        await persistSectionResults({
+        const sectionHistoryId = await persistSectionResults({
           session: finishedSession,
           stats,
           classId,
           userId: user.id,
         });
+        // Every leg of a practice test is a section, and each one gets its own
+        // report. Not awaited: the leg is saved, and the sitting has to be able
+        // to move on to the next section whatever the mail server is doing.
+        void emailSectionReport(sectionHistoryId);
         progress = recordCloseoutProgress(key!, { historySaved: true });
       }
 

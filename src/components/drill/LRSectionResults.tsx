@@ -19,6 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import {
   buildSectionStats,
   buildSectionTotals,
+  emailSectionReport,
   logSectionWrongAnswers,
   persistSectionResults,
   wajQidsForSection,
@@ -235,13 +236,18 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
       savedRef.current = true;
 
       try {
-        await persistSectionResults({
+        const sectionHistoryId = await persistSectionResults({
           session,
           stats,
           brResults,
           classId,
           userId: user.id,
         });
+
+        // The teacher's copy: every question, then the diagnosis. Not awaited —
+        // the sitting is saved and the student is already reading their score,
+        // and a mail server having a bad minute must not read as a lost section.
+        void emailSectionReport(sectionHistoryId);
 
         // Every question that was not answered correctly, answered or not. On the
         // standalone path nothing else journals this section, so the whole set

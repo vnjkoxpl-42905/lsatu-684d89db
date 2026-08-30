@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const insert = vi.fn();
+// The insert chains into .select().maybeSingle() so the caller gets the new
+// row's id back — that id is what the report email is addressed by.
+const maybeSingle = vi.fn();
+const insert = vi.fn(() => ({ select: () => ({ maybeSingle }) }));
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: { from: () => ({ insert }) },
 }));
@@ -50,7 +53,7 @@ const session = (
 
 beforeEach(() => {
   vi.clearAllMocks();
-  insert.mockResolvedValue({ error: null });
+  maybeSingle.mockResolvedValue({ data: { id: 'sh-1' }, error: null });
   logWrongAnswer.mockResolvedValue(undefined);
   getQuestion.mockImplementation((qid: string) => q(qid));
 });
@@ -268,7 +271,7 @@ describe('persistSectionResults', () => {
   });
 
   it('throws when the insert fails, so a sitting can tell the leg is unfinished', async () => {
-    insert.mockResolvedValue({ error: { message: 'nope' } });
+    maybeSingle.mockResolvedValue({ data: null, error: { message: 'nope' } });
 
     await expect(
       persistSectionResults({
