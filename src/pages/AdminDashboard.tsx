@@ -95,8 +95,14 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
         body: { class_id: classId, field, value },
       });
       if (res.error) throw res.error;
-    } catch {
+      // Trust the row the server wrote back, not the optimistic guess. A filter
+      // that matches nothing is not a PostgREST error, so without this a toggle
+      // that never landed reads as saved until the next reload undoes it.
+      const written = (res.data as { profile?: Record<string, unknown> } | null)?.profile;
+      if (!written || written[field] !== value) throw new Error("Permission was not saved");
+    } catch (error) {
       setUsers(prev => prev.map(u => u.class_id === classId ? { ...u, [field]: !value } : u));
+      console.error("toggleAccess failed", { classId, field, value, error });
       toast.error("Failed to update permission");
     }
   };
@@ -113,6 +119,10 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
         body: { action: "bulk_user", class_id: classId, value },
       });
       if (res.error) throw res.error;
+      // Read the row back rather than trusting the optimistic sweep: the server
+      // owns the flag list, and a client that knows fewer flags than the server
+      // would otherwise keep showing the ones it forgot as untouched.
+      await fetchData();
       toast.success(value ? "All access granted" : "All access revoked");
     } catch {
       setUsers(us => us.map(u => u.class_id === classId ? prev : u));
@@ -130,6 +140,7 @@ export default function AdminDashboard({ embedded = false, title = "Admin Dashbo
         body: { action: "apply_template", class_id: classId, flags },
       });
       if (res.error) throw res.error;
+      await fetchData();
       toast.success(`Applied "${label}"`);
     } catch {
       setUsers(us => us.map(u => u.class_id === classId ? prev : u));

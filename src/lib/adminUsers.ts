@@ -20,6 +20,8 @@ export interface ManagedUser {
   has_chat_access: boolean;
   has_export_access: boolean;
   has_ta_access: boolean;
+  has_journal_access: boolean;
+  has_activity_access: boolean;
 }
 
 export interface AdminAnalytics {
@@ -32,21 +34,52 @@ export interface AdminAnalytics {
   week_attempts: number;
 }
 
-// People-page access model is intentionally simple: the only per-student
-// permission Joshua grants here is Drill Access (the LSAT question bank).
-// Bootcamp access is NOT a flag, it is driven entirely by classroom_items
-// assignments and enforced by BootcampGate. Everything else students need to
-// function (classroom, chat, waj, ...) is default-on.
+// Every door a student can be given, grouped the way the classroom rail groups
+// them, and labelled in the words the rail uses. This list is the admin UI: a
+// flag that is missing here has no toggle anywhere, which is how
+// `has_journal_access` and `has_activity_access` came to be ungrantable while
+// the rail happily padlocked Wrong answers and Activities against them.
+//
+// Keep it in step with `ALL_FLAGS` in supabase/functions/admin-manage-users.
+// The server writes what it is told; if the client cannot name a flag, no
+// amount of pressing "grant all" will turn it on where Joshua can see it.
 export const FLAG_GROUPS = [
   {
-    label: 'Access',
+    label: 'Practice',
     flags: [
       { key: 'has_drill_access', label: 'Drill' },
+      { key: 'has_practice_access', label: 'Practice tests' },
+      { key: 'has_activity_access', label: 'Activities' },
+      { key: 'has_bootcamp_access', label: 'Bootcamps' },
+    ],
+  },
+  {
+    label: 'Review',
+    flags: [
+      { key: 'has_journal_access', label: 'Wrong answers' },
+      { key: 'has_waj_access', label: 'Wrong answer journal' },
+      { key: 'has_flagged_access', label: 'Flagged' },
+      { key: 'has_analytics_access', label: 'Analytics and History' },
+      { key: 'has_export_access', label: 'Export' },
+    ],
+  },
+  {
+    label: 'Classroom',
+    flags: [
+      { key: 'has_classroom_access', label: 'Classroom' },
+      { key: 'has_chat_access', label: 'Messages' },
+      { key: 'has_schedule_access', label: 'Schedule' },
+      { key: 'has_ta_access', label: 'TA assignments' },
     ],
   },
 ] as const;
 
 export const CONFIGURABLE_FLAG_KEYS = FLAG_GROUPS.flatMap((group) => group.flags.map((flag) => flag.key));
+/**
+ * What a paying student gets regardless of which template is applied. Templates
+ * force these back on after the explicit list, so "Trial" can narrow practice
+ * without taking away the room the student stands in.
+ */
 export const DEFAULT_ON_FLAG_KEYS = [
   'has_practice_access',
   'has_bootcamp_access',
@@ -54,12 +87,15 @@ export const DEFAULT_ON_FLAG_KEYS = [
   'has_analytics_access',
   'has_schedule_access',
   'has_waj_access',
+  'has_journal_access',
   'has_flagged_access',
   'has_chat_access',
   'has_export_access',
   'has_ta_access',
+  'has_activity_access',
 ] as const;
-export const ALL_FLAG_KEYS = [...CONFIGURABLE_FLAG_KEYS, ...DEFAULT_ON_FLAG_KEYS];
+/** Deduped: every configurable flag is now also a default-on candidate. */
+export const ALL_FLAG_KEYS = [...new Set<string>([...CONFIGURABLE_FLAG_KEYS, ...DEFAULT_ON_FLAG_KEYS])];
 
 export const ALL_FLAG_LABELS: Record<string, string> = {};
 FLAG_GROUPS.forEach((group) => group.flags.forEach((flag) => {
