@@ -98,17 +98,20 @@ async function fetchSectionHistoryBy(
   column: 'user_id' | 'class_id',
   value: string,
 ): Promise<SectionHistoryRow[]> {
+  // `*` rather than a column list, because the generated types are regenerated
+  // from the deployed schema and reject `analysis_json` by name until the
+  // migration that adds it has been applied. A star select is valid against
+  // both, returns the column once it exists, and simply omits it before then —
+  // which is exactly what the `?? null` below is for.
   const { data, error } = await supabase
     .from('section_history')
-    .select(
-      'id, pt, section, mode, initial_score, initial_total, initial_percent, br_score, br_percent, br_delta, br_used, total_time_ms, avg_time_ms, unanswered_count, by_qtype_json, by_difficulty_json, questions_json, analysis_json, completed_at, created_at',
-    )
+    .select('*')
     .eq(column, value)
     .order('completed_at', { ascending: false });
 
   if (error) throw error;
 
-  return (data ?? []).map((r) => ({
+  return ((data ?? []) as unknown as Array<Record<string, any>>).map((r) => ({
     id: r.id,
     pt: r.pt,
     section: r.section,
@@ -129,7 +132,7 @@ async function fetchSectionHistoryBy(
     byQtype: asTally(r.by_qtype_json),
     byDifficulty: asTally(r.by_difficulty_json),
     questions: asQuestions(r.questions_json),
-    analysis: ((r as Record<string, unknown>).analysis_json as SectionAnalysis) ?? null,
+    analysis: (r.analysis_json as SectionAnalysis) ?? null,
     completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
   }));
 }

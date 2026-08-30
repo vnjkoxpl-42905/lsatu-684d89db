@@ -454,7 +454,6 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
     if (upstream.length > 0) {
       findings.push({
         rule: 'R1',
-      category: 'test-taking',
         category: 'test-taking',
         headline: `You did not run out of ability at the end of this section. You ran out of clock.`,
         detail: `${unreached.length} question${unreached.length === 1 ? '' : 's'} went unanswered (${list(unreached.map((q) => q.qnum))}), and ${clock(overspend)} of overspend upstream is where that time went — ${list(upstream.map((q) => q.qnum))} each ran past the ${clock(paceMs)} they were owed. That includes questions you got right: slow and correct early is what costs you the ones at the end.`,
@@ -483,7 +482,6 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const slowHalf = slowerFirst ? 'first' : 'second';
       findings.push({
         rule: 'R2',
-      category: 'test-taking',
         category: 'test-taking',
         headline: `The extra time in the ${slowHalf} half did not buy accuracy.`,
         detail: `First half: ${clock(t1)} for ${c1}/${first.length}. Second half: ${clock(t2)} for ${c2}/${second.length}. The slower stretch scored no better than the faster one, so those minutes were not being converted.`,
@@ -506,7 +504,6 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const got = sinks.filter((q) => q.initialCorrect).length;
       findings.push({
         rule: 'R3',
-      category: 'test-taking',
         category: 'test-taking',
         headline:
           wrongSinks.length > 0
@@ -563,7 +560,6 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const spent = hardSlow.reduce((s, q) => s + q.timeMs, 0);
       findings.push({
         rule: 'R6',
-      category: 'test-taking',
         category: 'test-taking',
         headline: 'You bought the expensive questions and left cheap ones on the table.',
         detail: `${clock(spent)} went to ${list(hardSlow.map((q) => q.qnum))} at level 4-5, while ${list(cheapMissed.map((q) => q.qnum))} at level 1-2 went wrong. Every question is worth the same point and they cost very different amounts of time.`,
