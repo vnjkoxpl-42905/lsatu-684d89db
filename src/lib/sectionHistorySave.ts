@@ -48,6 +48,11 @@ export interface SectionQuestionStat {
    * timeline; an unanswered question has none.
    */
   answerTrail?: Array<{ answer: string; atMs: number }>;
+  /**
+   * Answered after the section clock ran out. Undefined for a section that
+   * never ran out, which is not the same as false on one that did.
+   */
+  answeredInOvertime?: boolean;
   flagged: boolean;
 }
 
@@ -64,6 +69,12 @@ export function buildSectionStats(
   session: DrillSession,
   brResults?: BlindReviewResult[],
 ): SectionQuestionStat[] {
+  // Who was already answered at the buzzer. A section that never ran out has
+  // no mark, and no question on it is in overtime.
+  const atBuzzer = session.regulationMark
+    ? new Set(session.regulationMark.answeredQids)
+    : null;
+
   return session.questionQueue
     .map((qid, idx) => {
       const question = questionBank.getQuestion(qid);
@@ -88,6 +99,7 @@ export function buildSectionStats(
         brTimeMs: brResult?.brTimeMs,
         switchCount: attempt?.switchCount || 0,
         answerTrail: attempt?.answerTrail,
+        answeredInOvertime: atBuzzer ? !atBuzzer.has(qid) : undefined,
         flagged: attempt?.brMarked || false,
       };
     })

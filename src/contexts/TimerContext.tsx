@@ -4,6 +4,10 @@ import { useTimer } from '@/hooks/useTimer';
 interface TimerContextValue {
   label: string;
   ms: number;
+  /** Time the clock has run, whatever direction it reports. */
+  elapsedMs: number;
+  /** How far past a countdown's budget the student has worked. 0 until then. */
+  overtimeMs: number;
   mode: 'countdown' | 'stopwatch';
   start: () => void;
   pause: () => void;

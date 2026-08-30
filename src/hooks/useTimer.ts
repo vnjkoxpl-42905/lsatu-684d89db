@@ -117,9 +117,20 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
   const ss = Math.floor((ms % 60000) / 1000);
   const label = `${mm}:${ss.toString().padStart(2, '0')}`;
 
+  // What the clock has actually run, and what it was given. A countdown that
+  // has hit zero reports `ms` of 0 forever, which cannot say whether the
+  // student stopped at the buzzer or worked twenty minutes past it.
+  const elapsedMs = elapsed();
+  const overtimeMs =
+    mode === 'countdown' && state.current.duration
+      ? Math.max(0, elapsedMs - state.current.duration)
+      : 0;
+
   return {
     label,
     ms,
+    elapsedMs,
+    overtimeMs,
     start,
     pause,
     resume,

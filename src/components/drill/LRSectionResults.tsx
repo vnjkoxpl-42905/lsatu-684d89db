@@ -299,6 +299,27 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
    * nothing on this screen measures an accommodated student against 1:21.
    * Unlimited owes nothing, so it draws no tick.
    */
+  /**
+   * The score under the real clock, when the section ran past it.
+   *
+   * A section carried into overtime has two scores and only one of them
+   * predicts a test day. Stating both is the point of allowing overtime at
+   * all; stating only the total would quietly inflate every section a student
+   * chose to finish.
+   */
+  const regulationSplit = React.useMemo(() => {
+    const inOvertime = stats.filter((s) => s.answeredInOvertime);
+    if (inOvertime.length === 0) return null;
+    const inTime = stats.filter((s) => !s.answeredInOvertime);
+    return {
+      answered: inTime.length,
+      correct: inTime.filter((s) => s.initialCorrect).length,
+      overtimeCount: inOvertime.length,
+      overtimeCorrect: inOvertime.filter((s) => s.initialCorrect).length,
+      total: stats.length,
+    };
+  }, [stats]);
+
   const sectionClock = React.useMemo(() => {
     const timer = session.fullSectionConfig?.timer;
     if (!timer || timer.mode === 'unlimited' || stats.length === 0) return null;
@@ -457,6 +478,21 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
               <div className="text-xs text-muted-foreground">Unanswered</div>
             </div>
           </div>
+
+          {/* What the clock actually covered. Only when it was exceeded. */}
+          {regulationSplit && (
+            <div className="mb-6 mx-auto max-w-xl rounded-lg border border-border bg-background/50 px-4 py-3 text-center text-sm">
+              <span className="font-medium">
+                At time: {regulationSplit.correct}/{regulationSplit.answered} on the{' '}
+                {regulationSplit.answered} questions you reached.
+              </span>{' '}
+              <span className="text-muted-foreground">
+                The other {regulationSplit.overtimeCount} were answered after the clock ran
+                out ({regulationSplit.overtimeCorrect} right). The score above counts all{' '}
+                {regulationSplit.total}.
+              </span>
+            </div>
+          )}
 
           {/* Top 3 Focus Areas */}
           <div className="mb-6">
@@ -638,6 +674,11 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
                   <div className="text-base font-semibold leading-tight">{stat.qtype}</div>
                   <div className="text-xs text-muted-foreground">
                     Level {stat.difficulty}
+                    {stat.answeredInOvertime && (
+                      <span className="ml-1.5 text-amber-600" title="Answered after time">
+                        · overtime
+                      </span>
+                    )}
                   </div>
                 </div>
 

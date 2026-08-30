@@ -60,6 +60,19 @@ export interface DrillSession {
     revisitCount?: number; // Number of times returned to question
     answerRevealed?: boolean; // Tracks if "Show Answer" clicked
   }>;
+  /**
+   * Where the student had got to when the section clock ran out.
+   *
+   * A section can be carried on past its own buzzer — the clock turns around
+   * and counts up, and the student finishes the questions. That is worth
+   * doing and worth recording separately: the score under the real clock is
+   * the one that predicts a test day, and the rest is what they can do with
+   * unlimited time. Absent means the section never ran out.
+   */
+  regulationMark?: {
+    /** Questions that already carried an answer at the buzzer. */
+    answeredQids: string[];
+  };
   sessionId?: string; // For tracking BR sessions
 }
 

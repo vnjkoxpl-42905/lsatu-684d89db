@@ -342,6 +342,16 @@ function DrillContent() {
    * silently, with questions still blank and time still on the clock.
    */
   const [submitConfirmOpen, setSubmitConfirmOpen] = React.useState(false);
+  /**
+   * What happens when a section's clock runs out.
+   *
+   * Nothing used to: the countdown sat at 0:00 and the student kept going, so
+   * the score said "sat under 35 minutes" about a section that took an hour.
+   * Now the buzzer stops the room and asks. Finishing there is the honest
+   * score; carrying on turns the clock around and counts up, and the results
+   * screen says which questions were answered on which side of it.
+   */
+  const [overtimeState, setOvertimeState] = React.useState<'none' | 'prompt' | 'running'>('none');
   const [exitDestination, setExitDestination] = React.useState<string>('/');
   const [tutorMode, setTutorMode] = React.useState(true);
   const [brMarked, setBrMarked] = React.useState<Set<string>>(new Set());
@@ -639,6 +649,8 @@ function DrillContent() {
         ? Math.min(Math.max(requestedInitialIndex, 0), Math.max(questionQueue.length - 1, 0))
         : 0;
       let restoredAttempts: DrillSession['attempts'] = new Map();
+      // Set only when a stored section had already run out of time.
+      let restoredRegulationMark: DrillSession['regulationMark'] | undefined;
 
       // Intro to LR practice sets resume from durable storage, not from the URL.
       // A student who closed the tab, signed out, or moved to another device
@@ -734,6 +746,9 @@ function DrillContent() {
           // with a fresh 35:00 was handing back time already spent, which
           // makes the score it produces meaningless.
           if (stored?.elapsed_ms) pendingResumeElapsedMs.current = stored.elapsed_ms;
+          if (stored?.regulation_answered_qids) {
+            restoredRegulationMark = { answeredQids: stored.regulation_answered_qids };
+          }
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(
             questionQueue,
@@ -764,6 +779,7 @@ function DrillContent() {
 
       setSession({
         mode,
+        regulationMark: restoredRegulationMark,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
         typeDrillConfig: (mode === 'type-drill' || mode === 'natural-drill') ? (state.config as TypeDrillConfig) : undefined,
         questionQueue,
@@ -818,6 +834,7 @@ function DrillContent() {
         // Stored as time SPENT, so it reads the same whether the surface
         // counts down or up.
         elapsedMs: sectionElapsedMs(),
+        regulationAnsweredQids: source.regulationMark?.answeredQids,
       };
     },
     [sectionElapsedMs],
@@ -2848,6 +2865,23 @@ function DrillContent() {
     timer.adoptElapsed(spent);
   }, [timer]);
 
+  // The buzzer. Stops the clock, records where the student had got to, and
+  // asks — once. A section that has already been carried past its buzzer must
+  // not be asked again on every tick.
+  React.useEffect(() => {
+    if (!timer || !session) return;
+    if (session.mode !== 'full-section') return;
+    if (timer.mode !== 'countdown' || timer.ms > 0) return;
+    if (overtimeState !== 'none' || session.regulationMark) return;
+
+    const answeredQids = Array.from(session.attempts.entries())
+      .filter(([, a]) => !!a.selectedAnswer)
+      .map(([qid]) => qid);
+    setSession({ ...session, regulationMark: { answeredQids } });
+    timer.pause();
+    setOvertimeState('prompt');
+  }, [timer, session, overtimeState]);
+
   // Metadata for the drawer's Details tab, drawn from the active question.
   // MUST be declared before any conditional early returns below to keep hook order stable.
   const drawerMeta = React.useMemo<DrillDetailsMeta | null>(() => {
@@ -3675,6 +3709,14 @@ function DrillContent() {
     // Fraction still left on the clock, for the depleting bar under the timer.
     // Only a countdown against a known budget has one; a stopwatch or an
     // unlimited section leaves it undefined and the bar does not render.
+    // Past the buzzer the clock reads as time owed, not time left: "+2:14" is
+    // the honest label for a section that ran over, and 0:00 forever is not.
+    const overtimeLabel =
+      overtimeState === 'running' && timer
+        ? `+${Math.floor(timer.overtimeMs / 60000)}:${Math.floor((timer.overtimeMs % 60000) / 1000)
+            .toString()
+            .padStart(2, '0')}`
+        : null;
     const timerProgress =
       timer?.mode === 'countdown' && totalMs
         ? Math.max(0, Math.min(1, timer.ms / totalMs))
@@ -3914,6 +3956,45 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        {/* The buzzer. Not dismissible: a section whose time is up has to be
+            either scored or deliberately carried on, and clicking the backdrop
+            is neither. */}
+        <AlertDialog open={overtimeState === 'prompt'}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Time.</AlertDialogTitle>
+              <AlertDialogDescription>
+                {(() => {
+                  const total = session.questionQueue.length;
+                  const answered = session.regulationMark?.answeredQids.length ?? 0;
+                  const left = total - answered;
+                  return left === 0
+                    ? 'Your section clock is up, and you answered every question inside it.'
+                    : `Your section clock is up. You answered ${answered} of ${total}, with ${left} left. You can finish now and be scored on the section as you sat it, or keep working with the clock counting up — either way, the results show which questions you answered before time and which after.`;
+                })()}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                onClick={() => {
+                  setOvertimeState('none');
+                  void handleFinishSection();
+                }}
+              >
+                Finish and score
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  setOvertimeState('running');
+                  timer?.resume();
+                }}
+              >
+                Keep working
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <AlertDialog open={revealConfirmOpen} onOpenChange={setRevealConfirmOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -3999,7 +4080,7 @@ function DrillContent() {
           <OfficialDrillToolbar
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
-            timerLabel={timer?.label ?? ""}
+            timerLabel={overtimeLabel ?? timer?.label ?? ""}
             timerMode={timer?.mode}
             timerProgress={timerProgress}
             searchTerm={officialSearchTerm}

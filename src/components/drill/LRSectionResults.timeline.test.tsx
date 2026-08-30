@@ -63,6 +63,17 @@ const session = {
   ]),
 } as unknown as DrillSession;
 
+/** The same section, carried past its own buzzer with one question left. */
+const overtimeSession = {
+  ...session,
+  questionQueue: ['q1', 'q2'],
+  regulationMark: { answeredQids: ['q1'] },
+  attempts: new Map([
+    ...Array.from((session.attempts as Map<string, unknown>).entries()),
+    ['q2', { selectedAnswer: 'C', correct: true, timeMs: 40_000, timestamp: 0 }],
+  ]),
+} as unknown as DrillSession;
+
 describe('LRSectionResults answer timeline', () => {
   it('draws every answer the student put down, in order', () => {
     render(
@@ -84,5 +95,18 @@ describe('LRSectionResults answer timeline', () => {
 
     // The clock they sat, named the way they chose it.
     expect(screen.getByText(/pace · 52:30 section · Time and a half/)).toBeTruthy();
+  });
+
+  it('separates what was answered inside the clock from what came after', () => {
+    render(
+      <MemoryRouter>
+        <LRSectionResults session={overtimeSession} classId="c1" onBack={vi.fn()} />
+      </MemoryRouter>,
+    );
+
+    // q1 was answered at the buzzer and got it wrong; q2 came after.
+    expect(screen.getByText(/At time: 0\/1 on the 1 questions you reached/)).toBeTruthy();
+    expect(screen.getByText(/answered after the clock ran out \(1 right\)/)).toBeTruthy();
+    expect(screen.getByText(/· overtime/)).toBeTruthy();
   });
 });

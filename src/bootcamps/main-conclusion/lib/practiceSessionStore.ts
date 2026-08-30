@@ -54,6 +54,8 @@ export interface PracticeSessionSnapshot {
   attempts: PracticeSessionAttempt[];
   /** Section clock already spent, for the surfaces that run one. */
   elapsedMs?: number;
+  /** Answers that were already down when the clock ran out, if it did. */
+  regulationAnsweredQids?: string[];
 }
 
 /**
@@ -136,6 +138,8 @@ export async function savePracticeSessionSnapshot(
     // Never hand back time already spent: a snapshot with no clock keeps
     // whatever the row already knew rather than clearing it.
     elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+    regulation_answered_qids:
+      snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
     started_at: existing?.started_at ?? now(),
     updated_at: now(),
   });
@@ -170,6 +174,8 @@ export async function completePracticeSession(
     attempts: snapshot.attempts.length ? snapshot.attempts : existing?.attempts ?? [],
     status: 'completed',
     elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+    regulation_answered_qids:
+      snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
     started_at: existing?.started_at ?? now(),
     updated_at: now(),
   });

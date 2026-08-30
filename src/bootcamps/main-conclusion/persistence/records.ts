@@ -216,6 +216,13 @@ export const PracticeSession = z.object({
    * used, which makes the score meaningless. Absent for anything untimed.
    */
   elapsed_ms: z.number().min(0).optional(),
+  /**
+   * Which questions already carried an answer when the section clock ran out.
+   * Kept so a section resumed during overtime still knows which side of the
+   * buzzer each answer belongs to; recomputing it on resume would quietly
+   * move every overtime answer back inside the clock.
+   */
+  regulation_answered_qids: z.array(z.string()).optional(),
   started_at: IsoDateSchema,
   updated_at: IsoDateSchema,
 });
