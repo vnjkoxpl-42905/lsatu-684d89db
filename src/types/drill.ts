@@ -57,6 +57,18 @@ export interface DrillSession {
      * revisits, so a question returned to twice reads as one continuous run.
      */
     answerTrail?: Array<{ answer: string; atMs: number }>;
+    /**
+     * How many times the student opened this question, and how many of those
+     * visits ended with the answer exactly as they found it.
+     *
+     * A second pass that changes nothing is the webinar's most concrete
+     * finding — six questions revisited and left alone, because the student
+     * went back with the same reading that produced the wrong answer the first
+     * time. The answer trail records changes of mind; only this records a
+     * change of mind that never came.
+     */
+    visitCount?: number;
+    noChangeRevisits?: number;
     revisitCount?: number; // Number of times returned to question
     answerRevealed?: boolean; // Tracks if "Show Answer" clicked
   }>;
@@ -73,6 +85,16 @@ export interface DrillSession {
     /** Questions that already carried an answer at the buzzer. */
     answeredQids: string[];
   };
+  /**
+   * Every question the student actually opened.
+   *
+   * Without it an unanswered question is one fact; with it, it is two very
+   * different ones. A question worked and left blank is a decision — the
+   * webinar's "I skipped something I wasn't supposed to skip" — and a question
+   * never reached is the clock. They call for opposite advice, and today both
+   * land as "unanswered".
+   */
+  visitedQids?: string[];
   sessionId?: string; // For tracking BR sessions
 }
 

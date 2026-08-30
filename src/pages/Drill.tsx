@@ -322,6 +322,13 @@ function DrillContent() {
    * makes the results timeline read as one run.
    */
   const trailBaseMs = React.useRef(0);
+  /**
+   * The question currently open, and what its answer trail looked like when it
+   * was opened. Closing the visit compares the two: a visit that ends with the
+   * trail the same length it started is a second pass that changed nothing,
+   * which is a finding in its own right and invisible from the trail alone.
+   */
+  const openVisit = React.useRef<{ qid: string; trailLength: number } | null>(null);
   const [hasTimer, setHasTimer] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
   const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
@@ -1142,6 +1149,20 @@ function DrillContent() {
 
     resetPerQuestionState();
 
+    // Close the visit we are leaving, then open the one we are entering. Done
+    // for every mode: a revisit means the same thing in a drill as in a
+    // section, and the record costs one map write.
+    if (session) {
+      const nextQid = session.questionQueue[session.currentIndex];
+      closeOpenVisit();
+      if (nextQid) {
+        openVisit.current = {
+          qid: nextQid,
+          trailLength: session.attempts.get(nextQid)?.answerTrail?.length ?? 0,
+        };
+      }
+    }
+
     // Restore saved answer + revealed solution for any non-adaptive mode.
     // (Adaptive is narrowed out by prior control flow in this effect.)
     if (session) {
@@ -1175,6 +1196,37 @@ function DrillContent() {
       setAdvanceToken(t => t + 1);
     }
   }, [sessionMode, currentQuestion, adaptiveHydrationStatus]);
+
+  /**
+   * Bank the visit that is ending.
+   *
+   * Counts the visit, marks the question as one the student actually opened,
+   * and — when the trail is no longer than it was on entry — counts it as a
+   * pass that changed nothing. A first visit that produced no answer is not
+   * one of those: there was no answer to leave alone.
+   */
+  const closeOpenVisit = React.useCallback(() => {
+    const visit = openVisit.current;
+    openVisit.current = null;
+    if (!visit) return;
+    setSession((prev) => {
+      if (!prev) return prev;
+      const attempts = new Map(prev.attempts);
+      const attempt = attempts.get(visit.qid);
+      const trailLength = attempt?.answerTrail?.length ?? 0;
+      const changedNothing = trailLength > 0 && trailLength === visit.trailLength;
+      if (attempt) {
+        attempts.set(visit.qid, {
+          ...attempt,
+          visitCount: (attempt.visitCount ?? 0) + 1,
+          noChangeRevisits: (attempt.noChangeRevisits ?? 0) + (changedNothing ? 1 : 0),
+        });
+      }
+      const visited = new Set(prev.visitedQids ?? []);
+      visited.add(visit.qid);
+      return { ...prev, attempts, visitedQids: [...visited] };
+    });
+  }, []);
 
   const resetPerQuestionState = () => {
     setSelectedAnswer('');
@@ -2444,6 +2496,10 @@ function DrillContent() {
     options?: { returnToAfterFinish?: string },
   ) => {
     if (!session) return;
+
+    // The last question never gets left, so its visit would never be banked.
+    // Close it here or every section under-counts by one.
+    closeOpenVisit();
 
     // Stop the section timer so it does not keep ticking through
     // SectionComplete / blind review / LRSectionResults.

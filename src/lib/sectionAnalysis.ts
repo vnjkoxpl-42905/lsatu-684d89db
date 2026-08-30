@@ -251,11 +251,22 @@ function categoriseMiss(
     tagMisses: Map<string, number>;
   },
 ): { category: ErrorCategory; why: string } {
-  // Never reached, or left blank. Nothing about the question was the problem.
+  // Unanswered, and the two kinds of unanswered are opposite findings. Worked
+  // and left blank is a decision the student made; never opened is the clock
+  // deciding for them.
   if (isUnanswered(q)) {
+    if (q.everVisited === true) {
+      return {
+        category: 'test-taking',
+        why: `opened for ${clock(q.timeMs)} and left blank — a skip, not a shortfall`,
+      };
+    }
     return {
       category: 'test-taking',
-      why: 'never answered — the clock, not the question',
+      why:
+        q.everVisited === false
+          ? 'never opened — the clock ran out before you reached it'
+          : 'never answered — the clock, not the question',
     };
   }
 
@@ -452,11 +463,21 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       .filter((q) => q.timeMs > paceMs * 1.5);
     const overspend = upstream.reduce((sum, q) => sum + (q.timeMs - paceMs), 0);
     if (upstream.length > 0) {
+      const neverOpened = unreached.filter((q) => q.everVisited === false);
+      const skipped = unreached.filter((q) => q.everVisited === true);
       findings.push({
         rule: 'R1',
         category: 'test-taking',
         headline: `You did not run out of ability at the end of this section. You ran out of clock.`,
-        detail: `${unreached.length} question${unreached.length === 1 ? '' : 's'} went unanswered (${list(unreached.map((q) => q.qnum))}), and ${clock(overspend)} of overspend upstream is where that time went — ${list(upstream.map((q) => q.qnum))} each ran past the ${clock(paceMs)} they were owed. That includes questions you got right: slow and correct early is what costs you the ones at the end.`,
+        detail: `${unreached.length} question${unreached.length === 1 ? '' : 's'} went unanswered (${list(unreached.map((q) => q.qnum))})${
+          neverOpened.length > 0 && skipped.length > 0
+            ? ` — ${list(neverOpened.map((q) => q.qnum))} you never reached, ${list(skipped.map((q) => q.qnum))} you opened and left`
+            : neverOpened.length > 0
+              ? ', none of which you ever reached'
+              : skipped.length > 0
+                ? ', all of which you opened and left blank'
+                : ''
+        }, and ${clock(overspend)} of overspend upstream is where that time went — ${list(upstream.map((q) => q.qnum))} each ran past the ${clock(paceMs)} they were owed. That includes questions you got right: slow and correct early is what costs you the ones at the end.`,
         prescription:
           'Work the earlier questions at the pace you worked the last ones. The rushed pace was not costing you accuracy and the slow pace was not buying any.',
         qnums: [...upstream.map((q) => q.qnum), ...unreached.map((q) => q.qnum)],
@@ -522,6 +543,26 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
         weight: 80,
       });
     }
+  }
+
+  // ── R4 · the second pass that changed nothing ─────────────────────────────
+  // The webinar counts these out loud, by number: six questions she came back
+  // to and left exactly as she found them, because she went back with the
+  // reading that produced the wrong answer in the first place.
+  const unchangedRevisits = questions.filter((q) => (q.noChangeRevisits ?? 0) > 0);
+  if (unchangedRevisits.length > 0) {
+    const wasted = unchangedRevisits.reduce((n, q) => n + (q.noChangeRevisits ?? 0), 0);
+    const stillWrong = unchangedRevisits.filter((q) => !q.initialCorrect);
+    findings.push({
+      rule: 'R4',
+      category: 'test-taking',
+      headline: `You went back to ${unchangedRevisits.length} question${unchangedRevisits.length === 1 ? '' : 's'} and changed nothing.`,
+      detail: `${list(unchangedRevisits.map((q) => q.qnum))} were opened again and left exactly as you found them${wasted > unchangedRevisits.length ? `, ${wasted} return visits in total` : ''}.${stillWrong.length > 0 ? ` ${list(stillWrong.map((q) => q.qnum))} were wrong both times.` : ''} Going back with the reading that produced the first answer gets you the first answer again.`,
+      prescription:
+        'On a second pass, throw the first reading away and redo the question from the stimulus. You flagged it because something went wrong and you do not know what — so treat it as wrong rather than re-checking the answer you already have. If that is too slow to do on every flag, come back to fewer questions and actually redo those.',
+      qnums: unchangedRevisits.map((q) => q.qnum),
+      weight: 78,
+    });
   }
 
   // ── R5 · confidence errors ────────────────────────────────────────────────
@@ -638,9 +679,11 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       'R1, R3 and R6 (everything about the clock) — this section was sat untimed, so nothing was owed and no pace can be judged.',
     );
   }
-  notRun.push(
-    'R4 (a second pass that changed nothing) — we record every answer change but not yet a revisit that left the answer alone.',
-  );
+  if (questions.every((q) => q.visitCount === undefined)) {
+    notRun.push(
+      'R4 (a second pass that changed nothing) and the difference between a question you skipped and one you never reached — this sitting predates visit tracking.',
+    );
+  }
   notRun.push(
     'R9 (EXCEPT-stem misreads) — the question bank does not yet flag which stems are EXCEPT / LEAST / NOT.',
   );

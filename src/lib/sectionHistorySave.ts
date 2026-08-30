@@ -51,6 +51,14 @@ export interface SectionQuestionStat {
    */
   reasoningTypes?: string[];
   questionFeatures?: string[];
+  /** How many times the student opened it, and how many of those changed nothing. */
+  visitCount?: number;
+  noChangeRevisits?: number;
+  /**
+   * Did they ever open it? A question worked and left blank is a decision; one
+   * never reached is the clock. Both are "unanswered" without this.
+   */
+  everVisited?: boolean;
   /**
    * Every choice put down on this question, in order, each stamped with how
    * far into the question it was made. The results screen draws it as a
@@ -83,6 +91,7 @@ export function buildSectionStats(
   const atBuzzer = session.regulationMark
     ? new Set(session.regulationMark.answeredQids)
     : null;
+  const visited = new Set(session.visitedQids ?? []);
 
   return session.questionQueue
     .map((qid, idx) => {
@@ -112,6 +121,12 @@ export function buildSectionStats(
           ? question.questionFeatures
           : undefined,
         answerTrail: attempt?.answerTrail,
+        visitCount: attempt?.visitCount,
+        noChangeRevisits: attempt?.noChangeRevisits,
+        // Undefined rather than false when nothing was recorded at all: a
+        // sitting from before visits were tracked must not report every
+        // question as one the student never opened.
+        everVisited: visited.size > 0 ? visited.has(qid) : undefined,
         answeredInOvertime: atBuzzer ? !atBuzzer.has(qid) : undefined,
         flagged: attempt?.brMarked || false,
       };

@@ -310,3 +310,63 @@ describe('biggest insight per category', () => {
     expect(fundamentals?.insight).toMatch(/conditional/);
   });
 });
+
+describe('R4 — the second pass that changed nothing', () => {
+  it('counts them by number and says why going back failed', () => {
+    const out = run([
+      q({
+        qnum: 7,
+        initialCorrect: false,
+        brCorrect: false,
+        visitCount: 2,
+        noChangeRevisits: 1,
+      }),
+      q({ qnum: 12, visitCount: 3, noChangeRevisits: 2 }),
+      q({ qnum: 15, visitCount: 1 }),
+    ]);
+
+    const r4 = out.findings.find((f) => f.rule === 'R4')!;
+    expect(r4.qnums).toEqual([7, 12]);
+    expect(r4.detail).toMatch(/3 return visits in total/);
+    // The webinar's actual reason, not a generic "review more carefully".
+    expect(r4.detail).toMatch(/reading that produced the first answer/);
+    expect(r4.prescription).toMatch(/throw the first reading away/);
+  });
+
+  it('says it cannot run on a sitting from before visits were tracked', () => {
+    const out = run([q({ qnum: 1, initialCorrect: false, brCorrect: false })]);
+    expect(out.findings.some((f) => f.rule === 'R4')).toBe(false);
+    expect(out.notRun.join(' ')).toMatch(/predates visit tracking/);
+  });
+});
+
+describe('a skip and a question never reached are different findings', () => {
+  const blank = (qnum: number, everVisited?: boolean, timeMs = 0) =>
+    q({ qnum, initialAnswer: '—', initialCorrect: false, timeMs, everVisited });
+
+  it('calls one a decision and the other the clock', () => {
+    const out = run([
+      q({ qnum: 1, timeMs: 240_000 }),
+      blank(2, true, 45_000),
+      blank(3, false),
+    ]);
+
+    expect(out.perQuestion.find((p) => p.qnum === 2)?.why).toMatch(/a skip, not a shortfall/);
+    expect(out.perQuestion.find((p) => p.qnum === 3)?.why).toMatch(/never opened/);
+    // Both are still test-taking: the fix differs, the category does not.
+    expect(out.perQuestion.find((p) => p.qnum === 2)?.category).toBe('test-taking');
+    expect(out.perQuestion.find((p) => p.qnum === 3)?.category).toBe('test-taking');
+  });
+
+  it('splits them in the upstream finding rather than lumping them as unanswered', () => {
+    const out = run([
+      q({ qnum: 1, timeMs: 300_000 }),
+      blank(2, true, 30_000),
+      blank(3, false),
+    ]);
+    const r1 = out.findings.find((f) => f.rule === 'R1')!;
+
+    expect(r1.detail).toMatch(/Q3 you never reached/);
+    expect(r1.detail).toMatch(/Q2 you opened and left/);
+  });
+});
