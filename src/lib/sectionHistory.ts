@@ -19,6 +19,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
+import type { SectionAnalysis } from '@/lib/sectionAnalysis';
 
 export interface SectionHistoryRow {
   id: string;
@@ -40,6 +41,12 @@ export interface SectionHistoryRow {
   byDifficulty: Record<string, { correct: number; total: number }>;
   /** Empty for sections sat before the per-question record was persisted. */
   questions: SectionQuestionStat[];
+  /**
+   * The diagnosis written at completion. Null for sittings from before the
+   * engine existed, which must render as "no report" rather than as an empty
+   * one — an empty report reads as "nothing was wrong".
+   */
+  analysis: SectionAnalysis | null;
   completedAt: string;
 }
 
@@ -94,7 +101,7 @@ async function fetchSectionHistoryBy(
   const { data, error } = await supabase
     .from('section_history')
     .select(
-      'id, pt, section, mode, initial_score, initial_total, initial_percent, br_score, br_percent, br_delta, br_used, total_time_ms, avg_time_ms, unanswered_count, by_qtype_json, by_difficulty_json, questions_json, completed_at, created_at',
+      'id, pt, section, mode, initial_score, initial_total, initial_percent, br_score, br_percent, br_delta, br_used, total_time_ms, avg_time_ms, unanswered_count, by_qtype_json, by_difficulty_json, questions_json, analysis_json, completed_at, created_at',
     )
     .eq(column, value)
     .order('completed_at', { ascending: false });
@@ -122,6 +129,7 @@ async function fetchSectionHistoryBy(
     byQtype: asTally(r.by_qtype_json),
     byDifficulty: asTally(r.by_difficulty_json),
     questions: asQuestions(r.questions_json),
+    analysis: ((r as Record<string, unknown>).analysis_json as SectionAnalysis) ?? null,
     completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
   }));
 }

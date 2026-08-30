@@ -44,6 +44,14 @@ export interface SectionQuestionStat {
   brTimeMs?: number;
   switchCount: number;
   /**
+   * What the bank knows about the question, copied onto the sitting so the
+   * record survives the bank changing under it. A report read next year has to
+   * describe the question as it was when it was sat, and re-reading the bank at
+   * display time cannot promise that.
+   */
+  reasoningTypes?: string[];
+  questionFeatures?: string[];
+  /**
    * Every choice put down on this question, in order, each stamped with how
    * far into the question it was made. The results screen draws it as a
    * timeline; an unanswered question has none.
@@ -99,6 +107,10 @@ export function buildSectionStats(
         timeMs: attempt?.timeMs || 0,
         brTimeMs: brResult?.brTimeMs,
         switchCount: attempt?.switchCount || 0,
+        reasoningTypes: question.reasoningType?.length ? question.reasoningType : undefined,
+        questionFeatures: question.questionFeatures?.length
+          ? question.questionFeatures
+          : undefined,
         answerTrail: attempt?.answerTrail,
         answeredInOvertime: atBuzzer ? !atBuzzer.has(qid) : undefined,
         flagged: attempt?.brMarked || false,
@@ -213,13 +225,8 @@ export function buildAnalysisInput(
         : Number(timer.mode);
 
   return {
-    questions: stats.map((s) => {
-      const question = questionBank.getQuestion(s.qid);
-      return {
-        ...s,
-        reasoningTypes: question?.reasoningType,
-      };
-    }),
+    // The stats already carry the bank's tags, copied at build time.
+    questions: stats,
     // The student's own clock over the section's questions, so an accommodated
     // section is judged against the time it was actually given.
     paceMsPerQuestion:

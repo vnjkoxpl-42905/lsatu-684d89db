@@ -3,7 +3,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // The insert chains into .select().maybeSingle() so the caller gets the new
 // row's id back — that id is what the report email is addressed by.
 const maybeSingle = vi.fn();
-const insert = vi.fn(() => ({ select: () => ({ maybeSingle }) }));
+const insert = vi.fn((_row?: Record<string, unknown>) => ({
+  select: () => ({ maybeSingle }),
+}));
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: { from: () => ({ insert }) },
 }));
@@ -218,7 +220,7 @@ describe('persistSectionResults', () => {
       userId: 'u',
     });
 
-    const row = insert.mock.calls[0][0];
+    const row = insert.mock.calls[0][0] as Record<string, any>;
     expect(row.by_qtype_json).toEqual({
       Flaw: { correct: 1, total: 1 },
       Assumption: { correct: 0, total: 1 },
@@ -237,7 +239,7 @@ describe('persistSectionResults', () => {
       userId: 'u',
     });
 
-    const row = insert.mock.calls[0][0];
+    const row = insert.mock.calls[0][0] as Record<string, any>;
     expect(row.questions_json).toHaveLength(2);
     expect(row.questions_json[0]).toMatchObject({
       qid: 'q1',
@@ -263,7 +265,7 @@ describe('persistSectionResults', () => {
       userId: 'u',
     });
 
-    const row = insert.mock.calls[0][0];
+    const row = insert.mock.calls[0][0] as Record<string, any>;
     expect(row.total_questions).toBe(2);
     expect(row.time_taken_ms).toBe(3000);
     expect(row.total_questions).toBe(row.initial_total);

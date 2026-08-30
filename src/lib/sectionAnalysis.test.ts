@@ -200,3 +200,113 @@ describe('the report as a whole', () => {
     expect(out.notRun.join(' ')).toMatch(/R9/);
   });
 });
+
+describe('breakdowns — every slice the bank knows how to cut', () => {
+  const questions: AnalysisQuestion[] = [
+    q({
+      qnum: 1,
+      qtype: 'Necessary Assumption',
+      reasoningTypes: ['conditional'],
+      questionFeatures: ['long stimulus'],
+      initialCorrect: false,
+      brCorrect: false,
+      timeMs: 160_000,
+    }),
+    q({
+      qnum: 2,
+      qtype: 'Necessary Assumption',
+      reasoningTypes: ['conditional'],
+      initialCorrect: false,
+      brCorrect: true,
+      timeMs: 150_000,
+    }),
+    q({ qnum: 3, qtype: 'Strengthen', reasoningTypes: ['causal'], timeMs: 60_000 }),
+    q({ qnum: 4, qtype: 'Strengthen', reasoningTypes: ['causal'], timeMs: 55_000 }),
+  ];
+
+  it('scores each dimension, with the rate, the pace, and the review split', () => {
+    const out = run(questions);
+    const na = out.breakdowns.find((b) => b.dimension === 'qtype' && b.key === 'Necessary Assumption')!;
+
+    expect(na.attempted).toBe(2);
+    expect(na.correct).toBe(0);
+    expect(na.accuracyPercent).toBe(0);
+    // 2:35 median against the 1:21 owed.
+    expect(na.paceRatio).toBeGreaterThan(1.8);
+    // One of the two misses came back in review: that half is timing, not knowledge.
+    expect(na.recoveredInBlindReview).toBe(1);
+    expect(na.stuckAfterBlindReview).toBe(1);
+  });
+
+  it('cuts by reasoning and by feature, not only by question type', () => {
+    const out = run(questions);
+    const dims = new Set(out.breakdowns.map((b) => b.dimension));
+
+    expect(dims.has('reasoning')).toBe(true);
+    expect(dims.has('feature')).toBe(true);
+    expect(dims.has('family')).toBe(true);
+    expect(dims.has('difficulty')).toBe(true);
+
+    const conditional = out.breakdowns.find((b) => b.key === 'conditional')!;
+    const causal = out.breakdowns.find((b) => b.key === 'causal')!;
+    expect(conditional.accuracyPercent).toBe(0);
+    expect(causal.accuracyPercent).toBe(100);
+    // Worst first: the failing reasoning outranks the one that is fine.
+    expect(conditional.priority).toBeGreaterThan(causal.priority);
+  });
+
+  it('ranks a slow-but-perfect slice above a fast perfect one', () => {
+    const out = run([
+      q({ qnum: 1, qtype: 'Flaw', timeMs: 200_000 }),
+      q({ qnum: 2, qtype: 'Role', timeMs: 40_000 }),
+    ]);
+    const flaw = out.breakdowns.find((b) => b.key === 'Flaw')!;
+    const role = out.breakdowns.find((b) => b.key === 'Role')!;
+
+    expect(flaw.accuracyPercent).toBe(100);
+    // The webinar is explicit: over target time is a finding at minus zero.
+    expect(flaw.priority).toBeGreaterThan(role.priority);
+  });
+
+  it('keeps an unanswered question out of its question type', () => {
+    const out = run([
+      q({ qnum: 1, qtype: 'Paradox' }),
+      q({ qnum: 2, qtype: 'Paradox', initialAnswer: '—', initialCorrect: false, timeMs: 0 }),
+    ]);
+    const paradox = out.breakdowns.find((b) => b.key === 'Paradox')!;
+
+    // Never reached is a clock fact. Blaming the type for it is how a report
+    // ends up telling someone to study Paradox when they ran out of time.
+    expect(paradox.attempted).toBe(1);
+    expect(paradox.accuracyPercent).toBe(100);
+  });
+});
+
+describe('biggest insight per category', () => {
+  it('gives every category that fired exactly one line', () => {
+    const out = run([
+      q({ qnum: 1, initialCorrect: false, brCorrect: true, timeMs: 250_000 }),
+      q({
+        qnum: 2,
+        qtype: 'Must Be True',
+        reasoningTypes: ['conditional'],
+        initialCorrect: false,
+        brCorrect: false,
+      }),
+      q({
+        qnum: 3,
+        qtype: 'Must Be True',
+        reasoningTypes: ['conditional'],
+        initialCorrect: false,
+        brCorrect: false,
+      }),
+    ]);
+
+    const cats = out.categories.map((c) => c.category);
+    expect(out.biggestInsights.map((i) => i.category)).toEqual(cats);
+    expect(out.biggestInsights.every((i) => i.insight.length > 0)).toBe(true);
+    // The fundamentals line names the reasoning, not just the question numbers.
+    const fundamentals = out.biggestInsights.find((i) => i.category === 'fundamentals');
+    expect(fundamentals?.insight).toMatch(/conditional/);
+  });
+});

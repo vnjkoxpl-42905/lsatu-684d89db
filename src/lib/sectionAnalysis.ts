@@ -102,10 +102,12 @@ const FAMILY_BY_TYPE: Record<string, ProcessFamily> = {
 
 export const familyOf = (qtype: string): ProcessFamily | null => FAMILY_BY_TYPE[qtype] ?? null;
 
-/** One question, enriched with what the bank knows about it. */
+/**
+ * One question of a sitting. `reasoningTypes` and `questionFeatures` are copied
+ * onto the stat when the section is saved, so a report describes the question
+ * as it was when it was sat rather than as the bank labels it today.
+ */
 export interface AnalysisQuestion extends SectionQuestionStat {
-  /** Conditional, causal, quantifier … straight off the bank. Drives R-tags. */
-  reasoningTypes?: string[];
   /** Share of test takers who get it right, 0-1, where we have it. Beats stars. */
   cohortAccuracy?: number;
 }
@@ -128,6 +130,8 @@ export interface AnalysisInput {
 export interface Finding {
   /** The rule's number in the spec, so a finding can always be traced back. */
   rule: string;
+  /** Which of the four this finding speaks to. Absent when it speaks to all. */
+  category?: ErrorCategory;
   /** One sentence, in the student's second person. */
   headline: string;
   /** The detail, including the numbers. */
@@ -148,6 +152,36 @@ export interface CategoryBreakdown {
   prescription: string;
 }
 
+/**
+ * One slice of the sitting: a question type, a feature, or the reasoning it
+ * runs on. Every dimension is computed the same way so they can be ranked
+ * against each other and read side by side.
+ */
+export interface Breakdown {
+  dimension: 'qtype' | 'family' | 'feature' | 'reasoning' | 'difficulty';
+  key: string;
+  attempted: number;
+  correct: number;
+  /** 0-100. The scoring rate on this slice. */
+  accuracyPercent: number;
+  medianTimeMs: number;
+  /** How this slice's median compares to the pace owed. Null when untimed. */
+  paceRatio: number | null;
+  /** Misses blind review recovered — timing, not knowledge. */
+  recoveredInBlindReview: number;
+  /** Misses that stayed wrong in review. The knowledge half. */
+  stuckAfterBlindReview: number;
+  /**
+   * What to work on first, high is worse.
+   *
+   * Deficit times volume, so a slice missed once does not outrank a slice
+   * missed four times, and a slice with two questions cannot claim to be a
+   * pattern. A slice that is slow but accurate still scores: the webinar is
+   * explicit that time over target is a finding even at minus zero.
+   */
+  priority: number;
+}
+
 export interface SectionAnalysis {
   /** The one sentence that opens the report. */
   headline: string;
@@ -155,6 +189,18 @@ export interface SectionAnalysis {
   findings: Finding[];
   /** Per-question category calls, for the table. */
   perQuestion: Array<{ qnum: number; qtype: string; category: ErrorCategory; why: string }>;
+  /**
+   * Every slice of the sitting, worst first within each dimension. This is the
+   * part a tutor reads before a session: what they are strongest at, what they
+   * are weakest at, and how long each of them is costing.
+   */
+  breakdowns: Breakdown[];
+  /**
+   * The one thing worth saying about each category that fired. Findings are
+   * ranked across the whole sitting, which buries a category that produced one
+   * important finding under another category that produced three.
+   */
+  biggestInsights: Array<{ category: ErrorCategory; insight: string }>;
   totals: {
     answered: number;
     correct: number;
@@ -273,6 +319,99 @@ function gaveAwayCorrect(q: AnalysisQuestion): boolean {
   return trail.slice(0, -1).some((e) => e.answer === q.correctAnswer);
 }
 
+
+/**
+ * Slice the sitting every way the bank knows how to slice it.
+ *
+ * One question lands in several slices at once — a Necessary Assumption
+ * question tagged conditional counts under its type, its family, and under
+ * conditional reasoning — which is the point. The three dimensions disagreeing
+ * is itself the finding: a type that looks fine while the reasoning under it
+ * looks bad means the process is sound and the logic is not.
+ */
+function buildBreakdowns(
+  questions: AnalysisQuestion[],
+  paceMs: number | null,
+  blindReviewDone: boolean,
+): Breakdown[] {
+  const buckets = new Map<string, { dimension: Breakdown['dimension']; key: string; qs: AnalysisQuestion[] }>();
+
+  const put = (dimension: Breakdown['dimension'], key: string, q: AnalysisQuestion) => {
+    if (!key) return;
+    const id = `${dimension}::${key}`;
+    if (!buckets.has(id)) buckets.set(id, { dimension, key, qs: [] });
+    buckets.get(id)!.qs.push(q);
+  };
+
+  for (const q of questions) {
+    // An unanswered question tells you nothing about a question type. It is a
+    // clock fact, and counting it as a miss on its type would blame the type
+    // for the section running out.
+    if (isUnanswered(q)) continue;
+    put('qtype', q.qtype, q);
+    const family = familyOf(q.qtype);
+    if (family) put('family', FAMILY_LABEL[family], q);
+    for (const f of q.questionFeatures ?? []) put('feature', f, q);
+    for (const r of q.reasoningTypes ?? []) put('reasoning', r, q);
+    put('difficulty', `Level ${q.difficulty}`, q);
+  }
+
+  const rows: Breakdown[] = [...buckets.values()].map(({ dimension, key, qs }) => {
+    const correct = qs.filter((q) => q.initialCorrect).length;
+    const missed = qs.filter((q) => !q.initialCorrect);
+    const med = median(qs.map((q) => q.timeMs).filter((t) => t > 0));
+    const accuracyPercent = Math.round((correct / qs.length) * 100);
+    const paceRatio = paceMs ? Number((med / paceMs).toFixed(2)) : null;
+    const recovered = blindReviewDone ? missed.filter((q) => q.brCorrect).length : 0;
+    const stuck = blindReviewDone ? missed.length - recovered : 0;
+
+    // Deficit times volume, plus a smaller charge for being slow. Volume is
+    // square-rooted so four misses outrank one without a big slice drowning
+    // out a small one that is failing completely.
+    const deficit = (100 - accuracyPercent) / 100;
+    const slowness = paceRatio && paceRatio > 1 ? Math.min(paceRatio - 1, 1.5) : 0;
+    const priority = Math.round(
+      (deficit * Math.sqrt(qs.length) * 100) + (slowness * Math.sqrt(qs.length) * 25),
+    );
+
+    return {
+      dimension,
+      key,
+      attempted: qs.length,
+      correct,
+      accuracyPercent,
+      medianTimeMs: med,
+      paceRatio,
+      recoveredInBlindReview: recovered,
+      stuckAfterBlindReview: stuck,
+      priority,
+    };
+  });
+
+  // Worst first inside each dimension, and dimensions in the order a tutor
+  // reads them: what they were asked, then how it was asked, then the logic.
+  const order: Breakdown['dimension'][] = ['qtype', 'family', 'reasoning', 'feature', 'difficulty'];
+  return rows.sort(
+    (a, b) =>
+      order.indexOf(a.dimension) - order.indexOf(b.dimension) ||
+      b.priority - a.priority ||
+      a.accuracyPercent - b.accuracyPercent,
+  );
+}
+
+/** "Necessary Assumption 1/4 (25%), 2:14 median against 1:21 owed" */
+function describeBreakdown(b: Breakdown): string {
+  const pace =
+    b.paceRatio === null
+      ? clock(b.medianTimeMs)
+      : `${clock(b.medianTimeMs)} median, ${b.paceRatio.toFixed(2)}x the pace owed`;
+  const br =
+    b.stuckAfterBlindReview > 0 || b.recoveredInBlindReview > 0
+      ? `, ${b.recoveredInBlindReview} recovered in review and ${b.stuckAfterBlindReview} still wrong`
+      : '';
+  return `${b.key}: ${b.correct}/${b.attempted} (${b.accuracyPercent}%), ${pace}${br}`;
+}
+
 export function analyseSection(input: AnalysisInput): SectionAnalysis {
   const { questions, paceMsPerQuestion: paceMs, blindReviewDone } = input;
   const findings: Finding[] = [];
@@ -315,6 +454,8 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
     if (upstream.length > 0) {
       findings.push({
         rule: 'R1',
+      category: 'test-taking',
+        category: 'test-taking',
         headline: `You did not run out of ability at the end of this section. You ran out of clock.`,
         detail: `${unreached.length} question${unreached.length === 1 ? '' : 's'} went unanswered (${list(unreached.map((q) => q.qnum))}), and ${clock(overspend)} of overspend upstream is where that time went — ${list(upstream.map((q) => q.qnum))} each ran past the ${clock(paceMs)} they were owed. That includes questions you got right: slow and correct early is what costs you the ones at the end.`,
         prescription:
@@ -342,6 +483,8 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const slowHalf = slowerFirst ? 'first' : 'second';
       findings.push({
         rule: 'R2',
+      category: 'test-taking',
+        category: 'test-taking',
         headline: `The extra time in the ${slowHalf} half did not buy accuracy.`,
         detail: `First half: ${clock(t1)} for ${c1}/${first.length}. Second half: ${clock(t2)} for ${c2}/${second.length}. The slower stretch scored no better than the faster one, so those minutes were not being converted.`,
         prescription:
@@ -363,6 +506,8 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const got = sinks.filter((q) => q.initialCorrect).length;
       findings.push({
         rule: 'R3',
+      category: 'test-taking',
+        category: 'test-taking',
         headline:
           wrongSinks.length > 0
             ? `You spent ${clock(spent)} on ${sinks.length} question${sinks.length === 1 ? '' : 's'} and got ${got} of them.`
@@ -387,6 +532,7 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
   if (overconfident.length > 0) {
     findings.push({
       rule: 'R5',
+      category: 'test-taking',
       headline: `${overconfident.length} of your misses were never flagged.`,
       detail: `On ${list(overconfident.map((q) => q.qnum))} you did not know you were in trouble, so you never came back. That is the expensive kind of miss: a flag buys a second look, and an unflagged wrong answer buys nothing.`,
       prescription:
@@ -399,6 +545,7 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
   if (underconfident.length > 0) {
     findings.push({
       rule: 'R5',
+      category: 'test-taking',
       headline: `${underconfident.length} question${underconfident.length === 1 ? '' : 's'} you flagged you had right all along.`,
       detail: `${list(underconfident.map((q) => q.qnum))} were correct when you flagged them. Any second pass spent there is a second pass not spent on something you could have converted.`,
       prescription:
@@ -416,6 +563,8 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
       const spent = hardSlow.reduce((s, q) => s + q.timeMs, 0);
       findings.push({
         rule: 'R6',
+      category: 'test-taking',
+        category: 'test-taking',
         headline: 'You bought the expensive questions and left cheap ones on the table.',
         detail: `${clock(spent)} went to ${list(hardSlow.map((q) => q.qnum))} at level 4-5, while ${list(cheapMissed.map((q) => q.qnum))} at level 1-2 went wrong. Every question is worth the same point and they cost very different amounts of time.`,
         prescription:
@@ -431,6 +580,7 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
   if (gaveAway.length > 0) {
     findings.push({
       rule: 'R7',
+      category: 'reading',
       headline: `You had the right answer on ${list(gaveAway.map((q) => q.qnum))} and changed it.`,
       detail: gaveAway
         .map((q) => {
@@ -453,6 +603,7 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
     const types = [...new Set(qs.map((q) => q.qtype))];
     findings.push({
       rule: 'R8',
+      category: 'process',
       headline: `${count} misses in one process: ${FAMILY_LABEL[family].toLowerCase()}.`,
       detail: `${list(qs.map((q) => q.qnum))} look scattered by label — ${types.join(', ')} — but they run the same process, so this is one problem rather than ${types.length}. ${FAMILY_FAILURE[family]}`,
       prescription:
@@ -528,8 +679,36 @@ export function analyseSection(input: AnalysisInput): SectionAnalysis {
 
   findings.sort((a, b) => b.weight - a.weight);
 
+  const breakdowns = buildBreakdowns(questions, paceMs, blindReviewDone);
+
+  /**
+   * One line per category that fired. A finding if the category produced one,
+   * otherwise the worst slice that category is about — because a fundamentals
+   * or process category with no finding attached still has a reasoning tag or
+   * a question type underneath it, and that is the sentence worth reading.
+   */
+  const biggestInsights = categories.map(({ category }) => {
+    const owned = findings.find((f) => f.category === category);
+    if (owned) return { category, insight: owned.headline };
+
+    const dimension = category === 'fundamentals' ? 'reasoning' : 'qtype';
+    const worst = breakdowns
+      .filter((b) => b.dimension === dimension && b.attempted >= 2 && b.accuracyPercent < 100)
+      .sort((a, b) => b.priority - a.priority)[0];
+    if (worst) {
+      return {
+        category,
+        insight: `Worst slice: ${describeBreakdown(worst)}.`,
+      };
+    }
+    const qnums = perQuestion.filter((p) => p.category === category).map((p) => p.qnum);
+    return { category, insight: `${list(qnums)}, with no pattern behind them yet.` };
+  });
+
   return {
     headline,
+    breakdowns,
+    biggestInsights,
     categories,
     findings,
     perQuestion,

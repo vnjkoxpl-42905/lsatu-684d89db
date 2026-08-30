@@ -21,6 +21,7 @@ import {
   type SectionHistoryRow,
 } from '@/lib/sectionHistory';
 import { UNANSWERED } from '@/lib/sectionHistorySave';
+import { CATEGORY_LABEL } from '@/lib/sectionAnalysis';
 
 function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
@@ -120,6 +121,140 @@ function QuestionTable({ row }: { row: SectionHistoryRow }) {
   );
 }
 
+/**
+ * The diagnosis written when the section was sat.
+ *
+ * Rendered from the stored report, never recomputed: this has to be what the
+ * student was actually told at the time, and a report that re-derives itself
+ * from today's rules is a different document wearing the same date.
+ */
+function SectionReport({ row }: { row: SectionHistoryRow }) {
+  const a = row.analysis;
+  if (!a) {
+    return (
+      <p className="px-4 pb-4 text-xs text-muted-foreground">
+        No report was written for this sitting. It was sat before the analysis existed.
+      </p>
+    );
+  }
+
+  const dimensions: Array<{ key: string; title: string }> = [
+    { key: 'qtype', title: 'By question type' },
+    { key: 'family', title: 'By process' },
+    { key: 'reasoning', title: 'By reasoning' },
+    { key: 'feature', title: 'By question feature' },
+    { key: 'difficulty', title: 'By difficulty' },
+  ];
+
+  return (
+    <div className="space-y-5 border-t border-border bg-muted/20 px-4 py-4">
+      <p className="text-sm font-medium text-foreground">{a.headline}</p>
+
+      {a.categories.length > 0 && (
+        <div className="space-y-2">
+          {a.categories.map((c) => {
+            const insight = a.biggestInsights?.find((i) => i.category === c.category)?.insight;
+            return (
+              <div key={c.category} className="rounded-lg border border-border bg-card p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                  {CATEGORY_LABEL[c.category] ?? c.category} · {c.qnums.length} ({c.percentOfMisses}%)
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">Q{c.qnums.join(', Q')}</p>
+                {insight && <p className="mt-1 text-xs text-foreground">{insight}</p>}
+                <p className="mt-1 text-xs text-muted-foreground">{c.prescription}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {a.findings.map((f) => (
+        <div key={`${f.rule}-${f.headline}`} className="space-y-1">
+          <p className="text-xs font-semibold text-foreground">{f.headline}</p>
+          <p className="text-xs text-muted-foreground">{f.detail}</p>
+          <p className="text-xs text-muted-foreground">{f.prescription}</p>
+          <p className="text-[10px] uppercase tracking-wide text-muted-foreground/70">
+            {f.rule} · Q{f.qnums.join(', Q')}
+          </p>
+        </div>
+      ))}
+
+      {/* Every slice, worst first. A question sits in several at once, and
+          where they disagree is the finding: a type that looks fine while the
+          reasoning under it looks bad means the process is sound and the logic
+          is not. */}
+      {(a.breakdowns?.length ?? 0) > 0 &&
+        dimensions.map(({ key, title }) => {
+          const slice = (a.breakdowns ?? []).filter((b) => b.dimension === key);
+          if (slice.length === 0) return null;
+          return (
+            <div key={key} className="space-y-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {title}
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[28rem] text-xs">
+                  <thead className="text-muted-foreground">
+                    <tr>
+                      <th className="py-1 pr-3 text-left font-medium">Slice</th>
+                      <th className="py-1 pr-3 text-left font-medium">Score</th>
+                      <th className="py-1 pr-3 text-left font-medium">Rate</th>
+                      <th className="py-1 pr-3 text-left font-medium">Median</th>
+                      <th className="py-1 pr-3 text-left font-medium">vs pace</th>
+                      <th className="py-1 text-left font-medium">Review</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {slice.map((b) => (
+                      <tr key={b.key} className="border-t border-border/60">
+                        <td className="py-1 pr-3 text-foreground">{b.key}</td>
+                        <td className="py-1 pr-3 tabular-nums text-muted-foreground">
+                          {b.correct}/{b.attempted}
+                        </td>
+                        <td
+                          className={cn(
+                            'py-1 pr-3 tabular-nums',
+                            b.accuracyPercent < 60 ? 'text-destructive' : 'text-foreground',
+                          )}
+                        >
+                          {b.accuracyPercent}%
+                        </td>
+                        <td className="py-1 pr-3 tabular-nums text-muted-foreground">
+                          {formatDurationMs(b.medianTimeMs)}
+                        </td>
+                        <td className="py-1 pr-3 tabular-nums text-muted-foreground">
+                          {b.paceRatio === null ? '' : `${b.paceRatio}x`}
+                        </td>
+                        <td className="py-1 tabular-nums text-muted-foreground">
+                          {b.recoveredInBlindReview || b.stuckAfterBlindReview
+                            ? `${b.recoveredInBlindReview} back · ${b.stuckAfterBlindReview} stuck`
+                            : ''}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
+
+      {a.notRun.length > 0 && (
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+            Not covered
+          </p>
+          {a.notRun.map((n) => (
+            <p key={n} className="text-[11px] text-muted-foreground">
+              {n}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function SectionHistoryList({ rows }: { rows: SectionHistoryRow[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const summary = summarizeSections(rows);
@@ -214,7 +349,12 @@ export default function SectionHistoryList({ rows }: { rows: SectionHistoryRow[]
                 </div>
               </button>
 
-              {open && <QuestionTable row={row} />}
+              {open && (
+                <>
+                  <QuestionTable row={row} />
+                  <SectionReport row={row} />
+                </>
+              )}
             </li>
           );
         })}

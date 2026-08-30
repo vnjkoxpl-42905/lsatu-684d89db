@@ -42,6 +42,18 @@ interface FindingRow {
   qnums: number[]
 }
 
+interface BreakdownRow {
+  dimension: string
+  key: string
+  attempted: number
+  correct: number
+  accuracyPercent: number
+  time: string
+  paceRatio: number | null
+  recovered: number
+  stuck: number
+}
+
 interface CategoryRow {
   label: string
   count: number
@@ -59,6 +71,8 @@ interface SectionReportProps {
   headline?: string
   questions?: QuestionRow[]
   categories?: CategoryRow[]
+  insights?: Array<{ label: string; insight: string }>
+  breakdowns?: Array<{ title: string; rows: BreakdownRow[] }>
   findings?: FindingRow[]
   notRun?: string[]
   studentUrl?: string
@@ -73,6 +87,8 @@ const SectionReportEmail = ({
   headline = '',
   questions = [],
   categories = [],
+  insights = [],
+  breakdowns = [],
   findings = [],
   notRun = [],
   studentUrl = '',
@@ -130,15 +146,28 @@ const SectionReportEmail = ({
 
         {categories.length > 0 && (
           <Section style={block}>
-            {categories.map((c) => (
-              <Text key={c.label} style={text}>
-                <strong>{`${c.label} — ${c.count} of the misses (${c.percent}%)`}</strong>
-                <br />
-                {`Q${c.qnums.join(', Q')}`}
-                <br />
-                <span style={muted}>{c.prescription}</span>
-              </Text>
-            ))}
+            {categories.map((c) => {
+              const insight = insights.find((i) => i.label === c.label)?.insight
+              return (
+                <Text key={c.label} style={text}>
+                  <strong>{`${c.label} — ${c.count} of the misses (${c.percent}%)`}</strong>
+                  <br />
+                  {`Q${c.qnums.join(', Q')}`}
+                  {/* The one line worth reading about this category. Findings
+                      are ranked across the whole sitting, which otherwise
+                      buries a category that produced one important finding
+                      under a category that produced three ordinary ones. */}
+                  {insight && (
+                    <>
+                      <br />
+                      <em>{insight}</em>
+                    </>
+                  )}
+                  <br />
+                  <span style={muted}>{c.prescription}</span>
+                </Text>
+              )
+            })}
           </Section>
         )}
 
@@ -153,6 +182,45 @@ const SectionReportEmail = ({
 
         {findings.length === 0 && (
           <Text style={text}>No rule fired on this sitting.</Text>
+        )}
+
+        {breakdowns.length > 0 && (
+          <>
+            <Hr style={hr} />
+            <Heading as="h2" style={h2}>Every slice, worst first</Heading>
+            <Text style={muted}>
+              A question lands in several of these at once, and the point is where they
+              disagree: a question type that looks fine while the reasoning under it looks
+              bad means the process is sound and the logic is not.
+            </Text>
+            {breakdowns.map((group) => (
+              <Section key={group.title} style={block}>
+                <Text style={findingHead}>{group.title}</Text>
+                <table style={table} cellPadding={0} cellSpacing={0}>
+                  <thead>
+                    <tr>
+                      {['', 'Score', 'Rate', 'Median', 'vs pace', 'BR back', 'BR stuck'].map((h) => (
+                        <th key={h} style={th}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {group.rows.map((r) => (
+                      <tr key={r.key} style={r.accuracyPercent < 60 ? rowWrong : undefined}>
+                        <td style={td}>{r.key}</td>
+                        <td style={tdNum}>{`${r.correct}/${r.attempted}`}</td>
+                        <td style={tdNum}>{`${r.accuracyPercent}%`}</td>
+                        <td style={tdNum}>{r.time}</td>
+                        <td style={tdNum}>{r.paceRatio === null ? '' : `${r.paceRatio}x`}</td>
+                        <td style={tdNum}>{r.recovered || ''}</td>
+                        <td style={tdNum}>{r.stuck || ''}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Section>
+            ))}
+          </>
         )}
 
         {notRun.length > 0 && (

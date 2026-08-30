@@ -51,6 +51,15 @@ const changesOf = (trail?: Array<{ answer: string; atMs: number }>): string => {
   return trail.map((e) => `${e.answer} at ${clock(e.atMs)}`).join(' → ')
 }
 
+/** The order a tutor reads them: what was asked, how, then the logic under it. */
+const DIMENSIONS = [
+  { key: 'qtype', title: 'By question type' },
+  { key: 'family', title: 'By process' },
+  { key: 'reasoning', title: 'By reasoning — conditional, causal, and the rest' },
+  { key: 'feature', title: 'By question feature' },
+  { key: 'difficulty', title: 'By difficulty' },
+]
+
 const CATEGORY_LABEL: Record<string, string> = {
   reading: 'Reading error',
   fundamentals: 'Logical reasoning error',
@@ -107,6 +116,18 @@ Deno.serve(async (req) => {
     const analysis = (row.analysis_json ?? null) as null | {
       headline: string
       categories: Array<{ category: string; qnums: number[]; percentOfMisses: number; prescription: string }>
+      biggestInsights?: Array<{ category: string; insight: string }>
+      breakdowns?: Array<{
+        dimension: string
+        key: string
+        attempted: number
+        correct: number
+        accuracyPercent: number
+        medianTimeMs: number
+        paceRatio: number | null
+        recoveredInBlindReview: number
+        stuckAfterBlindReview: number
+      }>
       findings: Array<{ rule: string; headline: string; detail: string; prescription: string; qnums: number[] }>
       perQuestion: Array<{ qnum: number; category: string; why: string }>
       notRun: string[]
@@ -162,6 +183,26 @@ Deno.serve(async (req) => {
         qnums: c.qnums,
         prescription: c.prescription,
       })),
+      insights: (analysis?.biggestInsights ?? []).map((i) => ({
+        label: CATEGORY_LABEL[i.category] ?? i.category,
+        insight: i.insight,
+      })),
+      breakdowns: DIMENSIONS.map(({ key, title }) => ({
+        title,
+        rows: (analysis?.breakdowns ?? [])
+          .filter((b) => b.dimension === key)
+          .map((b) => ({
+            dimension: b.dimension,
+            key: b.key,
+            attempted: b.attempted,
+            correct: b.correct,
+            accuracyPercent: b.accuracyPercent,
+            time: clock(b.medianTimeMs),
+            paceRatio: b.paceRatio,
+            recovered: b.recoveredInBlindReview,
+            stuck: b.stuckAfterBlindReview,
+          })),
+      })).filter((g) => g.rows.length > 0),
       findings: analysis?.findings ?? [],
       notRun: analysis?.notRun ?? [],
       studentUrl: `${Deno.env.get('APP_BASE_URL') ?? ''}/teacher/students`,
