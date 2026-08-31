@@ -9,6 +9,10 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
+/** Outline pill shared by Previous, Next, and Skip. */
+const OUTLINE_PILL_CLASS =
+  "rounded-full border border-slate-400 bg-white text-slate-700 px-6 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors";
+
 interface Props {
   /**
    * When true, the correct answer is revealed automatically after submitting.
@@ -32,6 +36,16 @@ interface Props {
   /** Disabled once the question is attempted / while paused. */
   skipDisabled?: boolean;
   /**
+   * Fixed-queue navigation. A built set is a list the student can walk in both
+   * directions, so it gets Previous/Next pills instead of the one-way Skip.
+   * Smart Drill picks each question on the fly and has no earlier question to
+   * return to, so it keeps Skip and omits these.
+   */
+  onPrev?: () => void;
+  prevDisabled?: boolean;
+  onAdvance?: () => void;
+  advanceDisabled?: boolean;
+  /**
    * Rendered as its own row above the pill row. RC puts its per-question pager
    * here; the official RC interface carries one and LR does not.
    */
@@ -47,7 +61,8 @@ interface Props {
 
 /**
  * Smart Drill (adaptive) bottom action bar. Replaces the arrow navigator used
- * by fixed-queue modes. Left: End and Menu. Right: auto-reveal toggle, Skip,
+ * by fixed-queue modes. Left: End and Menu. Right: auto-reveal toggle, the
+ * queue walk (Previous/Next for a fixed queue, Skip for the adaptive one),
  * and a primary Submit/Next pill. Answer and Explanation deliberately are not
  * here — they sit in the header strip (`OfficialSessionStrip`), because four
  * controls crowded this bar's left corner.
@@ -63,6 +78,10 @@ export default function OfficialSmartDrillBar({
   onNext,
   onSkip,
   skipDisabled,
+  onPrev,
+  prevDisabled,
+  onAdvance,
+  advanceDisabled,
   pager,
   endLabel,
   onEnd,
@@ -131,12 +150,34 @@ export default function OfficialSmartDrillBar({
           </TooltipProvider>
           )}
 
+          {onPrev && (
+            <button
+              type="button"
+              onClick={onPrev}
+              disabled={disabled || prevDisabled}
+              className={OUTLINE_PILL_CLASS}
+            >
+              Previous
+            </button>
+          )}
+
+          {onAdvance && (
+            <button
+              type="button"
+              onClick={onAdvance}
+              disabled={disabled || advanceDisabled}
+              className={OUTLINE_PILL_CLASS}
+            >
+              Next
+            </button>
+          )}
+
           {onSkip && !isNext && (
             <button
               type="button"
               onClick={onSkip}
               disabled={disabled || skipDisabled}
-              className="rounded-full border border-slate-400 bg-white text-slate-700 px-6 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className={OUTLINE_PILL_CLASS}
             >
               Skip
             </button>
