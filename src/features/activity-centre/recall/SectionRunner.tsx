@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
+import { useVoiceActivity } from "./useVoiceActivity";
+import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
 import {
   advanceCursor,
   buildSectionRun,
@@ -154,8 +156,16 @@ function RunBody({
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
-  const { start: startRecording, mark, stop: stopRecording, error: micError } =
-    useSectionRecorder(now);
+  const {
+    start: startRecording,
+    mark,
+    stop: stopRecording,
+    error: micError,
+    getStream,
+  } = useSectionRecorder(now);
+  // Runs for the whole section, alongside the recording rather than instead of
+  // it. The audio file stays the primary record.
+  const { transcript } = useSectionTranscript(!done, now);
   /**
    * Guards the one write, and a ref rather than state on purpose.
    *
@@ -262,6 +272,31 @@ function RunBody({
     return () => document.removeEventListener("keydown", onKey);
   }, [done, press]);
 
+  /*
+   * The section moves on when she stops talking.
+   *
+   * Every hand this drill asks of her is a hand not on the page, and she is
+   * running 23 stimuli back to back. So space is only ever needed to say "I
+   * have finished reading, I am about to speak"; the end of the turn announces
+   * itself. Space still advances, always, because a detector that mishears once
+   * must never be able to strand her mid-section.
+   *
+   * Armed only while she is meant to be speaking. During a silent read there is
+   * nothing to hear, and a detector listening then would take the first cough
+   * or chair creak as a whole turn.
+   */
+  const speaking = !done && (cursor.phase === "speak" || cursor.phase === "the-read");
+  useVoiceActivity({
+    armed: speaking,
+    // Re-armed per stimulus, chunk and phase. Two consecutive recalls are both
+    // spoken turns, so `armed` never drops between them; without this key the
+    // detector would fire once at the top of the section and then sit silent
+    // for the other 80 chunks.
+    turn: `${cursor.item}:${cursor.chunk}:${cursor.phase}`,
+    getStream,
+    onEnded: press,
+  });
+
   /** The one write, after the last stimulus. */
   useEffect(() => {
     if (!done || saving.current) return;
@@ -300,14 +335,30 @@ function RunBody({
         byOrder.set(seg.order, list);
       }
 
+      /*
+       * Her words, cut at the same boundaries as the audio.
+       *
+       * Both channels are stamped in milliseconds from the same start, so the
+       * text for one portion and the audio for that portion are the same slice
+       * of the same run rather than two things lined up by hand afterwards.
+       */
+      const said = transcript();
+
+      const spokenFor = (order: number) =>
+        sliceTranscript(said, byOrder.get(order) ?? []).join(" ").trim();
+
       const rows: (ResponseInsert & { rrc: unknown })[] = records.current.map((r) => ({
         assignment_id: assignmentId,
         student_id: studentId,
         item_order: r.order,
-        // Still null: the audio is captured but not yet transcribed, and
-        // transcription happens off this machine against the finished file.
-        // An empty string would record silence where the truth is "not yet".
-        response_text: null,
+        /*
+         * Everything she said during this stimulus, verbatim and in order.
+         *
+         * Null rather than an empty string when nothing came back, because a
+         * browser without recognition and a student who said nothing are
+         * different facts and only one of them is about her.
+         */
+        response_text: spokenFor(r.order) || null,
         attempt_no: 1,
         rrc: {
           mode: "section",
@@ -325,6 +376,14 @@ function RunBody({
           audio_duration_ms: finished?.durationMs ?? null,
           // Where this stimulus's portions sit in that one file, in ms.
           audio_segments: byOrder.get(r.order) ?? [],
+          /*
+           * The same portions as text, one entry per segment, in the same
+           * order. This is a best-effort browser transcript: the audio is the
+           * record a proper transcription runs against later, and the scorer
+           * must treat a blank here as "not captured", never as silence.
+           */
+          transcript_segments: sliceTranscript(said, byOrder.get(r.order) ?? []),
+          transcript_source: said.length > 0 ? "browser-speech" : null,
         },
       }));
       if (rows.length > 0) {
@@ -341,7 +400,7 @@ function RunBody({
     return () => {
       cancelled = true;
     };
-  }, [accommodation, assignmentId, done, onComplete, run, seconds, studentId, stopRecording]);
+  }, [accommodation, assignmentId, done, onComplete, run, seconds, studentId, stopRecording, transcript]);
 
   const stimulus = run.stimuli[cursor.item];
   const states = chunkStates(run, cursor);

@@ -142,5 +142,14 @@ export function useSectionRecorder(now: () => number = () => Date.now()) {
     return { blob, mimeType, durationMs, segments: segments.current.slice() };
   }, [now]);
 
-  return { start, mark, stop, error, recording };
+  /**
+   * The live input, for anything that needs to listen rather than store.
+   *
+   * A getter rather than state: the voice detector reads it inside an animation
+   * frame loop, and re-rendering the whole runner when the microphone opens
+   * would be a render in the middle of her first read.
+   */
+  const getStream = useCallback(() => stream.current, []);
+
+  return { start, mark, stop, error, recording, getStream };
 }

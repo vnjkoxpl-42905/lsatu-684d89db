@@ -21,13 +21,14 @@ import type { ChunkState, SectionPhase, SectionStimulus } from "./section";
  * Four hard requirements, all of them negative, all from
  * `docs/specs/2026-08-31-rrc-section-mode.md` section 3:
  *
- * - **The layout never reflows.** A blanked chunk keeps its exact bounding box.
- *   Text jumping is the failure that loses her place mid-section, and it is why
- *   the blank is `color: transparent` on the real text rather than a
- *   replacement element sized to guess at it.
- * - **Blur is not a blank.** Blurred means present and measurable but not
- *   readable. Blank means read, hidden, and now being said back. They are
- *   different instructions and must never look alike.
+ * - **The layout never reflows.** Nothing is added, removed or resized as she
+ *   advances; only the class on a chunk changes, and no state alters the type
+ *   itself. Text jumping is the failure that loses her place mid-section.
+ * - **Nothing is concealed.** The whole stimulus stays readable the whole time.
+ *   The screen used to blur what she had not reached and blank what she was
+ *   recalling; both are gone, because the method's own answer to rereading is
+ *   that she looks away from the text, and that habit has to work on paper too.
+ *   The states are a place marker now, nothing more.
  * - **One key.** No mouse in the loop. The only control here is Space, wired by
  *   the runner; the exit is outside the loop.
  * - **No answer choices, and nothing judged.** The stimulus alone. Nothing is
@@ -58,10 +59,18 @@ export interface SectionStageProps {
   onExit?: () => void;
 }
 
+/*
+ * She never reads aloud. Only the recall, the colour and The Read are spoken.
+ *
+ * "Look away" is the instruction and not a decoration. Nothing on this screen
+ * hides any more, so looking away is the entire mechanism keeping her from
+ * rereading the line while she says it back, and it is what the method itself
+ * asks for. An instruction that just said "say it back" would leave the text
+ * sitting there in front of her with nothing telling her not to use it.
+ */
 const INSTRUCTION: Record<SectionPhase, string> = {
-  // She never reads aloud. Only the recall, the colour and The Read are spoken.
   read: "Read it silently",
-  speak: "Say it back, then colour it",
+  speak: "Look away. Say it back, then colour it",
   "the-read": "Give your Read of the whole thing",
 };
 
@@ -110,13 +119,8 @@ export function SectionStage({
             */}
             <div className="ac-section-stimulus">
               {stimulus.chunks.map((chunk, i) => (
-                <span key={chunk.n} className={`ac-section-chunk is-${states[i] ?? "blurred"}`}>
-                  {/*
-                    aria-hidden while blanked: the text is still in the DOM to
-                    hold its box, and a screen reader announcing the chunk she is
-                    meant to be recalling from memory would hand her the answer.
-                  */}
-                  <span aria-hidden={states[i] === "blank"}>{chunk.text}</span>{" "}
+                <span key={chunk.n} className={`ac-section-chunk is-${states[i] ?? "upcoming"}`}>
+                  {chunk.text}{" "}
                 </span>
               ))}
             </div>

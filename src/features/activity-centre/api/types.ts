@@ -196,10 +196,38 @@ export interface ActivityCoach {
  * failure, going slowly is correct -- a student who does not have the why will
  * quietly do the easier thing instead.
  */
+/**
+ * One beat of a worked demonstration: a line of the stimulus, then what the
+ * student would say out loud about it.
+ */
+export interface BriefingBeat {
+  /** "Read", "Say it back", "Colour it", "The Read". */
+  kind: string;
+  text: string;
+}
+
 export interface ActivityBriefing {
   /** The line under the section label, before the sections. */
   lede?: string;
-  sections: { heading: string; body: string[] }[];
+  /**
+   * A section is a heading plus prose, and optionally either a numbered
+   * procedure or a worked demonstration.
+   *
+   * Both were added for the section drill, whose briefing is the first thing a
+   * student ever reads about the method and therefore has to teach it rather
+   * than remind her of it. Prose alone made the procedure something she had to
+   * extract from a paragraph, and the one thing that makes an unfamiliar
+   * process click is seeing somebody do it once. Both are optional, so every
+   * Activity authored before this renders exactly as it did.
+   */
+  sections: {
+    heading: string;
+    body: string[];
+    /** A numbered procedure. Rendered as an ordered list, after the prose. */
+    steps?: { label: string; body: string }[];
+    /** A worked run, beat by beat, of one real stimulus. */
+    demo?: { caption?: string; beats: BriefingBeat[] };
+  }[];
   /** The last beat before the Start action. */
   closer?: string;
 }

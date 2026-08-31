@@ -277,6 +277,42 @@ export function ActivityIntro({
                   {section.body.map((para, j) => (
                     <p key={j} className="act-briefing-body">{para}</p>
                   ))}
+
+                  {/* The procedure, when the section carries one. An ordered
+                      list rather than a paragraph because this is the part she
+                      will come back to look up, and a numbered step can be
+                      found again in a way a sentence inside prose cannot. */}
+                  {section.steps && (
+                    <ol className="act-briefing-steps">
+                      {section.steps.map((step, j) => (
+                        <li key={j} className="act-briefing-step">
+                          <span className="act-briefing-step-label">{step.label}</span>
+                          <span className="act-briefing-step-body">{step.body}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+
+                  {/* Somebody doing it once, on a real stimulus. Nothing else
+                      in a briefing does as much work for a process a student
+                      has never seen run. */}
+                  {section.demo && (
+                    <div className="act-briefing-demo">
+                      {section.demo.caption && (
+                        <p className="act-briefing-demo-caption">{section.demo.caption}</p>
+                      )}
+                      <ol className="act-briefing-beats">
+                        {section.demo.beats.map((beat, j) => (
+                          <li key={j} className={`act-briefing-beat is-${beat.kind
+                            .toLowerCase()
+                            .replace(/[^a-z]+/g, "-")}`}>
+                            <span className="act-briefing-beat-kind">{beat.kind}</span>
+                            <span className="act-briefing-beat-text">{beat.text}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
                 </section>
               ))}
             </div>

@@ -120,15 +120,15 @@ describe("what is on screen", () => {
     expect(states).toHaveLength(run.stimuli[0].chunks.length);
     // She can see how much is left against the clock without reading ahead.
     expect(states[0]).toBe("reading");
-    expect(states.slice(1).every((s) => s === "blurred")).toBe(true);
+    expect(states.slice(1).every((s) => s === "upcoming")).toBe(true);
   });
 
   it("blanks the chunk she is recalling and leaves the rest alone", () => {
     const at: SectionCursor = { item: 0, chunk: 1, phase: "speak" };
     const states = chunkStates(run, at);
     expect(states[0]).toBe("done");
-    expect(states[1]).toBe("blank");
-    expect(states.slice(2).every((s) => s === "blurred")).toBe(true);
+    expect(states[1]).toBe("speaking");
+    expect(states.slice(2).every((s) => s === "upcoming")).toBe(true);
   });
 
   it("never blurs and blanks the same chunk", () => {
@@ -136,7 +136,7 @@ describe("what is on screen", () => {
     // read and now being said back. One state per chunk, always.
     for (const at of walk(run)) {
       const states = chunkStates(run, at);
-      expect(states.filter((s) => s === "blank").length).toBeLessThanOrEqual(1);
+      expect(states.filter((s) => s === "speaking").length).toBeLessThanOrEqual(1);
       expect(states.filter((s) => s === "reading").length).toBeLessThanOrEqual(1);
     }
   });

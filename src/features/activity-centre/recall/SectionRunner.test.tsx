@@ -80,46 +80,50 @@ describe("what she sees", () => {
     }
   });
 
-  it("blurs what she has not reached and blanks only what she is recalling", () => {
+  it("marks where she is without concealing anything", () => {
     renderRun();
     expect(chunkSpans().map(stateOf)).toEqual([
       "reading",
-      ...CHUNKS.slice(1).map(() => "blurred"),
+      ...CHUNKS.slice(1).map(() => "upcoming"),
     ]);
 
     space();
-    // Blank and blurred are different instructions and must never look alike:
-    // blurred is present but unreadable, blank is read and being said back.
+    // The states are a place marker only. The method's own answer to rereading
+    // is that she looks away from the text, so the app does not take it away.
     expect(chunkSpans().map(stateOf)).toEqual([
-      "blank",
-      ...CHUNKS.slice(1).map(() => "blurred"),
+      "speaking",
+      ...CHUNKS.slice(1).map(() => "upcoming"),
     ]);
 
     space();
     expect(chunkSpans().map(stateOf)).toEqual([
       "done",
       "reading",
-      ...CHUNKS.slice(2).map(() => "blurred"),
+      ...CHUNKS.slice(2).map(() => "upcoming"),
     ]);
   });
 
   it("keeps every chunk in the DOM the whole time, so the layout cannot reflow", () => {
     renderRun();
-    // Text jumping is the failure that loses her place mid-section. The blank
-    // is the real text turned transparent, so the box stays the real box; a
-    // chunk leaving the DOM would be the version of this that reflows.
+    // Text jumping is the failure that loses her place mid-section. Only the
+    // class changes as she advances; a chunk leaving the DOM would be the
+    // version of this that reflows.
     for (let i = 0; i < CHUNKS.length * 2; i++) {
       expect(chunkSpans(), `after ${i} presses`).toHaveLength(CHUNKS.length);
       space();
     }
   });
 
-  it("hides the blanked chunk from screen readers without removing it", () => {
+  it("never hides a chunk from a screen reader", () => {
     renderRun();
     space();
-    const inner = chunkSpans()[0].querySelector("[aria-hidden]");
-    expect(inner?.getAttribute("aria-hidden")).toBe("true");
-    // Still there, still holding its box.
+    // The screen used to blank the chunk she was recalling and hide it from
+    // assistive tech so it could not be read back to her. Nothing is concealed
+    // now, so concealing it from a screen reader would make this activity
+    // simply unavailable to a student using one.
+    for (const span of chunkSpans()) {
+      expect(span.querySelector("[aria-hidden='true']")).toBeNull();
+    }
     expect(chunkSpans()[0].textContent).toContain(CHUNKS[0].text);
   });
 

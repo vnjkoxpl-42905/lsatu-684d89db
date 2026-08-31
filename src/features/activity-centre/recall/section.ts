@@ -21,14 +21,21 @@ import type { RecallSectionItem, TimeGoalMinutes } from "../api/types";
 /**
  * What one chunk looks like right now.
  *
- * `blurred` and `blank` are different states and must never be conflated. A
- * blurred chunk is present and measurable but not readable: she can see how
- * much section is left against the clock without being able to read ahead. A
- * blank chunk is one she has just read and is now saying back from memory, and
- * it keeps the chunk's exact bounding box so the layout cannot reflow. Text
- * jumping mid-section is the failure that loses her place.
+ * The whole stimulus is readable the whole time. It was not always: the first
+ * cut blurred what she had not reached and blanked the chunk she was saying
+ * back, so the screen enforced the not-rereading rule for her.
+ *
+ * That enforcement is gone on purpose, and the method is the reason. The step
+ * she is running is explicit that the way you avoid rereading is to **look away
+ * from the text, or close your eyes**. That is the accountability mechanism as
+ * taught, it is hers rather than the app's, and it is the one that still works
+ * when she runs a section on paper. A screen that hides the text instead
+ * replaces her habit with a crutch, and it cannot be there on test day.
+ *
+ * So the states are now only a place marker: which chunk she is on, and which
+ * side of it she is on. Nothing is concealed and nothing moves.
  */
-export type ChunkState = "done" | "reading" | "blank" | "blurred";
+export type ChunkState = "done" | "reading" | "speaking" | "upcoming";
 
 /**
  * Where the run is within one stimulus.
@@ -189,12 +196,11 @@ export function chunkStates(run: SectionRun, at: SectionCursor): ChunkState[] {
   const stimulus = run.stimuli[at.item];
   if (!stimulus) return [];
   return stimulus.chunks.map((_, i) => {
-    // The Read shows the whole stimulus sharp: she is giving her take on all of
-    // it, so nothing is hidden and nothing is blurred.
+    // The Read is about the whole stimulus, so no one chunk is marked.
     if (at.phase === "the-read") return "done";
     if (i < at.chunk) return "done";
-    if (i > at.chunk) return "blurred";
-    return at.phase === "speak" ? "blank" : "reading";
+    if (i > at.chunk) return "upcoming";
+    return at.phase === "speak" ? "speaking" : "reading";
   });
 }
 

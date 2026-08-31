@@ -794,6 +794,121 @@
   margin-top: 0.7rem;
 }
 
+/* The numbered procedure inside a briefing section.
+ *
+ * The number is drawn rather than left to the list marker so it can sit in its
+ * own column and the step text can hang in a straight edge beside it. A default
+ * ol indents the text differently for one-digit and two-digit numbers, which
+ * reads as a ragged left edge exactly where a procedure needs to be scannable.
+ */
+.act-home .act-briefing-steps {
+  counter-reset: act-step;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.act-home .act-briefing-step {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  align-items: baseline;
+  gap: 0.1rem 0.75rem;
+  counter-increment: act-step;
+}
+
+.act-home .act-briefing-step + .act-briefing-step {
+  margin-top: 0.85rem;
+}
+
+.act-home .act-briefing-step::before {
+  content: counter(act-step);
+  grid-row: span 2;
+  font-size: 0.8rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+  color: hsl(var(--act-ink) / 0.45);
+}
+
+.act-home .act-briefing-step-label {
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.5;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-briefing-step-body {
+  grid-column: 2;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: hsl(var(--act-ink-soft));
+}
+
+/* A worked run of one real stimulus, beat by beat.
+ *
+ * Set on its own inset panel because it is quoted work rather than instruction:
+ * the surrounding prose tells her what to do, and this shows it being done. The
+ * beat labels run down a fixed column so the three kinds of beat line up and
+ * the alternation between them is visible at a glance.
+ */
+.act-home .act-briefing-demo {
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  background: hsl(var(--act-ink) / 0.035);
+  padding: 1.1rem 1.25rem;
+}
+
+.act-home .act-briefing-demo-caption {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-briefing-beats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.act-home .act-briefing-beat {
+  display: grid;
+  grid-template-columns: 6.25rem 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.act-home .act-briefing-beat + .act-briefing-beat {
+  margin-top: 0.6rem;
+}
+
+.act-home .act-briefing-beat-kind {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: hsl(var(--act-ink) / 0.45);
+}
+
+.act-home .act-briefing-beat-text {
+  color: hsl(var(--act-ink-soft));
+}
+
+/* The read beats are the stimulus itself, so they carry the weight; what she
+   says about them is her own voice and sits lighter. */
+.act-home .act-briefing-beat.is-read .act-briefing-beat-text {
+  color: hsl(var(--act-ink));
+}
+
+@media (max-width: 640px) {
+  .act-home .act-briefing-beat {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
 /* The last beat before Start. Set apart by a rule and the accent, so the page
    ends on a sentence rather than trailing off into the final section. */
 .act-home .act-briefing-closer {
