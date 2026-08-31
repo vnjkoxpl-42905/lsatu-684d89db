@@ -80,3 +80,84 @@ describe("OfficialQuestionPane", () => {
     expect(container.querySelector(".space-y-4")).not.toBeInTheDocument();
   });
 });
+
+describe("OfficialQuestionPane — revealing an answer", () => {
+  function renderRevealed(props: Record<string, unknown> = {}) {
+    return render(
+      <OfficialQuestionPane
+        question={question}
+        displayNumber={26}
+        selectedAnswer="B"
+        eliminatedAnswers={new Set()}
+        isFlagged={false}
+        answerRevealed
+        correctAnswer="A"
+        highlights={[]}
+        highlightMode="none"
+        onAnswerSelect={vi.fn()}
+        onEliminate={vi.fn()}
+        onToggleFlag={vi.fn()}
+        onTextSelection={vi.fn()}
+        onHighlightClick={vi.fn()}
+        {...props}
+      />,
+    );
+  }
+
+  it("marks the choice they actually took, not only the one that was right", () => {
+    renderRevealed();
+
+    // B was chosen and is wrong; saying "A is correct" without saying "and you
+    // took B" is only half of what a reveal is for.
+    expect(
+      screen.getByRole("button", {
+        name: /There has been an increase in ratings/i,
+      }),
+    ).toHaveClass("text-red-900");
+  });
+
+  it("does not leave the verdict to colour alone", () => {
+    // ADR 0001: feedback must always carry an icon and a label, so a student who
+    // cannot separate the green from the red still gets the answer.
+    renderRevealed();
+
+    expect(screen.getByLabelText("Correct answer")).toBeInTheDocument();
+    expect(screen.getByLabelText("Your answer, incorrect")).toBeInTheDocument();
+  });
+
+  it("shows the answer without unfolding every explanation", () => {
+    // Answer and Explanation are separate asks. Revealing with no inline notes
+    // passed must colour the choices and add nothing else.
+    renderRevealed({ inlineNotes: null });
+
+    expect(screen.getByLabelText("Correct answer")).toBeInTheDocument();
+    expect(screen.queryByText(/why this is/i)).not.toBeInTheDocument();
+  });
+
+  it("unfolds them when the notes are handed over, which is Explanation's job", () => {
+    // The other half of the pair: without this, the assertion above would pass
+    // just as happily if the inline layer had been deleted outright.
+    renderRevealed({
+      inlineNotes: {
+        A: { tag: null, studentPercent: null, note: "A is the only choice that explains it." },
+        B: { tag: null, studentPercent: null, note: "B changes the subject." },
+      },
+    });
+
+    expect(screen.getByText(/why this is correct/i)).toBeInTheDocument();
+    expect(screen.getByText(/why this is wrong/i)).toBeInTheDocument();
+  });
+
+  it("leaves an untaken wrong choice alone", () => {
+    // Only the choice they committed to turns red. The other wrong answers are
+    // not accusations.
+    renderRevealed({ selectedAnswer: "A" });
+
+    expect(
+      screen.getByRole("button", {
+        name: /There has been an increase in ratings/i,
+      }),
+    ).not.toHaveClass("text-red-900");
+    expect(screen.queryByLabelText("Your answer, incorrect")).not.toBeInTheDocument();
+  });
+});

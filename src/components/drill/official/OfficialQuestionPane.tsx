@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DrillSplit } from '@/components/drill/DrillSplit';
-import { Eye, EyeOff, Flag } from "lucide-react";
+import { Check, Eye, EyeOff, Flag, X } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
 import InlineChoiceExplanation, {
   type InlineChoiceNotes,
@@ -206,6 +206,11 @@ export default function OfficialQuestionPane({
                 const isSelected = selectedAnswer === key;
                 const isEliminated = eliminatedAnswers.has(key);
                 const isCorrect = answerRevealed && correctAnswer === key;
+                // The choice they committed to, once it is known to be wrong.
+                // Without this a wrong answer stayed the same neutral grey as an
+                // unrevealed selection, so revealing said what was right without
+                // ever saying what they did.
+                const isWrongPick = answerRevealed && isSelected && correctAnswer !== key;
                 // The inline layer only ever appears once the answer is revealed.
                 const inline =
                   answerRevealed && inlineNotes ? inlineNotes[key] ?? {} : undefined;
@@ -218,6 +223,8 @@ export default function OfficialQuestionPane({
                       "grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3",
                       isCorrect
                         ? "border-green-500 bg-green-50"
+                        : isWrongPick
+                        ? "border-red-500 bg-red-50"
                         : isSelected
                         ? "border-slate-500 bg-slate-100 shadow-sm"
                         : isEliminated
@@ -233,6 +240,8 @@ export default function OfficialQuestionPane({
                         "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border font-semibold transition-all",
                         isCorrect
                           ? "border-green-600 bg-green-500 text-white"
+                          : isWrongPick
+                          ? "border-red-600 bg-red-500 text-white"
                           : isSelected
                           ? "border-slate-900 bg-slate-900 text-white"
                           : "border-transparent text-slate-950 group-hover:border-slate-300",
@@ -249,6 +258,8 @@ export default function OfficialQuestionPane({
                         "text-left leading-relaxed transition-colors",
                         isCorrect
                           ? "text-green-900"
+                          : isWrongPick
+                          ? "text-red-900"
                           : isSelected
                           ? "text-slate-950"
                           : "text-slate-950 group-hover:text-slate-950",
@@ -257,6 +268,22 @@ export default function OfficialQuestionPane({
                     >
                       {text}
                     </button>
+                    {answerRevealed && (isCorrect || isWrongPick) ? (
+                      // Colour alone must never carry the verdict (ADR 0001), and
+                      // once the answer is out the cross-out control is dead
+                      // anyway, so its corner becomes the icon and the label.
+                      <span
+                        role="img"
+                        aria-label={isCorrect ? "Correct answer" : "Your answer, incorrect"}
+                        title={isCorrect ? "Correct answer" : "Your answer, incorrect"}
+                        className={cn(
+                          "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center",
+                          isCorrect ? "text-green-700" : "text-red-700",
+                        )}
+                      >
+                        {isCorrect ? <Check size={18} /> : <X size={18} />}
+                      </span>
+                    ) : (
                     <button
                       type="button"
                       onClick={(event) => {
@@ -278,6 +305,7 @@ export default function OfficialQuestionPane({
                     >
                       {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
+                    )}
                     {inline && (
                       <div className="col-start-2 col-end-4">
                         <InlineChoiceExplanation

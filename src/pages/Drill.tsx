@@ -4154,7 +4154,12 @@ function DrillContent() {
             isFlagged={isFlagged}
             answerRevealed={currentRevealed}
             correctAnswer={currentQuestion.correctAnswer}
-            inlineNotes={inlineNotes}
+            // Answer and Explanation are two different asks. Answer says which
+            // choice was right and which one you took; Explanation is the one
+            // that opens every choice's reasoning inline. Passing the notes
+            // whenever the answer was revealed collapsed the two, so pressing
+            // Answer unfolded the whole breakdown nobody had asked for.
+            inlineNotes={explanationOpen ? inlineNotes : null}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}
