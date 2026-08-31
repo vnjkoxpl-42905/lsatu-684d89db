@@ -771,6 +771,57 @@ export type Database = {
           },
         ]
       }
+      booking_event_types: {
+        Row: {
+          active: boolean
+          buffer_after_minutes: number
+          buffer_before_minutes: number
+          created_at: string
+          currency: string
+          label: string
+          length_minutes: number
+          minimum_notice_minutes: number
+          price_cents: number
+          requires_payment: boolean
+          slot_interval_minutes: number | null
+          slug: string
+          updated_at: string
+          window_business_days: number
+        }
+        Insert: {
+          active?: boolean
+          buffer_after_minutes?: number
+          buffer_before_minutes?: number
+          created_at?: string
+          currency?: string
+          label: string
+          length_minutes: number
+          minimum_notice_minutes?: number
+          price_cents?: number
+          requires_payment?: boolean
+          slot_interval_minutes?: number | null
+          slug: string
+          updated_at?: string
+          window_business_days?: number
+        }
+        Update: {
+          active?: boolean
+          buffer_after_minutes?: number
+          buffer_before_minutes?: number
+          created_at?: string
+          currency?: string
+          label?: string
+          length_minutes?: number
+          minimum_notice_minutes?: number
+          price_cents?: number
+          requires_payment?: boolean
+          slot_interval_minutes?: number | null
+          slug?: string
+          updated_at?: string
+          window_business_days?: number
+        }
+        Relationships: []
+      }
       booking_link_hits: {
         Row: {
           action: string
@@ -998,6 +1049,41 @@ export type Database = {
           used_credits?: number
         }
         Relationships: []
+      }
+      booking_price_overrides: {
+        Row: {
+          created_at: string
+          email: string
+          event_slug: string
+          note: string | null
+          price_cents: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          event_slug: string
+          note?: string | null
+          price_cents: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          event_slug?: string
+          note?: string | null
+          price_cents?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_price_overrides_event_slug_fkey"
+            columns: ["event_slug"]
+            isOneToOne: false
+            referencedRelation: "booking_event_types"
+            referencedColumns: ["slug"]
+          },
+        ]
       }
       booking_worker_heartbeats: {
         Row: {
@@ -2842,6 +2928,69 @@ export type Database = {
           },
         ]
       }
+      practice_test_runs: {
+        Row: {
+          break_after_leg: number
+          break_started_at: string | null
+          break_taken: boolean
+          completed_at: string | null
+          created_at: string
+          current_leg: number
+          id: string
+          legs: Json
+          pace: string
+          pt: number
+          raw_correct: number | null
+          raw_total: number | null
+          revision: number
+          scaled_score: number | null
+          score_source: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          break_after_leg: number
+          break_started_at?: string | null
+          break_taken?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_leg?: number
+          id: string
+          legs: Json
+          pace: string
+          pt: number
+          raw_correct?: number | null
+          raw_total?: number | null
+          revision?: number
+          scaled_score?: number | null
+          score_source?: string | null
+          status: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          break_after_leg?: number
+          break_started_at?: string | null
+          break_taken?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_leg?: number
+          id?: string
+          legs?: Json
+          pace?: string
+          pt?: number
+          raw_correct?: number | null
+          raw_total?: number | null
+          revision?: number
+          scaled_score?: number | null
+          score_source?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           by_level_json: Json | null
@@ -2871,6 +3020,7 @@ export type Database = {
           longest_streak: number | null
           onboarding: Json | null
           onboarding_completed_at: string | null
+          onboarding_notified_at: string | null
           overall_answered: number | null
           overall_avg_ms: number | null
           overall_correct: number | null
@@ -2908,6 +3058,7 @@ export type Database = {
           longest_streak?: number | null
           onboarding?: Json | null
           onboarding_completed_at?: string | null
+          onboarding_notified_at?: string | null
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
@@ -2945,6 +3096,7 @@ export type Database = {
           longest_streak?: number | null
           onboarding?: Json | null
           onboarding_completed_at?: string | null
+          onboarding_notified_at?: string | null
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
@@ -3174,6 +3326,13 @@ export type Database = {
             referencedRelation: "rc_drill_sessions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "rc_attempts_session_owner_fk"
+            columns: ["session_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "rc_drill_sessions"
+            referencedColumns: ["id", "user_id"]
+          },
         ]
       }
       rc_drill_sessions: {
@@ -3183,6 +3342,8 @@ export type Database = {
           excluded_from_analytics: boolean
           id: string
           passage_ids: number[]
+          practice_test_leg: number | null
+          practice_test_run_id: string | null
           started_at: string
           status: string
           user_id: string
@@ -3193,6 +3354,8 @@ export type Database = {
           excluded_from_analytics?: boolean
           id?: string
           passage_ids: number[]
+          practice_test_leg?: number | null
+          practice_test_run_id?: string | null
           started_at?: string
           status?: string
           user_id: string
@@ -3203,11 +3366,21 @@ export type Database = {
           excluded_from_analytics?: boolean
           id?: string
           passage_ids?: number[]
+          practice_test_leg?: number | null
+          practice_test_run_id?: string | null
           started_at?: string
           status?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "rc_sessions_pt_run_fk"
+            columns: ["practice_test_run_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "practice_test_runs"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
       }
       rc_lesson_progress: {
         Row: {
@@ -3582,6 +3755,7 @@ export type Database = {
       }
       section_history: {
         Row: {
+          analysis_json: Json | null
           avg_time_ms: number | null
           blind_review_percent: number | null
           blind_review_score: number | null
@@ -3600,8 +3774,12 @@ export type Database = {
           initial_score: number
           initial_total: number | null
           mode: string | null
+          practice_test_leg: number | null
+          practice_test_run_id: string | null
           pt: number
           questions_json: Json | null
+          report_email_error: string | null
+          report_emailed_at: string | null
           section: number
           time_taken_ms: number
           total_questions: number
@@ -3610,6 +3788,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          analysis_json?: Json | null
           avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
@@ -3628,8 +3807,12 @@ export type Database = {
           initial_score?: number
           initial_total?: number | null
           mode?: string | null
+          practice_test_leg?: number | null
+          practice_test_run_id?: string | null
           pt: number
           questions_json?: Json | null
+          report_email_error?: string | null
+          report_emailed_at?: string | null
           section: number
           time_taken_ms?: number
           total_questions?: number
@@ -3638,6 +3821,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          analysis_json?: Json | null
           avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
@@ -3656,8 +3840,12 @@ export type Database = {
           initial_score?: number
           initial_total?: number | null
           mode?: string | null
+          practice_test_leg?: number | null
+          practice_test_run_id?: string | null
           pt?: number
           questions_json?: Json | null
+          report_email_error?: string | null
+          report_emailed_at?: string | null
           section?: number
           time_taken_ms?: number
           total_questions?: number
@@ -3665,7 +3853,15 @@ export type Database = {
           unanswered_count?: number | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "section_history_pt_run_fk"
+            columns: ["practice_test_run_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "practice_test_runs"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
       }
       session_ingestions: {
         Row: {
@@ -3887,6 +4083,7 @@ export type Database = {
           draft_expires_at: string
           email: string | null
           end_at: string
+          event_slug: string
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -3927,6 +4124,7 @@ export type Database = {
           draft_expires_at: string
           email?: string | null
           end_at: string
+          event_slug?: string
           gcal_event_id?: string | null
           guests?: Json
           id?: string
@@ -3967,6 +4165,7 @@ export type Database = {
           draft_expires_at?: string
           email?: string | null
           end_at?: string
+          event_slug?: string
           gcal_event_id?: string | null
           guests?: Json
           id?: string
@@ -3993,7 +4192,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "single_session_bookings_event_slug_fkey"
+            columns: ["event_slug"]
+            isOneToOne: false
+            referencedRelation: "booking_event_types"
+            referencedColumns: ["slug"]
+          },
+        ]
       }
       single_session_outbox: {
         Row: {
@@ -5183,6 +5390,60 @@ export type Database = {
       }
     }
     Functions: {
+      abandon_single_session_booking: {
+        Args: { _booking_id: string; _booking_token_hash: string }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      abandon_stale_practice_tests: {
+        Args: { exclude_ids?: string[] }
+        Returns: string[]
+      }
       append_waj_correct: {
         Args: { p_class_id: string; p_item: Json; p_qid: string }
         Returns: undefined
@@ -5231,6 +5492,62 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      attach_single_session_checkout: {
+        Args: {
+          _booking_id: string
+          _expected_version: number
+          _stripe_checkout_session_id: string
+          _stripe_checkout_url: string
+          _stripe_expires_at: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       attempt_accuracy_rollup: {
         Args: { p_class_id: string }
         Returns: {
@@ -5252,6 +5569,10 @@ export type Database = {
         Args: { _e: string; _s: string }
         Returns: unknown
       }
+      booking_price_cents: {
+        Args: { _email: string; _event_slug: string }
+        Returns: number
+      }
       bump_booking_hit: {
         Args: { _action: string; _ip_hash: string; _slug: string }
         Returns: number
@@ -5259,6 +5580,56 @@ export type Database = {
       cancel_booking_redemption: {
         Args: { _actor_id?: string; _redemption_id: string; _refund?: boolean }
         Returns: Json
+      }
+      cancel_single_session_booking: {
+        Args: { _cancel_token_hash: string }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       claim_booking_calendar_actions: {
         Args: { _lease_seconds?: number; _limit?: number }
@@ -5302,6 +5673,67 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      claim_single_session_slot: {
+        Args: {
+          _booking_token_hash: string
+          _client_idempotency_key: string
+          _email: string
+          _event_slug?: string
+          _guests: Json
+          _ip_hash: string
+          _name: string
+          _notes: string
+          _start_at: string
+          _user_id?: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       create_manual_booking_pass: {
         Args: {
           _booking_slug: string
@@ -5337,6 +5769,180 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      enqueue_single_session_outbox: {
+        Args: {
+          _action: string
+          _booking_id: string
+          _payload_ciphertext?: string
+          _precondition_lifecycle_version: number
+          _precondition_status: string
+          _recipient: string
+          _state: string
+        }
+        Returns: {
+          action: string
+          attempts: number
+          booking_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          lease_token: string | null
+          lease_until: string | null
+          lease_worker_id: string | null
+          max_attempts: number
+          next_retry_at: string
+          payload_ciphertext: string | null
+          precondition_lifecycle_version: number
+          precondition_status: string
+          provider_status: string | null
+          recipient: string
+          result: Json
+          sensitive_payload_purged_at: string | null
+          state: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_outbox"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      expire_single_session_checkout: {
+        Args: {
+          _booking_id: string
+          _reason: string
+          _stripe_checkout_session_id: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      expire_single_session_draft: {
+        Args: {
+          _booking_id: string
+          _expected_version: number
+          _reason: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      finalize_single_session_free: {
+        Args: {
+          _booking_id: string
+          _cancel_payload_ciphertext: string
+          _cancel_token_hash: string
+          _expected_version: number
+          _live_calendar_clear: boolean
+        }
+        Returns: Json
+      }
+      finalize_single_session_payment: {
+        Args: {
+          _amount_cents: number
+          _booking_id: string
+          _cancel_payload_ciphertext: string
+          _cancel_token_hash: string
+          _currency: string
+          _live_calendar_clear: boolean
+          _livemode: boolean
+          _provider_event_id: string
+          _stripe_checkout_session_id: string
+          _stripe_payment_intent_id: string
+        }
+        Returns: Json
       }
       fts_lsatu_content: {
         Args: { kind_filter?: string[]; match_count?: number; q: string }
@@ -5409,6 +6015,13 @@ export type Database = {
         }[]
       }
       get_or_create_joshua_conversation: { Args: never; Returns: string }
+      get_single_session_status: {
+        Args: {
+          _booking_token_hash: string
+          _stripe_checkout_session_id: string
+        }
+        Returns: Json
+      }
       get_student_booking: { Args: { _auth_user_id: string }; Returns: Json }
       get_student_email: { Args: { _student_id: string }; Returns: string }
       grant_booking_access: {
@@ -5478,6 +6091,10 @@ export type Database = {
       }
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_single_session_slot_bookable: {
+        Args: { _event_slug?: string; _now?: string; _start_at: string }
         Returns: boolean
       }
       is_slot_bookable: {
@@ -5585,6 +6202,60 @@ export type Database = {
         Returns: Json
       }
       mcp_require_admin: { Args: never; Returns: string }
+      persist_single_session_checkout_fingerprint: {
+        Args: {
+          _booking_id: string
+          _expected_version: number
+          _fingerprint_ciphertext: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       promote_lsat_knowledge_version: {
         Args: { _expected_count: number; _slug: string; _version: string }
         Returns: Json
@@ -5732,6 +6403,68 @@ export type Database = {
       set_booking_availability: {
         Args: { _ranges: Json; _timezone: string }
         Returns: Json
+      }
+      set_single_session_tentative_event: {
+        Args: {
+          _booking_id: string
+          _expected_version: number
+          _gcal_event_id: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      single_session_booking_window_end: {
+        Args: { _event_slug?: string; _now?: string }
+        Returns: string
+      }
+      single_session_slot_lock_key: {
+        Args: { _start_at: string }
+        Returns: number
       }
       take_abandoned_booking_uploads: {
         Args: { _limit?: number; _older_than?: string }
