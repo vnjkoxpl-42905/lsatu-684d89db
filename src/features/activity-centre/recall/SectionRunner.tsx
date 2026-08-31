@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { SectionStage } from "./SectionStage";
+import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import {
   advanceCursor,
   buildSectionRun,
@@ -25,6 +26,12 @@ import "./section.css";
 type ResponseInsert = Database["public"]["Tables"]["activity_item_responses"]["Insert"];
 
 /**
+ * Where a section's recording is kept. Private, and readable only by the
+ * student it belongs to and the instructor; see the bucket's own migration.
+ */
+const RECORDING_BUCKET = "drill-recordings";
+
+/**
  * A Read, Recall, Colour SECTION run: 22 to 26 stimuli, end to end, one clock,
  * no stopping.
  *
@@ -40,12 +47,17 @@ type ResponseInsert = Database["public"]["Tables"]["activity_item_responses"]["I
  *   nothing, which is correct: a section is the unit of work, and half a
  *   section is not a partial score, it is not a run.
  *
- * What this component does NOT do yet, and deliberately does not fake:
- * it does not record her audio. Persisting a recording needs a storage
- * destination and a policy that lets exactly her read exactly her own, and
- * both are open questions as of 2026-08-31. Recording into memory and dropping
- * it at the end would look like capture and be nothing, which is worse than not
- * capturing. Timings, which need no storage decision, are captured now.
+ * It records. One unbroken file for the whole section, started before the loop
+ * and stopped after it, exactly as the drill requires, uploaded once at the end
+ * to a private bucket only she and the instructor can read. Every phase
+ * boundary is stamped as an offset into that file, so each portion of each
+ * stimulus is addressable without the recorder ever having been paused. See
+ * `useSectionRecorder`.
+ *
+ * A refused or missing microphone does not stop the drill. It says so and the
+ * section continues, because the drill is still a valid drill run against a
+ * handheld recorder, and twenty minutes is far too long to spend talking into
+ * nothing without being told.
  */
 
 export interface SectionRunnerProps {
@@ -142,6 +154,8 @@ function RunBody({
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
+  const { start: startRecording, mark, stop: stopRecording, error: micError } =
+    useSectionRecorder(now);
   /**
    * Guards the one write, and a ref rather than state on purpose.
    *
@@ -164,6 +178,18 @@ function RunBody({
     [now],
   );
 
+  /*
+   * Press record at the very beginning. Before the first chunk, not on the
+   * first keypress: the drill's first act is reading, and a recording that
+   * starts on the first Space has already missed it.
+   */
+  useEffect(() => {
+    void startRecording();
+    // Mount only. Restarting a recorder mid-section is the one thing the drill
+    // forbids outright.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /**
    * One key press. This is the whole interaction: no mouse in the loop.
    *
@@ -177,6 +203,15 @@ function RunBody({
       const stimulus = run.stimuli[at.item];
       const spent = seconds(phaseStartedAt.current);
       phaseStartedAt.current = now();
+
+      // Close this portion in the recording's index. Refs and arithmetic only:
+      // nothing here reaches the network, so the loop cannot stall on it.
+      mark({
+        slug: stimulus.slug,
+        order: stimulus.order,
+        phase: at.phase,
+        chunk: at.phase === "the-read" ? null : stimulus.chunks[at.chunk].n,
+      });
 
       if (at.phase === "read") {
         chunkTimes.current[at.chunk] = {
@@ -209,7 +244,7 @@ function RunBody({
       }
       return next;
     });
-  }, [done, run, seconds, now]);
+  }, [done, run, seconds, now, mark]);
 
   // One key, and only Space. Bound on the document because the loop must not
   // depend on anything holding focus: a stray click on the page would otherwise
@@ -234,12 +269,44 @@ function RunBody({
     let cancelled = false;
     void (async () => {
       const total = seconds(startedAt.current);
+
+      /*
+       * Stop the recorder and put the file away first, so every row can name
+       * where its audio is. The upload is one request for the whole section and
+       * it happens here, after the last stimulus, never inside the loop.
+       *
+       * A failed upload does not fail the section. Her twenty minutes are done
+       * and the timings are still worth keeping, so the rows are written either
+       * way and the audio path is simply absent -- which reads as "not
+       * captured", the truth, rather than as silence.
+       */
+      const finished = await stopRecording();
+      let audioPath: string | null = null;
+      if (finished && finished.blob.size > 0) {
+        const ext = finished.mimeType.includes("mp4") ? "m4a" : "webm";
+        const path = `${studentId}/${assignmentId}.${ext}`;
+        const { error: upload } = await supabase.storage
+          .from(RECORDING_BUCKET)
+          .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true });
+        if (upload) console.error("[rrc] could not store the recording", upload);
+        else audioPath = path;
+      }
+
+      // The index, split per stimulus, so a row carries only its own portions.
+      const byOrder = new Map<number, RecordingSegment[]>();
+      for (const seg of finished?.segments ?? []) {
+        const list = byOrder.get(seg.order) ?? [];
+        list.push(seg);
+        byOrder.set(seg.order, list);
+      }
+
       const rows: (ResponseInsert & { rrc: unknown })[] = records.current.map((r) => ({
         assignment_id: assignmentId,
         student_id: studentId,
         item_order: r.order,
-        // Nothing was transcribed: no audio was captured, and an empty string
-        // here would record silence where the truth is "not captured".
+        // Still null: the audio is captured but not yet transcribed, and
+        // transcription happens off this machine against the finished file.
+        // An empty string would record silence where the truth is "not yet".
         response_text: null,
         attempt_no: 1,
         rrc: {
@@ -253,6 +320,11 @@ function RunBody({
           section_total_seconds: total,
           accommodation,
           goal_minutes: run.timeGoalMinutes[accommodation],
+          audio_bucket: audioPath ? RECORDING_BUCKET : null,
+          audio_path: audioPath,
+          audio_duration_ms: finished?.durationMs ?? null,
+          // Where this stimulus's portions sit in that one file, in ms.
+          audio_segments: byOrder.get(r.order) ?? [],
         },
       }));
       if (rows.length > 0) {
@@ -269,7 +341,7 @@ function RunBody({
     return () => {
       cancelled = true;
     };
-  }, [accommodation, assignmentId, done, onComplete, run, seconds, studentId]);
+  }, [accommodation, assignmentId, done, onComplete, run, seconds, studentId, stopRecording]);
 
   const stimulus = run.stimuli[cursor.item];
   const states = chunkStates(run, cursor);
@@ -297,6 +369,7 @@ function RunBody({
       phase={cursor.phase}
       stimulusNumber={cursor.item + 1}
       totalStimuli={run.stimuli.length}
+      error={micError}
       onExit={onExit}
     />
   );

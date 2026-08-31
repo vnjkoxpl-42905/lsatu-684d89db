@@ -1,38 +1,50 @@
 /* Read, Recall, Colour, section mode.
  *
- * Same dark field as the v1 runner and for the same reason: this activity asks
- * her to stop looking at the screen, so decorating it works against the only
- * thing that makes it worth building.
+ * The v1 runner sits on a dark field because it shows one chunk at a time and
+ * nothing during recall: there is barely anything on screen to light. A section
+ * is the opposite surface. The whole stimulus is present for the whole
+ * stimulus, it is the only thing on screen, and she is reading it closely for
+ * twenty minutes. That is a document, and a document belongs on paper.
  *
- * The difference is what the field holds. v1 shows one chunk at a time and
- * nothing during recall. A section shows the whole stimulus for the whole
- * stimulus, and says what she is doing by how each chunk is treated. Every rule
- * below exists to keep the text in exactly the same place while that changes.
+ * So this screen wears the real section's clothes. `OfficialDrillFrame` already
+ * mirrors LawHub -- indigo field, white header rail, one centred white card,
+ * Fraunces at 19px -- and that is the surface she will sit on test day. Every
+ * value below is taken from it rather than invented, and the answering half is
+ * removed rather than restyled. No new dialect: this is the drill room.
+ *
+ * Everything after the frame exists to keep the text in exactly the same place
+ * while its state changes.
  */
 
 .ac-section {
-  position: relative;
+  --sec-field: #1a1635;
+  --sec-paper: #ffffff;
+  --sec-ink: #111827;
+  --sec-ink-done: #6b7280;
+  --sec-rule: #cbd5e1;
+  --sec-chrome: #334155;
+  --sec-warn: #b45309;
+  --sec-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4.5rem 1.5rem 4rem;
-  background: #050102;
-  color: hsl(0 0% 96%);
+  background: var(--sec-field);
+  font-family: var(--sec-sans);
 }
 
+/* ---- the white rail ---------------------------------------------------- */
+
 .ac-section-head {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.75rem;
-  right: 1.75rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: hsl(0 0% 96% / 0.4);
+  gap: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: var(--sec-paper);
+  color: var(--sec-chrome);
+  font-size: 0.8125rem;
 }
 
 /* Where she is in the section, and deliberately not how long it is taking.
@@ -42,33 +54,100 @@
   font-variant-numeric: tabular-nums;
 }
 
+.ac-section-where b {
+  font-weight: 600;
+  color: var(--sec-ink);
+}
+
+.ac-section-rail {
+  height: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #e2e8f0;
+}
+
+.ac-section-rail-fill {
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  background: var(--sec-chrome);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Assignment-gated and full screen. Without a way out the only exit is the
    browser's back button, which is a trap rather than a design. */
 .ac-section-exit {
   border: none;
+  border-radius: 9999px;
   background: none;
-  padding: 0;
+  padding: 0.25rem 0.75rem;
   color: inherit;
   font: inherit;
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+.ac-section-exit:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
+/* ---- the paper --------------------------------------------------------- */
+
+.ac-section-field {
+  display: flex;
+  flex: 1;
+  padding: 1rem;
+}
+
+.ac-section-paper {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  min-height: 700px;
+  margin: 0 auto;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background: var(--sec-paper);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.35);
+}
+
+/* The stimulus is the only thing in the card, so its column is centred
+   horizontally -- but it hangs from the top, exactly as it does in the column it
+   used to share with a question.
+ *
+ * Centring it vertically was the first cut and it was wrong: stimuli run from
+ * two lines to nine, so a centred block starts at a different height on every
+ * one of the 23 and the whole page appears to jump between them. The spec bans
+ * reflow inside a stimulus; this is the same failure one level up. */
 .ac-section-body {
-  width: min(62ch, 100%);
-  text-align: left;
-}
-
-.ac-section-instruction {
-  margin: 0 0 2rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: hsl(0 0% 96% / 0.45);
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4rem 1.5rem 3rem;
 }
 
 .ac-section-stimulus {
-  font-size: 1.15rem;
-  line-height: 1.85;
+  max-width: 52ch;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.7;
+  /* Fraunces is a variable font with an optical-size axis. Left on `auto` the
+     browser picks the cut from the rendered size; pin it to the text-optimised
+     end so the hairlines stay put. Grayscale smoothing thins them too. */
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.ac-section-stimulus ::selection {
+  background: #dbeafe;
+  color: var(--sec-ink);
 }
 
 /* One inline run per chunk. Inline rather than block so a chunk that is part of
@@ -78,21 +157,15 @@
   transition: filter 0.22s ease, opacity 0.22s ease, color 0.22s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ac-section-chunk {
-    transition: none;
-  }
-}
-
 /* Already recalled. Sharp, and no longer marked: it is context now. */
 .ac-section-chunk.is-done {
-  color: hsl(0 0% 96% / 0.55);
+  color: var(--sec-ink-done);
 }
 
 /* The one she is reading, silently. Sharp and full strength; the marker is
-   weight and colour rather than a box, so nothing around it moves. */
+   colour rather than a box, so nothing around it moves. */
 .ac-section-chunk.is-reading {
-  color: hsl(0 0% 100%);
+  color: var(--sec-ink);
 }
 
 /* Blanked: read, hidden, being said back from memory.
@@ -103,9 +176,9 @@
  * rule underneath says "something is here" without saying what. */
 .ac-section-chunk.is-blank {
   color: transparent;
-  background-image: linear-gradient(hsl(0 0% 96% / 0.28), hsl(0 0% 96% / 0.28));
+  background-image: linear-gradient(var(--sec-rule), var(--sec-rule));
   background-repeat: no-repeat;
-  background-position: left 60%;
+  background-position: left 78%;
   background-size: 100% 1px;
 }
 
@@ -114,28 +187,73 @@
    must never look like it -- they are different instructions. */
 .ac-section-chunk.is-blurred {
   filter: blur(4.5px);
-  opacity: 0.45;
+  opacity: 0.42;
   user-select: none;
 }
 
+/* ---- the card's footer ------------------------------------------------- */
+
 .ac-section-foot {
-  position: absolute;
-  bottom: 1.75rem;
-  left: 1.75rem;
-  right: 1.75rem;
-  text-align: center;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.8125rem;
+}
+
+.ac-section-instruction {
+  margin: 0;
+  color: var(--sec-ink);
+  font-weight: 500;
 }
 
 .ac-section-hint {
   margin: 0;
-  color: hsl(0 0% 96% / 0.3);
+  color: #64748b;
+}
+
+.ac-section-hint kbd {
+  border: 1px solid var(--sec-rule);
+  border-bottom-width: 2px;
+  border-radius: 0.25rem;
+  background: var(--sec-paper);
+  padding: 0.125rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--sec-chrome);
 }
 
 /* Silence and a dead microphone look identical from her side, so a fault has to
    say so rather than let her talk into nothing for twenty minutes. */
 .ac-section-error {
   margin: 0;
-  color: hsl(30 80% 72%);
+  color: var(--sec-warn);
+  font-weight: 500;
+}
+
+/* The focus ring is graphite everywhere in the drill room, never an accent. */
+.ac-section :focus-visible {
+  outline: 3px solid rgb(29 29 31 / 0.35);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .ac-section-paper {
+    min-height: 0;
+  }
+
+  .ac-section-body {
+    padding: 2rem 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-chunk,
+  .ac-section-rail-fill,
+  .ac-section-exit {
+    transition: none;
+  }
 }

@@ -21,6 +21,11 @@ interface ActivityIntroProps {
    */
   format?: ItemFormat;
   /**
+   * Section mode, which changes what the sitting actually is. Absent on every
+   * Activity authored before it, so undefined reads as "not a section".
+   */
+  mode?: string | null;
+  /**
    * 1-based question the Start action would drop them on. Above 1 the run is
    * already under way and the button says so rather than reading as a restart.
    */
@@ -44,6 +49,7 @@ export function ActivityIntro({
   itemCount,
   maxAttempts,
   format,
+  mode,
   resumeAt,
   onStart,
   onExit,
@@ -101,10 +107,20 @@ export function ActivityIntro({
    * No chunk count here on purpose. The intro is handed `items.length`, and for
    * a spoken Activity that is 1 whatever the chunking is, so a number in this
    * sentence would be a number the intro cannot actually see.
+   *
+   * Section mode needed its own line for the same reason the line exists at
+   * all. The spoken sentence below promises that work saves as you go and that
+   * she can stop and pick up where she left off, and a section is the one
+   * Activity for which both are false: it writes nothing until the last
+   * stimulus, and stopping halfway is not a partial score, it is not a run.
+   * Shipping that promise on a section would have been the intro telling her
+   * she could do the exact thing the drill forbids.
    */
   const howLine =
     format === "spoken-recall"
-      ? "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
+      ? mode === "section"
+        ? `${itemCount ?? ""} stimuli, out loud, in one sitting. Nothing saves until the end, so it is finished in one go or not at all.`.trim()
+        : "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
       : [
           itemCount ? `${itemCount} ${itemCount === 1 ? "question" : "questions"}.` : "",
           maxAttempts ? `${maxAttempts} tries each, then the credited answer shows.` : "",

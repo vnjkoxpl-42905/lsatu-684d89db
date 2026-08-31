@@ -13,9 +13,21 @@ import { SectionRunner } from "./SectionRunner";
 
 type Row = Record<string, unknown>;
 const insert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
+const upload = vi.fn(() => Promise.resolve({ error: null }));
 vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { from: () => ({ insert: (rows: Row[]) => insert(rows) }) },
+  supabase: {
+    from: () => ({ insert: (rows: Row[]) => insert(rows) }),
+    storage: { from: () => ({ upload: () => upload() }) },
+  },
 }));
+
+/**
+ * jsdom has no `navigator.mediaDevices`, so the recorder takes its own
+ * refused-microphone path and captures nothing. That is the case worth having
+ * as the default here: the drill has to run to the end and still write its
+ * timings when there is no microphone, because she may well be recording on a
+ * handheld instead.
+ */
 
 /** One stimulus, so a full run is short enough to drive press by press. */
 const ONE = { ...pt105, items: [pt105.items[0]] };
@@ -54,6 +66,7 @@ function stateOf(el: HTMLElement): string {
 
 beforeEach(() => {
   insert.mockClear();
+  upload.mockClear();
 });
 
 describe("what she sees", () => {
@@ -175,7 +188,9 @@ describe("writing it down", () => {
     const { onComplete } = renderRun();
     for (let i = 0; i < CHUNKS.length * 2 + 1; i++) space();
 
-    expect(insert).toHaveBeenCalledTimes(1);
+    // The write waits on the recorder being stopped and its file put away, so
+    // it lands a tick after the last press rather than during it.
+    await vi.waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
     const rows = insert.mock.calls[0][0];
     expect(rows).toHaveLength(1);
     expect(rows[0].assignment_id).toBe("a1");
@@ -196,9 +211,10 @@ describe("writing it down", () => {
     expect(screen.getByText(/section finished/i)).toBeInTheDocument();
   });
 
-  it("scores a student with extra time against her own goal", () => {
+  it("scores a student with extra time against her own goal", async () => {
     renderRun({ accommodation: "accommodation_70" });
     for (let i = 0; i < CHUNKS.length * 2 + 1; i++) space();
+    await vi.waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
     const rrc = insert.mock.calls[0][0][0].rrc as Record<string, unknown>;
     // Grading her against the standard goal would score her accommodation as a
     // failure, which is the whole reason the goal is three numbers.

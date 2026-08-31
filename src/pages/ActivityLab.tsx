@@ -1,8 +1,18 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SEED_ACTIVITIES } from "@/features/activity-centre/content";
 import { RecallStage } from "@/features/activity-centre/recall/RecallStage";
 import { buildSession, type Phase as RecallPhase } from "@/features/activity-centre/recall/session";
 import "@/features/activity-centre/recall/recall.css";
+import { SectionStage } from "@/features/activity-centre/recall/SectionStage";
+import sectionInstructions from "@/features/activity-centre/content/read-recall-colour-section.instructions.json";
+import {
+  advanceCursor,
+  buildSectionRun,
+  chunkStates,
+  startCursor,
+  type SectionCursor,
+} from "@/features/activity-centre/recall/section";
+import "@/features/activity-centre/recall/section.css";
 import {
   SwitchyardStage,
   type Milepost,
@@ -146,6 +156,7 @@ const WORLDS = [
   { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
   { key: "recall", label: "Read, Recall, Colour" },
+  { key: "section", label: "RRC section (whole section)" },
   { key: "shell", label: "Runner shell" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
@@ -215,6 +226,7 @@ export default function ActivityLab() {
       {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
       {world === "recall" ? <RecallPanel /> : null}
+      {world === "section" ? <SectionPanel /> : null}
       {world === "shell" ? <ShellPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
@@ -393,6 +405,17 @@ function IntroPanel() {
   const shapes = SEED_ACTIVITIES;
   const [slug, setSlug] = useState(shapes[0].slug);
   const a = shapes.find((x) => x.slug === slug)!;
+  /*
+   * A section's own JSON carries `instructions: {}` on purpose -- they are
+   * authored once and filled in at seed time -- which left the one intro whose
+   * copy is most easily wrong as the one intro this harness could not draw. It
+   * is filled from the same file the seed builder reads, so what the lab shows
+   * is what the database gets.
+   */
+  const instructions =
+    a.mode === "section"
+      ? (sectionInstructions as unknown as typeof a.instructions)
+      : a.instructions;
   return (
     <div>
       <div className="border-b border-border px-6 py-3">
@@ -409,10 +432,11 @@ function IntroPanel() {
           key={a.slug}
           title={a.title}
           subtitle={a.subtitle}
-          instructions={a.instructions}
+          instructions={instructions}
           itemCount={a.items.length}
           maxAttempts={MAX_ATTEMPTS}
           format={a.item_format}
+          mode={a.mode}
           onStart={() => {}}
           onExit={() => {}}
         />
@@ -1864,6 +1888,77 @@ function CompletionPanel() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Read, Recall, Colour: a whole SECTION
+ * ------------------------------------------------------------------ */
+
+/**
+ * The section screen, driven by the real cursor.
+ *
+ * `SectionRunner` needs a signed-in student and an assignment row carrying the
+ * snapshot, so the screen she spends a whole 20-minute drill on could not be
+ * looked at once while it was built -- the same gap that hid the v1 recall
+ * screen until this lab existed. This panel runs the real machine from
+ * `section.ts` against the real seeded content and skips only the persistence,
+ * which is the one part that needs a database.
+ */
+function SectionPanel() {
+  const [slug, setSlug] = useState("read-recall-colour-pt105-s2");
+  const row = SEED_ACTIVITIES.find((a) => a.slug === slug);
+  const run = useMemo(
+    () => (row ? buildSectionRun(row.items, row.source_section, row.time_goal_minutes) : null),
+    [row],
+  );
+  const [cursor, setCursor] = useState<SectionCursor>(() => startCursor());
+
+  useEffect(() => setCursor(startCursor()), [slug]);
+
+  useEffect(() => {
+    if (!run) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code !== "Space") return;
+      e.preventDefault();
+      setCursor((at) => advanceCursor(run, at) ?? at);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [run]);
+
+  if (!run) {
+    return <p className="px-6 py-8 text-sm text-zinc-500">No section Activity in the seed content.</p>;
+  }
+  const stimulus = run.stimuli[Math.min(cursor.item, run.stimuli.length - 1)];
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={SEED_ACTIVITIES.filter((a) => a.mode === "section").map((a) => a.slug)}
+          value={slug}
+          onChange={(v) => setSlug(v)}
+          label="Section"
+        />
+        <Tabs
+          options={run.stimuli.map((_, i) => String(i + 1))}
+          value={String(cursor.item + 1)}
+          onChange={(v) => setCursor({ ...startCursor(), item: Number(v) - 1 })}
+          label="Stimulus"
+        />
+        <span className="text-xs text-zinc-500">
+          {cursor.phase} · chunk {cursor.chunk + 1}/{stimulus.chunks.length} · press space
+        </span>
+      </div>
+      <SectionStage
+        stimulus={stimulus}
+        states={chunkStates(run, cursor)}
+        phase={cursor.phase}
+        stimulusNumber={cursor.item + 1}
+        totalStimuli={run.stimuli.length}
+      />
     </div>
   );
 }

@@ -1,0 +1,75 @@
+{
+ "tagline": "A whole section, out loud, in one sitting. Nothing stops until it is done.",
+ "task": "Say each chunk back from memory, out loud and in your own words, react to it, then give your Read of the whole stimulus.",
+ "rules": [
+  "The recording starts before the first word and runs to the end. It never pauses, and neither do you.",
+  "Read a chunk silently. Press space and it goes blank. Say it back out loud in your own words, then say what you make of it.",
+  "Press space again. That chunk comes back, the next one clears, and you carry on to the end of the stimulus.",
+  "The moment the last chunk is coloured, give your Read. No gap, and nothing to think about first.",
+  "Then straight into the next stimulus, all the way to the end of the section. No breaks, no checking anything.",
+  "Nothing is marked while you work. Your scorecard comes after the section, never during it."
+ ],
+ "briefing": {
+  "lede": "This is the drill the rest of your prep is built on, and the one that asks the most of you in a single sitting.",
+  "sections": [
+   {
+    "heading": "The section is the unit here, not the question.",
+    "body": [
+     "Almost every rule in this drill is a rule about the whole section. The clock, the unbroken recording, the no breaks. Run one stimulus and you have not really run any of them.",
+     "So the whole thing goes in one sitting. Twenty three stimuli, start to finish, in the order they come."
+    ]
+   },
+   {
+    "heading": "Twenty minutes, and what that number actually means.",
+    "body": [
+     "The goal is twenty minutes for the section. With a fifty three minute accommodation it is twenty five, and with seventy minutes it is thirty.",
+     "It only counts if you recalled, coloured and gave a Read on every stimulus. Beating the clock with three of them skipped is not beating the clock, and the app checks the condition, not just the time.",
+     "There is no clock on the screen while you work. A timer in the corner is what produces the rushed, skating read this drill exists to fix. It is measured and you see it at the end."
+    ]
+   },
+   {
+    "heading": "Say it back, then say what you make of it.",
+    "body": [
+     "The chunk goes blank because you would look if you could, and then none of it is recall. You would just be reading it a second time and handing it back in their words.",
+     "So say it back in yours, out loud, in whatever order it comes out. Keep the names, numbers, dates and the small connecting words. Each one is its own detail, and none of them are safe to drop because the sentence around them survived.",
+     "Then colour it: say what you actually think. One standard, and it is the only one. If your reaction would fit any sentence on the test, it is not a reaction. The moment you push on a claim, or notice what it quietly assumes, you have started doing the question instead of waiting for it."
+    ]
+   },
+   {
+    "heading": "The Read arrives the instant the last colour lands.",
+    "body": [
+     "If you have been colouring honestly the whole way down, your Read is already sitting there. Usually it is the last thing you just said.",
+     "So do not stop and compose one. React freely on the way down and let it be messy. The Read is the tidy version of the best thing you noticed, and it is the part that gets checked against the key."
+    ]
+   },
+   {
+    "heading": "Nothing is judged while you are inside it.",
+    "body": [
+     "You will not see a verdict, a score or a correction until the section is over. That is deliberate.",
+     "Anything that grades you mid section teaches you to vet a thought before you say it, and that is the exact habit colouring exists to break. Say the half formed thing. It is worth more here than a careful one."
+    ]
+   },
+   {
+    "heading": "One a day holds you steady. Two starts to move you.",
+    "body": [
+     "Do at least three of these back to back, and six if you can. No breaks between them, and no reviewing between them.",
+     "Review is its own sitting, later. If you check your work between sections you stop drilling and start scorekeeping, and the next section gets run by whoever is reacting to that number."
+    ]
+   }
+  ],
+  "closer": "Expect the first one to run long and to feel clumsy out loud. That is what this feels like while it is working."
+ },
+ "coach": {
+  "drill": "a whole Logical Reasoning section run out loud, where the student reads each chunk of a stimulus, loses sight of it, says it back from memory in her own words, reacts to it, and gives a Read of the whole stimulus before moving to the next one",
+  "rubric": [
+   "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the chunk's phrasing. High overlap with the original is the failure, not the standard.",
+   "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",
+   "Casual, unpolished, laughing delivery is expected. Never mark down for style, length or fluency.",
+   "A detail merely gestured at is not carried. Naming the topic is not the same as saying what was claimed about it.",
+   "Numbers, names, dates, quantities and connecting words are each their own detail. Never treat one as carried because the sentence around it was.",
+   "Score The Read against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
+   "Silence during a silent read is correct and expected. Only silence inside a recall or a colour counts against her."
+  ],
+  "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
+ }
+}
