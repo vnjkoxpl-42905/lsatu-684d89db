@@ -125,7 +125,7 @@ export default function OfficialQuestionPane({
   const choiceBadgeStyle: React.CSSProperties = { fontSize: `${baseSize * 0.78}px` };
 
   return (
-    <div className="relative flex flex-col h-full bg-white text-slate-950">
+    <div className="relative flex flex-col flex-1 min-h-0 bg-white text-slate-950">
       <DrillSplit
         ratio="passage-weighted"
         maxWidthClassName={null}
