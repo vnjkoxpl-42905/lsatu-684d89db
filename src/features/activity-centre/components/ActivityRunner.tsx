@@ -21,6 +21,7 @@ import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { RecallRunner } from "../recall/RecallRunner";
+import { SectionRunner } from "../recall/SectionRunner";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import "../activity-centre.css";
@@ -556,7 +557,36 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
    * same for RRC as for anything else.
    */
   if (assignment.item_format === "spoken-recall") {
-    if (!currentItem || !user) return null;
+    if (!user) return null;
+    /*
+     * Section mode is its own player, not a mode flag on the v1 one.
+     *
+     * The v1 runner's unit is the item and it judges each chunk as she goes; a
+     * section's unit is the whole section and nothing may be judged until it
+     * ends (ADR 0010, spec section 4). Those are different machines, so the
+     * branch is here rather than inside RecallRunner, where the forbidden
+     * feedback phase would still exist and have to be remembered around.
+     *
+     * `mode` comes off the assignment's own snapshot, not the Activity: the
+     * clock is what her time is scored against, so a later edit to the
+     * definition must not be able to rescore a run she has finished.
+     */
+    if (assignment.mode === "section") {
+      return (
+        <div className="activity-centre min-h-screen" data-runner="recall-section">
+          <SectionRunner
+            assignmentId={assignment.id}
+            studentId={user.id}
+            items={assignment.items}
+            sourceSection={assignment.source_section}
+            timeGoalMinutes={assignment.time_goal_minutes}
+            onComplete={handleBackToIntro}
+            onExit={handleBackToIntro}
+          />
+        </div>
+      );
+    }
+    if (!currentItem) return null;
     return (
       <div className="activity-centre min-h-screen" data-runner="recall">
         <RecallRunner

@@ -1,6 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SEED_ACTIVITIES } from "../content";
+
+/**
+ * The Activities a student types an answer into. The captured sections are
+ * spoken end to end and never reach this panel -- ActivityRunner hands a
+ * spoken-recall Activity to a different player entirely (ADR 0009) -- so
+ * asking them for an answer label would be asking for copy nothing renders.
+ */
+const TYPED = SEED_ACTIVITIES.filter((a) => a.item_format !== "spoken-recall");
 import { AnswerPanel } from "./AnswerPanel";
 
 // The answer box used to be hardcoded to "Your negation", so Conditional
@@ -42,7 +50,7 @@ describe("AnswerPanel answer copy", () => {
   });
 
   it("every seeded Activity authors its own, and none asks for a negation", () => {
-    for (const activity of SEED_ACTIVITIES) {
+    for (const activity of TYPED) {
       expect(activity.instructions.answer_label, activity.slug).toBeTruthy();
       expect(activity.instructions.answer_placeholder, activity.slug).toBeTruthy();
       expect(activity.instructions.answer_label, activity.slug).not.toMatch(/negation/i);
@@ -51,7 +59,7 @@ describe("AnswerPanel answer copy", () => {
   });
 
   it("renders that authored copy for every seeded Activity", () => {
-    for (const activity of SEED_ACTIVITIES) {
+    for (const activity of TYPED) {
       const { unmount } = render(
         <AnswerPanel
           item={activity.items[0]}

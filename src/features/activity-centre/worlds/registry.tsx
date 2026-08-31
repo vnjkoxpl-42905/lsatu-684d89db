@@ -157,10 +157,25 @@ const UNWORLDED: Record<string, CardIdentity> = {
   },
 };
 
+/**
+ * A captured section is Read, Recall, Colour at full scale, and its title names
+ * the section it is ("Read, Recall, Colour \u00b7 PT105 Section 2"). It carries the
+ * same identity as the base Activity with its own scope, matched by prefix
+ * rather than listed: a new section is built roughly whenever the source
+ * publishes more recordings, and a card left unlabelled reads as a bug.
+ */
+const SECTION_IDENTITY: CardIdentity = {
+  label: "Out Loud",
+  scope: "a whole section, against the clock",
+  accent: "320 60% 62%",
+};
+
 export function cardIdentityFor(title: string | null | undefined): CardIdentity | null {
   const world = worldForTitle(title);
   if (world) return { label: world.label, scope: world.scope, accent: world.accent };
-  return UNWORLDED[slugFromTitle(title ?? "")] ?? null;
+  const slug = slugFromTitle(title ?? "");
+  if (UNWORLDED[slug]) return UNWORLDED[slug];
+  return slug.startsWith("read-recall-colour-") ? SECTION_IDENTITY : null;
 }
 
 const WORLDS: WorldBinding[] = [

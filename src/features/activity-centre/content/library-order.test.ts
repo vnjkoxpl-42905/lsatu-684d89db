@@ -10,8 +10,8 @@ import {
 // used to be thrown away at query time in favour of created_at. These pin it.
 
 describe("the library order", () => {
-  it("lists all nine Activities, including the one outside the seed pipeline", () => {
-    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(9);
+  it("lists all twelve Activities, including the one outside the seed pipeline", () => {
+    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(12);
     expect(ACTIVITY_LIBRARY_ORDER).toContain("negation-station");
   });
 
@@ -41,11 +41,21 @@ describe("the library order", () => {
       // analysed on the page. Sitting at the end says "different kind of thing"
       // rather than "bigger version of the last one".
       "read-recall-colour", // a stimulus, from memory
+      // Then the captured sections: the same drill at full scale, a whole LR
+      // section run unbroken against the clock. They follow the Activity they
+      // scale up rather than sorting among the scope-ordered ones, and they run
+      // by PrepTest so the list does not reshuffle when the next is built.
+      "read-recall-colour-pt102-s3",
+      "read-recall-colour-pt105-s2",
+      "read-recall-colour-pt134-s3",
     ]);
   });
 
-  it("keeps the spoken Activity last, where a scope-ordered list cannot rank it", () => {
-    expect(ACTIVITY_LIBRARY_ORDER.at(-1)).toBe("read-recall-colour");
+  it("keeps the spoken Activities last, where a scope-ordered list cannot rank them", () => {
+    const spoken = ACTIVITY_LIBRARY_ORDER.filter((s) => s.startsWith("read-recall-colour"));
+    expect(ACTIVITY_LIBRARY_ORDER.slice(-spoken.length)).toEqual(spoken);
+    // The base Activity comes before the sections it scales up.
+    expect(spoken[0]).toBe("read-recall-colour");
   });
 
   it("keeps the two statement-level Activities together", () => {
@@ -69,6 +79,9 @@ describe("sorting a library page", () => {
       { slug: "dumb-it-down" },
       { slug: "negation-station" },
       { slug: "read-recall-colour" },
+      { slug: "read-recall-colour-pt134-s3" },
+      { slug: "read-recall-colour-pt102-s3" },
+      { slug: "read-recall-colour-pt105-s2" },
     ];
     expect(sortForLibrary(fromQuery).map((r) => r.slug)).toEqual([
       ...ACTIVITY_LIBRARY_ORDER,

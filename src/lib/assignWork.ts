@@ -295,6 +295,12 @@ async function planFor(
               instructions: activity.instructions as never,
               item_format: activity.item_format,
               items: activity.items as never,
+              // Snapshotted for the same reason `items` is. The clock is what
+              // her time is scored against, so a later edit to the Activity
+              // must not be able to rescore a run she has already finished.
+              mode: activity.mode,
+              time_goal_minutes: activity.time_goal_minutes as never,
+              source_section: activity.source_section,
               status: 'assigned',
             })
             .select('id')

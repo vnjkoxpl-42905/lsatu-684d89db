@@ -203,8 +203,11 @@ export type Database = {
           instructions: Json
           item_format: string
           items: Json
+          mode: string | null
           slug: string
+          source_section: string | null
           subtitle: string | null
+          time_goal_minutes: Json | null
           title: string
           updated_at: string
         }
@@ -216,8 +219,11 @@ export type Database = {
           instructions?: Json
           item_format?: string
           items?: Json
+          mode?: string | null
           slug: string
+          source_section?: string | null
           subtitle?: string | null
+          time_goal_minutes?: Json | null
           title: string
           updated_at?: string
         }
@@ -229,8 +235,11 @@ export type Database = {
           instructions?: Json
           item_format?: string
           items?: Json
+          mode?: string | null
           slug?: string
+          source_section?: string | null
           subtitle?: string | null
+          time_goal_minutes?: Json | null
           title?: string
           updated_at?: string
         }
@@ -248,15 +257,18 @@ export type Database = {
           item_count: number | null
           item_format: string
           items: Json
+          mode: string | null
           score: number | null
           score_judged: number | null
           score_numerator: number | null
           score_total: number | null
           scoring_version: number | null
+          source_section: string | null
           started_at: string | null
           status: string
           student_id: string
           subtitle: string | null
+          time_goal_minutes: Json | null
           title: string
         }
         Insert: {
@@ -270,15 +282,18 @@ export type Database = {
           item_count?: number | null
           item_format?: string
           items?: Json
+          mode?: string | null
           score?: number | null
           score_judged?: number | null
           score_numerator?: number | null
           score_total?: number | null
           scoring_version?: number | null
+          source_section?: string | null
           started_at?: string | null
           status?: string
           student_id: string
           subtitle?: string | null
+          time_goal_minutes?: Json | null
           title: string
         }
         Update: {
@@ -292,15 +307,18 @@ export type Database = {
           item_count?: number | null
           item_format?: string
           items?: Json
+          mode?: string | null
           score?: number | null
           score_judged?: number | null
           score_numerator?: number | null
           score_total?: number | null
           scoring_version?: number | null
+          source_section?: string | null
           started_at?: string | null
           status?: string
           student_id?: string
           subtitle?: string | null
+          time_goal_minutes?: Json | null
           title?: string
         }
         Relationships: [

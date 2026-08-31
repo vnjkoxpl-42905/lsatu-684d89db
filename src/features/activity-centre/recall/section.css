@@ -1,0 +1,141 @@
+/* Read, Recall, Colour, section mode.
+ *
+ * Same dark field as the v1 runner and for the same reason: this activity asks
+ * her to stop looking at the screen, so decorating it works against the only
+ * thing that makes it worth building.
+ *
+ * The difference is what the field holds. v1 shows one chunk at a time and
+ * nothing during recall. A section shows the whole stimulus for the whole
+ * stimulus, and says what she is doing by how each chunk is treated. Every rule
+ * below exists to keep the text in exactly the same place while that changes.
+ */
+
+.ac-section {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 1.5rem 4rem;
+  background: #050102;
+  color: hsl(0 0% 96%);
+}
+
+.ac-section-head {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: hsl(0 0% 96% / 0.4);
+}
+
+/* Where she is in the section, and deliberately not how long it is taking.
+   Time is measured silently and reported at the end: a clock in view is what
+   produces the rushed reading this drill exists to treat. */
+.ac-section-where {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Assignment-gated and full screen. Without a way out the only exit is the
+   browser's back button, which is a trap rather than a design. */
+.ac-section-exit {
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ac-section-body {
+  width: min(62ch, 100%);
+  text-align: left;
+}
+
+.ac-section-instruction {
+  margin: 0 0 2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(0 0% 96% / 0.45);
+}
+
+.ac-section-stimulus {
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+
+/* One inline run per chunk. Inline rather than block so a chunk that is part of
+   a sentence still reads as that sentence: the chunking is the drill's unit,
+   not a paragraph break the student is meant to see. */
+.ac-section-chunk {
+  transition: filter 0.22s ease, opacity 0.22s ease, color 0.22s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-chunk {
+    transition: none;
+  }
+}
+
+/* Already recalled. Sharp, and no longer marked: it is context now. */
+.ac-section-chunk.is-done {
+  color: hsl(0 0% 96% / 0.55);
+}
+
+/* The one she is reading, silently. Sharp and full strength; the marker is
+   weight and colour rather than a box, so nothing around it moves. */
+.ac-section-chunk.is-reading {
+  color: hsl(0 0% 100%);
+}
+
+/* Blanked: read, hidden, being said back from memory.
+ *
+ * The text itself stays in flow and turns transparent, so the box is the real
+ * box to the pixel. A replacement element sized to an estimate is the version
+ * of this that reflows, and reflow mid-section is what loses her place. The
+ * rule underneath says "something is here" without saying what. */
+.ac-section-chunk.is-blank {
+  color: transparent;
+  background-image: linear-gradient(hsl(0 0% 96% / 0.28), hsl(0 0% 96% / 0.28));
+  background-repeat: no-repeat;
+  background-position: left 60%;
+  background-size: 100% 1px;
+}
+
+/* Not yet reached. Present and measurable, not readable: she can see how much
+   section is left without being able to read ahead. This is NOT the blank and
+   must never look like it -- they are different instructions. */
+.ac-section-chunk.is-blurred {
+  filter: blur(4.5px);
+  opacity: 0.45;
+  user-select: none;
+}
+
+.ac-section-foot {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.ac-section-hint {
+  margin: 0;
+  color: hsl(0 0% 96% / 0.3);
+}
+
+/* Silence and a dead microphone look identical from her side, so a fault has to
+   say so rather than let her talk into nothing for twenty minutes. */
+.ac-section-error {
+  margin: 0;
+  color: hsl(30 80% 72%);
+}

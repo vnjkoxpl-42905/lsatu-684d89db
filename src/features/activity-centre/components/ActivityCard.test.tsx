@@ -69,7 +69,11 @@ describe("Activity Centre ordering", () => {
     // The spoken Activity sits last, and not because its text is longest: it is
     // off the scope line entirely, working a stimulus from memory rather than
     // analysing one on the page.
-    expect(ordered[ordered.length - 1]).toBe("Read, Recall, Colour");
-    expect(ordered[ordered.length - 2]).toBe("Spot the Callback");
+    // The spoken Activities tail the list, base first and then the captured
+    // sections it scales up. Everything above them is scope-ordered.
+    const spoken = ordered.filter((t) => t.startsWith("Read, Recall, Colour"));
+    expect(ordered.slice(-spoken.length)).toEqual(spoken);
+    expect(spoken[0]).toBe("Read, Recall, Colour");
+    expect(ordered[ordered.length - spoken.length - 1]).toBe("Spot the Callback");
   });
 });

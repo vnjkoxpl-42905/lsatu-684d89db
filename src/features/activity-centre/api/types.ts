@@ -106,6 +106,71 @@ export interface RecallItem extends ActivityItem {
 }
 
 /**
+ * How a spoken-recall Activity is run.
+ *
+ * `stimulus` is v1: one stimulus at a time, with cumulative rounds. `section`
+ * is the captured drill, where the unit of work is a whole LR section run
+ * unbroken against a clock, with no cumulative round and no coach in the loop.
+ * Absent means `stimulus`, so every Activity authored before section mode keeps
+ * behaving exactly as it did.
+ */
+export type ActivityMode = "stimulus" | "section";
+
+/**
+ * The Read's type, as captured: Loophole, Implication, Contradiction, Rephrase.
+ * Stored as the single captured letter rather than a spelled-out name, because
+ * the key is ground truth and re-spelling it invites drift.
+ */
+export type TheReadType = "L" | "I" | "C" | "R";
+
+/**
+ * The minutes a section is meant to take, per accommodation. Time is a scored
+ * criterion, so the goal cannot be one number: a student with 53% or 70% extra
+ * time is not slow when she takes longer, and grading her against the standard
+ * goal would score her accommodation as a failure.
+ */
+export interface TimeGoalMinutes {
+  standard: number;
+  accommodation_53: number;
+  accommodation_70: number;
+}
+
+/** One captured LR question that hangs off a stimulus. */
+export interface SectionQuestion {
+  /** e.g. "PT105.S2.Q1". */
+  citation: string;
+  qnum: number;
+  question_type: string;
+  correct_answer: string;
+}
+
+/**
+ * One stimulus of a section run.
+ *
+ * `credited_answers` and `cumulative_after` are both empty here, and that is
+ * the design rather than missing content: the captured drill has no cumulative
+ * round, so there is nothing for a reference retelling to be the reference for.
+ * The Read is scored against `the_read`, which is captured ground truth and
+ * strictly better than an authored retelling.
+ *
+ * Two questions can share one stimulus, which is why `questions` is a list and
+ * why a 25-question section is 23 items. She recalls the stimulus once.
+ */
+export interface RecallSectionItem extends ActivityItem {
+  /** e.g. "PT105_S2_Q1"; the recording and transcript are named from it. */
+  slug: string;
+  chunks: RecallChunk[];
+  cumulative_after: number[];
+  /** The captured Read for this stimulus, said at the end of it. */
+  the_read: string;
+  the_read_type: TheReadType;
+  /** Path to Joshua's recording of the process done out loud. */
+  model_recording: string;
+  model_transcript: string;
+  questions: SectionQuestion[];
+}
+
+/**
  * Per-Activity judging brief for the Coach. Each Activity trains a different
  * skill and therefore needs a different rubric: what counts as `correct` in
  * Conditional Rephrase is not what counts in Dumb it Down. Without this the
@@ -179,6 +244,11 @@ export interface Activity {
   instructions: ActivityInstructions;
   item_format: ItemFormat;
   items: ActivityItem[];
+  /** Absent (null) on every Activity authored before section mode. */
+  mode: ActivityMode | null;
+  time_goal_minutes: TimeGoalMinutes | null;
+  /** e.g. "PT105.S2". Null unless this Activity is one captured section. */
+  source_section: string | null;
   created_by: string;
   class_id: string;
   created_at: string;
@@ -247,6 +317,15 @@ export interface ActivityAssignment {
    * nothing is backfilled into a version it was not computed under.
    */
   scoring_version?: number | null;
+  /**
+   * Snapshotted from the Activity at assign time, like `items`, and absent
+   * (null) on every assignment made before section mode. The clock is what her
+   * time is scored against, so reading it live from `activities` would let a
+   * later edit rescore a run she has already finished.
+   */
+  mode?: ActivityMode | null;
+  time_goal_minutes?: TimeGoalMinutes | null;
+  source_section?: string | null;
   started_at: string | null;
   completed_at: string | null;
   assigned_by: string;

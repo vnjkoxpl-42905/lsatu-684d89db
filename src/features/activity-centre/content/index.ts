@@ -8,10 +8,19 @@
 // To regenerate after editing a bank, re-run the vault-side build script and
 // commit the resulting JSON plus a new seed migration.
 
-import type { ActivityInstructions, ActivityItem, ItemFormat } from "../api/types";
+import type {
+  ActivityInstructions,
+  ActivityItem,
+  ActivityMode,
+  ItemFormat,
+  TimeGoalMinutes,
+} from "../api/types";
 
 import conditionalRephrase from "./conditional-rephrase.json";
 import readRecallColour from "./read-recall-colour.json";
+import readRecallColourPt102S3 from "./read-recall-colour-pt102-s3.json";
+import readRecallColourPt105S2 from "./read-recall-colour-pt105-s2.json";
+import readRecallColourPt134S3 from "./read-recall-colour-pt134-s3.json";
 import dumbItDown from "./dumb-it-down.json";
 import findTheConclusion from "./find-the-conclusion.json";
 import rebuttalRephrase from "./rebuttal-rephrase.json";
@@ -27,6 +36,15 @@ export interface SeedActivity {
   item_format: ItemFormat;
   instructions: ActivityInstructions;
   items: ActivityItem[];
+  /**
+   * Section mode only, and absent on every Activity authored before it. A
+   * section carries its own clock and names the captured section it came from;
+   * the instructions block stays empty in the JSON and is carried from the base
+   * Activity at seed time, so the rules are authored once.
+   */
+  mode?: ActivityMode;
+  time_goal_minutes?: TimeGoalMinutes;
+  source_section?: string;
 }
 
 /**
@@ -49,6 +67,13 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
   // `spoken-recall` Activity, so it is the only one ActivityRunner hands to a
   // different player entirely.
   readRecallColour as unknown as SeedActivity,
+  // The captured sections. Each is a whole LR section run unbroken against the
+  // clock, and they sit after the base Activity because they are the same drill
+  // at full scale rather than a different skill. Ordered by PrepTest so the
+  // list does not reshuffle when the next one is built.
+  readRecallColourPt102S3 as unknown as SeedActivity,
+  readRecallColourPt105S2 as unknown as SeedActivity,
+  readRecallColourPt134S3 as unknown as SeedActivity,
 ];
 
 export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);
@@ -79,6 +104,9 @@ export const ACTIVITY_LIBRARY_ORDER = [
   "dumb-it-down", // a paragraph
   "spot-the-callback", // a passage
   "read-recall-colour", // a stimulus, from memory
+  "read-recall-colour-pt102-s3", // a whole section, against the clock
+  "read-recall-colour-pt105-s2",
+  "read-recall-colour-pt134-s3",
 ] as const;
 
 /**

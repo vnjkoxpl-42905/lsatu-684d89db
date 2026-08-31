@@ -43,6 +43,33 @@
         ],
         "createdAt": "2026-08-29T08:10:25.249Z",
         "reason": "The official drill chrome (OfficialDrillFrame/Toolbar/QuestionPane/AnswerNavigator) runs its own LawHub-style type scale, not the app ramp. Evidence: sibling EnhancedBlindReview.tsx:286,287,355 uses the identical text-[14px]/text-[15px] literals; this screen sits beside it in the same frame and must match it."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#050102",
+        "createdAt": "2026-08-31T09:12:49.868Z",
+        "reason": "The RRC surface is a deliberate single dark field, not an app surface (ADR 0009; recall.css header). Evidence: sibling recall.css:21 and :134 use this exact literal for the same field, and section mode must match it or the two runners of the same Activity look like different products.",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ]
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.72rem",
+        "createdAt": "2026-08-31T09:12:50.166Z",
+        "reason": "Matches the sibling RRC runner's chrome scale exactly. Evidence: recall.css:47 sets 0.72rem for the same head/exit/hint text on the same dark field.",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ]
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.15rem",
+        "createdAt": "2026-08-31T09:12:50.465Z",
+        "reason": "The stimulus body on the RRC dark field. It is read at arm's length as one block of prose rather than as app UI, and sits between the app ramp's steps on purpose; the sibling runner sets its own body size the same way.",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ]
       }
     ]
   }
