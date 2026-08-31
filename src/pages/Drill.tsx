@@ -28,6 +28,7 @@ import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolb
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
+import AnswerOvals from '@/components/drill/official/AnswerOvals';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
 import { ReviewModal } from '@/components/drill/ReviewModal';
@@ -4278,6 +4279,26 @@ function DrillContent() {
               // what carries the student on, so a second "Next" in the primary
               // slot would just be the same control twice.
               primaryVisible={!currentAttempted && !currentUnscored}
+              // A built set is a fixed, known list, so it navigates like a
+              // section: every question gets an oval, and any of them can be
+              // clicked. Jumping commits whatever is selected first, for the
+              // same reason Previous does — leaving a question must never be
+              // the thing that loses the answer on it.
+              pager={
+                <AnswerOvals
+                  questionQueue={session.questionQueue}
+                  currentIndex={session.currentIndex}
+                  attemptedQids={attemptedQids}
+                  jumpEnabled={!timer?.isPaused}
+                  jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
+                  onJumpTo={(index) => {
+                    void (async () => {
+                      await commitPendingSelection();
+                      handleJumpTo(index);
+                    })();
+                  }}
+                />
+              }
               onEnd={() => handleNavigation('/classroom/drill')}
               disabled={!!timer?.isPaused}
             />

@@ -31,3 +31,27 @@ _Avoid_: deriving a drill's targets from card prose alone (it over-captures).
 **Guided Drill**:
 A curated, fixed practice set of LSAT questions with a Drill Instruction Card and (target state) a deterministic ordered question list. 108 exist (`guidedDrillHtmlManifest.ts`).
 _Avoid_: drill (too generic — could mean Smart Drill), set, assignment.
+
+**Answer Navigator** (the "bubbles"):
+The strip along the bottom of the official testing frame: one small empty **oval**
+per question in the queue, the question number printed *below* each oval, the
+current question's number bold with a thin I-beam tick above it. Rendered by
+`OfficialAnswerNavigator`. Joshua calls the ovals "bubbles"; the code calls them
+ovals and the strip an answer navigator. Both names mean this one thing.
+One oval stands for one **question**, never for an answer choice. This matters
+because "bubble" is overloaded: on paper, the bubble you fill in IS your answer
+(A-E). Here it is not. An oval is a place to go, so anything that turns it into a
+verdict on your answer is out of scope for it by definition.
+_Avoid_: pager (that is the RC per-question control that lives in the bar's
+`pager` slot), dots, progress bar (it is navigation, not a progress readout),
+and using "bubble" for an A-E answer choice.
+
+**Oval State**:
+What one oval in the Answer Navigator communicates. Today there are exactly three,
+and they are orthogonal: **current** (which question you are on), **answered** (a
+qid present in `attemptedQids`, meaning at least one recorded attempt), and
+**jumpable** (clicking moves you there, governed by `jumpEnabled`). Notably there
+is no correct/incorrect state: a section never reveals, so the strip has never had
+to say whether an answer was right.
+_Avoid_: "completed" or "done" (answered does not mean finished or correct),
+"selected" (that is an answer choice, not an oval).
