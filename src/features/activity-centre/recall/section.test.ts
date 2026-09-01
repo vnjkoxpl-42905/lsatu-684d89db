@@ -3,8 +3,6 @@ import pt105 from "../content/read-recall-colour-pt105-s2.json";
 import {
   advanceCursor,
   buildSectionRun,
-  chunkStates,
-  chunksDone,
   formatElapsed,
   goalSeconds,
   startCursor,
@@ -30,7 +28,7 @@ function walk(r: SectionRun): SectionCursor[] {
   let at: SectionCursor | null = startCursor();
   // Bounded so a machine that never terminates fails as a test rather than
   // hanging the suite.
-  const cap = r.totalChunks * 2 + r.stimuli.length + 10;
+  const cap = r.stimuli.length * 2 + 10;
   while (at && seen.length < cap) {
     seen.push(at);
     at = advanceCursor(r, at);
@@ -44,9 +42,14 @@ describe("building a section run", () => {
     expect(run).not.toBeNull();
     expect(run.sourceSection).toBe("PT105.S2");
     expect(run.stimuli).toHaveLength(pt105.items.length);
-    expect(run.totalChunks).toBe(
-      pt105.items.reduce((n, i) => n + i.chunks.length, 0),
-    );
+  });
+
+  it("keeps the chunks as authored, because the grader's Details live inside them", () => {
+    // A Chunk is the unit content is written in and a guide for her eye. It is
+    // not a boundary the machine holds her to, but the Details it carries are
+    // what Coverage is counted against, so the run must not flatten them away.
+    expect(run.stimuli[0].chunks).toHaveLength(pt105.items[0].chunks.length);
+    expect(run.stimuli[0].chunks[0].details.length).toBeGreaterThan(0);
   });
 
   it("refuses anything that is not a section rather than half-rendering it", () => {
@@ -60,7 +63,7 @@ describe("building a section run", () => {
     expect(
       buildSectionRun(pt105.items, "PT105.S2", { standard: 20, accommodation_53: 25 }),
     ).toBeNull();
-    // A v1 item has chunks but no captured Read.
+    // A v1 item has chunks but none of the section capture's fields.
     expect(
       buildSectionRun(
         [{ ...pt105.items[0], the_read: "" }],
@@ -74,103 +77,47 @@ describe("building a section run", () => {
 describe("advancing", () => {
   const walked = walk(run);
 
-  it("alternates read and speak, chunk by chunk, and ends The Read on each stimulus", () => {
+  it("gives every stimulus exactly two states: working, then recalling", () => {
+    // One key, pressed twice per stimulus. The first press is her saying
+    // "Recall Full Stimulus": the text goes and The Recall begins. The second
+    // ends it. Nothing else exists between those moments, because the app does
+    // not track which chunk she is on (ADR 0013).
     for (const stimulus of run.stimuli) {
       const mine = walked.filter((c) => run.stimuli[c.item].slug === stimulus.slug);
-      const shape = mine.map((c) => c.phase);
-      const expected = [
-        ...stimulus.chunks.flatMap(() => ["read", "speak"] as const),
-        "the-read" as const,
-      ];
-      expect(shape, stimulus.slug).toEqual(expected);
+      expect(mine.map((c) => c.phase), stimulus.slug).toEqual(["working", "recalling"]);
     }
   });
 
-  it("visits every chunk of every stimulus exactly once", () => {
-    const reads = walked.filter((c) => c.phase === "read");
-    expect(reads).toHaveLength(run.totalChunks);
-    const keys = reads.map((c) => `${c.item}:${c.chunk}`);
-    expect(new Set(keys).size).toBe(keys.length);
+  it("takes exactly two presses per stimulus across the whole section", () => {
+    expect(walked).toHaveLength(run.stimuli.length * 2);
   });
 
   it("runs the stimuli in order and never goes back", () => {
+    // Nothing is revisitable. A stimulus she has passed does not come back
+    // until the Report Card.
     const order = walked.map((c) => c.item);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     expect(new Set(order).size).toBe(run.stimuli.length);
   });
 
-  it("ends after the last stimulus's Read rather than looping", () => {
+  it("ends after the last stimulus's Recall rather than looping", () => {
     const last = walked[walked.length - 1];
     expect(last.item).toBe(run.stimuli.length - 1);
-    expect(last.phase).toBe("the-read");
+    expect(last.phase).toBe("recalling");
     expect(advanceCursor(run, last)).toBeNull();
   });
 
-  it("has no cumulative round anywhere in it", () => {
-    // Not an omission. The captured drill is read -> recall -> colour per chunk
-    // and then The Read, which IS the synthesis; a cumulative round would be a
-    // second one, and at roughly 48 seconds a stimulus it would not fit.
-    expect(walked.every((c) => ["read", "speak", "the-read"].includes(c.phase))).toBe(true);
+  it("has no chunk grain anywhere in it", () => {
+    // She may not chunk the way we cut, and a cursor that expects otherwise
+    // scores her for disagreeing with our line breaks. The machine carries no
+    // chunk position at all, so there is nothing to desync.
+    for (const at of walked) {
+      expect("chunk" in at).toBe(false);
+    }
   });
 });
 
-describe("what is on screen", () => {
-  it("shows every chunk of the stimulus from the first frame", () => {
-    const states = chunkStates(run, startCursor());
-    expect(states).toHaveLength(run.stimuli[0].chunks.length);
-    // She can see how much is left against the clock without reading ahead.
-    expect(states[0]).toBe("reading");
-    expect(states.slice(1).every((s) => s === "upcoming")).toBe(true);
-  });
-
-  it("blanks the chunk she is recalling and leaves the rest alone", () => {
-    const at: SectionCursor = { item: 0, chunk: 1, phase: "speak" };
-    const states = chunkStates(run, at);
-    expect(states[0]).toBe("done");
-    expect(states[1]).toBe("speaking");
-    expect(states.slice(2).every((s) => s === "upcoming")).toBe(true);
-  });
-
-  it("never blurs and blanks the same chunk", () => {
-    // They mean different things: blurred is present but unreadable, blank is
-    // read and now being said back. One state per chunk, always.
-    for (const at of walk(run)) {
-      const states = chunkStates(run, at);
-      expect(states.filter((s) => s === "speaking").length).toBeLessThanOrEqual(1);
-      expect(states.filter((s) => s === "reading").length).toBeLessThanOrEqual(1);
-    }
-  });
-
-  it("keeps the chunk count fixed for a stimulus, so the layout cannot reflow", () => {
-    for (const at of walk(run)) {
-      expect(chunkStates(run, at)).toHaveLength(run.stimuli[at.item].chunks.length);
-    }
-  });
-
-  it("brings the whole stimulus back sharp for The Read", () => {
-    const at: SectionCursor = {
-      item: 0,
-      chunk: run.stimuli[0].chunks.length,
-      phase: "the-read",
-    };
-    expect(chunkStates(run, at).every((s) => s === "done")).toBe(true);
-  });
-});
-
-describe("progress and the clock", () => {
-  it("counts a chunk once she has said it back, not once she has read it", () => {
-    expect(chunksDone(run, startCursor())).toBe(0);
-    expect(chunksDone(run, { item: 0, chunk: 0, phase: "speak" })).toBe(0);
-    expect(chunksDone(run, { item: 0, chunk: 1, phase: "read" })).toBe(1);
-  });
-
-  it("never runs backwards and finishes at the section's total", () => {
-    const walked = walk(run);
-    const counts = walked.map((c) => chunksDone(run, c));
-    for (let i = 1; i < counts.length; i++) expect(counts[i]).toBeGreaterThanOrEqual(counts[i - 1]);
-    expect(counts[counts.length - 1]).toBe(run.totalChunks);
-  });
-
+describe("the clock", () => {
   it("gives a student with extra time more of it, not the standard goal", () => {
     // Grading her against the standard goal would score her accommodation as a
     // failure, which is the whole reason the goal is three numbers.

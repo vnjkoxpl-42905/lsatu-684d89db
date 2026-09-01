@@ -46,3 +46,49 @@ _Avoid_: Grade, mark, result
 **Activity assignment**:
 A per-student issued copy of an Activity, snapshotting its content at assign time and tracking the student's progress/score. Mirrors the homework `assignment` pattern; immutable snapshot once issued.
 _Avoid_: Homework (that's the MCQ-set pattern), task
+
+### Read, Recall, Colour
+
+The four-step vocabulary of the RRC runner, plus the language its grading uses.
+The source method's own words for these steps are listed under `_Avoid_` and are
+never used in the product.
+
+**Chunk**:
+An authored cut of a stimulus, roughly a sentence, carrying the Details that fall inside it. A guide for her eye and the unit content is written in, never a boundary she is held to: she reads, recalls and colours in whatever units she likes.
+_Avoid_: Line, segment, piece, part
+
+**Read** (step 1):
+The silent reading of a chunk. Nothing is spoken.
+_Avoid_: Skim, study
+
+**Reading Recall** (step 2):
+Saying a chunk back out loud in her own words.
+_Avoid_: Translate, translation, paraphrase, summary, repeat-back
+
+**Colouring In** (step 3):
+Her spoken reaction to the chunk she just recalled — a thought, doubt, example, or joke that fits that chunk and no other.
+_Avoid_: Quip, comment, annotation, reaction
+
+**The Recall** (step 4):
+The end of a stimulus, worked with the text gone: she says the whole argument back from memory.
+_Avoid_: The Read (its former name, which collided with step 1), CLIR, recap, retell, rebound, takeaway
+
+**Detail**:
+One of the small authored facts a stimulus contains. PT102.S3.Q1 holds 21.
+_Avoid_: Point, fact, bullet, item (reserved for an Activity's prompt)
+
+**Coverage**:
+How many of a stimulus's Details she carried, counted across everything she said about it rather than against any one Chunk.
+_Avoid_: Accuracy, completeness, recall rate
+
+**Reciting**:
+Saying a stimulus back close to word-for-word. A failure of Reading Recall, not a step of its own: Coverage looks perfect and nothing was understood.
+_Avoid_: Parroting, copying, verbatim recall, memorising
+
+**Listing**:
+Delivering a stimulus as a flat run of facts rather than a story in her own words. The opposite failure to Reciting: Coverage looks perfect and the argument was never held together.
+_Avoid_: Shopping list, itemising, enumerating
+
+**Report Card**:
+What a finished section produces: every stimulus graded on its own merits, showing what she missed and what she got perfect, with her own recording playable beside it.
+_Avoid_: Scorecard (informally taken by the MCQ Drill results screen), Verdict (that is the coach judging live, which this surface never does), results, grade, review

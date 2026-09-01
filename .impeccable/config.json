@@ -47,29 +47,80 @@
       {
         "rule": "design-system-color",
         "value": "#050102",
-        "createdAt": "2026-08-31T09:12:49.868Z",
-        "reason": "The RRC surface is a deliberate single dark field, not an app surface (ADR 0009; recall.css header). Evidence: sibling recall.css:21 and :134 use this exact literal for the same field, and section mode must match it or the two runners of the same Activity look like different products.",
         "files": [
           "src/features/activity-centre/recall/section.css"
-        ]
+        ],
+        "createdAt": "2026-08-31T09:12:49.868Z",
+        "reason": "The RRC surface is a deliberate single dark field, not an app surface (ADR 0009; recall.css header). Evidence: sibling recall.css:21 and :134 use this exact literal for the same field, and section mode must match it or the two runners of the same Activity look like different products."
       },
       {
         "rule": "design-system-font-size",
         "value": "0.72rem",
-        "createdAt": "2026-08-31T09:12:50.166Z",
-        "reason": "Matches the sibling RRC runner's chrome scale exactly. Evidence: recall.css:47 sets 0.72rem for the same head/exit/hint text on the same dark field.",
         "files": [
           "src/features/activity-centre/recall/section.css"
-        ]
+        ],
+        "createdAt": "2026-08-31T09:12:50.166Z",
+        "reason": "Matches the sibling RRC runner's chrome scale exactly. Evidence: recall.css:47 sets 0.72rem for the same head/exit/hint text on the same dark field."
       },
       {
         "rule": "design-system-font-size",
         "value": "1.15rem",
-        "createdAt": "2026-08-31T09:12:50.465Z",
-        "reason": "The stimulus body on the RRC dark field. It is read at arm's length as one block of prose rather than as app UI, and sits between the app ramp's steps on purpose; the sibling runner sets its own body size the same way.",
         "files": [
           "src/features/activity-centre/recall/section.css"
-        ]
+        ],
+        "createdAt": "2026-08-31T09:12:50.465Z",
+        "reason": "The stimulus body on the RRC dark field. It is read at arm's length as one block of prose rather than as app UI, and sits between the app ramp's steps on purpose; the sibling runner sets its own body size the same way."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "hsl(30 80% 72%)",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ],
+        "createdAt": "2026-08-31T10:21:02.956Z",
+        "reason": "The RRC error text on the deliberate dark field (ADR 0009). Evidence: this is the sibling runner's exact value, recall.css:61, for the same microphone-fault message; the two runners of one Activity must not warn in different colours."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#f1f5f9",
+        "createdAt": "2026-09-01T12:50:55.454Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "0.375rem",
+        "createdAt": "2026-09-01T12:50:55.620Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(0 0 0 / 0.35)",
+        "createdAt": "2026-09-01T12:50:55.782Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "19px",
+        "createdAt": "2026-09-01T12:50:55.964Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#dbeafe",
+        "createdAt": "2026-09-01T12:50:56.131Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "0.25rem",
+        "createdAt": "2026-09-01T12:50:56.296Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.75rem",
+        "createdAt": "2026-09-01T12:50:56.460Z",
+        "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
       }
     ]
   }

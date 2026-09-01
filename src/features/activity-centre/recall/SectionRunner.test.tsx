@@ -3,13 +3,14 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import pt105 from "../content/read-recall-colour-pt105-s2.json";
 import { SectionRunner } from "./SectionRunner";
 
-// The section runner, driven the way she drives it: one key, start to finish.
+// The section runner, driven the way she drives it: one key, pressed twice per
+// stimulus, start to finish.
 //
-// Everything asserted here is a rule the spec states negatively, and each one
-// fails silently rather than loudly if it breaks: a chunk that reflows, a
-// verdict shown mid-run, or a write inside the loop all look like a working
-// screen. She runs twenty unbroken minutes with nothing checking on her, so
-// these are asserted rather than trusted.
+// Everything asserted here is a rule the design states negatively, and each one
+// fails silently rather than loudly if it breaks: a stimulus that stays on
+// screen through its Recall, a verdict shown mid-run, or a write inside the
+// loop all look like a working screen. She runs twenty unbroken minutes with
+// nothing checking on her, so these are asserted rather than trusted.
 
 type Row = Record<string, unknown>;
 const insert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
@@ -29,8 +30,10 @@ vi.mock("@/integrations/supabase/client", () => ({
  * handheld instead.
  */
 
-/** One stimulus, so a full run is short enough to drive press by press. */
+/** One stimulus, so a full run is two presses. */
 const ONE = { ...pt105, items: [pt105.items[0]] };
+/** Two, for the rules about what never comes back. */
+const TWO = { ...pt105, items: pt105.items.slice(0, 2) };
 const CHUNKS = ONE.items[0].chunks;
 
 function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {}) {
@@ -51,94 +54,33 @@ function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {})
 
 const space = () => fireEvent.keyDown(document, { code: "Space" });
 
-/** The rendered chunk spans, in document order. */
-function chunkSpans(): HTMLElement[] {
-  return Array.from(document.querySelectorAll<HTMLElement>(".ac-section-chunk"));
-}
-
-function stateOf(el: HTMLElement): string {
-  return (
-    Array.from(el.classList)
-      .find((c) => c.startsWith("is-"))
-      ?.slice(3) ?? "none"
-  );
-}
-
 beforeEach(() => {
   insert.mockClear();
   upload.mockClear();
 });
 
-describe("what she sees", () => {
+describe("what she sees while working", () => {
   it("puts the whole stimulus on screen from the first frame", () => {
     renderRun();
-    // She can see how much is left against the clock without reading ahead,
-    // which is the entire reason a section shows everything and v1 shows one.
-    expect(chunkSpans()).toHaveLength(CHUNKS.length);
+    // Full stimulus, no cursor, no rail: she reads, recalls and colours in
+    // whatever units she likes, and the screen does not mark where she is.
     for (const chunk of CHUNKS) {
       expect(screen.getByText(chunk.text)).toBeInTheDocument();
     }
   });
 
-  it("marks where she is without concealing anything", () => {
+  it("marks no chunk as current, done, or upcoming", () => {
     renderRun();
-    expect(chunkSpans().map(stateOf)).toEqual([
-      "reading",
-      ...CHUNKS.slice(1).map(() => "upcoming"),
-    ]);
-
-    space();
-    // The states are a place marker only. The method's own answer to rereading
-    // is that she looks away from the text, so the app does not take it away.
-    expect(chunkSpans().map(stateOf)).toEqual([
-      "speaking",
-      ...CHUNKS.slice(1).map(() => "upcoming"),
-    ]);
-
-    space();
-    expect(chunkSpans().map(stateOf)).toEqual([
-      "done",
-      "reading",
-      ...CHUNKS.slice(2).map(() => "upcoming"),
-    ]);
-  });
-
-  it("keeps every chunk in the DOM the whole time, so the layout cannot reflow", () => {
-    renderRun();
-    // Text jumping is the failure that loses her place mid-section. Only the
-    // class changes as she advances; a chunk leaving the DOM would be the
-    // version of this that reflows.
-    for (let i = 0; i < CHUNKS.length * 2; i++) {
-      expect(chunkSpans(), `after ${i} presses`).toHaveLength(CHUNKS.length);
-      space();
-    }
-  });
-
-  it("never hides a chunk from a screen reader", () => {
-    renderRun();
-    space();
-    // The screen used to blank the chunk she was recalling and hide it from
-    // assistive tech so it could not be read back to her. Nothing is concealed
-    // now, so concealing it from a screen reader would make this activity
-    // simply unavailable to a student using one.
-    for (const span of chunkSpans()) {
-      expect(span.querySelector("[aria-hidden='true']")).toBeNull();
-    }
-    expect(chunkSpans()[0].textContent).toContain(CHUNKS[0].text);
-  });
-
-  it("brings the whole stimulus back sharp for The Read", () => {
-    renderRun();
-    for (let i = 0; i < CHUNKS.length * 2; i++) space();
-    expect(chunkSpans().map(stateOf).every((s) => s === "done")).toBe(true);
-    expect(screen.getByText(/give your read/i)).toBeInTheDocument();
+    // A place marker would be the chunk cursor coming back as styling. The
+    // grain is hers, so no chunk is treated differently from any other.
+    const marked = document.querySelectorAll(
+      ".is-reading, .is-speaking, .is-done, .is-upcoming",
+    );
+    expect(marked).toHaveLength(0);
   });
 
   it("never tells her she read aloud, and never shows a clock", () => {
     renderRun();
-    // She reads silently; only the recall, the colour and The Read are spoken.
-    expect(screen.getByText(/read it silently/i)).toBeInTheDocument();
-    space();
     expect(screen.getByText(/say it back/i)).toBeInTheDocument();
     // No clock on screen, for the same reason v1 has none: a running clock in
     // view is what produces the rushed reading this drill exists to treat.
@@ -146,10 +88,46 @@ describe("what she sees", () => {
   });
 });
 
+describe("The Recall", () => {
+  it("removes the text on the first press, entirely", () => {
+    renderRun();
+    space();
+    // The text vanishes and she says the whole argument back from memory.
+    // Truly gone, not hidden: a chunk left in the DOM would be read back to a
+    // student using a screen reader, which defeats the drill for her exactly.
+    for (const chunk of CHUNKS) {
+      expect(document.body.textContent).not.toContain(chunk.text);
+    }
+    expect(screen.getByText(/from memory/i)).toBeInTheDocument();
+  });
+
+  it("does not bring a finished stimulus back", () => {
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
+      />,
+    );
+    space();
+    space();
+    // Nothing is revisitable until the Report Card. The second press loads the
+    // next stimulus; the first is gone for good.
+    for (const chunk of TWO.items[1].chunks) {
+      expect(screen.getByText(chunk.text)).toBeInTheDocument();
+    }
+    for (const chunk of TWO.items[0].chunks) {
+      expect(document.body.textContent).not.toContain(chunk.text);
+    }
+  });
+});
+
 describe("what she never sees", () => {
   it("judges nothing and shows no verdict at any point in the run", () => {
     renderRun();
-    for (let i = 0; i < CHUNKS.length * 2 + 1; i++) {
+    for (let i = 0; i < 2; i++) {
       // A live verdict trains her to vet before speaking, which is the exact
       // habit colouring exists to break.
       expect(document.body.textContent).not.toMatch(/correct|incorrect|missed|score|you said/i);
@@ -157,10 +135,10 @@ describe("what she never sees", () => {
     }
   });
 
-  it("shows her no detail list, which is the answer key", () => {
+  it("shows her no Detail list, which is the answer key", () => {
     renderRun();
     const details = CHUNKS.flatMap((c) => c.details.map((d) => d.text));
-    for (let i = 0; i < CHUNKS.length * 2; i++) {
+    for (let i = 0; i < 2; i++) {
       for (const detail of details) {
         expect(screen.queryByText(detail)).toBeNull();
       }
@@ -168,9 +146,11 @@ describe("what she never sees", () => {
     }
   });
 
-  it("shows her no captured Read before she has given her own", () => {
+  it("shows her no captured takeaway, which stays unused on purpose", () => {
     renderRun();
-    for (let i = 0; i < CHUNKS.length * 2; i++) {
+    // The captured key is wired to nothing (ADR 0012). Rendering it would be
+    // the accidental version of turning the takeaway back on.
+    for (let i = 0; i < 2; i++) {
       expect(screen.queryByText(ONE.items[0].the_read)).toBeNull();
       space();
     }
@@ -182,15 +162,14 @@ describe("writing it down", () => {
     renderRun();
     // A dropped connection must not be able to stall her mid-section, so there
     // is no network call inside the loop at all.
-    for (let i = 0; i < CHUNKS.length * 2; i++) {
-      expect(insert).not.toHaveBeenCalled();
-      space();
-    }
+    space();
+    expect(insert).not.toHaveBeenCalled();
   });
 
   it("writes one row per stimulus once, at the end, and finishes", async () => {
     const { onComplete } = renderRun();
-    for (let i = 0; i < CHUNKS.length * 2 + 1; i++) space();
+    space();
+    space();
 
     // The write waits on the recorder being stopped and its file put away, so
     // it lands a tick after the last press rather than during it.
@@ -209,7 +188,12 @@ describe("writing it down", () => {
     expect(rrc.slug).toBe(ONE.items[0].slug);
     expect(rrc.accommodation).toBe("standard");
     expect(rrc.goal_minutes).toBe(ONE.time_goal_minutes.standard);
-    expect((rrc.chunk_seconds as unknown[]).length).toBe(CHUNKS.length);
+    // The record is stimulus-grained, like everything else: time working, time
+    // recalling, and nothing per chunk, because no chunk boundary was observed.
+    expect(typeof rrc.working_seconds).toBe("number");
+    expect(typeof rrc.recall_seconds).toBe("number");
+    expect("chunk_seconds" in rrc).toBe(false);
+    expect("the_read_seconds" in rrc).toBe(false);
 
     await vi.waitFor(() => expect(onComplete).toHaveBeenCalled());
     expect(screen.getByText(/section finished/i)).toBeInTheDocument();
@@ -217,7 +201,8 @@ describe("writing it down", () => {
 
   it("scores a student with extra time against her own goal", async () => {
     renderRun({ accommodation: "accommodation_70" });
-    for (let i = 0; i < CHUNKS.length * 2 + 1; i++) space();
+    space();
+    space();
     await vi.waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
     const rrc = insert.mock.calls[0][0][0].rrc as Record<string, unknown>;
     // Grading her against the standard goal would score her accommodation as a
@@ -231,9 +216,9 @@ describe("writing it down", () => {
       <SectionRunner
         assignmentId="a1"
         studentId="s1"
-        items={ONE.items}
-        sourceSection={ONE.source_section}
-        timeGoalMinutes={ONE.time_goal_minutes}
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
       />,
     );
     space();
@@ -251,6 +236,5 @@ describe("a snapshot that is not a section", () => {
       <SectionRunner assignmentId="a1" studentId="s1" items={[]} sourceSection={null} timeGoalMinutes={null} />,
     );
     expect(screen.getByText(/could not be read/i)).toBeInTheDocument();
-    expect(chunkSpans()).toHaveLength(0);
   });
 });

@@ -8,7 +8,6 @@ import sectionInstructions from "@/features/activity-centre/content/read-recall-
 import {
   advanceCursor,
   buildSectionRun,
-  chunkStates,
   startCursor,
   type SectionCursor,
 } from "@/features/activity-centre/recall/section";
@@ -1945,16 +1944,15 @@ function SectionPanel() {
         <Tabs
           options={run.stimuli.map((_, i) => String(i + 1))}
           value={String(cursor.item + 1)}
-          onChange={(v) => setCursor({ ...startCursor(), item: Number(v) - 1 })}
+          onChange={(v) => setCursor({ item: Number(v) - 1, phase: "working" })}
           label="Stimulus"
         />
         <span className="text-xs text-zinc-500">
-          {cursor.phase} · chunk {cursor.chunk + 1}/{stimulus.chunks.length} · press space
+          {cursor.phase} · press space
         </span>
       </div>
       <SectionStage
         stimulus={stimulus}
-        states={chunkStates(run, cursor)}
         phase={cursor.phase}
         stimulusNumber={cursor.item + 1}
         totalStimuli={run.stimuli.length}

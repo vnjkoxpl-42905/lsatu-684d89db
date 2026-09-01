@@ -1,12 +1,13 @@
-import type { ChunkState, SectionPhase, SectionStimulus } from "./section";
+import type { SectionPhase, SectionStimulus } from "./section";
 
 /**
  * One screen of a Read, Recall, Colour SECTION run.
  *
  * Presentational, like `RecallStage`, and separate from it because the rule it
- * keeps is the opposite one. v1 hides everything during recall. A section keeps
- * the whole stimulus on screen the entire time and changes only how each chunk
- * is treated, so she can see how much is left without being able to read ahead.
+ * keeps is different. v1 hides one chunk during its recall; a section has two
+ * looks and nothing between them: the whole stimulus while she works it, and
+ * no stimulus at all during The Recall
+ * (`docs/adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md`).
  *
  * **It wears the real section's clothes.** The drill she is training for is sat
  * on LawHub, and `OfficialDrillFrame` already mirrors that surface: indigo
@@ -18,33 +19,27 @@ import type { ChunkState, SectionPhase, SectionStimulus } from "./section";
  * auth, the notepad and the tutor toggle, none of which may exist inside this
  * loop, and because this component has to stay presentational.
  *
- * Four hard requirements, all of them negative, all from
- * `docs/specs/2026-08-31-rrc-section-mode.md` section 3:
+ * The hard requirements, all of them negative:
  *
- * - **The layout never reflows.** Nothing is added, removed or resized as she
- *   advances; only the class on a chunk changes, and no state alters the type
- *   itself. Text jumping is the failure that loses her place mid-section.
- * - **Nothing is concealed.** The whole stimulus stays readable the whole time.
- *   The screen used to blur what she had not reached and blank what she was
- *   recalling; both are gone, because the method's own answer to rereading is
- *   that she looks away from the text, and that habit has to work on paper too.
- *   The states are a place marker now, nothing more.
- * - **One key.** No mouse in the loop. The only control here is Space, wired by
- *   the runner; the exit is outside the loop.
- * - **No answer choices, and nothing judged.** The stimulus alone. Nothing is
- *   scored, shown or corrected until the section ends, because a live verdict
- *   trains her to vet before speaking, which is the habit colouring exists to
- *   break.
+ * - **No place marker.** The app does not track which chunk she is on, so no
+ *   chunk is styled as current, done, or upcoming. She reads, recalls and
+ *   colours in whatever units she likes.
+ * - **The text truly vanishes for The Recall.** Not blurred, not transparent,
+ *   not aria-hidden: removed. A stimulus left in the DOM would be read back to
+ *   a student using a screen reader, which defeats the drill for her exactly.
+ * - **One key.** No mouse in the loop. The only control here is Space, wired
+ *   by the runner; the exit is outside the loop.
+ * - **No answer choices, and nothing judged.** Nothing is scored, shown or
+ *   corrected until the section ends, because a live verdict trains her to vet
+ *   before speaking, which is the habit colouring exists to break.
  *
  * There is deliberately no clock on screen. Time is measured and reported at
  * the end for the same reason v1 does it that way: a running clock in view is
- * what produces the rushed reading this drill exists to treat. The rail shows
- * position, which is what "how much is left" actually asks.
+ * what produces the rushed reading this drill exists to treat.
  */
 
 export interface SectionStageProps {
   stimulus: SectionStimulus;
-  states: ChunkState[];
   phase: SectionPhase;
   /** 1-based, for the quiet position line. */
   stimulusNumber: number;
@@ -60,32 +55,33 @@ export interface SectionStageProps {
 }
 
 /*
- * She never reads aloud. Only the recall, the colour and The Read are spoken.
- *
- * "Look away" is the instruction and not a decoration. Nothing on this screen
- * hides any more, so looking away is the entire mechanism keeping her from
- * rereading the line while she says it back, and it is what the method itself
- * asks for. An instruction that just said "say it back" would leave the text
- * sitting there in front of her with nothing telling her not to use it.
+ * The working instruction covers steps 1 to 3 at once, because the screen no
+ * longer walks her through them: she reads, says back and colours in whatever
+ * units she likes, and the app is not told where she is. The Recall's
+ * instruction is the method's own: the text is gone, the whole argument comes
+ * back from memory.
  */
 const INSTRUCTION: Record<SectionPhase, string> = {
-  read: "Read it silently",
-  speak: "Look away. Say it back, then colour it",
-  "the-read": "Give your Read of the whole thing",
+  working: "Read it. Say it back and colour it in as you go.",
+  recalling: "Say the whole argument back from memory.",
+};
+
+/** What the one key does next, which is the whole of the controls. */
+const KEY_DOES: Record<SectionPhase, string> = {
+  working: "recall full stimulus",
+  recalling: "next stimulus",
 };
 
 export function SectionStage({
   stimulus,
-  states,
   phase,
   stimulusNumber,
   totalStimuli,
   error,
   onExit,
 }: SectionStageProps) {
-  // Position across the section, drawn as the rail's fill. Chunk-level progress
-  // inside the current stimulus is deliberately not shown: it would move on
-  // every keypress, which is a metronome, and this drill is not paced by one.
+  // Position across the section, drawn as the rail's fill. Progress inside the
+  // current stimulus is deliberately not shown: the app does not know it.
   const through = Math.min(stimulusNumber - 1, totalStimuli) / Math.max(totalStimuli, 1);
 
   return (
@@ -112,18 +108,21 @@ export function SectionStage({
         <div className="ac-section-paper">
           <div className="ac-section-body">
             {/*
-              Every chunk is rendered every frame, in order, whatever its state.
-              Nothing is added or removed as she advances -- only the class
-              changes -- which is what makes the no-reflow requirement
-              structural rather than something to remember.
+              While she works, every chunk is rendered in order with nothing
+              marking one out from another: the cuts guide her eye and hold the
+              grader's Details, and that is all they do. During The Recall the
+              stimulus is not rendered at all -- the paper stays, the text goes,
+              and it does not come back until the Report Card.
             */}
-            <div className="ac-section-stimulus">
-              {stimulus.chunks.map((chunk, i) => (
-                <span key={chunk.n} className={`ac-section-chunk is-${states[i] ?? "upcoming"}`}>
-                  {chunk.text}{" "}
-                </span>
-              ))}
-            </div>
+            {phase === "working" ? (
+              <div className="ac-section-stimulus">
+                {stimulus.chunks.map((chunk) => (
+                  <span key={chunk.n} className="ac-section-chunk">
+                    {chunk.text}{" "}
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           {/* The card's own footer, where the real section keeps its controls.
@@ -138,7 +137,7 @@ export function SectionStage({
               </p>
             ) : (
               <p className="ac-section-hint">
-                <kbd>space</kbd>
+                <kbd>space</kbd> {KEY_DOES[phase]}
               </p>
             )}
           </div>

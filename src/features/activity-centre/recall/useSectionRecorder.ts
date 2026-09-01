@@ -20,16 +20,20 @@ import { useCallback, useRef, useState } from "react";
  * call can never touch a twenty-minute unbroken take.
  */
 
-/** Which portion of which stimulus a stretch of the file belongs to. */
+/**
+ * Which portion of which stimulus a stretch of the file belongs to.
+ *
+ * Stimulus-grained: `working` is her time with the text up, `recalling` is The
+ * Recall. There is no chunk field, because the app does not track which chunk
+ * she is on (`docs/adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md`);
+ * what she covered inside a stretch is worked out from the audio afterwards.
+ */
 export interface SegmentBody {
   /** The stimulus this belongs to, by its content slug. */
   slug: string;
   /** 1-based position of that stimulus in the section. */
   order: number;
-  /** Which portion: silent read, the recall-and-colour, or The Read. */
-  phase: "read" | "speak" | "the-read";
-  /** Which chunk, or null for The Read, which is the whole stimulus. */
-  chunk: number | null;
+  phase: "working" | "recalling";
 }
 
 /** One stretch of the file, in ms from the start of the recording. */
@@ -43,7 +47,7 @@ export interface RecordingSegment extends SegmentBody {
    * checked rather than asserted. It sits here and not on `SegmentBody` because
    * `Omit` over an index signature erases the named members with it.
    */
-  [key: string]: string | number | null;
+  [key: string]: string | number;
 }
 
 export interface FinishedRecording {

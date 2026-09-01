@@ -3,13 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
-import { useVoiceActivity } from "./useVoiceActivity";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
 import {
   advanceCursor,
   buildSectionRun,
-  chunkStates,
-  chunksDone,
   startCursor,
   type Accommodation,
   type SectionCursor,
@@ -81,7 +78,13 @@ export interface SectionRunnerProps {
   now?: () => number;
 }
 
-/** What one stimulus's run looked like, written once the section is over. */
+/**
+ * What one stimulus's run looked like, written once the section is over.
+ *
+ * Stimulus-grained, like the cursor: time with the text up, time recalling
+ * from memory, and nothing per chunk, because no chunk boundary was observed
+ * (`docs/adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md`).
+ */
 interface StimulusRecord {
   slug: string;
   order: number;
@@ -89,10 +92,10 @@ interface StimulusRecord {
   finishedAtSeconds: number;
   /** Seconds spent on this stimulus alone. */
   elapsedSeconds: number;
-  /** Per chunk, in order: seconds reading it, then seconds speaking it back. */
-  chunkSeconds: { n: number; read: number; speak: number }[];
-  /** Seconds spent giving The Read. */
-  theReadSeconds: number;
+  /** Seconds with the text on screen: her reads, recalls and colouring. */
+  workingSeconds: number;
+  /** Seconds spent giving The Recall, text gone. */
+  recallSeconds: number;
 }
 
 export function SectionRunner({
@@ -161,7 +164,6 @@ function RunBody({
     mark,
     stop: stopRecording,
     error: micError,
-    getStream,
   } = useSectionRecorder(now);
   // Runs for the whole section, alongside the recording rather than instead of
   // it. The audio file stays the primary record.
@@ -177,11 +179,11 @@ function RunBody({
   const saving = useRef(false);
 
   const startedAt = useRef(now());
-  /** When the phase currently on screen began. Every phase is timed. */
+  /** When the phase currently on screen began. Both phases are timed. */
   const phaseStartedAt = useRef(now());
   const stimulusStartedAt = useRef(now());
   const records = useRef<StimulusRecord[]>([]);
-  const chunkTimes = useRef<{ n: number; read: number; speak: number }[]>([]);
+  const workingSeconds = useRef(0);
 
   const seconds = useCallback(
     (from: number) => Math.max(0, Math.round((now() - from) / 1000)),
@@ -201,7 +203,10 @@ function RunBody({
   }, []);
 
   /**
-   * One key press. This is the whole interaction: no mouse in the loop.
+   * One key press, twice per stimulus. This is the whole interaction: no mouse
+   * in the loop, and no other signal either -- advancing on detected silence
+   * was considered and rejected, because a timeout would cut her off
+   * mid-sentence if she paused to think (ADR 0013).
    *
    * The cursor itself is decided by `section.ts`, which is pure and tested.
    * What lives here is only the timing that goes with each transition, and the
@@ -215,35 +220,29 @@ function RunBody({
       phaseStartedAt.current = now();
 
       // Close this portion in the recording's index. Refs and arithmetic only:
-      // nothing here reaches the network, so the loop cannot stall on it.
+      // nothing here reaches the network, so the loop cannot stall on it. The
+      // two presses are the only moments not recoverable from the audio, and
+      // this stamp is what makes each stimulus's stretch of the file findable.
       mark({
         slug: stimulus.slug,
         order: stimulus.order,
         phase: at.phase,
-        chunk: at.phase === "the-read" ? null : stimulus.chunks[at.chunk].n,
       });
 
-      if (at.phase === "read") {
-        chunkTimes.current[at.chunk] = {
-          n: stimulus.chunks[at.chunk].n,
-          read: spent,
-          speak: 0,
-        };
-      } else if (at.phase === "speak") {
-        const entry = chunkTimes.current[at.chunk];
-        if (entry) entry.speak = spent;
+      if (at.phase === "working") {
+        workingSeconds.current = spent;
       } else {
-        // The Read is over, so this stimulus is finished. Its record is
+        // The Recall is over, so this stimulus is finished. Its record is
         // buffered, not written: no network call inside the loop.
         records.current.push({
           slug: stimulus.slug,
           order: stimulus.order,
           finishedAtSeconds: seconds(startedAt.current),
           elapsedSeconds: seconds(stimulusStartedAt.current),
-          chunkSeconds: chunkTimes.current.slice(),
-          theReadSeconds: spent,
+          workingSeconds: workingSeconds.current,
+          recallSeconds: spent,
         });
-        chunkTimes.current = [];
+        workingSeconds.current = 0;
         stimulusStartedAt.current = now();
       }
 
@@ -271,31 +270,6 @@ function RunBody({
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [done, press]);
-
-  /*
-   * The section moves on when she stops talking.
-   *
-   * Every hand this drill asks of her is a hand not on the page, and she is
-   * running 23 stimuli back to back. So space is only ever needed to say "I
-   * have finished reading, I am about to speak"; the end of the turn announces
-   * itself. Space still advances, always, because a detector that mishears once
-   * must never be able to strand her mid-section.
-   *
-   * Armed only while she is meant to be speaking. During a silent read there is
-   * nothing to hear, and a detector listening then would take the first cough
-   * or chair creak as a whole turn.
-   */
-  const speaking = !done && (cursor.phase === "speak" || cursor.phase === "the-read");
-  useVoiceActivity({
-    armed: speaking,
-    // Re-armed per stimulus, chunk and phase. Two consecutive recalls are both
-    // spoken turns, so `armed` never drops between them; without this key the
-    // detector would fire once at the top of the section and then sit silent
-    // for the other 80 chunks.
-    turn: `${cursor.item}:${cursor.chunk}:${cursor.phase}`,
-    getStream,
-    onEnded: press,
-  });
 
   /** The one write, after the last stimulus. */
   useEffect(() => {
@@ -366,8 +340,8 @@ function RunBody({
           slug: r.slug,
           finished_at_seconds: r.finishedAtSeconds,
           elapsed_seconds: r.elapsedSeconds,
-          chunk_seconds: r.chunkSeconds,
-          the_read_seconds: r.theReadSeconds,
+          working_seconds: r.workingSeconds,
+          recall_seconds: r.recallSeconds,
           section_total_seconds: total,
           accommodation,
           goal_minutes: run.timeGoalMinutes[accommodation],
@@ -403,7 +377,6 @@ function RunBody({
   }, [accommodation, assignmentId, done, onComplete, run, seconds, studentId, stopRecording, transcript]);
 
   const stimulus = run.stimuli[cursor.item];
-  const states = chunkStates(run, cursor);
 
   if (done) {
     return (
@@ -411,9 +384,8 @@ function RunBody({
         <div className="ac-section-body">
           <p className="ac-section-instruction">Section finished</p>
           <div className="ac-section-stimulus">
-            <span className="ac-section-chunk is-done">
-              {chunksDone(run, cursor)} chunks, {run.stimuli.length} stimuli. Your scorecard comes
-              next.
+            <span className="ac-section-chunk">
+              {run.stimuli.length} stimuli, end to end. Your Report Card comes next.
             </span>
           </div>
         </div>
@@ -424,7 +396,6 @@ function RunBody({
   return (
     <SectionStage
       stimulus={stimulus}
-      states={states}
       phase={cursor.phase}
       stimulusNumber={cursor.item + 1}
       totalStimuli={run.stimuli.length}

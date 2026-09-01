@@ -20,11 +20,7 @@
   --sec-field: #1a1635;
   --sec-paper: #ffffff;
   --sec-ink: #111827;
-  --sec-ink-done: #4b5563;
   --sec-rule: #cbd5e1;
-  --sec-mark: #eef2f7;
-  --sec-speak: #64748b;
-  --sec-ink-ahead: #64748b;
   --sec-chrome: #334155;
   --sec-warn: #b45309;
   --sec-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -154,53 +150,12 @@
 }
 
 /* One inline run per chunk. Inline rather than block so a chunk that is part of
-   a sentence still reads as that sentence: the chunking is the drill's unit,
-   not a paragraph break the student is meant to see. */
+   a sentence still reads as that sentence: the cuts guide her eye, and nothing
+   more. There are no per-chunk states any more -- no current, done or upcoming
+   marker -- because the app does not track which chunk she is on
+   (docs/adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md). */
 .ac-section-chunk {
-  transition: filter 0.22s ease, opacity 0.22s ease, color 0.22s ease;
-}
-
-/* Behind her. Quieter, because it is context now rather than the line she is
-   working, but still perfectly readable: the stimulus is a whole argument and
-   she is allowed to see all of it. */
-.ac-section-chunk.is-done {
-  color: var(--sec-ink-done);
-}
-
-/* The line she is reading, silently. */
-.ac-section-chunk.is-reading {
   color: var(--sec-ink);
-  background: var(--sec-mark);
-  box-shadow: 0 0 0 3px var(--sec-mark);
-}
-
-/* The line she is saying back and colouring, out loud, with her eyes off the
-   screen.
- *
- * It used to be blanked here: the real text turned transparent so its box was
- * preserved while its content was hidden. The hiding is gone, because the
- * method's own answer to rereading is that she looks away from the text, and
- * that is a habit she can take to a paper section while a screen that hides
- * things for her is a crutch that cannot come with her.
- *
- * So this is the same marker as the read, held one beat longer. Nothing about
- * the type changes between the two states, only the rule beneath, which is why
- * moving from reading to speaking cannot shift a single glyph. */
-.ac-section-chunk.is-speaking {
-  color: var(--sec-ink);
-  background: var(--sec-mark);
-  box-shadow: 0 0 0 3px var(--sec-mark);
-  background-image: linear-gradient(var(--sec-speak), var(--sec-speak));
-  background-repeat: no-repeat;
-  background-position: left 96%;
-  background-size: 100% 2px;
-}
-
-/* Not yet reached. Readable, because there is nothing to gain from hiding it:
-   she can see the shape of the argument she is working through, which is what
-   she would see on paper. */
-.ac-section-chunk.is-upcoming {
-  color: var(--sec-ink-ahead);
 }
 
 /* ---- the card's footer ------------------------------------------------- */
