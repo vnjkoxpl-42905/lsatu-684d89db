@@ -17,6 +17,7 @@ import ScoreRing from '@/components/drill/ScoreRing';
 import { questionBank } from '@/lib/questionLoader';
 import { useAuth } from '@/contexts/AuthContext';
 import {
+  applyBlindReviewToSection,
   buildSectionStats,
   buildSectionTotals,
   emailSectionReport,
@@ -51,6 +52,16 @@ interface LRSectionResultsProps {
    * is not rendered — a surface with no review walk should not offer one.
    */
   onReviewSection?: () => void;
+  /**
+   * The row the finished section was already written to, when the caller wrote
+   * one. Given it, this screen folds the blind review onto that row instead of
+   * inserting a second one; without it, it writes the section itself.
+   *
+   * The fallback is not decoration. This screen is reachable from surfaces that
+   * do not persist the section themselves, and a section shown but never saved
+   * is the exact failure this prop exists to end.
+   */
+  sectionHistoryId?: string | null;
 }
 
 type QuestionStat = SectionQuestionStat;
@@ -160,7 +171,7 @@ function AnswerTimeline({
   );
 }
 
-export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection }: LRSectionResultsProps) {
+export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection, sectionHistoryId }: LRSectionResultsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
@@ -236,7 +247,16 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
       savedRef.current = true;
 
       try {
-        const sectionHistoryId = await persistSectionResults({
+        // The section was already written when it ended. All that is new here
+        // is the blind review, which could not have existed then.
+        if (sectionHistoryId) {
+          if (brResults?.length) {
+            await applyBlindReviewToSection({ sectionHistoryId, stats, brResults });
+          }
+          return;
+        }
+
+        const newId = await persistSectionResults({
           session,
           stats,
           brResults,
@@ -247,7 +267,7 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
         // The teacher's copy: every question, then the diagnosis. Not awaited —
         // the sitting is saved and the student is already reading their score,
         // and a mail server having a bad minute must not read as a lost section.
-        void emailSectionReport(sectionHistoryId);
+        void emailSectionReport(newId);
 
         // Every question that was not answered correctly, answered or not. On the
         // standalone path nothing else journals this section, so the whole set
