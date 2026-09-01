@@ -13,6 +13,7 @@
 import { DrillLaunchError, launchNeedsResolution, type DrillLaunch } from '@/lib/drillLaunch';
 import { listSavedSets } from '@/lib/savedSets';
 import { getAssignment } from '@/lib/guidedDrills';
+import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import {
   pickHomeworkForDay,
   pickPracticeForDay,
@@ -70,9 +71,25 @@ export async function resolveDrillLaunch(
       return qids;
     }
 
+    case 'practice-set': {
+      // The pool is static source data with a fixed list, so re-resolving the
+      // slug gives back the same questions every time. Its Run Record is keyed
+      // by the slug too, so both safety conditions hold.
+      const pool = getPracticePool(launch.slug);
+      if (!pool) {
+        throw new DeadDrillLinkError('That practice set no longer exists.');
+      }
+      return [...pool.qids];
+    }
+
     case 'bootcamp-day': {
       // Deterministic for a given day and part, so the same link picks the same
       // questions even before a Run Record exists.
+      //
+      // Depends on the question bank being loaded: the day's targets are
+      // filtered against it, and an unloaded bank yields nothing and reads as a
+      // dead link. Nothing emits this kind yet, but whatever does must wait for
+      // the bank first — the gate does not.
       const qids =
         launch.part === 'homework'
           ? pickHomeworkForDay(launch.day)
@@ -86,11 +103,11 @@ export async function resolveDrillLaunch(
     }
 
     default:
-      // Guided drills and practice sets are still handed over in the old
-      // grammar, which carries their questions directly. A guided drill cannot
-      // safely be id-named yet: without an assignment it resolves through a
-      // per-student level band, so re-resolving on refresh could draw a
-      // different set than the one the student is part-way through.
+      // A guided drill is still handed over in the old grammar, which carries
+      // its questions directly. It cannot safely be id-named yet: without an
+      // assignment it resolves through a per-student level band, so
+      // re-resolving on refresh could draw a different set than the one the
+      // student is part-way through.
       throw new DrillLaunchError(
         `${launch.kind} links are not accepted yet — open it from the classroom instead.`,
       );
