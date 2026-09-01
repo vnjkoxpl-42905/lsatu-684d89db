@@ -121,6 +121,15 @@
         "value": "0.75rem",
         "createdAt": "2026-09-01T12:50:56.460Z",
         "reason": "LawHub surface mirror: section.css header documents every value as taken from the real LawHub drill screen, not invented"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ],
+        "createdAt": "2026-09-01T12:59:39.627Z",
+        "reason": "LawHub surface mirror: the real drill screen sets the stimulus in Fraunces at 19px, and section.css documents every value as taken from it rather than invented"
       }
     ]
   }
