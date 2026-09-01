@@ -1,4 +1,4 @@
-import type { DrillMode, FullSectionConfig, TypeDrillConfig } from "@/types/drill";
+import type { DrillMode, FullSectionConfig, TimerConfig, TypeDrillConfig } from "@/types/drill";
 
 export interface DrillRouteState {
   mode?: DrillMode;
@@ -48,6 +48,19 @@ function positiveNumberParam(value: string | null): number | undefined {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
 }
 
+function listParam(value: string | null): string[] {
+  return (value ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function numberListParam(value: string | null): number[] {
+  return listParam(value)
+    .map(Number)
+    .filter((n) => Number.isFinite(n));
+}
+
 export function getResolvedDrillRouteState(
   searchParams: URLSearchParams,
   locationState: unknown,
@@ -64,11 +77,20 @@ export function getResolvedDrillRouteState(
     const section = positiveNumberParam(searchParams.get("section"));
     if (pt && section) {
       const minutes = positiveNumberParam(searchParams.get("minutes"));
+      // A section is not always 35 minutes: 52.5 and 70 are the accommodated
+      // clocks and `unlimited` is untimed. Reducing all of them to a number of
+      // minutes would quietly re-time an accommodated sitting.
+      const timerParam = searchParams.get("timer");
+      const timerMode = (["52.5", "70", "custom", "unlimited"] as string[]).includes(
+        timerParam ?? "",
+      )
+        ? (timerParam as TimerConfig["mode"])
+        : undefined;
       const config: FullSectionConfig = {
         pt,
         section,
         timer: {
-          mode: minutes ? "custom" : "35",
+          mode: timerMode ?? (minutes ? "custom" : "35"),
           customMinutes: minutes,
           isPaused: false,
           elapsedMs: 0,
@@ -85,18 +107,51 @@ export function getResolvedDrillRouteState(
     }
   }
 
+  // Smart Drill carries no configuration at all, and must not be handed an
+  // empty one: the state-launched form has never had a `config`, and the two
+  // forms have to resolve identically now that the gate writes this one.
+  if (urlMode === "adaptive") {
+    return {
+      mode: "adaptive",
+      returnTo: safeReturnTo(searchParams.get("returnTo")),
+      sealed,
+    };
+  }
+
   if (urlMode) {
     const qids = (searchParams.get("qids") ?? "")
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
-    const config: TypeDrillConfig = {
-      qtypes: [],
-      difficulties: [],
-      pts: [],
-      count: qids.length,
-      selectedQids: qids,
-    };
+    // A filtered drill — "six Flaw questions, medium" — is a launch the URL
+    // grammar could not previously express, which is why every filtered drill
+    // was state-only and died on refresh. The filter is the run's name; the
+    // questions it draws live in the Run Record.
+    const filterCount = positiveNumberParam(searchParams.get("count"));
+    const config: TypeDrillConfig =
+      qids.length === 0 && filterCount
+        ? {
+            qtypes: listParam(searchParams.get("qtypes")),
+            difficulties: numberListParam(searchParams.get("difficulties")),
+            pts: numberListParam(searchParams.get("pts")),
+            // Omitted rather than empty, to match the shape the in-memory
+            // launches pass. (`drillResumeKey` reads both as `[]`, so the
+            // resume row is unaffected either way.)
+            ...(searchParams.get("sections")
+              ? { sections: numberListParam(searchParams.get("sections")) }
+              : {}),
+            ...(searchParams.get("qfeatures")
+              ? { qfeatures: listParam(searchParams.get("qfeatures")) }
+              : {}),
+            count: filterCount,
+          }
+        : {
+            qtypes: [],
+            difficulties: [],
+            pts: [],
+            count: qids.length,
+            selectedQids: qids,
+          };
 
     const present = searchParams.get("present") === "smart" ? "smart" : undefined;
     const returnTo = safeReturnTo(searchParams.get("returnTo"));

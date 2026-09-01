@@ -199,7 +199,15 @@ function DrillContent() {
   // Which run and leg this section belongs to, when it belongs to one. Comes
   // from launch state rather than from returnTo: that string is a routing hint
   // and nothing load-bearing may depend on it.
-  const ptRun = (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
+  // Read from the URL first: a refreshed leg used to lose these and then had
+  // nothing to write its close-out against, so the section could never be
+  // marked finished and the practice test stayed open forever.
+  const ptRun = React.useMemo(() => {
+    const runId = searchParams.get('runId');
+    const leg = Number.parseInt(searchParams.get('leg') ?? '', 10);
+    if (runId && Number.isFinite(leg) && leg >= 0) return { runId, legIndex: leg };
+    return (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
+  }, [searchParams, location.state]);
   // Routing and score-UI suppression only. Never a clock or integrity decision.
   const inSitting = isSittingReturn(drillReturnTo);
   /**
