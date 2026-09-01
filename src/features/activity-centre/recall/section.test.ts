@@ -12,7 +12,7 @@ import {
 
 // The section machine, driven against real captured content rather than a
 // fixture. Everything here is what one key press does, and it has to be right
-// without a browser: she runs 20-odd minutes unbroken with no coach in the loop
+// without a browser: she runs 25-odd minutes unbroken with no coach in the loop
 // to catch a wrong state, so a phase bug would surface as a lost place
 // mid-section rather than as an error.
 
@@ -121,7 +121,12 @@ describe("the clock", () => {
   it("gives a student with extra time more of it, not the standard goal", () => {
     // Grading her against the standard goal would score her accommodation as a
     // failure, which is the whole reason the goal is three numbers.
-    expect(goalSeconds(run, "standard")).toBe(20 * 60);
+    //
+    // Read off the content rather than written out, because what is being
+    // checked here is that the right key is picked and turned into seconds. The
+    // numbers themselves belong to the section, and the content fixture test is
+    // where they are pinned.
+    expect(goalSeconds(run, "standard")).toBe(pt105.time_goal_minutes.standard * 60);
     expect(goalSeconds(run, "accommodation_53")).toBeGreaterThan(goalSeconds(run, "standard"));
     expect(goalSeconds(run, "accommodation_70")).toBeGreaterThan(
       goalSeconds(run, "accommodation_53"),

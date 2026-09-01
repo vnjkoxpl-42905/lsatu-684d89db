@@ -5,9 +5,9 @@
  "item_format": "spoken-recall",
  "mode": "section",
  "time_goal_minutes": {
-  "standard": 20,
-  "accommodation_53": 25,
-  "accommodation_70": 30
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
  },
  "source_section": "PT102.S3",
  "instructions": {},

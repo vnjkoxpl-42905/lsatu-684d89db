@@ -26,7 +26,7 @@ Source: `~/ai-os/corpus/loophole-online/drills/translation-plus-clir-drill.md`,
 | Per stimulus | read + recall each chunk, colour each chunk, then The Read |
 | Medium | out loud |
 | Recording | one unbroken file per section, never paused or stopped |
-| Time goal | 20 min · 25 at a 53-min accommodation · 30 at a 70-min accommodation |
+| Time goal | 20 min · 25 at a 53-min accommodation · 30 at a 70-min accommodation — superseded by [ADR 0014](../adr/0014-the-section-goal-is-calibrated-not-inherited.md), which ships 25 · 38 · 50 |
 | Goal valid only if | every stimulus recalled, coloured, AND given a Read |
 | Volume | 3+ consecutive sections a day, ideally 6, no breaks, no review between |
 | Accuracy | -5 or better on The Read against the key |

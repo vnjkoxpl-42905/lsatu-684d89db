@@ -54,10 +54,17 @@ describe.each(SECTIONS)("%s", (citation, section) => {
     // Time is a scored criterion, so the goal cannot be one number: a student
     // with extra time is not slow when she takes longer, and one goal would
     // score her accommodation as a failure.
+    //
+    // The source method states its own goals precisely, and they are 20 / 25 /
+    // 30. We ship 25 / 38 / 50 instead: 25 for a standard 35-minute section,
+    // and each accommodated goal scaled by that accommodation's own multiplier,
+    // 53/35 and 70/35. The source's numbers do not scale -- they hand a student
+    // with double the time a goal only half again as long -- so an accommodated
+    // run was being measured against a tighter standard than a standard one.
     const { standard, accommodation_53, accommodation_70 } = section.time_goal_minutes;
-    expect(standard).toBeGreaterThan(0);
-    expect(accommodation_53).toBeGreaterThan(standard);
-    expect(accommodation_70).toBeGreaterThan(accommodation_53);
+    expect(standard).toBe(25);
+    expect(accommodation_53).toBe(Math.round((standard * 53) / 35));
+    expect(accommodation_70).toBe(Math.round((standard * 70) / 35));
   });
 
   it("leaves instructions to the base Activity", () => {
