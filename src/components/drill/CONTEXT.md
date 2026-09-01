@@ -55,3 +55,23 @@ is no correct/incorrect state: a section never reveals, so the strip has never h
 to say whether an answer was right.
 _Avoid_: "completed" or "done" (answered does not mean finished or correct),
 "selected" (that is an answer choice, not an oval).
+
+**Drill Launch**:
+Everything the runner needs to be told in order to start a drill: which kind of
+drill, and the name of the particular run. It is carried in the URL and nowhere
+else, so any drill can be refreshed, bookmarked, or reopened. A Drill Launch
+names a run; it does not contain one. The questions, the answers already given
+and the position in the queue live in the Run Record.
+_Avoid_: route state, config (that word currently means two different things in
+the code, a filter and a fixed question list), params, drill options.
+
+**Run Record**:
+The durable row, per student per run, holding what a run actually consists of:
+the ordered question list, every attempt, the position, and the clock already
+spent. Survives a closed tab, a sign-out, and a different device. It is the
+reason a Drill Launch can be short: the launch names the run and the Run Record
+supplies its contents. Stored via `practiceSessionStore`, keyed by the pool slug
+that `drillResumeKey` derives.
+_Avoid_: resume state (that is what it is for, not what it is), snapshot (that is
+one write to it), session (overloaded: `DrillSession` is the in-memory object for
+the current screen, and an auth session is a third thing).
