@@ -368,6 +368,18 @@ describe('a short link expands to something the runner understands', () => {
     expect(p.get('guidedDurationMinutes')).toBe('20');
   });
 
+  it('keeps the params the runner reads for a classroom assignment', () => {
+    const p = params(
+      expandToLegacySearch(
+        { kind: 'assignment', assignmentId: 'asg_1', guidedSetId: 'gs_1' },
+        ['q1', 'q2'],
+      ),
+    );
+    expect(p.get('assignmentId')).toBe('asg_1');
+    expect(p.get('guidedSetId')).toBe('gs_1');
+    expect(p.get('qids')).toBe('q1,q2');
+  });
+
   it('keeps the params the runner reads for a practice set', () => {
     const p = params(expandToLegacySearch({ kind: 'practice-set', slug: 'mc-practice-1' }, ['q1']));
     expect(p.get('source')).toBe('intro-to-lr-practice-drills');

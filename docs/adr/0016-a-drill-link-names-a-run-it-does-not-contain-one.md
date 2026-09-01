@@ -79,3 +79,29 @@ heading is not.
   Run Record, produces links too long to send, and would have made a filter
   drill's identity the questions it happened to draw rather than what the
   student asked for.
+
+## When a kind can be named by its id
+
+Found while building this, and it is the constraint that decides the remaining
+work. Naming a run by an id is safe only when one of these holds:
+
+1. **Re-resolving the id yields the same questions.** A saved set and a
+   classroom assignment both store an explicit list, so re-reading the row on
+   refresh returns what the student is part-way through.
+2. **The Run Record is keyed by that id rather than by the question list.** A
+   guided drill launched from an assignment is keyed `guided::<assignmentId>`,
+   so even a different draw finds the right row and adopts its stored queue.
+
+Where neither holds, an id-named link is actively worse than a long one: the
+runner re-resolves, draws a different list, computes a different Run Record key
+from that list, finds no row, and the student loses a drill they were half way
+through. That rules out, for now:
+
+- **A bootcamp day.** Its questions come through a per-student recently-seen
+  filter, and its Run Record is keyed by the resulting list.
+- **A guided drill with no assignment.** It resolves through a per-student level
+  band, and without an assignment id it falls back to the same list-keyed Run
+  Record.
+
+Both become safe the moment their Run Record is keyed by the name in the link —
+the day, or the drill — which is a separate change and the natural next one.

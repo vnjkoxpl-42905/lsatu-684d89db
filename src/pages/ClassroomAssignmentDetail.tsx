@@ -11,6 +11,7 @@ import {
   type AssignmentStatus,
 } from "@/hooks/useStudentAssignments";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
+import { launchDrill } from "@/lib/drillLaunch";
 import { GuidedDrillLaunchFrame } from "@/components/drill/GuidedDrillLaunchFrame";
 import {
   buildGuidedDrillLaunchHtml,
@@ -60,16 +61,15 @@ export default function ClassroomAssignmentDetail() {
 
   const navigateToDrill = React.useCallback(() => {
     if (!assignment) return;
-    const qidsParam = assignment.question_qids.join(",");
-    const params = new URLSearchParams({
-      mode: "type-drill",
-      qids: qidsParam,
-      assignmentId: assignment.id,
-    });
-    if (parentSet?.id && isGuided) {
-      params.set("guidedSetId", parentSet.id);
-    }
-    navigate(`/drill?${params.toString()}`);
+    // The assignment's id, not a copy of its questions: edit the assignment and
+    // this link runs what it says now rather than what it said when it was sent.
+    navigate(
+      `/drill?${launchDrill({
+        kind: "assignment",
+        assignmentId: assignment.id,
+        guidedSetId: parentSet?.id && isGuided ? parentSet.id : undefined,
+      })}`,
+    );
   }, [assignment, parentSet, isGuided, navigate]);
 
   const handleStart = () => {

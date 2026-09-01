@@ -14,6 +14,7 @@ import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
 import { useQueryClient } from "@tanstack/react-query";
 import { resolveItemRoute } from "@/lib/classroomItems";
+import { launchDrill } from "@/lib/drillLaunch";
 import { markNoteRead } from "@/lib/markNoteRead";
 import {
   groupNotes,
@@ -283,15 +284,16 @@ export function ClassroomAssignmentView() {
 
   const start = () => {
     if (!assignment) return;
-    const params = new URLSearchParams({
-      mode: "type-drill",
-      qids: assignment.question_qids.join(","),
-      assignmentId: assignment.id,
-    });
-    if (setQuery.set?.id && setQuery.set.is_guided_set) {
-      params.set("guidedSetId", setQuery.set.id);
-    }
-    navigate(`/drill?${params.toString()}`);
+    // Named by the assignment, not by a copy of its questions. See
+    // docs/adr/0016.
+    navigate(
+      `/drill?${launchDrill({
+        kind: "assignment",
+        assignmentId: assignment.id,
+        guidedSetId:
+          setQuery.set?.id && setQuery.set.is_guided_set ? setQuery.set.id : undefined,
+      })}`,
+    );
   };
 
   if (assignmentQuery.loading && !assignment) return <DetailLoading />;

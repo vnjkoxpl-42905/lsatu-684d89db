@@ -12,6 +12,7 @@
 
 import { DrillLaunchError, launchNeedsResolution, type DrillLaunch } from '@/lib/drillLaunch';
 import { listSavedSets } from '@/lib/savedSets';
+import { getAssignment } from '@/lib/guidedDrills';
 import {
   pickHomeworkForDay,
   pickPracticeForDay,
@@ -50,6 +51,25 @@ export async function resolveDrillLaunch(
       return set.question_ids;
     }
 
+    case 'assignment': {
+      // The assignment row owns the list. Re-reading it is the whole point: an
+      // assignment edited after the link went out should run what it says now,
+      // not what it said when the student was emailed.
+      const row = (await getAssignment(launch.assignmentId)) as
+        | { question_qids?: string[]; guided_drill?: { question_qids?: string[] } }
+        | null;
+      if (!row) {
+        throw new DeadDrillLinkError('That assignment no longer exists.');
+      }
+      const qids = row.question_qids?.length
+        ? row.question_qids
+        : (row.guided_drill?.question_qids ?? []);
+      if (qids.length === 0) {
+        throw new DeadDrillLinkError('That assignment has no questions on it.');
+      }
+      return qids;
+    }
+
     case 'bootcamp-day': {
       // Deterministic for a given day and part, so the same link picks the same
       // questions even before a Run Record exists.
@@ -66,10 +86,11 @@ export async function resolveDrillLaunch(
     }
 
     default:
-      // Assignments, guided drills and practice sets are still handed over in
-      // the old grammar, which carries their questions directly. Nothing emits
-      // the id-named form for them yet, so reaching here means a hand-written
-      // link rather than one the app produced.
+      // Guided drills and practice sets are still handed over in the old
+      // grammar, which carries their questions directly. A guided drill cannot
+      // safely be id-named yet: without an assignment it resolves through a
+      // per-student level band, so re-resolving on refresh could draw a
+      // different set than the one the student is part-way through.
       throw new DrillLaunchError(
         `${launch.kind} links are not accepted yet — open it from the classroom instead.`,
       );
