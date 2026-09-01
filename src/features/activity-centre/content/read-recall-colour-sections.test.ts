@@ -137,10 +137,18 @@ describe.each(SECTIONS)("%s", (citation, section) => {
     (_order, item) => {
       expect(item.the_read.trim()).not.toBe("");
       expect(["L", "I", "C", "R"]).toContain(item.the_read_type);
-      // Named from the item's own slug: the play button in her review resolves
-      // the path, so a mismatch is a control that does nothing.
-      expect(item.model_recording).toBe(`audio/${item.slug}.mp3`);
-      expect(item.model_transcript).toBe(`transcripts/${item.slug}.txt`);
+      // His Model Run is NOT here, and its absence is the assertion. Both used
+      // to be rootless strings -- "audio/PT105_S2_Q1.mp3" -- that resolved only
+      // against a folder on his Mac, so nothing deployed could follow them.
+      // They now live in the `model_runs` table, joined on this same slug, and
+      // must stay out of `items`: a student selects every column of her own
+      // assignment, so anything here is in her browser, and his run of the
+      // drill is the drill done correctly.
+      expect(item).not.toHaveProperty("model_recording");
+      expect(item).not.toHaveProperty("model_transcript");
+      // The join key the Model Run is found by, so it has to be the capture's
+      // own identifier rather than anything we renamed.
+      expect(item.slug).toMatch(/^PT[A-Za-z0-9]+_S\d+_Q\d+$/);
       expect(item.questions.length).toBeGreaterThan(0);
       for (const q of item.questions) {
         expect(q.citation.startsWith(citation), q.citation).toBe(true);

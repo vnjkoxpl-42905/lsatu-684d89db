@@ -136,8 +136,6 @@
    ],
    "the_read": "Protect hot spots.",
    "the_read_type": "I",
-   "model_recording": "audio/PT134_S3_Q1.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q1.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q1",
@@ -263,8 +261,6 @@
    ],
    "the_read": "What if Wilton didn't know the bicycle was defective?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q2.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q2.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q2",
@@ -390,8 +386,6 @@
    ],
    "the_read": "Boat noise may impair whales' ability to communicate.",
    "the_read_type": "I",
-   "model_recording": "audio/PT134_S3_Q3.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q3.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q3",
@@ -503,8 +497,6 @@
    ],
    "the_read": "What if the document doesn't list every member of the trade group?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q4.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q4.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q4",
@@ -640,8 +632,6 @@
    ],
    "the_read": "The speakers disagree over whether children's stories today tend to have clearly immoral characters.",
    "the_read_type": "C",
-   "model_recording": "audio/PT134_S3_Q5.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q5.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q5",
@@ -749,8 +739,6 @@
    ],
    "the_read": "What if there's no causal relationship between the algae and the dead fish? What if pollution is causing both the algae growth and the fish deaths? What if dead fish cause algae to grow?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q6.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q6.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q6",
@@ -872,8 +860,6 @@
    ],
    "the_read": "The speakers disagree over whether political debates help voters decide who is more qualified for office.",
    "the_read_type": "C",
-   "model_recording": "audio/PT134_S3_Q7.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q7.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q7",
@@ -929,8 +915,6 @@
    ],
    "the_read": "What if people can't drive particularly fast on these roads because of the heavy traffic, and fatal accidents tend to occur at high speeds?",
    "the_read_type": "R",
-   "model_recording": "audio/PT134_S3_Q8.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q8.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q8",
@@ -1008,8 +992,6 @@
    ],
    "the_read": "What if penalties for a crime have no relationship to the harm lawmakers think those crimes impose?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q9.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q9.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q9",
@@ -1123,8 +1105,6 @@
    ],
    "the_read": "What if we can discover the lessons of history without knowing exactly what they are or applying them in identical situations?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q10.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q10.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q10",
@@ -1214,8 +1194,6 @@
    ],
    "the_read": "What if just because Sigerson has acted in a way that is counter to his proposal in the past, that doesn't mean his proposal is dishonest?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q11.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q11.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q11",
@@ -1323,8 +1301,6 @@
    ],
    "the_read": "What if an explanation of the basics of composting doesn't need to include an explanation of the difference between hot and cold composting?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q12.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q12.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q12",
@@ -1432,8 +1408,6 @@
    ],
    "the_read": "What if galaxy mass is a negligible amount of the entire universe's mass? What if astronomers now believe each galaxy has a much smaller mass than previously thought?",
    "the_read_type": "R",
-   "model_recording": "audio/PT134_S3_Q13.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q13.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q13",
@@ -1541,8 +1515,6 @@
    ],
    "the_read": "What if just because the argument relies on a questionable assumption, that doesn't mean it's totally wrong?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q14.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q14.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q14",
@@ -1684,8 +1656,6 @@
    ],
    "the_read": "What if this city is not comparable to other cities that have seen large returns on the investment in an economic development adviser, so this city won't see the same returns?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q15.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q15.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q15",
@@ -1825,8 +1795,6 @@
    ],
    "the_read": "What if cell phone usage on buses and trains are annoying because people are making phone calls, but people would only be allowed to use a phone to text on airplanes?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q16.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q16.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q16",
@@ -1968,8 +1936,6 @@
    ],
    "the_read": "What if there's no relationship between microglia and Alzheimer's? What if something else causes Alzheimer's? What if an Alzheimer's diagnosis increases the amount of microglia in the brain?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q17.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q17.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q17",
@@ -2077,8 +2043,6 @@
    ],
    "the_read": "If a computer is not typically used in the operation of a business, then one is not justified in accessing information in the files without the owner's permission.",
    "the_read_type": "I",
-   "model_recording": "audio/PT134_S3_Q18.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q18.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q18",
@@ -2204,8 +2168,6 @@
    ],
    "the_read": "What if it costs much more to dispose of biological catalysts than to dispose of chemicals?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q19.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q19.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q19",
@@ -2265,8 +2227,6 @@
    ],
    "the_read": "If one should play a practical joke on another person, then the joke does not show contempt and the one playing the joke does not believe it might bring significant harm.",
    "the_read_type": "I",
-   "model_recording": "audio/PT134_S3_Q20.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q20.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q20",
@@ -2410,8 +2370,6 @@
    ],
    "the_read": "What if Checkers's has a company policy to not accept coupons not issued by them and therefore the motive is to follow policy? What if it would have been super inconvenient and an administrative hassle for Checkers to accept the coupon?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q21.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q21.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q21",
@@ -2555,8 +2513,6 @@
    ],
    "the_read": "Scientists may not have the same problem solving success rate if they did not choose or help to formulate the problems they are called upon to solve.",
    "the_read_type": "I",
-   "model_recording": "audio/PT134_S3_Q22.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q22.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q22",
@@ -2632,8 +2588,6 @@
    ],
    "the_read": "What if we can't use bad some/most conditional reasoning?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q23.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q23.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q23",
@@ -2711,8 +2665,6 @@
    ],
    "the_read": "What if genuine self confidence cannot be gained from fake-it-til-you-make-it?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q24.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q24.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q24",
@@ -2812,8 +2764,6 @@
    ],
    "the_read": "What if just because arbitration was unlikely in the past, that doesn't mean it's unlikely now?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q25.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q25.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q25",
@@ -2917,8 +2867,6 @@
    ],
    "the_read": "What if the benefits of acquiring the information are always expected to outweigh the cost?",
    "the_read_type": "L",
-   "model_recording": "audio/PT134_S3_Q26.mp3",
-   "model_transcript": "transcripts/PT134_S3_Q26.txt",
    "questions": [
     {
      "citation": "PT134.S3.Q26",
