@@ -114,7 +114,13 @@ export interface RecallItem extends ActivityItem {
  * Absent means `stimulus`, so every Activity authored before section mode keeps
  * behaving exactly as it did.
  */
-export type ActivityMode = "stimulus" | "section";
+/**
+ * `section-library` is the door: an Activity whose content is the list of
+ * sections a student picks from, rather than a section itself. It carries no
+ * `source_section` and no clock, which is why the database exempts it from the
+ * completeness check that a real section must satisfy.
+ */
+export type ActivityMode = "stimulus" | "section" | "section-library";
 
 /**
  * The Read's type, as captured: Loophole, Implication, Contradiction, Rephrase.
@@ -295,6 +301,9 @@ export interface Activity {
  * needed the same data, and the shared type is what made the waste invisible.
  */
 export interface ActivityAssignmentSummary {
+  /** Section mode fields, so a list can tell an Attempt from other work. */
+  mode?: ActivityMode | null;
+  source_section?: string | null;
   id: string;
   activity_id: string | null;
   student_id: string;

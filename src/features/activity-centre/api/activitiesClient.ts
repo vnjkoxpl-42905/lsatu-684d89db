@@ -40,7 +40,7 @@ function hydrateActivity(row: Record<string, unknown>): Activity {
  * row so a card could print a number the database can count.
  */
 const SUMMARY_COLUMNS =
-  "id,activity_id,student_id,title,subtitle,status,score,score_numerator,score_judged,score_total,scoring_version,instructions,created_at,started_at,completed_at";
+  "id,activity_id,student_id,title,subtitle,status,score,score_numerator,score_judged,score_total,scoring_version,instructions,created_at,started_at,completed_at,mode,source_section";
 
 /** Student: list my activity assignments. RLS scopes to student_id = auth.uid(). */
 export async function listStudentAssignments(
@@ -91,6 +91,29 @@ export async function getStudentAssignment(
     .select("*")
     .eq("id", assignmentId)
     .eq("student_id", studentId)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? hydrateAssignment(data) : null;
+}
+
+/**
+ * Admin: read any assignment by id alone, whoever it was issued to.
+ *
+ * `getStudentAssignment` filters on `student_id`, which is right for a student
+ * and wrong for Joshua: opening a link he just handed out told him the activity
+ * belonged to a different account, when the whole reason he has the link is to
+ * look at it. RLS is the gate here, not this filter -- "Admins read all
+ * activity assignments" already exists, and a non-admin calling this gets the
+ * same `null` the student-scoped read would have given them.
+ *
+ * The caller is responsible for running what comes back read-only when it is
+ * somebody else's row. Nothing here writes.
+ */
+export async function getAssignmentById(assignmentId: string): Promise<ActivityAssignment | null> {
+  const { data, error } = await supabase
+    .from("activity_assignments")
+    .select("*")
+    .eq("id", assignmentId)
     .maybeSingle();
   if (error) throw error;
   return data ? hydrateAssignment(data) : null;
@@ -389,7 +412,53 @@ export async function listActivities(): Promise<Activity[]> {
  */
 export function isRunnable(activity: Activity): boolean {
   if (activity.item_format !== "spoken-recall") return true;
-  return activity.mode === "section";
+  // A `section` row is content now, not something to assign: it is one of the
+  // sections she picks from inside the library. The library is the door, and
+  // the door is the only Read, Recall, Colour card in the list.
+  return activity.mode === "section-library";
+}
+
+/** One row of the section list a student chooses from. */
+export interface SectionChoice {
+  id: string;
+  title: string;
+  source_section: string;
+  stimulus_count: number;
+  goal_minutes: Record<string, number>;
+}
+
+/**
+ * The sections she may run.
+ *
+ * Read through a definer function rather than a select, because only admins may
+ * read `activities` and the fix must not be a read policy: `items` carries the
+ * Details her Coverage is scored against and the captured answer key, and a
+ * policy cannot hand back some columns while withholding others.
+ */
+export async function listSectionChoices(): Promise<SectionChoice[]> {
+  // Cast until `types.ts` is regenerated against the deployed schema. Both
+  // functions arrived with 20260902200000 and the generated union predates it;
+  // delete the casts the next time types are pulled.
+  const { data, error } = await supabase.rpc("list_section_activities" as never);
+  if (error) throw error;
+  return (data ?? []) as unknown as SectionChoice[];
+}
+
+/**
+ * Start an Attempt on one section, and return the assignment id to run.
+ *
+ * The row is built server-side. She chooses which section; she never supplies
+ * what is in it. An abandoned Attempt on the same section is discarded first,
+ * because the drill is one unbroken recording and half a run has no valid audio
+ * to resume into.
+ */
+export async function startSectionAttempt(activityId: string): Promise<string> {
+  const { data, error } = await supabase.rpc("start_section_attempt" as never, {
+    p_activity_id: activityId,
+  } as never);
+  if (error) throw error;
+  if (typeof data !== "string") throw new Error("start_section_attempt returned no id");
+  return data;
 }
 
 /** Teaching order, with anything unlisted kept in the query's own order. */
