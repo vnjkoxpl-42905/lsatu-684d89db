@@ -3,92 +3,78 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import type { ActivityAssignmentSummary } from "../api/types";
 import { SectionLibrary } from "./SectionLibrary";
 
-// The section list. Two of these rules are ones the regular section picker
-// breaks on purpose, so they are asserted rather than assumed: it hides a
-// section once sat, and it never shows past runs. Here both are wrong.
+// The list she picks a section from. Three rules the drill puts on it, each of
+// which fails quietly rather than loudly if it breaks.
 
 const choices = [
-  { id: "a1", title: "RRC · PT102 Section 3", source_section: "PT102.S3", stimulus_count: 22, goal_minutes: { standard: 25 } },
-  { id: "a2", title: "RRC · PT105 Section 2", source_section: "PT105.S2", stimulus_count: 23, goal_minutes: { standard: 25 } },
+  { id: "a1", title: "…PT102 Section 3", source_section: "PT102.S3", stimulus_count: 22, goal_minutes: { standard: 25 } },
+  { id: "a2", title: "…PT105 Section 2", source_section: "PT105.S2", stimulus_count: 23, goal_minutes: { standard: 25 } },
 ];
 
 const attempt = (over: Partial<ActivityAssignmentSummary>): ActivityAssignmentSummary =>
   ({
-    id: "x", activity_id: "a1", student_id: "s", title: "t", status: "completed",
+    id: "x", student_id: "s", title: "t", status: "completed", item_count: 23,
     created_at: "2026-09-01T10:00:00Z", completed_at: "2026-09-01T10:30:00Z",
-    mode: "section", source_section: "PT102.S3", instructions: {}, item_count: 22,
+    mode: "section", source_section: "PT105.S2", instructions: {},
     ...over,
   }) as ActivityAssignmentSummary;
 
 const load = () => Promise.resolve(choices);
 
 describe("choosing a section", () => {
-  it("lists every section, including ones already done", async () => {
-    render(
-      <SectionLibrary
-        attempts={[attempt({ id: "r1" })]}
-        onStart={vi.fn()}
-        loadChoices={load}
-      />,
-    );
-    // Nothing is hidden once done. Three sections exist, so hide-on-use would
-    // empty the list after three nights of a drill that asks for three a day.
-    await vi.waitFor(() => expect(screen.getByText("PT102.S3")).toBeInTheDocument());
+  it("lists every section and never hides one she has done", async () => {
+    // The regular picker drops a section she has sat. Right at 200 sections,
+    // wrong at three: she would run out in three nights.
+    render(<SectionLibrary attempts={[attempt({})]} onStart={vi.fn()} loadChoices={load} />);
+    await screen.findByText("PT102.S3");
     expect(screen.getByText("PT105.S2")).toBeInTheDocument();
   });
 
-  it("shows every Attempt, not a count", async () => {
+  it("shows the clock and not the stimulus count", async () => {
+    // A stimulus is our grain, not hers, and the counts differ per section for
+    // a reason she cannot see: two questions can share a stimulus.
+    render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={load} />);
+    await screen.findByText("PT102.S3");
+    expect(screen.getAllByText("25 min").length).toBe(2);
+    expect(screen.queryByText(/22 stimuli/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/stimuli/)).not.toBeInTheDocument();
+  });
+
+  it("lists every Attempt separately, not a count", async () => {
     render(
       <SectionLibrary
         attempts={[
-          attempt({ id: "r1", created_at: "2026-08-30T10:00:00Z" }),
-          attempt({ id: "r2", created_at: "2026-08-31T10:00:00Z" }),
-          attempt({ id: "r3", created_at: "2026-09-01T10:00:00Z" }),
+          attempt({ id: "r1", created_at: "2026-09-01T10:00:00Z" }),
+          attempt({ id: "r2", created_at: "2026-08-30T10:00:00Z" }),
         ]}
         onStart={vi.fn()}
         loadChoices={load}
       />,
     );
-    await vi.waitFor(() => expect(screen.getByText(/Attempt 3/)).toBeInTheDocument());
+    await screen.findByText("PT105.S2");
     expect(screen.getByText(/Attempt 2/)).toBeInTheDocument();
     expect(screen.getByText(/Attempt 1/)).toBeInTheDocument();
   });
 
-  it("marks an unfinished Attempt as unfinished rather than done", async () => {
-    render(
-      <SectionLibrary
-        attempts={[attempt({ id: "r1", status: "in_progress", completed_at: null })]}
-        onStart={vi.fn()}
-        loadChoices={load}
-      />,
-    );
-    await vi.waitFor(() => expect(screen.getByText(/not finished/)).toBeInTheDocument());
-  });
-
-  it("starts an Attempt server-side and hands back the id to run", async () => {
+  it("starts a run through the server, never by inserting one", async () => {
+    // The row carries the Details her Coverage is scored against, so it is
+    // built under definer rights. She names the section and nothing else.
+    const begin = vi.fn(() => Promise.resolve("new-assignment"));
     const onStart = vi.fn();
-    const beginAttempt = vi.fn(() => Promise.resolve("new-assignment-id"));
     render(
-      <SectionLibrary attempts={[]} onStart={onStart} loadChoices={load} beginAttempt={beginAttempt} />,
+      <SectionLibrary attempts={[]} onStart={onStart} loadChoices={load} beginAttempt={begin} />,
     );
-    await vi.waitFor(() => expect(screen.getByText("PT102.S3")).toBeInTheDocument());
-
+    await screen.findByText("PT102.S3");
     fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
-    // She names the section. She never supplies what is in it: the snapshot
-    // carries the Details her Coverage is scored against.
-    await vi.waitFor(() => expect(beginAttempt).toHaveBeenCalledWith("a1"));
-    expect(onStart).toHaveBeenCalledWith("new-assignment-id");
+    await vi.waitFor(() => expect(begin).toHaveBeenCalledWith("a1"));
+    await vi.waitFor(() => expect(onStart).toHaveBeenCalledWith("new-assignment"));
   });
 
-  it("says a failed read failed, instead of showing an empty list", async () => {
-    render(
-      <SectionLibrary
-        attempts={[]}
-        onStart={vi.fn()}
-        loadChoices={() => Promise.reject(new Error("offline"))}
-      />,
-    );
-    // An empty list means "nothing to do tonight", which is a different fact.
-    await vi.waitFor(() => expect(screen.getByText(/Could not load the sections/)).toBeInTheDocument());
+  it("says so when a section will not start, rather than hanging", async () => {
+    const begin = vi.fn(() => Promise.reject(new Error("nope")));
+    render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={load} beginAttempt={begin} />);
+    await screen.findByText("PT102.S3");
+    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
+    expect(await screen.findByText(/Could not start that section/)).toBeInTheDocument();
   });
 });
