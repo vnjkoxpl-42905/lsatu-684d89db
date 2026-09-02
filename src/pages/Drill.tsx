@@ -2523,7 +2523,10 @@ function DrillContent() {
       }
 
       if (!progress.historySaved) {
-        const sectionHistoryId = await persistSectionResults({
+        // Named for the leg, not shadowing the standalone path's state: a
+        // sitting never renders a score screen, so this row is closed the
+        // moment it is written and has no blind review to come back for.
+        const legHistoryId = await persistSectionResults({
           session: finishedSession,
           stats,
           classId,
@@ -2532,7 +2535,7 @@ function DrillContent() {
         // Every leg of a practice test is a section, and each one gets its own
         // report. Not awaited: the leg is saved, and the sitting has to be able
         // to move on to the next section whatever the mail server is doing.
-        void emailSectionReport(sectionHistoryId);
+        void emailSectionReport(legHistoryId);
         progress = recordCloseoutProgress(key!, { historySaved: true });
       }
 
