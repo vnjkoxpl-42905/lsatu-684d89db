@@ -107,7 +107,8 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onShowAnswer}
             disabled={showAnswerDisabled}
-            className={PILL_CLASS}
+            aria-pressed={showAnswerActive}
+            className={`${PILL_CLASS}${showAnswerActive ? " bg-slate-200 border-slate-400" : ""}`}
           >
             Answer
           </button>
@@ -117,8 +118,9 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onExplanation}
             disabled={explanationDisabled}
+            aria-pressed={explanationActive}
             title={explanationDisabled ? "Answer or reveal the question first" : undefined}
-            className={PILL_CLASS}
+            className={`${PILL_CLASS}${explanationActive ? " bg-slate-200 border-slate-400" : ""}`}
           >
             {explanationLabel}
           </button>
