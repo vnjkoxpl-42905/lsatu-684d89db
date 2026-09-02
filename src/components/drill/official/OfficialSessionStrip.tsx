@@ -28,6 +28,8 @@ interface Props {
   explanationLabel?: string;
   /** Disabled until something is revealed, so the breakdown cannot leak. */
   explanationDisabled?: boolean;
+  /** Whether the explanation panel is currently open (toggles pill styling). */
+  explanationActive?: boolean;
   /** Noun used in pause/complete labels: "Section" (default) or "Question". */
   pauseNoun?: string;
   /** Label for the complete/end action. Defaults to the LawHub-style full-section wording. */
