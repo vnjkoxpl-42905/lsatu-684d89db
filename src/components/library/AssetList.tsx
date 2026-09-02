@@ -35,7 +35,6 @@ function typeBadge(type: AssetType) {
     drill: "bg-purple-500/15 text-purple-300",
     curriculum: "bg-amber-500/15 text-amber-300",
     notes: "bg-zinc-500/15 text-zinc-300",
-    audio: "bg-cyan-500/15 text-cyan-300",
   };
   return map[type] ?? "bg-zinc-500/15 text-zinc-300";
 }

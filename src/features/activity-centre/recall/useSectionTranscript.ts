@@ -63,6 +63,14 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
   const pieces = useRef<TranscriptPiece[]>([]);
   const startedAt = useRef<number | null>(null);
   const running = useRef(false);
+  /*
+   * `now` is usually an inline arrow from the caller, so its identity changes
+   * on every render. Held in a ref, the recognition session survives the whole
+   * section instead of being aborted and restarted at every phase boundary —
+   * which used to reset the offsets each piece is timed against.
+   */
+  const nowRef = useRef(now);
+  nowRef.current = now;
 
   useEffect(() => {
     if (!enabled) return;
@@ -77,7 +85,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
     // only `isFinal` results are kept, because an interim is a guess that the
     // engine itself is about to revise.
     rec.interimResults = true;
-    startedAt.current = now();
+    startedAt.current = nowRef.current();
     running.current = true;
 
     rec.onresult = (e) => {
@@ -86,7 +94,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
         if (!result.isFinal) continue;
         const text = result[0].transcript.trim();
         if (!text) continue;
-        pieces.current.push({ atMs: now() - (startedAt.current ?? 0), text });
+        pieces.current.push({ atMs: nowRef.current() - (startedAt.current ?? 0), text });
       }
     };
     /*
@@ -122,7 +130,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
       rec.onresult = null;
       rec.abort();
     };
-  }, [enabled, now]);
+  }, [enabled]);
 
   /** Everything said, in order, with offsets from the start of the section. */
   const transcript = useCallback(() => pieces.current.slice(), []);
