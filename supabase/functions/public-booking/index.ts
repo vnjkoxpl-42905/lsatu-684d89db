@@ -21,6 +21,7 @@ import {
   bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
 import { linkPassToAccount } from "../_shared/linkPassToAccount.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 const LIMITS = {
   read: 20,          // info|slots per (ip,slug) per minute
@@ -52,12 +53,12 @@ async function callerIsAdmin(req: Request): Promise<boolean> {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
-    const { data, error } = await admin.auth.getUser(authorization.slice(7));
-    if (error || !data?.user) return false;
+    const caller = await userFromRequest(req);
+    if (!caller) return false;
     const { data: role } = await admin
       .from("user_roles")
       .select("role")
-      .eq("user_id", data.user.id)
+      .eq("user_id", caller.id)
       .eq("role", "admin")
       .maybeSingle();
     return !!role;
