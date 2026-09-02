@@ -60,3 +60,23 @@ create policy "admins read section grades"
 -- the grader, and a run with no row is ungraded rather than faked.
 
 grant select on public.activity_section_grades to authenticated;
+
+-- Then take back everything else.
+--
+-- This database grants ALL on every table in public to `authenticated` by
+-- default, which for a fresh table means INSERT, UPDATE, DELETE and TRUNCATE
+-- arrive uninvited. RLS already blocks the first three, since no policy permits
+-- them -- but TRUNCATE is not subject to RLS at all, so the grant is the only
+-- thing standing between a signed-in student and every grade in the table. It
+-- is not reachable through PostgREST, which exposes no TRUNCATE, and it is
+-- still not a grant this table should hold.
+--
+-- Revoking makes the intent explicit rather than implied, and means a
+-- permissive policy added here by accident later cannot open a write path on
+-- its own.
+revoke insert, update, delete, truncate, references, trigger
+  on public.activity_section_grades from authenticated;
+revoke all on public.activity_section_grades from anon;
+
+-- Verified in production 2026-09-01: authenticated holds SELECT and nothing
+-- else; service_role, which is what the grader runs as, holds everything.
