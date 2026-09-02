@@ -63,6 +63,14 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
   const pieces = useRef<TranscriptPiece[]>([]);
   const startedAt = useRef<number | null>(null);
   const running = useRef(false);
+  /*
+   * `now` is usually an inline arrow from the caller, so its identity changes
+   * on every render. Held in a ref, the recognition session survives the whole
+   * section instead of being aborted and restarted at every phase boundary —
+   * which used to reset the offsets each piece is timed against.
+   */
+  const nowRef = useRef(now);
+  nowRef.current = now;
 
   useEffect(() => {
     if (!enabled) return;

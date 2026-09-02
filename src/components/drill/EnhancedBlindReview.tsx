@@ -367,6 +367,29 @@ export function EnhancedBlindReview({
         }
       />
 
+      {/* Why this answer. The second pass is only worth reading back if she
+          says what changed her mind, so the box rides directly under the
+          choices. Read-only when looking at the timed attempt. */}
+      <div className="px-4 py-3 border-t border-slate-200 bg-white">
+        <label
+          htmlFor="br-rationale"
+          className="block text-[13px] font-semibold text-slate-700 mb-1.5"
+        >
+          Your rationale
+        </label>
+        <input
+          id="br-rationale"
+          type="text"
+          value={readOnly ? '' : currentRationale}
+          disabled={readOnly}
+          onChange={(e) => handleRationaleChange(e.target.value)}
+          placeholder="Why this answer?"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-[14px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7f1d1d]/30 disabled:bg-slate-50 disabled:text-slate-400"
+        />
+      </div>
+
+
+
       <OfficialAnswerNavigator
         questionQueue={reviewQids}
         currentIndex={currentIndex}
