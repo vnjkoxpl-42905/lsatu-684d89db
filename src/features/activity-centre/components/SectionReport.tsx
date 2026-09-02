@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { getSectionGrade } from "../api/activitiesClient";
+import { getSectionGrade, requestSectionGrading } from "../api/activitiesClient";
 import type { SectionGrade } from "../api/types";
 import { SectionReportCard } from "./SectionReportCard";
 
@@ -22,6 +22,16 @@ import { SectionReportCard } from "./SectionReportCard";
 const POLL_MS = 4000;
 /** After this, stop asking and tell her it is still being marked. */
 const GIVE_UP_MS = 3 * 60 * 1000;
+/**
+ * How long to wait before asking for the grade a second time.
+ *
+ * The runner already asked once, fire and forget, and that ask can be lost: the
+ * tab closed before it left, the network dropped, the function was cold. One
+ * repeat after a decent wait recovers all three. It is idempotent on the server
+ * -- an already-graded run returns its existing row rather than regrading -- so
+ * the cost of a redundant ask is one request.
+ */
+const RETRY_ASK_MS = 20000;
 
 interface SectionReportProps {
   assignmentId: string;
@@ -36,6 +46,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
   useEffect(() => {
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
+    let askedAgain = false;
 
     const poll = async () => {
       try {
@@ -50,7 +61,16 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
         // arrives or the give-up copy takes over.
       }
       if (cancelled) return;
-      if (Date.now() - startedAt.current > GIVE_UP_MS) {
+
+      const waited = Date.now() - startedAt.current;
+      if (!askedAgain && waited > RETRY_ASK_MS) {
+        // Ask once more. Losing the first ask is the likeliest way a finished
+        // run ends up with no Report Card, and it is the one failure this
+        // screen is in a position to repair by itself.
+        askedAgain = true;
+        void requestSectionGrading(assignmentId);
+      }
+      if (waited > GIVE_UP_MS) {
         setStillWaiting(true);
         return;
       }
