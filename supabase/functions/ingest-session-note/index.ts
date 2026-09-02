@@ -22,10 +22,10 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import {
-import { userFromRequest } from "../_shared/authClaims.ts";
   cleanupStoredTranscript,
   isUniqueViolation,
 } from "../_shared/sessionIngestCore.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

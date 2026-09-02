@@ -5,7 +5,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import {
-import { userFromRequest } from "../_shared/authClaims.ts";
   deleteEvent,
   getAccessToken,
   getEvent,
@@ -14,6 +13,7 @@ import { userFromRequest } from "../_shared/authClaims.ts";
   meetUrlFromEvent,
   patchEvent,
 } from "../_shared/googleCalendar.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
