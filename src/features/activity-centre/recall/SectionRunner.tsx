@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-import { completeSectionRun } from "../api/activitiesClient";
+import { completeSectionRun, requestSectionGrading } from "../api/activitiesClient";
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
@@ -390,6 +390,11 @@ function RunBody({
       } catch (err) {
         console.error("[rrc] could not close the assignment", err);
       }
+
+      // Ask for the grade, but do not wait on it and do not let it fail the
+      // run. The Report Card polls for the result, and the sweeper re-drives
+      // anything this call missed.
+      await requestSectionGrading(assignmentId);
 
       if (!cancelled) onComplete?.();
     })();
