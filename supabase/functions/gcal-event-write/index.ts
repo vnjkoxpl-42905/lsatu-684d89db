@@ -3,6 +3,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { deleteEvent, insertEvent, patchEvent } from "../_shared/googleCalendar.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 interface Body {
   action: "create" | "update" | "delete";
@@ -30,8 +31,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
       { global: { headers: { Authorization: authHeader } } },
     );
-    const { data: userRes } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-    const user = userRes?.user;
+    const user = await userFromRequest(req);
     if (!user) {
       return new Response(JSON.stringify({ error: "unauthorized" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },

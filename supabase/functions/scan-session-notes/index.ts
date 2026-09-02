@@ -22,6 +22,7 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import {
+import { userFromRequest } from "../_shared/authClaims.ts";
   cleanupStoredTranscript,
   GMAIL_GATEWAY,
   exportDocText,
@@ -93,8 +94,7 @@ Deno.serve(async (req) => {
   const authHeader = req.headers.get("Authorization") ?? "";
   if (!authHeader.startsWith("Bearer ")) return jsonRes({ ok: false, error: "unauthorized" }, 401);
   const admin = createClient(supabaseUrl, serviceRoleKey);
-  const { data: userRes } = await admin.auth.getUser(authHeader.replace("Bearer ", ""));
-  const caller = userRes?.user;
+  const caller = await userFromRequest(req);
   if (!caller) return jsonRes({ ok: false, error: "unauthorized" }, 401);
   const { data: roleRow } = await admin
     .from("user_roles").select("role")

@@ -3,6 +3,7 @@
 // Frontend talks to this function via supabase.functions.invoke("gmail", { action, ... }).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/google_mail/gmail/v1";
 
@@ -165,8 +166,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
-    const { data: userRes } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-    const user = userRes?.user;
+    const user = await userFromRequest(req);
     if (!user) return jsonResp({ error: "unauthorized" }, 401);
     const { data: roleRow } = await supabase.from("user_roles")
       .select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
