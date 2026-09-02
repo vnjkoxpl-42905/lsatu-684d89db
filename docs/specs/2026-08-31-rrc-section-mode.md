@@ -72,16 +72,22 @@ v1 deferred scoring The Read because it "needs a per-stimulus key authored by
 hand." **That key now exists** — 5,015 typed Reads captured 2026-08-30, at
 `~/ai-os/raw/sources/lsat-curriculum/loophole-question-db/derived/clir-answer-key.tsv`.
 
-| Criterion | Grade | Against |
-|---|---|---|
-| Details kept | LLM rubric | the authored detail list per chunk |
-| Own words | code | n-gram overlap with the chunk; **high overlap is the failure** |
-| How the pieces fit | LLM rubric | relationships, not order |
-| A colour on every chunk | code | countable |
-| Colour genericness | LLM rubric | once, at session end, only when repeated |
-| The Read | LLM rubric | **the captured key**, typed L/I/C/R |
-| Time | code | wall clock vs the goal for her accommodation |
-| Dead air | code | silence in the recording — **windowed, see below** |
+> **This table predates ADRs 0012 and 0013 and four of its rows no longer
+> describe anything buildable.** It is kept as drafted, annotated rather than
+> edited, because it is the record of what was believed on 2026-08-31. The
+> grader as designed is
+> [2026-09-01-rrc-section-grader.md](./2026-09-01-rrc-section-grader.md).
+
+| Criterion | Grade | Against | Still true? |
+|---|---|---|---|
+| Details kept | LLM rubric | the authored detail list per chunk | **per stimulus, not per chunk** ([0013](../adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md)) |
+| Own words | code | n-gram overlap with the chunk; **high overlap is the failure** | yes; `recall/overlap.ts` |
+| How the pieces fit | LLM rubric | relationships, not order | yes, as the Listing check ([0012](../adr/0012-the-recall-is-a-recap-from-memory.md)) |
+| A colour on every chunk | code | countable | **no.** The app does not track chunks, so nothing is countable. Judged per stimulus |
+| Colour genericness | LLM rubric | once, at session end, only when repeated | yes |
+| The Read | LLM rubric | **the captured key**, typed L/I/C/R | **no.** Replaced by The Recall; the key goes unused ([0012](../adr/0012-the-recall-is-a-recap-from-memory.md)) |
+| Time | code | wall clock vs the goal for her accommodation | yes; 25/38/50 ([0014](../adr/0014-the-section-goal-is-calibrated-not-inherited.md)) |
+| Dead air | code | silence in the recording — **windowed, see below** | yes, windowed to The Recall only |
 
 **Dead air must be windowed.** She reads silently, so silence during a read is
 expected and correct. Only silence inside a recall or colour window is a
@@ -172,6 +178,20 @@ settled the detail grain as built. Three sections are content-complete at
 Activities, with `mode`, `time_goal_minutes` and `source_section` on
 `public.activities` (`20260831050000_activities_section_mode.sql`) and a seed
 migration that carries them.
+
+**The runner is built** and has caught up with ADRs 0012 and 0013: the cursor is
+stimulus-grained (`working` / `recalling`), one unbroken recording per section
+lands in `drill-recordings`, and a full per-stimulus record is written to
+`activity_item_responses.rrc`.
+
+**Nothing reads any of it.** Grading is designed and not built; see
+[2026-09-01-rrc-section-grader.md](./2026-09-01-rrc-section-grader.md). Note that
+a finished section never reaches `completed` today, because the section branch of
+`ActivityRunner` returns before `completeAssignment` is called.
+
+**§3's blur/blank chunk contract is stale** and is the one part of this spec not
+yet annotated: ADR 0013 removed per-chunk state entirely, so the four chunk
+states it describes no longer exist.
 
 **The screen in section 3 is built.** `recall/section.ts` is the machine (pure,
 16 tests), `SectionStage.tsx` draws it, `SectionRunner.tsx` drives it, and

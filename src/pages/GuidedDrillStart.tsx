@@ -44,6 +44,7 @@ import {
 } from '@/lib/guidedDrillSession';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import type { DrillSession } from '@/types/drill';
+import { launchDrill } from '@/lib/drillLaunch';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
@@ -307,19 +308,22 @@ export default function GuidedDrillStart({
         await markStarted(assignment.id);
       }
 
-      const params = new URLSearchParams();
-      params.set('mode', 'type-drill');
-      params.set('qids', validQids.join(','));
-      params.set('returnTo', launchReturnTo);
-      if (resumeIndex != null) {
-        params.set('initialIndex', String(resumeIndex));
-      }
-      params.set('focus', ov.title);
-      params.set('source', ov.source);
-      // Carry the pool slug so /drill can mark this practice set complete in
-      // module progress when the student finishes (see runner path-completion).
-      params.set('practiceSlug', ov.slug);
-      navigate(`/drill?${params.toString()}`);
+      // Named by the pool slug rather than by a copy of its questions. The
+      // slug is also what lets /drill mark this practice set complete in module
+      // progress when the student finishes (see runner path-completion), and
+      // what its Run Record is keyed by, so a refresh finds the same run.
+      navigate(
+        `/drill?${launchDrill({
+          kind: 'practice-set',
+          slug: ov.slug,
+          source: ov.source,
+          options: {
+            returnTo: launchReturnTo,
+            label: ov.title,
+            initialIndex: resumeIndex ?? undefined,
+          },
+        })}`,
+      );
       return;
     }
 

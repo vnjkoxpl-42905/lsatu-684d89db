@@ -28,6 +28,7 @@ import { loadDrillHub } from "@/lib/routePreload";
 import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const Drill = safeLazy(() => import("./pages/Drill"));
+const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
@@ -412,7 +413,7 @@ const App = () => {
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
-                    <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
+                    <ProtectedRoute flag="has_drill_access"><DrillLaunchGate><Drill /></DrillLaunchGate></ProtectedRoute>
                   } />
                   {/* Reading Comprehension drilling. Content is static JSON; only
                       progress touches the database. See src/features/rc/CONTEXT.md. */}

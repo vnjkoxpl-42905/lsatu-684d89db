@@ -20,6 +20,7 @@
 import type {
   DrillMode,
   FullSectionConfig,
+  TimerMode,
   TypeDrillConfig,
 } from '@/types/drill';
 import type { DrillRouteState } from '@/lib/drillRouteState';
@@ -76,6 +77,14 @@ export type DrillLaunchBody =
       kind: 'section';
       pt: number;
       section: number;
+      /**
+       * The clock this section runs on. Omitted means the standard 35. A
+       * section can also be sat at 52.5, at 70, or with no clock at all, which
+       * is how an accommodation is honoured, so this cannot be reduced to a
+       * number of minutes.
+       */
+      timerMode?: Exclude<TimerMode, '35'>;
+      /** Only meaningful with a `custom` timer. */
       minutes?: number;
       /**
        * Answer and Explanation are never rendered, for the whole run. A section
@@ -99,6 +108,23 @@ export type DrillLaunchBody =
     }
   /** A bootcamp module's practice set, named by its pool slug. */
   | { kind: 'practice-set'; slug: string; source?: string }
+  /**
+   * One day of a bootcamp, either its homework or its practice. The questions
+   * are picked fresh each time from that day's filters, so the day and the part
+   * are the run's real name — "Day 3 homework" — and the picked list is not.
+   * Naming it this way means the link survives a change to how the picker
+   * works, and the Run Record still holds the questions the student actually
+   * got.
+   *
+   * Nothing emits this yet, deliberately. The picker excludes questions the
+   * student has recently seen, and the Run Record is keyed by the question
+   * list, so re-picking on refresh would draw a different list, miss the
+   * resume row, and lose the run — the opposite of the point. Emitting it
+   * needs the Run Record keyed by the day instead, which is its own change.
+   * Until then the bootcamp day is canonicalized as a plain question list,
+   * which already survives a refresh.
+   */
+  | { kind: 'bootcamp-day'; day: number; part: 'homework' | 'practice' }
   /**
    * An ad-hoc list of specific questions: a question-finder jump, "redo this
    * one", a generated micro-drill. It has no row to point at, so the list is
@@ -138,6 +164,7 @@ const KINDS_NEEDING_RESOLUTION = new Set([
   'assignment',
   'guided-drill',
   'practice-set',
+  'bootcamp-day',
 ]);
 
 export function launchNeedsResolution(launch: DrillLaunch): boolean {
@@ -177,6 +204,7 @@ export function launchDrill(launch: DrillLaunch): string {
     case 'section':
       p.set('pt', String(launch.pt));
       p.set('section', String(launch.section));
+      if (launch.timerMode) p.set('timer', launch.timerMode);
       if (launch.minutes) p.set('minutes', String(launch.minutes));
       if (launch.sealed) p.set('sealed', '1');
       if (launch.ptLeg) {
@@ -199,6 +227,10 @@ export function launchDrill(launch: DrillLaunch): string {
     case 'practice-set':
       p.set('slug', launch.slug);
       if (launch.source) p.set('source', launch.source);
+      break;
+    case 'bootcamp-day':
+      p.set('day', String(launch.day));
+      p.set('part', launch.part);
       break;
     case 'questions':
       p.set('qids', launch.qids.join(','));
@@ -241,6 +273,14 @@ function nonNegativeInt(value: string | null): number | undefined {
   if (!value) return undefined;
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+}
+
+const TIMER_MODES = ['52.5', '70', 'custom', 'unlimited'] as const;
+
+function readTimerMode(value: string | null): Exclude<TimerMode, '35'> | undefined {
+  return (TIMER_MODES as readonly string[]).includes(value ?? '')
+    ? (value as Exclude<TimerMode, '35'>)
+    : undefined;
 }
 
 function list(value: string | null): string[] {
@@ -318,6 +358,7 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
         kind,
         pt,
         section,
+        timerMode: readTimerMode(p.get('timer')),
         minutes: positiveNumber(p.get('minutes')),
         sealed: p.get('sealed') === '1' ? true : undefined,
         ptLeg: runId && legIndex != null ? { runId, legIndex } : undefined,
@@ -365,6 +406,17 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
       const slug = p.get('slug');
       if (!slug) throw new DrillLaunchError('a practice-set launch needs a slug');
       return { kind, slug, source: p.get('source') || undefined, options };
+    }
+
+    case 'bootcamp-day': {
+      const day = positiveNumber(p.get('day'));
+      const part = p.get('part');
+      if (!day || (part !== 'homework' && part !== 'practice')) {
+        throw new DrillLaunchError(
+          'a bootcamp-day launch needs a day and a part of homework or practice',
+        );
+      }
+      return { kind, day, part, options };
     }
 
     case 'questions': {
@@ -506,7 +558,7 @@ export function toDrillRouteState(
         pt: launch.pt,
         section: launch.section,
         timer: {
-          mode: launch.minutes ? 'custom' : '35',
+          mode: launch.timerMode ?? (launch.minutes ? 'custom' : '35'),
           customMinutes: launch.minutes,
           isPaused: false,
           elapsedMs: 0,
@@ -551,7 +603,8 @@ export function toDrillRouteState(
     case 'saved-set':
     case 'assignment':
     case 'guided-drill':
-    case 'practice-set': {
+    case 'practice-set':
+    case 'bootcamp-day': {
       if (!resolvedQids) {
         throw new DrillLaunchError(
           `a ${launch.kind} launch must have its questions resolved before it can run`,
@@ -568,4 +621,181 @@ export function toDrillRouteState(
       };
     }
   }
+}
+
+// ---------------------------------------------------------------------------
+// Expanding
+// ---------------------------------------------------------------------------
+
+/**
+ * Write a launch in the grammar `Drill.tsx` already reads.
+ *
+ * The gate in front of the runner uses this: a short link arrives, the gate
+ * resolves whatever row it names, and then replaces the address bar with the
+ * long form the page understands. That is what lets the page stay untouched
+ * while every launch still survives a refresh.
+ *
+ * Temporary by construction. When the runner reads a `DrillLaunch` directly,
+ * this function and the legacy branch of the parser go together.
+ */
+export function expandToLegacySearch(
+  launch: DrillLaunch,
+  resolvedQids?: string[],
+): string {
+  const p = new URLSearchParams();
+  const o = launch.options ?? {};
+
+  const asQuestionList = (qids: string[]) => {
+    p.set('mode', 'type-drill');
+    if (qids.length > 0) p.set('qids', qids.join(','));
+  };
+
+  switch (launch.kind) {
+    case 'smart-drill':
+      p.set('mode', 'adaptive');
+      break;
+
+    case 'section':
+      p.set('mode', 'full-section');
+      p.set('pt', String(launch.pt));
+      p.set('section', String(launch.section));
+      if (launch.timerMode) p.set('timer', launch.timerMode);
+      if (launch.minutes) p.set('minutes', String(launch.minutes));
+      if (launch.sealed) p.set('sealed', '1');
+      // The two values whose loss on refresh left a practice test permanently
+      // open. The runner reads them from here now, not only from route state.
+      if (launch.ptLeg) {
+        p.set('runId', launch.ptLeg.runId);
+        p.set('leg', String(launch.ptLeg.legIndex));
+      }
+      break;
+
+    case 'questions':
+      asQuestionList(launch.qids);
+      if (launch.legacy?.isGuidedDrill) p.set('guided', '1');
+      if (launch.legacy?.guidedDurationMinutes) {
+        p.set('guidedDurationMinutes', String(launch.legacy.guidedDurationMinutes));
+      }
+      if (launch.legacy?.sealed) p.set('sealed', '1');
+      break;
+
+    case 'filter':
+      p.set('mode', 'type-drill');
+      p.set('count', String(launch.count));
+      setList(p, 'qtypes', launch.qtypes);
+      setList(p, 'difficulties', launch.difficulties);
+      setList(p, 'pts', launch.pts);
+      setList(p, 'sections', launch.sections);
+      setList(p, 'qfeatures', launch.qfeatures);
+      break;
+
+    case 'saved-set':
+    case 'bootcamp-day':
+      asQuestionList(resolvedQids ?? []);
+      break;
+
+    case 'assignment':
+      asQuestionList(resolvedQids ?? []);
+      p.set('assignmentId', launch.assignmentId);
+      if (launch.guidedSetId) p.set('guidedSetId', launch.guidedSetId);
+      break;
+
+    case 'guided-drill':
+      asQuestionList(resolvedQids ?? []);
+      p.set('guided', '1');
+      if (launch.assignmentId) p.set('guidedAssignmentId', launch.assignmentId);
+      if (launch.durationMinutes) {
+        p.set('guidedDurationMinutes', String(launch.durationMinutes));
+      }
+      break;
+
+    case 'practice-set':
+      asQuestionList(resolvedQids ?? []);
+      // The two params the runner uses to recognise an Intro to LR practice
+      // set and map it back to its module-progress completion id.
+      p.set('source', launch.source ?? 'intro-to-lr-practice-drills');
+      p.set('practiceSlug', launch.slug);
+      break;
+  }
+
+  if (o.returnTo) p.set('returnTo', o.returnTo);
+  if (o.label) p.set('focus', o.label);
+  if (o.initialIndex != null) p.set('initialIndex', String(o.initialIndex));
+  if (o.present) p.set('present', o.present);
+
+  return p.toString();
+}
+
+/**
+ * Read a launch back out of the route state a button handed over in memory.
+ *
+ * This is how the eight buttons that never built a URL get one without being
+ * touched: the gate takes what they passed, names it, and writes it into the
+ * address bar. It can only recover what the button actually passed, which is
+ * why two buttons still have to change — a saved set arrives as a bare list of
+ * questions with its set id already discarded, and a bootcamp day arrives
+ * without saying which day it was.
+ *
+ * Returns null when the state names no drill, which is the case where there is
+ * nothing to canonicalize.
+ */
+export function launchFromRouteState(
+  state: DrillRouteState | null | undefined,
+  ptLeg?: PtLegRef,
+): DrillLaunch | null {
+  if (!state?.mode) return null;
+
+  const options: DrillLaunchOptions = {};
+  if (state.returnTo) options.returnTo = state.returnTo;
+  if (state.practicingLabel) options.label = state.practicingLabel;
+  if (state.present) options.present = state.present;
+  const withOptions = undefinedIfEmpty(options);
+
+  if (state.mode === 'adaptive') {
+    return { kind: 'smart-drill', options: withOptions };
+  }
+
+  if (state.mode === 'full-section') {
+    const config = state.config as FullSectionConfig | undefined;
+    if (!config) return null;
+    return {
+      kind: 'section',
+      pt: config.pt,
+      section: config.section,
+      timerMode: config.timer.mode === '35' ? undefined : config.timer.mode,
+      minutes: config.timer.customMinutes,
+      sealed: state.sealed || undefined,
+      ptLeg,
+      options: withOptions,
+    };
+  }
+
+  const config = state.config as TypeDrillConfig | undefined;
+  if (!config) return null;
+
+  if (config.selectedQids && config.selectedQids.length > 0) {
+    return {
+      kind: 'questions',
+      qids: config.selectedQids,
+      options: withOptions,
+      legacy: {
+        mode: state.mode === 'practice-set' ? 'type-drill' : state.mode,
+        sealed: !!state.sealed,
+        isGuidedDrill: !!state.isGuidedDrill,
+        guidedDurationMinutes: state.guidedDurationMinutes,
+      },
+    };
+  }
+
+  if (!config.count) return null;
+  return {
+    kind: 'filter',
+    count: config.count,
+    qtypes: config.qtypes?.length ? config.qtypes : undefined,
+    difficulties: config.difficulties?.length ? config.difficulties : undefined,
+    pts: config.pts?.length ? config.pts : undefined,
+    sections: config.sections?.length ? config.sections : undefined,
+    qfeatures: config.qfeatures?.length ? config.qfeatures : undefined,
+    options: withOptions,
+  };
 }

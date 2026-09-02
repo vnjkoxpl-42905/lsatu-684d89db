@@ -17,6 +17,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useSavedSets } from "@/hooks/useSavedSets";
 import { recordExposures } from "@/lib/questionExposure";
+import { launchDrill } from "@/lib/drillLaunch";
 import { format } from "date-fns";
 
 // Saved-set surface. Lists every set the
@@ -37,7 +38,10 @@ export default function SavedSets() {
   const [renameValue, setRenameValue] = React.useState("");
   const [confirmDeleteId, setConfirmDeleteId] = React.useState<string | null>(null);
 
-  const launch = (questionIds: string[]) => {
+  // The set's id, not its questions. A link that names the set stays correct
+  // when the set is edited, and it is short enough to read; handing over the
+  // question list threw the only durable name away.
+  const launch = (setId: string, questionIds: string[]) => {
     if (questionIds.length === 0) {
       toast.error("This set has no questions.");
       return;
@@ -47,18 +51,7 @@ export default function SavedSets() {
         console.error("[SavedSets] recordExposures failed", e),
       );
     }
-    navigate("/drill", {
-      state: {
-        mode: "type-drill",
-        config: {
-          qtypes: [],
-          difficulties: [],
-          pts: [],
-          count: questionIds.length,
-          selectedQids: questionIds,
-        },
-      },
-    });
+    navigate(`/drill?${launchDrill({ kind: "saved-set", setId })}`);
   };
 
   const startRename = (id: string, currentName: string) => {
@@ -194,7 +187,7 @@ export default function SavedSets() {
                     <div className="flex items-center gap-1.5 shrink-0">
                       <Button
                         size="sm"
-                        onClick={() => launch(set.question_ids)}
+                        onClick={() => launch(set.id, set.question_ids)}
                         className="gap-1.5"
                       >
                         <Play className="h-3.5 w-3.5" aria-hidden /> Launch
