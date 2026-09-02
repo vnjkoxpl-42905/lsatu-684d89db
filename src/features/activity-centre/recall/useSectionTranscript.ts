@@ -85,7 +85,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
     // only `isFinal` results are kept, because an interim is a guess that the
     // engine itself is about to revise.
     rec.interimResults = true;
-    startedAt.current = now();
+    startedAt.current = nowRef.current();
     running.current = true;
 
     rec.onresult = (e) => {
@@ -94,7 +94,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
         if (!result.isFinal) continue;
         const text = result[0].transcript.trim();
         if (!text) continue;
-        pieces.current.push({ atMs: now() - (startedAt.current ?? 0), text });
+        pieces.current.push({ atMs: nowRef.current() - (startedAt.current ?? 0), text });
       }
     };
     /*
@@ -130,7 +130,7 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
       rec.onresult = null;
       rec.abort();
     };
-  }, [enabled, now]);
+  }, [enabled]);
 
   /** Everything said, in order, with offsets from the start of the section. */
   const transcript = useCallback(() => pieces.current.slice(), []);
