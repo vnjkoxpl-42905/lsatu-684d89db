@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { completeSectionRun } from "../api/activitiesClient";
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
@@ -369,6 +370,27 @@ function RunBody({
         // unbroken minutes.
         if (error) console.error("[rrc] could not record the section", error);
       }
+
+      /*
+       * Close the assignment.
+       *
+       * Deliberately after the rows and deliberately not conditional on them:
+       * `status` is the Classroom's answer to "did she do the work", and she
+       * did, whether or not our write of the evidence succeeded. Left out, an
+       * RRC section stayed `in_progress` for ever -- every run ever done still
+       * reads as unfinished -- because this branch never called the completion
+       * the free-text path calls.
+       *
+       * Logged rather than thrown, like every other failure in this effect. She
+       * has finished twenty unbroken minutes and a write we can retry is not a
+       * thing to hand her at the end of them.
+       */
+      try {
+        await completeSectionRun(assignmentId);
+      } catch (err) {
+        console.error("[rrc] could not close the assignment", err);
+      }
+
       if (!cancelled) onComplete?.();
     })();
     return () => {

@@ -15,9 +15,14 @@ import { SectionRunner } from "./SectionRunner";
 type Row = Record<string, unknown>;
 const insert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
 const upload = vi.fn(() => Promise.resolve({ error: null }));
+/** The assignment close: `.update(patch).eq("id", id)`. */
+const update = vi.fn((_patch: Row) => Promise.resolve({ error: null }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
-    from: () => ({ insert: (rows: Row[]) => insert(rows) }),
+    from: () => ({
+      insert: (rows: Row[]) => insert(rows),
+      update: (patch: Row) => ({ eq: () => update(patch) }),
+    }),
     storage: { from: () => ({ upload: () => upload() }) },
   },
 }));
@@ -57,6 +62,7 @@ const space = () => fireEvent.keyDown(document, { code: "Space" });
 beforeEach(() => {
   insert.mockClear();
   upload.mockClear();
+  update.mockClear();
 });
 
 describe("what she sees while working", () => {
@@ -164,6 +170,53 @@ describe("writing it down", () => {
     // is no network call inside the loop at all.
     space();
     expect(insert).not.toHaveBeenCalled();
+  });
+
+  it("marks the assignment completed at the end", async () => {
+    renderRun();
+    space();
+    space();
+
+    // Left out, every RRC section ever run stayed `in_progress` for ever: this
+    // branch never called the completion the free-text path calls, so the
+    // Classroom's answer to "did she do it" was permanently no.
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
+    const patch = update.mock.calls[0][0];
+    expect(patch.status).toBe("completed");
+    expect(patch.completed_at).toEqual(expect.any(String));
+  });
+
+  it("closes the run without claiming a score", async () => {
+    renderRun();
+    space();
+    space();
+
+    // Coverage is produced afterwards by the grader and lives in its own table
+    // (ADR 0019). Writing any scoring column here -- even a null score -- would
+    // be a claim that something judged this run, when nothing has.
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
+    const patch = update.mock.calls[0][0];
+    for (const column of [
+      "score",
+      "score_numerator",
+      "score_judged",
+      "score_total",
+      "scoring_version",
+    ]) {
+      expect(patch).not.toHaveProperty(column);
+    }
+  });
+
+  it("still closes the run when the rows could not be written", async () => {
+    insert.mockImplementationOnce(() => Promise.resolve({ error: { message: "nope" } }));
+    renderRun();
+    space();
+    space();
+
+    // `status` answers "did she do the work", and she did. A failure to store
+    // our evidence of it is ours, and must not leave her run looking abandoned.
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
+    expect(update.mock.calls[0][0].status).toBe("completed");
   });
 
   it("writes one row per stimulus once, at the end, and finishes", async () => {

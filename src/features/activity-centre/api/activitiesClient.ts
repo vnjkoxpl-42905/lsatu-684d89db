@@ -264,6 +264,35 @@ export async function completeAssignment(assignmentId: string, score: RunScore):
   if (retryError) throw retryError;
 }
 
+/**
+ * Student: close a Read, Recall, Colour section run.
+ *
+ * Deliberately not `completeAssignment`. That one writes `score`,
+ * `scoring_version` and the judged/total breakdown, and a section knows none of
+ * them: Coverage is produced afterwards by the grader and lives in its own
+ * table (ADR 0019). Passing a null score through the scoring columns would not
+ * be silence, it would be a claim -- "the v2 scorer ran over N items and
+ * reached no verdict" -- when the truth is that nothing has graded it yet.
+ *
+ * So this writes the two columns that mean "she finished" and touches nothing
+ * that means "and here is how she did". Until the grader exists a finished
+ * section is a completed assignment with no grade, which is exactly what it is.
+ *
+ * `status` is the Classroom's view of whether the work was done and nothing may
+ * derive trust from it: she holds UPDATE on her own row, so it is hers to set
+ * either way (ADR 0019). It is written here rather than being left behind.
+ */
+export async function completeSectionRun(assignmentId: string): Promise<void> {
+  const { error } = await supabase
+    .from("activity_assignments")
+    .update({
+      status: "completed" satisfies ActivityStatus,
+      completed_at: new Date().toISOString(),
+    })
+    .eq("id", assignmentId);
+  if (error) throw error;
+}
+
 // --- Admin -----------------------------------------------------------------
 
 /**

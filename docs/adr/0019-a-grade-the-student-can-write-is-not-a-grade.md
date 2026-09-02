@@ -48,12 +48,22 @@ flagged and which this ADR now gives a trustworthy input: not `status`, which
 she can set, but the existence of a grade row, which she cannot.
 
 **`activity_assignments.status` and `completed_at` are still written when a
-section finishes, by the grader rather than the client.** They are the
-Classroom's view of whether work is done, they are read all over the app, and
-today an RRC section never reaches `completed` at all because the section branch
-of `ActivityRunner` never calls `completeAssignment`. Having the server write
-them fixes that and makes them advisory rather than load-bearing: convenient for
-listing, never the basis of a judgement.
+section finishes, and they are advisory.** They are the Classroom's view of
+whether work is done and they are read all over the app, but nothing may derive
+trust from them: she holds UPDATE on her own row, so they are hers to set either
+way. Who writes them is therefore a question of correctness, not of security.
+
+The client writes them, in `completeSectionRun`, because the run is finished the
+moment she stops and the grader may be minutes behind or may never arrive. It is
+deliberately not `completeAssignment`: that writes `score`, `scoring_version` and
+the judged/total breakdown, and passing a null score through those columns would
+not be silence but a claim — "the v2 scorer ran over N items and reached no
+verdict" — when the truth is that nothing has graded it yet. A finished section
+is a completed assignment with no grade, which is exactly what it is.
+
+Before this, an RRC section never reached `completed` at all: the section branch
+of `ActivityRunner` returned before the completion the free-text path calls, so
+every run ever done still read as `in_progress`.
 
 **Closing the hole on the existing score columns is a separate change and is not
 in this ADR's scope.** It is recorded here because it was found here, and
