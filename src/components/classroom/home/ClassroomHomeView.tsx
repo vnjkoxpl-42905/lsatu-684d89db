@@ -11,7 +11,6 @@
  */
 
 import * as React from "react";
-import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { ArrowRight, CalendarClock } from "lucide-react";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
@@ -230,11 +229,6 @@ export function ClassroomHomeView({
                 ? "1 DUE TODAY"
                 : `${model.dueTodayCount} DUE TODAY`}
             </span>
-          ) : null}
-          {model.access.drill ? (
-            <div className="classroom-home-jump">
-              <QuestionJump returnTo="/classroom" />
-            </div>
           ) : null}
         </div>
       </header>
