@@ -230,6 +230,11 @@ export function ClassroomHomeView({
                 : `${model.dueTodayCount} DUE TODAY`}
             </span>
           ) : null}
+          {model.access.drill ? (
+            <div className="classroom-home-jump">
+              <QuestionJump returnTo="/classroom" />
+            </div>
+          ) : null}
         </div>
       </header>
 
