@@ -20,6 +20,18 @@ function previewAssignment(activity: Activity, userId: string): ActivityAssignme
     subtitle: activity.subtitle,
     instructions: activity.instructions,
     item_format: activity.item_format,
+    /*
+     * Section mode is carried by three fields, and a preview that drops them
+     * silently runs the WRONG PLAYER. `ActivityRunner` picks the section runner
+     * on `mode === "section"`; without it the branch falls through to the v1
+     * chunk-by-chunk runner, which judges live, accepts typing and walks a
+     * cursor -- every one of which section mode forbids. The preview then shows
+     * a drill that has not existed since ADR 0012, and looks like a design
+     * failure rather than a missing field.
+     */
+    mode: activity.mode,
+    time_goal_minutes: activity.time_goal_minutes,
+    source_section: activity.source_section,
     items: activity.items,
     status: "assigned",
     score: null,

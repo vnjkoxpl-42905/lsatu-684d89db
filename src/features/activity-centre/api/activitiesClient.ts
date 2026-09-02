@@ -372,7 +372,24 @@ export async function listActivities(): Promise<Activity[]> {
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return sortForLibrary((data ?? []).map(hydrateActivity));
+  return sortForLibrary((data ?? []).map(hydrateActivity).filter(isRunnable));
+}
+
+/**
+ * Can this Activity still be run?
+ *
+ * Read, Recall, Colour is a whole section and only that. The one-stimulus
+ * runner it used to fall back to is gone, so a `spoken-recall` Activity without
+ * `mode: "section"` has nothing to run it.
+ *
+ * It is filtered out of the library rather than deleted. The row is content
+ * that predates the decision, it costs nothing to keep, and deleting a row to
+ * fix a listing is a trade nobody should make. Assigning something unrunnable
+ * is the actual harm, and this is where that is prevented.
+ */
+export function isRunnable(activity: Activity): boolean {
+  if (activity.item_format !== "spoken-recall") return true;
+  return activity.mode === "section";
 }
 
 /** Teaching order, with anything unlisted kept in the query's own order. */
