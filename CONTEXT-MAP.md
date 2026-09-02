@@ -10,6 +10,7 @@ The repo has more than one bounded context, each with its own language. This map
 - [Guided Drills & Explanations](./src/components/drill/CONTEXT.md) — the practice domain: guided drills, the question bank, drill instruction cards, and per-question explanations (the Phase 2 authoring work).
 - [Classroom](./src/components/classroom/CONTEXT.md) — the student's own room: the Classroom frame, its sections, and the flag-versus-wrong-answer distinction.
 - [Reading Comprehension](./src/features/rc/CONTEXT.md) — full-passage RC drilling: passages, sessions, attempts, reveal modes, status, and the adaptive picker.
+- [Activity Centre](./src/features/activity-centre/CONTEXT.md) — coach-led skill exercises a student is assigned, and the Read, Recall, Colour drill that runs inside one: Chunk, Detail, Coverage, The Recall, Report Card.
 - [Booking](./src/components/booking/CONTEXT.md) — paying for and scheduling tutoring time: Packages, Booking Passes, the public microsite, and the Single Session (Slots, Holds, Bookers).
 
 ## Relationships
