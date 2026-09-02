@@ -1317,11 +1317,3 @@ html.dark .classroom-root .classroom-home-shine {
     opacity: 1;
   }
 }
-
-/* The question finder in the masthead's utility cluster. Kept to a shrink-safe
-   inline block so the due pill's position never moves when it appears. */
-.classroom-root .classroom-home-jump {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
